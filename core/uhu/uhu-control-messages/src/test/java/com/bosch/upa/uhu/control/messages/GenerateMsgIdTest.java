@@ -1,0 +1,71 @@
+package com.bosch.upa.uhu.control.messages;
+
+import static org.junit.Assert.*;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.bosch.upa.uhu.proxy.api.impl.UhuServiceEndPoint;
+import com.bosch.upa.uhu.proxy.api.impl.UhuServiceId;
+
+/**
+ * This testCase verifies the GenerateMessageId by verifying generated id in the following scenarios.
+ * 
+ * a) EventId generated for different devices should be different.
+ * b) CtrlId generated each time should be different from the previous one.
+ * 
+ * @author AJC6KOR
+ *
+ */
+public class GenerateMsgIdTest {
+	
+	private static final Logger log = LoggerFactory
+			.getLogger(GenerateMsgIdTest.class);
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		
+		log.info("***** Setting up GenerateMsgIdTest TestCase *****");
+		
+	}
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+
+		log.info("***** Shutting down GenerateMsgIdTest TestCase *****");
+	}
+
+
+	@Test
+	public void testGenerateEvtId() {
+
+		UhuServiceId serviceId = new UhuServiceId("ServiceA");
+		UhuServiceEndPoint sep = new UhuServiceEndPoint("DeviceA", serviceId );
+		String eventId = GenerateMsgId.generateEvtId(sep) ;
+		sep.device ="DeviceB";
+		assertNotEquals("Same messageId generated for different devices",eventId, GenerateMsgId.generateEvtId(sep));
+	
+	}
+
+	@Test
+	public void testGenerateCtrlId() {
+
+		int ctrlId= GenerateMsgId.generateCtrlId();
+		
+		assertNotEquals("Same controlId generated multiple times.",ctrlId, GenerateMsgId.generateCtrlId());
+		
+	
+	}
+
+
+
+}

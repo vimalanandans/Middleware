@@ -1,0 +1,10 @@
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'light - protocol', 'Implementation-Version': version
+    }
+}
+
+dependencies {
+    compile project(':core:bezirk-api')
+}
+

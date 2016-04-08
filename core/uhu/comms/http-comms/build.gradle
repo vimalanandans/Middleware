@@ -1,0 +1,21 @@
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
+    }
+}
+
+dependencies {
+    compile project(':core:uhu:uhu-control-messages')
+    compile project(':core:uhu:commons')
+    compile 'org.slf4j:slf4j-api:1.7.6'
+
+    //NanoHttpD Dependeny
+    compile 'org.nanohttpd:nanohttpd:2.2.0'
+    compile 'org.nanohttpd:nanohttpd-nanolets:2.2.0'
+
+    //apache dependency
+    compile 'org.apache.httpcomponents:httpclient:4.5.1'
+    compile 'commons-io:commons-io:2.4'
+
+}
+

@@ -1,0 +1,15 @@
+// Configure the license gradle plugin: https://github.com/hierynomus/license-gradle-plugin
+// To create licese reports, run "gradlew downloadLicenses"
+//apply from: "${scriptDir}/license.gradle"
+apply plugin: 'java'
+//overriding default supprojects in middleware.gradle from group = 'com.bosch.upa.uhu'
+group = 'com.bezirk'
+dependencies {
+    compile 'com.google.code.gson:gson:2.2.4'
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Bezirk API', 'Implementation-Version': version
+    }
+}

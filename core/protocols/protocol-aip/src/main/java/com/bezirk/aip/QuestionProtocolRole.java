@@ -1,0 +1,43 @@
+/**
+ * Question ProtocolRole
+ *
+ * @author Cory Henson
+ * @modified 06/11/2014 
+ */
+package com.bezirk.aip;
+
+import com.bezirk.api.messages.ProtocolRole;
+
+public class QuestionProtocolRole extends ProtocolRole {
+
+	private String role = this.getClass().getSimpleName();
+	private String desc = "Protocol role for question-type messages";
+
+	private static final String[] topics = {
+		Question.topic, 
+		IncompleteQuestion.topic, 
+		InspireMe.topic,
+		OpenQuestion.topic
+	};
+
+	@Override
+	public String getProtocolName() {
+		return role;
+	}
+
+	@Override
+	public String getDescription() {
+		return desc;
+	}
+
+	@Override
+	public String[] getEventTopics() {
+		return topics==null ?null:topics.clone();
+	}
+
+	@Override
+	public String[] getStreamTopics() {
+		return null;
+	}
+	
+}

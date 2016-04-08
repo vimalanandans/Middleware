@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.bosch.upa.uhu.controlui.logging.SphereSelectLoggingActivity">
+
+    <Button
+        android:id="@+id/loggingFetchSphereButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonLabelFetchSpheres"
+        android:layout_centerHorizontal="true"
+        android:onClick="fetchSpheresButtonClick"/>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/loggingStartLoggingButton"
+        android:layout_below="@id/loggingFetchSphereButton"
+        android:gravity="center_horizontal">
+
+        <LinearLayout
+            android:id="@+id/sphereCheckBoxListLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/loggingStartLoggingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonLabelStartLogging"
+        android:layout_above="@+id/loggingVersionLabel"
+        android:layout_centerHorizontal="true"
+        android:onClick="startLoggingButtonClick"/>
+
+    <TextView
+    android:id="@+id/loggingVersionLabel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:textStyle="bold"
+    android:onClick="developerModeTapClick"/>
+<!--
+    Add this view to fix the bug for Samsung Tabs
+-->
+    <View
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:onClick="developerModeTapClick"/>
+
+    <TextView
+        android:id="@+id/devModeEnableLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:textStyle="bold"
+        android:text="@string/label_dev_mode_enabled"
+        android:textColor="@color/bg_red_color"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/logDataFragmentLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="0dp">
+
+    </RelativeLayout>
+</RelativeLayout>

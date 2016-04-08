@@ -1,0 +1,492 @@
+##########################################################################
+uhu is renamed to bezirk.
+the below log is to show the rename history
+DELETE THIS FILE ONCE THE SERVICES ARE MIGRATED
+##########################################################################
+
+commit f9c7273cbd1a402088e2b81b550c8e139c299827
+Merge: 3a4213b 076bf25
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Wed Mar 2 12:41:47 2016 -0500
+
+    Merge branch 'integration' into feature/bezirk-pack-rename
+
+commit 076bf25b9dc3b28d9a642698c652c6c4e7c485a9
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Tue Mar 1 12:49:33 2016 -0500
+
+    upgrading jar to include rasp pi libs
+
+ create mode 100644 Native-Builds/zyre-jni-pc/unix/native/linux_arm/libczmq.so
+ create mode 100644 Native-Builds/zyre-jni-pc/unix/native/linux_arm/libsodium.so
+ create mode 100644 Native-Builds/zyre-jni-pc/unix/native/linux_arm/libzmq.so
+ create mode 100644 Native-Builds/zyre-jni-pc/unix/native/linux_arm/libzyre-jni.so
+ create mode 100644 Native-Builds/zyre-jni-pc/unix/native/linux_arm/libzyre.so
+
+commit 3a4213b37a44382c1c2fd59bb975f165b757b083
+Merge: 8342f87 3ba13cf
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Mon Feb 29 12:36:24 2016 -0500
+
+    Merge branch 'integration' into feature/bezirk-pack-rename
+
+commit 8342f879a85f2d66000550a8a6a40181c427455f
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Mon Feb 29 12:34:25 2016 -0500
+
+    fixing java proxy names
+
+ rename Middleware/core/bezirk-api/src/main/java/com/bezirk/api/messages/{UhuMessage.java => Message.java} (97%)
+ rename Middleware/java/libraries/bezirk-factory/src/main/java/com/bezirk/{BezirkFactory.java => proxy/Factory.java} (63%)
+ rename Middleware/java/libraries/bezirk-factory/src/main/java/com/bezirk/{ => proxy}/IServiceRunner.java (97%)
+ rename Middleware/java/libraries/bezirk-factory/src/main/java/com/bezirk/proxy/{BezirkProxy.java => Proxy.java} (95%)
+ rename Middleware/java/libraries/bezirk-factory/src/main/java/com/bezirk/{ => proxy}/SpringRunner.java (97%)
+
+commit 0aa011fac05fc6dc4843d9b2b2bc5e88b80f5dbc
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Fri Feb 26 17:24:43 2016 -0500
+
+    uhu factory to uhu proxyforUhu to proxy
+
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/.gitignore (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/build.gradle (87%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/proguard-rules.txt (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/AndroidManifest.xml (100%)
+ rename Middleware/android/libraries/{ProxyForUhu/src/main/java/com/bezirk/proxy/android/UhuFactory.java => proxy/src/main/java/com/bezirk/proxy/android/Factory.java} (79%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/java/com/bezirk/proxy/android/IntentMessageReceiver.java (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/java/com/bezirk/proxy/android/Proxy.java (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/java/com/bezirk/proxy/android/ProxyHelper.java (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/java/com/bezirk/proxy/android/ServiceRegistration.java (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/java/com/bezirk/proxy/android/StringValidatorUtil.java (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/res/drawable-hdpi/ic_launcher.png (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/res/drawable-mdpi/ic_launcher.png (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/res/drawable-xhdpi/ic_launcher.png (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/res/drawable-xxhdpi/ic_launcher.png (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/res/layout/activity_main.xml (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/res/menu/main.xml (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/res/values-w820dp/dimens.xml (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/res/values/dimens.xml (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/main/res/values/strings.xml (100%)
+ rename Middleware/android/libraries/{ProxyForUhu => proxy}/src/test/java/.keep (100%)
+ rename Middleware/java/libraries/{uhu-factory => bezirk-factory}/build.gradle (84%)
+ rename Middleware/java/libraries/{uhu-factory => bezirk-factory}/src/main/java/com/bezirk/BezirkFactory.java (79%)
+ rename Middleware/java/libraries/{uhu-factory => bezirk-factory}/src/main/java/com/bezirk/IServiceRunner.java (100%)
+ rename Middleware/java/libraries/{uhu-factory => bezirk-factory}/src/main/java/com/bezirk/SpringRunner.java (97%)
+ rename Middleware/java/libraries/{uhu-factory => bezirk-factory}/src/main/java/com/bezirk/proxy/BRForService.java (98%)
+ rename Middleware/java/libraries/{uhu-factory/src/main/java/com/bezirk/proxy/UhuProxyforJava.java => bezirk-factory/src/main/java/com/bezirk/proxy/BezirkProxy.java} (97%)
+ rename Middleware/java/libraries/{uhu-factory => bezirk-factory}/src/main/java/com/bezirk/proxy/ProxyUtil.java (100%)
+ rename Middleware/java/libraries/{uhu-factory => bezirk-factory}/src/test/java/com/bezirk/proxy/DiscoveryTest.java (100%)
+ rename Middleware/java/libraries/{uhu-factory => bezirk-factory}/src/test/java/com/bezirk/proxy/LocationUpdateTest.java (100%)
+ rename Middleware/java/libraries/{uhu-factory => bezirk-factory}/src/test/java/com/bezirk/proxy/MulticastEventLocalTest.java (100%)
+ rename Middleware/java/libraries/{uhu-factory => bezirk-factory}/src/test/java/com/bezirk/proxy/RegistrationUnregistrationTest.java (100%)
+ rename Middleware/java/libraries/{uhu-factory => bezirk-factory}/src/test/java/com/bezirk/proxy/StreamLocalTest.java (100%)
+ rename Middleware/java/libraries/{uhu-factory => bezirk-factory}/src/test/java/com/bezirk/proxy/UnicastEventLocalTest.java (100%)
+ rename Middleware/java/libraries/{uhu-factory => bezirk-factory}/src/test/resources/streamingTestFile.txt (100%)
+
+commit 267c2ee3389a04fa3936012fe76aef239db919a7
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Fri Feb 26 15:55:08 2016 -0500
+
+    renaming protocol packages
+
+ rename Middleware/core/actions/src/main/java/com/{bosch/uhu => bezirk}/actions/UhuActions.java (98%)
+ rename Middleware/core/bezirk-api/src/test/java/com/{bosch/uhu => bezirk}/serialziation/SerializationTest.java (98%)
+ rename Middleware/core/protocols/cloudpipe-protocols/src/main/java/com/{bosch/uhu => bezirk}/samples/protocols/EchoReply.java (91%)
+ rename Middleware/core/protocols/cloudpipe-protocols/src/main/java/com/{bosch/uhu => bezirk}/samples/protocols/EchoReplyProtocol.java (90%)
+ rename Middleware/core/protocols/cloudpipe-protocols/src/main/java/com/{bosch/uhu => bezirk}/samples/protocols/EchoRequest.java (91%)
+ rename Middleware/core/protocols/cloudpipe-protocols/src/main/java/com/{bosch/uhu => bezirk}/samples/protocols/EchoRequestProtocol.java (90%)
+ rename Middleware/core/protocols/cloudpipe-protocols/src/main/java/com/{bosch/uhu => bezirk}/samples/protocols/FileReply.java (90%)
+ rename Middleware/core/protocols/cloudpipe-protocols/src/main/java/com/{bosch/uhu => bezirk}/samples/protocols/FileReplyProtocol.java (88%)
+ rename Middleware/core/protocols/cloudpipe-protocols/src/main/java/com/{bosch/uhu => bezirk}/samples/protocols/FileRequest.java (93%)
+ rename Middleware/core/protocols/cloudpipe-protocols/src/main/java/com/{bosch/uhu => bezirk}/samples/protocols/FileRequestProtocol.java (88%)
+ rename Middleware/core/protocols/cloudpipe-protocols/src/test/java/com/{bosch/uhu => bezirk}/samples/protocols/EchoTest.java (95%)
+ rename Middleware/core/protocols/cloudpipe-protocols/src/test/java/com/{bosch/uhu => bezirk}/samples/protocols/FileTest.java (95%)
+ rename Middleware/core/protocols/domain-vocabulary/src/main/java/com/{bosch/upa => bezirk}/protocols/vocabulary/SmartHomeVocab.java (99%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/main/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/InputValuesStringPair.java (74%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/main/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/InputValuesStringTriplet.java (77%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/main/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/NoticeUIshowPic.java (94%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/main/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/NoticeUIshowText.java (96%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/main/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/NoticeUIshowVideo.java (94%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/main/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/ReplyUIchoices.java (91%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/main/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/ReplyUIvalues.java (91%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/main/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/RequestUIinputValues.java (92%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/main/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/RequestUImultipleChoice.java (92%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/main/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/RequestUIpickOne.java (92%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/main/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/RoleConsumeUI.java (88%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/main/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/RoleParametricUI.java (89%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/test/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/NoticeUIshowTest.java (88%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/test/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/ReplyUITest.java (93%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/test/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/RequestUITest.java (95%)
+ rename Middleware/core/protocols/parametricUI-protocols/src/test/java/com/{bosch/upa => bezirk}/examples/protocols/parametricUI/RoleUITest.java (90%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/Answer.java (99%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/AnswerItem.java (98%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/AnswerProtocolRole.java (91%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/Context.java (97%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/Digest.java (99%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/DigestItem.java (99%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/DisambiguationQuestions.java (98%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/IncompleteQuestion.java (96%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/InspireMe.java (98%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/OpenQuestion.java (97%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/Question.java (99%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/QuestionProtocolRole.java (91%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/RelatedQuestions.java (98%)
+ rename Middleware/core/protocols/protocol-aip/src/main/java/com/{bosch/upa => bezirk}/aip/SingleAnswer.java (99%)
+ rename Middleware/core/protocols/protocol-aip/src/test/java/com/{bosch/upa => bezirk}/aip/AnswerItemTest.java (94%)
+ rename Middleware/core/protocols/protocol-aip/src/test/java/com/{bosch/upa => bezirk}/aip/AnswerTest.java (93%)
+ rename Middleware/core/protocols/protocol-aip/src/test/java/com/{bosch/upa => bezirk}/aip/ContextTest.java (92%)
+ rename Middleware/core/protocols/protocol-aip/src/test/java/com/{bosch/upa => bezirk}/aip/DigestItemTest.java (95%)
+ rename Middleware/core/protocols/protocol-aip/src/test/java/com/{bosch/upa => bezirk}/aip/DigestTest.java (93%)
+ rename Middleware/core/protocols/protocol-aip/src/test/java/com/{bosch/upa => bezirk}/aip/DisambiguationQuestionsTest.java (95%)
+ rename Middleware/core/protocols/protocol-aip/src/test/java/com/{bosch/upa => bezirk}/aip/IncompleteQuestionTest.java (96%)
+ rename Middleware/core/protocols/protocol-aip/src/test/java/com/{bosch/upa => bezirk}/aip/InspireMeTest.java (94%)
+ rename Middleware/core/protocols/protocol-aip/src/test/java/com/{bosch/upa => bezirk}/aip/OpenQuestionTest.java (96%)
+ rename Middleware/core/protocols/protocol-aip/src/test/java/com/{bosch/upa => bezirk}/aip/ProtocolRoleTest.java (97%)
+ rename Middleware/core/protocols/protocol-aip/src/test/java/com/{bosch/upa => bezirk}/aip/QuestionTest.java (95%)
+ rename Middleware/core/protocols/protocol-aip/src/test/java/com/{bosch/upa => bezirk}/aip/RelatedQuestionsTest.java (94%)
+ rename Middleware/core/protocols/protocol-aip/src/test/java/com/{bosch/upa => bezirk}/aip/SingleAnswerTest.java (95%)
+ rename Middleware/core/protocols/protocol-dragonfly/src/main/java/com/{bosch/upa => bezirk}/protocols/context/Context.java (95%)
+ rename Middleware/core/protocols/protocol-dragonfly/src/main/java/com/{bosch/upa => bezirk}/protocols/context/exception/UserPreferenceException.java (83%)
+ rename Middleware/core/protocols/protocol-dragonfly/src/main/java/com/{bosch/upa => bezirk}/protocols/dragonfly/EnvironmentObservation.java (87%)
+ rename Middleware/core/protocols/protocol-dragonfly/src/main/java/com/{bosch/upa => bezirk}/protocols/dragonfly/EnvironmentObservationRole.java (89%)
+ rename Middleware/core/protocols/protocol-dragonfly/src/main/java/com/{bosch/upa => bezirk}/protocols/dragonfly/Observation.java (98%)
+ rename Middleware/core/protocols/protocol-dragonfly/src/main/java/com/{bosch/upa => bezirk}/protocols/dragonfly/UserObservation.java (88%)
+ rename Middleware/core/protocols/protocol-dragonfly/src/main/java/com/{bosch/upa => bezirk}/protocols/dragonfly/UserObservationRole.java (89%)
+ rename Middleware/core/protocols/protocol-dragonfly/src/main/java/com/{bosch/upa => bezirk}/protocols/dragonfly/test/ObservationTest.java (91%)
+ rename Middleware/core/protocols/protocol-dragonfly/src/test/java/com/{bosch/upa => bezirk}/protocols/context/ContextTest.java (92%)
+ rename Middleware/core/protocols/protocol-dragonfly/src/test/java/com/{bosch/upa => bezirk}/protocols/dragonfly/EnvironmentObservationRoleTest.java (93%)
+ rename Middleware/core/protocols/protocol-dragonfly/src/test/java/com/{bosch/upa => bezirk}/protocols/dragonfly/ObservationTest.java (94%)
+ rename Middleware/core/protocols/protocol-dragonfly/src/test/java/com/{bosch/upa => bezirk}/protocols/dragonfly/UserObservationRoleTest.java (93%)
+ rename Middleware/core/protocols/protocol-dragonfly/src/test/java/com/{bosch/upa => bezirk}/protocols/dragonfly/test/ObservationTestTest.java (91%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/ActuateBulb.java (97%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/BulbStatus.java (92%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/ClearUserDetails.java (90%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/ConfigureBulbLocation.java (93%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/ConfigurePolicy.java (95%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/DiscoverLocationResponse.java (91%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/DiscoverLocations.java (83%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/HueVocab.java (90%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/LightConfigConsumerRole.java (89%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/LightConfigCtrlRole.java (96%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/LightDetails.java (97%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/MakeKing.java (91%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/RequestActiveLights.java (90%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/RequestKing.java (88%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/RequestLightLocation.java (89%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/RequestLightStateForLocation.java (93%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/RequestLocationWithLightDetails.java (85%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/RequestPolicy.java (88%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/ResponseActiveLights.java (94%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/ResponseKing.java (91%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/ResponseLightLocation.java (92%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/ResponseLocationWithLightDetails.java (94%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/ResponsePolicy.java (97%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/TestLocationAndLightSetUpRequest.java (87%)
+ rename Middleware/core/protocols/protocol-light/src/main/java/com/{bosch/upa => bezirk}/services/light/protocol/TestLocationAndLightSetUpResponse.java (95%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/ActuateBulbTest.java (89%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/BulbStatusTest.java (82%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/ConfigureBulbLocationTest.java (92%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/ConfigurePolicyTest.java (92%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/LightConfigConsumerRoleTest.java (93%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/LightConfigCtrlRoleTest.java (89%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/LightDetailsTest.java (95%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/MakeKingTest.java (90%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/RequestActiveLightsTest.java (91%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/RequestKingTest.java (89%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/RequestLightLocationTest.java (90%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/RequestPolicyTest.java (89%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/ResponseActiveLightsTest.java (91%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/ResponseKingTest.java (91%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/ResponseLightLocationTest.java (92%)
+ rename Middleware/core/protocols/protocol-light/src/test/java/com/{bosch/upa => bezirk}/services/light/protocol/ResponsePolicyTest.java (91%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/callback/TrackableEvent.java (96%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/Condition.java (93%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/ConditionalProfileSubset.java (93%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/ContextValue.java (92%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/DefaultProfileSubset.java (74%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/GetPreference.java (94%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/GetUserProfile.java (96%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/InitUserProxyRemoteUI.java (95%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/InitUserProxyUI.java (92%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/Preference.java (98%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/ProfileSubset.java (88%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/QueryUserProxyRole.java (88%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/UserModel.java (95%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/UserProfile.java (97%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/UserProxyRole.java (63%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/test/GetPreferenceTest.java (90%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/test/GetUserProfileTest.java (87%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/presence/PresenceDetectorRole.java (89%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/smartservice/SmartServiceRole.java (76%)
+ rename Middleware/core/protocols/protocol-penguin/src/main/java/com/{bosch/upa => bezirk}/protocols/specific/userproxy/ClearData.java (95%)
+ rename Middleware/core/protocols/protocol-penguin/src/test/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/ClearDataTest.java (85%)
+ rename Middleware/core/protocols/protocol-penguin/src/test/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/ConditionalProfileSubsetTest.java (93%)
+ rename Middleware/core/protocols/protocol-penguin/src/test/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/EventsTest.java (94%)
+ rename Middleware/core/protocols/protocol-penguin/src/test/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/GetPreferenceTest.java (79%)
+ rename Middleware/core/protocols/protocol-penguin/src/test/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/GetProfileTest.java (89%)
+ rename Middleware/core/protocols/protocol-penguin/src/test/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/PreferencesTest.java (93%)
+ rename Middleware/core/protocols/protocol-penguin/src/test/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/ProtocolsTest.java (84%)
+ rename Middleware/core/protocols/protocol-penguin/src/test/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/ProxyTest.java (93%)
+ rename Middleware/core/protocols/protocol-penguin/src/test/java/com/{bosch/upa => bezirk}/protocols/penguin/v01/UserProfileTest.java (95%)
+ rename Middleware/core/protocols/protocol-penguin/src/test/resources/com/{bosch/upa => bezirk}/protocols/penguin/v01/userprofiletest/Test_UserProfile.java (94%)
+ rename Middleware/core/uhu/uhu-control-messages/src/test/java/com/{bosch/uhu => bezirk}/test/ctrlmessages/PipeHeaderConversionTest.java (98%)
+
+commit 552d275495bac8dbd9e2bc05285e07f41c5eabf2
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Fri Feb 26 14:12:16 2016 -0500
+
+    fixing test app as per changes in bezirk-api name change
+
+
+commit 4ae6e7c562e50824993ee3fe65e84ddcd64afdda
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Fri Feb 26 13:39:54 2016 -0500
+
+    moving core.uhu.bezirk-api to core.bezirk-api and fixing group name fro bezirk-api
+
+ rename Middleware/core/{uhu => }/bezirk-api/LICENSE (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/build.gradle (59%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/IBezirk.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/IBezirkListener.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/addressing/Address.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/addressing/CloudPipe.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/addressing/DiscoveredService.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/addressing/Location.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/addressing/Pipe.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/addressing/PipePolicy.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/addressing/ServiceEndPoint.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/addressing/ServiceId.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/messages/Event.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/messages/GetStreamRequest.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/messages/MulticastStream.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/messages/ProtocolRole.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/messages/Stream.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/messages/UhuMessage.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/messages/UnicastStream.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/serialization/AddressSerializer.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/main/java/com/bezirk/api/serialization/InterfaceAdapter.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/uhu/serialziation/SerializationTest.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/upa/uhu/api/addressing/AddressTest.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/upa/uhu/api/addressing/CloudPipeTest.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/upa/uhu/api/addressing/LocationTest.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/upa/uhu/api/addressing/MockProtocolRole.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/upa/uhu/api/addressing/PipePolicyTest.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/upa/uhu/api/addressing/PipeTest.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/upa/uhu/api/messages/EventTest.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/upa/uhu/api/messages/GetStreamRequestTest.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/upa/uhu/api/messages/MockServiceEndpoint.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/upa/uhu/api/messages/MulticastStreamTest.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/upa/uhu/api/messages/ProtocolRoleTest.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/upa/uhu/api/messages/StreamTest.java (100%)
+ rename Middleware/core/{uhu => }/bezirk-api/src/test/java/com/bosch/upa/uhu/api/messages/UnicastStreamTest.java (100%)
+ delete mode 100644 Middleware/core/uhu/bezirk-api/uhu-API-doc-rev.zip
+
+commit 886cb7c2522ca7082e6773e23419aef876f3a8e0
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Fri Feb 26 11:54:07 2016 -0500
+
+    added settings.gradle uhu-API to bezirk-api
+
+
+commit dfe194a36dac271e6e62006ee5981741b33ba797
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Fri Feb 26 11:53:17 2016 -0500
+
+    rename uhu-API to bezirk-api
+
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/LICENSE (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/build.gradle (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/IBezirk.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/IBezirkListener.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/addressing/Address.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/addressing/CloudPipe.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/addressing/DiscoveredService.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/addressing/Location.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/addressing/Pipe.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/addressing/PipePolicy.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/addressing/ServiceEndPoint.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/addressing/ServiceId.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/messages/Event.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/messages/GetStreamRequest.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/messages/MulticastStream.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/messages/ProtocolRole.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/messages/Stream.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/messages/UhuMessage.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/messages/UnicastStream.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/serialization/AddressSerializer.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/main/java/com/bezirk/api/serialization/InterfaceAdapter.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/uhu/serialziation/SerializationTest.java (100%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/upa/uhu/api/addressing/AddressTest.java (96%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/upa/uhu/api/addressing/CloudPipeTest.java (96%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/upa/uhu/api/addressing/LocationTest.java (97%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/upa/uhu/api/addressing/MockProtocolRole.java (95%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/upa/uhu/api/addressing/PipePolicyTest.java (97%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/upa/uhu/api/addressing/PipeTest.java (96%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/upa/uhu/api/messages/EventTest.java (96%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/upa/uhu/api/messages/GetStreamRequestTest.java (96%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/upa/uhu/api/messages/MockServiceEndpoint.java (94%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/upa/uhu/api/messages/MulticastStreamTest.java (97%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/upa/uhu/api/messages/ProtocolRoleTest.java (95%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/upa/uhu/api/messages/StreamTest.java (96%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/src/test/java/com/bosch/upa/uhu/api/messages/UnicastStreamTest.java (96%)
+ rename Middleware/core/uhu/{uhu-API => bezirk-api}/uhu-API-doc-rev.zip (100%)
+
+commit d907caafc8ef894f359a86e54f5033a99e2f6161
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Fri Feb 26 09:41:58 2016 -0500
+
+    modified android libs
+
+ rename Middleware/android/libraries/ProxyForUhu/src/main/java/com/{bosch/upa/uhu/proxy/UhuIntentReceiver.java => bezirk/proxy/android/IntentMessageReceiver.java} (80%)
+ rename Middleware/android/libraries/ProxyForUhu/src/main/java/com/{bosch/upa/uhu/proxy/UhuProxyForAndroid.java => bezirk/proxy/android/Proxy.java} (96%)
+ rename Middleware/android/libraries/ProxyForUhu/src/main/java/com/{bosch/upa/uhu/proxy/UhuProxyForAndroidHelper.java => bezirk/proxy/android/ProxyHelper.java} (82%)
+ rename Middleware/android/libraries/ProxyForUhu/src/main/java/com/{bosch/upa/uhu/proxy/android/registration => bezirk/proxy/android}/ServiceRegistration.java (94%)
+ rename Middleware/android/libraries/ProxyForUhu/src/main/java/com/{bosch/upa/uhu/proxy/util/UhuValidatorForAndroid.java => bezirk/proxy/android/StringValidatorUtil.java} (88%)
+ rename Middleware/android/libraries/ProxyForUhu/src/main/java/com/{bosch/upa/uhu => bezirk}/proxy/android/UhuFactory.java (64%)
+ rename Middleware/android/libraries/comms-zyre-jni/src/main/java/com/{bosch/upa/uhu => bezirk}/comms/ZyreCommsHelper.java (99%)
+ rename Middleware/android/libraries/comms-zyre-jni/src/main/java/com/{bosch/upa/uhu => bezirk}/comms/ZyreCommsJni.java (99%)
+ rename Middleware/android/libraries/comms-zyre-jni/src/main/java/com/{bosch/upa/uhu => bezirk}/comms/ZyreCommsManager.java (97%)
+ rename Middleware/java/libraries/comms-zyre-jni/src/main/java/com/{bosch/upa/uhu => bezirk}/comms/NativeUtils.java (96%)
+ rename Middleware/java/libraries/comms-zyre-jni/src/main/java/com/{bosch/upa/uhu => bezirk}/comms/ResourceUtils.java (99%)
+ rename Middleware/java/libraries/comms-zyre-jni/src/main/java/com/{bosch/upa/uhu => bezirk}/comms/ZyreCommsJni.java (97%)
+ rename Middleware/java/libraries/comms-zyre-jni/src/main/java/com/{bosch/upa/uhu => bezirk}/comms/ZyreCommsManager.java (97%)
+
+commit 9fc1c7e4e1cfdad93812f0ec8c7c4c020bdf8cce
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Thu Feb 25 17:04:36 2016 -0500
+
+    fixing uhu-factory for java name space
+
+ rename Middleware/java/libraries/uhu-factory/src/test/java/com/{bosch/upa/uhu => bezirk}/proxy/DiscoveryTest.java (96%)
+ rename Middleware/java/libraries/uhu-factory/src/test/java/com/{bosch/upa/uhu => bezirk}/proxy/LocationUpdateTest.java (96%)
+ rename Middleware/java/libraries/uhu-factory/src/test/java/com/{bosch/upa/uhu => bezirk}/proxy/MulticastEventLocalTest.java (96%)
+ rename Middleware/java/libraries/uhu-factory/src/test/java/com/{bosch/upa/uhu => bezirk}/proxy/RegistrationUnregistrationTest.java (95%)
+ rename Middleware/java/libraries/uhu-factory/src/test/java/com/{bosch/upa/uhu => bezirk}/proxy/StreamLocalTest.java (96%)
+ rename Middleware/java/libraries/uhu-factory/src/test/java/com/{bosch/upa/uhu => bezirk}/proxy/UnicastEventLocalTest.java (96%)
+
+commit 912e64b1b909e3bdbe9f0a71e7c5b6fa93ab01cc
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Thu Feb 25 17:03:55 2016 -0500
+
+    java/libraries/
+
+ rename Middleware/java/libraries/uhu-factory/src/main/java/com/{bosch/upa/bezirk/UhuFactory.java => bezirk/BezirkFactory.java} (61%)
+ rename Middleware/java/libraries/uhu-factory/src/main/java/com/{bosch/upa/bezirk/ServiceRunner.java => bezirk/IServiceRunner.java} (89%)
+ rename Middleware/java/libraries/uhu-factory/src/main/java/com/{bosch/upa/bezirk/UhuSpringRunner.java => bezirk/SpringRunner.java} (91%)
+ rename Middleware/java/libraries/uhu-factory/src/main/java/com/{bosch/upa => }/bezirk/proxy/BRForService.java (99%)
+ rename Middleware/java/libraries/uhu-factory/src/main/java/com/{bosch/upa => }/bezirk/proxy/ProxyUtil.java (97%)
+ rename Middleware/java/libraries/uhu-factory/src/main/java/com/{bosch/upa => }/bezirk/proxy/UhuProxyforJava.java (97%)
+
+commit f5e23965e79f332e5acfeb98da389569d06fcec0
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Thu Feb 25 13:07:31 2016 -0500
+
+    renaming uhuAPI.java and UhuListenerAPI.java
+
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/bezirk/api/{UhuAPI.java => IBezirk.java} (86%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/bezirk/api/{UhuListenerAPI.java => IBezirkListener.java} (92%)
+ rename Middleware/java/libraries/uhu-factory/src/main/java/com/bosch/upa/{uhu => bezirk}/ServiceRunner.java (96%)
+ rename Middleware/java/libraries/uhu-factory/src/main/java/com/bosch/upa/{uhu => bezirk}/UhuFactory.java (52%)
+ rename Middleware/java/libraries/uhu-factory/src/main/java/com/bosch/upa/{uhu => bezirk}/UhuSpringRunner.java (94%)
+ rename Middleware/java/libraries/uhu-factory/src/main/java/com/bosch/upa/{uhu => bezirk}/proxy/BRForService.java (85%)
+ rename Middleware/java/libraries/uhu-factory/src/main/java/com/bosch/upa/{uhu => bezirk}/proxy/ProxyUtil.java (68%)
+ rename Middleware/java/libraries/uhu-factory/src/main/java/com/bosch/upa/{uhu => bezirk}/proxy/UhuProxyforJava.java (87%)
+
+commit 3ba13cf5a27d1f6e8fffd6f1f70b794c71683b69
+Author: Punith Raj <punithraj.krishnaiah@in.bosch.com>
+Date:   Tue Feb 23 14:14:26 2016 +0530
+
+    removing accent color for party app... this will show the default styled checkbox
+
+
+commit bdba72a464be14fe7e5942d71c1ac3250345b5b7
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Mon Feb 22 17:16:10 2016 -0500
+
+    enabling the remote maven for core
+
+
+commit 8373f4a8e562549ee87718be5c93318befb0d190
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Mon Feb 22 17:11:19 2016 -0500
+
+    renaming uhu-api packages
+
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/UhuAPI.java (92%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/UhuListenerAPI.java (68%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/addressing/Address.java (95%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/addressing/CloudPipe.java (95%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/addressing/DiscoveredService.java (93%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/addressing/Location.java (99%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/addressing/Pipe.java (96%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/addressing/PipePolicy.java (97%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/addressing/ServiceEndPoint.java (93%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/addressing/ServiceId.java (93%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/messages/Event.java (94%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/messages/GetStreamRequest.java (96%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/messages/MulticastStream.java (88%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/messages/ProtocolRole.java (94%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/messages/Stream.java (94%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/messages/UhuMessage.java (97%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/messages/UnicastStream.java (76%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/serialization/AddressSerializer.java (86%)
+ rename Middleware/core/uhu/uhu-API/src/main/java/com/{bosch/upa/uhu => bezirk}/api/serialization/InterfaceAdapter.java (97%)
+
+commit 99d683df12a792bec34ee71c58dfdf64c2948f2f
+Author: Punith Raj <punithraj.krishnaiah@in.bosch.com>
+Date:   Mon Feb 22 15:18:46 2016 +0530
+
+    Fix. Auto Approve for stream request will be enabled by default.
+
+
+commit a68d6fac08b6c8d2dfae7ad89f52494b4ba79108
+Merge: 252c651 746e1ed
+Author: unknown <PIK6KOR@KOR1048862.KOR.APAC.BOSCH.COM>
+Date:   Thu Feb 18 15:27:23 2016 +0530
+
+    Merge branch 'integration' of http://cr-scm01.de.bosch.com:7990/scm/upa/platform into integration
+
+commit 252c651057f9a5d902a9bdcdc9fd138c797ebc30
+Author: unknown <PIK6KOR@KOR1048862.KOR.APAC.BOSCH.COM>
+Date:   Thu Feb 18 15:25:22 2016 +0530
+
+    Changes for Rest feature.
+    1. Maintain On/Off state.
+    2. Interupt sender thread when we stop the rest server
+    3. remove the data after it has been retrieved, fail-safe removing from the map.
+
+
+commit 746e1ed4b3cf9634dcdaa7c2c8a7f837a774a004
+Author: AmitK <Amit.Kumar13@in.bosch.com>
+Date:   Thu Feb 18 14:28:59 2016 +0530
+
+    checkingForBuildTrigger
+
+
+commit 40a4b5bf2af216f399cb5aad9cf44df83c262814
+Author: AmitK <Amit.Kumar13@in.bosch.com>
+Date:   Thu Feb 18 14:22:27 2016 +0530
+
+    temporarily reverting build switch remote
+
+
+commit 58953f16fbd4b8f75d52d5cbae7c4bae5bd0fa19
+Merge: 5fb0323 a3a37d1
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Wed Feb 17 12:57:53 2016 -0500
+
+    Merge branch 'integration' of http://tahiti.si.de.bosch.com:7990/scm/upa/platform into integration
+
+commit 5fb0323ca6ca19d0033728f49565a4e9a9158857
+Author: vnd2kor <vimalanandan.s@in.bosch.com>
+Date:   Wed Feb 17 12:56:46 2016 -0500
+
+    added build switch remote/local core libs
+
+
+commit a3a37d1c39d5ffcda19fb87d52eb2e96250001b1
+Author: AmitK <Amit.Kumar13@in.bosch.com>
+Date:   Tue Feb 16 12:30:06 2016 +0530
+
+    test Checkin for Jenkins run
+

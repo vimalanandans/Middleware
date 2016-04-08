@@ -1,0 +1,85 @@
+rootProject.name = 'Middleware'
+
+//refer README.md
+def useInitVar = false
+def exec
+if (gradle.hasProperty("execute")) {
+    exec = gradle.execute
+    useInitVar = true
+}else{
+    println 'Not building using init.gradle: Building all projects'
+}
+
+
+/*
+* command line .. entry like gradlew clean build -PdevBuild=true
+if("$devBuild" == "true"){*/
+
+/*def devBuildVar
+if(gradle.hasProperty("devBuild")){
+    devBuildVar = gradle.devBuild
+	if(devBuildVar != null && devBuildVar == "true"){
+    println "############  Performing Dev Build   ###########"
+    def props = new Properties()
+    def propsFile = new File("${rootDir}/core/uhu/commons/src/main/resources/features.properties")
+
+    //println "RootDir is :: ${rootDir}"
+
+    props.load(propsFile.newDataInputStream());
+    //println props.getProperty('HTTP_BEZIRK_COMMS')
+
+    props.setProperty('HTTP_BEZIRK_COMMS', devBuildVar)
+    props.store(propsFile.newWriter(), null)
+
+
+    props.load(propsFile.newDataInputStream())
+    //println props.getProperty('HTTP_BEZIRK_COMMS')
+
+
+    //check how this has to be done...
+    include ':core:uhu:comms:http-comms'
+	}
+}*/
+
+/*Projects for core*/
+include ':core:bezirk-api'
+include ':core:uhu:uhu-API-impl'
+include ':core:uhu:pipes'
+include ':core:protocols:protocol-aip'
+
+include ':core:uhu:uhu-control-messages'
+include ':core:uhu:utils:uhu-network-util'
+include ':core:uhu:commons'
+
+include ':core:uhu:comms:comms-udp'
+include ':core:uhu:comms:comms-factory'
+include ':core:uhu:comms:comms-zyre'
+include ':core:uhu:comms:comms-jyre'
+
+//### this has to be removed..
+include ':core:uhu:comms:http-comms'
+
+include ':core:uhu:uhu-device-objects'
+include ':core:actions'
+include ':core:protocols:protocol-penguin'
+include ':core:protocols:protocol-dragonfly'
+include ':core:protocols:domain-vocabulary'
+include ':core:protocols:protocol-light'
+include ':core:protocols:parametricUI-protocols'
+include ':core:protocols:cloudpipe-protocols'
+
+if (!useInitVar || (useInitVar && exec == 'all')) {
+/*Projects for java*/
+    include ':java:libraries:bezirk-factory'
+    include ':java:libraries:comms-zyre-jni'
+    include ':java:uhu-pc'
+    include ':java:testApp'
+
+/*Projects for android*/
+    include ':android:uhu-android'
+    include ':android:uhu-ui:uhu-control-ui'
+    include ':android:uhu-ui:uhu-sphere-pipe-ui'
+    include ':android:libraries:proxy'
+    include ':android:libraries:zbarscanner'
+    include ':android:libraries:comms-zyre-jni'
+}

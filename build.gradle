@@ -1,0 +1,68 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    ext{
+        androidGradleToolsVersion = "1.2.3"
+        androidBuildToolsVersion = "21.1.2" //upgrade requires upgrade in jenkins
+        androidSupportLibraryVersion = "19.+"
+        androidCompileSdkVersion = "19"
+        androidMinSdkVersion = "16"
+        androidTargetSdkVersion = "19"
+        androidVersionCode = "1"
+        androidVersionName = "1.0"
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:${project.androidGradleToolsVersion}"
+    }
+    ext {
+        local = true //change to false for compiling project artifacts from remote maven
+    }
+}
+
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'maven'
+
+    group = 'com.bosch.upa.uhu'
+    version = "2.0.4"
+
+    ext {
+        artifactRepoBase = "http://cr-scm01.de.bosch.com:8081/nexus/content/repositories"
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url "${artifactRepoBase}/central/"
+            credentials {
+                // Define "nexus_user" and "nexus_password" in ~/.gradle/gradle.properties
+                username nexus_user
+                password nexus_password
+            }
+        }
+        maven {
+            url "${artifactRepoBase}/upa-public/"
+            credentials {
+                username nexus_user
+                password nexus_password
+            }
+        }
+    }
+}
+
+/**
+ * Build java distribution. Jars contained in the zip are used to run PC services.
+ * Eg. http://52.18.79.103:8090/rishabh.gulati/HelloWorld
+ **/
+task javaBuildDist(type: Zip) {
+    baseName = 'bezirk-java-dist'
+    version = project.version
+    into 'jars'
+    from { project(':core:bezirk-api').configurations.runtime }
+    from { project(':java:libraries:bezirk-factory').configurations.runtime }
+    from { project(':core:bezirk-api').jar }
+    from { project(':java:libraries:bezirk-factory').jar }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

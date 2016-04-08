@@ -1,0 +1,73 @@
+apply plugin: 'android-library'
+
+repositories {
+    flatDir {
+        dirs 'lib'
+    }
+}
+
+android {
+    compileSdkVersion project.androidCompileSdkVersion.toInteger()
+    buildToolsVersion project.androidBuildToolsVersion
+
+    defaultConfig {
+        minSdkVersion project.androidMinSdkVersion.toInteger()
+        targetSdkVersion project.androidTargetSdkVersion.toInteger()
+        versionCode project.androidVersionCode.toInteger()
+        versionName project.androidVersionName
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
+
+    compile "com.bezirk:bezirk-api:${version}"
+    compile "com.bosch.upa.uhu:uhu-control-messages:${version}"
+    compile "com.bosch.upa.uhu:commons:${version}"
+    compile "com.bosch.upa.uhu:http-comms:${version}"
+    compile project(':android:libraries:comms-zyre-jni')
+
+    // fixme : the actual package is com.bosch.upa.uhu.comms.udp.*
+    // but include path is showing as com.bosch.upa.uhu:udp:* (comms is missing)
+
+    if (project.local == "false") {
+        compile "com.bosch.upa.uhu:comms-udp:${version}"
+        compile "com.bosch.upa.uhu:comms-factory:${version}"
+        compile "com.bosch.upa.uhu:actions:${version}"
+        compile("com.bosch.upa.uhu:pipes:${version}")
+
+    } else {
+        compile project(':core:uhu:comms:comms-udp')
+        compile project(':core:uhu:comms:comms-factory')
+        compile project(':core:actions')
+        compile project(':core:uhu:pipes')
+    }
+
+    compile 'org.bouncycastle:bcprov-jdk15on:1.49' //Check if this works
+    compile 'org.apache.shiro:shiro-core:1.2.4'
+    compile 'com.google.zxing:core:2.3.0'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.github.tony19:logback-android-classic:1.1.1-2'
+    compile 'org.slf4j:slf4j-api:1.7.6'
+    compile 'org.sqldroid:sqldroid:1.0.3'
+    compile "com.j256.ormlite:ormlite-core:4.48"
+    compile "com.j256.ormlite:ormlite-android:4.48"
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.0.31-beta'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // FIXME orm lite creating problem with sqldroid
+    // compile 'com.j256.ormlite:ormlite-android:4.48'
+    // compile 'org.xerial:sqlite-jdbc:3.8.7'
+}
+

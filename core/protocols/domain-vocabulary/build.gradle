@@ -1,0 +1,9 @@
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'domain-vocabulary', 'Implementation-Version': version
+    }
+}
+
+dependencies {
+    compile project(':core:bezirk-api')
+}

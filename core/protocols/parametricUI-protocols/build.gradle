@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':core:bezirk-api')
+}
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'examples-protocols', 'Implementation-Version': version
+    }
+}

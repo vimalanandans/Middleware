@@ -1,0 +1,12 @@
+project.ext {
+    sourcesDir = new File('src/main/java')
+    resourcesDir = new File('src/main/resources')
+    testDir = new File('src/test/java')
+}
+task androidInit << {
+    println 'Generating folder structures for java-gradle'
+    sourcesDir.mkdirs()
+    resourcesDir.mkdirs()
+    testDir.mkdirs()
+   // new File("build.gradle").createNewFile()
+}

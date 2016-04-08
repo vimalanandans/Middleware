@@ -1,0 +1,83 @@
+apply plugin: 'java'
+/*
+ * Determine platform
+ */
+def final String LIB_BIN_FOLDER = "lib-zeromq-bin"
+def final PLAT_OSX = "osx"
+def final PLAT_X64_LINUX = "x64linux"
+def final PLAT_X64_WINDOWS = "x64windows"
+
+def os = System.properties['os.name'].toLowerCase()
+def platform
+
+if (os.contains("mac")) {
+    platform = PLAT_OSX
+} else if (os.contains("linux")) {
+    platform = PLAT_X64_LINUX
+} else if (os.contains("windows")) {
+    platform = PLAT_X64_WINDOWS
+} else {
+    throw new RuntimeException("platform not supported: $os")
+}
+
+
+test {
+    systemProperties = System.getProperties()
+    def javaLibPath = System.getProperty("java.io.tmpdir") + File.separator + "${LIB_BIN_FOLDER}" + File.separator + File.pathSeparator + systemProperties['java.library.path'];
+
+    if (platform.equals(PLAT_OSX)) {
+        environment 'DYLD_FALLBACK_LIBRARY_PATH', "$javaLibPath"
+    }
+    systemProperties = System.getProperties()
+    systemProperties['java.library.path'] = javaLibPath
+    systemProperty "java.library.path", javaLibPath
+
+}
+/*
+tasks.withType(Test) {
+   systemProperties = System.getProperties()
+   nativeLibPath =  System.getProperty("java.io.tmpdir") + "${LIB_BIN}" +  File.pathSeparator +systemProperties['java.library.path'] ;
+   systemProperties['java.library.path'] = nativeLibPath;
+   println "PATH: " + systemProperties['java.library.path']
+   systemProperty "java.library.path",nativeLibPath
+}
+/*
+repositories {
+   mavenLocal()
+   mavenCentral()
+   flatDir {
+       dirs 'lib'
+   }
+   // use this instead of FlatDirs if zyre-jni is installed with publishToMavenLocal
+   //mavenLocal()
+}*/
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.12'
+    compile 'ch.qos.logback:logback-classic:1.1.3'
+    compile "com.bosch.zyre:zyre-jni-core:0.7"
+    compile files('lib/zyre-android.jar') //zyre  2 for quick testing
+    compile 'org.apache.commons:commons-io:1.3.2'
+    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'org.apache.commons:commons-collections4:4.0'
+
+    // to load the platform specific native library //  bsd license
+    compile 'org.scijava:native-lib-loader:2.1.3'
+    // test
+    testCompile 'junit:junit:4.12'
+
+    compile "com.google.code.gson:gson:2.2.4"
+    if (project.local == "false") {
+        compile "com.bezirk:bezirk-api:${version}"
+        compile "com.bosch.upa.uhu:uhu-API-impl:${version}"
+        compile "com.bosch.upa.uhu:actions:${version}"
+        compile "com.bosch.upa.uhu:commons:${version}"
+
+    } else {
+        compile project(':core:bezirk-api')
+        compile project(':core:uhu:uhu-API-impl')
+        compile project(':core:actions')
+        compile project(':core:uhu:commons')
+    }
+    //compile "com.bosch.upa.uhu:streaming:${version}"
+    //compile "com.bosch.upa.uhu:comms-processor:${version}"
+}

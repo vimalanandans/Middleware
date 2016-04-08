@@ -1,0 +1,12 @@
+apply plugin: 'java'
+group = 'com.bezirk'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'dragonfly-protocol', 'Implementation-Version': version
+    }
+}
+
+dependencies {
+    compile project(':core:bezirk-api')
+}
+

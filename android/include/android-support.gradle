@@ -1,0 +1,164 @@
+
+/*
+ * Create common extra properties use by all projects
+ */
+
+apply from: "${rootDir}/../gradle-plugins/script/all-projects.gradle"
+
+// We need to apply findbugs before android config section, then we
+// configure findbugs below
+apply plugin: 'findbugs'
+apply plugin: 'jacoco'
+
+/*
+ * Configuration for android apps and libraries
+ */
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            //runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+			
+		}
+    }
+
+    /*
+     * Exclude license-type files to prevent duplicates being combined into
+     * a single artifact.  We can exclude license files b/c we will document
+     * this info elsewhere
+     */
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+project.gradle.taskGraph.whenReady {
+
+    testDebug {
+        ignoreFailures = true
+    }
+	testRelease{
+        ignoreFailures = true
+    }
+
+}
+//
+///*
+// * PMD configuration
+// */
+//
+//apply from: "${scriptDir}/pmd-support.gradle"
+//
+//task pmdMain (type: Pmd, dependsOn: assembleDebug) {
+//    ruleSets += "java-android"
+//    source = fileTree('src/main/java')
+//}
+//
+///*
+// * Findbugs configuration
+// * Adapted from: https://gist.github.com/rciovati/8461832
+// */
+//
+//
+//findbugs {
+//    sourceSets = []
+//    ignoreFailures = true
+//}
+//
+//task findbugsMain(type: FindBugs, dependsOn: assembleDebug) {
+//
+//    description 'Run findbugs'
+//    //group 'verification'
+//
+//    classes = fileTree('build/intermediates/classes/debug/')
+//    source = fileTree('src/main/java')
+//    classpath = files()
+//
+//    effort = 'default'
+//    reportLevel = 'low'
+//    //excludeFilter = file("./config/findbugs/exclude.xml")
+//
+//    // only one report type can be enabled
+//    reports {
+//        xml.enabled = false
+//        html.enabled = true
+//    }
+//}
+//
+//def coverageSourceDirs = [
+//        "src/main/java"
+//]
+//jacoco {
+//        toolVersion = "0.7.1.201405082137"
+//
+//    }
+//
+//task jacocoTestReport(type:JacocoReport, dependsOn: "assembleDebug") {
+//    group = "Reporting"
+//
+//    description = "Generate Jacoco coverage reports"
+//
+//    classDirectories = fileTree(
+//            dir: 'build/intermediates/classes/debug',
+//            excludes: ['**/R.class',
+//                       '**/R$*.class',
+//                       '**/*$ViewInjector*.*',
+//                       '**/BuildConfig.*',
+//                      '**/Manifest*.*']
+//    )
+//
+//    additionalSourceDirs = files(coverageSourceDirs)
+//    sourceDirectories = files(coverageSourceDirs)
+//    executionData = files('build/jacoco/testDebug.exec')
+//
+//    reports {
+//        xml.enabled true
+//        csv.enabled true
+//        html.enabled true
+//
+//        xml.destination "${buildDir}/reports/jacocoXml"
+//        csv.destination "${buildDir}/reports/jacocoCsv"
+//        html.destination "${buildDir}/reports/jacocoHtml"
+//    }
+//
+//}
+//check.doLast {
+//    project.tasks.getByName("pmdMain").execute()
+//    project.tasks.getByName("pmdSave").execute()
+//	project.tasks.getByName("findbugsMain").execute()
+//	project.tasks.getByName("jacocoTestReport").execute()
+//}
+//
+//assembleDebug << {
+//    testSave.execute()
+//}
+
+/*
+ * NOTE: currently these report types are not configured:
+ *  - collecting junit reports (no unit tests yet)
+ *  - test code coverage (same reason)
+ *  - roboelectric will bing jacoco along when we get it working
+ */
+

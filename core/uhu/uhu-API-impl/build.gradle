@@ -1,0 +1,12 @@
+apply plugin: 'java'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Implementations of Interfaces in bezirk-api', 'Implementation-Version': version
+    }
+}
+
+dependencies {
+	compile project(':core:bezirk-api')
+}
+
+

@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/parentlayout"
+    tools:context=".ControlActivity"
+    >
+    <!--    layout-large is currently same. this shall be different later-->
+
+    <!--    <TextView
+            android:id="@+id/ServiceNameText"
+            android:layout_height="wrap_content"
+            android:layout_width = "fill_parent"
+            android:text="Service Name : "
+            android:textAppearance="?android:attr/textAppearanceMedium" /> -->
+    <!--   <GridView
+           android:id="@+id/list"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentTop="true"
+           android:layout_alignParentLeft="true"
+
+           android:paddingLeft="15dp"
+           android:paddingRight="15dp"
+           android:numColumns="3"
+           android:clickable="true">
+       </GridView>-->
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/list_divider"
+        android:dividerHeight="1dp"
+        android:horizontalSpacing="15dip"
+        android:verticalSpacing="15dip"
+        android:paddingTop="15dp"
+        android:clickable="true"
+        />
+
+</LinearLayout >

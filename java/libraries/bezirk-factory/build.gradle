@@ -1,0 +1,35 @@
+apply plugin: 'java'
+group = 'com.bezirk'
+dependencies {
+    if (project.local == "false") {
+        compile "com.bezirk:bezirk-api:${version}"
+        compile "com.bosch.upa.uhu:uhu-API-impl:${version}"
+        compile "com.bosch.upa.uhu:commons:${version}"
+    } else {
+        compile project(':core:bezirk-api')
+        compile project(':core:uhu:uhu-API-impl')
+        compile project(':core:uhu:commons')
+    }
+    compile project(':java:uhu-pc')
+    testCompile 'junit:junit:4.11'
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'bezirk-factory', 'Implementation-Version': version
+    }
+}
+
+task copyRes(type: Copy) {
+    from "$rootDir/uhu-pc/src/main/resources/"
+    into 'src/test/resources'
+}
+
+test.dependsOn copyRes
+
+task deleteFactoryRes(type: Delete) {
+    delete fileTree(dir: 'src/test/resources/', exclude: "streamingTestFile.txt")
+    delete fileTree(dir: 'build/resources/test/', exclude: "streamingTestFile.txt")
+}
+
+test.finalizedBy(deleteFactoryRes)

@@ -1,0 +1,29 @@
+apply plugin: 'maven'
+
+//    task androidJavadocsJar(type: Jar) {
+//        classifier = 'javadoc'
+//        from generateReleaseJavadoc.destinationDir
+//    }
+    task androidSourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.sourceFiles
+    }
+    def coreAarFile = file("build/outputs/aar/${project.name}-${project.version}.aar")//ProxyForUhu-0.4.0-SNAPSHOT.aar)
+    artifacts {
+        //archives files(dir: '$buildDir/apk/*.apk', include: '*.apk')
+        archives coreAarFile
+        //archives androidReleaseJar
+        archives androidSourcesJar
+       // archives androidJavadocsJar
+    }
+uploadArchives {
+    repositories {
+        maven {
+            credentials {
+                username nexus_user
+                password nexus_password
+            }
+            url "${artifactRepoBase}/${project.version.endsWith('-SNAPSHOT') ? 'upa-snapshots' : 'upa-releases'}"
+        }
+    }
+}

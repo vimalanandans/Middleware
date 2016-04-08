@@ -1,0 +1,42 @@
+apply plugin: 'application'
+mainClassName = "test.Test"
+
+dependencies {
+
+    if (project.local == "false") {
+        compile "com.bezirk:bezirk-api:${version}"
+        compile "com.bosch.upa.uhu:uhu-API-impl:${version}"
+        compile "com.bosch.upa.uhu:commons:${version}"
+
+    } else {
+        compile project(':core:bezirk-api')
+        compile project(':core:uhu:uhu-API-impl')
+        compile project(':core:uhu:commons')
+    }
+
+    compile project(':java:libraries:bezirk-factory')
+    testCompile 'junit:junit:4.11'
+}
+
+/*
+ * Platform labels
+ */
+def final String LIB_BIN_FOLDER = "lib-zeromq-bin"
+def nativeLibPath
+
+/*
+ *  Configure native properties for tests to be able to run
+ *  on each platform
+ */
+
+run {
+    /*  systemProperties = System.getProperties()
+      systemProperties['java.library.path'] = new File("${projectDir}/dist/native/${platform}").getAbsolutePath()
+      println "PATH: " + systemProperties['java.library.path']
+      */
+    systemProperties = System.getProperties()
+    nativeLibPath = System.getProperty("java.io.tmpdir") + "${LIB_BIN_FOLDER}" + File.pathSeparator + systemProperties['java.library.path'];
+    systemProperties['java.library.path'] = nativeLibPath;
+    println "PATH: " + systemProperties['java.library.path']
+
+}

@@ -1,0 +1,29 @@
+apply plugin: 'com.android.library'
+
+apply from: "${rootDir}/android/include/publish-android-library.gradle"
+
+android {
+    sourceSets {
+        main.jniLibs.srcDirs = ['libs']
+    }
+    compileSdkVersion project.androidCompileSdkVersion.toInteger()
+    buildToolsVersion project.androidBuildToolsVersion
+
+    defaultConfig {
+        minSdkVersion project.androidMinSdkVersion.toInteger()
+        targetSdkVersion project.androidTargetSdkVersion.toInteger()
+        versionCode project.androidVersionCode.toInteger()
+        versionName project.androidVersionName
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
+}

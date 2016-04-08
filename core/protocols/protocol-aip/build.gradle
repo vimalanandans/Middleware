@@ -1,0 +1,10 @@
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'aip-protocols', 'Implementation-Version': version
+    }
+}
+
+dependencies {
+    compile project(':core:bezirk-api')
+}
+
