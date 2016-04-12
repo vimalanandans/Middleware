@@ -1,8 +1,8 @@
 description "Bezirk-core: common-modules across platforms"
 
 subprojects {
-    apply from: "${rootDir}/../gradle-plugins/script/java-support.gradle"
-    apply from: "${rootDir}/../gradle-plugins/script/maven-publishing-java.gradle"
+    apply from: "${rootDir}/gradle-plugins/script/java-support.gradle"
+    apply from: "${rootDir}/gradle-plugins/script/maven-publishing-java.gradle"
     sourceCompatibility = 1.7
 
     dependencies {
@@ -17,8 +17,8 @@ buildscript {
     dependencies {
         classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.10.0'
         classpath 'org.ajoberstar:gradle-jacoco:0.1.0'
-        classpath files("../gradle-plugins/jar/release-plugin-0.2.jar")
-        classpath files("../gradle-plugins/jar/report-stats-plugin-0.2.jar")
+        classpath files("gradle-plugins/jar/release-plugin-0.2.jar")
+        classpath files("gradle-plugins/jar/report-stats-plugin-0.2.jar")
     }
 }
 

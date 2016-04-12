@@ -1,0 +1,37 @@
+/*
+ * Determine platform
+ */
+
+def final String LIB_BIN_FOLDER = "lib-zeromq-bin"
+
+def final PLAT_OSX = "osx"
+def final PLAT_X64_LINUX = "x64linux"
+def final PLAT_X64_WINDOWS = "x64windows"
+
+def os = System.properties['os.name'].toLowerCase()
+def platform
+
+if (os.contains("mac")) {
+    platform = PLAT_OSX
+}
+else if (os.contains("linux")) {
+    platform = PLAT_X64_LINUX
+}
+else if (os.contains("windows")) {
+    platform = PLAT_X64_WINDOWS
+}
+else {
+    throw new RuntimeException("platform not supported: $os")
+}
+
+test {
+	systemProperties = System.getProperties()
+	// add temp path along with old javalibpath
+	def javaLibPath =  System.getProperty("java.io.tmpdir") + File.separator+ "${LIB_BIN_FOLDER}" +  File.separator+ File.pathSeparator + systemProperties['java.library.path'];
+
+    if (platform.equals(PLAT_OSX)) {
+        environment 'DYLD_FALLBACK_LIBRARY_PATH', "$javaLibPath"
+    }
+    systemProperties = System.getProperties()
+    systemProperties['java.library.path'] = javaLibPath
+}
