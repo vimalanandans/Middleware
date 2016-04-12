@@ -1,0 +1,69 @@
+// Allow private data members to be linked in javadocs
+//javadoc.options.addStringOption("private")
+apply plugin: 'java'
+dependencies {
+
+
+/*    if (project.local == "false") {
+
+        compile "com.bezirk:bezirk-api:${version}"
+        compile "com.bezirk:bezirk:${version}"
+        compile "com.bezirk:control-messages:${version}"
+        compile "com.bezirk:commons:${version}"
+        compile "com.bezirk:comms-udp:${version}"
+        compile "com.bezirk:comms-jyre:${version}"
+        compile "com.bezirk:comms-factory:${version}"
+        compile "com.bezirk:pipes:${version}"
+    } else {
+
+  */      //println " uhu-pc build with remote maven repo "
+
+        //direct local dependencies for renaming the packages
+        // uhu deps
+        compile project(':core:bezirk-api')
+        compile project(':core:bezirk')
+        compile project(':core:control-messages')
+        compile project(':core:commons')
+        compile project(':core:comms:comms-udp')
+        //compile project(':core:comms:comms-jyre')
+        compile project(':core:comms:comms-factory')
+        compile project(':core:pipes')
+    //}
+
+    compile project(':java:libraries:comms-zyre-jni')
+
+    // Enable this to include Uhu-RTC
+    //	compile project(':uhu-pc-rtc')
+
+    // external deps
+    compile 'org.apache.shiro:shiro-core:1.2.4'
+    compile 'ch.qos.logback:logback-classic:1.1.2'
+    compile 'ch.qos.logback:logback-core:1.1.2'
+    compile 'com.google.zxing:core:2.3.0'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'org.xerial:sqlite-jdbc:3.7.2'
+    compile 'org.springframework:spring-context:4.1.4.RELEASE'
+
+    // test deps
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.mockito:mockito-all:1.10.19'
+}
+
+test {
+    exclude 'com/bosch/upa/uhu/network/test/**'
+}
+
+task deleteDb(type: Delete) {
+    //println 'Deleting db - uhu_spheres.sqlite'
+    delete 'uhu_spheres.sqlite'
+}
+
+clean.dependsOn deleteDb
+//test.dependsOn deleteDb
+
+/*
+jar  {
+	// Don't include logging config in the jar
+	exclude('logback.xml')
+}
+*/

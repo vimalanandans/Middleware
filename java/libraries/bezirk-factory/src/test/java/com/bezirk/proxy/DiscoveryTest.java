@@ -17,8 +17,8 @@ import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bosch.upa.devices.UPADeviceForPC;
-import com.bosch.upa.devices.UPADeviceInterface;
+import com.bezirk.devices.UPADeviceForPC;
+import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.api.IBezirk;
 import com.bezirk.api.IBezirkListener;
 import com.bezirk.api.addressing.Address;
@@ -29,9 +29,9 @@ import com.bezirk.api.addressing.PipePolicy;
 import com.bezirk.api.addressing.ServiceEndPoint;
 import com.bezirk.api.addressing.ServiceId;
 import com.bezirk.api.messages.ProtocolRole;
-import com.bosch.upa.uhu.commons.UhuCompManager;
-import com.bosch.upa.uhu.proxy.api.impl.UhuDiscoveredService;
-import com.bosch.upa.uhu.proxy.api.impl.UhuServiceId;
+import com.bezirk.commons.UhuCompManager;
+import com.bezirk.proxy.api.impl.UhuDiscoveredService;
+import com.bezirk.proxy.api.impl.UhuServiceId;
 
 /**
  * This test case is used to test for discovery!

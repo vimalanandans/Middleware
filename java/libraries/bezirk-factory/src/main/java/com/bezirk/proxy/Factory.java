@@ -1,7 +1,7 @@
 package com.bezirk.proxy;
 
 import com.bezirk.api.IBezirk;
-import com.bosch.upa.uhu.starter.UhuConfig;
+import com.bezirk.starter.UhuConfig;
 
 
 public abstract class Factory {

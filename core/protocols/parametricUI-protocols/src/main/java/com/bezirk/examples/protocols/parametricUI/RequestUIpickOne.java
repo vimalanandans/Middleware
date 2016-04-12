@@ -6,7 +6,7 @@ package com.bezirk.examples.protocols.parametricUI;
 import com.bezirk.api.messages.Event;
 
 /**
- * @see com.bosch.upa.uhu.API.messages.Event
+ * @see com.bezirk.API.messages.Event
  */
 public class RequestUIpickOne extends Event {
 	

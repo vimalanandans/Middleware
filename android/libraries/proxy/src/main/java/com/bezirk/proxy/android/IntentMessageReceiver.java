@@ -12,10 +12,10 @@ import com.bezirk.api.addressing.CloudPipe;
 import com.bezirk.api.addressing.DiscoveredService;
 import com.bezirk.api.addressing.Pipe;
 import com.bezirk.api.addressing.PipePolicy;
-import com.bosch.upa.uhu.pipe.policy.ext.UhuPipePolicy;
-import com.bosch.upa.uhu.proxy.api.impl.UhuDiscoveredService;
-import com.bosch.upa.uhu.proxy.api.impl.UhuServiceEndPoint;
-import com.bosch.upa.uhu.proxy.api.impl.UhuServiceId;
+import com.bezirk.pipe.policy.ext.UhuPipePolicy;
+import com.bezirk.proxy.api.impl.UhuDiscoveredService;
+import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuServiceId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

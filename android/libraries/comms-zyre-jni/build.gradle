@@ -35,15 +35,15 @@ dependencies {
     // created using ndk build
     compile 'org.zyre:zyre-jni:0.2@aar'
 
-    if (project.local == "false") {
-        compile "com.bosch.upa.uhu:uhu-API-impl:${version}"
+/*    if (project.local == "false") {
+        compile "com.bezirk:bezirk:${version}"
         compile "com.bezirk:bezirk-api:${version}"
-        compile "com.bosch.upa.uhu:actions:${version}"
-        compile "com.bosch.upa.uhu:commons:${version}"
+        compile "com.bezirk:actions:${version}"
+        compile "com.bezirk:commons:${version}"
     } else {
-        compile project(':core:bezirk-api')
-        compile project(':core:uhu:uhu-API-impl')
+  */      compile project(':core:bezirk-api')
+        compile project(':core:bezirk')
         compile project(':core:actions')
-        compile project(':core:uhu:commons')
-    }
+        compile project(':core:commons')
+//    }
 }

@@ -1,0 +1,11 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:name="com.bosch.upa.spheremanager.ui.SphereListFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:background="#EEEEEE"
+    tools:context="com.bezirk.spheremanager.SphereListActivity"
+    android:id = "@+id/smartphone_sphere_list"/>
+
