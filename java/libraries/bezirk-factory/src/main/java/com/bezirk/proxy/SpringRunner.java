@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.bosch.upa.uhu.starter.UhuConfig;
-import com.bosch.upa.uhu.util.UhuValidatorUtility;
+import com.bezirk.starter.UhuConfig;
+import com.bezirk.util.UhuValidatorUtility;
 
 /**
  * Responsible for starting uhu using Spring's xml configuration method

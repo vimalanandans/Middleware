@@ -1,5 +1,5 @@
 apply plugin: 'java'
-group = 'com.bezirk'
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'penguin-protocol', 'Implementation-Version': version

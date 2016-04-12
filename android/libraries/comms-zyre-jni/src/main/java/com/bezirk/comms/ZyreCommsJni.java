@@ -2,8 +2,8 @@ package com.bezirk.comms;
 
 import android.util.Log;
 
-import com.bosch.upa.uhu.processor.CommsProcessor;
-import com.bosch.upa.uhu.util.UhuValidatorUtility;
+import com.bezirk.processor.CommsProcessor;
+import com.bezirk.util.UhuValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

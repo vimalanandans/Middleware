@@ -1,11 +1,10 @@
 package com.bezirk.comms;
 
-import com.bosch.upa.uhu.comms.CommsProperties;
-import com.bosch.upa.uhu.processor.CommsProcessor;
-import com.bosch.upa.uhu.pipe.core.PipeManager;
-import com.bosch.upa.uhu.rest.BezirkRestCommsManager;
-import com.bosch.upa.uhu.sadl.UhuSadlManager;
-import com.bosch.upa.uhu.util.UhuValidatorUtility;
+import com.bezirk.processor.CommsProcessor;
+import com.bezirk.pipe.core.PipeManager;
+import com.bezirk.rest.BezirkRestCommsManager;
+import com.bezirk.sadl.UhuSadlManager;
+import com.bezirk.util.UhuValidatorUtility;
 
 import java.net.InetAddress;
 

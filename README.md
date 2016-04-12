@@ -1,9 +1,7 @@
-# Bezirk 
+﻿# Bezirk 
 
 ################################ DELETE THIS LATER ######################
-uhu APIs are renamed to bezirk API
-list of remanes are listed in renamelog.txt
-delete this text after each services are migrating the bezirk api
+remove and organize the platform build releated references
 #########################################################################
 
 ## System Enivornment
