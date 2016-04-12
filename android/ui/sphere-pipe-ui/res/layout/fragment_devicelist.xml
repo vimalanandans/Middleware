@@ -1,0 +1,11 @@
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:name="com.bezirk.spheremanager.ui.DeviceListFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:background="#EEEEEE"
+    tools:context="com.bezirk.spheremanager.DeviceListFragment"
+    tools:layout="@android:layout/list_content" />
+

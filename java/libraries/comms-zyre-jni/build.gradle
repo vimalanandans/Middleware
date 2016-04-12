@@ -66,18 +66,18 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile "com.google.code.gson:gson:2.2.4"
-    if (project.local == "false") {
+/*    if (project.local == "false") {
         compile "com.bezirk:bezirk-api:${version}"
-        compile "com.bosch.upa.uhu:uhu-API-impl:${version}"
-        compile "com.bosch.upa.uhu:actions:${version}"
-        compile "com.bosch.upa.uhu:commons:${version}"
+        compile "com.bezirk:bezirk:${version}"
+        compile "com.bezirk:actions:${version}"
+        compile "com.bezirk:commons:${version}"
 
     } else {
-        compile project(':core:bezirk-api')
-        compile project(':core:uhu:uhu-API-impl')
+  */    compile project(':core:bezirk-api')
+        compile project(':core:bezirk')
         compile project(':core:actions')
-        compile project(':core:uhu:commons')
-    }
-    //compile "com.bosch.upa.uhu:streaming:${version}"
-    //compile "com.bosch.upa.uhu:comms-processor:${version}"
+        compile project(':core:commons')
+    //}
+    //compile "com.bezirk:streaming:${version}"
+    //compile "com.bezirk:comms-processor:${version}"
 }

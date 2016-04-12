@@ -37,29 +37,29 @@ if(gradle.hasProperty("devBuild")){
 
 
     //check how this has to be done...
-    include ':core:uhu:comms:http-comms'
+    include ':core:comms:http-comms'
 	}
 }*/
 
 /*Projects for core*/
 include ':core:bezirk-api'
-include ':core:uhu:uhu-API-impl'
-include ':core:uhu:pipes'
+include ':core:bezirk'
+include ':core:pipes'
 include ':core:protocols:protocol-aip'
 
-include ':core:uhu:uhu-control-messages'
-include ':core:uhu:utils:uhu-network-util'
-include ':core:uhu:commons'
+include ':core:control-messages'
+include ':core:network-util'
+include ':core:commons'
 
-include ':core:uhu:comms:comms-udp'
-include ':core:uhu:comms:comms-factory'
-include ':core:uhu:comms:comms-zyre'
-include ':core:uhu:comms:comms-jyre'
+include ':core:comms:comms-udp'
+include ':core:comms:comms-factory'
+include ':core:comms:comms-zyre'
+// include ':core:comms:comms-jyre' // not used anymore
 
 //### this has to be removed..
-include ':core:uhu:comms:http-comms'
+include ':core:comms:http-comms'
 
-include ':core:uhu:uhu-device-objects'
+include ':core:device-objects'
 include ':core:actions'
 include ':core:protocols:protocol-penguin'
 include ':core:protocols:protocol-dragonfly'
@@ -72,13 +72,13 @@ if (!useInitVar || (useInitVar && exec == 'all')) {
 /*Projects for java*/
     include ':java:libraries:bezirk-factory'
     include ':java:libraries:comms-zyre-jni'
-    include ':java:uhu-pc'
+    include ':java:starter'
     include ':java:testApp'
 
 /*Projects for android*/
-    include ':android:uhu-android'
-    include ':android:uhu-ui:uhu-control-ui'
-    include ':android:uhu-ui:uhu-sphere-pipe-ui'
+    include ':android:starter'
+    include ':android:ui:control-ui'
+    include ':android:ui:sphere-pipe-ui'
     include ':android:libraries:proxy'
     include ':android:libraries:zbarscanner'
     include ':android:libraries:comms-zyre-jni'
