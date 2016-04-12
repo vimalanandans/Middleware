@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bezirk.api.IBezirk;
-import com.bosch.upa.uhu.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuServiceId;
 
 /**
  * @author vbd4kor

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <!-- should appear as action button -->
+
+    <item
+        android:id="@+id/action_create_sphere"
+        android:icon="@drawable/ic_action_new"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_create_sphere"/>
+
+    <!--  FIXME: share and catch is disable at the root level for 1.0
+ <item
+       android:id="@+id/action_scan_qr"
+       android:icon="@drawable/ic_action_qr"
+       android:showAsAction="ifRoom"
+       android:title="@string/action_scan_qr"/>
+    <item
+        android:id="@+id/action_refresh_spheres"
+        android:icon="@drawable/ic_action_refresh"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_refresh_spheres"/>-->
+
+    <!-- should always be in the overflow -->
+    <!--  Not used
+        <item
+            android:id="@+id/action_show_all_services"
+            android:showAsAction="never"
+            android:title="@string/action_show_all_services"/>
+        <item
+            android:id="@+id/action_request_pipe"
+            android:showAsAction="never"
+            android:title="@string/action_request_pipe"/>
+
+           <item
+            android:id="@+id/action_manage_pipes"
+            android:showAsAction="never"
+            android:title="@string/action_manage_pipes"/>
+        -->
+   <!-- <item
+        android:id="@+id/action_show_all_services"
+        android:showAsAction="never"
+        android:title="@string/action_show_all_services"/>-->
+
+   <!-- <item
+        android:id="@+id/action_request_pipe"
+        android:showAsAction="never"
+        android:title="@string/action_request_pipe"/>
+    
+   	<item
+        android:id="@+id/action_manage_pipes"
+        android:showAsAction="never"
+        android:title="@string/action_manage_pipes"/>-->
+    
+
+
+    </menu>

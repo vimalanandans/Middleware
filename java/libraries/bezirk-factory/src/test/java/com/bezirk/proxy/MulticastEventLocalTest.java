@@ -24,7 +24,7 @@ import com.bezirk.api.addressing.ServiceId;
 import com.bezirk.api.messages.Event;
 import com.bezirk.api.messages.ProtocolRole;
 import com.bezirk.api.messages.Message.Stripe;
-import com.bosch.upa.uhu.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuServiceId;
 
 /**
  * @author vbd4kor

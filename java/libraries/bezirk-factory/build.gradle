@@ -1,16 +1,17 @@
 apply plugin: 'java'
-group = 'com.bezirk'
+
 dependencies {
-    if (project.local == "false") {
+/*    if (project.local == "false") {
+
         compile "com.bezirk:bezirk-api:${version}"
-        compile "com.bosch.upa.uhu:uhu-API-impl:${version}"
-        compile "com.bosch.upa.uhu:commons:${version}"
+        compile "com.bezirk:bezirk:${version}"
+        compile "com.bezirk:commons:${version}"
     } else {
-        compile project(':core:bezirk-api')
-        compile project(':core:uhu:uhu-API-impl')
-        compile project(':core:uhu:commons')
-    }
-    compile project(':java:uhu-pc')
+*/      compile project(':core:bezirk-api')
+        compile project(':core:bezirk')
+        compile project(':core:commons')
+  //  }
+    compile project(':java:starter')
     testCompile 'junit:junit:4.11'
 }
 

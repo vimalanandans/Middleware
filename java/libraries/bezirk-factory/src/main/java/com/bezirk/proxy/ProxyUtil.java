@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bezirk.api.IBezirkListener;
 import com.bezirk.api.addressing.ServiceId;
-import com.bosch.upa.uhu.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuServiceId;
 
 /**
  * @author AJC6KOR

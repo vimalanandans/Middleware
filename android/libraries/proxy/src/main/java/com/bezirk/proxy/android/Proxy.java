@@ -21,10 +21,10 @@ import com.bezirk.api.messages.Event;
 import com.bezirk.api.messages.ProtocolRole;
 import com.bezirk.api.messages.Stream;
 import com.bezirk.api.serialization.AddressSerializer;
-import com.bosch.upa.uhu.pipe.policy.ext.UhuPipePolicy;
-import com.bosch.upa.uhu.proxy.api.impl.SubscribedRole;
-import com.bosch.upa.uhu.proxy.api.impl.UhuServiceEndPoint;
-import com.bosch.upa.uhu.proxy.api.impl.UhuServiceId;
+import com.bezirk.pipe.policy.ext.UhuPipePolicy;
+import com.bezirk.proxy.api.impl.SubscribedRole;
+import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuServiceId;
 import com.google.gson.Gson;
 
 import java.io.File;

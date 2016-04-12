@@ -1,0 +1,14 @@
+apply plugin: 'java'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Uhu Device Objects', 'Implementation-Version': version
+    }
+}
+
+dependencies {
+    compile project(':core:bezirk')
+    compile project(':core:network-util')
+}
+
+
+

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Sphere Manager</string>
+    <string name="title_sphere_detail">Sphere Details</string>
+    <string name="action_show_all_services">Show all Services in Sphere</string>
+    <string name="action_request_pipe">Request Pipe</string>
+    <string name="action_create_sphere">Create Sphere</string>
+    <string name="action_refresh_spheres">Refresh</string>
+    <string name="action_scan_qr">Scan QR Code</string>
+    <string name="action_share_sphere">Share</string>
+    <string name="action_catch_sphere_device">Catch</string>
+    <string name="action_share_sphere_device">Share</string>
+    <string name="action_show_all_services_in_sphere">Show all services in Sphere</string>
+    <string name="refreshSphereDetails">Refresh Sphere Details</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_add">Add</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_finish">Finish</string>
+    <string name="title_activity_member_detail">Member Details</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_scan">QR Code Scan</string>
+    <string name="title_activity_pipe">Pipe Management</string>
+    <string name="title_activity_share_sphere">Share Group QR-Code</string>
+    <string name="text_heading_share_sphere_qr">QR-Code to share this Sphere</string>
+    <string name="text_sphere_id">Enter Sphere-ID manually: 
+        41ab0b82-821c-455e-9a88-b8907af9dd61</string>
+    <string name="image_qr_code">QR-Code to share a Group</string>
+    <string name="title_activity_pipe_policy">Pipe Management</string>
+    <string name="title_activity_information">Member Details</string>
+    <string name="title_activity_manage_pipes">Pipe Management</string>
+    <string name="action_manage_pipes">Manage Pipes</string>
+    <string name="title_activity_update_user_credentials">Pipe Management</string>
+    <string name="action_add_services_to_sphere">Add services to sphere</string>
+    <string name="action_delete_sphere">Delete sphere</string>
+    <string name="hint_text">Tap on list item to edit service name</string>
+
+    <!--MENU-->
+    <string name="action_print_qrcode">Save/ Print QR-Code</string>
+    <string name="action_email_qrcode">Save/ E-Mail QR-Code</string>
+    <string name="action_qrcode_id">Manual Share Sphere</string>
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- Sphere invite to services -->
+    <item
+        android:id="@+id/action_share_sphere"
+        android:icon="@drawable/ic_action_share_white"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_share_sphere"/>
+
+    <!-- Share services -->
+    <item
+    android:id="@+id/action_scan_qr_service_share"
+    android:icon="@drawable/ic_action_qr_service_share"
+    android:showAsAction="ifRoom"
+    android:title="@string/action_share_sphere_device"/>
+
+    <!-- catch services -->
+
+    <!-- should always be in the overflow -->
+
+    <!-- catch services -->
+    <item
+        android:id="@+id/action_discover_sphere_details"
+        android:icon="@drawable/ic_action_refresh"
+        android:showAsAction="ifRoom"
+        android:title="@string/refreshSphereDetails"/>
+    <item
+        android:id="@+id/action_scan_qr_service_catch"
+        android:icon="@drawable/ic_action_qr_service_catch"
+        android:showAsAction="never"
+        android:title="@string/action_catch_sphere_device"/>
+
+    <item
+        android:id="@+id/action_add_device_services_to_sphere"
+        android:showAsAction="never"
+        android:title="Add Device Services to Sphere"/>
+   <!--<item
+        android:id="@+id/action_show_all_services_in_sphere"
+        android:visible="false"
+        android:showAsAction="never"
+        android:title="@string/action_show_all_services_in_sphere"/> -->
+
+</menu>
