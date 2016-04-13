@@ -6,7 +6,7 @@
  * Reference:
  * https://github.com/ZBar/ZBar/tree/master/android/examples/CameraTest/src/net/sourceforge/zbar/android/CameraTest
  */
-package bosch.zbarscanner;
+package bezirk.zbarscanner;
 
 import android.app.Activity;
 import android.content.Intent;

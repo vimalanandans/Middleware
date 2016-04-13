@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.bezirk.spheremanager.ui.DialogServiceListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
-import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallbacks;
 import com.bezirk.spheremanager.ui.PipeListFragment.ShowPipesCallbacks;
@@ -38,7 +37,7 @@ import com.bezirk.util.UhuValidatorUtility;
 import java.util.ArrayList;
 import java.util.List;
 
-import bosch.zbarscanner.ScannerActivity;
+import bezirk.zbarscanner.ScannerActivity;
 
 /**
  * An activity representing a single Sphere detail screen. This activity is only

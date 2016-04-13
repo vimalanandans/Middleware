@@ -11,13 +11,12 @@ import android.widget.ImageView;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.PipeListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
-import com.bezirk.spheremanager.R;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.UhuValidatorUtility;
 
-import bosch.zbarscanner.ScannerActivity;
+import bezirk.zbarscanner.ScannerActivity;
 
 /**
  * Created by AJC6KOR on 12/21/2015.

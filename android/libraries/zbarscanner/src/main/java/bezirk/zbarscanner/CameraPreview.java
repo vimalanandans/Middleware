@@ -8,7 +8,7 @@
  *
  */
 
-package bosch.zbarscanner;
+package bezirk.zbarscanner;
 
 import android.content.Context;
 import android.hardware.Camera;
