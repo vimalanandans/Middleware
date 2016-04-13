@@ -6,8 +6,8 @@ jar {
 }
 
 dependencies {
-    compile project(':core:uhu:uhu-control-messages')
-    compile project(':core:uhu:pipes')
+    compile project(':core:control-messages')
+    compile project(':core:pipes')
 
     // orm db files
     compile 'com.j256.ormlite:ormlite-core:4.48'
@@ -34,7 +34,7 @@ dependencies {
 
 /*
 * Before the starting of the test task, delete the uhu-database.sqlite file as it might contain the stale data.
-* This file is created during running of testcase. 
+* This file is created during running of testcase.
 */
 test.doFirst {
     project.delete 'uhu_database.sqlite'
@@ -44,7 +44,8 @@ test.doLast {
     project.delete 'uhu_database.sqlite'
 }
 
-//@vijet - Script to generate the version.properties file containing the values from  * @modifed Vijet Badigannavar Added a parameter to the constructMsg() and modified to give the callback 
+
+//@vijet - Script to generate the version.properties file containing the values from  * @modifed Vijet Badigannavar Added a parameter to the constructMsg() and modified to give the callback
 //if version mismatch occures
 //build.doLast {
 //    println 'Writing the version file'
@@ -67,6 +68,10 @@ test.doLast {
 //}
 
 build.doLast {
-    def verFile = "${rootDir}/core/uhu/commons/src/main/resources/version.properties"
+    def verFile = "${projectDir}/src/main/resources/version.properties"
     new File(verFile).text = "UHU_VERSION=${version}"
 }
+
+
+
+
