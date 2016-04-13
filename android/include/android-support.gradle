@@ -3,7 +3,7 @@
  * Create common extra properties use by all projects
  */
 
-//apply from: "${rootDir}/../gradle-plugins/script/all-projects.gradle"
+
 
 // We need to apply findbugs before android config section, then we
 // configure findbugs below

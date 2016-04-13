@@ -6,8 +6,8 @@ jar {
 }
 
 dependencies {
-    compile project(':core:control-messages')
-    compile project(':core:pipes')
+    compile project(':core:uhu:uhu-control-messages')
+    compile project(':core:uhu:pipes')
 
     // orm db files
     compile 'com.j256.ormlite:ormlite-core:4.48'
@@ -46,24 +46,27 @@ test.doLast {
 
 //@vijet - Script to generate the version.properties file containing the values from  * @modifed Vijet Badigannavar Added a parameter to the constructMsg() and modified to give the callback 
 //if version mismatch occures
+//build.doLast {
+//    println 'Writing the version file'
+//
+//    def verDir = "${rootDir}/../release-tool/config/version.properties"
+//    def verFile = "${rootDir}/core/uhu/commons/src/main/resources/version.properties"
+////	def verFileForJava = "${rootDir}/../Java-Build/uhu-pc/src/main/resources/version.properties"
+//
+//    Properties props = new Properties()
+//    props.load(new FileInputStream(verDir))
+//    String major = props.getProperty("major")
+//    String minor = props.getProperty("minor")
+//    String fix = props.getProperty("fix")
+//    //create a new file for each build
+//    if (fix.contains("0")) // exclude 0 in the release version
+//        new File(verFile).text = "UHU_VERSION=${major}.${minor}"
+//    else
+//        new File(verFile).text = "UHU_VERSION=${major}.${minor}.${fix}"
+////	new File(verFileForJava).text = "UHU_VERSION=${major}.${minor}.${fix}"
+//}
+
 build.doLast {
-    println 'Writing the version file'
-
-    def verDir = "${rootDir}/../release-tool/config/version.properties"
-    def verFile = "${projectDir}/src/main/resources/version.properties"
-
-    Properties props = new Properties()
-    props.load(new FileInputStream(verDir))
-    String major = props.getProperty("major")
-    String minor = props.getProperty("minor")
-    String fix = props.getProperty("fix")
-    //create a new file for each build
-    if (fix.contains("0")) // exclude 0 in the release version
-        new File(verFile).text = "UHU_VERSION=${major}.${minor}"
-    else
-        new File(verFile).text = "UHU_VERSION=${major}.${minor}.${fix}"
-//	new File(verFileForJava).text = "UHU_VERSION=${major}.${minor}.${fix}"
+    def verFile = "${rootDir}/core/uhu/commons/src/main/resources/version.properties"
+    new File(verFile).text = "UHU_VERSION=${version}"
 }
-
-
-
