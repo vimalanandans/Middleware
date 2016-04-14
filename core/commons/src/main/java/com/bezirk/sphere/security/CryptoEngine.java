@@ -421,16 +421,12 @@ public final class CryptoEngine implements ICryptoInternals {
      *         otherwise
      */
     private boolean validateSphereKey(String sphereId) {
-        SphereKeys sphereKeys = registry.getSphereKeys(sphereId);
-        if (sphereKeys == null) {
+        final SphereKeys sphereKeys = registry.getSphereKeys(sphereId);
 
-        }
         if (sphereKeys != null && sphereKeys.getSphereKey() != null && sphereKeys.getSphereKey().length != 0) {
             LOGGER.debug("CryptoEngine, Sphere key validated:" + sphereId);
             return true;
         }
-
-        // log.error("invalid sphere key > " + sphereId);
 
         return false;
     }
