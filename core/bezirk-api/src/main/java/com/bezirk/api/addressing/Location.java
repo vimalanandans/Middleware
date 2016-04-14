@@ -14,11 +14,68 @@ package com.bezirk.api.addressing;
 
 import java.io.Serializable;
 
-
 /**
- * Physical location for objects of interest, such as people, devices, and services.
- * Location is structured using three containment attributes: region, area within the region (in), and proximity to a landmark object (near)
- * All attributes are optional, e.g. any area within the region.
+ * A <code>Location</code> represents a <em>semantic address</em> that specifies the 
+ * physical location of a Thing or a set of Things. Typically, messages are broadcast 
+ * within a sphere and filtered based on the message's 
+ * {@link com.bezirk.api.messages.ProtocolRole ProtocolRole}, which may be too 
+ * coarse-grained for some cases. A semantic address is used to more precisely scope 
+ * message recipients after protocol role filtering occurs.
+ *
+ * <h4>Scopes</h4>
+ * To identify a Thing or set of Things, a semantic address contains three scopes of 
+ * increasing specificity that resolve to place a specific Thing or Things in scope:
+ *
+ * <ul>
+ *   <li>A <em>wide scope</em> specifies a potentially large set of Things. For example, 
+ *   the floor of a building (e.g. &quot;floor 1&quot;) represents a wide scope.</li>
+ *   <li>An <em>intermediate scope</em> refines a wide scope to further target Things of 
+ *   interest. Building on the previous example, specifying a room on floor 1 (e.g. 
+ *   &quot;kitchen&quot;) represents an intermediate scope.</li>
+ *   <li>A <em>narrow scope</em> further refines the set of Things to just the specific 
+ *   Thing or Things that will be the message recipients. Again building on the previous 
+ *   example, specifying a specific light (e.g. "ceiling light") or area of the kitchen 
+ *   (e.g. &quot;window&quot;) completes the semantic address.</li>
+ * </ul>
+ *
+ * <mark><strong>TODO</strong></mark>: We need to say something about where these names 
+ * (e.g. ceiling light) come from.
+  
+ * <h4>Representing Semantic Addresses as Strings</h4>
+ * Semantic addresses are represented as strings by listing each scope in descending order 
+ * separated by a forward slash: <code>"wide scope/intermediate scope/narrow scope"</code>. 
+ * For example, using the scopes in the examples from the previous section, the semantic 
+ * addresses are represented by the following strings: 
+ * <code>"floor 1/kitchen/ceiling light"</code> and <code>"floor 1/kitchen/window"</code>.
+ *
+ * <h4>Specifying Scopes</h4>
+ * The relative size of each scope is dependent on the specific context the semantic address 
+ * is used in. The previous examples were within the context of Things in a building, however 
+ * in a context where Things are traffic controls for municipalities the wide scope may be a 
+ * city, the intermediate scope a street, and the narrow scope a pedestrian walk sign or set 
+ * of traffic lights.
+ * <p>
+ * Each scope is optional. If you do not specify any scope you are referring to all Things in 
+ * a sphere subscribed to the message's role. This is equivalent to not using a semantic 
+ * address. However, any of the scopes may be skipped if necessary to define the desired set 
+ * of Things. Once again using the building example, the following addresses refer to different 
+ * sets of Things whose services are within a sphere subscribed to the targeted protocol role:
+ *
+ * <ul>
+ *	 <li><code>"floor1//"</code> refers to all Things on floor 1.</li>
+ *	 <li><code>"floor1/kitchen/"</code> refers to all Things in floor 1's kitchen.</li>
+ *	 <li><code>"floor1/kitchen/window"</code> refers to all Things in floor 1's kitchen 
+ *   window or the window itself.</li>
+ *   <li><code>"floor 1//light"</code> refers to all Things named &quot;light&quot; on 
+ *   floor 1.</li> 
+ *	 <li><code>"/kitchen/light"</code> refers to all Things named &quot;light&quot; in 
+ *   rooms named &quot;kitchen&quot; in the building</li> 
+ *	 <li><code>"//light"</code> refers to all things named &quot;light&quot; in the 
+ *   building.</li> 
+ * </ul>
+ *
+ * <h4>Practical Example</h4>
+ * <mark><strong>TODO</strong></mark>: We need to show some code here.
  */
 public class Location implements Serializable {
 	/**
