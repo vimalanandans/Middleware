@@ -1,14 +1,14 @@
 /**
  * Copyright (C) 2014 Robert Bosch, LLC. All Rights Reserved.
- *
+ * <p/>
  * Authors: Joao de Sousa, 2014
- *          Mansimar Aneja, 2014
- *          Vijet Badigannavar, 2014
- *          Samarjit Das, 2014
- *          Cory Henson, 2014
- *          Sunil Kumar Meena, 2014
- *          Adam Wynne, 2014
- *          Jan Zibuschka, 2014
+ * Mansimar Aneja, 2014
+ * Vijet Badigannavar, 2014
+ * Samarjit Das, 2014
+ * Cory Henson, 2014
+ * Sunil Kumar Meena, 2014
+ * Adam Wynne, 2014
+ * Jan Zibuschka, 2014
  */
 package com.bezirk.api.serialization;
 
@@ -23,20 +23,20 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 public class InterfaceAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
-   @Override
-	public JsonElement serialize(T object, Type interfaceType, JsonSerializationContext context) {
+    @Override
+    public JsonElement serialize(T object, Type interfaceType, JsonSerializationContext context) {
         final JsonObject wrapper = new JsonObject();
         wrapper.addProperty("type", object.getClass().getName());
         wrapper.add("data", context.serialize(object));
         return wrapper;
     }
-   
-   @Override
+
+    @Override
     public T deserialize(JsonElement elem, Type interfaceType, JsonDeserializationContext context) throws JsonParseException {
         final JsonObject wrapper = (JsonObject) elem;
         final JsonElement typeName = get(wrapper, "type");
         final JsonElement data = get(wrapper, "data");
-        final Type actualType = typeForName(typeName); 
+        final Type actualType = typeForName(typeName);
         return context.deserialize(data, actualType);
     }
 
@@ -50,9 +50,10 @@ public class InterfaceAdapter<T> implements JsonSerializer<T>, JsonDeserializer<
 
     private JsonElement get(final JsonObject wrapper, String memberName) {
         final JsonElement elem = wrapper.get(memberName);
-        if (elem == null) throw new JsonParseException("no '" + memberName + "' member found in what was expected to be an interface wrapper");
+        if (elem == null)
+            throw new JsonParseException("no '" + memberName + "' member found in what was expected to be an interface wrapper");
         return elem;
     }
 
-	
+
 }
