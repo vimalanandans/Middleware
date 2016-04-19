@@ -13,12 +13,22 @@
 package com.bezirk.middleware.messages;
 
 /**
- * Protocol definitions must extend this class to define concrete events, e.g. by adding a payload with message-specific attributes.
- * Extends {@link Message}
+ * Base class for simple Bezirk events. An event represents a simple message (e.g. personalization 
+ * observation, temperature measurement, etc.). This class is extended by protocol implementations to 
+ * define concrete events and their custom attributes and simple, small payloads.
+ * 
+ * An <code>Event</code> is used to represent simple messages that communicate one request, reply, or 
+ * notification. To combine multiple messages into one send or to include non-trivial message 
+ * payloads, use the {@link Stream} class.
+ * 
+ * @see Message
+ * @see Stream
  */
-
 public class Event extends Message {
-	
+	/**
+	 * The concrete implentation of an <code>Event</code> must specify the event's flag
+	 * and topic. Message flags and topics are documented in {@link Message}.
+	 */
 	public Event(Stripe stripe, String topic){
 		this.stripe = stripe;
 		this.topic = topic;
