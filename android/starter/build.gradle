@@ -49,7 +49,7 @@ dependencies {
 
     } else {
 */
-        compile project(':core:bezirk-api')
+        compile project(':core:bezirk-middleware-api')
         compile project(':core:bezirk')
         compile project(':core:control-messages')
         compile project(':core:commons')

@@ -42,7 +42,7 @@ if(gradle.hasProperty("devBuild")){
 }*/
 
 /*Projects for core*/
-include ':core:bezirk-api'
+include ':core:bezirk-middleware-api'
 include ':core:bezirk'
 include ':core:pipes'
 include ':core:protocols:protocol-aip'
