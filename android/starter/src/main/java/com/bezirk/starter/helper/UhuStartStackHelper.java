@@ -40,7 +40,7 @@ class UhuStartStackHelper {
 
     RegistryPersistence initializeRegistryPersistence(MainService service) {
         IDatabaseConnection dbConnection = new DatabaseConnectionForAndroid(service);
-        String DB_VERSION = "0.0.3";
+        String DB_VERSION = "0.0.4";
         RegistryPersistence registryPersistence=null;
 
         try {
