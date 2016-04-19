@@ -3,7 +3,7 @@ package com.bezirk.protocols.penguin.v01;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 
 public class UserProfile extends Event
 {

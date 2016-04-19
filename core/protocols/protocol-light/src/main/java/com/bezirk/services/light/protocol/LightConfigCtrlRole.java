@@ -1,6 +1,6 @@
 package com.bezirk.services.light.protocol;
 
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.messages.ProtocolRole;
 
 /**
  * 

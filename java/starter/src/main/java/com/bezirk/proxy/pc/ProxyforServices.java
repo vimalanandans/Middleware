@@ -13,10 +13,10 @@ import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.addressing.Address;
-import com.bezirk.api.addressing.Location;
-import com.bezirk.api.messages.Event;
-import com.bezirk.api.messages.Stream;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.Stream;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlLedger;

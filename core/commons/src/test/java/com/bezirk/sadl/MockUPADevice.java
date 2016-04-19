@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bezirk.devices.DeviceDetails;
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 import com.bezrik.network.UhuNetworkUtilities;
 
 

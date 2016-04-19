@@ -1,6 +1,6 @@
 package com.bezirk.services.light.protocol;
 
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 
 public class MakeKing extends Event {
 	public static final String TOPIC = MakeKing.class.getSimpleName();

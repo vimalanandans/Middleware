@@ -14,7 +14,7 @@ import java.util.Date;
 //import org.slf4j.LoggerFactory;
 
 import com.bezirk.protocols.context.exception.UserPreferenceException;
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 
 public class Observation extends Event implements Comparable<Observation> {
 	/**

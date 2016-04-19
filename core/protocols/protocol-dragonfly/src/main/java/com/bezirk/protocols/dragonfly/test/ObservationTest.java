@@ -1,7 +1,7 @@
 package com.bezirk.protocols.dragonfly.test;
 
 import com.bezirk.protocols.dragonfly.UserObservation;
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 
 /**
  * This class is a sub class of the Observation Object and is used in the

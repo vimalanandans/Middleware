@@ -3,7 +3,7 @@
  */
 package com.bezirk.examples.protocols.parametricUI;
 
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 
 /**
  * @see com.bezirk.API.messages.Event

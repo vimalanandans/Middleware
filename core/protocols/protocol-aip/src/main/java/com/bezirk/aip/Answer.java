@@ -10,7 +10,7 @@ package com.bezirk.aip;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

@@ -1,7 +1,7 @@
 package com.bezirk.pipe.core;
 
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
 
 public class PipeRecord {
 	

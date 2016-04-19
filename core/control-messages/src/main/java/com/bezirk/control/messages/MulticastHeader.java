@@ -1,6 +1,6 @@
 package com.bezirk.control.messages;
 
-import com.bezirk.api.addressing.Address;
+import com.bezirk.middleware.addressing.Address;
 
 /**
  * This Class reflects the Header for Multicast Events

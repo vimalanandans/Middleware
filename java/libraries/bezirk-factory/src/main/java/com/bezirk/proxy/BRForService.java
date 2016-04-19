@@ -10,10 +10,10 @@ import java.util.LinkedHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.IBezirkListener.StreamConditions;
-import com.bezirk.api.addressing.DiscoveredService;
-import com.bezirk.api.addressing.ServiceEndPoint;
+import com.bezirk.middleware.IBezirkListener;
+import com.bezirk.middleware.IBezirkListener.StreamConditions;
+import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.ServiceEndPoint;
 import com.bezirk.callback.pc.IBoradcastReceiver;
 import com.bezirk.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.messagehandler.EventIncomingMessage;

@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.bezirk.spheremanager.R;
-import com.bezirk.api.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.UhuServiceInfo;
 
 import java.util.List;
 

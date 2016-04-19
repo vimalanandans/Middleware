@@ -12,18 +12,18 @@ import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.IBezirk;
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.addressing.Address;
-import com.bezirk.api.addressing.DiscoveredService;
-import com.bezirk.api.addressing.Location;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
-import com.bezirk.api.addressing.ServiceEndPoint;
-import com.bezirk.api.addressing.ServiceId;
-import com.bezirk.api.messages.Event;
-import com.bezirk.api.messages.ProtocolRole;
-import com.bezirk.api.messages.Message.Stripe;
+import com.bezirk.middleware.IBezirk;
+import com.bezirk.middleware.IBezirkListener;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.ServiceEndPoint;
+import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.Message.Stripe;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 
 /**

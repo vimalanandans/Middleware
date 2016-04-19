@@ -7,11 +7,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.addressing.CloudPipe;
-import com.bezirk.api.addressing.DiscoveredService;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
+import com.bezirk.middleware.IBezirkListener;
+import com.bezirk.middleware.addressing.CloudPipe;
+import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
 import com.bezirk.proxy.api.impl.UhuDiscoveredService;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;

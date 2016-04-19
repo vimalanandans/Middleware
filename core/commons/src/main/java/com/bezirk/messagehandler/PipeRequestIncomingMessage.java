@@ -1,6 +1,6 @@
 package com.bezirk.messagehandler;
 
-import com.bezirk.api.addressing.Pipe;
+import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 

@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.bezirk.protocols.context.Context;
 import com.bezirk.protocols.context.exception.UserPreferenceException;
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 
 /**
  * This testcase verifies the GetPreference event by setting the properties and retrieving them after deserialization.

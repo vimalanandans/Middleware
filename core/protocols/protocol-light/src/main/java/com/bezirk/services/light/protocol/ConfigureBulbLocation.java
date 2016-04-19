@@ -1,7 +1,7 @@
 package com.bezirk.services.light.protocol;
 
-import com.bezirk.api.addressing.Location;
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.messages.Event;
 /**
  * 
  * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)

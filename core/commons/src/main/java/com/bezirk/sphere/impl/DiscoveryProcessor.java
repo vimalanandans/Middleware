@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import com.bezirk.discovery.DiscoveryLabel;
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.api.objects.UhuDeviceInfo;
-import com.bezirk.api.objects.UhuServiceInfo;
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;

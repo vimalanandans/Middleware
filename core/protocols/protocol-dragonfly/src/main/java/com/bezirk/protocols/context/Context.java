@@ -8,7 +8,7 @@ package com.bezirk.protocols.context;
 
 import com.bezirk.protocols.context.exception.UserPreferenceException;
 //import com.bosch.upa.protocols.penguin.v01.exception.UserPreferenceException;
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 
 public class Context 
 {

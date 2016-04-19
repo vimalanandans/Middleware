@@ -1,6 +1,6 @@
 package com.bezirk.proxy.android;
 
-import com.bezirk.api.messages.Stream;
+import com.bezirk.middleware.messages.Stream;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlLedger;

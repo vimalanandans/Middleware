@@ -1,7 +1,7 @@
 package com.bezirk.sadl;
 
-import com.bezirk.api.addressing.Location;
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 
 /**

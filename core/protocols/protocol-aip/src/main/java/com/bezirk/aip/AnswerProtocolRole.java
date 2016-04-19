@@ -6,7 +6,7 @@
  */
 package com.bezirk.aip;
 
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.messages.ProtocolRole;
 
 public class AnswerProtocolRole extends ProtocolRole {
 

@@ -2,7 +2,7 @@ package com.bezirk.pipe.policy.ext;
 
 import java.util.HashSet;
 
-import com.bezirk.api.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.PipePolicy;
 
 public class UhuPipePolicy extends PipePolicy {
 	private HashSet<String> allowedProtocols = new HashSet<String>();

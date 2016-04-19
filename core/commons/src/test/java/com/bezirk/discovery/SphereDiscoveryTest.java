@@ -14,7 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
 import com.bezrik.network.UhuNetworkUtilities;
 import com.bezirk.persistence.SphereRegistry;

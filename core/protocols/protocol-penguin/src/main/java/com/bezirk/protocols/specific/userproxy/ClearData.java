@@ -1,7 +1,7 @@
 package com.bezirk.protocols.specific.userproxy;
 
 
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 
 public class ClearData extends Event{
 	

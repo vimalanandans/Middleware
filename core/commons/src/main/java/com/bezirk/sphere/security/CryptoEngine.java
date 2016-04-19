@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bezirk.commons.UhuId;
-import com.bezirk.api.objects.SphereVitals;
+import com.bezirk.middleware.objects.SphereVitals;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.ICryptoInternals;
 

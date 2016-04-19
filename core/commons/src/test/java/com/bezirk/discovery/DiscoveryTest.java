@@ -13,7 +13,7 @@ import java.util.Enumeration;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 import com.bezirk.messagehandler.ServiceMessageHandler;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;

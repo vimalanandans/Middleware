@@ -2,9 +2,9 @@ package com.bezirk.starter.helper;
 
 import android.content.Intent;
 
-import com.bezirk.api.addressing.Address;
-import com.bezirk.api.addressing.Location;
-import com.bezirk.api.serialization.AddressSerializer;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.serialization.AddressSerializer;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.UhuComms;
 import com.bezirk.messagehandler.StreamStatusMessage;

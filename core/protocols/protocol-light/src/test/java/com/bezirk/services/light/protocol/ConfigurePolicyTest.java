@@ -11,7 +11,7 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.bezirk.services.light.protocol.HueVocab.Policy;
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 
 /**
  * This testcase verifies the ConfigurePolicy event by setting the properties and retrieving them.

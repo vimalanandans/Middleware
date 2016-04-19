@@ -39,7 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bezirk.remotelogging.service.UhuLoggingService;
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.UhuComms;

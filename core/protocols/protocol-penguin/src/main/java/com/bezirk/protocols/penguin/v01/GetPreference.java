@@ -7,7 +7,7 @@
 package com.bezirk.protocols.penguin.v01;
 
 import com.bezirk.protocols.context.Context;
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 
 public class GetPreference extends Event 
 {

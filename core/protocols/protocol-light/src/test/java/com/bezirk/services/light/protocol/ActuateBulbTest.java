@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.bezirk.services.light.protocol.HueVocab.Color;
 import com.bezirk.services.light.protocol.HueVocab.Commands;
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 
 /**
  *	 This testcase verifies the ActuateBulb event by setting the properties and retrieving them after deserialization.

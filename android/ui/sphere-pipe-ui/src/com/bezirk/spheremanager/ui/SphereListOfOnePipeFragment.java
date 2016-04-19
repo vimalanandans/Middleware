@@ -16,7 +16,7 @@ import android.widget.ListView;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.pipe.core.PipeRecord;
 import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.starter.MainService;

@@ -5,7 +5,7 @@ package com.bezirk.sphere.api;
 
 import java.util.Set;
 
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 
 /**
  * @author Rishabh Gulati

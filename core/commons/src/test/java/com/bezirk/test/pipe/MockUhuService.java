@@ -3,12 +3,12 @@ package com.bezirk.test.pipe;
 import java.io.InputStream;
 import java.util.Set;
 
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.addressing.DiscoveredService;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
-import com.bezirk.api.addressing.ServiceEndPoint;
-import com.bezirk.api.addressing.ServiceId;
+import com.bezirk.middleware.IBezirkListener;
+import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.ServiceEndPoint;
+import com.bezirk.middleware.addressing.ServiceId;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 import com.bezirk.proxy.registration.ServiceRegistration;
 

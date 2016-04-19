@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.bezirk.protocols.callback.TrackableEvent;
 import com.bezirk.protocols.presence.PresenceDetectorRole;
 import com.bezirk.protocols.smartservice.SmartServiceRole;
-import com.bezirk.api.messages.Message.Stripe;
+import com.bezirk.middleware.messages.Message.Stripe;
 
 /**
  *  This testcase verifies the PresenceDetectorRole,SmartServiceRole and UserProxyRole 

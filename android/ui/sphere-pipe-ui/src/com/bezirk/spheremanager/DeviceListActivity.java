@@ -25,7 +25,7 @@ import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallbacks;
 import com.bezirk.spheremanager.ui.PipeListFragment.ShowPipesCallbacks;
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.pipe.core.PipeRecord;
 import com.bezirk.pipe.core.PipeRegistry;

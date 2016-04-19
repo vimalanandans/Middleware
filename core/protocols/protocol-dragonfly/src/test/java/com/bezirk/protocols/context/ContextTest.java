@@ -7,7 +7,7 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 import com.bezirk.protocols.context.exception.UserPreferenceException;
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 
 /**
  *	 This testcase verifies the Context by setting the properties and retrieving them.

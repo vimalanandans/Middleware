@@ -1,7 +1,7 @@
 package com.bezirk.sphere.api;
 
 import com.bezirk.sphere.security.SphereKeys;
-import com.bezirk.api.objects.SphereVitals;
+import com.bezirk.middleware.objects.SphereVitals;
 
 /**
  * @author Rishabh Gulati

@@ -22,7 +22,7 @@ import com.bezirk.samples.protocols.EchoRequest;
 import com.bezirk.samples.protocols.FileReply;
 import com.bezirk.samples.protocols.FileRequest;
 import com.bezirk.test.util.TestUtils;
-import com.bezirk.api.messages.Stream;
+import com.bezirk.middleware.messages.Stream;
 import com.bezirk.control.messages.pipes.CloudResponse;
 import com.bezirk.control.messages.pipes.CloudStreamResponse;
 import com.bezirk.control.messages.pipes.PipeHeader;

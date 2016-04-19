@@ -2,8 +2,8 @@ package com.bezirk.services.light.protocol;
 
 import java.util.Set;
 
-import com.bezirk.api.addressing.Location;
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.messages.Event;
 
 public class ResponseActiveLights extends Event {
 

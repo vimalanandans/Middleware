@@ -17,7 +17,7 @@ import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.PolicyListFragment;
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.pipe.core.PipeApprovalException;
 import com.bezirk.pipe.core.PipePolicyUtility;

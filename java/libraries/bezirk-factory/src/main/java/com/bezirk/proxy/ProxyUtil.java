@@ -6,8 +6,8 @@ import java.util.HashSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.addressing.ServiceId;
+import com.bezirk.middleware.IBezirkListener;
+import com.bezirk.middleware.addressing.ServiceId;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 
 /**

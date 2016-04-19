@@ -4,7 +4,7 @@
 package com.bezirk.test.sphere.testSphereUsingVirtualComms;
 
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 
 /**
  * @author Karthik

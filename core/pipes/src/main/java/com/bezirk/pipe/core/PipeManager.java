@@ -1,8 +1,8 @@
 package com.bezirk.pipe.core;
 
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
+import com.bezirk.middleware.IBezirkListener;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.pipes.PipeHeader;
 

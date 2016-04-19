@@ -6,7 +6,7 @@
  */
 package com.bezirk.protocols.presence;
 
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.messages.ProtocolRole;
 
 public class PresenceDetectorRole extends ProtocolRole 
 {	

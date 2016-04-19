@@ -7,9 +7,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.addressing.CloudPipe;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.CloudPipe;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.core.PipeApprovalException;
 import com.bezirk.pipe.core.PipeRecord;
 import com.bezirk.pipe.core.PipeRegistry;

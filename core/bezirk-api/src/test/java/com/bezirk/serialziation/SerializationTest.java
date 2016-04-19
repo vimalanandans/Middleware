@@ -18,11 +18,11 @@ import java.net.URI;
 
 import org.junit.Test;
 
-import com.bezirk.api.addressing.Address;
-import com.bezirk.api.addressing.CloudPipe;
-import com.bezirk.api.addressing.Location;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.serialization.AddressSerializer;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.CloudPipe;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.serialization.AddressSerializer;
 
 public class SerializationTest {
 	

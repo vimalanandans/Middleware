@@ -8,7 +8,7 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.bezirk.services.light.protocol.HueVocab.Color;
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 
 /**
  *	 This testcase verifies the ResponseActiveLights events by setting the properties and retrieving them after deserialization.

@@ -2,7 +2,7 @@ package com.bezirk.proxy.android;
 
 import android.util.Log;
 
-import com.bezirk.api.IBezirkListener;
+import com.bezirk.middleware.IBezirkListener;
 
 import java.util.ArrayList;
 import java.util.List;

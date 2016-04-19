@@ -1,6 +1,6 @@
 package com.bezirk.proxy;
 
-import com.bezirk.api.IBezirk;
+import com.bezirk.middleware.IBezirk;
 import com.bezirk.starter.UhuConfig;
 
 

@@ -14,7 +14,7 @@ import android.widget.ListView;
 
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.R;
-import com.bezirk.api.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.starter.MainService;
 

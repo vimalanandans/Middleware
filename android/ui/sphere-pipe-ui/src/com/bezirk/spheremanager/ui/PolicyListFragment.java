@@ -13,7 +13,7 @@ import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.SphereListActivity;
 import com.bezirk.spheremanager.ui.listitems.AbstractPolicyListItem;
 import com.bezirk.spheremanager.ui.listitems.ProtocolItem;
-import com.bezirk.api.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.core.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRecord;
 import com.bezirk.pipe.core.PipeRegistry;

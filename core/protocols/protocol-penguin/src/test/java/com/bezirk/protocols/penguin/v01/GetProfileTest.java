@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.bezirk.protocols.context.Context;
 import com.bezirk.protocols.context.exception.UserPreferenceException;
 import com.bezirk.protocols.penguin.v01.test.GetUserProfileTest;
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 
 /**
  * This testcase verifies the GetUserProfileTest event by setting the properties and retrieving them after deserialization.

@@ -3,11 +3,11 @@
  */
 package test;
 
-import com.bezirk.api.IBezirk;
-import com.bezirk.api.addressing.Address;
-import com.bezirk.api.addressing.ServiceId;
-import com.bezirk.api.messages.Event;
-import com.bezirk.api.messages.Message.Stripe;
+import com.bezirk.middleware.IBezirk;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.Message.Stripe;
 import com.bezirk.proxy.Factory;
 
 

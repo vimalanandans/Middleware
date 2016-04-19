@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.IBezirk;
+import com.bezirk.middleware.IBezirk;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 
 /**

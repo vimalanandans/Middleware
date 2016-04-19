@@ -3,7 +3,7 @@
  */
 package com.bezirk.devices;
 
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 
 /**
  * @author GUR1PI

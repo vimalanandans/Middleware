@@ -4,7 +4,7 @@
 package com.bezirk.test.sphere.testUtilities;
 
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 
 /**
  * @author Rishabh Gulati

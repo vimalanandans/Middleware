@@ -1,6 +1,6 @@
 package com.bezirk.test.pipe;
 
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.messages.ProtocolRole;
 
 public class MockProtocolRole extends ProtocolRole {
 	

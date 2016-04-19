@@ -4,10 +4,10 @@ package com.bezirk.sphere.api;
 import java.util.List;
 
 import com.bezirk.proxy.api.impl.UhuServiceId;
-import com.bezirk.api.objects.UhuDeviceInfo;
-import com.bezirk.api.objects.UhuPipeInfo;
-import com.bezirk.api.objects.UhuServiceInfo;
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.UhuPipeInfo;
+import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.google.zxing.common.BitMatrix;
 
 /**

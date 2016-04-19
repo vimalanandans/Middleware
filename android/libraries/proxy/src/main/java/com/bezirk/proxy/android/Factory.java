@@ -2,7 +2,7 @@ package com.bezirk.proxy.android;
 
 import android.content.Context;
 
-import com.bezirk.api.IBezirk;
+import com.bezirk.middleware.IBezirk;
 
 
 public final class Factory {

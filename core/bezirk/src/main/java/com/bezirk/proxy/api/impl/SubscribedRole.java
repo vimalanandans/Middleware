@@ -2,7 +2,7 @@ package com.bezirk.proxy.api.impl;
 
 import java.util.Arrays;
 
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.messages.ProtocolRole;
 import com.google.gson.Gson;
 
 public class SubscribedRole extends ProtocolRole{

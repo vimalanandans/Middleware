@@ -12,7 +12,7 @@ import com.bezirk.protocols.dragonfly.test.ObservationTest;
 import com.bezirk.protocols.penguin.v01.test.GetPreferenceTest;
 import com.bezirk.protocols.penguin.v01.test.GetUserProfileTest;
 import com.bezirk.protocols.specific.userproxy.ClearData;
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.messages.ProtocolRole;
 
 public class UserProxyRole extends ProtocolRole 
 {

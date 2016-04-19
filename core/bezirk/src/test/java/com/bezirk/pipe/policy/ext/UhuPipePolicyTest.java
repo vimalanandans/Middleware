@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 import org.junit.Test;
 
-import com.bezirk.api.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.PipePolicy;
 
 /**
  *	 This testcase verifies the UhuPipePolicy by setting the properties and retrieving them after deserialization.

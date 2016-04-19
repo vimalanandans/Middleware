@@ -14,9 +14,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.addressing.CloudPipe;
-import com.bezirk.api.addressing.PipePolicy;
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.addressing.CloudPipe;
+import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.application.IUhuApp;
 import com.bezirk.messagehandler.ServiceMessageHandler;
 import com.bezirk.commons.UhuCompManager;

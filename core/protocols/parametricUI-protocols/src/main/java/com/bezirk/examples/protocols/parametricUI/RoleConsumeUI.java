@@ -3,7 +3,7 @@
  */
 package com.bezirk.examples.protocols.parametricUI;
 
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.messages.ProtocolRole;
 
 /**
  * Role of a consumer service interacting with a parametric UI
