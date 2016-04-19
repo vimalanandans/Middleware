@@ -1,5 +1,6 @@
 package com.bezirk.discovery;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ public class SphereDiscovery {
 
     private static final Logger log = LoggerFactory.getLogger(SphereDiscovery.class);
 
-    private final ConcurrentHashMap<DiscoveryLabel, SphereDiscoveryRecord> discoveredMap;
+    private final Map<DiscoveryLabel, SphereDiscoveryRecord> discoveredMap;
     
     //TODO change the name
     //private final IUhuSphereDiscovery sphereDiscoveryHandler;
@@ -37,7 +38,7 @@ public class SphereDiscovery {
 					throw e;
 				}
 			}
-			return discoveredMap;
+			return (ConcurrentHashMap)discoveredMap;
 		}
     }
 
