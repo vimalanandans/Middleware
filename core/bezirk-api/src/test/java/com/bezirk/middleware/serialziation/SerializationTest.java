@@ -10,7 +10,7 @@
  *          Adam Wynne, 2014
  *          Jan Zibuschka, 2014
  */
-package com.bezirk.serialziation;
+package com.bezirk.middleware.serialziation;
 
 import static org.junit.Assert.assertTrue;
 

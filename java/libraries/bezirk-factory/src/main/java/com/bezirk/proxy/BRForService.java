@@ -10,8 +10,8 @@ import java.util.LinkedHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.middleware.IBezirkListener;
-import com.bezirk.middleware.IBezirkListener.StreamConditions;
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.BezirkListener.StreamConditions;
 import com.bezirk.middleware.addressing.DiscoveredService;
 import com.bezirk.middleware.addressing.ServiceEndPoint;
 import com.bezirk.callback.pc.IBoradcastReceiver;
@@ -35,9 +35,9 @@ public class BRForService implements IBoradcastReceiver{
     private static final LinkedHashMap<String, Long> duplicateStreamMap = new LinkedHashMap<String, Long>();
     private final HashMap<String,String> activeStreams;
     private final HashMap<UhuServiceId, Proxy.DiscoveryBookKeeper> dListenerMap;
-    private final HashMap<String, HashSet<IBezirkListener>> eventListenerMap;
-    private final HashMap<UhuServiceId,HashSet<IBezirkListener>> sidMap;
-    private final HashMap<String, HashSet<IBezirkListener>> streamListenerMap;
+    private final HashMap<String, HashSet<BezirkListener>> eventListenerMap;
+    private final HashMap<UhuServiceId,HashSet<BezirkListener>> sidMap;
+    private final HashMap<String, HashSet<BezirkListener>> streamListenerMap;
     
      /**
      * @param activeStreams
@@ -48,9 +48,9 @@ public class BRForService implements IBoradcastReceiver{
      */
     public BRForService(HashMap<String,String> activeStreams,
             HashMap<UhuServiceId, Proxy.DiscoveryBookKeeper> dListenerMap,
-            HashMap<String, HashSet<IBezirkListener>> eventListenerMap,
-            HashMap<UhuServiceId, HashSet<IBezirkListener>> sidMap,
-            HashMap<String, HashSet<IBezirkListener>> streamListenerMap) {
+            HashMap<String, HashSet<BezirkListener>> eventListenerMap,
+            HashMap<UhuServiceId, HashSet<BezirkListener>> sidMap,
+            HashMap<String, HashSet<BezirkListener>> streamListenerMap) {
         super();
         this.activeStreams = activeStreams;
         this.dListenerMap = dListenerMap;
@@ -106,12 +106,12 @@ public class BRForService implements IBoradcastReceiver{
             //Make a combined sid for sender and recipient
             String combinedSid = eCallbackMessage.senderSEP.serviceId.getUhuServiceId() +":"+ eCallbackMessage.getRecipient().getUhuServiceId();
             if(checkDuplicateMsg(combinedSid, eCallbackMessage.msgId)){
-                HashSet<IBezirkListener> tempListenersSidMap = sidMap.get(eCallbackMessage.getRecipient());
-                HashSet<IBezirkListener> tempListenersTopicsMap = eventListenerMap.get(eCallbackMessage.eventTopic);
+                HashSet<BezirkListener> tempListenersSidMap = sidMap.get(eCallbackMessage.getRecipient());
+                HashSet<BezirkListener> tempListenersTopicsMap = eventListenerMap.get(eCallbackMessage.eventTopic);
                 if(null !=tempListenersSidMap  && null != tempListenersTopicsMap){
-                    Iterator<IBezirkListener> listenerIterator = tempListenersSidMap.iterator();
+                    Iterator<BezirkListener> listenerIterator = tempListenersSidMap.iterator();
                     while(listenerIterator.hasNext()){
-                        IBezirkListener invokingListener = listenerIterator.next();
+                        BezirkListener invokingListener = listenerIterator.next();
                         if(tempListenersTopicsMap.contains(invokingListener)){
                             invokingListener.receiveEvent(eCallbackMessage.eventTopic, eCallbackMessage.serialzedEvent, (ServiceEndPoint)eCallbackMessage.senderSEP);
                         }
@@ -129,7 +129,7 @@ public class BRForService implements IBoradcastReceiver{
         private void handlerStreamUnicastCallback(StreamIncomingMessage strmMsg){
             if(checkDuplicateStream(strmMsg.senderSEP.serviceId.getUhuServiceId(),strmMsg.localStreamId)){
                 if (streamListenerMap.containsKey(strmMsg.streamTopic)) {
-                    for (IBezirkListener listener : streamListenerMap.get(strmMsg.streamTopic)) {
+                    for (BezirkListener listener : streamListenerMap.get(strmMsg.streamTopic)) {
                         listener.receiveStream(strmMsg.streamTopic, strmMsg.serialzedStream,strmMsg.localStreamId, strmMsg.filePath, strmMsg.senderSEP);
                     }
                     return;
@@ -148,9 +148,9 @@ public class BRForService implements IBoradcastReceiver{
         private void handleStreamStatusCallback(StreamStatusMessage streamStatusCallbackMessage){
             String activeStreamkey = streamStatusCallbackMessage.getRecipient().getUhuServiceId() + streamStatusCallbackMessage.streamId;
             if(activeStreams.containsKey(activeStreamkey)){ 
-                HashSet<IBezirkListener> tempHashSet = streamListenerMap.get(activeStreams.get(activeStreamkey));
+                HashSet<BezirkListener> tempHashSet = streamListenerMap.get(activeStreams.get(activeStreamkey));
                 if (tempHashSet!=null && !tempHashSet.isEmpty()) { 
-                    for (IBezirkListener listner : tempHashSet) {
+                    for (BezirkListener listner : tempHashSet) {
                         listner.streamStatus(
                                 streamStatusCallbackMessage.streamId,
                                 ((1 == streamStatusCallbackMessage.streamStatus) ? StreamConditions.END_OF_DATA

@@ -3,7 +3,7 @@
  */
 package test;
 
-import com.bezirk.middleware.IBezirk;
+import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.ServiceId;
 import com.bezirk.middleware.messages.Event;
@@ -16,7 +16,7 @@ import com.bezirk.proxy.Factory;
  */
 public class Test {
 
-    private IBezirk bezirk;
+    private Bezirk bezirk;
     private ServiceId myId;
 
     public Test() {

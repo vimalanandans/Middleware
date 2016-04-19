@@ -15,8 +15,8 @@ import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.middleware.IBezirk;
-import com.bezirk.middleware.IBezirkListener;
+import com.bezirk.middleware.Bezirk;
+import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.DiscoveredService;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
@@ -72,7 +72,7 @@ public class UnicastEventLocalTest {
 	@After
 	public void destroyMockservices() {
 
-		IBezirk uhu= Factory.getInstance();
+		Bezirk uhu= Factory.getInstance();
 		uhu.unregisterService(mockA.myId);
 		uhu.unregisterService(mockB.myId);
 	}
@@ -85,9 +85,9 @@ public class UnicastEventLocalTest {
 	/**
 	 * The service discovers the MockServiceB and communicate unicastly.
 	 */
-	private final class UnicastMockServiceA implements IBezirkListener {
+	private final class UnicastMockServiceA implements BezirkListener {
 		private final String serviceName = "UnicastMockServiceA";
-		private IBezirk uhu = null;
+		private Bezirk uhu = null;
 		private ServiceId myId = null;
 		private MockServiceBProtocolRole pRole;
 		
@@ -250,9 +250,9 @@ public class UnicastEventLocalTest {
 	/**
 	 * The service discovers the MockServiceA and communicate unicastly.
 	 */
-	private final class UnicastMockServiceB implements IBezirkListener {
+	private final class UnicastMockServiceB implements BezirkListener {
 		private final String serviceName = "UnicastMockServiceB";
-		private IBezirk uhu = null;
+		private Bezirk uhu = null;
 		private ServiceId myId = null;
 		
 		/**

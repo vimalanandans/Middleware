@@ -27,7 +27,7 @@ import com.bezirk.middleware.addressing.DiscoveredService;
 /**
  * Services that subscribe to a protocol role, or that request discovery, must designate an object that implements this interface.
  */
-public interface IBezirkListener {
+public interface BezirkListener {
 	
 	public enum StreamConditions {LOST_CONNECTION, END_OF_DATA}
 	public enum PipeConditions {LOST_CONNECTION}
@@ -64,7 +64,7 @@ public interface IBezirkListener {
 	/**
 	 * Callback issued by Bezirk middleware if something unexpected happens, or when an incremental stream closes.
 	 * 
-	 * @param streamId as returned by {@link IBezirk#sendStream(ServiceId, ServiceEndPoint, Stream, java.io.PipedOutputStream)}
+	 * @param streamId as returned by {@link Bezirk#sendStream(ServiceId, ServiceEndPoint, Stream, java.io.PipedOutputStream)}
 	 * or passed in {@link #receiveStream(String, String, short, InputStream, ServiceEndPoint)}
 	 * @param status
 	 */
@@ -88,7 +88,7 @@ public interface IBezirkListener {
 	public void pipeStatus(Pipe p, PipeConditions status );
 	
 	/**
-	 * Callback issued by Bezirk middleware once the outstanding {@link IBezirk#discover(ServiceId, Address, ProtocolRole, long, int, IBezirkListener)} runs its course
+	 * Callback issued by Bezirk middleware once the outstanding {@link Bezirk#discover(ServiceId, Address, ProtocolRole, long, int, BezirkListener)} runs its course
 	 * 
 	 * @param serviceSet
 	 */

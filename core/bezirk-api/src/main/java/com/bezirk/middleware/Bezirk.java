@@ -28,9 +28,9 @@ import com.bezirk.middleware.addressing.Pipe;
 /**
  * Platform-independent API offered by bezirk middleware to services (normally by means of a platform-specific proxy.)
  * 
- * @see IBezirkListener
+ * @see BezirkListener
  */
-public interface IBezirk {
+public interface Bezirk {
 	
 	/**
 	 * Makes the service known to Bezirk middleware, so that the user may then associate the service with one or more Spheres.
@@ -57,7 +57,7 @@ public interface IBezirk {
 	 * @param pRole specific protocol role that the service will play
 	 * @param listener object for the callbacks issued by Bezirk middelware upon reception of events and streams associated with this protocol role
 	 */
-	public void subscribe(ServiceId subscriber, ProtocolRole pRole, IBezirkListener listener);
+	public void subscribe(ServiceId subscriber, ProtocolRole pRole, BezirkListener listener);
 	
 	/**
 	 * Removes the effects of subscribe(...). Does nothing if no subscription is found.
@@ -73,7 +73,7 @@ public interface IBezirk {
 	 * @param sender id as returned by {@link #registerService(String)}
 	 * @param target semantic address
 	 * @param event being published
-	 * @see IBezirkListener#receiveEvent(String, String, ServiceEndPoint)
+	 * @see BezirkListener#receiveEvent(String, String, ServiceEndPoint)
 	 */
 	public void sendEvent(ServiceId sender, Address target, Event event);
 	
@@ -83,7 +83,7 @@ public interface IBezirk {
 	 * @param sender id as returned by {@link #registerService(String)}
 	 * @param receiver intended recipient, as extracted from a received message, or as resulted from discovery
 	 * @param event being unicast
-	 * @see IBezirkListener#receiveEvent(String, String, ServiceEndPoint)
+	 * @see BezirkListener#receiveEvent(String, String, ServiceEndPoint)
 	 */
 	public void sendEvent(ServiceId sender, ServiceEndPoint receiver, Event event);
 
@@ -95,14 +95,14 @@ public interface IBezirk {
 	 * @param s descriptor of the stream
 	 * @param p stream where the outgoing data will be written into by the invoker of this method.
 	 * Bezirk middelware will read data from p in a thread-safe way by creating a PipedInputStream linked to p
-	 * @return Bezirk middelware-generated id for the stream, which will be referred to in {@link IBezirkListener#streamStatus(short, IBezirkListener.StreamConditions)}
-	 * @see IBezirkListener#receiveStream(String, String, short, java.io.InputStream, ServiceEndPoint)
-	 * @see IBezirkListener#receiveStream(String, String, short, String, ServiceEndPoint)
+	 * @return Bezirk middelware-generated id for the stream, which will be referred to in {@link BezirkListener#streamStatus(short, BezirkListener.StreamConditions)}
+	 * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ServiceEndPoint)
+	 * @see BezirkListener#receiveStream(String, String, short, String, ServiceEndPoint)
 	 */
 	public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream s, PipedOutputStream p);
 	
 	/**
-	 * Same as {@link IBezirk#sendStream(ServiceId, ServiceEndPoint, Stream, PipedOutputStream)} but taking a file as the source of data.
+	 * Same as {@link Bezirk#sendStream(ServiceId, ServiceEndPoint, Stream, PipedOutputStream)} but taking a file as the source of data.
 	 */
 	public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream s, String filePath);
 	
@@ -114,18 +114,18 @@ public interface IBezirk {
 	 * @param allowedIn protocols allowed to flow from the pipe into the sphere.  No constraint on the protocols, if NULL.
 	 * @param allowedOut protocols allowed to flow from the sphere into the pipe.  No constraint on the protocols, if NULL.
 	 * @param listener object for the callback issued by Bezirk middelware once the pipe is verified by the user
-	 * @see IBezirkListener#pipeGranted(Pipe, PipePolicy, PipePolicy)
+	 * @see BezirkListener#pipeGranted(Pipe, PipePolicy, PipePolicy)
 	 */
-	public void requestPipe(ServiceId requester, Pipe p, PipePolicy allowedIn, PipePolicy allowedOut, IBezirkListener listener);
+	public void requestPipe(ServiceId requester, Pipe p, PipePolicy allowedIn, PipePolicy allowedOut, BezirkListener listener);
 	
 	/**
 	 * Requests being informed of the policy for p.
 	 * 
 	 * @param p
 	 * @param listener object for the callback issued by Bezirk middelware
-	 * @see IBezirkListener#pipeGranted(Pipe, PipePolicy, PipePolicy)
+	 * @see BezirkListener#pipeGranted(Pipe, PipePolicy, PipePolicy)
 	 */
-	public void getPipePolicy(Pipe p, IBezirkListener listener);
+	public void getPipePolicy(Pipe p, BezirkListener listener);
 	
 	/**
 	 * Requests the discovery of services which support pRole, within the spheres that the service is a member of.
@@ -139,10 +139,10 @@ public interface IBezirk {
 	 * @param timeout max time Bezirk middelware is to wait for replies to come in
 	 * @param maxDiscovered number of replies that Bezirk middelware is to wait for
 	 * @param listener object for the callback issued by Bezirk middelware upon gathering of discovery results
-	 * @see IBezirkListener#discovered(java.util.Set)
+	 * @see BezirkListener#discovered(java.util.Set)
 	 * @see #setLocation(ServiceId, Location)
 	 */
-	public void discover(ServiceId service, Address scope, ProtocolRole pRole, long timeout, int maxDiscovered, IBezirkListener listener);
+	public void discover(ServiceId service, Address scope, ProtocolRole pRole, long timeout, int maxDiscovered, BezirkListener listener);
 	
 	/**
 	 * Informs Bezirk middelware of the location of the service, when distinct from the location of the host device: useful for proxy devices, e.g. CCU.

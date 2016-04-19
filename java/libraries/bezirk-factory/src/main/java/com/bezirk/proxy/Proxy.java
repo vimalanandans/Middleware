@@ -8,8 +8,8 @@ import java.util.HashSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.middleware.IBezirk;
-import com.bezirk.middleware.IBezirkListener;
+import com.bezirk.middleware.Bezirk;
+import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
@@ -32,15 +32,15 @@ import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuConfig;
 import com.bezirk.util.UhuValidatorUtility;
 
-public class Proxy implements IBezirk {
+public class Proxy implements Bezirk {
 	private static final Logger log = LoggerFactory.getLogger(Proxy.class);
 	private final ProxyforServices proxy;
 	private final ProxyUtil proxyUtil;
 
 	protected final HashMap<UhuServiceId, DiscoveryBookKeeper> dListenerMap = new HashMap<UhuServiceId, DiscoveryBookKeeper>();
-	protected final HashMap<UhuServiceId,HashSet<IBezirkListener>> sidMap = new HashMap<UhuServiceId,HashSet<IBezirkListener>>();
-	protected final HashMap<String, HashSet<IBezirkListener>> eventListenerMap = new HashMap<String, HashSet<IBezirkListener>>();
-	protected final HashMap<String, HashSet<IBezirkListener>> streamListenerMap = new HashMap<String, HashSet<IBezirkListener>>();
+	protected final HashMap<UhuServiceId,HashSet<BezirkListener>> sidMap = new HashMap<UhuServiceId,HashSet<BezirkListener>>();
+	protected final HashMap<String, HashSet<BezirkListener>> eventListenerMap = new HashMap<String, HashSet<BezirkListener>>();
+	protected final HashMap<String, HashSet<BezirkListener>> streamListenerMap = new HashMap<String, HashSet<BezirkListener>>();
 	// Stream
 	private short streamFactory = 0;
 	protected final HashMap<String,String> activeStreams = new HashMap<String,String>();
@@ -53,15 +53,15 @@ public class Proxy implements IBezirk {
 	   //Create object for listener, discoveryId pair
     class DiscoveryBookKeeper {
         private final int discoveryId;
-        private final IBezirkListener listener;
-        DiscoveryBookKeeper(int id, IBezirkListener listener){
+        private final BezirkListener listener;
+        DiscoveryBookKeeper(int id, BezirkListener listener){
             this.discoveryId = id;
             this.listener = listener;
         }
         public int getDiscoveryId() {
             return discoveryId;
         }
-        public IBezirkListener getListener() {
+        public BezirkListener getListener() {
             return listener;
         }
 
@@ -145,7 +145,7 @@ public class Proxy implements IBezirk {
 	}
 
 	@Override
-	public void subscribe(final ServiceId subscriber, final ProtocolRole pRole, final IBezirkListener listener) {
+	public void subscribe(final ServiceId subscriber, final ProtocolRole pRole, final BezirkListener listener) {
 		if (null == pRole.getProtocolName() || pRole.getProtocolName().isEmpty() || null == listener || null == subscriber) {
 			log.error("Check for ProtocolRole/ UhuListener/ServiceId for null or empty values");
 			return;
@@ -239,14 +239,14 @@ public class Proxy implements IBezirk {
 
 	@Override
 	public void requestPipe(ServiceId requester, Pipe p, PipePolicy allowedIn,
-			PipePolicy allowedOut, IBezirkListener listener) {
+			PipePolicy allowedOut, BezirkListener listener) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void getPipePolicy(Pipe p,
-			IBezirkListener listener) {
+			BezirkListener listener) {
 		// TODO Auto-generated method stub
 
 	}
@@ -254,7 +254,7 @@ public class Proxy implements IBezirk {
 	@Override
 	public void discover(ServiceId service, Address scope,
 			ProtocolRole pRole, long timeout,
-			int maxDiscovered, IBezirkListener listener) {
+			int maxDiscovered, BezirkListener listener) {
 		// update discovery map
 		discoveryCount = (++discoveryCount) % Integer.MAX_VALUE;
 		dListenerMap.put((UhuServiceId) service, new DiscoveryBookKeeper(discoveryCount, listener));	

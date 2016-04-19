@@ -3,7 +3,7 @@ package com.bezirk.test.pipe;
 import java.io.InputStream;
 import java.util.Set;
 
-import com.bezirk.middleware.IBezirkListener;
+import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.DiscoveredService;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
@@ -12,7 +12,7 @@ import com.bezirk.middleware.addressing.ServiceId;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 import com.bezirk.proxy.registration.ServiceRegistration;
 
-public class MockUhuService implements IBezirkListener {
+public class MockUhuService implements BezirkListener {
 
 	private UhuServiceId serviceId = new UhuServiceId(ServiceRegistration.generateUniqueServiceID());
 	

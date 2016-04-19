@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.bezirk.middleware.IBezirkListener;
+import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.DiscoveredService;
 import com.bezirk.middleware.addressing.Pipe;
@@ -131,11 +131,11 @@ public class IntentMessageReceiver extends BroadcastReceiver {
     }
 
     private boolean receiveEventOrStream(String topic, String message, UhuServiceEndPoint sourceSEP, short streamId,
-                                         String filePath, String type, Map<String, ArrayList<IBezirkListener>> listenerMap) {
+                                         String filePath, String type, Map<String, ArrayList<BezirkListener>> listenerMap) {
 
             if (listenerMap.containsKey(topic)) {
-                final List<IBezirkListener> tempEventListners = listenerMap.get(topic);
-                for (IBezirkListener listener : tempEventListners) {
+                final List<BezirkListener> tempEventListners = listenerMap.get(topic);
+                for (BezirkListener listener : tempEventListners) {
                     if ("EVENT".equalsIgnoreCase(type)) {
                         listener.receiveEvent(topic, message, sourceSEP);
                     } else if ("STREAM_UNICAST".equalsIgnoreCase(type)) {
@@ -204,11 +204,11 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             Log.e(TAG, "Error in Stream Status received Intent ");
             return;
         }
-        final IBezirkListener.StreamConditions streamCondition = (streamStatus == 1) ? IBezirkListener.StreamConditions.END_OF_DATA : IBezirkListener.StreamConditions.LOST_CONNECTION;
+        final BezirkListener.StreamConditions streamCondition = (streamStatus == 1) ? BezirkListener.StreamConditions.END_OF_DATA : BezirkListener.StreamConditions.LOST_CONNECTION;
         if (Proxy.activeStreams.containsKey(streamId)) {
             final String streamTopic = Proxy.activeStreams.get(streamId);
             if (Proxy.streamListenerMap.containsKey(streamTopic)) {
-                for (IBezirkListener listener : Proxy.streamListenerMap.get(streamTopic)) {
+                for (BezirkListener listener : Proxy.streamListenerMap.get(streamTopic)) {
                     listener.streamStatus(streamId, streamCondition);
                 }
             }
