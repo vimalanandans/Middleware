@@ -13,13 +13,13 @@ public final class DBConstants {
 	public static final String COLUMN_2 = "sphereregistry";
 	public static final String COLUMN_3 = "serviceId";
 	/* Database Connection Properties */
-	public static final String DB_FILE_NAME = "uhu_database.sqlite";
+	public static final String DB_FILE_NAME = "mw_database.sqlite";
 	public static final String DB_URL_PATH = "jdbc:sqlite:";
 	/* Database Version */
-	public static final String DB_VERSION = "0.0.3";
+	public static final String DB_VERSION = "0.0.4";
 	
 	/*	DB CONSTANSTS USED ONLY ON PC_SIDE FOR STORING UHUSERVICEID	*/
-	public static final String DB_FILE_NAME_UHU_SID = "uhu_serviceid.sqlite";
+	//public static final String DB_FILE_NAME_UHU_SID = "uhu_serviceid.sqlite";
 	/*	LOCAL DIRECTORY TODO: Change it to config directory*/
 	public static final String DB_LOCATION = "./";
 }
