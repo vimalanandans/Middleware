@@ -18,8 +18,15 @@ package com.bezirk.middleware.messages;
  * define concrete streams and their custom attributes and payloads. To implement a simple, small
  * message, extend the {@link Event} class.
  * 
+ * Implementers should favor extending {@link MulticastStream} when a concrete stream will have 
+ * multiple recipients where the set of recipients is more specific that simply anyone subscribed to 
+ * a topic (e.g. when a {@link Location} is  required). {@link UnicastStream} should be favored when 
+ * the stream will have a single known recipient.
+ * 
  * @see Message
  * @see Event
+ * @see MulticastStream
+ * @see UnicastStream
  */
 public class Stream extends Message {
 	/**
