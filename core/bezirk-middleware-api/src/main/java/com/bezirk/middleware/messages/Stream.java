@@ -13,26 +13,40 @@
 package com.bezirk.middleware.messages;
 
 /**
- * Protocol definitions must extend this class to define concrete streams, e.g. by adding message-specific attributes.
- * In other words, streams are messages followed by a large amount of data.
- * Extends {@link Message}
+ * Base class for non-trivial Bezirk messages and data transfers. A stream represents a set of data
+ * elements such as picture and music data. This class is extended by protocol implementations to 
+ * define concrete streams and their custom attributes and payloads. To implement a simple, small
+ * message, extend the {@link Event} class.
+ * 
+ * @see Message
+ * @see Event
  */
 public class Stream extends Message {
 	/**
-	 * Set by each subclass, it tells UhU whether the stream should be processed incrementally (e.g. a music stream) or as a unit (e.g. an image file)
+	 * Subclass sets to <code>true</code> if the payload can be processed incrementally (e.g. a music stream) or 
+	 * <code>false</code> if all data elements must be received before processing can continue (e.g. image file 
+	 * data).
 	 */
 	private boolean incremental;
+	
 	/**
-	 * Set by each subclass, it tells UhU whether the stream allows data to be dropped, thereby promoting real-time delivery
+	 * Subclass sets to <code>true</code> if data elements may be dropped from the stream without resending
+	 * to increase performance, or <code>false</code> if the data elements must be reliably transferred.
 	 */
 	private boolean allowDrops;
 	
 	/**
-	 * Set by each subclass, it tells UhU whether the stream MUST be encrypted while in transit in the Sphere.
-	 * The user may dynamically instruct UhU via UI whether to encrypt the exchange of streams marked unsecured: a tradeoff between privacy and performance.
+	 * Subclass sets to <code>true</code> if Bezirk must encrypt the stream's data before transmitting. If
+	 * set to <code>false</code>, Bezirk will offer the user the opportunity to encrypt the stream anyway. 
+	 * This option is provided to allow users to make a tradeoff between privacy and performance where the 
+	 * protocol designer does not believe the stream will always require confidentiality.
 	 */
 	private boolean secure;
 	
+	/**
+	 * The concrete implentation of a <code>Stream</code> must specify the stream's flag
+	 * and topic. Message flags and topics are documented in {@link Message}.
+	 */
 	public Stream(Stripe stripe, String topic){
 		this.stripe = stripe;
 		this.topic = topic;
@@ -61,6 +75,4 @@ public class Stream extends Message {
 	public boolean isSecure() {
 		return secure;
 	}
-
-
 }
