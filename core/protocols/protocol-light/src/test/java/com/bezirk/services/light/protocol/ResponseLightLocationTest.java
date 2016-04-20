@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 
 /**
  *	 This testcase verifies the ResponseLightLocation event by setting the properties and retrieving them after deserialization.

@@ -9,11 +9,11 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.addressing.Address;
-import com.bezirk.api.addressing.CloudPipe;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.messages.Event;
-import com.bezirk.api.messages.GetStreamRequest;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.CloudPipe;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.GetStreamRequest;
 import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;

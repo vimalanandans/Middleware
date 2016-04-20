@@ -1,6 +1,7 @@
 package com.bezirk.discovery;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -15,7 +16,7 @@ import com.google.gson.Gson;
 public class Discovery {
     private static final Logger log = LoggerFactory.getLogger(Discovery.class);
 
-    private final ConcurrentHashMap<DiscoveryLabel,DiscoveryRecord> discoveredMap;
+    private final Map<DiscoveryLabel,DiscoveryRecord> discoveredMap;
 
     private final Gson gson = new Gson();
 
@@ -33,7 +34,7 @@ public class Discovery {
 					throw e;
 				}
 			}
-			return discoveredMap;
+			return (ConcurrentHashMap)discoveredMap;
 		}
     }
 

@@ -18,9 +18,9 @@ import android.widget.Toast;
 import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.SphereListActivity;
-import com.bezirk.api.objects.UhuDeviceInfo;
-import com.bezirk.api.objects.UhuServiceInfo;
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.starter.MainService;
 

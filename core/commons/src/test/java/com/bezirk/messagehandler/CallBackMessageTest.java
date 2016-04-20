@@ -7,9 +7,9 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import com.bezirk.api.addressing.CloudPipe;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.CloudPipe;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 import com.bezirk.proxy.api.impl.UhuServiceId;

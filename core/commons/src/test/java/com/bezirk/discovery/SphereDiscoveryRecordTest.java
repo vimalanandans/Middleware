@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 import com.bezirk.sphere.api.UhuSphereType;

@@ -9,10 +9,10 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.addressing.Address;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
@@ -191,7 +191,7 @@ public class PipeManagerImpl implements PipeManager {
 
 	@Override
 	public void pipeGranted(boolean granted, Pipe pipe, PipePolicy allowedIn,
-			PipePolicy allowedOut, String sphereId, IBezirkListener uhuListener) {
+			PipePolicy allowedOut, String sphereId, BezirkListener uhuListener) {
 
 		// TODO call uhuListener directly or via a proxy?  is this done differently on each platform?
 		// uhuListener.pipeGranted(...)

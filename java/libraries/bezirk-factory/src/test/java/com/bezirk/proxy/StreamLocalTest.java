@@ -19,16 +19,16 @@ import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.IBezirk;
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.addressing.DiscoveredService;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
-import com.bezirk.api.addressing.ServiceEndPoint;
-import com.bezirk.api.addressing.ServiceId;
-import com.bezirk.api.messages.ProtocolRole;
-import com.bezirk.api.messages.Message.Stripe;
-import com.bezirk.api.messages.UnicastStream;
+import com.bezirk.middleware.Bezirk;
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.ServiceEndPoint;
+import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.UnicastStream;
 import com.bezirk.proxy.api.impl.UhuDiscoveredService;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 
@@ -88,7 +88,7 @@ public class StreamLocalTest {
 
 	@After
 	public void destroySetUp() {
-		IBezirk uhu = Factory.getInstance();
+		Bezirk uhu = Factory.getInstance();
 		uhu.unregisterService(mockA.myId);
 		uhu.unregisterService(mockB.myId);
 	}
@@ -96,9 +96,9 @@ public class StreamLocalTest {
 	/**
 	 * The service that discovers and streams the file
 	 */
-	private final class StreamLocalMockServiceA implements IBezirkListener {
+	private final class StreamLocalMockServiceA implements BezirkListener {
 		private final String serviceName = "StreamLocalMockServiceA";
-		private IBezirk uhu = null;
+		private Bezirk uhu = null;
 		private ServiceId myId = null;
 		private StreamLocalDummyProtocolRole pRole;
 		
@@ -244,9 +244,9 @@ public class StreamLocalTest {
 	/**
 	 * Service that is consumer of Stream
 	 */
-	private final class StreamLocalMockServiceB implements IBezirkListener {
+	private final class StreamLocalMockServiceB implements BezirkListener {
 		private final String serviceName = "StreamLocalMockServiceB";
-		private IBezirk uhu = null;
+		private Bezirk uhu = null;
 		private ServiceId myId = null;
 		
 		/**

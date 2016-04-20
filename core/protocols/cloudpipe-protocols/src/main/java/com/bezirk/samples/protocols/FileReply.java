@@ -1,6 +1,6 @@
 package com.bezirk.samples.protocols;
 
-import com.bezirk.api.messages.Stream;
+import com.bezirk.middleware.messages.Stream;
 
 public class FileReply extends Stream {
 	

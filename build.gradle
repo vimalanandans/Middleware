@@ -27,31 +27,31 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "2.0.5"
+    version = "2.0.6"
 
     ext {
-        artifactRepoBase_old = "http://cr-scm01.de.bosch.com:8081/nexus/content/repositories"
+        //artifactRepoBase_old = "http://cr-scm01.de.bosch.com:8081/nexus/content/repositories"
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
     }
 
     repositories {
         mavenLocal()
         mavenCentral()
-        maven {
-            url "${artifactRepoBase_old}/central/"
-            credentials {
-                // Define "nexus_user" and "nexus_password" in ~/.gradle/gradle.properties
-                username nexus_user
-                password nexus_password
-            }
-        }
-        maven {
-            url "${artifactRepoBase_old}/upa-public/"
-            credentials {
-                username nexus_user
-                password nexus_password
-            }
-        }
+//        maven {
+//            url "${artifactRepoBase_old}/central/"
+//            credentials {
+//                // Define "nexus_user" and "nexus_password" in ~/.gradle/gradle.properties
+//                username nexus_user
+//                password nexus_password
+//            }
+//        }
+//        maven {
+//            url "${artifactRepoBase_old}/upa-public/"
+//            credentials {
+//                username nexus_user
+//                password nexus_password
+//            }
+//        }
         maven {
             url "${artifactRepoBase}/libs-release-local/"
             credentials {

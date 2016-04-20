@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.bezirk.actions.UhuActions;
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.rest.BezirkRestCommsManager;
 import com.bezirk.starter.MainService;

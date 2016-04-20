@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.util.MockProtocolRole;
 
 /**

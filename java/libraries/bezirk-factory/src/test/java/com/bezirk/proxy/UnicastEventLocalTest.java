@@ -15,16 +15,16 @@ import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.IBezirk;
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.addressing.DiscoveredService;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
-import com.bezirk.api.addressing.ServiceEndPoint;
-import com.bezirk.api.addressing.ServiceId;
-import com.bezirk.api.messages.Event;
-import com.bezirk.api.messages.ProtocolRole;
-import com.bezirk.api.messages.Message.Stripe;
+import com.bezirk.middleware.Bezirk;
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.ServiceEndPoint;
+import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.Message.Stripe;
 import com.bezirk.proxy.api.impl.UhuDiscoveredService;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 
@@ -72,7 +72,7 @@ public class UnicastEventLocalTest {
 	@After
 	public void destroyMockservices() {
 
-		IBezirk uhu= Factory.getInstance();
+		Bezirk uhu= Factory.getInstance();
 		uhu.unregisterService(mockA.myId);
 		uhu.unregisterService(mockB.myId);
 	}
@@ -85,9 +85,9 @@ public class UnicastEventLocalTest {
 	/**
 	 * The service discovers the MockServiceB and communicate unicastly.
 	 */
-	private final class UnicastMockServiceA implements IBezirkListener {
+	private final class UnicastMockServiceA implements BezirkListener {
 		private final String serviceName = "UnicastMockServiceA";
-		private IBezirk uhu = null;
+		private Bezirk uhu = null;
 		private ServiceId myId = null;
 		private MockServiceBProtocolRole pRole;
 		
@@ -250,9 +250,9 @@ public class UnicastEventLocalTest {
 	/**
 	 * The service discovers the MockServiceA and communicate unicastly.
 	 */
-	private final class UnicastMockServiceB implements IBezirkListener {
+	private final class UnicastMockServiceB implements BezirkListener {
 		private final String serviceName = "UnicastMockServiceB";
-		private IBezirk uhu = null;
+		private Bezirk uhu = null;
 		private ServiceId myId = null;
 		
 		/**

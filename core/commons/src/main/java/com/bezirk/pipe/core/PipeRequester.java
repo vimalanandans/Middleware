@@ -6,9 +6,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.application.IUhuApp;
 import com.bezirk.messagehandler.PipeRequestIncomingMessage;
 import com.bezirk.commons.UhuCompManager;
@@ -134,7 +134,7 @@ public class PipeRequester implements IPipeRequester, IUhuPipeAPI {
     public void pipeApproved(boolean approved, String pipeRequestId, String pipePassword, String sphereId) throws PipeApprovalException {
     	PipeRequest request = outstandingRequests.get(pipeRequestId);
 
-    	IBezirkListener listener = request.getListener();
+    	BezirkListener listener = request.getListener();
     	Pipe pipe = request.getPipe();
     	UhuPipePolicy allowedIn = PipePolicyUtility.policyInMap.get(request.getId());
     	UhuPipePolicy allowedOut = PipePolicyUtility.policyOutMap.get(request.getId());

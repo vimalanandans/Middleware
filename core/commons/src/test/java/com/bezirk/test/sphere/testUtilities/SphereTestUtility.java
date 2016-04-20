@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.api.objects.UhuDeviceInfo;
-import com.bezirk.api.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.commons.UhuId;
 import com.bezrik.network.UhuNetworkUtilities;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;

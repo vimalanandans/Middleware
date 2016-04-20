@@ -6,8 +6,8 @@
  */
 package com.bezirk.proxy.pc;
 
-import com.bezirk.api.addressing.Address;
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 import com.bezirk.proxy.api.impl.UhuServiceId;

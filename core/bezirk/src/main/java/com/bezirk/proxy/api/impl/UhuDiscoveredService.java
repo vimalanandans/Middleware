@@ -1,7 +1,7 @@
 package com.bezirk.proxy.api.impl;
 
-import com.bezirk.api.addressing.DiscoveredService;
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.Location;
 /**
  * @author: Joao de Sousa (CR/RTC3-NA)
  * With contributions from:
@@ -13,7 +13,7 @@ import com.bezirk.api.addressing.Location;
  * Adam Wynne (CR/RTC3.1-NA)
  * Jan Zibuschka (CR/AEA3)
  */
-import com.bezirk.api.addressing.ServiceEndPoint;
+import com.bezirk.middleware.addressing.ServiceEndPoint;
 
 
 /**

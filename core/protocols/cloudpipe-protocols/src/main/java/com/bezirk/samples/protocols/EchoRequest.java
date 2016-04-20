@@ -1,6 +1,6 @@
 package com.bezirk.samples.protocols;
 
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 
 public class EchoRequest extends Event {
 	

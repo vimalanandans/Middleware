@@ -1,9 +1,9 @@
 package com.bezirk.pipe.core;
 
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.addressing.CloudPipe;
-import com.bezirk.api.addressing.PipePolicy;
-import com.bezirk.api.addressing.ServiceId;
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.addressing.CloudPipe;
+import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.ServiceId;
 
 public class PipeRequest {
 	
@@ -13,7 +13,7 @@ public class PipeRequest {
 	private CloudPipe pipe = null;
 	private PipePolicy allowedIn = null;
 	private PipePolicy allowedOut = null;
-	private IBezirkListener listener = null;
+	private BezirkListener listener = null;
 	private String id;
 
 	public PipeRequest(String id) {
@@ -44,10 +44,10 @@ public class PipeRequest {
 	public void setAllowedOut(PipePolicy allowedOut) {
 		this.allowedOut = allowedOut;
 	}
-	public IBezirkListener getListener() {
+	public BezirkListener getListener() {
 		return listener;
 	}
-	public void setListener(IBezirkListener listener) {
+	public void setListener(BezirkListener listener) {
 		this.listener = listener;
 	}
 

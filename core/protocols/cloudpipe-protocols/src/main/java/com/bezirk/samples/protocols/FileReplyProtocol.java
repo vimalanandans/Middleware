@@ -1,6 +1,6 @@
 package com.bezirk.samples.protocols;
 
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.messages.ProtocolRole;
 
 public class FileReplyProtocol extends ProtocolRole {
 	

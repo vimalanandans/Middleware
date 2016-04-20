@@ -19,16 +19,16 @@ import org.slf4j.LoggerFactory;
 
 import com.bezirk.devices.UPADeviceForPC;
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.api.IBezirk;
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.addressing.Address;
-import com.bezirk.api.addressing.DiscoveredService;
-import com.bezirk.api.addressing.Location;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
-import com.bezirk.api.addressing.ServiceEndPoint;
-import com.bezirk.api.addressing.ServiceId;
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.Bezirk;
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.ServiceEndPoint;
+import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.proxy.api.impl.UhuDiscoveredService;
 import com.bezirk.proxy.api.impl.UhuServiceId;
@@ -99,7 +99,7 @@ public class DiscoveryTest {
 	@After
 	public void destroyMockservices() {
 
-		IBezirk uhu= Factory.getInstance();
+		Bezirk uhu= Factory.getInstance();
 		uhu.unregisterService(mockA.myId);
 		uhu.unregisterService(mockB.myId);
 		uhu.unregisterService(mockC.myId);		
@@ -114,9 +114,9 @@ public class DiscoveryTest {
 	/**
 	 * MockServiceA that is simulating as Service that initiates the Discovery
 	 */
-	private final class DiscoveryMockServiceA implements IBezirkListener {
+	private final class DiscoveryMockServiceA implements BezirkListener {
 		private final String serviceName = "DiscoveryMockServiceA";
-		private IBezirk uhu = null;
+		private Bezirk uhu = null;
 		private ServiceId myId = null;
 		private DiscoveryMockServiceProtocol pRole;
 		
@@ -275,9 +275,9 @@ public class DiscoveryTest {
 	/**
 	 * MockServiceB stimulating the responder of the discovery request initiated by MockServiceA
 	 */
-	private final class DiscoveryMockServiceB implements IBezirkListener {
+	private final class DiscoveryMockServiceB implements BezirkListener {
 		private final String serviceName = "DiscoveryMockServiceB";
-		private IBezirk uhu = null;
+		private Bezirk uhu = null;
 		private ServiceId myId = null;
 		public DiscoveryMockServiceB() {	}
 		
@@ -323,9 +323,9 @@ public class DiscoveryTest {
 	/**
 	 * MockServiceC stimulating the responder of the discovery request initiated by MockServiceA
 	 */
-	private final class DiscoveryMockServiceC implements IBezirkListener {
+	private final class DiscoveryMockServiceC implements BezirkListener {
 		private final String serviceName = "DiscoveryMockServiceC";
-		private IBezirk uhu = null;
+		private Bezirk uhu = null;
 		private ServiceId myId = null;
 
 		private final void setupMockService(){

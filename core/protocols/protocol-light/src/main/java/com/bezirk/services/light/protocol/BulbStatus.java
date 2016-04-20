@@ -1,8 +1,8 @@
 package com.bezirk.services.light.protocol;
 
 import com.bezirk.services.light.protocol.HueVocab.BulbStatusType;
-import com.bezirk.api.addressing.Location;
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.messages.Event;
 
 public class BulbStatus extends Event{
 	public final static String TOPIC = BulbStatus.class.getSimpleName();

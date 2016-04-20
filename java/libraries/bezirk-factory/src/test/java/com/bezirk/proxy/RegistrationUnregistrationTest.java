@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.IBezirk;
+import com.bezirk.middleware.Bezirk;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 
 /**
@@ -33,7 +33,7 @@ public class RegistrationUnregistrationTest {
 	//@Test
 	public void registrationUnregistrationTest(){
 		final String serviceName = "MOCK_SERVICE_A";
-		IBezirk uhu = null;
+		Bezirk uhu = null;
 		UhuServiceId serviceId = null;
 
 		uhu = Factory.getInstance();

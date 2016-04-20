@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.bezirk.api.messages.GetStreamRequest;
+import com.bezirk.middleware.messages.GetStreamRequest;
 
 
 /**

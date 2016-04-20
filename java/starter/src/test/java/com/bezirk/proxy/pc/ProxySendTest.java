@@ -11,11 +11,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.addressing.Address;
-import com.bezirk.api.addressing.Location;
-import com.bezirk.api.addressing.ServiceEndPoint;
-import com.bezirk.api.messages.Message.Stripe;
-import com.bezirk.api.messages.UnicastStream;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.addressing.ServiceEndPoint;
+import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.UnicastStream;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 import com.bezirk.sadl.UhuSadlManager;

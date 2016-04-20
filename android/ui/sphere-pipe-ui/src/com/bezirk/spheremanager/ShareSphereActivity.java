@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.commons.UhuVersion;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.sphere.impl.IUhuQRCode;

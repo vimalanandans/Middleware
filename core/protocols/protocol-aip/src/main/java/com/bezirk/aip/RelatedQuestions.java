@@ -9,7 +9,7 @@ package com.bezirk.aip;
 
 import java.util.List;
 
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 
 public class RelatedQuestions extends Event {
 

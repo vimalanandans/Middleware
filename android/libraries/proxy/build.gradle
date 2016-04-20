@@ -34,7 +34,7 @@ dependencies {
         compile "com.bezirk:bezirk-api:${version}"
         compile "com.bezirk:actions:${version}"
     } else {
-  */    compile project(':core:bezirk-api')
+  */    compile project(':core:bezirk-middleware-api')
         compile project(':core:bezirk')
         compile project(':core:actions')
 //    }

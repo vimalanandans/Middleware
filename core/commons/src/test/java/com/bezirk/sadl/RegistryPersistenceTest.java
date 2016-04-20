@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 import com.bezirk.persistence.DBConstants;
 import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.persistence.IDatabaseConnection;

@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 
 /**
  *	 This testcase verifies UhuDevice by setting the values and retrieving them.

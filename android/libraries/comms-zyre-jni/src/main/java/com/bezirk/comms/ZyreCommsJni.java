@@ -28,7 +28,7 @@ public class ZyreCommsJni extends Thread {
 
     private Zyre zyre;
 
-    private final ConcurrentMap<String, List<String>> peers = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, List<String>> peers = new ConcurrentHashMap<String, List<String>>();
 
     public static final String BEZIRK_GROUP = "BEZIRK_GROUP";
 

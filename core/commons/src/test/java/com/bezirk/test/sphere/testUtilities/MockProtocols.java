@@ -1,7 +1,7 @@
 package com.bezirk.test.sphere.testUtilities;
 
-import com.bezirk.api.messages.Event;
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.ProtocolRole;
 
 /**
  * This class provides different protocols which are used in the testcases.

@@ -1,6 +1,6 @@
 package com.bezirk.proxy.api.impl;
 
-import com.bezirk.api.addressing.ServiceEndPoint;
+import com.bezirk.middleware.addressing.ServiceEndPoint;
 
 /**
  * Created by vbd4kor on 6/6/2014.

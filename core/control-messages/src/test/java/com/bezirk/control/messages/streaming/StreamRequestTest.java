@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezrik.network.UhuNetworkUtilities;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;

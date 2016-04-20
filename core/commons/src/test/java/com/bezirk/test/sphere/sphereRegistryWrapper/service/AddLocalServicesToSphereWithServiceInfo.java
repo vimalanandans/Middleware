@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bezirk.test.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.api.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 import com.bezirk.sphere.api.UhuSphereType;

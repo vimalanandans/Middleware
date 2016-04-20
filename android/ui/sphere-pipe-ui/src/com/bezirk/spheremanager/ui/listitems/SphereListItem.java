@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.SphereListAdapter.ListItems;
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.sphere.api.UhuSphereType;
 
 public class SphereListItem implements AbstractSphereListItem {

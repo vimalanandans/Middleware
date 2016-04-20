@@ -17,7 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import  java.lang.reflect.Method;
 
 import com.bezirk.test.sphere.testUtilities.MockSetUpUtility;
-import com.bezirk.api.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.commons.UhuId;
 import com.bezrik.network.UhuNetworkUtilities;
 import com.bezirk.sphere.impl.CatchProcessor;

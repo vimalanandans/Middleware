@@ -12,7 +12,7 @@ import org.apache.shiro.codec.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 import com.bezrik.network.UhuNetworkUtilities;
 
 public class UPADeviceForPC implements com.bezirk.devices.UPADeviceInterface {

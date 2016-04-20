@@ -1,7 +1,7 @@
 
 package com.bezirk.services.light.protocol;
 
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 
 public class ResponsePolicy extends Event{
 	public static final String TOPIC = ResponsePolicy.class.getSimpleName();

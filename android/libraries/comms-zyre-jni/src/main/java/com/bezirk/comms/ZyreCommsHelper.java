@@ -34,35 +34,34 @@ class ZyreCommsHelper {
 
     void processEvent(String eventType, String peer, String peerGroup, String payload) {
         // A Zyre-enabled device enters the network
-        switch (eventType) {
-            case "ENTER":
-                log.info("peer (" + peer + ") entered network");
-                break;
-            case "WHISPER":// Message sent to a particular device
-                log.info("data size > " + payload.length());
-                commsProcessor.processWireMessage(peer, payload);
-                break;
-            case "SHOUT":// Message sent to all members of a group
-                log.info("data size > " + payload.length());
-                commsProcessor.processWireMessage(peer, payload);
-                break;
-            case "JOIN":// A device joins a group
-                addPeer(peerGroup, peer);
-                log.info("peer (" + peer + ") joined: " + peerGroup);
-                logKnownDevices();
-                break;
-            case "LEAVE":// A device explicitly leaves a group
-                boolean success = removePeer(peerGroup, peer);
-                log.info("peer (" + peer + ") left " + peerGroup + ":" + success);
-                logKnownDevices();
-                break;
-            case "EXIT":// A device exits the network
-                boolean isRemovalSuccess = removePeer(peer);
-                log.debug("peer (" + peer + ") exited: " + isRemovalSuccess);
-                logKnownDevices();
-                break;
-            default:
-                Log.d(TAG, "unknown event: " + eventType);
+        if (eventType.equals("ENTER")) {
+            log.info("peer (" + peer + ") entered network");
+
+        } else if (eventType.equals("WHISPER")) {
+            log.info("data size > " + payload.length());
+            commsProcessor.processWireMessage(peer, payload);
+
+        } else if (eventType.equals("SHOUT")) {
+            log.info("data size > " + payload.length());
+            commsProcessor.processWireMessage(peer, payload);
+
+        } else if (eventType.equals("JOIN")) {
+            addPeer(peerGroup, peer);
+            log.info("peer (" + peer + ") joined: " + peerGroup);
+            logKnownDevices();
+
+        } else if (eventType.equals("LEAVE")) {
+            boolean success = removePeer(peerGroup, peer);
+            log.info("peer (" + peer + ") left " + peerGroup + ":" + success);
+            logKnownDevices();
+
+        } else if (eventType.equals("EXIT")) {
+            boolean isRemovalSuccess = removePeer(peer);
+            log.debug("peer (" + peer + ") exited: " + isRemovalSuccess);
+            logKnownDevices();
+
+        } else {
+            Log.d(TAG, "unknown event: " + eventType);
         }
     }
 
@@ -70,7 +69,7 @@ class ZyreCommsHelper {
     Map<String,String> receive(Zyre zyre) {
         String incoming = zyre.recv();
 
-        ConcurrentMap<String,String> eventMap = new ConcurrentHashMap<>();
+        ConcurrentMap<String,String> eventMap = new ConcurrentHashMap<String, String>();
 
         if((incoming == null) || incoming.isEmpty())
             return eventMap;
@@ -100,7 +99,7 @@ class ZyreCommsHelper {
 
         String MSG_DELIM = "\\|";  // separates each part of the message
         int NUM_PARTS = 4;
-        ConcurrentMap<String,String> result = new ConcurrentHashMap<>();
+        ConcurrentMap<String,String> result = new ConcurrentHashMap<String, String>();
         List<String> pairs = Arrays.asList(msg.split(MSG_DELIM, NUM_PARTS));
 
         if (pairs.size() != NUM_PARTS) {
@@ -126,7 +125,7 @@ class ZyreCommsHelper {
         }
 
         if (result.get("event") == null) {
-            return new ConcurrentHashMap<>();
+            return new ConcurrentHashMap<String, String>();
         }
 
         return result;

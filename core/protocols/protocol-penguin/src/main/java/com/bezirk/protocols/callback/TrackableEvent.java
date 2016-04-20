@@ -8,7 +8,7 @@
  */
 package com.bezirk.protocols.callback;
 
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 
 public class TrackableEvent extends Event
 {

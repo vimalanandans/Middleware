@@ -1,6 +1,6 @@
 package com.bezirk.protocols.penguin.v01;
 
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 
 public class InitUserProxyUI extends Event
 {

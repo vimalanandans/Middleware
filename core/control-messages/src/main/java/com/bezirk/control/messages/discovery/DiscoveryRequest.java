@@ -1,6 +1,6 @@
 package com.bezirk.control.messages.discovery;
 
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.MulticastControlMessage;
 import com.bezirk.proxy.api.impl.SubscribedRole;

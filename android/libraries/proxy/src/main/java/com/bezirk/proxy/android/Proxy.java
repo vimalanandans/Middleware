@@ -8,19 +8,19 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.bezirk.actions.UhuActions;
-import com.bezirk.api.IBezirk;
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.addressing.Address;
-import com.bezirk.api.addressing.CloudPipe;
-import com.bezirk.api.addressing.Location;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
-import com.bezirk.api.addressing.ServiceEndPoint;
-import com.bezirk.api.addressing.ServiceId;
-import com.bezirk.api.messages.Event;
-import com.bezirk.api.messages.ProtocolRole;
-import com.bezirk.api.messages.Stream;
-import com.bezirk.api.serialization.AddressSerializer;
+import com.bezirk.middleware.Bezirk;
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.CloudPipe;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.ServiceEndPoint;
+import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.Stream;
+import com.bezirk.middleware.serialization.AddressSerializer;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
@@ -35,7 +35,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public final class Proxy implements IBezirk {
+public final class Proxy implements Bezirk {
     private final String TAG = Proxy.class.getSimpleName();
 
     private static final String ACTION_UHU_REGISTER = "REGISTER";
@@ -55,17 +55,17 @@ public final class Proxy implements IBezirk {
     static final int MAX_MAP_SIZE = 50;
 
     static Context mContext;
-    static IBezirkListener DiscoveryListener;
+    static BezirkListener DiscoveryListener;
     private short streamFactory;
     static int discoveryCount; // keep track of Discovery Id
 
-    static final ConcurrentMap<String, ArrayList<IBezirkListener>> eventListenerMap = new ConcurrentHashMap<String, ArrayList<IBezirkListener>>();
-    static final ConcurrentMap<String, ArrayList<IBezirkListener>> streamListenerMap = new ConcurrentHashMap<String, ArrayList<IBezirkListener>>();
+    static final ConcurrentMap<String, ArrayList<BezirkListener>> eventListenerMap = new ConcurrentHashMap<String, ArrayList<BezirkListener>>();
+    static final ConcurrentMap<String, ArrayList<BezirkListener>> streamListenerMap = new ConcurrentHashMap<String, ArrayList<BezirkListener>>();
     static final ConcurrentMap<Short, String> activeStreams = new ConcurrentHashMap<Short, String>();
     static final ConcurrentMap<String, Long> duplicateMsgMap = new ConcurrentHashMap<String, Long>();
     static final ConcurrentMap<String, Long> duplicateStreamMap = new ConcurrentHashMap<String, Long>();
     //Pipe Listener Map -- pipeId : listener
-    static final ConcurrentMap<String, IBezirkListener> pipeListenerMap = new ConcurrentHashMap<String, IBezirkListener>();
+    static final ConcurrentMap<String, BezirkListener> pipeListenerMap = new ConcurrentHashMap<String, BezirkListener>();
     private static final ProxyHelper proxyHelper = new ProxyHelper();
 
     public Proxy(Context context) {
@@ -140,7 +140,7 @@ public final class Proxy implements IBezirk {
     }
 
     @Override
-    public void subscribe(final ServiceId subscriber, final ProtocolRole pRole, final IBezirkListener listener) {
+    public void subscribe(final ServiceId subscriber, final ProtocolRole pRole, final BezirkListener listener) {
         if (!isRequestValid(subscriber, pRole, listener)) {
             return;
         }
@@ -162,7 +162,7 @@ public final class Proxy implements IBezirk {
         }
     }
 
-    private boolean isRequestValid(ServiceId subscriber, ProtocolRole pRole, IBezirkListener listener) {
+    private boolean isRequestValid(ServiceId subscriber, ProtocolRole pRole, BezirkListener listener) {
         if (!StringValidatorUtil.areValidStrings(pRole.getProtocolName())|| null == listener || null == subscriber) {
             Log.e(TAG, "Check for ProtocolRole/ UhuListener/ServiceId for null or empty values");
             return false;
@@ -300,7 +300,7 @@ public final class Proxy implements IBezirk {
      *   1. register the pipe with the PipeManager, or
      *   2. if the pipe already exists, overwrite an existing pipe with the same uri
      */
-    public void requestPipe(ServiceId requester, Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut, IBezirkListener listener) {
+    public void requestPipe(ServiceId requester, Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut, BezirkListener listener) {
         //Update Listener Map
         final String pipeId = UUID.randomUUID().toString();
         pipeListenerMap.put(pipeId, listener);
@@ -334,13 +334,13 @@ public final class Proxy implements IBezirk {
     }
 
     @Override
-    public void getPipePolicy(Pipe pipe, IBezirkListener listener) {
+    public void getPipePolicy(Pipe pipe, BezirkListener listener) {
         // Need not do now
         Log.w(TAG, "getPipePolicy() not implemented yet");
     }
 
     @Override
-    public void discover(ServiceId service, Address scope, ProtocolRole pRole, long timeout, int maxDiscovered, IBezirkListener listener) {
+    public void discover(ServiceId service, Address scope, ProtocolRole pRole, long timeout, int maxDiscovered, BezirkListener listener) {
 
         if (null == service || null == listener) {
             Log.e(TAG, "ServiceId/UhuListener is null");

@@ -19,8 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.api.objects.UhuDeviceInfo;
-import com.bezirk.api.objects.UhuDeviceInfo.UhuDeviceRole;
+import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.UhuDeviceInfo.UhuDeviceRole;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 import com.bezirk.sphere.impl.OwnerService;

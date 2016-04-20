@@ -2,7 +2,7 @@ package com.bezirk.proxy.android;
 
 import android.util.Log;
 
-import com.bezirk.api.IBezirkListener;
+import com.bezirk.middleware.BezirkListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +15,13 @@ public class ProxyHelper {
 
     static final String TAG = ProxyHelper.class.getSimpleName();
 
-    void addTopicsToMap(String[] topics, Map<String, ArrayList<IBezirkListener>> listenerMap,IBezirkListener listener,String type){
+    void addTopicsToMap(String[] topics, Map<String, ArrayList<BezirkListener>> listenerMap, BezirkListener listener, String type){
         if (StringValidatorUtil.areValidStrings(topics)) {
             for (String topic : topics) {
                 if (listenerMap.containsKey(topic)) {
                     addListener(listenerMap, listener, type, topic);
                 } else {
-                    List<IBezirkListener> regServiceList = new ArrayList<IBezirkListener>();
+                    List<BezirkListener> regServiceList = new ArrayList<BezirkListener>();
                     regServiceList.add(listener);
                     listenerMap.put(topic, (ArrayList)regServiceList);
                 }
@@ -31,8 +31,8 @@ public class ProxyHelper {
         }
     }
 
-    private void addListener(Map<String, ArrayList<IBezirkListener>> listenerMap, IBezirkListener listener, String type, String topic) {
-        List<IBezirkListener> serviceList = listenerMap.get(topic);
+    private void addListener(Map<String, ArrayList<BezirkListener>> listenerMap, BezirkListener listener, String type, String topic) {
+        List<BezirkListener> serviceList = listenerMap.get(topic);
         if (serviceList.contains(listener)) {
             Log.w(TAG, type + " already registered with the " + type + "Label " + topic);
         } else {

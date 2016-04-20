@@ -2,7 +2,7 @@ package com.bezirk.proxy.api.impl;
 
 import java.io.Serializable;
 
-import com.bezirk.api.addressing.ServiceId;
+import com.bezirk.middleware.addressing.ServiceId;
 
 public final class UhuServiceId implements ServiceId,Serializable {
 	private final String uhuServiceId;

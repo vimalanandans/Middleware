@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import com.bezirk.protocols.penguin.v01.UserProxyRole;
 import com.bezirk.protocols.smartservice.SmartServiceRole;
-import com.bezirk.api.addressing.PipePolicy;
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.messages.ProtocolRole;
 
 /**
  * 

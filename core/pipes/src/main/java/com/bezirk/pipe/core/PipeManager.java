@@ -1,8 +1,8 @@
 package com.bezirk.pipe.core;
 
-import com.bezirk.api.IBezirkListener;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.addressing.PipePolicy;
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.pipes.PipeHeader;
 
@@ -66,5 +66,5 @@ public interface PipeManager {
 	 * @param sphereId The sphere the pipe has been added to
 	 * @param uhuListener The uhu service to notify of the status of the pipe request
 	 */
-	void pipeGranted(boolean granted, Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut, String sphereId, IBezirkListener uhuListener);
+	void pipeGranted(boolean granted, Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut, String sphereId, BezirkListener uhuListener);
 }

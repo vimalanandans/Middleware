@@ -12,7 +12,7 @@
  */
 package com.bezirk.util;
 
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.messages.ProtocolRole;
 
 /**
  * This is mock protocol role used in unit testing.

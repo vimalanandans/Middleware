@@ -8,7 +8,7 @@ package com.bezirk.protocols.smartservice;
 
 import com.bezirk.protocols.dragonfly.Observation;
 import com.bezirk.protocols.dragonfly.UserObservation;
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.messages.ProtocolRole;
 
 public class SmartServiceRole extends ProtocolRole 
 {

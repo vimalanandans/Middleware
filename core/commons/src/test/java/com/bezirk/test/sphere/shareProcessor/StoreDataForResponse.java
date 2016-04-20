@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.InvocationTargetException;
 import  java.lang.reflect.Method;
 
-import com.bezirk.api.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.impl.SphereExchangeData;
 import com.bezirk.test.sphere.testUtilities.MockSetUpUtility;

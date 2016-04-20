@@ -3,7 +3,7 @@
  */
 package com.bezirk.control.messages.streaming;
 
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;

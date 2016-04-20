@@ -3,7 +3,7 @@
  */
 package com.bezirk.control.messages.discovery;
 
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezrik.network.UhuNetworkUtilities;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 

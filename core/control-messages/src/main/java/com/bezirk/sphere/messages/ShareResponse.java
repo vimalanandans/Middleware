@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.messages;
 
-import com.bezirk.api.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;

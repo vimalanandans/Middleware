@@ -1,5 +1,5 @@
 dependencies {
-    compile project(':core:bezirk-api')
+    compile project(':core:bezirk-middleware-api')
 }
 jar {
     manifest {

@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bezirk.actions.UhuActions;
-import com.bezirk.api.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.sphere.api.IUhuDevMode;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.starter.MainService;

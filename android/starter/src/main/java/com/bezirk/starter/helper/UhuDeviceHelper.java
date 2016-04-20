@@ -3,7 +3,7 @@ package com.bezirk.starter.helper;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Location;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.device.UhuDevice;
 import com.bezirk.device.UhuDeviceType;

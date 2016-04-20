@@ -1,8 +1,8 @@
 package com.bezirk.control.messages.pipes;
 
-import com.bezirk.api.addressing.Address;
-import com.bezirk.api.addressing.Pipe;
-import com.bezirk.api.serialization.InterfaceAdapter;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.serialization.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

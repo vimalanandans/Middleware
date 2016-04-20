@@ -2,7 +2,7 @@ package com.bezirk.protocols.penguin.v01.test;
 
 import com.bezirk.protocols.context.Context;
 import com.bezirk.protocols.penguin.v01.GetPreference;
-import com.bezirk.api.messages.Event;
+import com.bezirk.middleware.messages.Event;
 
 /**
  *This class is a subclass of the GetPreference Class

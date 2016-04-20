@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.api.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.OwnerSphere;

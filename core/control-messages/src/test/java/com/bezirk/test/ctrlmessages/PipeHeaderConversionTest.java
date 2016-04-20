@@ -4,8 +4,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.bezirk.api.addressing.Address;
-import com.bezirk.api.addressing.Location;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.Location;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.control.messages.pipes.PipeMulticastHeader;

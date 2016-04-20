@@ -6,7 +6,7 @@
  */
 package com.bezirk.protocols.penguin.v01;
 
-import com.bezirk.api.messages.ProtocolRole;
+import com.bezirk.middleware.messages.ProtocolRole;
 
 public class QueryUserProxyRole extends ProtocolRole
 {
