@@ -1,0 +1,61 @@
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.artifactory'
+/*
+* Command to publish: gradlew artifactoryPublish
+*/
+publishing {
+    publications {
+        bezirkPublication(MavenPublication) {
+            from components.java
+
+            artifact javadocJar
+
+            /*unccomment to publish sources jar*/
+            //artifact sourceJar
+        }
+    }
+//    repositories {
+//        // This publishes our jars to the Bosch nexus repository manager
+//        maven {
+//            // Deploy to upa-snapshots if this is a SNAPSHOT release, else deploy to upa-releases
+//            url "${artifactRepoBase}/${project.version.endsWith('-SNAPSHOT') ? 'upa-snapshots' : 'upa-releases'}"
+//            credentials {
+//                username nexus_user
+//                password nexus_password
+//            }
+//        }
+//    }
+}
+
+artifactory {
+    //contextUrl = 'http://localhost:8081/artifactory'
+    contextUrl = 'https://bezirk.artifactoryonline.com/bezirk'
+    publish {
+        repository {
+            repoKey = 'libs-release-local' // The Artifactory repository key to publish to
+            username = "${artifactory_user}" // The publisher user name
+            password = "${artifactory_password}" // The publisher password
+        }
+        defaults {
+            // Reference to Gradle publications defined in the build script.
+            // This is how we tell the Artifactory Plugin which artifacts should be
+            // published to Artifactory.
+            publications('bezirkPublication')
+            publishArtifacts = true
+            // Properties to be attached to the published artifacts.
+            properties = ['qa.level': 'basic', 'dev.team': 'core']
+            // Publish generated POM files to Artifactory (true by default)
+            publishPom = true
+        }
+    }
+}
+
+task sourceJar(type: Jar) {
+    classifier 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier 'javadoc'
+    from javadoc.destinationDir
+}
