@@ -88,16 +88,16 @@ public class Location implements Serializable {
     private String near;
 
     /**
-     * A location defined by a region, an area within the region, and proximity to a landmark object; any or all of which may be NULL.
+     * A location defined by a wideScope, an area within the wideScope, and proximity to a landmark object; any or all of which may be NULL.
      *
-     * @param region for example "floor1" or "Pennsylvania". Commas and slashes are cleared from the region's name.
-     * @param in     for example "bedroom" or "greater Pittsburgh". Commas and slashes are cleared from the area's name.
-     * @param near   for example "bed" or "Frick park". Commas and slashes are cleared from the landmark's name.
+     * @param wideScope for example "floor1" or "Pennsylvania". Commas and slashes are cleared from the wideScope's name.
+     * @param intermediateScope     for example "bedroom" or "greater Pittsburgh". Commas and slashes are cleared from the area's name.
+     * @param narrowScope   for example "bed" or "Frick park". Commas and slashes are cleared from the landmark's name.
      */
-    public Location(String region, String in, String near) {
-        this.region = (region == null) ? null : region.replace(",", "").replace("/", "");
-        this.in = (in == null) ? null : in.replace(",", "").replace("/", "");
-        this.near = (near == null) ? null : near.replace(",", "").replace("/", "");
+    public Location(String wideScope, String intermediateScope, String narrowScope) {
+        this.region = (wideScope == null) ? null : wideScope.replace(",", "").replace("/", "");
+        this.in = (intermediateScope == null) ? null : intermediateScope.replace(",", "").replace("/", "");
+        this.near = (narrowScope == null) ? null : narrowScope.replace(",", "").replace("/", "");
     }
 
     /**
