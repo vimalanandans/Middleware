@@ -16,7 +16,7 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
     public UhuServiceEndPoint senderSEP;
     public boolean isIncremental;                // used for sending the data, set by the sender
     public boolean allowDrops;                    // used for sending the data, set by the sender
-    public boolean isSecure;                    // if the DataSend needs to be encrypted
+    public boolean isEncrypted;                    // if the DataSend needs to be encrypted
     public String Sphere;                        // used for sending the data , set by the sender
     public StreamingStatus streamStatus;        // changed after receiving the Response
     public String recipientIP;                    // recipient IP, set by the proxy after getting the stream Response

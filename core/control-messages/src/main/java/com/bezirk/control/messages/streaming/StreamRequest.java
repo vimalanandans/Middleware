@@ -35,7 +35,7 @@ public class StreamRequest extends UnicastControlMessage {
     /**
      * Flag indicating secure communication. If true file transfer will be encrypted.
      */
-    public boolean isSecure = false;
+    public boolean isEncrypted = false;
     /**
      * Flag indicating the communication is quantized.If true data  will be quantized and sent
      */
@@ -50,14 +50,14 @@ public class StreamRequest extends UnicastControlMessage {
     public short localStreamId = (short) -1;
 
     public StreamRequest(UhuServiceEndPoint sender, UhuServiceEndPoint recipient, String sphereName,
-                         String key, Location location, String serialzedString, String streamLabel, String fileName, boolean isSecure,
+                         String key, Location location, String serialzedString, String streamLabel, String fileName, boolean isEncrypted,
                          boolean isIncremental, boolean allowDrops, short localStreamId) {
         super(sender, recipient, sphereName, discriminator, false, key);
         this.location = location;
         this.serialzedString = serialzedString;
         this.streamLabel = streamLabel;
         this.fileName = fileName;
-        this.isSecure = isSecure;
+        this.isEncrypted = isEncrypted;
         this.isIncremental = isIncremental;
         this.allowDrops = allowDrops;
         this.localStreamId = localStreamId;

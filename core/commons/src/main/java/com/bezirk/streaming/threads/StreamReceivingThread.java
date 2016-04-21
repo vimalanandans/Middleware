@@ -49,7 +49,7 @@ public class StreamReceivingThread implements Runnable {
     private final int port;                                                                      // port,received from Port Factory
     private final String streamLabel;                                                                 // StreamLabel, that the service has subscribed
     private final String fileName;
-    private final boolean isSecure;
+    private final boolean isEncrypted;
     private final UhuServiceEndPoint recipient;
     private final UhuServiceEndPoint sender;
     private final String serialzedMsg;
@@ -73,7 +73,7 @@ public class StreamReceivingThread implements Runnable {
         this.port = port;
         this.streamLabel = streamRequest.streamLabel;
         this.fileName = streamRequest.fileName;
-        this.isSecure = streamRequest.isSecure;
+        this.isEncrypted = streamRequest.isEncrypted;
         this.recipient = streamRequest.getRecipient();
         this.sender = streamRequest.getSender();
         this.serialzedMsg = streamRequest.serialzedString;
@@ -105,7 +105,7 @@ public class StreamReceivingThread implements Runnable {
             fileOutputStream = new FileOutputStream(tempFile);
             inputStream = new DataInputStream(receivingSocket.getInputStream());
 
-            if (isSecure) {
+            if (isEncrypted) {
                 if (UhuValidatorUtility.isObjectNotNull(sphereForSadl)) {
                     sphereForSadl.decryptSphereContent(inputStream, fileOutputStream, sphere);
                 } else {

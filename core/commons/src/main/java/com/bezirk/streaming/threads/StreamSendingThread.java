@@ -27,7 +27,7 @@ public class StreamSendingThread implements Runnable {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(StreamSendingThread.class);
     private static final int BUFFER_SIZE = 1024;                      // size of the buffer
-    private final boolean isSecure;
+    private final boolean isEncrypted;
     private final short localStreamId;
     private final UhuServiceId senderServiceID;
     private final String recipientIP;                                 // recipient
@@ -45,7 +45,7 @@ public class StreamSendingThread implements Runnable {
         this.recipientIP = streamRecord.recipientIP;
         this.port = streamRecord.recipientPort;
         this.filePath = streamRecord.filePath;
-        this.isSecure = streamRecord.isSecure;
+        this.isEncrypted = streamRecord.isEncrypted;
         this.localStreamId = streamRecord.localStreamId;
         this.senderServiceID = streamRecord.senderSEP.serviceId;
         this.sadlReceiver = sadlReceiver;
@@ -64,7 +64,7 @@ public class StreamSendingThread implements Runnable {
             fileInputStream = new FileInputStream(filePath);                              // open the file
             client = new Socket(recipientIP, port);                                       // open the socket
             dataOutputStream = new DataOutputStream(client.getOutputStream());
-            if (isSecure) {
+            if (isEncrypted) {
                 LOGGER.debug("---------- Secure Data transfer requested! -------------");
                 if (UhuValidatorUtility.isObjectNotNull(sphereForSadl)) {
                     sphereForSadl.encryptSphereContent(fileInputStream, dataOutputStream, sphere);

@@ -48,7 +48,7 @@ public class Stream extends Message {
      * This option is provided to allow users to make a tradeoff between privacy and performance where the
      * protocol designer does not believe the stream will always require confidentiality.
      */
-    private boolean secure;
+    private boolean encrypted;
 
     /**
      * The concrete implentation of a <code>Stream</code> must specify the stream's flag
@@ -78,11 +78,11 @@ public class Stream extends Message {
         this.allowDrops = allowDrops;
     }
 
-    public boolean isSecure() {
-        return secure;
+    public boolean isEncrypted() {
+        return encrypted;
     }
 
-    public void setSecure(boolean secure) {
-        this.secure = secure;
+    public void setEncrypted(boolean encrypted) {
+        this.encrypted = encrypted;
     }
 }
