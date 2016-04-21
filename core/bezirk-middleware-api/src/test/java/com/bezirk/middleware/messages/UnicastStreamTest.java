@@ -12,6 +12,7 @@
  */
 package com.bezirk.middleware.messages;
 
+import com.bezirk.middleware.addressing.ServiceEndPoint;
 import com.bezirk.middleware.messages.Message.Flag;
 
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class UnicastStreamTest {
         Flag flag = Flag.REQUEST;
         String topic = "TestTopic";
         MockServiceEndpoint recipient = new MockServiceEndpoint("ServiceA");
-        com.bezirk.middleware.messages.UnicastStream unicastStream = new UnicastStream(flag, topic, recipient);
+        com.bezirk.middleware.messages.UnicastStream unicastStream = new MockUnicastStream(flag, topic, recipient);
 
 	
 	/*
@@ -43,4 +44,9 @@ public class UnicastStreamTest {
 
     }
 
+    private class MockUnicastStream extends UnicastStream {
+        MockUnicastStream(Flag flag, String topic, ServiceEndPoint recipient) {
+            super(flag, topic, recipient);
+        }
+    }
 }

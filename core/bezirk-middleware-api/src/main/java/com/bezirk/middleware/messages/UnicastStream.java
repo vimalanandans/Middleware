@@ -16,7 +16,7 @@ import com.bezirk.middleware.addressing.ServiceEndPoint;
 
 /**
  */
-public class UnicastStream extends Stream {
+public abstract class UnicastStream extends Stream {
 
     private final ServiceEndPoint recipient;
 

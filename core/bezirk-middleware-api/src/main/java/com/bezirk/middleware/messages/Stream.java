@@ -20,15 +20,15 @@ package com.bezirk.middleware.messages;
  * <p/>
  * Implementers should favor extending {@link MulticastStream} when a concrete stream will have
  * multiple recipients where the set of recipients is more specific that simply anyone subscribed to
- * a topic (e.g. when a {@link com.bezirk.middleware.addressing.Location} is  required). {@link UnicastStream} should be favored when
- * the stream will have a single known recipient.
+ * a topic (e.g. when a {@link com.bezirk.middleware.addressing.Location} is  required).
+ * {@link UnicastStream} should be favored when the stream will have a single known recipient.
  *
  * @see Message
  * @see Event
  * @see MulticastStream
  * @see UnicastStream
  */
-public class Stream extends Message {
+public abstract class Stream extends Message {
     /**
      * Subclass sets to <code>true</code> if the payload can be processed incrementally (e.g. a music stream) or
      * <code>false</code> if all data elements must be received before processing can continue (e.g. image file

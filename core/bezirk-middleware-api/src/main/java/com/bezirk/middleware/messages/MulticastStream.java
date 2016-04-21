@@ -17,7 +17,7 @@ import com.bezirk.middleware.addressing.Address;
 /**
  * Created by sme6kor on 7/4/2014.
  */
-public class MulticastStream extends Stream {
+public abstract class MulticastStream extends Stream {
 
     private final Address address;
 

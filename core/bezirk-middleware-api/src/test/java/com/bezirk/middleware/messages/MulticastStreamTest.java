@@ -34,15 +34,20 @@ public class MulticastStreamTest {
         String topic = "TestTopic";
         Location loc = new Location("OFFICE1/BLOCk1/FLOOR1");
         Address address = new Address(loc);
-        com.bezirk.middleware.messages.MulticastStream multicastStream = new MulticastStream(flag, topic, address);
+        com.bezirk.middleware.messages.MulticastStream multicastStream = new MockMulticastStream(flag, topic, address);
 
         String serializedMulticastStream = multicastStream.serialize();
 
-        MulticastStream deserializedMulticastStream = MulticastStream.deserialize(serializedMulticastStream, MulticastStream.class);
+        MulticastStream deserializedMulticastStream = MulticastStream.deserialize(serializedMulticastStream, MockMulticastStream.class);
 
         assertEquals("Address is not equal to the set value. ", address.getLocation(), deserializedMulticastStream.getAddress().getLocation());
         assertEquals("Flag is not equal to the set value. ", flag, deserializedMulticastStream.flag);
         assertEquals("Topic is not equal to the set value. ", topic, deserializedMulticastStream.topic);
     }
 
+    private class MockMulticastStream extends MulticastStream {
+        MockMulticastStream(Flag flag, String topic, Address address) {
+            super(flag, topic, address);
+        }
+    }
 }
