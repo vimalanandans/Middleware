@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class PipeRegistry {
 
-    private static Logger log = LoggerFactory.getLogger(PipeRegistry.class);
+    private static final Logger logger = LoggerFactory.getLogger(PipeRegistry.class);
     private final Map<Pipe, PipeRecord> pipeMap = Collections.synchronizedMap(new HashMap<Pipe, PipeRecord>());
 
 	/*
@@ -136,7 +136,7 @@ public class PipeRegistry {
             throw new PipeApprovalException("Can't update a pipe that has not been added yet: " + pipe);
         }
 
-        log.info("Pipe already registered, updating");
+        logger.info("Pipe already registered, updating");
         record = pipeMap.get(pipe);
 
         // TODO: validate these fields instead of just setting

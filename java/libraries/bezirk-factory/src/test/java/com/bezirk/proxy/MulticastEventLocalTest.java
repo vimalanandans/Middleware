@@ -35,7 +35,7 @@ import static org.junit.Assert.assertEquals;
  * Only MockServiceC should receive the event.
  */
 public class MulticastEventLocalTest {
-    private final static Logger log = LoggerFactory.getLogger(MulticastEventLocalTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(MulticastEventLocalTest.class);
     private static boolean didMockBreceive = false, didMockCreceive = false, didMockCReceiveSpecifically = false;
     private final Location loc = new Location("Liz Home", "floor-6", "Garage");  // change in the location
     private MulticastMockServiceA mockA = new MulticastMockServiceA();
@@ -44,12 +44,12 @@ public class MulticastEventLocalTest {
 
     @BeforeClass
     public static void setup() {
-        log.info(" ************** Setting up MulticastEventLocalTest Testcase ****************************");
+        logger.info(" ************** Setting up MulticastEventLocalTest Testcase ****************************");
     }
 
     @AfterClass
     public static void tearDown() {
-        log.info(" ************** Shutting down MulticastEventLocalTest Testcase ****************************");
+        logger.info(" ************** Shutting down MulticastEventLocalTest Testcase ****************************");
     }
 
     @Before
@@ -73,7 +73,7 @@ public class MulticastEventLocalTest {
                 e.printStackTrace();
             }
         }
-        log.info(" **************  MulticastEventLocalTesting for NULL Location is Successful ****************************");
+        logger.info(" **************  MulticastEventLocalTesting for NULL Location is Successful ****************************");
         // Change the location of Service C.
         mockC.changeLocation();
         mockA.pingServiceC();
@@ -86,7 +86,7 @@ public class MulticastEventLocalTest {
             }
         }
 
-        log.info(" **************  MulticastEventLocalTesting Successful ****************************");
+        logger.info(" **************  MulticastEventLocalTesting Successful ****************************");
     }
 
     @After
@@ -113,7 +113,7 @@ public class MulticastEventLocalTest {
         private final void setupMockService() {
             uhu = Factory.getInstance();
             myId = uhu.registerService(serviceName);
-            log.info("MulticastMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            logger.info("MulticastMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             pRole = new MulticastMockServiceProtocolRole();
             uhu.subscribe(myId, pRole, this);
         }
@@ -223,19 +223,19 @@ public class MulticastEventLocalTest {
         private final void setupMockService() {
             uhu = Factory.getInstance();
             myId = uhu.registerService(serviceName);
-            log.info("MulticastMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            logger.info("MulticastMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             uhu.subscribe(myId, new MulticastEventLocalTest.MulticastMockServiceProtocolRole(), this);
         }
 
         @Override
         public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
-            log.info(" **** Received Event *****");
+            logger.info(" **** Received Event *****");
 
             assertEquals("MockRequestEvent", topic);
             MulticastMockRequestEvent receivedEvent = Event.deserialize(event, MulticastMockRequestEvent.class);
             assertEquals("Ping to Mock Services", receivedEvent.question);
             didMockBreceive = true;
-            log.info("********* MOCK_SERVICE B received the Event successfully **************");
+            logger.info("********* MOCK_SERVICE B received the Event successfully **************");
         }
 
         @Override
@@ -279,7 +279,7 @@ public class MulticastEventLocalTest {
         private final void setupMockService() {
             uhu = Factory.getInstance();
             myId = uhu.registerService(serviceName);
-            log.info("MulticastMockServiceC - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            logger.info("MulticastMockServiceC - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             uhu.subscribe(myId, new MulticastMockServiceProtocolRole(), this);
         }
 
@@ -293,7 +293,7 @@ public class MulticastEventLocalTest {
         @Override
         public void receiveEvent(String topic, String event,
                                  ServiceEndPoint sender) {
-            log.info(" **** Received Event *****");
+            logger.info(" **** Received Event *****");
 
             assertEquals("MockRequestEvent", topic);
             MulticastMockRequestEvent receivedEvent = Event.deserialize(event, MulticastMockRequestEvent.class);
@@ -304,7 +304,7 @@ public class MulticastEventLocalTest {
                 didMockCReceiveSpecifically = true;
             }
 
-            log.info("********* MOCK_SERVICE C received the Event successfully **************");
+            logger.info("********* MOCK_SERVICE C received the Event successfully **************");
 
         }
 

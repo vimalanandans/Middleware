@@ -20,7 +20,7 @@ public class Observation extends Event implements Comparable<Observation> {
     /**
      * Logger for current class
      */
-//	private final transient Logger log = LoggerFactory
+//	private final transient Logger logger = LoggerFactory
 //			.getLogger(Observation.class);
     /**
      * topic

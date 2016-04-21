@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SphereDiscovery {
 
-    private static final Logger log = LoggerFactory.getLogger(SphereDiscovery.class);
+    private static final Logger logger = LoggerFactory.getLogger(SphereDiscovery.class);
 
     private final Map<DiscoveryLabel, SphereDiscoveryRecord> discoveredMap;
 
@@ -34,7 +34,7 @@ public class SphereDiscovery {
                 try {
                     wait();
                 } catch (InterruptedException e) {
-                    log.warn("Discovery Queue Interrupted");
+                    logger.warn("Discovery Queue Interrupted");
                     throw e;
                 }
             }
@@ -45,14 +45,14 @@ public class SphereDiscovery {
     public void remove(DiscoveryLabel dlabel) {
         synchronized (this) {
             discoveredMap.remove(dlabel);
-            log.info("Discovery removed > " + dlabel.getRequester().device);
+            logger.info("Discovery removed > " + dlabel.getRequester().device);
         }
     }
 
     public void addRequest(DiscoveryLabel dlabel, SphereDiscoveryRecord disc) {
         synchronized (this) {
             discoveredMap.put(dlabel, disc);
-            log.info("Discovery request added > "
+            logger.info("Discovery request added > "
                     + dlabel.getRequester().device);
             //  notifyAll();
         }
@@ -75,11 +75,11 @@ public class SphereDiscovery {
                     /* final long currentTime = new Date().getTime();
 					 
 					 if (discRecord.getDiscoveredSetSize() >= discRecord.getMax() || currentTime - discRecord.getCreationTime() >= discRecord.getTimeout()) {
-					 	log.debug("Timeout for sphere discovery, Size of UhuSphereInfos discovered : "+discRecord.getSphereServices().size());                    
+					 	logger.debug("Timeout for sphere discovery, Size of UhuSphereInfos discovered : "+discRecord.getSphereServices().size());
 					 	sphereDiscoveryHandler.processDiscoveredSphereInfo(discRecord.getSphereServices(), discRecord.getSphereId());                    
 					     
 					     discoveredMap.remove(dLabel);
-					     log.info("Discovery response added > " + dLabel.getRequester().device);
+					     logger.info("Discovery response added > " + dLabel.getRequester().device);
 					     return true;
 					 }*/
                     return true;
@@ -87,7 +87,7 @@ public class SphereDiscovery {
                 } else
 
                 {
-                    log.warn("Nothing to add " + "discovery is not pending");
+                    logger.warn("Nothing to add " + "discovery is not pending");
                     return false;
                 }
 

@@ -36,7 +36,7 @@ import static org.junit.Assert.fail;
  * MS-B receives the event that validates the testcase.
  */
 public class LocationUpdateTest {
-    private final static Logger log = LoggerFactory.getLogger(LocationUpdateTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(LocationUpdateTest.class);
     private final Location l1 = new Location("Liz Home", "floor-6", "Garage");  // change in the location
     private final Location l2 = new Location("Bob apartment", "floor-7", "Living-room");  // change in the location
     private final LocationUpdateMockServiceA mockA = new LocationUpdateMockServiceA();
@@ -46,12 +46,12 @@ public class LocationUpdateTest {
 
     @BeforeClass
     public static void setup() {
-        log.info(" ************** Setting up LocationUpdateTest Testcase ****************************");
+        logger.info(" ************** Setting up LocationUpdateTest Testcase ****************************");
     }
 
     @AfterClass
     public static void tearDown() {
-        log.info(" ************** Shutting down LocationUpdateTest Testcase ****************************");
+        logger.info(" ************** Shutting down LocationUpdateTest Testcase ****************************");
     }
 
     @Before
@@ -101,7 +101,7 @@ public class LocationUpdateTest {
             }
         }
 
-        log.info("******** TEST CASE FOR LOCATION UPDATE PASSED SUCCESSFULLY **********");
+        logger.info("******** TEST CASE FOR LOCATION UPDATE PASSED SUCCESSFULLY **********");
     }
 
     @After
@@ -127,7 +127,7 @@ public class LocationUpdateTest {
         private final void setupMockService() {
             uhu = Factory.getInstance();
             myId = uhu.registerService(serviceName);
-            log.info("LocationUpdateMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            logger.info("LocationUpdateMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             pRole = new LocationUpdateMockServiceProtocolRole();
             uhu.subscribe(myId, pRole, this);
         }
@@ -237,7 +237,7 @@ public class LocationUpdateTest {
         private final void setupMockService() {
             uhu = Factory.getInstance();
             myId = uhu.registerService(serviceName);
-            log.info("LocationUpdateMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            logger.info("LocationUpdateMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             uhu.subscribe(myId, new LocationUpdateMockServiceProtocolRole(), this);
         }
 
@@ -257,7 +257,7 @@ public class LocationUpdateTest {
 
         @Override
         public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
-            log.info(" **** Received Event *****");
+            logger.info(" **** Received Event *****");
 
             ++countPingServiceB;
 
@@ -272,7 +272,7 @@ public class LocationUpdateTest {
                 fail("ping count is not matching expected value. Current ping count is : " + countPingServiceB);
             }
 
-            log.info("********* MOCK_SERVICE B received the Event successfully **************");
+            logger.info("********* MOCK_SERVICE B received the Event successfully **************");
         }
 
         @Override

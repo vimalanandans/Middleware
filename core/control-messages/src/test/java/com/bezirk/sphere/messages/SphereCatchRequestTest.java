@@ -23,7 +23,7 @@
 // */
 //public class SphereCatchRequestTest {
 //	
-//	private static final Logger log = LoggerFactory
+//	private static final Logger logger = LoggerFactory
 //			.getLogger(SphereCatchRequestTest.class);
 //
 //	private static final UhuServiceId serviceAId = new UhuServiceId("ServiceA");

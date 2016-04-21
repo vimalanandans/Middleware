@@ -16,7 +16,7 @@ public class LoggingClient {
     /**
      * private logger for the class
      */
-    private final Logger log = LoggerFactory.getLogger(LoggingClient.class);
+    private static final Logger log = LoggerFactory.getLogger(LoggingClient.class);
     /**
      * Remote Logging Service IP
      */

@@ -18,7 +18,7 @@
 //import static org.junit.Assert.fail;
 //
 //public class IpTest {
-//	private static final Logger log = LoggerFactory.getLogger(IpTest.class);
+//	private static final Logger logger = LoggerFactory.getLogger(IpTest.class);
 //
 //	@Test
 //	public void test1() {

@@ -21,17 +21,17 @@ import static org.junit.Assert.assertNotNull;
  *         5. Register the service again and check for different ServiceId that indicates the validaity of the test case
  */
 public class RegistrationUnregistrationTest {
-    private static final Logger log = LoggerFactory.getLogger(RegistrationUnregistrationTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(RegistrationUnregistrationTest.class);
 
 
     @BeforeClass
     public static void setup() {
-        log.info(" ************** Setting up RegistrationUnregistrationTest Testcase ****************************");
+        logger.info(" ************** Setting up RegistrationUnregistrationTest Testcase ****************************");
     }
 
     @AfterClass
     public static void tearDown() {
-        log.info(" ************** TearingDown RegistrationUnregistrationTest Testcase ****************************");
+        logger.info(" ************** TearingDown RegistrationUnregistrationTest Testcase ****************************");
     }
 
     //@Test

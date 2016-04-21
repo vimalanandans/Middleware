@@ -26,7 +26,7 @@ public class LogDataActivity extends Activity {
     /**
      * Logging Util.
      */
-    private final Logger log = LoggerFactory.getLogger(LogDataActivity.class);
+    private static final Logger log = LoggerFactory.getLogger(LogDataActivity.class);
 
     /**
      * RESULT CODE to send the data to back activity.

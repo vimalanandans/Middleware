@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
 public class TestWithTwoReceivers {
 
     static int numOfDevices = 3;
-    private static Logger log = LoggerFactory.getLogger(TestWithTwoReceivers.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestWithTwoReceivers.class);
     private static VirtualCommsManager manager = new VirtualCommsManager();
     private static UhuCommsMock uhuCommsMock;
 
@@ -38,7 +38,7 @@ public class TestWithTwoReceivers {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("******** Setting up TestWithTwoReceivers ********");
+        logger.info("******** Setting up TestWithTwoReceivers ********");
         manager.setUp(numOfDevices);
         uhuCommsMock = manager.uhuCommsMock;
     }
@@ -50,7 +50,7 @@ public class TestWithTwoReceivers {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("******** Shutting down TestWithTwoReceivers ********");
+        logger.info("******** Shutting down TestWithTwoReceivers ********");
         manager.destroy(numOfDevices);
     }
 
@@ -80,7 +80,7 @@ public class TestWithTwoReceivers {
      */
     @Test
     public final void validCatchCodeReturnsTrue() throws Exception {
-        log.info("****** Starting the valid catch code test *****");
+        logger.info("****** Starting the valid catch code test *****");
 
         //Get the sphere ID of device0
         String sphereId0 = manager.device[0].sphereId;
@@ -105,7 +105,7 @@ public class TestWithTwoReceivers {
         CatchResponse receivedResponse = (CatchResponse) uhuCommsMock.message.getMessage();
         assertTrue(manager.device[0].catchProcessor.processResponse(receivedResponse));
 
-        log.info("****** Ending the valid catch code test *****");
+        logger.info("****** Ending the valid catch code test *****");
     }
 
 }

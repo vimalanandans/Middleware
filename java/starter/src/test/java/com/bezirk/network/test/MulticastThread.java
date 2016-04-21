@@ -22,7 +22,7 @@
 // * Note: UhuCommsMulticastListener will drop all echo messages(messages that are sent by the host device).
 // */
 //public class MulticastThread implements Runnable {
-//    private static final Logger log = LoggerFactory
+//    private static final Logger logger = LoggerFactory
 //            .getLogger(MulticastThread.class);
 //
 //    private final MulticastSocket multicastSocket;

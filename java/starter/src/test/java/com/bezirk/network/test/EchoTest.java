@@ -22,7 +22,7 @@
 //import static org.junit.Assert.assertNotNull;
 //
 //public class EchoTest {
-//	private static final Logger log = LoggerFactory.getLogger(IpTest.class);
+//	private static final Logger logger = LoggerFactory.getLogger(IpTest.class);
 //
 //	//Sockets for listeners
 //	private MulticastSocket eMSocket;

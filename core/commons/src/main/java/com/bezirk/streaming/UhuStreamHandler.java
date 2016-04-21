@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * appropriate processing threads.
  */
 final class UhuStreamHandler {
-    private static final Logger LOGGER = LoggerFactory
+    private static final Logger logger = LoggerFactory
             .getLogger(UhuStreamHandler.class);
 
     /**
@@ -58,9 +58,9 @@ final class UhuStreamHandler {
             }
 
         }
-        LOGGER.debug("<-Sender->" + streamRequest.getSender().device
+        logger.debug("<-Sender->" + streamRequest.getSender().device
                 + streamRequest.getSender().serviceId);
-        LOGGER.debug("<-recipient->" + streamRequest.getRecipient().device
+        logger.debug("<-recipient->" + streamRequest.getRecipient().device
                 + streamRequest.getRecipient().serviceId);
 
         //send device Ip
@@ -84,12 +84,12 @@ final class UhuStreamHandler {
 
     boolean handleStreamResponse(final StreamResponse streamResponse,
                                  final MessageQueue streamQueue, final StreamStore streamStore) {
-        LOGGER.info("RECEIVED STREAM-RESPONSE");
+        logger.info("RECEIVED STREAM-RESPONSE");
 
         StreamRecord streamRecord = streamStore.popStreamRecord(streamResponse
                 .getUniqueKey());
         if (null == streamRecord) {
-            LOGGER.debug("No StreamRecord for this Response or the Stream is already addressed");
+            logger.debug("No StreamRecord for this Response or the Stream is already addressed");
             return false;
         }
         streamRecord.Sphere = streamResponse.getSphereId();
@@ -97,13 +97,13 @@ final class UhuStreamHandler {
 
         streamRecord.recipientIP = streamResponse.streamIp;
 
-        LOGGER.info("recipient key = " + streamResponse.getUniqueKey() + " rec IP = " + streamRecord.recipientIP + "sender device " + streamResponse.getSender().device);
+        logger.info("recipient key = " + streamResponse.getUniqueKey() + " rec IP = " + streamRecord.recipientIP + "sender device " + streamResponse.getSender().device);
         //quickfix to test: remove it later.
         /*List quickFix_keys = Arrays.asList(streamResponse.getUniqueKey().split(":"));
 
         if(quickFix_keys.size() > 0) {
             streamRecord.recipientIP = (String) quickFix_keys.get(0);
-            LOGGER.info("recipient IP"+streamResponse.getUniqueKey()+" rec = "+ streamRecord.recipientIP);
+            logger.info("recipient IP"+streamResponse.getUniqueKey()+" rec = "+ streamRecord.recipientIP);
         }*/
 
 

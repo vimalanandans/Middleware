@@ -31,7 +31,7 @@ import java.util.List;
 public class DeviceControlActivity extends ActionBarActivity
         implements GenericListItemView.ItemToggleListener {
     final Context context = this;
-    private final Logger log = LoggerFactory.getLogger(DeviceControlActivity.class);
+    private static final Logger log = LoggerFactory.getLogger(DeviceControlActivity.class);
     // UI Create
     List<DataModel> listData = new ArrayList<DataModel>();
     UhuPreferences preferences;

@@ -23,7 +23,7 @@
 //import UhuServiceId;
 //
 //public class EventReceiverTest {
-//	private static final Logger log = LoggerFactory.getLogger(EventReceiverTest.class);
+//	private static final Logger logger = LoggerFactory.getLogger(EventReceiverTest.class);
 //	private TestingUhuSadlRegistry sadlRegistry = null;
 //	 
 //	@BeforeClass

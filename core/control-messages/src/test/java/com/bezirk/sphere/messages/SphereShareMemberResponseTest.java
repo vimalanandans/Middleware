@@ -25,7 +25,7 @@
 // */
 //public class SphereShareMemberResponseTest {
 //	
-//	private static final Logger log = LoggerFactory
+//	private static final Logger logger = LoggerFactory
 //			.getLogger(SphereShareMemberResponseTest.class);
 //
 //	private static final String sphereId = "TestSphere";

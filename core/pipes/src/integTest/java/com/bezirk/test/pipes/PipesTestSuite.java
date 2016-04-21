@@ -17,13 +17,13 @@ import org.slf4j.LoggerFactory;
 })
 public class PipesTestSuite {
 
-    private static Logger log = LoggerFactory.getLogger(PipesTestSuite.class);
+    private static final Logger logger = LoggerFactory.getLogger(PipesTestSuite.class);
 
     private static Thread webServerThread;
 
     @BeforeClass
     public static void setUpTestSuite() throws Exception {
-        log.info("setting up: " + PipesTestSuite.class.getSimpleName());
+        logger.info("setting up: " + PipesTestSuite.class.getSimpleName());
 
         // Start web server
         webServerThread = new Thread(new UhuWebServer());
@@ -33,7 +33,7 @@ public class PipesTestSuite {
 
     @AfterClass
     public static void tearDownTestSuite() {
-        log.info("tearing down");
+        logger.info("tearing down");
     }
 
     public static boolean isWebServerRunning() {

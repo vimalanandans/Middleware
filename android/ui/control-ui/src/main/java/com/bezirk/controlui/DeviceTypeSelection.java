@@ -23,7 +23,7 @@ public class DeviceTypeSelection extends ActionBarActivity {
 
     public static final int RESULT_DEVICE_ITEM_SELECT = 0x100;
     public static final String DEVICE_ITEM_SELECTED_TEXT = "DEVICE_ITEM_SELECTED_TEXT";
-    private final Logger log = LoggerFactory.getLogger(DeviceTypeSelection.class);
+    private static final Logger log = LoggerFactory.getLogger(DeviceTypeSelection.class);
     // UI Create
     List<DataModel> listData = new ArrayList<DataModel>();
 

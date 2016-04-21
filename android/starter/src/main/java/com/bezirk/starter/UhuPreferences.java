@@ -20,7 +20,7 @@ public class UhuPreferences {
     public static final String DEVICE_TYPE_TAG_PREFERENCE = "DeviceType";
     public static final String DEVICE_NAME_TAG_PREFERENCE = "DeviceName";
     public static final String DEFAULT_SPHERE_NAME_TAG_PREFERENCE = "DefaultSphereName";
-    private final Logger log = LoggerFactory.getLogger(UhuPreferences.class);
+    private static final Logger log = LoggerFactory.getLogger(UhuPreferences.class);
     private SharedPreferences preferences;
 
     public UhuPreferences(Context context) {

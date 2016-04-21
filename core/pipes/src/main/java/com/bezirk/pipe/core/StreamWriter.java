@@ -17,7 +17,7 @@ import java.io.InputStream;
 public class StreamWriter implements Runnable {
 
     private static int numThreads = 0;
-    private final Logger log = LoggerFactory.getLogger(StreamWriter.class);
+    private static final Logger log = LoggerFactory.getLogger(StreamWriter.class);
     private final int id;
 
     private WriteJob writeJob;

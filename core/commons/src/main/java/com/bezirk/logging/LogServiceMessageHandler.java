@@ -17,10 +17,10 @@ import java.util.Arrays;
 
 /**
  * Handles the LogMessage received from the Log Service. It activates/Deactivates/Updates
- * the logging service properties for the client to log the data.
+ * the logging service properties for the client to logger the data.
  */
 public final class LogServiceMessageHandler {
-    private static final Logger log = LoggerFactory.getLogger(LogServiceMessageHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(LogServiceMessageHandler.class);
     /**
      * Logging Manager to start/ stop the logging client
      */
@@ -41,7 +41,7 @@ public final class LogServiceMessageHandler {
                 try {
                     loggingManager.startLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(), loggingServiceMsg.getRemoteLoggingServicePort());
                 } catch (Exception e) {
-                    log.error("Error occured while logging client", e);
+                    logger.error("Error occured while logging client", e);
                 }
                 FilterLogMessages.setLoggingSphereList(Arrays.asList(loggingServiceMsg.getSphereList()));
                 LoggingStatus.setLoggingEnabled(loggingServiceMsg.isLoggingStatus());
@@ -52,16 +52,16 @@ public final class LogServiceMessageHandler {
                         loggingManager = null;
                         LoggingStatus.setLoggingEnabled(loggingServiceMsg.isLoggingStatus());
                     } catch (Exception e) {
-                        log.error("Error occured while stopping client", e);
+                        logger.error("Error occured while stopping client", e);
                     }
 
                 } else {
-                    log.debug("Tried to stop the logging client that's not started");
+                    logger.debug("Tried to stop the logging client that's not started");
                 }
             }
             //LoggingStatus.setLoggingEnabled(loggingServiceMsg.isLoggingStatus());
         } else {
-            log.error("Logging Service Message failed Validation");
+            logger.error("Logging Service Message failed Validation");
         }
     }
 

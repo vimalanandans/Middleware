@@ -21,7 +21,7 @@ public class AndroidServiceMessageHandler implements ServiceMessageHandler {
      * Used to convert the object to its string
      */
     final Gson gson = new Gson();
-    private final Logger log = LoggerFactory.getLogger(AndroidServiceMessageHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(AndroidServiceMessageHandler.class);
     /**
      * Context to fire the Intent
      */

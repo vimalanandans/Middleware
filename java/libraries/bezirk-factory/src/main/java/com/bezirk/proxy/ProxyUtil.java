@@ -14,8 +14,7 @@ import java.util.HashSet;
  * @author AJC6KOR
  */
 class ProxyUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProxyUtil.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(ProxyUtil.class);
 
     void addTopicsToMaps(final ServiceId subscriber,
                          final String[] topics, final BezirkListener listener, HashMap<UhuServiceId, HashSet<BezirkListener>> sidMap, HashMap<String, HashSet<BezirkListener>> listenerMap, String topicType) {
@@ -32,7 +31,7 @@ class ProxyUtil {
             if (listenerMap.containsKey(topic)) {
                 HashSet<BezirkListener> serviceList = listenerMap.get(topic);
                 if (serviceList.contains(listener)) {
-                    LOGGER.warn(topicType + " already registered with the Label " + topic);
+                    logger.warn(topicType + " already registered with the Label " + topic);
                 } else {
                     serviceList.add(listener);
                 }

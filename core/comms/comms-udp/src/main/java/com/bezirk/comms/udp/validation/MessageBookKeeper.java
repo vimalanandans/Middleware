@@ -24,7 +24,7 @@ import java.util.LinkedHashMap;
 public class MessageBookKeeper {
     private final static long FRESHNESS_VAL = 10000;
     private final static int MAX_SIZE = 50;
-    //private static final Logger log = LoggerFactory.getLogger(MessageBookKeeper.class);
+    //private static final Logger logger = LoggerFactory.getLogger(MessageBookKeeper.class);
     //uniqueKey:ControlRecord
     private LinkedHashMap<String, ControlRecord> controlMap = new LinkedHashMap<String, ControlRecord>();
 

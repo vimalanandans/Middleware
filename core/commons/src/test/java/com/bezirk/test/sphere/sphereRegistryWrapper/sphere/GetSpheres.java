@@ -45,7 +45,7 @@
 //    private static ISphereConfig sphereConfig;
 //    private static UPADeviceInterface upaDevice;
 //    private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-//    private static final Logger log = LoggerFactory.getLogger(GetSpheres.class);
+//    private static final Logger logger = LoggerFactory.getLogger(GetSpheres.class);
 //
 //    /**
 //     * @throws java.lang.Exception

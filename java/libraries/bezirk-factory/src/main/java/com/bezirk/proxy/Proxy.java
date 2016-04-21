@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class Proxy implements Bezirk {
-    private static final Logger log = LoggerFactory.getLogger(Proxy.class);
+    private static final Logger logger = LoggerFactory.getLogger(Proxy.class);
     private static int discoveryCount = 0; // keep track of Discovery Id
     protected final HashMap<UhuServiceId, DiscoveryBookKeeper> dListenerMap = new HashMap<UhuServiceId, DiscoveryBookKeeper>();
     protected final HashMap<UhuServiceId, HashSet<BezirkListener>> sidMap = new HashMap<UhuServiceId, HashSet<BezirkListener>>();
@@ -60,7 +60,7 @@ public class Proxy implements Bezirk {
         try {
             uhuProxyRegistry = proxyPersistence.loadUhuProxyRegistry();
         } catch (Exception e) {
-            log.error("Error in Loding UhuProxyRegistry", e);
+            logger.error("Error in Loding UhuProxyRegistry", e);
             System.exit(0);
         }
     }
@@ -77,16 +77,16 @@ public class Proxy implements Bezirk {
         try {
             uhuProxyRegistry = proxyPersistence.loadUhuProxyRegistry();
         } catch (Exception e) {
-            log.error("Error in Loding UhuProxyRegistry", e);
+            logger.error("Error in Loding UhuProxyRegistry", e);
             System.exit(0);
         }
     }
 
     @Override
     public ServiceId registerService(String serviceName) {
-        log.trace("inside RegisterService");
+        logger.trace("inside RegisterService");
         if (serviceName == null) {
-            log.error("Service name Cannot be null during Registration");
+            logger.error("Service name Cannot be null during Registration");
             return null;
         }
 
@@ -98,10 +98,10 @@ public class Proxy implements Bezirk {
             try {
                 proxyPersistence.persistUhuProxyRegistry();
             } catch (Exception e) {
-                log.error("Error in persisting the information", e);
+                logger.error("Error in persisting the information", e);
             }
         }
-        log.info("Service-Id-> " + serviceIdAsString);
+        logger.info("Service-Id-> " + serviceIdAsString);
         final UhuServiceId serviceId = new UhuServiceId(serviceIdAsString);
         // Register with Uhu
         proxy.registerService(serviceId, serviceName);
@@ -111,7 +111,7 @@ public class Proxy implements Bezirk {
     @Override
     public void unregisterService(ServiceId myId) {
         if (null == myId) {
-            log.error("Trying to UnRegister with null ID");
+            logger.error("Trying to UnRegister with null ID");
             return;
         }
         // Clear the Persistence by removing the UhuServiceId of the unregistering Service
@@ -120,7 +120,7 @@ public class Proxy implements Bezirk {
         try {
             proxyPersistence.persistUhuProxyRegistry();
         } catch (Exception e) {
-            log.error("Error in persisting the information", e);
+            logger.error("Error in persisting the information", e);
         }
         proxy.unregister((UhuServiceId) myId);
     }
@@ -128,18 +128,18 @@ public class Proxy implements Bezirk {
     @Override
     public void subscribe(final ServiceId subscriber, final ProtocolRole pRole, final BezirkListener listener) {
         if (null == pRole.getProtocolName() || pRole.getProtocolName().isEmpty() || null == listener || null == subscriber) {
-            log.error("Check for ProtocolRole/ UhuListener/ServiceId for null or empty values");
+            logger.error("Check for ProtocolRole/ UhuListener/ServiceId for null or empty values");
             return;
         }
         if (null == pRole.getEventTopics() && null == pRole.getStreamTopics()) {
-            log.error("ProtocolRole doesn't have any Events/ Streams to subscribe");
+            logger.error("ProtocolRole doesn't have any Events/ Streams to subscribe");
             return;
         }
         if (UhuValidatorUtility.isObjectNotNull(pRole.getEventTopics())) {
             proxyUtil.addTopicsToMaps(subscriber, pRole.getEventTopics(),
                     listener, sidMap, eventListenerMap, "Event");
         } else {
-            log.info("No Events to Subscribe");
+            logger.info("No Events to Subscribe");
         }
         if (UhuValidatorUtility.isObjectNotNull(pRole.getStreamTopics())) {
 
@@ -147,7 +147,7 @@ public class Proxy implements Bezirk {
                     listener, sidMap, streamListenerMap, "Stream");
 
         } else {
-            log.info("No Streams to Subscribe");
+            logger.info("No Streams to Subscribe");
         }
         // Send the intent
         SubscribedRole subRole = new SubscribedRole(pRole);
@@ -160,7 +160,7 @@ public class Proxy implements Bezirk {
     public void unsubscribe(ServiceId subscriber,
                             ProtocolRole pRole) {
         if (null == subscriber || null == pRole) {
-            log.error("Null Values for unsubscribe method");
+            logger.error("Null Values for unsubscribe method");
             return;
         }
         proxy.unsubscribe((UhuServiceId) subscriber, new SubscribedRole(pRole));
@@ -172,7 +172,7 @@ public class Proxy implements Bezirk {
                           Event event) {
         // Check for sending the target!
         if (null == event || null == sender) {
-            log.error("Check for null in target or Event or sender");
+            logger.error("Check for null in target or Event or sender");
             return;
         }
         proxy.sendMulticastEvent((UhuServiceId) sender, target, event.serialize());
@@ -183,7 +183,7 @@ public class Proxy implements Bezirk {
                           ServiceEndPoint receiver,
                           Event event) {
         if (null == receiver || null == event || null == sender) {
-            log.error("Check for null in receiver or Event or sender");
+            logger.error("Check for null in receiver or Event or sender");
             return;
         }
         proxy.sendUnicastEvent((UhuServiceId) sender, (UhuServiceEndPoint) receiver, event.serialize());
@@ -203,13 +203,13 @@ public class Proxy implements Bezirk {
     @Override
     public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream s, String filePath) {
         if (null == receiver || null == s || null == filePath || filePath.isEmpty() || s.topic.isEmpty()) {
-            log.error("Check for null values in sendStream()/ Topic might be Empty");
+            logger.error("Check for null values in sendStream()/ Topic might be Empty");
             return (short) -1;
         }
 
         File tempFile = new File(filePath);
         if (!tempFile.exists()) {
-            log.error(" No file found at the location: " + filePath);
+            logger.error(" No file found at the location: " + filePath);
             return (short) -1;
         }
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
@@ -246,7 +246,7 @@ public class Proxy implements Bezirk {
     @Override
     public void setLocation(ServiceId service, Location location) {
         if (null == location) {
-            log.error("Location is null or Empty, Services cannot set the location as Null");
+            logger.error("Location is null or Empty, Services cannot set the location as Null");
             return;
         }
         //Set

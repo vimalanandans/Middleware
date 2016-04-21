@@ -24,7 +24,7 @@ import static com.bezirk.util.UhuValidatorUtility.checkUhuServiceId;
  * Created by wya1pi on 8/21/14.
  */
 public class PipeActionParser {
-    private final Logger log = LoggerFactory.getLogger(PipeActionParser.class);
+    private static final Logger log = LoggerFactory.getLogger(PipeActionParser.class);
 
     public PipeRequest parsePipeRequest(Intent intent) {
         log.info("Validating intent: " + intent.getAction());

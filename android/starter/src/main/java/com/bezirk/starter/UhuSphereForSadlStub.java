@@ -18,7 +18,7 @@ import java.util.Set;
  * This is the Quick fix. in actual this suppose to be a package altered via build
  */
 public class UhuSphereForSadlStub implements IUhuSphereForSadl {
-    private final Logger log = LoggerFactory.getLogger(UhuSphereForSadlStub.class);
+    private static final Logger log = LoggerFactory.getLogger(UhuSphereForSadlStub.class);
 
     @Override
     public byte[] encryptSphereContent(String sphereId, String serializedContent) {

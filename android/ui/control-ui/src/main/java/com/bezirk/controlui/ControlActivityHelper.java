@@ -35,7 +35,7 @@ import java.util.List;
  */
 class ControlActivityHelper {
 
-    private final Logger log = LoggerFactory.getLogger(ControlActivity.class);
+    private static final Logger log = LoggerFactory.getLogger(ControlActivity.class);
     private final List<DataModel> listData = new ArrayList<DataModel>();
     private final String BR_SYSTEM_STATUS_ACTION = "com.bezirk.systemstatus";
     private final ControlActivity controlActivity;

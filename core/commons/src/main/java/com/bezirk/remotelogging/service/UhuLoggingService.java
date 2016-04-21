@@ -26,7 +26,7 @@ public class UhuLoggingService extends Thread {
     /**
      * private logger for the class
      */
-    private final Logger log = LoggerFactory.getLogger(UhuLoggingService.class);
+    private static final Logger log = LoggerFactory.getLogger(UhuLoggingService.class);
     /**
      * TCP listening Port for the service
      */

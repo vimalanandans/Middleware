@@ -37,7 +37,7 @@ import static org.junit.Assert.fail;
  * The MockServiceB receives the event and responds with a unicast reply. The MockServiceA receives the reply and validates!
  */
 public class UnicastEventLocalTest {
-    private final static Logger log = LoggerFactory.getLogger(UnicastEventLocalTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(UnicastEventLocalTest.class);
     private boolean isTestPassed = false;
 
     private UnicastMockServiceA mockA = new UnicastMockServiceA();
@@ -45,12 +45,12 @@ public class UnicastEventLocalTest {
 
     @BeforeClass
     public static void setup() {
-        log.info(" ************** Setting up UnicastEventLocallyTest Testcase ****************************");
+        logger.info(" ************** Setting up UnicastEventLocallyTest Testcase ****************************");
     }
 
     @AfterClass
     public static void tearDown() {
-        log.info(" ************** Shutting down UnicastEventLocallyTest Testcase ****************************");
+        logger.info(" ************** Shutting down UnicastEventLocallyTest Testcase ****************************");
     }
 
     @Before
@@ -71,7 +71,7 @@ public class UnicastEventLocalTest {
                 e.printStackTrace();
             }
         }
-        log.info(" ************** Testcase Successful ****************************");
+        logger.info(" ************** Testcase Successful ****************************");
     }
 
     @After
@@ -97,7 +97,7 @@ public class UnicastEventLocalTest {
         private final void setupMockService() {
             uhu = Factory.getInstance();
             myId = uhu.registerService(serviceName);
-            log.info("MOCK_SERVICE_A - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            logger.info("MOCK_SERVICE_A - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             pRole = new MockServiceBProtocolRole();
             uhu.subscribe(myId, pRole, this);
         }
@@ -115,7 +115,7 @@ public class UnicastEventLocalTest {
             assertEquals("MockReplyEvent", topic);
             MockReplyEvent reply = Event.deserialize(event, MockReplyEvent.class);
             assertNotNull(reply);
-            log.info("**** REPLY FROM MOCK SERVICE **** " + reply.answer);
+            logger.info("**** REPLY FROM MOCK SERVICE **** " + reply.answer);
             assertNotNull(reply.answer);
             assertEquals("I am Fine! Thank you", reply.answer);
             isTestPassed = true;
@@ -139,7 +139,7 @@ public class UnicastEventLocalTest {
 
         @Override
         public void discovered(Set<DiscoveredService> serviceSet) {
-            log.info("Received Discovery Response");
+            logger.info("Received Discovery Response");
             if (serviceSet == null) {
                 fail("Service Set of Discovered Services in Null");
                 return;
@@ -154,7 +154,7 @@ public class UnicastEventLocalTest {
 
             Iterator<DiscoveredService> iterator = serviceSet.iterator();
             dService = (UhuDiscoveredService) iterator.next();
-            log.info("DiscoveredServiceName : " + dService.name + "\n" +
+            logger.info("DiscoveredServiceName : " + dService.name + "\n" +
                     "Discovered Role : " + dService.pRole + "\n" +
                     "Discovered SEP" + dService.service + "\n");
 
@@ -265,13 +265,13 @@ public class UnicastEventLocalTest {
         private final void setupMockService() {
             uhu = Factory.getInstance();
             myId = uhu.registerService(serviceName);
-            log.info("UnicastMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            logger.info("UnicastMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             uhu.subscribe(myId, new MockServiceAProtocolRole(), this);
         }
 
         @Override
         public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
-            log.info(" **** Received Event *****");
+            logger.info(" **** Received Event *****");
             assertEquals("MockRequestEvent", topic);
             MockRequestEvent receivedEvent = Event.deserialize(event, MockRequestEvent.class);
             assertEquals("Who am I?", receivedEvent.question);
@@ -279,7 +279,7 @@ public class UnicastEventLocalTest {
             MockReplyEvent replyEvent = new MockReplyEvent(Message.Flag.REPLY, "MockReplyEvent");
             replyEvent.answer = "I am Fine! Thank you";
             uhu.sendEvent(myId, sender, replyEvent);
-            log.info("********* MOCK_SERVICE B responded to the Event **************");
+            logger.info("********* MOCK_SERVICE B responded to the Event **************");
         }
 
         @Override

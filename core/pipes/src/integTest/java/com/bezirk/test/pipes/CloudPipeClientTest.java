@@ -38,7 +38,7 @@ public class CloudPipeClientTest {
 
     private static final String TEMP_FILE_PREFIX = "testFile";
     private static final String TEMP_FILE_SUFFIX = ".txt";
-    private static Logger log = LoggerFactory.getLogger(CloudPipeClientTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(CloudPipeClientTest.class);
     private CloudPipeClient client;
     private EchoRequest echoRequest;
     private String tempFileName = TEMP_FILE_PREFIX + TEMP_FILE_SUFFIX;
@@ -77,13 +77,13 @@ public class CloudPipeClientTest {
         // Validate reply
         EchoReply echoReply = EchoReply.deserialize(serializedResponse);
         assertNotNull(echoReply);
-        log.info("Received reply... ");
+        logger.info("Received reply... ");
         System.out.println(TestUtils.prettyPrintJson(serializedResponse));
 
         // Assert that the response wan an echo of the text we originally sent
         String replyMsg = echoReply.getText();
         assertTrue(replyMsg.contains(echoRequest.getText()));
-        log.info("Received echo: <" + echoReply.getText() + ">");
+        logger.info("Received echo: <" + echoReply.getText() + ">");
     }
 
     @Test
@@ -91,7 +91,7 @@ public class CloudPipeClientTest {
         FileRequest fileRequest = new FileRequest();
         fileRequest.setFileName(tempFileName);
 
-        log.info("retrieving content with request: ");
+        logger.info("retrieving content with request: ");
         System.out.println(TestUtils.prettyPrintJson(fileRequest.serialize()));
 
         CloudStreamResponse response = client.retrieveContent(generateTestHeader(), fileRequest.serialize());
@@ -100,7 +100,7 @@ public class CloudPipeClientTest {
 
         String serializedStreamDesc = response.getStreamDescriptor();
         assertNotNull(serializedStreamDesc);
-        log.info("stream: ");
+        logger.info("stream: ");
         System.out.println(TestUtils.prettyPrintJson(serializedStreamDesc));
 
         // Ensure that the streamDescriptor json string can be de-serialized as the expected Stream object
@@ -112,13 +112,13 @@ public class CloudPipeClientTest {
         assertNotNull(content);
 
         // Write content to a file and validate that the file exists
-        log.info("Writing content to temporary file");
+        logger.info("Writing content to temporary file");
         File outputFile = File.createTempFile(TEMP_FILE_PREFIX, TEMP_FILE_SUFFIX);
         FileOutputStream fileOutStream = new FileOutputStream(outputFile);
         TestUtils.inputStreamToOutputStream(content, fileOutStream, 0);
         assertTrue(outputFile.exists());
         assertTrue(outputFile.isFile());
-        log.info("Temp file created: " + outputFile);
+        logger.info("Temp file created: " + outputFile);
     }
 
 	/*
@@ -145,17 +145,17 @@ public class CloudPipeClientTest {
         // validate http header
         Map<String, List<String>> httpHeader = response.getHttpHeader();
         assertNotNull(httpHeader);
-        log.info("dumping header");
+        logger.info("dumping header");
         for (String key : httpHeader.keySet()) {
-            log.info(key + " : " + httpHeader.get(key));
+            logger.info(key + " : " + httpHeader.get(key));
         }
-        log.info("end header");
+        logger.info("end header");
 
         // Validate pipe header
         PipeHeader pipeHeader = response.getPipeHeader();
         assertNotNull(pipeHeader);
         if (pipeHeader instanceof PipeMulticastHeader) {
-            log.info("RECEIVED Multicast header");
+            logger.info("RECEIVED Multicast header");
         } else if (pipeHeader instanceof PipeUnicastHeader) {
             throw new Exception("Can't handle unicast header yet");
         } else {

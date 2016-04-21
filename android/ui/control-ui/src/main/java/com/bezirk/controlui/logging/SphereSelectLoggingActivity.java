@@ -38,7 +38,7 @@ public class SphereSelectLoggingActivity extends ActionBarActivity {
     /**
      * Logging Util.
      */
-    private final Logger log = LoggerFactory.getLogger(SphereSelectLoggingActivity.class);
+    private static final Logger log = LoggerFactory.getLogger(SphereSelectLoggingActivity.class);
     /**
      * RESULT code to send intent to LogDataActivity.
      */

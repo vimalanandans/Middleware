@@ -30,7 +30,7 @@ import java.util.List;
  */
 class DeviceControlActivityHelper {
 
-    private final Logger log = LoggerFactory.getLogger(DeviceControlActivityHelper.class);
+    private static final Logger log = LoggerFactory.getLogger(DeviceControlActivityHelper.class);
 
     // result codes
     private final int RESULT_DEVICE_NAME_CHANGE = 1000;

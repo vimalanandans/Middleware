@@ -41,7 +41,7 @@ import java.util.ArrayList;
 
 public class UhuCommsManager implements IUhuCommsLegacy {
 
-    private static final Logger log = LoggerFactory.getLogger(UhuCommsManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuCommsManager.class);
 
     MessageDispatcher msgDispatcher = null;
     CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver();
@@ -126,10 +126,10 @@ public class UhuCommsManager implements IUhuCommsLegacy {
             cMSocket.setInterface(addr);
 
         } catch (SocketException e) {
-            log.error("unable to get socket ports : is it already running?", e);
+            logger.error("unable to get socket ports : is it already running?", e);
             return false;
         } catch (IOException e) {
-            log.error("unable to get socket ports : is it already running?", e);
+            logger.error("unable to get socket ports : is it already running?", e);
             return false;
         }
 
@@ -290,19 +290,19 @@ public class UhuCommsManager implements IUhuCommsLegacy {
 	/* unused
 	 * private boolean diagnose(){
 	if(!eMListenerThread.getState().equals(Thread.State.RUNNABLE)){
-		log.error( "EVENT MULTICAST LISTENER THREAD HAS STALLED");
+		logger.error( "EVENT MULTICAST LISTENER THREAD HAS STALLED");
 		return false;
 	}
 	if(!eUListenerThread.getState().equals(Thread.State.RUNNABLE)){
-		log.error( "EVENT UNICAST LISTENER THREAD HAS STALLED");
+		logger.error( "EVENT UNICAST LISTENER THREAD HAS STALLED");
 		return false;
 	}
 	if(!cMListenerThread.getState().equals(Thread.State.RUNNABLE)){
-		log.error( "CONTROL MULTICAST LISTENER THREAD HAS STALLED");
+		logger.error( "CONTROL MULTICAST LISTENER THREAD HAS STALLED");
 		return false;
 	}
 	if(!cUListenerThread.getState().equals(Thread.State.RUNNABLE)){
-		log.error( "CONTROL UNICAST LISTENER THREAD HAS STALLED");
+		logger.error( "CONTROL UNICAST LISTENER THREAD HAS STALLED");
 		return false;
 	}
 	return true;
@@ -464,7 +464,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
             return true;
         } else {
 
-            log.error("UhuStreamManager is not initialized.");
+            logger.error("UhuStreamManager is not initialized.");
             return false;
         }
 
@@ -478,7 +478,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
             return uhuStreamManager.sendStream(uniqueKey);
         } else {
 
-            log.error("UhuStreamManager is not initialized.");
+            logger.error("UhuStreamManager is not initialized.");
             return false;
         }
 
@@ -492,7 +492,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
             return uhuStreamManager.registerStreamBook(key, sRecord);
         } else {
 
-            log.error("UhuStreamManager is not initialized.");
+            logger.error("UhuStreamManager is not initialized.");
             return false;
         }
 
@@ -507,7 +507,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
 
         } else {
 
-            log.error("UhuStreamManager is not initialized.");
+            logger.error("UhuStreamManager is not initialized.");
             return null;
         }
 
@@ -566,8 +566,8 @@ public class UhuCommsManager implements IUhuCommsLegacy {
         public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
             switch (id) {
                 case LoggingServiceMessage:
-                    //log.debug("<<<<<<<<  LOGGING MESSAGE RECEIVED FROM LOGGING SERVICE  >>>>>>>>>");
-                    log.debug("ReceivedLogMessage-> " + serializedMsg);
+                    //logger.debug("<<<<<<<<  LOGGING MESSAGE RECEIVED FROM LOGGING SERVICE  >>>>>>>>>");
+                    logger.debug("ReceivedLogMessage-> " + serializedMsg);
                     try {
                         final LoggingServiceMessage loggingServiceMsg = ControlMessage.deserialize(serializedMsg, LoggingServiceMessage.class);
 
@@ -576,11 +576,11 @@ public class UhuCommsManager implements IUhuCommsLegacy {
                         }
                         logServiceMsgHandler.handleLogServiceMessage(loggingServiceMsg);
                     } catch (Exception e) {
-                        log.error("Error in Deserializing LogServiceMessage", e);
+                        logger.error("Error in Deserializing LogServiceMessage", e);
                     }
                     break;
                 default:
-                    log.error("Unknown control message > " + id);
+                    logger.error("Unknown control message > " + id);
                     return false;
             }
             return true;

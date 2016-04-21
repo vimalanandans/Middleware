@@ -23,7 +23,7 @@
 //import UhuServiceId;
 //
 //public class ControlReceiverTest {
-//	private static final Logger log = LoggerFactory.getLogger(ControlReceiverTest.class);
+//	private static final Logger logger = LoggerFactory.getLogger(ControlReceiverTest.class);
 //	private TestingUhuSadlRegistry sadlRegistry = null;
 //	 
 //	@BeforeClass
