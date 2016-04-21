@@ -15,7 +15,7 @@ package com.bezirk.middleware.addressing;
 import com.bezirk.middleware.messages.Event;
 
 /**
- * Represents a semantic address for publishing events and streams over UhU
+ * Represents a semantic address for publishing events and streams over Bezirk
  * @see Event
  */
 public class Address {
@@ -25,7 +25,8 @@ public class Address {
 
     /**
      * Address for local publishing only: no pipes.
-     * Local publishing means publishing in all Spheres that the service is a member of, as defined by the user via the UhU UIs.
+     * Local publishing means publishing in all Spheres that the service is a member of, as defined
+     * by the user via the Bezirk UIs.
      *
      * @param loc maybe null, which places no constraints on location
      */

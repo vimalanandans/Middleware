@@ -15,7 +15,7 @@ package com.bezirk.middleware.messages;
 import com.google.gson.Gson;
 
 /**
- * Superclass of all messages that services may exchange over UhU. Defines JSON (de)serialization.
+ * Superclass of all messages that services may exchange over Bezirk. Defines JSON (de)serialization.
  * Known subclasses: {@link Event} and {@link Stream}
  *
  */
@@ -26,15 +26,18 @@ public class Message {
      */
     public Flag flag;
 
-    ;
     /**
      * Discriminatory property for all messages. Should be set by leaf classes.
-     * Subscription ultimately translates to topics, which are then used by UhU during reception of published messages for matching them with recipients.
+     * Subscription ultimately translates to topics, which are then used by Bezirk during reception
+     * of published messages for matching them with recipients.
      */
     public String topic;
+
     /**
-     * Intended to help services match requests to (asynchronous) replies, this property is passed, but ignored by UhU.
-     * Should be set by requester services (e.g. circular counter), and echoed back by responder services.
+     * Intended to help services match requests to (asynchronous) replies, this property is passed,
+     * but ignored by Bezirk. Should be set by requester services (e.g. circular counter), and
+     * echoed back by responder services.
+     *
      * May be ignored for notices.
      */
     public String msgId;

@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 /**
- * Defines the reasons to allow each protocol. UhU internally defines a subclass
+ * Defines the reasons to allow each protocol. Bezirk internally defines a subclass
  * for managing protocol authorization.
  *
  */
@@ -72,7 +72,7 @@ public class PipePolicy {
     }
 
     // /**
-    // * UhU internally defines a subclass for managing policies, which
+    // * Bezirk internally defines a subclass for managing policies, which
     // overrides this method.
     // *
     // * @return false
@@ -91,7 +91,7 @@ public class PipePolicy {
     }
 
     /**
-     * UhU internally defines a subclass for managing policies, which overrides
+     * Bezirk internally defines a subclass for managing policies, which overrides
      * this method.
      *
      * @return false

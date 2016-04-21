@@ -14,7 +14,7 @@ package com.bezirk.middleware.addressing;
 
 
 /**
- * UhU generates objects that implement this interface.
+ * Bezirk generates objects that implement this interface.
  * These objects represent a network end point for a service, which can be sent across the network and used in unicasts.
  */
 public interface ServiceEndPoint {

@@ -23,7 +23,7 @@ public abstract class ProtocolRole {
     public abstract String getProtocolName();
 
     /**
-     * Human readable name for the protocol. E.g. UhU may refer to it to explain pipe policy.
+     * Human readable name for the protocol. E.g. Bezirk may refer to it to explain pipe policy.
      * @return The Protocol role description
      */
     public abstract String getDescription();

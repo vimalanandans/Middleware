@@ -27,7 +27,7 @@ public class Pipe {
     }
 
     /**
-     * @param pName suggested name for the pipe - which may be changed by the user via UhU UIs
+     * @param pName suggested name for the pipe - which may be changed by the user via Bezirk UIs
      */
     public Pipe(String pName) {
         this.name = pName;
