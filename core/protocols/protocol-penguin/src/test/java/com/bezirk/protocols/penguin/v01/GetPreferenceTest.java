@@ -26,7 +26,7 @@ public class GetPreferenceTest {
         context.setDateTime("2001-07-04 12:08:56.235-0700");
         assertEquals("2001-07-04 12:08:56.235-0700", context.getDateTime());
         context.setLocation(loc);
-        assertEquals("Office", context.getLocation().getRegion());
+        assertEquals("Office", context.getLocation().getWideScope());
         context.setPartOfDay("Saturday");
         assertEquals("Saturday", context.getPartOfDay());
 
