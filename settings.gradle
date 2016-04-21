@@ -1,47 +1,6 @@
 rootProject.name = 'Middleware'
 
-//refer README.md
-def useInitVar = false
-def exec
-if (gradle.hasProperty("execute")) {
-    exec = gradle.execute
-    useInitVar = true
-}else{
-    println 'Not building using init.gradle: Building all projects'
-}
-
-
-/*
-* command line .. entry like gradlew clean build -PdevBuild=true
-if("$devBuild" == "true"){*/
-
-/*def devBuildVar
-if(gradle.hasProperty("devBuild")){
-    devBuildVar = gradle.devBuild
-	if(devBuildVar != null && devBuildVar == "true"){
-    println "############  Performing Dev Build   ###########"
-    def props = new Properties()
-    def propsFile = new File("${rootDir}/core/uhu/commons/src/main/resources/features.properties")
-
-    //println "RootDir is :: ${rootDir}"
-
-    props.load(propsFile.newDataInputStream());
-    //println props.getProperty('HTTP_BEZIRK_COMMS')
-
-    props.setProperty('HTTP_BEZIRK_COMMS', devBuildVar)
-    props.store(propsFile.newWriter(), null)
-
-
-    props.load(propsFile.newDataInputStream())
-    //println props.getProperty('HTTP_BEZIRK_COMMS')
-
-
-    //check how this has to be done...
-    include ':core:comms:http-comms'
-	}
-}*/
-
-/*Projects for core*/
+/*--------------------core--------------------*/
 include ':core:bezirk-middleware-api'
 include ':core:bezirk'
 include ':core:pipes'
@@ -54,9 +13,6 @@ include ':core:commons'
 include ':core:comms:comms-udp'
 include ':core:comms:comms-factory'
 include ':core:comms:comms-zyre'
-// include ':core:comms:comms-jyre' // not used anymore
-
-//### this has to be removed..
 include ':core:comms:http-comms'
 
 include ':core:device-objects'
@@ -68,18 +24,17 @@ include ':core:protocols:protocol-light'
 include ':core:protocols:parametricUI-protocols'
 include ':core:protocols:cloudpipe-protocols'
 
-if (!useInitVar || (useInitVar && exec == 'all')) {
-/*Projects for java*/
-    include ':java:libraries:bezirk-factory'
-    include ':java:libraries:comms-zyre-jni'
-    include ':java:starter'
-    include ':java:testApp'
+/*--------------------java--------------------*/
+include ':java:libraries:bezirk-factory'
+include ':java:libraries:comms-zyre-jni'
+include ':java:starter'
+include ':java:testApp'
 
-/*Projects for android*/
-    include ':android:starter'
-    include ':android:ui:control-ui'
-    include ':android:ui:sphere-pipe-ui'
-    include ':android:libraries:proxy'
-    include ':android:libraries:zbarscanner'
-    include ':android:libraries:comms-zyre-jni'
-}
+/*--------------------android--------------------*/
+include ':android:starter'
+include ':android:ui:control-ui'
+include ':android:ui:sphere-pipe-ui'
+include ':android:libraries:proxy'
+include ':android:libraries:zbarscanner'
+include ':android:libraries:comms-zyre-jni'
+

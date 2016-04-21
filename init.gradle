@@ -1,7 +1,0 @@
-//refer to README.md
-gradle.ext.execute = 'core'
-println "$gradle.execute projects building"
-
-///////// Dev Build when HTTP-COMMS will be disabled from build ///////
-gradle.ext.devBuild="false"
-
