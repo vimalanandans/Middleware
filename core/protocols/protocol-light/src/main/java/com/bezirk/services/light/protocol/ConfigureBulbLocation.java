@@ -15,7 +15,7 @@ public class ConfigureBulbLocation extends Event {
     private Location location;
 
     public ConfigureBulbLocation(Integer id, Location location) {
-        super(Stripe.NOTICE, TOPIC);
+        super(Flag.NOTICE, TOPIC);
         this.id = id;
         this.location = location;
     }

@@ -14,13 +14,16 @@ package com.bezirk.middleware.addressing;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
- *	 This testcase verifies the Location by checking equals, hashcode and subsume apis.
+ * This testcase verifies the Location by checking equals, hashcode and subsume apis.
  *
  * @author AJC6KOR
- *
  */
 public class LocationTest {
 
@@ -37,7 +40,7 @@ public class LocationTest {
         assertFalse("Location subsumes the invalid temp location. ", location.subsumes(tempLoc));
 
         assertEquals("Area is not equal to the set value", "BLOCK2", tempLoc.getArea());
-        assertEquals("Region is not equal to the set value.", "OFFICE1", tempLoc.getRegion());
+        assertEquals("Region is not equal to the set value.", "OFFICE1", tempLoc.getWideScope());
         assertEquals("Landmark is not equal to the set value.", "FLOOR1", tempLoc.getLandmark());
 
         Location testLoc = new Location(null, null, null);

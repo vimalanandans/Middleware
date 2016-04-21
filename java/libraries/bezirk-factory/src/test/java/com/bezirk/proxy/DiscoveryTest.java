@@ -47,7 +47,7 @@ import static org.junit.Assert.fail;
  * @Date - 23/09/2014
  */
 public class DiscoveryTest {
-    private final static Logger log = LoggerFactory.getLogger(DiscoveryTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(DiscoveryTest.class);
     private static boolean isTestWithNullLocPassed = false;
     private static boolean isTestWithLocPassed = false;
     private final Location loc = new Location("Liz Home", "floor-6", "Garage");  // change in the location
@@ -58,13 +58,13 @@ public class DiscoveryTest {
 
     @BeforeClass
     public static void setup() {
-        log.info(" ****************** Setting up DiscoveryTest Testcase *******************");
+        logger.info(" ****************** Setting up DiscoveryTest Testcase *******************");
 
     }
 
     @AfterClass
     public static void tearDown() {
-        log.info(" ************** Shutting down DiscoveryTest Testcase ****************************");
+        logger.info(" ************** Shutting down DiscoveryTest Testcase ****************************");
     }
 
     @Before
@@ -99,7 +99,7 @@ public class DiscoveryTest {
             }
         }
 
-        log.info(" ************** TEST SUCCESSFUL ************************");
+        logger.info(" ************** TEST SUCCESSFUL ************************");
     }
 
     @After
@@ -123,7 +123,7 @@ public class DiscoveryTest {
         private final void setupMockService() {
             uhu = Factory.getInstance();
             myId = uhu.registerService(serviceName);
-            log.info("DiscoveryMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            logger.info("DiscoveryMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             pRole = new DiscoveryMockServiceProtocol();
             uhu.subscribe(myId, pRole, this);
         }
@@ -160,7 +160,7 @@ public class DiscoveryTest {
 
         @Override
         public void discovered(Set<DiscoveredService> serviceSet) {
-            log.info("Received Discovery Response");
+            logger.info("Received Discovery Response");
             if (serviceSet == null) {
                 fail("Service Set of Discovered Services in Null");
                 return;
@@ -169,7 +169,7 @@ public class DiscoveryTest {
                 fail("Service Set is Empty");
                 return;
             }
-            log.debug("*******Size of the Set********* : " + serviceSet.size());
+            logger.debug("*******Size of the Set********* : " + serviceSet.size());
 
             if (isTestWithNullLocPassed == false && serviceSet.size() == 3) {
 
@@ -214,12 +214,12 @@ public class DiscoveryTest {
                             break;
                     }
                 }
-                log.info("**** DISCOVERY SUB-TEST WITH NULL LOCATION PASSES SUCCESSFULLY ****");
+                logger.info("**** DISCOVERY SUB-TEST WITH NULL LOCATION PASSES SUCCESSFULLY ****");
                 isTestWithNullLocPassed = true;
                 return;
             }
             if (isTestWithNullLocPassed == true && isTestWithLocPassed == false && serviceSet.size() == 1) {
-                log.info("Discovery subtest with location passed");
+                logger.info("Discovery subtest with location passed");
 
 
                 Iterator<DiscoveredService> iterator = serviceSet.iterator();
@@ -233,7 +233,7 @@ public class DiscoveryTest {
                 assertEquals(serviceCId, tempDisService.service.serviceId.getUhuServiceId());
 
                 isTestWithLocPassed = true;
-                log.info("**** DISCOVERY SUB-TEST WITH SPECIFIC LOCATION PASSES SUCCESSFULLY ****");
+                logger.info("**** DISCOVERY SUB-TEST WITH SPECIFIC LOCATION PASSES SUCCESSFULLY ****");
                 return;
             }
         }
@@ -292,7 +292,7 @@ public class DiscoveryTest {
             uhu = Factory.getInstance();
             myId = uhu.registerService(serviceName);
             serviceBId = ((UhuServiceId) myId).getUhuServiceId();
-            log.info("DiscoveryMockServiceB - regId : " + serviceBId);
+            logger.info("DiscoveryMockServiceB - regId : " + serviceBId);
             uhu.subscribe(myId, new DiscoveryMockServiceProtocol(), this);
         }
 
@@ -345,7 +345,7 @@ public class DiscoveryTest {
             uhu = Factory.getInstance();
             myId = uhu.registerService(serviceName);
             serviceCId = ((UhuServiceId) myId).getUhuServiceId();
-            log.info("DiscoveryMockServiceC - regId : " + serviceCId);
+            logger.info("DiscoveryMockServiceC - regId : " + serviceCId);
 
             uhu.subscribe(myId, new DiscoveryMockServiceProtocol(), this);
         }

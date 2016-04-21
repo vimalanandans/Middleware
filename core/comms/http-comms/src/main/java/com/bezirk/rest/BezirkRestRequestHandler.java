@@ -25,7 +25,7 @@ import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
  */
 public class BezirkRestRequestHandler extends DefaultHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BezirkRestRequestHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkRestRequestHandler.class);
     //translator utilities class
     private final BezirkRequestTranslator translator = new BezirkRequestTranslator();
     //A rolling map of limited size of 100
@@ -47,7 +47,7 @@ public class BezirkRestRequestHandler extends DefaultHandler {
 
     @Override
     public String getText() {
-        LOGGER.debug("Called GET service to BEzirkRestRequestHandler!!!, Feature not supported");
+        logger.debug("Called GET service to BEzirkRestRequestHandler!!!, Feature not supported");
         return "Not Yet Implemented!!";
     }
 
@@ -62,7 +62,7 @@ public class BezirkRestRequestHandler extends DefaultHandler {
         String selectedSphere = bezirkCommsManager.getSelectedSphere();
 
         if (selectedSphere == null) {
-            LOGGER.debug("Sphere not selected!!. Select the HTTP Comms Sphere");
+            logger.debug("Sphere not selected!!. Select the HTTP Comms Sphere");
             //means the user has not set the sphere!!! This has to be set before using the HTTPComms
             return "ERROR:SELECT_SPHERE";
         }
@@ -71,7 +71,7 @@ public class BezirkRestRequestHandler extends DefaultHandler {
         final BezirkHttpRequest requestObject = constructRequestObject(session);
         requestObject.setEventSphere(selectedSphere);
 
-        LOGGER.debug("UniqueID generated is :" + requestObject.getUniqueID());
+        logger.debug("UniqueID generated is :" + requestObject.getUniqueID());
 
         //put the request with unique key, will be the random integer
         List<String> emptyList = new ArrayList<String>();
@@ -83,7 +83,7 @@ public class BezirkRestRequestHandler extends DefaultHandler {
         //add the eventledger to the queue
         bezirkCommsManager.getRequestQueue().add(eventLedger);
 
-        LOGGER.debug("sending http rest messge to comms for topic" + requestObject.getEventTopic());
+        logger.debug("sending http rest messge to comms for topic" + requestObject.getEventTopic());
         return requestObject.getUniqueID().toString();
     }
 
@@ -146,10 +146,10 @@ public class BezirkRestRequestHandler extends DefaultHandler {
         String inputStreamString = null;
         try {
 
-			/*LOGGER.debug("Retriving http body :"+System.currentTimeMillis());
+			/*logger.debug("Retriving http body :"+System.currentTimeMillis());
 			isr = new InputStreamReader(session.getInputStream(),"utf-8");
 			
-			LOGGER.debug("Converted InputStream :"+System.currentTimeMillis());
+			logger.debug("Converted InputStream :"+System.currentTimeMillis());
 			BufferedReader br = new BufferedReader(isr);
 			// From now on, the right way of moving from bytes to utf-8 characters:
 
@@ -158,16 +158,16 @@ public class BezirkRestRequestHandler extends DefaultHandler {
 				buf.append((char) b);
 			}
 			
-			LOGGER.debug("Read Complete :"+System.currentTimeMillis());
+			logger.debug("Read Complete :"+System.currentTimeMillis());
 
 			br.close();
 			isr.close();*/
 
-            LOGGER.debug("Retriving http body :" + System.currentTimeMillis());
+            logger.debug("Retriving http body :" + System.currentTimeMillis());
             inputStreamString = new Scanner(session.getInputStream(), "UTF-8").next();
 
-            LOGGER.debug("Body Read complete :" + System.currentTimeMillis());
-            LOGGER.debug("HTTP rest request body is :" + inputStreamString);
+            logger.debug("Body Read complete :" + System.currentTimeMillis());
+            logger.debug("HTTP rest request body is :" + inputStreamString);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

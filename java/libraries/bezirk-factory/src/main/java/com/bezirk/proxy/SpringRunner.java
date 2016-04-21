@@ -31,7 +31,7 @@ public class SpringRunner {
      */
     public static final String DATA_DIR_RELATIVE = "data";
 
-    private static Logger log = LoggerFactory.getLogger(SpringRunner.class);
+    private static final Logger logger = LoggerFactory.getLogger(SpringRunner.class);
 
     private String configFile = CONFIG_FILE_DEFAULT;
 
@@ -60,17 +60,17 @@ public class SpringRunner {
      */
     public void run() {
         // Read in spring configuration file
-        log.info("Initializing Spring context.");
+        logger.info("Initializing Spring context.");
         springContext = new ClassPathXmlApplicationContext(configFile);
 
         UhuConfig uhuConfig = (UhuConfig) springContext.getBean("uhuSettings");
 
         if (uhuConfig == null) {
-            log.error("uhuSettings was not found");
+            logger.error("uhuSettings was not found");
             return;
         }
 
-        log.info("Starting Bezirk...");
+        logger.info("Starting Bezirk...");
         String uhuDataPath = uhuConfig.getDataPath();
         uhuConfig.setDataPath(appHome + File.separator + uhuDataPath);
         Proxy api = (Proxy) Factory.getInstance(uhuConfig);
@@ -80,10 +80,10 @@ public class SpringRunner {
 
         int numServices = services.size();
         if (numServices < 1) {
-            log.error("Did not find any ServiceRunners in config file");
+            logger.error("Did not find any ServiceRunners in config file");
             return;
         }
-        log.info("Found " + numServices + " ServiceRunners: " + services.keySet());
+        logger.info("Found " + numServices + " ServiceRunners: " + services.keySet());
 
         // Used to record started and failed services
         List<String> startedServices = new ArrayList<String>();
@@ -92,17 +92,17 @@ public class SpringRunner {
         // For each service: 1. set the data path, 2. initialize, and 3. start
         for (IServiceRunner service : services.values()) {
             String name = service.getClass().getSimpleName();
-            log.info("Starting uhu service with runner: " + name);
+            logger.info("Starting uhu service with runner: " + name);
 
             // 1. Set data path
             String dataPath = buildDataPath(service);
             service.setDataPath(dataPath);
-            log.info("Data path was set to: " + service.getDataPath());
+            logger.info("Data path was set to: " + service.getDataPath());
 
             try {
-                log.debug("Initializing service: " + name);
+                logger.debug("Initializing service: " + name);
                 service.init(); // 2. Initialize data members, if necessary
-                log.debug("Running service: " + name);
+                logger.debug("Running service: " + name);
                 service.run(); //  3. Start the service
 
                 // Service successfully started
@@ -112,14 +112,14 @@ public class SpringRunner {
             catch (Exception e) {
                 failedServices.add(name);
                 System.out.println();
-                log.error("There was a problem starting service with runner: "
+                logger.error("There was a problem starting service with runner: "
                         + name, e);
             }
         }
 
-        log.info("Uhu has started with these services:" + startedServices);
+        logger.info("Uhu has started with these services:" + startedServices);
         if (!failedServices.isEmpty()) {
-            log.warn("These services could not be started:" + failedServices);
+            logger.warn("These services could not be started:" + failedServices);
         }
     }
 
@@ -149,7 +149,7 @@ public class SpringRunner {
             File userSpecifiedPath = new File(service.getDataPath());
             if (userSpecifiedPath.isAbsolute()) {
                 dataPath += DATA_DIR_RELATIVE;
-                log.warn("Uhu services should not specify an absolute dataPath. Setting dataPath to: "
+                logger.warn("Uhu services should not specify an absolute dataPath. Setting dataPath to: "
                         + dataPath);
             }
             // Set the user-specified path relative to appHome

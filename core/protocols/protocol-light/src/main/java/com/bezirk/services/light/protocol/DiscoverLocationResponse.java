@@ -10,7 +10,7 @@ public class DiscoverLocationResponse extends Event {
     private List<String> knownLocations;
 
     public DiscoverLocationResponse() {
-        super(Stripe.REPLY, TOPIC);
+        super(Flag.REPLY, TOPIC);
     }
 
     public List<String> getKnownLocations() {

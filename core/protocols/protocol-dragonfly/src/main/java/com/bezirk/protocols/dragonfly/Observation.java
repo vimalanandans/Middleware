@@ -20,7 +20,7 @@ public class Observation extends Event implements Comparable<Observation> {
     /**
      * Logger for current class
      */
-//	private final transient Logger log = LoggerFactory
+//	private final transient Logger logger = LoggerFactory
 //			.getLogger(Observation.class);
     /**
      * topic
@@ -94,11 +94,11 @@ public class Observation extends Event implements Comparable<Observation> {
 	/* constructors */
 
     public Observation() {
-        super(Stripe.NOTICE, topic);
+        super(Flag.NOTICE, topic);
     }
 
     public Observation(String _topic) {
-        super(Stripe.NOTICE, _topic);
+        super(Flag.NOTICE, _topic);
     }
 
 	/* getters and setters */

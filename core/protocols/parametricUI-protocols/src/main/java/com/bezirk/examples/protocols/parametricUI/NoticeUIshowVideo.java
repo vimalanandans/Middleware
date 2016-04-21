@@ -25,7 +25,7 @@ public class NoticeUIshowVideo extends Event {
      */
     public NoticeUIshowVideo(String videoURL) {
         // set UhuMessage properties: useful for discrimination/deserialization
-        super(Stripe.NOTICE, TOPIC);
+        super(Flag.NOTICE, TOPIC);
         // set event payload: useful for the consumer services
         this.videoURL = videoURL;
     }

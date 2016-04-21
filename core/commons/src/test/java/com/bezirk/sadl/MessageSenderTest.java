@@ -37,7 +37,7 @@
 //*/
 //public class MessageSenderTest {
 //
-//	private final static Logger log = LoggerFactory
+//	private static final Logger logger = LoggerFactory
 //			.getLogger(MessageSenderTest.class);
 //
 //	private static UhuSadlManager uhuSadlManager = null;

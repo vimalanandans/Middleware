@@ -21,12 +21,12 @@ public class GetUserProfile extends Event {
 	/* constructors */
 
     public GetUserProfile() {
-        super(Stripe.REQUEST, topic);
+        super(Flag.REQUEST, topic);
         context = new ArrayList<ContextValue>();
     }
 
     public GetUserProfile(String topic) {
-        super(Stripe.REQUEST, topic);
+        super(Flag.REQUEST, topic);
     }
 	
 	/* getters and setters */

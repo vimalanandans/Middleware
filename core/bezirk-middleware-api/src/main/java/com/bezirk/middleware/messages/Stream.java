@@ -14,13 +14,13 @@ package com.bezirk.middleware.messages;
 
 /**
  * Base class for non-trivial Bezirk messages and data transfers. A stream represents a set of data
- * elements such as picture and music data. This class is extended by protocol implementations to 
+ * elements such as picture and music data. This class is extended by protocol implementations to
  * define concrete streams and their custom attributes and payloads. To implement a simple, small
  * message, extend the {@link Event} class.
- *
- * Implementers should favor extending {@link MulticastStream} when a concrete stream will have 
- * multiple recipients where the set of recipients is more specific that simply anyone subscribed to 
- * a topic (e.g. when a {@link Location} is  required). {@link UnicastStream} should be favored when 
+ * <p/>
+ * Implementers should favor extending {@link MulticastStream} when a concrete stream will have
+ * multiple recipients where the set of recipients is more specific that simply anyone subscribed to
+ * a topic (e.g. when a {@link com.bezirk.middleware.addressing.Location} is  required). {@link UnicastStream} should be favored when
  * the stream will have a single known recipient.
  *
  * @see Message
@@ -48,14 +48,17 @@ public class Stream extends Message {
      * This option is provided to allow users to make a tradeoff between privacy and performance where the
      * protocol designer does not believe the stream will always require confidentiality.
      */
-    private boolean secure;
+    private boolean encrypted;
 
     /**
      * The concrete implentation of a <code>Stream</code> must specify the stream's flag
      * and topic. Message flags and topics are documented in {@link Message}.
+     *
+     * @param flag  flag to mark the intent of this stream
+     * @param topic the pub-sub topic for this stream
      */
-    public Stream(Stripe stripe, String topic) {
-        this.stripe = stripe;
+    public Stream(Flag flag, String topic) {
+        this.flag = flag;
         this.topic = topic;
     }
 
@@ -75,11 +78,11 @@ public class Stream extends Message {
         this.allowDrops = allowDrops;
     }
 
-    public boolean isSecure() {
-        return secure;
+    public boolean isEncrypted() {
+        return encrypted;
     }
 
-    public void setSecure(boolean secure) {
-        this.secure = secure;
+    public void setEncrypted(boolean encrypted) {
+        this.encrypted = encrypted;
     }
 }

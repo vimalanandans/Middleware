@@ -102,7 +102,7 @@ public class SingleAnswer extends Event {
 	/* Constructor */
 
     public SingleAnswer() {
-        super(Stripe.REPLY, topic);
+        super(Flag.REPLY, topic);
     }
 
 

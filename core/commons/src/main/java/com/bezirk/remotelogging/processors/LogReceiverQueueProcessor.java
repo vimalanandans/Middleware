@@ -23,7 +23,7 @@ public class LogReceiverQueueProcessor extends Thread {
     /**
      * private logger for the class
      */
-    private final Logger log = LoggerFactory.getLogger(LogReceiverQueueProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(LogReceiverQueueProcessor.class);
     /**
      * Platform specific logger
      */

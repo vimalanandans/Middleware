@@ -20,8 +20,8 @@ public class UnicastStream extends Stream {
 
     private final ServiceEndPoint recipient;
 
-    public UnicastStream(Stripe stripe, String topic, ServiceEndPoint recipient) {
-        super(stripe, topic);
+    public UnicastStream(Flag flag, String topic, ServiceEndPoint recipient) {
+        super(flag, topic);
         this.recipient = recipient;
     }
 

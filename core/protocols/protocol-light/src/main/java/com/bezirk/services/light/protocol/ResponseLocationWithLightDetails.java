@@ -14,7 +14,7 @@ public class ResponseLocationWithLightDetails extends Event {
     private String id = "";
 
     public ResponseLocationWithLightDetails() {
-        super(Stripe.REPLY, TOPIC);
+        super(Flag.REPLY, TOPIC);
     }
 
     public String getId() {

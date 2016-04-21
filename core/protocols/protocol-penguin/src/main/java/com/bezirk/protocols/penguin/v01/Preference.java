@@ -36,7 +36,7 @@ public class Preference /* extends Event */ {
 	/* constructors */
 
     public Preference() {
-        //super (Stripe.REPLY, topic);
+        //super (Flag.REPLY, topic);
     }
 
     public Preference(String _user,
@@ -44,7 +44,7 @@ public class Preference /* extends Event */ {
                       String _value,
                       String _format,
                       double _confidence) {
-        //super (Stripe.REPLY, topic);
+        //super (Flag.REPLY, topic);
         this.setUser(_user);
         this.setType(_type);
         this.setFormat(_format);

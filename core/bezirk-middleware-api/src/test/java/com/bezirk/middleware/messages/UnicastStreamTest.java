@@ -12,31 +12,30 @@
  */
 package com.bezirk.middleware.messages;
 
-import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.Message.Flag;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 /**
- *	 This testcase verifies the UnicastStream by setting the properties and retrieving them.
+ * This testcase verifies the UnicastStream by setting the properties and retrieving them.
  *
  * @author AJC6KOR
- *
  */
 public class UnicastStreamTest {
 
     @Test
     public void test() {
 
-        Stripe stripe = Stripe.REQUEST;
+        Flag flag = Flag.REQUEST;
         String topic = "TestTopic";
         MockServiceEndpoint recipient = new MockServiceEndpoint("ServiceA");
-        com.bezirk.middleware.messages.UnicastStream unicastStream = new UnicastStream(stripe, topic, recipient);
+        com.bezirk.middleware.messages.UnicastStream unicastStream = new UnicastStream(flag, topic, recipient);
 
 	
 	/*
-	 * --- Deserialization is failing serviceEndpoint doesn't have a no-args constructor-----
+     * --- Deserialization is failing serviceEndpoint doesn't have a no-args constructor-----
 			String serializedUnicastStream = unicastStream.serialize();
 	 		UnicastStream deserializedUnicastStream = UnicastStream.deserialize(serializedUnicastStream, UnicastStream.class);*/
 

@@ -9,7 +9,7 @@ public class RequestLightStateForLocation extends Event {
     private String requestedLocation;
 
     public RequestLightStateForLocation() {
-        super(Stripe.NOTICE, TOPIC);
+        super(Flag.NOTICE, TOPIC);
         // TODO Auto-generated constructor stub
     }
 

@@ -46,7 +46,7 @@ public class PipeManagerImpl implements PipeManager {
 	/*
 	 * Private data members
 	 */
-    private final Logger log = LoggerFactory.getLogger(PipeManagerImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(PipeManagerImpl.class);
     // Thread pool used to send http requests
     private ThreadPoolExecutor sendingThreadPool = null;
     // Thread pool for writing streams to disk

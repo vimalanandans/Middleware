@@ -8,7 +8,7 @@ public class RequestActiveLights extends Event {
     private String requestedLocation;
 
     public RequestActiveLights() {
-        super(Stripe.REQUEST, TOPIC);
+        super(Flag.REQUEST, TOPIC);
     }
 
     public String getRequestedLocation() {

@@ -15,7 +15,7 @@ public class InitUserProxyRemoteUI extends Event {
     private String partOfDay = null;
 
     public InitUserProxyRemoteUI() {
-        super(Stripe.REQUEST, topic);
+        super(Flag.REQUEST, topic);
     }
 
     public static InitUserProxyRemoteUI deserialize(String json) {

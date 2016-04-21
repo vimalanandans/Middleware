@@ -190,7 +190,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
             streamRecord.senderSEP = senderSEP;
             streamRecord.allowDrops = false;
             streamRecord.isIncremental = false;
-            streamRecord.isSecure = stream.isSecure();
+            streamRecord.isEncrypted = stream.isEncrypted();
             streamRecord.Sphere = null;
             streamRecord.streamStatus = StreamRecord.StreamingStatus.PENDING;
             streamRecord.recipientIP = receiver.device;
@@ -211,7 +211,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
                 final String sphereName = sphereIterator.next();
                 final ControlLedger tcMessage = new ControlLedger();
                 tcMessage.setSphereId(sphereName);
-                final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedStream, stream.topic, tempFile.getName(), streamRecord.isSecure, streamRecord.isIncremental, streamRecord.allowDrops, streamId);
+                final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedStream, stream.topic, tempFile.getName(), streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.allowDrops, streamId);
                 tcMessage.setSphereId(sphereName);
                 tcMessage.setMessage(request);
                 tcMessage.setSerializedMessage(new Gson().toJson(request));

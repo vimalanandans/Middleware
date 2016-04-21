@@ -26,7 +26,7 @@ public class LocalAndroidSender implements LocalUhuSender {
     private final Service uhuService = ProxyforServices.getServiceInstance();
     private final ProxyforServices proxy = new ProxyforServices(uhuService);
 
-    private final Logger log = LoggerFactory.getLogger(LocalAndroidSender.class);
+    private static final Logger log = LoggerFactory.getLogger(LocalAndroidSender.class);
 
     @Override
     public void invokeReceive(PipeHeader pipeHeader, String serializedEvent) {

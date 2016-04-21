@@ -16,7 +16,7 @@ public class ResponsePolicy extends Event {
      * @param policy
      */
     public ResponsePolicy(String location, HueVocab.Policy policy) {
-        super(Stripe.REPLY, TOPIC);
+        super(Flag.REPLY, TOPIC);
         this.location = location;
         this.policy = policy;
     }
@@ -30,7 +30,7 @@ public class ResponsePolicy extends Event {
      * @param king
      */
     public ResponsePolicy(String location, HueVocab.Policy policy, String king) {
-        super(Stripe.REPLY, TOPIC);
+        super(Flag.REPLY, TOPIC);
         this.location = location;
         this.policy = policy;
         this.king = king;

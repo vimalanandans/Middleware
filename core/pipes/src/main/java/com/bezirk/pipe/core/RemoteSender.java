@@ -28,7 +28,7 @@ import java.util.UUID;
  */
 public class RemoteSender implements Runnable {
 
-    private final Logger log = LoggerFactory.getLogger(RemoteSender.class);
+    private static final Logger log = LoggerFactory.getLogger(RemoteSender.class);
 
     /**
      * Reference to the pipe registry so that pipes can be searched for

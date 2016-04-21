@@ -14,7 +14,7 @@ public class ResponseActiveLights extends Event {
     private Location location;
 
     public ResponseActiveLights() {
-        super(Stripe.REPLY, TOPIC);
+        super(Flag.REPLY, TOPIC);
     }
 
     public Set<LightDetails> getLightIdDetails() {

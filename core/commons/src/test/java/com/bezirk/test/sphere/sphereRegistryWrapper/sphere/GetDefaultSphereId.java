@@ -33,7 +33,7 @@
 //	private static SphereRegistry registry;
 //	private static SphereTestUtility sphereTestUtility;
 //	private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-//	private static final Logger log = LoggerFactory.getLogger(GetDefaultSphereId.class);
+//	private static final Logger logger = LoggerFactory.getLogger(GetDefaultSphereId.class);
 //
 //	/**
 //	 * @throws java.lang.Exception

@@ -22,7 +22,7 @@ public class LogSenderQueueProcessor extends Thread {
     /**
      * private logger for the class
      */
-    private final Logger log = LoggerFactory.getLogger(LogSenderQueueProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(LogSenderQueueProcessor.class);
     /**
      * Logging Service IP. This will set based on the LoggingMessage from the Logging service.
      */

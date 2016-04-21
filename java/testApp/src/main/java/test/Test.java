@@ -7,7 +7,7 @@ import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.ServiceId;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.proxy.Factory;
 
 
@@ -49,7 +49,7 @@ public class Test {
         Address target = new Address(null);        // local only (no pipes) with no constraints on location: will reach all services in the spheres test.Test is a member of
 
         // 2. set the event to be published
-        Event hello = new Event(Stripe.NOTICE, "Hello World");
+        Event hello = new Event(Flag.NOTICE, "Hello World");
 
         // 3. publish "hello world" to all in the target address
         bezirk.sendEvent(myId, target, hello);

@@ -32,7 +32,7 @@ public class PipeManagerTest {
 
     private static final String TEMP_FILE_PREFIX = "testFile";
     private static final String TEMP_FILE_SUFFIX = ".txt";
-    private static Logger log = LoggerFactory.getLogger(PipeManagerTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(PipeManagerTest.class);
     private PipeManager pipeManager = null;
     private Pipe boschPipe = null;
     private EchoRequest echoRequest = null;
@@ -48,7 +48,7 @@ public class PipeManagerTest {
 
     @AfterClass
     public static void cleanUpAfterAllTests() throws Exception {
-        log.info("cleaning up ...");
+        logger.info("cleaning up ...");
     }
 
     @Before
@@ -93,7 +93,7 @@ public class PipeManagerTest {
         FileRequest fileRequest = new FileRequest();
         fileRequest.setFileName(tempFileName);
         String serializedRequest = fileRequest.serialize();
-        log.info("Sending request: ");
+        logger.info("Sending request: ");
         System.out.println(TestUtils.prettyPrintJson(serializedRequest));
 
         MulticastHeader multicastHeader = new MulticastHeader();

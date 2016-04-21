@@ -18,7 +18,6 @@ import com.bezirk.middleware.addressing.ServiceEndPoint;
  * This is a mock service endpoint used for unit testing.
  *
  * @author AJC6KOR
- *
  */
 public class MockServiceEndpoint implements ServiceEndPoint {
 

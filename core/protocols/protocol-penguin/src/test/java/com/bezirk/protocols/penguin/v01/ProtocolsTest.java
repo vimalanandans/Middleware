@@ -1,6 +1,6 @@
 package com.bezirk.protocols.penguin.v01;
 
-import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.protocols.callback.TrackableEvent;
 import com.bezirk.protocols.presence.PresenceDetectorRole;
 import com.bezirk.protocols.smartservice.SmartServiceRole;
@@ -24,11 +24,11 @@ public class ProtocolsTest {
     @Before
     public void setUp() throws Exception {
 
-        TrackableEvent tEvents = new TrackableEvent(Stripe.REQUEST, "TTS");
+        TrackableEvent tEvents = new TrackableEvent(Flag.REQUEST, "TTS");
 
         String requestID = tEvents.getRequestID();
 
-        tEvents = new TrackableEvent(Stripe.REQUEST, "TTS", requestID);
+        tEvents = new TrackableEvent(Flag.REQUEST, "TTS", requestID);
 
     }
 

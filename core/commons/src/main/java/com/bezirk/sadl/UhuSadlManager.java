@@ -40,7 +40,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
     /**
      * Logger for current class
      */
-    private final Logger log = LoggerFactory.getLogger(UhuSadlManager.class);
+    private static final Logger log = LoggerFactory.getLogger(UhuSadlManager.class);
     private final Date currentDate = new Date();
     protected ISadlPersistence sadlPersistence = null;
     protected SadlRegistry sadlRegistry = null;

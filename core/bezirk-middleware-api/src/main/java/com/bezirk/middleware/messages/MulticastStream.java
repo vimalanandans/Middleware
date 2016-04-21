@@ -21,8 +21,8 @@ public class MulticastStream extends Stream {
 
     private final Address address;
 
-    public MulticastStream(Stripe stripe, String topic, Address address) {
-        super(stripe, topic);
+    public MulticastStream(Flag flag, String topic, Address address) {
+        super(flag, topic);
         this.address = address;
     }
 

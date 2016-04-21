@@ -21,7 +21,7 @@ import java.util.List;
 public class DiagnosisActivity extends ActionBarActivity
         implements GenericListItemView.ItemToggleListener {
 
-    private final Logger log = LoggerFactory.getLogger(DiagnosisActivity.class);
+    private static final Logger log = LoggerFactory.getLogger(DiagnosisActivity.class);
 
     // UI Create
     List<DataModel> listData = new ArrayList<DataModel>();

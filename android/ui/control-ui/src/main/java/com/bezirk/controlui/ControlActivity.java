@@ -1,6 +1,6 @@
 package com.bezirk.controlui;
 /**
- * Uhu Control UI Application to launch UhU-Android Stack
+ * Bezirk Control UI Application to launch UhU-Android Stack
  * Vimal
  */
 

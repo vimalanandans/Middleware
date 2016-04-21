@@ -18,13 +18,13 @@ public class TrackableEvent extends Event {
 
 	/* constructors */
 
-    public TrackableEvent(Stripe stripe, String topic) {
-        super(stripe, topic);
+    public TrackableEvent(Flag flag, String topic) {
+        super(flag, topic);
         requestID = generateRequestID();
     }
 
-    public TrackableEvent(Stripe stripe, String topic, String requestID) {
-        super(stripe, topic);
+    public TrackableEvent(Flag flag, String topic, String requestID) {
+        super(flag, topic);
         this.setRequestID(requestID);
     }
 	

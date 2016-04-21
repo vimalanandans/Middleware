@@ -7,7 +7,7 @@ import java.util.LinkedHashSet;
 
 
 public final class DuplicateMessageManager {
-    private static final Logger log = LoggerFactory.getLogger(DuplicateMessageManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(DuplicateMessageManager.class);
 
     private static final int SIZE_OF_SET = 1024;
     //	private static final LinkedHashSet<byte[]> duplicateEventsCheck = new LinkedHashSet<byte[]>();

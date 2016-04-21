@@ -56,7 +56,7 @@ public class DisambiguationQuestions extends Event {
 	/* Constructor */
 
     public DisambiguationQuestions() {
-        super(Stripe.REPLY, topic);
+        super(Flag.REPLY, topic);
     }
 	
 	

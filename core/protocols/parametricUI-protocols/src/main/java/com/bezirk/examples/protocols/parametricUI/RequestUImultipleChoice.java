@@ -27,7 +27,7 @@ public class RequestUImultipleChoice extends Event {
      */
     public RequestUImultipleChoice(String[] availableChoices, long expiration) {
         // set UhuMessage properties: useful for discrimination/deserialization
-        super(Stripe.REQUEST, TOPIC);
+        super(Flag.REQUEST, TOPIC);
         // set event payload: useful for the consumer services
         this.availableChoices = availableChoices == null ? null : availableChoices.clone();
         this.expiration = expiration;

@@ -60,8 +60,8 @@ public class DeviceWindow extends JFrame {
         textFieldRegionName = new JTextField();
         textFieldRegionName.setBounds(234, 60, 155, 20);
         textFieldRegionName
-                .setText(upaDevice.getDeviceLocation().getRegion() == null ? ""
-                        : upaDevice.getDeviceLocation().getRegion());
+                .setText(upaDevice.getDeviceLocation().getWideScope() == null ? ""
+                        : upaDevice.getDeviceLocation().getWideScope());
         contentPane.add(textFieldRegionName);
         textFieldRegionName.setColumns(10);
 

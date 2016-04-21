@@ -1,7 +1,7 @@
 /*
  * @author: Joao Sousa (CR/RTC3-NA)
  * 
- * @description: This is the core interface for Uhu Proxy - sending side.
+ * @description: This is the core interface for Bezirk Proxy - sending side.
  * 
  */
 package com.bezirk.proxy.android;

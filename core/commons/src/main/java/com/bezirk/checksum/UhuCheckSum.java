@@ -9,11 +9,7 @@ import java.util.zip.CRC32;
 
 
 public final class UhuCheckSum {
-
-    /**
-     * Logger for current class
-     */
-    private static transient final Logger log = LoggerFactory.getLogger(UhuCheckSum.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuCheckSum.class);
 
     private final static String ALGORITHM = "SHA";
 
@@ -35,7 +31,7 @@ public final class UhuCheckSum {
             msgdgst.update(dataToBeComputed);
             computedCheckSum = msgdgst.digest();
         } catch (NoSuchAlgorithmException e) {
-            log.error("Could not find any algorithm to compute the checksum", e);
+            logger.error("Could not find any algorithm to compute the checksum", e);
         }
         return computedCheckSum;
     }
@@ -55,7 +51,7 @@ public final class UhuCheckSum {
             Long crcValue = crc32.getValue();
             computedCheckSum = String.valueOf(crcValue).getBytes();
         } catch (Exception e) {
-            log.error("Error occured while computing checksum using crc32", e);
+            logger.error("Error occured while computing checksum using crc32", e);
         }
         return computedCheckSum;
     }

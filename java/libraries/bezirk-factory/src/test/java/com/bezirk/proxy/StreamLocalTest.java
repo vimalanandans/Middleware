@@ -7,7 +7,7 @@ import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ServiceEndPoint;
 import com.bezirk.middleware.addressing.ServiceId;
-import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.UnicastStream;
 import com.bezirk.proxy.api.impl.UhuDiscoveredService;
@@ -41,7 +41,7 @@ import static org.junit.Assert.fail;
  *         MS-B receives the file.
  */
 public class StreamLocalTest {
-    private final static Logger log = LoggerFactory.getLogger(StreamLocalTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(StreamLocalTest.class);
     private static boolean isStreamSuccess = false;
     private short sendStreamId = -1;
     private String sendfilePath = null;
@@ -51,13 +51,13 @@ public class StreamLocalTest {
 
     @BeforeClass
     public static void setup() {
-        log.info(" ****************** Setting up Stream Local Testcase *******************");
+        logger.info(" ****************** Setting up Stream Local Testcase *******************");
 
     }
 
     @AfterClass
     public static void tearDown() {
-        log.info(" ************** Shutting down Stream Local Testcase ****************************");
+        logger.info(" ************** Shutting down Stream Local Testcase ****************************");
 
     }
 
@@ -108,7 +108,7 @@ public class StreamLocalTest {
         private final void setupMockService() {
             uhu = Factory.getInstance();
             myId = uhu.registerService(serviceName);
-            log.info("StreamLocalMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            logger.info("StreamLocalMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             pRole = new StreamLocalDummyProtocolRole();
             uhu.subscribe(myId, pRole, this);
 
@@ -145,7 +145,7 @@ public class StreamLocalTest {
 
         @Override
         public void discovered(Set<DiscoveredService> serviceSet) {
-            log.info("Received Discovery Response");
+            logger.info("Received Discovery Response");
             if (serviceSet == null) {
                 fail("Service Set of Discovered Services in Null");
                 return;
@@ -160,11 +160,11 @@ public class StreamLocalTest {
 
             Iterator<DiscoveredService> iterator = serviceSet.iterator();
             dService = (UhuDiscoveredService) iterator.next();
-            log.info("DiscoveredServiceName : " + dService.name + "\n" +
+            logger.info("DiscoveredServiceName : " + dService.name + "\n" +
                     "Discovered Role : " + dService.pRole + "\n" +
                     "Discovered SEP" + dService.service + "\n");
 
-            request = new StreamLocalMockRequestStream(Stripe.REQUEST, "MockRequestStream", dService.service);
+            request = new StreamLocalMockRequestStream(Message.Flag.REQUEST, "MockRequestStream", dService.service);
 
             sendfilePath = StreamLocalTest.class.getClassLoader().getResource("streamingTestFile.txt").getPath();
             sendStreamId = uhu.sendStream(myId, dService.service, request, sendfilePath);
@@ -239,9 +239,9 @@ public class StreamLocalTest {
      */
     private final class StreamLocalMockRequestStream extends UnicastStream {
 
-        private StreamLocalMockRequestStream(Stripe stripe, String topic,
+        private StreamLocalMockRequestStream(Flag flag, String topic,
                                              ServiceEndPoint recipient) {
-            super(stripe, topic, recipient);
+            super(flag, topic, recipient);
         }
 
 
@@ -261,7 +261,7 @@ public class StreamLocalTest {
         private final void setupMockService() {
             uhu = Factory.getInstance();
             myId = uhu.registerService(serviceName);
-            log.info("StreamLocalMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            logger.info("StreamLocalMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             uhu.subscribe(myId, new StreamLocalMockServiceProtocolRole(), this);
         }
 
@@ -277,17 +277,17 @@ public class StreamLocalTest {
 
         @Override
         public void receiveStream(String topic, String stream, short streamId, String filePath, ServiceEndPoint sender) {
-            log.info("****** RECEIVED STREAM REQUEST ******");
+            logger.info("****** RECEIVED STREAM REQUEST ******");
             assertNotNull(topic);
             assertNotNull(stream);
             assertNotNull(filePath);
             assertNotNull(sender);
 
-            log.info("topic-> " + topic);
-            log.info("stream-> " + stream);
-            log.info("streamId-> " + streamId);
-            log.info("filePath-> " + filePath);
-            log.info("sender-> " + sender);
+            logger.info("topic-> " + topic);
+            logger.info("stream-> " + stream);
+            logger.info("streamId-> " + streamId);
+            logger.info("filePath-> " + filePath);
+            logger.info("sender-> " + sender);
 
             assertEquals("MockRequestStream", topic);
             assertEquals(sendfilePath, filePath);
@@ -313,7 +313,7 @@ public class StreamLocalTest {
                         fileInputStream.close();
                 } catch (IOException e) {
 
-                    log.error("Error in closing resources.");
+                    logger.error("Error in closing resources.");
                 }
             }
             isStreamSuccess = true;
@@ -323,7 +323,7 @@ public class StreamLocalTest {
         public void streamStatus(short streamId, StreamConditions status) {
             assertEquals(sendStreamId, streamId);
             assertEquals(StreamConditions.END_OF_DATA, status);
-            log.info("**** STREAM STATUS SUCCESSFUL FOR END_OF_DATA");
+            logger.info("**** STREAM STATUS SUCCESSFUL FOR END_OF_DATA");
         }
 
 

@@ -14,13 +14,12 @@ package com.bezirk.middleware.messages;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
- *	 This testcase verifies the GetStreamRequest by setting the properties and retrieving them after deserialization.
+ * This testcase verifies the GetStreamRequest by setting the properties and retrieving them after deserialization.
  *
  * @author AJC6KOR
- *
  */
 public class GetStreamRequestTest {
 

@@ -35,7 +35,7 @@ class LogDataActivityHelper {
     /**
      * Logging Util.
      */
-    private final Logger log = LoggerFactory.getLogger(LogDataActivityHelper.class);
+    private static final Logger log = LoggerFactory.getLogger(LogDataActivityHelper.class);
     /**
      * ANY_SPHERE label
      */

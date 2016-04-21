@@ -8,7 +8,7 @@ public class RequestLightLocation extends Event {
     private Integer lightId;
 
     public RequestLightLocation(Integer id) {
-        super(Stripe.REQUEST, TOPIC);
+        super(Flag.REQUEST, TOPIC);
         this.lightId = id;
     }
 

@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
 public class TestWithOneReceiver {
 
     static int numOfDevices = 2;
-    private static Logger log = LoggerFactory.getLogger(TestWithTwoReceivers.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestWithTwoReceivers.class);
     private static VirtualCommsManager manager = new VirtualCommsManager();
     private static UhuCommsMock uhuCommsMock;
 
@@ -36,7 +36,7 @@ public class TestWithOneReceiver {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("******** Setting up TestWithOneReceiver ********");
+        logger.info("******** Setting up TestWithOneReceiver ********");
         manager.setUp(numOfDevices);
         uhuCommsMock = manager.uhuCommsMock;
     }
@@ -47,7 +47,7 @@ public class TestWithOneReceiver {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("******** Shutting down TestWithOneReceiver ********");
+        logger.info("******** Shutting down TestWithOneReceiver ********");
         manager.destroy(numOfDevices);
     }
 
@@ -75,7 +75,7 @@ public class TestWithOneReceiver {
      */
     @Test
     public final void validCatchCodeReturnsTrue() throws Exception {
-        log.info("****** Starting the valid catch code test *****");
+        logger.info("****** Starting the valid catch code test *****");
 
         //Get the sphere ID of device0
         String sphereId0 = manager.device[0].sphereId;
@@ -96,7 +96,7 @@ public class TestWithOneReceiver {
         CatchResponse receivedResponse = (CatchResponse) uhuCommsMock.message.getMessage();
         assertTrue(manager.device[0].catchProcessor.processResponse(receivedResponse));
 
-        log.info("****** Ending the valid catch code test *****");
+        logger.info("****** Ending the valid catch code test *****");
     }
 
 
@@ -107,7 +107,7 @@ public class TestWithOneReceiver {
      */
     @Test
     public final void invalidCatchCodeReturnsFalse() throws Exception {
-        log.info("****** Starting the invalid catch code test *****");
+        logger.info("****** Starting the invalid catch code test *****");
 
         //Get the sphere ID of device0
         String sphereId0 = manager.device[0].sphereId;
@@ -123,7 +123,7 @@ public class TestWithOneReceiver {
         //Process the received request at device1 and send a catch response if processing was successful
         assertFalse(manager.device[1].catchProcessor.processRequest(receivedRequest));
 
-        log.info("****** Ending the invalid catch code test *****");
+        logger.info("****** Ending the invalid catch code test *****");
     }
 
 }

@@ -26,18 +26,21 @@ import java.io.PipedOutputStream;
 
 
 /**
- * Platform-independent API offered by bezirk middleware to services (normally by means of a platform-specific proxy.)
+ * Platform-independent API offered by bezirk middleware to services (normally by means of a
+ * platform-specific proxy.)
  *
  * @see BezirkListener
  */
 public interface Bezirk {
 
     /**
-     * Makes the service known to Bezirk middleware, so that the user may then associate the service with one or more Spheres.
+     * Makes the service known to Bezirk middleware, so that the user may then associate the service
+     * with one or more Spheres.
      * Should be called once by each service before any other call on this API.
      *
      * @param myName as defined by the service developer/vendor
-     * @return Bezirk middelware-defined id for the registering service, or NULL if Bezirk middelware blocks a second registration for the same name.
+     * @return Bezirk middelware-defined id for the registering service, or NULL if Bezirk
+     * middelware blocks a second registration for the same name.
      */
     public ServiceId registerService(String myName);
 
@@ -54,7 +57,8 @@ public interface Bezirk {
      *
      * @param subscriber id as returned by {@link #registerService(String)}
      * @param pRole      specific protocol role that the service will play
-     * @param listener   object for the callbacks issued by Bezirk middelware upon reception of events and streams associated with this protocol role
+     * @param listener   object for the callbacks issued by Bezirk middelware upon reception of
+     *                   events and streams associated with this protocol role
      */
     public void subscribe(ServiceId subscriber, ProtocolRole pRole, BezirkListener listener);
 

@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
 public final class UhuComms {
 
     // Comms properties
-    private static final Logger log = LoggerFactory.getLogger(UhuComms.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuComms.class);
     private static final int retransmitTime = 10000;
     private static final int mapSize = 10;
     private static LinkedHashMap<String, Long> duplicateMap = new LinkedHashMap<String, Long>();

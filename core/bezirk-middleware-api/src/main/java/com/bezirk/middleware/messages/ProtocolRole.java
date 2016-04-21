@@ -18,24 +18,28 @@ package com.bezirk.middleware.messages;
 public abstract class ProtocolRole {
     /**
      * Concrete classes must implement this method to return the specific protocol label.
+     *
      * @return protocol label, which may used for subscription and discovery
      */
     public abstract String getProtocolName();
 
     /**
-     * Human readable name for the protocol. E.g. UhU may refer to it to explain pipe policy.
+     * Human readable name for the protocol. E.g. Bezirk may refer to it to explain pipe policy.
+     *
      * @return The Protocol role description
      */
     public abstract String getDescription();
 
     /**
      * Concrete classes must implement this method to return the specific array of event topics.
+     *
      * @return array of event topics
      */
     public abstract String[] getEventTopics();
 
     /**
      * Concrete classes must implement this method to return the specific array of stream topics.
+     *
      * @return array of stream topics
      */
     public abstract String[] getStreamTopics();

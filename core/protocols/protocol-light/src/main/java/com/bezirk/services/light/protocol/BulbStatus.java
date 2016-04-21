@@ -15,7 +15,7 @@ public class BulbStatus extends Event {
     private HueVocab.BulbStatusType type = BulbStatusType.STATUS;
 
     public BulbStatus(Integer lightNumber, HueVocab.Commands command) {
-        super(Stripe.NOTICE, TOPIC);
+        super(Flag.NOTICE, TOPIC);
         this.command = command;
         this.lightNumber = lightNumber;
         this.location = null;
@@ -24,7 +24,7 @@ public class BulbStatus extends Event {
     }
 
     public BulbStatus(Location location, HueVocab.Commands command) {
-        super(Stripe.NOTICE, TOPIC);
+        super(Flag.NOTICE, TOPIC);
         this.command = command;
         this.lightNumber = null;
         this.location = location;

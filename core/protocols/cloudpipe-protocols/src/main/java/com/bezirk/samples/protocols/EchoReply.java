@@ -7,7 +7,7 @@ public class EchoReply extends Event {
     private String text = null;
 
     public EchoReply() {
-        super(Stripe.REPLY, EchoReply.class.getSimpleName());
+        super(Flag.REPLY, EchoReply.class.getSimpleName());
     }
 
     public static EchoReply deserialize(String serializedEvent) {

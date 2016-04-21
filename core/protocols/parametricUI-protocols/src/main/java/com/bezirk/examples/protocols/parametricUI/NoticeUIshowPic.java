@@ -25,7 +25,7 @@ public class NoticeUIshowPic extends Event {
      */
     public NoticeUIshowPic(String picURL) {
         // set UhuMessage properties: useful for discrimination/deserialization
-        super(Stripe.NOTICE, TOPIC);
+        super(Flag.NOTICE, TOPIC);
         // set event payload: useful for the consumer services
         this.picURL = picURL;
     }

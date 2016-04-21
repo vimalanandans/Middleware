@@ -20,7 +20,7 @@ public class UserProfile extends Event {
 	/* constructors */
 
     public UserProfile() {
-        super(Stripe.REPLY, topic);
+        super(Flag.REPLY, topic);
         this.hasConditionalProfileSubset = new ArrayList<ConditionalProfileSubset>();
         this.hasDefaultProfileSubset = new ArrayList<DefaultProfileSubset>();
     }

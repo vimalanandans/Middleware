@@ -32,7 +32,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class MessageDispatcherTest {
 
-    private static final Logger log = LoggerFactory.getLogger(MessageDispatcherTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageDispatcherTest.class);
     private static final UhuServiceId serviceId = new UhuServiceId("ServiceA");
     private static final UhuServiceEndPoint recipient = new UhuServiceEndPoint(serviceId);
     private static InetAddress inetAddr;
@@ -44,7 +44,7 @@ public class MessageDispatcherTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up MessageDispatcherTest TestCase *****");
+        logger.info("***** Setting up MessageDispatcherTest TestCase *****");
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
     }
@@ -71,7 +71,7 @@ public class MessageDispatcherTest {
             }
         } catch (SocketException e) {
 
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
 
         }
         return null;
@@ -120,15 +120,15 @@ public class MessageDispatcherTest {
         public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
             switch (id) {
                 case DiscoveryRequest:
-                    log.info("Received discovery request.");
+                    logger.info("Received discovery request.");
                     requestReceived = true;
                     break;
                 case DiscoveryResponse:
-                    log.info("Received discovery response.");
+                    logger.info("Received discovery response.");
                     responseReceived = true;
                     break;
                 default:
-                    log.error("Unknown control message > " + id);
+                    logger.error("Unknown control message > " + id);
                     unKnownMessageReceived = true;
                     return false;
             }

@@ -20,7 +20,7 @@ public class ConfigurePolicy extends Event {
     private String king = "No-King";
 
     public ConfigurePolicy(Location loc, HueVocab.Policy policy, String presenceSentivity) {
-        super(Stripe.NOTICE, TOPIC);
+        super(Flag.NOTICE, TOPIC);
         this.location = loc;
         this.policy = policy;
         this.presenceSentivity = presenceSentivity;

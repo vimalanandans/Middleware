@@ -34,7 +34,7 @@ import javax.swing.SwingUtilities;
  * @modified AJC6KOR
  */
 public class MainService {
-    private static final Logger LOGGER = LoggerFactory
+    private static final Logger logger = LoggerFactory
             .getLogger(MainService.class);
     private static final String DB_VERSION = "0.0.3";
     /**
@@ -80,14 +80,14 @@ public class MainService {
          */
         @Override
         public void versionMismatch(final String misMatchVersionId) {
-            LOGGER.info("mismatch version " + misMatchVersionId);
+            logger.info("mismatch version " + misMatchVersionId);
             if ((++errorCallbackCount) % MAX_ERROR_REPEAT_COUNT == 0) {
                 if (uhuConfig.isDisplayEnabled()) {
                     if (frame != null) {
                         frame.showWarningIcon(true, misMatchVersionId);
                     }
                 } else {
-                    LOGGER.error("Mismatch in Uhu Version, Check the versions of all the devices");
+                    logger.error("Mismatch in Uhu Version, Check the versions of all the devices");
                 }
             }
         }
@@ -96,13 +96,13 @@ public class MainService {
         public void diagMsg(MessageLedger msg) {
             // TODO:
             // handle ping message and reply pong. check android code
-            LOGGER.info("diag UI and response are not implemented in uhu build");
+            logger.info("diag UI and response are not implemented in uhu build");
         }
 
         @Override
         public void handleError(String errorMsg) {
             // TODO Auto-generated method stub
-            LOGGER.info("Comms UI Error" + errorMsg);
+            logger.info("Comms UI Error" + errorMsg);
         }
     };
 
@@ -121,7 +121,7 @@ public class MainService {
 
         /** get the config */
         if (uhuConfig == null) {
-            LOGGER.debug("unable to find the uhu config. using default values. check uhu.xml");
+            logger.debug("unable to find the uhu config. using default values. check uhu.xml");
             this.uhuConfig = new UhuConfig();
         }
 
@@ -138,7 +138,7 @@ public class MainService {
      * Stop UhuStack
      */
     public void stopStack() {
-        LOGGER.info("UhuStarter has stopped\n");
+        logger.info("UhuStarter has stopped\n");
 
         /*************************************
          * Step1 : Stop Comms                *
@@ -175,7 +175,7 @@ public class MainService {
      * @param uhuPcCallback
      */
     public void startStack(final ServiceMessageHandler uhuPcCallback) {
-        LOGGER.info("UhuStarter has started \n");
+        logger.info("UhuStarter has started \n");
 
         /**************************************************
          * Step1 : Set Platform specific call back        *
@@ -275,7 +275,7 @@ public class MainService {
 
             // Check if the Logging is enabled and start the LoggingGUI
             if (UhuComms.isRemoteLoggingServiceEnabled()) {
-                LOGGER.info("*** REMOTE LOGGING SERVICE IS ENABLED");
+                logger.info("*** REMOTE LOGGING SERVICE IS ENABLED");
                 SwingUtilities.invokeLater(new Runnable() {
 
                     @Override
@@ -304,7 +304,7 @@ public class MainService {
         this.startStack(null);
         final long endTime = new Date().getTime();
         final long totalTime = endTime - startTime;
-        LOGGER.info(">>" + "Reboot-Time:" + totalTime + "<<");
+        logger.info(">>" + "Reboot-Time:" + totalTime + "<<");
     }
 
     /**
@@ -321,7 +321,7 @@ public class MainService {
             registryPersistence = new RegistryPersistence(dbConnection,
                     DB_VERSION);
         } catch (Exception e1) {
-            LOGGER.error("Error in loading Registry Persistence from:"
+            logger.error("Error in loading Registry Persistence from:"
                     + uhuConfig.getDataPath(), e1);
             System.exit(0);
         }
@@ -355,7 +355,7 @@ public class MainService {
 
         } catch (Exception e) {
 
-            LOGGER.error("Unable to set uhu callback for the comms.", e);
+            logger.error("Unable to set uhu callback for the comms.", e);
             return false;
         }
         */

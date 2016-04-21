@@ -22,7 +22,7 @@ import java.sql.SQLException;
  */
 public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implements IDatabaseConnection {
     private static final int DATABASE_VERSION = 1;
-    private final Logger log = LoggerFactory.getLogger(DatabaseConnectionForAndroid.class);
+    private static final Logger log = LoggerFactory.getLogger(DatabaseConnectionForAndroid.class);
     private final Context mContext;
     private ConnectionSource dbConnectionSource;
     private Dao<UhuRegistry, Integer> uhuPersistenceDao;

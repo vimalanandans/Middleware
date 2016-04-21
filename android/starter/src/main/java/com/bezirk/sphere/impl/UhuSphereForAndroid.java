@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  */
 public class UhuSphereForAndroid extends UhuSphere implements IUhuSphereListener, IUhuQRCode {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(UhuSphereForAndroid.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UhuSphereForAndroid.class);
     private final Context applicationContext;
     private final UhuPreferences preferences;
     private ISphereConfig sphereConfig;

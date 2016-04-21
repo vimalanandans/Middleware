@@ -15,8 +15,8 @@ package com.bezirk.middleware.addressing;
 import java.net.URI;
 
 /**
- * Represents a pipe to a UhU-cloud instance hosted at URL - which may be redirected by the user via UhU UIs
- *
+ * Represents a pipe to a Bezirk-cloud instance hosted at URL - which may be redirected by the user
+ * via Bezirk UIs
  */
 public class CloudPipe extends Pipe {
 

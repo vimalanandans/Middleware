@@ -8,7 +8,7 @@ public class ClearUserDetails extends Event {
     private String userName;
 
     public ClearUserDetails() {
-        super(Stripe.NOTICE, TOPIC);
+        super(Flag.NOTICE, TOPIC);
         // TODO Auto-generated constructor stub
     }
 

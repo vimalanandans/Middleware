@@ -14,8 +14,9 @@ package com.bezirk.middleware.addressing;
 
 
 /**
- * UhU generates objects that implement this interface.
- * If one of these objects represents the identity of a service s1, it may be used by s1 for interactions with UhU, and may also be used by UhU for sphere management.
+ * Bezirk generates objects that implement this interface.
+ * If one of these objects represents the identity of a service s1, it may be used by s1 for
+ * interactions with Bezirk, and may also be used by Bezirk for sphere management.
  */
 public interface ServiceId {
 

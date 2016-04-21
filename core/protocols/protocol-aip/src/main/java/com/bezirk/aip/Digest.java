@@ -62,7 +62,7 @@ public class Digest<A> extends Event {
 	/* Constructor */
 
     public Digest() {
-        super(Stripe.REPLY, topic);
+        super(Flag.REPLY, topic);
     }
 	
 	

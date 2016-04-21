@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 public class BRForService implements IBoradcastReceiver {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BRForService.class);
+    private static final Logger logger = LoggerFactory.getLogger(BRForService.class);
 
 
     private static final int TIME_DURATION = 15000;
@@ -85,7 +85,7 @@ public class BRForService implements IBoradcastReceiver {
                     handleMulticastCallback(multicastCallbackMessage);
                     break;*/
                 default:
-                    LOGGER.error("Unknown incoming message type : " + incomingMessage.getCallbackType());
+                    logger.error("Unknown incoming message type : " + incomingMessage.getCallbackType());
             }
         }
 
@@ -93,7 +93,7 @@ public class BRForService implements IBoradcastReceiver {
 
   /*      private void handleMulticastCallback(
                 MulticastCallbackMessage multicastCallbackMessage) {
-            LOGGER.debug("Not yet implemented");
+            logger.debug("Not yet implemented");
         }*/
 
     /**
@@ -103,7 +103,7 @@ public class BRForService implements IBoradcastReceiver {
      * @param eCallbackMessage
      */
     private void handleEventCallback(EventIncomingMessage eCallbackMessage) {
-        LOGGER.debug("About to callback sid:" + eCallbackMessage.getRecipient().getUhuServiceId() + " for id:" + eCallbackMessage.msgId);
+        logger.debug("About to callback sid:" + eCallbackMessage.getRecipient().getUhuServiceId() + " for id:" + eCallbackMessage.msgId);
         //Make a combined sid for sender and recipient
         String combinedSid = eCallbackMessage.senderSEP.serviceId.getUhuServiceId() + ":" + eCallbackMessage.getRecipient().getUhuServiceId();
         if (checkDuplicateMsg(combinedSid, eCallbackMessage.msgId)) {
@@ -119,7 +119,7 @@ public class BRForService implements IBoradcastReceiver {
                 }
             }
         } else {
-            LOGGER.info("Duplicate Event Received");
+            logger.info("Duplicate Event Received");
         }
     }
 
@@ -136,10 +136,10 @@ public class BRForService implements IBoradcastReceiver {
                 }
                 return;
             }
-            LOGGER.error(" StreamListnerMap doesnt have a mapped Stream");
+            logger.error(" StreamListnerMap doesnt have a mapped Stream");
             return;
         }
-        LOGGER.error("Duplicate Stream Request Received");
+        logger.error("Duplicate Stream Request Received");
     }
 
     /**
@@ -180,7 +180,7 @@ public class BRForService implements IBoradcastReceiver {
             final HashSet<UhuDiscoveredService> discoveredList = gson.fromJson(discoveredListAsString, discoveredListType);
 
             if (null == discoveredList || discoveredList.isEmpty()) {
-                LOGGER.error("Empty discovered List");
+                logger.error("Empty discovered List");
                 return;
             }
 

@@ -15,7 +15,8 @@ package com.bezirk.middleware.addressing;
 import com.google.gson.Gson;
 
 /**
- * Represents a pipe with a name.  
+ * Represents a pipe with a name.
+ *
  * @see CloudPipe
  */
 public class Pipe {
@@ -27,7 +28,7 @@ public class Pipe {
     }
 
     /**
-     * @param pName suggested name for the pipe - which may be changed by the user via UhU UIs
+     * @param pName suggested name for the pipe - which may be changed by the user via Bezirk UIs
      */
     public Pipe(String pName) {
         this.name = pName;
@@ -35,7 +36,7 @@ public class Pipe {
 
     /**
      * @param json The Json String that is to be deserialized
-     * @param dC class to deserialize into
+     * @param cL   class to deserialize into
      * @return object of class C
      */
     public static <C> C deserialize(String json, Class cL) {

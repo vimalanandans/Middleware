@@ -7,7 +7,7 @@ public class EchoRequest extends Event {
     private String text = null;
 
     public EchoRequest() {
-        super(Stripe.REQUEST, EchoRequest.class.getSimpleName());
+        super(Flag.REQUEST, EchoRequest.class.getSimpleName());
     }
 
     public static EchoRequest deserialize(String serializedEvent) {

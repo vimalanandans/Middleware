@@ -30,7 +30,7 @@ public class ClearData extends Event {
      * @param topic
      */
     public ClearData() {
-        super(Stripe.NOTICE, topic);
+        super(Flag.NOTICE, topic);
 
     }
 

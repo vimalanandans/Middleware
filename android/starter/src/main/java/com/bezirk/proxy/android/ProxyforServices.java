@@ -1,7 +1,7 @@
 /*
  * @author: Marcelo Cataldo (CR/RTC3-NA)
  *
- * @description: This class implements Android-specific Uhu Proxy.
+ * @description: This class implements Android-specific Bezirk Proxy.
  *
  */
 

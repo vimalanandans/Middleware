@@ -18,7 +18,6 @@ import com.bezirk.middleware.messages.ProtocolRole;
  * This is a mockprotocol used for unit testing
  *
  * @author AJC6KOR
- *
  */
 
 class MockProtocolRole extends ProtocolRole {

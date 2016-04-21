@@ -12,17 +12,14 @@
  */
 package com.bezirk.middleware.messages;
 
-import com.bezirk.middleware.messages.Message.Stripe;
-
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 /**
- *	 This testcase verifies Event by setting the properties and retrieving them after deserialization.
+ * This testcase verifies Event by setting the properties and retrieving them after deserialization.
  *
  * @author AJC6KOR
- *
  */
 public class EventTest {
 
@@ -31,14 +28,14 @@ public class EventTest {
     public void test() {
 
         String topic = "TestEvent";
-        Stripe stripe = Stripe.NOTICE;
-        com.bezirk.middleware.messages.Event event = new Event(stripe, topic);
+        Message.Flag flag = Message.Flag.NOTICE;
+        com.bezirk.middleware.messages.Event event = new Event(flag, topic);
 
         String serializedEvent = event.serialize();
 
         Event deserializedEvent = Event.deserialize(serializedEvent, Event.class);
 
-        assertEquals("Stripe is not equal to the set value.", stripe, deserializedEvent.stripe);
+        assertEquals("Flag is not equal to the set value.", flag, deserializedEvent.flag);
         assertEquals("Topic is not equal to the set value.", topic, deserializedEvent.topic);
     }
 

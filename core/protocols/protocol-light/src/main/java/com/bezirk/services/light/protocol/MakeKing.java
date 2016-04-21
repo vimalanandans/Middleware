@@ -8,7 +8,7 @@ public class MakeKing extends Event {
     private String king;
 
     public MakeKing(String location, String king) {
-        super(Stripe.NOTICE, TOPIC);
+        super(Flag.NOTICE, TOPIC);
         this.location = location;
         this.king = king;
     }
