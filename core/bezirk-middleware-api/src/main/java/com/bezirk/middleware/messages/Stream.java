@@ -28,7 +28,7 @@ package com.bezirk.middleware.messages;
  * @see MulticastStream
  * @see UnicastStream
  */
-public abstract class Stream extends Message {
+public class Stream extends Message {
     /**
      * Subclass sets to <code>true</code> if the payload can be processed incrementally (e.g. a music stream) or
      * <code>false</code> if all data elements must be received before processing can continue (e.g. image file
