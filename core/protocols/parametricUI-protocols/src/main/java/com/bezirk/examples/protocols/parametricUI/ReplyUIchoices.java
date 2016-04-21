@@ -25,7 +25,7 @@ public class ReplyUIchoices extends Event {
      */
     public ReplyUIchoices(int[] selectedChoices) {
         // set UhuMessage properties: useful for discrimination/deserialization
-        super(Stripe.REPLY, TOPIC);
+        super(Flag.REPLY, TOPIC);
         // set event payload: useful for the consumer services
         this.selectedChoices = selectedChoices == null ? null : selectedChoices.clone();
     }

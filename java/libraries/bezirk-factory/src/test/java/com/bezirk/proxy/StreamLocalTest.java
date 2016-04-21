@@ -7,7 +7,7 @@ import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ServiceEndPoint;
 import com.bezirk.middleware.addressing.ServiceId;
-import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.UnicastStream;
 import com.bezirk.proxy.api.impl.UhuDiscoveredService;
@@ -164,7 +164,7 @@ public class StreamLocalTest {
                     "Discovered Role : " + dService.pRole + "\n" +
                     "Discovered SEP" + dService.service + "\n");
 
-            request = new StreamLocalMockRequestStream(Stripe.REQUEST, "MockRequestStream", dService.service);
+            request = new StreamLocalMockRequestStream(Message.Flag.REQUEST, "MockRequestStream", dService.service);
 
             sendfilePath = StreamLocalTest.class.getClassLoader().getResource("streamingTestFile.txt").getPath();
             sendStreamId = uhu.sendStream(myId, dService.service, request, sendfilePath);
@@ -239,9 +239,9 @@ public class StreamLocalTest {
      */
     private final class StreamLocalMockRequestStream extends UnicastStream {
 
-        private StreamLocalMockRequestStream(Stripe stripe, String topic,
+        private StreamLocalMockRequestStream(Flag flag, String topic,
                                              ServiceEndPoint recipient) {
-            super(stripe, topic, recipient);
+            super(flag, topic, recipient);
         }
 
 

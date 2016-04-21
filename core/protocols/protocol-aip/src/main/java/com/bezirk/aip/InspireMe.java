@@ -67,7 +67,7 @@ public class InspireMe extends Event {
 	/* Constructor */
 
     public InspireMe() {
-        super(Stripe.REQUEST, topic);
+        super(Flag.REQUEST, topic);
     }
 
 	

@@ -29,8 +29,8 @@ public class Event extends Message {
      * The concrete implentation of an <code>Event</code> must specify the event's flag
      * and topic. Message flags and topics are documented in {@link Message}.
      */
-    public Event(Stripe stripe, String topic) {
-        this.stripe = stripe;
+    public Event(Flag flag, String topic) {
+        this.flag = flag;
         this.topic = topic;
     }
 }

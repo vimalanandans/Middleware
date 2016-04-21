@@ -9,7 +9,7 @@ public class ResponseLightLocation extends Event {
     private Location location;
 
     public ResponseLightLocation(Integer lightId, Location location) {
-        super(Stripe.REPLY, TOPIC);
+        super(Flag.REPLY, TOPIC);
         this.lightId = lightId;
         this.location = location;
     }

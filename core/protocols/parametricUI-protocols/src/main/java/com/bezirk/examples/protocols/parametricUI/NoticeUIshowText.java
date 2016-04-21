@@ -29,7 +29,7 @@ public class NoticeUIshowText extends Event {
      */
     public NoticeUIshowText(String text, TextType type, long expiration) {
         // set UhuMessage properties: useful for discrimination/deserialization
-        super(Stripe.NOTICE, TOPIC);
+        super(Flag.NOTICE, TOPIC);
         // set event payload: useful for the consumer services
         this.text = text;
         this.type = type;

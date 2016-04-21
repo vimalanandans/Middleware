@@ -15,7 +15,7 @@ public class TestLocationAndLightSetUpResponse extends Event {
     private HashMap<String, LinkedHashSet<String>> locToUsers = new HashMap<String, LinkedHashSet<String>>();
 
     public TestLocationAndLightSetUpResponse() {
-        super(Stripe.REPLY, TOPIC);
+        super(Flag.REPLY, TOPIC);
         // TODO Auto-generated constructor stub
     }
 

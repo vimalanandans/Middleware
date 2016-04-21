@@ -10,7 +10,7 @@ import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ServiceEndPoint;
 import com.bezirk.middleware.addressing.ServiceId;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 
@@ -136,7 +136,7 @@ public class LocationUpdateTest {
          * Send Multi cast request with null location on the wire
          */
         private final void pingServices(Location location) {
-            MockRequestEvent req = new MockRequestEvent(Stripe.REQUEST, "MockRequestEvent");
+            MockRequestEvent req = new MockRequestEvent(Flag.REQUEST, "MockRequestEvent");
             Address address = new Address(location);
             uhu.sendEvent(myId, address, req);
         }
@@ -218,8 +218,8 @@ public class LocationUpdateTest {
 
         private final String question = "Ping to Mock Services";
 
-        public MockRequestEvent(Stripe stripe, String topic) {
-            super(stripe, topic);
+        public MockRequestEvent(Flag flag, String topic) {
+            super(flag, topic);
         }
     }
 

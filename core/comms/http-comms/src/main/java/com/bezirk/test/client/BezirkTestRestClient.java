@@ -53,7 +53,7 @@ public class BezirkTestRestClient {
 			httpPost.setHeader("User-Agent", USER_AGENT);
 
 			List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-			urlParameters.add(new BasicNameValuePair("BEZIRK_EVENT_MSG", "{\"stripe\":\"REQUEST\",\"topic\":\"HostIdentityEvent\"}"));
+			urlParameters.add(new BasicNameValuePair("BEZIRK_EVENT_MSG", "{\"flag\":\"REQUEST\",\"topic\":\"HostIdentityEvent\"}"));
 			urlParameters.add(new BasicNameValuePair("BEZIRK_EVENT_TOPIC", "HostIdentityEvent"));
 			urlParameters.add(new BasicNameValuePair("BEZIRK_EXPECTED_RESPONSE_TYPE", "HostEvent"));
 			

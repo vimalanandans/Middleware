@@ -62,7 +62,7 @@ public class Answer<A> extends Event {
 	/* Constructor */
 
     public Answer() {
-        super(Stripe.REPLY, topic);
+        super(Flag.REPLY, topic);
     }
 	
 	

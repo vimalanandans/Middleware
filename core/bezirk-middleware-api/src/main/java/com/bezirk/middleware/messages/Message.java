@@ -24,7 +24,7 @@ public class Message {
     /**
      * Hint about the protocol-level expectations of the sender. Should be set by leaf classes.
      */
-    public Stripe stripe;
+    public Flag flag;
 
     ;
     /**
@@ -65,7 +65,7 @@ public class Message {
      * Provides the message's recipient(s) with an indication of the intent of the
      * message and their duty to reply.
      */
-    public enum Stripe {
+    public enum Flag {
         /**
          * Indicate to the recipient(s) that the message does not require a reply.
          */

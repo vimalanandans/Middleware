@@ -94,11 +94,11 @@ public class Observation extends Event implements Comparable<Observation> {
 	/* constructors */
 
     public Observation() {
-        super(Stripe.NOTICE, topic);
+        super(Flag.NOTICE, topic);
     }
 
     public Observation(String _topic) {
-        super(Stripe.NOTICE, _topic);
+        super(Flag.NOTICE, _topic);
     }
 
 	/* getters and setters */

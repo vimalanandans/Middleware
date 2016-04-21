@@ -14,7 +14,7 @@ package com.bezirk.middleware.messages;
 
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.Message.Flag;
 
 import org.junit.Test;
 
@@ -31,18 +31,18 @@ public class MulticastStreamTest {
     @Test
     public void test() {
 
-        Stripe stripe = Stripe.NOTICE;
+        Flag flag = Flag.NOTICE;
         String topic = "TestTopic";
         Location loc = new Location("OFFICE1/BLOCk1/FLOOR1");
         Address address = new Address(loc);
-        com.bezirk.middleware.messages.MulticastStream multicastStream = new MulticastStream(stripe, topic, address);
+        com.bezirk.middleware.messages.MulticastStream multicastStream = new MulticastStream(flag, topic, address);
 
         String serializedMulticastStream = multicastStream.serialize();
 
         MulticastStream deserializedMulticastStream = MulticastStream.deserialize(serializedMulticastStream, MulticastStream.class);
 
         assertEquals("Address is not equal to the set value. ", address.getLocation(), deserializedMulticastStream.getAddress().getLocation());
-        assertEquals("Stripe is not equal to the set value. ", stripe, deserializedMulticastStream.stripe);
+        assertEquals("Flag is not equal to the set value. ", flag, deserializedMulticastStream.flag);
         assertEquals("Topic is not equal to the set value. ", topic, deserializedMulticastStream.topic);
     }
 

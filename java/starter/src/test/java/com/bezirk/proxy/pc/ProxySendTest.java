@@ -3,7 +3,8 @@ package com.bezirk.proxy.pc;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.ServiceEndPoint;
-import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.Message;
+import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.UnicastStream;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 import com.bezirk.proxy.api.impl.UhuServiceId;
@@ -85,7 +86,7 @@ public class ProxySendTest {
         proxyForServices.setCommsManager(mockComms);
 
         proxyForServices.registerService(senderId, serviceName);
-        String serializedStream = new MockRequestStream(Stripe.REQUEST, "MockStream", receiver).serialize();
+        String serializedStream = new MockRequestStream(Message.Flag.REQUEST, "MockStream", receiver).serialize();
         receiver.device = "DeviceB";
         short streamId = proxyForServices.sendStream(senderId, receiver, serializedStream, sendfilePath, (short) 5);
         // checking the stream id is not enough
@@ -102,7 +103,7 @@ public class ProxySendTest {
             MockComms mockComms = (MockComms) mockSetUP.getUhuComms();
             proxyForServices.setCommsManager(mockComms);
 
-            String serializedEventMsg = new MockProtocolsForUhuPC().new MockEvent1(Stripe.REQUEST, "MockEvent").serialize();
+            String serializedEventMsg = new MockProtocolsForUhuPC().new MockEvent1(Flag.REQUEST, "MockEvent").serialize();
             receiver.device = "DeviceB";
             proxyForServices.sendUnicastEvent(senderId, receiver, serializedEventMsg);
 
@@ -123,7 +124,7 @@ public class ProxySendTest {
             MockComms mockComms = (MockComms) mockSetUP.getUhuComms();
             proxyForServices.setCommsManager(mockComms);
 
-            String serializedEventMsg = new MockProtocolsForUhuPC().new MockEvent1(Stripe.REQUEST, "MockEvent").serialize();
+            String serializedEventMsg = new MockProtocolsForUhuPC().new MockEvent1(Flag.REQUEST, "MockEvent").serialize();
             Address address = new Address(new Location("FLOOR1/BLOCk1/ROOM1"));
             proxyForServices.sendMulticastEvent(senderId, address, serializedEventMsg);
             assertEquals("Proxy is unable to add multicast event message to the comms queue.", 1, mockComms.getEventList().size());
@@ -144,9 +145,9 @@ public class ProxySendTest {
     class MockRequestStream extends UnicastStream {
         public String sampleValue = "TestValue";
 
-        public MockRequestStream(Stripe stripe, String topic,
+        public MockRequestStream(Flag flag, String topic,
                                  ServiceEndPoint recipient) {
-            super(stripe, topic, recipient);
+            super(flag, topic, recipient);
         }
 
 

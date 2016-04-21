@@ -54,8 +54,8 @@ public class Stream extends Message {
      * The concrete implentation of a <code>Stream</code> must specify the stream's flag
      * and topic. Message flags and topics are documented in {@link Message}.
      */
-    public Stream(Stripe stripe, String topic) {
-        this.stripe = stripe;
+    public Stream(Flag flag, String topic) {
+        this.flag = flag;
         this.topic = topic;
     }
 

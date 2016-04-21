@@ -56,7 +56,7 @@ public class RelatedQuestions extends Event {
 	/* Constructor */
 
     public RelatedQuestions() {
-        super(Stripe.REPLY, topic);
+        super(Flag.REPLY, topic);
     }
 	
 	

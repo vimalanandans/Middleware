@@ -15,7 +15,7 @@ public class InitUserProxyUI extends Event {
 	/* constructors */
 
     public InitUserProxyUI() {
-        super(Stripe.REQUEST, topic);
+        super(Flag.REQUEST, topic);
     }
 	
 	/* getters and setters */

@@ -7,7 +7,7 @@ public class RequestKing extends Event {
     private String location;
 
     public RequestKing(String location) {
-        super(Stripe.REQUEST, TOPIC);
+        super(Flag.REQUEST, TOPIC);
         this.location = location;
     }
 

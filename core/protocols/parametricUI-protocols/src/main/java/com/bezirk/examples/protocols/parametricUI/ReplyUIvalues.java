@@ -25,7 +25,7 @@ public class ReplyUIvalues extends Event {
      */
     public ReplyUIvalues(InputValuesStringPair[] values) {
         // set UhuMessage properties: useful for discrimination/deserialization
-        super(Stripe.REPLY, TOPIC);
+        super(Flag.REPLY, TOPIC);
         // set event payload: useful for the consumer services
         this.values = values == null ? null : values.clone();
     }

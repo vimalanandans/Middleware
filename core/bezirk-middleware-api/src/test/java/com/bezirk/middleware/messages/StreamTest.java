@@ -12,7 +12,7 @@
  */
 package com.bezirk.middleware.messages;
 
-import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.Message.Flag;
 
 import org.junit.Test;
 
@@ -29,14 +29,14 @@ public class StreamTest {
     @Test
     public void test() {
 
-        Stripe stripe = Stripe.REPLY;
+        Flag flag = Message.Flag.REPLY;
         String topic = "TestTopic";
 
         boolean allowDrops = false;
         boolean incremental = false;
         boolean secure = true;
 
-        com.bezirk.middleware.messages.Stream stream = new Stream(stripe, topic);
+        com.bezirk.middleware.messages.Stream stream = new Stream(flag, topic);
         stream.setAllowDrops(allowDrops);
         stream.setIncremental(incremental);
         stream.setSecure(secure);
@@ -45,7 +45,7 @@ public class StreamTest {
 
         Stream deserializedStream = Stream.deserialize(serializedStream, Stream.class);
 
-        assertEquals("Stripe is not equal to the set value.", stripe, deserializedStream.stripe);
+        assertEquals("Flag is not equal to the set value.", flag, deserializedStream.flag);
         assertEquals("Topic is not equal to the set value.", topic, deserializedStream.topic);
         assertFalse("AllowDrops is not equal to the set value.", deserializedStream.isAllowDrops());
         assertFalse("Incremental is not equal to the set value.", deserializedStream.isIncremental());

@@ -10,7 +10,7 @@ import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ServiceEndPoint;
 import com.bezirk.middleware.addressing.ServiceId;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 
@@ -122,7 +122,7 @@ public class MulticastEventLocalTest {
          * Send Multi cast request with null location on the wire
          */
         private final void pingServiceC() {
-            MulticastMockRequestEvent req = new MulticastMockRequestEvent(Stripe.REQUEST, "MockRequestEvent");
+            MulticastMockRequestEvent req = new MulticastMockRequestEvent(Flag.REQUEST, "MockRequestEvent");
             Address address = new Address(loc);
             uhu.sendEvent(myId, address, req);
         }
@@ -131,7 +131,7 @@ public class MulticastEventLocalTest {
          * Send Multi cast request with specific location on the wire
          */
         private final void pingServices() {
-            MulticastMockRequestEvent req = new MulticastMockRequestEvent(Stripe.REQUEST, "MockRequestEvent");
+            MulticastMockRequestEvent req = new MulticastMockRequestEvent(Flag.REQUEST, "MockRequestEvent");
             Address address = null;
             uhu.sendEvent(myId, address, req);
         }
@@ -204,8 +204,8 @@ public class MulticastEventLocalTest {
 
         private final String question = "Ping to Mock Services";
 
-        private MulticastMockRequestEvent(Stripe stripe, String topic) {
-            super(stripe, topic);
+        private MulticastMockRequestEvent(Flag flag, String topic) {
+            super(flag, topic);
         }
     }
 

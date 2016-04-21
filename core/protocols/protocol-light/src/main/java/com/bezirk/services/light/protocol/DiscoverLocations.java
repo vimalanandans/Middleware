@@ -6,7 +6,7 @@ public class DiscoverLocations extends Event {
     public final static String TOPIC = DiscoverLocations.class.getSimpleName();
 
     public DiscoverLocations() {
-        super(Stripe.NOTICE, TOPIC);
+        super(Flag.NOTICE, TOPIC);
     }
 
 }

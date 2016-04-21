@@ -7,7 +7,7 @@ public class RequestLocationWithLightDetails extends Event {
     public static final String TOPIC = RequestLocationWithLightDetails.class.getSimpleName();
 
     public RequestLocationWithLightDetails() {
-        super(Stripe.REQUEST, TOPIC);
+        super(Flag.REQUEST, TOPIC);
     }
 
 }

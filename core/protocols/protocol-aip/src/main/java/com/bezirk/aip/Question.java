@@ -99,11 +99,11 @@ public class Question extends Event {
 	/* Constructor */
 
     public Question() {
-        super(Stripe.REQUEST, topic);
+        super(Flag.REQUEST, topic);
     }
 
     protected Question(String _topic) {
-        super(Stripe.REQUEST, _topic);
+        super(Flag.REQUEST, _topic);
     }
 	
 	

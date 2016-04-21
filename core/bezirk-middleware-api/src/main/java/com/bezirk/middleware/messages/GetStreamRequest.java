@@ -23,7 +23,7 @@ public class GetStreamRequest extends Event {
     protected String subTopic = null;
 
     public GetStreamRequest(String subTopic) {
-        super(Stripe.REQUEST, TOPIC);
+        super(Flag.REQUEST, TOPIC);
         this.subTopic = subTopic;
     }
 

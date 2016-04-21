@@ -28,17 +28,17 @@ public class GetPreference extends Event {
      *
      */
     public GetPreference(String topic) {
-        super(Stripe.REQUEST, topic);
+        super(Flag.REQUEST, topic);
     }
 
     public GetPreference() {
-        super(Stripe.REQUEST, topic);
+        super(Flag.REQUEST, topic);
     }
 
     public GetPreference(String _user,
                          String _type,
                          Context _context) {
-        super(Stripe.REQUEST, topic);
+        super(Flag.REQUEST, topic);
         this.setUser(_user);
         this.setType(_type);
         this.setContext(_context);

@@ -8,7 +8,7 @@ public class ResponseKing extends Event {
     private String king;
 
     public ResponseKing(String location, String king) {
-        super(Stripe.REPLY, TOPIC);
+        super(Flag.REPLY, TOPIC);
         this.location = location;
         this.king = king;
     }

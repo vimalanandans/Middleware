@@ -8,7 +8,7 @@ import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ServiceEndPoint;
 import com.bezirk.middleware.addressing.ServiceId;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.UhuDiscoveredService;
 import com.bezirk.proxy.api.impl.UhuServiceId;
@@ -158,7 +158,7 @@ public class UnicastEventLocalTest {
                     "Discovered Role : " + dService.pRole + "\n" +
                     "Discovered SEP" + dService.service + "\n");
 
-            MockRequestEvent request = new MockRequestEvent(Stripe.REQUEST, "MockRequestEvent");
+            MockRequestEvent request = new MockRequestEvent(Message.Flag.REQUEST, "MockRequestEvent");
             uhu.sendEvent(myId, dService.service, request);
         }
 
@@ -234,8 +234,8 @@ public class UnicastEventLocalTest {
     private final class MockRequestEvent extends Event {
         private final String question = "Who am I?";
 
-        public MockRequestEvent(Stripe stripe, String topic) {
-            super(stripe, topic);
+        public MockRequestEvent(Flag flag, String topic) {
+            super(flag, topic);
         }
     }
 
@@ -245,8 +245,8 @@ public class UnicastEventLocalTest {
     private final class MockReplyEvent extends Event {
         private String answer = "";
 
-        public MockReplyEvent(Stripe stripe, String topic) {
-            super(stripe, topic);
+        public MockReplyEvent(Flag flag, String topic) {
+            super(flag, topic);
         }
 
     }
@@ -276,7 +276,7 @@ public class UnicastEventLocalTest {
             MockRequestEvent receivedEvent = Event.deserialize(event, MockRequestEvent.class);
             assertEquals("Who am I?", receivedEvent.question);
             // send the reply
-            MockReplyEvent replyEvent = new MockReplyEvent(Stripe.REPLY, "MockReplyEvent");
+            MockReplyEvent replyEvent = new MockReplyEvent(Message.Flag.REPLY, "MockReplyEvent");
             replyEvent.answer = "I am Fine! Thank you";
             uhu.sendEvent(myId, sender, replyEvent);
             log.info("********* MOCK_SERVICE B responded to the Event **************");

@@ -24,7 +24,7 @@ public class ActuateBulb extends Event {
     private Boolean byId = false;
 
     public ActuateBulb(Set<Integer> lightNumber, HueVocab.Commands command) {
-        super(Stripe.NOTICE, TOPIC);
+        super(Flag.NOTICE, TOPIC);
         this.command = command;
         this.lightNumber = lightNumber;
         this.location = null;
@@ -33,7 +33,7 @@ public class ActuateBulb extends Event {
     }
 
     public ActuateBulb(Location location, HueVocab.Commands command) {
-        super(Stripe.NOTICE, TOPIC);
+        super(Flag.NOTICE, TOPIC);
         this.command = command;
         this.lightNumber = null;
         this.location = location;

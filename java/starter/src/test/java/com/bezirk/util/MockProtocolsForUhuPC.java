@@ -19,8 +19,8 @@ public class MockProtocolsForUhuPC {
 
         private String reply = "Yes. I got your message";
 
-        public MockEvent1(Stripe stripe, String topic) {
-            super(stripe, topic);
+        public MockEvent1(Flag flag, String topic) {
+            super(flag, topic);
         }
 
         public String getTopic() {

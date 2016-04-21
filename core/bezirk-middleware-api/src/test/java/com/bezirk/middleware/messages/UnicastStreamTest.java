@@ -12,7 +12,7 @@
  */
 package com.bezirk.middleware.messages;
 
-import com.bezirk.middleware.messages.Message.Stripe;
+import com.bezirk.middleware.messages.Message.Flag;
 
 import org.junit.Test;
 
@@ -29,10 +29,10 @@ public class UnicastStreamTest {
     @Test
     public void test() {
 
-        Stripe stripe = Stripe.REQUEST;
+        Flag flag = Flag.REQUEST;
         String topic = "TestTopic";
         MockServiceEndpoint recipient = new MockServiceEndpoint("ServiceA");
-        com.bezirk.middleware.messages.UnicastStream unicastStream = new UnicastStream(stripe, topic, recipient);
+        com.bezirk.middleware.messages.UnicastStream unicastStream = new UnicastStream(flag, topic, recipient);
 
 	
 	/*

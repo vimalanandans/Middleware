@@ -9,7 +9,7 @@ public class FileReply extends Stream {
     private String fileName = null;
 
     public FileReply() {
-        super(Stripe.REPLY, TOPIC);
+        super(Flag.REPLY, TOPIC);
     }
 
     public String getFileName() {

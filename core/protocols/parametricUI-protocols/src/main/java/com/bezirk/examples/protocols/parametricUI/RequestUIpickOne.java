@@ -29,7 +29,7 @@ public class RequestUIpickOne extends Event {
      */
     public RequestUIpickOne(String intro, String[] availableChoices, long expiration) {
         // set UhuMessage properties: useful for discrimination/deserialization
-        super(Stripe.REQUEST, TOPIC);
+        super(Flag.REQUEST, TOPIC);
         // set event payload: useful for the consumer services
         this.intro = intro;
         this.availableChoices = availableChoices == null ? null : availableChoices.clone();

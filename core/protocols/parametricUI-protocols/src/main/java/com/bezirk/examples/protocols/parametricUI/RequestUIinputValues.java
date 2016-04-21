@@ -27,7 +27,7 @@ public class RequestUIinputValues extends Event {
      */
     public RequestUIinputValues(InputValuesStringTriplet[] values, long expiration) {
         // set UhuMessage properties: useful for discrimination/deserialization
-        super(Stripe.REQUEST, TOPIC);
+        super(Flag.REQUEST, TOPIC);
         // set event payload: useful for the consumer services
         this.values = values == null ? null : values.clone();
         this.expiration = expiration;

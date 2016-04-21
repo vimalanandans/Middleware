@@ -7,7 +7,7 @@ public class RequestPolicy extends Event {
     private String location;
 
     public RequestPolicy(String location) {
-        super(Stripe.REQUEST, TOPIC);
+        super(Flag.REQUEST, TOPIC);
         this.location = location;
     }
 
