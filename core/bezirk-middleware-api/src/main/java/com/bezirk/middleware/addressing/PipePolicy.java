@@ -34,7 +34,7 @@ public class PipePolicy {
     /**
      * @param json
      *            The Json String that is to be deserialized
-     * @param dC
+     * @param cL
      *            class to deserialize into
      * @return object of class C
      */

@@ -23,9 +23,10 @@ import java.io.Serializable;
  * message recipients after protocol role filtering occurs.
  *
  * <h4>Scopes</h4>
- * To identify a Thing or set of Things, a semantic address contains three scopes of 
+ * <p>
+ * To identify a Thing or set of Things, a semantic address contains three scopes of
  * increasing specificity that resolve to place a specific Thing or Things in scope:
- *
+ * </p>
  * <ul>
  *   <li>A <em>wide scope</em> specifies a potentially large set of Things. For example, 
  *   the floor of a building (e.g. &quot;floor 1&quot;) represents a wide scope.</li>
@@ -34,13 +35,13 @@ import java.io.Serializable;
  *   &quot;kitchen&quot;) represents an intermediate scope.</li>
  *   <li>A <em>narrow scope</em> further refines the set of Things to just the specific 
  *   Thing or Things that will be the message recipients. Again building on the previous 
- *   example, specifying a specific light (e.g. "ceiling light") or area of the kitchen 
+ *   example, specifying a specific light (e.g. &quot;ceiling light&quot;) or area of the kitchen
  *   (e.g. &quot;window&quot;) completes the semantic address.</li>
  * </ul>
- *
+ * <p>
  * <mark><strong>TODO</strong></mark>: We need to say something about where these names 
- * (e.g. ceiling light) come from.
-
+ * (e.g. &quot;ceiling light&quot;) come from.
+ * </p>
  * <h4>Representing Semantic Addresses as Strings</h4>
  * Semantic addresses are represented as strings by listing each scope in descending order 
  * separated by a forward slash: <code>"wide scope/intermediate scope/narrow scope"</code>. 
@@ -60,7 +61,7 @@ import java.io.Serializable;
  * address. However, any of the scopes may be skipped if necessary to define the desired set 
  * of Things. Once again using the building example, the following addresses refer to different 
  * sets of Things whose services are within a sphere subscribed to the targeted protocol role:
- *
+ * </p>
  * <ul>
  *	 <li><code>"floor1//"</code> refers to all Things on floor 1.</li>
  *	 <li><code>"floor1/kitchen/"</code> refers to all Things in floor 1's kitchen.</li>
@@ -170,10 +171,10 @@ public class Location implements Serializable {
      * - L1.attribute equals L2.attribute, or
      * - L1.attribute is open (NULL) and L2.attribute is specific.
      *
-     * UhU uses the subsumes relation to match the address of an incoming message M to the location of a service S.
+     * Bezirk uses the subsumes relation to match the address of an incoming message M to the location of a service S.
      * As far as location, the message is delivered if M.getLocation().subsumes(S.getLocation())
      *
-     * @param loc
+     * @param loc the location that may be subsumed by this
      * @return whether location is subsumed by this
      */
     public boolean subsumes(Location loc) {

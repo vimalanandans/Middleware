@@ -35,7 +35,7 @@ public class Pipe {
 
     /**
      * @param json The Json String that is to be deserialized
-     * @param dC class to deserialize into
+     * @param cL class to deserialize into
      * @return object of class C
      */
     public static <C> C deserialize(String json, Class cL) {

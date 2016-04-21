@@ -20,7 +20,7 @@ package com.bezirk.middleware.messages;
  *
  * Implementers should favor extending {@link MulticastStream} when a concrete stream will have 
  * multiple recipients where the set of recipients is more specific that simply anyone subscribed to 
- * a topic (e.g. when a {@link Location} is  required). {@link UnicastStream} should be favored when 
+ * a topic (e.g. when a {@link com.bezirk.middleware.addressing.Location} is  required). {@link UnicastStream} should be favored when
  * the stream will have a single known recipient.
  *
  * @see Message
@@ -53,6 +53,9 @@ public class Stream extends Message {
     /**
      * The concrete implentation of a <code>Stream</code> must specify the stream's flag
      * and topic. Message flags and topics are documented in {@link Message}.
+     *
+     * @param flag flag to mark the intent of this stream
+     * @param topic the pub-sub topic for this stream
      */
     public Stream(Flag flag, String topic) {
         this.flag = flag;
