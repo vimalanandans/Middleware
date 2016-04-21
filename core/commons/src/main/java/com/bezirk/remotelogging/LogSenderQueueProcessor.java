@@ -20,7 +20,7 @@ public class LogSenderQueueProcessor extends Thread {
     /**
      * private logger for the class
      */
-    private static final Logger log = LoggerFactory.getLogger(LogSenderQueueProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(LogSenderQueueProcessor.class);
     /**
      * Logging Service IP. This will set based on the LoggingMessage from the Logging service.
      */
@@ -59,18 +59,18 @@ public class LogSenderQueueProcessor extends Thread {
                     clientOutputStream.flush();
                     clientOutputStream.close();
                 } catch (IOException ioExcpetion) {
-                    log.error("Some Error occured :", ioExcpetion);
+                    logger.error("Some Error occured :", ioExcpetion);
                 } finally {
                     try {
                         if (uhuClient != null) {
                             uhuClient.close();
                         }
                     } catch (IOException e) {
-                        log.error("Errors occured in closing uhuClient \n", e);
+                        logger.error("Errors occured in closing uhuClient \n", e);
                     }
                 }
             } catch (InterruptedException e) {
-                log.error(e.getMessage());
+                logger.error(e.getMessage());
             }
         }
     }

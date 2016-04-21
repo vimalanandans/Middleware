@@ -15,7 +15,7 @@ import java.util.Properties;
  * the main uhu version is read from build file
  */
 public class UhuVersion {
-    private transient static final Logger log = LoggerFactory.getLogger(UhuVersion.class);
+    private transient static final Logger logger = LoggerFactory.getLogger(UhuVersion.class);
 
     // UHU_VERSION - read from build property file
     public static String UHU_VERSION = "1.1";
@@ -39,13 +39,13 @@ public class UhuVersion {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             InputStream is = loader.getResourceAsStream("version.properties");
             if (is == null) {
-                log.error("Unable to find uhu version file. using default uhu version " + UHU_VERSION);
+                logger.error("Unable to find uhu version file. using default uhu version " + UHU_VERSION);
                 return;
             }
             uhuProperties.load(is);
             UHU_VERSION = (String) uhuProperties.get("UHU_VERSION");
         } catch (Exception e) {
-            log.error("Error in reading the Config file", e);
+            logger.error("Error in reading the Config file", e);
         }
     }
 

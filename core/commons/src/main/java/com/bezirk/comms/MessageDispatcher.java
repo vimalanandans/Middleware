@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class MessageDispatcher implements IMessageDispatcher {
 
-    private static final Logger log = LoggerFactory.getLogger(MessageDispatcher.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageDispatcher.class);
     private final ISadlEventReceiver sadlEventReceiver;
 
     //private ISadlControlReceiver sadlCtrlRxer;
@@ -54,7 +54,7 @@ public class MessageDispatcher implements IMessageDispatcher {
     @Override
     public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, ICtrlMsgReceiver receiver) {
         if (ctrlReceivers.containsKey(id)) {
-            log.debug("Registration is rejected. id is already registered > " + id);
+            logger.debug("Registration is rejected. id is already registered > " + id);
             return false; // unregister first
         }
         ctrlReceivers.put(id, receiver);
@@ -69,7 +69,7 @@ public class MessageDispatcher implements IMessageDispatcher {
         if (UhuValidatorUtility.isObjectNotNull(sadlEventReceiver)) {
             return sadlEventReceiver.processEvent(eLedger);
         } else {
-            log.error("no valid service message receivers ");
+            logger.error("no valid service message receivers ");
         }
         return false;
     }
@@ -82,7 +82,7 @@ public class MessageDispatcher implements IMessageDispatcher {
 
         ControlMessage.Discriminator id = ctrlMsg.getDiscriminator();
 
-        log.debug("Message decrypted with Discriminator : " + id);
+        logger.debug("Message decrypted with Discriminator : " + id);
 
         if (LoggingStatus.isLoggingEnabled() && FilterLogMessages.checkSphere(ctrlMsg.getSphereId())) {
             sendRemoteLogMessage(ctrlMsg);
@@ -95,12 +95,12 @@ public class MessageDispatcher implements IMessageDispatcher {
         if (UhuValidatorUtility.isObjectNotNull(ctrlReceiver)) {
             // invoke the listener
             if (!ctrlReceiver.processControlMessage(id, serializedMsg)) {
-                log.debug("Receiver not processing id > " + id);
+                logger.debug("Receiver not processing id > " + id);
             }
 
         } else {
 
-            log.error("New Message / not registered ? No receiver to process id > " + id);
+            logger.error("New Message / not registered ? No receiver to process id > " + id);
         }
 
         return true;
@@ -115,7 +115,7 @@ public class MessageDispatcher implements IMessageDispatcher {
             tcMessage.setSerializedMessage(tcMessage.getMessage().serialize());
         }
         ControlMessage msg = (ControlMessage) tcMessage.getMessage();
-        log.debug("Message decrypted with Discriminator : " + msg.getDiscriminator());
+        logger.debug("Message decrypted with Discriminator : " + msg.getDiscriminator());
 
         if (LoggingStatus.isLoggingEnabled() && FilterLogMessages.checkSphere(tcMessage.getSphereId())) {
             sendRemoteLogMessage(tcMessage);
@@ -129,12 +129,12 @@ public class MessageDispatcher implements IMessageDispatcher {
         if (UhuValidatorUtility.isObjectNotNull(ctrlReceiver)) {
             // invoke the listener
             if (!ctrlReceiver.processControlMessage(id, tcMessage.getSerializedMessage())) {
-                log.debug("Receiver not processing id > " + id);
+                logger.debug("Receiver not processing id > " + id);
             }
 
         } else {
 
-            log.error("New Message / not registered ? No receiver to process id > " + id);
+            logger.error("New Message / not registered ? No receiver to process id > " + id);
         }
 
         return true;
@@ -154,7 +154,7 @@ public class MessageDispatcher implements IMessageDispatcher {
                             Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
                             Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {
-            log.error(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -171,7 +171,7 @@ public class MessageDispatcher implements IMessageDispatcher {
                             Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
                             Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {
-            log.error(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 

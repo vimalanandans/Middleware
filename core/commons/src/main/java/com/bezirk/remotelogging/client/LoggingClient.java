@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Logging Client that is used to send the log message to the remote Logging Service. Client will
+ * Logging Client that is used to send the logger message to the remote Logging Service. Client will
  * be activated(started)/ Deactivated (Stopped) / Updated after LoggingService Message
  * is received from the Logging Service.
  */
@@ -19,7 +19,7 @@ public class LoggingClient {
     /**
      * private logger for the class
      */
-    private static final Logger log = LoggerFactory.getLogger(LoggingClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoggingClient.class);
     /**
      * Remote Logging Service IP
      */
@@ -34,7 +34,7 @@ public class LoggingClient {
     private LogSenderQueueProcessor logSenderQueueProcessor = null;
 
     /**
-     * Starts the client and the log sender Processor.
+     * Starts the client and the logger sender Processor.
      *
      * @param remoteIP - IP of the logging Service
      * @param port     - Port at which the logging Service is listening
@@ -81,7 +81,7 @@ public class LoggingClient {
             startClient(newIP, port);
             return;
         }
-        log.debug("Received same LoggingService request to update the client");
+        logger.debug("Received same LoggingService request to update the client");
     }
 
 

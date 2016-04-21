@@ -24,7 +24,7 @@ public class UhuLoggingService extends Thread {
     /**
      * private logger for the class
      */
-    private static final Logger log = LoggerFactory.getLogger(UhuLoggingService.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuLoggingService.class);
     /**
      * TCP listening Port for the service
      */
@@ -49,7 +49,7 @@ public class UhuLoggingService extends Thread {
 
     @Override
     public void run() {
-        log.info("Logging Service is being Started...");
+        logger.info("Logging Service is being Started...");
         try {
             while (isRunning) {
                 Socket clientSocket = serverSocket.accept();
@@ -57,15 +57,15 @@ public class UhuLoggingService extends Thread {
                 LoggingQueueManager.loadLogReceiverQueue(serializedLoggerMessage.toString());
             }
         } catch (IOException e) {
-            log.error("Some exception occured \n", e);
+            logger.error("Some exception occured \n", e);
         } catch (InterruptedException e) {
-            log.error(e.getMessage());
+            logger.error(e.getMessage());
         } finally {
             if (serverSocket != null) {
                 try {
                     serverSocket.close();
                 } catch (IOException e) {
-                    log.error("Exception occured while closing hte serverSocket \n", e);
+                    logger.error("Exception occured while closing hte serverSocket \n", e);
                 }
             }
         }
