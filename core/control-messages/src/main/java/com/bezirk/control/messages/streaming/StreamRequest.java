@@ -37,11 +37,12 @@ public class StreamRequest extends UnicastControlMessage {
      */
     public boolean isEncrypted = false;
     /**
-     * Flag indicating the communication is quantized.If true data  will be quantized and sent
+     * Flag indicating the communication is quantized. If <code>true</code> data  will be quantized
+     * and sent
      */
     public boolean isIncremental = false;
     /**
-     * Flag indicating reliable transfer. If true, the communication is reliable.
+     * Flag indicating reliable transfer. If <code>true</code>, the communication is unreliable
      */
     public boolean allowDrops = false;
     /**
