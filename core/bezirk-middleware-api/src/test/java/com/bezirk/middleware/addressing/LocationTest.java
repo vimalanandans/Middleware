@@ -14,13 +14,16 @@ package com.bezirk.middleware.addressing;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
- *	 This testcase verifies the Location by checking equals, hashcode and subsume apis.
+ * This testcase verifies the Location by checking equals, hashcode and subsume apis.
  *
  * @author AJC6KOR
- *
  */
 public class LocationTest {
 

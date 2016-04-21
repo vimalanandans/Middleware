@@ -19,10 +19,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
 /**
- *	 This testcase verifies the ProtocolRole by checking the equals and hashcode apis.
+ * This testcase verifies the ProtocolRole by checking the equals and hashcode apis.
  *
  * @author AJC6KOR
- *
  */
 public class ProtocolRoleTest {
 

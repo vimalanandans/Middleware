@@ -22,7 +22,6 @@ import java.util.Set;
 /**
  * Defines the reasons to allow each protocol. Bezirk internally defines a subclass
  * for managing protocol authorization.
- *
  */
 public class PipePolicy {
     // private final HashMap<ProtocolRole, String> reasonMap = new
@@ -32,10 +31,8 @@ public class PipePolicy {
     private HashMap<String, String> reasonMap = new HashMap<String, String>();
 
     /**
-     * @param json
-     *            The Json String that is to be deserialized
-     * @param cL
-     *            class to deserialize into
+     * @param json The Json String that is to be deserialized
+     * @param cL   class to deserialize into
      * @return object of class C
      */
     public static <C> C deserialize(String json, Class cL) {
@@ -45,8 +42,7 @@ public class PipePolicy {
 
     /**
      * @param pRole
-     * @param reason
-     *            describes the benefit for the user for allowing this protocol
+     * @param reason describes the benefit for the user for allowing this protocol
      */
     public void addProtocol(ProtocolRole pRole, String reason) {
         // reasonMap.put(pRole, reason);
@@ -84,7 +80,7 @@ public class PipePolicy {
     /**
      * @param pRoleName
      * @return the stated reason for allowing this protocol, or NULL if the
-     *         protocol is not defined in the policy
+     * protocol is not defined in the policy
      */
     public String getReason(String pRoleName) {
         return reasonMap.get(pRoleName);

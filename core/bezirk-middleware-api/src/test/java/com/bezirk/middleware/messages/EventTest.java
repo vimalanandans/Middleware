@@ -17,10 +17,9 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- *	 This testcase verifies Event by setting the properties and retrieving them after deserialization.
+ * This testcase verifies Event by setting the properties and retrieving them after deserialization.
  *
  * @author AJC6KOR
- *
  */
 public class EventTest {
 

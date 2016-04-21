@@ -16,6 +16,7 @@ import com.bezirk.middleware.messages.Event;
 
 /**
  * Represents a semantic address for publishing events and streams over Bezirk
+ *
  * @see Event
  */
 public class Address {
@@ -41,7 +42,7 @@ public class Address {
      * Address for publishing across pipes.
      *
      * @param loc
-     * @param p specific pipe, or NULL for ALL authorized pipes
+     * @param p         specific pipe, or NULL for ALL authorized pipes
      * @param alsoLocal whether local publishing is additionally targeted
      * @see #Address(Location)
      */
@@ -58,7 +59,6 @@ public class Address {
 
     /**
      * If this returns false, then {@link #getPipe()} is meaningless
-     *
      */
     public boolean isPipeTargeted() {
         return remote;

@@ -19,10 +19,9 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- *	 This testcase verifies the UnicastStream by setting the properties and retrieving them.
+ * This testcase verifies the UnicastStream by setting the properties and retrieving them.
  *
  * @author AJC6KOR
- *
  */
 public class UnicastStreamTest {
 
@@ -36,7 +35,7 @@ public class UnicastStreamTest {
 
 	
 	/*
-	 * --- Deserialization is failing serviceEndpoint doesn't have a no-args constructor-----
+     * --- Deserialization is failing serviceEndpoint doesn't have a no-args constructor-----
 			String serializedUnicastStream = unicastStream.serialize();
 	 		UnicastStream deserializedUnicastStream = UnicastStream.deserialize(serializedUnicastStream, UnicastStream.class);*/
 

@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 /**
  * Superclass of all messages that services may exchange over Bezirk. Defines JSON (de)serialization.
  * Known subclasses: {@link Event} and {@link Stream}
- *
  */
 public class Message {
 
@@ -37,7 +36,7 @@ public class Message {
      * Intended to help services match requests to (asynchronous) replies, this property is passed,
      * but ignored by Bezirk. Should be set by requester services (e.g. circular counter), and
      * echoed back by responder services.
-     *
+     * <p/>
      * May be ignored for notices.
      */
     public String msgId;
@@ -48,7 +47,7 @@ public class Message {
 
     /**
      * @param json The Json String that is to be deserialized
-     * @param dC class to deserialize into
+     * @param dC   class to deserialize into
      * @return object of class C
      */
     public static <C> C deserialize(String json, Class<C> dC) {

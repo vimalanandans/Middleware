@@ -17,13 +17,15 @@ import org.junit.Test;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
- *	 This testcase verifies the CloudPipe by setting the properties and retrieving them after deserialization.
+ * This testcase verifies the CloudPipe by setting the properties and retrieving them after deserialization.
  *
  * @author AJC6KOR
- *
  */
 public class CloudPipeTest {
 

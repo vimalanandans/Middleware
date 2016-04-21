@@ -14,12 +14,12 @@ package com.bezirk.middleware.messages;
 
 /**
  * Base class for non-trivial Bezirk messages and data transfers. A stream represents a set of data
- * elements such as picture and music data. This class is extended by protocol implementations to 
+ * elements such as picture and music data. This class is extended by protocol implementations to
  * define concrete streams and their custom attributes and payloads. To implement a simple, small
  * message, extend the {@link Event} class.
- *
- * Implementers should favor extending {@link MulticastStream} when a concrete stream will have 
- * multiple recipients where the set of recipients is more specific that simply anyone subscribed to 
+ * <p/>
+ * Implementers should favor extending {@link MulticastStream} when a concrete stream will have
+ * multiple recipients where the set of recipients is more specific that simply anyone subscribed to
  * a topic (e.g. when a {@link com.bezirk.middleware.addressing.Location} is  required). {@link UnicastStream} should be favored when
  * the stream will have a single known recipient.
  *
@@ -54,7 +54,7 @@ public class Stream extends Message {
      * The concrete implentation of a <code>Stream</code> must specify the stream's flag
      * and topic. Message flags and topics are documented in {@link Message}.
      *
-     * @param flag flag to mark the intent of this stream
+     * @param flag  flag to mark the intent of this stream
      * @param topic the pub-sub topic for this stream
      */
     public Stream(Flag flag, String topic) {

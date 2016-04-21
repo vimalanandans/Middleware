@@ -18,14 +18,16 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
- *	 This testcase verifies the PipePolicy by setting the properties and retrieving them after deserialization.
- *   This alse includes tests for verifying equals check.
+ * This testcase verifies the PipePolicy by setting the properties and retrieving them after deserialization.
+ * This alse includes tests for verifying equals check.
  *
  * @author AJC6KOR
- *
  */
 public class PipePolicyTest {
 

@@ -14,13 +14,13 @@ package com.bezirk.middleware.addressing;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
- *	 This testcase verifies the Pipe by setting the properties and retrieving them after deserialization.
+ * This testcase verifies the Pipe by setting the properties and retrieving them after deserialization.
  *
  * @author AJC6KOR
- *
  */
 public class PipeTest {
 
