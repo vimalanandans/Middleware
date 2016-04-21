@@ -9,7 +9,7 @@ import com.bezirk.util.UhuValidatorUtility;
 import java.net.InetAddress;
 
 /**
- * vimal : Uhu Communication manager for zyre - jni
+ * vimal : Bezirk Communication manager for zyre - jni
  * this extends zyre specific comms all the queue, sockets, receiver threads etc etc
  */
 

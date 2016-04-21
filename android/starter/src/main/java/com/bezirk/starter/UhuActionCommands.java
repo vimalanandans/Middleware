@@ -2,7 +2,7 @@ package com.bezirk.starter;
 
 /**
  * Created by vnd2kor on 12/21/2014.
- * Uhu Action Commands to send the notification to UI Via intents
+ * Bezirk Action Commands to send the notification to UI Via intents
  * At the moment this is specific to android. if this shall be
  */
 
@@ -21,7 +21,7 @@ public final class UhuActionCommands {
 
     public final static String UHU_ACTION_COMMAND_MESSAGE = "Message";
     /* ------------------------
-    * Uhu Control UI Action response Commands to UI
+    * Bezirk Control UI Action response Commands to UI
     * ------------------------
     */
 
@@ -57,7 +57,7 @@ public final class UhuActionCommands {
     /*
      * ------------------------
      *
-     * Uhu Sphere UI response Commands
+     * Bezirk Sphere UI response Commands
      * ------------------------
      */
     public final static String CMD_SPHERE_CREATE_STATUS = "CMD_SPHERE_CREATE_STATUS";

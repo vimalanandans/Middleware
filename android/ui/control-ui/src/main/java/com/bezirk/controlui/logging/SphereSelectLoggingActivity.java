@@ -69,7 +69,7 @@ public class SphereSelectLoggingActivity extends ActionBarActivity {
      */
     private LinearLayout mLinearLayoutSphereList;
     /**
-     * TextView that display the Uhu version at the bottom of the screen
+     * TextView that display the Bezirk version at the bottom of the screen
      */
     private TextView mTextViewLoggingVersion, mTextViewDevModeEnableLabel;
     /**

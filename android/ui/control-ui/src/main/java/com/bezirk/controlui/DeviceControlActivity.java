@@ -163,7 +163,7 @@ public class DeviceControlActivity extends ActionBarActivity
             if (UhuValidatorUtility.isObjectNotNull(dataModel)) {
                 intent = new Intent(context, MainService.class);
                 switch (dataModel.getImageId()) {
-                    case R.drawable.upa_control: // Uhu On/OFF
+                    case R.drawable.upa_control: // Bezirk On/OFF
                         action = checkStatus ? UhuActions.ACTION_START_UHU : UhuActions.ACTION_STOP_UHU;
                         intent.setAction(action);
                         startService(intent);

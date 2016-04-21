@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Created by vnd2kor on 12/29/2014.
  * <p/>
- * Uhu Preference storing the setting for keeping all the android way of storing the preferences
+ * Bezirk Preference storing the setting for keeping all the android way of storing the preferences
  */
 public class UhuPreferences {
 

@@ -131,7 +131,7 @@ public class DeviceListActivity extends FragmentActivity implements
     protected void onResume() {
         super.onResume();
 
-        // register the intent to receive the Uhu Sphere Results
+        // register the intent to receive the Bezirk Sphere Results
 
         IntentFilter filter = new IntentFilter();
 
@@ -314,7 +314,7 @@ public class DeviceListActivity extends FragmentActivity implements
     }
 
     /**
-     * Broadcast event receiver for Uhu Stack sphere management results
+     * Broadcast event receiver for Bezirk Stack sphere management results
      */
     public class SphereIntentReceiver extends BroadcastReceiver {
         private final String TAG = "SphereIntentReceiver";

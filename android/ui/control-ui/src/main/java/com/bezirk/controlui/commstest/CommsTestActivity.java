@@ -266,7 +266,7 @@ public class CommsTestActivity extends ActionBarActivity {
             String data = new Gson().toJson(msg);
 
             if (!USE_UHU_UDP) {
-                //Ping Uhu
+                //Ping Bezirk
                 Intent serviceIntent = new Intent(this.getApplicationContext(), MainService.class);
                 serviceIntent.setAction(BR_COMMS_DIAG_ACTION);
                 serviceIntent.putExtra("MSG_TYPE", "ping");
@@ -303,7 +303,7 @@ public class CommsTestActivity extends ActionBarActivity {
                 clientSocket.send(sendPacket);
                 clientSocket.close();
             } else {
-                //Ping Uhu
+                //Ping Bezirk
                 Intent serviceIntent = new Intent(this.getApplicationContext(), MainService.class);
                 serviceIntent.setAction(BR_COMMS_DIAG_ACTION);
                 serviceIntent.putExtra("MSG_TYPE", "pong");

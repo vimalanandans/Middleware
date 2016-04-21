@@ -157,7 +157,7 @@ public class SphereListActivity extends FragmentActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        // register the intent to receive the Uhu Sphere Results
+        // register the intent to receive the Bezirk Sphere Results
         IntentFilter filter = new IntentFilter();
         filter.addAction(UhuActionCommands.SPHERE_NOTIFICATION_ACTION);
         registerReceiver(sphereIntentReceiver, filter);
@@ -288,7 +288,7 @@ public class SphereListActivity extends FragmentActivity implements
     }
 
     /**
-     * Broadcast event receiver for Uhu Stack sphere management results
+     * Broadcast event receiver for Bezirk Stack sphere management results
      */
     public class SphereIntentSphereListReceiver extends BroadcastReceiver {
         private final String TAG = "SphereIntentReceiver";

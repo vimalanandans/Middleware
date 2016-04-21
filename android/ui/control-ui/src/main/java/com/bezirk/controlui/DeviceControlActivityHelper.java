@@ -56,7 +56,7 @@ class DeviceControlActivityHelper {
         String actions = null;
         // we selecting based on image id hence list must have image id and it has to be unique
         switch (listData.get(position).getImageId()) {
-            case R.drawable.upa_control: // Uhu On/OFF
+            case R.drawable.upa_control: // Bezirk On/OFF
                 // NOT used. we are handling the toggle button inside the onItemToggleListener
                 break;
             case R.drawable.ic_device_name: //Set Device Name
