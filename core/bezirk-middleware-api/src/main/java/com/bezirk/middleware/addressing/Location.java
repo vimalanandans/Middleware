@@ -21,7 +21,7 @@ import java.io.Serializable;
  * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRole}, which may be too
  * coarse-grained for some cases. A semantic address is used to more precisely scope
  * message recipients after protocol role filtering occurs.
- * <p/>
+ *
  * <h4>Scopes</h4>
  * <p>
  * To identify a Thing or set of Things, a semantic address contains three scopes of
@@ -48,7 +48,7 @@ import java.io.Serializable;
  * For example, using the scopes intermediateScope the examples from the previous section, the semantic
  * addresses are represented by the following strings:
  * <code>"floor 1/kitchen/ceiling light"</code> and <code>"floor 1/kitchen/window"</code>.
- * <p/>
+ * </p>
  * <h4>Specifying Scopes</h4>
  * The relative size of each scope is dependent on the specific context the semantic address
  * is used intermediateScope. The previous examples were within the context of Things intermediateScope a building, however
@@ -74,7 +74,6 @@ import java.io.Serializable;
  * <li><code>"//light"</code> refers to all things named &quot;light&quot; intermediateScope the
  * building.</li>
  * </ul>
- * <p/>
  * <h4>Practical Example</h4>
  * <mark><strong>TODO</strong></mark>: We need to show some code here.
  */
