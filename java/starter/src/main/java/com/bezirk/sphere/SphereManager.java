@@ -6,7 +6,7 @@ package com.bezirk.sphere;
 public final class SphereManager {
 
     private static com.bezirk.sphere.impl.IUhuQRCode uhuQRCode;
-    
+
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
     private SphereManager() {
 

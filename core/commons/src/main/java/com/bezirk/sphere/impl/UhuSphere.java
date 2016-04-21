@@ -1,37 +1,29 @@
 /**
- * 
+ *
  */
 package com.bezirk.sphere.impl;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.discovery.SphereDiscovery;
-import com.bezirk.persistence.ISpherePersistence;
-import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
-import com.bezirk.sphere.api.IUhuSphereMessages;
+import com.bezirk.comms.IUhuComms;
+import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.discovery.SphereDiscovery;
+import com.bezirk.discovery.SphereDiscoveryProcessor;
 import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.middleware.objects.UhuPipeInfo;
 import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.comms.IUhuComms;
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.discovery.SphereDiscoveryProcessor;
+import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.UhuDiscoveredService;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 import com.bezirk.sphere.api.ICryptoInternals;
+import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuDevMode;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.sphere.api.IUhuSphereDiscovery;
+import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.sphere.api.IUhuSphereListener;
+import com.bezirk.sphere.api.IUhuSphereMessages;
 import com.bezirk.sphere.api.IUhuSphereRegistration;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
@@ -40,9 +32,16 @@ import com.bezirk.sphere.messages.ShareResponse;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.google.zxing.common.BitMatrix;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author rishabh
- *
  */
 public class UhuSphere
         implements IUhuSphereAPI, IUhuSphereForSadl, IUhuSphereRegistration, IUhuSphereDiscovery, IUhuSphereMessages, IUhuDevMode {
@@ -77,7 +76,7 @@ public class UhuSphere
 
     /* Initialize uhu sphere */
     public boolean initSphere(ISpherePersistence spherePersistence, IUhuComms uhuComms,
-            IUhuSphereListener uhuSphereListener, ISphereConfig sphereConfig) {
+                              IUhuSphereListener uhuSphereListener, ISphereConfig sphereConfig) {
 
         if (spherePersistence == null || uhuComms == null) {
             LOGGER.error("Null passed to for ISpherePersistence or IUhuComms");
@@ -86,12 +85,12 @@ public class UhuSphere
             LOGGER.warn("IUhuSphereListener passed as null");
         }
 
-        if(sphereConfig == null){
+        if (sphereConfig == null) {
             LOGGER.warn("Sphere Configuration provided is null");
         }
         this.uhuSphereListener = uhuSphereListener;
         this.sphereConfig = sphereConfig;
-        
+
         try {
             registry = spherePersistence.loadSphereRegistry();
             LOGGER.info("Sphere Registry loaded successfully");
@@ -99,7 +98,7 @@ public class UhuSphere
             LOGGER.error("Error in loading sphere Registry from Persistence. Uninstall the app and re-install", e);
             return false;
         }
-        
+
         this.sphereRegistryWrapper = new SphereRegistryWrapper(this.registry, spherePersistence, upaDevice, cryptoEngine, uhuSphereListener, sphereConfig);
         this.sphereRegistryWrapper.init();
         comms = new CommsUtility(uhuComms);
@@ -111,23 +110,24 @@ public class UhuSphere
                 this.uhuSphereListener);
 
         // init the sphere for receiving sphere discovery message
-         //uhuComms.initDiscovery(this);
+        //uhuComms.initDiscovery(this);
         initSphereDiscovery(uhuComms);
 
         ctrlMsgReceiver.initControlMessageListener(uhuComms);
         return true;
     }
 
-    /** moved the init discovery from comms layer to sphere.
-     * because this is out of comms layer */
-    public void initSphereDiscovery(IUhuComms uhuComms)
-    {
+    /**
+     * moved the init discovery from comms layer to sphere.
+     * because this is out of comms layer
+     */
+    public void initSphereDiscovery(IUhuComms uhuComms) {
         // initialize the discovery here
         SphereDiscoveryProcessor.setDiscovery(new SphereDiscovery(this));
 
         sphereDiscThread = new Thread(new SphereDiscoveryProcessor(this, uhuComms));
 
-        if(sphereDiscThread != null)
+        if (sphereDiscThread != null)
             sphereDiscThread.start();
 
         //  add the sphere discovery stop
@@ -306,7 +306,9 @@ public class UhuSphere
         return processCatchQRCodeRequest(shortCode, sphereRegistryWrapper.getDefaultSphereId());
     }
 
-    /** this returns the short string for qr code */
+    /**
+     * this returns the short string for qr code
+     */
     public String getShareCode(String sphereId) {
         return sphereRegistryWrapper.getShareCode(sphereId);
     }
@@ -356,7 +358,9 @@ public class UhuSphere
         return sphereRegistryWrapper.getDefaultSphereId();
     }
 
-    /** set the listener object */
+    /**
+     * set the listener object
+     */
     public void setUhuSphereListener(IUhuSphereListener sphereListener) {
         this.uhuSphereListener = sphereListener;
     }

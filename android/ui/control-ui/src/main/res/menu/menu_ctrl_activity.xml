@@ -5,8 +5,8 @@
 
     <item
         android:id="@+id/warning"
-        android:orderInCategory="100"
-        app:showAsAction="ifRoom"
         android:icon="@drawable/ic_warning"
-        android:title="warning"/>
+        android:orderInCategory="100"
+        android:title="warning"
+        app:showAsAction="ifRoom" />
 </menu>

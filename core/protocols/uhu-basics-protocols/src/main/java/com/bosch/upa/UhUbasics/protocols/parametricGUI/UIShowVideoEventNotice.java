@@ -8,33 +8,35 @@
 package com.bosch.upa.UhUbasics.protocols.parametricGUI;
 
 import com.bosch.upa.uhu.Proxy.Event;
-import com.bosch.upa.uhu.Proxy.ServiceEndPoint;
 import com.bosch.upa.uhu.Proxy.IndoorLocation;
+import com.bosch.upa.uhu.Proxy.ServiceEndPoint;
 
 public class UIShowVideoEventNotice extends Event {
-	public static final String MsgLabel = UIShowVideoEventNotice.class.getSimpleName();
-	// Payload
-	public String videoURL;
-	
-	/**
-	 * Multicast
-	 * 
-	 * @param at physical location
-	 * @param sphere
-	 */
-	public UIShowVideoEventNotice(IndoorLocation at, String sphere, ServiceEndPoint sender) {
-		super(MsgLabel, at, sphere, sender);
-	}
-	
-	public void setPayload(String videoURL) {
-		this.videoURL = videoURL;
-	}
-	/**
-	 * Use instead of the generic UhuMessage.deserialize()
-	 * @param json
-	 * @return
-	 */
-	public static UIShowVideoEventNotice deserialize(String json) {
-		return Event.deserialize(json, UIShowVideoEventNotice.class);
-	}
+    public static final String MsgLabel = UIShowVideoEventNotice.class.getSimpleName();
+    // Payload
+    public String videoURL;
+
+    /**
+     * Multicast
+     *
+     * @param at     physical location
+     * @param sphere
+     */
+    public UIShowVideoEventNotice(IndoorLocation at, String sphere, ServiceEndPoint sender) {
+        super(MsgLabel, at, sphere, sender);
+    }
+
+    /**
+     * Use instead of the generic UhuMessage.deserialize()
+     *
+     * @param json
+     * @return
+     */
+    public static UIShowVideoEventNotice deserialize(String json) {
+        return Event.deserialize(json, UIShowVideoEventNotice.class);
+    }
+
+    public void setPayload(String videoURL) {
+        this.videoURL = videoURL;
+    }
 }

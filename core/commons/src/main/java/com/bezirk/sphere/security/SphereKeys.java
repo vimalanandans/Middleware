@@ -32,19 +32,19 @@ public final class SphereKeys implements Serializable {
 
     /**
      * Initializes the Object with all the keys passed
-     * 
+     *
      * @param sphereKey
      * @param ownerPrivateKeyBytes
      * @param ownerPublicKeyBytes
      */
     public SphereKeys(byte[] sphereKey, byte[] ownerPrivateKeyBytes, byte[] ownerPublicKeyBytes) {
-        this.sphereKey = sphereKey==null ?null:sphereKey.clone();
-        this.ownerPrivateKeyBytes = ownerPrivateKeyBytes==null ?null:ownerPrivateKeyBytes.clone();
-        this.ownerPublicKeyBytes = ownerPublicKeyBytes==null ?null:ownerPublicKeyBytes.clone();
+        this.sphereKey = sphereKey == null ? null : sphereKey.clone();
+        this.ownerPrivateKeyBytes = ownerPrivateKeyBytes == null ? null : ownerPrivateKeyBytes.clone();
+        this.ownerPublicKeyBytes = ownerPublicKeyBytes == null ? null : ownerPublicKeyBytes.clone();
     }
 
     public SphereKeys(byte[] sphereKey, KeyPair pair) {
-        this.sphereKey = sphereKey==null ?null:sphereKey.clone();
+        this.sphereKey = sphereKey == null ? null : sphereKey.clone();
         this.ownerPrivateKeyBytes = pair.getPrivate().getEncoded();
         this.ownerPublicKeyBytes = pair.getPublic().getEncoded();
     }
@@ -52,35 +52,35 @@ public final class SphereKeys implements Serializable {
     /**
      * Initializes the Object with all the keys passed [for member spheres, no
      * private key]
-     * 
+     *
      * @param sphereKey
      * @param ownerPublicKeyBytes
      */
     public SphereKeys(byte[] sphereKey, byte[] ownerPublicKeyBytes) {
-        this.sphereKey = sphereKey==null ?null:sphereKey.clone();
+        this.sphereKey = sphereKey == null ? null : sphereKey.clone();
         this.ownerPrivateKeyBytes = null;
-        this.ownerPublicKeyBytes = ownerPublicKeyBytes==null ?null:ownerPublicKeyBytes.clone();
+        this.ownerPublicKeyBytes = ownerPublicKeyBytes == null ? null : ownerPublicKeyBytes.clone();
     }
 
     /**
      * @return the sphereKey
      */
     public final byte[] getSphereKey() {
-        return sphereKey==null ?null:sphereKey.clone();
+        return sphereKey == null ? null : sphereKey.clone();
     }
 
     /**
      * @return the ownerPrivateKeyBytes
      */
     public final byte[] getOwnerPrivateKeyBytes() {
-        return ownerPrivateKeyBytes==null ?null:ownerPrivateKeyBytes.clone();
+        return ownerPrivateKeyBytes == null ? null : ownerPrivateKeyBytes.clone();
     }
 
     /**
      * @return the ownerPublicKeyBytes
      */
     public final byte[] getOwnerPublicKeyBytes() {
-        return ownerPublicKeyBytes==null ?null:ownerPublicKeyBytes.clone();
+        return ownerPublicKeyBytes == null ? null : ownerPublicKeyBytes.clone();
     }
 
     @Override

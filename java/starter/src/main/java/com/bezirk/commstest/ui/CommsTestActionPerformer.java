@@ -1,5 +1,8 @@
 package com.bezirk.commstest.ui;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -7,12 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * @author AJC6KOR
- *
  */
 public class CommsTestActionPerformer {
     private static final Logger LOGGER = LoggerFactory
@@ -22,7 +21,7 @@ public class CommsTestActionPerformer {
     Integer pingCount = 0;
 
     void settingsBtnActionPerformed(CommsTest commsTest,
-            JTextArea statusDisplayTxt, JButton startBtn, JButton pingBtn) {
+                                    JTextArea statusDisplayTxt, JButton startBtn, JButton pingBtn) {
         final JTextField multicastSendingPort = new JTextField(
                 String.valueOf(CommsTestConstants.DEFAULT_MULTICAST_SENDING_PORT));
         final JTextField multicastReceivingPort = new JTextField(
@@ -33,13 +32,13 @@ public class CommsTestActionPerformer {
                 String.valueOf(CommsTestConstants.DEFAULT_UNICAST_SENDING_PORT));
         final JTextField timer = new JTextField(
                 String.valueOf(CommsTestConstants.DEFAULT_TIMER_VALUE));
-        final JComponent[] inputs = new JComponent[] {
+        final JComponent[] inputs = new JComponent[]{
                 new JLabel("Unicast Sending Port"), unicastSendingPort,
                 new JLabel("Unicast Receiving Port"), unicastReceivingPort,
                 new JLabel("Multicast Sending Port"), multicastSendingPort,
                 new JLabel("Multicast Receiving Port"), multicastReceivingPort,
                 new JLabel("Waiting Time To Receive Responses(in MilliSec)"),
-                timer };
+                timer};
         final int res = JOptionPane.showConfirmDialog(null, inputs,
                 CommsTestConstants.SETTINGS_DIALOG_TITLE,
                 JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE);
@@ -50,7 +49,7 @@ public class CommsTestActionPerformer {
 
                 commsTest
                         .updateConfiguration(Integer
-                                .parseInt(unicastSendingPort.getText().trim()),
+                                        .parseInt(unicastSendingPort.getText().trim()),
                                 Integer.parseInt(unicastReceivingPort.getText()
                                         .trim()), Integer
                                         .parseInt(multicastSendingPort
@@ -74,8 +73,8 @@ public class CommsTestActionPerformer {
     }
 
     private boolean arePortsNumeric(JTextField unicastSendingPort,
-            JTextField unicastReceivingPort, JTextField multicastSendingPort,
-            JTextField multicastReceivingPort) {
+                                    JTextField unicastReceivingPort, JTextField multicastSendingPort,
+                                    JTextField multicastReceivingPort) {
 
         return isNumeric(unicastSendingPort.getText().toString())
                 || isNumeric(unicastReceivingPort.getText().toString())
@@ -97,7 +96,7 @@ public class CommsTestActionPerformer {
     }
 
     void pingBtnActionPerformed(JTextArea statusDisplayTxt,
-            CommsTest commsTest, JButton pingBtn) {
+                                CommsTest commsTest, JButton pingBtn) {
         statusDisplayTxt.setText("");
         ++pingCount;
         commsTest.sendPing(pingCount);
@@ -109,7 +108,7 @@ public class CommsTestActionPerformer {
     }
 
     void infoBtnActionPerformed() {
-        final JComponent[] inputs = new JComponent[] {
+        final JComponent[] inputs = new JComponent[]{
                 new JLabel("1. Check the network connection."),
                 new JLabel("2. Check if all the devices are in same network."),
                 new JLabel("3. Check wifi is enabled on all devices."),
@@ -118,7 +117,7 @@ public class CommsTestActionPerformer {
                 new JLabel(
                         "5. Make sure your device is not conncted to any VPN networks!"),
                 new JLabel(
-                        "6. If still the communication does not happen, contact the platform team.") };
+                        "6. If still the communication does not happen, contact the platform team.")};
         JOptionPane
                 .showMessageDialog(null, inputs,
                         CommsTestConstants.HINT_DIALOG_TITLE,
@@ -132,7 +131,7 @@ public class CommsTestActionPerformer {
 
     /**
      * Method to validate port numbers entered
-     * 
+     *
      * @param str
      */
     private boolean isNumeric(String str) {

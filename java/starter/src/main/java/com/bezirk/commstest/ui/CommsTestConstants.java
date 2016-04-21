@@ -1,9 +1,7 @@
 package com.bezirk.commstest.ui;
 
 /**
- * 
  * @author MCA7KOR
- *
  */
 public final class CommsTestConstants {
 

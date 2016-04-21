@@ -15,12 +15,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
-            android:paddingBottom ="10dip"
+            android:padding="8dp"
+            android:paddingBottom="10dip"
             android:text="DEVICE-NAME"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/list_item_color"
-            android:textStyle="bold"
-            android:padding="8dp"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/deviceName"
@@ -28,12 +28,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.7"
-            android:paddingBottom ="10dip"
+            android:padding="8dp"
+            android:paddingBottom="10dip"
             android:text="Device-1"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold"
             android:textColor="@color/list_item_color"
-            android:padding="8dp"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
     <!-- Port layout is not needed. it is in configuration
@@ -139,38 +139,40 @@
         android:layout_below="@+id/deviceNameLayout"
         android:orientation="horizontal"
         android:weightSum="1.0">
+
         <Button
             android:id="@+id/startStopButton"
             android:layout_width="0dp"
-            android:layout_weight="0.33"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="START"
             android:layout_below="@+id/devicePortLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0.33"
+            android:onClick="startButtonClick"
             android:padding="16dp"
-            android:onClick="startButtonClick"/>
+            android:text="START" />
+
         <Button
             android:id="@+id/pingBtn"
             android:layout_width="0dp"
-            android:layout_weight="0.33"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Test"
             android:layout_below="@+id/devicePortLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0.33"
+            android:onClick="pingButtonClick"
             android:padding="16dp"
-            android:onClick="pingButtonClick"/>
+            android:text="Test" />
+
         <Button
             android:id="@+id/clearBtn"
             android:layout_width="0dp"
-            android:layout_weight="0.33"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="CLEAR"
             android:layout_below="@+id/devicePortLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0.33"
+            android:onClick="clearButtonClick"
             android:padding="16dp"
-            android:onClick="clearButtonClick"/>
+            android:text="CLEAR" />
     </LinearLayout>
-
 
 
     <TextView
@@ -178,14 +180,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/buttonsLayout"
-        android:gravity="center"
         android:layout_gravity="center_vertical"
-        android:paddingBottom ="10dip"
+        android:gravity="center"
+        android:padding="16dp"
+        android:paddingBottom="10dip"
         android:text="STATUS"
-        android:textStyle="italic|bold"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/list_item_color"
-        android:padding="16dp"/>
+        android:textStyle="italic|bold" />
 
     <LinearLayout
         android:id="@+id/deviceStatusLayout"
@@ -199,41 +201,40 @@
             android:id="@+id/deviceSendingText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="DEVICE-NAME"
-            android:textColor="@color/list_item_color"
+            android:background="#C1FFC1"
             android:padding="8dp"
-            android:background="#C1FFC1"/>
+            android:text="DEVICE-NAME"
+            android:textColor="@color/list_item_color" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="#c3c3c4"
-            android:layout_marginTop="1dp"/>
+            android:layout_marginTop="1dp"
+            android:background="#c3c3c4" />
 
         <TextView
             android:id="@+id/deviceReceivingText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Message received for this device from 0 devices"
-            android:textColor="@color/list_item_color"
+            android:background="#C1FFC1"
             android:padding="8dp"
-            android:background="#C1FFC1"/>
+            android:text="Message received for this device from 0 devices"
+            android:textColor="@color/list_item_color" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="#c3c3c4"
-            android:layout_marginTop="1dp"/>
+            android:layout_marginTop="1dp"
+            android:background="#c3c3c4" />
 
-        </LinearLayout>
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/deviceStatusLayout"
         android:layout_above="@+id/infoLabel"
-        >
+        android:layout_below="@+id/deviceStatusLayout">
 
         <LinearLayout
             android:id="@+id/deviceReplyLayout"
@@ -245,13 +246,13 @@
                 android:id="@+id/deviceReplyName"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="#C1FFC1"
+                android:padding="8dp"
                 android:text="DEVICE-NAME"
                 android:textColor="@color/list_item_color"
-                android:padding="8dp"
-                android:visibility="gone"
-                android:background="#C1FFC1"/>
+                android:visibility="gone" />
 
-         </LinearLayout>
+        </LinearLayout>
 
     </ScrollView>
 
@@ -261,10 +262,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:padding="8dp"
-        android:text="@string/comms_info_label"
-        />
-
-
+        android:text="@string/comms_info_label" />
 
 
 </RelativeLayout>

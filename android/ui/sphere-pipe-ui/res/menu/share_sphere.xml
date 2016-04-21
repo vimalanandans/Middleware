@@ -1,31 +1,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:ShareSphereActivity="http://schemas.android.com/apk/res-auto"
-    tools:context="com.bezirk.spheremanager.ShareSphereActivity" >
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.bezirk.spheremanager.ShareSphereActivity">
 
     <item
         android:id="@+id/print_qrcode"
         android:orderInCategory="100"
-        ShareSphereActivity:showAsAction="never"
-        android:title="@string/action_print_qrcode"/>
+        android:title="@string/action_print_qrcode"
+        ShareSphereActivity:showAsAction="never" />
 
     <item
         android:id="@+id/email_qrcode"
         android:orderInCategory="100"
-        ShareSphereActivity:showAsAction="never"
-        android:title="@string/action_email_qrcode"/>
+        android:title="@string/action_email_qrcode"
+        ShareSphereActivity:showAsAction="never" />
 
-   <item
+    <item
         android:id="@+id/qr_code_id"
         android:orderInCategory="100"
-       ShareSphereActivity:showAsAction="never"
-        android:title="@string/action_qrcode_id"/>
+        android:title="@string/action_qrcode_id"
+        ShareSphereActivity:showAsAction="never" />
 
     <item
         android:id="@+id/warning"
-        android:orderInCategory="100"
-        ShareSphereActivity:showAsAction="ifRoom"
         android:icon="@drawable/ic_warning"
-        android:title="warning"/>
+        android:orderInCategory="100"
+        android:title="warning"
+        ShareSphereActivity:showAsAction="ifRoom" />
 
 </menu>

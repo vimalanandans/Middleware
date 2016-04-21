@@ -33,18 +33,62 @@ public class ScannerActivity extends Activity {
 
     public static final int REQUEST_CODE = 0;
     public static final String DATA = "data";
-    private Camera camera;
-    private CameraPreview cameraPreview;
-    private Handler autoFocusHandler;
-    private ImageScanner imageScanner;
-
-    private boolean previewing = true;
-    private Bundle receivedBundle;
-    private final String TAG = ScannerActivity.class.getName();
 
     static {
         System.loadLibrary("iconv");
     }
+
+    private final String TAG = ScannerActivity.class.getName();
+    private Camera camera;
+    private CameraPreview cameraPreview;
+    private Handler autoFocusHandler;
+    /**
+     * Auto-focus callback
+     */
+    private final AutoFocusCallback autoFocusCB = new AutoFocusCallback() {
+        public void onAutoFocus(boolean success, Camera camera) {
+            autoFocusHandler.postDelayed(doAutoFocus, 1000);
+        }
+    };
+    private ImageScanner imageScanner;
+    private boolean previewing = true;
+    private final Runnable doAutoFocus = new Runnable() {
+        @Override
+        public void run() {
+            if (previewing)
+                camera.autoFocus(autoFocusCB);
+        }
+    };
+    private Bundle receivedBundle;
+    /**
+     * Camera preview callback called for each preview frame
+     */
+    private final PreviewCallback previewCallback = new PreviewCallback() {
+        public void onPreviewFrame(byte[] data, Camera camera) {
+            Parameters parameters = camera.getParameters();
+            Size size = parameters.getPreviewSize();
+            Image barcode = new Image(size.width, size.height, "Y800");
+            barcode.setData(data);
+            int result = imageScanner.scanImage(barcode);
+
+            if (result != 0) {
+                previewing = false;
+                ScannerActivity.this.camera.setPreviewCallback(null);
+                ScannerActivity.this.camera.stopPreview();
+                SymbolSet syms = imageScanner.getResults();
+                for (Symbol sym : syms) {
+                    Log.d(TAG, "data: " + sym.getData());
+                    Intent barcodeData = new Intent();
+                    barcodeData.putExtra(DATA, sym.getData());
+                    if (receivedBundle != null) {
+                        barcodeData.putExtras(receivedBundle);
+                    }
+                    setResult(RESULT_OK, barcodeData);
+                    finish();
+                }
+            }
+        }
+    };
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +141,7 @@ public class ScannerActivity extends Activity {
         try {
             cameraInstance = Camera.open();
         } catch (Exception e) {
-            Log.e(TAG,"Exception in opening camera instance.",e);
+            Log.e(TAG, "Exception in opening camera instance.", e);
         }
         return cameraInstance;
     }
@@ -113,51 +157,4 @@ public class ScannerActivity extends Activity {
             camera = null;
         }
     }
-
-    private final Runnable doAutoFocus = new Runnable() {
-        @Override
-        public void run() {
-            if (previewing)
-                camera.autoFocus(autoFocusCB);
-        }
-    };
-
-    /**
-     * Camera preview callback called for each preview frame
-     */
-    private final PreviewCallback previewCallback = new PreviewCallback() {
-        public void onPreviewFrame(byte[] data, Camera camera) {
-            Parameters parameters = camera.getParameters();
-            Size size = parameters.getPreviewSize();
-            Image barcode = new Image(size.width, size.height, "Y800");
-            barcode.setData(data);
-            int result = imageScanner.scanImage(barcode);
-
-            if (result != 0) {
-                previewing = false;
-                ScannerActivity.this.camera.setPreviewCallback(null);
-                ScannerActivity.this.camera.stopPreview();
-                SymbolSet syms = imageScanner.getResults();
-                for (Symbol sym : syms) {
-                    Log.d(TAG, "data: " + sym.getData());
-                    Intent barcodeData = new Intent();
-                    barcodeData.putExtra(DATA, sym.getData());
-                    if(receivedBundle != null){
-                        barcodeData.putExtras(receivedBundle);
-                    }
-                    setResult(RESULT_OK, barcodeData);
-                    finish();
-                }
-            }
-        }
-    };
-
-    /**
-     * Auto-focus callback
-     */
-    private final AutoFocusCallback autoFocusCB = new AutoFocusCallback() {
-        public void onAutoFocus(boolean success, Camera camera) {
-            autoFocusHandler.postDelayed(doAutoFocus, 1000);
-        }
-    };
 }

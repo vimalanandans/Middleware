@@ -8,8 +8,8 @@
 package com.bezirk.UhUbasics.protocols.parametricGUI;
 
 import com.bezirk.Proxy.Event;
-import com.bezirk.Proxy.ServiceEndPoint;
 import com.bezirk.Proxy.IndoorLocation;
+import com.bezirk.Proxy.ServiceEndPoint;
 
 /**
  * A notice Event that instructs the device to display the specified text
@@ -17,47 +17,52 @@ import com.bezirk.Proxy.IndoorLocation;
  */
 
 public class ShowTextEventNotice extends Event {
-	public static final String TOPIC = ShowTextEventNotice.class.getSimpleName();
+    public static final String TOPIC = ShowTextEventNotice.class.getSimpleName();
+    private String text;
 
-	// Payload
-	public enum TextType { INFORMATION, WARNING, ERROR};
-	private String text;
-	private TextType type;
-	private long expiration;
-	
-	/**
-	 * Multicast
-	 * 
-	 * @param at physical location
-	 * @param sphere
-	 */
-	public ShowTextEventNotice(IndoorLocation at, String sphere, ServiceEndPoint sender) {
-		super(TOPIC, at, sphere, sender);
-	}
-	
-	public void setPayload(String text, TextType type, long expiration) {
-		this.text = text;
-		this.type = type;
-		this.expiration = expiration;
-	}
-	/**
-	 * Use instead of the generic UhuMessage.deserialize()
-	 * @param json
-	 * @return
-	 */
-	public static ShowTextEventNotice deserialize(String json) {
-		return Event.deserialize(json, ShowTextEventNotice.class);
-	}
+    ;
+    private TextType type;
+    private long expiration;
+    /**
+     * Multicast
+     *
+     * @param at     physical location
+     * @param sphere
+     */
+    public ShowTextEventNotice(IndoorLocation at, String sphere, ServiceEndPoint sender) {
+        super(TOPIC, at, sphere, sender);
+    }
 
-	public String getText() {
-		return text;
-	}
+    /**
+     * Use instead of the generic UhuMessage.deserialize()
+     *
+     * @param json
+     * @return
+     */
+    public static ShowTextEventNotice deserialize(String json) {
+        return Event.deserialize(json, ShowTextEventNotice.class);
+    }
 
-	public TextType getType() {
-		return type;
-	}
+    public void setPayload(String text, TextType type, long expiration) {
+        this.text = text;
+        this.type = type;
+        this.expiration = expiration;
+    }
 
-	public long getExpiration() {
-		return expiration;
-	}
+    public String getText() {
+        return text;
+    }
+
+    public TextType getType() {
+        return type;
+    }
+
+    public long getExpiration() {
+        return expiration;
+    }
+
+    // Payload
+    public enum TextType {
+        INFORMATION, WARNING, ERROR
+    }
 }

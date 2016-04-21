@@ -2,7 +2,7 @@ package com.bezirk.controlui;
 /**
  * Uhu Control UI Application to launch UhU-Android Stack
  * Vimal
- * */
+ */
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -14,7 +14,7 @@ import com.bezirk.controlui.R;
 
 public class ControlActivity extends ActionBarActivity {
 
-private ControlActivityHelper controlActivityHelper;
+    private ControlActivityHelper controlActivityHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +31,7 @@ private ControlActivityHelper controlActivityHelper;
 
 
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -47,7 +48,7 @@ private ControlActivityHelper controlActivityHelper;
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int itemId = item.getItemId();
-        if(itemId == R.id.warning){
+        if (itemId == R.id.warning) {
             controlActivityHelper.showAlertDialogToShowSystemStatus();
         }
         return super.onOptionsItemSelected(item);
@@ -56,9 +57,9 @@ private ControlActivityHelper controlActivityHelper;
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem warningMenuItem = menu.findItem(R.id.warning);
-        if(controlActivityHelper.stackVersionMismatch){
+        if (controlActivityHelper.stackVersionMismatch) {
             warningMenuItem.setVisible(true);
-        }else{
+        } else {
             warningMenuItem.setVisible(false);
         }
         return super.onPrepareOptionsMenu(menu);

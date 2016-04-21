@@ -1,5 +1,14 @@
 package com.bezirk.starter;
 
+import com.bezirk.comms.UhuComms;
+import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.util.UhuValidatorUtility;
+import com.bezrik.network.IntfInetPair;
+import com.bezrik.network.UhuNetworkUtilities;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.net.NetworkInterface;
@@ -9,20 +18,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.comms.UhuComms;
-import com.bezrik.network.IntfInetPair;
-import com.bezrik.network.UhuNetworkUtilities;
-import com.bezirk.util.UhuValidatorUtility;
-
 /**
  * Helper class for main service to fetch the network interface details.
- * 
+ *
  * @author ajc6kor
- * 
  */
 final class UhuPCNetworkUtil {
 
@@ -52,7 +51,7 @@ final class UhuPCNetworkUtil {
      * exactly one interface found, use it <li>If more than one are found,
      * prompt the user to enter one <li>If none are found, use the loopback
      * interface
-     * 
+     *
      * @param interfaceName
      * @param uhuConfig
      * @return
@@ -60,7 +59,7 @@ final class UhuPCNetworkUtil {
      * @throws NullPointerException
      */
     private NetworkInterface resolveInterface(final String interfaceName,
-            final UhuConfig uhuConfig) throws SocketException,
+                                              final UhuConfig uhuConfig) throws SocketException,
             NullPointerException {
         final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
         // Try to resolve interface for supplied interfaceName
@@ -119,7 +118,7 @@ final class UhuPCNetworkUtil {
      * Prompts the user to enter an interface. If the UI is enabled, pop up a
      * swing window and prompt the user to choose from a pull-down menu. If UI
      * is not enabled, prompt the user to enter the interface on the console
-     * 
+     *
      * @return
      * @throws SocketException
      */
@@ -154,7 +153,7 @@ final class UhuPCNetworkUtil {
                 if (tempInterfaceName.toString() != null
                         && !tempInterfaceName.toString().isEmpty()
                         && tempInterfaceName.toString().equals(
-                                pair.getIntf().getName())) {
+                        pair.getIntf().getName())) {
                     interfaceName = tempInterfaceName.toString();
                     break;
                 }
@@ -169,11 +168,11 @@ final class UhuPCNetworkUtil {
      * Update the comms.properties file with the chosen interface if possible.
      * This is not possible if comms.properties is in a jar, in which case we do
      * nothing and return false
-     * 
+     *
      * @param intf
      * @param uhuConfig
-     * @throws Exception
      * @return False if the interface was not updated in the properties file
+     * @throws Exception
      */
     private boolean updateInterfaceInPropsFile(final NetworkInterface intf) {
         try {

@@ -3,31 +3,31 @@
  */
 package com.bezirk.streaming.threads;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.bezirk.comms.MessageQueue;
+import com.bezirk.control.messages.Ledger;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.sadl.ISadlEventReceiver;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
-import com.bezirk.control.messages.Ledger;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.control.Objects.StreamRecord.StreamingStatus;
 import com.bezirk.util.UhuValidatorUtility;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 /**
  * This Thread is a blocking and will be iterating on the message queue } to process the {@link StreamRecord}. It checks the {@link StreamingStatus} of the
- * {@link StreamRecord} and if it is {@link StreamingStatus#READY} it will process further else just remove from the queue.  If the {@link StreamingStatus} of the {@link StreamRecord} is 
+ * {@link StreamRecord} and if it is {@link StreamingStatus#READY} it will process further else just remove from the queue.  If the {@link StreamingStatus} of the {@link StreamRecord} is
  * {@link StreamingStatus#READY} it spawns a {@link StreamSendingThread} and removes the {@link StreamRecord} from the  queue}
- * 
+ * <p/>
  * TODO : onError has to be discussed!
- * @see StreamRecord
  *
+ * @see StreamRecord
  */
 public class StreamQueueProcessor implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(StreamQueueProcessor.class);
@@ -53,11 +53,12 @@ public class StreamQueueProcessor implements Runnable {
      * and checks  {@link StreamingStatus} of the {@link StreamRecord}.If {@link StreamingStatus} is {@link StreamingStatus#READY} , it spawns a  {@link StreamSendingThread}.
      * If {@link StreamingStatus} is {@link StreamingStatus#BUSY} then a notification has to be given back to the service via onError() ( yet to be implemented ).
      * The {@link StreamRecord} is removed from the stream queue}
+     *
      * @see java.lang.Runnable#run()
-     */ 
+     */
     @Override
     public void run() {
-       boolean running = true;
+        boolean running = true;
         LOGGER.debug("Uhu Stream Processor has started");
         boolean uhuCallbackPresent = false;
         while (running) {
@@ -97,7 +98,7 @@ public class StreamQueueProcessor implements Runnable {
     }
 
     private void processStreamBusyMessage(boolean uhuCallbackPresent,
-            StreamRecord streamRecord) {
+                                          StreamRecord streamRecord) {
 
         LOGGER.debug("The Receipient is Busy, Giving Callback to the Service");
 
@@ -110,25 +111,25 @@ public class StreamQueueProcessor implements Runnable {
     }
 
     private void processStreamReadyMessage(StreamRecord streamRecord) {
-        if (streamRecord.isIncremental 
+        if (streamRecord.isIncremental
                 || streamRecord.allowDrops) {
-        	
-        	LOGGER.debug("Uhu Supports only RELIABLE-COMPLETE..as of now..");
-           
-        } else {
-            
-        	 if (UhuValidatorUtility.isObjectNotNull(sphereForSadl)) {
-        		 
-                 new Thread(new StreamSendingThread(streamRecord, sadlReceiver, sphereForSadl)).start();                       // spawn the thread
-             } else {
 
-                 LOGGER.error("SphereForSadl is not initialized.");
-             }
+            LOGGER.debug("Uhu Supports only RELIABLE-COMPLETE..as of now..");
+
+        } else {
+
+            if (UhuValidatorUtility.isObjectNotNull(sphereForSadl)) {
+
+                new Thread(new StreamSendingThread(streamRecord, sadlReceiver, sphereForSadl)).start();                       // spawn the thread
+            } else {
+
+                LOGGER.error("SphereForSadl is not initialized.");
+            }
         }
     }
 
     private void processLocalStreamMessage(boolean uhuCallbackPresent,
-            StreamRecord streamRecord) {
+                                           StreamRecord streamRecord) {
         // GIVE THE CALLBACK AS SUCCESS FOR THE SENDER
         StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
                 streamRecord.senderSEP.serviceId, 1, streamRecord.localStreamId);

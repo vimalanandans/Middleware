@@ -10,38 +10,38 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bezirk.spheremanager.R;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.device.UhuDeviceType;
+import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.spheremanager.R;
 
 import java.util.List;
 
 public class DeviceListAdapter extends ArrayAdapter<UhuDeviceInfo> {
 
-	private final Context context;
-	private final List<UhuDeviceInfo> devices;
-	private LayoutInflater inflater;
+    private final Context context;
+    private final List<UhuDeviceInfo> devices;
+    private LayoutInflater inflater;
 
-	public DeviceListAdapter(Context context, List<UhuDeviceInfo> devices) {
-		super(context, 0, devices);
-		this.devices = devices;
-		this.context = context;
-		inflater = LayoutInflater.from(context);
-	}
+    public DeviceListAdapter(Context context, List<UhuDeviceInfo> devices) {
+        super(context, 0, devices);
+        this.devices = devices;
+        this.context = context;
+        inflater = LayoutInflater.from(context);
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View view;
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view;
         UhuDeviceInfo item = devices.get(position);
-		view = (View) inflater.inflate(R.layout.layout_devicelist_entry,
-				parent, false);
-		// set icon for device types
-		ImageView imageView = (ImageView) view.findViewById(R.id.device_type);
+        view = (View) inflater.inflate(R.layout.layout_devicelist_entry,
+                parent, false);
+        // set icon for device types
+        ImageView imageView = (ImageView) view.findViewById(R.id.device_type);
         // FIXME : create utility function to add the below
         if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_SMARTPHONE)) {
-			imageView.setImageResource(R.drawable.ic_smartphone);
-		} else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_TABLET)) {
-			imageView.setImageResource(R.drawable.ic_tablet);
+            imageView.setImageResource(R.drawable.ic_smartphone);
+        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_TABLET)) {
+            imageView.setImageResource(R.drawable.ic_tablet);
         } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_FAN)) {
             imageView.setImageResource(R.drawable.ic_fan);
         } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_LIGHT)) {
@@ -55,47 +55,46 @@ public class DeviceListAdapter extends ArrayAdapter<UhuDeviceInfo> {
         } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_WASHING_MACHINE)) {
             imageView.setImageResource(R.drawable.ic_washingmachine);
         } else if (item.getDeviceType().startsWith("Chainsaw")) { //sorry no chainsaw now
-			imageView.setImageResource(R.drawable.ic_chainsaw);
-		} else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_TV)){
-			imageView.setImageResource(R.drawable.ic_tv);
-        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_COFFEE)){
-			imageView.setImageResource(R.drawable.ic_coffee);
-        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_HEATING)){
-			imageView.setImageResource(R.drawable.ic_heating);
-        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_MICROWAVE)){
-			imageView.setImageResource(R.drawable.ic_microwave);
-        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_GAME)){
-			imageView.setImageResource(R.drawable.ic_controller);
-        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_CAR)){
-			imageView.setImageResource(R.drawable.ic_car);
-        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_CLOUD)){
-			imageView.setImageResource(R.drawable.ic_cloud);
-		} else {
-			// do nothing
-		}
-		TextView device_name = (TextView) view.findViewById(R.id.device_name);
+            imageView.setImageResource(R.drawable.ic_chainsaw);
+        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_TV)) {
+            imageView.setImageResource(R.drawable.ic_tv);
+        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_COFFEE)) {
+            imageView.setImageResource(R.drawable.ic_coffee);
+        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_HEATING)) {
+            imageView.setImageResource(R.drawable.ic_heating);
+        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_MICROWAVE)) {
+            imageView.setImageResource(R.drawable.ic_microwave);
+        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_GAME)) {
+            imageView.setImageResource(R.drawable.ic_controller);
+        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_CAR)) {
+            imageView.setImageResource(R.drawable.ic_car);
+        } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_CLOUD)) {
+            imageView.setImageResource(R.drawable.ic_cloud);
+        } else {
+            // do nothing
+        }
+        TextView device_name = (TextView) view.findViewById(R.id.device_name);
 
         device_name.setText(item.getDeviceName());
 
         // this device is owner for the sphere
-        if(item.getDeviceRole() == UhuDeviceInfo.UhuDeviceRole.UHU_CONTROL)
-        {
+        if (item.getDeviceRole() == UhuDeviceInfo.UhuDeviceRole.UHU_CONTROL) {
             device_name.setTypeface(null, Typeface.BOLD);
         }
 
         TextView device_active = (TextView) view
-				.findViewById(R.id.device_active);
+                .findViewById(R.id.device_active);
 
         String activeString = "";
 
         if (item.isDeviceActive()) {
-			activeString = "Active";
-			device_active.setTextColor(Color.rgb(120, 220, 90));
-		} else {
-			activeString = "Inactive";
-		}
-		device_active.setText(activeString);
-		return view;
-	}
+            activeString = "Active";
+            device_active.setTextColor(Color.rgb(120, 220, 90));
+        } else {
+            activeString = "Inactive";
+        }
+        device_active.setText(activeString);
+        return view;
+    }
 
 }

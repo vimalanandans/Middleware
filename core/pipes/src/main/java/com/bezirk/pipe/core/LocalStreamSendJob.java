@@ -7,35 +7,35 @@ import com.bezirk.control.messages.pipes.PipeHeader;
  * request to a local service
  */
 public class LocalStreamSendJob {
-	
-	protected String streamDescriptor;
-	
-	protected String filePath;
-	
-	protected PipeHeader pipeHeader;
 
-	public void setStreamDescriptor(String streamDescriptor) {
-		this.streamDescriptor = streamDescriptor;
-	}
+    protected String streamDescriptor;
 
-	public String getStreamDescriptor() {
-		return streamDescriptor;
-	}
+    protected String filePath;
 
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
+    protected PipeHeader pipeHeader;
 
-	public String getFilePath() {
-		return filePath;
-	}
+    public String getStreamDescriptor() {
+        return streamDescriptor;
+    }
 
-	public PipeHeader getPipeHeader() {
-		return pipeHeader;
-	}
+    public void setStreamDescriptor(String streamDescriptor) {
+        this.streamDescriptor = streamDescriptor;
+    }
 
-	public void setPipeHeader(PipeHeader pipeHeader) {
-		this.pipeHeader = pipeHeader;
-	}
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public PipeHeader getPipeHeader() {
+        return pipeHeader;
+    }
+
+    public void setPipeHeader(PipeHeader pipeHeader) {
+        this.pipeHeader = pipeHeader;
+    }
 
 }

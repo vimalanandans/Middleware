@@ -1,38 +1,49 @@
 package com.bezirk.spheremanager.ui.listitems;
 
 public class ProtocolItem implements AbstractPolicyListItem {
-	public static final String TAG = "PolicyListItem";
-	private String policyName;
-	private String policyReason;
-	private boolean isActive;
-	private boolean isNew;
+    public static final String TAG = "PolicyListItem";
+    private String policyName;
+    private String policyReason;
+    private boolean isActive;
+    private boolean isNew;
 
-	public enum PolicyDirection {
-		INBOUND, 
-		OUTBOUND 
-	}
-
-	public ProtocolItem(String policyName, String policyReason,
+    public ProtocolItem(String policyName, String policyReason,
                         boolean isActive, boolean isNew) {
-		super();
-		this.policyName = policyName;
-		this.policyReason = policyReason;
-		this.isActive = isActive;
-		this.isNew = isNew;
+        super();
+        this.policyName = policyName;
+        this.policyReason = policyReason;
+        this.isActive = isActive;
+        this.isNew = isNew;
 
-	}
-	public String getProtocolName(){
-		return policyName;
-	}
-	
-	/**
-	 * Human readable name for the protocol. E.g. UhU may refer to it to explain pipe policy.
-	 * @return The Protocol role description
-	 */
-	public  String getDescription(){
-		return policyReason;
-	}
-	
+    }
+
+    public String getProtocolName() {
+        return policyName;
+    }
+
+    /**
+     * Human readable name for the protocol. E.g. UhU may refer to it to explain pipe policy.
+     *
+     * @return The Protocol role description
+     */
+    public String getDescription() {
+        return policyReason;
+    }
+
+    /**
+     * @param p
+     * @return whether p has the same label as this
+     */
+    @Override
+    public boolean equals(Object p) {
+
+        if (p instanceof ProtocolItem) {
+
+            return this.getProtocolName().equals(((ProtocolItem) p).getProtocolName());
+        }
+        return false;
+    }
+
 //	/**
 //	 * Concrete classes must implement this method to return the specific array of event topics.
 //	 * @return array of event topics
@@ -43,47 +54,36 @@ public class ProtocolItem implements AbstractPolicyListItem {
 //	 * @return array of stream topics
 //	 */
 //	public  String[] getStreamTopics();
-	
-	/**
-	 * @param p
-	 * @return whether p has the same label as this
-	 */
-	@Override
-	public boolean equals(Object p) {
 
-		if(p instanceof ProtocolItem){
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((policyName == null) ? 0 : policyName.hashCode());
+        result = prime * result + ((policyReason == null) ? 0 : policyReason.hashCode());
+        return result;
+    }
 
-			return this.getProtocolName().equals(((ProtocolItem)p).getProtocolName());
-		}
-		return false;
-	}
+    public boolean isNew() {
+        return isNew;
+    }
 
+    public void setNew(boolean isNew) {
+        this.isNew = isNew;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((policyName == null) ? 0 : policyName.hashCode());
-		result = prime * result + ((policyReason == null) ? 0 : policyReason.hashCode());
-		return result;
-	}
+    public boolean isActive() {
+        return isActive;
+    }
 
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
 
-	public boolean isNew() {
-		return isNew;
-	}
-
-	public void setNew(boolean isNew) {
-		this.isNew = isNew;
-	}
-
-	public boolean isActive() {
-		return isActive;
-	}
-
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
+    public enum PolicyDirection {
+        INBOUND,
+        OUTBOUND
+    }
 //
 //	@Override
 //	public View getView(LayoutInflater layoutInflater, ViewGroup parent) {

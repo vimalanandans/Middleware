@@ -3,14 +3,28 @@ package com.bezirk.controlui;
 /**
  * Created by vnd2kor on 11/13/2014.
  */
-public class DataModel
-{
+public class DataModel {
     private final Integer imageId;
     private final String titleText;
-    private String hintText;
     private final boolean toggleButtonEnable; // ToggleButton Enable or disable
+    private String hintText;
     private boolean toggleButtonState; // ToggleButton on/off when enabled
     private boolean icon;
+
+    DataModel(Integer imageID, String title, String hint, boolean buttonEnable, boolean buttonState, boolean iconState) {
+
+        imageId = imageID;
+
+        titleText = title;
+
+        hintText = hint;
+
+        toggleButtonEnable = buttonEnable;
+
+        toggleButtonState = buttonState;
+
+        this.icon = iconState;
+    }
 
     public String getHintText() {
         return hintText;
@@ -46,22 +60,6 @@ public class DataModel
 
     public void setIcon(boolean icon) {
         this.icon = icon;
-    }
-
-
-    DataModel(Integer imageID, String title, String hint, boolean buttonEnable,boolean buttonState, boolean iconState){
-
-        imageId = imageID;
-
-        titleText = title;
-
-        hintText = hint;
-
-        toggleButtonEnable = buttonEnable;
-
-        toggleButtonState = buttonState;
-
-        this.icon = iconState;
     }
 
 }

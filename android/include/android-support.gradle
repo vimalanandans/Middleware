@@ -1,9 +1,6 @@
-
 /*
  * Create common extra properties use by all projects
  */
-
-
 
 // We need to apply findbugs before android config section, then we
 // configure findbugs below
@@ -29,8 +26,8 @@ android {
         release {
             //runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-			
-		}
+
+        }
     }
 
     /*
@@ -59,7 +56,7 @@ project.gradle.taskGraph.whenReady {
     testDebug {
         ignoreFailures = true
     }
-	testRelease{
+    testRelease {
         ignoreFailures = true
     }
 

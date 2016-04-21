@@ -2,10 +2,9 @@
  * Created by Rishabh Gulati on 12/9/15.
  * Robert Bosch LLC
  * rishabh.gulati@us.bosch.com
- *
+ * <p/>
  * Reference:
  * https://github.com/ZBar/ZBar/tree/master/android/examples/CameraTest/src/net/sourceforge/zbar/android/CameraTest
- *
  */
 
 package bezirk.zbarscanner;
@@ -26,6 +25,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private final PreviewCallback previewCallback;
     private final AutoFocusCallback autoFocusCallback;
     private final String TAG = CameraPreview.class.getName();
+
     public CameraPreview(Context context, Camera camera,
                          PreviewCallback previewCb,
                          AutoFocusCallback autoFocusCb) {
@@ -48,7 +48,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             camera.setPreviewDisplay(holder);
         } catch (IOException e) {
-            Log.d(TAG, "Error setting camera preview: " ,e);
+            Log.d(TAG, "Error setting camera preview: ", e);
         }
     }
 
@@ -71,7 +71,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             camera.stopPreview();
         } catch (Exception e) {
             // ignore: tried to stop a non-existent preview
-            Log.d(TAG,"Tried to stop non-existent preview. ",e);
+            Log.d(TAG, "Tried to stop non-existent preview. ", e);
         }
 
         try {
@@ -83,7 +83,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             camera.startPreview();
             camera.autoFocus(autoFocusCallback);
         } catch (Exception e) {
-            Log.d(TAG, "Error starting camera preview: " ,e);
+            Log.d(TAG, "Error starting camera preview: ", e);
         }
     }
 }

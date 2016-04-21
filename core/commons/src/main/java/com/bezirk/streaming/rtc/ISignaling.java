@@ -3,8 +3,7 @@ package com.bezirk.streaming.rtc;
 import com.bezirk.control.messages.UnicastControlMessage;
 
 /**
- * API for using uhu as signaling 
- *
+ * API for using uhu as signaling
  */
 public interface ISignaling {
 
@@ -13,19 +12,19 @@ public interface ISignaling {
      *
      * @param ctrlMsg control message containing handshake data
      */
-	public void startSignaling(final UnicastControlMessage ctrlMsg);
-	
-	/**
+    public void startSignaling(final UnicastControlMessage ctrlMsg);
+
+    /**
      * Send the handshake control message
      *
      * @param ctrlMsg control message containing handshake data
      */
-	public void sendControlMessage(final UnicastControlMessage ctrlMsg);
-	
-	/**
+    public void sendControlMessage(final UnicastControlMessage ctrlMsg);
+
+    /**
      * Receive the handshake control message
      *
      * @param ctrlMsg control message containing handshake data
      */
-	public void receiveControlMessage(final UnicastControlMessage ctrlMsg);
+    public void receiveControlMessage(final UnicastControlMessage ctrlMsg);
 }

@@ -1,15 +1,14 @@
 /**
- * 
+ *
  */
 package com.bezirk.sphere.api;
 
-import java.util.Set;
-
 import com.bezirk.middleware.objects.UhuSphereInfo;
+
+import java.util.Set;
 
 /**
  * @author Rishabh Gulati
- *
  */
 public interface IUhuSphereDiscovery {
 

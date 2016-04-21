@@ -20,7 +20,7 @@ public class DialogSphereList extends DialogFragment {
     private List<String> sphereList;
     private OnSphereSelectCallback callback;
 
-    DialogSphereList(){
+    DialogSphereList() {
         //default constructor
     }
 
@@ -31,9 +31,9 @@ public class DialogSphereList extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sphere_list,container,false);
-        ListView sphereListView = (ListView)view.findViewById(R.id.sphereList);
-        ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,sphereList);
+        View view = inflater.inflate(R.layout.fragment_sphere_list, container, false);
+        ListView sphereListView = (ListView) view.findViewById(R.id.sphereList);
+        ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, sphereList);
         sphereListView.setAdapter(listAdapter);
         getDialog().setTitle("Select Sphere");
         sphereListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -49,7 +49,7 @@ public class DialogSphereList extends DialogFragment {
     /**
      * Interface to give callback to called activity
      */
-    interface OnSphereSelectCallback{
+    interface OnSphereSelectCallback {
         void onSphereSelectCallback(int position);
     }
 }

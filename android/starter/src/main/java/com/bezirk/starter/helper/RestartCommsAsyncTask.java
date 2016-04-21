@@ -21,17 +21,18 @@ import org.slf4j.LoggerFactory;
  */
 class RestartCommsAsyncTask extends AsyncTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestartCommsAsyncTask.class);
+    private static AlertDialog dialog;
     private final Context context;
     private final String message;
     private final IUhuStackHandler stackHandler;
-    private static AlertDialog dialog;
 
-    RestartCommsAsyncTask(Context context, String alertMessage,IUhuStackHandler stackHandler){
+    RestartCommsAsyncTask(Context context, String alertMessage, IUhuStackHandler stackHandler) {
         this.context = context;
         this.message = alertMessage;
         this.stackHandler = stackHandler;
     }
-    private void buildAlertDialog(String message, Context context){
+
+    private void buildAlertDialog(String message, Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Alert!!");
         builder.setMessage(message);
@@ -40,12 +41,13 @@ class RestartCommsAsyncTask extends AsyncTask {
                 DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         return;
-                    } });
+                    }
+                });
         dialog = builder.create();
-        dialog.getWindow().setType( WindowManager.LayoutParams.TYPE_SYSTEM_ALERT );
+        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
-        if(dialog.isShowing()) {
+        if (dialog.isShowing()) {
             dialog.dismiss();
         }
         dialog.show();

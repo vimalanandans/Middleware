@@ -1,43 +1,38 @@
 /**
- * 
+ *
  */
 package com.bezirk.sphere.impl;
-
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.bezirk.devices.UPADeviceForPC;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuDevMode.Mode;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Properties;
+
 /**
  * @author rishabh
- *
  */
 public class SphereProperties implements ISphereConfig {
 
-    private Mode mode;
-
-    /* Development sphere variables */
-    private String sphereName;
-    private String sphereId;
-    private byte[] sphereKey;
-
-    private String defaultSphereName;
     private static final String SPHERE_PROPERTIES_FILE = "sphere.properties";
-
     /* Keys used in sphere.properties */
     private static final String SPHERE_NAME = "sphereName";
     private static final String SPHERE_ID = "sphereId";
     private static final String SPHERE_KEY = "sphereKey";
     private static final String SPHERE_MODE = "devMode";
     private static final String DEFAULT_SPHERE_NAME = "defaultSphereName";
-
     private static final Logger log = LoggerFactory.getLogger(SphereProperties.class);
+    private Mode mode;
+    /* Development sphere variables */
+    private String sphereName;
+    private String sphereId;
+    private byte[] sphereKey;
+    private String defaultSphereName;
 
     @Override
     public void init() {
@@ -114,7 +109,7 @@ public class SphereProperties implements ISphereConfig {
 
     /**
      * Get sphere properties from the sphere.properties file.
-     * 
+     *
      * @return
      */
     private Properties getProperties() {
@@ -130,7 +125,7 @@ public class SphereProperties implements ISphereConfig {
 
     /**
      * Validate sphere properties from the properties file
-     * 
+     *
      * @param properties
      * @return
      */
@@ -147,7 +142,7 @@ public class SphereProperties implements ISphereConfig {
     /**
      * Populate members. Requires validation of properties using
      * {@link #validateProperties(Properties)}
-     * 
+     *
      * @param properties
      * @return
      */

@@ -2,23 +2,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:padding="8dp" >
+    android:orientation="horizontal"
+    android:padding="8dp">
+
     <ImageView
         android:id="@+id/sphere_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginRight="8dp"
         android:src="@drawable/ic_sphere" />
+
     <TextView
         android:id="@+id/sphere_item_name"
         style="@style/ListItem"
         tools:context="com.bezirk.spheremanager.ui.SphereListFragment" />
 
-<!--     <TextView
-        android:id="@+id/sphere_item_details"
-        style="@style/ListItemDetails"
-        tools:context="SphereListFragment" /> -->
+    <!--     <TextView
+            android:id="@+id/sphere_item_details"
+            style="@style/ListItemDetails"
+            tools:context="SphereListFragment" /> -->
 
 </LinearLayout>

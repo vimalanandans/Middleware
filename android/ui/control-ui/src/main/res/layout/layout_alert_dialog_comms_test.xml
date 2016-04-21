@@ -3,102 +3,100 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bezirk.controlui.ControlActivity"
-    >
+    tools:context="com.bezirk.controlui.ControlActivity">
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="UHU-COMMS-CONFIGURATION"
-        android:padding="16dp"
         android:gravity="center_horizontal"
-        android:textStyle="bold"/>
-
+        android:padding="16dp"
+        android:text="UHU-COMMS-CONFIGURATION"
+        android:textStyle="bold" />
 
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="UNICAST-SENDING-PORT"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:text="UNICAST-SENDING-PORT" />
 
     <EditText
         android:id="@+id/unicastSendingPort"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="3456"
         android:inputType="number"
+        android:maxLength="4"
         android:padding="8dp"
-        android:maxLength="4"/>
+        android:text="3456" />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="UNICAST-RECEIVING-PORT"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:text="UNICAST-RECEIVING-PORT" />
 
     <EditText
         android:id="@+id/unicastReceivingPort"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="3456"
         android:inputType="number"
+        android:maxLength="4"
         android:padding="8dp"
-        android:maxLength="4"/>
+        android:text="3456" />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="MULTICAST-RECEIVING-PORT"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:text="MULTICAST-RECEIVING-PORT" />
 
     <EditText
         android:id="@+id/multicastReceivingPort"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="3456"
         android:inputType="number"
+        android:maxLength="4"
         android:padding="8dp"
-        android:maxLength="4"/>
+        android:text="3456" />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="MULTICAST-SENDING-PORT"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:text="MULTICAST-SENDING-PORT" />
 
     <EditText
         android:id="@+id/multicastSendingPort"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="3456"
         android:inputType="number"
+        android:maxLength="4"
         android:padding="8dp"
-        android:maxLength="4"/>
+        android:text="3456" />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="WAITING TIME TO RECEIVE RESPONSES(in MilliSec)"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:text="WAITING TIME TO RECEIVE RESPONSES(in MilliSec)" />
 
     <EditText
         android:id="@+id/waitingTime"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="60000"
         android:inputType="number"
+        android:maxLength="5"
         android:padding="8dp"
-        android:maxLength="5"/>
+        android:text="60000" />
 
     <Button
-        android:layout_width="wrap_content"
         android:id="@+id/setButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SET"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
         android:padding="16dp"
-        android:layout_marginTop="16dp"/>
+        android:text="SET" />
 
 
 </LinearLayout>

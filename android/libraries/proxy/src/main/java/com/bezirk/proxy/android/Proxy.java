@@ -36,8 +36,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public final class Proxy implements Bezirk {
-    private final String TAG = Proxy.class.getSimpleName();
-
+    static final int TIME_DURATION = 15000;
+    static final int MAX_MAP_SIZE = 50;
+    static final ConcurrentMap<String, ArrayList<BezirkListener>> eventListenerMap = new ConcurrentHashMap<String, ArrayList<BezirkListener>>();
+    static final ConcurrentMap<String, ArrayList<BezirkListener>> streamListenerMap = new ConcurrentHashMap<String, ArrayList<BezirkListener>>();
+    static final ConcurrentMap<Short, String> activeStreams = new ConcurrentHashMap<Short, String>();
+    static final ConcurrentMap<String, Long> duplicateMsgMap = new ConcurrentHashMap<String, Long>();
+    static final ConcurrentMap<String, Long> duplicateStreamMap = new ConcurrentHashMap<String, Long>();
+    //Pipe Listener Map -- pipeId : listener
+    static final ConcurrentMap<String, BezirkListener> pipeListenerMap = new ConcurrentHashMap<String, BezirkListener>();
     private static final String ACTION_UHU_REGISTER = "REGISTER";
     private static final String ACTION_SERVICE_DISCOVER = "DISCOVER";
     private static final String ACTION_SERVICE_SEND_MULTICAST_EVENT = "MULTICAST_EVENT";
@@ -47,26 +54,14 @@ public final class Proxy implements Bezirk {
     private static final String ACTION_UHU_SETLOCATION = "LOCATION";
     private static final String ACTION_UHU_PUSH_UNICAST_STREAM = "UNICAST_STREAM";
     private static final String ACTION_UHU_PUSH_MULTICAST_STREAM = "MULTICAST_STREAM";
-
     private static final String COMPONENT_NAME = "com.bosch.upa.uhu.controlui";
     private static final String SERVICE_PKG_NAME = "com.bosch.upa.uhu.starter.MainService";
-
-    static final int TIME_DURATION = 15000;
-    static final int MAX_MAP_SIZE = 50;
-
+    private static final ProxyHelper proxyHelper = new ProxyHelper();
     static Context mContext;
     static BezirkListener DiscoveryListener;
-    private short streamFactory;
     static int discoveryCount; // keep track of Discovery Id
-
-    static final ConcurrentMap<String, ArrayList<BezirkListener>> eventListenerMap = new ConcurrentHashMap<String, ArrayList<BezirkListener>>();
-    static final ConcurrentMap<String, ArrayList<BezirkListener>> streamListenerMap = new ConcurrentHashMap<String, ArrayList<BezirkListener>>();
-    static final ConcurrentMap<Short, String> activeStreams = new ConcurrentHashMap<Short, String>();
-    static final ConcurrentMap<String, Long> duplicateMsgMap = new ConcurrentHashMap<String, Long>();
-    static final ConcurrentMap<String, Long> duplicateStreamMap = new ConcurrentHashMap<String, Long>();
-    //Pipe Listener Map -- pipeId : listener
-    static final ConcurrentMap<String, BezirkListener> pipeListenerMap = new ConcurrentHashMap<String, BezirkListener>();
-    private static final ProxyHelper proxyHelper = new ProxyHelper();
+    private final String TAG = Proxy.class.getSimpleName();
+    private short streamFactory;
 
     public Proxy(Context context) {
         mContext = context;
@@ -126,11 +121,11 @@ public final class Proxy implements Bezirk {
         Log.i(TAG, "Unregister request for serviceID: " + ((UhuServiceId) serviceId).getUhuServiceId());
 
         SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(mContext);
-        Map<String,?> keys = shrdPref.getAll();
-        for(Map.Entry<String,?> entry : keys.entrySet()){
+        Map<String, ?> keys = shrdPref.getAll();
+        for (Map.Entry<String, ?> entry : keys.entrySet()) {
             //find and delete the entry corresponding to this serviceId
-            if(entry.getValue().toString().equalsIgnoreCase(((UhuServiceId) serviceId).getUhuServiceId())){
-                Log.i(TAG, "Unregistering service: "+entry.getKey());
+            if (entry.getValue().toString().equalsIgnoreCase(((UhuServiceId) serviceId).getUhuServiceId())) {
+                Log.i(TAG, "Unregistering service: " + entry.getKey());
                 SharedPreferences.Editor editor = shrdPref.edit();
                 editor.remove(entry.getKey());
                 editor.apply();
@@ -145,8 +140,8 @@ public final class Proxy implements Bezirk {
             return;
         }
 
-        proxyHelper.addTopicsToMap(pRole.getEventTopics(),eventListenerMap,listener,"Event");
-        proxyHelper.addTopicsToMap(pRole.getStreamTopics(),streamListenerMap,listener,"Stream");
+        proxyHelper.addTopicsToMap(pRole.getEventTopics(), eventListenerMap, listener, "Event");
+        proxyHelper.addTopicsToMap(pRole.getStreamTopics(), streamListenerMap, listener, "Stream");
         // Send the intent
         Intent subscribeIntent = new Intent();
         subscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
@@ -163,7 +158,7 @@ public final class Proxy implements Bezirk {
     }
 
     private boolean isRequestValid(ServiceId subscriber, ProtocolRole pRole, BezirkListener listener) {
-        if (!StringValidatorUtil.areValidStrings(pRole.getProtocolName())|| null == listener || null == subscriber) {
+        if (!StringValidatorUtil.areValidStrings(pRole.getProtocolName()) || null == listener || null == subscriber) {
             Log.e(TAG, "Check for ProtocolRole/ UhuListener/ServiceId for null or empty values");
             return false;
         }

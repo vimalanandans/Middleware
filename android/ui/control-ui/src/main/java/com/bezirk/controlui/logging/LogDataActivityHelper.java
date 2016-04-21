@@ -43,137 +43,29 @@ class LogDataActivityHelper {
     /**
      * To print the timestamp of the recieved msg
      */
-    private final SimpleDateFormat sdf= new SimpleDateFormat("HH:mm:ss:SSS", Locale.ENGLISH);
+    private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS", Locale.ENGLISH);
 
     /**
      * CONSTANT for New Row
      */
-    private final int  NEW_ROW_FOR_TABLE = -1,
+    private final int NEW_ROW_FOR_TABLE = -1,
     /**
      * SIZE of the Linked HashMap to keep track of the MsgId
      */
-            SIZE_OF_LOG_MSG_MAP = 128;
-
-    /**
-     * UI Handler
-     */
-    Handler mHandler;
-
+    SIZE_OF_LOG_MSG_MAP = 128;
     /**
      * Value to be displayed for the Recipient during MULTICAST
      */
     private final String RECIPIENT_MULTICAST_VALUE = "MULTI-CAST";
     /**
-     * Integer value referring to the row tag, that will be assigned to each of the log table row
-     */
-    private int tableRowTagCount;
-    /**
      * ConcurrentHashMap that is used to store the log messages and update them.
      */
-    private final ConcurrentMap<String,Integer> logMsgMap = new ConcurrentHashMap<String,Integer>(SIZE_OF_LOG_MSG_MAP);
-
-    /**
-     * Table Layout that displays the logs.(defined in the xml)
-     */
-    private TableLayout mTableLayoutLogData;
-
+    private final ConcurrentMap<String, Integer> logMsgMap = new ConcurrentHashMap<String, Integer>(SIZE_OF_LOG_MSG_MAP);
     private final LogDataActivity logDataActivity;
-
-    LogDataActivityHelper(LogDataActivity logDataActivity) {
-        this.logDataActivity = logDataActivity;
-    }
-
     /**
-     * Init the UI and setup the Handler
+     * UI Handler
      */
-    void init(){
-        mHandler = new Handler(handlerCallback);
-        mTableLayoutLogData = (TableLayout)logDataActivity.findViewById(R.id.logdataTableLayout);
-    }
-    /**
-     * Handle the callback. Update the table layout with the log
-     */
-    final Handler.Callback handlerCallback = new Handler.Callback(){
-
-        @Override
-        public boolean handleMessage(final Message msg) {
-            UhuLoggingMessage logMsg = (UhuLoggingMessage) msg.obj;
-
-            if(!logDataActivity.isDeveloperModeEnabled && (logMsg.typeOfMessage.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name()) ||
-                    logMsg.typeOfMessage.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND.name()))){
-                return true;
-            }
-            int rowTagVal = getLogRowPosition(logMsg.uniqueMsgId,logMsg.sphereName);
-            if(NEW_ROW_FOR_TABLE == rowTagVal)
-                mTableLayoutLogData.addView(getLogTableRow(logMsg));
-            else
-                updateTableRow(rowTagVal);
-            return true;
-        }
-    };
-
-    /**
-     * Returns the row tag assicociated with the table row.
-     * @param logMsgId - Message Id of the log msg
-     * @param sphereId - of the log msg
-     * @return the row tag if already updted on the table else NEW_ROW_FOR_TABLE value
-     */
-    Integer getLogRowPosition(final String logMsgId, final String sphereId){
-        StringBuilder tempMapKey = new StringBuilder();
-        tempMapKey.append(sphereId).append(":").append(logMsgId);
-
-        if(logMsgMap.containsKey(tempMapKey.toString()))
-            return logMsgMap.get(tempMapKey.toString());
-        ++tableRowTagCount;
-        if(logMsgMap.size() == SIZE_OF_LOG_MSG_MAP){
-            logMsgMap.remove(logMsgMap.keySet().iterator().next());
-        }
-        logMsgMap.put(tempMapKey.toString(),tableRowTagCount);
-        return NEW_ROW_FOR_TABLE;
-    }
-
-    /**
-     * Updates the row of the table by incrementing the value
-     * @param rowTagValue tag of the row that needs to be updated
-     */
-    void updateTableRow(final int rowTagValue) {
-        try {
-            TableRow updatingTableRow = (TableRow) mTableLayoutLogData.findViewWithTag(String.valueOf(rowTagValue));
-            TextView countTextView = (TextView) updatingTableRow.getChildAt(5); // 5th Clid
-            int countValue = Integer.valueOf(countTextView.getText().toString()) + 1;
-            countTextView.setText(String.valueOf(countValue));
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            printToast("Error in updating table Row");
-        }
-    }
-    /**
-     * Starts the Logging Service and LogReceiverProcessor.
-     */
-    void startLogService(){
-        try{
-            logDataActivity.mUhuLoggingManager = new UhuLoggingManager();
-            logDataActivity.mUhuLoggingManager.startLoggingService(UhuComms.getREMOTE_LOGGING_PORT(),loggingHandler);
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-        }
-    }
-    /**
-     * Send the LogServiceMsg across all the spheres.
-     */
-    void sendLogServiceMsg(final String[] selectedSphereList, boolean isAnySphereSelectedFlag){
-        String[] tempLoggingSphereList = null;
-        if(isAnySphereSelectedFlag){
-            tempLoggingSphereList = ANY_SPHERE_VALUE;
-        }else{
-            tempLoggingSphereList = selectedSphereList;
-        }
-        logDataActivity.selSpheres = selectedSphereList.clone();
-
-        // it is not a good idea to access the main service directly. the best way to do is via IBinder
-        MainService.sendLoggingServiceMsgToClients(logDataActivity.selSpheres, tempLoggingSphereList, true);
-
-    }
+    Handler mHandler;
     /**
      * IUhuLogging Implementation to handle the logmessage. It receives the log message and gives it to the handler to update the UI.
      */
@@ -186,13 +78,122 @@ class LogDataActivityHelper {
         }
     };
     /**
+     * Integer value referring to the row tag, that will be assigned to each of the log table row
+     */
+    private int tableRowTagCount;
+    /**
+     * Table Layout that displays the logs.(defined in the xml)
+     */
+    private TableLayout mTableLayoutLogData;
+    /**
+     * Handle the callback. Update the table layout with the log
+     */
+    final Handler.Callback handlerCallback = new Handler.Callback() {
+
+        @Override
+        public boolean handleMessage(final Message msg) {
+            UhuLoggingMessage logMsg = (UhuLoggingMessage) msg.obj;
+
+            if (!logDataActivity.isDeveloperModeEnabled && (logMsg.typeOfMessage.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name()) ||
+                    logMsg.typeOfMessage.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND.name()))) {
+                return true;
+            }
+            int rowTagVal = getLogRowPosition(logMsg.uniqueMsgId, logMsg.sphereName);
+            if (NEW_ROW_FOR_TABLE == rowTagVal)
+                mTableLayoutLogData.addView(getLogTableRow(logMsg));
+            else
+                updateTableRow(rowTagVal);
+            return true;
+        }
+    };
+
+    LogDataActivityHelper(LogDataActivity logDataActivity) {
+        this.logDataActivity = logDataActivity;
+    }
+
+    /**
+     * Init the UI and setup the Handler
+     */
+    void init() {
+        mHandler = new Handler(handlerCallback);
+        mTableLayoutLogData = (TableLayout) logDataActivity.findViewById(R.id.logdataTableLayout);
+    }
+
+    /**
+     * Returns the row tag assicociated with the table row.
+     *
+     * @param logMsgId - Message Id of the log msg
+     * @param sphereId - of the log msg
+     * @return the row tag if already updted on the table else NEW_ROW_FOR_TABLE value
+     */
+    Integer getLogRowPosition(final String logMsgId, final String sphereId) {
+        StringBuilder tempMapKey = new StringBuilder();
+        tempMapKey.append(sphereId).append(":").append(logMsgId);
+
+        if (logMsgMap.containsKey(tempMapKey.toString()))
+            return logMsgMap.get(tempMapKey.toString());
+        ++tableRowTagCount;
+        if (logMsgMap.size() == SIZE_OF_LOG_MSG_MAP) {
+            logMsgMap.remove(logMsgMap.keySet().iterator().next());
+        }
+        logMsgMap.put(tempMapKey.toString(), tableRowTagCount);
+        return NEW_ROW_FOR_TABLE;
+    }
+
+    /**
+     * Updates the row of the table by incrementing the value
+     *
+     * @param rowTagValue tag of the row that needs to be updated
+     */
+    void updateTableRow(final int rowTagValue) {
+        try {
+            TableRow updatingTableRow = (TableRow) mTableLayoutLogData.findViewWithTag(String.valueOf(rowTagValue));
+            TextView countTextView = (TextView) updatingTableRow.getChildAt(5); // 5th Clid
+            int countValue = Integer.valueOf(countTextView.getText().toString()) + 1;
+            countTextView.setText(String.valueOf(countValue));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            printToast("Error in updating table Row");
+        }
+    }
+
+    /**
+     * Starts the Logging Service and LogReceiverProcessor.
+     */
+    void startLogService() {
+        try {
+            logDataActivity.mUhuLoggingManager = new UhuLoggingManager();
+            logDataActivity.mUhuLoggingManager.startLoggingService(UhuComms.getREMOTE_LOGGING_PORT(), loggingHandler);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Send the LogServiceMsg across all the spheres.
+     */
+    void sendLogServiceMsg(final String[] selectedSphereList, boolean isAnySphereSelectedFlag) {
+        String[] tempLoggingSphereList = null;
+        if (isAnySphereSelectedFlag) {
+            tempLoggingSphereList = ANY_SPHERE_VALUE;
+        } else {
+            tempLoggingSphereList = selectedSphereList;
+        }
+        logDataActivity.selSpheres = selectedSphereList.clone();
+
+        // it is not a good idea to access the main service directly. the best way to do is via IBinder
+        MainService.sendLoggingServiceMsgToClients(logDataActivity.selSpheres, tempLoggingSphereList, true);
+
+    }
+
+    /**
      * Returns the Table Row setup with all the contents with properties to be displayed
      */
-    TableRow getLogTableRow(final UhuLoggingMessage logMsg){
+    TableRow getLogTableRow(final UhuLoggingMessage logMsg) {
         final TableRow.LayoutParams tableRowLayoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-        final TableRow.LayoutParams tableLayoutLayoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT,1.0f);
-        tableLayoutLayoutParams.gravity= Gravity.CENTER;
-        tableLayoutLayoutParams.rightMargin=2;
+        final TableRow.LayoutParams tableLayoutLayoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
+        tableLayoutLayoutParams.gravity = Gravity.CENTER;
+        tableLayoutLayoutParams.rightMargin = 2;
 
         // compute the colour  for the row based on the type of the message
         int rowColour = getColourForRow(logMsg.typeOfMessage);
@@ -248,27 +249,28 @@ class LogDataActivityHelper {
 
     /**
      * Returns the DeviceName associated with the deviceId
+     *
      * @param deviceId Device Id whose name is to be fetched
      * @return DeviceName if exists, null otherwise
      */
-    String getDeviceNameFromDeviceId(final String deviceId){
-        if(deviceId == null)
+    String getDeviceNameFromDeviceId(final String deviceId) {
+        if (deviceId == null)
             return RECIPIENT_MULTICAST_VALUE;
         String tempDeviceName = UhuCompManager.getSphereForSadl().getDeviceNameFromSphere(deviceId);
-        return (null == tempDeviceName)?deviceId:tempDeviceName;
+        return (null == tempDeviceName) ? deviceId : tempDeviceName;
     }
 
     /**
      * Returns a particular type of colour based on the msg Type
      */
-    private int getColourForRow(final String msgType){
-        if(msgType.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name())){
+    private int getColourForRow(final String msgType) {
+        if (msgType.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name())) {
             return R.color.table_bg_ctrlMsg_receive;
-        }else if(msgType.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND.name())){
+        } else if (msgType.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND.name())) {
             return R.color.table_bg_ctrlMsg_send;
-        }else if(msgType.equals(Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name())){
+        } else if (msgType.equals(Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name())) {
             return R.color.table_bg_event_receive;
-        }else if(msgType.equals(Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_SEND.name())){
+        } else if (msgType.equals(Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_SEND.name())) {
             return R.color.table_bg_event_send;
         }
         return R.color.list_item_table_cell_bg;
@@ -277,7 +279,7 @@ class LogDataActivityHelper {
     /**
      * Pop the Confirm Dialog before closing the actitity.
      */
-    void showConfirmDialogToStopLogging(){
+    void showConfirmDialogToStopLogging() {
         AlertDialog dialog = null;
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(logDataActivity);
@@ -294,7 +296,7 @@ class LogDataActivityHelper {
                     logDataActivity.onDestroy();
                 } catch (Exception e) {
                     printToast("ERROR IN STOPPING LOG SERVICE...");
-                    log.error("Error in stopping log service.",e);
+                    log.error("Error in stopping log service.", e);
                 }
             }
         });
@@ -311,23 +313,25 @@ class LogDataActivityHelper {
 
     /**
      * Gets the Sphere name from the SPhere UI if available, "Un-defined" if not available.
+     *
      * @param sphereId SPhereId of the sphere
      * @return Sphere Name associated with the sphere Id.
      */
-    String getSphereNameFromSphereId(final String sphereId){
+    String getSphereNameFromSphereId(final String sphereId) {
         StringBuilder tempSphereName = new StringBuilder();
         try {
             tempSphereName.append(UhuCompManager.getSphereUI().getSphere(sphereId).getSphereName());
-        }catch (NullPointerException ne){
-            log.error("Error in fetching sphereName from sphere UI",ne);
+        } catch (NullPointerException ne) {
+            log.error("Error in fetching sphereName from sphere UI", ne);
             tempSphereName.append("Un-defined");
         }
         return tempSphereName.toString();
     }
+
     /**
      * Print Toast Message
      */
-    void printToast(String toastMsg){
+    void printToast(String toastMsg) {
         Toast.makeText(logDataActivity, toastMsg, Toast.LENGTH_SHORT).show();
     }
 }

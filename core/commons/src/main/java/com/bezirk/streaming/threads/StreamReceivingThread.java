@@ -1,7 +1,20 @@
 /**
- *@author : Vijet Badigannavar (bvijet@in.bosch.com)
+ * @author : Vijet Badigannavar (bvijet@in.bosch.com)
  */
 package com.bezirk.streaming.threads;
+
+import com.bezirk.comms.IPortFactory;
+import com.bezirk.comms.UhuComms;
+import com.bezirk.control.messages.streaming.StreamRequest;
+import com.bezirk.messagehandler.StreamIncomingMessage;
+import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.sadl.ISadlEventReceiver;
+import com.bezirk.sphere.api.IUhuSphereForSadl;
+import com.bezirk.streaming.port.PortFactory;
+import com.bezirk.util.UhuValidatorUtility;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -11,19 +24,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.comms.UhuComms;
-import com.bezirk.sadl.ISadlEventReceiver;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
-import com.bezirk.messagehandler.StreamIncomingMessage;
-import com.bezirk.comms.IPortFactory;
-import com.bezirk.streaming.port.PortFactory;
-import com.bezirk.control.messages.streaming.StreamRequest;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.util.UhuValidatorUtility;
 
 /**
  * This thread is used by the recipient that is interested in receiving the Stream. This Thread opens socket at port ({@link PortFactory#getPort(String)} and
@@ -45,7 +45,7 @@ public class StreamReceivingThread implements Runnable {
      * the port is released*/
     private static final int CONNECTION_TIMEOUT_TIME = 45000;                                     // 45 sec
     private static final int BUFFER_SIZE = 1024;
-	private final String sphere;
+    private final String sphere;
     private final int port;                                                                      // port,received from Port Factory
     private final String streamLabel;                                                                 // StreamLabel, that the service has subscribed
     private final String fileName;
@@ -56,20 +56,20 @@ public class StreamReceivingThread implements Runnable {
     private final short streamId;
     private final IPortFactory portFactory;
     private final ISadlEventReceiver sadlReceiver;
-    private final IUhuSphereForSadl sphereForSadl ;
+    private final IUhuSphereForSadl sphereForSadl;
 
     /**
      * Constructor that is called during starting the thread
-     * @param sphereForSadl 
+     * @param sphereForSadl
      * @param - sphere - used to decrypt the data
      * @param - port   - port that this thread is listening to receive the data. { This port is got from PortFactory }
      * @param - streamLabel - streamLabel that is used to identify the Stream
      */
     public StreamReceivingThread(int port,
-            StreamRequest streamRequest, IPortFactory portFactory,
-            ISadlEventReceiver sadlReceiver, IUhuSphereForSadl sphereForSadl) {
+                                 StreamRequest streamRequest, IPortFactory portFactory,
+                                 ISadlEventReceiver sadlReceiver, IUhuSphereForSadl sphereForSadl) {
         super();
-        this.sphere =streamRequest.getSphereId();
+        this.sphere = streamRequest.getSphereId();
         this.port = port;
         this.streamLabel = streamRequest.streamLabel;
         this.fileName = streamRequest.fileName;
@@ -94,7 +94,7 @@ public class StreamReceivingThread implements Runnable {
         boolean portReleased = false;
 
         boolean streamErrored = true;
-        
+
         try {
             LOGGER.debug("Thread started to listen at port to receive Data..");
             socket = new ServerSocket(port);                                      // listen at the Port
@@ -106,13 +106,13 @@ public class StreamReceivingThread implements Runnable {
             inputStream = new DataInputStream(receivingSocket.getInputStream());
 
             if (isSecure) {
-            	if(UhuValidatorUtility.isObjectNotNull(sphereForSadl)){
-            		sphereForSadl.decryptSphereContent(inputStream, fileOutputStream, sphere);
-            	}else{
-            		LOGGER.error("SphereForSadl is not initialized. Unable to process secure streaming request.");
-            	}
-            	
-            	LOGGER.debug("---------- Secure Data transfer Completed! -------------");
+                if (UhuValidatorUtility.isObjectNotNull(sphereForSadl)) {
+                    sphereForSadl.decryptSphereContent(inputStream, fileOutputStream, sphere);
+                } else {
+                    LOGGER.error("SphereForSadl is not initialized. Unable to process secure streaming request.");
+                }
+
+                LOGGER.debug("---------- Secure Data transfer Completed! -------------");
             } else {
                 int noOfBytesRead = 0;
                 byte[] buffer = new byte[BUFFER_SIZE];
@@ -125,7 +125,7 @@ public class StreamReceivingThread implements Runnable {
 
             portReleased = portFactory.releasePort(port);                                 // release the Port
             notifyStreamFile(tempFile, portReleased);
-            streamErrored  =false;
+            streamErrored = false;
         } catch (SocketException e) {
             LOGGER.error(
                     "Connection Timeout, the client didn't connect within specified timeout",
@@ -147,8 +147,8 @@ public class StreamReceivingThread implements Runnable {
             if (UhuValidatorUtility.isObjectNotNull(tempFile) && tempFile.exists()) {
                 tempFile.delete();
             }
-        }  finally {
-            
+        } finally {
+
             if (streamErrored) {
                 portReleased = portFactory.releasePort(port); // release the port if there is any exception
                 if (!portReleased) {
@@ -161,7 +161,7 @@ public class StreamReceivingThread implements Runnable {
     }
 
     private void closeResources(ServerSocket socket, Socket receivingSocket,
-            FileOutputStream fileOutputStream, DataInputStream inputStream) {
+                                FileOutputStream fileOutputStream, DataInputStream inputStream) {
         try {
             if (UhuValidatorUtility.isObjectNotNull(inputStream)) {
                 inputStream.close();

@@ -4,7 +4,6 @@ import java.util.HashSet;
 
 /**
  * @author Rishabh Gulati
- *
  */
 public final class MemberService extends Service {
 

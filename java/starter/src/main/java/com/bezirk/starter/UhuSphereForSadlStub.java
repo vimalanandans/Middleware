@@ -32,19 +32,19 @@ public class UhuSphereForSadlStub implements IUhuSphereForSadl {
     }
 
     @Override
-    public String decryptSphereContent(final String sphereId,final byte[] serializedContent) {
+    public String decryptSphereContent(final String sphereId, final byte[] serializedContent) {
         return new String(serializedContent);
     }
 
     @Override
-    public void encryptSphereContent(final InputStream inputStream,final OutputStream outputStream,
-            final String sphereId) {
+    public void encryptSphereContent(final InputStream inputStream, final OutputStream outputStream,
+                                     final String sphereId) {
         LOGGER.error("Interface not implemented > encryptSphereContent");
     }
 
     @Override
-    public void decryptSphereContent(final InputStream inputStream,final OutputStream outputStream,
-            final String sphereId) {
+    public void decryptSphereContent(final InputStream inputStream, final OutputStream outputStream,
+                                     final String sphereId) {
         LOGGER.error("Interface not implemented > decryptSphereContent");
     }
 
@@ -56,7 +56,7 @@ public class UhuSphereForSadlStub implements IUhuSphereForSadl {
     }
 
     @Override
-    public boolean isServiceInSphere(final UhuServiceId service,final String sphereId) {
+    public boolean isServiceInSphere(final UhuServiceId service, final String sphereId) {
 
         return true;
     }

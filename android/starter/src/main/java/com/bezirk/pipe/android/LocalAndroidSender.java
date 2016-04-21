@@ -41,14 +41,12 @@ public class LocalAndroidSender implements LocalUhuSender {
 
             // Send the reply directly to the recipient
             proxy.sendUnicastEvent(serviceId, pipeUnicastHeader.getRecipient(), serializedEvent);
-        }
-        else if (pipeHeader instanceof PipeMulticastHeader) {
+        } else if (pipeHeader instanceof PipeMulticastHeader) {
             PipeMulticastHeader pipeMulticastHeader = (PipeMulticastHeader) pipeHeader;
 
             // This sends to services on this device and local nework
             proxy.sendMulticastEvent(serviceId, pipeMulticastHeader.getAddress(), serializedEvent);
-        }
-        else {
+        } else {
             log.error("unknown header type: " + pipeHeader.getClass().getSimpleName());
         }
     }

@@ -1,16 +1,13 @@
 /**
- * 
+ *
  */
 package com.bezirk.test.sphere.crypto;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.UUID;
+import com.bezirk.persistence.SphereRegistry;
+import com.bezirk.sphere.security.CryptoEngine;
+import com.bezirk.sphere.security.SphereKeys;
+import com.bezirk.sphere.security.UPABlockCipherService;
+import com.bezirk.test.sphere.testUtilities.MockSetUpUtility;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -20,27 +17,29 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.security.CryptoEngine;
-import com.bezirk.sphere.security.SphereKeys;
-import com.bezirk.sphere.security.UPABlockCipherService;
-import com.bezirk.test.sphere.testUtilities.MockSetUpUtility;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rishabh Gulati
- * 
  */
 public class DecryptSerializedContent {
+    private static final Logger log = LoggerFactory.getLogger(DecryptSerializedContent.class);
+    private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
     private static SphereRegistry registry;
     private static CryptoEngine cryptoEngine;
-    private SphereKeys sKeys;
+    private static String sphereId;
     private final UPABlockCipherService cipherService = new UPABlockCipherService();
     private final String KEY_FACTORY_ALGORITHM = "DSA";
     private final String SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
-    private static String sphereId;
     private final String content = "Testing serialized content decryption!!!";
-    private static final Logger log = LoggerFactory.getLogger(DecryptSerializedContent.class);
-    private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
+    private SphereKeys sKeys;
 
     /**
      * @throws java.lang.Exception
@@ -114,7 +113,6 @@ public class DecryptSerializedContent {
      * Test operation of
      * {@link CryptoEngine#decryptSphereContent(java.lang.String, byte[])}
      * with null sphereId
-     * 
      */
     @Test
     public final void testDecryptSphereContentSphereIdNull() {
@@ -125,7 +123,6 @@ public class DecryptSerializedContent {
      * Test operation of
      * {@link CryptoEngine#decryptSphereContent(java.lang.String, byte[])}
      * with null serialized encrypted content
-     * 
      */
     @Test
     public final void testDecryptSphereContentSerializedContentNull() {
@@ -136,7 +133,6 @@ public class DecryptSerializedContent {
      * Test operation of
      * {@link CryptoEngine#decryptSphereContent(java.lang.String, byte[])}
      * with null serialized encrypted content and sphereId
-     * 
      */
     @Test
     public final void testDecryptSphereContentBothNull() {
@@ -147,7 +143,6 @@ public class DecryptSerializedContent {
      * Test operation of
      * {@link CryptoEngine#decryptSphereContent(java.lang.String, byte[])}
      * with an entry of passed sphereId absent
-     * 
      */
     @Test
     public final void testDecryptSphereContentAbsentSphereId() {

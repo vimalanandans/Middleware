@@ -1,15 +1,15 @@
 package com.bezirk.sphere.impl;
 
+import com.bezirk.proxy.api.impl.UhuServiceId;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.proxy.api.impl.UhuServiceId;
 
 /**
  * Created by GUR1PI on 7/15/2014.
@@ -17,31 +17,25 @@ import com.bezirk.proxy.api.impl.UhuServiceId;
 public class Sphere implements Serializable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -8206651024005270100L;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(Sphere.class);
+    private static final String DEFAULT_SPHERE_NAME = "Default Sphere";
     /**
      * Name of the sphere
      */
     protected String sphereName;
-
     /**
      * List of deviceId's who own the sphere
      */
     protected HashSet<String> ownerDevices;
-
     protected String sphereType;
-
     /**
      * Map maintains the services which belong to a particular device [device id
      * : List of UhuServiceId]
      */
     protected LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Sphere.class);
-    
-    private static final String DEFAULT_SPHERE_NAME = "Default Sphere";
 
     public Sphere() {
     }
@@ -54,8 +48,7 @@ public class Sphere implements Serializable {
     }
 
     /**
-     * @param sphereName
-     *            the sphereName to set
+     * @param sphereName the sphereName to set
      */
     public final void setSphereName(String sphereName) {
         this.sphereName = sphereName;
@@ -76,8 +69,7 @@ public class Sphere implements Serializable {
     }
 
     /**
-     * @param deviceServices
-     *            the deviceServices to set
+     * @param deviceServices the deviceServices to set
      */
     public final void setDeviceServices(LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices) {
         this.deviceServices = deviceServices;
@@ -85,7 +77,7 @@ public class Sphere implements Serializable {
 
     /**
      * Adds a service to the deviceId passed
-     * 
+     *
      * @param deviceId
      * @param service
      * @return
@@ -98,7 +90,7 @@ public class Sphere implements Serializable {
 
     /**
      * Adds a service to the deviceId passed
-     * 
+     *
      * @param deviceId
      * @param service
      * @return
@@ -144,7 +136,7 @@ public class Sphere implements Serializable {
 
     /**
      * Adds services to the deviceId passed
-     * 
+     *
      * @param deviceId
      * @param services
      * @return
@@ -171,11 +163,11 @@ public class Sphere implements Serializable {
 
     /**
      * Removes a service from the sphere
-     * 
+     * <p/>
      * //TODO : What happens if this service is a part of a sphere owned by
      * another device. If we remove the service we need to inform the owner
      * about the change. What if the owner is not available?
-     * 
+     *
      * @param service
      * @return
      */

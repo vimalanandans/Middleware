@@ -1,66 +1,66 @@
 package com.bezirk.pipe.core;
 
-import java.io.InputStream;
-
 import com.bezirk.control.messages.pipes.PipeHeader;
+
+import java.io.InputStream;
 
 /**
  * Used to hold data needed to write content to disk
  */
 public class WriteJob {
-	
-	protected boolean retainFile;
-	
-	protected InputStream inStream;
-	
-	protected String streamDescriptor;
-	
-	protected String shortFileName;
-	
-	protected PipeHeader pipeHeader;
-	
-	public String toString() {
-		return "WriteJob: " + shortFileName + "," + streamDescriptor;
-	}
 
-	public boolean isRetainFile() {
-		return retainFile;
-	}
+    protected boolean retainFile;
 
-	public void setRetainFile(boolean retainFile) {
-		this.retainFile = retainFile;
-	}
+    protected InputStream inStream;
 
-	public InputStream getInputStream() {
-		return inStream;
-	}
+    protected String streamDescriptor;
 
-	public void setInputStream(InputStream inStream) {
-		this.inStream = inStream;
-	}
-	
-	public void setStreamDescriptor(String streamDescriptor) {
-		this.streamDescriptor = streamDescriptor;
-	}
+    protected String shortFileName;
 
-	public String getStreamDescriptor() {
-		return streamDescriptor;
-	}
+    protected PipeHeader pipeHeader;
 
-	public String getShortFileName() {
-		return shortFileName;
-	}
+    public String toString() {
+        return "WriteJob: " + shortFileName + "," + streamDescriptor;
+    }
 
-	public void setShortFileName(String shortFileName) {
-		this.shortFileName = shortFileName;
-	}
+    public boolean isRetainFile() {
+        return retainFile;
+    }
 
-	public void setPipeHeader(PipeHeader pipeHeader) {
-		this.pipeHeader = pipeHeader;
-	}
+    public void setRetainFile(boolean retainFile) {
+        this.retainFile = retainFile;
+    }
 
-	public PipeHeader getPipeHeader() {
-		return pipeHeader;
-	}
+    public InputStream getInputStream() {
+        return inStream;
+    }
+
+    public void setInputStream(InputStream inStream) {
+        this.inStream = inStream;
+    }
+
+    public String getStreamDescriptor() {
+        return streamDescriptor;
+    }
+
+    public void setStreamDescriptor(String streamDescriptor) {
+        this.streamDescriptor = streamDescriptor;
+    }
+
+    public String getShortFileName() {
+        return shortFileName;
+    }
+
+    public void setShortFileName(String shortFileName) {
+        this.shortFileName = shortFileName;
+    }
+
+    public PipeHeader getPipeHeader() {
+        return pipeHeader;
+    }
+
+    public void setPipeHeader(PipeHeader pipeHeader) {
+        this.pipeHeader = pipeHeader;
+    }
 
 }

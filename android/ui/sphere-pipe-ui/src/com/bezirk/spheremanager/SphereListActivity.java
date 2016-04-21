@@ -18,15 +18,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.bezirk.spheremanager.ui.DialogAddSphereFragment;
-import com.bezirk.spheremanager.ui.DialogServiceListFragment;
-import com.bezirk.spheremanager.ui.SphereListFragment;
-import com.bezirk.spheremanager.R;
-import com.bezirk.spheremanager.ui.DeviceListFragment;
-import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallbacks;
 import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.spheremanager.R;
+import com.bezirk.spheremanager.ui.DeviceListFragment;
+import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallbacks;
+import com.bezirk.spheremanager.ui.DialogAddSphereFragment;
+import com.bezirk.spheremanager.ui.DialogServiceListFragment;
+import com.bezirk.spheremanager.ui.SphereListFragment;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuActionCommands;
 
@@ -146,6 +146,84 @@ public class SphereListActivity extends FragmentActivity implements
 
     }
 
+    @Override
+    public void addNewSphere(String name, String type) {
+        // add a new Sphere
+        UUID newID = UUID.randomUUID();
+        CreateSphereAsyncTask task = new CreateSphereAsyncTask();
+        task.execute(new String[]{name, type});
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // register the intent to receive the Uhu Sphere Results
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(UhuActionCommands.SPHERE_NOTIFICATION_ACTION);
+        registerReceiver(sphereIntentReceiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // unregister the intent so that it doesn't receive when it goes out of the scope
+        unregisterReceiver(sphereIntentReceiver);
+    }
+
+    // TODO implement Callbacks if Tablet is used
+    @Override
+    public void onItemSelectedDeviceList(int id) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onItemLongClickedDeviceList(int id) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        if (info.position == 0) {
+            return;
+        }
+        menu.setHeaderTitle("Sphere Actions");
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.sphere_actions, menu);
+        final List<UhuServiceInfo> serviceInfo = MainService.getSphereHandle().getServiceInfo();
+        if (serviceInfo == null) {
+            menu.getItem(0).setEnabled(false);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        DialogServiceListFragment dialogServiceListFragment = new DialogServiceListFragment();
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Iterator<UhuSphereInfo> itr = MainService.getSphereHandle().getSpheres().iterator();
+
+        ArrayList<String> arrayList = new ArrayList<String>();
+        while (itr.hasNext()) {
+            arrayList.add(itr.next().getSphereID());
+        }
+        if (item.getTitle().equals("Add services to sphere")) {
+            String sphereId = arrayList.get(menuInfo.position);
+            dialogServiceListFragment.setSphereId(sphereId);
+            dialogServiceListFragment.setTitle("Add services to sphere");
+            dialogServiceListFragment.show(fragmentManager, "Dialog Service List");
+        }
+        /**
+         * @MCA7KOR Delete functionality not yet available
+         */
+        /*else if (item.getTitle().equals("Delete sphere")) {
+            Toast.makeText(getApplicationContext(), "delete sphere code", Toast.LENGTH_LONG).show();
+        }*/
+        return true;
+    }
+
     private class CreateSphereAsyncTask extends AsyncTask<String, Void, String> {
         final IUhuSphereAPI sphereAPI = MainService.getSphereHandle();
         final List<UhuServiceInfo> servicesToBeAdded = new ArrayList<UhuServiceInfo>();
@@ -209,30 +287,6 @@ public class SphereListActivity extends FragmentActivity implements
         }
     }
 
-    @Override
-    public void addNewSphere(String name, String type) {
-        // add a new Sphere
-        UUID newID = UUID.randomUUID();
-        CreateSphereAsyncTask task = new CreateSphereAsyncTask();
-        task.execute(new String[]{name, type});
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // register the intent to receive the Uhu Sphere Results
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(UhuActionCommands.SPHERE_NOTIFICATION_ACTION);
-        registerReceiver(sphereIntentReceiver, filter);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // unregister the intent so that it doesn't receive when it goes out of the scope
-        unregisterReceiver(sphereIntentReceiver);
-    }
-
     /**
      * Broadcast event receiver for Uhu Stack sphere management results
      */
@@ -278,59 +332,5 @@ public class SphereListActivity extends FragmentActivity implements
 
 
         }
-    }
-
-    // TODO implement Callbacks if Tablet is used
-    @Override
-    public void onItemSelectedDeviceList(int id) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onItemLongClickedDeviceList(int id) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        if (info.position == 0) {
-            return;
-        }
-        menu.setHeaderTitle("Sphere Actions");
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.sphere_actions, menu);
-        final List<UhuServiceInfo> serviceInfo = MainService.getSphereHandle().getServiceInfo();
-        if (serviceInfo == null) {
-            menu.getItem(0).setEnabled(false);
-        }
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        DialogServiceListFragment dialogServiceListFragment = new DialogServiceListFragment();
-        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Iterator<UhuSphereInfo> itr = MainService.getSphereHandle().getSpheres().iterator();
-
-        ArrayList<String> arrayList = new ArrayList<String>();
-        while (itr.hasNext()) {
-            arrayList.add(itr.next().getSphereID());
-        }
-        if (item.getTitle().equals("Add services to sphere")) {
-            String sphereId = arrayList.get(menuInfo.position);
-            dialogServiceListFragment.setSphereId(sphereId);
-            dialogServiceListFragment.setTitle("Add services to sphere");
-            dialogServiceListFragment.show(fragmentManager, "Dialog Service List");
-        }
-        /**
-         * @MCA7KOR Delete functionality not yet available
-         */
-        /*else if (item.getTitle().equals("Delete sphere")) {
-            Toast.makeText(getApplicationContext(), "delete sphere code", Toast.LENGTH_LONG).show();
-        }*/
-        return true;
     }
 }

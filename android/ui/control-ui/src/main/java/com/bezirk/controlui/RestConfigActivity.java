@@ -8,11 +8,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.bezirk.actions.UhuActions;
-import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.commons.UhuCompManager;
+import com.bezirk.controlui.R;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.rest.BezirkRestCommsManager;
 import com.bezirk.starter.MainService;
-import com.bezirk.controlui.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,30 +25,30 @@ import java.util.Map;
  */
 public class RestConfigActivity extends ActionBarActivity implements DialogSphereList.OnSphereSelectCallback, GenericListItemView.ItemToggleListener {
 
-    private ListView restConfigList  = null;
     BezirkRestCommsManager restCommsManager = BezirkRestCommsManager.getInstance();
+    private ListView restConfigList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.rest_pipe_layout);
-        restConfigList = (ListView)findViewById(R.id.rest_configure_list);
+        restConfigList = (ListView) findViewById(R.id.rest_configure_list);
 
         List<DataModel> list = new ArrayList();
-        list.add(new DataModel(0,"Rest Server ON / OFF", "Turn ON or OFF Rest server",true,false, false));
-        list.add(new DataModel(1,"Select Rest Sphere", "select sphere",false,false, false));
+        list.add(new DataModel(0, "Rest Server ON / OFF", "Turn ON or OFF Rest server", true, false, false));
+        list.add(new DataModel(1, "Select Rest Sphere", "select sphere", false, false, false));
 
-        GenericListItemView adapter = new GenericListItemView(this,list,this);
+        GenericListItemView adapter = new GenericListItemView(this, list, this);
         restConfigList.setAdapter(adapter);
 
         restConfigList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                if(position == 0){
+                if (position == 0) {
                     //no change..
-                }else if(position ==1){
+                } else if (position == 1) {
                     showSelectSphereDialog();
                 }
 
@@ -61,14 +61,14 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
 
         Map<String, String> sphereList = new LinkedHashMap();
         Iterator<UhuSphereInfo> sphereInfoIterator = UhuCompManager.getSphereUI().getSpheres().iterator();
-        while(sphereInfoIterator.hasNext()){
-            UhuSphereInfo uhuSphereInfo  = sphereInfoIterator.next();
-            sphereList.put(uhuSphereInfo.getSphereID(),uhuSphereInfo.getSphereName());
+        while (sphereInfoIterator.hasNext()) {
+            UhuSphereInfo uhuSphereInfo = sphereInfoIterator.next();
+            sphereList.put(uhuSphereInfo.getSphereID(), uhuSphereInfo.getSphereName());
         }
 
         int i = 0;
-        for(Map.Entry<String, String> entry : sphereList.entrySet()){
-            if(position == i){
+        for (Map.Entry<String, String> entry : sphereList.entrySet()) {
+            if (position == i) {
                 restCommsManager.setSelectedSphere(entry.getKey());
                 restCommsManager.setSlectedSphereName(entry.getKey());
             }
@@ -85,11 +85,11 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
 
         sphereList.clear();
         Iterator<UhuSphereInfo> sphereInfoIterator = UhuCompManager.getSphereUI().getSpheres().iterator();
-        while(sphereInfoIterator.hasNext()){
+        while (sphereInfoIterator.hasNext()) {
             sphereList.add(sphereInfoIterator.next().getSphereName());
         }
-        DialogSphereList dialogSphereList = new DialogSphereList(sphereList,this);
-        dialogSphereList.show(getSupportFragmentManager(),"DialogSphereList");
+        DialogSphereList dialogSphereList = new DialogSphereList(sphereList, this);
+        dialogSphereList.show(getSupportFragmentManager(), "DialogSphereList");
     }
 
 
@@ -99,10 +99,10 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
         String action;
         Intent intent = new Intent(this, MainService.class);
 
-        if(checkStatus){
+        if (checkStatus) {
             action = UhuActions.ACTION_REST_START_UHU;
             restCommsManager.setStarted(true);
-        }else{
+        } else {
             action = UhuActions.ACTION_REST_STOP_UHU;
             restCommsManager.setStarted(false);
         }

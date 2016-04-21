@@ -4,7 +4,7 @@ import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 
 /**
  * Created by Vimal on 12/9/2015.
- *
+ * <p/>
  * This is generic ledger which works only between comms without encryption.
  * this is meant for comms layer diagnostic tests / performance tests etc.
  */
@@ -15,10 +15,10 @@ public class MessageLedger extends Ledger /*implements Serializable*/ {
     UhuServiceEndPoint recipient;
     String Msg; // serialized message
 
-    public boolean isMulticast(){
-        if(recipient != null &&
+    public boolean isMulticast() {
+        if (recipient != null &&
                 (recipient.device != null) &&
-                recipient.device.length() != 0){
+                recipient.device.length() != 0) {
             return false;
         }
         return true;

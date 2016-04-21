@@ -1,18 +1,17 @@
 /**
- * 
+ *
  */
 package com.bezirk.sphere.impl;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author rishabh
- *
  */
 public final class CommsUtility {
 

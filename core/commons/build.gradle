@@ -44,7 +44,6 @@ test.doLast {
     project.delete 'uhu_database.sqlite'
 }
 
-
 //@vijet - Script to generate the version.properties file containing the values from  * @modifed Vijet Badigannavar Added a parameter to the constructMsg() and modified to give the callback
 //if version mismatch occures
 //build.doLast {

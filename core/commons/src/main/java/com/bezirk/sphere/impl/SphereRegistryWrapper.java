@@ -1,32 +1,19 @@
 package com.bezirk.sphere.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.persistence.ISpherePersistence;
-import com.bezirk.sphere.api.ISphereUtils;
+import com.bezirk.commons.UhuId;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.objects.SphereVitals;
 import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.middleware.objects.UhuDeviceInfo.UhuDeviceRole;
 import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.commons.UhuId;
+import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.UhuDiscoveredService;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 import com.bezirk.sphere.api.ICryptoInternals;
 import com.bezirk.sphere.api.ISphereConfig;
+import com.bezirk.sphere.api.ISphereUtils;
 import com.bezirk.sphere.api.IUhuDevMode.Mode;
 import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.api.IUhuSphereListener.SphereCreateStatus;
@@ -38,22 +25,34 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author rishabh
- *
  */
 public class SphereRegistryWrapper {
 
+    public static final String DEVELOPMENT_DEVICE_ID = "DevDeviceId";
+    private static final Logger LOGGER = LoggerFactory.getLogger(SphereRegistryWrapper.class);
+    private static final String DEFAULT_SPHERE_NAME = "Default Sphere";
+    private static final String DEVELOPMENT_DEVICE_NAME = "DevDeviceName";
+    private static final String DEVELOPMENT_DEVICE_TYPE = "DevDeviceType";
     private SphereRegistry registry = null;
     private ISpherePersistence spherePersistence = null;
     private UPADeviceInterface upaDevice;
     private IUhuSphereListener sphereListener;
     private ISphereConfig sphereConfig;
-    private static final Logger LOGGER = LoggerFactory.getLogger(SphereRegistryWrapper.class);
-    private static final String DEFAULT_SPHERE_NAME = "Default Sphere";
-    public static final String DEVELOPMENT_DEVICE_ID = "DevDeviceId";
-    private static final String DEVELOPMENT_DEVICE_NAME = "DevDeviceName";
-    private static final String DEVELOPMENT_DEVICE_TYPE = "DevDeviceType";
     private ICryptoInternals crypto;
     private DevelopmentSphere developmentSphere;
 
@@ -66,25 +65,16 @@ public class SphereRegistryWrapper {
      */
     private boolean deviceIdControl = false;
 
-    public enum Operation {
-        SHARE, CATCH
-    }
-
-    /**********************************************
-     * CONSTRUCTION & INITIALIZATION
-     **************************************************/
     /**
      * Constructor to initialize SphereRegistry object and ISpherePersistence
      * interface object
-     * 
-     * @param registry
-     *            - SphereRegistry object. Should not be null.
-     * @param spherePersistence
-     *            - ISpherePersistence interface object. Should not be null.
+     *
+     * @param registry          - SphereRegistry object. Should not be null.
+     * @param spherePersistence - ISpherePersistence interface object. Should not be null.
      */
     public SphereRegistryWrapper(SphereRegistry registry, ISpherePersistence spherePersistence,
-            UPADeviceInterface upaDevice, ICryptoInternals crypto, IUhuSphereListener sphereListener,
-            ISphereConfig sphereConfig) {
+                                 UPADeviceInterface upaDevice, ICryptoInternals crypto, IUhuSphereListener sphereListener,
+                                 ISphereConfig sphereConfig) {
         if (null == registry || null == spherePersistence || null == upaDevice || null == crypto
                 || null == sphereConfig) {
             throw new IllegalArgumentException("Parameters should be not null");
@@ -99,6 +89,10 @@ public class SphereRegistryWrapper {
         this.sphereListener = sphereListener;
         this.developmentSphere = new DevelopmentSphere();
     }
+
+    /**********************************************
+     * CONSTRUCTION & INITIALIZATION
+     **************************************************/
 
     /**
      * Handle initialization of development sphere and default sphere
@@ -117,6 +111,17 @@ public class SphereRegistryWrapper {
         persist();
     }
 
+    /**
+     * Get a sphere from registry.
+     *
+     * @param sphereId whose Sphere object is to be retrieved.
+     * @return sphere associated with the sphereId if it is present in the
+     * spheres map, null otherwise
+     */
+    public Sphere getSphere(String sphereId) {
+        return registry.spheres.get(sphereId);
+    }
+
     /********************************************** SPHERE **************************************************/
 
     /**
@@ -125,7 +130,7 @@ public class SphereRegistryWrapper {
      * Prod mode it will be into the default sphere. In dev mode, all services
      * across all devices[all devices in dev mode with same devSphere
      * properties] register to the same development sphere.
-     * 
+     *
      * @return
      */
     // private String getSphereIdForRegistration() {
@@ -169,26 +174,12 @@ public class SphereRegistryWrapper {
     // }
 
     /**
-     * Get a sphere from registry.
-     * 
-     * @param sphereId
-     *            whose Sphere object is to be retrieved.
-     * @return sphere associated with the sphereId if it is present in the
-     *         spheres map, null otherwise
-     */
-    public Sphere getSphere(String sphereId) {
-        return registry.spheres.get(sphereId);
-    }
-
-    /**
      * Get the UhuSphereInfo object for the sphere Id passed. If the sphere is a
      * temporary sphere, then it is skipped.
-     * 
-     * @param sphereId
-     *            whose UhuSphereInfo object is to be retrieved.
-     * 
+     *
+     * @param sphereId whose UhuSphereInfo object is to be retrieved.
      * @return : Sphere Info if found else null.<br>
-     *         null if its a temporary sphere.
+     * null if its a temporary sphere.
      */
     public UhuSphereInfo getSphereInfo(String sphereId) {
         UhuSphereInfo sphereInfo = null;
@@ -221,10 +212,10 @@ public class SphereRegistryWrapper {
 
     /**
      * Get UhuSphereInfo objects for all the spheres stored in the registry.
-     * 
+     *
      * @return - List of UhuSphereInfo objects for each sphere in the registry.
-     *         <br>
-     *         - null, if there are no spheres in the registry.
+     * <br>
+     * - null, if there are no spheres in the registry.
      */
     public Iterable<UhuSphereInfo> getSpheres() {
         List<UhuSphereInfo> spheres = null;
@@ -244,9 +235,8 @@ public class SphereRegistryWrapper {
 
     /**
      * Check if a sphere with passed sphereId exists in registry.
-     * 
-     * @param sphereId
-     *            whose existence in the registry has to be checked.
+     *
+     * @param sphereId whose existence in the registry has to be checked.
      * @return true if sphereId exists in the spheres map, false otherwise
      */
     public boolean containsSphere(String sphereId) {
@@ -255,9 +245,9 @@ public class SphereRegistryWrapper {
 
     /**
      * Get list of all sphereIds from registry.
-     * 
+     *
      * @return The sphereIds stored in the spheres map. <br>
-     *         null if sphereIds don't exist in the registry.
+     * null if sphereIds don't exist in the registry.
      */
     public Set<String> getSphereIds() {
         return registry.spheres.keySet();
@@ -265,13 +255,10 @@ public class SphereRegistryWrapper {
 
     /**
      * Add a sphere to the registry.
-     * 
-     * @param sphereId
-     *            which has to be added to registry. It has to be non-null
-     * @param sphere
-     *            - Sphere object which has to be added to the registry. It has
-     *            to be non-null.
-     * 
+     *
+     * @param sphereId which has to be added to registry. It has to be non-null
+     * @param sphere   - Sphere object which has to be added to the registry. It has
+     *                 to be non-null.
      * @return true if the sphere was added in spheres map, false otherwise
      */
     public boolean addSphere(String sphereId, Sphere sphere) {
@@ -291,9 +278,8 @@ public class SphereRegistryWrapper {
      * Includes cleaning sphere membership such that no service has this
      * sphereId as a reference. <br>
      * Also includes cleaning the sphereKeys associated with this sphere.
-     * 
+     *
      * @param sphereId
-     * 
      * @return true if the sphere was deleted successfully
      */
     public boolean deleteSphere(String sphereId) {
@@ -315,7 +301,7 @@ public class SphereRegistryWrapper {
 
     /**
      * Removes reference of passed sphereId from all services
-     * 
+     *
      * @param sphereId
      */
     private void cleanServiceMemberShip(String sphereId) {
@@ -329,11 +315,10 @@ public class SphereRegistryWrapper {
     /**
      * Check if sphereId is present in sphereKeyMap/sphereHashKeyMap. <br>
      * Registry should not be empty.
-     * 
-     * @param sphereId
-     *            whose existence in the sphere maps has to be checked.
+     *
+     * @param sphereId whose existence in the sphere maps has to be checked.
      * @return true if sphereId exists in the sphereKeyMap or sphereHashKeyMap
-     *         false otherwise
+     * false otherwise
      */
     public boolean existsSphereIdInKeyMaps(String sphereId) {
         return registry.isKeymapExist(sphereId);
@@ -341,12 +326,12 @@ public class SphereRegistryWrapper {
 
     /**
      * Get the 'default sphere id'
-     * 
+     * <p/>
      * <br>
      * NOTE: Current implementation assumes use of LinkedHashMap for 'spheres'
      * map. The default sphere is the first entry in this map. It is required
      * that this entry is never deleted.
-     * 
+     *
      * @return sphereId of the default-sphere null otherwise
      */
     public String getDefaultSphereId() {
@@ -360,13 +345,13 @@ public class SphereRegistryWrapper {
         return defaultSphereId;
         /*
          * Other ways :
-         * 
+         *
          * 1) use combination of DEFAULT_SPHERE_NAME and upadevice.getDeviceId
          * to directly get the default sphereId
-         * 
+         *
          * 2) iterate through the keyset of the spheres map to find the default
          * sphereId
-         * 
+         *
          * 3) if using the listener approach with UhuSphere, we could store the
          * default sphereId on creation of the default sphere
          */
@@ -377,12 +362,11 @@ public class SphereRegistryWrapper {
      * If it does not, then it creates a default sphere.<br>
      * If the default sphere does exist and the name is different, then just the
      * name is updated.
-     * 
-     * @param defaultSphereName
-     *            - The name to be assigned to the default sphere. It has to be
-     *            non-null
+     *
+     * @param defaultSphereName - The name to be assigned to the default sphere. It has to be
+     *                          non-null
      * @return - true, if sphere was created or if the name is updated. False,
-     *         otherwise.
+     * otherwise.
      */
     public boolean createDefaultSphere(String defaultSphereName) {
         String defaultSphereId = getDefaultSphereId();
@@ -405,14 +389,12 @@ public class SphereRegistryWrapper {
     /**
      * Creates a sphere with the name and type as passed in the parameters. If
      * there already exists the same sphereId, then new sphere is NOT created.
-     * 
-     * @param sphereName
-     *            - Name to be assigned to the new sphere.
-     * @param sphereType
-     *            - Type of sphere to be created
+     *
+     * @param sphereName        - Name to be assigned to the new sphere.
+     * @param sphereType        - Type of sphere to be created
      * @param uhuSphereListener
      * @return - SphereId if sphere was created successfully or if the sphereId
-     *         existed already, null otherwise.
+     * existed already, null otherwise.
      */
     public String createSphere(String sphereName, String sphereType, IUhuSphereListener uhuSphereListener) {
         String name = (null == sphereName) ? DEFAULT_SPHERE_NAME : sphereName;
@@ -477,7 +459,7 @@ public class SphereRegistryWrapper {
 
     /**
      * Generate sphere name using information from {@link UPADeviceInterface}
-     * 
+     *
      * @return - generated sphere name.
      */
     private String generateSphereName() {
@@ -498,28 +480,26 @@ public class SphereRegistryWrapper {
         return name;
     }
 
-    /********************************************** SERVICE **************************************************/
-
     /**
      * Check if serviceId is present in the sphereMembership map
-     * 
-     * @param serviceId
-     *            whose existence in the registry has to be checked. It has to
-     *            be valid and non-null. No validation done in this method.
+     *
+     * @param serviceId whose existence in the registry has to be checked. It has to
+     *                  be valid and non-null. No validation done in this method.
      * @return true if the serviceId is present in the sphereMembership map
-     *         false otherwise
+     * false otherwise
      */
     public boolean containsService(String serviceId) {
         return registry.sphereMembership.containsKey(serviceId);
     }
 
+    /********************************************** SERVICE **************************************************/
+
     /**
      * Get a service from registry.
-     * 
-     * @param serviceId
-     *            of the required Service object.
+     *
+     * @param serviceId of the required Service object.
      * @return service associated with the serviceId if it is present in the
-     *         sphereMembership map null otherwise
+     * sphereMembership map null otherwise
      */
     public Service getService(String serviceId) {
         return registry.sphereMembership.get(serviceId);
@@ -527,15 +507,13 @@ public class SphereRegistryWrapper {
 
     /**
      * Add a service to the registry and persist the information.
-     * 
-     * @param serviceId
-     *            of the service which has to be added to the sphere membership
-     *            map.
-     * @param service
-     *            - Service object which has to be added to the sphere
-     *            membership map.
+     *
+     * @param serviceId of the service which has to be added to the sphere membership
+     *                  map.
+     * @param service   - Service object which has to be added to the sphere
+     *                  membership map.
      * @return true if the service was added to the sphereMembership map false
-     *         otherwise
+     * otherwise
      */
     public boolean addService(String serviceId, Service service) {
         if (service == null || serviceId == null) {
@@ -553,20 +531,18 @@ public class SphereRegistryWrapper {
 
     /**
      * Checks if the service is a local service
-     * 
+     * <p/>
      * NOTE: Another way of checking if the service is local is by checking what
      * instance of Service is stored in the sphereMembership i.e. OwnerService
      * or MemberService
-     * 
-     * @param deviceId
-     *            : service owner deviceId
-     * 
+     *
+     * @param deviceId : service owner deviceId
      * @return: True if the service is local for this device. <br>
-     *          False otherwise or if deviceId is passed as null.
-     * 
-     *          <br>
-     *          <br>
-     *          TODO: Has to be moved to Service.java
+     * False otherwise or if deviceId is passed as null.
+     * <p/>
+     * <br>
+     * <br>
+     * TODO: Has to be moved to Service.java
      */
     public boolean isServiceLocal(String deviceId) {
         if (deviceId != null && deviceId.equals(upaDevice.getDeviceId())) {
@@ -578,12 +554,11 @@ public class SphereRegistryWrapper {
     /**
      * Get UhuServiceInfo objects for each service in the passed list of service
      * IDs.
-     * 
-     * @param serviceIds
-     *            - list of service IDs whose respective UhuServiceInfo objects
-     *            are required.
+     *
+     * @param serviceIds - list of service IDs whose respective UhuServiceInfo objects
+     *                   are required.
      * @return - List of UhuServiceInfo objects.<br>
-     *         - null, if no services passed.<br>
+     * - null, if no services passed.<br>
      */
     public Iterable<UhuServiceInfo> getUhuServiceInfo(Iterable<UhuServiceId> serviceIds) {
         if (serviceIds == null) {
@@ -615,11 +590,10 @@ public class SphereRegistryWrapper {
     /**
      * Get set of sphere Ids for the passed serviceId. Sphere set for the given
      * serviceId has to be non-null.
-     * 
-     * @param serviceId
-     *            whose sphere set is required.
+     *
+     * @param serviceId whose sphere set is required.
      * @return - Set of sphereIds<br>
-     *         - Null if service does not exist<br>
+     * - Null if service does not exist<br>
      */
     public Iterable<String> getSphereMembership(UhuServiceId serviceId) {
 
@@ -636,14 +610,12 @@ public class SphereRegistryWrapper {
      * Registers the service with UhuSphere's. In case the service is already
      * registered, call to this method updates the name of the service to
      * serviceName passed
-     * 
-     * @param serviceId
-     *            UhuServiceId to be registered - has to be non-null
-     * @param serviceName
-     *            Name to be associated with the service - has to be non-null
+     *
+     * @param serviceId   UhuServiceId to be registered - has to be non-null
+     * @param serviceName Name to be associated with the service - has to be non-null
      * @return true if service was added successfully
-     * 
-     *         false otherwise
+     * <p/>
+     * false otherwise
      */
     public boolean registerService(UhuServiceId serviceId, String serviceName) {
         List<String> spheresForRegistration = new ArrayList<>();
@@ -663,7 +635,7 @@ public class SphereRegistryWrapper {
     }
 
     private boolean registerService(UhuServiceId serviceId, String serviceName, List<String> sphereIds,
-            List<String> deviceIds) {
+                                    List<String> deviceIds) {
         int count = 0;
         for (String sphereId : sphereIds) {
             // add the service to the sphere with default device
@@ -690,20 +662,15 @@ public class SphereRegistryWrapper {
      * call to this method updates the name of the service to serviceName passed
      * and also adds the sphereId to the set of spheres, the service is a part
      * off
-     * 
-     * @param serviceId
-     *            which has to be added to the sphere membership map. It has to
-     *            be non-null
-     * @param sphereId
-     *            which has to be added to the sphere set of the service
-     * @param ownerDeviceId
-     *            - has to be non-null
-     * @param serviceName
-     *            - Name of the service to be added to sphere membership map. It
-     *            has to be non-null
-     * 
+     *
+     * @param serviceId     which has to be added to the sphere membership map. It has to
+     *                      be non-null
+     * @param sphereId      which has to be added to the sphere set of the service
+     * @param ownerDeviceId - has to be non-null
+     * @param serviceName   - Name of the service to be added to sphere membership map. It
+     *                      has to be non-null
      * @return - True if service membership was added successfully, False
-     *         otherwise.
+     * otherwise.
      */
     public boolean addMembership(UhuServiceId serviceId, String sphereId, String ownerDeviceId, String serviceName) {
         if (containsSphere(sphereId)) {
@@ -734,11 +701,9 @@ public class SphereRegistryWrapper {
     /**
      * Checks if the list of passed service IDs exist in the sphere membership
      * map.
-     * 
-     * @param serviceIds
-     *            - List of service IDs which have to be validated. It has to be
-     *            non null
-     * 
+     *
+     * @param serviceIds - List of service IDs which have to be validated. It has to be
+     *                   non null
      * @return - True, if all the services are validated. False otherwise.
      */
     public boolean validateServices(Iterable<UhuServiceId> serviceIds) {
@@ -756,13 +721,11 @@ public class SphereRegistryWrapper {
 
     /**
      * Check if the sphere is part of the service's sphere set.
-     * 
-     * @param service
-     *            - UhuServiceId object of the service. It has to be non-null
-     * @param sphereId
-     *            whose existence is the sphere set has to be checked.
+     *
+     * @param service  - UhuServiceId object of the service. It has to be non-null
+     * @param sphereId whose existence is the sphere set has to be checked.
      * @return - true if the service is part of the sphere. <br>
-     *         false otherwise.
+     * false otherwise.
      */
     public boolean isServiceInSphere(UhuServiceId service, String sphereId) {
 
@@ -780,9 +743,8 @@ public class SphereRegistryWrapper {
 
     /**
      * Get the Service name mapped to the serviceId.
-     * 
-     * @param serviceId
-     *            of the Service whose name is required. It has to be non-null
+     *
+     * @param serviceId of the Service whose name is required. It has to be non-null
      * @return - service name if the service exists. Else return null.
      */
     public String getServiceName(UhuServiceId serviceId) {
@@ -798,9 +760,9 @@ public class SphereRegistryWrapper {
     /**
      * Get list of UhuServiceInfo objects for all the services registered on the
      * default sphere.
-     * 
+     *
      * @return - list of UhuServiceInfo objects.<br>
-     *         - null, if no devices in default sphere.
+     * - null, if no devices in default sphere.
      */
     public List<UhuServiceInfo> getServiceInfo() {
         List<UhuServiceInfo> info = null;
@@ -831,15 +793,11 @@ public class SphereRegistryWrapper {
     /**
      * Create member service objects for all the services on the device and add
      * them to the registry and the sphere.
-     * 
-     * @param uhuDeviceInfo
-     *            - UhuDeviceInfo object from where the service list will be
-     *            retrieved. It has to be non-null
-     * @param sphereId
-     *            - which has to be added to the sphere set of the services.
-     * @param ownerDeviceId
-     *            - has to be non-null
-     * 
+     *
+     * @param uhuDeviceInfo - UhuDeviceInfo object from where the service list will be
+     *                      retrieved. It has to be non-null
+     * @param sphereId      - which has to be added to the sphere set of the services.
+     * @param ownerDeviceId - has to be non-null
      * @return - True if the service was added, False otherwise.
      */
     public boolean addMemberServices(UhuDeviceInfo uhuDeviceInfo, String sphereId, String ownerDeviceId) {
@@ -875,13 +833,10 @@ public class SphereRegistryWrapper {
     /**
      * Add the local services to the given sphere. The service Ids are retrieved
      * from the list of UhuServiceInfo objects.
-     * 
-     * @param sphereId
-     *            of the sphere to be added in the sphere set of the services
-     * @param serviceInfos
-     *            - List of UhuServiceInfo objects from which UhuServiceId list
-     *            is retrieved. It has to be non-null
-     * 
+     *
+     * @param sphereId     of the sphere to be added in the sphere set of the services
+     * @param serviceInfos - List of UhuServiceInfo objects from which UhuServiceId list
+     *                     is retrieved. It has to be non-null
      * @return - True if the service was added. False otherwise.
      */
     public boolean addLocalServicesToSphere(String sphereId, Iterable<UhuServiceInfo> serviceInfos) {
@@ -901,16 +856,13 @@ public class SphereRegistryWrapper {
     /**
      * Add the local services to the given sphere(sphere Id). Also, update the
      * sphere Id in the sphere set of the services.
-     * 
-     * @param serviceIds
-     *            - List of service IDs of the services whose sphere set have to
-     *            be updated.
-     * @param sphereId
-     *            of the sphere to be added in the sphere set of the services
-     * 
+     *
+     * @param serviceIds - List of service IDs of the services whose sphere set have to
+     *                   be updated.
+     * @param sphereId   of the sphere to be added in the sphere set of the services
      * @return - True if all the services were added to the sphere and the
-     *         sphere Id was updated in sphere set of all services. - False
-     *         otherwise.
+     * sphere Id was updated in sphere set of all services. - False
+     * otherwise.
      */
     public boolean addLocalServicesToSphere(Iterable<UhuServiceId> serviceIds, String sphereId) {
         boolean success = false;
@@ -940,9 +892,8 @@ public class SphereRegistryWrapper {
 
     /**
      * Add the services present in the default sphere to the sphere Id passed.
-     * 
-     * @param sphereId
-     *            of the sphere to be added in the sphere set of the services
+     *
+     * @param sphereId of the sphere to be added in the sphere set of the services
      * @return
      */
     public boolean addLocalServicesToSphere(String sphereId) {
@@ -986,16 +937,13 @@ public class SphereRegistryWrapper {
 
     /**
      * Updates the sphere set of the service Id to include the passed sphere id.
-     * 
-     * @param serviceId
-     *            of the service whose sphere set has to be updated. It has to
-     *            be non-null
-     * @param sphereId
-     *            of the sphere to be added in the sphere set of the services
-     * 
+     *
+     * @param serviceId of the service whose sphere set has to be updated. It has to
+     *                  be non-null
+     * @param sphereId  of the sphere to be added in the sphere set of the services
      * @return - True if sphere Id was added to service or if it was already
-     *         present. <br>
-     *         - False otherwise.
+     * present. <br>
+     * - False otherwise.
      */
     private boolean updateMembership(UhuServiceId serviceId, String sphereId) {
 
@@ -1019,7 +967,7 @@ public class SphereRegistryWrapper {
     /**
      * Change the active status to True for all the discovered services whose ID
      * matches the UhuServiceInfo service ID.
-     * 
+     *
      * @param discoveredServices
      * @param serviceInfo
      */
@@ -1031,33 +979,30 @@ public class SphereRegistryWrapper {
         }
     }
 
-    /********************************************** DEVICE **************************************************/
-
     /**
      * Check if DeviceInformation with passed deviceId exists in registry
-     * 
-     * @param deviceId
-     *            whose existence in the registry has to be checked.
+     *
+     * @param deviceId whose existence in the registry has to be checked.
      * @return true if deviceId exists in the devices map, false otherwise
      */
     public boolean containsDevice(String deviceId) {
         return registry.devices.containsKey(deviceId);
     }
 
+    /********************************************** DEVICE **************************************************/
+
     /**
      * Get a device from registry
-     * 
+     * <p/>
      * NOTE: The current device information is not stored in the sphere
      * registry. For retrieving device information, use
      * {@link ISphereUtils#getDeviceInformation(String)}
      * which wraps around this method along with retrieving current device's
      * information from {@link UPADeviceInterface}
-     * 
-     * @param deviceId
-     *            whose DeviceInformation object has to be retrieved.
-     * 
+     *
+     * @param deviceId whose DeviceInformation object has to be retrieved.
      * @return DeviceInformation if the deviceId is present in the devices map
-     *         null otherwise
+     * null otherwise
      */
     public DeviceInformation getDevice(String deviceId) {
         return registry.devices.get(deviceId);
@@ -1065,13 +1010,10 @@ public class SphereRegistryWrapper {
 
     /**
      * Add a device to the registry and persist the information.
-     * 
-     * @param deviceId
-     *            which has to be added to the registry.
-     * @param deviceInformation
-     *            - DeviceInformation which has to be added to the registry for
-     *            the corresponding device ID.
-     * 
+     *
+     * @param deviceId          which has to be added to the registry.
+     * @param deviceInformation - DeviceInformation which has to be added to the registry for
+     *                          the corresponding device ID.
      * @return true if the device was added to the devices map false otherwise
      */
     public boolean addDevice(String deviceId, DeviceInformation deviceInformation) {
@@ -1093,18 +1035,17 @@ public class SphereRegistryWrapper {
     /**
      * Gets the deviceInformation for the passed deviceId. This method abstracts
      * out the current implementation of storing device information
-     * 
+     * <p/>
      * Currently the information about the current device is maintained using
      * UPADeviceInterface implementation. Also the information which is received
      * from other devices in operation like invite/join/catch is stored in the
      * sphere registry.
-     * 
+     * <p/>
      * These two information management storages can be combined using just the
      * devices map. By extending the basic deviceInformation we can store both
      * current as well as external device information using just one map
-     * 
-     * @param deviceId
-     *            whose DeviceInformation object has to be retrieved.
+     *
+     * @param deviceId whose DeviceInformation object has to be retrieved.
      * @return
      */
     public DeviceInformation getDeviceInformation(String deviceId) {
@@ -1122,20 +1063,17 @@ public class SphereRegistryWrapper {
     /**
      * Provides UhuDeviceInfo iterable for the passed map of deviceId -> device
      * services
-     * 
-     * @param devices
-     *            - services mapped to the device Id. It has to be non-null
-     * @param ownerDevices
-     *            - HashSet of list of devices of the sphere. It has to be
-     *            non-null
-     * 
+     *
+     * @param devices      - services mapped to the device Id. It has to be non-null
+     * @param ownerDevices - HashSet of list of devices of the sphere. It has to be
+     *                     non-null
      * @return Iterable UhuDeviceInfo if devices is not null and has size
-     *         greater than 0.
-     * 
-     *         null otherwise
+     * greater than 0.
+     * <p/>
+     * null otherwise
      */
     public Iterable<UhuDeviceInfo> getUhuDeviceInfo(Map<String, ArrayList<UhuServiceId>> devices,
-            HashSet<String> ownerDevices) {
+                                                    HashSet<String> ownerDevices) {
 
         if (!devices.isEmpty()) {
 
@@ -1164,11 +1102,10 @@ public class SphereRegistryWrapper {
 
     /**
      * Returns the Device Name associated with the Device ID
-     * 
-     * @author Vijet
-     * @param deviceId
-     *            Id of the device (IP)
+     *
+     * @param deviceId Id of the device (IP)
      * @return Device Name if exists, null otherwise
+     * @author Vijet
      */
     public String getDeviceName(final String deviceId) {
         if (containsDevice(deviceId))
@@ -1178,11 +1115,9 @@ public class SphereRegistryWrapper {
 
     /**
      * Checks if the sphere is owner sphere.
-     * 
-     * @param sphereInfo
-     *            - UhuSphereInfo object whose from which the sphere ID is
-     *            retrieved.
-     * 
+     *
+     * @param sphereInfo - UhuSphereInfo object whose from which the sphere ID is
+     *                   retrieved.
      * @return - True, if the sphere is owner sphere. False otherwise.
      */
     public boolean isThisDeviceOwnsSphere(UhuSphereInfo sphereInfo) {
@@ -1195,8 +1130,6 @@ public class SphereRegistryWrapper {
         }
         return false;
     }
-
-    /********************************************** PERSISTENCE **************************************************/
 
     /**
      * Persist information in the registry
@@ -1212,17 +1145,19 @@ public class SphereRegistryWrapper {
         }
     }
 
-    /********************************************** MISC **************************************************/
+    /********************************************** PERSISTENCE **************************************************/
+
+    /**********************************************
+     * MISC
+     **************************************************/
 
     public String getSphereIdFromPasscode(String passCode) {
         return registry.getSphereIdFromPasscode(passCode);
     }
 
-    // TODO : The below methods are to be moved out of SphereRegistryWrapper.
-
     /**
      * Get the short QR code
-     * 
+     *
      * @param sphereId
      * @return
      */
@@ -1237,9 +1172,11 @@ public class SphereRegistryWrapper {
         return qrString;
     }
 
+    // TODO : The below methods are to be moved out of SphereRegistryWrapper.
+
     /**
      * Get QR code with complete information
-     * 
+     *
      * @param sphereId
      * @return
      */
@@ -1286,7 +1223,7 @@ public class SphereRegistryWrapper {
 
     /**
      * Update listener if initialized, with status for corresponding operations
-     * 
+     *
      * @param operation
      * @param status
      * @param message
@@ -1295,14 +1232,14 @@ public class SphereRegistryWrapper {
         if (sphereListener != null) {
             LOGGER.debug("Updating listener, status: " + status.toString() + " message: " + message);
             switch (operation) {
-            case CATCH:
-                sphereListener.onCatchStatus(status, message);
-                break;
-            case SHARE:
-                sphereListener.onShareStatus(status, message);
-                break;
-            default:
-                LOGGER.error("Illegal operation for updating listener");
+                case CATCH:
+                    sphereListener.onCatchStatus(status, message);
+                    break;
+                case SHARE:
+                    sphereListener.onShareStatus(status, message);
+                    break;
+                default:
+                    LOGGER.error("Illegal operation for updating listener");
             }
         } else {
             LOGGER.debug("listener not initialized");
@@ -1356,25 +1293,29 @@ public class SphereRegistryWrapper {
         if (!sphereConfig.getMode().equals(mode)) {
             LOGGER.debug("Changing mode to: " + mode.name());
             switch (mode) {
-            case ON:
-                if (developmentSphere.create()) {
-                    sphereConfig.setMode(Mode.ON);
-                    // add existing services to development sphere
-                    deviceIdControl = true;
-                    addLocalServicesToSphere(sphereConfig.getSphereId());
-                    deviceIdControl = false;
-                }
-                return true;
-            case OFF:
-                if (developmentSphere.destroy()) {
-                    sphereConfig.setMode(Mode.OFF);
-                }
-                return true;
-            default:
-                break;
+                case ON:
+                    if (developmentSphere.create()) {
+                        sphereConfig.setMode(Mode.ON);
+                        // add existing services to development sphere
+                        deviceIdControl = true;
+                        addLocalServicesToSphere(sphereConfig.getSphereId());
+                        deviceIdControl = false;
+                    }
+                    return true;
+                case OFF:
+                    if (developmentSphere.destroy()) {
+                        sphereConfig.setMode(Mode.OFF);
+                    }
+                    return true;
+                default:
+                    break;
             }
         }
         return false;
+    }
+
+    public enum Operation {
+        SHARE, CATCH
     }
 
     private class DevelopmentSphere {

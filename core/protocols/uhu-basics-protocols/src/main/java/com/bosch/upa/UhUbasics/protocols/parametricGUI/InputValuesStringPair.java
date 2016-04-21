@@ -7,6 +7,6 @@
 package com.bosch.upa.UhUbasics.protocols.parametricGUI;
 
 public class InputValuesStringPair {
-	public String value;
-	public String unit;
+    public String value;
+    public String unit;
 }

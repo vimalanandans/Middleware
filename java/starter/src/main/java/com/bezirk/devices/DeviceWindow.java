@@ -1,5 +1,11 @@
 package com.bezirk.devices;
 
+import com.bezirk.commons.UhuCompManager;
+import com.bezirk.middleware.addressing.Location;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -13,27 +19,18 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.middleware.addressing.Location;
-import com.bezirk.commons.UhuCompManager;
-
 /**
- * 
  * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
- * This class is used to show the current Device Location which is represented as the fields within {@link IndoorLocation}
- * 
+ *         This class is used to show the current Device Location which is represented as the fields within {@link IndoorLocation}
  */
 public class DeviceWindow extends JFrame {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(DeviceWindow.class);
     private static final long serialVersionUID = 1L;
+    private static final String TAHOMA_FONT = "Tahoma";
     private final JTextField textFieldRegionName;
     private final JTextField textFieldIn;
     private final JTextField textFieldNear;
-    
-    private static final String TAHOMA_FONT = "Tahoma";
 
     /**
      * Create the frame.
@@ -117,7 +114,7 @@ public class DeviceWindow extends JFrame {
     public static void saveParamChanges() {
         final com.bezirk.devices.UPADeviceInterface upaDevice = UhuCompManager.getUpaDevice();
         try {
-           final Properties props = UPADeviceForPC.loadProperties();
+            final Properties props = UPADeviceForPC.loadProperties();
 
             props.setProperty("DeviceLocation", upaDevice.getDeviceLocation()
                     .toString());
@@ -127,7 +124,7 @@ public class DeviceWindow extends JFrame {
                     + upaDevice.getDeviceLocation().toString());
         } catch (Exception e) {
             LOGGER.error("Problem reading or writing properties file: "
-                    ,e);
+                    , e);
         }
     }
 }

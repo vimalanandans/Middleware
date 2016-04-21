@@ -4,6 +4,19 @@
  */
 package com.bezirk.logging.ui;
 
+import com.bezirk.commons.UhuCompManager;
+import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.UhuComms;
+import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.remotelogging.loginterface.IUhuLogging;
+import com.bezirk.remotelogging.manager.UhuLoggingManager;
+import com.bezirk.remotelogging.messages.UhuLoggingMessage;
+import com.bezirk.remotelogging.service.UhuLoggingService;
+import com.bezirk.remotelogging.util.Util;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -34,19 +47,6 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.remotelogging.service.UhuLoggingService;
-import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.commons.UhuCompManager;
-import com.bezirk.comms.IUhuComms;
-import com.bezirk.comms.UhuComms;
-import com.bezirk.remotelogging.loginterface.IUhuLogging;
-import com.bezirk.remotelogging.manager.UhuLoggingManager;
-import com.bezirk.remotelogging.messages.UhuLoggingMessage;
-import com.bezirk.remotelogging.util.Util;
 
 /**
  * Class that displays the GUI to select the spheres and start the logging Service.
@@ -86,65 +86,40 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
             moveLeftBtn = new JButton();
     private final JCheckBox uhuDeveloperChck = new JCheckBox();
     private final JFrame thisFrame;
-    private String[] tempArray;
-    private int size;
-    transient IUhuComms comms;
-    /**
-     * Thread that starts and stops the LoggingService.
-     * @see UhuLoggingService
-     */
-    private transient UhuLogDetailsGUI uhu;
-    private transient UhuLoggingManager uhuLoggingManager;
-    private boolean isDeveoperModeEnabled;
-
-    private final transient ItemListener developerModeListener = new ItemListener() {
-
-        @Override
-        public void itemStateChanged(ItemEvent itemEvent) {
-            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
-                isDeveoperModeEnabled = true;
-            } else if (itemEvent.getStateChange() == ItemEvent.DESELECTED) {
-                isDeveoperModeEnabled = false;
-            }
-        }
-    };
-
     private final transient ListSelectionListener leftSphereSelectionListListener = new ListSelectionListener() {
         @Override
         public void valueChanged(ListSelectionEvent event) {
             moveRightBtn.setEnabled(true);
         }
     };
-
     private final transient ListSelectionListener rightSphereSelectionListListener = new ListSelectionListener() {
         @Override
         public void valueChanged(ListSelectionEvent event) {
             moveLeftBtn.setEnabled(true);
         }
     };
-
-    /**
-     * Starts the logging Service by sending the {@link} on the wire to all the spheres and takes the action to the logging screen.
-     */
-    private final transient ActionListener startLoggingButtonListener = new ActionListener() {
+    private final transient ActionListener listSphereBtnListener = new ActionListener() {
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
-            String[] selectedSpheres = new String[rightSphereListModel.size()];
-
-            for (int i = 0; i < rightSphereListModel.size(); i++) {
-                selectedSpheres[i] = rightSphereListModel.getElementAt(i);
+            leftSphereListModel.removeAllElements();
+            rightSphereListModel.removeAllElements();
+            leftSphereListModel.addElement(Util.ANY_SPHERE);
+            try {
+                final Iterator<UhuSphereInfo> sphereInfoIterator = UhuCompManager
+                        .getSphereUI().getSpheres().iterator();
+                while (sphereInfoIterator.hasNext()) {
+                    leftSphereListModel.addElement(sphereInfoIterator.next()
+                            .getSphereID());
+                }
+            } catch (Exception ex) {
+                LOGGER.error("Error in sphere list model.", ex);
             }
-
-            if (selectedSpheres[0].equals(Util.ANY_SPHERE)) {
-                selectedSpheres = tempArray;
-            }
-
-            uhu = new UhuLogDetailsGUI(comms, selectedSpheres, thisFrame,
-                    isDeveoperModeEnabled);
         }
     };
-
+    transient IUhuComms comms;
+    private String[] tempArray;
+    private int size;
     /**
      * Moves the spheres from left to right box
      */
@@ -178,7 +153,6 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
             moveLeftBtn.setEnabled(false);
         }
     };
-
     /**
      * Moves the spheres from right to left box
      */
@@ -206,27 +180,13 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
             moveRightBtn.setEnabled(false);
         }
     };
-
-    private final transient ActionListener listSphereBtnListener = new ActionListener() {
-
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-            leftSphereListModel.removeAllElements();
-            rightSphereListModel.removeAllElements();
-            leftSphereListModel.addElement(Util.ANY_SPHERE);
-            try {
-                final Iterator<UhuSphereInfo> sphereInfoIterator = UhuCompManager
-                        .getSphereUI().getSpheres().iterator();
-                while (sphereInfoIterator.hasNext()) {
-                    leftSphereListModel.addElement(sphereInfoIterator.next()
-                            .getSphereID());
-                }
-            } catch (Exception ex) {
-                LOGGER.error("Error in sphere list model.", ex);
-            }
-        }
-    };
-
+    /**
+     * Thread that starts and stops the LoggingService.
+     *
+     * @see UhuLoggingService
+     */
+    private transient UhuLogDetailsGUI uhu;
+    private transient UhuLoggingManager uhuLoggingManager;
     private final transient WindowAdapter closeButtonListener = new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent arg0) {
@@ -234,10 +194,44 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
             super.windowClosing(arg0);
         }
     };
+    private boolean isDeveoperModeEnabled;
+    private final transient ItemListener developerModeListener = new ItemListener() {
+
+        @Override
+        public void itemStateChanged(ItemEvent itemEvent) {
+            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
+                isDeveoperModeEnabled = true;
+            } else if (itemEvent.getStateChange() == ItemEvent.DESELECTED) {
+                isDeveoperModeEnabled = false;
+            }
+        }
+    };
+    /**
+     * Starts the logging Service by sending the {@link} on the wire to all the spheres and takes the action to the logging screen.
+     */
+    private final transient ActionListener startLoggingButtonListener = new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            String[] selectedSpheres = new String[rightSphereListModel.size()];
+
+            for (int i = 0; i < rightSphereListModel.size(); i++) {
+                selectedSpheres[i] = rightSphereListModel.getElementAt(i);
+            }
+
+            if (selectedSpheres[0].equals(Util.ANY_SPHERE)) {
+                selectedSpheres = tempArray;
+            }
+
+            uhu = new UhuLogDetailsGUI(comms, selectedSpheres, thisFrame,
+                    isDeveoperModeEnabled);
+        }
+    };
 
     /**
      * Starts the GUI and the Logging service.
-     * @param comms 
+     *
+     * @param comms
      * @param remoteLoggingPort port at which the LoggingService should be started
      */
     public SphereSelectGUI(IUhuComms comms) {
@@ -260,6 +254,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
 
     /**
      * initialize the GUI with the components
+     *
      * @throws Exception
      */
     private void jbInit() throws Exception {
@@ -313,7 +308,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
         settingsPanel.add(new JLabel(LoggingGUILabels.LABEL_IP_ADDRESS));
         settingsPanel.add(ipAddressTxt);
         settingsPanel.add(Box.createHorizontalStrut(15)); // spacer between
-                                                          // textbox
+        // textbox
         settingsPanel
                 .add(new JLabel(LoggingGUILabels.LABEL_REMOTE_LOGGING_PORT));
         settingsPanel.add(portTxt);

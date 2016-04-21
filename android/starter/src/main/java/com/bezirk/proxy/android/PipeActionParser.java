@@ -59,8 +59,7 @@ public class PipeActionParser {
         URI pipeUri = null;
         try {
             pipeUri = new URI(uriString);
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
             log.error("Intent not valid because pipeUri could not be parsed", e);
             return null;
         }
@@ -80,8 +79,7 @@ public class PipeActionParser {
         if (pipeClassName.equals(CloudPipe.class.getCanonicalName())) {
             log.debug("Creating cloud pipe");
             pipe = new CloudPipe(pipeName, pipeUri);
-        }
-        else {
+        } else {
             log.error("Unknown pipe type: " + pipeClassName);
             return null;
         }
@@ -99,7 +97,7 @@ public class PipeActionParser {
     private UhuServiceId serviceIdFromString(String serviceIdAsString) {
         Gson gson = new Gson();
         UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
-        if ( !checkUhuServiceId(serviceId) ) {
+        if (!checkUhuServiceId(serviceId)) {
             log.error("serviceId not valid: " + serviceId);
             return null;
         }
@@ -109,22 +107,22 @@ public class PipeActionParser {
 
     private boolean stringsValid(String serviceId, String pipeName, String uriString, String pipeClassName) {
 
-        boolean stringsValid= true;
+        boolean stringsValid = true;
         String errorSuffix = "String is null or empty";
 
-        if ( !checkForString(serviceId)) {
+        if (!checkForString(serviceId)) {
             log.error("serviceId " + errorSuffix);
             stringsValid = false;
         }
-        if ( !checkForString(pipeName) ) {
+        if (!checkForString(pipeName)) {
             log.error("pipeName " + errorSuffix);
             stringsValid = false;
         }
-        if ( !checkForString(uriString) ) {
+        if (!checkForString(uriString)) {
             log.error("uri " + errorSuffix);
             stringsValid = false;
         }
-        if ( !checkForString(pipeClassName) ) {
+        if (!checkForString(pipeClassName)) {
             log.error("Pipe class " + errorSuffix);
             stringsValid = false;
         }

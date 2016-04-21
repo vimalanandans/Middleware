@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.bezirk.sphere.api;
 
@@ -11,22 +11,20 @@ import com.google.zxing.common.BitMatrix;
 
 /**
  * @author rishabh
- *
  */
 public interface ISphereUtils {
 
     /**
      * Checks if the service is a local service
-     * 
-     * @param deviceId
-     *            : service owner deviceId
+     *
+     * @param deviceId : service owner deviceId
      * @return
      */
     public boolean isServiceLocal(String deviceId);
 
     /**
      * Validates the services passed by checking the registry
-     * 
+     *
      * @param serviceIds
      * @return
      */
@@ -34,7 +32,6 @@ public interface ISphereUtils {
 
     /**
      * Add the member services
-     * 
      */
 
     public DeviceInformation getDeviceInformation(String deviceId);

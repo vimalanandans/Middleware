@@ -1,13 +1,5 @@
 package com.bezirk.commstest.ui.threads;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-
-import org.slf4j.Logger;
-
 import com.bezirk.commstest.ui.CommsTestConstants;
 import com.bezirk.commstest.ui.IUpdateResponse;
 import com.bezirk.commstest.ui.PingMessage;
@@ -15,36 +7,38 @@ import com.bezirk.commstest.ui.PongMessage;
 import com.bezrik.network.UhuNetworkUtilities;
 import com.google.gson.Gson;
 
+import org.slf4j.Logger;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
+
 /**
  * Thread class that listens to a multicast port and updates the UI when a ping is reeived.
  *
  * @author AJC6KOR
- *
  */
 public class MulticastReceiver extends Thread {
-    
+
     private static final Logger LOGGER = org.slf4j.LoggerFactory
             .getLogger(MulticastReceiver.class);
-
-    boolean isRunning;
-    private MulticastSocket multicastSocket;
-    
-    private InetAddress myAddress;
     private final String deviceName;
     private final String deviceIP;
-
+    private final IUpdateResponse responseUI;
+    boolean isRunning;
+    private MulticastSocket multicastSocket;
+    private InetAddress myAddress;
     private int multicastReceivingPort = CommsTestConstants.DEFAULT_MULTICAST_RECEIVING_PORT;
-    
     private int unicastSendingPort = 2222;
 
-    private final IUpdateResponse responseUI;
-    
-    public MulticastReceiver(String ctrlMCastAddr,IUpdateResponse responseUI,String deviceIP,String deviceName) {
-        
-        this.responseUI =responseUI;
+    public MulticastReceiver(String ctrlMCastAddr, IUpdateResponse responseUI, String deviceIP, String deviceName) {
+
+        this.responseUI = responseUI;
         this.deviceIP = deviceIP;
-        this.deviceName = deviceName; 
-        
+        this.deviceName = deviceName;
+
         try {
             multicastSocket = new MulticastSocket(multicastReceivingPort);
             multicastSocket.joinGroup(InetAddress.getByName(ctrlMCastAddr));
@@ -54,7 +48,7 @@ public class MulticastReceiver extends Thread {
                 LOGGER.error("ERROR IN STARTING RECEIVER");
             }
         } catch (IOException e) {
-            LOGGER.error("ERROR IN STARTING RECEIVER",e);
+            LOGGER.error("ERROR IN STARTING RECEIVER", e);
         }
     }
 
@@ -79,7 +73,7 @@ public class MulticastReceiver extends Thread {
                 multicastSocket.receive(receivePacket);
             } catch (Exception e) {
                 isRunning = false;
-                LOGGER.error("EXCEPTION IN RECEIVING",e);
+                LOGGER.error("EXCEPTION IN RECEIVING", e);
                 continue;
             }
             LOGGER.debug("Something received");
@@ -91,10 +85,10 @@ public class MulticastReceiver extends Thread {
                             .trim())) {
                 LOGGER.debug("local ping received");
             } else {
-                 recData= new byte[receivePacket.getLength()];
+                recData = new byte[receivePacket.getLength()];
                 System.arraycopy(receivePacket.getData(), 0, recData, 0,
                         receivePacket.getLength());
-                 yep = new String(recData);
+                yep = new String(recData);
                 if (isRunning) {
                     updatePingMessage(yep);
                 }
@@ -112,7 +106,7 @@ public class MulticastReceiver extends Thread {
             // send Pong
             sendPong(msg);
         } catch (Exception e) {
-            LOGGER.error("Error in parsing JSON",e);
+            LOGGER.error("Error in parsing JSON", e);
         }
     }
 
@@ -133,7 +127,7 @@ public class MulticastReceiver extends Thread {
         isRunning = true;
         this.start();
     }
-    
+
     private boolean sendPong(PingMessage msg) {
         // create a ongMessage
         final PongMessage pongMessage = new PongMessage();
@@ -156,7 +150,7 @@ public class MulticastReceiver extends Thread {
             responseUI.updateUIPongSent(msg);
             return true;
         } catch (Exception e) {
-            LOGGER.error("ERROR in SENDING PONG",e);
+            LOGGER.error("ERROR in SENDING PONG", e);
         }
         return true;
     }
@@ -164,10 +158,10 @@ public class MulticastReceiver extends Thread {
     /**
      * @param uSendingPort
      */
-    public void updateConfiguration(int multicastReceivingPort,int uSendingPort) {
+    public void updateConfiguration(int multicastReceivingPort, int uSendingPort) {
 
         this.multicastReceivingPort = multicastReceivingPort;
-        this.unicastSendingPort =uSendingPort;
+        this.unicastSendingPort = uSendingPort;
     }
 
 }

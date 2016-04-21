@@ -4,22 +4,22 @@ import com.bezirk.middleware.messages.Event;
 
 public class EchoReply extends Event {
 
-	private String text = null;
+    private String text = null;
 
-	public EchoReply() {
-		super(Stripe.REPLY, EchoReply.class.getSimpleName());
-	}
+    public EchoReply() {
+        super(Stripe.REPLY, EchoReply.class.getSimpleName());
+    }
 
-	public String getText() {
-		return text;
-	}
+    public static EchoReply deserialize(String serializedEvent) {
+        return deserialize(serializedEvent, EchoReply.class);
+    }
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    public String getText() {
+        return text;
+    }
 
-	public static EchoReply deserialize(String serializedEvent) {
-		return deserialize(serializedEvent, EchoReply.class);
-	}
+    public void setText(String text) {
+        this.text = text;
+    }
 
 }

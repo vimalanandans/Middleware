@@ -1,7 +1,6 @@
 package com.bezirk.starter;
 
 /**
- *
  * Created by pik6kor on 1/7/2016.
  */
 public interface IUhuStackHandler {

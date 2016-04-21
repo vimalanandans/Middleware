@@ -11,20 +11,28 @@ import com.bezirk.control.messages.EventLedger;
  */
 public interface IMessageDispatcher {
 
-    /** register control Message receivers */
+    /**
+     * register control Message receivers
+     */
     public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, ICtrlMsgReceiver receiver);
 
     // currently sadl consumes all the service message. hence no registration
     // if needed extend similar mechanism to control message dispatching
 
 
-    /** dispatch the control message */
+    /**
+     * dispatch the control message
+     */
     public boolean dispatchServiceMessages(EventLedger eLedger);
 
-    /** dispatch the control message using ledger */
+    /**
+     * dispatch the control message using ledger
+     */
     public boolean dispatchControlMessages(ControlLedger tcMessage);
 
-    /** dispatch the control message using ControlMessage and msg */
+    /**
+     * dispatch the control message using ControlMessage and msg
+     */
     public boolean dispatchControlMessages(ControlMessage ctrlMsg, String msg);
 
 

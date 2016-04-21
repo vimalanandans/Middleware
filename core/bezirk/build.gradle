@@ -6,7 +6,7 @@ jar {
 }
 
 dependencies {
-	compile project(':core:bezirk-middleware-api')
+    compile project(':core:bezirk-middleware-api')
 }
 
 

@@ -2,6 +2,7 @@ package com.bezirk.commstest.ui;
 
 /**
  * Interface that is used to update the UI
+ *
  * @author VBD4KOR
  */
 public interface IUpdateResponse {

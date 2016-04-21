@@ -43,7 +43,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
 
         final String receivedServiceId = intent.getStringExtra("service_id_tag");
 
-        if (!isValidRequest(receivedServiceId)){
+        if (!isValidRequest(receivedServiceId)) {
 
             return;
         }
@@ -56,24 +56,24 @@ public class IntentMessageReceiver extends BroadcastReceiver {
     private void processReceivedIntent(Intent intent) {
         final String discriminator = intent.getStringExtra("discriminator");
 
-        switch (discriminator){
+        switch (discriminator) {
 
-            case "EVENT" :
+            case "EVENT":
                 processEvent(intent);
                 break;
-            case "STREAM_UNICAST" :
+            case "STREAM_UNICAST":
                 processStreamUnicast(intent);
                 break;
-            case "STREAM_MULTICAST" :
+            case "STREAM_MULTICAST":
                 Log.e(TAG, "Multicast Stream received");
                 break;
-            case "STREAM_STATUS" :
+            case "STREAM_STATUS":
                 processStreamStatus(intent);
                 break;
-            case "DISCOVERY" :
+            case "DISCOVERY":
                 processDiscovery(intent);
                 break;
-            case "PIPE-APPROVED" :
+            case "PIPE-APPROVED":
                 processPipeApproval(intent);
                 break;
             default:
@@ -107,7 +107,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         final String eventMessage = intent.getStringExtra("eventMessage");
         final String eventSender = intent.getStringExtra("eventSender");
 
-        boolean valid  = isIntentValid(eventTopic, eventMessage, eventSender);
+        boolean valid = isIntentValid(eventTopic, eventMessage, eventSender);
 
         if (!valid) {
             Log.e(TAG, "The Unicast event intent is received but dropped as it doesn't contain the required fields");
@@ -118,8 +118,8 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         UhuServiceEndPoint sourceOfEventSEP = new Gson().fromJson(eventSender, UhuServiceEndPoint.class);
         //Check for duplicate message
         if (checkDuplicateMsg(sourceOfEventSEP.serviceId.getUhuServiceId(), messageId)) {
-             boolean isEventReceived = receiveEventOrStream(eventTopic, eventMessage, sourceOfEventSEP,(short)0,null,"EVENT", Proxy.eventListenerMap);
-            if(isEventReceived){
+            boolean isEventReceived = receiveEventOrStream(eventTopic, eventMessage, sourceOfEventSEP, (short) 0, null, "EVENT", Proxy.eventListenerMap);
+            if (isEventReceived) {
                 return;
             }
         } else {
@@ -133,18 +133,18 @@ public class IntentMessageReceiver extends BroadcastReceiver {
     private boolean receiveEventOrStream(String topic, String message, UhuServiceEndPoint sourceSEP, short streamId,
                                          String filePath, String type, Map<String, ArrayList<BezirkListener>> listenerMap) {
 
-            if (listenerMap.containsKey(topic)) {
-                final List<BezirkListener> tempEventListners = listenerMap.get(topic);
-                for (BezirkListener listener : tempEventListners) {
-                    if ("EVENT".equalsIgnoreCase(type)) {
-                        listener.receiveEvent(topic, message, sourceSEP);
-                    } else if ("STREAM_UNICAST".equalsIgnoreCase(type)) {
-                        listener.receiveStream(topic, message, streamId, filePath, sourceSEP);
-                    }
+        if (listenerMap.containsKey(topic)) {
+            final List<BezirkListener> tempEventListners = listenerMap.get(topic);
+            for (BezirkListener listener : tempEventListners) {
+                if ("EVENT".equalsIgnoreCase(type)) {
+                    listener.receiveEvent(topic, message, sourceSEP);
+                } else if ("STREAM_UNICAST".equalsIgnoreCase(type)) {
+                    listener.receiveStream(topic, message, streamId, filePath, sourceSEP);
                 }
-                return true;
             }
-            return false;
+            return true;
+        }
+        return false;
 
     }
 
@@ -184,10 +184,10 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         Log.e(TAG, sourceOfStreamSEP.serviceId.getUhuServiceId() + ":" + streamId);
         if (checkDuplicateStream(sourceOfStreamSEP.serviceId.getUhuServiceId(), streamId)) {
 
-            boolean isStreamReceived = receiveEventOrStream(streamTopic,streamMsg,sourceOfStreamSEP,streamId,filePath,"STREAM_UNICAST",
+            boolean isStreamReceived = receiveEventOrStream(streamTopic, streamMsg, sourceOfStreamSEP, streamId, filePath, "STREAM_UNICAST",
                     Proxy.streamListenerMap);
 
-            if(!isStreamReceived){
+            if (!isStreamReceived) {
 
                 Log.e(TAG, " StreamListnerMap doesnt have a mapped Stream");
             }

@@ -7,7 +7,6 @@ import com.bezirk.sphere.api.IUhuDevMode.Mode;
 
 /**
  * @author rishabh
- *
  */
 public interface ISphereConfig {
 
@@ -20,52 +19,50 @@ public interface ISphereConfig {
     /**
      * Get the mode of operation for the sphere's, i.e. Development or
      * Production
-     * 
+     *
      * @return
      */
     public Mode getMode();
 
     /**
-     * 
      * @return development sphereName if operating in dev mode <br>
-     *         null otherwise
+     * null otherwise
      */
     public String getSphereName();
 
     /**
-     * 
      * @return development sphereId if operating in dev mode <br>
-     *         null otherwise
+     * null otherwise
      */
     public String getSphereId();
 
     /**
-     * 
      * @return development sphereKey if operating in dev mode <br>
-     *         null otherwise
+     * null otherwise
      */
     public byte[] getSphereKey();
 
     /**
      * Get default sphere name
-     * 
+     *
      * @return
      */
     public String getDefaultSphereName();
 
     /**
      * Set default sphere name in configuration file
-     * 
+     *
      * @return true if the defaultSphereName is changed successfully <br>
-     *         false otherwise
+     * false otherwise
      */
     public boolean setDefaultSphereName(String name);
-    
+
     /**
      * Set the passed mode in configuration file
+     *
      * @param mode
      * @return true if the mode was set successfully<br>
-     *         false otherwise 
+     * false otherwise
      */
     public boolean setMode(Mode mode);
 }

@@ -54,7 +54,7 @@ public class LogDataActivity extends Activity {
         setContentView(R.layout.activity_log_data);
         logDataActivityHelper.startLogService();
         Intent receivedIntent = getIntent();
-        isDeveloperModeEnabled = receivedIntent.getBooleanExtra("isDeveloperModeEnabled",false);
+        isDeveloperModeEnabled = receivedIntent.getBooleanExtra("isDeveloperModeEnabled", false);
         logDataActivityHelper.sendLogServiceMsg(receivedIntent.getStringArrayExtra("selectedSphereList"), receivedIntent.getBooleanExtra("isAnySphereFlag", false));
         logDataActivityHelper.init();
     }
@@ -84,15 +84,15 @@ public class LogDataActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        if(mUhuLoggingManager!=null){
+        if (mUhuLoggingManager != null) {
             try {
                 mUhuLoggingManager.stopLoggingService();
                 new ShutDownLoggingServiceTask().execute(selSpheres);
                 logDataActivityHelper.printToast("STOPPING LOG SERVICE ABRUPTLY...");
                 logDataActivityHelper.mHandler = null;
-               } catch (Exception e) {
+            } catch (Exception e) {
                 logDataActivityHelper.printToast("ERROR IN STOPPING LOG SERVICE...");
-                log.error("Error in stopping log service.",e);
+                log.error("Error in stopping log service.", e);
             }
         }
         setResult(RESULT_CODE_FOR_RETURN_ACTIVITY);
@@ -103,8 +103,9 @@ public class LogDataActivity extends Activity {
     /**
      * Task that is used to send LoggingMessage across all spheres.
      */
-    class ShutDownLoggingServiceTask extends AsyncTask<String[],Void,Void> {
+    class ShutDownLoggingServiceTask extends AsyncTask<String[], Void, Void> {
         private String[] spheres;
+
         @Override
         protected Void doInBackground(String[]... params) {
             spheres = params[0];

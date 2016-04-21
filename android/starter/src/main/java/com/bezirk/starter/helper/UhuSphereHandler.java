@@ -1,8 +1,8 @@
 package com.bezirk.starter.helper;
 
-import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.IUhuComms;
+import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.ISphereConfig;
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Handles the sphere initialization for MainService
- *
+ * <p/>
  * Created by AJC6KOR on 9/8/2015.
  */
 public final class UhuSphereHandler {
@@ -32,9 +32,8 @@ public final class UhuSphereHandler {
 
     /**
      * deinitialize the Sphere
-     * */
-    boolean deinitSphere()
-    {
+     */
+    boolean deinitSphere() {
 
         // clear the reference
         sphereForAndroid = null;
@@ -45,21 +44,21 @@ public final class UhuSphereHandler {
 
     /**
      * create and initialise the Sphere
-     * */
-    boolean initSphere(UPADeviceInterface uhuDevice,MainService service, ISpherePersistence spherePersistence, UhuPreferences preferences) {
+     */
+    boolean initSphere(UPADeviceInterface uhuDevice, MainService service, ISpherePersistence spherePersistence, UhuPreferences preferences) {
 
         /** start the sphere related init*/
-        if(sphereForAndroid == null) {
+        if (sphereForAndroid == null) {
             // init the actual
             SphereRegistry sphereRegistry = null;
             try {
                 sphereRegistry = spherePersistence.loadSphereRegistry();
             } catch (Exception e) {
-                LOGGER.error("Error in loading Sphere Persistence",e);
+                LOGGER.error("Error in loading Sphere Persistence", e);
             }
             CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
 
-            sphereForAndroid = new UhuSphereForAndroid(cryptoEngine, uhuDevice, sphereRegistry,service.getApplicationContext(), preferences);
+            sphereForAndroid = new UhuSphereForAndroid(cryptoEngine, uhuDevice, sphereRegistry, service.getApplicationContext(), preferences);
 
             UhuSphereForAndroid uhuSphereForAndroid = (UhuSphereForAndroid) UhuSphereHandler.sphereForAndroid;
 
@@ -68,18 +67,18 @@ public final class UhuSphereHandler {
             ISphereConfig sphereConfig = new SphereProperties(preferences);
             sphereConfig.init();
 
-            if(!(uhuSphereForAndroid.initSphere(spherePersistence, UhuStackHandler.getUhuComms()))){
+            if (!(uhuSphereForAndroid.initSphere(spherePersistence, UhuStackHandler.getUhuComms()))) {
                 // at the moment the init sphere fails due to persistence
                 return false;
             }
 
-            devMode = (IUhuDevMode)sphereForAndroid;
+            devMode = (IUhuDevMode) sphereForAndroid;
 
             UhuCompManager.setSphereUI(sphereForAndroid);
             UhuCompManager.setSphereRegistration((IUhuSphereRegistration) sphereForAndroid);
 
             UhuCompManager.setSphereForSadl((IUhuSphereForSadl) sphereForAndroid);
-            IUhuComms uhuComms =  UhuStackHandler.getUhuComms();
+            IUhuComms uhuComms = UhuStackHandler.getUhuComms();
             uhuComms.setSphereForSadl((IUhuSphereForSadl) sphereForAndroid);
         }
         return true;

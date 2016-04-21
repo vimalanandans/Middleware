@@ -1,11 +1,14 @@
 /**
- * 
+ *
  */
 package com.bezirk.test.sphere.sphereRegistryWrapper.sphere;
 
-import static org.junit.Assert.*;
-
-import java.util.UUID;
+import com.bezirk.persistence.SphereRegistry;
+import com.bezirk.sphere.api.ISphereConfig;
+import com.bezirk.sphere.api.IUhuDevMode.Mode;
+import com.bezirk.sphere.impl.OwnerSphere;
+import com.bezirk.sphere.impl.SphereRegistryWrapper;
+import com.bezirk.test.sphere.testUtilities.MockSetUpUtility;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -15,25 +18,21 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.IUhuDevMode.Mode;
-import com.bezirk.sphere.impl.OwnerSphere;
-import com.bezirk.sphere.impl.SphereRegistryWrapper;
-import com.bezirk.test.sphere.testUtilities.MockSetUpUtility;
+import java.util.UUID;
+
+import static org.junit.Assert.*;
 
 /**
  * @author rishabh
- *
  */
 public class GetSphereIds {
 
+    private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
+    private static final Logger log = LoggerFactory.getLogger(GetSphereIds.class);
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
     private static ISphereConfig sphereConfig;
-    private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
     private static int spheres = 0;
-    private static final Logger log = LoggerFactory.getLogger(GetSphereIds.class);
 
     /**
      * @throws java.lang.Exception
@@ -72,20 +71,20 @@ public class GetSphereIds {
     }
 
     /**
-     *  Test method for {@link SphereRegistryWrapper#getSphereIds()}.
-     *  
+     * Test method for {@link SphereRegistryWrapper#getSphereIds()}.
+     * <p/>
      * <br>When no other sphere is present, this method should return the sphere Id of default sphere.
      */
     @Test
     public final void validDefaultSphere() {
         assertEquals(sphereRegistryWrapper.getSphereIds().size(), spheres);
     }
-    
-    
+
+
     /**
      * Test method for {@link SphereRegistryWrapper#getSphereIds()}.
-	 * 
-	 * <br>When another sphere is added to the registry, the method should return 2 sphere Ids - one each for 
+     * <p/>
+     * <br>When another sphere is added to the registry, the method should return 2 sphere Ids - one each for
      */
     @Test
     public final void validSpheres() {

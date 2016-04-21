@@ -3,20 +3,20 @@ package com.bezirk.samples.protocols;
 import com.bezirk.middleware.messages.Stream;
 
 public class FileReply extends Stream {
-	
-	public static final String TOPIC = FileReply.class.getSimpleName();
-	
-	private String fileName = null;
-	
-	public FileReply() {
-		super(Stripe.REPLY, TOPIC);
-	}
 
-	public String getFileName() {
-		return fileName;
-	}
+    public static final String TOPIC = FileReply.class.getSimpleName();
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    private String fileName = null;
+
+    public FileReply() {
+        super(Stripe.REPLY, TOPIC);
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 }

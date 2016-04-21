@@ -1,39 +1,34 @@
 package com.bezirk.comms;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.bezirk.commons.UhuCompManager;
+import com.bezirk.control.messages.ControlLedger;
+import com.bezirk.control.messages.ControlMessage;
+import com.bezirk.control.messages.EventLedger;
 import com.bezirk.remotelogging.messages.UhuLoggingMessage;
 import com.bezirk.remotelogging.queues.LoggingQueueManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
 import com.bezirk.remotelogging.status.LoggingStatus;
 import com.bezirk.remotelogging.util.Util;
 import com.bezirk.sadl.ISadlEventReceiver;
-import com.bezirk.control.messages.ControlLedger;
-import com.bezirk.control.messages.ControlMessage;
-import com.bezirk.control.messages.EventLedger;
 import com.bezirk.util.UhuValidatorUtility;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Vimal on 5/18/2015.
  * Dispatches the incoming events to respective registered listener
  */
-public class MessageDispatcher implements IMessageDispatcher{
+public class MessageDispatcher implements IMessageDispatcher {
 
     private static final Logger log = LoggerFactory.getLogger(MessageDispatcher.class);
-
-    // Map of control receivers
-    Map<ControlMessage.Discriminator, ICtrlMsgReceiver> ctrlReceivers =
-            new HashMap <ControlMessage.Discriminator, ICtrlMsgReceiver>();
-
-   //private ISadlControlReceiver sadlCtrlRxer;
-
     private final ISadlEventReceiver sadlEventReceiver;
+
+    //private ISadlControlReceiver sadlCtrlRxer;
     /*
     private LogServiceMessageHandler logServiceMsgHandler = null;
 
@@ -45,17 +40,21 @@ public class MessageDispatcher implements IMessageDispatcher{
     IPortFactory  portFactory = null;
     */
     private final Date currentDate = new Date();
+    // Map of control receivers
+    Map<ControlMessage.Discriminator, ICtrlMsgReceiver> ctrlReceivers =
+            new HashMap<ControlMessage.Discriminator, ICtrlMsgReceiver>();
 
-    public MessageDispatcher(ISadlEventReceiver sadlEventReceiver){
+    public MessageDispatcher(ISadlEventReceiver sadlEventReceiver) {
         this.sadlEventReceiver = sadlEventReceiver;
     }
 
-    /** register control Message receivers */
+    /**
+     * register control Message receivers
+     */
     @Override
-    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, ICtrlMsgReceiver receiver){
-        if(ctrlReceivers.containsKey(id))
-        {
-            log.debug("Registration is rejected. id is already registered > "+id);
+    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, ICtrlMsgReceiver receiver) {
+        if (ctrlReceivers.containsKey(id)) {
+            log.debug("Registration is rejected. id is already registered > " + id);
             return false; // unregister first
         }
         ctrlReceivers.put(id, receiver);
@@ -66,60 +65,59 @@ public class MessageDispatcher implements IMessageDispatcher{
     // currently sadl consumes all the service message. hence no registration
     // if needed extend similar mechanism to control message dispatching
     @Override
-    public boolean dispatchServiceMessages(EventLedger eLedger)
-    {
-        if(UhuValidatorUtility.isObjectNotNull(sadlEventReceiver)) {
+    public boolean dispatchServiceMessages(EventLedger eLedger) {
+        if (UhuValidatorUtility.isObjectNotNull(sadlEventReceiver)) {
             return sadlEventReceiver.processEvent(eLedger);
-        }
-        else{
+        } else {
             log.error("no valid service message receivers ");
         }
         return false;
     }
 
-    /** dispatch the control message */
+    /**
+     * dispatch the control message
+     */
     @Override
-    public boolean dispatchControlMessages(ControlMessage ctrlMsg, String serializedMsg){
+    public boolean dispatchControlMessages(ControlMessage ctrlMsg, String serializedMsg) {
 
         ControlMessage.Discriminator id = ctrlMsg.getDiscriminator();
 
         log.debug("Message decrypted with Discriminator : " + id);
 
-        if(LoggingStatus.isLoggingEnabled() && FilterLogMessages.checkSphere(ctrlMsg.getSphereId())){
+        if (LoggingStatus.isLoggingEnabled() && FilterLogMessages.checkSphere(ctrlMsg.getSphereId())) {
             sendRemoteLogMessage(ctrlMsg);
         }
-
 
 
         //get the registered receiver
         ICtrlMsgReceiver ctrlReceiver = ctrlReceivers.get(id);
 
-        if(UhuValidatorUtility.isObjectNotNull(ctrlReceiver))
-        {
+        if (UhuValidatorUtility.isObjectNotNull(ctrlReceiver)) {
             // invoke the listener
-            if(!ctrlReceiver.processControlMessage(id, serializedMsg))
-            {
+            if (!ctrlReceiver.processControlMessage(id, serializedMsg)) {
                 log.debug("Receiver not processing id > " + id);
             }
 
-        }else{
+        } else {
 
-            log.error("New Message / not registered ? No receiver to process id > "+id);
+            log.error("New Message / not registered ? No receiver to process id > " + id);
         }
 
         return true;
     }
 
-    /** dispatch the control message */
+    /**
+     * dispatch the control message
+     */
     @Override
-    public boolean dispatchControlMessages(ControlLedger tcMessage){
-        if(tcMessage.getIsMessageFromHost()){ //If the msg is local : set serialized msg
+    public boolean dispatchControlMessages(ControlLedger tcMessage) {
+        if (tcMessage.getIsMessageFromHost()) { //If the msg is local : set serialized msg
             tcMessage.setSerializedMessage(tcMessage.getMessage().serialize());
         }
-        ControlMessage msg = (ControlMessage)tcMessage.getMessage();
+        ControlMessage msg = (ControlMessage) tcMessage.getMessage();
         log.debug("Message decrypted with Discriminator : " + msg.getDiscriminator());
 
-        if(LoggingStatus.isLoggingEnabled() && FilterLogMessages.checkSphere(tcMessage.getSphereId())){
+        if (LoggingStatus.isLoggingEnabled() && FilterLogMessages.checkSphere(tcMessage.getSphereId())) {
             sendRemoteLogMessage(tcMessage);
         }
 
@@ -128,25 +126,22 @@ public class MessageDispatcher implements IMessageDispatcher{
         //get the registered receiver
         ICtrlMsgReceiver ctrlReceiver = ctrlReceivers.get(id);
 
-        if(UhuValidatorUtility.isObjectNotNull(ctrlReceiver))
-        {
+        if (UhuValidatorUtility.isObjectNotNull(ctrlReceiver)) {
             // invoke the listener
-            if(!ctrlReceiver.processControlMessage(id, tcMessage.getSerializedMessage()))
-            {
+            if (!ctrlReceiver.processControlMessage(id, tcMessage.getSerializedMessage())) {
                 log.debug("Receiver not processing id > " + id);
             }
 
-        }else{
+        } else {
 
-            log.error("New Message / not registered ? No receiver to process id > "+id);
+            log.error("New Message / not registered ? No receiver to process id > " + id);
         }
 
         return true;
     }
 
 
-
-    private void sendRemoteLogMessage(ControlLedger tcMessage){
+    private void sendRemoteLogMessage(ControlLedger tcMessage) {
         try {
             LoggingQueueManager.loadLogSenderQueue(
                     new UhuLoggingMessage(
@@ -163,7 +158,7 @@ public class MessageDispatcher implements IMessageDispatcher{
         }
     }
 
-    private void sendRemoteLogMessage(ControlMessage msg){
+    private void sendRemoteLogMessage(ControlMessage msg) {
         try {
             LoggingQueueManager.loadLogSenderQueue(
                     new UhuLoggingMessage(

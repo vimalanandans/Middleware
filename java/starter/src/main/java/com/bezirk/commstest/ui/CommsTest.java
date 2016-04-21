@@ -1,36 +1,33 @@
 package com.bezirk.commstest.ui;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.commstest.ui.threads.UnicastReceiver;
 import com.bezrik.network.UhuNetworkUtilities;
 import com.google.gson.Gson;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.util.Set;
+
 /**
  * Class that handles the Ping test.
  */
 public final class CommsTest {
-    
+
     private static final Logger LOGGER = LoggerFactory
             .getLogger(CommsTest.class);
-
-    private final String name = UhuCompManager.getUpaDevice().getDeviceName();
-    private int multicastSendingPort = CommsTestConstants.DEFAULT_MULTICAST_SENDING_PORT;
     private static final String CTRL_MULTICAST_ADDRESS = "224.5.5.5";
-    private UnicastReceiver uReceiver;
-
+    private final String name = UhuCompManager.getUpaDevice().getDeviceName();
     private final com.bezirk.commstest.ui.IUpdateResponse responseUI;
-    private com.bezirk.commstest.ui.threads.MulticastReceiver mReceiver;
     private final UIStore uiStore = new UIStore();
-
     private final String myAddress = UhuNetworkUtilities.getDeviceIp();
+    private int multicastSendingPort = CommsTestConstants.DEFAULT_MULTICAST_SENDING_PORT;
+    private UnicastReceiver uReceiver;
+    private com.bezirk.commstest.ui.threads.MulticastReceiver mReceiver;
 
     public CommsTest(com.bezirk.commstest.ui.IUpdateResponse response) {
         this.responseUI = response;
@@ -38,6 +35,7 @@ public final class CommsTest {
 
     /**
      * Sends the ping
+     *
      * @param pingData
      */
     public void sendPing(int pingCount) {
@@ -50,15 +48,16 @@ public final class CommsTest {
     }
 
     public void updateConfiguration(int uSendingPort, int uReceivingPort,
-            int mSendingPort, int mReceivingPort) {
+                                    int mSendingPort, int mReceivingPort) {
         multicastSendingPort = mSendingPort;
-        mReceiver.updateConfiguration(mReceivingPort,uSendingPort);
+        mReceiver.updateConfiguration(mReceivingPort, uSendingPort);
         uReceiver.updateConfiguration(uReceivingPort);
 
     }
 
     /**
      * sends a ping
+     *
      * @param msg <DeviceName-PingId>
      */
     private void sendPingMsg(final PingMessage msg) {
@@ -74,7 +73,7 @@ public final class CommsTest {
             responseUI.updateUIPingSent(msg);
             uiStore.addToWaitingPongList(msg.deviceName + ":" + msg.pingId);
         } catch (Exception e) {
-            LOGGER.error("Exception in sending ping message.",e);
+            LOGGER.error("Exception in sending ping message.", e);
         }
     }
 
@@ -83,7 +82,7 @@ public final class CommsTest {
      */
     public void startCommsReceiverThread() {
         if (null == mReceiver) {
-            mReceiver = new com.bezirk.commstest.ui.threads.MulticastReceiver(CTRL_MULTICAST_ADDRESS,responseUI,myAddress,name);
+            mReceiver = new com.bezirk.commstest.ui.threads.MulticastReceiver(CTRL_MULTICAST_ADDRESS, responseUI, myAddress, name);
         }
         mReceiver.startComms();
         if (null == uReceiver) {

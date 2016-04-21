@@ -2,15 +2,17 @@ package com.bezirk.starter;
 
 /**
  * Created by vnd2kor on 12/21/2014.
- *  Uhu Action Commands to send the notification to UI Via intents
- *  At the moment this is specific to android. if this shall be
+ * Uhu Action Commands to send the notification to UI Via intents
+ * At the moment this is specific to android. if this shall be
  */
 
 public final class UhuActionCommands {
 
     public final static String SPHERE_NOTIFICATION_ACTION = "com.bosch.upa.uhu.spherenotfication";
 
-    /** generic parameters */
+    /**
+     * generic parameters
+     */
     public final static String UHU_ACTION_COMMANDS = "commands";
 
     public final static String UHU_ACTION_COMMAND_STATUS = "Status";
@@ -66,7 +68,7 @@ public final class UhuActionCommands {
 
     public final static String CMD_SPHERE_DISCOVERY_STATUS = "CMD_SPHERE_DISCOVERY_STATUS";
 
-    private UhuActionCommands(){
+    private UhuActionCommands() {
         //Utility class. Hence hiding the default public constructor
     }
 

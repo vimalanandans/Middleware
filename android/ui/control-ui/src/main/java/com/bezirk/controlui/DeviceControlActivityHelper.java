@@ -12,13 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bezirk.actions.UhuActions;
+import com.bezirk.controlui.R;
 import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.sphere.api.IUhuDevMode;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuPreferences;
 import com.bezirk.util.UhuValidatorUtility;
-import com.bezirk.controlui.R;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,41 +43,42 @@ class DeviceControlActivityHelper {
     private final Context context;
     private final UhuPreferences preferences;
 
-    DeviceControlActivityHelper(DeviceControlActivity deviceControlActivity,Context context) {
+    DeviceControlActivityHelper(DeviceControlActivity deviceControlActivity, Context context) {
         this.deviceControlActivity = deviceControlActivity;
         this.context = context;
         this.preferences = deviceControlActivity.preferences;
     }
 
-    /** Handle the device click*/
-    void deviceControlListClick(List<DataModel> listData,int position)
-    {
+    /**
+     * Handle the device click
+     */
+    void deviceControlListClick(List<DataModel> listData, int position) {
         String actions = null;
         // we selecting based on image id hence list must have image id and it has to be unique
-        switch(listData.get(position).getImageId()) {
+        switch (listData.get(position).getImageId()) {
             case R.drawable.upa_control: // Uhu On/OFF
                 // NOT used. we are handling the toggle button inside the onItemToggleListener
                 break;
             case R.drawable.ic_device_name: //Set Device Name
-                promptSettingTextChange(listData.get(position).getTitleText(),  RESULT_DEVICE_NAME_CHANGE);
+                promptSettingTextChange(listData.get(position).getTitleText(), RESULT_DEVICE_NAME_CHANGE);
                 break;
             case R.drawable.ic_action_device_type:
                 // set device type
-                Intent activityIntent=new Intent(deviceControlActivity,DeviceTypeSelection.class);
+                Intent activityIntent = new Intent(deviceControlActivity, DeviceTypeSelection.class);
                 deviceControlActivity.startActivityForResult(activityIntent, DeviceTypeSelection.RESULT_DEVICE_ITEM_SELECT);// Activity is started with requestCode 2
                 break;
             case R.drawable.ic_action_sphere_name: // set default sphere name
-                promptSettingTextChange(listData.get(position).getTitleText(),  RESULT_SPHERE_NAME_CHANGE);
+                promptSettingTextChange(listData.get(position).getTitleText(), RESULT_SPHERE_NAME_CHANGE);
                 break;
             case R.drawable.ic_action_sphere_type: // set default sphere name
                 actions = UhuActions.ACTION_CHANGE_SPHERE_TYPE;
                 break;
             case R.drawable.ic_delete_database:
-                promptClearConfirmation(listData.get(position).getTitleText(),"Do you want to Clear the Sphere data ?",
+                promptClearConfirmation(listData.get(position).getTitleText(), "Do you want to Clear the Sphere data ?",
                         RESULT_DATABASE_CLEAR);
                 break;
             case R.drawable.ic_action_diag: // diag // to be implemented
-                Intent diagonisisActivityIntent=new Intent(deviceControlActivity,DiagnosisActivity.class);
+                Intent diagonisisActivityIntent = new Intent(deviceControlActivity, DiagnosisActivity.class);
                 deviceControlActivity.startActivity(diagonisisActivityIntent);
                 break;
             default:
@@ -85,12 +86,13 @@ class DeviceControlActivityHelper {
                 return;
         }
 
-        if(UhuValidatorUtility.isObjectNotNull(actions)) {
+        if (UhuValidatorUtility.isObjectNotNull(actions)) {
             Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
             intent.setAction(actions);
             deviceControlActivity.startService(intent);
         }
     }
+
     /**/
     private void onPromptTextResult(int resultCode, String data) {
         // check if the request code is same as what is passed  here it is RESULT_DEVICE_ITEM_SELECT
@@ -109,18 +111,23 @@ class DeviceControlActivityHelper {
                 break;
         }
     }
-    /** clear the device database */
-    private void clearDataBase(){
+
+    /**
+     * clear the device database
+     */
+    private void clearDataBase() {
         String actions = UhuActions.ACTION_CLEAR_PERSISTENCE;
         Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
 
         intent.setAction(actions);
         deviceControlActivity.startService(intent);
     }
-    /** store the device type and invoke the services*/
-    void setDeviceType(String deviceType)
-    {
-        log.info("device type changed to "+deviceType);
+
+    /**
+     * store the device type and invoke the services
+     */
+    void setDeviceType(String deviceType) {
+        log.info("device type changed to " + deviceType);
         // store the device type
         preferences.putString(preferences.DEVICE_TYPE_TAG_PREFERENCE, deviceType);
 
@@ -132,12 +139,11 @@ class DeviceControlActivityHelper {
     }
 
     // set the device name
-    private void setDeviceName(String deviceName)
-    {
+    private void setDeviceName(String deviceName) {
         // TODO: Currently this stored local to stack not sent to other devices.
         // needs to fix this in the stack
 
-        log.info("device name changed to "+deviceName);
+        log.info("device name changed to " + deviceName);
 
         // store the device name
         preferences.putString(preferences.DEVICE_NAME_TAG_PREFERENCE, deviceName);
@@ -150,12 +156,11 @@ class DeviceControlActivityHelper {
     }
 
     // set the device name
-    private void setDefaultSphereName(String sphereName)
-    {
+    private void setDefaultSphereName(String sphereName) {
         // TODO: Currently this stored local to stack not sent to other devices.
         // needs to fix this in the stack
 
-        log.info("default sphere name changed to "+sphereName);
+        log.info("default sphere name changed to " + sphereName);
 
         // store the device name
         preferences.putString(preferences.DEFAULT_SPHERE_NAME_TAG_PREFERENCE, sphereName);
@@ -166,8 +171,9 @@ class DeviceControlActivityHelper {
         intent.setAction(actions);
         deviceControlActivity.startService(intent);
     }
+
     // prompt for text edit box
-    private void promptSettingTextChange(final String TitleText, final int resultId){
+    private void promptSettingTextChange(final String TitleText, final int resultId) {
 // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptsView = layoutInflater.inflate(R.layout.prompt_text, null);
@@ -192,16 +198,16 @@ class DeviceControlActivityHelper {
                 .setCancelable(false)
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int clickId) {
+                            public void onClick(DialogInterface dialog, int clickId) {
                                 // get user input and set it to result
                                 String data = userInput.getText().toString();
-                                log.info("device name is set to "+data);
+                                log.info("device name is set to " + data);
                                 onPromptTextResult(resultId, data);
                             }
                         })
                 .setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int clickId) {
+                            public void onClick(DialogInterface dialog, int clickId) {
                                 dialog.cancel();
                             }
                         });
@@ -214,7 +220,7 @@ class DeviceControlActivityHelper {
     }
 
     // prompt for confirmation box
-    private void promptClearConfirmation(final String titleText, final String confirmText,final int resultId){
+    private void promptClearConfirmation(final String titleText, final String confirmText, final int resultId) {
 // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptsView = layoutInflater.inflate(R.layout.prompt_confirm, null);
@@ -241,10 +247,10 @@ class DeviceControlActivityHelper {
                 .setCancelable(false)
                 .setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int clickId) {
+                            public void onClick(DialogInterface dialog, int clickId) {
                                 // get user input and set it to result
                                 String data = confirmTextView.getText().toString();
-                                log.info("clear database confirmed "+data);
+                                log.info("clear database confirmed " + data);
                                 onPromptTextResult(resultId, data);
                                 if (UhuValidatorUtility.isObjectNotNull(uhuServiceInfos) && !uhuServiceInfos.isEmpty()) {
                                     for (UhuServiceInfo info : uhuServiceInfos) {
@@ -257,7 +263,7 @@ class DeviceControlActivityHelper {
                         })
                 .setNegativeButton("No",
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int clickId) {
+                            public void onClick(DialogInterface dialog, int clickId) {
                                 dialog.cancel();
                             }
                         });
@@ -272,7 +278,7 @@ class DeviceControlActivityHelper {
     /**
      * Get status of development mode by sending an broadcast intent
      */
-    void getStatus(){
+    void getStatus() {
         Intent devIntent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
         devIntent.setAction(UhuActions.ACTION_DEV_MODE_STATUS);
         deviceControlActivity.startService(devIntent);
@@ -283,11 +289,13 @@ class DeviceControlActivityHelper {
      *
      * @param mode
      */
-    void updateList(IUhuDevMode.Mode mode,List<DataModel> listData){
+    void updateList(IUhuDevMode.Mode mode, List<DataModel> listData) {
         log.debug("mode received: " + mode);
         boolean switchState = false;
-        switch(mode){
-            case ON: switchState = true; break;
+        switch (mode) {
+            case ON:
+                switchState = true;
+                break;
             default:
         }
         listData.add(new DataModel(R.drawable.ic_action_dev_mode, "Developer Mode",

@@ -1,16 +1,7 @@
 package com.bezirk.sphere.impl;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.comms.IUhuComms;
+import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.ISphereConfig;
@@ -18,6 +9,15 @@ import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.util.UhuValidatorUtility;
 import com.google.zxing.common.BitMatrix;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 /**
  * Created by GUR1PI on 8/9/2014.
@@ -30,7 +30,7 @@ public class UhuSphereForPC extends UhuSphere implements IUhuQRCode,
     private final SphereUI sphereUI;
 
     public UhuSphereForPC(CryptoEngine cryptoEngine,
-            UPADeviceInterface upaDevice, SphereRegistry sphereRegistry) {
+                          UPADeviceInterface upaDevice, SphereRegistry sphereRegistry) {
         super(cryptoEngine, upaDevice, sphereRegistry);
         sphereUI = new SphereUI();
     }
@@ -91,7 +91,7 @@ public class UhuSphereForPC extends UhuSphere implements IUhuQRCode,
         try {
             ImageIO.write(img, "jpg", qrFile);
         } catch (IOException e) {
-            LOGGER.error("unable to write qr file into " + fileName,e);
+            LOGGER.error("unable to write qr file into " + fileName, e);
             return false;
         }
         LOGGER.info("qr code created in " + fileName);
@@ -142,8 +142,8 @@ public class UhuSphereForPC extends UhuSphere implements IUhuQRCode,
 
     }
 
-	public void initSphere(ISpherePersistence spherePersistence, IUhuComms uhuComms, ISphereConfig sphereConfig) {
-		super.initSphere(spherePersistence, uhuComms, this, sphereConfig);
-	}
+    public void initSphere(ISpherePersistence spherePersistence, IUhuComms uhuComms, ISphereConfig sphereConfig) {
+        super.initSphere(spherePersistence, uhuComms, this, sphereConfig);
+    }
 
 }

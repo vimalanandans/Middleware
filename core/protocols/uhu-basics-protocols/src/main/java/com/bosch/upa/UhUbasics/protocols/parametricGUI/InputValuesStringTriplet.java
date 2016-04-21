@@ -7,7 +7,7 @@
 package com.bosch.upa.UhUbasics.protocols.parametricGUI;
 
 public class InputValuesStringTriplet {
-	public String label;
-	public String type;
-	public String unit;
+    public String label;
+    public String type;
+    public String unit;
 }

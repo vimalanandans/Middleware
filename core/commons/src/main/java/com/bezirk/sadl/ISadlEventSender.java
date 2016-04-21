@@ -3,7 +3,7 @@ package com.bezirk.sadl;
 /*import EventLedger;*/
 
 /**
- * Platform independent API's used by the SADL for sending Event messages 
+ * Platform independent API's used by the SADL for sending Event messages
  */
 /*@Deprecated // this functionality is moved to Event Sender Thread. Remove this. Vimal
 public interface ISadlEventSender {

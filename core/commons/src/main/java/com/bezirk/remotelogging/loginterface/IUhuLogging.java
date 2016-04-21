@@ -11,9 +11,10 @@ import com.bezirk.remotelogging.messages.UhuLoggingMessage;
  * The Platforms can process the log message and handle it in UI.
  */
 public interface IUhuLogging {
-	/**
-	 * Callback given by the Uhu-Logging module to the platform specific logging.
-	 * @param uhuLogMessage UhuLoggingMessage containing the Logging information.
-	 */
-	public void handleLogMessage(UhuLoggingMessage uhuLogMessage);
+    /**
+     * Callback given by the Uhu-Logging module to the platform specific logging.
+     *
+     * @param uhuLogMessage UhuLoggingMessage containing the Logging information.
+     */
+    public void handleLogMessage(UhuLoggingMessage uhuLogMessage);
 }

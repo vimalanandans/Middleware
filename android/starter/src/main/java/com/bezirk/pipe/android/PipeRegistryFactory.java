@@ -14,7 +14,7 @@ public class PipeRegistryFactory {
     }
 
     static public PipeRegistry getPipeRegistry() {
-        synchronized (PipeRegistryFactory.class){
+        synchronized (PipeRegistryFactory.class) {
             if (registry == null) {
                 registry = new PipeRegistry();
             }

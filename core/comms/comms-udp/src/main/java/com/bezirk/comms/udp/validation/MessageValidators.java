@@ -1,8 +1,5 @@
 package com.bezirk.comms.udp.validation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.control.messages.ControlLedger;
@@ -15,123 +12,124 @@ import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.util.UhuValidatorUtility;
 import com.google.gson.Gson;
 
-/**
- * This class represents the worker threads which validate the message before populating 
- * the receiverQueue 
- * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
- *
- */
-public class MessageValidators implements Runnable{
-	private static final Logger log =LoggerFactory.getLogger(MessageValidators.class);
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-	private Ledger ledger;
-	private String computedDevId;
+/**
+ * This class represents the worker threads which validate the message before populating
+ * the receiverQueue
+ *
+ * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
+ */
+public class MessageValidators implements Runnable {
+    private static final Logger log = LoggerFactory.getLogger(MessageValidators.class);
+
+    private Ledger ledger;
+    private String computedDevId;
     private IUhuCommsLegacy uhuComms = null;
 
-	public MessageValidators(String devId, Ledger l, IUhuCommsLegacy uhuComms){
-		this.ledger = l;
-		this.computedDevId = devId;
+    public MessageValidators(String devId, Ledger l, IUhuCommsLegacy uhuComms) {
+        this.ledger = l;
+        this.computedDevId = devId;
         this.uhuComms = uhuComms;
-	}
-	@Override
-	public void run() {
-		if(this.ledger instanceof ControlLedger){
-			processControl((ControlLedger)this.ledger);
-		}
-		else if(this.ledger instanceof EventLedger){
-			processEvent((EventLedger)this.ledger);
-		}
-	}
-	
-	private void processEvent(EventLedger eLedger){
-		//Check Encrypted Header and SphereId
-        if(null == eLedger.getEncryptedHeader() || !UhuValidatorUtility.checkForString(eLedger.getHeader().getSphereName())){
-            log.error( " Null Header received, Removed the msg");
+    }
+
+    @Override
+    public void run() {
+        if (this.ledger instanceof ControlLedger) {
+            processControl((ControlLedger) this.ledger);
+        } else if (this.ledger instanceof EventLedger) {
+            processEvent((EventLedger) this.ledger);
+        }
+    }
+
+    private void processEvent(EventLedger eLedger) {
+        //Check Encrypted Header and SphereId
+        if (null == eLedger.getEncryptedHeader() || !UhuValidatorUtility.checkForString(eLedger.getHeader().getSphereName())) {
+            log.error(" Null Header received, Removed the msg");
             return;
         }
-        
-        //Decrypt Header
-		IUhuSphereForSadl sphereIf = UhuCompManager.getSphereForSadl();
-			
-		if(sphereIf == null)
-		{
-			log.error("Sphere object for the sadl is invalid. msg not decrypted");
-			return ;
-		}
-			
 
-        final String encryptedSerialzedHeader = sphereIf.decryptSphereContent(eLedger.getHeader().getSphereName(),eLedger.getEncryptedHeader());
-        if(!UhuValidatorUtility.checkForString(encryptedSerialzedHeader)){
-            log.error( " Serialized Decrypted Header is null");
+        //Decrypt Header
+        IUhuSphereForSadl sphereIf = UhuCompManager.getSphereForSadl();
+
+        if (sphereIf == null) {
+            log.error("Sphere object for the sadl is invalid. msg not decrypted");
+            return;
+        }
+
+
+        final String encryptedSerialzedHeader = sphereIf.decryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getEncryptedHeader());
+        if (!UhuValidatorUtility.checkForString(encryptedSerialzedHeader)) {
+            log.error(" Serialized Decrypted Header is null");
             return;
         }
         eLedger.setSerializedHeader(encryptedSerialzedHeader);
-        
+
         //Set Header
-        if(!setHeader(eLedger, encryptedSerialzedHeader)){
-        	log.error("Dropping Msg setHeader failed");
-        	return;
+        if (!setHeader(eLedger, encryptedSerialzedHeader)) {
+            log.error("Dropping Msg setHeader failed");
+            return;
         }
-        
+
         // Check Integrity
-     	boolean success= this.computedDevId.equals(eLedger.getHeader().getSenderSEP().device);
-     	if(!success){
-     		log.error("Dropping Msg Integerity failed");
-     		return;
-     	}
+        boolean success = this.computedDevId.equals(eLedger.getHeader().getSenderSEP().device);
+        if (!success) {
+            log.error("Dropping Msg Integerity failed");
+            return;
+        }
 
-     	//Clarify Add received message to receiverMessagerQueue
-     	//MessageQueueManager.getReceiverMessageQueue().addToQueue(eLedger);
-        uhuComms.addToQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE,eLedger);
-        	
-	}
+        //Clarify Add received message to receiverMessagerQueue
+        //MessageQueueManager.getReceiverMessageQueue().addToQueue(eLedger);
+        uhuComms.addToQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
 
-	private Boolean setHeader(EventLedger eLedger, String encryptedSerialzedHeader){
-		if(eLedger.getIsMulticast()){
+    }
+
+    private Boolean setHeader(EventLedger eLedger, String encryptedSerialzedHeader) {
+        if (eLedger.getIsMulticast()) {
             MulticastHeader mHeader = new Gson().fromJson(encryptedSerialzedHeader, MulticastHeader.class);
-            if(!UhuValidatorUtility.checkHeader(mHeader)|| null == eLedger.getEncryptedMessage()){
-                log.error( " Serialized Decrypted Header (Multicast) is not having all the feilds defined");
+            if (!UhuValidatorUtility.checkHeader(mHeader) || null == eLedger.getEncryptedMessage()) {
+                log.error(" Serialized Decrypted Header (Multicast) is not having all the feilds defined");
                 //MessageQueueManager.getReceiverMessageQueue().removeFromQueue(eLedger);
-                uhuComms.removeFromQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE,eLedger);
+                uhuComms.removeFromQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
                 return false;
             }
             eLedger.setHeader(mHeader);
-        }else{
+        } else {
             UnicastHeader uHeader = new Gson().fromJson(encryptedSerialzedHeader, UnicastHeader.class);
-            if( !UhuValidatorUtility.checkHeader(uHeader)){
-                log.error( " Serialized Decrypted Header ( Unicast ) is not having all the feilds defined");
+            if (!UhuValidatorUtility.checkHeader(uHeader)) {
+                log.error(" Serialized Decrypted Header ( Unicast ) is not having all the feilds defined");
                 //MessageQueueManager.getReceiverMessageQueue().removeFromQueue(eLedger);
-                uhuComms.removeFromQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE,eLedger);
+                uhuComms.removeFromQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
                 return false;
             }
             eLedger.setHeader(uHeader);
         }
-		return true;
-	}
-	
-	private void processControl(ControlLedger cLedger){
-		Boolean success = false;
-		//decrypt
-		success = decryptMsg(cLedger);
-		if(success){
-			ControlMessage cMsg = ControlMessage.deserialize(cLedger.getSerializedMessage(), ControlMessage.class);
-			cLedger.setMessage(cMsg);
-		}
-		else{
-			log.debug("Decryption failed");
-			return;
-		}
-		
-		
-		// Check Integrity
-		success= this.computedDevId.equals(cLedger.getMessage().getSender().device);
-		if(!success){
-			log.debug("Dropping Msg Integerity failed");
-			return;
-		}
-		
-		//Check duplicate
-		/*
+        return true;
+    }
+
+    private void processControl(ControlLedger cLedger) {
+        Boolean success = false;
+        //decrypt
+        success = decryptMsg(cLedger);
+        if (success) {
+            ControlMessage cMsg = ControlMessage.deserialize(cLedger.getSerializedMessage(), ControlMessage.class);
+            cLedger.setMessage(cMsg);
+        } else {
+            log.debug("Decryption failed");
+            return;
+        }
+
+
+        // Check Integrity
+        success = this.computedDevId.equals(cLedger.getMessage().getSender().device);
+        if (!success) {
+            log.debug("Dropping Msg Integerity failed");
+            return;
+        }
+
+        //Check duplicate
+        /*
 		This module is no longer needed. because no one calls addmessage
          * and only the checking the record present in the message validator
          * - Vimal
@@ -141,39 +139,38 @@ public class MessageValidators implements Runnable{
 			return;
 		}
 		*/
-		
-		//populate Receiver Queue
-		//MessageQueueManager.getControlReceiverQueue().addToQueue(cLedger);
-        uhuComms.addToQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.CONTROL_RECEIVE_QUEUE,cLedger);
-	}
-	// Clarify and change the Message
-	private Boolean decryptMsg(ControlLedger cLedger){
-		String sphereid = cLedger.getSphereId();
-		byte[] encMsg= cLedger.getEncryptedMessage();
-		String decryptMsg = "";
-		
-		if (!UhuValidatorUtility.checkForString(sphereid) || encMsg == null) {
-			log.error("Sphere or encrypted message is null");
-			return false;
-		} else {
-			IUhuSphereForSadl sphereIf = UhuCompManager.getSphereForSadl();
-			
-			if(sphereIf == null)
-			{
-				log.error("Sphere object for the sadl is invalid. msg not decrypted");
-				return false;
-			}
-			
-			
-			decryptMsg = sphereIf.decryptSphereContent(sphereid, encMsg);
-			if (UhuValidatorUtility.checkForString(decryptMsg)) {
-				log.debug("Ctrl Msg decrypted: " + decryptMsg);
-				cLedger.setSerializedMessage(decryptMsg);
-				return true;
-			}
-			else{
-				return false;
-			}		
-		}
-	}
+
+        //populate Receiver Queue
+        //MessageQueueManager.getControlReceiverQueue().addToQueue(cLedger);
+        uhuComms.addToQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.CONTROL_RECEIVE_QUEUE, cLedger);
+    }
+
+    // Clarify and change the Message
+    private Boolean decryptMsg(ControlLedger cLedger) {
+        String sphereid = cLedger.getSphereId();
+        byte[] encMsg = cLedger.getEncryptedMessage();
+        String decryptMsg = "";
+
+        if (!UhuValidatorUtility.checkForString(sphereid) || encMsg == null) {
+            log.error("Sphere or encrypted message is null");
+            return false;
+        } else {
+            IUhuSphereForSadl sphereIf = UhuCompManager.getSphereForSadl();
+
+            if (sphereIf == null) {
+                log.error("Sphere object for the sadl is invalid. msg not decrypted");
+                return false;
+            }
+
+
+            decryptMsg = sphereIf.decryptSphereContent(sphereid, encMsg);
+            if (UhuValidatorUtility.checkForString(decryptMsg)) {
+                log.debug("Ctrl Msg decrypted: " + decryptMsg);
+                cLedger.setSerializedMessage(decryptMsg);
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }

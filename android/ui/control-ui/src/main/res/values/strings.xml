@@ -34,9 +34,8 @@
 
     <string name="comms_info_label">Press Test and look for the response. If you don\'t see the response from other device, check the hints (from menu) and redo the test!</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
 
 </resources>

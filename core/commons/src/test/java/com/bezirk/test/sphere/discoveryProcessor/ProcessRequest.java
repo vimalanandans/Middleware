@@ -1,16 +1,8 @@
 package com.bezirk.test.sphere.discoveryProcessor;
 
-import static org.junit.Assert.assertTrue;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 import com.bezirk.sphere.impl.DiscoveryProcessor;
@@ -18,17 +10,23 @@ import com.bezirk.test.sphere.testUtilities.MockProtocols;
 import com.bezirk.test.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.test.sphere.testUtilities.SphereTestUtility;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static org.junit.Assert.assertTrue;
+
 /**
- * 
  * @author rishabh
- *
  */
 public class ProcessRequest {
 
-    private static DiscoveryProcessor discoveryProcessor;
     private static final Logger log = LoggerFactory.getLogger(ProcessRequest.class);
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
     private static final MockProtocols mockProtocols = new MockProtocols();
+    private static DiscoveryProcessor discoveryProcessor;
     private static SphereTestUtility sphereTestUtility;
 
     /**

@@ -1,9 +1,9 @@
 /**
- * 
+ *
  */
 package com.bezirk.sphere;
 
-import static org.junit.Assert.assertTrue;
+import com.bezirk.sphere.impl.SphereProperties;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -13,16 +13,15 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.sphere.impl.SphereProperties;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author rishabh
- *
  */
 public class SpherePropertiesTest {
 
-    SphereProperties sphereProperties;
     private static final Logger log = LoggerFactory.getLogger(SpherePropertiesTest.class);
+    SphereProperties sphereProperties;
 
     /**
      * @throws java.lang.Exception
@@ -44,7 +43,7 @@ public class SpherePropertiesTest {
     @Before
     public void setUp() throws Exception {
         sphereProperties = new SphereProperties();
-        sphereProperties.init();        
+        sphereProperties.init();
     }
 
     /**
@@ -54,7 +53,7 @@ public class SpherePropertiesTest {
     public void tearDown() throws Exception {
     }
 
-   
+
     @Test
     public final void testSetDefaultSphereName() {
         String temp = "DefaultSphere";

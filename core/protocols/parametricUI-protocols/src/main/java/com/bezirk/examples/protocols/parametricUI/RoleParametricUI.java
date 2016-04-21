@@ -9,32 +9,32 @@ import com.bezirk.middleware.messages.ProtocolRole;
  * Role of a service offering a parametric UI
  */
 public class RoleParametricUI extends ProtocolRole {
-	
-	private static final String evts[] =
-		{NoticeUIshowPic.TOPIC,
-		 NoticeUIshowText.TOPIC,
-		 NoticeUIshowVideo.TOPIC,
-		 RequestUIinputValues.TOPIC,
-		 RequestUImultipleChoice.TOPIC,
-		 RequestUIpickOne.TOPIC};
 
-	@Override
-	public String getProtocolName() {
-		return RoleParametricUI.class.getSimpleName();
-	}
+    private static final String evts[] =
+            {NoticeUIshowPic.TOPIC,
+                    NoticeUIshowText.TOPIC,
+                    NoticeUIshowVideo.TOPIC,
+                    RequestUIinputValues.TOPIC,
+                    RequestUImultipleChoice.TOPIC,
+                    RequestUIpickOne.TOPIC};
 
-	@Override
-	public String getDescription() {
-		return "Showing text, pictures, and video to users; requesting user input on values and choices";
-	}
+    @Override
+    public String getProtocolName() {
+        return RoleParametricUI.class.getSimpleName();
+    }
 
-	@Override
-	public String[] getEventTopics() {
-		return evts==null ?null:evts.clone();
-	}
+    @Override
+    public String getDescription() {
+        return "Showing text, pictures, and video to users; requesting user input on values and choices";
+    }
 
-	@Override
-	public String[] getStreamTopics() {
-		return null;
-	}
+    @Override
+    public String[] getEventTopics() {
+        return evts == null ? null : evts.clone();
+    }
+
+    @Override
+    public String[] getStreamTopics() {
+        return null;
+    }
 }

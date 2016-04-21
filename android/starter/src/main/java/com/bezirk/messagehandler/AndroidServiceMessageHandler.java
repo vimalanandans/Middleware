@@ -13,21 +13,21 @@ import org.slf4j.LoggerFactory;
  * This class implements IUhuCallback and provides platform specific implementations for android
  */
 public class AndroidServiceMessageHandler implements ServiceMessageHandler {
-    private final Logger log = LoggerFactory.getLogger(AndroidServiceMessageHandler.class);
     /**
      * This intent action is subscribed by all the ProxyForUhu
      */
     final String FIRE_INTENT_ACTION = "com.bosch.upa.uhu.broadcast";
     /**
-     * Context to fire the Intent
-     */
-    private final Context applicationContext;
-    /**
      * Used to convert the object to its string
      */
     final Gson gson = new Gson();
+    private final Logger log = LoggerFactory.getLogger(AndroidServiceMessageHandler.class);
+    /**
+     * Context to fire the Intent
+     */
+    private final Context applicationContext;
 
-    public AndroidServiceMessageHandler(Context context){
+    public AndroidServiceMessageHandler(Context context) {
         this.applicationContext = context;
     }
 
@@ -49,8 +49,8 @@ public class AndroidServiceMessageHandler implements ServiceMessageHandler {
             fireIntent.putExtra(msgIdKEY, eventIncomingMessage.msgId);
             fireIntent.putExtra(discriminatorKEY, eventIncomingMessage.getCallbackType());
             fireIntentToService(fireIntent);
-        }catch(Exception e){
-            log.error("Cant fire the intent to the services as the ppd intent is not valid.",e);
+        } catch (Exception e) {
+            log.error("Cant fire the intent to the services as the ppd intent is not valid.", e);
         }
     }
 
@@ -82,7 +82,7 @@ public class AndroidServiceMessageHandler implements ServiceMessageHandler {
     /*fireMulticastStream available in commitID 0fc60754247ec4131ac1a595a0b8c4e78c0b20a8*/
 
     @Override
-    public void onStreamStatus(StreamStatusMessage streamStatusMessage){
+    public void onStreamStatus(StreamStatusMessage streamStatusMessage) {
         String serviceIdKEY = "service_id_tag";
         String streamIdKEY = "streamId";
         String streamStatusKEY = "streamStatus";
@@ -94,15 +94,15 @@ public class AndroidServiceMessageHandler implements ServiceMessageHandler {
             fireIntent.putExtra(streamIdKEY, streamStatusMessage.streamId);
             fireIntent.putExtra(streamStatusKEY, streamStatusMessage.streamStatus);
             fireIntentToService(fireIntent);
-        }catch (Exception e){
-            log.error("Callback cannot be given to the services as there is some exception in the Firing the Intent",e);
+        } catch (Exception e) {
+            log.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
         }
     }
 
 
     @Override
-    public void onDiscoveryIncomingMessage(DiscoveryIncomingMessage discoveryIncomingMessage){
-        
+    public void onDiscoveryIncomingMessage(DiscoveryIncomingMessage discoveryIncomingMessage) {
+
         String serviceIdKEY = "service_id_tag";
         String discriminatorKEY = "discriminator";
         String discoveredServiceListKEY = "DiscoveredServices";
@@ -113,14 +113,13 @@ public class AndroidServiceMessageHandler implements ServiceMessageHandler {
             fireIntent.putExtra(discriminatorKEY, discoveryIncomingMessage.getCallbackType());
             fireIntent.putExtra(discoveryIdKEY, discoveryIncomingMessage.discoveryId);
             fireIntent.putExtra(discoveredServiceListKEY, discoveryIncomingMessage.discoveredList);
-            if(discoveryIncomingMessage.isSphereDiscovery){
+            if (discoveryIncomingMessage.isSphereDiscovery) {
                 fireIntenttoSphere(fireIntent);
-            }
-            else{
+            } else {
                 fireIntentToService(fireIntent);
             }
-        }catch (Exception e){
-            log.error("Callback cannot be given to the services as there is some exception in the Firing the Intent",e);
+        } catch (Exception e) {
+            log.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
         }
     }
 
@@ -137,28 +136,28 @@ public class AndroidServiceMessageHandler implements ServiceMessageHandler {
             fireIntent.putExtra(UhuActions.KEY_PIPE_POLICY_OUT, pipeMsg.getAllowedOut().serialize());
 
             fireIntentToService(fireIntent);
-        }catch (Exception e){
-            log.error("Callback cannot be given to the services as there is some exception in the Firing the Intent",e);
+        } catch (Exception e) {
+            log.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
         }
     }
 
     /**
      * This method just fires the intent to the services.
      */
-    private void fireIntentToService(Intent fireIntent){
+    private void fireIntentToService(Intent fireIntent) {
         fireIntent.setAction(FIRE_INTENT_ACTION);
         fireIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if(null != applicationContext){
+        if (null != applicationContext) {
             applicationContext.sendBroadcast(fireIntent);
             return;
         }
         log.error("Application Context is null, cant fire the  broadcast Intent intent!");
     }
 
-    private void fireIntenttoSphere(Intent fireIntent){
+    private void fireIntenttoSphere(Intent fireIntent) {
         fireIntent.setAction("SphereScanReceiver");
         fireIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if(null != applicationContext){
+        if (null != applicationContext) {
             applicationContext.sendBroadcast(fireIntent);
             return;
         }

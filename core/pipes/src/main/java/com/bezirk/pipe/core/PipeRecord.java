@@ -4,68 +4,68 @@ import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 
 public class PipeRecord {
-	
-	private Pipe pipe = null;
-	
-	private PipePolicy allowedIn = null;
-	
-	private PipePolicy allowedOut = null;
-	
-	private String sphereId = null;
-	
-	private String password = null;
-	
-	private String certFile = null;
 
-	public PipeRecord(Pipe pipe) {
-		this.pipe = pipe;
-	}
-	
-	public void setPipe(Pipe pipe) {
-		this.pipe = pipe;
-	}
+    private Pipe pipe = null;
 
-	public Pipe getPipe() {
-		return pipe;
-	}
+    private PipePolicy allowedIn = null;
 
-	public PipePolicy getAllowedIn() {
-		return allowedIn;
-	}
+    private PipePolicy allowedOut = null;
 
-	public void setAllowedIn(PipePolicy allowedIn) {
-		this.allowedIn = allowedIn;
-	}
+    private String sphereId = null;
 
-	public PipePolicy getAllowedOut() {
-		return allowedOut;
-	}
+    private String password = null;
 
-	public void setAllowedOut(PipePolicy allowedOut) {
-		this.allowedOut = allowedOut;
-	}
+    private String certFile = null;
 
-	public String getSphereId() {
-		return sphereId;
-	}
+    public PipeRecord(Pipe pipe) {
+        this.pipe = pipe;
+    }
 
-	public void setSphereId(String sphereId) {
-		this.sphereId = sphereId;
-	}
+    public Pipe getPipe() {
+        return pipe;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setPipe(Pipe pipe) {
+        this.pipe = pipe;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public PipePolicy getAllowedIn() {
+        return allowedIn;
+    }
 
-	public String getCertFile() {
-		return certFile;
-	}
+    public void setAllowedIn(PipePolicy allowedIn) {
+        this.allowedIn = allowedIn;
+    }
 
-	public void setCertFile(String certFile) {
-		this.certFile = certFile;
-	}
+    public PipePolicy getAllowedOut() {
+        return allowedOut;
+    }
+
+    public void setAllowedOut(PipePolicy allowedOut) {
+        this.allowedOut = allowedOut;
+    }
+
+    public String getSphereId() {
+        return sphereId;
+    }
+
+    public void setSphereId(String sphereId) {
+        this.sphereId = sphereId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getCertFile() {
+        return certFile;
+    }
+
+    public void setCertFile(String certFile) {
+        this.certFile = certFile;
+    }
 }

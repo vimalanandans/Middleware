@@ -3,12 +3,12 @@ package com.bezirk.test.sphere.testUtilities;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuDevMode.Mode;
 
-public class SpherePropertiesMock implements ISphereConfig{
+public class SpherePropertiesMock implements ISphereConfig {
 
     @Override
     public void init() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override

@@ -12,6 +12,16 @@ import java.io.IOException;
 public class TestMessage {
     String MessageType;
 
+    /**
+     * @param json               The Json String that is to be deserialized
+     * @param classToDeserialize class to deserialize into
+     * @return object of class C
+     */
+    public static <C> C deserialize(String json, Class<C> classToDeserialize) throws JsonParseException {
+        Gson gson = new Gson();
+        return (C) gson.fromJson(json, classToDeserialize);
+    }
+
     public String getMessageType() {
         return MessageType;
     }
@@ -26,15 +36,5 @@ public class TestMessage {
     public String serialize() throws IOException {
         Gson gson = new Gson();
         return gson.toJson(this);
-    }
-
-    /**
-     * @param json The Json String that is to be deserialized
-     * @param classToDeserialize   class to deserialize into
-     * @return object of class C
-     */
-    public static <C> C deserialize(String json, Class<C> classToDeserialize) throws JsonParseException {
-        Gson gson = new Gson();
-        return (C) gson.fromJson(json, classToDeserialize);
     }
 }

@@ -21,7 +21,7 @@ public final class UhuCommsAndroid {
     private UhuCommsAndroid() {
     }
 
-    public static void init(UhuPreferences pref){
+    public static void init(UhuPreferences pref) {
 
         //Initialize UPADeviceForAndroid preferences
         UPADeviceForAndroid.setPreferences(pref.getSharedPreferences());
@@ -29,7 +29,7 @@ public final class UhuCommsAndroid {
         //Refer res/preferences.xml for values
         UhuComms.setINTERFACE_NAME(pref.getString("InterfaceName", null));
         log.info("InterfaceName:" + UhuComms.getINTERFACE_NAME());
-        UhuComms.setMULTICAST_ADDRESS(pref.getString("EMulticastAddress", null)) ;
+        UhuComms.setMULTICAST_ADDRESS(pref.getString("EMulticastAddress", null));
         log.info("MulticastAddress " + UhuComms.getMULTICAST_ADDRESS());
         UhuComms.setMULTICAST_PORT(Integer.valueOf(pref.getString("EMulticastPort", "0")));
         log.info("MulticastPort " + UhuComms.getMULTICAST_PORT());
@@ -43,25 +43,24 @@ public final class UhuCommsAndroid {
         log.info("Ctrl UnicastPort " + UhuComms.getCTRL_UNICAST_PORT());
         UhuComms.setMAX_BUFFER_SIZE(Integer.valueOf(pref.getString("MaxBufferSize", "0")));
         //Intialize POOL Size
-        log.info("Max Buffer Size "+UhuComms.getMAX_BUFFER_SIZE());
+        log.info("Max Buffer Size " + UhuComms.getMAX_BUFFER_SIZE());
         UhuComms.setPOOL_SIZE(Integer.valueOf(pref.getString("MessageValidatorPool", "0")));
 
         UhuComms.setSTARTING_PORT_FOR_STREAMING(Integer.valueOf(pref.getString("StartPort", "0")));
         log.info("Starting Port for Streaming: " + UhuComms.getSTARTING_PORT_FOR_STREAMING());
         UhuComms.setENDING_PORT_FOR_STREAMING(Integer.valueOf(pref.getString("EndPort", "0")));
         log.info("Ending port for Streaming " + UhuComms.getENDING_PORT_FOR_STREAMING());
-        UhuComms.setMAX_SUPPORTED_STREAMS(Integer.valueOf(pref.getString("NoOfActiveThreads", "0"))) ;
+        UhuComms.setMAX_SUPPORTED_STREAMS(Integer.valueOf(pref.getString("NoOfActiveThreads", "0")));
         log.info("No of active threads supported " + UhuComms.getMAX_SUPPORTED_STREAMS());
-        UhuComms.setStreamingEnabled(Boolean.valueOf(pref.getString("StreamingEnabled", "false"))) ;
+        UhuComms.setStreamingEnabled(Boolean.valueOf(pref.getString("StreamingEnabled", "false")));
         log.info("Is streaming Enabled" + UhuComms.isStreamingEnabled());
 
         UhuComms.setDOWNLOAD_PATH(Environment.getExternalStorageDirectory().getAbsolutePath() + "/UhuDownloads/");
-        if(UhuComms.isStreamingEnabled())
-        {
+        if (UhuComms.isStreamingEnabled()) {
             // port factory is moved to the uhu comms manager
             // create a Downloads folder
             File createDownloadFolder = new File(UhuComms.getDOWNLOAD_PATH());
-            if(!createDownloadFolder.exists()){
+            if (!createDownloadFolder.exists()) {
                 createDownloadFolder.mkdir();
             }
         }

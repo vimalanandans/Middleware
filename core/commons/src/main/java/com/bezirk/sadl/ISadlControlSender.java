@@ -4,7 +4,7 @@ package com.bezirk.sadl;
 */
 
 /**
- * Platform independent API's used by the SADL for sending Control messages 
+ * Platform independent API's used by the SADL for sending Control messages
  */
 /*@Deprecated // this functionality is moved to Control Sender Thread. Remove this. Vimal
 public interface ISadlControlSender {

@@ -1,35 +1,34 @@
 /**
- * 
+ *
  */
 package com.bezirk.sphere.impl;
+
+import com.bezirk.control.messages.discovery.DiscoveryRequest;
+import com.bezirk.control.messages.discovery.DiscoveryResponse;
+import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
+import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.discovery.DiscoveryLabel;
+import com.bezirk.discovery.SphereDiscoveryProcessor;
+import com.bezirk.discovery.SphereDiscoveryRecord;
+import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.proxy.api.impl.UhuDiscoveredService;
+import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.sphere.api.IUhuSphereListener;
+import com.bezrik.network.UhuNetworkUtilities;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.discovery.DiscoveryLabel;
-import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.control.messages.discovery.DiscoveryResponse;
-import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
-import com.bezirk.discovery.SphereDiscoveryProcessor;
-import com.bezirk.discovery.SphereDiscoveryRecord;
-import com.bezrik.network.UhuNetworkUtilities;
-import com.bezirk.proxy.api.impl.UhuDiscoveredService;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
-import com.bezirk.sphere.api.IUhuSphereListener;
-
 /**
  * @author rishabh
- *
  */
 public class DiscoveryProcessor {
 
@@ -45,7 +44,6 @@ public class DiscoveryProcessor {
     private int timeout = 5000;
 
     /**
-     * 
      * @param sphereUtils
      * @param crypto
      * @param upaDeviceInterface
@@ -53,7 +51,7 @@ public class DiscoveryProcessor {
      * @param sphereRegistryWrapper
      */
     public DiscoveryProcessor(UPADeviceInterface upaDeviceInterface, CommsUtility comms,
-            SphereRegistryWrapper sphereRegistryWrapper, IUhuSphereListener uhuSphereListener) {
+                              SphereRegistryWrapper sphereRegistryWrapper, IUhuSphereListener uhuSphereListener) {
         this.upaDeviceInterface = upaDeviceInterface;
         this.comms = comms;
         this.sphereRegistryWrapper = sphereRegistryWrapper;
@@ -63,24 +61,24 @@ public class DiscoveryProcessor {
     /**
      * Process the discovered services for a sphere to incorporate more details
      * about the services.
-     * 
+     * <p/>
      * The current implementation is limited to changing the UhuSphereInfo
      * object received by the {@link #getSphereInfo(String)} method. This
      * implies :
-     * 
+     * <p/>
      * 1) When the getSphere is operated on a owner sphere, we get the complete
      * info with the status of active/in-active for all services
-     * 
+     * <p/>
      * 2) When the getSphere is operated on a member sphere, we get only the
      * info with the status of active/in-active for a local services, i.e. for
      * services on that device. For latest information to be added for a Service
      * we would require this information coming as a part of the discovered
      * services
-     * 
+     *
      * @param discoveredServices
      * @param sphereId
-     * @deprecated use {@link #processDiscoveredSphereInfo(Set, String)}
      * @return
+     * @deprecated use {@link #processDiscoveredSphereInfo(Set, String)}
      */
     @Deprecated
     public UhuSphereInfo processDiscoveryResponse(Set<UhuDiscoveredService> discoveredServices, String sphereId) {
@@ -117,9 +115,10 @@ public class DiscoveryProcessor {
     }
 
     // TODO Reduce complexity
+
     /**
      * Process UhuSphereInfo set retrieved from running sphere discovery
-     * 
+     *
      * @param uhuSphereInfoSet - should be not null
      * @param sphereId
      */
@@ -155,12 +154,11 @@ public class DiscoveryProcessor {
     }
 
     /**
-     * 
      * @param discoveredSphereInfoSet
      * @param sphereId
      * @return
      */
-   
+
     public boolean discoverSphere(String sphereId) {
         if (!sphereRegistryWrapper.containsSphere(sphereId)) {
             return false;
@@ -187,13 +185,12 @@ public class DiscoveryProcessor {
 
     /**
      * Process the {@link DiscoveryRequest}
-     * 
+     *
      * @param discoveryRequest
      * @return true if a {@link DiscoveryResponse} was sent for this request.
-     *         This happens when a device has services that are a part of the
-     *         sphere initiating the request.<br>
-     *         false otherwise
-     * 
+     * This happens when a device has services that are a part of the
+     * sphere initiating the request.<br>
+     * false otherwise
      */
     public boolean processRequest(DiscoveryRequest discoveryRequest) {
         if (validateRequest(discoveryRequest)) {

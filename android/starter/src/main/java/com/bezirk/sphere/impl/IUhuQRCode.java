@@ -12,9 +12,10 @@ public interface IUhuQRCode {
 
     /**
      * Retrives the QRCode with specific dimensions. This method is useful to show QRCode of different sizes on different devices.
+     *
      * @param sphereId Name of the sphere that will be imprinted in the QRCode image
-     * @param width width of the image
-     * @param height height of the image
+     * @param width    width of the image
+     * @param height   height of the image
      * @return Bitmap containing the QRCode imprinted with the sphereId
      */
     public Bitmap getQRCode(String sphereId, int width, int height);

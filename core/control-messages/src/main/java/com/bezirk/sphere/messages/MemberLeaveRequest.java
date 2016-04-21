@@ -12,20 +12,21 @@ import com.bezirk.proxy.api.impl.UhuServiceId;
 /**
  * This message is used to initiate 'leave' from a member of the sphere owning a service it shared with owner of the same sphere
  */
-public class MemberLeaveRequest extends MulticastControlMessage{
-    private final UhuServiceId serviceId;
+public class MemberLeaveRequest extends MulticastControlMessage {
     //private final String sphere_Name;
-	private final static Discriminator discriminator = ControlMessage.Discriminator.MemberLeaveRequest;
-    
+    private final static Discriminator discriminator = ControlMessage.Discriminator.MemberLeaveRequest;
+    private final UhuServiceId serviceId;
+
     /**
      * Used with for multicasting the leave request by the member of a sphere
+     *
      * @param sphereID
      * @param serviceId
      * @param sphere_Name
      * @param sender
      */
-    public MemberLeaveRequest(String sphereID, UhuServiceId serviceId, String sphere_Name, UhuServiceEndPoint sender){        
-    	super(sender, sphereID, discriminator);
+    public MemberLeaveRequest(String sphereID, UhuServiceId serviceId, String sphere_Name, UhuServiceEndPoint sender) {
+        super(sender, sphereID, discriminator);
         this.serviceId = serviceId;
         //this.sphere_Name = sphere_Name;        
     }

@@ -5,7 +5,7 @@
             <level>INFO</level>
         </filter>
         <encoder>
-            <pattern>%-5level  %logger - %msg%n</pattern>
+            <pattern>%-5level %logger - %msg%n</pattern>
         </encoder>
     </appender>
     <!-- Write to file that rolls over once per day -->

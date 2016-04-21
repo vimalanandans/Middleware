@@ -3,7 +3,6 @@
 apply plugin: 'java'
 dependencies {
 
-
 /*    if (project.local == "false") {
 
         compile "com.bezirk:bezirk-api:${version}"
@@ -18,16 +17,16 @@ dependencies {
 
   */      //println " uhu-pc build with remote maven repo "
 
-        //direct local dependencies for renaming the packages
-        // uhu deps
-        compile project(':core:bezirk-middleware-api')
-        compile project(':core:bezirk')
-        compile project(':core:control-messages')
-        compile project(':core:commons')
-        compile project(':core:comms:comms-udp')
-        //compile project(':core:comms:comms-jyre')
-        compile project(':core:comms:comms-factory')
-        compile project(':core:pipes')
+    //direct local dependencies for renaming the packages
+    // uhu deps
+    compile project(':core:bezirk-middleware-api')
+    compile project(':core:bezirk')
+    compile project(':core:control-messages')
+    compile project(':core:commons')
+    compile project(':core:comms:comms-udp')
+    //compile project(':core:comms:comms-jyre')
+    compile project(':core:comms:comms-factory')
+    compile project(':core:pipes')
     //}
 
     compile project(':java:libraries:comms-zyre-jni')

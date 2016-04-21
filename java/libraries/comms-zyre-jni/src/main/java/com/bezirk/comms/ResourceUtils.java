@@ -6,6 +6,7 @@ package com.bezirk.comms;
  */
 
 import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,8 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.net.JarURLConnection;
+import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
@@ -56,7 +57,7 @@ public class ResourceUtils {
 
         final JarFile jarFile = jarConnection.getJarFile();
 
-        for (final Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements();) {
+        for (final Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements(); ) {
             final JarEntry entry = e.nextElement();
             if (entry.getName().startsWith(jarConnection.getEntryName())) {
                 final String filename = StringUtils.removeStart(entry.getName(), //
@@ -65,7 +66,7 @@ public class ResourceUtils {
                 final File f = new File(destDir, filename);
                 if (!entry.isDirectory()) {
                     final InputStream entryInputStream = jarFile.getInputStream(entry);
-                    if(!ResourceUtils.copyStream(entryInputStream, f)){
+                    if (!ResourceUtils.copyStream(entryInputStream, f)) {
                         return false;
                     }
                     entryInputStream.close();

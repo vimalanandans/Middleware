@@ -25,28 +25,18 @@ public class ZyreCommsJni extends Thread {
 
     public static final Logger log = LoggerFactory.getLogger(ZyreCommsJni.class);
     public static final String TAG = ZyreCommsJni.class.getSimpleName();
-
-    private Zyre zyre;
-
-    private final ConcurrentMap<String, List<String>> peers = new ConcurrentHashMap<String, List<String>>();
-
     public static final String BEZIRK_GROUP = "BEZIRK_GROUP";
-
-    private String group;
-
-    private boolean listenToEventsFlag;
-
+    private static boolean isZyreReady;
+    private final ConcurrentMap<String, List<String>> peers = new ConcurrentHashMap<String, List<String>>();
+    private final ZyreCommsHelper zyreCommsHelper;
+    private final int numberOfEventThreads = 100;
     CommsProcessor commsProcessor;
 
     int delayedInitTime = 5000; //in ms
-
-    private final ZyreCommsHelper zyreCommsHelper;
-
-    private static boolean isZyreReady;
-
+    private Zyre zyre;
+    private String group;
+    private boolean listenToEventsFlag;
     private ExecutorService eventExecutor;
-
-    private final int numberOfEventThreads = 100;
 
     public ZyreCommsJni(CommsProcessor commsProcessor) {
         this.commsProcessor = commsProcessor;
@@ -62,6 +52,7 @@ public class ZyreCommsJni extends Thread {
         zyreCommsHelper = new ZyreCommsHelper(peers, commsProcessor);
 
     }
+
     /**
      * initialize the zyre
      */
@@ -160,7 +151,7 @@ public class ZyreCommsJni extends Thread {
             eventExecutor.shutdown();
             while (!eventExecutor.awaitTermination(5, TimeUnit.SECONDS)) ;
         } catch (InterruptedException e) {
-            Log.e(TAG,"Error in stopping zyre.",e);
+            Log.e(TAG, "Error in stopping zyre.", e);
         }
 
 
@@ -191,9 +182,9 @@ public class ZyreCommsJni extends Thread {
                         }
                         zyre.shout(getGroup(), data);
                         log.debug("Shouted message to group : >> " + getGroup());
-                        log.debug("Multi-cast size : >> " + data.length() );
+                        log.debug("Multi-cast size : >> " + data.length());
                     } catch (Exception e) {
-                        log.error(TAG,"An Error has occurred during Zyre Shout!!!",e);
+                        log.error(TAG, "An Error has occurred during Zyre Shout!!!", e);
                     }
                 }
             });
@@ -202,7 +193,7 @@ public class ZyreCommsJni extends Thread {
             }
             return true;
 
-        }else{
+        } else {
             log.error("zyre not initialized");
         }
 
@@ -232,7 +223,7 @@ public class ZyreCommsJni extends Thread {
 
                         log.debug("Unicast size : >> " + data.length() + " data >> " + data);
                     } catch (Exception e) {
-                        log.error(TAG,"An Error has occurred during Zyre Shout!!!",e);
+                        log.error(TAG, "An Error has occurred during Zyre Shout!!!", e);
                     }
                 }
             });

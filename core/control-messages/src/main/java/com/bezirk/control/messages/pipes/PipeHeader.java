@@ -4,31 +4,31 @@ import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 import com.google.gson.Gson;
 
 public class PipeHeader {
-	
-	public static final String KEY_UHU_HEADER = "Uhu-Header";
-	
-	protected UhuServiceEndPoint senderSEP;
 
-	protected String topic;
-	
-	public UhuServiceEndPoint getSenderSEP() {
-		return senderSEP;
-	}
+    public static final String KEY_UHU_HEADER = "Uhu-Header";
 
-	public void setSenderSEP(UhuServiceEndPoint senderSEP) {
-		this.senderSEP = senderSEP;
-	}
+    protected UhuServiceEndPoint senderSEP;
 
-	public String getTopic() {
-		return topic;
-	}
+    protected String topic;
 
-	public void setTopic(String topic) {
-		this.topic = topic;
-	}
-	
-	public String serialize() {
-		Gson gson = new Gson();
-		return gson.toJson(this);
-	}
+    public UhuServiceEndPoint getSenderSEP() {
+        return senderSEP;
+    }
+
+    public void setSenderSEP(UhuServiceEndPoint senderSEP) {
+        this.senderSEP = senderSEP;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public String serialize() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
 }

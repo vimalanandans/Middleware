@@ -10,7 +10,7 @@ import java.util.Set;
 public abstract class Service implements Serializable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -2130386016234942372L;
     // set of sphereID's the service is a part of
@@ -32,8 +32,7 @@ public abstract class Service implements Serializable {
     }
 
     /**
-     * @param sphereSet
-     *            the sphereSet to set
+     * @param sphereSet the sphereSet to set
      */
     public void setSphereSet(HashSet<String> sphereSet) {
         this.sphereSet = sphereSet;
@@ -47,8 +46,7 @@ public abstract class Service implements Serializable {
     }
 
     /**
-     * @param serviceName
-     *            the serviceName to set
+     * @param serviceName the serviceName to set
      */
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
@@ -62,8 +60,7 @@ public abstract class Service implements Serializable {
     }
 
     /**
-     * @param ownerDeviceId
-     *            the ownerDeviceId to set
+     * @param ownerDeviceId the ownerDeviceId to set
      */
     public void setOwnerDeviceId(String ownerDeviceId) {
         this.ownerDeviceId = ownerDeviceId;
@@ -72,7 +69,7 @@ public abstract class Service implements Serializable {
     /**
      * Provides the information regarding a service which can be shared Ex. in
      * control messages
-     * 
+     *
      * @return
      */
     public ServiceVitals getServiceVitals() {

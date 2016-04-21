@@ -1,14 +1,16 @@
 package com.bezirk.sphere.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+
+import org.apache.shiro.codec.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
-import org.apache.shiro.codec.Base64;
-
 public class SphereExchangeData {
 
+    public static final String OPERATION_SHARE = "Share";
+    public static final String OPERATION_CATCH = "Catch";
     private static final Logger LOGGER = LoggerFactory.getLogger(SphereExchangeData.class);
     private String deviceId;
     private String deviceName;
@@ -18,31 +20,13 @@ public class SphereExchangeData {
     private String sphereType;
     private String sphereKey = null;
     private String spherePublicKey = null;
-    public static final String OPERATION_SHARE = "Share";
-    public static final String OPERATION_CATCH = "Catch";
 
     public SphereExchangeData() {
     }
 
     /**
-     * Get the JSON string of the whole object
-     * 
-     * @return
-     */
-    public String serialize() {
-        String data = null;
-
-        Gson gson = new Gson();
-        data = gson.toJson(this);
-
-        LOGGER.debug("serialize data > " + data);
-
-        return data;
-    }
-
-    /**
      * De-serialize the string to object
-     * 
+     *
      * @param data
      * @return
      */
@@ -54,6 +38,22 @@ public class SphereExchangeData {
             LOGGER.error("Deserialization error", e);
         }
         return null;
+    }
+
+    /**
+     * Get the JSON string of the whole object
+     *
+     * @return
+     */
+    public String serialize() {
+        String data = null;
+
+        Gson gson = new Gson();
+        data = gson.toJson(this);
+
+        LOGGER.debug("serialize data > " + data);
+
+        return data;
     }
 
     public String getSphereName() {

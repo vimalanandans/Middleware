@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bezirk.spheremanager.InformationActivity" >
+    tools:context="com.bezirk.spheremanager.InformationActivity">
 
-   <LinearLayout
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp" >
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/icon_thing"
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/name_of_thing"
@@ -49,7 +49,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/filter_outbound"
@@ -58,9 +58,9 @@
             android:layout_weight=".50"
             android:background="@color/buttonActive"
             android:text="Outbound" />
-        
-        
-                <Button
+
+
+        <Button
             android:id="@+id/filter_inbound"
             android:layout_width="fill_parent"
             android:layout_height="44dp"
@@ -76,13 +76,12 @@
         android:layout_width="fill_parent"
         android:layout_height="15dp"
         android:layout_weight="1"
-        tools:layout="@android:layout/list_content" >
-    </FrameLayout>
+        tools:layout="@android:layout/list_content"></FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp" >
+        android:layout_marginTop="4dp">
 
         <Button
             android:id="@+id/information_back_to_services"

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.bezirk.sphere.impl;
 
@@ -7,12 +7,11 @@ import java.io.Serializable;
 
 /**
  * @author Rishabh Gulati
- * 
  */
 public class DeviceInformation implements Serializable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -7659289630471500105L;
 
@@ -27,7 +26,7 @@ public class DeviceInformation implements Serializable {
     /**
      * @param deviceName
      * @param deviceType
-    */
+     */
     public DeviceInformation(String deviceName, String deviceType) {
         super();
         this.deviceName = deviceName;
@@ -42,8 +41,7 @@ public class DeviceInformation implements Serializable {
     }
 
     /**
-     * @param deviceName
-     *            the deviceName to set
+     * @param deviceName the deviceName to set
      */
     public final void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
@@ -57,8 +55,7 @@ public class DeviceInformation implements Serializable {
     }
 
     /**
-     * @param deviceType
-     *            the deviceType to set
+     * @param deviceType the deviceType to set
      */
     public final void setDeviceType(String deviceType) {
         this.deviceType = deviceType;

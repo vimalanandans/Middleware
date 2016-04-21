@@ -1,23 +1,19 @@
 package com.bezirk.comms;
 
 
-
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.processor.CommsProcessor;
 import com.bezirk.sadl.UhuSadlManager;
 
-
-import java.net.InetAddress;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.InetAddress;
 
 /**
  * vimal : Uhu Communication manager for zyre - jni
  * this extends zyre specific comms all the queue, sockets, receiver threads etc etc
- *
- * */
+ */
 
 public class ZyreCommsManager extends CommsProcessor {
 
@@ -28,8 +24,7 @@ public class ZyreCommsManager extends CommsProcessor {
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             UhuSadlManager sadl, PipeManager pipe)
-    {
+                             UhuSadlManager sadl, PipeManager pipe) {
         /*init zyre and internals of comms */
         if (comms == null) {
 
@@ -37,7 +32,7 @@ public class ZyreCommsManager extends CommsProcessor {
 
             comms.initZyre();
 
-            return super.initComms(commsProperties,addr,sadl,pipe);
+            return super.initComms(commsProperties, addr, sadl, pipe);
         }
 
         return false;
@@ -46,7 +41,7 @@ public class ZyreCommsManager extends CommsProcessor {
     @Override
     public boolean startComms() {
 
-        if(comms != null) {
+        if (comms != null) {
 
             comms.startZyre();
 
@@ -67,6 +62,7 @@ public class ZyreCommsManager extends CommsProcessor {
 
         return super.stopComms();
     }
+
     @Override
     public boolean closeComms() {
         if (comms != null) {
@@ -77,29 +73,31 @@ public class ZyreCommsManager extends CommsProcessor {
     }
 
 
-
-    /** send to all : Multicast message */
+    /**
+     * send to all : Multicast message
+     */
     @Override
-    public boolean sendToAll(byte[] msg, boolean isEvent){
+    public boolean sendToAll(byte[] msg, boolean isEvent) {
 
         return comms.sendToAllZyre(msg, isEvent);
     }
 
-    /** send to one : Unicast message
+    /**
+     * send to one : Unicast message
      * nodeId = device id
-     * */
+     */
     @Override
-    public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent){
+    public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent) {
         return comms.sendToAllZyre(msg, isEvent);
 
     }
-    
+
     /**
      * Create a new Zyre context, required during wifi reset.
      */
     @Override
     public boolean restartComms() {
-    	return false;
+        return false;
     }
 
 }

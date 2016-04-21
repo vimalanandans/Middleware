@@ -15,7 +15,7 @@ public class CommsFactory {
 
     CommsFeature activeComms = CommsFeature.COMMS_UHU;
 
-    public IUhuComms getComms(){
+    public IUhuComms getComms() {
 
         IUhuComms uhuComms = null;
 
@@ -23,11 +23,10 @@ public class CommsFactory {
 
         log.info("selected comms -> " + activeComms.name());
 
-        switch(activeComms)
-        {
+        switch (activeComms) {
             default:
             case COMMS_UHU:
-                uhuComms =  new UhuCommsManager();
+                uhuComms = new UhuCommsManager();
                 log.debug("udp comms is created. ");
                 break;
             case COMMS_ZYRE_JNI:
@@ -44,27 +43,22 @@ public class CommsFactory {
 
         return uhuComms;
     }
+
     /**
      * returns the comms configurations as commsFeature
-     * */
-    public CommsFeature getActiveComms()
-    {
+     */
+    public CommsFeature getActiveComms() {
 
         // if multiples are true, then first one is considered for selection
-        if(CommsFeature.COMMS_UHU.isActive())
-        {
+        if (CommsFeature.COMMS_UHU.isActive()) {
             activeComms = CommsFeature.COMMS_UHU;
-        }
-        else if(CommsFeature.COMMS_ZYRE.isActive()){
+        } else if (CommsFeature.COMMS_ZYRE.isActive()) {
             activeComms = CommsFeature.COMMS_ZYRE;
-        }
-        else if (CommsFeature.COMMS_ZYRE_JNI.isActive()){
+        } else if (CommsFeature.COMMS_ZYRE_JNI.isActive()) {
             activeComms = CommsFeature.COMMS_ZYRE_JNI;
-        }
-        else if (CommsFeature.COMMS_JYRE.isActive()){
+        } else if (CommsFeature.COMMS_JYRE.isActive()) {
             activeComms = CommsFeature.COMMS_JYRE;
-        }
-        else{ // default
+        } else { // default
             activeComms = CommsFeature.COMMS_UHU;
         }
 

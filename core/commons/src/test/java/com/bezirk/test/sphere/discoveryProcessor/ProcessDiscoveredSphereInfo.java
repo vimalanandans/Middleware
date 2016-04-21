@@ -1,11 +1,13 @@
 package com.bezirk.test.sphere.discoveryProcessor;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.persistence.SphereRegistry;
+import com.bezirk.sphere.impl.DiscoveryProcessor;
+import com.bezirk.sphere.impl.SphereRegistryWrapper;
+import com.bezirk.test.sphere.testUtilities.MockSetUpUtility;
+import com.bezirk.test.sphere.testUtilities.SphereTestUtility;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -13,22 +15,18 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.test.sphere.testUtilities.MockSetUpUtility;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.impl.DiscoveryProcessor;
-import com.bezirk.sphere.impl.SphereRegistryWrapper;
-import com.bezirk.test.sphere.testUtilities.SphereTestUtility;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This testcase verifies the processing of discovered sphere info. Sphere
  * Registry is queried to verify the discovered services are added to registry.
- * 
- * 
- * @author AJC6KOR
  *
+ * @author AJC6KOR
  */
 public class ProcessDiscoveredSphereInfo {
 
@@ -69,9 +67,9 @@ public class ProcessDiscoveredSphereInfo {
     @Test(expected = NullPointerException.class)
     public void testNullSphereInfoSet() {
         String sphereId = sphereTestUtility.generateOwnerCombo();
-        discoveryProcessor.processDiscoveredSphereInfo(null, sphereId);        
+        discoveryProcessor.processDiscoveredSphereInfo(null, sphereId);
     }
-    
+
     /**
      * Test {@link DiscoveryProcessor#processDiscoveredSphereInfo(Set, String)}
      * Set has valid device(s) with service(s) SphereId is valid

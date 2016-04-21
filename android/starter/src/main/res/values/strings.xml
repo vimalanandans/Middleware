@@ -25,14 +25,14 @@
     <string  name="createSphere">Create Sphere</string>
     <string  name="scanSphereQR">Scan Sphere QR</string>
     --><!--<string  name="displayDeviceQR">Display Device QR</string>-->
-   <!-- <string  name="addDeviceSuggested">Add Device</string>
-    <string  name="exploreAddLocal">Explore/Add Local Services</string>
-    <string  name="refreshSphere">Refresh Sphere\'s</string>
+    <!-- <string  name="addDeviceSuggested">Add Device</string>
+     <string  name="exploreAddLocal">Explore/Add Local Services</string>
+     <string  name="refreshSphere">Refresh Sphere\'s</string>
 
-    <string  name="actionBarTitle"> \'s Spheres</string>
-    <string  name="changeProfile">Profile</string>
+     <string  name="actionBarTitle"> \'s Spheres</string>
+     <string  name="changeProfile">Profile</string>
 
-    --><!--<string  name="addDevice">Add Device</string>--><!--
+     --><!--<string  name="addDevice">Add Device</string>--><!--
     <string  name="showSphereQR">Show Sphere QR</string>
 
     <string  name="printQR">Print QR Code</string>

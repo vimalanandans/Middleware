@@ -6,7 +6,7 @@
         <item name="Lobby">Lobby</item>
         <item name="Clemente">Clemente</item>
 
-        </string-array>
+    </string-array>
     <string-array name="location_settings_values">
         <item name="Lab">Office/Lab/null</item>
         <item name="Warhol">Office/Warhol/null</item>

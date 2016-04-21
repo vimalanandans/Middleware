@@ -4,6 +4,15 @@
  */
 package com.bezirk.logging.ui;
 
+import com.bezirk.commons.UhuCompManager;
+import com.bezirk.comms.IUhuComms;
+import com.bezirk.logging.LogServiceActivatorDeactivator;
+import com.bezirk.remotelogging.messages.UhuLoggingMessage;
+import com.bezirk.remotelogging.util.Util;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -29,22 +38,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.commons.UhuCompManager;
-import com.bezirk.comms.IUhuComms;
-import com.bezirk.logging.LogServiceActivatorDeactivator;
-import com.bezirk.remotelogging.messages.UhuLoggingMessage;
-import com.bezirk.remotelogging.util.Util;
-
 /**
  * Class that shows the Log Details of the connected logging clients.
  */
 public class UhuLogDetailsGUI extends JFrame {
     private static final long serialVersionUID = 1210684068159783241L;
-
-    transient IUhuComms comms;
     /**
      * Common logger for this class
      */
@@ -54,6 +52,7 @@ public class UhuLogDetailsGUI extends JFrame {
      * Value to be displayed for the Recipient during MULTICAST
      */
     private static final String RECIPIENT_MULTICAST_VALUE = "MULTI-CAST";
+    private static final int SIZE_OF_LOG_MSG_MAP = 128;
     /*
      * GUI Components
      */
@@ -63,19 +62,8 @@ public class UhuLogDetailsGUI extends JFrame {
     private final JLabel selectedSphereLbl = new JLabel();
     private final JButton clearLogBtn = new JButton();
     private final JFrame sphereSelectFrame, currentFrame;
-    private DefaultTableModel model = new DefaultTableModel(0, 0) {
-        private static final long serialVersionUID = 3243397041333717170L;
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-    };
-    private final JTable logTbl = new JTable(model);
-
     private final String[] selectedSpheres;
     private final boolean isDeveloperModeEnabled;
-
-    private static final int SIZE_OF_LOG_MSG_MAP = 128;
     /**
      * Linked HashMap that is used to store the log messages and update them.
      */
@@ -84,8 +72,8 @@ public class UhuLogDetailsGUI extends JFrame {
     /**
      * To print the timestamp of the recieved msg
      */
-    private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS",Locale.GERMANY);
-
+    private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS", Locale.GERMANY);
+    transient IUhuComms comms;
     private final transient WindowAdapter closeButtonListener = new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent arg0) {
@@ -93,7 +81,15 @@ public class UhuLogDetailsGUI extends JFrame {
             super.windowClosing(arg0);
         }
     };
+    private DefaultTableModel model = new DefaultTableModel(0, 0) {
+        private static final long serialVersionUID = 3243397041333717170L;
 
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    private final JTable logTbl = new JTable(model);
     private final transient ActionListener logClearButtonListener = new ActionListener() {
 
         @Override
@@ -106,12 +102,11 @@ public class UhuLogDetailsGUI extends JFrame {
 
     /**
      * start the loggingService Processors and init the GUI
-     * 
-     * @param loggingService
-     *            loggingService that will be listening at a particular socket
+     *
+     * @param loggingService loggingService that will be listening at a particular socket
      */
     public UhuLogDetailsGUI(IUhuComms comms, String[] spheres, JFrame frame,
-            boolean isDeveloperModeEnabled) {
+                            boolean isDeveloperModeEnabled) {
         this.sphereSelectFrame = frame;
         selectedSpheres = spheres.clone();
         this.isDeveloperModeEnabled = isDeveloperModeEnabled;
@@ -119,7 +114,7 @@ public class UhuLogDetailsGUI extends JFrame {
         try {
             jbInit();
         } catch (Exception e1) {
-            LOGGER.debug("Error in Log Deatails GUI.",e1);
+            LOGGER.debug("Error in Log Deatails GUI.", e1);
         }
 
         sendLoggingServiceMsg(true);
@@ -129,7 +124,7 @@ public class UhuLogDetailsGUI extends JFrame {
 
     /**
      * init the GUI
-     * 
+     *
      * @throws Exception
      */
     private void jbInit() throws Exception {
@@ -221,27 +216,27 @@ public class UhuLogDetailsGUI extends JFrame {
 
         if (!isDeveloperModeEnabled
                 && uhuLogMessage.typeOfMessage
-                        .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE
-                                .name())
+                .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE
+                        .name())
                 || uhuLogMessage.typeOfMessage
-                        .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND
-                                .name())) {
+                .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND
+                        .name())) {
             return;
         }
 
-       final StringBuilder tempMapKey = new StringBuilder();
+        final StringBuilder tempMapKey = new StringBuilder();
         tempMapKey.append(uhuLogMessage.uniqueMsgId).append(':').append(uhuLogMessage.sphereName);
 
         if (checkEntry(tempMapKey.toString())) {
             try {
-                model.addRow(new Object[] {
+                model.addRow(new Object[]{
                         getSphereNameFromSphereId(uhuLogMessage.sphereName),
                         sdf.format(Long.valueOf(uhuLogMessage.timeStamp)),
                         uhuLogMessage.sender,
                         getDeviceNameFromDeviceId(uhuLogMessage.recipient),
-                        uhuLogMessage.topic, 0 });
+                        uhuLogMessage.topic, 0});
             } catch (Exception e) {
-                LOGGER.error("Error in updating the table",e);
+                LOGGER.error("Error in updating the table", e);
             }
         } else {
             int tempValue = (int) model.getValueAt(
@@ -264,6 +259,7 @@ public class UhuLogDetailsGUI extends JFrame {
 
     /**
      * Returns the DeviceName associated with the deviceId
+     *
      * @param deviceId Device Id whose name is to be fetched
      * @return DeviceName if exists, null otherwise
      */
@@ -279,6 +275,7 @@ public class UhuLogDetailsGUI extends JFrame {
 
     /**
      * Gets the Sphere name from the SPhere UI if available, "Un-defined" if not available.
+     *
      * @param sphereId SPhereId of the sphere
      * @return Sphere Name associated with the sphere Id.
      */
@@ -288,7 +285,7 @@ public class UhuLogDetailsGUI extends JFrame {
             tempSphereName.append(UhuCompManager.getSphereUI()
                     .getSphere(sphereId).getSphereName());
         } catch (NullPointerException ne) {
-            LOGGER.error("Error in fetching sphereName from sphere UI",ne);
+            LOGGER.error("Error in fetching sphereName from sphere UI", ne);
             tempSphereName.append("Un-defined");
         }
         return tempSphereName.toString();

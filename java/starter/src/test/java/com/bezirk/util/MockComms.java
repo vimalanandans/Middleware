@@ -1,10 +1,6 @@
 package com.bezirk.util;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-
 import com.bezirk.comms.CommsProperties;
-
 import com.bezirk.comms.ICommsNotification;
 import com.bezirk.comms.ICtrlMsgReceiver;
 import com.bezirk.comms.IUhuComms;
@@ -19,133 +15,136 @@ import com.bezirk.sadl.UhuSadlManager;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
+import java.net.InetAddress;
+import java.util.ArrayList;
+
 public class MockComms implements IUhuComms {
 
-	private ArrayList<ControlLedger> ctrlList;
-	
-	private ArrayList<EventLedger> eventList;
-	
-	private ArrayList<StreamRequest> streamList;
+    private ArrayList<ControlLedger> ctrlList;
 
-	public ArrayList<ControlLedger> getCtrlList() {
-		return ctrlList;
-	}
+    private ArrayList<EventLedger> eventList;
 
-	public void setCtrlList(ArrayList<ControlLedger> ctrlList) {
-		this.ctrlList = ctrlList;
-	}
+    private ArrayList<StreamRequest> streamList;
 
-	public ArrayList<EventLedger> getEventList() {
-		return eventList;
-	}
+    public ArrayList<ControlLedger> getCtrlList() {
+        return ctrlList;
+    }
 
-	public void setEventList(ArrayList<EventLedger> eventList) {
-		this.eventList = eventList;
-	}
+    public void setCtrlList(ArrayList<ControlLedger> ctrlList) {
+        this.ctrlList = ctrlList;
+    }
 
-	public ArrayList<StreamRequest> getStreamList() {
-		return streamList;
-	}
+    public ArrayList<EventLedger> getEventList() {
+        return eventList;
+    }
 
-	public void setStreamList(ArrayList<StreamRequest> streamList) {
-		this.streamList = streamList;
-	}
+    public void setEventList(ArrayList<EventLedger> eventList) {
+        this.eventList = eventList;
+    }
 
-	@Override
-	public boolean startComms() {
-		ctrlList = new ArrayList<>();
-		eventList = new ArrayList<>();
-		streamList = new ArrayList<>();
-		return true;
-	}
+    public ArrayList<StreamRequest> getStreamList() {
+        return streamList;
+    }
 
-	@Override
-	public boolean stopComms() {
-		// TODO Auto-generated method stub
-		return true;
-	}
+    public void setStreamList(ArrayList<StreamRequest> streamList) {
+        this.streamList = streamList;
+    }
 
-	@Override
-	public boolean closeComms() {
-		// TODO Auto-generated method stub
-		return true;
-	}
+    @Override
+    public boolean startComms() {
+        ctrlList = new ArrayList<>();
+        eventList = new ArrayList<>();
+        streamList = new ArrayList<>();
+        return true;
+    }
 
-	@Override
-	public boolean sendMessage(Ledger message) {
+    @Override
+    public boolean stopComms() {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
-		if (message instanceof ControlLedger) {
+    @Override
+    public boolean closeComms() {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
-			ControlLedger ctrlLedger = (ControlLedger) message;
-			ControlMessage ledgerMessage = ctrlLedger.getMessage();
+    @Override
+    public boolean sendMessage(Ledger message) {
 
-			if (ledgerMessage instanceof StreamRequest) {
-				StreamRequest streamMessage = (StreamRequest) ledgerMessage;
-				streamList.add(streamMessage);
-				return true;
-			} else {
+        if (message instanceof ControlLedger) {
 
-				ctrlList.add(ctrlLedger);
-				return true;
-			}
-		} else if (message instanceof EventLedger) {
-			eventList.add((EventLedger) message);
-			return true;
-		}
-		return false;
-	}
+            ControlLedger ctrlLedger = (ControlLedger) message;
+            ControlMessage ledgerMessage = ctrlLedger.getMessage();
 
-	@Override
-	public boolean sendStream(String uniqueKey) {
-		// TODO Auto-generated method stub
-		return true;
-	}
+            if (ledgerMessage instanceof StreamRequest) {
+                StreamRequest streamMessage = (StreamRequest) ledgerMessage;
+                streamList.add(streamMessage);
+                return true;
+            } else {
 
-	@Override
-	public boolean registerStreamBook(String key, StreamRecord sRecord) {
-		// TODO Auto-generated method stub
-		return true;
-	}
+                ctrlList.add(ctrlLedger);
+                return true;
+            }
+        } else if (message instanceof EventLedger) {
+            eventList.add((EventLedger) message);
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public boolean registerNotification(
-			ICommsNotification errNotificationCallback) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean sendStream(String uniqueKey) {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
-	@Override
-	public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-			UhuSadlManager sadl, PipeManager pipe) {
-		// TODO Auto-generated method stub
-		return true;
-	}
+    @Override
+    public boolean registerStreamBook(String key, StreamRecord sRecord) {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
-	@Override
-	public boolean registerControlMessageReceiver(Discriminator id,
-			ICtrlMsgReceiver receiver) {
-		// TODO Auto-generated method stub
-		return true;
-	}
+    @Override
+    public boolean registerNotification(
+            ICommsNotification errNotificationCallback) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public void setSphereForSadl(IUhuSphereForSadl uhuSphere) {
-		// TODO Auto-generated method stub
+    @Override
+    public boolean initComms(CommsProperties commsProperties, InetAddress addr,
+                             UhuSadlManager sadl, PipeManager pipe) {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
-	}
+    @Override
+    public boolean registerControlMessageReceiver(Discriminator id,
+                                                  ICtrlMsgReceiver receiver) {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
-	public void clearQueues() {
+    @Override
+    public void setSphereForSadl(IUhuSphereForSadl uhuSphere) {
+        // TODO Auto-generated method stub
 
-		ctrlList.clear();
-		eventList.clear();
-		streamList.clear();
+    }
 
-	}
-	
-	@Override
-	public boolean restartComms() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public void clearQueues() {
+
+        ctrlList.clear();
+        eventList.clear();
+        streamList.clear();
+
+    }
+
+    @Override
+    public boolean restartComms() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
 }

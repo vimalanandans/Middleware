@@ -8,7 +8,7 @@ package com.bezirk.logging.ui;
  * GUI labels used in the @link(SphereSelectGUI).
  */
 final class LoggingGUILabels {
-    
+
     static final String LABEL_SETTINGS = "Settings";
 
     static final String LABEL_ABOUT_US = "About Us";
@@ -51,8 +51,8 @@ final class LoggingGUILabels {
     static final String LABEL_TOPIC = "Topic";
 
     static final String LABEL_NO_OF_RECEIVERS = "# - Receivers";
-    
-    private LoggingGUILabels(){
+
+    private LoggingGUILabels() {
         /* Utility Class. All fields are static. Adding private constructor to suppress PMD warnings.*/
     }
 

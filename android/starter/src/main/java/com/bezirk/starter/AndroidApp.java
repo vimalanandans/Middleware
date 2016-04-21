@@ -21,12 +21,9 @@ import org.slf4j.LoggerFactory;
 public class AndroidApp implements IUhuApp {
 
     private static final Logger log = LoggerFactory.getLogger(AndroidApp.class);
-
-    private Context context;
-
-    private final IUhuPipeAPI pipeAPI;
-
     private static final String COMPONENT_NAME = "com.bosch.upa.uhu.controlui";
+    private final IUhuPipeAPI pipeAPI;
+    private Context context;
 
     public AndroidApp(Context context, IUhuPipeAPI pipeApi) {
         this.context = context;
@@ -54,7 +51,7 @@ public class AndroidApp implements IUhuApp {
         // TODO remove the above and send the below serialized object to UI
         //Only to test
         String data = new Gson().toJson(pipeRequest);
-        log.info("pipe request : serialize > "+data );
+        log.info("pipe request : serialize > " + data);
 
         context.startActivity(intent);
 

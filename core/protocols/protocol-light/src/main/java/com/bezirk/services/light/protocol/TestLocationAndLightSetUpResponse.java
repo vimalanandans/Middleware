@@ -1,38 +1,38 @@
 package com.bezirk.services.light.protocol;
 
+import com.bezirk.middleware.messages.Event;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
-import com.bezirk.middleware.messages.Event;
+public class TestLocationAndLightSetUpResponse extends Event {
 
-public class TestLocationAndLightSetUpResponse extends Event{
-	
-	public static final String TOPIC = TestLocationAndLightSetUpResponse.class.getSimpleName();
-	
-	private Map<String, HashSet<String>> locToIds = new HashMap<String, HashSet<String>>();
-	private HashMap<String, LinkedHashSet<String>> locToUsers = new HashMap<String, LinkedHashSet<String>>();
+    public static final String TOPIC = TestLocationAndLightSetUpResponse.class.getSimpleName();
 
-	public TestLocationAndLightSetUpResponse() {
-		super(Stripe.REPLY, TOPIC);
-		// TODO Auto-generated constructor stub
-	}
+    private Map<String, HashSet<String>> locToIds = new HashMap<String, HashSet<String>>();
+    private HashMap<String, LinkedHashSet<String>> locToUsers = new HashMap<String, LinkedHashSet<String>>();
 
-	public Map<String, HashSet<String>> getLocToIds() {
-		return locToIds;
-	}
+    public TestLocationAndLightSetUpResponse() {
+        super(Stripe.REPLY, TOPIC);
+        // TODO Auto-generated constructor stub
+    }
 
-	public void setLocToIds(Map<String, HashSet<String>> locToIds) {
-		this.locToIds = locToIds;
-	}
+    public Map<String, HashSet<String>> getLocToIds() {
+        return locToIds;
+    }
 
-	public HashMap<String, LinkedHashSet<String>> getLocToUsers() {
-		return locToUsers;
-	}
+    public void setLocToIds(Map<String, HashSet<String>> locToIds) {
+        this.locToIds = locToIds;
+    }
 
-	public void setLocToUsers(HashMap<String, LinkedHashSet<String>> locToUsers) {
-		this.locToUsers = locToUsers;
-	}
+    public HashMap<String, LinkedHashSet<String>> getLocToUsers() {
+        return locToUsers;
+    }
+
+    public void setLocToUsers(HashMap<String, LinkedHashSet<String>> locToUsers) {
+        this.locToUsers = locToUsers;
+    }
 
 }

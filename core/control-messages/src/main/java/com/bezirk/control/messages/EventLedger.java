@@ -15,20 +15,19 @@ public class EventLedger extends Ledger {
     private byte[] encryptedHeader;
     private byte[] checksum;
     private byte[] dataOnWire;
-	private long lastSent;
-    private Integer numOfSends=0;
+    private long lastSent;
+    private Integer numOfSends = 0;
     private Boolean isLocal = true;
     private com.bezirk.control.messages.Header header;
     //	private Payload payload;
     private Boolean isMulticast = false;
-    
-    
 
-    public EventLedger(){
+
+    public EventLedger() {
         header = new com.bezirk.control.messages.Header();
     }
+
     /**
-     *
      * @return Json(string) which is the serializedMessage
      */
     public String getSerializedMessage() {
@@ -36,7 +35,6 @@ public class EventLedger extends Ledger {
     }
 
     /**
-     *
      * @param serializedMessage The serializedMessage that is returned by invoking UhuMessage.serialize()
      */
     public void setSerializedMessage(String serializedMessage) {
@@ -44,38 +42,36 @@ public class EventLedger extends Ledger {
     }
 
     /**
-     *
      * @return The message encrypted by the sphere
      */
     public byte[] getEncryptedMessage() {
-        return encryptedMessage==null ?null:encryptedMessage.clone();
+        return encryptedMessage == null ? null : encryptedMessage.clone();
     }
 
     /**
      * @param encryptedMessage The message encrypted by the sphere
-     *
      */
     public void setEncryptedMessage(byte[] encryptedMessage) {
-        this.encryptedMessage = encryptedMessage==null ?null:encryptedMessage.clone();
+        this.encryptedMessage = encryptedMessage == null ? null : encryptedMessage.clone();
     }
 
     /**
-     *
      * @return the encryptedheader
      */
     public byte[] getEncryptedHeader() {
-        return encryptedHeader==null ?null:encryptedHeader.clone();
+        return encryptedHeader == null ? null : encryptedHeader.clone();
     }
 
     /**
-     *
      * @param encryptedHeader the encryptedHeader
      */
     public void setEncryptedHeader(byte[] encryptedHeader) {
-        this.encryptedHeader = encryptedHeader==null ?null:encryptedHeader.clone();
+        this.encryptedHeader = encryptedHeader == null ? null : encryptedHeader.clone();
     }
+
     /**
      * This method is used by the SenderThread to check for time between retransmits.	 *
+     *
      * @return the timestamp in milliseconds (as Long) which represents the time at which the message was sent last
      */
     public long getLastSent() {
@@ -83,7 +79,6 @@ public class EventLedger extends Ledger {
     }
 
     /**
-     *
      * @param lastSent the timestamp in milliseconds which is set every time a message is sent. The lastSent timestamp is overwritten which each send on retransmit
      */
     public void setLastSent(long lastSent) {
@@ -91,7 +86,6 @@ public class EventLedger extends Ledger {
     }
 
     /**
-     *
      * @return The number of times a message is sent
      */
     public Integer getNumOfSends() {
@@ -99,32 +93,30 @@ public class EventLedger extends Ledger {
     }
 
     /**
-     *
      * @param numOfSends This is incremented every time the message is sent
      */
     public void setNumOfSends(Integer numOfSends) {
         this.numOfSends = numOfSends;
     }
 
-  
-
 
     public Boolean getIsLocal() {
-		return isLocal;
-	}
-	public void setIsLocal(Boolean isLocal) {
-		this.isLocal = isLocal;
-	}
-	/**
-     *
+        return isLocal;
+    }
+
+    public void setIsLocal(Boolean isLocal) {
+        this.isLocal = isLocal;
+    }
+
+    /**
      * @return The header of the message on the wire
      * @see com.bezirk.control.messages.Header
      */
     public com.bezirk.control.messages.Header getHeader() {
         return header;
     }
+
     /**
-     *
      * @param header The header of the message on the wire
      * @see com.bezirk.control.messages.Header
      */
@@ -133,20 +125,18 @@ public class EventLedger extends Ledger {
     }
 
     /**
-     * 
      * @return the data that is to go on the wire
      */
     public byte[] getDataOnWire() {
-		return dataOnWire==null ?null:dataOnWire.clone();
-	}
-    
+        return dataOnWire == null ? null : dataOnWire.clone();
+    }
+
     /**
-     * 
      * @param dataOnWire this is only set when the message is sent the first time
      */
-	public void setDataOnWire(byte[] dataOnWire) {
-		this.dataOnWire = dataOnWire==null ?null:dataOnWire.clone();
-	}
+    public void setDataOnWire(byte[] dataOnWire) {
+        this.dataOnWire = dataOnWire == null ? null : dataOnWire.clone();
+    }
 //	/**
 //	 *
 //	 * @return the payload that goes on the wire
@@ -163,15 +153,15 @@ public class EventLedger extends Ledger {
 //	public void setPayload(Payload payload) {
 //		this.payload = payload;
 //	}
+
     /**
-     *
      * @return true is message is a multicast
      */
     public Boolean getIsMulticast() {
         return isMulticast;
     }
+
     /**
-     *
      * @param isMulticast true is message is a multicast
      */
     public void setIsMulticast(Boolean isMulticast) {
@@ -199,12 +189,14 @@ public class EventLedger extends Ledger {
     public void setSerializedHeader(String serializedHeader) {
         this.serializedHeader = serializedHeader;
     }
-	public byte[] getChecksum() {
-		return checksum==null ?null:checksum.clone();
-	}
-	public void setChecksum(byte[] checksum) {
-		this.checksum = checksum==null ?null:checksum.clone();
-	}
-    
-    
+
+    public byte[] getChecksum() {
+        return checksum == null ? null : checksum.clone();
+    }
+
+    public void setChecksum(byte[] checksum) {
+        this.checksum = checksum == null ? null : checksum.clone();
+    }
+
+
 }

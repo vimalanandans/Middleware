@@ -16,25 +16,20 @@ import java.util.Map;
  */
 public class UhuPreferences {
 
-    private SharedPreferences preferences;
-
     public static final String DEVICE_ID_TAG_PREFERENCE = "DeviceId";
-
     public static final String DEVICE_TYPE_TAG_PREFERENCE = "DeviceType";
-
     public static final String DEVICE_NAME_TAG_PREFERENCE = "DeviceName";
-
     public static final String DEFAULT_SPHERE_NAME_TAG_PREFERENCE = "DefaultSphereName";
-
     private final Logger log = LoggerFactory.getLogger(UhuPreferences.class);
+    private SharedPreferences preferences;
 
     public UhuPreferences(Context context) {
         if (context != null) {
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            Map<String,?> keys = preferences.getAll();
+            Map<String, ?> keys = preferences.getAll();
 
-            for(Map.Entry<String,?> entry : keys.entrySet()){
-                log.debug("map values "+ entry.getKey() + ": " +
+            for (Map.Entry<String, ?> entry : keys.entrySet()) {
+                log.debug("map values " + entry.getKey() + ": " +
                         entry.getValue().toString());
             }
         }

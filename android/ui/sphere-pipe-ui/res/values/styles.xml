@@ -2,13 +2,15 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
+
         -->
     </style>
 
@@ -26,8 +28,8 @@
         <item name="android:textColor">#000000</item>
         <item name="android:background">#00000000</item>
     </style>
-    
-        <style name="ListItemMedium">
+
+    <style name="ListItemMedium">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">0dp</item>
@@ -36,8 +38,8 @@
         <item name="android:textColor">#999999</item>
         <item name="android:background">#00000000</item>
     </style>
-    
-   <style name="ListItemMediumHint">
+
+    <style name="ListItemMediumHint">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">0dp</item>
@@ -58,6 +60,7 @@
     <style name="Heading">
         <item name="android:textColor">#000000</item>
     </style>
+
     <style name="Subheading">
         <item name="android:textColor">#808080</item>
     </style>

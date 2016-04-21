@@ -9,27 +9,27 @@ import com.bezirk.middleware.messages.ProtocolRole;
  * Role of a consumer service interacting with a parametric UI
  */
 public class RoleConsumeUI extends ProtocolRole {
-	private static final String evts[] =
-		{ReplyUIchoices.TOPIC,
-		 ReplyUIvalues.TOPIC };
+    private static final String evts[] =
+            {ReplyUIchoices.TOPIC,
+                    ReplyUIvalues.TOPIC};
 
-	@Override
-	public String getProtocolName() {
-		return RoleConsumeUI.class.getSimpleName();
-	}
+    @Override
+    public String getProtocolName() {
+        return RoleConsumeUI.class.getSimpleName();
+    }
 
-	@Override
-	public String getDescription() {
-		return "Receiving user input on values and choices";
-	}
+    @Override
+    public String getDescription() {
+        return "Receiving user input on values and choices";
+    }
 
-	@Override
-	public String[] getEventTopics() {
-		return evts==null ?null:evts.clone();
-	}
+    @Override
+    public String[] getEventTopics() {
+        return evts == null ? null : evts.clone();
+    }
 
-	@Override
-	public String[] getStreamTopics() {
-		return null;
-	}
+    @Override
+    public String[] getStreamTopics() {
+        return null;
+    }
 }

@@ -1,139 +1,54 @@
 package com.bezirk.streaming;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.bezirk.comms.ICtrlMsgReceiver;
-import com.bezirk.comms.IStreaming;
-import com.bezirk.comms.MessageQueue;
-import com.bezirk.comms.UhuComms;
-import com.bezirk.sadl.ISadlEventReceiver;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
-import com.bezirk.streaming.rtc.ISignaling;
-import com.bezirk.streaming.rtc.SignalingFactory;
 import com.bezirk.comms.IPortFactory;
+import com.bezirk.comms.IStreaming;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.MessageDispatcher;
-import com.bezirk.streaming.port.PortFactory;
-import com.bezirk.streaming.store.StreamStore;
-import com.bezirk.streaming.threads.StreamQueueProcessor;
+import com.bezirk.comms.MessageQueue;
+import com.bezirk.comms.UhuComms;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.control.messages.streaming.StreamResponse;
 import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
+import com.bezirk.sadl.ISadlEventReceiver;
+import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
+import com.bezirk.streaming.port.PortFactory;
+import com.bezirk.streaming.rtc.ISignaling;
+import com.bezirk.streaming.rtc.SignalingFactory;
+import com.bezirk.streaming.store.StreamStore;
+import com.bezirk.streaming.threads.StreamQueueProcessor;
 import com.bezirk.util.UhuValidatorUtility;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author ajc6kor
- * 
+ *         <p/>
  *         UhuStreamManager manages all queues,sockets and threads related to
  *         streaming. It also includes the StreamControlReceiver which process
  *         the stream request and stream responses.
- * 
  */
 public class UhuStreamManager implements IStreaming {
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(UhuStreamManager.class);
-
-    private IUhuSphereForSadl sphereForSadl = null;
-
-    private MessageQueue streamingMessageQueue = null;
-
-    private StreamQueueProcessor streamQueueProcessor = null;
-
-    private Thread sStreamingThread = null;
-
-    private UhuStreamHandler uhuStreamHandler = null;
-
-    private IPortFactory portFactory;
-
-    private MessageDispatcher msgDispatcher;
-
     private final StreamCtrlReceiver ctrlReceiver = new StreamCtrlReceiver();
-
+    private IUhuSphereForSadl sphereForSadl = null;
+    private MessageQueue streamingMessageQueue = null;
+    private StreamQueueProcessor streamQueueProcessor = null;
+    private Thread sStreamingThread = null;
+    private UhuStreamHandler uhuStreamHandler = null;
+    private IPortFactory portFactory;
+    private MessageDispatcher msgDispatcher;
     private IUhuComms comms = null;
 
     private StreamStore streamStore = null;
 
     private ISadlEventReceiver sadlReceiver = null;
-
-    class StreamCtrlReceiver implements ICtrlMsgReceiver {
-
-        @Override
-        public boolean processControlMessage(ControlMessage.Discriminator id,
-                String serializedMsg) {
-
-            switch (id) {
-            case StreamRequest:
-                processStreamRequest(serializedMsg);
-                break;
-            case StreamResponse:
-                processStreamResponse(serializedMsg);
-                break;
-            case RTCControlMessage:
-                LOGGER.debug("Real Time Stream Message Received");
-                processRTCMessage(serializedMsg);
-                break;
-            default:
-                LOGGER.error("Unknown Stream message type.");
-                break;
-            }
-
-            return true;
-        }
-
-        private void processStreamResponse(String serializedMsg) {
-            LOGGER.debug("Stream Response Received");
-            try {
-
-                final StreamResponse streamResponse = ControlMessage
-                        .deserialize(serializedMsg, StreamResponse.class);
-                uhuStreamHandler.handleStreamResponse(streamResponse,
-                        streamingMessageQueue, streamStore);
-
-            } catch (Exception e) {
-                LOGGER.error(
-                        "Something Wrong in processing Stream Request, Removing Message from Queue",
-                        e);
-            }
-        }
-
-        private void processStreamRequest(String serializedMsg) {
-            LOGGER.debug("Stream Request Received");
-            try {
-
-                final StreamRequest streamRequest = ControlMessage.deserialize(
-                        serializedMsg, StreamRequest.class);
-                uhuStreamHandler.handleStreamRequest(streamRequest,
-                        comms, portFactory,
-                        streamStore, sadlReceiver,sphereForSadl);
-
-            } catch (Exception e) {
-                LOGGER.error(
-                        "Something Wrong in processing Stream Request, Removing Message from Queue",
-                        e);
-            }
-        }
-
-        private void processRTCMessage(String serializedMsg) {
-            ISignaling signaling = null;
-            if (SignalingFactory.getSignalingInstance() instanceof ISignaling) {
-                signaling = (ISignaling) SignalingFactory
-                        .getSignalingInstance();
-            }
-            if (signaling == null) {
-
-                LOGGER.error("Feature not enabled.");
-            } else {
-                final RTCControlMessage rtcCtrlMsg = ControlMessage
-                        .deserialize(serializedMsg, RTCControlMessage.class);
-                signaling.receiveControlMessage(rtcCtrlMsg);
-            }
-        }
-    }
 
     public UhuStreamManager(IUhuComms comms,
                             MessageDispatcher msgDispatcher, ISadlEventReceiver sadlReceiver) {
@@ -154,7 +69,7 @@ public class UhuStreamManager implements IStreaming {
 
     /**
      * This is the message queue for stream requests on the receiver side
-     * 
+     *
      * @return MessageQueue
      */
     public MessageQueue getStreamingMessageQueue() {
@@ -163,14 +78,16 @@ public class UhuStreamManager implements IStreaming {
 
     /**
      * This is the message queue for stream requests on the sender side
-     * 
+     *
      * @param streamingMessageQueue
      */
     public void setStreamingMessageQueue(MessageQueue streamingMessageQueue) {
         this.streamingMessageQueue = streamingMessageQueue;
     }
 
-    /** send the Stream ledger message */
+    /**
+     * send the Stream ledger message
+     */
     @Override
     public boolean sendStreamMessage(Ledger message) {
 
@@ -211,7 +128,6 @@ public class UhuStreamManager implements IStreaming {
 
             streamQueueProcessor = new StreamQueueProcessor(
                     streamingMessageQueue, sadlReceiver);
-
 
 
             portFactory = new PortFactory(
@@ -283,6 +199,81 @@ public class UhuStreamManager implements IStreaming {
 
         this.sphereForSadl = uhuSphere;
         this.streamQueueProcessor.setSphereForSadl(sphereForSadl);
+    }
+
+    class StreamCtrlReceiver implements ICtrlMsgReceiver {
+
+        @Override
+        public boolean processControlMessage(ControlMessage.Discriminator id,
+                                             String serializedMsg) {
+
+            switch (id) {
+                case StreamRequest:
+                    processStreamRequest(serializedMsg);
+                    break;
+                case StreamResponse:
+                    processStreamResponse(serializedMsg);
+                    break;
+                case RTCControlMessage:
+                    LOGGER.debug("Real Time Stream Message Received");
+                    processRTCMessage(serializedMsg);
+                    break;
+                default:
+                    LOGGER.error("Unknown Stream message type.");
+                    break;
+            }
+
+            return true;
+        }
+
+        private void processStreamResponse(String serializedMsg) {
+            LOGGER.debug("Stream Response Received");
+            try {
+
+                final StreamResponse streamResponse = ControlMessage
+                        .deserialize(serializedMsg, StreamResponse.class);
+                uhuStreamHandler.handleStreamResponse(streamResponse,
+                        streamingMessageQueue, streamStore);
+
+            } catch (Exception e) {
+                LOGGER.error(
+                        "Something Wrong in processing Stream Request, Removing Message from Queue",
+                        e);
+            }
+        }
+
+        private void processStreamRequest(String serializedMsg) {
+            LOGGER.debug("Stream Request Received");
+            try {
+
+                final StreamRequest streamRequest = ControlMessage.deserialize(
+                        serializedMsg, StreamRequest.class);
+                uhuStreamHandler.handleStreamRequest(streamRequest,
+                        comms, portFactory,
+                        streamStore, sadlReceiver, sphereForSadl);
+
+            } catch (Exception e) {
+                LOGGER.error(
+                        "Something Wrong in processing Stream Request, Removing Message from Queue",
+                        e);
+            }
+        }
+
+        private void processRTCMessage(String serializedMsg) {
+            ISignaling signaling = null;
+            if (SignalingFactory.getSignalingInstance() instanceof ISignaling) {
+                signaling = (ISignaling) SignalingFactory
+                        .getSignalingInstance();
+            }
+            if (signaling == null) {
+
+                LOGGER.error("Feature not enabled.");
+            } else {
+                final RTCControlMessage rtcCtrlMsg = ControlMessage
+                        .deserialize(serializedMsg, RTCControlMessage.class);
+                signaling.receiveControlMessage(rtcCtrlMsg);
+            }
+        }
     }
 
 }

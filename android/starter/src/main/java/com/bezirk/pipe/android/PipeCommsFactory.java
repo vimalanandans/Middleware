@@ -12,7 +12,7 @@ import java.io.File;
  */
 public final class PipeCommsFactory {
 
-    private PipeCommsFactory(){
+    private PipeCommsFactory() {
         //To hide the implicit public constructor.
     }
 

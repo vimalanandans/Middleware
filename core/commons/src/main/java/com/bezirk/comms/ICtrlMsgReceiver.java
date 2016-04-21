@@ -8,7 +8,7 @@ import com.bezirk.control.messages.ControlMessage;
 // Sadl, Sphere Logger,...who ever wishes to receive the message
 // registers the respective control message Discriminator type
 public interface ICtrlMsgReceiver {
-        // interface to process control message.
-        public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg);
+    // interface to process control message.
+    public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg);
 
 }

@@ -12,10 +12,10 @@ import UhuValidatorUtility;*/
 
 /**
  * FIXME: Unused module. removed it - Vimal
- * **/
+ **/
 
 /*public class SphereDiscoverySender {
-	private static final Logger log =LoggerFactory.getLogger(SphereDiscoverySender.class);
+    private static final Logger log =LoggerFactory.getLogger(SphereDiscoverySender.class);
 
 	
 	public SphereDiscoverySender(final String sphere, final int discoveryId, final long timeout, final int maxDiscovered) throws Exception{

@@ -17,30 +17,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.spheremanager.ui.SelectServiceFragment;
-import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
-import com.bezirk.spheremanager.R;
-import com.bezirk.spheremanager.ui.DeviceListFragment;
+import com.bezirk.device.UhuDeviceType;
 import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.device.UhuDeviceType;
 import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.spheremanager.R;
+import com.bezirk.spheremanager.ui.DeviceListFragment;
+import com.bezirk.spheremanager.ui.SelectServiceFragment;
+import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
 import com.bezirk.starter.MainService;
 
 import java.util.List;
 
 public class SelectServiceActivity extends FragmentActivity implements
         SelectServiceFragment.DeviceDetailCallbacks {
-	private String sphereID;
-	private String callingActivity;
-	private int deviceID;
-	static final int DEVICE_DETAIL_CODE_REQUEST = 6;
-	static final int INFORMATION_CODE_REQUEST = 14;
+    static final int DEVICE_DETAIL_CODE_REQUEST = 6;
+    static final int INFORMATION_CODE_REQUEST = 14;
     static final String TAG = SelectServiceActivity.class.getSimpleName();
+    private String sphereID;
+    private String callingActivity;
+    private int deviceID;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -49,46 +49,45 @@ public class SelectServiceActivity extends FragmentActivity implements
         view = (View) layoutInflater.inflate(
                 R.layout.activity_select_service_smartphone, null);
 
-		callingActivity = getCallingActivity().getClassName();
+        callingActivity = getCallingActivity().getClassName();
 
-		sphereID = getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
+        sphereID = getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
 
 
-		deviceID = getIntent().getIntExtra(DeviceListActivity.ARG_DEVICE_ID, 0);
+        deviceID = getIntent().getIntExtra(DeviceListActivity.ARG_DEVICE_ID, 0);
 
-		///SphereListItem sphere = (SphereListItem) DummyContent.ITEM_MAP.get(sphereID);
-        UhuSphereInfo sphereInfo  = null;
+        ///SphereListItem sphere = (SphereListItem) DummyContent.ITEM_MAP.get(sphereID);
+        UhuSphereInfo sphereInfo = null;
 
         IUhuSphereAPI api = MainService.getSphereHandle();
 
-        if(api != null) {
-            sphereInfo  = api.getSphere(sphereID);
-        }else {
+        if (api != null) {
+            sphereInfo = api.getSphere(sphereID);
+        } else {
             Log.e(TAG, "MainService is not available");
         }
 
-		//TODO Replace with real Device data
+        //TODO Replace with real Device data
         //Bob's Phone  
 
-        if(sphereInfo != null) {
+        if (sphereInfo != null) {
             UhuDeviceInfo item = sphereInfo.getDeviceList().get(deviceID);
 
             TextView device_name = (TextView) view
                     .findViewById(R.id.name_of_device);
             device_name.setText(item.getDeviceName());
 
-            if(item.getDeviceRole() == UhuDeviceInfo.UhuDeviceRole.UHU_CONTROL)
-            {
+            if (item.getDeviceRole() == UhuDeviceInfo.UhuDeviceRole.UHU_CONTROL) {
                 device_name.setTypeface(null, Typeface.BOLD);
             }
 
             TextView sphere_name = (TextView) view
                     .findViewById(R.id.sphere_of_device);
 
-            sphere_name.setText("Services in " +sphereInfo.getSphereName());
+            sphere_name.setText("Services in " + sphereInfo.getSphereName());
 
-            if(sphereInfo.isThisDeviceOwnsSphere()){
-                sphere_name.setTypeface(null,Typeface.BOLD);
+            if (sphereInfo.isThisDeviceOwnsSphere()) {
+                sphere_name.setTypeface(null, Typeface.BOLD);
             }
 
             // set icons
@@ -114,19 +113,19 @@ public class SelectServiceActivity extends FragmentActivity implements
                 imageView.setImageResource(R.drawable.ic_washingmachine);
             } else if (item.getDeviceType().startsWith("Chainsaw")) { //sorry no chainsaw now
                 imageView.setImageResource(R.drawable.ic_chainsaw);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_TV)){
+            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_TV)) {
                 imageView.setImageResource(R.drawable.ic_tv);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_COFFEE)){
+            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_COFFEE)) {
                 imageView.setImageResource(R.drawable.ic_coffee);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_HEATING)){
+            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_HEATING)) {
                 imageView.setImageResource(R.drawable.ic_heating);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_MICROWAVE)){
+            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_MICROWAVE)) {
                 imageView.setImageResource(R.drawable.ic_microwave);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_GAME)){
+            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_GAME)) {
                 imageView.setImageResource(R.drawable.ic_controller);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_CAR)){
+            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_CAR)) {
                 imageView.setImageResource(R.drawable.ic_car);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_CLOUD)){
+            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_CLOUD)) {
                 imageView.setImageResource(R.drawable.ic_cloud);
             } else {
                 // do nothing
@@ -204,67 +203,66 @@ public class SelectServiceActivity extends FragmentActivity implements
             //
             //			}
             //		});
+        } else {
+            Log.e(TAG, "Sphere id : " + sphereID + " not found in sphere list");
         }
-        else{
-            Log.e(TAG, "Sphere id : "+sphereID+" not found in sphere list");
+
+        setContentView(view);
+    }
+
+    @Override
+    public void onItemClicked() {
+        // TODO Change data
+        // Toast.makeText(getApplicationContext(),
+        // "Change Data now", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.device_detail_actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            // This ID represents the Home or Up button. In the case of this
+            // activity, the Up button is shown. Use NavUtils to allow users
+            // to navigate up one level in the application structure. For
+            // more details, see the Navigation pattern on Android Design:
+            //
+            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            //
+
+            NavUtils.navigateUpTo(this, createBackIntent());
+            return true;
         }
-				
-		setContentView(view);
-	}
 
-	@Override
-	public void onItemClicked() {
-		// TODO Change data
-		// Toast.makeText(getApplicationContext(),
-		// "Change Data now", Toast.LENGTH_SHORT).show();
-	}
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.device_detail_actions, menu);
-		return true;
-	}
+    // change action of back button
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            NavUtils.navigateUpTo(this, createBackIntent());
+            return true;
+        }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
+        return super.onKeyDown(keyCode, event);
+    }
 
-		if (id == android.R.id.home) {
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-
-			NavUtils.navigateUpTo(this, createBackIntent());
-			return true;
-		}
-
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	// change action of back button
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			NavUtils.navigateUpTo(this, createBackIntent());
-			return true;
-		}
-
-		return super.onKeyDown(keyCode, event);
-	}
-
-	private Intent createBackIntent() {
-		Intent backIntent = new Intent(this, DeviceListActivity.class);
+    private Intent createBackIntent() {
+        Intent backIntent = new Intent(this, DeviceListActivity.class);
         // don't remember the history
         backIntent.setFlags(backIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
 //		if (callingActivity.equals("com.bosch.upa.spheremanager.ScanActivity")) {
@@ -281,30 +279,30 @@ public class SelectServiceActivity extends FragmentActivity implements
         // go back without remembering history
         backIntent.addFlags(backIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-		backIntent.putExtra(DeviceListFragment.ARG_ITEM_ID, sphereID);
-		return backIntent;
-	}
+        backIntent.putExtra(DeviceListFragment.ARG_ITEM_ID, sphereID);
+        return backIntent;
+    }
 
-	@Override
-	public void onSwiped(String direction) {
-		if (callingActivity.equals("com.bosch.upa.spheremanager.ScanActivity")) {
-			// don't allow swipe if intent is from ScanActivity
-    } else {
-        String newSphereID = "";
-        String firstSphereID = "";
-        String lastEntry = "";
-        boolean foundSphere = false;
+    @Override
+    public void onSwiped(String direction) {
+        if (callingActivity.equals("com.bosch.upa.spheremanager.ScanActivity")) {
+            // don't allow swipe if intent is from ScanActivity
+        } else {
+            String newSphereID = "";
+            String firstSphereID = "";
+            String lastEntry = "";
+            boolean foundSphere = false;
 
-        IUhuSphereAPI api = MainService.getSphereHandle();
-        if(api == null) {
-            Log.e(TAG, "MainService is not available");
-            return;
-        }
+            IUhuSphereAPI api = MainService.getSphereHandle();
+            if (api == null) {
+                Log.e(TAG, "MainService is not available");
+                return;
+            }
 
-        List<UhuSphereInfo> sphereInfos = (List)api.getSpheres();
+            List<UhuSphereInfo> sphereInfos = (List) api.getSpheres();
 
-        String[] previousEnties = new String[ sphereInfos.size()];
-        int iteration = 0;
+            String[] previousEnties = new String[sphereInfos.size()];
+            int iteration = 0;
       /* FIXME - commented by Vimal
         Iterator<Entry<String, AbstractSphereListItem>> entries = DummyContent.ITEM_MAP
                 .entrySet().iterator();
@@ -312,14 +310,14 @@ public class SelectServiceActivity extends FragmentActivity implements
         for (String key : DummyContent.ITEM_MAP.keySet()) {
             lastEntry = key;
         }*/
-        // find the last entry
-        UhuSphereInfo sphereInfo = sphereInfos.get(sphereInfos.size()-1);
+            // find the last entry
+            UhuSphereInfo sphereInfo = sphereInfos.get(sphereInfos.size() - 1);
 
-        if (direction.equals("TB") || direction.equals("BT")) {
-            // do nothing
-        } else {
-            Toast.makeText(getApplicationContext(),"FIXME SelectServiceActivity -> onSwiped",Toast.LENGTH_SHORT);
-            //FIXME - commented by Vimal
+            if (direction.equals("TB") || direction.equals("BT")) {
+                // do nothing
+            } else {
+                Toast.makeText(getApplicationContext(), "FIXME SelectServiceActivity -> onSwiped", Toast.LENGTH_SHORT);
+                //FIXME - commented by Vimal
            /* while (entries.hasNext()) {
                 Entry<String, AbstractSphereListItem> entry = entries
                         .next();
@@ -356,17 +354,17 @@ public class SelectServiceActivity extends FragmentActivity implements
                 }
                 iteration++;
             }*/
+            }
+
+            Intent changeSphereIntent = new Intent(this,
+                    SelectServiceActivity.class);
+            changeSphereIntent.putExtra(DeviceListFragment.ARG_ITEM_ID,
+                    newSphereID);
+            changeSphereIntent.putExtra(DeviceListActivity.ARG_DEVICE_ID,
+                    deviceID);
+            startActivityForResult(changeSphereIntent,
+                    DEVICE_DETAIL_CODE_REQUEST);
+
         }
-
-        Intent changeSphereIntent = new Intent(this,
-                SelectServiceActivity.class);
-        changeSphereIntent.putExtra(DeviceListFragment.ARG_ITEM_ID,
-                newSphereID);
-        changeSphereIntent.putExtra(DeviceListActivity.ARG_DEVICE_ID,
-                deviceID);
-        startActivityForResult(changeSphereIntent,
-                DEVICE_DETAIL_CODE_REQUEST);
-
-		}
-	}
+    }
 }

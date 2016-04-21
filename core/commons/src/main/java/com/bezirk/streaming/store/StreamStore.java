@@ -3,14 +3,14 @@
  */
 package com.bezirk.streaming.store;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import com.bezirk.streaming.control.Objects.StreamRecord;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.streaming.control.Objects.StreamRecord;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /*
  * This class is used for book keeping of stream requests.{@link this#streamBook} is used to keep track of all the stream requests that is used at the sender side (SenderSide).
@@ -50,9 +50,9 @@ public class StreamStore {
      */
     public boolean updatePortsMap(String portMapkey, int value) {
 
-    	synchronized (this) {
-    		
-    		if (value <= 0) {
+        synchronized (this) {
+
+            if (value <= 0) {
                 LOGGER.error("empty values for either key or value");
                 return false;
             }
@@ -65,9 +65,9 @@ public class StreamStore {
             LOGGER.debug("portsmap updated with key : value:" + "key:" + portMapkey
                     + " value:" + value);
             return true;
-			
-		}
-        
+
+        }
+
     }
 
     /*
@@ -80,8 +80,8 @@ public class StreamStore {
      * @return status of the updation. true if success, false if fails.
      */
     public boolean releasePort(int port) {
-    	synchronized (this) {
-    		boolean updatedPortMap = true;
+        synchronized (this) {
+            boolean updatedPortMap = true;
 
             if (port <= 0) {
                 return false;
@@ -103,8 +103,8 @@ public class StreamStore {
                 LOGGER.error("port key tried to remove that doesn't exist");
             }
             return updatedPortMap;
-		}
-        
+        }
+
     }
 
     /*
@@ -114,10 +114,10 @@ public class StreamStore {
      * @return the PortsMap<Integer, StreamRecord>
      */
     public Map<String, Integer> getPortsMap() {
-    	synchronized (this) {
-			
-    		return portsMap;
-		}
+        synchronized (this) {
+
+            return portsMap;
+        }
     }
 
     /*

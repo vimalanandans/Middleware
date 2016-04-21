@@ -2,6 +2,7 @@ package com.bezirk.comms.builder;
 
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.UhuCommsManager;
+
 /**
  * Created by vnd2kor on 4/13/2015.
  * This creates the uhu / qmqp / mqtt - comms based configuration and returns
@@ -9,8 +10,7 @@ import com.bezirk.comms.UhuCommsManager;
  */
 public class CommsBuilder {
 
-    static public IUhuComms createComms()
-    {
+    static public IUhuComms createComms() {
         IUhuComms comms;
 
         // for Uhu (as of now)

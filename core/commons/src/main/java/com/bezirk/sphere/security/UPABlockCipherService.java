@@ -1,13 +1,13 @@
 package com.bezirk.sphere.security;
 
-import java.security.Security;
+import com.bezirk.devices.UhuOsPlatform;
 
 import org.apache.shiro.crypto.DefaultBlockCipherService;
 import org.apache.shiro.crypto.OperationMode;
 import org.apache.shiro.crypto.PaddingScheme;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import com.bezirk.devices.UhuOsPlatform;
+import java.security.Security;
 
 /**
  * Class for thread-safe crypto functions, specifically providing a block cipher

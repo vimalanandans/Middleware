@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/dialog_text"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:orientation="horizontal"
-        android:padding="2dp" >
+        android:padding="2dp">
 
         <Button
             android:id="@+id/cancel_button"

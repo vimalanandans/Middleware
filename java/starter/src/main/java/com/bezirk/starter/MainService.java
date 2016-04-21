@@ -1,14 +1,5 @@
 package com.bezirk.starter;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Date;
-
-import javax.swing.SwingUtilities;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.ICommsNotification;
@@ -19,7 +10,6 @@ import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.UhuDevice;
 import com.bezirk.features.CommsFeature;
 import com.bezirk.messagehandler.ServiceMessageHandler;
-import com.bezrik.network.UhuNetworkUtilities;
 import com.bezirk.persistence.IDatabaseConnection;
 import com.bezirk.persistence.IUhuProxyPersistence;
 import com.bezirk.persistence.RegistryPersistence;
@@ -27,44 +17,49 @@ import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.sadl.UhuSadlManager;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.util.UhuValidatorUtility;
+import com.bezrik.network.UhuNetworkUtilities;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Date;
+
+import javax.swing.SwingUtilities;
 
 /**
  * MainService for uhu-pc which controls the uhu stack
- * 
+ *
  * @modified AJC6KOR
- * 
  */
 public class MainService {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(MainService.class);
-
+    private static final String DB_VERSION = "0.0.3";
+    /**
+     * Max value for the notification
+     */
+    private static final int MAX_ERROR_REPEAT_COUNT = 100;
+    private final com.bezirk.proxy.pc.ProxyforServices proxyforServices;
+    private final UhuPCNetworkUtil uhuPcNetworkUtil = new UhuPCNetworkUtil();
+    private final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
+    IUhuSphereAPI sphereForPC;
+    /**
+     * List of configurations
+     */
+    UhuConfig uhuConfig;
     // Booleans to start and stop stack gracefully
     private Boolean startedStack = false;
     private Boolean stoppedStack = false;
-
-    IUhuSphereAPI sphereForPC;
-
     private RegistryPersistence registryPersistence;
-
-    private final com.bezirk.proxy.pc.ProxyforServices proxyforServices;
-
-    private static final String DB_VERSION = "0.0.3";
-
     // Logging GUI
     private com.bezirk.logging.ui.SphereSelectGUI loggingGUI;
-
-    /** List of configurations */
-    UhuConfig uhuConfig;
-
     private com.bezirk.sphere.ui.SphereManagementGUI frame;
-
-    /** communication interface to send and receive the data */
+    /**
+     * communication interface to send and receive the data
+     */
     private IUhuComms comms;
-
-    private final UhuPCNetworkUtil uhuPcNetworkUtil = new UhuPCNetworkUtil();
-
-    private final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
-
     /**
      * Keeps track of no of error messages notified. Each time a notification is
      * received, its value is incremented and after reaching
@@ -72,15 +67,10 @@ public class MainService {
      */
     private int errorCallbackCount = -1;
     /**
-     * Max value for the notification
-     */
-    private static final int MAX_ERROR_REPEAT_COUNT = 100;
-
-    /**
      * Callback interface to display the Version mismatch UI if stack receives a
      * message version that is not compatible. This will be shown only once when
      * it receives for the first time.
-     * 
+     *
      * @author Vijet Badigannavar
      */
     private final ICommsNotification errNotificationCallback = new ICommsNotification() {
@@ -90,7 +80,7 @@ public class MainService {
          */
         @Override
         public void versionMismatch(final String misMatchVersionId) {
-        	LOGGER.info("mismatch version "+misMatchVersionId);
+            LOGGER.info("mismatch version " + misMatchVersionId);
             if ((++errorCallbackCount) % MAX_ERROR_REPEAT_COUNT == 0) {
                 if (uhuConfig.isDisplayEnabled()) {
                     if (frame != null) {
@@ -102,28 +92,28 @@ public class MainService {
             }
         }
 
-		@Override
-		public void diagMsg(MessageLedger msg) {
-			// TODO:
-			// handle ping message and reply pong. check android code
-			LOGGER.info("diag UI and response are not implemented in uhu build");
-		}
+        @Override
+        public void diagMsg(MessageLedger msg) {
+            // TODO:
+            // handle ping message and reply pong. check android code
+            LOGGER.info("diag UI and response are not implemented in uhu build");
+        }
 
-		@Override
-		public void handleError(String errorMsg) {
-			// TODO Auto-generated method stub
-			LOGGER.info("Comms UI Error"+errorMsg);
-		}
+        @Override
+        public void handleError(String errorMsg) {
+            // TODO Auto-generated method stub
+            LOGGER.info("Comms UI Error" + errorMsg);
+        }
     };
 
     /**
      * Configure proxy and uhuconfig for main service
-     * 
+     *
      * @param proxyforServices
      * @param uhuConfigRef
      */
     public MainService(final com.bezirk.proxy.pc.ProxyforServices proxyforServices,
-            final UhuConfig uhuConfigRef) {
+                       final UhuConfig uhuConfigRef) {
 
         this.proxyforServices = proxyforServices;
 
@@ -181,7 +171,7 @@ public class MainService {
 
     /**
      * Start UhuStack. Initializes sadl, sphere, comms.
-     * 
+     *
      * @param uhuPcCallback
      */
     public void startStack(final ServiceMessageHandler uhuPcCallback) {
@@ -302,7 +292,9 @@ public class MainService {
         }
     }
 
-    /** Restarts uhu stack */
+    /**
+     * Restarts uhu stack
+     */
     public void reboot() {
         // display in long period of time
         final long startTime = new Date().getTime();
@@ -336,21 +328,19 @@ public class MainService {
     }
 
     private boolean initComms(final ServiceMessageHandler uhuPcCallback,
-            final NetworkInterface intf, final UhuSadlManager uhuSadlManager) {
+                              final NetworkInterface intf, final UhuSadlManager uhuSadlManager) {
 
         CommsFactory commsFactory = new CommsFactory();
 
         // comms zyre jni is injected from platform specific code
-        if(commsFactory.getActiveComms() == CommsFeature.COMMS_ZYRE_JNI)
-        {
+        if (commsFactory.getActiveComms() == CommsFeature.COMMS_ZYRE_JNI) {
             comms = new ZyreCommsManager();
-        }
-        else{
+        } else {
             //rest of the comms are returned from factory
             /** Initialize the comms. */
             comms = new CommsFactory().getComms();
         }
-        
+
         /** initialize the communications */
         /*
          * VERY IMP NOTE: Always setup the Notification Callback first then init
@@ -385,12 +375,12 @@ public class MainService {
         proxyforServices.setCommsManager(comms);
 
         // Set RTC Signalling for streaming
-        
+
         // FIXME: Throwing some errors on comms object 
         /* SignalingFactory.createSignalingInstance(
                 "com.bosch.upa.uhu.rtc.streaming.Signaling", comms);
          	*/
-        
+
         // init the comms manager for sadl
         uhuSadlManager.initSadlManager(comms);
 

@@ -5,20 +5,84 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SmartHomeVocab 
-{
+public class SmartHomeVocab {
+
+    /**
+     * data-structure defining relations between services and properties
+     */
+    public final static Map<String, ArrayList<String>> servicePropertyMap =
+            new HashMap<String, ArrayList<String>>() {{
+                // thermostat service relates to:
+                put(service.THERMOSTAT, new ArrayList<String>(
+                        Arrays.asList(
+                                property.CHOOSE_TEMPERATURE
+                        )));
+
+                // light service relates to:
+                put(service.LIGHT, new ArrayList<String>(
+                        Arrays.asList(
+                                property.SET_LIGHT,
+                                property.SET_HUE
+                        )));
+
+                // fan service relates to:
+                put(service.FAN, new ArrayList<String>(
+                        Arrays.asList(
+                                property.SET_FAN
+                        )));
+
+                // Test service relates to:
+                put(service.TEST_SERVICE, new ArrayList<String>(
+                        Arrays.asList(
+                                property.TESTPROPERTY,
+                                property.SET_TESTPROPERTY
+                        )));
+
+                put(service.COFFEE, new ArrayList<String>(
+                        Arrays.asList(
+                                property.CHOOSE_COFFEE_MACHINE_STATE,
+                                property.CHOOSE_COFFEE_TYPE
+                        )));
+
+                put(service.CIGARETTE, new ArrayList<String>(
+                        Arrays.asList(
+                                property.CHOOSE_CIGARETTE_VENDING_MACHINE_STATE,
+                                property.CHOOSE_CIGARETTE_BRAND
+                        )));
+
+                put(service.MUSIC_SERVICE, new ArrayList<String>(
+                        Arrays.asList(
+                                property.CHOOSE_MUSIC_GENRE)));
+            }};
+    /**
+     * data-structure defining relations between properties and services
+     */
+    public final static Map<String, String> propertyServiceMap =
+            new HashMap<String, String>() {{
+                put(property.CHOOSE_TEMPERATURE, service.THERMOSTAT);
+                put(property.SET_LIGHT, service.LIGHT);
+                put(property.SET_HUE, service.LIGHT);
+                put(property.SET_FAN, service.FAN);
+                put(property.TESTPROPERTY, service.TEST_SERVICE);
+                put(property.SET_TESTPROPERTY, service.TEST_SERVICE);
+                put(property.CHOOSE_CIGARETTE_VENDING_MACHINE_STATE, service.CIGARETTE);
+                put(property.CHOOSE_CIGARETTE_BRAND, service.CIGARETTE);
+                put(property.CHOOSE_COFFEE_MACHINE_STATE, service.COFFEE);
+                put(property.CHOOSE_COFFEE_TYPE, service.COFFEE);
+                put(property.CHOOSE_MUSIC_GENRE, service.MUSIC_SERVICE);
+
+            }};
 
     /**
      * property [http://purl.oclc.org/NET/ssnx/ssn#Property]
-     *
+     * <p/>
      * An observable Quality of an Event or Object. That is, not a quality of an abstract entity as is also
      * allowed by DUL's Quality, but rather an aspect of an entity that is intrinsic to and cannot exist
      * without the entity and is observable by a sensor.
      */
-    public static class property
-    {
-    	
-    	/**
+    public static class property {
+
+        /**
          * Location
          */
 
@@ -39,23 +103,23 @@ public class SmartHomeVocab
         // Set-temperature property
         // Describes the act of a user setting the temperature (on a thermostat)
         public static final String SET_TEMPERATURE = "http://upa.bosch.com/vocab/shv#SET_TEMPERATURE";
-        
+
         // Set-temperature property
         // Describes the act of a user setting the temperature (on a thermostat)
         public static final String CHOOSE_TEMPERATURE = "http://upa.bosch.com/vocab/shv#CHOOSE_TEMPERATURE";
-        
+
         // Set-coffee property
         // State of the coffee-machine whether (on/off)
         public static final String CHOOSE_COFFEE_MACHINE_STATE = "http://upa.bosch.com/vocab/shv#CHOOSE_COFFEE_MACHINE_STATE";
-        
+
         //Set-coffee property
         // Type of coffee to be set in the coffee machine
         public static final String CHOOSE_COFFEE_TYPE = "http://upa.bosch.com/vocab/shv#CHOOSE_COFFEE_TYPE";
-        
+
         // Set-CIGARETTE property
         // State of the Cigarette vending machine
         public static final String CHOOSE_CIGARETTE_VENDING_MACHINE_STATE = "http://upa.bosch.com/vocab/shv#CHOOSE_CIGARETTE_VENDING_MACHINE_STATE";
-        
+
         // Set CIGARETTE Brand Property
         // Type of CIGARETTE Brand
         public static final String CHOOSE_CIGARETTE_BRAND = "http://upa.bosch.com/vocab/shv#CHOOSE_CIGARETTE_BRAND";
@@ -63,7 +127,7 @@ public class SmartHomeVocab
         //Set MUSIC GENRE Property
         //Type of Music
         public static final String CHOOSE_MUSIC_GENRE = "http://upa.bosch.com/vocab/shv#CHOOSE_MUSIC_GENRE";
-        
+
         /**
          * Light
          */
@@ -112,8 +176,7 @@ public class SmartHomeVocab
     /**
      * unit of measurement
      */
-    public static class uom
-    {
+    public static class uom {
         // Uhu Location
         // see: http://tahiti.si.de.bosch.com:7990/projects/UPA/repos/platform/browse/Java-Common/uhu/uhu-API/src/main/java/com/bosch/upa/uhu/api/addressing/Location.java?at=refs%2Fheads%2Ftopic%2Fplatform-0.5
         public static final String UHU_LOCATION = "http://upa.bosch.com/vocab/shv#UHU_LOCATION";
@@ -136,8 +199,7 @@ public class SmartHomeVocab
     /**
      * services
      */
-    public static class service
-    {
+    public static class service {
         public static final String THERMOSTAT = "http://upa.bosch.com/vocab/shv#THERMOSTAT_SERVICE";
         public static final String COFFEE = "http://upa.bosch.com/vocab/shv#COFFEE_SERVICE";
         public static final String CIGARETTE = "http://upa.bosch.com/vocab/shv#CIGARETTE_SERVICE";
@@ -147,73 +209,4 @@ public class SmartHomeVocab
         public static final String MUSIC_SERVICE = "http://upa.bosch.com/vocab/shv#MUSIC_SERVICE";
     }
 
-    /**
-     * data-structure defining relations between services and properties
-     */
-    public final static Map<String, ArrayList<String>> servicePropertyMap =
-            new HashMap<String, ArrayList<String>>()
-            {{
-                    // thermostat service relates to:
-                    put(service.THERMOSTAT, new ArrayList<String>(
-                            Arrays.asList(
-                                    property.CHOOSE_TEMPERATURE
-                            )));
-
-                    // light service relates to:
-                    put(service.LIGHT, new ArrayList<String>(
-                            Arrays.asList(
-                                    property.SET_LIGHT,
-                                    property.SET_HUE
-                            )));
-
-                    // fan service relates to:
-                    put(service.FAN, new ArrayList<String>(
-                            Arrays.asList(
-                                    property.SET_FAN
-                            )));
-
-                    // Test service relates to:
-                    put(service.TEST_SERVICE, new ArrayList<String>(
-                            Arrays.asList(
-                                    property.TESTPROPERTY,
-                                    property.SET_TESTPROPERTY
-                            )));
-                    
-                    put(service.COFFEE, new ArrayList<String>(
-                    		Arrays.asList(
-                    				property.CHOOSE_COFFEE_MACHINE_STATE,
-                    				property.CHOOSE_COFFEE_TYPE
-                    		)));
-                    
-                    put(service.CIGARETTE, new ArrayList<String>(
-                    		Arrays.asList(
-                    				property.CHOOSE_CIGARETTE_VENDING_MACHINE_STATE,
-                    				property.CHOOSE_CIGARETTE_BRAND
-                    		)));
-                    
-                    put(service.MUSIC_SERVICE, new ArrayList<String>(
-                    		Arrays.asList(
-                    				property.CHOOSE_MUSIC_GENRE)));
-                }};
-
-    /**
-     * data-structure defining relations between properties and services
-     */
-    public final static Map<String, String> propertyServiceMap =
-            new HashMap<String, String>()
-            {{
-                    put(property.CHOOSE_TEMPERATURE, service.THERMOSTAT);
-                    put(property.SET_LIGHT,service.LIGHT);
-                    put(property.SET_HUE,service.LIGHT);
-                    put(property.SET_FAN,service.FAN);
-                    put(property.TESTPROPERTY,service.TEST_SERVICE);
-                    put(property.SET_TESTPROPERTY,service.TEST_SERVICE);
-                    put(property.CHOOSE_CIGARETTE_VENDING_MACHINE_STATE, service.CIGARETTE);
-                    put(property.CHOOSE_CIGARETTE_BRAND, service.CIGARETTE);
-                    put(property.CHOOSE_COFFEE_MACHINE_STATE, service.COFFEE);
-                    put(property.CHOOSE_COFFEE_TYPE, service.COFFEE);
-                    put(property.CHOOSE_MUSIC_GENRE, service.MUSIC_SERVICE);
-            
-                }};
-                
 }

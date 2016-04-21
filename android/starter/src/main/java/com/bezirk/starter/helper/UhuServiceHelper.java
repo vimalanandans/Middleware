@@ -2,12 +2,12 @@ package com.bezirk.starter.helper;
 
 import android.content.Intent;
 
-import com.bezirk.middleware.addressing.Address;
-import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.serialization.AddressSerializer;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.UhuComms;
 import com.bezirk.messagehandler.StreamStatusMessage;
+import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.serialization.AddressSerializer;
 import com.bezirk.proxy.android.ProxyforServices;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
@@ -20,23 +20,24 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This is a helper class to pass the intent to proxy for service actions.
- *
- *
+ * <p/>
+ * <p/>
  * Created by AJC6KOR on 9/2/2015.
  */
 public final class UhuServiceHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UhuServiceHelper.class);
 
-    private  final ProxyforServices proxy;
+    private final ProxyforServices proxy;
 
-    public UhuServiceHelper(ProxyforServices proxy){
+    public UhuServiceHelper(ProxyforServices proxy) {
 
         this.proxy = proxy;
     }
 
     /**
      * Sends the subscribe request to proxy.
+     *
      * @param intent Intent received
      */
     void subscribeService(Intent intent) {
@@ -64,6 +65,7 @@ public final class UhuServiceHelper {
 
     /**
      * Sends Register request to proxy
+     *
      * @param intent Intent received
      */
     void registerService(Intent intent) {
@@ -90,6 +92,7 @@ public final class UhuServiceHelper {
 
     /**
      * Sends UnSubscribe request to proxy
+     *
      * @param intent Intent received
      */
     void unsubscribeService(Intent intent) {
@@ -121,6 +124,7 @@ public final class UhuServiceHelper {
 
     /**
      * Sends discovery request to proxy
+     *
      * @param intent Intent received
      */
     void discoverService(Intent intent) {
@@ -151,7 +155,8 @@ public final class UhuServiceHelper {
                 LOGGER.info("Discovery Request pass to Proxy");
 
             } else {
-                LOGGER.error("Service Id is null, dropping discovery request");            }
+                LOGGER.error("Service Id is null, dropping discovery request");
+            }
 
         } else {
 
@@ -161,6 +166,7 @@ public final class UhuServiceHelper {
 
     /**
      * Sends UnicastStream to proxy
+     *
      * @param intent Intent received
      */
     void sendUnicastStream(Intent intent) {
@@ -175,7 +181,7 @@ public final class UhuServiceHelper {
         final String streamAsString = intent.getStringExtra("stream");
         final short localStreamId = intent.getShortExtra("localStreamId", (short) -1);
 
-        if (UhuValidatorUtility.checkForString(serviceIdAsString,recipientAsString,filePath,streamAsString) && -1 != localStreamId) {
+        if (UhuValidatorUtility.checkForString(serviceIdAsString, recipientAsString, filePath, streamAsString) && -1 != localStreamId) {
             final Gson gson = new Gson();
             final UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
             final UhuServiceEndPoint recipient = gson.fromJson(recipientAsString, UhuServiceEndPoint.class);
@@ -209,6 +215,7 @@ public final class UhuServiceHelper {
 
     /**
      * Sends Multicast stream to proxy
+     *
      * @param intent Intent received
      */
     void sendMulticastStream(Intent intent) {
@@ -224,23 +231,23 @@ public final class UhuServiceHelper {
         final short localStreamId = intent.getShortExtra("localStreamId", (short) -1);
 
 
-        try{
+        try {
             final Gson gson = new Gson();
             final UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
             final UhuServiceEndPoint recipient = gson.fromJson(recipientAsString, UhuServiceEndPoint.class);
 
-            if(UhuValidatorUtility.checkRTCStreamRequest(serviceId, recipient)){
+            if (UhuValidatorUtility.checkRTCStreamRequest(serviceId, recipient)) {
 
                 if (-1 == proxy.sendStream(serviceId, recipient, streamAsString, localStreamId)) {
                     isStreamingValid = false;
                 }
 
-            }else{
+            } else {
                 LOGGER.error("Invalid arguments received");
                 isStreamingValid = false;
             }
-        }catch(Exception e){
-            LOGGER.error("Invalid arguments received",e);
+        } catch (Exception e) {
+            LOGGER.error("Invalid arguments received", e);
             isStreamingValid = false;
         }
 
@@ -252,6 +259,7 @@ public final class UhuServiceHelper {
 
     /**
      * Sends MulticastEvent to proxy
+     *
      * @param intent Intent received
      */
     void sendMulticastEvent(Intent intent) {
@@ -284,6 +292,7 @@ public final class UhuServiceHelper {
 
     /**
      * Sends UnicastEvent to proxy
+     *
      * @param intent Intent received
      */
     void sendUnicastEvent(Intent intent) {
@@ -312,6 +321,7 @@ public final class UhuServiceHelper {
 
     /**
      * Sets service location via proxy
+     *
      * @param intent Intent received
      */
     void setLocation(Intent intent) {

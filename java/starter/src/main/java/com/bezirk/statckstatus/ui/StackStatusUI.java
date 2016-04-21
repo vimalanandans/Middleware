@@ -1,18 +1,18 @@
 package com.bezirk.statckstatus.ui;
 
-import javax.swing.JOptionPane;
-
 import com.bezirk.commons.UhuVersion;
 
+import javax.swing.JOptionPane;
+
 public final class StackStatusUI {
-    
+
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
-    private StackStatusUI(){
-        
+    private StackStatusUI() {
+
     }
 
     public static void showStackStatusUI(boolean status,
-            String receivedVersion) {
+                                         String receivedVersion) {
         if (status) {
             JOptionPane.showMessageDialog(null, "Uhu-is functioning normally",
                     "STACK-STATUS", JOptionPane.ERROR_MESSAGE);

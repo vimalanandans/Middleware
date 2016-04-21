@@ -1,41 +1,39 @@
 package com.bezirk.sphere.impl;
 
+import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.sphere.api.ICryptoInternals;
+import com.bezirk.sphere.api.IUhuSphereListener;
+import com.bezirk.sphere.messages.ShareRequest;
+import com.bezirk.sphere.messages.ShareResponse;
+import com.bezirk.sphere.security.SphereKeys;
+import com.bezrik.network.UhuNetworkUtilities;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.sphere.api.IUhuSphereListener;
-import com.bezirk.sphere.security.SphereKeys;
-import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezrik.network.UhuNetworkUtilities;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
-import com.bezirk.sphere.api.ICryptoInternals;
-import com.bezirk.sphere.messages.ShareRequest;
-import com.bezirk.sphere.messages.ShareResponse;
-
 /**
  * @author Rishabh Gulati
- * 
  */
 public class ShareProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShareProcessor.class);
+    private static final String SHARE_FAILURE_MSG = "Share Failed";
     private ICryptoInternals crypto;
     private UPADeviceInterface upaDeviceInterface;
     private CommsUtility comms;
     private SphereRegistryWrapper sphereRegistryWrapper;
-    private static final String SHARE_FAILURE_MSG = "Share Failed";
 
     /**
-     * 
      * @param sphereUtils
      * @param crypto
      * @param upaDeviceInterface
@@ -43,7 +41,7 @@ public class ShareProcessor {
      * @param sphereRegistryWrapper
      */
     public ShareProcessor(ICryptoInternals crypto, UPADeviceInterface upaDeviceInterface, CommsUtility comms,
-            SphereRegistryWrapper sphereRegistryWrapper) {
+                          SphereRegistryWrapper sphereRegistryWrapper) {
         this.crypto = crypto;
         this.upaDeviceInterface = upaDeviceInterface;
         this.comms = comms;
@@ -53,12 +51,10 @@ public class ShareProcessor {
     /**
      * Process the share qr code/short-code request and send the request if the shareCode and
      * sphereId are correct.
-     * 
-     * @param shareCode
-     *            can be in the form of qr-code or a 7-digit[may change later]
-     *            code
-     * @param sphereId of the sphere whose services are to be shared.
-     * 
+     *
+     * @param shareCode can be in the form of qr-code or a 7-digit[may change later]
+     *                  code
+     * @param sphereId  of the sphere whose services are to be shared.
      * @return True if request was sent. False otherwise.
      */
     public boolean processShareCode(String shareCode, String sphereId) {
@@ -134,10 +130,9 @@ public class ShareProcessor {
 
     /**
      * Process share request received from the device sharing its services and send a response.
-     * 
-     * @param shareRequest - ShareRequest object containing the information about 
-     * the sharer's device and their sphereID.
-     * 
+     *
+     * @param shareRequest - ShareRequest object containing the information about
+     *                     the sharer's device and their sphereID.
      * @return - True if response was sent successfully. False otherwise.
      */
     public boolean processRequest(ShareRequest shareRequest) {
@@ -243,19 +238,17 @@ public class ShareProcessor {
     /**
      * Store the inviter SphereID and sharer Device Info from the received share
      * request.
-     * 
-     * @param inviterSphereId
-     *            - has to be valid and non-null
-     * @param sharerUhuDeviceInfo
-     *            - has to be non-null
+     *
+     * @param inviterSphereId     - has to be valid and non-null
+     * @param sharerUhuDeviceInfo - has to be non-null
      * @return - True if data was added to the registry successfully, else,
-     *         False.
+     * False.
      */
     private boolean storeData(String inviterSphereId, UhuDeviceInfo sharerUhuDeviceInfo) {
         if (sphereRegistryWrapper.addDevice(sharerUhuDeviceInfo.getDeviceId(),
                 new DeviceInformation(sharerUhuDeviceInfo.getDeviceName(), sharerUhuDeviceInfo.getDeviceType()))
                 && sphereRegistryWrapper.addMemberServices(sharerUhuDeviceInfo, inviterSphereId,
-                        sharerUhuDeviceInfo.getDeviceId())) {
+                sharerUhuDeviceInfo.getDeviceId())) {
             sphereRegistryWrapper.persist();
             return true;
         }
@@ -264,20 +257,17 @@ public class ShareProcessor {
 
     /**
      * Store the data
-     * 
-     * @param sphereExchangeData
-     *            - has to be non-null
-     * @param inviterUhuDeviceInfo
-     *            - has to be non-null
-     * @param sharerSphereId
-     *            - has to be non-null
+     *
+     * @param sphereExchangeData   - has to be non-null
+     * @param inviterUhuDeviceInfo - has to be non-null
+     * @param sharerSphereId       - has to be non-null
      * @return - True if data was stored successfully in the registry, else
-     *         False. <br>
-     *         - NullPointerException is thrown if SphereExchangeData obj is
-     *         null.
+     * False. <br>
+     * - NullPointerException is thrown if SphereExchangeData obj is
+     * null.
      */
     private boolean storeData(SphereExchangeData sphereExchangeData, UhuDeviceInfo inviterUhuDeviceInfo,
-            String sharerSphereId) {
+                              String sharerSphereId) {
 
         LOGGER.debug("Sphere Exchange data:\n" + sphereExchangeData.toString());
         LOGGER.debug("Uhu Device Info:\n" + inviterUhuDeviceInfo.toString());
@@ -329,7 +319,7 @@ public class ShareProcessor {
 
     /**
      * Validates the qrcode string/short code
-     * 
+     *
      * @param inviterShareCode
      * @return
      */
@@ -351,9 +341,8 @@ public class ShareProcessor {
 
     /**
      * Add keys for the short code
-     * 
-     * @param inviterShortCode
-     *            - has to be non-null
+     *
+     * @param inviterShortCode - has to be non-null
      * @return
      */
     private boolean addCatchCode(String inviterShortCode) {
@@ -376,7 +365,7 @@ public class ShareProcessor {
 
     /**
      * Generate the share request to be sent to the device sharing its sphere
-     * 
+     *
      * @param sharerSphereId
      * @param inviterShortCode
      * @return
@@ -411,7 +400,7 @@ public class ShareProcessor {
 
     /**
      * Validate the Share request: shortCode, sphereExchangeData, uhuDeviceInfo
-     * 
+     *
      * @param sphereCatchRequest
      * @return
      */
@@ -445,20 +434,19 @@ public class ShareProcessor {
 
         //check if you are the owner of the sphere for which response is received
         Sphere sphere = sphereRegistryWrapper.getSphere(inviterSphereId);
-        if(!(sphere instanceof OwnerSphere)){
+        if (!(sphere instanceof OwnerSphere)) {
             LOGGER.debug("Response received for a known sphere. This device does not own the sphere");
             return false;
         }
-        
+
         return true;
     }
 
     /**
      * Validate the Share response: SphereExchangeData, UhuDeviceInfo,
      * sharerSphereId
-     * 
-     * @param -
-     *            shareResponse
+     *
+     * @param - shareResponse
      * @return - True if response if valid, else, False.
      */
     private boolean validateResponse(ShareResponse shareResponse) {
@@ -471,7 +459,7 @@ public class ShareProcessor {
                 .deserialize(shareResponse.getSphereExchangeDataString());
         UhuDeviceInfo uhuDeviceInfo = shareResponse.getUhuDeviceInfo();
         String sharerSphereId = shareResponse.getSharerSphereId();
-                
+
         if (sphereExchangeData == null) {
             LOGGER.error("sphereExchangeData is not valid");
             return false;
@@ -486,24 +474,21 @@ public class ShareProcessor {
             LOGGER.error("sharerSphereId is not valid");
             return false;
         }
-                
+
         return true;
     }
 
     /**
-     * 
      * @param uhuDeviceInfo
      * @param inviterShortCode
-     * @param inviterSphereId
-     *            sphereId pertaining to the sphere which generated the short
-     *            code.
-     * @param sharer
-     *            - has to be non-null
+     * @param inviterSphereId  sphereId pertaining to the sphere which generated the short
+     *                         code.
+     * @param sharer           - has to be non-null
      * @param uniqueKey
      * @return
      */
     private ShareResponse prepareResponse(String inviterShortCode, String inviterSphereId, UhuServiceEndPoint sharer,
-            String uniqueKey, String sharerSphereId) {
+                                          String uniqueKey, String sharerSphereId) {
         ShareResponse shareResponse = null;
         String sphereExchangeData = sphereRegistryWrapper.getShareCodeString(inviterSphereId);
         if (sphereExchangeData == null) {

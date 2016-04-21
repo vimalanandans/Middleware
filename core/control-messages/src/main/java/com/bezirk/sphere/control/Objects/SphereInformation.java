@@ -59,31 +59,31 @@ public class SphereInformation {
     }
 
     public byte[] getSphereKey() {
-        return sphereKey==null ?null:sphereKey.clone();
+        return sphereKey == null ? null : sphereKey.clone();
     }
 
     public void setSphereKey(byte[] sphereKey) {
-        if(sphereKey!=null) {
+        if (sphereKey != null) {
             this.sphereKey = Arrays.copyOf(sphereKey, sphereKey.length);
         }
     }
 
     public byte[] getOwnerPrivateKeyBytes() {
-        return ownerPrivateKeyBytes==null ?null:ownerPrivateKeyBytes.clone();
+        return ownerPrivateKeyBytes == null ? null : ownerPrivateKeyBytes.clone();
     }
 
     public void setOwnerPrivateKeyBytes(byte[] ownerPrivateKeyBytes) {
-        if(ownerPrivateKeyBytes!=null) {
+        if (ownerPrivateKeyBytes != null) {
             this.ownerPrivateKeyBytes = Arrays.copyOf(ownerPrivateKeyBytes, ownerPrivateKeyBytes.length);
         }
     }
 
     public byte[] getOwnerPublicKeyBytes() {
-        return ownerPublicKeyBytes==null ?null:ownerPublicKeyBytes.clone();
+        return ownerPublicKeyBytes == null ? null : ownerPublicKeyBytes.clone();
     }
 
     public void setOwnerPublicKeyBytes(byte[] ownerPublicKeyBytes) {
-        if(ownerPublicKeyBytes!=null) {
+        if (ownerPublicKeyBytes != null) {
             this.ownerPublicKeyBytes = Arrays.copyOf(ownerPublicKeyBytes, ownerPublicKeyBytes.length);
         }
     }

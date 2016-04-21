@@ -1,14 +1,14 @@
 package com.bezirk.comms;
 
-import java.io.File;
-import java.util.Properties;
+import com.bezirk.devices.UPADeviceForPC;
+import com.bezirk.starter.UhuConfig;
+import com.bezirk.util.UhuValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.devices.UPADeviceForPC;
-import com.bezirk.starter.UhuConfig;
-import com.bezirk.util.UhuValidatorUtility;
+import java.io.File;
+import java.util.Properties;
 
 public final class UhuCommsPC {
     public static final String PROPS_FILE = "comms.properties";
@@ -64,7 +64,7 @@ public final class UhuCommsPC {
                 .getProperty("NoOfActiveThreads"))); // No of active Threads
         UhuComms.setStreamingEnabled(Boolean.valueOf(props
                 .getProperty("StreamingEnabled"))); // flag to check if
-                                                    // Streaming Enabled
+        // Streaming Enabled
 
         UhuComms.setNO_OF_RETRIES(Integer.valueOf(props
                 .getProperty("NoOfRetries")));
@@ -97,16 +97,17 @@ public final class UhuCommsPC {
     }
 
     /**
-     * Allows us to override comms.properties values by reading a system property and setting it on 
+     * Allows us to override comms.properties values by reading a system property and setting it on
      * the properties object. Specifically, this method checks for a system property with the key
-     * propName.  If there is such a property, we overwrite the value that may have already 
+     * propName.  If there is such a property, we overwrite the value that may have already
      * been set in the properties object.
      * The system property can be set, e.g., via a -D option on the command line.
+     *
      * @param propName
-     * @return 
+     * @return
      */
     private static void overrideStringProperty(String propName,
-            Properties props, UhuConfig uhuConfig) {
+                                               Properties props, UhuConfig uhuConfig) {
         final String value = System.getProperty(propName);
         if (UhuValidatorUtility.checkForString(value)) {
             LOGGER.info("found system property: " + propName + ": " + value);

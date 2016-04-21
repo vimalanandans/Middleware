@@ -1,7 +1,7 @@
 package com.bezirk.comms;
 
-import com.bezirk.processor.CommsProcessor;
 import com.bezirk.pipe.core.PipeManager;
+import com.bezirk.processor.CommsProcessor;
 import com.bezirk.rest.BezirkRestCommsManager;
 import com.bezirk.sadl.UhuSadlManager;
 import com.bezirk.util.UhuValidatorUtility;
@@ -11,8 +11,7 @@ import java.net.InetAddress;
 /**
  * vimal : Uhu Communication manager for zyre - jni
  * this extends zyre specific comms all the queue, sockets, receiver threads etc etc
- *
- * */
+ */
 
 public class ZyreCommsManager extends CommsProcessor {
 
@@ -22,22 +21,20 @@ public class ZyreCommsManager extends CommsProcessor {
 
     private String zyreGroup;
 
-    public ZyreCommsManager(){
+    public ZyreCommsManager() {
         //default constructor
     }
 
-    public ZyreCommsManager(String zyreGroup){
+    public ZyreCommsManager(String zyreGroup) {
         this.zyreGroup = zyreGroup;
     }
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             UhuSadlManager sadl, PipeManager pipe)
-    {
+                             UhuSadlManager sadl, PipeManager pipe) {
         /*init zyre and internals of comms */
-        if (comms == null)
-        {
-            return super.initComms(commsProperties,addr,sadl,pipe);
+        if (comms == null) {
+            return super.initComms(commsProperties, addr, sadl, pipe);
         }
 
         return false;
@@ -46,15 +43,15 @@ public class ZyreCommsManager extends CommsProcessor {
     @Override
     public boolean startComms() {
 
-        if(UhuValidatorUtility.isObjectNotNull(zyreGroup)){
+        if (UhuValidatorUtility.isObjectNotNull(zyreGroup)) {
             // you can join the zyre group you specify here..
             comms = new ZyreCommsJni(this, zyreGroup);
-        }else {
+        } else {
             comms = new ZyreCommsJni(this);
         }
 
 
-        if(comms != null) {
+        if (comms != null) {
 
             //Initialize a new Zyre context
             comms.initZyre(delayedInit);
@@ -84,6 +81,7 @@ public class ZyreCommsManager extends CommsProcessor {
 
         return super.stopComms();
     }
+
     @Override
     public boolean closeComms() {
         if (comms != null) {
@@ -94,19 +92,21 @@ public class ZyreCommsManager extends CommsProcessor {
     }
 
 
-
-    /** send to all : Multicast message */
+    /**
+     * send to all : Multicast message
+     */
     @Override
-    public boolean sendToAll(byte[] msg, boolean isEvent){
+    public boolean sendToAll(byte[] msg, boolean isEvent) {
 
         return comms.sendToAllZyre(msg);
     }
 
-    /** send to one : Unicast message
+    /**
+     * send to one : Unicast message
      * nodeId = device id
-     * */
+     */
     @Override
-    public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent){
+    public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent) {
         return comms.sendToOneZyre(msg, nodeId);
 
     }
@@ -117,7 +117,7 @@ public class ZyreCommsManager extends CommsProcessor {
     @Override
     public boolean restartComms() {
         //Adding comments for testing
-        if(comms!= null && comms.getZyre() != null){
+        if (comms != null && comms.getZyre() != null) {
             //stopComms(); // should not be done as it will stop the streaming threads.
             comms.stopZyre();
 

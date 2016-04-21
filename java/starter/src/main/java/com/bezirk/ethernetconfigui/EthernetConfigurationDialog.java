@@ -1,12 +1,12 @@
 package com.bezirk.ethernetconfigui;
 
+import com.bezrik.network.IntfInetPair;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-
-import com.bezrik.network.IntfInetPair;
 
 public class EthernetConfigurationDialog {
 

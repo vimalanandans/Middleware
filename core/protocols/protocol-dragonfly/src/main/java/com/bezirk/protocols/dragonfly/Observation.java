@@ -2,9 +2,12 @@
  * Observation
  *
  * @author Cory Henson
- * @modified 09/16/2014 
+ * @modified 09/16/2014
  */
 package com.bezirk.protocols.dragonfly;
+
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.protocols.context.exception.UserPreferenceException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,282 +16,279 @@ import java.util.Date;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
-import com.bezirk.protocols.context.exception.UserPreferenceException;
-import com.bezirk.middleware.messages.Event;
-
 public class Observation extends Event implements Comparable<Observation> {
-	/**
-	 * Logger for current class
-	 */
+    /**
+     * Logger for current class
+     */
 //	private final transient Logger log = LoggerFactory
 //			.getLogger(Observation.class);
-	/**
-	 * topic
-	 */
-	public static final String topic = "observation";
+    /**
+     * topic
+     */
+    public static final String topic = "observation";
 
-	/*
-	 * featureOfInterest [http://purl.oclc.org/NET/ssnx/ssn#featureOfInterest]
-	 * 
-	 * A relation between an observation and the entity whose quality was
-	 * observed. For example, in an observation of the weight of a person, the
-	 * feature of interest is the person and the quality is weight.
-	 */
-	private String featureOfInterest = null;
+    /*
+     * featureOfInterest [http://purl.oclc.org/NET/ssnx/ssn#featureOfInterest]
+     *
+     * A relation between an observation and the entity whose quality was
+     * observed. For example, in an observation of the weight of a person, the
+     * feature of interest is the person and the quality is weight.
+     */
+    private String featureOfInterest = null;
 
-	/*
-	 * location
-	 */
-	private String location = null;
+    /*
+     * location
+     */
+    private String location = null;
 
-	/*
-	 * observationResult [http://purl.oclc.org/NET/ssnx/ssn#observationResult]
-	 * 
-	 * Relation linking an Observation and a Result, which contains a value
-	 * representing the value associated with the observed Property.
-	 */
-	private String observationResult = null;
+    /*
+     * observationResult [http://purl.oclc.org/NET/ssnx/ssn#observationResult]
+     *
+     * Relation linking an Observation and a Result, which contains a value
+     * representing the value associated with the observed Property.
+     */
+    private String observationResult = null;
 
-	/*
-	 * observationSamplingTime
-	 * [http://purl.oclc.org/NET/ssnx/ssn#observationSamplingTime]
-	 * 
-	 * The phenomenon time shall describe the time that the result applies to
-	 * the property of the feature-of-interest. This is often the time of
-	 * interaction by a sampling procedure or observation procedure with a
-	 * real-world feature.
-	 */
-	private String observationSamplingTime = null; // Java.Date().toString
+    /*
+     * observationSamplingTime
+     * [http://purl.oclc.org/NET/ssnx/ssn#observationSamplingTime]
+     *
+     * The phenomenon time shall describe the time that the result applies to
+     * the property of the feature-of-interest. This is often the time of
+     * interaction by a sampling procedure or observation procedure with a
+     * real-world feature.
+     */
+    private String observationSamplingTime = null; // Java.Date().toString
 
-	/*
-	 * observedBy [http://purl.oclc.org/NET/ssnx/ssn#observedBy]
-	 * 
-	 * Relation between an Observation and a Sensor.
-	 */
-	private String observedBy = null;
+    /*
+     * observedBy [http://purl.oclc.org/NET/ssnx/ssn#observedBy]
+     *
+     * Relation between an Observation and a Sensor.
+     */
+    private String observedBy = null;
 
-	/*
-	 * observedProperty [http://purl.oclc.org/NET/ssnx/ssn#observedProperty]
-	 * 
-	 * Relation linking an Observation to the Property that was observed. The
-	 * observedProperty should be a Property (hasProperty) of the
-	 * FeatureOfInterest (linked by featureOfInterest) of this observation.
-	 */
-	private String observedProperty = null;
+    /*
+     * observedProperty [http://purl.oclc.org/NET/ssnx/ssn#observedProperty]
+     *
+     * Relation linking an Observation to the Property that was observed. The
+     * observedProperty should be a Property (hasProperty) of the
+     * FeatureOfInterest (linked by featureOfInterest) of this observation.
+     */
+    private String observedProperty = null;
 
-	/*
-	 * qualityOfObservation
-	 * [http://purl.oclc.org/NET/ssnx/ssn#qualityOfObservation]
-	 * 
-	 * Relation linking an Observation to the adjudged quality of the result.
-	 * This is of course complimentary to the MeasurementCapability information
-	 * recorded for the Sensor that made the Observation.
-	 */
-	private double qualityOfObservation = -1;
+    /*
+     * qualityOfObservation
+     * [http://purl.oclc.org/NET/ssnx/ssn#qualityOfObservation]
+     *
+     * Relation linking an Observation to the adjudged quality of the result.
+     * This is of course complimentary to the MeasurementCapability information
+     * recorded for the Sensor that made the Observation.
+     */
+    private double qualityOfObservation = -1;
 
-	/*
-	 * unitOfMeasure
-	 */
-	private String unitOfMeasure = null;
+    /*
+     * unitOfMeasure
+     */
+    private String unitOfMeasure = null;
 
 	/* constructors */
 
-	public Observation() {
-		super(Stripe.NOTICE, topic);
-	}
+    public Observation() {
+        super(Stripe.NOTICE, topic);
+    }
 
-	public Observation(String _topic) {
-		super(Stripe.NOTICE, _topic);
-	}
+    public Observation(String _topic) {
+        super(Stripe.NOTICE, _topic);
+    }
 
 	/* getters and setters */
 
-	// qualityOfObservation
-	public void setQualityOfObservation(double _v) {
-		this.qualityOfObservation = _v;
-	}
+    /**
+     * Use instead of the generic UhuMessage.deserialize()
+     *
+     * @param json
+     * @return Observation
+     */
+    public static Observation deserialize(String json) {
+        return Event.deserialize(json, Observation.class);
+    }
 
-	public double getQualityOfObservation() {
-		return this.qualityOfObservation;
-	}
+    public double getQualityOfObservation() {
+        return this.qualityOfObservation;
+    }
 
-	// observationSamplingTime
-	public void setObservationSamplingTime(String _v)
-			throws UserPreferenceException {
-		if (validateDateFormat(_v)) {
-			this.observationSamplingTime = _v;
-		} else {
-			throw new UserPreferenceException();
-		}
-	}
+    // qualityOfObservation
+    public void setQualityOfObservation(double _v) {
+        this.qualityOfObservation = _v;
+    }
 
-	public String getObservationSamplingTime() {
-		return this.observationSamplingTime;
-	}
+    public String getObservationSamplingTime() {
+        return this.observationSamplingTime;
+    }
 
-	// featureOfInterest
-	public void setFeatureOfInterest(String _v) {
-		this.featureOfInterest = _v;
-	}
+    // observationSamplingTime
+    public void setObservationSamplingTime(String _v)
+            throws UserPreferenceException {
+        if (validateDateFormat(_v)) {
+            this.observationSamplingTime = _v;
+        } else {
+            throw new UserPreferenceException();
+        }
+    }
 
-	public String getFeatureOfInterest() {
-		return this.featureOfInterest;
-	}
+    public String getFeatureOfInterest() {
+        return this.featureOfInterest;
+    }
 
-	// unitOfMeasure
-	public void setUnitOfMeasure(String _v) {
-		this.unitOfMeasure = _v;
-	}
+    // featureOfInterest
+    public void setFeatureOfInterest(String _v) {
+        this.featureOfInterest = _v;
+    }
 
-	public String getUnitOfMeasure() {
-		return this.unitOfMeasure;
-	}
+    public String getUnitOfMeasure() {
+        return this.unitOfMeasure;
+    }
 
-	// location
-	public void setLocation(String _v) {
-		this.location = _v;
-	}
+    // unitOfMeasure
+    public void setUnitOfMeasure(String _v) {
+        this.unitOfMeasure = _v;
+    }
 
-	public String getLocation() {
-		return this.location;
-	}
+    public String getLocation() {
+        return this.location;
+    }
 
-	// observationResult
-	public void setObservationResult(String _v) {
-		this.observationResult = _v;
-	}
+    // location
+    public void setLocation(String _v) {
+        this.location = _v;
+    }
 
-	public String getObservationResult() {
-		return this.observationResult;
-	}
+    public String getObservationResult() {
+        return this.observationResult;
+    }
 
-	// observedBy
-	public void setObservedBy(String _v) {
-		this.observedBy = _v;
-	}
+    // observationResult
+    public void setObservationResult(String _v) {
+        this.observationResult = _v;
+    }
 
-	public String getObservedBy() {
-		return this.observedBy;
-	}
+    public String getObservedBy() {
+        return this.observedBy;
+    }
 
-	// observedProperty
-	public void setObservedProperty(String _v) {
-		this.observedProperty = _v;
-	}
+    // observedBy
+    public void setObservedBy(String _v) {
+        this.observedBy = _v;
+    }
 
-	public String getObservedProperty() {
-		return this.observedProperty;
-	}
+    public String getObservedProperty() {
+        return this.observedProperty;
+    }
 
-	/**
-	 * This method is a regular expression validation for the Date Format
-	 * according to ISO 8601 (http://en.wikipedia.org/wiki/ISO_8601)
-	 * 
-	 * @param _dateTime
-	 *            {@link String}
-	 * @return {@link Boolean}
-	 */
-	private boolean validateDateFormat(String _dateTime) {
-		boolean checkformat;
-		String[] splitedDateTime = _dateTime.split("\\s+");
+    // observedProperty
+    public void setObservedProperty(String _v) {
+        this.observedProperty = _v;
+    }
 
-		if (splitedDateTime.length < 2) {
-			return false;
-		}
-		if (splitedDateTime[1].contains(".")) {
-			String intermediate = splitedDateTime[1].replaceAll("\\.", "-");
-			splitedDateTime[1] = intermediate;
-		}
-		if (splitedDateTime[1].contains(":")) {
-			String intermediate = splitedDateTime[1].replaceAll(":", "-");
-			splitedDateTime[1] = intermediate;
-		}
-		if (splitedDateTime[1].contains("+")) {
-			String intermediate = splitedDateTime[1].replaceAll("\\+", "-");
-			splitedDateTime[1] = intermediate;
-		}
+    /**
+     * This method is a regular expression validation for the Date Format
+     * according to ISO 8601 (http://en.wikipedia.org/wiki/ISO_8601)
+     *
+     * @param _dateTime
+     *            {@link String}
+     * @return {@link Boolean}
+     */
+    private boolean validateDateFormat(String _dateTime) {
+        boolean checkformat;
+        String[] splitedDateTime = _dateTime.split("\\s+");
 
-		if (splitedDateTime[0].matches("([0-9]{4})-([0-9]{2})-([0-9]{2})"))
-			checkformat = true;
-		else
-			checkformat = false;
+        if (splitedDateTime.length < 2) {
+            return false;
+        }
+        if (splitedDateTime[1].contains(".")) {
+            String intermediate = splitedDateTime[1].replaceAll("\\.", "-");
+            splitedDateTime[1] = intermediate;
+        }
+        if (splitedDateTime[1].contains(":")) {
+            String intermediate = splitedDateTime[1].replaceAll(":", "-");
+            splitedDateTime[1] = intermediate;
+        }
+        if (splitedDateTime[1].contains("+")) {
+            String intermediate = splitedDateTime[1].replaceAll("\\+", "-");
+            splitedDateTime[1] = intermediate;
+        }
 
-		if (checkformat) {
-			if (splitedDateTime[1]
-					.matches("([0-9]{2})-([0-9]{2})-([0-9]{2})-([0-9]{3})-([0-9]{4})")) {
-				return true;
-			} else {
-				return false;
-			}
-		}
+        if (splitedDateTime[0].matches("([0-9]{4})-([0-9]{2})-([0-9]{2})"))
+            checkformat = true;
+        else
+            checkformat = false;
 
-		return checkformat;
-	}
+        if (checkformat) {
+            if (splitedDateTime[1]
+                    .matches("([0-9]{2})-([0-9]{2})-([0-9]{2})-([0-9]{3})-([0-9]{4})")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
-	/**
-	 * Use instead of the generic UhuMessage.deserialize()
-	 * 
-	 * @param json
-	 * @return Observation
-	 */
-	public static Observation deserialize(String json) {
-		return Event.deserialize(json, Observation.class);
-	}
+        return checkformat;
+    }
 
-	@Override
-	public int compareTo(Observation o) {
+    @Override
+    public int compareTo(Observation o) {
 
-		// Himadri: Changes for the Date Format Issue
+        // Himadri: Changes for the Date Format Issue
 
-		Date thisDate = null;
-		try {
-			thisDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ")
-					.parse(this.getObservationSamplingTime());
-		} catch (ParseException e) {
-			//log.error("Error occured in parsing the Date-Time"+e);
-			 e.printStackTrace();
-		}
+        Date thisDate = null;
+        try {
+            thisDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ")
+                    .parse(this.getObservationSamplingTime());
+        } catch (ParseException e) {
+            //log.error("Error occured in parsing the Date-Time"+e);
+            e.printStackTrace();
+        }
 
-		Date oDate = null;
+        Date oDate = null;
 
-		try {
-			oDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(o
-					.getObservationSamplingTime());
-		} catch (ParseException e) {
-			//log.error("Error occured in parsing the object's Date-Time"+ e);
-			e.printStackTrace();
-			
-		}
+        try {
+            oDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(o
+                    .getObservationSamplingTime());
+        } catch (ParseException e) {
+            //log.error("Error occured in parsing the object's Date-Time"+ e);
+            e.printStackTrace();
 
-		int compare = -thisDate.compareTo(oDate);
+        }
 
-		if (compare == 0) {
-			compare = Double.compare(getQualityOfObservation(),
-					o.getQualityOfObservation());
-		}
-		if (compare == 0) {
-			compare = this.getObservationResult().compareTo(
-					o.getObservationResult());
-		}
+        int compare = -thisDate.compareTo(oDate);
 
-		return compare;
-	}
+        if (compare == 0) {
+            compare = Double.compare(getQualityOfObservation(),
+                    o.getQualityOfObservation());
+        }
+        if (compare == 0) {
+            compare = this.getObservationResult().compareTo(
+                    o.getObservationResult());
+        }
 
-	@Override
-	public boolean equals(Object obj) {
-		
-		return Float.floatToRawIntBits((float) (getQualityOfObservation() - ((Observation) obj)
-				.getQualityOfObservation()))==0
-				&& getObservationResult() == ((Observation) obj)
-						.getObservationResult();
-	}
+        return compare;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = (int) (prime * result + getQualityOfObservation() + +((getObservationResult() != null) ? getObservationResult()
-				.hashCode() : 0));
-		return result;
-	}
+    @Override
+    public boolean equals(Object obj) {
+
+        return Float.floatToRawIntBits((float) (getQualityOfObservation() - ((Observation) obj)
+                .getQualityOfObservation())) == 0
+                && getObservationResult() == ((Observation) obj)
+                .getObservationResult();
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = (int) (prime * result + getQualityOfObservation() + +((getObservationResult() != null) ? getObservationResult()
+                .hashCode() : 0));
+        return result;
+    }
 }

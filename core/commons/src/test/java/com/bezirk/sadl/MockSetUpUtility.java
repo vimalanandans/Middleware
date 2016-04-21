@@ -1,6 +1,24 @@
 package com.bezirk.sadl;
 
-import static org.mockito.Mockito.mock;
+import com.bezirk.commons.UhuCompManager;
+import com.bezirk.comms.CommsProperties;
+import com.bezirk.comms.IUhuComms;
+import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.persistence.DBConstants;
+import com.bezirk.persistence.DatabaseConnectionForJava;
+import com.bezirk.persistence.ISadlPersistence;
+import com.bezirk.persistence.ISpherePersistence;
+import com.bezirk.persistence.RegistryPersistence;
+import com.bezirk.persistence.SphereRegistry;
+import com.bezirk.persistence.UhuRegistry;
+import com.bezirk.sphere.api.ISphereConfig;
+import com.bezirk.sphere.security.CryptoEngine;
+import com.bezirk.test.sphere.testUtilities.SpherePropertiesMock;
+import com.bezrik.network.UhuNetworkUtilities;
+import com.j256.ormlite.table.TableUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -9,132 +27,106 @@ import java.net.SocketException;
 import java.sql.SQLException;
 import java.util.Enumeration;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.persistence.DatabaseConnectionForJava;
-import com.bezirk.test.sphere.testUtilities.SpherePropertiesMock;
-import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.commons.UhuCompManager;
-import com.bezirk.comms.CommsProperties;
-import com.bezirk.comms.IUhuComms;
-import com.bezrik.network.UhuNetworkUtilities;
-import com.bezirk.persistence.DBConstants;
-import com.bezirk.persistence.ISadlPersistence;
-import com.bezirk.persistence.ISpherePersistence;
-import com.bezirk.persistence.RegistryPersistence;
-import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.persistence.UhuRegistry;
-import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.security.CryptoEngine;
-import com.j256.ormlite.table.TableUtils;
+import static org.mockito.Mockito.mock;
 
 /**
  * This utility facilitates the setup and destruction of mock environment for testing sadlManager.
- * 
- * @author AJC6KOR
  *
+ * @author AJC6KOR
  */
 public class MockSetUpUtility {
 
-	private final static Logger log = LoggerFactory
-			.getLogger(MockSetUpUtility.class);
+    private final static Logger log = LoggerFactory
+            .getLogger(MockSetUpUtility.class);
 
-	private static final String DBPath = "./";
-	private static final String DBVersion = DBConstants.DB_VERSION;
-	private DatabaseConnectionForJava dbConnection;
-	
-	UhuSadlManager uhuSadlManager = null;
-	private static InetAddress inetAddr;
+    private static final String DBPath = "./";
+    private static final String DBVersion = DBConstants.DB_VERSION;
+    private static InetAddress inetAddr;
+    UhuSadlManager uhuSadlManager = null;
+    ISadlPersistence sadlPersistence;
+    ISpherePersistence spherePersistence;
+    UPADeviceInterface upaDevice;
+    CryptoEngine cryptoEngine;
+    SphereRegistry sphereRegistry;
+    IUhuComms uhuComms;
+    ISphereConfig sphereConfig;
+    private DatabaseConnectionForJava dbConnection;
 
-	ISadlPersistence sadlPersistence;
+    private static InetAddress getInetAddress() {
+        try {
 
-	ISpherePersistence spherePersistence;
+            for (Enumeration<NetworkInterface> en = NetworkInterface
+                    .getNetworkInterfaces(); en.hasMoreElements(); ) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf
+                        .getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
 
-	UPADeviceInterface upaDevice;
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()
+                            && !inetAddress.isLinkLocalAddress()
+                            && inetAddress.isSiteLocalAddress()) {
 
-	CryptoEngine cryptoEngine;
+                        inetAddr = UhuNetworkUtilities.getIpForInterface(intf);
+                        return inetAddr;
+                    }
 
-	SphereRegistry sphereRegistry;
+                }
+            }
+        } catch (SocketException e) {
 
-	IUhuComms uhuComms;
-	
-	ISphereConfig sphereConfig;
-	
-	void setUPTestEnv() throws IOException, SQLException,
-			Exception {
-		
-		dbConnection = new DatabaseConnectionForJava(DBPath);
-		RegistryPersistence regPersistence = new RegistryPersistence(
-				dbConnection, DBVersion);
+            log.error("Unable to fetch network interface");
 
-		getInetAddress();
-		
-		sphereConfig = new SpherePropertiesMock();
-		spherePersistence = (ISpherePersistence) regPersistence;
-		sphereRegistry  = new SphereRegistry();
-		cryptoEngine = new CryptoEngine(sphereRegistry );
-		sadlPersistence = (ISadlPersistence) regPersistence;
-		uhuSadlManager = new UhuSadlManager(sadlPersistence);
-		uhuComms = mock(IUhuComms.class);
-		CommsProperties commsProperties = new CommsProperties();
-		uhuComms.initComms(commsProperties, inetAddr, uhuSadlManager,  null);
-		uhuComms.startComms();
-		uhuSadlManager.initSadlManager(uhuComms);
-		
-		setupUpaDevice();
+        }
+        return null;
+    }
+
+    void setUPTestEnv() throws IOException, SQLException,
+            Exception {
+
+        dbConnection = new DatabaseConnectionForJava(DBPath);
+        RegistryPersistence regPersistence = new RegistryPersistence(
+                dbConnection, DBVersion);
+
+        getInetAddress();
+
+        sphereConfig = new SpherePropertiesMock();
+        spherePersistence = (ISpherePersistence) regPersistence;
+        sphereRegistry = new SphereRegistry();
+        cryptoEngine = new CryptoEngine(sphereRegistry);
+        sadlPersistence = (ISadlPersistence) regPersistence;
+        uhuSadlManager = new UhuSadlManager(sadlPersistence);
+        uhuComms = mock(IUhuComms.class);
+        CommsProperties commsProperties = new CommsProperties();
+        uhuComms.initComms(commsProperties, inetAddr, uhuSadlManager, null);
+        uhuComms.startComms();
+        uhuSadlManager.initSadlManager(uhuComms);
+
+        setupUpaDevice();
 /*		UhuSphere sphereForSadl = new UhuSphere(cryptoEngine, upaDevice, sphereRegistry);
-		UhuCompManager.setSphereForSadl(sphereForSadl );*/
-	}
+        UhuCompManager.setSphereForSadl(sphereForSadl );*/
+    }
 
-	 void setupUpaDevice() {
-		upaDevice = new MockUPADevice();
-		UhuCompManager.setUpaDevice(upaDevice);
-	}
+    void setupUpaDevice() {
+        upaDevice = new MockUPADevice();
+        UhuCompManager.setUpaDevice(upaDevice);
+    }
 
-	private static InetAddress getInetAddress() {
-		try {
+    void destroyTestSetUp() throws SQLException,
+            IOException, Exception {
+        ((RegistryPersistence) uhuSadlManager.sadlPersistence)
+                .clearPersistence();
+        TableUtils.dropTable(dbConnection.getDatabaseConnection(),
+                UhuRegistry.class, true);
+    }
 
-			for (Enumeration<NetworkInterface> en = NetworkInterface
-					.getNetworkInterfaces(); en.hasMoreElements();) {
-				NetworkInterface intf = en.nextElement();
-				for (Enumeration<InetAddress> enumIpAddr = intf
-						.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+    void clearSadlPersistence() {
 
-					InetAddress inetAddress = enumIpAddr.nextElement();
-					if (!inetAddress.isLoopbackAddress()
-							&& !inetAddress.isLinkLocalAddress()
-							&& inetAddress.isSiteLocalAddress()) {
+        uhuSadlManager.sadlPersistence = null;
+    }
 
-						inetAddr = UhuNetworkUtilities.getIpForInterface(intf);
-						return inetAddr;
-					}
+    void restoreSadlPersistence() {
 
-				}
-			}
-		} catch (SocketException e) {
-
-			log.error("Unable to fetch network interface");
-
-		}
-		return null;
-	}
-
-	void destroyTestSetUp() throws SQLException,
-			IOException, Exception {
-		((RegistryPersistence) uhuSadlManager.sadlPersistence)
-				.clearPersistence();
-		TableUtils.dropTable(dbConnection.getDatabaseConnection(),
-				UhuRegistry.class, true);
-	}
-	
-	void clearSadlPersistence(){
-		
-		uhuSadlManager.sadlPersistence = null;
-	}
-	void restoreSadlPersistence(){
-		
-		uhuSadlManager.sadlPersistence = this.sadlPersistence;
-	}
+        uhuSadlManager.sadlPersistence = this.sadlPersistence;
+    }
 
 }

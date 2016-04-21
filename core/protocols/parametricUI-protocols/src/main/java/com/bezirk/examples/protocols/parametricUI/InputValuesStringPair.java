@@ -7,6 +7,6 @@ package com.bezirk.examples.protocols.parametricUI;
  * Pair: value, unit
  */
 public class InputValuesStringPair {
-	public String value;
-	public String unit;
+    public String value;
+    public String unit;
 }

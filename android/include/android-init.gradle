@@ -8,5 +8,5 @@ task androidInit << {
     sourcesDir.mkdirs()
     resourcesDir.mkdirs()
     testDir.mkdirs()
-   // new File("build.gradle").createNewFile()
+    // new File("build.gradle").createNewFile()
 }

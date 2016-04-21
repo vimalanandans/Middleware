@@ -15,20 +15,18 @@ public class CommsFactory {
 
     CommsFeature activeComms = CommsFeature.COMMS_UHU;
 
-    IUhuComms getComms(){
+    IUhuComms getComms() {
 
-        if(!CommsFeature.COMMS_UHU.isActive() &&  !CommsFeature.COMMS_ZYRE.isActive())
-        {
+        if (!CommsFeature.COMMS_UHU.isActive() && !CommsFeature.COMMS_ZYRE.isActive()) {
             log.error("both comms are not active. Selecting only the default comms");
             // log
         }
 
         // we can't keep both comms active. not yet.
-        if(CommsFeature.COMMS_UHU.isActive() &&  CommsFeature.COMMS_ZYRE.isActive())
-        {
+        if (CommsFeature.COMMS_UHU.isActive() && CommsFeature.COMMS_ZYRE.isActive()) {
             log.error("both comms active. Selecting only the default comms");
             // log
-        } else if(CommsFeature.COMMS_ZYRE.isActive()){
+        } else if (CommsFeature.COMMS_ZYRE.isActive()) {
 
             activeComms = CommsFeature.COMMS_ZYRE;
 
@@ -36,11 +34,11 @@ public class CommsFactory {
         }
         return null;
     }
+
     /**
      * Selects the active comms
-     * */
-    public CommsFeature getActiveComms()
-    {
+     */
+    public CommsFeature getActiveComms() {
         return activeComms;
     }
 

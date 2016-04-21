@@ -1,26 +1,25 @@
 package com.bezirk.util;
 
+import com.bezirk.commons.UhuCompManager;
+import com.bezirk.statckstatus.ui.StackStatusUI;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JOptionPane;
 
-import com.bezirk.commons.UhuCompManager;
-import com.bezirk.statckstatus.ui.StackStatusUI;
-
 /**
  * @author AJC6KOR
- *
  */
-public class TestUIMouseListener implements MouseListener{
+public class TestUIMouseListener implements MouseListener {
 
     private final String uiType;
     private final com.bezirk.commstest.ui.CommsTest commsTest;
     private final Integer pingCount;
     private final String misMatchVersion;
-    
+
     public TestUIMouseListener(String uiType, com.bezirk.commstest.ui.CommsTest commsTest, Integer pingCount,
-            String misMatchVersion) {
+                               String misMatchVersion) {
         super();
         this.uiType = uiType;
         this.commsTest = commsTest;
@@ -45,7 +44,7 @@ public class TestUIMouseListener implements MouseListener{
             StackStatusUI.showStackStatusUI(false, misMatchVersion);
         }
 
-    
+
     }
 
     @Override
@@ -55,19 +54,19 @@ public class TestUIMouseListener implements MouseListener{
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
-      //Nothing to be done
-        
+        //Nothing to be done
+
     }
 
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
-      //Nothing to be done
-        
+        //Nothing to be done
+
     }
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
-      //Nothing to be done
-        
+        //Nothing to be done
+
     }
 }

@@ -8,11 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.PipeListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
-import com.bezirk.sphere.api.IUhuSphereAPI;
-import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.UhuValidatorUtility;
 
@@ -33,7 +33,7 @@ public class DeviceListActivityHelper {
         this.deviceListActivity = deviceListActivity;
     }
 
-    void configureFilterDevicesAndPipes(View view,final SphereListItem entry) {
+    void configureFilterDevicesAndPipes(View view, final SphereListItem entry) {
         final Button filterDevices = (Button) view
                 .findViewById(R.id.filter_devices);
         final Button filterPipes = (Button) view
@@ -154,7 +154,7 @@ public class DeviceListActivityHelper {
         deviceListActivity.startActivityForResult(intent, ScannerActivity.REQUEST_CODE);
     }
 
-    boolean processQRcode(String data, String scanType,String sphereID) {
+    boolean processQRcode(String data, String scanType, String sphereID) {
         boolean qrProcessStatus = false;
         IUhuSphereAPI api = MainService.getSphereHandle();
         if (UhuValidatorUtility.isObjectNotNull(api)) {

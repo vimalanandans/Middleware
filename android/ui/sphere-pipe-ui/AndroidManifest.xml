@@ -4,6 +4,7 @@
     package="com.bezirk.spheremanager"
     android:versionCode="1"
     android:versionName="1.0">
+
     <uses-sdk
         android:minSdkVersion="13"
         android:targetSdkVersion="19" />
@@ -27,17 +28,15 @@
 
         <activity
             android:name="com.bezirk.spheremanager.PipeActivity"
-            android:label="Pipe Activity">
-        </activity>
+            android:label="Pipe Activity"></activity>
         <activity
             android:name="com.bezirk.spheremanager.SphereListActivity"
-            android:label="@string/app_name"
-            android:configChanges="orientation|screenSize">
-        </activity>
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"></activity>
         <activity
             android:name="com.bezirk.spheremanager.DeviceListActivity"
             android:label="@string/title_sphere_detail"
-            android:parentActivityName="com.bezirk.spheremanager.SphereListActivity" >
+            android:parentActivityName="com.bezirk.spheremanager.SphereListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bezirk.spheremanager.SphereListActivity" />
@@ -45,23 +44,23 @@
         <activity
             android:name="com.bezirk.spheremanager.SelectServiceActivity"
             android:label="@string/title_activity_member_detail"
-            android:parentActivityName="com.bezirk.spheremanager.DeviceListActivity" >
+            android:parentActivityName="com.bezirk.spheremanager.DeviceListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bezirk.spheremanager.DeviceListActivity" />
         </activity>
         <!--<activity-->
-            <!--android:name=".ScanActivity"-->
-            <!--android:label="@string/title_activity_scan"-->
-            <!--android:parentActivityName=".SphereListActivity" >-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value="SphereListActivity" />-->
+        <!--android:name=".ScanActivity"-->
+        <!--android:label="@string/title_activity_scan"-->
+        <!--android:parentActivityName=".SphereListActivity" >-->
+        <!--<meta-data-->
+        <!--android:name="android.support.PARENT_ACTIVITY"-->
+        <!--android:value="SphereListActivity" />-->
         <!--</activity>-->
         <activity
             android:name="com.bezirk.spheremanager.NewPipeActivity"
             android:label="@string/title_activity_pipe"
-            android:parentActivityName="com.bezirk.spheremanager.SphereListActivity" >
+            android:parentActivityName="com.bezirk.spheremanager.SphereListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bezirk.spheremanager.SphereListActivity" />
@@ -69,7 +68,7 @@
         <activity
             android:name="com.bezirk.spheremanager.ShareSphereActivity"
             android:label="@string/title_activity_share_sphere"
-            android:parentActivityName="com.bezirk.spheremanager.DeviceListActivity" >
+            android:parentActivityName="com.bezirk.spheremanager.DeviceListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bezirk.spheremanager.DeviceListActivity" />
@@ -77,7 +76,7 @@
         <activity
             android:name="com.bezirk.spheremanager.PipePolicyActivity"
             android:label="@string/title_activity_pipe_policy"
-            android:parentActivityName="com.bezirk.spheremanager.NewPipeActivity" >
+            android:parentActivityName="com.bezirk.spheremanager.NewPipeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bezirk.spheremanager.PipeActivity" />
@@ -85,7 +84,7 @@
         <activity
             android:name="com.bezirk.spheremanager.InformationActivity"
             android:label="@string/title_activity_information"
-            android:parentActivityName="com.bezirk.spheremanager.SelectServiceActivity" >
+            android:parentActivityName="com.bezirk.spheremanager.SelectServiceActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bezirk.spheremanager.SelectServiceActivity" />
@@ -93,7 +92,7 @@
         <activity
             android:name="com.bezirk.spheremanager.PipeListActivity"
             android:label="@string/title_activity_manage_pipes"
-            android:parentActivityName="com.bezirk.spheremanager.SphereListActivity" >
+            android:parentActivityName="com.bezirk.spheremanager.SphereListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bezirk.spheremanager.SphereListActivity" />
@@ -101,7 +100,7 @@
         <activity
             android:name="com.bezirk.spheremanager.ManagePipesActivity"
             android:label="@string/title_activity_manage_pipes"
-            android:parentActivityName="com.bezirk.spheremanager.PipeListActivity" >
+            android:parentActivityName="com.bezirk.spheremanager.PipeListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bezirk.spheremanager.PipeListActivity" />
@@ -109,7 +108,7 @@
         <activity
             android:name="com.bezirk.spheremanager.UpdateUserCredentialsActivity"
             android:label="@string/title_activity_update_user_credentials"
-            android:parentActivityName="com.bezirk.spheremanager.PipeListActivity" >
+            android:parentActivityName="com.bezirk.spheremanager.PipeListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bezirk.spheremanager.PipeListActivity" />

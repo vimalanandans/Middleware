@@ -20,22 +20,20 @@ public enum CommsFeature {
     // zyre-jni is platform specific (as of now). hence this needs to handled in java-build or android build
     // comms-jni will be platform specific
     COMMS_ZYRE_JNI,
-    
+
     // comms jyre implementation
     COMMS_JYRE,
-    
+
     WIRE_MSG_COMPRESSION,
-    
+
     WIRE_MSG_ENCRYPTION,
-    
+
     HTTP_BEZIRK_COMMS;
 
-    private static Properties properties;
-
     private static final Logger log = LoggerFactory.getLogger(CommsFeature.class);
+    private static Properties properties;
+    private String value;
 
-    private String  value;
-    
     private void init() {
         if (properties == null) {
             properties = new Properties();
@@ -43,21 +41,23 @@ public enum CommsFeature {
                 //properties.load(Constants.class.getResourceAsStream(PATH));
                 ClassLoader loader = Thread.currentThread().getContextClassLoader();
                 properties.load(loader.getResourceAsStream("features.properties"));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 log.error("Unable to load features.properties file from classpath.", e);
             }
         }
         value = (String) properties.get(this.toString());
     }
+
     public String getValue() {
-    	if (value == null) {
-    		init();
-    	}
-    	return value;
+        if (value == null) {
+            init();
+        }
+        return value;
     }
 
-    /**assuming everything boolean.*/
+    /**
+     * assuming everything boolean.
+     */
     public boolean isActive() {
         if (value == null) {
             init();

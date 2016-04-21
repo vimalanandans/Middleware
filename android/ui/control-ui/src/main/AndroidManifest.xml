@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.bezirk.controlui" >
+    package="com.bezirk.controlui">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -16,20 +16,20 @@
         android:icon="@drawable/upa_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        tools:replace="icon, label, theme" >
+        tools:replace="icon, label, theme">
         <!-- The receiver is now bound to the DeviceControlActivity lifecycle -->
         <!--<receiver android:name=".DeviceControlActivity$DeviceIntentReceiver" >-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.bosch.upa.uhu.controluinotfication" >-->
-                    <!--<category android:name="android.intent.category.DEFAULT" />-->
-                <!--</action>-->
-            <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="com.bosch.upa.uhu.controluinotfication" >-->
+        <!--<category android:name="android.intent.category.DEFAULT" />-->
+        <!--</action>-->
+        <!--</intent-filter>-->
         <!--</receiver>-->
 
         <activity
             android:name="com.bezirk.controlui.ControlActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,21 +38,18 @@
         </activity>
         <activity
             android:name="com.bezirk.controlui.DeviceControlActivity"
-            android:label="@string/title_activity_device_control" >
-        </activity>
+            android:label="@string/title_activity_device_control"></activity>
         <activity
             android:name="com.bezirk.controlui.RestConfigActivity"
-            android:label="Rest configurations" >
-        </activity>
+            android:label="Rest configurations"></activity>
         <activity
             android:name="com.bezirk.controlui.DeviceTypeSelection"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="Device Type Selection" >
-        </activity>
+            android:label="Device Type Selection"></activity>
 
         <service
             android:name="com.bezirk.starter.MainService"
-            android:exported="true" >
+            android:exported="true">
 
         </service>
 
@@ -68,21 +65,17 @@
 
         <activity
             android:name="com.bezirk.controlui.logging.SphereSelectLoggingActivity"
-            android:label="@string/title_activity_sphere_select_logging" >
-        </activity>
+            android:label="@string/title_activity_sphere_select_logging"></activity>
         <activity
             android:name="com.bezirk.controlui.logging.LogDataActivity"
             android:label="@string/title_activity_log_data"
-            android:screenOrientation="landscape" >
-        </activity>
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name="com.bezirk.controlui.commstest.CommsTestActivity"
-            android:label="@string/title_activity_comms_test" >
-        </activity>
+            android:label="@string/title_activity_comms_test"></activity>
         <activity
             android:name="com.bezirk.controlui.DiagnosisActivity"
-            android:label="@string/title_activity_diagnosis" >
-        </activity>
+            android:label="@string/title_activity_diagnosis"></activity>
     </application>
 
 </manifest>

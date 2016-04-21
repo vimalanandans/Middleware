@@ -20,10 +20,10 @@
     <color name="bg_ping_sent">#BDD6B9</color>
     <color name="bg_ping_received">#E1FFDC</color>
     <color name="bg_info_label">#B02000</color>
-<!--    <color name="list_item_bg">#44a8eb</color>
-    <color name="list_item_select">#126188</color>
-    <color name="action_bar_bg">#44a8eb</color>
-    <color name="action_bar_text">#126188</color>
-    -->
+    <!--    <color name="list_item_bg">#44a8eb</color>
+        <color name="list_item_select">#126188</color>
+        <color name="action_bar_bg">#44a8eb</color>
+        <color name="action_bar_text">#126188</color>
+        -->
 
 </resources>

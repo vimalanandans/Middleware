@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="4dp"
-    tools:context="com.bezirk.spheremanager.ScanActivity" >
+    tools:context="com.bezirk.spheremanager.ScanActivity">
 
     <FrameLayout
         android:id="@+id/scan_container_in_activity"

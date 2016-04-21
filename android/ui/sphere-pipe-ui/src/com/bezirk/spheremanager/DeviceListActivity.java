@@ -20,16 +20,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.spheremanager.ui.DialogServiceListFragment;
-import com.bezirk.spheremanager.ui.listitems.SphereListItem;
-import com.bezirk.spheremanager.ui.DeviceListFragment;
-import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallbacks;
-import com.bezirk.spheremanager.ui.PipeListFragment.ShowPipesCallbacks;
-import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.commons.UhuCompManager;
+import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.pipe.core.PipeRecord;
 import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.spheremanager.ui.DeviceListFragment;
+import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallbacks;
+import com.bezirk.spheremanager.ui.DialogServiceListFragment;
+import com.bezirk.spheremanager.ui.PipeListFragment.ShowPipesCallbacks;
+import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuActionCommands;
 import com.bezirk.util.UhuValidatorUtility;
@@ -49,22 +49,20 @@ import bezirk.zbarscanner.ScannerActivity;
  */
 public class DeviceListActivity extends FragmentActivity implements
         DeviceListFragmentCallbacks, ShowPipesCallbacks, DialogServiceListFragment.DialogServiceListFragmentCallback {
+    public static final String ARG_DEVICE_ID = "device_id";
     static final int DETAIL_CODE_REQUEST = 5;
     static final int DETAIL_PIPE_REQUEST = 23;
     static final int USER_CREDENTIALS_REQUEST = 24;
     static final String SHARE = "share";
     static final String CATCH = "catch";
     static final String SCANTYPE = "scantype";
-
     private static final String TAG = "DeviceListActivity";
-    public static final String ARG_DEVICE_ID = "device_id";
-
     private SphereListItem entry;
     private String sphereName;
     private String sphereID;
 
-    private SphereIntentReceiver sphereIntentReceiver ;
-    private  DeviceListActivityHelper deviceListActivityHelper;
+    private SphereIntentReceiver sphereIntentReceiver;
+    private DeviceListActivityHelper deviceListActivityHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +93,7 @@ public class DeviceListActivity extends FragmentActivity implements
         View view = (View) layoutInflater.inflate(
                 R.layout.activity_devicelist_smartphone, null);
 
-        deviceListActivityHelper.configureFilterDevicesAndPipes(view,entry);
+        deviceListActivityHelper.configureFilterDevicesAndPipes(view, entry);
 
         // Embed list via Fragment
         deviceListActivityHelper.updateContainer(entry);
@@ -110,7 +108,7 @@ public class DeviceListActivity extends FragmentActivity implements
 
         ImageView img = (ImageView) view.findViewById(R.id.sphere_icon);
 
-        deviceListActivityHelper.setImageSourceForSphereType(img,entry);
+        deviceListActivityHelper.setImageSourceForSphereType(img, entry);
 
         Button catchDeviceButton = deviceListActivityHelper.configureCatchButton(view);
 
@@ -152,41 +150,6 @@ public class DeviceListActivity extends FragmentActivity implements
     @Override
     public void onAddServicesToSphere() {
         deviceListActivityHelper.updateContainer(entry);
-    }
-
-    /**
-     * Broadcast event receiver for Uhu Stack sphere management results
-     */
-    public class SphereIntentReceiver extends BroadcastReceiver {
-        private final String TAG = "SphereIntentReceiver";
-
-        private final DeviceListActivity parent;
-
-        SphereIntentReceiver(DeviceListActivity activity) {
-            parent = activity;
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.i(TAG, "Received Intent for Device control >" + intent.getAction());
-            String command = intent.getStringExtra(UhuActionCommands.UHU_ACTION_COMMANDS);
-            Log.i(TAG, "Command > " + command);
-            if (command.equals(UhuActionCommands.CMD_SPHERE_DISCOVERY_STATUS)) {
-                boolean Status = intent.getBooleanExtra(UhuActionCommands.UHU_ACTION_COMMAND_STATUS, false);
-                if (Status) { // when status is true
-                    if (deviceListActivityHelper != null) {
-                        deviceListActivityHelper.updateContainer(entry);
-                    }
-                } else {
-                    Toast.makeText(parent, "FAILED : " + command, Toast.LENGTH_SHORT).show();
-                }
-
-            } else if (command.equals(UhuActionCommands.CMD_SPHERE_CATCH_STATUS) ||
-                    command.equals(UhuActionCommands.CMD_SPHERE_SHARE_STATUS)) {
-                String message = intent.getStringExtra(UhuActionCommands.UHU_ACTION_COMMAND_MESSAGE);
-                Toast.makeText(parent, message, Toast.LENGTH_LONG).show();
-            }
-        }
     }
 
     @Override
@@ -294,9 +257,9 @@ public class DeviceListActivity extends FragmentActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ScannerActivity.REQUEST_CODE && resultCode == RESULT_OK) {
-                Bundle bundle = data.getExtras();
-                Log.d(TAG, "Getting value passed to bundle: " + bundle.getString(SCANTYPE));
-            deviceListActivityHelper.processQRcode(data.getStringExtra(ScannerActivity.DATA), bundle.getString(SCANTYPE),sphereID);
+            Bundle bundle = data.getExtras();
+            Log.d(TAG, "Getting value passed to bundle: " + bundle.getString(SCANTYPE));
+            deviceListActivityHelper.processQRcode(data.getStringExtra(ScannerActivity.DATA), bundle.getString(SCANTYPE), sphereID);
         }
     }
 
@@ -348,6 +311,41 @@ public class DeviceListActivity extends FragmentActivity implements
         super.onBackPressed();
         NavUtils.navigateUpTo(this, new Intent(this,
                 SphereListActivity.class));
+    }
+
+    /**
+     * Broadcast event receiver for Uhu Stack sphere management results
+     */
+    public class SphereIntentReceiver extends BroadcastReceiver {
+        private final String TAG = "SphereIntentReceiver";
+
+        private final DeviceListActivity parent;
+
+        SphereIntentReceiver(DeviceListActivity activity) {
+            parent = activity;
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i(TAG, "Received Intent for Device control >" + intent.getAction());
+            String command = intent.getStringExtra(UhuActionCommands.UHU_ACTION_COMMANDS);
+            Log.i(TAG, "Command > " + command);
+            if (command.equals(UhuActionCommands.CMD_SPHERE_DISCOVERY_STATUS)) {
+                boolean Status = intent.getBooleanExtra(UhuActionCommands.UHU_ACTION_COMMAND_STATUS, false);
+                if (Status) { // when status is true
+                    if (deviceListActivityHelper != null) {
+                        deviceListActivityHelper.updateContainer(entry);
+                    }
+                } else {
+                    Toast.makeText(parent, "FAILED : " + command, Toast.LENGTH_SHORT).show();
+                }
+
+            } else if (command.equals(UhuActionCommands.CMD_SPHERE_CATCH_STATUS) ||
+                    command.equals(UhuActionCommands.CMD_SPHERE_SHARE_STATUS)) {
+                String message = intent.getStringExtra(UhuActionCommands.UHU_ACTION_COMMAND_MESSAGE);
+                Toast.makeText(parent, message, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
 

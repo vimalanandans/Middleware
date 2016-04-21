@@ -10,6 +10,7 @@ import com.bezirk.control.messages.MessageLedger;
 public interface ICommsNotification {
     /**
      * Will be invoked if there is mismatch in the versions.
+     *
      * @param - details Message regarding the version mistach
      */
     public void versionMismatch(String mismatchedVersionId);

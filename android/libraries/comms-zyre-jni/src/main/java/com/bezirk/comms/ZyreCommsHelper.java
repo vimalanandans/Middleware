@@ -65,13 +65,15 @@ class ZyreCommsHelper {
         }
     }
 
-    /** handling the revieve */
-    Map<String,String> receive(Zyre zyre) {
+    /**
+     * handling the revieve
+     */
+    Map<String, String> receive(Zyre zyre) {
         String incoming = zyre.recv();
 
-        ConcurrentMap<String,String> eventMap = new ConcurrentHashMap<String, String>();
+        ConcurrentMap<String, String> eventMap = new ConcurrentHashMap<String, String>();
 
-        if((incoming == null) || incoming.isEmpty())
+        if ((incoming == null) || incoming.isEmpty())
             return eventMap;
 
         if (Thread.interrupted()) {
@@ -91,34 +93,32 @@ class ZyreCommsHelper {
         return eventMap;
     }
 
-    ConcurrentMap<String,String> parseMsg(String msg) {
-		/*
+    ConcurrentMap<String, String> parseMsg(String msg) {
+        /*
 			 * The message is created in the JNI C code with the statement:
 			 * snprintf(ret, len, "event::%s|peer::%s|group::%s|message::%s", event, peer, group, message)
 			 */
 
         String MSG_DELIM = "\\|";  // separates each part of the message
         int NUM_PARTS = 4;
-        ConcurrentMap<String,String> result = new ConcurrentHashMap<String, String>();
+        ConcurrentMap<String, String> result = new ConcurrentHashMap<String, String>();
         List<String> pairs = Arrays.asList(msg.split(MSG_DELIM, NUM_PARTS));
 
         if (pairs.size() != NUM_PARTS) {
-            Log.d(TAG,"recv() did not return exactly " + NUM_PARTS + " key/value pairs");
+            Log.d(TAG, "recv() did not return exactly " + NUM_PARTS + " key/value pairs");
             return result;
         }
 
         for (String pair : pairs) {
-            List<String> keyValueList = Arrays.asList( pair.split("::", 2) );
+            List<String> keyValueList = Arrays.asList(pair.split("::", 2));
             if (keyValueList.isEmpty()) {
                 // key and value are empty - do nothing
-            }
-            else {
+            } else {
                 int int1 = 1;
                 if (keyValueList.size() == int1) {
                     // value is null
                     result.put(keyValueList.get(0), null);
-                }
-                else {
+                } else {
                     result.put(keyValueList.get(0), keyValueList.get(int1));
                 }
             }
@@ -132,7 +132,7 @@ class ZyreCommsHelper {
     }
 
     void logKnownDevices() {
-        for(String deviceGroup : peers.keySet()) {
+        for (String deviceGroup : peers.keySet()) {
             log.debug("devices in " + deviceGroup + " : " + peers.get(deviceGroup));
         }
     }
@@ -153,8 +153,8 @@ class ZyreCommsHelper {
 
         boolean allRemovesSucceeded = true;
 
-        for (String peerGroup: peers.keySet()) {
-            if ( !removePeer(peerGroup, zyreDeviceId) ) {
+        for (String peerGroup : peers.keySet()) {
+            if (!removePeer(peerGroup, zyreDeviceId)) {
                 log.debug("remove failed: " + zyreDeviceId);
                 allRemovesSucceeded = false;
             }

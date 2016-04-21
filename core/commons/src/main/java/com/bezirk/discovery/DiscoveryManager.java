@@ -12,9 +12,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Created by Vimal on 11/16/2015.
- *
+ * <p/>
  * this delegates the service / sadl discovery related classes
- *
  */
 public class DiscoveryManager implements ICtrlMsgReceiver {
 
@@ -26,42 +25,39 @@ public class DiscoveryManager implements ICtrlMsgReceiver {
 
     private Thread discThread;
 
-    public DiscoveryManager(UhuSadlManager sadlManager, IUhuComms comms)
-    {
-       this.sadlManager = sadlManager;
-       this.comms = comms;
+    public DiscoveryManager(UhuSadlManager sadlManager, IUhuComms comms) {
+        this.sadlManager = sadlManager;
+        this.comms = comms;
     }
 
-    public boolean initDiscovery()
-    {
+    public boolean initDiscovery() {
 
         DiscoveryProcessor.setDiscovery(new Discovery());
-        discThread = new Thread (new DiscoveryProcessor() );
+        discThread = new Thread(new DiscoveryProcessor());
 
         /*SphereDiscoveryProcessor.setDiscovery(new SphereDiscovery(sphereDiscHandler));
         sphereDiscThread = new Thread(new SphereDiscoveryProcessor(sphereDiscHandler, this));*/
 
-        comms.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest,this);
+        comms.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, this);
 
-        comms.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryResponse,this);
+        comms.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryResponse, this);
 
-        if(discThread != null)
+        if (discThread != null)
             discThread.start();
 
         return true;
     }
 
-    public boolean stopDiscovery()
-    {
+    public boolean stopDiscovery() {
         //Interrupt Discovery Cleaner
-        if(discThread != null)
+        if (discThread != null)
             discThread.interrupt();
         return true;
     }
+
     @Override
     public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
-        switch (id)
-        {
+        switch (id) {
             case DiscoveryRequest:
                 final DiscoveryRequest req = (DiscoveryRequest) ControlMessage.deserialize(serializedMsg, DiscoveryRequest.class);
                 new DiscoveryRequestHandler(sadlManager, req, comms).getDiscoveryResponse();
@@ -71,12 +67,12 @@ public class DiscoveryManager implements ICtrlMsgReceiver {
                 //if tcMessage.message==null deserialize, else get tcMessage.message and typecast as response
                 final DiscoveryResponse response = (DiscoveryResponse) ControlMessage.deserialize(serializedMsg, DiscoveryResponse.class);
                 if (DiscoveryProcessor.getDiscovery().addResponse(response)) {
-                    log.debug( "Discovery Response added successfully");
+                    log.debug("Discovery Response added successfully");
                 } else
-                    log.debug( "Problem w adding response/invoking service listener");
+                    log.debug("Problem w adding response/invoking service listener");
                 break;
             default:
-                log.error("Unknown control message > "+id);
+                log.error("Unknown control message > " + id);
                 return false;
         }
         return true;

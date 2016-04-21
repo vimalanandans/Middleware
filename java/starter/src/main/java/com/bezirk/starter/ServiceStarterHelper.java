@@ -1,19 +1,12 @@
 package com.bezirk.starter;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.devices.UPADeviceForPC;
-import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.middleware.addressing.Location;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.device.UhuDevice;
 import com.bezirk.device.UhuDeviceType;
+import com.bezirk.devices.UPADeviceForPC;
+import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.middleware.addressing.Location;
 import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
@@ -24,12 +17,18 @@ import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.sphere.api.IUhuSphereRegistration;
 import com.bezirk.sphere.security.CryptoEngine;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Properties;
+
 /**
  * This is a helper class for service startup which handles the sphere
  * initialization and device configuration.
- * 
+ *
  * @author ajc6kor
- * 
  */
 final class ServiceStarterHelper {
 
@@ -38,13 +37,13 @@ final class ServiceStarterHelper {
 
     /**
      * create and initialise the Sphere
-     * 
+     *
      * @param comms
      * @param registryPersistence
      * @param sphereForPC
-     * */
+     */
     IUhuSphereAPI initSphere(final UPADeviceInterface uhuDevice,
-            final RegistryPersistence registryPersistence, final IUhuComms comms) {
+                             final RegistryPersistence registryPersistence, final IUhuComms comms) {
 
         // init the actual
         final ISpherePersistence spherePersistence = registryPersistence;
@@ -112,7 +111,7 @@ final class ServiceStarterHelper {
 
     /**
      * Initializes the UhuDevice and configures the location
-     * 
+     *
      * @param uhuConfig
      * @return
      */
@@ -146,7 +145,7 @@ final class ServiceStarterHelper {
 
     /**
      * deinitialize the Sphere
-     * */
+     */
     boolean deinitSphere(final MainService service) {
         // clear the reference
         service.sphereForPC = null;
@@ -160,11 +159,9 @@ final class ServiceStarterHelper {
 
     /**
      * Log the error message with an optional Throwable and then exit
-     * 
-     * @param errorMsg
-     *            Message to log before exiting
-     * @param throwable
-     *            May be null if not relevant
+     *
+     * @param errorMsg  Message to log before exiting
+     * @param throwable May be null if not relevant
      */
     void fail(final String errorMsg, final Throwable throwable) {
         LOGGER.error(errorMsg, throwable);

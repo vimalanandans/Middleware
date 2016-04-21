@@ -1,5 +1,13 @@
 package com.bezirk.sphere.security;
 
+import com.bezirk.commons.UhuId;
+import com.bezirk.middleware.objects.SphereVitals;
+import com.bezirk.persistence.SphereRegistry;
+import com.bezirk.sphere.api.ICryptoInternals;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.KeyPair;
@@ -8,14 +16,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.commons.UhuId;
-import com.bezirk.middleware.objects.SphereVitals;
-import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.api.ICryptoInternals;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -26,16 +26,14 @@ import javax.crypto.spec.SecretKeySpec;
 public final class CryptoEngine implements ICryptoInternals {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CryptoEngine.class);
-
-    // Encryption Service
-    private final UPABlockCipherService sphereCipherService = new UPABlockCipherService();
-
-    SphereRegistry registry = null;
-
     private static final String KEY_FACTORY_ALGORITHM = "DSA";
     private static final String SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
     private static final String KEY_FACTORY_ALGORITHM_PASS = "PBKDF2WithHmacSHA1";
     private static final String REGISTRY_ERROR = "registry is not initialized";
+    // Encryption Service
+    private final UPABlockCipherService sphereCipherService = new UPABlockCipherService();
+    SphereRegistry registry = null;
+
     /* initialize the registry reference */
     public CryptoEngine(SphereRegistry registry) {
         if (registry == null) {
@@ -48,13 +46,11 @@ public final class CryptoEngine implements ICryptoInternals {
     /**
      * This method generates the keys for a sphere if the passed sphereId is not
      * already present
-     * 
-     * @param sphereId
-     *            sphereId for which keys need to be generated
+     *
+     * @param sphereId sphereId for which keys need to be generated
      * @return true: if the keys were generated and stored successfully
-     * 
-     *         false otherwise
-     * 
+     * <p/>
+     * false otherwise
      */
     public final boolean generateKeys(String sphereId) {
 
@@ -83,7 +79,9 @@ public final class CryptoEngine implements ICryptoInternals {
         return success;
     }
 
-    /** create secret key basedon passcode */
+    /**
+     * create secret key basedon passcode
+     */
     public byte[] generateKey(String code) {
 
         try {
@@ -108,7 +106,9 @@ public final class CryptoEngine implements ICryptoInternals {
         return null;
     }
 
-    /** generate key pair */
+    /**
+     * generate key pair
+     */
     private KeyPair getKeyPair() {
         KeyPair pair = null;
         try {
@@ -129,15 +129,13 @@ public final class CryptoEngine implements ICryptoInternals {
     /**
      * This method generates the keys for a sphere if the passed sphereId is not
      * already present
-     *
+     * <p/>
      * for the symmetric key the code is generated form short id of sphere id
      *
-     * @param sphereId
-     *            sphereId for which keys need to be generated
+     * @param sphereId sphereId for which keys need to be generated
      * @return true: if the keys were generated and stored successfully
-     *
-     *         false otherwise
-     *
+     * <p/>
+     * false otherwise
      */
     public final boolean generateKeys(String sphereId, boolean fromSphereId) {
 
@@ -189,16 +187,14 @@ public final class CryptoEngine implements ICryptoInternals {
     /**
      * Encrypts the serializedContent with sphereKey associated with the
      * sphereId passed
-     * 
-     * @param sphereId
-     *            sphereId of the sphere for which serializedContent needs to be
-     *            encrypted
-     * @param serializedContent
-     *            content to be encrypted
+     *
+     * @param sphereId          sphereId of the sphere for which serializedContent needs to be
+     *                          encrypted
+     * @param serializedContent content to be encrypted
      * @return encrypted byte array if 1. sphereId is not null & has a sphereKey
-     *         associated with it 2. serializedContent is not null
-     * 
-     *         null otherwise
+     * associated with it 2. serializedContent is not null
+     * <p/>
+     * null otherwise
      */
     public final byte[] encryptSphereContent(String sphereId, String serializedContent) {
 
@@ -234,17 +230,15 @@ public final class CryptoEngine implements ICryptoInternals {
     /**
      * Decrypts the serializedContent with sphereKey associated with the
      * sphereId passed
-     * 
-     * @param sphereId
-     *            sphereId of the sphere for which serializedContent needs to be
-     *            decrypted
-     * @param serializedContent
-     *            content to be decrypted
+     *
+     * @param sphereId          sphereId of the sphere for which serializedContent needs to be
+     *                          decrypted
+     * @param serializedContent content to be decrypted
      * @return Decrypted serialized content String if 1. sphereId is not null &
-     *         has a sphereKey associated with it 2. serializedContent is not
-     *         null
-     * 
-     *         null otherwise
+     * has a sphereKey associated with it 2. serializedContent is not
+     * null
+     * <p/>
+     * null otherwise
      */
     public final String decryptSphereContent(String sphereId, byte[] serializedContent) {
 
@@ -278,34 +272,31 @@ public final class CryptoEngine implements ICryptoInternals {
 
     /**
      * Encrypts a stream into another stream
-     * 
-     * @param in
-     *            Input stream for incoming un-encrypted information
-     * @param out
-     *            Output stream for outgoing encrypted information
-     * @param sphereId
-     *            sphereId of the sphere for which input stream needs to be
-     *            encrypted
-     * 
-     *            <pre>
-     * NOTE: This method does NOT flush or close either stream prior to returning - the caller must do so when they are finished with the streams. For example:
-     * {@code try {
-     *       InputStream in = ...
-     *       OutputStream out = ...
-     *       uhuSphere.encryptSphereContent(in, out, sphereId);
-     *   } finally {
-     *       if (in != null) {
-     *           try {
-     *               in.close();
-     *           } catch (IOException ioe1) { ... log, trigger event, etc }
-     *       }
-     *       if (out != null) {
-     *           try {
-     *               out.close();
-     *           } catch (IOException ioe2) { ... log, trigger event, etc }
-     *       }
-     *   }}
-     *            </pre>
+     *
+     * @param in       Input stream for incoming un-encrypted information
+     * @param out      Output stream for outgoing encrypted information
+     * @param sphereId sphereId of the sphere for which input stream needs to be
+     *                 encrypted
+     *                 <p/>
+     *                 <pre>
+     *                 NOTE: This method does NOT flush or close either stream prior to returning - the caller must do so when they are finished with the streams. For example:
+     *                 {@code try {
+     *                       InputStream in = ...
+     *                       OutputStream out = ...
+     *                       uhuSphere.encryptSphereContent(in, out, sphereId);
+     *                   } finally {
+     *                       if (in != null) {
+     *                           try {
+     *                               in.close();
+     *                           } catch (IOException ioe1) { ... log, trigger event, etc }
+     *                       }
+     *                       if (out != null) {
+     *                           try {
+     *                               out.close();
+     *                           } catch (IOException ioe2) { ... log, trigger event, etc }
+     *                       }
+     *                   }}
+     *                            </pre>
      */
     public void encryptSphereContent(InputStream in, OutputStream out, String sphereId) {
 
@@ -325,34 +316,31 @@ public final class CryptoEngine implements ICryptoInternals {
 
     /**
      * Decrypts a stream into another stream
-     * 
-     * @param in
-     *            Input stream for incoming encrypted information
-     * @param out
-     *            Output stream for outgoing decrypted information
-     * @param sphereId
-     *            sphereId of the sphere for which input stream needs to be
-     *            decrypted
-     * 
-     *            <pre>
-     * NOTE: This method does NOT flush or close either stream prior to returning - the caller must do so when they are finished with the streams. For example:	
-     * {@code try {
-     *       InputStream in = ...
-     *       OutputStream out = ...
-     *       uhuSphere.decryptSphereContent(in, out, sphereId);
-     *   } finally {
-     *       if (in != null) {
-     *           try {
-     *               in.close();
-     *           } catch (IOException ioe1) { ... log, trigger event, etc }
-     *       }
-     *       if (out != null) {
-     *           try {
-     *               out.close();
-     *           } catch (IOException ioe2) { ... log, trigger event, etc }
-     *       }
-     *   }}
-     *            </pre>
+     *
+     * @param in       Input stream for incoming encrypted information
+     * @param out      Output stream for outgoing decrypted information
+     * @param sphereId sphereId of the sphere for which input stream needs to be
+     *                 decrypted
+     *                 <p/>
+     *                 <pre>
+     *                 NOTE: This method does NOT flush or close either stream prior to returning - the caller must do so when they are finished with the streams. For example:
+     *                 {@code try {
+     *                       InputStream in = ...
+     *                       OutputStream out = ...
+     *                       uhuSphere.decryptSphereContent(in, out, sphereId);
+     *                   } finally {
+     *                       if (in != null) {
+     *                           try {
+     *                               in.close();
+     *                           } catch (IOException ioe1) { ... log, trigger event, etc }
+     *                       }
+     *                       if (out != null) {
+     *                           try {
+     *                               out.close();
+     *                           } catch (IOException ioe2) { ... log, trigger event, etc }
+     *                       }
+     *                   }}
+     *                            </pre>
      */
     public void decryptSphereContent(InputStream in, OutputStream out, String sphereId) {
         if (registry == null) {
@@ -371,7 +359,7 @@ public final class CryptoEngine implements ICryptoInternals {
     /**
      * Provides the key details which can be used for sharing a sphere with
      * other devices Eq. using QR code
-     * 
+     *
      * @return
      */
     public SphereVitals getSphereVitals(String sphereId) {
@@ -396,11 +384,10 @@ public final class CryptoEngine implements ICryptoInternals {
 
     /**
      * validates the passed sphereId
-     * 
-     * @param sphereId
-     *            sphereId which needs to be validated
+     *
+     * @param sphereId sphereId which needs to be validated
      * @return true: if the passed sphereId is not null, sphereId exists in the
-     *         sphereKeyMap and has a not-null sphere key for encryption
+     * sphereKeyMap and has a not-null sphere key for encryption
      */
     private boolean validateSphere(String sphereId) {
         if (sphereId != null && registry.isKeymapExist(sphereId)) {
@@ -414,11 +401,10 @@ public final class CryptoEngine implements ICryptoInternals {
     /**
      * validates the sphere key associated with the sphere Id passed Requires
      * the sphereId passed to be validated
-     * 
-     * @param sphereId
-     *            sphereId for which sphere key needs to be validated
+     *
+     * @param sphereId sphereId for which sphere key needs to be validated
      * @return true: if the sphere key for the passed sphere id is valid false:
-     *         otherwise
+     * otherwise
      */
     private boolean validateSphereKey(String sphereId) {
         final SphereKeys sphereKeys = registry.getSphereKeys(sphereId);

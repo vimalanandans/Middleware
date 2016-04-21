@@ -1,14 +1,11 @@
 /**
- * 
+ *
  */
 package com.bezirk.test.sphere.crypto;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import com.bezirk.sphere.security.CryptoEngine;
+import com.bezirk.test.sphere.testUtilities.MockSetUpUtility;
+import com.bezirk.test.sphere.testUtilities.SphereTestUtility;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -16,18 +13,20 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.sphere.security.CryptoEngine;
-import com.bezirk.test.sphere.testUtilities.MockSetUpUtility;
-import com.bezirk.test.sphere.testUtilities.SphereTestUtility;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * @author rishabh
- *
  */
 public class EncryptDecryptStream {
-    private static CryptoEngine cryptoEngine;
     private static final Logger log = LoggerFactory.getLogger(EncryptDecryptStream.class);
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
+    private static CryptoEngine cryptoEngine;
     private static SphereTestUtility sphereTestUtility;
     private static String sphereId;
     private static String content = "Content to be encrypted";

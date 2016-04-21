@@ -21,28 +21,27 @@ import java.sql.SQLException;
  * Created by hkh5kor on 10/7/2014.
  */
 public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implements IDatabaseConnection {
-    private final Logger log = LoggerFactory.getLogger(DatabaseConnectionForAndroid.class);
-
-    private ConnectionSource dbConnectionSource;
-    private Dao<UhuRegistry,Integer> uhuPersistenceDao;
     private static final int DATABASE_VERSION = 1;
+    private final Logger log = LoggerFactory.getLogger(DatabaseConnectionForAndroid.class);
     private final Context mContext;
+    private ConnectionSource dbConnectionSource;
+    private Dao<UhuRegistry, Integer> uhuPersistenceDao;
 
     public DatabaseConnectionForAndroid(Context context) {
-        super(context, context.getFilesDir().getPath()+File.separator+ DBConstants.DB_FILE_NAME, null, DATABASE_VERSION);
+        super(context, context.getFilesDir().getPath() + File.separator + DBConstants.DB_FILE_NAME, null, DATABASE_VERSION);
         mContext = context;
     }
 
     @Override
     public ConnectionSource getDatabaseConnection() throws NullPointerException, SQLException, IOException, Exception {
-        if(null == dbConnectionSource)
-        dbConnectionSource = getPersistenceDAO().getConnectionSource();
+        if (null == dbConnectionSource)
+            dbConnectionSource = getPersistenceDAO().getConnectionSource();
         return dbConnectionSource;
     }
 
     @Override
     public Dao<UhuRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException, Exception {
-        if(null == uhuPersistenceDao){
+        if (null == uhuPersistenceDao) {
             uhuPersistenceDao = getDao(UhuRegistry.class);
             uhuPersistenceDao.setAutoCommit(true);
         }
@@ -52,13 +51,13 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         dbConnectionSource = connectionSource;
-        String internalMemoryPath = mContext.getFilesDir().getPath()+File.separator+ DBConstants.DB_FILE_NAME;
+        String internalMemoryPath = mContext.getFilesDir().getPath() + File.separator + DBConstants.DB_FILE_NAME;
         File tempDbFile = new File(internalMemoryPath);
-        if(!tempDbFile.exists()){
+        if (!tempDbFile.exists()) {
             try {
                 tempDbFile.createNewFile();
             } catch (IOException e) {
-                log.error(e.getMessage(),e);
+                log.error(e.getMessage(), e);
             }
         }
     }

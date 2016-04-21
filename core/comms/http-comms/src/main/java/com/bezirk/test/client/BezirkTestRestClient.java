@@ -7,41 +7,41 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 /**
  * This class will call the rest controller to test for a service response.
- * @author PIK6KOR
  *
+ * @author PIK6KOR
  */
 public class BezirkTestRestClient {
 
-	private final String USER_AGENT = "Mozilla/5.0";
+    private final String USER_AGENT = "Mozilla/5.0";
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		BezirkTestRestClient httpClient = new BezirkTestRestClient();
-		httpClient.sendPost();
-	}
+        BezirkTestRestClient httpClient = new BezirkTestRestClient();
+        httpClient.sendPost();
+    }
 
 
-	/**
-	 * send a post data to Party Application..
-	 */
-	private void sendPost() {
+    /**
+     * send a post data to Party Application..
+     */
+    private void sendPost() {
 
-		try{
-			String url = "http://192.168.1.3:8080/bezirk/service";
-			
+        try {
+            String url = "http://192.168.1.3:8080/bezirk/service";
+
 			
 			/*
 			 * 
 			 */
-			String xmlString = "</xml>";
-			DefaultHttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpRequest = new HttpPost(url);
-			httpRequest.setHeader("Content-Type", "application/xml");
-			StringEntity xmlEntity = new StringEntity(xmlString);
-			httpRequest.setEntity(xmlEntity );
-			HttpResponse httpresponse = httpClient.execute(httpRequest);
-	        
-	        // ******************
+            String xmlString = "</xml>";
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpRequest = new HttpPost(url);
+            httpRequest.setHeader("Content-Type", "application/xml");
+            StringEntity xmlEntity = new StringEntity(xmlString);
+            httpRequest.setEntity(xmlEntity);
+            HttpResponse httpresponse = httpClient.execute(httpRequest);
+
+            // ******************
 			
 			
 			
@@ -76,9 +76,9 @@ public class BezirkTestRestClient {
 
 			System.out.println(result.toString());*/
 
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.bezirk.sphere.api;
 
@@ -10,7 +10,6 @@ import com.bezirk.sphere.messages.ShareResponse;
 
 /**
  * @author Rishabh Gulati
- *
  */
 
 public interface IUhuSphereMessages {

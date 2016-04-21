@@ -5,8 +5,7 @@
         <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>
     <!-- ActionBar styles -->
-    <style name="MyActionBar"
-        parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="MyActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:background">@color/action_bar_bg</item>
     </style>
 </resources>

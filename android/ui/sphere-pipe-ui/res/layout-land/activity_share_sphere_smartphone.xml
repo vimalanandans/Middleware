@@ -6,17 +6,16 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.bezirk.spheremanager.ShareSphereActivity" >
+    tools:context="com.bezirk.spheremanager.ShareSphereActivity">
 
     <ImageView
         android:id="@+id/QR_Code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:contentDescription="@string/image_qr_code"
-        android:src="@drawable/ic_qrcode_sphere"
-        android:layout_centerInParent="true"/>
-
+        android:src="@drawable/ic_qrcode_sphere" />
 
 
 </RelativeLayout>

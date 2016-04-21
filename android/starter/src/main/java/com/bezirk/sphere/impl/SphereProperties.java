@@ -14,25 +14,20 @@ import java.util.Arrays;
  */
 public class SphereProperties implements ISphereConfig {
 
-    private IUhuDevMode.Mode mode;
-
-    /* Development sphere variables */
-    private String sphereName;
-    private String sphereId;
-    private byte[] sphereKey;
-
-    private String defaultSphereName;
-
     /* Keys used in sphere.properties */
     private static final String SPHERE_NAME = "sphereName";
     private static final String SPHERE_ID = "sphereId";
     private static final String SPHERE_KEY = "sphereKey";
     private static final String SPHERE_MODE = "devMode";
     private static final String DEFAULT_SPHERE_NAME = "defaultSphereName";
-
-    UhuPreferences preferences;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(SphereProperties.class);
+    UhuPreferences preferences;
+    private IUhuDevMode.Mode mode;
+    /* Development sphere variables */
+    private String sphereName;
+    private String sphereId;
+    private byte[] sphereKey;
+    private String defaultSphereName;
 
     /**
      * @param preferences: should not be null
@@ -76,7 +71,7 @@ public class SphereProperties implements ISphereConfig {
 
     @Override
     public boolean setDefaultSphereName(String name) {
-        if(preferences.putString(DEFAULT_SPHERE_NAME, name)){
+        if (preferences.putString(DEFAULT_SPHERE_NAME, name)) {
             this.defaultSphereName = name;
             return true;
         }
@@ -85,9 +80,9 @@ public class SphereProperties implements ISphereConfig {
 
     @Override
     public boolean setMode(IUhuDevMode.Mode mode) {
-        if(!this.mode.equals(mode)){
+        if (!this.mode.equals(mode)) {
             String modeToSet = (mode.equals(IUhuDevMode.Mode.ON)) ? "true" : "false";
-            if(preferences.putString(SPHERE_MODE, modeToSet)){
+            if (preferences.putString(SPHERE_MODE, modeToSet)) {
                 this.mode = mode;
                 return true;
             }
@@ -102,10 +97,10 @@ public class SphereProperties implements ISphereConfig {
      */
     private boolean validatePreferences() {
 
-        String[] spherePreferences = new String[]{SPHERE_NAME,SPHERE_ID,SPHERE_KEY,SPHERE_MODE,DEFAULT_SPHERE_NAME};
-        for(String spherePreference : spherePreferences){
+        String[] spherePreferences = new String[]{SPHERE_NAME, SPHERE_ID, SPHERE_KEY, SPHERE_MODE, DEFAULT_SPHERE_NAME};
+        for (String spherePreference : spherePreferences) {
 
-            if(!preferences.contains(spherePreference)){
+            if (!preferences.contains(spherePreference)) {
                 return false;
             }
 
@@ -134,7 +129,6 @@ public class SphereProperties implements ISphereConfig {
         LOGGER.info("Sphere name: " + sphereName + " sphereId: " + sphereId + " sphereKey: " + Arrays.toString(sphereKey)
                 + " mode: " + mode + " defaultSphereName: " + defaultSphereName);
     }
-
 
 
 }

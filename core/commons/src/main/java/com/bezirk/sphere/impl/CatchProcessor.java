@@ -1,41 +1,39 @@
 package com.bezirk.sphere.impl;
 
+import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.sphere.api.ICryptoInternals;
+import com.bezirk.sphere.api.IUhuSphereListener;
+import com.bezirk.sphere.messages.CatchRequest;
+import com.bezirk.sphere.messages.CatchResponse;
+import com.bezirk.sphere.security.SphereKeys;
+import com.bezrik.network.UhuNetworkUtilities;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bezirk.sphere.api.IUhuSphereListener;
-import com.bezirk.sphere.security.SphereKeys;
-import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezrik.network.UhuNetworkUtilities;
-import com.bezirk.proxy.api.impl.UhuServiceId;
-import com.bezirk.sphere.api.ICryptoInternals;
-import com.bezirk.sphere.messages.CatchRequest;
-import com.bezirk.sphere.messages.CatchResponse;
-
 /**
  * @author rishabh
- *
  */
-public class CatchProcessor { 
+public class CatchProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CatchProcessor.class);
+    private static final String CATCH_FAILURE_MSG = "Catch Failed";
     private SphereRegistryWrapper sphereRegistryWrapper;
     private ICryptoInternals crypto;
     private UPADeviceInterface upaDeviceInterface;
     private CommsUtility comms;
-    private static final String CATCH_FAILURE_MSG = "Catch Failed";
 
     public CatchProcessor(ICryptoInternals crypto, UPADeviceInterface upaDeviceInterface,
-            CommsUtility comms, SphereRegistryWrapper sphereRegistryWrapper) {
+                          CommsUtility comms, SphereRegistryWrapper sphereRegistryWrapper) {
         this.crypto = crypto;
         this.upaDeviceInterface = upaDeviceInterface;
         this.comms = comms;
@@ -48,10 +46,9 @@ public class CatchProcessor {
 
     /**
      * Process the catch qr code/short-code request
-     * 
-     * @param catchCode
-     *            can be in the form of qr-code or a 7-digit[may change later]
-     *            code
+     *
+     * @param catchCode can be in the form of qr-code or a 7-digit[may change later]
+     *                  code
      * @param sphereId
      * @return
      */
@@ -128,7 +125,7 @@ public class CatchProcessor {
 
     /**
      * Process the catch response received from sphere/device being caught
-     * 
+     *
      * @param catchResponse
      * @return
      */
@@ -184,7 +181,7 @@ public class CatchProcessor {
 
     /**
      * Process catch request received from the catcher device
-     * 
+     *
      * @param catchRequest
      * @return
      */
@@ -257,7 +254,7 @@ public class CatchProcessor {
 
     /**
      * Store the data
-     * 
+     *
      * @param sphereExchangeData - has to be non-null
      * @return
      */
@@ -296,7 +293,7 @@ public class CatchProcessor {
 
     /**
      * Validates the qrcode string/short code
-     * 
+     *
      * @param inviterCatchCode
      * @return
      */
@@ -318,7 +315,7 @@ public class CatchProcessor {
 
     /**
      * Add keys for the short code
-     * 
+     *
      * @param inviterShortCode
      * @return
      */
@@ -343,8 +340,8 @@ public class CatchProcessor {
     /**
      * Generate the catch request to be sent to the device whose services need
      * to be caught
-     * 
-     * @param catcherSphereId - has to be non-null. null check done in {@link #processCatchCode(String, String)}
+     *
+     * @param catcherSphereId  - has to be non-null. null check done in {@link #processCatchCode(String, String)}
      * @param inviterShortCode - has to be non-null. null check done in {@link #processCatchCode(String, String)}
      * @return - CatchRequest object if catcherSphereId and inviterShortCode are valid.
      */
@@ -388,7 +385,7 @@ public class CatchProcessor {
 
     /**
      * Validate the Catch request: shortCode, sphereExchangeData, uhuDeviceInfo
-     * 
+     *
      * @param catchRequest
      * @return
      */
@@ -422,21 +419,21 @@ public class CatchProcessor {
         }
         return true;
     }
-    
+
     /**
      * Generate the catch response to be sent.
-     * 
-     * @param sphereExchangeData - has to be non-null
+     *
+     * @param sphereExchangeData   - has to be non-null
      * @param catcherUhuDeviceInfo - has to be non-null
-     * @param inviterShortCode - has to be non-null
-     * @param - catcherSphereId
+     * @param inviterShortCode     - has to be non-null
+     * @param -                    catcherSphereId
      * @return - CatchResponse object if all parameters are valid.
-     *           <br>- Exception if sphereExchangeData or catcherUhuDeviceInfo are null
-     *           <br>- null if catcherSphereId is null.
+     * <br>- Exception if sphereExchangeData or catcherUhuDeviceInfo are null
+     * <br>- null if catcherSphereId is null.
      */
 
     private CatchResponse prepareResponse(SphereExchangeData sphereExchangeData, UhuDeviceInfo catcherUhuDeviceInfo,
-            String inviterShortCode, String catcherSphereId) {
+                                          String inviterShortCode, String catcherSphereId) {
 
         Sphere catchCodeGeneratorSphere = sphereRegistryWrapper
                 .getSphere(sphereRegistryWrapper.getSphereIdFromPasscode(inviterShortCode));

@@ -1,12 +1,14 @@
 package com.bezirk.proxy.pc;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.net.UnknownHostException;
-import java.util.concurrent.ConcurrentHashMap;
+import com.bezirk.discovery.DiscoveryLabel;
+import com.bezirk.discovery.DiscoveryProcessor;
+import com.bezirk.discovery.DiscoveryRecord;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.proxy.api.impl.SubscribedRole;
+import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.sadl.UhuSadlManager;
+import com.bezirk.util.MockProtocolsForUhuPC;
+import com.bezirk.util.MockSetUpUtilityForUhuPC;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,176 +16,170 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bezirk.middleware.addressing.Location;
-import com.bezirk.discovery.DiscoveryLabel;
-import com.bezirk.discovery.DiscoveryProcessor;
-import com.bezirk.discovery.DiscoveryRecord;
-import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuServiceId;
-import com.bezirk.sadl.UhuSadlManager;
-import com.bezirk.util.MockProtocolsForUhuPC;
-import com.bezirk.util.MockSetUpUtilityForUhuPC;
+import java.net.UnknownHostException;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
- *  This testcase verfies the methods in ProxyForServices class.
- *  
- * @author AJC6KOR
+ * This testcase verfies the methods in ProxyForServices class.
  *
+ * @author AJC6KOR
  */
 public class ProxyForServicesTest {
 
-	private static final MockSetUpUtilityForUhuPC mockSetUP = new MockSetUpUtilityForUhuPC();
-	private static UhuSadlManager sadlManager;
+    private static final MockSetUpUtilityForUhuPC mockSetUP = new MockSetUpUtilityForUhuPC();
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProxyForServicesTest.class);
+    private static UhuSadlManager sadlManager;
+    private final String serviceName = "MockServiceA";
+    private final String serviceAId = "MockServiceAId";
+    private final UhuServiceId uhuServiceAId = new UhuServiceId(serviceAId);
+    private final MockProtocolsForUhuPC.DummyProtocol dummyProtocol = new MockProtocolsForUhuPC().new DummyProtocol();
+    private final SubscribedRole pRole = new SubscribedRole(dummyProtocol);
 
-	private final String serviceName = "MockServiceA";
-	private final String serviceAId = "MockServiceAId";
-	private final UhuServiceId uhuServiceAId = new UhuServiceId(serviceAId);
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
 
-	private final MockProtocolsForUhuPC.DummyProtocol dummyProtocol = new MockProtocolsForUhuPC().new DummyProtocol();
-	private final SubscribedRole pRole = new SubscribedRole(dummyProtocol);
+        LOGGER.info("********** Setting up ProxyForServicesTest Testcase **********");
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProxyForServicesTest.class);
+        mockSetUP.setUPTestEnv();
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+        try {
+            sadlManager = mockSetUP.getUhuSadlManager();
+        } catch (UnknownHostException e) {
+            fail("Unable to set up test environment.");
+        }
+    }
 
-		LOGGER.info("********** Setting up ProxyForServicesTest Testcase **********");
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
 
-		mockSetUP.setUPTestEnv();
+        LOGGER.info("********** Shutting down ProxyForServicesTest Testcase **********");
 
-		try {
-			sadlManager = mockSetUP.getUhuSadlManager();
-		} catch (UnknownHostException e) {
-			fail("Unable to set up test environment.");
-		}
-	}
+        mockSetUP.destroyTestSetUp();
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
+    }
 
-		LOGGER.info("********** Shutting down ProxyForServicesTest Testcase **********");
+    @Test
+    public void test() {
 
-		mockSetUP.destroyTestSetUp();
+        testRegisterService();
 
-	}
+        testSubscribeService();
 
-	@Test
-	public void test() {
+        testUnSubscribeService();
 
-		testRegisterService();
+        testUnregisterService();
 
-		testSubscribeService();
+        testDiscover();
 
-		testUnSubscribeService();
+        testSetLocation();
+    }
 
-		testUnregisterService();
+    private void testRegisterService() {
+        com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
+        proxyforServices.setSadlRegistry(sadlManager);
 
-		testDiscover();
+        proxyforServices.registerService(uhuServiceAId, serviceName);
 
-		testSetLocation();
-	}
+        assertTrue("Proxy is unable to register service. ",
+                sadlManager.isServiceRegisterd(uhuServiceAId));
 
-	private void testRegisterService() {
-		com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
-		proxyforServices.setSadlRegistry(sadlManager);
+        proxyforServices.unregister(uhuServiceAId);
+    }
 
-		proxyforServices.registerService(uhuServiceAId, serviceName);
+    private void testSubscribeService() {
+        com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
+        proxyforServices.setSadlRegistry(sadlManager);
 
-		assertTrue("Proxy is unable to register service. ",
-				sadlManager.isServiceRegisterd(uhuServiceAId));
+        proxyforServices.registerService(uhuServiceAId, serviceName);
+        proxyforServices.subscribeService(uhuServiceAId, pRole);
 
-		proxyforServices.unregister(uhuServiceAId);
-	}
+        assertTrue(
+                "Proxy is allowing duplicate subscription. ",
+                sadlManager.isStreamTopicRegistered(
+                        dummyProtocol.getStreamTopics()[0], uhuServiceAId));
 
-	private void testSubscribeService() {
-		com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
-		proxyforServices.setSadlRegistry(sadlManager);
+        proxyforServices.unregister(uhuServiceAId);
 
-		proxyforServices.registerService(uhuServiceAId, serviceName);
-		proxyforServices.subscribeService(uhuServiceAId, pRole);
+    }
 
-		assertTrue(
-				"Proxy is allowing duplicate subscription. ",
-				sadlManager.isStreamTopicRegistered(
-						dummyProtocol.getStreamTopics()[0], uhuServiceAId));
+    private void testUnregisterService() {
+        com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
+        proxyforServices.setSadlRegistry(sadlManager);
 
-		proxyforServices.unregister(uhuServiceAId);
+        proxyforServices.registerService(uhuServiceAId, serviceName);
 
-	}
+        proxyforServices.unregister(uhuServiceAId);
 
-	private void testUnregisterService() {
-		com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
-		proxyforServices.setSadlRegistry(sadlManager);
+        assertFalse("Proxy is unable to perform unregistration ",
+                sadlManager.isServiceRegisterd(uhuServiceAId));
+    }
 
-		proxyforServices.registerService(uhuServiceAId, serviceName);
+    private void testUnSubscribeService() {
+        com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
+        proxyforServices.setSadlRegistry(sadlManager);
 
-		proxyforServices.unregister(uhuServiceAId);
+        proxyforServices.registerService(uhuServiceAId, serviceName);
+        proxyforServices.subscribeService(uhuServiceAId, pRole);
+        proxyforServices.unsubscribe(uhuServiceAId, pRole);
+        assertFalse(
+                "Proxy is unable to perform unsubscription. ",
+                sadlManager.isStreamTopicRegistered(
+                        dummyProtocol.getStreamTopics()[0], uhuServiceAId));
 
-		assertFalse("Proxy is unable to perform unregistration ",
-				sadlManager.isServiceRegisterd(uhuServiceAId));
-	}
+        proxyforServices.unregister(uhuServiceAId);
 
-	private void testUnSubscribeService() {
-		com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
-		proxyforServices.setSadlRegistry(sadlManager);
+    }
 
-		proxyforServices.registerService(uhuServiceAId, serviceName);
-		proxyforServices.subscribeService(uhuServiceAId, pRole);
-		proxyforServices.unsubscribe(uhuServiceAId, pRole);
-		assertFalse(
-				"Proxy is unable to perform unsubscription. ",
-				sadlManager.isStreamTopicRegistered(
-						dummyProtocol.getStreamTopics()[0], uhuServiceAId));
+    private void testDiscover() {
 
-		proxyforServices.unregister(uhuServiceAId);
+        com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
+        proxyforServices.setSadlRegistry(sadlManager);
 
-	}
+        String serviceId = "ServiceB";
+        UhuServiceId uhuServiceBId = new UhuServiceId(serviceId);
 
-	private void testDiscover() {
+        proxyforServices.registerService(uhuServiceBId, serviceId);
+        proxyforServices.subscribeService(uhuServiceBId, pRole);
 
-		com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
-		proxyforServices.setSadlRegistry(sadlManager);
+        proxyforServices.discover(uhuServiceAId, null, pRole, 3, 10000, 1);
+        ConcurrentHashMap<DiscoveryLabel, DiscoveryRecord> discoveredMap = new ConcurrentHashMap<>();
+        try {
+            discoveredMap = DiscoveryProcessor.getDiscovery()
+                    .getDiscoveredMap();
+        } catch (InterruptedException e) {
 
-		String serviceId = "ServiceB";
-		UhuServiceId uhuServiceBId = new UhuServiceId(serviceId);
+            fail("Unable to fetch discovered map. " + e.getMessage());
+        }
+        assertEquals("Proxy is unable to perform discovery. ",
+                discoveredMap.size(), 1);
 
-		proxyforServices.registerService(uhuServiceBId, serviceId);
-		proxyforServices.subscribeService(uhuServiceBId, pRole);
+        DiscoveryLabel discLabel = discoveredMap.entrySet().iterator().next()
+                .getKey();
+        assertEquals(
+                "DiscoveryId is not matching with the id in the discovery request.",
+                discLabel.getDiscoveryId(), 3);
 
-		proxyforServices.discover(uhuServiceAId, null, pRole, 3, 10000, 1);
-		ConcurrentHashMap<DiscoveryLabel, DiscoveryRecord> discoveredMap = new ConcurrentHashMap<>();
-		try {
-			discoveredMap = DiscoveryProcessor.getDiscovery()
-					.getDiscoveredMap();
-		} catch (InterruptedException e) {
+        proxyforServices.unregister(uhuServiceBId);
+    }
 
-			fail("Unable to fetch discovered map. " + e.getMessage());
-		}
-		assertEquals("Proxy is unable to perform discovery. ",
-				discoveredMap.size(), 1);
+    private void testSetLocation() {
 
-		DiscoveryLabel discLabel = discoveredMap.entrySet().iterator().next()
-				.getKey();
-		assertEquals(
-				"DiscoveryId is not matching with the id in the discovery request.",
-				discLabel.getDiscoveryId(), 3);
+        com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
+        proxyforServices.setSadlRegistry(sadlManager);
+        proxyforServices.registerService(uhuServiceAId, serviceName);
 
-		proxyforServices.unregister(uhuServiceBId);
-	}
+        Location location = new Location("OFFICE1/BLOCK1/FLOOR1");
+        proxyforServices.setLocation(uhuServiceAId, location);
 
-	private void testSetLocation() {
-
-		com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
-		proxyforServices.setSadlRegistry(sadlManager);
-		proxyforServices.registerService(uhuServiceAId, serviceName);
-
-		Location location = new Location("OFFICE1/BLOCK1/FLOOR1");
-		proxyforServices.setLocation(uhuServiceAId, location);
-
-		Location locInRegistry = ((UhuSadlManager) proxyforServices
-				.getSadlRegistry()).getLocationForService(uhuServiceAId);
-		assertEquals(
-				"Location for mockservice is not matching the location set via proxy.",
-				location, locInRegistry);
-	}
+        Location locInRegistry = ((UhuSadlManager) proxyforServices
+                .getSadlRegistry()).getLocationForService(uhuServiceAId);
+        assertEquals(
+                "Location for mockservice is not matching the location set via proxy.",
+                location, locInRegistry);
+    }
 }

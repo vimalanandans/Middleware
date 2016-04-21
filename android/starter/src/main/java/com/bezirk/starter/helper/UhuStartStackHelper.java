@@ -4,12 +4,12 @@ import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
 import com.bezirk.commons.UhuCompManager;
-import com.bezirk.messagehandler.AndroidServiceMessageHandler;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.ICommsNotification;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.features.CommsFeature;
+import com.bezirk.messagehandler.AndroidServiceMessageHandler;
 import com.bezirk.persistence.IDatabaseConnection;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.util.DatabaseConnectionForAndroid;
@@ -41,7 +41,7 @@ class UhuStartStackHelper {
     RegistryPersistence initializeRegistryPersistence(MainService service) {
         IDatabaseConnection dbConnection = new DatabaseConnectionForAndroid(service);
         String DB_VERSION = "0.0.4";
-        RegistryPersistence registryPersistence=null;
+        RegistryPersistence registryPersistence = null;
 
         try {
             registryPersistence = new RegistryPersistence(dbConnection, DB_VERSION);
@@ -60,11 +60,11 @@ class UhuStartStackHelper {
         }
     }
 
-    boolean isIPAddressValid(MainService service,WifiManager wifi,UhuAndroidNetworkUtil androidNetworkUtil) {
+    boolean isIPAddressValid(MainService service, WifiManager wifi, UhuAndroidNetworkUtil androidNetworkUtil) {
         String ipAddress;
         try {
             ipAddress = androidNetworkUtil.getIpAddress(wifi);
-        }catch (UnknownHostException e){
+        } catch (UnknownHostException e) {
             LOGGER.error("Unable to get ip address. Is it connected to network", e);
             Toast.makeText(service.getApplicationContext(), "Unable to get ip address. Is it connected to network", Toast.LENGTH_SHORT).show();
             return false;
@@ -87,7 +87,7 @@ class UhuStartStackHelper {
         }
     }
 
-    IUhuComms initializeComms(InetAddress inetAddress, UhuSadlManager uhuSadlManager,ProxyforServices proxy,ICommsNotification errNotificationCallback) {
+    IUhuComms initializeComms(InetAddress inetAddress, UhuSadlManager uhuSadlManager, ProxyforServices proxy, ICommsNotification errNotificationCallback) {
         // Instantiate pipeManager before SenderThread so that it is ready to start sending over pipes
         PipeManager pipeComms = PipeCommsFactory.createPipeComms();
 
@@ -96,18 +96,15 @@ class UhuStartStackHelper {
         IUhuComms comms;
 
         // comms zyre jni is injected from platform specific code
-        if(commsFactory.getActiveComms() == CommsFeature.COMMS_ZYRE_JNI)
-        {
+        if (commsFactory.getActiveComms() == CommsFeature.COMMS_ZYRE_JNI) {
             String arch = System.getProperty("os.arch");
-            LOGGER.info("phone arch "+arch);
+            LOGGER.info("phone arch " + arch);
             comms = new ZyreCommsManager();
-        }
-        else{
+        } else {
             //rest of the comms are returned from factory
             /** Initialize the comms. */
             comms = new CommsFactory().getComms();
         }
-
 
 
         // the comms manager for the proxy

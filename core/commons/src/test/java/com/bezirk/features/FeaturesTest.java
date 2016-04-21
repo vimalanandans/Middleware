@@ -11,18 +11,17 @@ import static org.junit.Assert.assertTrue;
  */
 public class FeaturesTest {
     @Test
-    public void TestUhuComms()
-    {
+    public void TestUhuComms() {
         /**
          * Make sure you have features.properties as per the feature implementation
          * features.properties should contain the below
-            COMMS_UHU=true
-            COMMS_ZYRE=false
-            TODO : use TogglzRule from http://www.togglz.org/documentation/testing.html
+         COMMS_UHU=true
+         COMMS_ZYRE=false
+         TODO : use TogglzRule from http://www.togglz.org/documentation/testing.html
          * */
-        for ( CommsFeature feature : CommsFeature.values() ) {
+        for (CommsFeature feature : CommsFeature.values()) {
 
-            System.out.println(  "Feature '%s' is active %s "+ feature+" is "+ feature.getValue() + " active : "+feature.isActive());
+            System.out.println("Feature '%s' is active %s " + feature + " is " + feature.getValue() + " active : " + feature.isActive());
 
         }
 

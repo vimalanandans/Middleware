@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.bezirk.spheremanager.DeviceListActivity;
-import com.bezirk.spheremanager.SphereListActivity;
 import com.bezirk.spheremanager.R;
+import com.bezirk.spheremanager.SphereListActivity;
 
 /**
  * A fragment representing a single Sphere detail screen. This fragment is
@@ -22,138 +22,135 @@ import com.bezirk.spheremanager.R;
  */
 public class ScanSphereFragment extends Fragment {
 
-	public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_ITEM_ID = "item_id";
 
-	public static final String TAG = "ScanSphereFragment";
+    public static final String TAG = "ScanSphereFragment";
 
-	/**
-	 * The serialization (saved instance state) Bundle key representing the
-	 * activated item position. Only used on tablets.
-	 */
-	private static final String STATE_ACTIVATED_POSITION = "activated_position";
+    /**
+     * The serialization (saved instance state) Bundle key representing the
+     * activated item position. Only used on tablets.
+     */
+    private static final String STATE_ACTIVATED_POSITION = "activated_position";
+    /**
+     * A dummy implementation of the {@link SphereListFragment.Callbacks} interface that does
+     * nothing. Used only when this fragment is not attached to an activity.
+     */
+    private static CallbacksSphere sDummyCallbacks = new CallbacksSphere() {
 
-	/**
-	 * The fragment's current callback object, which is notified of list item
-	 * clicks.
-	 */
-	private CallbacksSphere mCallbacks = sDummyCallbacks;
+        @Override
+        public void joinSphere() {
+            // TODO Auto-generated method stub
 
-	/**
-	 * The current activated item position. Only used on tablets.
-	 */
-	private int mActivatedPosition = ListView.INVALID_POSITION;
+        }
 
-	/**
-	 * A callback interface that all activities containing this fragment must
-	 * implement. This mechanism allows activities to be notified of item
-	 * selections.
-	 */
-	public interface CallbacksSphere {
-		/**
-		 * Callback for when an item has been selected.
-		 */
-		void joinSphere();
+        @Override
+        public void declineSphere() {
+            // TODO Auto-generated method stub
 
-		void declineSphere();
-	}
+        }
+    };
+    /**
+     * The fragment's current callback object, which is notified of list item
+     * clicks.
+     */
+    private CallbacksSphere mCallbacks = sDummyCallbacks;
+    /**
+     * The current activated item position. Only used on tablets.
+     */
+    private int mActivatedPosition = ListView.INVALID_POSITION;
 
-	/**
-	 * A dummy implementation of the {@link SphereListFragment.Callbacks} interface that does
-	 * nothing. Used only when this fragment is not attached to an activity.
-	 */
-	private static CallbacksSphere sDummyCallbacks = new CallbacksSphere() {
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public ScanSphereFragment() {
+    }
 
-		@Override
-		public void joinSphere() {
-			// TODO Auto-generated method stub
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		}
+    }
 
-		@Override
-		public void declineSphere() {
-			// TODO Auto-generated method stub
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_scan_sphere, container,
+                false);
+        Button yes = (Button) view.findViewById(R.id.join_sphere_yes);
+        yes.setOnClickListener(new OnClickListener() {
 
-		}
-	};
+            @Override
+            public void onClick(View v) {
+                mCallbacks.joinSphere();
 
-	/**
-	 * Mandatory empty constructor for the fragment manager to instantiate the
-	 * fragment (e.g. upon screen orientation changes).
-	 */
-	public ScanSphereFragment() {
-	}
+            }
+        });
+        Button no = (Button) view.findViewById(R.id.join_sphere_no);
+        no.setOnClickListener(new OnClickListener() {
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+            @Override
+            public void onClick(View v) {
+                mCallbacks.declineSphere();
 
-	}
+            }
+        });
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_scan_sphere, container,
-				false);
-		Button yes = (Button) view.findViewById(R.id.join_sphere_yes);
-		yes.setOnClickListener(new OnClickListener() {
+        return view;
 
-			@Override
-			public void onClick(View v) {
-				mCallbacks.joinSphere();
+    }
 
-			}
-		});
-		Button no = (Button) view.findViewById(R.id.join_sphere_no);
-		no.setOnClickListener(new OnClickListener() {
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-			@Override
-			public void onClick(View v) {
-				mCallbacks.declineSphere();
+        // View lv = getView();
+        // // Swipe Detector
+        // final SwipeDetector swipeDetector = new SwipeDetector();
+        // lv.setOnTouchListener(swipeDetector);
+        //
+        // Log.v(TAG, "onActivityCreated");
+    }
 
-			}
-		});
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.v(TAG, "onViewCreated");
 
-		return view;
+    }
 
-	}
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
 
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+        // Activities containing this fragment must implement its callbacks.
+        if (!(activity instanceof CallbacksSphere)) {
+            throw new IllegalStateException(
+                    "Activity must implement fragment's callbacks.");
+        }
 
-		// View lv = getView();
-		// // Swipe Detector
-		// final SwipeDetector swipeDetector = new SwipeDetector();
-		// lv.setOnTouchListener(swipeDetector);
-		//
-		// Log.v(TAG, "onActivityCreated");
-	}
+        mCallbacks = (CallbacksSphere) activity;
+    }
 
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		Log.v(TAG, "onViewCreated");
+    @Override
+    public void onDetach() {
+        super.onDetach();
 
-	}
+        // Reset the active callbacks interface to the dummy implementation.
+        mCallbacks = sDummyCallbacks;
+    }
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface CallbacksSphere {
+        /**
+         * Callback for when an item has been selected.
+         */
+        void joinSphere();
 
-		// Activities containing this fragment must implement its callbacks.
-		if (!(activity instanceof CallbacksSphere)) {
-			throw new IllegalStateException(
-					"Activity must implement fragment's callbacks.");
-		}
-
-		mCallbacks = (CallbacksSphere) activity;
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-
-		// Reset the active callbacks interface to the dummy implementation.
-		mCallbacks = sDummyCallbacks;
-	}
+        void declineSphere();
+    }
 
 }

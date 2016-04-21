@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.comms.IUhuComms;
+import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.ISphereConfig;
@@ -22,12 +22,12 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by GUR1PI on 8/9/2014.
  */
-public class UhuSphereForAndroid extends UhuSphere implements IUhuSphereListener,IUhuQRCode {
+public class UhuSphereForAndroid extends UhuSphere implements IUhuSphereListener, IUhuQRCode {
 
     private final Logger LOGGER = LoggerFactory.getLogger(UhuSphereForAndroid.class);
     private final Context applicationContext;
-    private ISphereConfig sphereConfig;
     private final UhuPreferences preferences;
+    private ISphereConfig sphereConfig;
 
     public UhuSphereForAndroid(CryptoEngine cryptoEngine, UPADeviceInterface upaDevice,
                                SphereRegistry sphereRegistry, Context context, UhuPreferences preferences) {
@@ -36,14 +36,14 @@ public class UhuSphereForAndroid extends UhuSphere implements IUhuSphereListener
         applicationContext = context;
     }
 
-    public boolean initSphere(ISpherePersistence spherePersistence, IUhuComms uhuComms){
+    public boolean initSphere(ISpherePersistence spherePersistence, IUhuComms uhuComms) {
         initializeSphereConfig();
-        if(sphereConfig == null) LOGGER.error("SphereConfig is null");
+        if (sphereConfig == null) LOGGER.error("SphereConfig is null");
         return super.initSphere(spherePersistence, uhuComms, this, sphereConfig);
     }
 
-    private void initializeSphereConfig(){
-        if(sphereConfig == null){
+    private void initializeSphereConfig() {
+        if (sphereConfig == null) {
             LOGGER.info("Initializing the SphereConfig");
             sphereConfig = new SphereProperties(preferences);
             sphereConfig.init();
@@ -76,11 +76,11 @@ public class UhuSphereForAndroid extends UhuSphere implements IUhuSphereListener
 
     @Override
     public Bitmap getQRCode(String sphereId, int width, int height) {
-        if(width == -1 || height == -1){
+        if (width == -1 || height == -1) {
             return getQRCode(sphereId);
         }
         Bitmap image = null;
-        BitMatrix matrix = getQRCodeMatrix(sphereId,width,height);
+        BitMatrix matrix = getQRCodeMatrix(sphereId, width, height);
         if (matrix != null) {
             image = Bitmap.createBitmap(matrix.getWidth(),
                     matrix.getHeight(), Bitmap.Config.ARGB_8888);
@@ -133,30 +133,29 @@ public class UhuSphereForAndroid extends UhuSphere implements IUhuSphereListener
 
     }
 
-    void sendIntent(String status, String message, String command){
-        Intent intent = new Intent ();
+    void sendIntent(String status, String message, String command) {
+        Intent intent = new Intent();
 
         intent.setAction(UhuActionCommands.SPHERE_NOTIFICATION_ACTION);
         intent.putExtra(UhuActionCommands.UHU_ACTION_COMMANDS, command);
-        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMAND_STATUS,status);
-        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMAND_MESSAGE,message);
+        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMAND_STATUS, status);
+        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMAND_MESSAGE, message);
 
         // this sends only to the active activity
-        if(applicationContext != null)
+        if (applicationContext != null)
             applicationContext.sendBroadcast(intent);
     }
 
-    void sendIntent(boolean status, String sphereId,String command)
-    {
-        Intent intent = new Intent ();
+    void sendIntent(boolean status, String sphereId, String command) {
+        Intent intent = new Intent();
 
         intent.setAction(UhuActionCommands.SPHERE_NOTIFICATION_ACTION);
         intent.putExtra(UhuActionCommands.UHU_ACTION_COMMANDS, command);
-        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMAND_STATUS,status);
-        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMAND_SPHERE_ID,sphereId);
+        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMAND_STATUS, status);
+        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMAND_SPHERE_ID, sphereId);
 
         // this sends only to the active activity
-        if(applicationContext != null)
+        if (applicationContext != null)
             applicationContext.sendBroadcast(intent);
     }
 

@@ -1,28 +1,28 @@
 package com.bezirk.spheremanager.ui.listitems;
 
 public class DeviceServiceItem {
-	public String getServiceName() {
-		return serviceName;
-	}
+    private String serviceName;
+    private boolean isActive;
 
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
-	}
+    public DeviceServiceItem(String serviceName, boolean isActive) {
+        this.serviceName = serviceName;
+        this.isActive = isActive;
+    }
 
-	public boolean isActive() {
-		return isActive;
-	}
+    public String getServiceName() {
+        return serviceName;
+    }
 
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
 
-	private String serviceName;
-	private boolean isActive;
+    public boolean isActive() {
+        return isActive;
+    }
 
-	public DeviceServiceItem(String serviceName,  boolean isActive) {
-		this.serviceName = serviceName;
-		this.isActive = isActive;
-	}
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
 
 }

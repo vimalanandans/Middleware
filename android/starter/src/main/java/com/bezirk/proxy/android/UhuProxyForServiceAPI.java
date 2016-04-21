@@ -15,14 +15,23 @@ import com.bezirk.proxy.api.impl.UhuServiceId;
 
 public interface UhuProxyForServiceAPI {
     public void registerService(UhuServiceId serviceId, String serviceName);
+
     public void subscribeService(UhuServiceId serviceId, SubscribedRole pRole);
-    public void sendUnicastEvent(UhuServiceId serviceId, UhuServiceEndPoint recipient,String serializedEventMsg);
-    public void sendMulticastEvent(UhuServiceId serviceId,Address address, String serializedEventMsg);
+
+    public void sendUnicastEvent(UhuServiceId serviceId, UhuServiceEndPoint recipient, String serializedEventMsg);
+
+    public void sendMulticastEvent(UhuServiceId serviceId, Address address, String serializedEventMsg);
+
     public void discover(UhuServiceId service, Address scope, SubscribedRole pRole, int discoveryId, long timeout, int maxDiscovered);
+
     public short sendStream(UhuServiceId sender, UhuServiceEndPoint receiver, String serialsedString, String filePath, short streamId);
+
     public short sendStream(UhuServiceId sender, UhuServiceEndPoint receiver, String serialsedString, short streamId);
-    public void setLocation (UhuServiceId serviceId, Location location);
-    public void unsubscribe (UhuServiceId serviceId, SubscribedRole role);
-    public void unregister (UhuServiceId serviceId);
+
+    public void setLocation(UhuServiceId serviceId, Location location);
+
+    public void unsubscribe(UhuServiceId serviceId, SubscribedRole role);
+
+    public void unregister(UhuServiceId serviceId);
 
 }

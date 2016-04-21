@@ -11,7 +11,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         super(Application.class);
     }
 
-    public void testSampleActivity(){
-        assert(true);
+    public void testSampleActivity() {
+        assert (true);
     }
 }

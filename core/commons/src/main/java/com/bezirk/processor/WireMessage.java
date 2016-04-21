@@ -24,12 +24,12 @@ import java.util.zip.InflaterInputStream;
  */
 public class WireMessage implements Serializable {
     public static final Logger log = LoggerFactory.getLogger(WireMessage.class);
+    private static final String MSG_VER_STRING = "\"msgVer\":\"";
+    /// if the parser type is json, to check the message version VERSION STRING
+    private static final String MSG_VER = MSG_VER_STRING + UhuVersion.getWireVersion() + "\"";
     //private String msgVer = UhuVersion.UHU_VERSION;
     // increment the wire message version in uhu version. when there is a change in message format
     private String msgVer = UhuVersion.getWireVersion();
-    private static final String MSG_VER_STRING = "\"msgVer\":\"";
-    /// if the parser type is json, to check the message version VERSION STRING
-    private static final String MSG_VER = MSG_VER_STRING+UhuVersion.getWireVersion()+"\"";
     private String sphereId; // sphere id
     private WireMsgType msgType; // control / event. do we need?
     private MsgParserType parserType; // type of parser JSON / BSON for event/ctrl messages
@@ -42,59 +42,16 @@ public class WireMessage implements Serializable {
 
     private byte[] headerMsg = null; // message header for event. FIXME : generalize this
 
-    public byte[] getHeaderMsg() {
-    	byte[] headerMsgCopy = new byte[headerMsg.length];
-    	System.arraycopy(headerMsg, 0, headerMsgCopy, 0, headerMsg.length);
-        return headerMsgCopy;
-    }
-
-    public void setHeaderMsg(byte[] headerMsg) {
-    	byte[] headerMsgCopy = new byte[headerMsg.length];
-    	System.arraycopy(headerMsg, 0, headerMsgCopy, 0, headerMsg.length);
-    	
-        this.headerMsg = headerMsgCopy;
-    }
-
-    public enum WireMsgType {
-        MSG_MULTICAST_CTRL,
-        MSG_UNICAST_CTRL,
-        MSG_MULTICAST_EVENT,
-        MSG_UNICAST_EVENT,
-        MSG_EVENT, // future use
-    }
-    
-    public enum WireMsgStatus {
-    	MSG_RAW,
-    	MSG_ENCRYPTED,
-    	MSG_COMPRESSED,
-        MSG_ENCRYPTED_COMPRESSED,
-        MSG_DECRYPTED
-    }
-
-    public enum MsgParserType {
-        PARSER_JSON, // default / legacy
-        PARSER_BSON //
-    }
-    public boolean isMulticast()
-    {
-        if(msgType == WireMsgType.MSG_MULTICAST_CTRL ||
-                msgType == WireMsgType.MSG_MULTICAST_EVENT)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    static public boolean checkVersion(String msg)
-    {
+    static public boolean checkVersion(String msg) {
         // for json format
         boolean test = msg.contains(MSG_VER);
         return test;
     }
 
-    /** call this when the message format is not able to fetch the data */
-    static public String getVersion(String msg)
-    {
+    /**
+     * call this when the message format is not able to fetch the data
+     */
+    static public String getVersion(String msg) {
         String version = "";
 
         // for json format.
@@ -104,21 +61,84 @@ public class WireMessage implements Serializable {
 
             int end = msg.substring(start).indexOf("\"");
 
-            if(start+end < msg.length())
+            if (start + end < msg.length())
 
-            // log.info("start > " + start + " end > "+end);
-            version = msg.substring(start, start + end);
+                // log.info("start > " + start + " end > "+end);
+                version = msg.substring(start, start + end);
             //log.info("version > " + version);
         }
 
         return version;
     }
 
-    public boolean isCtrlMsg()
-    {
-        if(msgType == WireMsgType.MSG_MULTICAST_CTRL ||
-                msgType == WireMsgType.MSG_UNICAST_CTRL)
-        {
+    public static String decompress(byte[] bytes) {
+        InputStream in = new InflaterInputStream(new ByteArrayInputStream(bytes));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            byte[] buffer = new byte[8192];
+            int len;
+            while ((len = in.read(buffer)) > 0)
+                baos.write(buffer, 0, len);
+            return new String(baos.toByteArray(), "UTF-8");
+        } catch (IOException e) {
+            log.error(e.getLocalizedMessage());
+            throw new AssertionError(e);
+        }
+    }
+
+    //deserialize data
+    public static WireMessage deserialize(byte[] data) {
+
+        WireMessage wireMessage = null;
+        String json = new String(data);
+        //String json = new String(decompress(data));
+        Gson gson = new Gson();
+        try {
+            wireMessage = gson.fromJson(json, WireMessage.class);
+        } catch (JsonParseException e) {
+            log.error("Exception in parsing json message from wire message.", e);
+        }
+        return wireMessage;
+    }
+
+    public static WireMessage deserialize(String data) throws UnsupportedEncodingException {
+
+        WireMessage wireMessage = null;
+        //String json = new String(data);
+        String json = new String(decompress(data.getBytes("UTF-8")));
+        Gson gson = new Gson();
+        try {
+            wireMessage = gson.fromJson(json, WireMessage.class);
+        } catch (JsonParseException e) {
+            log.error("Exception in parsing json message from wire message.", e);
+        }
+        return wireMessage;
+    }
+
+    public byte[] getHeaderMsg() {
+        byte[] headerMsgCopy = new byte[headerMsg.length];
+        System.arraycopy(headerMsg, 0, headerMsgCopy, 0, headerMsg.length);
+        return headerMsgCopy;
+    }
+
+    public void setHeaderMsg(byte[] headerMsg) {
+        byte[] headerMsgCopy = new byte[headerMsg.length];
+        System.arraycopy(headerMsg, 0, headerMsgCopy, 0, headerMsg.length);
+
+        this.headerMsg = headerMsgCopy;
+    }
+
+    public boolean isMulticast() {
+        if (msgType == WireMsgType.MSG_MULTICAST_CTRL ||
+                msgType == WireMsgType.MSG_MULTICAST_EVENT) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isCtrlMsg() {
+        if (msgType == WireMsgType.MSG_MULTICAST_CTRL ||
+                msgType == WireMsgType.MSG_UNICAST_CTRL) {
             return true;
         }
         return false;
@@ -158,24 +178,24 @@ public class WireMessage implements Serializable {
     }
 
     public byte[] getMsg() {
-    	byte[] msgCopy = new byte[msg.length];
-    	System.arraycopy(msg, 0, msgCopy, 0, msg.length);
+        byte[] msgCopy = new byte[msg.length];
+        System.arraycopy(msg, 0, msgCopy, 0, msg.length);
         return msgCopy;
     }
 
     public void setMsg(byte[] msg) {
-    	byte[] msgCopy = new byte[msg.length];
-    	System.arraycopy(msg, 0, msgCopy, 0, msg.length);
+        byte[] msgCopy = new byte[msg.length];
+        System.arraycopy(msg, 0, msgCopy, 0, msg.length);
         this.msg = msgCopy;
     }
-    
+
     public WireMsgStatus getWireMsgStatus() {
-		return wireMsgStatus;
-	}
-    
+        return wireMsgStatus;
+    }
+
     public void setWireMsgStatus(WireMsgStatus wireMsgStatus) {
-		this.wireMsgStatus = wireMsgStatus;
-	}
+        this.wireMsgStatus = wireMsgStatus;
+    }
 
 
     //refer : http://stackoverflow.com/questions/10572398/how-can-i-easily-compress-and-decompress-strings-to-from-byte-arrays
@@ -191,64 +211,41 @@ public class WireMessage implements Serializable {
         return baos.toByteArray();
     }
 
-    public static String decompress(byte[] bytes) {
-        InputStream in = new InflaterInputStream(new ByteArrayInputStream(bytes));
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            byte[] buffer = new byte[8192];
-            int len;
-            while((len = in.read(buffer))>0)
-                baos.write(buffer, 0, len);
-            return new String(baos.toByteArray(), "UTF-8");
-        } catch (IOException e) {
-            log.error(e.getLocalizedMessage());
-            throw new AssertionError(e);
-        }
-    }
-
     // wire format is serialized
-    public byte[] serialize()  throws IOException {
+    public byte[] serialize() throws IOException {
         Gson gson = new Gson();
         return gson.toJson(this).getBytes();
         // send the compressed string
         //return compress (gson.toJson(this));
     }
 
-    //deserialize data
-    public static WireMessage deserialize(byte[] data) {
-
-        WireMessage wireMessage = null;
-        String json = new String(data);
-        //String json = new String(decompress(data));
-        Gson gson = new Gson();
-        try{
-            wireMessage = gson.fromJson(json,WireMessage.class);
-        } catch (JsonParseException e){
-            log.error("Exception in parsing json message from wire message.",e);
-        }
-        return wireMessage;
+    public enum WireMsgType {
+        MSG_MULTICAST_CTRL,
+        MSG_UNICAST_CTRL,
+        MSG_MULTICAST_EVENT,
+        MSG_UNICAST_EVENT,
+        MSG_EVENT, // future use
     }
 
-    public static WireMessage deserialize(String data) throws UnsupportedEncodingException {
+    public enum WireMsgStatus {
+        MSG_RAW,
+        MSG_ENCRYPTED,
+        MSG_COMPRESSED,
+        MSG_ENCRYPTED_COMPRESSED,
+        MSG_DECRYPTED
+    }
 
-        WireMessage wireMessage = null;
-        //String json = new String(data);
-        String json = new String(decompress(data.getBytes("UTF-8")));
-        Gson gson = new Gson();
-        try{
-            wireMessage = gson.fromJson(json,WireMessage.class);
-        } catch (JsonParseException e){
-            log.error("Exception in parsing json message from wire message.",e);
-        }
-        return wireMessage;
+    public enum MsgParserType {
+        PARSER_JSON, // default / legacy
+        PARSER_BSON //
     }
 
     /**
 
-    public static <C> C deserialize(String json, Class<C> dC) {
-        Gson gson = new Gson();
-        return (C) gson.fromJson(json, dC);
-    }
+     public static <C> C deserialize(String json, Class<C> dC) {
+     Gson gson = new Gson();
+     return (C) gson.fromJson(json, dC);
+     }
 
-    * */
+     * */
 }

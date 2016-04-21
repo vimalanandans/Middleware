@@ -3,28 +3,31 @@ package com.bosch.upa.UhUbasics.protocols.oneway;
 import com.bosch.upa.uhu.Proxy.ProtocolRole;
 
 public class HelloNoticeProtocolRole implements ProtocolRole {
-	
-	private String ROLE = this.getClass().getSimpleName();
-	
-	private static final String[] EVENTS = {
-		HelloNoticeEvent.TOPIC
-	};
 
-	/** Unique identifier for our protocol role */
-	@Override
-	public String getProtocol() {
-		return ROLE;
-	}
+    private static final String[] EVENTS = {
+            HelloNoticeEvent.TOPIC
+    };
+    private String ROLE = this.getClass().getSimpleName();
 
-	/** The set of Events specified by this protocol role */
-	@Override
-	public String[] getEvents() {
-		return EVENTS;
-	}
+    /**
+     * Unique identifier for our protocol role
+     */
+    @Override
+    public String getProtocol() {
+        return ROLE;
+    }
 
-	@Override
-	public String[] getStreams() {
-		return null;
-	}
+    /**
+     * The set of Events specified by this protocol role
+     */
+    @Override
+    public String[] getEvents() {
+        return EVENTS;
+    }
+
+    @Override
+    public String[] getStreams() {
+        return null;
+    }
 
 }

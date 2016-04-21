@@ -12,18 +12,18 @@ import com.bezirk.proxy.api.impl.UhuServiceId;
 /**
  * This message is used to respond to a SignedControlMessage(discriminator : UhuSphereLeave)
  */
-public class MemberLeaveResponse extends UnicastControlMessage{
+public class MemberLeaveResponse extends UnicastControlMessage {
+    //private final int requestId;
+    private final static Discriminator discriminator = ControlMessage.Discriminator.MemberLeaveResponse;
     //private final UhuServiceEndPoint recipient; //initiator (owner of the sphere)
     private final boolean signatureVerified;
     private final boolean removedSuccessfully;
     private final UhuServiceId serviceId;
     private final String sphere_Name;
-    //private final int requestId;
-	private final static Discriminator discriminator = ControlMessage.Discriminator.MemberLeaveResponse;
-    
+
     /**
      * Used for sending unicast response back to the requesting member
-     * 
+     *
      * @param sphereID
      * @param requestId
      * @param signatureVerified
@@ -32,11 +32,11 @@ public class MemberLeaveResponse extends UnicastControlMessage{
      * @param serviceId
      * @param sphere_Name
      */
-    public MemberLeaveResponse(String sphereID, int requestId, boolean signatureVerified, boolean removedSuccessfully, UhuServiceEndPoint sender, UhuServiceEndPoint recipient, UhuServiceId serviceId, String sphere_Name, String key){
-    	
+    public MemberLeaveResponse(String sphereID, int requestId, boolean signatureVerified, boolean removedSuccessfully, UhuServiceEndPoint sender, UhuServiceEndPoint recipient, UhuServiceId serviceId, String sphere_Name, String key) {
+
         super(sender, recipient, sphereID, discriminator, false, key);
         //public UnicastControlMessage(UhuServiceEndPoint sender, UhuServiceEndPoint recipient, String sphereName,
-    			//String discriminator, Boolean retransmit, String key){
+        //String discriminator, Boolean retransmit, String key){
         this.signatureVerified = signatureVerified;
         this.removedSuccessfully = removedSuccessfully;
         this.serviceId = serviceId;
@@ -47,7 +47,7 @@ public class MemberLeaveResponse extends UnicastControlMessage{
     public boolean isRemovedSuccessfully() {
         return removedSuccessfully;
     }
-    
+
     public UhuServiceId getServiceId() {
         return serviceId;
     }

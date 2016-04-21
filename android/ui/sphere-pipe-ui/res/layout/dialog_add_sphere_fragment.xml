@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/dialog_text"
@@ -13,13 +13,15 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="6dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-     <EditText
+
+    <EditText
         android:id="@+id/new_sphere_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <requestFocus />
     </EditText>
+
     <Spinner
         android:id="@+id/new_sphere_type"
         android:layout_width="match_parent"
@@ -30,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:orientation="horizontal"
-        android:padding="2dp" >
+        android:padding="2dp">
 
         <Button
             android:id="@+id/cancel_button"

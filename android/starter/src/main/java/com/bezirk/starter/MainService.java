@@ -15,46 +15,63 @@ import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
-import com.bezirk.pipe.android.PipeRegistryFactory;
-import com.bezirk.proxy.android.PipeActionParser;
-import com.bezirk.proxy.android.ProxyforServices;
-import com.bezirk.starter.helper.NetworkBroadCastReceiver;
-import com.bezirk.starter.helper.UhuActionProcessor;
-import com.bezirk.starter.helper.UhuServiceHelper;
-import com.bezirk.starter.helper.UhuStackHandler;
 import com.bezirk.R;
 import com.bezirk.application.IUhuApp;
 import com.bezirk.comms.ICommsNotification;
 import com.bezirk.logging.LogServiceActivatorDeactivator;
+import com.bezirk.pipe.android.PipeRegistryFactory;
 import com.bezirk.pipe.core.PipeApprovalException;
 import com.bezirk.pipe.core.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.pipe.core.PipeRequest;
 import com.bezirk.pipe.core.PipeRequester;
+import com.bezirk.proxy.android.PipeActionParser;
+import com.bezirk.proxy.android.ProxyforServices;
 import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.starter.helper.NetworkBroadCastReceiver;
+import com.bezirk.starter.helper.UhuActionProcessor;
+import com.bezirk.starter.helper.UhuServiceHelper;
+import com.bezirk.starter.helper.UhuStackHandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
-public class MainService extends Service implements INotificationCallback{
+public class MainService extends Service implements INotificationCallback {
     private static final Logger LOGGER = LoggerFactory.getLogger(MainService.class);
 
     private final UhuActionProcessor uhuActionProcessor = new UhuActionProcessor();
-
-    private UhuServiceHelper uhuServiceHelper;
-
-    private UhuStackHandler uhuStackHandler;
-
     private final PipeActionParser pipeActionParser = new PipeActionParser();
-
+    private UhuServiceHelper uhuServiceHelper;
+    private UhuStackHandler uhuStackHandler;
     private ICommsNotification commsNotification;
 
     private NetworkBroadCastReceiver broadcastReceiver;
 
     public static Boolean getStartedStack() {
         return UhuStackHandler.isStackStarted();
+    }
+
+    /**
+     * get the sphere object handle.
+     */
+    public static boolean sendLoggingServiceMsgToClients(final String[] selSpheres,
+                                                         final String[] tempLoggingSphereList, boolean isActivate) {
+        LogServiceActivatorDeactivator.sendLoggingServiceMsgToClients(UhuStackHandler.getUhuComms(), selSpheres, tempLoggingSphereList, isActivate);
+        return true;
+    }
+
+    // TODO :use iBinder interface to send the handle reference
+    public static IUhuSphereAPI getSphereHandle() {
+        return UhuStackHandler.getSphereForAndroid();
+    }
+
+    /**
+     * get the pipe registry handle
+     */
+
+    public static PipeRegistry getPipeRegistryHandle() {
+        return PipeRegistryFactory.getPipeRegistry();
     }
 
     @Override
@@ -74,10 +91,10 @@ public class MainService extends Service implements INotificationCallback{
         //initialize the commsNotification object
         commsNotification = new CommsNotification(this);
 
-        uhuStackHandler = new UhuStackHandler(proxy,commsNotification);
+        uhuStackHandler = new UhuStackHandler(proxy, commsNotification);
 
         //register to the broadcast receiver to receive changes in network state.
-        broadcastReceiver = new NetworkBroadCastReceiver(this,uhuStackHandler);
+        broadcastReceiver = new NetworkBroadCastReceiver(this, uhuStackHandler);
         registerToWifiBroadcastReceivers(broadcastReceiver);
 
         // this is needed when the service starts first before uhu stack.
@@ -91,7 +108,7 @@ public class MainService extends Service implements INotificationCallback{
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         if (intent != null) {
-            uhuActionProcessor.processUhuAction(intent, this,uhuServiceHelper,uhuStackHandler);
+            uhuActionProcessor.processUhuAction(intent, this, uhuServiceHelper, uhuStackHandler);
         }
 
         return START_STICKY;
@@ -100,13 +117,15 @@ public class MainService extends Service implements INotificationCallback{
     }
 
     @Override
-    public void onDestroy(){
-        if(!uhuStackHandler.isStackStopped()){
+    public void onDestroy() {
+        if (!uhuStackHandler.isStackStopped()) {
 
             uhuStackHandler.stopStack(this);
         }
         super.onDestroy();
     }
+
+    // TODO :use iBinder interface to send the handle reference
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -115,6 +134,7 @@ public class MainService extends Service implements INotificationCallback{
 
     /**
      * Process pipe request
+     *
      * @param intent Intent Received
      */
     public void processPipeRequest(Intent intent) {
@@ -133,16 +153,16 @@ public class MainService extends Service implements INotificationCallback{
             PipePolicyUtility.pipeRequesterMap.put(pipeRequest.getId(), myPipeRequester);
             try {
                 myPipeRequester.requestPipe(pipeRequest);
-            }
-            catch (PipeApprovalException e) {
+            } catch (PipeApprovalException e) {
                 LOGGER.error("Pipe request failed", e);
             }
         }
     }
+    // TODO :use iBinder interface to send the handle reference
 
     /***
      * Set the service as foreground android service
-     * */
+     */
     public Notification buildForegroundNotification(String filename) {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this);
 
@@ -151,8 +171,7 @@ public class MainService extends Service implements INotificationCallback{
 
         notificationIntent = manager.getLaunchIntentForPackage(getApplicationContext().getPackageName());
 
-        if(notificationIntent == null)
-        {
+        if (notificationIntent == null) {
             notificationIntent = new Intent(Intent.ACTION_MAIN);
         }
 
@@ -163,7 +182,7 @@ public class MainService extends Service implements INotificationCallback{
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                notificationIntent,0);
+                notificationIntent, 0);
 
         notification.setOngoing(true);
 
@@ -171,9 +190,9 @@ public class MainService extends Service implements INotificationCallback{
         BitmapFactory.decodeResource(getResources(), R.drawable.upa_notification_s);
         notification.setContentTitle(getString(R.string.app_name))
                 .setContentText(filename)
-                        /** Changed notification icon to white color. */
+                /** Changed notification icon to white color. */
 
-                        //.setLargeIcon(bm)
+                //.setLargeIcon(bm)
                 .setSmallIcon(R.drawable.upa_notification_s)
                 .setTicker(getString(R.string.app_name)
                 );
@@ -181,30 +200,9 @@ public class MainService extends Service implements INotificationCallback{
         return notification.build();
     }
 
-    // TODO :use iBinder interface to send the handle reference
-    /** get the sphere object handle.  */
-    public static boolean sendLoggingServiceMsgToClients(final String[] selSpheres,
-                                                         final String[] tempLoggingSphereList, boolean isActivate)
-    {
-        LogServiceActivatorDeactivator.sendLoggingServiceMsgToClients(UhuStackHandler.getUhuComms(), selSpheres, tempLoggingSphereList, isActivate);
-        return true;
-    }
-
-    // TODO :use iBinder interface to send the handle reference
-    public static IUhuSphereAPI getSphereHandle()
-    {
-        return UhuStackHandler.getSphereForAndroid();
-    }
-    // TODO :use iBinder interface to send the handle reference
-    /** get the pipe registry handle */
-
-    public static PipeRegistry getPipeRegistryHandle()
-    {
-        return PipeRegistryFactory.getPipeRegistry();
-    }
-
     /**
      * sends the broadcast with the passed intent
+     *
      * @param intent
      */
     @Override

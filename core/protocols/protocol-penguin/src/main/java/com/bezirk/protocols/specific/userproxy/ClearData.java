@@ -3,69 +3,69 @@ package com.bezirk.protocols.specific.userproxy;
 
 import com.bezirk.middleware.messages.Event;
 
-public class ClearData extends Event{
-	
-	/**
-	 * topic
-	 */
-	public static final String topic = "clear-user-details";
-	
-	/**
-	 * Clear Observation DB
-	 */
-	private boolean clearObservation;
-	
-	/**
-	 * Clear Preference DB
-	 */
+public class ClearData extends Event {
+
+    /**
+     * topic
+     */
+    public static final String topic = "clear-user-details";
+
+    /**
+     * Clear Observation DB
+     */
+    private boolean clearObservation;
+
+    /**
+     * Clear Preference DB
+     */
     private boolean clearPreference;
-    
+
     /**
      * User Name for which the DB needs to be cleared
      */
     private String user;
-    
+
     /**
-     * 
      * @param stripe
      * @param topic
      */
-	public ClearData() {
-		super(Stripe.NOTICE, topic);
-		
-	}
+    public ClearData() {
+        super(Stripe.NOTICE, topic);
 
-	public boolean isClearObservation() {
-		return clearObservation;
-	}
+    }
 
-	public void setClearObservation(boolean clearObservation) {
-		this.clearObservation = clearObservation;
-	}
+    /**
+     * Use instead of the generic UhuMessage.deserialize()
+     *
+     * @param json
+     * @return ClearData
+     */
+    public static ClearData deserialize(String json) {
+        return Event.deserialize(json, ClearData.class);
+    }
 
-	public boolean isClearPreference() {
-		return clearPreference;
-	}
+    public boolean isClearObservation() {
+        return clearObservation;
+    }
 
-	public void setClearPreference(boolean clearPreference) {
-		this.clearPreference = clearPreference;
-	}
+    public void setClearObservation(boolean clearObservation) {
+        this.clearObservation = clearObservation;
+    }
 
-	public String getUser() {
-		return user;
-	}
+    public boolean isClearPreference() {
+        return clearPreference;
+    }
 
-	public void setUser(String user) {
-		this.user = user;
-	}
-	
-	/**
-	 * Use instead of the generic UhuMessage.deserialize()
-	 * @param json
-	 * @return ClearData
-	 */
-	public static ClearData deserialize(String json) {
-		return Event.deserialize(json, ClearData.class);
-	}
+    public void setClearPreference(boolean clearPreference) {
+        this.clearPreference = clearPreference;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
 
 }

@@ -1,21 +1,21 @@
 package com.bezirk.starter;
 
 /**
- *
  * singleton class, only one state
  * Created by PIK6KOR on 12/14/2015.
  */
 public final class UhuWifiManager {
 
-    private String connectedWifiSSID;
     private static UhuWifiManager context;
+    private String connectedWifiSSID;
 
-    private UhuWifiManager(){
+    private UhuWifiManager() {
         //private constructor
     }
 
     /**
      * get instance
+     *
      * @return
      */
     public static UhuWifiManager getInstance() {

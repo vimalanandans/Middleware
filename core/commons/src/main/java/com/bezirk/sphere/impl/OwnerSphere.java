@@ -1,23 +1,22 @@
 /**
- * 
+ *
  */
 package com.bezirk.sphere.impl;
+
+import com.bezirk.proxy.api.impl.UhuServiceId;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
-import com.bezirk.proxy.api.impl.UhuServiceId;
-
 /**
  * @author Rishabh Gulati
- * 
  */
 public final class OwnerSphere extends Sphere implements Serializable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 8307802592890417699L;
 
@@ -32,7 +31,7 @@ public final class OwnerSphere extends Sphere implements Serializable {
 
     /**
      * Creates the sphere with passed sphereName
-     * 
+     *
      * @param sphereName
      */
     private void createSphere(String sphereName, String ownerDeviceId, String sphereType) {

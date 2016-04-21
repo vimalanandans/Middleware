@@ -1,5 +1,8 @@
 package com.bezirk.commstest.ui;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,13 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- * 
  * @author MCA7KOR
- * 
  */
 public class CommsTestJFrame extends JFrame implements IUpdateResponse {
 
@@ -30,6 +28,7 @@ public class CommsTestJFrame extends JFrame implements IUpdateResponse {
 
     // UI Elements
     private static final long serialVersionUID = 1L;
+    private static final String ID_STRING = "Id : ";
     private final GridBagLayout mainFrameLayout = new GridBagLayout();
     private final JPanel componentsPanel = new JPanel();
     private final JPanel displayPanel = new JPanel();
@@ -39,9 +38,6 @@ public class CommsTestJFrame extends JFrame implements IUpdateResponse {
     private final JSeparator buttonSeparator = new JSeparator();
     private final JPanel statusDisplayPanel = new JPanel();
     private final JTextArea statusDisplayTxt = new JTextArea();
-
-    private static final String ID_STRING = "Id : ";
-
     private final transient CommsTest commsTest;
     private final transient CommsTestUIHelper commsUIHelper = new CommsTestUIHelper();
 
@@ -62,6 +58,23 @@ public class CommsTestJFrame extends JFrame implements IUpdateResponse {
             LOGGER.error("Error initializing commsTest ", e);
         }
 
+    }
+
+    public static void main(String... args) {
+        final JFrame frame = new CommsTestJFrame();
+        final Dimension screenSize = Toolkit.getDefaultToolkit()
+                .getScreenSize();
+        final Dimension frameSize = frame.getSize();
+        if (frameSize.height > screenSize.height) {
+            frameSize.height = screenSize.height;
+        }
+        if (frameSize.width > screenSize.width) {
+            frameSize.width = screenSize.width;
+        }
+        frame.setLocation((screenSize.width - frameSize.width) / 2,
+                (screenSize.height - frameSize.height) / 2);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 
     /**
@@ -126,23 +139,6 @@ public class CommsTestJFrame extends JFrame implements IUpdateResponse {
     public void updatePingResposne(String response) {
         // Nothing to be done. Status display available in commit ID :commit
         // 6d759437d8bf7bf1c9d94d152946b45a1bfb4e84
-    }
-
-    public static void main(String... args) {
-        final JFrame frame = new CommsTestJFrame();
-        final Dimension screenSize = Toolkit.getDefaultToolkit()
-                .getScreenSize();
-        final Dimension frameSize = frame.getSize();
-        if (frameSize.height > screenSize.height) {
-            frameSize.height = screenSize.height;
-        }
-        if (frameSize.width > screenSize.width) {
-            frameSize.width = screenSize.width;
-        }
-        frame.setLocation((screenSize.width - frameSize.width) / 2,
-                (screenSize.height - frameSize.height) / 2);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
     }
 
     @Override
