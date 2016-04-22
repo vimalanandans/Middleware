@@ -1,4 +1,4 @@
-package com.bezirk.proxy;
+package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
@@ -88,7 +88,7 @@ public class StreamLocalTest {
 
     @After
     public void destroySetUp() {
-        Bezirk uhu = Factory.getInstance();
+        Bezirk uhu = com.bezirk.middleware.proxy.Factory.getInstance();
         uhu.unregisterService(mockA.myId);
         uhu.unregisterService(mockB.myId);
     }
@@ -106,7 +106,7 @@ public class StreamLocalTest {
          * Setup the service
          */
         private final void setupMockService() {
-            uhu = Factory.getInstance();
+            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerService(serviceName);
             logger.info("StreamLocalMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             pRole = new StreamLocalDummyProtocolRole();
@@ -259,7 +259,7 @@ public class StreamLocalTest {
          * Setup the service
          */
         private final void setupMockService() {
-            uhu = Factory.getInstance();
+            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerService(serviceName);
             logger.info("StreamLocalMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             uhu.subscribe(myId, new StreamLocalMockServiceProtocolRole(), this);

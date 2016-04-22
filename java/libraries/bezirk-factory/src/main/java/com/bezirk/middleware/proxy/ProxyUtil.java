@@ -1,4 +1,4 @@
-package com.bezirk.proxy;
+package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.ServiceId;

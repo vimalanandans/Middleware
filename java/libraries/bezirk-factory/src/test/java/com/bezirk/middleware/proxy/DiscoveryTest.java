@@ -1,4 +1,4 @@
-package com.bezirk.proxy;
+package com.bezirk.middleware.proxy;
 
 
 import com.bezirk.commons.UhuCompManager;
@@ -105,7 +105,7 @@ public class DiscoveryTest {
     @After
     public void destroyMockservices() {
 
-        Bezirk uhu = Factory.getInstance();
+        Bezirk uhu = com.bezirk.middleware.proxy.Factory.getInstance();
         uhu.unregisterService(mockA.myId);
         uhu.unregisterService(mockB.myId);
         uhu.unregisterService(mockC.myId);
@@ -121,7 +121,7 @@ public class DiscoveryTest {
         private DiscoveryMockServiceProtocol pRole;
 
         private final void setupMockService() {
-            uhu = Factory.getInstance();
+            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerService(serviceName);
             logger.info("DiscoveryMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             pRole = new DiscoveryMockServiceProtocol();
@@ -289,7 +289,7 @@ public class DiscoveryTest {
         }
 
         private final void setupMockService() {
-            uhu = Factory.getInstance();
+            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerService(serviceName);
             serviceBId = ((UhuServiceId) myId).getUhuServiceId();
             logger.info("DiscoveryMockServiceB - regId : " + serviceBId);
@@ -342,7 +342,7 @@ public class DiscoveryTest {
         private ServiceId myId = null;
 
         private final void setupMockService() {
-            uhu = Factory.getInstance();
+            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerService(serviceName);
             serviceCId = ((UhuServiceId) myId).getUhuServiceId();
             logger.info("DiscoveryMockServiceC - regId : " + serviceCId);

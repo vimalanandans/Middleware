@@ -1,4 +1,4 @@
-package com.bezirk.proxy;
+package com.bezirk.middleware.proxy;
 
 import com.bezirk.callback.pc.CBkForServicePC;
 import com.bezirk.callback.pc.IBoradcastReceiver;

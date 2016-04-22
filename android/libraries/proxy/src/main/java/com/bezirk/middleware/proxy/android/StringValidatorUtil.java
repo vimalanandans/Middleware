@@ -1,4 +1,4 @@
-package com.bezirk.proxy.android;
+package com.bezirk.middleware.proxy.android;
 
 /**
  * Created by AJC6KOR on 11/19/2015.

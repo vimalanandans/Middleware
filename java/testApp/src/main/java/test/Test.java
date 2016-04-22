@@ -8,7 +8,7 @@ import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.ServiceId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message.Flag;
-import com.bezirk.proxy.Factory;
+import com.bezirk.middleware.proxy.Factory;
 
 
 /**

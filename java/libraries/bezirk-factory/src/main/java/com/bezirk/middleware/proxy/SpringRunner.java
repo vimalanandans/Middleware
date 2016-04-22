@@ -1,4 +1,4 @@
-package com.bezirk.proxy;
+package com.bezirk.middleware.proxy;
 
 import com.bezirk.starter.UhuConfig;
 import com.bezirk.util.UhuValidatorUtility;
@@ -76,7 +76,7 @@ public class SpringRunner {
         Proxy api = (Proxy) Factory.getInstance(uhuConfig);
 
         // Get all ServiceRunners specified in the app context
-        Map<String, IServiceRunner> services = springContext.getBeansOfType(IServiceRunner.class);
+        Map<String, com.bezirk.middleware.proxy.IServiceRunner> services = springContext.getBeansOfType(com.bezirk.middleware.proxy.IServiceRunner.class);
 
         int numServices = services.size();
         if (numServices < 1) {
@@ -90,7 +90,7 @@ public class SpringRunner {
         List<String> failedServices = new ArrayList<String>();
 
         // For each service: 1. set the data path, 2. initialize, and 3. start
-        for (IServiceRunner service : services.values()) {
+        for (com.bezirk.middleware.proxy.IServiceRunner service : services.values()) {
             String name = service.getClass().getSimpleName();
             logger.info("Starting uhu service with runner: " + name);
 
@@ -134,7 +134,7 @@ public class SpringRunner {
      * @param service
      * @return
      */
-    private String buildDataPath(IServiceRunner service) {
+    private String buildDataPath(com.bezirk.middleware.proxy.IServiceRunner service) {
 		
 		/* dataPath is where the service can write its data. We add a 
 		 * subDirectory to this later on depending on whether the 
