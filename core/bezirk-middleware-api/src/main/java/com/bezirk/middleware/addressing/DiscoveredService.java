@@ -12,18 +12,44 @@
  */
 package com.bezirk.middleware.addressing;
 
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.messages.ProtocolRole;
+
+import java.util.Set;
+
 /**
- * A tuple that characterizes a discovered service.
+ * Metadata for a Zirk subscribed to a particular
+ * {@link com.bezirk.middleware.messages.ProtocolRole}. A Zirk may use
+ * {@link com.bezirk.middleware.Bezirk#discover(ServiceId, Address, ProtocolRole, long, int, BezirkListener)}
+ * to request the set of Zirks in its sphere(s) subscribed to a particular role. Implementations of
+ * this interface are delivered to {@link com.bezirk.middleware.BezirkListener#discovered(Set)} in
+ * reply the discovery request.
  */
 public interface DiscoveredService {
-
     public boolean equals(Object obj);
 
+    /**
+     * An endpoint that can be used to unicast to a Zirk discovered by
+     * {@link com.bezirk.middleware.Bezirk#discover(ServiceId, Address, ProtocolRole, long, int, BezirkListener)}
+     * as subscribing to a particular role.
+     *
+     * @return the endpoint of the subscribing Zirk
+     */
     public ServiceEndPoint getServiceEndPoint();
 
+    /**
+     * The name of the Zirk subscribed to the targeted role.
+     *
+     * @return the name of the subscribing Zirk
+     */
     public String getServiceName();
 
     public String getProtocol();
 
+    /**
+     * The semantic address of the Zirk subscribed to the targeted role
+     *
+     * @return the semantic address of the subscribing Zirk
+     */
     public Location getLocation();
 }
