@@ -73,8 +73,7 @@ public class Message {
          */
         NOTICE,
         /**
-         * Indicate to the recipient(s) that the message expects a reply (e.g. the answer
-         * to a question).
+         * Indicate to the recipient(s) that the message expects a reply.
          */
         REQUEST,
         /**
