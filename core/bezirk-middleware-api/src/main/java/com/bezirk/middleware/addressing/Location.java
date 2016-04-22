@@ -21,7 +21,6 @@ import java.io.Serializable;
  * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRole}, which may be too
  * coarse-grained for some cases. A semantic address is used to more precisely scope
  * message recipients after protocol role filtering occurs.
- *
  * <h4>Scopes</h4>
  * <p>
  * To identify a Thing or set of Things, a semantic address contains three scopes of
@@ -89,9 +88,9 @@ public class Location implements Serializable {
     /**
      * A location defined by a wideScope, an area within the wideScope, and proximity to a landmark object; any or all of which may be NULL.
      *
-     * @param wideScope for example "floor1" or "Pennsylvania". Commas and slashes are cleared from the wideScope's name.
-     * @param intermediateScope     for example "bedroom" or "greater Pittsburgh". Commas and slashes are cleared from the area's name.
-     * @param narrowScope   for example "bed" or "Frick park". Commas and slashes are cleared from the landmark's name.
+     * @param wideScope         for example "floor1" or "Pennsylvania". Commas and slashes are cleared from the wideScope's name.
+     * @param intermediateScope for example "bedroom" or "greater Pittsburgh". Commas and slashes are cleared from the area's name.
+     * @param narrowScope       for example "bed" or "Frick park". Commas and slashes are cleared from the landmark's name.
      */
     public Location(String wideScope, String intermediateScope, String narrowScope) {
         this.wideScope = (wideScope == null) ? null : wideScope.replace(",", "").replace("/", "");
