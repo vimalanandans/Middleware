@@ -18,12 +18,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class AddressSerializer {
-
-    private GsonBuilder builder = null;
     private Gson gson = null;
 
     public AddressSerializer() {
-        builder = new GsonBuilder();
+        final GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Pipe.class, new InterfaceAdapter<Pipe>());
         gson = builder.create();
     }

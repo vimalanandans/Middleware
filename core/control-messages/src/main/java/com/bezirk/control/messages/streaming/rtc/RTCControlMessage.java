@@ -75,8 +75,7 @@ public class RTCControlMessage extends com.bezirk.control.messages.UnicastContro
     /**
      * Different types of RTC handshake messages
      */
-    public static enum RTCControlMessageType {
+    public enum RTCControlMessageType {
         RTCOffer, RTCAnswer, RTCCandidate, RTCSessionId
     }
-
 }

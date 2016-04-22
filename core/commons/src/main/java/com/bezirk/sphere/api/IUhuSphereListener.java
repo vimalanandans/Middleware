@@ -13,8 +13,6 @@ public interface IUhuSphereListener {
      */
     void onLeaveResponseReceived(final String memberLeaveResponse);
 
-    ;
-
     /**
      * @param leaveRequest
      */

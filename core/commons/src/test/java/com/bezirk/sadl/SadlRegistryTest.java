@@ -11,7 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -248,7 +250,7 @@ public class SadlRegistryTest {
         assertFalse("SADLEOBJEC2 eventmap is null", results);
 
         sadlobj3.eventMap = null;
-        ConcurrentHashMap<String, HashSet<UhuServiceId>> sadle2EventMap = sadlobj2.eventMap;
+        ConcurrentMap<String, Set<UhuServiceId>> sadle2EventMap = sadlobj2.eventMap;
         sadlobj2.eventMap = null;
         results = sadlobj3.equals(sadlobj2);
         assertTrue("sadl registries with null eventmaps are not considered equal", results);
@@ -260,7 +262,7 @@ public class SadlRegistryTest {
 		 * comparing with sadlobj2. Since, maps are empty it should not be
 		 * equal to sadlobj2 and the result will be false.
 		 */
-        sadlobj3.eventMap = new ConcurrentHashMap<String, HashSet<UhuServiceId>>();
+        sadlobj3.eventMap = new ConcurrentHashMap<String, Set<UhuServiceId>>();
         sadlobj3.locationMap = new ConcurrentHashMap<UhuServiceId, Location>();
         results = sadlobj2.equals(sadlobj3);
         assertFalse("SADLEOBJEC3 eventMap and location map is empty", results);
@@ -271,7 +273,7 @@ public class SadlRegistryTest {
 		 * Result: False Guess Yourself Why ? :)
 		 */
 
-        sadlobj3.eventMap = new ConcurrentHashMap<String, HashSet<UhuServiceId>>();
+        sadlobj3.eventMap = new ConcurrentHashMap<String, Set<UhuServiceId>>();
         sadlobj3.locationMap = new ConcurrentHashMap<UhuServiceId, Location>();
         sadlobj3.protocolDescMap = null;
         results = sadlobj2.equals(sadlobj3);

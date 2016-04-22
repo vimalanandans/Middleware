@@ -38,15 +38,11 @@ final class UhuStreamHandler {
 
         // Check if the request is duplicate
         StreamRecord.StreamingStatus status = StreamRecord.StreamingStatus.ADDRESSED;
-        int assignedPort = 0;
-        if (streamStore.checkStreamRequestForDuplicate(streamRequest
-                .getUniqueKey())) {               // its duplicate
+        int assignedPort;
 
-            assignedPort = streamStore.getAssignedPort(streamRequest
-                    .getUniqueKey());
-
+        if (streamStore.checkStreamRequestForDuplicate(streamRequest.getUniqueKey())) {
+            assignedPort = streamStore.getAssignedPort(streamRequest.getUniqueKey());
         } else {
-
             assignedPort = portFactory.getPort(streamRequest.getUniqueKey());
             if (-1 == assignedPort) {
                 status = StreamRecord.StreamingStatus.BUSY;
@@ -56,8 +52,8 @@ final class UhuStreamHandler {
                         streamRequest, portFactory, sadlReceiver, sphereForSadl))
                         .start();
             }
-
         }
+
         logger.debug("<-Sender->" + streamRequest.getSender().device
                 + streamRequest.getSender().serviceId);
         logger.debug("<-recipient->" + streamRequest.getRecipient().device

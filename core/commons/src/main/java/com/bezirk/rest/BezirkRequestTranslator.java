@@ -32,7 +32,7 @@ public class BezirkRequestTranslator {
         //prepare the event based on the type, update the message with Origin and MessageId
 
         if (true) {
-            final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(mySEP));
+            final String uniqueMsgId = GenerateMsgId.generateEvtId(mySEP);
 
             // construct multicast header
             MulticastHeader multicastHeader = new MulticastHeader();
@@ -41,7 +41,7 @@ public class BezirkRequestTranslator {
             multicastHeader.setSenderSEP(mySEP);
             multicastHeader.setSphereName(requestObject.getEventSphere());
             multicastHeader.setTopic(requestObject.getEventTopic());
-            multicastHeader.setUniqueMsgId(uniqueMsgId.toString());
+            multicastHeader.setUniqueMsgId(uniqueMsgId);
 
             //set constructed header...
             eventLedger.setHeader(multicastHeader);
@@ -77,7 +77,7 @@ public class BezirkRequestTranslator {
     /**
      * This method will translate the Ledger response object from Comms to Client expected json response string
      *
-     * @param eventLedger
+     * @param responseEventLedger
      * @return
      */
     public String translateEventToClientResponse(EventLedger responseEventLedger) {

@@ -113,13 +113,7 @@ public class BezirkRestCommsManager {
         List<String> responseList = responseMap.get(uniqueID);
 
         //response list can be null also
-        List<String> valueList = null;
-        if (responseList == null) {
-            valueList = new ArrayList<String>();
-
-        } else {
-            valueList = responseList;
-        }
+        List<String> valueList = responseList == null ? new ArrayList<String>() : responseList;
         valueList.add(responseString);
         responseMap.put(uniqueID, valueList);
 

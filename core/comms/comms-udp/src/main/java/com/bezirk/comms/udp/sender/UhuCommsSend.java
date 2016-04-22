@@ -34,9 +34,9 @@ import java.util.Date;
  */
 
 public class UhuCommsSend {
-    private static final Logger log = LoggerFactory.getLogger(UhuCommsSend.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuCommsSend.class);
     private final static Date currentDate = new Date();
-    private final static String SEP = ",";
+    private final static String SEPERATOR = ",";
 
     /**
      * The SenderThread invokes this method after the Sphere Layer returns true.
@@ -48,7 +48,6 @@ public class UhuCommsSend {
      * @see com.bezirk.comms.udp.threads.ReceiverThread
      */
     public static Boolean send(EventLedger tcMessage) {
-        boolean isSent = false;
         //Update the packaged message
         // updateMessage(tcMessage);
         // Update the Message
@@ -64,7 +63,7 @@ public class UhuCommsSend {
 
             byte[] header = UhuCompManager.getSphereForSadl().encryptSphereContent(tcMessage.getHeader().getSphereName(), tcMessage.getSerializedHeader());
             if (header == null) {
-                log.error(" Failed: Header cannot be encrypted");
+                logger.error(" Failed: Header cannot be encrypted");
                 return false;
             }
             // Set the encrypted Header
@@ -82,14 +81,14 @@ public class UhuCommsSend {
             System.arraycopy(payload, 0, sendData, preHeader.getBytes().length + header.length, payload.length);
 
             if (sendData == null) {
-                log.error("  Failed: trying to send null data");
+                logger.error("  Failed: trying to send null data");
                 return false;
             }
 
             //fill the checksum
             tcMessage.setChecksum(UhuCheckSum.computeCRC(sendData));
 
-            StringBuilder tempString = new StringBuilder(UhuVersion.UHU_VERSION + SEP);
+            StringBuilder tempString = new StringBuilder(UhuVersion.UHU_VERSION + SEPERATOR);
             byte[] dataOnWire = new byte[tempString.toString().getBytes().length + tcMessage.getChecksum().length + sendData.length];
             try {
                 //arraycopy(Object src, int srcPos, Object dest, int destPos, int length);
@@ -98,26 +97,27 @@ public class UhuCommsSend {
                 System.arraycopy(sendData, 0, dataOnWire, (tempString.toString().length() + tcMessage.getChecksum().length), sendData.length);
                 tcMessage.setDataOnWire(dataOnWire);
             } catch (Exception e) {
-                log.error("Null Pointer exception while sending the data on the stack", e);
+                logger.error("Null Pointer exception while sending the data on the stack", e);
                 return false;
             }
         }
 
         byte[] dataOnWire = tcMessage.getDataOnWire();
         if (null == dataOnWire) {
-            log.error("Trying to send null data");
+            logger.error("Trying to send null data");
             return false;
         }
         // Can we make this logic simple.
-        String recipient = null;
+        final String recipient;
+        final boolean isSent;
         if (tcMessage.getIsMulticast()) {//multicast
             isSent = sendMulticast(dataOnWire, true);
+            recipient = null;
         } else { //unicast
 
             UnicastHeader uHeader = (UnicastHeader) tcMessage.getHeader();
             if (null == uHeader || uHeader.getRecipient() == null || uHeader.getRecipient().device == null || uHeader.getRecipient().device.isEmpty()) {
-                log.error(" Message not of accepted type");
-                isSent = false;
+                logger.error(" Message not of accepted type");
             }
             recipient = uHeader.getRecipient().device;
             isSent = sendUnicast(dataOnWire, recipient, true);
@@ -131,10 +131,10 @@ public class UhuCommsSend {
 
 
     /**
-     * This method sends the log message to the remote service if the logging is enabled.
+     * This method sends the logger message to the remote service if the logging is enabled.
      *
-     * @param eLedger   is used to extract the contents needed to fill the log message
-     * @param recipient is used to set the recipient in the log Message.
+     * @param eLedger   is used to extract the contents needed to fill the logger message
+     * @param recipient is used to set the recipient in the logger Message.
      */
     private static void sendEventLogMessage(final EventLedger eLedger, final String recipient) {
         try {
@@ -142,15 +142,15 @@ public class UhuCommsSend {
                     String.valueOf(currentDate.getTime()), UhuCompManager.getUpaDevice().getDeviceName(), recipient, eLedger.getHeader().getUniqueMsgId(),
                     eLedger.getHeader().getTopic(), Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_SEND.name(), Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {
-            log.error(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
     /**
-     * This method sends the log message to the remote service if the logging is enabled.
+     * This method sends the logger message to the remote service if the logging is enabled.
      *
-     * @param eLedger   is used to extract the contents needed to fill the log message
-     * @param recipient is used to set the recipient in the log Message.
+     * @param tcMsg   is used to extract the contents needed to fill the logger message
+     * @param recipient is used to set the recipient in the logger Message.
      */
     private static void sendControlLogMessage(ControlLedger tcMsg, String recipient) {
         try {
@@ -158,7 +158,7 @@ public class UhuCommsSend {
                     String.valueOf(currentDate.getTime()), UhuCompManager.getUpaDevice().getDeviceName(), recipient, tcMsg.getMessage().getUniqueKey(),
                     tcMsg.getMessage().getDiscriminator().toString(), Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND.name(), Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {
-            log.error(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -176,17 +176,17 @@ public class UhuCommsSend {
             }
             clientSocket.send(sendPacket);
             clientSocket.close();
-            log.debug("multicast Sent");
+            logger.debug("multicast Sent");
             return true;
 
         } catch (UnknownHostException e) {
-            log.error(" Problem sending Muliticasts", e);
+            logger.error(" Problem sending Muliticasts", e);
             return false;
         } catch (SocketException e) {
-            log.error(" Problem sending Muliticasts", e);
+            logger.error(" Problem sending Muliticasts", e);
             return false;
         } catch (IOException e) {
-            log.error(" Problem sending Muliticasts", e);
+            logger.error(" Problem sending Muliticasts", e);
             return false;
         }
 
@@ -207,13 +207,13 @@ public class UhuCommsSend {
             return true;
 
         } catch (UnknownHostException e) {
-            log.error(" Problem sending Unicast", e);
+            logger.error(" Problem sending Unicast", e);
             return false;
         } catch (SocketException e) {
-            log.error(" Problem sending Unicast", e);
+            logger.error(" Problem sending Unicast", e);
             return false;
         } catch (IOException e) {
-            log.error(" Problem sending Unicast", e);
+            logger.error(" Problem sending Unicast", e);
             return false;
         }
     }
@@ -227,7 +227,7 @@ public class UhuCommsSend {
             //1a. Compute the Encrypted Msg
             byte[] encryptMsg = UhuCompManager.getSphereForSadl().encryptSphereContent(tcMsg.getMessage().getSphereId(), tcMsg.getSerializedMessage());
             if (null == encryptMsg) {
-                log.info("Uhu Sphere Failed: Could not encrypt msg");
+                logger.info("Uhu Sphere Failed: Could not encrypt msg");
                 return false;
             }
             //1b. set encrypted message
@@ -237,7 +237,7 @@ public class UhuCommsSend {
             String msgOpen = "," + tcMsg.getMessage().getSphereId() + ",";
             byte[] msgClosed = tcMsg.getEncryptedMessage();
             if (msgClosed == null) {
-                log.error(" Problem with encrypting message");
+                logger.error(" Problem with encrypting message");
                 return false;
             }
             //Create the data to be sent in bytes
@@ -248,7 +248,7 @@ public class UhuCommsSend {
             //2b. Set the sendData
 
             tcMsg.setChecksum(UhuCheckSum.computeCRC(sendData));
-            StringBuilder tempString = new StringBuilder(UhuVersion.UHU_VERSION + SEP);
+            StringBuilder tempString = new StringBuilder(UhuVersion.UHU_VERSION + SEPERATOR);
             byte[] dataOnWire = new byte[tempString.toString().getBytes().length + tcMsg.getChecksum().length + sendData.length];
             try {
                 System.arraycopy(tempString.toString().getBytes(), 0, dataOnWire, 0, tempString.toString().length());
@@ -256,7 +256,7 @@ public class UhuCommsSend {
                 System.arraycopy(sendData, 0, dataOnWire, (tempString.toString().length() + tcMsg.getChecksum().length), sendData.length);
                 tcMsg.setDataOnWire(dataOnWire);
             } catch (Exception e) {
-                log.error("Error in creating the dataOnWire field of the control message", e);
+                logger.error("Error in creating the dataOnWire field of the control message", e);
             }
         }
 
@@ -264,10 +264,10 @@ public class UhuCommsSend {
         String recipient = null;
         //Send the message
         if (tcMsg.getMessage() instanceof MulticastControlMessage) {
-            log.info("About to send: " + tcMsg.getMessage().getDiscriminator().toString());
+            logger.info("About to send: " + tcMsg.getMessage().getDiscriminator().toString());
             isSent = UhuCommsSend.sendMulticast(tcMsg.getDataOnWire(), false);
         } else if (tcMsg.getMessage() instanceof UnicastControlMessage) {
-            log.info("About to send: " + tcMsg.getMessage().getDiscriminator().toString());
+            logger.info("About to send: " + tcMsg.getMessage().getDiscriminator().toString());
             UnicastControlMessage uMsg = (UnicastControlMessage) tcMsg.getMessage();
             recipient = uMsg.getRecipient().device;
             isSent = UhuCommsSend.sendUnicast(tcMsg.getDataOnWire(), recipient, false);

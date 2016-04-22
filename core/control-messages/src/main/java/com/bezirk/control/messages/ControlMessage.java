@@ -132,7 +132,7 @@ public class ControlMessage {
         return gson.toJson(this);
     }
 
-    public static enum Discriminator {
+    public enum Discriminator {
         DiscoveryRequest, DiscoveryResponse, MemberLeaveRequest, MemberLeaveResponse,
         OwnerLeaveResponse, UhuSphereLeave, ShareResponse, CatchRequest,
         CatchResponse, ShareRequest,
@@ -140,6 +140,4 @@ public class ControlMessage {
         LoggingServiceMessage, RTCControlMessage,
         MaxCtrlMsgId // add the new command before MaxCtrlMsgId
     }
-
-
 }

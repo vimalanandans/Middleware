@@ -31,23 +31,19 @@ public final class EventListenerUtility {
         receivedMessage.setIsLocal(false);
 
         byte[] packetData = Arrays.copyOfRange(receivePacket.getData(), 0, receivePacket.getLength());
-        byte[] reconHeader = null;
-        String headerPart = "";
         //Separate header from payload
         int lastSeenSep = 0;
         int headerCount = -2;
-        Integer headerLength = 0;
         receivedMessage.setIsMulticast(true);
         Boolean isHeaderSep = false;
         //FIX
-        byte[] receivedChecksum = null;
         boolean isMsgDuplicate = false;
         for (int i = 0; i < packetData.length; i++) {
             if (packetData[i] == SEPERATOR) {
-                reconHeader = Arrays.copyOfRange(packetData, (lastSeenSep == 0) ? lastSeenSep : lastSeenSep + 1, i);
+                byte[] reconHeader = Arrays.copyOfRange(packetData, (lastSeenSep == 0) ? lastSeenSep : lastSeenSep + 1, i);
                 lastSeenSep = i;
                 headerCount++;
-                headerPart = new String(reconHeader, 0, reconHeader.length);
+                String headerPart = new String(reconHeader, 0, reconHeader.length);
                 switch (headerCount) {
                     case -1:
                         if (!headerPart.equals(UhuVersion.UHU_VERSION)) {
@@ -59,7 +55,7 @@ public final class EventListenerUtility {
                         }
                         break;
                     case 0:
-                        receivedChecksum = Arrays.copyOfRange(reconHeader, 0, reconHeader.length);
+                        final byte[] receivedChecksum = Arrays.copyOfRange(reconHeader, 0, reconHeader.length);
                         isMsgDuplicate = DuplicateMessageManager.checkDuplicateEvent(receivedChecksum);
                         receivedMessage.setChecksum(receivedChecksum);
                         break;
@@ -67,7 +63,7 @@ public final class EventListenerUtility {
                         receivedMessage.getHeader().setSphereName(headerPart);
                         break;
                     case 2:
-                        headerLength = Integer.parseInt(headerPart);
+                        final int headerLength = Integer.parseInt(headerPart);
                         isHeaderSep = separateHeaderAndPayload(receivedMessage, lastSeenSep + 1, headerLength, packetData);
                         break;
                 }

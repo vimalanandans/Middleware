@@ -57,7 +57,7 @@ public class Pipe {
     }
 
     public String toString() {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
 
         builder.append("|");
         builder.append(getClass().getSimpleName());

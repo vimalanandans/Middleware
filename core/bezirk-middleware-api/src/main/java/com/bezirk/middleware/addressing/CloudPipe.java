@@ -30,11 +30,7 @@ public class CloudPipe extends Pipe {
     public boolean equals(Object thatObject) {
         if (thatObject instanceof CloudPipe) {
             URI thatUri = ((CloudPipe) thatObject).getURI();
-            if (this.uri.equals(thatUri)) {
-                return true;
-            } else {
-                return false;
-            }
+            return uri.equals(thatUri);
         } else {
             return false;
         }

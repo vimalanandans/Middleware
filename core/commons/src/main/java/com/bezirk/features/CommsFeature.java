@@ -1,9 +1,5 @@
 package com.bezirk.features;
 
-/**
- * Created by vnd2kor on 8/13/2015.
- */
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

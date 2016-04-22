@@ -44,18 +44,16 @@ public class DiscoveryRequestHandler {
 
     }
 
-
     public void getDiscoveryResponse() {
+        final Boolean success = (null == discReq.getProtocol()) ? handleSphereDiscovery(discReq) :
+                handleServiceDiscovery(discReq);
 
-        Boolean success = false;
-        success = (null == discReq.getProtocol()) ? handleSphereDiscovery(discReq) : handleServiceDiscovery(discReq);
         if (success) {
             populateReceiverQueue(response);
             log.debug("DiscoveryResponse created successfully");
         } else {
             log.debug("Nothing could be discovered");
         }
-
     }
 
 

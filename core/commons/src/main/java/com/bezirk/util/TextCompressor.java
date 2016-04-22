@@ -73,13 +73,11 @@ public class TextCompressor {
      * @return
      */
     public static byte[] compressByteArrayUsingDeflater(byte[] bytes) {
-
-        ByteArrayOutputStream baos = null;
         Deflater dfl = new Deflater();
         dfl.setLevel(Deflater.BEST_COMPRESSION);
         dfl.setInput(bytes);
         dfl.finish();
-        baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] tmp = new byte[4 * 1024];
         try {
             while (!dfl.finished()) {

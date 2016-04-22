@@ -124,7 +124,7 @@ public class PipeRequester implements IPipeRequester, IUhuPipeAPI {
      * Called to notify the PipeManager whether the user has granted access to the pipe and
      * which policies are allowed to pass in and out of the pipe.
      *
-     * @param granted     True if the pipe was granted
+     * @param approved     True if the pipe was granted
      * @param pipe        The Pipe originally requested by the service
      * @param allowedIn   This PipePolicy contains the collection of Protocols allowed into the local sphere
      * @param allowedOut  This PipePolicy contains the collection of Protocols allowed to pass out of the local sphere
@@ -134,7 +134,6 @@ public class PipeRequester implements IPipeRequester, IUhuPipeAPI {
     public void pipeApproved(boolean approved, String pipeRequestId, String pipePassword, String sphereId) throws PipeApprovalException {
         PipeRequest request = outstandingRequests.get(pipeRequestId);
 
-        BezirkListener listener = request.getListener();
         Pipe pipe = request.getPipe();
         UhuPipePolicy allowedIn = PipePolicyUtility.policyInMap.get(request.getId());
         UhuPipePolicy allowedOut = PipePolicyUtility.policyOutMap.get(request.getId());

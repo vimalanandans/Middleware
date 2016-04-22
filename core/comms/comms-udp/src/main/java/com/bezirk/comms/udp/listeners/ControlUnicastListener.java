@@ -77,14 +77,10 @@ public class ControlUnicastListener implements Runnable {
                     }
                 } catch (Exception e) {
                     log.error("Error in decrypting the message", e);
-
                 }
             } else {
                 log.debug("[DISCARD]Control Unicast Received: " + receivePacket.getLength());
-                continue;
             }
-
-
         }
     }
 

@@ -102,16 +102,16 @@ public class WireMessage implements Serializable {
     }
 
     public static WireMessage deserialize(String data) throws UnsupportedEncodingException {
-
         WireMessage wireMessage = null;
-        //String json = new String(data);
-        String json = new String(decompress(data.getBytes("UTF-8")));
-        Gson gson = new Gson();
+        final String json = decompress(data.getBytes("UTF-8"));
+        final Gson gson = new Gson();
+
         try {
             wireMessage = gson.fromJson(json, WireMessage.class);
         } catch (JsonParseException e) {
             log.error("Exception in parsing json message from wire message.", e);
         }
+
         return wireMessage;
     }
 

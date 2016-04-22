@@ -49,7 +49,7 @@ import java.util.concurrent.Executors;
 
 public abstract class CommsProcessor implements IUhuComms {
 
-    private static final Logger log = LoggerFactory.getLogger(CommsProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(CommsProcessor.class);
 
     // thread pool size
     private static final int THREAD_SIZE = 4;
@@ -186,9 +186,9 @@ public abstract class CommsProcessor implements IUhuComms {
                 try {
                     wireByteMessage = wireMessage.serialize();
 
-                    //log.info("wireData size after "+wireData.length );
+                    //logger.info("wireData size after "+wireData.length );
                 } catch (IOException e) {
-                    log.error("unable to serialize the wire msg " + e);
+                    logger.error("unable to serialize the wire msg " + e);
                     return ret;
                 }
 
@@ -204,7 +204,7 @@ public abstract class CommsProcessor implements IUhuComms {
                 String recipient = uMsg.getRecipient().device;
 
 				/*if(isLocalMessage(recipient))
-				{
+                {
 					return bridgeControlMessage(getDeviceId(),message);
 				}
 				else */
@@ -217,7 +217,7 @@ public abstract class CommsProcessor implements IUhuComms {
                         wireByteMessage = wireMessage.serialize();
 
                     } catch (IOException e) {
-                        log.error("unable to serialize the wire msg " + e);
+                        logger.error("unable to serialize the wire msg " + e);
                         return false;
                     }
 
@@ -229,7 +229,7 @@ public abstract class CommsProcessor implements IUhuComms {
                 }
 
             } else {
-                log.debug("unknown control message");
+                logger.debug("unknown control message");
             }
         }
 
@@ -302,20 +302,17 @@ public abstract class CommsProcessor implements IUhuComms {
      * @return
      */
     private byte[] compressMsg(final String data) {
-        byte[] temp = null;
-        byte[] wireData = null;
+        final byte[] temp = data.getBytes();
+        logger.info("Before Compression Msg byte length: {}", temp.length);
 
-        temp = data.getBytes();
-        log.info("Before Compression Msg byte length : " + temp.length);
+        final long compStartTime = System.currentTimeMillis();
+        final byte[] wireData = TextCompressor.compress(temp);
+        final long compEndTime = System.currentTimeMillis();
 
-        long compStartTime = System.currentTimeMillis();
-        wireData = TextCompressor.compress(temp);
-        long compEndTime = System.currentTimeMillis();
-
-        log.info("Compression Took " + (compEndTime - compStartTime) + " milli seconds");
+        logger.info("Compression Took {} milliseconds", compEndTime - compStartTime);
 
         //After Compression Byte Length is
-        log.info("After Compression Msg byte length : " + wireData.length);
+        logger.info("After Compression Msg byte length: {}", wireData.length);
         return wireData;
     }
 
@@ -329,7 +326,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
         byte[] msg = null;
 
-        log.info("Before Encryption Msg byte length : " + msgData.length);
+        logger.info("Before Encryption Msg byte length : " + msgData.length);
         long startTime = System.nanoTime();
 
         //Encrypt the data.. To test the local encryption
@@ -339,11 +336,11 @@ public abstract class CommsProcessor implements IUhuComms {
         msg = UhuCompManager.getSphereForSadl().encryptSphereContent(sphereId, msgDataString);
 
         long endTime = System.nanoTime();
-        log.info("Encryption Took " + (endTime - startTime) + " nano seconds");
+        logger.info("Encryption Took " + (endTime - startTime) + " nano seconds");
 
         //After Encryption Byte Length
         if (msg != null) {
-            log.info("After Encryption Msg byte length : " + msg.length);
+            logger.info("After Encryption Msg byte length : " + msg.length);
         }
 
         return msg;
@@ -369,9 +366,9 @@ public abstract class CommsProcessor implements IUhuComms {
 
             if (data != null) {
                 msg = data.getBytes();
-                //log.info("decrypted size >> " + message.length);
+                //logger.info("decrypted size >> " + message.length);
             } else {
-                log.info("unable to decrypt msg for sphere id >> " + sphereId);
+                logger.info("unable to decrypt msg for sphere id >> " + sphereId);
 
             }
         } else // encryption not enabled . send back same data
@@ -410,7 +407,7 @@ public abstract class CommsProcessor implements IUhuComms {
                 try {
                     wireByteMessage = wireMessage.serialize();
                 } catch (IOException e) {
-                    log.error("unable to serialize the wire msg " + e);
+                    logger.error("unable to serialize the wire msg " + e);
                     return ret;
                 }
 
@@ -426,7 +423,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
                 //FIXME: since current zyre-jni doesn't support the self device identification
                 // we are sending the unicast always loop back
-				/*if(isLocalMessage(recipient)) {
+                /*if(isLocalMessage(recipient)) {
 					// if it is unicast and targeted to same device. sent it only to local
 					return processWireMessage(recipient,ledger);
 				}
@@ -448,14 +445,14 @@ public abstract class CommsProcessor implements IUhuComms {
                     try {
                         wireByteMessage = wireMessage.serialize();
                     } catch (IOException e) {
-                        log.error("unable to serialize the wire msg " + e);
+                        logger.error("unable to serialize the wire msg " + e);
                         return false;
                     }
 
 
                     if (null == uHeader || uHeader.getRecipient() == null
                             || uHeader.getRecipient().device == null || uHeader.getRecipient().device.length() == 0) {
-                        log.error(" Message not of accepted type");
+                        logger.error(" Message not of accepted type");
                         return ret;
                     }
 
@@ -478,7 +475,7 @@ public abstract class CommsProcessor implements IUhuComms {
             return true;
         } else {
 
-            log.error("UhuStreamManager is not initialized.");
+            logger.error("UhuStreamManager is not initialized.");
             return false;
         }
 
@@ -503,7 +500,7 @@ public abstract class CommsProcessor implements IUhuComms {
         try {
             data = wireMessage.serialize();
         } catch (IOException e) {
-            log.error("Ledger wire message serialization error " + e);
+            logger.error("Ledger wire message serialization error " + e);
             return false;
         }
 
@@ -538,7 +535,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
             executor.execute(inMsg);
         } else {
-            log.error("thread pool is not active.");
+            logger.error("thread pool is not active.");
         }
 
         return true;
@@ -555,7 +552,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
             executor.execute(inMsg);
         } else {
-            log.error("thread pool is not active.");
+            logger.error("thread pool is not active.");
         }
 
         return true;
@@ -568,7 +565,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
         if (msg != null) {
             String processedMsg = new String(msg);
-            //log.info("Ctrl Msg size "+data.length());
+            //logger.info("Ctrl Msg size "+data.length());
             ControlMessage ctrl = ControlMessage.deserialize(processedMsg, ControlMessage.class);
 
             // Quickfix for zyre-jni: update the sender device id
@@ -576,7 +573,7 @@ public abstract class CommsProcessor implements IUhuComms {
             //processedMsg = ctrl.serialize();
             // instead of deserialization, you shall try to use
             // pattern match to speed up the discriminator
-            //log.info("ctrl msg >> " + ctrl.toString());
+            //logger.info("ctrl msg >> " + ctrl.toString());
             msgDispatcher.dispatchControlMessages(ctrl, processedMsg);
 
             return true;
@@ -594,7 +591,7 @@ public abstract class CommsProcessor implements IUhuComms {
             EventLedger eventLedger = (EventLedger) ledger;
             msgDispatcher.dispatchServiceMessages(eventLedger);
         } else {
-            log.error("unknown msg to dispatch ");
+            logger.error("unknown msg to dispatch ");
         }
 
         return false;
@@ -749,11 +746,11 @@ public abstract class CommsProcessor implements IUhuComms {
     @Override
     public boolean sendStream(String uniqueKey) {
         if (uhuStreamManager != null) {
-            log.info("sending stream >" + uniqueKey);
+            logger.info("sending stream >" + uniqueKey);
             return uhuStreamManager.sendStream(uniqueKey);
         } else {
 
-            log.error("UhuStreamManager is not initialized.");
+            logger.error("UhuStreamManager is not initialized.");
             return false;
         }
     }
@@ -767,7 +764,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
         } else {
 
-            log.error("UhuStreamManager is not initialized.");
+            logger.error("UhuStreamManager is not initialized.");
             return false;
         }
     }
@@ -849,7 +846,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
             if (!WireMessage.checkVersion(msg)) {
                 String mismatchedVersion = WireMessage.getVersion(msg);
-				/*log.error("Unknown message received. Uhu version > "+ UhuVersion.getWireVersion() +
+				/*logger.error("Unknown message received. Uhu version > "+ UhuVersion.getWireVersion() +
 						" . Incoming msg version > " + mismatchedVersion);*/
                 notification.versionMismatch(mismatchedVersion);
                 return;
@@ -858,7 +855,7 @@ public abstract class CommsProcessor implements IUhuComms {
             WireMessage wireMessage = WireMessage.deserialize(msg.getBytes());
 
             if (wireMessage == null) {
-                log.error(" deserialization failed >> " + msg);
+                logger.error(" deserialization failed >> " + msg);
                 return;
             }
 
@@ -882,7 +879,7 @@ public abstract class CommsProcessor implements IUhuComms {
                     processMessageEvent(deviceId, wireMessage);
                     break;
                 default:
-                    log.error(" Unknown event >> " + msg);
+                    logger.error(" Unknown event >> " + msg);
                     return;
             }
 
@@ -895,8 +892,8 @@ public abstract class CommsProcessor implements IUhuComms {
         public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
             switch (id) {
                 case LoggingServiceMessage:
-                    //log.debug("<<<<<<<<  LOGGING MESSAGE RECEIVED FROM LOGGING SERVICE  >>>>>>>>>");
-                    log.debug("ReceivedLogMessage-> " + serializedMsg);
+                    //logger.debug("<<<<<<<<  LOGGING MESSAGE RECEIVED FROM LOGGING SERVICE  >>>>>>>>>");
+                    logger.debug("ReceivedLogMessage-> " + serializedMsg);
                     try {
                         final LoggingServiceMessage loggingServiceMsg = ControlMessage.deserialize(serializedMsg, LoggingServiceMessage.class);
 
@@ -905,11 +902,11 @@ public abstract class CommsProcessor implements IUhuComms {
                         }
                         logServiceMsgHandler.handleLogServiceMessage(loggingServiceMsg);
                     } catch (Exception e) {
-                        log.error("Error in Deserializing LogServiceMessage", e);
+                        logger.error("Error in Deserializing LogServiceMessage", e);
                     }
                     break;
                 default:
-                    log.error("Unknown control message > " + id);
+                    logger.error("Unknown control message > " + id);
                     return false;
             }
             return true;

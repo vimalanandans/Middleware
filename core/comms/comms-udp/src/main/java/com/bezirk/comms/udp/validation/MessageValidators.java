@@ -109,10 +109,8 @@ public class MessageValidators implements Runnable {
     }
 
     private void processControl(ControlLedger cLedger) {
-        Boolean success = false;
         //decrypt
-        success = decryptMsg(cLedger);
-        if (success) {
+        if (decryptMsg(cLedger)) {
             ControlMessage cMsg = ControlMessage.deserialize(cLedger.getSerializedMessage(), ControlMessage.class);
             cLedger.setMessage(cMsg);
         } else {
@@ -122,7 +120,7 @@ public class MessageValidators implements Runnable {
 
 
         // Check Integrity
-        success = this.computedDevId.equals(cLedger.getMessage().getSender().device);
+        final Boolean success = this.computedDevId.equals(cLedger.getMessage().getSender().device);
         if (!success) {
             log.debug("Dropping Msg Integerity failed");
             return;
@@ -147,9 +145,8 @@ public class MessageValidators implements Runnable {
 
     // Clarify and change the Message
     private Boolean decryptMsg(ControlLedger cLedger) {
-        String sphereid = cLedger.getSphereId();
-        byte[] encMsg = cLedger.getEncryptedMessage();
-        String decryptMsg = "";
+        final String sphereid = cLedger.getSphereId();
+        final byte[] encMsg = cLedger.getEncryptedMessage();
 
         if (!UhuValidatorUtility.checkForString(sphereid) || encMsg == null) {
             log.error("Sphere or encrypted message is null");
@@ -162,8 +159,7 @@ public class MessageValidators implements Runnable {
                 return false;
             }
 
-
-            decryptMsg = sphereIf.decryptSphereContent(sphereid, encMsg);
+            final String decryptMsg = sphereIf.decryptSphereContent(sphereid, encMsg);
             if (UhuValidatorUtility.checkForString(decryptMsg)) {
                 log.debug("Ctrl Msg decrypted: " + decryptMsg);
                 cLedger.setSerializedMessage(decryptMsg);

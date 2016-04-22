@@ -1,7 +1,7 @@
 package com.bezirk.comms;
 
 /**
- * Created by vimal on 4/13/2015.
+ * @author Vimal
  */
 // used for streaming. remove it
 public interface IPortFactory {

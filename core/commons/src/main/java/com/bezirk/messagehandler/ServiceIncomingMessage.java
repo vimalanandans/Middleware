@@ -11,9 +11,9 @@ public class ServiceIncomingMessage {
      * Discriminator for the Callbacks
      */
     public String callbackDiscriminator = null;
-    ;
+
     /**
-     * Recipeint of this msg
+     * Recipient of this msg
      */
     protected UhuServiceId recipient;
 

@@ -15,9 +15,8 @@ import java.io.InputStream;
  * local uhu service
  */
 public class StreamWriter implements Runnable {
-
     private static int numThreads = 0;
-    private static final Logger log = LoggerFactory.getLogger(StreamWriter.class);
+    private static final Logger logger = LoggerFactory.getLogger(StreamWriter.class);
     private final int id;
 
     private WriteJob writeJob;
@@ -46,14 +45,14 @@ public class StreamWriter implements Runnable {
     @Override
     public void run() {
         if (!validateDataMembers()) {
-            log.error("Data members not specified correctly");
+            logger.error("Data members not specified correctly");
             return;
         }
 
         try {
             writeFile();
         } catch (IOException e) {
-            log.error("Error writing to file: " + e.getClass().getSimpleName() + ": \n" + e);
+            logger.error("Error writing to file: " + e.getClass().getSimpleName() + ": \n" + e);
         }
     }
 
@@ -66,31 +65,31 @@ public class StreamWriter implements Runnable {
         boolean valid = true;
 
         if (pipeMonitor == null) {
-            log.error(err + "pipeMonitor is null");
+            logger.error(err + "pipeMonitor is null");
             valid = false;
         }
         if (writeJob == null) {
-            log.error(err + "writeJob is null");
+            logger.error(err + "writeJob is null");
             valid = false;
         }
         if (writeJob.getInputStream() == null) {
-            log.error(err + "writeJob.inputStream is null");
+            logger.error(err + "writeJob.inputStream is null");
             valid = false;
         }
         if (writeJob.getStreamDescriptor() == null) {
-            log.error(err + "writeJob.streamDescriptor is null");
+            logger.error(err + "writeJob.streamDescriptor is null");
             valid = false;
         }
         if (writeJob.getShortFileName() == null) {
-            log.error(err + "writeJob.shortFileName is null");
+            logger.error(err + "writeJob.shortFileName is null");
             valid = false;
         }
         if (outputDir == null) {
-            log.error(err + "outputDir is null");
+            logger.error(err + "outputDir is null");
             valid = false;
         }
         if (pipeHeader == null) {
-            log.error(err + "pipeHeader is null");
+            logger.error(err + "pipeHeader is null");
             valid = false;
         }
 
@@ -118,19 +117,19 @@ public class StreamWriter implements Runnable {
 
                 // Ensure data is available to be read before proceeding
                 while (inStream.available() < 1) {
-                    log.warn("Data not available to be read. Sleeping for 200ms.");
+                    logger.warn("Data not available to be read. Sleeping for 200ms.");
                     Thread.sleep(200);
                 }
                 // Data is available to be read, so we can send fileName to local services
-                log.info("*** enqueue-ing for local sending *** " + outputFile.getAbsolutePath());
+                logger.info("*** enqueue-ing for local sending *** " + outputFile.getAbsolutePath());
                 LocalStreamSendJob localSendJob = new LocalStreamSendJob();
                 localSendJob.setStreamDescriptor(serializedStreamDesc);
                 localSendJob.setFilePath(outputFile.getAbsolutePath());
-                log.info("** setting pipeheader: " + pipeHeader.serialize());
+                logger.info("** setting pipeheader: " + pipeHeader.serialize());
                 localSendJob.setPipeHeader(pipeHeader);
                 pipeMonitor.processLocalSend(localSendJob);
 
-                log.info("(thread: " + id + ") Streaming file write started");
+                logger.info("(thread: " + id + ") Streaming file write started");
 
                 // Write the file
                 while ((read = inStream.read(buffer)) != -1) {
@@ -139,17 +138,17 @@ public class StreamWriter implements Runnable {
 
                     counter++;
                     if (counter % 500 == 0) {
-                        log.info("(thread: " + id + ") streaming file written in KBytes: " + counter);
+                        logger.info("(thread: " + id + ") streaming file written in KBytes: " + counter);
                     }
                 }
                 fileOutputStream.flush();
             } catch (Exception t) {
-                log.error("(thread: " + id + ") Problem writing file: \n", t);
+                logger.error("(thread: " + id + ") Problem writing file: \n", t);
             } finally {
                 fileOutputStream.close();
             }
         } finally {
-            log.info("(thread: " + id + ") streaming file written completely: " + outputFile);
+            logger.info("(thread: " + id + ") streaming file written completely: " + outputFile);
             inStream.close();
         }
 
@@ -169,26 +168,25 @@ public class StreamWriter implements Runnable {
      * @throws IOException
      */
     protected File createFile() throws IOException {
-
-        File outputFile = null;
-
         // Create output directory if it doesn't exist
         if (outputDir.exists()) {
-            log.info("Output directory already exists: " + outputDir);
+            logger.info("Output directory already exists: " + outputDir);
         } else {
             boolean success = outputDir.mkdirs();
             if (!success) {
                 throw new IOException("Temp directory does not exist and it could not be created");
             }
-            log.info("Output directory created: " + outputDir);
+            logger.info("Output directory created: " + outputDir);
         }
+
+        final File outputFile;
 
         if (writeJob.retainFile) {
             outputFile = new File(outputDir, writeJob.getShortFileName());
-            log.info("Created regular file: " + outputFile);
+            logger.info("Created regular file: " + outputFile);
         } else {
             outputFile = File.createTempFile(writeJob.getShortFileName(), "", outputDir);
-            log.info("Created temp file: " + outputFile);
+            logger.info("Created temp file: " + outputFile);
         }
 
         return outputFile;

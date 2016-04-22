@@ -34,8 +34,9 @@ public class MessageBookKeeper {
      * @return true if the message is to be processed
      */
     public Boolean processMsg(ControlLedger msg) {
-        String uniqueKey = msg.getMessage().getUniqueKey();
-        Boolean isMsg2BProcessed = false;
+        final String uniqueKey = msg.getMessage().getUniqueKey();
+
+        final Boolean isMsg2BProcessed;
         if (controlMap.containsKey(uniqueKey)) {
             //this is the case where a response is received for a request
             isMsg2BProcessed = updateRecord(uniqueKey, msg);
