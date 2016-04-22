@@ -32,7 +32,6 @@ public final class ControlListenerUtility {
         boolean isMsgDuplicate = false;
         byte[] received = new byte[receivePacket.getLength()];
         byte[] reconSphere = null;
-        String sphereName = "";
         System.arraycopy(receivePacket.getData(), receivePacket.getOffset(), received, 0, receivePacket.getLength());
         // Message format is bytes --> CS,SphereName,EncryptedMessage
         int countSeperator = -1;
@@ -62,7 +61,7 @@ public final class ControlListenerUtility {
                         break;
                     case 2:
                         reconSphere = Arrays.copyOfRange(received, secSEP + 1, i);
-                        sphereName = new String(reconSphere, 0, reconSphere.length);
+                        String sphereName = new String(reconSphere, 0, reconSphere.length);
                         receivedMessage.setSphereId(sphereName);
                         byte[] encPayload = Arrays.copyOfRange(received, i + 1, receivePacket.getLength());
                         receivedMessage.setEncryptedMessage(encPayload);

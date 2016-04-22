@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -112,7 +113,7 @@ public class SubscriptionUnsubscriptionTest {
 		 * SadlManager should return serviceA id when queried for services subscribed to streamlessProtocol.
 		 * ServiceCId should not be present in this list.
 		 * */
-        HashSet<UhuServiceId> serviceIdSet = uhuSadlManager.sadlRegistry.protocolMap
+        Set<UhuServiceId> serviceIdSet = uhuSadlManager.sadlRegistry.protocolMap
                 .get(streamlessPRole.getProtocolName());
 
         assertNotNull("ServiceIdSet is null", serviceIdSet);
@@ -190,7 +191,7 @@ public class SubscriptionUnsubscriptionTest {
 		 * ServiceB should be present in the eventlist for streamless protocol. 
 		 * ServiceA and ServiceC should not be present in the eventlist for streamless protocol.
 		 * */
-        HashSet<UhuServiceId> serviceIdSet;
+        Set<UhuServiceId> serviceIdSet;
         for (String topic : streamlessPRole.getEventTopics()) {
 
             serviceIdSet = uhuSadlManager.sadlRegistry.eventMap.get(topic);

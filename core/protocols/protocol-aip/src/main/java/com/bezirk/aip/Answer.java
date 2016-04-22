@@ -89,16 +89,16 @@ public class Answer<A> extends Event {
         // (1) Extract DigestItems from JSON
         // (2) Deserialize each DigestItem individually
         // (3) Add deserialized DigestItems to Digest
-        JsonObject jsonObj = new JsonParser().parse(json).getAsJsonObject();
-        JsonArray jsonObjAnswers = jsonObj.get("aip_answers").getAsJsonArray();
-        List<I> answers = new ArrayList<I>();
-        JsonObject jsonObjAnswer = null;
-        I answerItem = null;
+        final JsonObject jsonObj = new JsonParser().parse(json).getAsJsonObject();
+        final JsonArray jsonObjAnswers = jsonObj.get("aip_answers").getAsJsonArray();
+        final List<I> answers = new ArrayList<I>();
+
         for (int i = 0; i < jsonObjAnswers.size(); i++) {
-            jsonObjAnswer = jsonObjAnswers.get(i).getAsJsonObject();
-            answerItem = (I) gson.fromJson(jsonObjAnswer.toString(), iC);
+            JsonObject jsonObjAnswer = jsonObjAnswers.get(i).getAsJsonObject();
+            I answerItem = (I) gson.fromJson(jsonObjAnswer.toString(), iC);
             answers.add(answerItem);
         }
+
         answer.setAnswers(answers);
         return answer;
     }

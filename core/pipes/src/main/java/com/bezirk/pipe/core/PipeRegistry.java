@@ -15,7 +15,6 @@ import java.util.Map;
  * Used to register and retrieve information on all uhu pipes in a uhu instance
  */
 public class PipeRegistry {
-
     private static final Logger logger = LoggerFactory.getLogger(PipeRegistry.class);
     private final Map<Pipe, PipeRecord> pipeMap = Collections.synchronizedMap(new HashMap<Pipe, PipeRecord>());
 
@@ -26,7 +25,7 @@ public class PipeRegistry {
     /**
      * Check if the specified pipe is registered with uhu
      *
-     * @param location
+     * @param pipe
      * @return True if the pipe is registered
      */
     public boolean isRegistered(Pipe pipe) {
@@ -130,14 +129,12 @@ public class PipeRegistry {
     public PipeRecord update(Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut, String sphereId, String password) throws PipeApprovalException {
         validatePipe(pipe);
 
-        PipeRecord record = null;
-
         if (!isRegistered(pipe)) {
             throw new PipeApprovalException("Can't update a pipe that has not been added yet: " + pipe);
         }
 
         logger.info("Pipe already registered, updating");
-        record = pipeMap.get(pipe);
+        PipeRecord record = pipeMap.get(pipe);
 
         // TODO: validate these fields instead of just setting
 
@@ -154,7 +151,6 @@ public class PipeRegistry {
 	/*
 	 * Helper methods
 	 */
-
     private void validatePipe(Pipe pipe) throws PipeApprovalException {
         String prefix = "Could not register pipe. ";
 
@@ -166,5 +162,4 @@ public class PipeRegistry {
             throw new PipeApprovalException(prefix + "Pipe name not defined");
         }
     }
-
 }

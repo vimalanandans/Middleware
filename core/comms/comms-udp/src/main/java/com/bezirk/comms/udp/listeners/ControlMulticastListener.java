@@ -99,7 +99,6 @@ public class ControlMulticastListener implements Runnable {
             } else {
                 //String retPayload = (String) UhuMessage.deserialize(received.split(",")[2].getBytes());
                 log.info("[DISCARD]Control Multicast Received: " + receivePacket.getLength());//+ " payload " + retPayload);
-                continue;
             }
         }
     }

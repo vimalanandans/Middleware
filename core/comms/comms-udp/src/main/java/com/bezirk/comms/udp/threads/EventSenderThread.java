@@ -68,7 +68,8 @@ public class EventSenderThread implements Runnable {
                 if (new Date().getTime() - eLedger.getLastSent() < timeBetweenRetransmits) {
                     continue;
                 }
-                Boolean spherePassed = false;
+
+                final Boolean spherePassed;
                 //If message is sent first time go through the stack until sphere
                 //Otherwise, just invoke UhuComms
                 if (eLedger.getNumOfSends() == 0) {
@@ -85,6 +86,7 @@ public class EventSenderThread implements Runnable {
                     //sphere layer has already been passed and message is encrypted
                     spherePassed = true;
                 }
+
                 if (spherePassed) {
                     sendToComms(eLedger);
                 } else {

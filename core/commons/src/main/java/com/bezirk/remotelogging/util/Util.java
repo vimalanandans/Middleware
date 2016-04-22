@@ -24,7 +24,7 @@ public class Util {
     /**
      * Types of the logged message
      */
-    public static enum LOGGING_MESSAGE_TYPE {
+    public enum LOGGING_MESSAGE_TYPE {
         /**
          * Used by the client of Event Sender
          */

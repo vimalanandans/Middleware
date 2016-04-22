@@ -17,7 +17,6 @@ public class NoticeUIshowText extends Event {
     // Payload
     private String text;
 
-    ;
     private TextType type;
     private long expiration;
     /**

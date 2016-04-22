@@ -55,11 +55,17 @@ public class SubscribedRole extends ProtocolRole {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(" ProtocolName: " + protocolName);
-        builder.append(" ProtocolDesc: " + protocolDesc);
-        builder.append(" evntTopics: " + Arrays.toString(eventTopics));
-        builder.append(" strmTopics: " + Arrays.toString(streamTopics));
+        final StringBuilder builder = new StringBuilder();
+
+        builder.append(" ProtocolName: ");
+        builder.append(protocolName);
+        builder.append(" ProtocolDesc: ");
+        builder.append(protocolDesc);
+        builder.append(" evntTopics: ");
+        builder.append(Arrays.toString(eventTopics));
+        builder.append(" strmTopics: ");
+        builder.append(Arrays.toString(streamTopics));
+
         return builder.toString();
     }
 }

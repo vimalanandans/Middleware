@@ -147,7 +147,7 @@ public final class CryptoEngine implements ICryptoInternals {
         }
 
         if (sphereId != null && !registry.isKeymapExist(sphereId)) {
-            byte[] sphereKey = null;
+            final byte[] sphereKey;
 
             if (fromSphereId) { // create from sphere id
                 // get short id from sphere id

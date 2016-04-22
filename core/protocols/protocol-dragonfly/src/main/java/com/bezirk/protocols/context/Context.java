@@ -28,7 +28,7 @@ public class Context {
      * partOfDay
      */
     private String partOfDay = null;
-	
+
 	
 	/* Constructors */
 
@@ -71,18 +71,10 @@ public class Context {
             splitedDateTime[1] = intermediate;
         }
 
-        if (splitedDateTime[0].matches("([0-9]{4})-([0-9]{2})-([0-9]{2})"))
-            checkformat = true;
-        else
-            checkformat = false;
+        checkformat = splitedDateTime[0].matches("([0-9]{4})-([0-9]{2})-([0-9]{2})");
 
         if (checkformat) {
-            if (splitedDateTime[1]
-                    .matches("([0-9]{2})-([0-9]{2})-([0-9]{2})-([0-9]{3})-([0-9]{4})")) {
-                return true;
-            } else {
-                return false;
-            }
+            return splitedDateTime[1].matches("([0-9]{2})-([0-9]{2})-([0-9]{2})-([0-9]{3})-([0-9]{4})");
         }
 
         return checkformat;

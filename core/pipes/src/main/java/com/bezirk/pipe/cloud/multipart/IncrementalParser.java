@@ -68,7 +68,6 @@ public class IncrementalParser implements MultiPartParser {
     /**
      * @param expectedBoundary
      * @param inStream
-     * @param offset
      * @return
      * @throws Exception
      */
@@ -77,7 +76,7 @@ public class IncrementalParser implements MultiPartParser {
         StreamContentPart contentPart = new StreamContentPart();
 
 		/*
-		 * Parse the <content> (i.e. stream content) part in 4 steps:
+         * Parse the <content> (i.e. stream content) part in 4 steps:
 		 */
 
         // 1. Ensure that boundary is the first line in the part
@@ -100,9 +99,9 @@ public class IncrementalParser implements MultiPartParser {
 
     protected UhuHeaderPart parseUhuHeader(String expectedBoundary, InputStream inStream) throws Exception {
         Part streamPart = new UhuHeaderPart();
-		
+
 		/*
-		 * Parse the <uhu-header> (uhuHeader) part in 4 steps:
+         * Parse the <uhu-header> (uhuHeader) part in 4 steps:
 		 */
 
         // 1. Ensure that the boundary is the first line in the part
@@ -166,74 +165,52 @@ public class IncrementalParser implements MultiPartParser {
         return (StreamDescriptorPart) streamPart;
     }
 
-    protected String readPipeHeader(InputStream inStream, Part part) throws IOException {
-        int next = 0;
-        StringBuilder stringBuilder = new StringBuilder();
-        String serializedPipeHeader = null;
-
-        while ((next = inStream.read()) != -1) {
-            bytesRead++;
-            System.out.print((char) next);
-
-            // We found the end of a line, we have our serialized uhu header
-            if (next == '\n') {
-                serializedPipeHeader = stringBuilder.toString();
-                log.info("Identified uhu header: " + serializedPipeHeader);
-                break;
-            }
-            // Collect all chars except newlines
-            else {
-                stringBuilder.append((char) next);
-            }
-        }
-
-        return serializedPipeHeader;
-    }
-
-
     /**
-     * @param inStream
-     * @param bytesRead
-     * @return
-     * @throws IOException
+     * Converts a string from the current position to the first new line character
+     * to a string.
+     *
+     * @param is the stream whose first line will be returned as a string
+     * @return the first line of the stream as a string
+     * @throws IOException problem reading from <code>is</code>
      */
-    protected String readStreamDescriptor(InputStream inStream, Part part) throws IOException {
-        int next = 0;
-        StringBuilder stringBuilder = new StringBuilder();
-        String streamDesc = null;
+    private String streamLineToString(InputStream is) throws IOException {
+        final StringBuilder streamData = new StringBuilder();
 
-        while ((next = inStream.read()) != -1) {
+        int next;
+        while ((next = is.read()) != -1) {
             bytesRead++;
-            System.out.print((char) next);
 
             // We found the end of a line, this is our stream descriptor
             if (next == '\n') {
-                streamDesc = stringBuilder.toString();
-                log.info("Identified streamDescriptor: " + streamDesc);
                 break;
-            }
-            // Collect all chars except newlines
-            else {
-                stringBuilder.append((char) next);
+            } else { // Collect all chars except newlines
+                streamData.append((char) next);
             }
         }
+
+        return streamData.toString();
+    }
+
+    protected String readPipeHeader(InputStream inStream, Part part) throws IOException {
+        final String pipeHeader = streamLineToString(inStream);
+        log.info("Identified uhu header: {}", pipeHeader.toString());
+
+        return pipeHeader;
+    }
+
+    protected String readStreamDescriptor(InputStream inStream, Part part) throws IOException {
+        final String streamDesc = streamLineToString(inStream);
+        log.info("Identified streamDescriptor: {}", streamDesc.toString());
 
         return streamDesc;
     }
 
-    /**
-     * @param inStream
-     * @param bytesRead
-     * @param part
-     * @return
-     * @throws Exception
-     */
     protected Map<String, String> parsePartHeader(InputStream inStream, Part part) throws Exception {
-        int next = 0;
         StringBuilder stringBuilder = new StringBuilder();
-        Map<String, String> partHeader = new HashMap<String, String>();
+        final Map<String, String> partHeader = new HashMap<String, String>();
         int lineNum = 0;
 
+        int next;
         while ((next = inStream.read()) != -1) {
             bytesRead++;
             System.out.print((char) next);
@@ -272,14 +249,13 @@ public class IncrementalParser implements MultiPartParser {
     /**
      * @param expectedBoundary
      * @param inStream
-     * @param bytesRead
      * @param part
      * @throws Exception
      */
     protected void validateBoundary(String expectedBoundary, InputStream inStream, Part part) throws Exception {
-        int next = 0;
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
 
+        int next;
         while ((next = inStream.read()) != -1) {
             bytesRead++;
             System.out.print((char) next);
@@ -292,7 +268,6 @@ public class IncrementalParser implements MultiPartParser {
 
             // We found a line
             String line = stringBuilder.toString().trim();
-            stringBuilder = new StringBuilder();
 
             // Check that this is the first line and it matches the expected value
             if (line.equals(expectedBoundary)) {

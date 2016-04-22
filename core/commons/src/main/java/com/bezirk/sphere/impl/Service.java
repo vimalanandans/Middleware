@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by Rishabh Gulati on 6/19/2014.
+ * @author Rishabh Gulati
  */
 public abstract class Service implements Serializable {
 

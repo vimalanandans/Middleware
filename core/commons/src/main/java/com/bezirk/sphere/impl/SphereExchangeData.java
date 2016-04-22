@@ -8,10 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SphereExchangeData {
+    private static final Logger logger = LoggerFactory.getLogger(SphereExchangeData.class);
 
     public static final String OPERATION_SHARE = "Share";
     public static final String OPERATION_CATCH = "Catch";
-    private static final Logger LOGGER = LoggerFactory.getLogger(SphereExchangeData.class);
+
     private String deviceId;
     private String deviceName;
     private String deviceType;
@@ -35,7 +36,7 @@ public class SphereExchangeData {
             Gson gson = new Gson();
             return gson.fromJson(data, SphereExchangeData.class);
         } catch (JsonParseException e) {
-            LOGGER.error("Deserialization error", e);
+            logger.error("Deserialization error", e);
         }
         return null;
     }
@@ -46,12 +47,10 @@ public class SphereExchangeData {
      * @return
      */
     public String serialize() {
-        String data = null;
-
         Gson gson = new Gson();
-        data = gson.toJson(this);
+        String data = gson.toJson(this);
 
-        LOGGER.debug("serialize data > " + data);
+        logger.debug("serialize data > {}", data);
 
         return data;
     }
@@ -129,5 +128,4 @@ public class SphereExchangeData {
         this.sphereType = sphereType;
 
     }
-
 }

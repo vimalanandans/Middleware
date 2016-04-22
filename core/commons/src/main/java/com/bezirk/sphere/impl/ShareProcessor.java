@@ -34,10 +34,9 @@ public class ShareProcessor {
     private SphereRegistryWrapper sphereRegistryWrapper;
 
     /**
-     * @param sphereUtils
      * @param crypto
      * @param upaDeviceInterface
-     * @param uhuComms
+     * @param comms
      * @param sphereRegistryWrapper
      */
     public ShareProcessor(ICryptoInternals crypto, UPADeviceInterface upaDeviceInterface, CommsUtility comms,
@@ -58,8 +57,6 @@ public class ShareProcessor {
      * @return True if request was sent. False otherwise.
      */
     public boolean processShareCode(String shareCode, String sphereId) {
-
-        String inviterShortCode = null;
         // sphereId from which the services need to be shared
         String sharerSphereId = null;
         ShareRequest shareRequest = null;
@@ -81,7 +78,7 @@ public class ShareProcessor {
          * short code and set the code
          ************************************************************************/
 
-        inviterShortCode = validateCodeString(shareCode);
+        final String inviterShortCode = validateCodeString(shareCode);
         if (inviterShortCode != null) {
             LOGGER.info("Share Process, Step2: shortCode validation complete");
         } else {

@@ -91,7 +91,6 @@ public class StreamReceivingThread implements Runnable {
         File tempFile = null;
         FileOutputStream fileOutputStream = null;
         DataInputStream inputStream = null;
-        boolean portReleased = false;
 
         boolean streamErrored = true;
 
@@ -123,8 +122,7 @@ public class StreamReceivingThread implements Runnable {
             logger.debug("--- File Received--- & saved at "
                     + UhuComms.getDOWNLOAD_PATH() + fileName);
 
-            portReleased = portFactory.releasePort(port); // release the Port
-            notifyStreamFile(tempFile, portReleased);
+            notifyStreamFile(tempFile, portFactory.releasePort(port));
             streamErrored = false;
         } catch (SocketException e) {
             logger.error("Connection Timeout, the client didn't connect within specified timeout", e);
@@ -142,15 +140,13 @@ public class StreamReceivingThread implements Runnable {
                 logger.error("Failed to delete temporary stream file: {}", tempFile);
             }
         } finally {
-
             if (streamErrored) {
-                portReleased = portFactory.releasePort(port); // release the port if there is any exception
-                if (!portReleased) {
+                if (!portFactory.releasePort(port)) {
                     logger.error("Error releasing Port Connection.");
                 }
             }
-            closeResources(socket, receivingSocket, fileOutputStream,
-                    inputStream);
+
+            closeResources(socket, receivingSocket, fileOutputStream, inputStream);
         }
     }
 
