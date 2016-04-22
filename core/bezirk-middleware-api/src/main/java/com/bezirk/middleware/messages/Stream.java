@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014 Robert Bosch, LLC. All Rights Reserved.
- * <p/>
+ * <p>
  * Authors: Joao de Sousa, 2014
  * Mansimar Aneja, 2014
  * Vijet Badigannavar, 2014
@@ -20,7 +20,7 @@ package com.bezirk.middleware.messages;
  * <p>
  * Implementers should favor extending {@link MulticastStream} when a concrete stream will have
  * multiple recipients. {@link UnicastStream} should be favored when the stream will have a single
- * known recipient.
+ * and known recipient.
  * </p>
  *
  * @see Message
@@ -63,26 +63,64 @@ public class Stream extends Message {
         this.topic = topic;
     }
 
+    /**
+     * Returns <code>true</code> if the payload can be processed as data elements arrive.
+     *
+     * @return <code>true</code> if the payload can be processed as data elements arrive
+     */
     public boolean isIncremental() {
         return incremental;
     }
 
+    /**
+     * Sets whether or not the payload can be processed before all data elements are received.
+     * If <code>true</code>, the recipient may begin processing the payload as data elements
+     * are received (e.g. a music stream). Otherwise, all of the data must be received first
+     * (e.g. a picture stream).
+     *
+     * @param incremental <code>true</code> if the payload can be processed before all data
+     *                    elements arrive
+     */
     public void setIncremental(boolean incremental) {
         this.incremental = incremental;
     }
 
+    /**
+     * Returns <code>true</code> if the stream may be unreliably transmitted. Essentially,
+     * <code>true</code> has the same reliability guarantees as UDP, and <code>false</code> the
+     * same guarantees as TCP.
+     *
+     * @return <code>true</code> if the stream may be unreliably transmitted.
+     */
     public boolean isAllowDrops() {
         return allowDrops;
     }
 
+    /**
+     * Sets whether or not the middleware must reliably transmit this stream to recipients, or
+     * if packets may be dropped. It can be useful to allow packets to be dropped in high
+     * performance cases where some loss is acceptable (e.g. streaming video).
+     *
+     * @param allowDrops <code>true</code> if the stream may be unreliably transmitted
+     */
     public void setAllowDrops(boolean allowDrops) {
         this.allowDrops = allowDrops;
     }
 
+    /**
+     * Returns <code>true</code> if the stream's contents must be encrypted.
+     *
+     * @return <code>true</code> if the stream's contents must be encrypted
+     */
     public boolean isEncrypted() {
         return encrypted;
     }
 
+    /**
+     * Sets whether or not the stream's contents must be encrypted.
+     *
+     * @param encrypted <code>true</code> if the stream's contents must be encrypted
+     */
     public void setEncrypted(boolean encrypted) {
         this.encrypted = encrypted;
     }

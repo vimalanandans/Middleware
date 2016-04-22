@@ -13,44 +13,68 @@
 package com.bezirk.middleware.messages;
 
 /**
- * Super class for all protocol role definitions.  A role includes a set of events and streams that a given participant subscribes to.
+ * Base class for protocol role definitions. Bezirk uses topic-based pub-sub for distributed
+ * communication, and roles are the unit of subscription. Protocols specify {@link Event Events} and
+ * {@link Stream Streams} that will be sent to recipients subscribed to particular topics. A
+ * <code>ProtocolRole</code> specifies those topics for a particular protocol and provides
+ * metadata to uniquely identify the protocol to the middleware and describe the purpose of the
+ * protocol to users.
+ *
+ * @see Event
+ * @see Stream
  */
 public abstract class ProtocolRole {
     /**
-     * Concrete classes must implement this method to return the specific protocol label.
+     * Returns the unique name of this protocol, used by the middleware to manage subscriptions
+     * and discover services subscribed to the role.
+     * <p></p>
+     * The implementation of this method should return the simple name of the implementing class,
+     * for example:
+     * <pre>
+     * public class PartyProtocolRole implements ProtocolRole {
+     *    {@literal @}Override
+     *     public String getProtocolName() {
+     *         return PartyProtocolRole.class.getSimpleName();
+     *     }
+     * }
+     * </pre>
      *
-     * @return protocol label, which may used for subscription and discovery
+     * @return the name of the protocol role for managing subscriptions and discovery
      */
     public abstract String getProtocolName();
 
     /**
-     * Human readable name for the protocol. E.g. Bezirk may refer to it to explain pipe policy.
+     * Returns a human-readable description of this protocol. This description should be succinctly
+     * written because the middleware may display it to the user in some contexts (e.g. when
+     * asking the user to authorize a communication channel).
      *
-     * @return The Protocol role description
+     * @return a human-readable and user-friendly description of this protocol
      */
     public abstract String getDescription();
 
     /**
-     * Concrete classes must implement this method to return the specific array of event topics.
+     * The specific pub-sub topics any Zirk subscribed to this role will subscribe to. In
+     * particular, a Zirk will receive any <code>Event</code> sent in its sphere(s) whose topic is
+     * listed in the array returned by this method.
      *
-     * @return array of event topics
+     * @return the set of topics this role subscribes to
      */
     public abstract String[] getEventTopics();
 
+
     /**
-     * Concrete classes must implement this method to return the specific array of stream topics.
+     * The specific pub-sub topics any Zirk subscribed to this role will subscribe to. In
+     * particular, a Zirk will receive any <code>Stream</code> sent in its sphere(s) whose topic is
+     * listed in the array returned by this method.
      *
-     * @return array of stream topics
+     * @return the set of topics this role subscribes to
      */
     public abstract String[] getStreamTopics();
 
     @Override
     public boolean equals(Object p) {
-        if (p instanceof ProtocolRole) {
-            return this.getProtocolName().equals(((ProtocolRole) p).getProtocolName());
-        }
-        return false;
-
+        return p instanceof ProtocolRole &&
+                this.getProtocolName().equals(((ProtocolRole) p).getProtocolName());
     }
 
     @Override
@@ -60,11 +84,4 @@ public abstract class ProtocolRole {
         result = prime * result + ((this.getProtocolName() != null) ? this.getProtocolName().hashCode() : 0);
         return result;
     }
-
-
-    /**
-     * @param p
-     * @return whether p has the same label as this
-     */
-
 }

@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014 Robert Bosch, LLC. All Rights Reserved.
- * <p/>
+ * <p>
  * Authors: Joao de Sousa, 2014
  * Mansimar Aneja, 2014
  * Vijet Badigannavar, 2014
@@ -17,14 +17,14 @@ import java.io.Serializable;
 /**
  * A <code>Location</code> represents a <em>semantic address</em> that specifies the
  * physical location of a Thing or a set of Things. Typically, messages are broadcast
- * within a sphere and filtered based on the message's
- * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRole}, which may be too
+ * within a sphere and filtered based on the message's topic (topics are specified in
+ * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles}), which may be too
  * coarse-grained for some cases. A semantic address is used to more precisely scope
- * message recipients after protocol role filtering occurs.
+ * message recipients after topic-based filtering occurs.
  * <h4>Scopes</h4>
  * <p>
  * To identify a Thing or set of Things, a semantic address contains three scopes of
- * increasing specificity that resolve to place a specific Thing or Things intermediateScope scope:
+ * increasing specificity that resolve to place a specific Thing or Things in scope:
  * </p>
  * <ul>
  * <li>A <em>wide scope</em> specifies a potentially large set of Things. For example,
@@ -42,35 +42,35 @@ import java.io.Serializable;
  * (e.g. &quot;ceiling light&quot;) come from.
  * </p>
  * <h4>Representing Semantic Addresses as Strings</h4>
- * Semantic addresses are represented as strings by listing each scope intermediateScope descending order
+ * Semantic addresses are represented as strings by listing each scope in descending order
  * separated by a forward slash: <code>"wide scope/intermediate scope/narrow scope"</code>.
- * For example, using the scopes intermediateScope the examples from the previous section, the semantic
+ * For example, using the scopes in the examples from the previous section, the semantic
  * addresses are represented by the following strings:
  * <code>"floor 1/kitchen/ceiling light"</code> and <code>"floor 1/kitchen/window"</code>.
  * </p>
  * <h4>Specifying Scopes</h4>
  * The relative size of each scope is dependent on the specific context the semantic address
- * is used intermediateScope. The previous examples were within the context of Things intermediateScope a building, however
- * intermediateScope a context where Things are traffic controls for municipalities the wide scope may be a
+ * exists withing. The previous examples were within the context of Things in a building, however
+ * in a context where Things are traffic controls for municipalities the wide scope may be a
  * city, the intermediate scope a street, and the narrow scope a pedestrian walk sign or set
  * of traffic lights.
  * <p>
- * Each scope is optional. If you do not specify any scope you are referring to all Things intermediateScope
- * a sphere subscribed to the message's role. This is equivalent to not using a semantic
+ * Each scope is optional. If you do not specify any scope you are referring to all Things in
+ * a sphere subscribed to the message's topic. This is equivalent to not using a semantic
  * address. However, any of the scopes may be skipped if necessary to define the desired set
  * of Things. Once again using the building example, the following addresses refer to different
- * sets of Things whose services are within a sphere subscribed to the targeted protocol role:
+ * sets of Things whose services are within a sphere subscribed to the targeted topic:
  * </p>
  * <ul>
  * <li><code>"floor1//"</code> refers to all Things on floor 1.</li>
- * <li><code>"floor1/kitchen/"</code> refers to all Things intermediateScope floor 1's kitchen.</li>
- * <li><code>"floor1/kitchen/window"</code> refers to all Things intermediateScope floor 1's kitchen
+ * <li><code>"floor1/kitchen/"</code> refers to all Things in floor 1's kitchen.</li>
+ * <li><code>"floor1/kitchen/window"</code> refers to all Things in floor 1's kitchen
  * window or the window itself.</li>
  * <li><code>"floor 1//light"</code> refers to all Things named &quot;light&quot; on
  * floor 1.</li>
- * <li><code>"/kitchen/light"</code> refers to all Things named &quot;light&quot; intermediateScope
- * rooms named &quot;kitchen&quot; intermediateScope the building</li>
- * <li><code>"//light"</code> refers to all things named &quot;light&quot; intermediateScope the
+ * <li><code>"/kitchen/light"</code> refers to all Things named &quot;light&quot; in
+ * rooms named &quot;kitchen&quot; in the building</li>
+ * <li><code>"//light"</code> refers to all things named &quot;light&quot; in the
  * building.</li>
  * </ul>
  * <h4>Practical Example</h4>

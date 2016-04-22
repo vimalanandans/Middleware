@@ -31,15 +31,14 @@ import java.net.SocketException;
  * data at a time. After the data transfer it will release the port through {@link PortFactory#releasePort(int)}. From the {@link this#streamLabel}, it will query the UhuSadl
  * to get all the Service Identities via
  * corresponding to the services.
- * If error occurs during the course, it releases the port and closes the socket and Streams  
+ * If error occurs during the course, it releases the port and closes the socket and Streams
  *
- *  @see com.bezirk.proxy
- *  @see UhuComms
- *  @see PortFactory
+ * @see com.bezirk.proxy
+ * @see UhuComms
+ * @see PortFactory
  */
 public class StreamReceivingThread implements Runnable {
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(StreamReceivingThread.class);
+    private static final Logger logger = LoggerFactory.getLogger(StreamReceivingThread.class);
 
     /*Connection Timeout is hard coded to 45 sec. When set, if the requester doesn't get connected with this time, then the socket throws an Exception and
      * the port is released*/
@@ -60,10 +59,11 @@ public class StreamReceivingThread implements Runnable {
 
     /**
      * Constructor that is called during starting the thread
+     *
      * @param sphereForSadl
-     * @param - sphere - used to decrypt the data
-     * @param - port   - port that this thread is listening to receive the data. { This port is got from PortFactory }
-     * @param - streamLabel - streamLabel that is used to identify the Stream
+     * @param -             sphere - used to decrypt the data
+     * @param -             port   - port that this thread is listening to receive the data. { This port is got from PortFactory }
+     * @param -             streamLabel - streamLabel that is used to identify the Stream
      */
     public StreamReceivingThread(int port,
                                  StreamRequest streamRequest, IPortFactory portFactory,
@@ -96,7 +96,7 @@ public class StreamReceivingThread implements Runnable {
         boolean streamErrored = true;
 
         try {
-            LOGGER.debug("Thread started to listen at port to receive Data..");
+            logger.debug("Thread started to listen at port to receive Data..");
             socket = new ServerSocket(port);                                      // listen at the Port
             socket.setSoTimeout(CONNECTION_TIMEOUT_TIME);
             receivingSocket = socket.accept();
@@ -109,10 +109,10 @@ public class StreamReceivingThread implements Runnable {
                 if (UhuValidatorUtility.isObjectNotNull(sphereForSadl)) {
                     sphereForSadl.decryptSphereContent(inputStream, fileOutputStream, sphere);
                 } else {
-                    LOGGER.error("SphereForSadl is not initialized. Unable to process secure streaming request.");
+                    logger.error("SphereForSadl is not initialized. Unable to process secure streaming request.");
                 }
 
-                LOGGER.debug("---------- Secure Data transfer Completed! -------------");
+                logger.debug("---------- Secure Data transfer Completed! -------------");
             } else {
                 int noOfBytesRead = 0;
                 byte[] buffer = new byte[BUFFER_SIZE];
@@ -120,39 +120,33 @@ public class StreamReceivingThread implements Runnable {
                     fileOutputStream.write(buffer, 0, noOfBytesRead);
                 }
             }
-            LOGGER.debug("--- File Received--- & saved at "
+            logger.debug("--- File Received--- & saved at "
                     + UhuComms.getDOWNLOAD_PATH() + fileName);
 
-            portReleased = portFactory.releasePort(port);                                 // release the Port
+            portReleased = portFactory.releasePort(port); // release the Port
             notifyStreamFile(tempFile, portReleased);
             streamErrored = false;
         } catch (SocketException e) {
-            LOGGER.error(
-                    "Connection Timeout, the client didn't connect within specified timeout",
-                    e);
-            if (UhuValidatorUtility.isObjectNotNull(tempFile) && tempFile.exists()) {
-                tempFile.delete();
+            logger.error("Connection Timeout, the client didn't connect within specified timeout", e);
+            if (tempFile != null && tempFile.exists() && !tempFile.delete()) {
+                logger.error("Failed to delete temporary stream file: {}", tempFile);
             }
         } catch (FileNotFoundException e) {
-            LOGGER.error(
-                    "Unable to receiving stream file in downloads.",
-                    e);
-            if (UhuValidatorUtility.isObjectNotNull(tempFile) && tempFile.exists()) {
-                tempFile.delete();
+            logger.error("Unable to receiving stream file in downloads.", e);
+            if (tempFile != null && tempFile.exists() && !tempFile.delete()) {
+                logger.error("Failed to delete temporary stream file: {}", tempFile);
             }
         } catch (IOException e) {
-            LOGGER.error(
-                    "Exception occured while receiving stream.",
-                    e);
-            if (UhuValidatorUtility.isObjectNotNull(tempFile) && tempFile.exists()) {
-                tempFile.delete();
+            logger.error("Exception occured while receiving stream.", e);
+            if (tempFile != null && tempFile.exists() && !tempFile.delete()) {
+                logger.error("Failed to delete temporary stream file: {}", tempFile);
             }
         } finally {
 
             if (streamErrored) {
                 portReleased = portFactory.releasePort(port); // release the port if there is any exception
                 if (!portReleased) {
-                    LOGGER.error("Error releasing Port Connection.");
+                    logger.error("Error releasing Port Connection.");
                 }
             }
             closeResources(socket, receivingSocket, fileOutputStream,
@@ -179,7 +173,7 @@ public class StreamReceivingThread implements Runnable {
             }
         } catch (IOException e) {
 
-            LOGGER.error("Exception in closing resources.", e);
+            logger.error("Exception in closing resources.", e);
         }
     }
 
@@ -194,10 +188,10 @@ public class StreamReceivingThread implements Runnable {
 
             } else {
 
-                LOGGER.error("UhuCallback is not provided. Unable to send stream callback.");
+                logger.error("UhuCallback is not provided. Unable to send stream callback.");
             }
         } else {
-            LOGGER.error("Error releasing the Port");
+            logger.error("Error releasing the Port");
         }
     }
 

@@ -19,10 +19,9 @@ import java.util.Arrays;
  * if version mismatch occures
  */
 public final class ControlListenerUtility {
-    private static final Logger log = LoggerFactory.getLogger(ControlListenerUtility.class);
+    private static final Logger logger = LoggerFactory.getLogger(ControlListenerUtility.class);
 
-    private final static byte SEP = new String(",").getBytes()[0];
-
+    private final static byte SEPERATOR = (byte)',';
 
     private ControlListenerUtility() {
         // This a utility class
@@ -40,15 +39,15 @@ public final class ControlListenerUtility {
         int firstSEP = 0;
         int secSEP = 0;
         for (int i = 0; i < received.length; i++) {
-            if (received[i] == SEP) {
+            if (received[i] == SEPERATOR) {
                 countSeperator++;
                 switch (countSeperator) {
                     case 0:
                         String tempString = new String(Arrays.copyOfRange(received, 0, i));
-                        if (!tempString.toString().equals(UhuVersion.UHU_VERSION)) {
-                            log.error("UPGRADE UHU. UHU VERSION MISMATCH. device version > " + UhuVersion.UHU_VERSION + " Received msg version " + tempString.toString());
+                        if (!UhuVersion.UHU_VERSION.equals(tempString)) {
+                            logger.error("UPGRADE UHU. UHU VERSION MISMATCH. device version > " + UhuVersion.UHU_VERSION + " Received msg version " + tempString);
                             if (null != notification) {
-                                notification.versionMismatch(tempString.toString());
+                                notification.versionMismatch(tempString);
                             }
                             return false;
                         }
@@ -72,8 +71,8 @@ public final class ControlListenerUtility {
                 }
 
                 if (isMsgDuplicate) {
-                    //log.info("Duplicate Msg Received DROPPING PACKET; CHECKSUM = " + CheckSumUtil.bytesToHex(receivedMessage.getChecksum()) );
-                    //log.info("Duplicate Msg Received DROPPING PACKET");
+                    //logger.info("Duplicate Msg Received DROPPING PACKET; CHECKSUM = " + CheckSumUtil.bytesToHex(receivedMessage.getChecksum()) );
+                    //logger.info("Duplicate Msg Received DROPPING PACKET");
                     return false;
                 }
             }

@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014 Robert Bosch, LLC. All Rights Reserved.
- * <p/>
+ * <p>
  * Authors: Joao de Sousa, 2014
  * Mansimar Aneja, 2014
  * Vijet Badigannavar, 2014
@@ -34,7 +34,7 @@ public abstract class MulticastStream extends Stream {
      * recipient set, this stream is broadcast to every component subscribed to <code>topic</code>
      * in the sender's sphere(s). Otherwise, the stream is broadcast to those components in the
      * set described in the previous sentence that are specified by <code>address</code>. If the
-     * <code>address</code> specifies a {#link com.bezirk.middleware.addressing.Pipe}, the stream
+     * <code>address</code> specifies a {@link com.bezirk.middleware.addressing.Pipe}, the stream
      * will also be sent outside of a sphere.
      *
      * @param flag    flag to mark the intent of this stream
@@ -49,8 +49,8 @@ public abstract class MulticastStream extends Stream {
 
     /**
      * Returns the <code>address</code> associated with this stream. This address specifies which
-     * components in the sender's spheres subscribed to the <code>topic</code> specified in the
-     * constructor should receive this stream. The address may also specify a pipe to send the
+     * components in the sender's spheres, subscribed to the <code>topic</code> specified in the
+     * constructor, should receive this stream. The address may also specify a pipe to send the
      * stream outside of a sphere.
      *
      * @return the <code>address</code> associated with this stream

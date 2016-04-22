@@ -73,7 +73,7 @@ public class UhuCommsSend {
             preHeader += Integer.toString(header.length) + ",";
             byte[] payload = tcMessage.getEncryptedMessage();
             if (payload == null) {
-                payload = new String("null").getBytes();
+                payload = "null".getBytes();
             }
             byte[] sendData = new byte[preHeader.getBytes().length + header.length + payload.length];
             //Copy header and payload
