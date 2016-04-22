@@ -3,6 +3,7 @@ package com.bezirk.commons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,47 +18,52 @@ import java.util.Properties;
 public class UhuVersion {
     private transient static final Logger logger = LoggerFactory.getLogger(UhuVersion.class);
 
+    private static final String DEFAULT_BEZIRK_VERSION = "1.1";
+
     // UHU_VERSION - read from build property file
-    public static String UHU_VERSION = "1.1";
+    public static final String UHU_VERSION;
 
     // Wire Message Version. increment it where there is a change in
     // wire message format (which would lead to crash while decoding)
-    private static String WIRE_MESSAGE_VERSION = "0.1";
+    private static final String WIRE_MESSAGE_VERSION = "0.1";
 
     // DB Version for storing database
     // Sphere / sadl regisry changes.
-    private static String PERSISTENCE_VERSION = "0.1";
-
+    private static final String PERSISTENCE_VERSION = "0.1";
 
     static {
-        loadUhuVersion();
-    }
+        // Fetch the version of this Bezirk middleware instance from version.properties
+        final Properties uhuProperties = new Properties();
+        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
-    static void loadUhuVersion() {
-        try {
-            Properties uhuProperties = new Properties();
-            ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            InputStream is = loader.getResourceAsStream("version.properties");
+        String middlewareVersion = "";
+
+        try (final InputStream is = loader.getResourceAsStream("version.properties")) {
             if (is == null) {
-                logger.error("Unable to find uhu version file. using default uhu version " + UHU_VERSION);
-                return;
+                logger.error("Unable to find uhu version file. using default uhu version " +
+                        DEFAULT_BEZIRK_VERSION);
+            } else {
+                uhuProperties.load(is);
+                middlewareVersion = (String) uhuProperties.get("UHU_VERSION");
             }
-            uhuProperties.load(is);
-            UHU_VERSION = (String) uhuProperties.get("UHU_VERSION");
-        } catch (Exception e) {
-            logger.error("Error in reading the Config file", e);
+        } catch (NullPointerException e) {
+            logger.error("Error fetching resource stream for version.properties", e);
+        } catch (IOException e) {
+            logger.error("Error reading version.properties", e);
         }
+
+        UHU_VERSION = middlewareVersion.isEmpty() ? DEFAULT_BEZIRK_VERSION : middlewareVersion;
     }
 
     /**
-     * return the wire message version
+     * @return the wire message version
      */
     static public String getWireVersion() {
         return WIRE_MESSAGE_VERSION;
     }
 
     /**
-     * returns if the version is same
+     * @return if the version is same
      */
     static public boolean isSameWireMessageVersion(String version) {
         return WIRE_MESSAGE_VERSION.equals(version);
@@ -69,9 +75,9 @@ public class UhuVersion {
     static public Map<String, String> getAllVersion() {
         Map<String, String> versions = new HashMap<String, String>();
 
-        versions.put(UHU_VERSION.toString(), UHU_VERSION);
+        versions.put("UHU_VERSION", UHU_VERSION);
 
-        versions.put(WIRE_MESSAGE_VERSION.toString(), WIRE_MESSAGE_VERSION);
+        versions.put("WIRE_MESSAGE_VERSION", WIRE_MESSAGE_VERSION);
 
         //versions.put(PERSISTENCE_VERSION.toString(),PERSISTENCE_VERSION);
 

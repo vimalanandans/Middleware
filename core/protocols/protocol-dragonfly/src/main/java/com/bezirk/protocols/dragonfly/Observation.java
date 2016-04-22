@@ -194,8 +194,7 @@ public class Observation extends Event implements Comparable<Observation> {
      * This method is a regular expression validation for the Date Format
      * according to ISO 8601 (http://en.wikipedia.org/wiki/ISO_8601)
      *
-     * @param _dateTime
-     *            {@link String}
+     * @param _dateTime {@link String}
      * @return {@link Boolean}
      */
     private boolean validateDateFormat(String _dateTime) {
@@ -276,11 +275,10 @@ public class Observation extends Event implements Comparable<Observation> {
 
     @Override
     public boolean equals(Object obj) {
-
-        return Float.floatToRawIntBits((float) (getQualityOfObservation() - ((Observation) obj)
-                .getQualityOfObservation())) == 0
-                && getObservationResult() == ((Observation) obj)
-                .getObservationResult();
+        return obj instanceof Observation &&
+                Float.floatToRawIntBits((float) (getQualityOfObservation() - ((Observation) obj)
+                        .getQualityOfObservation())) == 0
+                && getObservationResult().equals(((Observation) obj).getObservationResult());
     }
 
     @Override

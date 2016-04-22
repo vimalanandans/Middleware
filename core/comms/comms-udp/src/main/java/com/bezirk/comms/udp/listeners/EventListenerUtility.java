@@ -20,7 +20,7 @@ import java.util.Arrays;
  */
 public final class EventListenerUtility {
     private static final Logger log = LoggerFactory.getLogger(EventListenerUtility.class);
-    private final static byte SEP = new String(",").getBytes()[0];
+    private final static byte SEPERATOR = (byte)',';
 
     private EventListenerUtility() {
         //This is a utitlity class
@@ -43,7 +43,7 @@ public final class EventListenerUtility {
         byte[] receivedChecksum = null;
         boolean isMsgDuplicate = false;
         for (int i = 0; i < packetData.length; i++) {
-            if (packetData[i] == SEP) {
+            if (packetData[i] == SEPERATOR) {
                 reconHeader = Arrays.copyOfRange(packetData, (lastSeenSep == 0) ? lastSeenSep : lastSeenSep + 1, i);
                 lastSeenSep = i;
                 headerCount++;
@@ -95,5 +95,4 @@ public final class EventListenerUtility {
             return false;
         return true;
     }
-
 }

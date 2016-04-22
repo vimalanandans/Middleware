@@ -133,7 +133,6 @@ public class BezirkRestCommsManager {
      * @author PIK6KOR
      */
     class SenderThread implements Runnable {
-
         @Override
         public void run() {
             while (true) {
@@ -143,10 +142,5 @@ public class BezirkRestCommsManager {
 
             }
         }
-
-        ;
-
     }
-
-
 }

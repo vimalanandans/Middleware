@@ -8,11 +8,7 @@ package com.bezirk.services.light.protocol;
 public class HueVocab {
     public enum Commands {ON, OFF, TOGGLE}
 
-    ;
-
     public enum Color {BLUE, GREEN, YELLOW, ORANGE, PINK, RED, DEFAULT}
-
-    ;
 
     /*
      * FCFS - First Come First Serve
@@ -22,9 +18,5 @@ public class HueVocab {
         FCFS, KOH
     }
 
-    ;
-
     public enum BulbStatusType {STATUS, CHANGE}
-
-    ;
 }
