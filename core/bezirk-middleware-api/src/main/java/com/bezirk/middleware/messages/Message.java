@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014 Robert Bosch, LLC. All Rights Reserved.
- * <p/>
+ * <p>
  * Authors: Joao de Sousa, 2014
  * Mansimar Aneja, 2014
  * Vijet Badigannavar, 2014
@@ -16,12 +16,11 @@ import com.google.gson.Gson;
 
 /**
  * Superclass of all messages that services may exchange over Bezirk. Defines JSON (de)serialization.
- * Known subclasses: {@link Event} and {@link Stream}
  */
 public class Message {
 
     /**
-     * Hint about the protocol-level expectations of the sender. Should be set by leaf classes.
+     * Hint about the sender's protocol-specific expectations recipients should meet.
      */
     public Flag flag;
 
