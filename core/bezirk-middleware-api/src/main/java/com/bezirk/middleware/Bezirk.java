@@ -28,7 +28,7 @@ import java.io.PipedOutputStream;
 /**
  * The API for registering Zirks, sending messages, and discovering other Zirks. Zirks fetch
  * this API using the following code:
- * <p></p>
+ * <br>
  * <pre>
  * import com.bezirk.api.Bezirk;
  * import com.bezirk.proxy.Factory;

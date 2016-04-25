@@ -27,9 +27,10 @@ public abstract class ProtocolRole {
     /**
      * Returns the unique name of this protocol, used by the middleware to manage subscriptions
      * and discover services subscribed to the role.
-     * <p></p>
+     * <p>
      * The implementation of this method should return the simple name of the implementing class,
      * for example:
+     * </p>
      * <pre>
      * public class PartyProtocolRole implements ProtocolRole {
      *    {@literal @}Override

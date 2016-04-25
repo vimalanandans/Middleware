@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014 Robert Bosch, LLC. All Rights Reserved.
- * <p>
+ * <p/>
  * Authors: Joao de Sousa, 2014
  * Mansimar Aneja, 2014
  * Vijet Badigannavar, 2014
@@ -38,8 +38,11 @@ import java.io.Serializable;
  * (e.g. &quot;window&quot;) completes the semantic address.</li>
  * </ul>
  * <p>
- * <mark><strong>TODO</strong></mark>: We need to say something about where these names
- * (e.g. &quot;ceiling light&quot;) come from.
+ * The actual names of scopes are typically specified by the user. For example, a user that connects
+ * a light Zirk to a new light may be prompted to enter the location of the light as a string. If
+ * the user is using a Zirk that provides location awareness as a service, the names may also be
+ * set by the location Zirk. The location of a Zirk operating a Thing is set using
+ * {@link com.bezirk.middleware.Bezirk#setLocation(ServiceId, Location)}.
  * </p>
  * <h4>Representing Semantic Addresses as Strings</h4>
  * Semantic addresses are represented as strings by listing each scope in descending order
@@ -47,7 +50,6 @@ import java.io.Serializable;
  * For example, using the scopes in the examples from the previous section, the semantic
  * addresses are represented by the following strings:
  * <code>"floor 1/kitchen/ceiling light"</code> and <code>"floor 1/kitchen/window"</code>.
- * </p>
  * <h4>Specifying Scopes</h4>
  * The relative size of each scope is dependent on the specific context the semantic address
  * exists withing. The previous examples were within the context of Things in a building, however
@@ -77,20 +79,22 @@ import java.io.Serializable;
  * <mark><strong>TODO</strong></mark>: We need to show some code here.
  */
 public class Location implements Serializable {
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     private String wideScope;
     private String intermediateScope;
     private String narrowScope;
 
     /**
-     * A location defined by a wideScope, an area within the wideScope, and proximity to a landmark object; any or all of which may be NULL.
+     * A location defined by a <code>wideScope</code>, an <code>intermediateScope</code> within the
+     * wide scope, and a <code>narrowScope</code> within the intermediate scope. Any or all of the
+     * scopes may be <code>null</code>.
      *
-     * @param wideScope         for example "floor1" or "Pennsylvania". Commas and slashes are cleared from the wideScope's name.
-     * @param intermediateScope for example "bedroom" or "greater Pittsburgh". Commas and slashes are cleared from the area's name.
-     * @param narrowScope       for example "bed" or "Frick park". Commas and slashes are cleared from the landmark's name.
+     * @param wideScope         for example "floor1" or "Pennsylvania". Commas and slashes are
+     *                          cleared from the wideScope's name.
+     * @param intermediateScope for example "bedroom" or "greater Pittsburgh". Commas and slashes
+     *                          are cleared from the area's name.
+     * @param narrowScope       for example "bed" or "Frick park". Commas and slashes are cleared
+     *                          from the landmark's name.
      */
     public Location(String wideScope, String intermediateScope, String narrowScope) {
         this.wideScope = (wideScope == null) ? null : wideScope.replace(",", "").replace("/", "");
@@ -99,10 +103,11 @@ public class Location implements Serializable {
     }
 
     /**
-     * Constructs a Location from its string representation.
+     * Construct a Location from its string representation. The string is in the format:
+     * <code>"wide scope/intermediate scope/narrow scope"</code>.
      *
-     * @param location with attributes separated by '/', passing null is equivalent to Location(null,null,null)
-     * @see #toString()
+     * @param location scopes separated by '/'. Passing null is equivalent to
+     *                 using <code>new Location(null, null, null);</code>
      */
     public Location(String location) {
         wideScope = null;
@@ -119,9 +124,14 @@ public class Location implements Serializable {
 
     }
 
-
+    /**
+     * Set this <code>Location</code>'s semantic address using a string in the format:
+     * <code>"wide scope/intermediate scope/narrow scope"</code>.
+     *
+     * @param location this location's new semantic address specified as a string
+     */
     private void setLocationParams(String location) {
-        String[] attributes = location.split("/");
+        final String[] attributes = location.split("/");
         switch (attributes.length) {
             case 1:
                 wideScope = computeParam(attributes[0]);
@@ -145,21 +155,21 @@ public class Location implements Serializable {
     }
 
     /**
-     * @return wideScope
+     * @return the largest scope that helps resolve this <code>Location</code>'s set of Things
      */
     public String getWideScope() {
         return wideScope;
     }
 
     /**
-     * @return area intermediateScope the wideScope
+     * @return the middle scope that helps resolve this <code>Location</code>'s set of Things
      */
     public String getArea() {
         return intermediateScope;
     }
 
     /**
-     * @return proximate landmark object
+     * @return the narrowest scope that helps resolve this <code>Location</code>'s set of Things
      */
     public String getLandmark() {
         return narrowScope;
@@ -169,9 +179,11 @@ public class Location implements Serializable {
      * L1 subsumes L2 if, for all attributes (wideScope, intermediateScope, narrowScope)
      * - L1.attribute equals L2.attribute, or
      * - L1.attribute is open (NULL) and L2.attribute is specific.
-     * <p/>
-     * Bezirk uses the subsumes relation to match the address of an incoming message M to the location of a service S.
-     * As far as location, the message is delivered if M.getLocation().subsumes(S.getLocation())
+     * <p>
+     * Bezirk uses the subsumes relation to match the address of an incoming message M to the
+     * location of a Zirk Z. As far as location, the message is delivered
+     * if <code>M.getLocation().subsumes(S.getLocation()) == true</code>.
+     * </p>
      *
      * @param loc the location that may be subsumed by this
      * @return whether location is subsumed by this
@@ -185,8 +197,11 @@ public class Location implements Serializable {
     }
 
     /**
-     * @return string representation with attributes separated by '/'
-     * @see #Location(String)
+     * Convert this location to a <code>String</code> in the format:
+     * <code>"wide scope/intermediate scope/narrow scope"</code>.
+     *
+     * @return this <code>Location</code> represented as a string where each scope is separated by
+     * '/'
      */
     public String toString() {
         return String.valueOf(this.wideScope) + "/" + String.valueOf(this.intermediateScope) + "/" + String.valueOf(this.narrowScope);
@@ -228,6 +243,4 @@ public class Location implements Serializable {
             return false;
         return true;
     }
-
-
 }
