@@ -133,7 +133,7 @@ public class MessageValidators implements Runnable {
          * - Vimal
 		success = UhuCompManager.getMsgBookKeeper().processMsg(cLedger);
 		if(!success){
-			log.debug("Dropping Duplicate Msg: "+ cLedger.getMessage().getUniqueKey());
+			logger.debug("Dropping Duplicate Msg: "+ cLedger.getMessage().getUniqueKey());
 			return;
 		}
 		*/

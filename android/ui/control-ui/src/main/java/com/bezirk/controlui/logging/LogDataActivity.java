@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Activity that is used to display the log messages.
+ * Activity that is used to display the logger messages.
  */
 public class LogDataActivity extends Activity {
     /**
@@ -92,7 +92,7 @@ public class LogDataActivity extends Activity {
                 logDataActivityHelper.mHandler = null;
             } catch (Exception e) {
                 logDataActivityHelper.printToast("ERROR IN STOPPING LOG SERVICE...");
-                log.error("Error in stopping log service.", e);
+                log.error("Error in stopping logger service.", e);
             }
         }
         setResult(RESULT_CODE_FOR_RETURN_ACTIVITY);

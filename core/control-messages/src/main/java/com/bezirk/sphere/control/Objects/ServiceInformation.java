@@ -3,7 +3,7 @@ package com.bezirk.sphere.control.Objects;
 import java.util.HashSet;
 
 /**
- * Created by Rishabh Gulati on 6/19/2014.
+ * @author Rishab Gulati
  */
 public class ServiceInformation {
 

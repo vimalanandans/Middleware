@@ -30,8 +30,7 @@ public final class ControlListenerUtility {
     public static boolean constructMsg(ControlLedger receivedMessage, DatagramPacket receivePacket, ICommsNotification notification) throws Exception {
         //Reconstruct the message SphereName, EncryptedBytes
         boolean isMsgDuplicate = false;
-        byte[] received = new byte[receivePacket.getLength()];
-        byte[] reconSphere = null;
+        final byte[] received = new byte[receivePacket.getLength()];
         System.arraycopy(receivePacket.getData(), receivePacket.getOffset(), received, 0, receivePacket.getLength());
         // Message format is bytes --> CS,SphereName,EncryptedMessage
         int countSeperator = -1;
@@ -60,10 +59,10 @@ public final class ControlListenerUtility {
                         receivedMessage.setChecksum(receivedChecksum);
                         break;
                     case 2:
-                        reconSphere = Arrays.copyOfRange(received, secSEP + 1, i);
+                        final byte[] reconSphere = Arrays.copyOfRange(received, secSEP + 1, i);
                         String sphereName = new String(reconSphere, 0, reconSphere.length);
                         receivedMessage.setSphereId(sphereName);
-                        byte[] encPayload = Arrays.copyOfRange(received, i + 1, receivePacket.getLength());
+                        final byte[] encPayload = Arrays.copyOfRange(received, i + 1, receivePacket.getLength());
                         receivedMessage.setEncryptedMessage(encPayload);
                         break;
 

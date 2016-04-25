@@ -19,12 +19,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ControlUnicastListener implements Runnable {
-    private static final Logger log = LoggerFactory.getLogger(ControlUnicastListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(ControlUnicastListener.class);
 
     private DatagramSocket ctrlUcastSocket;
     private Boolean running = false;
-    private InetAddress myAddress;
-    private ControlLedger receivedMessage;
     private ExecutorService executor;
     private IUhuCommsLegacy uhuComms = null;
     private ICommsNotification notification = null;
@@ -38,15 +36,15 @@ public class ControlUnicastListener implements Runnable {
 
     @Override
     public void run() {
-        log.info("Control UnicastListener has Started");
+        logger.info("Control UnicastListener has Started");
         byte[] receiveData = new byte[UhuComms.getMAX_BUFFER_SIZE()];
         DatagramPacket receivePacket;
         running = true;
-        myAddress = UhuNetworkUtilities.getLocalInet();
+        InetAddress myAddress = UhuNetworkUtilities.getLocalInet();
 
         while (running) {
             if (Thread.interrupted()) {
-                log.info("Control UnicastListener has Stopped\n");
+                logger.info("Control UnicastListener has Stopped\n");
                 running = false;
                 continue;
             }
@@ -55,15 +53,15 @@ public class ControlUnicastListener implements Runnable {
                 ctrlUcastSocket.receive(receivePacket);
             } catch (SocketException e) {
                 running = false;
-                log.warn("UnicastListener has stopped \n", e);
+                logger.warn("UnicastListener has stopped \n", e);
                 continue;
             } catch (IOException e) {
-                log.warn("Datagram packet could not be received", e);
+                logger.warn("Datagram packet could not be received", e);
             }
-            receivedMessage = new ControlLedger();
+            ControlLedger receivedMessage = new ControlLedger();
             String computedSender = receivePacket.getAddress().getHostAddress().trim();
             if (!computedSender.equals(myAddress.getHostAddress())) {
-                log.info("RECEIVED ON Control Unicast: " + receivePacket.getLength());
+                logger.info("RECEIVED ON Control Unicast: " + receivePacket.getLength());
                 //Set message is not local field
                 receivedMessage.setIsMessageFromHost(false);
                 //Construct Message -- with encMsg
@@ -73,13 +71,13 @@ public class ControlUnicastListener implements Runnable {
                         Runnable worker = new MessageValidators(computedSender, receivedMessage, uhuComms);
                         executor.execute(worker);
                     } else {
-                        log.debug("duplicate/ msg received");
+                        logger.debug("duplicate/ msg received");
                     }
                 } catch (Exception e) {
-                    log.error("Error in decrypting the message", e);
+                    logger.error("Error in decrypting the message", e);
                 }
             } else {
-                log.debug("[DISCARD]Control Unicast Received: " + receivePacket.getLength());
+                logger.debug("[DISCARD]Control Unicast Received: " + receivePacket.getLength());
             }
         }
     }

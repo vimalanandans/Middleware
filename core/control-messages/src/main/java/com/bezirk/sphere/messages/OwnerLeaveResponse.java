@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Created by GUR1PI on 8/3/2014.
+ * @author Rishab Gulati
  */
 //TODO Move to new package, since this is an object used for encapsulating information to be sent as a signed messages. The control message which uses this object is SignedControlMessage.
 

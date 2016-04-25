@@ -58,11 +58,7 @@ public enum CommsFeature {
         if (value == null) {
             init();
         }
-        if (value == null)
-            return false;
 
-        return value.equalsIgnoreCase("true");
+        return value != null && value.equalsIgnoreCase("true");
     }
-
-
 }

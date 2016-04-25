@@ -29,10 +29,7 @@ public class PipeRegistry {
      * @return True if the pipe is registered
      */
     public boolean isRegistered(Pipe pipe) {
-        if (pipe == null) {
-            return false;
-        }
-        return pipeMap.containsKey(pipe);
+        return pipe != null && pipeMap.containsKey(pipe);
     }
 
     /**

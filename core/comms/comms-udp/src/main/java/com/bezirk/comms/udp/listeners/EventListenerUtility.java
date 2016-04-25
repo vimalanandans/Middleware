@@ -68,8 +68,8 @@ public final class EventListenerUtility {
                         break;
                 }
                 if (isMsgDuplicate) {
-                    //log.info("Duplicate Msg Received DROPPING PACKET; CHECKSUM = " + CheckSumUtil.bytesToHex(receivedMessage.getChecksum()) );
-                    //log.info("Duplicate Msg Received DROPPING PACKET");
+                    //logger.info("Duplicate Msg Received DROPPING PACKET; CHECKSUM = " + CheckSumUtil.bytesToHex(receivedMessage.getChecksum()) );
+                    //logger.info("Duplicate Msg Received DROPPING PACKET");
                     return false;
                 }
                 if (headerCount == 2 && isHeaderSep) {
@@ -84,8 +84,7 @@ public final class EventListenerUtility {
     private static Boolean separateHeaderAndPayload(EventLedger receivedMessage, int headerStartIndex, int headerLength, byte[] packetData) {
         byte[] header = Arrays.copyOfRange(packetData, headerStartIndex, headerLength + headerStartIndex);
         receivedMessage.setEncryptedHeader(header);
-        int preHeaderLen = headerStartIndex;
-        byte[] payload = Arrays.copyOfRange(packetData, preHeaderLen + headerLength, packetData.length);
+        byte[] payload = Arrays.copyOfRange(packetData, headerStartIndex + headerLength, packetData.length);
         receivedMessage.setEncryptedMessage(payload);
         if (receivedMessage.getEncryptedHeader().length == 0)
             return false;

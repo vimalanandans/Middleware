@@ -21,11 +21,7 @@ public class UhuId {
 
     /** get short id. *** it is not Not Unique**** */
     public String getShortId() {
-        Hashids hashids = getHashId();
-
-        String hash = hashids.encode(rand.nextInt(Integer.MAX_VALUE));
-
-        return hash;
+        return getHashId().encode(rand.nextInt(Integer.MAX_VALUE));
 
     }
 

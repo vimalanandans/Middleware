@@ -6,8 +6,6 @@ public class EchoRequestProtocol extends ProtocolRole {
 
     private String protocolName = EchoRequestProtocol.class.getSimpleName();
 
-    private String description = "Protocol containing echo request messages";
-
     private String[] eventTopics = {new EchoRequest().topic};
 
     private String[] streamTopics = {};
@@ -19,7 +17,7 @@ public class EchoRequestProtocol extends ProtocolRole {
 
     @Override
     public String getDescription() {
-        return description;
+        return "Protocol containing echo request messages";
     }
 
     @Override

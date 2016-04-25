@@ -48,7 +48,7 @@ public class ZyreCommsJni extends Thread {
 		}
 		catch (UnsatisfiedLinkError e) {
 
-			log.error("Unable to load zyre comms. ", e);
+			logger.error("Unable to load zyre comms. ", e);
             return false;
         }*/
         // create the zyre
@@ -124,7 +124,7 @@ public class ZyreCommsJni extends Thread {
             //send to the specific node
             zyre.whisper(nodeId, data);
 
-            //log.debug("Unicast size : >> " + data.length() + " data >> "+data);
+            //logger.debug("Unicast size : >> " + data.length() + " data >> "+data);
             return true;
         }
         return false;
@@ -197,7 +197,7 @@ public class ZyreCommsJni extends Thread {
         if ((incoming == null) || incoming.isEmpty())
             return eventMap;
 
-        //log.info("IN Size << " + incoming.length());//+" data << " +incoming);
+        //logger.info("IN Size << " + incoming.length());//+" data << " +incoming);
 
         if (incoming == null) {// Interrupted
             log.warn("Interrupted during recv()");
@@ -273,7 +273,7 @@ public class ZyreCommsJni extends Thread {
 
     private void handleWhisper(String zyreDeviceId, String payload) {
 
-        //log.info("peer (" + zyreDeviceId + ") Whisper to  " + zyreDeviceId + ": " + payload);
+        //logger.info("peer (" + zyreDeviceId + ") Whisper to  " + zyreDeviceId + ": " + payload);
         log.info("data size > " + payload.length());
 
         commsProcessor.processWireMessage(zyreDeviceId, payload);
@@ -282,7 +282,7 @@ public class ZyreCommsJni extends Thread {
     private void handleShout(String zyreDeviceId, String group, String payload) {
 
 
-        //log.info("peer (" + zyreDeviceId + ") shouted to group " + group + ": " + payload);
+        //logger.info("peer (" + zyreDeviceId + ") shouted to group " + group + ": " + payload);
         log.info("data size > " + payload.length());
 
 

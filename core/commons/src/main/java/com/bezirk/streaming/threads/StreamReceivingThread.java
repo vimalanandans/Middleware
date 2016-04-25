@@ -113,8 +113,8 @@ public class StreamReceivingThread implements Runnable {
 
                 logger.debug("---------- Secure Data transfer Completed! -------------");
             } else {
-                int noOfBytesRead = 0;
-                byte[] buffer = new byte[BUFFER_SIZE];
+                int noOfBytesRead;
+                final byte[] buffer = new byte[BUFFER_SIZE];
                 while ((noOfBytesRead = inputStream.read(buffer)) != -1) {
                     fileOutputStream.write(buffer, 0, noOfBytesRead);
                 }

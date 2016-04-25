@@ -27,13 +27,12 @@ import java.util.concurrent.Executors;
  *         Note: UhuCommsMulticastListener will drop all echo messages(messages that are sent by the host device).
  */
 public class EventMulticastListener implements Runnable {
-    private static final Logger log = LoggerFactory.getLogger(EventMulticastListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(EventMulticastListener.class);
 
     private final MulticastSocket multicastSocket;
     private final ExecutorService executor;
     private Boolean running = false;
     private InetAddress myAddress;
-    private EventLedger receivedMessage;
     private IUhuCommsLegacy uhuComms = null;
     private ICommsNotification commsErrNotificationError = null;
 
@@ -53,22 +52,22 @@ public class EventMulticastListener implements Runnable {
             multicastSocket.joinGroup(InetAddress.getByName(UhuComms.getMULTICAST_ADDRESS()));
             myAddress = UhuNetworkUtilities.getLocalInet();
             if (myAddress == null) {
-                log.error("Cannot resolve Ip: About to stop thread");
+                logger.error("Cannot resolve Ip: About to stop thread");
                 return;
             }
             running = true;
-            log.info("Event MulicastListener has Started\n");
+            logger.info("Event MulicastListener has Started\n");
         } catch (SocketException e1) {
-            log.warn("Error setting up Evt MulticastListener", e1);
+            logger.warn("Error setting up Evt MulticastListener", e1);
         } catch (UnknownHostException e) {
-            log.warn("Error setting up Evt MulticastListener", e);
+            logger.warn("Error setting up Evt MulticastListener", e);
         } catch (IOException e) {
-            log.warn("Error setting up Evt MulticastListener", e);
+            logger.warn("Error setting up Evt MulticastListener", e);
         }
 
         while (running) {
             if (Thread.interrupted()) {
-                log.info("Event MulicastListener has Stopped");
+                logger.info("Event MulicastListener has Stopped");
                 running = false;
                 continue;
             }
@@ -76,18 +75,18 @@ public class EventMulticastListener implements Runnable {
             try {
                 multicastSocket.receive(receivePacket);
             } catch (SocketTimeoutException e) {
-                log.warn("Event MulicastListener has Stopped \n", e);
+                logger.warn("Event MulicastListener has Stopped \n", e);
             } catch (SocketException e) {
-                log.warn("Event MulicastListener has Stopped \n", e);
+                logger.warn("Event MulicastListener has Stopped \n", e);
                 running = false;
                 continue;
             } catch (IOException e) {
-                log.warn("Event MulicastListener has Stopped \n", e);
+                logger.warn("Event MulicastListener has Stopped \n", e);
             }
-            receivedMessage = new EventLedger();
+            EventLedger receivedMessage = new EventLedger();
             String computedSender = receivePacket.getAddress().getHostAddress().trim();
             if (!computedSender.equals(myAddress.getHostAddress())) {
-                log.info("RECEIVED ON Multicast ");
+                logger.info("RECEIVED ON Multicast ");
                 if (EventListenerUtility.constructMsg(receivedMessage, receivePacket, commsErrNotificationError)) {
                     //Validate the message
                     Runnable worker = new MessageValidators(computedSender, receivedMessage, uhuComms);
@@ -95,11 +94,8 @@ public class EventMulticastListener implements Runnable {
                 }
             } else {
                 //String retPayload = (String) UhuMessage.fromJson(received.split(",")[2].getBytes());
-                log.info("[DISCARD]Multicast Received: ");//+ " payload " + retPayload);
-                continue;
+                logger.info("[DISCARD]Multicast Received: ");//+ " payload " + retPayload);
             }
-
-
         }
     }
 

@@ -19,13 +19,13 @@ public class CommsFactory {
 
         if (!CommsFeature.COMMS_UHU.isActive() && !CommsFeature.COMMS_ZYRE.isActive()) {
             log.error("both comms are not active. Selecting only the default comms");
-            // log
+            // logger
         }
 
         // we can't keep both comms active. not yet.
         if (CommsFeature.COMMS_UHU.isActive() && CommsFeature.COMMS_ZYRE.isActive()) {
             log.error("both comms active. Selecting only the default comms");
-            // log
+            // logger
         } else if (CommsFeature.COMMS_ZYRE.isActive()) {
 
             activeComms = CommsFeature.COMMS_ZYRE;

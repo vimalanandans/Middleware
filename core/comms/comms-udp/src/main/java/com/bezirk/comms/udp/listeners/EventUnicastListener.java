@@ -25,12 +25,11 @@ import java.util.concurrent.Executors;
  *         Note: the UhuCommsUnicastListener drops all echo messages(messages sent by the host device)
  */
 public class EventUnicastListener implements Runnable {
+    private static final Logger logger = LoggerFactory.getLogger(EventUnicastListener.class);
+
     private final DatagramSocket unicastSocket;
     private final ExecutorService executor;
-    private Logger log = LoggerFactory.getLogger(EventUnicastListener.class);
     private Boolean running = false;
-    private InetAddress myAddress;
-    private EventLedger receivedMessage;
     private IUhuCommsLegacy uhuComms = null;
     private ICommsNotification commsErrNotificationError = null;
 
@@ -47,15 +46,15 @@ public class EventUnicastListener implements Runnable {
         byte[] receiveData = new byte[UhuComms.getMAX_BUFFER_SIZE()];
         DatagramPacket receivePacket;
         running = true;
-        myAddress = UhuNetworkUtilities.getLocalInet();
+        InetAddress myAddress = UhuNetworkUtilities.getLocalInet();
         if (myAddress == null) {
-            log.error("Cannot resolve Ip: About to stop thread");
+            logger.error("Cannot resolve Ip: About to stop thread");
             return;
         }
-        log.info("Event UnicastListener has Started");
+        logger.info("Event UnicastListener has Started");
         while (running) {
             if (Thread.interrupted()) {
-                log.info("Event UnicastListener has Stopped\n");
+                logger.info("Event UnicastListener has Stopped\n");
                 running = false;
                 continue;
             }
@@ -64,15 +63,15 @@ public class EventUnicastListener implements Runnable {
                 unicastSocket.receive(receivePacket);
             } catch (SocketException e) {
                 running = false;
-                log.warn("UnicastListener has stopped \n", e);
+                logger.warn("UnicastListener has stopped \n", e);
                 continue;
             } catch (IOException e) {
-                log.warn("UnicastListener has stopped \n", e);
+                logger.warn("UnicastListener has stopped \n", e);
             }
-            receivedMessage = new EventLedger();
+            EventLedger receivedMessage = new EventLedger();
             String computedSender = receivePacket.getAddress().getHostAddress().trim();
             if (!receivePacket.getAddress().getHostAddress().trim().equals(myAddress.getHostAddress().trim())) {
-                log.info("RECEIVED ON Event Unicast: ");
+                logger.info("RECEIVED ON Event Unicast: ");
                 if (EventListenerUtility.constructMsg(receivedMessage, receivePacket, commsErrNotificationError)) {
                     //Validate the message
                     Runnable worker = new MessageValidators(computedSender, receivedMessage, uhuComms);
@@ -80,10 +79,8 @@ public class EventUnicastListener implements Runnable {
                 }
             } else {
                 //String retPayload = (String) UhuMessage.fromJson(received.split(",")[2].getBytes());
-                log.info("[DISCARD]Unicast Received: ");//+ " payload " + retPayload);
-                continue;
+                logger.info("[DISCARD]Unicast Received: ");//+ " payload " + retPayload);
             }
-
         }
     }
 

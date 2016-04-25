@@ -88,7 +88,7 @@ public abstract class Message {
      * @return an object of type <code>objectType</code> deserialized from <code>json</code>
      */
     public static <C> C fromJson(String json, Class<C> objectType) {
-        return (C) gson.fromJson(json, objectType);
+        return gson.fromJson(json, objectType);
     }
 
     /**

@@ -51,16 +51,12 @@ public class LoggingClient {
      */
     public void stopClient(String remoteIP, int port) throws Exception {
         if (null != logSenderQueueProcessor && remoteIP.equals(this.serviceIP) && port == this.servicePort) {
-            try {
-                LoggingQueueManager.clearLogSenderQueue();
-                logSenderQueueProcessor.stopProcessing();
-            } catch (Exception e) {
-                throw e;
-            } finally {
-                logSenderQueueProcessor = null;
-                serviceIP = null;
-                servicePort = -1;
-            }
+            LoggingQueueManager.clearLogSenderQueue();
+            logSenderQueueProcessor.stopProcessing();
+            logSenderQueueProcessor = null;
+            serviceIP = null;
+            servicePort = -1;
+
             return;
         }
         throw new Exception("Tried to stop the client that is not started");

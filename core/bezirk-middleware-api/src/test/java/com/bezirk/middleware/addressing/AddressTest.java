@@ -43,11 +43,5 @@ public class AddressTest {
         address = new Address(loc, pipe);
 
         assertEquals("Pipe is not equal to the set value.", pipe, address.getPipe());
-        assertTrue("Is Local target is false.", address.isLocalTargeted());
-
-        address = new Address(loc, pipe);
-        assertFalse("Is Local target is true.", address.isLocalTargeted());
-
     }
-
 }

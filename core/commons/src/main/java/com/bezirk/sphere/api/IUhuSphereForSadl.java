@@ -61,12 +61,12 @@ public interface IUhuSphereForSadl {
      *                       if (in != null) {
      *                           try {
      *                               in.close();
-     *                           } catch (IOException ioe1) { ... log, trigger event, etc }
+     *                           } catch (IOException ioe1) { ... logger, trigger event, etc }
      *                       }
      *                       if (out != null) {
      *                           try {
      *                               out.close();
-     *                           } catch (IOException ioe2) { ... log, trigger event, etc }
+     *                           } catch (IOException ioe2) { ... logger, trigger event, etc }
      *                       }
      *                   }}
      *                            </pre>
@@ -91,12 +91,12 @@ public interface IUhuSphereForSadl {
      *                       if (in != null) {
      *                           try {
      *                               in.close();
-     *                           } catch (IOException ioe1) { ... log, trigger event, etc }
+     *                           } catch (IOException ioe1) { ... logger, trigger event, etc }
      *                       }
      *                       if (out != null) {
      *                           try {
      *                               out.close();
-     *                           } catch (IOException ioe2) { ... log, trigger event, etc }
+     *                           } catch (IOException ioe2) { ... logger, trigger event, etc }
      *                       }
      *                   }}
      *                            </pre>

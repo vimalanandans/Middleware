@@ -6,11 +6,9 @@ import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 
 /**
- * Created by GUR1PI on 8/6/2014.
- */
-
-/**
  * This message is used to respond to a SignedControlMessage(discriminator : UhuSphereLeave)
+ *
+ * @author Rishab Gulati
  */
 public class MemberLeaveResponse extends UnicastControlMessage {
     //private final int requestId;

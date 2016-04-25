@@ -3,7 +3,7 @@ package com.bezirk.sphere.control.Objects;
 import java.util.Arrays;
 
 /**
- * Created by GUR1PI on 7/15/2014.
+ * @author Rishab Gulati
  */
 public class SphereInformation {
     private String sphereName;

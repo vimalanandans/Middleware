@@ -195,7 +195,7 @@ public class CloudPipeClientImpl implements CloudPipeClient {
 
         // Dump header for debugging
         if (log.isInfoEnabled()) {
-            //if (log.isDebugEnabled()) {
+            //if (logger.isDebugEnabled()) {
             log.info("Dumping header ...");
             System.out.println("*** BEGIN header ***");
             for (String key : httpHeader.keySet()) {
@@ -214,16 +214,15 @@ public class CloudPipeClientImpl implements CloudPipeClient {
         log.info("Received a response with Content-Type: " + contentType);
 
         // Return this response object
-        CloudResponse response = null;
+        CloudResponse response;
 
         // Multipart response containing a stream descriptor + stream content
         if (contentType.contains(VAL_CONTENT_TYPE_MULTIPART_MIXED)) {
             log.info("Parsing multiparts");
             response = multiPartParser.parse(httpHeader, inStream);
-        }
-        // Single part response containing a regular uhu event
-        else if (contentType.contains(VAL_CONTENT_TYPE_APP_JSON)) {
-            String serializedReply = StreamUtils.getStringFromInputStream(inStream);
+        } else if (contentType.contains(VAL_CONTENT_TYPE_APP_JSON)) {
+            // Single part response containing a regular uhu event
+            final String serializedReply = StreamUtils.getStringFromInputStream(inStream);
             response = new CloudResponse();
             response.setSerializedEvent(serializedReply);
             response.setHttpHeader(httpHeader);

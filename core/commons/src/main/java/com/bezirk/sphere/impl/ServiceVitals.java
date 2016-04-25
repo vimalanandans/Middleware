@@ -3,7 +3,7 @@ package com.bezirk.sphere.impl;
 import java.io.Serializable;
 
 /**
- * Created by GUR1PI on 7/28/2014.
+ * @author Rishab Gulati
  */
 public class ServiceVitals implements Serializable {
     private static final long serialVersionUID = -1298410041179461450L;

@@ -3,10 +3,7 @@ package com.bezirk.samples.protocols;
 import com.bezirk.middleware.messages.ProtocolRole;
 
 public class EchoReplyProtocol extends ProtocolRole {
-
     private String protocolName = EchoReplyProtocol.class.getSimpleName();
-
-    private String description = "Protocol containing echo reply messages";
 
     private String[] eventTopics = {new EchoReply().topic};
 
@@ -19,7 +16,7 @@ public class EchoReplyProtocol extends ProtocolRole {
 
     @Override
     public String getDescription() {
-        return description;
+        return "Protocol containing echo reply messages";
     }
 
     @Override

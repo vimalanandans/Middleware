@@ -15,11 +15,11 @@ import java.util.concurrent.SynchronousQueue;
 @SuppressWarnings("PMD")// inorder to avoid the synchonized 
 public final class LoggingQueueManager {
     /**
-     * Blocking Queue that is used to queue log messages at the logging client.
+     * Blocking Queue that is used to queue logger messages at the logging client.
      */
     private static BlockingQueue<String> logSenderQueue = null;
     /**
-     * Blocking Queue that is used to queue log messages at the Logging Service.
+     * Blocking Queue that is used to queue logger messages at the Logging Service.
      *
      * @see UhuLoggingService
      */
@@ -45,7 +45,7 @@ public final class LoggingQueueManager {
     }
 
     /**
-     * Waits on the logSenderQueue to retrive the log Message
+     * Waits on the logSenderQueue to retrive the logger Message
      *
      * @return String representation of the UhuLoggingMessage
      * @throws InterruptedException if multiple threads try to access the queue.
@@ -71,7 +71,7 @@ public final class LoggingQueueManager {
     }
 
     /**
-     * Waits on the logReceiverQueue to retrieve the log Message
+     * Waits on the logReceiverQueue to retrieve the logger Message
      *
      * @return String representation of the UhuLoggingMessage
      * @throws InterruptedException if multiple threads try to access the queue.

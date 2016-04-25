@@ -16,7 +16,6 @@ import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.UhuDiscoveredService;
 import com.bezirk.proxy.api.impl.UhuServiceId;
-import com.bezirk.sphere.api.ICryptoInternals;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuDevMode;
 import com.bezirk.sphere.api.IUhuSphereAPI;
@@ -46,7 +45,7 @@ import java.util.Set;
 public class UhuSphere
         implements IUhuSphereAPI, IUhuSphereForSadl, IUhuSphereRegistration, IUhuSphereDiscovery, IUhuSphereMessages, IUhuDevMode {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UhuSphere.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuSphere.class);
     private CryptoEngine cryptoEngine = null;
     private UPADeviceInterface upaDevice = null;
     private SphereRegistry registry = null;
@@ -57,14 +56,11 @@ public class UhuSphere
     private CatchProcessor catchProcessor = null;
     private DiscoveryProcessor discoveryProcessor = null;
     private SphereRegistryWrapper sphereRegistryWrapper = null;
-    private CommsUtility comms = null;
-    // Sphere Discovery thread
-    private Thread sphereDiscThread = null;
 
     public UhuSphere(CryptoEngine cryptoEngine, UPADeviceInterface upaDevice, SphereRegistry sphereRegistry) {
 
         if (cryptoEngine == null || upaDevice == null || sphereRegistry == null) {
-            LOGGER.error("Exiting UhuSphere setup. A parameter to the constructor is null");
+            logger.error("Exiting UhuSphere setup. A parameter to the constructor is null");
             return;
         }
 
@@ -79,32 +75,32 @@ public class UhuSphere
                               IUhuSphereListener uhuSphereListener, ISphereConfig sphereConfig) {
 
         if (spherePersistence == null || uhuComms == null) {
-            LOGGER.error("Null passed to for ISpherePersistence or IUhuComms");
+            logger.error("Null passed to for ISpherePersistence or IUhuComms");
         }
         if (uhuSphereListener == null) {
-            LOGGER.warn("IUhuSphereListener passed as null");
+            logger.warn("IUhuSphereListener passed as null");
         }
 
         if (sphereConfig == null) {
-            LOGGER.warn("Sphere Configuration provided is null");
+            logger.warn("Sphere Configuration provided is null");
         }
         this.uhuSphereListener = uhuSphereListener;
         this.sphereConfig = sphereConfig;
 
         try {
             registry = spherePersistence.loadSphereRegistry();
-            LOGGER.info("Sphere Registry loaded successfully");
+            logger.info("Sphere Registry loaded successfully");
         } catch (Exception e) {
-            LOGGER.error("Error in loading sphere Registry from Persistence. Uninstall the app and re-install", e);
+            logger.error("Error in loading sphere Registry from Persistence. Uninstall the app and re-install", e);
             return false;
         }
 
         this.sphereRegistryWrapper = new SphereRegistryWrapper(this.registry, spherePersistence, upaDevice, cryptoEngine, uhuSphereListener, sphereConfig);
         this.sphereRegistryWrapper.init();
-        comms = new CommsUtility(uhuComms);
-        shareProcessor = new ShareProcessor((ICryptoInternals) cryptoEngine, upaDevice, comms,
+        CommsUtility comms = new CommsUtility(uhuComms);
+        shareProcessor = new ShareProcessor(cryptoEngine, upaDevice, comms,
                 sphereRegistryWrapper);
-        catchProcessor = new CatchProcessor((ICryptoInternals) cryptoEngine, upaDevice, comms,
+        catchProcessor = new CatchProcessor(cryptoEngine, upaDevice, comms,
                 sphereRegistryWrapper);
         discoveryProcessor = new DiscoveryProcessor(upaDevice, comms, sphereRegistryWrapper,
                 this.uhuSphereListener);
@@ -125,7 +121,7 @@ public class UhuSphere
         // initialize the discovery here
         SphereDiscoveryProcessor.setDiscovery(new SphereDiscovery(this));
 
-        sphereDiscThread = new Thread(new SphereDiscoveryProcessor(this, uhuComms));
+        Thread sphereDiscThread = new Thread(new SphereDiscoveryProcessor(this, uhuComms));
 
         if (sphereDiscThread != null)
             sphereDiscThread.start();

@@ -288,12 +288,12 @@ public final class CryptoEngine implements ICryptoInternals {
      *                       if (in != null) {
      *                           try {
      *                               in.close();
-     *                           } catch (IOException ioe1) { ... log, trigger event, etc }
+     *                           } catch (IOException ioe1) { ... logger, trigger event, etc }
      *                       }
      *                       if (out != null) {
      *                           try {
      *                               out.close();
-     *                           } catch (IOException ioe2) { ... log, trigger event, etc }
+     *                           } catch (IOException ioe2) { ... logger, trigger event, etc }
      *                       }
      *                   }}
      *                            </pre>
@@ -332,12 +332,12 @@ public final class CryptoEngine implements ICryptoInternals {
      *                       if (in != null) {
      *                           try {
      *                               in.close();
-     *                           } catch (IOException ioe1) { ... log, trigger event, etc }
+     *                           } catch (IOException ioe1) { ... logger, trigger event, etc }
      *                       }
      *                       if (out != null) {
      *                           try {
      *                               out.close();
-     *                           } catch (IOException ioe2) { ... log, trigger event, etc }
+     *                           } catch (IOException ioe2) { ... logger, trigger event, etc }
      *                       }
      *                   }}
      *                            </pre>
@@ -426,7 +426,7 @@ public final class CryptoEngine implements ICryptoInternals {
         if (key != null && key.getHashKey() != null && key.getHashKey().length != 0) {
             return true;
         }
-        // log.error("invalid hash key > " + sphereId);
+        // logger.error("invalid hash key > " + sphereId);
 
         return false;
     }

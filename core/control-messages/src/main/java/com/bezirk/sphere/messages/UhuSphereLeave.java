@@ -36,7 +36,7 @@ public class UhuSphereLeave extends com.bezirk.control.messages.UnicastControlMe
      */
     public static <C> C deserialize(String json, Class<C> dC) {
         Gson gson = new Gson();
-        return (C) gson.fromJson(json, dC);
+        return gson.fromJson(json, dC);
     }
 
     public UhuServiceId getServiceId() {

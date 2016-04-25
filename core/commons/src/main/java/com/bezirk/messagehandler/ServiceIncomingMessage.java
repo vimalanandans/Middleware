@@ -23,8 +23,8 @@ public class ServiceIncomingMessage {
      * @return object of class C
      */
     public static <C> C deserialize(String json, Class<C> dC) {
-        Gson gson = new Gson();
-        return (C) gson.fromJson(json, dC);
+        final Gson gson = new Gson();
+        return gson.fromJson(json, dC);
     }
 
     /**

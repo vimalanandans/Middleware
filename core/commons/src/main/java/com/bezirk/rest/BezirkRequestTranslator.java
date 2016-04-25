@@ -13,8 +13,6 @@ import com.bezrik.network.UhuNetworkUtilities;
  * @author PIK6KOR
  */
 public class BezirkRequestTranslator {
-
-
     /**
      * this method will translate the request object to event ledger object.
      * This object will be passed to Comms, which will be communicated to other devices
@@ -31,31 +29,31 @@ public class BezirkRequestTranslator {
 
         //prepare the event based on the type, update the message with Origin and MessageId
 
-        if (true) {
-            final String uniqueMsgId = GenerateMsgId.generateEvtId(mySEP);
+        //if (true) {
+        final String uniqueMsgId = GenerateMsgId.generateEvtId(mySEP);
 
-            // construct multicast header
-            MulticastHeader multicastHeader = new MulticastHeader();
+        // construct multicast header
+        MulticastHeader multicastHeader = new MulticastHeader();
 
-            // TODO ?? multicastHeader.setAddress(address);
-            multicastHeader.setSenderSEP(mySEP);
-            multicastHeader.setSphereName(requestObject.getEventSphere());
-            multicastHeader.setTopic(requestObject.getEventTopic());
-            multicastHeader.setUniqueMsgId(uniqueMsgId);
+        // TODO ?? multicastHeader.setAddress(address);
+        multicastHeader.setSenderSEP(mySEP);
+        multicastHeader.setSphereName(requestObject.getEventSphere());
+        multicastHeader.setTopic(requestObject.getEventTopic());
+        multicastHeader.setUniqueMsgId(uniqueMsgId);
 
-            //set constructed header...
-            eventLedger.setHeader(multicastHeader);
-            eventLedger.setIsMulticast(true);
-            eventLedger.setSerializedHeader(multicastHeader.serialize());
-            eventLedger.setIsLocal(true);
+        //set constructed header...
+        eventLedger.setHeader(multicastHeader);
+        eventLedger.setIsMulticast(true);
+        eventLedger.setSerializedHeader(multicastHeader.serialize());
+        eventLedger.setIsLocal(true);
 
-        } else {
+        // } else {
 
-            //As discussed there is no Unicast!!!!! Client currently does not require a response from a single device
+        //As discussed there is no Unicast!!!!! Client currently does not require a response from a single device
 
-            //construct unicast header..
+        //construct unicast header..
             /*UnicastHeader unicastHeader = new UnicastHeader();
-			unicastHeader.setRecipient(null);
+            unicastHeader.setRecipient(null);
 			unicastHeader.setSenderSEP(mySEP);
 			unicastHeader.setSphereName("SphereName");
 			unicastHeader.setTopic("HOW TO KNOW THE EVENT TOPIC");
@@ -66,12 +64,12 @@ public class BezirkRequestTranslator {
 			//set constructed header..
 			eventLedger.setHeader(unicastHeader);
 			eventLedger.setIsMulticast(false);*/
-        }
+ //   }
 
-        eventLedger.setSerializedMessage(requestObject.getEventMsg());
+    eventLedger.setSerializedMessage(requestObject.getEventMsg());
 
-        return eventLedger;
-    }
+    return eventLedger;
+}
 
 
     /**

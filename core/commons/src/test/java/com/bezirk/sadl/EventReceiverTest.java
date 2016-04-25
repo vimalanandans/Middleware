@@ -28,18 +28,18 @@
 //	 
 //	@BeforeClass
 //	public static void setup(){
-//		log.info(" ***** STARTING EventReceiver TEST *****");
+//		logger.info(" ***** STARTING EventReceiver TEST *****");
 //	}
 //	
 //	@Before
 //	public void beforeEachTest(){
-//		log.info("Before each Test");
+//		logger.info("Before each Test");
 //		sadlRegistry = new TestingUhuSadlRegistry();
 //	}
 //	
 //	@After
 //	public void afterEachTest(){
-//		log.info("After each Test");
+//		logger.info("After each Test");
 //		sadlRegistry.getEventsMap().clear();
 //		sadlRegistry.getLocationMap().clear();
 //		sadlRegistry.getProtocolMap().clear();
@@ -49,7 +49,7 @@
 //	
 //	@AfterClass
 //	public static void teardown(){
-//		log.info(" ***** BRINGING DOWN EventReceiver TEST *****");
+//		logger.info(" ***** BRINGING DOWN EventReceiver TEST *****");
 //	}
 //
 //	@Test

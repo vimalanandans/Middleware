@@ -4,9 +4,6 @@ import com.bezirk.pipe.policy.ext.UhuPipePolicy;
 
 import java.util.HashMap;
 
-/**
- * Created by anm1pi on 12/25/2014.
- */
 public final class PipePolicyUtility {
     public static final HashMap<String, UhuPipePolicy> policyInMap = new HashMap<String, UhuPipePolicy>();
     public static final HashMap<String, UhuPipePolicy> policyOutMap = new HashMap<String, UhuPipePolicy>();

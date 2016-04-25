@@ -1,7 +1,7 @@
 package com.bezirk.sphere.control.Objects;
 
 /**
- * Created by GUR1PI on 7/28/2014.
+ * @author Rishab Gulati
  */
 public class ServiceVitals {
     private String serviceName;

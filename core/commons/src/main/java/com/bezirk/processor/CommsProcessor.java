@@ -48,7 +48,6 @@ import java.util.concurrent.Executors;
  */
 
 public abstract class CommsProcessor implements IUhuComms {
-
     private static final Logger logger = LoggerFactory.getLogger(CommsProcessor.class);
 
     // thread pool size
@@ -74,7 +73,6 @@ public abstract class CommsProcessor implements IUhuComms {
      * be compatible before they are processed.
      */
     private com.bezirk.comms.ICommsNotification notification = null;
-    private IUhuSphereForSadl sphereForSadl;
 
     //private final byte[] testKey = {'B','E','Z','I','R','K','_','G','R','O','U','P','N','E','W','1'};
     private ExecutorService executor;
@@ -175,16 +173,14 @@ public abstract class CommsProcessor implements IUhuComms {
         boolean ret = false;
         String data = message.getSerializedMessage();
         if (data != null) {
-            byte[] wireByteMessage = null;
-
-
             if (message.getMessage() instanceof MulticastControlMessage) {
 
                 WireMessage wireMessage = prepareWireMessgae(message.getMessage().getSphereId(), data);
 
                 wireMessage.setMsgType(WireMessage.WireMsgType.MSG_MULTICAST_CTRL);
                 try {
-                    wireByteMessage = wireMessage.serialize();
+                    byte[] wireByteMessage = wireMessage.serialize();
+                    ret = sendToAll(wireByteMessage, false);
 
                     //logger.info("wireData size after "+wireData.length );
                 } catch (IOException e) {
@@ -192,18 +188,15 @@ public abstract class CommsProcessor implements IUhuComms {
                     return ret;
                 }
 
-                ret = sendToAll(wireByteMessage, false);
-
                 // bridge local
                 bridgeControlMessage(getDeviceId(), message);
 
             } else if (message.getMessage() instanceof UnicastControlMessage) {
+               /* UnicastControlMessage uMsg = (UnicastControlMessage) message.getMessage();
 
-                UnicastControlMessage uMsg = (UnicastControlMessage) message.getMessage();
+				 String recipient = uMsg.getRecipient().device;
 
-                String recipient = uMsg.getRecipient().device;
-
-				/*if(isLocalMessage(recipient))
+				if(isLocalMessage(recipient))
                 {
 					return bridgeControlMessage(getDeviceId(),message);
 				}
@@ -214,18 +207,16 @@ public abstract class CommsProcessor implements IUhuComms {
                     wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_CTRL);
 
                     try {
-                        wireByteMessage = wireMessage.serialize();
+                        byte[] wireByteMessage = wireMessage.serialize();
 
+                        //ret = sendToOne(wireByteMessage, recipient, false);
+                        // quick fix . since we are not able to extract the device from incoming message
+                        // unicast reply fails, so send everything as multicast
+                        ret = sendToAll(wireByteMessage, false);
                     } catch (IOException e) {
                         logger.error("unable to toJson the wire msg " + e);
                         return false;
                     }
-
-
-                    //ret = sendToOne(wireByteMessage, recipient, false);
-                    // quick fix . since we are not able to extract the device from incoming message
-                    // unicast reply fails, so send everything as multicast
-                    ret = sendToAll(wireByteMessage, false);
                 }
 
             } else {
@@ -323,9 +314,6 @@ public abstract class CommsProcessor implements IUhuComms {
      * @return
      */
     private byte[] encryptMsg(String sphereId, byte[] msgData) {
-
-        byte[] msg = null;
-
         logger.info("Before Encryption Msg byte length : " + msgData.length);
         long startTime = System.nanoTime();
 
@@ -333,7 +321,7 @@ public abstract class CommsProcessor implements IUhuComms {
         //msg = cipherService.encrypt(msgData, testKey).getBytes();
         // temp fix of sending the byte stream
         String msgDataString = new String(msgData);
-        msg = UhuCompManager.getSphereForSadl().encryptSphereContent(sphereId, msgDataString);
+        byte[] msg = UhuCompManager.getSphereForSadl().encryptSphereContent(sphereId, msgDataString);
 
         long endTime = System.nanoTime();
         logger.info("Encryption Took " + (endTime - startTime) + " nano seconds");
@@ -387,8 +375,6 @@ public abstract class CommsProcessor implements IUhuComms {
         String data = ledger.getSerializedMessage();
 
         if (data != null) {
-            byte[] wireByteMessage = null;
-
             if (ledger.getIsMulticast()) {
 
                 //TODO: for event message decrypt the header here
@@ -405,13 +391,12 @@ public abstract class CommsProcessor implements IUhuComms {
 
 
                 try {
-                    wireByteMessage = wireMessage.serialize();
+                    byte[] wireByteMessage = wireMessage.serialize();
+                    ret = sendToAll(wireByteMessage, false);
                 } catch (IOException e) {
                     logger.error("unable to toJson the wire msg " + e);
                     return ret;
                 }
-
-                ret = sendToAll(wireByteMessage, false);
 
                 // also send it locally
                 processWireMessage(getDeviceId(), ledger);
@@ -424,7 +409,7 @@ public abstract class CommsProcessor implements IUhuComms {
                 //FIXME: since current zyre-jni doesn't support the self device identification
                 // we are sending the unicast always loop back
                 /*if(isLocalMessage(recipient)) {
-					// if it is unicast and targeted to same device. sent it only to local
+                    // if it is unicast and targeted to same device. sent it only to local
 					return processWireMessage(recipient,ledger);
 				}
 				else*/
@@ -442,13 +427,6 @@ public abstract class CommsProcessor implements IUhuComms {
 
                     wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_EVENT);
 
-                    try {
-                        wireByteMessage = wireMessage.serialize();
-                    } catch (IOException e) {
-                        logger.error("unable to toJson the wire msg " + e);
-                        return false;
-                    }
-
 
                     if (null == uHeader || uHeader.getRecipient() == null
                             || uHeader.getRecipient().device == null || uHeader.getRecipient().device.length() == 0) {
@@ -456,7 +434,14 @@ public abstract class CommsProcessor implements IUhuComms {
                         return ret;
                     }
 
-                    ret = sendToOne(wireByteMessage, recipient, false);
+                    try {
+                        byte[] wireByteMessage = wireMessage.serialize();
+                        ret = sendToOne(wireByteMessage, recipient, false);
+                    } catch (IOException e) {
+                        logger.error("unable to toJson the wire msg " + e);
+                        return false;
+                    }
+
                     // FIXME : since we don't know the zyre-jni device id. we are sending now.
                     processWireMessage(recipient, ledger);
                 }
@@ -495,7 +480,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
         wireMessage.setWireMsgStatus(WireMessage.WireMsgStatus.MSG_RAW);
 
-        byte[] data = null;
+        byte[] data;
 
         try {
             data = wireMessage.serialize();
@@ -605,8 +590,6 @@ public abstract class CommsProcessor implements IUhuComms {
      * @return
      */
     private byte[] parseCtrlMessage(WireMessage wireMessage) {
-
-        byte[] message = null;
         //process wiremessage to decrypt
 
         /**
@@ -614,7 +597,7 @@ public abstract class CommsProcessor implements IUhuComms {
          * Step 1 : Decryption :  decrypt the message.
          * ##########
          */
-        message = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getMsg());
+        byte[] message = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getMsg());
 
         if (message == null) {
             // encrption failed return null
@@ -712,11 +695,8 @@ public abstract class CommsProcessor implements IUhuComms {
     }
 
     private boolean setEventHeader(EventLedger eLedger, WireMessage wireMessage) {
-
-        byte data[] = null;
-
         // decrypt the header
-        data = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getHeaderMsg());
+        byte[] data = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getHeaderMsg());
 
         if (data == null) // header decrpt failed. unknown sphere id
             return false;
@@ -802,8 +782,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
     @Override
     public void setSphereForSadl(IUhuSphereForSadl uhuSphere) {
-        this.sphereForSadl = uhuSphere;
-        uhuStreamManager.setSphereForSadl(sphereForSadl);
+        uhuStreamManager.setSphereForSadl(uhuSphere);
     }
 
     /**
@@ -820,7 +799,7 @@ public abstract class CommsProcessor implements IUhuComms {
         Ledger ledger = null;
 
         public ProcessIncomingMessage(/*CommsProcessor commsProcessor, */String deviceId, String msg) {
-			/*this.commsProcessor = commsProcessor;*/
+            /*this.commsProcessor = commsProcessor;*/
             this.deviceId = deviceId;
             this.msg = msg;
         }
@@ -829,7 +808,7 @@ public abstract class CommsProcessor implements IUhuComms {
          * processing loop back
          */
         public ProcessIncomingMessage(/*CommsProcessor commsProcessor, */String deviceId, Ledger ledger) {
-			/*this.commsProcessor = commsProcessor;*/
+            /*this.commsProcessor = commsProcessor;*/
             this.deviceId = deviceId;
             this.ledger = ledger;
         }
@@ -880,9 +859,7 @@ public abstract class CommsProcessor implements IUhuComms {
                     break;
                 default:
                     logger.error(" Unknown event >> " + msg);
-                    return;
             }
-
         }
     }
 

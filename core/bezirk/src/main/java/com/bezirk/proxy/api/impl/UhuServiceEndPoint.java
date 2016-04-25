@@ -2,9 +2,6 @@ package com.bezirk.proxy.api.impl;
 
 import com.bezirk.middleware.addressing.ServiceEndPoint;
 
-/**
- * Created by vbd4kor on 6/6/2014.
- */
 public class UhuServiceEndPoint implements ServiceEndPoint {
     public String device;
     public UhuServiceId serviceId;

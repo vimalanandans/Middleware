@@ -2,6 +2,7 @@ package com.bezirk.protocols.vocabulary;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class SmartHomeVocab {
             new HashMap<String, ArrayList<String>>() {{
                 // thermostat service relates to:
                 put(service.THERMOSTAT, new ArrayList<String>(
-                        Arrays.asList(
+                        Collections.singletonList(
                                 property.CHOOSE_TEMPERATURE
                         )));
 
@@ -27,7 +28,7 @@ public class SmartHomeVocab {
 
                 // fan service relates to:
                 put(service.FAN, new ArrayList<String>(
-                        Arrays.asList(
+                        Collections.singletonList(
                                 property.SET_FAN
                         )));
 
@@ -51,7 +52,7 @@ public class SmartHomeVocab {
                         )));
 
                 put(service.MUSIC_SERVICE, new ArrayList<String>(
-                        Arrays.asList(
+                        Collections.singletonList(
                                 property.CHOOSE_MUSIC_GENRE)));
             }};
     /**

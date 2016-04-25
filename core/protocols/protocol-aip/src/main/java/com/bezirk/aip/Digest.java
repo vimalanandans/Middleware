@@ -94,7 +94,7 @@ public class Digest<A> extends Event {
 
         for (int i = 0; i < jsonObjSummaries.size(); i++) {
             JsonObject jsonObjSummary = jsonObjSummaries.get(i).getAsJsonObject();
-            I digestItem = (I) gson.fromJson(jsonObjSummary.toString(), iC);
+            I digestItem = gson.fromJson(jsonObjSummary.toString(), iC);
             summaries.add(digestItem);
         }
 

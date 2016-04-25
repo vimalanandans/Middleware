@@ -65,7 +65,7 @@ public class UhuLogDetailsGUI extends JFrame {
     private final String[] selectedSpheres;
     private final boolean isDeveloperModeEnabled;
     /**
-     * Linked HashMap that is used to store the log messages and update them.
+     * Linked HashMap that is used to store the logger messages and update them.
      */
     private final transient Map<String, Integer> logMsgMap = new LinkedHashMap<String, Integer>(
             SIZE_OF_LOG_MSG_MAP);

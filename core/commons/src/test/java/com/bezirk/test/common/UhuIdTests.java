@@ -40,13 +40,13 @@ public class UhuIdTests {
             }
 
             data.put(id, count);
-            //log.info(".");
-            //log.info(" short Id for "+count+" > " +id);
+            //logger.info(".");
+            //logger.info(" short Id for "+count+" > " +id);
         }
         log.info("id is unique with trails of " + count);
 
-        // log.info(" short Id of 'UHU' > "+new ShortUUID().getShortIdByHash("UHU"));
-        //  log.info(" short Id of 'UHU' > "+new ShortUUID().getShortIdByHash("UHU"));
+        // logger.info(" short Id of 'UHU' > "+new ShortUUID().getShortIdByHash("UHU"));
+        //  logger.info(" short Id of 'UHU' > "+new ShortUUID().getShortIdByHash("UHU"));
 
     }
 
@@ -72,10 +72,10 @@ public class UhuIdTests {
         assertTrue(shortId1 != shortId2);
         assertTrue(shortId3 != shortId4);
         /*
-        log.info("short id for "+uniqueId+" > " + new UhuUUIID().getShortIdByHash(uniqueId));
+        logger.info("short id for "+uniqueId+" > " + new UhuUUIID().getShortIdByHash(uniqueId));
 
-        log.info("short id for "+uniqueId+" > " + new UhuUUIID().getShortIdByHash(uniqueId));
-        log.info("short id for "+uniqueId+" > " + new UhuUUIID().getShortIdByHash(uniqueId));*/
+        logger.info("short id for "+uniqueId+" > " + new UhuUUIID().getShortIdByHash(uniqueId));
+        logger.info("short id for "+uniqueId+" > " + new UhuUUIID().getShortIdByHash(uniqueId));*/
 
     }
 

@@ -16,12 +16,9 @@ public class MessageLedger extends Ledger /*implements Serializable*/ {
     String Msg; // serialized message
 
     public boolean isMulticast() {
-        if (recipient != null &&
-                (recipient.device != null) &&
-                recipient.device.length() != 0) {
-            return false;
-        }
-        return true;
+        return recipient != null &&
+                recipient.device != null &&
+                recipient.device.length() != 0;
     }
 /*
     // wire format is serialized

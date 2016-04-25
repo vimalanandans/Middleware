@@ -20,10 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *         The thread interacts within the Uhu Internal Components in order to process the Control message and invoke services (if necessary)
  */
 public class ControlReceiverThread implements Runnable {
-
     private static final Logger log = LoggerFactory.getLogger(ControlReceiverThread.class);
-
-    private Boolean running = false;
 
     private MessageQueue msgQueue = null;
 
@@ -38,7 +35,7 @@ public class ControlReceiverThread implements Runnable {
 
     @Override
     public void run() {
-        running = true;
+        Boolean running = true;
         log.info("Control Receiver Thread has started");
 
         while (running) {

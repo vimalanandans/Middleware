@@ -40,7 +40,6 @@ import java.util.ArrayList;
  */
 
 public class UhuCommsManager implements IUhuCommsLegacy {
-
     private static final Logger logger = LoggerFactory.getLogger(UhuCommsManager.class);
 
     MessageDispatcher msgDispatcher = null;
@@ -86,8 +85,6 @@ public class UhuCommsManager implements IUhuCommsLegacy {
      * @author Vijet Badigannavar
      */
     private ICommsNotification notification = null;
-
-    private IUhuSphereForSadl sphereForSadl;
 
     //private ServiceMessageHandler uhuCallback = null;
 
@@ -545,10 +542,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
      */
     @Override
     public void setSphereForSadl(IUhuSphereForSadl uhuSphere) {
-
-
-        this.sphereForSadl = uhuSphere;
-        uhuStreamManager.setSphereForSadl(sphereForSadl);
+        uhuStreamManager.setSphereForSadl(uhuSphere);
     }
 
     /**
