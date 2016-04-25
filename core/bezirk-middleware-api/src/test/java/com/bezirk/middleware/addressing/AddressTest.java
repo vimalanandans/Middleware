@@ -40,12 +40,12 @@ public class AddressTest {
         assertNotEquals("Location in address is equal to another invalid location.", loc, address.getLocation());
 
         com.bezirk.middleware.addressing.Pipe pipe = new Pipe();
-        address = new Address(loc, pipe, true);
+        address = new Address(loc, pipe);
 
         assertEquals("Pipe is not equal to the set value.", pipe, address.getPipe());
         assertTrue("Is Local target is false.", address.isLocalTargeted());
 
-        address = new Address(loc, pipe, false);
+        address = new Address(loc, pipe);
         assertFalse("Is Local target is true.", address.isLocalTargeted());
 
     }

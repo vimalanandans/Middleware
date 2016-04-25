@@ -30,7 +30,7 @@ public class SerializationTest {
         Location location = new Location("home", "garage", "garagedoor");
         URI uri = new URI("http://foo/bar");
         Pipe pipe = new CloudPipe("boschPipe", uri);
-        Address address = new Address(location, pipe, false);
+        Address address = new Address(location, pipe);
 
         String serializedAddress = address.toJson();
         System.out.println("serialized address    : " + serializedAddress);
