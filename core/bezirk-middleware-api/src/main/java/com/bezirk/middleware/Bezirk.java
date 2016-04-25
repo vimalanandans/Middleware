@@ -26,134 +26,218 @@ import java.io.PipedOutputStream;
 
 
 /**
- * Platform-independent API offered by bezirk middleware to services (normally by means of a
- * platform-specific proxy.)
+ * The API for registering Zirks, sending messages, and discovering other Zirks. Zirks fetch
+ * this API using the following code:
+ * <p></p>
+ * <pre>
+ * import com.bezirk.api.Bezirk;
+ * import com.bezirk.proxy.Factory;
+ *
+ * // ...
+ *
+ *          Bezirk bezirk = Factory.getInstance();
+ *
+ * // ...
+ *
+ * </pre>
  *
  * @see BezirkListener
  */
 public interface Bezirk {
 
     /**
-     * Makes the service known to Bezirk middleware, so that the user may then associate the service
-     * with one or more Spheres.
-     * Should be called once by each service before any other call on this API.
+     * Register a Zirk with the Bezirk middleware. This makes the Zirk available the user,
+     * thus allowing her to place it in a sphere to interact with other Zirks. This method must
+     * be called before any other API method can be called because it returns the ID required by
+     * most other API methods.
      *
-     * @param myName as defined by the service developer/vendor
-     * @return Bezirk middelware-defined id for the registering service, or NULL if Bezirk
-     * middelware blocks a second registration for the same name.
+     * @param zirkName the name of the Zirk being registered, as defined by the Zirk
+     *                 developer/vendor
+     * @return a middleware-defined ID for the registered Zirk, or <code>null</code> if a Zirk with
+     * the name specified by <code>zirkName</code> is already registered. The returned ID is
+     * required to use most other API methods
      */
-    public ServiceId registerService(String myName);
+    public ServiceId registerService(String zirkName);
 
     /**
-     * Undoes the effects of {@link #registerService(String)} and removes all subscriptions:
-     * same as calling {@link #unsubscribe(ServiceId, ProtocolRole)} with NULL in the ProtocolRole
+     * Undo the effects of {@link #registerService(String)} and removes all subscriptions as if
+     * {@link #unsubscribe(ServiceId, ProtocolRole)} were called with <code>null</code> as the
+     * <code>ProtocolRole</code>.
      *
-     * @param myId as returned by {@link #registerService(String)}
+     * @param zirkId id for the registered Zirk, returned by {@link #registerService(String)}
      */
-    public void unregisterService(ServiceId myId);
+    public void unregisterService(ServiceId zirkId);
 
     /**
-     * Registers a service listener for all events and streams defined in the protocol role.
+     * Register a Zirk <code>listener</code> to receive all events and streams whose topics are
+     * defined by <code>protocolRole</code>. This is a declaration to the middleware and other Zirks
+     * that the registered Zirk will fill the role defined by <code>protocolRole</code>. Translating
+     * the concept to the pub-sub model, this method is how Zirks subscribe to topics.
      *
-     * @param subscriber id as returned by {@link #registerService(String)}
-     * @param pRole      specific protocol role that the service will play
-     * @param listener   object for the callbacks issued by Bezirk middelware upon reception of
-     *                   events and streams associated with this protocol role
+     * @param subscriber   id for subscribing Zirk, returned by {@link #registerService(String)}
+     * @param protocolRole a declaration of the role the registered Zirk will play, meaning the
+     *                     Zirk should receive all messages whose topic is defined in this role
+     * @param listener     recipient of notifications issued from the Bezirk middleware when events
+     *                     and streams associated with this protocol role are received
      */
-    public void subscribe(ServiceId subscriber, ProtocolRole pRole, BezirkListener listener);
+    public void subscribe(ServiceId subscriber, ProtocolRole protocolRole, BezirkListener listener);
 
     /**
-     * Removes the effects of subscribe(...). Does nothing if no subscription is found.
+     * Unsubscribe a Zirk from a particular role. This method undoes the effects of
+     * {@link #subscribe(ServiceId, ProtocolRole, BezirkListener)}. After this method finishes, the
+     * Zirk will no longer receive messages for topics defined in <code>protocolRole</code>. This
+     * method does nothing if the defined <code>subscriber</code> was not subscribed to the role.
+     * Specifying <code>null</code> for the role unsubscribes the Zirk from all roles it is
+     * subscribed to.
      *
-     * @param subscriber id as returned by {@link #registerService(String)}
-     * @param pRole      specific protocol to remove, or NULL to remove all subscriptions for the service
+     * @param subscriber   id for registered Zirk, as returned by {@link #registerService(String)}
+     * @param protocolRole role to unsubscribe from, or <code>null</code> to remove all subscriptions
+     *                     for the service
      */
-    public void unsubscribe(ServiceId subscriber, ProtocolRole pRole);
+    public void unsubscribe(ServiceId subscriber, ProtocolRole protocolRole);
 
     /**
-     * Publishes an event over a target semantic address.
+     * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event's topic.
+     * The set of recipients can be narrowed using <code>receiver</code> if a semantic address is
+     * specified, or broadened if a pipe is specified.
      *
-     * @param sender id as returned by {@link #registerService(String)}
-     * @param target semantic address
-     * @param event  being published
+     * @param sender   id of Zirk sending the event, as returned by {@link #registerService(String)}
+     * @param receiver the {@link Address} of the sent event's recipients
+     * @param event    the <code>Event</code> being sent
      * @see BezirkListener#receiveEvent(String, String, ServiceEndPoint)
      */
-    public void sendEvent(ServiceId sender, Address target, Event event);
+    public void sendEvent(ServiceId sender, Address receiver, Event event);
 
     /**
-     * (Asynchronous) Unicast an event to an intended receiver.
+     * Publish an event with one specific recipient.
      *
-     * @param sender   id as returned by {@link #registerService(String)}
-     * @param receiver intended recipient, as extracted from a received message, or as resulted from discovery
-     * @param event    being unicast
+     * @param sender   id of Zirk sending the event, returned by {@link #registerService(String)}
+     * @param receiver intended recipient, as extracted from a received message, or as discovered
+     *                 by calling
+     *                 {@link #discover(ServiceId, Address, ProtocolRole, long, int, BezirkListener)}
+     * @param event    the <code>Event</code> being sent
      * @see BezirkListener#receiveEvent(String, String, ServiceEndPoint)
      */
     public void sendEvent(ServiceId sender, ServiceEndPoint receiver, Event event);
 
     /**
-     * Unicast a stream to an intended receiver. The stream is described by s and fed by data written into p.
+     * Publish a {@link com.bezirk.middleware.messages.Stream} with one specific recipient. The
+     * channel's properties are described by <code>stream</code>. The transmitted data is supplied by
+     * writes to <code>dataStream</code>. To send a file use
+     * {@link #sendStream(ServiceId, ServiceEndPoint, Stream, String)}.
      *
-     * @param sender   id as returned by {@link #registerService(String)}
-     * @param receiver intended recipient, as extracted from a request message, or as resulted from discovery
-     * @param s        descriptor of the stream
-     * @param p        stream where the outgoing data will be written into by the invoker of this method.
-     *                 Bezirk middelware will read data from p in a thread-safe way by creating a PipedInputStream linked to p
-     * @return Bezirk middelware-generated id for the stream, which will be referred to in {@link BezirkListener#streamStatus(short, BezirkListener.StreamConditions)}
+     * @param sender     id of Zirk sending the stream, as returned by {@link #registerService(String)}
+     * @param receiver   intended recipient, as extracted from a received message, or as discovered
+     *                   by calling
+     *                   {@link #discover(ServiceId, Address, ProtocolRole, long, int, BezirkListener)}
+     * @param stream     communication channel's descriptor
+     * @param dataStream io stream where the outgoing data will be written into by this method's
+     *                   caller. Internally, the Bezirk middleware will read data from the
+     *                   <code>dataStream</code> in a thread-safe manner by creating a
+     *                   <code>PipedInputStream</code> linked to <code>dataStream</code>
+     * @return Bezirk middelware-generated id for the stream, which will be referred to in
+     * {@link BezirkListener#streamStatus(short, BezirkListener.StreamConditions)}
      * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ServiceEndPoint)
      * @see BezirkListener#receiveStream(String, String, short, String, ServiceEndPoint)
      */
-    public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream s, PipedOutputStream p);
+    public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream stream,
+                            PipedOutputStream dataStream);
 
     /**
-     * Same as {@link Bezirk#sendStream(ServiceId, ServiceEndPoint, Stream, PipedOutputStream)} but taking a file as the source of data.
-     */
-    public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream s, String filePath);
-
-    /**
-     * Requests a pipe p to be added to all Spheres this service is a member of.
+     * Publish a file with one specific recipient. This method is identical to
+     * {@link Bezirk#sendStream(ServiceId, ServiceEndPoint, Stream, PipedOutputStream)}, except this
+     * version is intended to send a specific file instead of general data.
      *
-     * @param requester  id as returned by {@link #registerService(String)}
-     * @param p
-     * @param allowedIn  protocols allowed to flow from the pipe into the sphere.  No constraint on the protocols, if NULL.
-     * @param allowedOut protocols allowed to flow from the sphere into the pipe.  No constraint on the protocols, if NULL.
-     * @param listener   object for the callback issued by Bezirk middelware once the pipe is verified by the user
+     * @param sender   id of Zirk sending the stream, as returned by {@link #registerService(String)}
+     * @param receiver intended recipient, as extracted from a received message, or as discovered
+     *                 by calling
+     *                 {@link #discover(ServiceId, Address, ProtocolRole, long, int, BezirkListener)}
+     * @param stream   communication channel's descriptor
+     * @param filePath the file whose contents will be sent using the <code>stream</code>
+     * @return Bezirk middelware-generated id for the stream, which will be referred to in
+     * {@link BezirkListener#streamStatus(short, BezirkListener.StreamConditions)}
+     * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ServiceEndPoint)
+     * @see BezirkListener#receiveStream(String, String, short, String, ServiceEndPoint)
+     */
+    public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream stream, String filePath);
+
+    /**
+     * Request the use of a {@link com.bezirk.middleware.addressing.Pipe} to send data outside of the
+     * <code>requester</code>'s sphere(s). A pipe may break the confidentiality property established
+     * by spheres, thus the user must authorize the use of the pipe. The authorization process is
+     * initiated via this request. Pipes are governed by security policies, specified by
+     * <code>allowedIn</code> and <code>allowedOut</code>, which restrict the messages that can flow
+     * into and out of the sphere via the pipe to just those messages belonging to explicitly listed
+     * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles's}.
+     *
+     * @param requester  id of Zirk requesting the pipe, as returned by {@link #registerService(String)}
+     * @param pipe       the pipe the Zirk wants permission to use
+     * @param allowedIn  specification of message roles allowed to flow into the requester's sphere(s)
+     *                   via the pipe. If <code>null</code>, no security policy is imposed
+     * @param allowedOut specification of message roles allowed to flow out of the requester's sphere(s)
+     *                   via the pipe. If <code>null</code>, no security policy is imposed
+     * @param listener   recipient of notifications issued by the Bezirk middleware when the user
+     *                   authorizes the creation of a pipe
      * @see BezirkListener#pipeGranted(Pipe, PipePolicy, PipePolicy)
      */
-    public void requestPipe(ServiceId requester, Pipe p, PipePolicy allowedIn, PipePolicy allowedOut, BezirkListener listener);
+    public void requestPipe(ServiceId requester, Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut,
+                            BezirkListener listener);
 
     /**
-     * Requests being informed of the policy for p.
+     * Fetch the security policies governing an authorized <code>pipe</code>. If the pipe is not
+     * authorized, this method does nothing. Use
+     * {@link #requestPipe(ServiceId, Pipe, PipePolicy, PipePolicy, BezirkListener)} to request
+     * the authority to use a pipe.
      *
-     * @param p
-     * @param listener object for the callback issued by Bezirk middelware
+     * @param pipe     the authorized pipe whose policy we want to retrieve
+     * @param listener recipient of notifications issued by the Bezirk middleware when
+     *                 <code>pipe</code>'s policies is discovered
      * @see BezirkListener#pipeGranted(Pipe, PipePolicy, PipePolicy)
      */
-    public void getPipePolicy(Pipe p, BezirkListener listener);
+    public void getPipePolicy(Pipe pipe, BezirkListener listener);
 
     /**
-     * Requests the discovery of services which support pRole, within the spheres that the service is a member of.
-     * Bezirk middelware will issue a callback with the results once either timeout expires or the number of replies reaches maxDiscovered.
-     * For each service, Bezirk middelware manages one outstanding request at a time:
-     * a service may issue another discover request once the results of the previous request no longer matter.
+     * Find Zirks subscribed to <code>protocolRole</code> within <code>zirk</code>'s sphere(s).
+     * The <code>listener</code> will be notified when a set of results is ready. The set of results
+     * is considered ready after all of the Zirks within the relevant sphere(s) that are subscribed to
+     * the role are found, the <code>timeout</code> elapses, or the number of discovered Zirks in the
+     * result set hits <code>maxResults</code>. The discovery of Zirks subscribed to a role can
+     * be further constrained to just the set of services described by <code>scope</code> (see
+     * {@link com.bezirk.middleware.addressing.Location}).
+     * <p>
+     * Internally, the Bezirk middleware issues one discovery request at a time. If this method
+     * is called multiple times in short succession, a new discovery request will occur only after
+     * the first request is fulfilled. Each new discovery request will be fulfilled in the order they
+     * were received as soon as the currently executing request finishes.
+     * </p>
      *
-     * @param service       id as returned by {@link #registerService(String)}
-     * @param scope         address for discovery
-     * @param pRole         specific role to discover, or NULL if discovering all services within the Sphere(s) the invoker is a member of
-     * @param timeout       max time Bezirk middelware is to wait for replies to come in
-     * @param maxDiscovered number of replies that Bezirk middelware is to wait for
-     * @param listener      object for the callback issued by Bezirk middelware upon gathering of discovery results
+     * @param zirk         id of Zirk discovering Zirks subscribed to <code>protocolRole</code>, as
+     *                     returned by {@link #registerService(String)}
+     * @param scope        semantic address to further constrain the discovery of Zirks fulfilling
+     *                     <code>protocolRole</code>
+     * @param protocolRole the role that Zirks we want to discover are subscribed to, or
+     *                     <code>null</code> to discover all Zirks in <code>zirk</code>'s
+     *                     spheres
+     * @param timeout      max time Bezirk middleware can wait for replies to discovery requests
+     * @param maxResults   number of Zirks the Bezirk middleware is to wait for
+     * @param listener     recipient of notifications issued by the Bezirk middleware when the set
+     *                     of discovered services is complete
      * @see BezirkListener#discovered(java.util.Set)
+     * @see com.bezirk.middleware.addressing.DiscoveredService
      * @see #setLocation(ServiceId, Location)
      */
-    public void discover(ServiceId service, Address scope, ProtocolRole pRole, long timeout, int maxDiscovered, BezirkListener listener);
+    public void discover(ServiceId zirk, Address scope, ProtocolRole protocolRole, long timeout,
+                         int maxResults, BezirkListener listener);
 
     /**
-     * Informs Bezirk middelware of the location of the service, when distinct from the location of the host device: useful for proxy devices, e.g. CCU.
-     * It may be invoked each time a mobile service changes location.
-     * The location of a service is used to match location constraints during discovery and semantic addressing of events.
+     * Inform the Bezirk middleware of the Zirk's {@link com.bezirk.middleware.addressing.Location}.
+     * This method is useful when the Zirk controls a device that is in a location distrinct from
+     * the device that is executing the Zirk. The location is used whenever an
+     * {@link com.bezirk.middleware.addressing.Address} is used (e.g. when sending an event,
+     * discovering services subscribed to a role, etc.).
      *
-     * @param service  id as returned by {@link #registerService(String)}
-     * @param location
+     * @param zirk     id of Zirk whose location is being set, as returned by {@link #registerService(String)}
+     * @param location the physical location of the Thing <code>Zirk</code> controlss
      */
-    public void setLocation(ServiceId service, Location location);
+    public void setLocation(ServiceId zirk, Location location);
 }
