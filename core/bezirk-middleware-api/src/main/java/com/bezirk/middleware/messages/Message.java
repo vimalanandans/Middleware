@@ -65,10 +65,20 @@ public abstract class Message {
     public String msgId;
 
     /**
+     * Serialize the message to a JSON string.
+     *
+     * @return JSON representation of the message
+     */
+    public String toJson() {
+        return gson.toJson(this);
+    }
+
+
+    /**
      * Deserialize the <code>json</code> string to create an object of type <code>objectType</code>.
      * This method can be used to serialize a message as follows:
      * <p>
-     * <code>TemperatureReadEvent tempReadEvent = Event.fromJSON(event, TemperatureReadEvent.class);</code>.
+     * <code>TemperatureReadEvent tempReadEvent = Event.fromJson(event, TemperatureReadEvent.class);</code>.
      * </p>
      *
      * @param <C>        the type of the object represented by <code>json</code>, set by
@@ -77,17 +87,8 @@ public abstract class Message {
      * @param objectType the type of the object represented by <code>json</code>
      * @return an object of type <code>objectType</code> deserialized from <code>json</code>
      */
-    public static <C> C fromJSON(String json, Class<C> objectType) {
+    public static <C> C fromJson(String json, Class<C> objectType) {
         return (C) gson.fromJson(json, objectType);
-    }
-
-    /**
-     * Serialize the message to a JSON string.
-     *
-     * @return JSON representation of the message
-     */
-    public String toJSON() {
-        return gson.toJson(this);
     }
 
     /**

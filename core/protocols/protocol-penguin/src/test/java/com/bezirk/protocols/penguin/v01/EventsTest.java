@@ -54,7 +54,7 @@ public class EventsTest {
 		assertEquals(2, getUserProfileString.getContext().size());*/
 
 
-        String jsonSer = getUsrProfile.toJSON();
+        String jsonSer = getUsrProfile.toJson();
         GetUserProfile getUserProfSer = new GetUserProfile();
         getUserProfSer = GetUserProfile.deserialize(jsonSer);
         assertEquals("User_1", getUserProfSer.getUser());

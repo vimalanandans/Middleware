@@ -26,7 +26,7 @@ public class SphereExchangeData {
     }
 
     /**
-     * De-toJSON the string to object
+     * De-toJson the string to object
      *
      * @param data
      * @return
@@ -50,7 +50,7 @@ public class SphereExchangeData {
         Gson gson = new Gson();
         String data = gson.toJson(this);
 
-        logger.debug("toJSON data > {}", data);
+        logger.debug("toJson data > {}", data);
 
         return data;
     }

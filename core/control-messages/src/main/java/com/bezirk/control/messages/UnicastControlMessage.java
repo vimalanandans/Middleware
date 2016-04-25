@@ -9,10 +9,10 @@ public class UnicastControlMessage extends ControlMessage {
     private UhuServiceEndPoint recipient;
 
     /**
-     * Empty Constructor required for gson.fromJSON
+     * Empty Constructor required for gson.fromJson
      */
     public UnicastControlMessage() {
-        // Empty Constructor required for gson.fromJSON
+        // Empty Constructor required for gson.fromJson
     }
 
     /**

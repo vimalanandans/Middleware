@@ -33,13 +33,13 @@ public class GetUserProfileTest extends GetUserProfile {
     }
 
     /**
-     * Use instead of the generic UhuMessage.fromJSON()
+     * Use instead of the generic UhuMessage.fromJson()
      *
      * @param json
      * @return GetPreference
      */
     public static GetUserProfileTest deserialize(String json) {
-        return Event.fromJSON(json, GetUserProfileTest.class);
+        return Event.fromJson(json, GetUserProfileTest.class);
     }
 
     public String getDbFile() {

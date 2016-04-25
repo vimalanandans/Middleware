@@ -82,7 +82,7 @@ public class ObservationTest {
         populateObservation(observation);
 
 
-        String serializedObservation = observation.toJSON();
+        String serializedObservation = observation.toJson();
 
         Observation deserializedObservation = Observation.deserialize(serializedObservation);
 

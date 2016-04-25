@@ -17,8 +17,8 @@ public class RequestPolicyTest {
         String location = "ROOM1";
         RequestPolicy requestPolicy = new RequestPolicy(location);
 
-        String serializedRequestPolicy = requestPolicy.toJSON();
-        RequestPolicy deserializedRequestPolicy = RequestPolicy.fromJSON(serializedRequestPolicy, RequestPolicy.class);
+        String serializedRequestPolicy = requestPolicy.toJson();
+        RequestPolicy deserializedRequestPolicy = RequestPolicy.fromJson(serializedRequestPolicy, RequestPolicy.class);
 
         assertEquals("Location not equal to the set value.", location, deserializedRequestPolicy.getLocation());
 

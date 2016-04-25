@@ -19,9 +19,9 @@ public class MakeKingTest {
         String king = "BOB";
         MakeKing makeKing = new MakeKing(location, king);
 
-        String serializedMakeking = makeKing.toJSON();
+        String serializedMakeking = makeKing.toJson();
 
-        MakeKing deserializedMakeking = MakeKing.fromJSON(serializedMakeking, MakeKing.class);
+        MakeKing deserializedMakeking = MakeKing.fromJson(serializedMakeking, MakeKing.class);
 
         assertEquals("Location is not matching to the set value.", location, deserializedMakeking.getLocation());
         assertEquals("King is not matching to the set value.", king, deserializedMakeking.getKing());

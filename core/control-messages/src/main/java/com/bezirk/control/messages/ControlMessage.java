@@ -18,7 +18,7 @@ public class ControlMessage {
     private Boolean retransmit = true;
     private UhuServiceEndPoint sender;
     public ControlMessage() {
-        // Empty Constructor required for gson.fromJSON
+        // Empty Constructor required for gson.fromJson
     }
 
     /**
@@ -61,7 +61,7 @@ public class ControlMessage {
 
     /**
      * @param json The Json String that is to be deserialized
-     * @param dC   class to fromJSON into
+     * @param dC   class to fromJson into
      * @return object of class type C
      */
     public static <C> C deserialize(String json, Class<C> dC) {

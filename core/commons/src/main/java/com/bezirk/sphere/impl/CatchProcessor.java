@@ -303,7 +303,7 @@ public class CatchProcessor {
          * if (QRCodeData.checkVersionTag(inviterCatchCode) &&
          * QRCodeData.checkCompatibility(inviterCatchCode)) <br>
          * { // retrieve the catchCode QRCodeData catchData =
-         * QRCodeData.fromJSON(inviterCatchCode); return
+         * QRCodeData.fromJson(inviterCatchCode); return
          * catchData.getCatchCode(); }
          */
         if (inviterCatchCode.length() == 7) {

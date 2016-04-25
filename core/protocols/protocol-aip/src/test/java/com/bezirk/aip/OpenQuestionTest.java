@@ -44,7 +44,7 @@ public class OpenQuestionTest {
         openQuestion.setUntil(until);
 
 
-        String serializedOpenQuestion = openQuestion.toJSON();
+        String serializedOpenQuestion = openQuestion.toJson();
         OpenQuestion deserializedOpenQuestion = OpenQuestion.deserialize(serializedOpenQuestion);
 
         assertEquals("About is not equal to the set value.", about, deserializedOpenQuestion.getAbout());

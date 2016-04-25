@@ -292,7 +292,7 @@ public class StreamLocalTest {
             assertEquals("MockRequestStream", topic);
             assertEquals(sendfilePath, filePath);
             assertEquals(sendStreamId, streamId);
-            assertEquals(request.toJSON(), stream);
+            assertEquals(request.toJson(), stream);
             // Read and verify the stream
             FileInputStream fileInputStream = null;
             BufferedReader reader = null;

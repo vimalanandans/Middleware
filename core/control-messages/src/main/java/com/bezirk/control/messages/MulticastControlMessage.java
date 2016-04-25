@@ -5,10 +5,10 @@ import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 public class MulticastControlMessage extends ControlMessage {
 
     /**
-     * Empty Constructor required for gson.fromJSON
+     * Empty Constructor required for gson.fromJson
      */
     public MulticastControlMessage() {
-        // Empty Constructor required for gson.fromJSON
+        // Empty Constructor required for gson.fromJson
     }
 
     /**

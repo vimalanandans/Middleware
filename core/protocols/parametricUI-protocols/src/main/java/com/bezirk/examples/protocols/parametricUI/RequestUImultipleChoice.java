@@ -34,13 +34,13 @@ public class RequestUImultipleChoice extends Event {
     }
 
     /**
-     * Use instead of the generic UhuMessage.fromJSON()
+     * Use instead of the generic UhuMessage.fromJson()
      *
      * @param json
      * @return
      */
     public static RequestUImultipleChoice deserialize(String json) {
-        return Event.fromJSON(json, RequestUImultipleChoice.class);
+        return Event.fromJson(json, RequestUImultipleChoice.class);
     }
 
     public String[] getAvailableChoices() {

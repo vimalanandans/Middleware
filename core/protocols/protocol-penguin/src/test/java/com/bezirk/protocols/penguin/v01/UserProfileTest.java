@@ -130,7 +130,7 @@ public class UserProfileTest {
 
         usrProfile.setId("USER 1");
 
-        String serializedProfile = usrProfile.toJSON();
+        String serializedProfile = usrProfile.toJson();
         UserProfile deserializedUserProfile = UserProfile.deserialize(serializedProfile);
 
         assertEquals("ProfileSubset not matching to set value.", 1, deserializedUserProfile.getDefaultProfileSubset().size());

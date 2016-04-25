@@ -188,7 +188,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
                     //logger.info("wireData size after "+wireData.length );
                 } catch (IOException e) {
-                    logger.error("unable to toJSON the wire msg " + e);
+                    logger.error("unable to toJson the wire msg " + e);
                     return ret;
                 }
 
@@ -217,7 +217,7 @@ public abstract class CommsProcessor implements IUhuComms {
                         wireByteMessage = wireMessage.serialize();
 
                     } catch (IOException e) {
-                        logger.error("unable to toJSON the wire msg " + e);
+                        logger.error("unable to toJson the wire msg " + e);
                         return false;
                     }
 
@@ -407,7 +407,7 @@ public abstract class CommsProcessor implements IUhuComms {
                 try {
                     wireByteMessage = wireMessage.serialize();
                 } catch (IOException e) {
-                    logger.error("unable to toJSON the wire msg " + e);
+                    logger.error("unable to toJson the wire msg " + e);
                     return ret;
                 }
 
@@ -445,7 +445,7 @@ public abstract class CommsProcessor implements IUhuComms {
                     try {
                         wireByteMessage = wireMessage.serialize();
                     } catch (IOException e) {
-                        logger.error("unable to toJSON the wire msg " + e);
+                        logger.error("unable to toJson the wire msg " + e);
                         return false;
                     }
 
@@ -570,7 +570,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
             // Quickfix for zyre-jni: update the sender device id
             ctrl.getSender().device = deviceId;
-            //processedMsg = ctrl.toJSON();
+            //processedMsg = ctrl.toJson();
             // instead of deserialization, you shall try to use
             // pattern match to speed up the discriminator
             //logger.info("ctrl msg >> " + ctrl.toString());

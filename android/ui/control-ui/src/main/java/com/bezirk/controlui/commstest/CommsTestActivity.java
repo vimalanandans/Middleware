@@ -157,7 +157,7 @@ public class CommsTestActivity extends ActionBarActivity {
     void processDiagMsg(String address, String diagMessage) {
         TestMessage msg = TestMessage.deserialize(diagMessage, TestMessage.class);
         if (msg == null) {
-            Log.e(TAG, "unable to toJSON the diag msg " + diagMessage);
+            Log.e(TAG, "unable to toJson the diag msg " + diagMessage);
             return;
         }
         if (PingMessage.isPing(msg)) {

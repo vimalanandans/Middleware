@@ -262,7 +262,7 @@ public class LocationUpdateTest {
             ++countPingServiceB;
 
             assertEquals("MockRequestEvent", topic);
-            MockRequestEvent receivedEvent = Event.fromJSON(event, MockRequestEvent.class);
+            MockRequestEvent receivedEvent = Event.fromJson(event, MockRequestEvent.class);
             assertEquals("Ping to Mock Services", receivedEvent.question);
             if (countPingServiceB == 1) {
                 isL1passed = true;

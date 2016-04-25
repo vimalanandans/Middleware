@@ -28,9 +28,9 @@ public class DigestTest {
         digest.setSubTopic(subTopic);
         digest.setSummaries(summaries);
 
-        String serializedDigest = digest.toJSON();
+        String serializedDigest = digest.toJson();
 
-        Digest<?> deserializedDigest = Digest.fromJSON(serializedDigest, Digest.class);
+        Digest<?> deserializedDigest = Digest.fromJson(serializedDigest, Digest.class);
 
         assertEquals("ID is not equal to the set value.", id, deserializedDigest.getId());
         assertEquals("SubTopic is not equal to the set value.", subTopic, deserializedDigest.getSubTopic());

@@ -22,9 +22,9 @@ public class ResponsePolicyTest {
         ResponsePolicy responsePolicy = new ResponsePolicy(location, policy);
         responsePolicy.setKing(king);
 
-        String serializedPolicy = responsePolicy.toJSON();
+        String serializedPolicy = responsePolicy.toJson();
 
-        ResponsePolicy deserializedPolicy = ResponsePolicy.fromJSON(serializedPolicy, ResponsePolicy.class);
+        ResponsePolicy deserializedPolicy = ResponsePolicy.fromJson(serializedPolicy, ResponsePolicy.class);
 
         assertEquals("Policy not equal to the set policy.", policy, deserializedPolicy.getPolicy());
         assertEquals("Location not equal to the set location.", location, deserializedPolicy.getLocation());
@@ -37,8 +37,8 @@ public class ResponsePolicyTest {
         responsePolicy.setPolicy(policy);
         Integer sensitivityToPresence = 50;
         responsePolicy.setSensitivityToPresence(sensitivityToPresence);
-        serializedPolicy = responsePolicy.toJSON();
-        deserializedPolicy = ResponsePolicy.fromJSON(serializedPolicy, ResponsePolicy.class);
+        serializedPolicy = responsePolicy.toJson();
+        deserializedPolicy = ResponsePolicy.fromJson(serializedPolicy, ResponsePolicy.class);
         assertEquals("king not equal to the set value.", king, deserializedPolicy.getKing());
         assertEquals("Policy not equal to the set policy.", policy, deserializedPolicy.getPolicy());
         assertEquals("Location not equal to the set location.", location, deserializedPolicy.getLocation());

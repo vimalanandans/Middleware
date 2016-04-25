@@ -14,7 +14,7 @@ public class TestMessage {
 
     /**
      * @param json               The Json String that is to be deserialized
-     * @param classToDeserialize class to fromJSON into
+     * @param classToDeserialize class to fromJson into
      * @return object of class C
      */
     public static <C> C deserialize(String json, Class<C> classToDeserialize) throws JsonParseException {

@@ -44,7 +44,7 @@ public class GetPreferenceTest {
         assertEquals("BOB", getPref.getUser());
 
 
-        String jsonSer = getPref.toJSON();
+        String jsonSer = getPref.toJson();
         GetPreference getPrefSer = GetPreference.deserialize(jsonSer);
         assertEquals("Saturday", getPrefSer.getContext().getPartOfDay());
 
@@ -96,7 +96,7 @@ public class GetPreferenceTest {
         getPrefTestN.setUser("UPA USER");
         assertEquals("UPA USER", getPrefTestN.getUser());
 
-        String jsonSerr = getPrefTestN.toJSON();
+        String jsonSerr = getPrefTestN.toJson();
         getPrefTestN = null;
         getPrefTestN = new com.bezirk.protocols.penguin.v01.test.GetPreferenceTest();
         getPrefTestN = com.bezirk.protocols.penguin.v01.test.GetPreferenceTest.deserialize(jsonSerr);

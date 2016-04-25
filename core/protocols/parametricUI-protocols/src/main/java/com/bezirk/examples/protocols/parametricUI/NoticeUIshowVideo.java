@@ -31,13 +31,13 @@ public class NoticeUIshowVideo extends Event {
     }
 
     /**
-     * Use instead of the generic UhuMessage.fromJSON()
+     * Use instead of the generic UhuMessage.fromJson()
      *
      * @param json
      * @return
      */
     public static NoticeUIshowVideo deserialize(String json) {
-        return Event.fromJSON(json, NoticeUIshowVideo.class);
+        return Event.fromJson(json, NoticeUIshowVideo.class);
     }
 
     public String getVideoURL() {

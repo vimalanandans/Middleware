@@ -25,14 +25,14 @@ public class MessageLedger extends Ledger /*implements Serializable*/ {
     }
 /*
     // wire format is serialized
-    public byte[] toJSON()  throws IOException {
+    public byte[] toJson()  throws IOException {
         Gson gson = new Gson();
         return gson.toJson(this).getBytes();
         // send the compressed string
         //return compress (gson.toJson(this));
     }
-    //fromJSON data
-    public static MessageLedger fromJSON(byte[] data) {
+    //fromJson data
+    public static MessageLedger fromJson(byte[] data) {
 
         MessageLedger wireMessage = null;
         String json = new String(data);

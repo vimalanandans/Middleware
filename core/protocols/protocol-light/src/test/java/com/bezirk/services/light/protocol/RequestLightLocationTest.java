@@ -17,9 +17,9 @@ public class RequestLightLocationTest {
         Integer id = 1234;
         RequestLightLocation requestLightLocation = new RequestLightLocation(id);
 
-        String serializedRequestLightLocation = requestLightLocation.toJSON();
+        String serializedRequestLightLocation = requestLightLocation.toJson();
 
-        RequestLightLocation deserializedRequestLightLocation = RequestLightLocation.fromJSON(serializedRequestLightLocation, RequestLightLocation.class);
+        RequestLightLocation deserializedRequestLightLocation = RequestLightLocation.fromJson(serializedRequestLightLocation, RequestLightLocation.class);
 
         assertEquals("LightID is different from the set value.", id, deserializedRequestLightLocation.getLightId());
 

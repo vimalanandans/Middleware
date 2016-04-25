@@ -18,9 +18,9 @@ public class RequestKingTest {
         String location = "FLOOR1/ROOM1/TABLE";
         RequestKing requestKing = new RequestKing(location);
 
-        String serializedRequestKing = requestKing.toJSON();
+        String serializedRequestKing = requestKing.toJson();
 
-        RequestKing deserializedRequestKing = RequestKing.fromJSON(serializedRequestKing, RequestKing.class);
+        RequestKing deserializedRequestKing = RequestKing.fromJson(serializedRequestKing, RequestKing.class);
 
         assertEquals("Location is not equal to the set value.", location, deserializedRequestKing.getLocation());
 

@@ -19,7 +19,7 @@ public class InitUserProxyRemoteUI extends Event {
     }
 
     public static InitUserProxyRemoteUI deserialize(String json) {
-        return Event.fromJSON(json, InitUserProxyRemoteUI.class);
+        return Event.fromJson(json, InitUserProxyRemoteUI.class);
     }
 
     public String getUser() {

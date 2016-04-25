@@ -198,7 +198,7 @@ public final class Proxy implements Bezirk {
         multicastEventIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) sender));
 
         multicastEventIntent.putExtra("address", receiver.toJson());
-        multicastEventIntent.putExtra("multicastEvent", event.toJSON());
+        multicastEventIntent.putExtra("multicastEvent", event.toJson());
 
         ComponentName retName = mContext.startService(multicastEventIntent);
 
@@ -221,7 +221,7 @@ public final class Proxy implements Bezirk {
         unicastEventIntent.setAction(ACTION_SERVICE_SEND_UNICAST_EVENT);
         unicastEventIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) sender));
         unicastEventIntent.putExtra("receiverSep", new Gson().toJson((UhuServiceEndPoint) receiver));
-        unicastEventIntent.putExtra("eventMsg", event.toJSON());
+        unicastEventIntent.putExtra("eventMsg", event.toJson());
         ComponentName retName = mContext.startService(unicastEventIntent);
         if (retName == null) {
             Log.e(TAG, "Unable to start the Uhu Service. returning null for service id. Is Uhu this installed?");
@@ -240,7 +240,7 @@ public final class Proxy implements Bezirk {
         multicastStreamIntent.setAction(ACTION_UHU_PUSH_MULTICAST_STREAM);
         multicastStreamIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) sender));
         multicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
-        multicastStreamIntent.putExtra("stream", stream.toJSON());
+        multicastStreamIntent.putExtra("stream", stream.toJson());
         multicastStreamIntent.putExtra("localStreamId", streamId);
         ComponentName retName = mContext.startService(multicastStreamIntent);
         if (retName == null) {
@@ -276,7 +276,7 @@ public final class Proxy implements Bezirk {
         unicastStreamIntent.setAction(ACTION_UHU_PUSH_UNICAST_STREAM);
         unicastStreamIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) sender));
         unicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
-        unicastStreamIntent.putExtra("stream", stream.toJSON());
+        unicastStreamIntent.putExtra("stream", stream.toJson());
         unicastStreamIntent.putExtra("filePath", filePath);
         unicastStreamIntent.putExtra("localStreamId", streamId);
         ComponentName retName = mContext.startService(unicastStreamIntent);

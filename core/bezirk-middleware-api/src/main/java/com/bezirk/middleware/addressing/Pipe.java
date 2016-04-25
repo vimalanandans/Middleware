@@ -24,7 +24,7 @@ public class Pipe {
     private String name;
 
     public Pipe() {
-        //Empty Constructor for gson.fromJSON
+        //Empty Constructor for gson.fromJson
     }
 
     /**
@@ -36,7 +36,7 @@ public class Pipe {
 
     /**
      * @param json The Json String that is to be deserialized
-     * @param cL   class to fromJSON into
+     * @param cL   class to fromJson into
      * @return object of class C
      */
     public static <C> C deserialize(String json, Class cL) {

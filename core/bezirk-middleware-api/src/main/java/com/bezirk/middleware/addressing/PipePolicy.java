@@ -32,7 +32,7 @@ public class PipePolicy {
 
     /**
      * @param json The Json String that is to be deserialized
-     * @param cL   class to fromJSON into
+     * @param cL   class to fromJson into
      * @return object of class C
      */
     public static <C> C deserialize(String json, Class cL) {

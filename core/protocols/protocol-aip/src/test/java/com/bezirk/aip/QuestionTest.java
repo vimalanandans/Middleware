@@ -41,7 +41,7 @@ public class QuestionTest {
         question.setResponse(response);
         question.setSubTopic(subTopic);
 
-        String serializedQuestion = question.toJSON();
+        String serializedQuestion = question.toJson();
         Question deserializedQuestion = Question.deserialize(serializedQuestion);
 
         assertEquals("About is not equal to the set value.", about, deserializedQuestion.getAbout());

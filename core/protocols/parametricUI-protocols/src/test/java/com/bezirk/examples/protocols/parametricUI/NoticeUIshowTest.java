@@ -20,7 +20,7 @@ public class NoticeUIshowTest {
         String picURL = "pic1.jpg";
 
         NoticeUIshowPic noticeUIshowPic = new NoticeUIshowPic(picURL);
-        String serializedNoticeUIshowPic = noticeUIshowPic.toJSON();
+        String serializedNoticeUIshowPic = noticeUIshowPic.toJson();
         NoticeUIshowPic deserializedNoticeUIshowPic = NoticeUIshowPic.deserialize(serializedNoticeUIshowPic);
 
         assertEquals("PicURL is not equal to the set value.", picURL, deserializedNoticeUIshowPic.getPicURL());
@@ -31,7 +31,7 @@ public class NoticeUIshowTest {
         long expiration = 89;
 
         NoticeUIshowText noticeUIshowText = new NoticeUIshowText(text, type, expiration);
-        String serializedNoticeUIshowText = noticeUIshowText.toJSON();
+        String serializedNoticeUIshowText = noticeUIshowText.toJson();
         NoticeUIshowText deserializedNoticeUIshowText = NoticeUIshowText.deserialize(serializedNoticeUIshowText);
 
         assertEquals("Text is not equal to the set value.", text, deserializedNoticeUIshowText.getText());
@@ -41,7 +41,7 @@ public class NoticeUIshowTest {
         String videoURL = "video1.mov";
 
         NoticeUIshowVideo noticeUIshowVideo = new NoticeUIshowVideo(videoURL);
-        String serializedNoticeUIshowVideo = noticeUIshowVideo.toJSON();
+        String serializedNoticeUIshowVideo = noticeUIshowVideo.toJson();
         NoticeUIshowVideo deserializedNoticeUIshowVideo = NoticeUIshowVideo.deserialize(serializedNoticeUIshowVideo);
 
         assertEquals("VideoURL is not equal to the set value.", videoURL, deserializedNoticeUIshowVideo.getVideoURL());

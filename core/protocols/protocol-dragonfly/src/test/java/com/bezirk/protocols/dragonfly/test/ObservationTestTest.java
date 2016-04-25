@@ -21,7 +21,7 @@ public class ObservationTestTest {
         ;
 
 
-        String serializedObservationTest = observationTest.toJSON();
+        String serializedObservationTest = observationTest.toJson();
 
         ObservationTest deserializedObservationTest = ObservationTest.deserialize(serializedObservationTest);
 

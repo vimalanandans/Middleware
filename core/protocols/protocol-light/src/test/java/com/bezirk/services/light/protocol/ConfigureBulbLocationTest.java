@@ -19,9 +19,9 @@ public class ConfigureBulbLocationTest {
         Location location = new Location("FLOOR1/ROOM1/TABLE");
         ConfigureBulbLocation configBulbLocation = new ConfigureBulbLocation(id, location);
 
-        String serializedConfigBulbLocation = configBulbLocation.toJSON();
+        String serializedConfigBulbLocation = configBulbLocation.toJson();
 
-        ConfigureBulbLocation deserializedConfigBulbLocation = ConfigureBulbLocation.fromJSON(serializedConfigBulbLocation, ConfigureBulbLocation.class);
+        ConfigureBulbLocation deserializedConfigBulbLocation = ConfigureBulbLocation.fromJson(serializedConfigBulbLocation, ConfigureBulbLocation.class);
 
         assertEquals("ID is not equal to the set value.", id, deserializedConfigBulbLocation.getId());
         assertEquals("Location is not equal to the set value.", location, deserializedConfigBulbLocation.getLocation());

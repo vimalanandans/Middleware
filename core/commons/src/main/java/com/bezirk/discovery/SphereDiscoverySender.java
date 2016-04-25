@@ -30,7 +30,7 @@ import UhuValidatorUtility;*/
 	        final DiscoveryRequest discoveryRequest = new DiscoveryRequest(sphere,sender,null,null,discoveryId,timeout,maxDiscovered);
 	        transControlMessage.setMessage(discoveryRequest);
 	        transControlMessage.setSphereId(sphere);
-	        transControlMessage.setSerializedMessage(transControlMessage.getMessage().toJSON());
+	        transControlMessage.setSerializedMessage(transControlMessage.getMessage().toJson());
 
             // FIXME commented out because no one is using  this module - Vimal
 	        // MessageQueueManager.getControlSenderQueue().addToQueue(transControlMessage);

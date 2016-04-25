@@ -25,11 +25,11 @@ public class IncompleteQuestion extends Question {
 
 
     /**
-     * Use instead of the generic UhuMessage.fromJSON()
+     * Use instead of the generic UhuMessage.fromJson()
      * @param json
      * @return IncompleteQuestion
      */
     public static IncompleteQuestion deserialize(String json) {
-        return Event.fromJSON(json, IncompleteQuestion.class);
+        return Event.fromJson(json, IncompleteQuestion.class);
     }
 }

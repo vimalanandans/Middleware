@@ -63,12 +63,12 @@ public class DisambiguationQuestions extends Event {
 	/* Getter and setter methods */
 
     /**
-     * Use instead of the generic UhuMessage.fromJSON()
+     * Use instead of the generic UhuMessage.fromJson()
      * @param json
      * @return DisambiguationQuestion
      */
     public static DisambiguationQuestions deserialize(String json) {
-        return Event.fromJSON(json, DisambiguationQuestions.class);
+        return Event.fromJson(json, DisambiguationQuestions.class);
     }
 
     public String getId() {

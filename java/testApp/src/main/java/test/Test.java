@@ -55,6 +55,6 @@ public class Test {
         bezirk.sendEvent(myId, target, hello);
 
         // sanity check: display the event that was just published
-        System.out.println("Published: " + hello.toJSON());
+        System.out.println("Published: " + hello.toJson());
     }
 }
