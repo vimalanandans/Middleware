@@ -81,7 +81,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         final UhuServiceEndPoint senderSEP = UhuNetworkUtilities.getServiceEndPoint(serviceId);
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
-        final StringBuilder eventTopic = new StringBuilder(Event.deserialize(serializedEventMsg, Event.class).topic);
+        final StringBuilder eventTopic = new StringBuilder(Event.fromJSON(serializedEventMsg, Event.class).topic);
 
         while (sphereIterator.hasNext()) {
             final EventLedger ecMessage = new EventLedger();
@@ -117,7 +117,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         final UhuServiceEndPoint senderSEP = UhuNetworkUtilities.getServiceEndPoint(serviceId);
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
-        final StringBuilder eventTopic = new StringBuilder(Event.deserialize(serializedEventMsg, Event.class).topic);
+        final StringBuilder eventTopic = new StringBuilder(Event.fromJSON(serializedEventMsg, Event.class).topic);
 
         while (sphereIterator.hasNext()) {
             final EventLedger ecMessage = new EventLedger();

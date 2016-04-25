@@ -14,7 +14,7 @@ public class FileRequest extends GetStreamRequest {
     }
 
     public static FileRequest deserialize(String serializedEvent) {
-        return Event.deserialize(serializedEvent, FileRequest.class);
+        return Event.fromJSON(serializedEvent, FileRequest.class);
     }
 
     public String getFileName() {

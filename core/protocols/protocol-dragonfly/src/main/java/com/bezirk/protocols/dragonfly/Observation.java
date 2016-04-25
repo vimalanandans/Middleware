@@ -104,13 +104,13 @@ public class Observation extends Event implements Comparable<Observation> {
 	/* getters and setters */
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJSON()
      *
      * @param json
      * @return Observation
      */
     public static Observation deserialize(String json) {
-        return Event.deserialize(json, Observation.class);
+        return Event.fromJSON(json, Observation.class);
     }
 
     public double getQualityOfObservation() {

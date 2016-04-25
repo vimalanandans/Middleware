@@ -35,7 +35,7 @@ public class ProxyTest {
         initProxy.setUser("INIT USER USER");
         assertEquals("INIT USER USER", initProxy.getUser());
 
-        String json = initProxy.serialize();
+        String json = initProxy.toJSON();
 
         InitUserProxyUI initSer = new InitUserProxyUI().deserialize(json);
         assertEquals("INIT USER USER", initSer.getUser());

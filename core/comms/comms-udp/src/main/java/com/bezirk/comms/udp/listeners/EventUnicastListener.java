@@ -79,7 +79,7 @@ public class EventUnicastListener implements Runnable {
                     executor.execute(worker);
                 }
             } else {
-                //String retPayload = (String) UhuMessage.deserialize(received.split(",")[2].getBytes());
+                //String retPayload = (String) UhuMessage.fromJSON(received.split(",")[2].getBytes());
                 log.info("[DISCARD]Unicast Received: ");//+ " payload " + retPayload);
                 continue;
             }

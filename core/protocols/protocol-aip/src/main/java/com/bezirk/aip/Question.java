@@ -110,12 +110,12 @@ public class Question extends Event {
 	/* Getter and setter methods */
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJSON()
      * @param json
      * @return Question
      */
     public static Question deserialize(String json) {
-        return Event.deserialize(json, Question.class);
+        return Event.fromJSON(json, Question.class);
     }
 
     public String getQuestion() {

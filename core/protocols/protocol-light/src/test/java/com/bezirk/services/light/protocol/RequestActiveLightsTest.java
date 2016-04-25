@@ -20,9 +20,9 @@ public class RequestActiveLightsTest {
         RequestActiveLights requestActiveLights = new RequestActiveLights();
         requestActiveLights.setRequestedLocation(requestedLocation);
 
-        String serializedRequestActiveLights = requestActiveLights.serialize();
+        String serializedRequestActiveLights = requestActiveLights.toJSON();
 
-        RequestActiveLights deserializedRequestActiveLight = RequestActiveLights.deserialize(serializedRequestActiveLights, RequestActiveLights.class);
+        RequestActiveLights deserializedRequestActiveLight = RequestActiveLights.fromJSON(serializedRequestActiveLights, RequestActiveLights.class);
 
         assertEquals("RequestedLocation not equal to the set value.", requestedLocation, deserializedRequestActiveLight.getRequestedLocation());
 

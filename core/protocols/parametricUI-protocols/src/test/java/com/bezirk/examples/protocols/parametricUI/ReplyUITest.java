@@ -30,7 +30,7 @@ public class ReplyUITest {
         int[] selectedChoices = new int[]{23, 24, 25};
         ReplyUIchoices replyUIChoices = new ReplyUIchoices(selectedChoices);
 
-        String serializedReplyUIChoices = replyUIChoices.serialize();
+        String serializedReplyUIChoices = replyUIChoices.toJSON();
         ReplyUIchoices deserializedReplyUIChoices = ReplyUIchoices.deserialize(serializedReplyUIChoices);
 
         int[] deserializedSelectedChoices = deserializedReplyUIChoices.getSelectedChoices();
@@ -46,7 +46,7 @@ public class ReplyUITest {
         InputValuesStringPair[] values = new InputValuesStringPair[]{inputValuesStringPair};
         ReplyUIvalues replyUIValues = new ReplyUIvalues(values);
 
-        String serializedReplyUIValues = replyUIValues.serialize();
+        String serializedReplyUIValues = replyUIValues.toJSON();
 
         ReplyUIvalues deserializedReplyUIValues = ReplyUIvalues.deserialize(serializedReplyUIValues);
 

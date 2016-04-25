@@ -31,9 +31,9 @@ public class EventTest {
         Message.Flag flag = Message.Flag.NOTICE;
         com.bezirk.middleware.messages.Event event = new Event(flag, topic);
 
-        String serializedEvent = event.serialize();
+        String serializedEvent = event.toJSON();
 
-        Event deserializedEvent = Event.deserialize(serializedEvent, Event.class);
+        Event deserializedEvent = Event.fromJSON(serializedEvent, Event.class);
 
         assertEquals("Flag is not equal to the set value.", flag, deserializedEvent.flag);
         assertEquals("Topic is not equal to the set value.", topic, deserializedEvent.topic);

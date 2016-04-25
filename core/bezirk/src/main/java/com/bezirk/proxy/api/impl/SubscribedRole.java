@@ -13,7 +13,7 @@ public class SubscribedRole extends ProtocolRole {
     private String[] streamTopics;
 
     public SubscribedRole() {
-        //Empty constructor required for gson.deserialize
+        //Empty constructor required for gson.fromJSON
     }
 
     public SubscribedRole(ProtocolRole pRole) {

@@ -232,7 +232,7 @@ public class MulticastEventLocalTest {
             logger.info(" **** Received Event *****");
 
             assertEquals("MockRequestEvent", topic);
-            MulticastMockRequestEvent receivedEvent = Event.deserialize(event, MulticastMockRequestEvent.class);
+            MulticastMockRequestEvent receivedEvent = Event.fromJSON(event, MulticastMockRequestEvent.class);
             assertEquals("Ping to Mock Services", receivedEvent.question);
             didMockBreceive = true;
             logger.info("********* MOCK_SERVICE B received the Event successfully **************");
@@ -296,7 +296,7 @@ public class MulticastEventLocalTest {
             logger.info(" **** Received Event *****");
 
             assertEquals("MockRequestEvent", topic);
-            MulticastMockRequestEvent receivedEvent = Event.deserialize(event, MulticastMockRequestEvent.class);
+            MulticastMockRequestEvent receivedEvent = Event.fromJSON(event, MulticastMockRequestEvent.class);
             assertEquals("Ping to Mock Services", receivedEvent.question);
             if (!didMockCreceive) {
                 didMockCreceive = true;

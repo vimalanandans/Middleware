@@ -35,13 +35,13 @@ public class ClearData extends Event {
     }
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJSON()
      *
      * @param json
      * @return ClearData
      */
     public static ClearData deserialize(String json) {
-        return Event.deserialize(json, ClearData.class);
+        return Event.fromJSON(json, ClearData.class);
     }
 
     public boolean isClearObservation() {

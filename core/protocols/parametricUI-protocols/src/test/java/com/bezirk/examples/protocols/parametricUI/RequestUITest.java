@@ -37,7 +37,7 @@ public class RequestUITest {
         long expiration = 25;
         RequestUIinputValues inputValues = new RequestUIinputValues(values, expiration);
 
-        String serializedInputValues = inputValues.serialize();
+        String serializedInputValues = inputValues.toJSON();
 
         RequestUIinputValues deserializedInputValues = RequestUIinputValues.deserialize(serializedInputValues);
 
@@ -54,7 +54,7 @@ public class RequestUITest {
         long expiration = 25;
         RequestUImultipleChoice requestUIMultipleChoice = new RequestUImultipleChoice(availableChoices, expiration);
 
-        String serializedRequestUIMultipleChoice = requestUIMultipleChoice.serialize();
+        String serializedRequestUIMultipleChoice = requestUIMultipleChoice.toJSON();
 
         RequestUImultipleChoice deserializedRequestUIMultipleChoice = RequestUImultipleChoice.deserialize(serializedRequestUIMultipleChoice);
 
@@ -72,7 +72,7 @@ public class RequestUITest {
 
         RequestUIpickOne requestUIPickOne = new RequestUIpickOne(intro, availableChoices, expiration);
 
-        String serializedRequestUIPickOne = requestUIPickOne.serialize();
+        String serializedRequestUIPickOne = requestUIPickOne.toJSON();
 
         RequestUIpickOne deserializedRequestUIPickOne = RequestUIpickOne.deserialize(serializedRequestUIPickOne);
 

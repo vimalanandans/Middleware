@@ -38,7 +38,7 @@ public class GetProfileTest {
 
         GetUserProfileTest getProfTest = new GetUserProfileTest("BOB", "Public", context, testID, testSampleID, testSampleBatchID, dbFile);
 
-        String jsonSer = getProfTest.serialize();
+        String jsonSer = getProfTest.toJSON();
         GetUserProfileTest getUserProfSer = GetUserProfileTest.deserialize(jsonSer);
         assertEquals(testID, getUserProfSer.getTestID());
 
@@ -67,7 +67,7 @@ public class GetProfileTest {
         ContextValue contextValue3 = new ContextValue("Type 3", "Value 3");
         getProfTestN.addContext(contextValue3);
 
-        String serializedProfTest = getProfTestN.serialize();
+        String serializedProfTest = getProfTestN.toJSON();
         GetUserProfileTest deserializedGetProfTest = GetUserProfileTest.deserialize(serializedProfTest);
 
         assertEquals("Service Name is not equal to the set name.", serviceName, deserializedGetProfTest.getService());

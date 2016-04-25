@@ -32,7 +32,7 @@ public class GetUserProfile extends Event {
 	/* getters and setters */
 
     public static GetUserProfile deserialize(String json) {
-        return Event.deserialize(json, GetUserProfile.class);
+        return Event.fromJSON(json, GetUserProfile.class);
     }
 
     public String getUser() {

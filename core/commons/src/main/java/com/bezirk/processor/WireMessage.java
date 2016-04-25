@@ -86,7 +86,7 @@ public class WireMessage implements Serializable {
         }
     }
 
-    //deserialize data
+    //fromJSON data
     public static WireMessage deserialize(byte[] data) {
 
         WireMessage wireMessage = null;
@@ -242,7 +242,7 @@ public class WireMessage implements Serializable {
 
     /**
 
-     public static <C> C deserialize(String json, Class<C> dC) {
+     public static <C> C fromJSON(String json, Class<C> dC) {
      Gson gson = new Gson();
      return (C) gson.fromJson(json, dC);
      }

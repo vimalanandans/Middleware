@@ -36,9 +36,9 @@ public class MulticastStreamTest {
         Address address = new Address(loc);
         com.bezirk.middleware.messages.MulticastStream multicastStream = new MockMulticastStream(flag, topic, address);
 
-        String serializedMulticastStream = multicastStream.serialize();
+        String serializedMulticastStream = multicastStream.toJSON();
 
-        MulticastStream deserializedMulticastStream = MulticastStream.deserialize(serializedMulticastStream, MockMulticastStream.class);
+        MulticastStream deserializedMulticastStream = MulticastStream.fromJSON(serializedMulticastStream, MockMulticastStream.class);
 
         assertEquals("Address is not equal to the set value. ", address.getLocation(), deserializedMulticastStream.getAddress().getLocation());
         assertEquals("Flag is not equal to the set value. ", flag, deserializedMulticastStream.flag);

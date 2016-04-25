@@ -23,9 +23,9 @@ public class BulbStatusTest {
         Commands command = Commands.TOGGLE;
         BulbStatus bulbStatus = new BulbStatus(lightNumber, command);
 
-        String serializedBulbStatus = bulbStatus.serialize();
+        String serializedBulbStatus = bulbStatus.toJSON();
 
-        BulbStatus deserializedBulbStatus = BulbStatus.deserialize(serializedBulbStatus, BulbStatus.class);
+        BulbStatus deserializedBulbStatus = BulbStatus.fromJSON(serializedBulbStatus, BulbStatus.class);
         assertEquals("LightNumber is not equal to the set value.", lightNumber, deserializedBulbStatus.getLightNumber());
         assertEquals("Command is not equal to the set value.", command, deserializedBulbStatus.getCommand());
         assertEquals("Color is not equal to the default value.", HueVocab.Color.DEFAULT, deserializedBulbStatus.getColor());
@@ -35,9 +35,9 @@ public class BulbStatusTest {
         bulbStatus = new BulbStatus(location, command);
         Color color = Color.PINK;
         bulbStatus.setColor(color);
-        serializedBulbStatus = bulbStatus.serialize();
+        serializedBulbStatus = bulbStatus.toJSON();
 
-        deserializedBulbStatus = BulbStatus.deserialize(serializedBulbStatus, BulbStatus.class);
+        deserializedBulbStatus = BulbStatus.fromJSON(serializedBulbStatus, BulbStatus.class);
         assertEquals("Location is not equal to the set value.", location, deserializedBulbStatus.getLocation());
         assertFalse("Bulb Status by ID is false.", deserializedBulbStatus.getById());
         assertEquals("Color is not equal to the set value.", color, deserializedBulbStatus.getColor());

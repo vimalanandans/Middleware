@@ -23,7 +23,7 @@ public class ClearDataTest {
         clearData.setClearPreference(true);
         clearData.setUser("BOB");
 
-        String serializedData = clearData.serialize();
+        String serializedData = clearData.toJSON();
 
         ClearData clearDataSer = ClearData.deserialize(serializedData);
         assertEquals("User name is not same as the set value", "BOB", clearDataSer.getUser());

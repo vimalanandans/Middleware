@@ -34,13 +34,13 @@ public class RequestUIinputValues extends Event {
     }
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJSON()
      *
      * @param json
      * @return
      */
     public static RequestUIinputValues deserialize(String json) {
-        return Event.deserialize(json, RequestUIinputValues.class);
+        return Event.fromJSON(json, RequestUIinputValues.class);
     }
 
     public InputValuesStringTriplet[] getValues() {

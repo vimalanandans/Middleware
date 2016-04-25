@@ -28,7 +28,7 @@ public class RelatedQuestionsTest {
         relatedQuestions.setRelatedQuestions(questionList);
         relatedQuestions.setSubTopic(subTopic);
 
-        String serializedRelatedQuestions = relatedQuestions.serialize();
+        String serializedRelatedQuestions = relatedQuestions.toJSON();
         RelatedQuestions deserializedRelatedQuestions = RelatedQuestions.deserialize(serializedRelatedQuestions);
 
         assertEquals("QuestionList is not same as the set value.", questionList, deserializedRelatedQuestions.getRelatedQuestions());

@@ -38,7 +38,7 @@ public class EchoTest {
         EchoRequest echoRequest = new EchoRequest();
         echoRequest.setText(text);
 
-        String serializedEchoRequest = echoRequest.serialize();
+        String serializedEchoRequest = echoRequest.toJSON();
 
         EchoRequest deserializedEchoRequest = EchoRequest
                 .deserialize(serializedEchoRequest);
@@ -75,7 +75,7 @@ public class EchoTest {
         EchoReply echoReply = new EchoReply();
         echoReply.setText(text);
 
-        String serializedEchoReply = echoReply.serialize();
+        String serializedEchoReply = echoReply.toJSON();
 
         EchoReply deserializedEchoReply = EchoReply
                 .deserialize(serializedEchoReply);

@@ -41,13 +41,13 @@ public class GetPreferenceTest extends GetPreference {
 	/* getters and setters */
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJSON()
      *
      * @param json
      * @return GetPreference
      */
     public static GetPreferenceTest deserialize(String json) {
-        return Event.deserialize(json, GetPreferenceTest.class);
+        return Event.fromJSON(json, GetPreferenceTest.class);
     }
 
     public String getTestID() {

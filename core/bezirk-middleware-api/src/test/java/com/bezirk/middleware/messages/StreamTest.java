@@ -42,9 +42,9 @@ public class StreamTest {
         stream.setIncremental(incremental);
         stream.setEncrypted(secure);
 
-        String serializedStream = stream.serialize();
+        String serializedStream = stream.toJSON();
 
-        Stream deserializedStream = Stream.deserialize(serializedStream, MockStream.class);
+        Stream deserializedStream = Stream.fromJSON(serializedStream, MockStream.class);
 
         assertEquals("Flag is not equal to the set value.", flag, deserializedStream.flag);
         assertEquals("Topic is not equal to the set value.", topic, deserializedStream.topic);

@@ -29,7 +29,7 @@ public class LogReceiverQueueProcessor extends Thread {
      */
     private boolean isRunning = false;
     /**
-     * Gson to deserialize into UhuLoggingMessage
+     * Gson to fromJSON into UhuLoggingMessage
      */
     private Gson gson = null;
 

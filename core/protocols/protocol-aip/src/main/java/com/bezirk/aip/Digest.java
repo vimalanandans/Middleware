@@ -69,12 +69,12 @@ public class Digest<A> extends Event {
 	/* Getter and setter methods */
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJSON()
      * @param json
      * @return Digest
      */
     public static Digest<?> deserialize(String json) {
-        return Event.deserialize(json, Digest.class);
+        return Event.fromJSON(json, Digest.class);
     }
 
     public static <D, I> Digest<I> deserialize(String json, Class<D> dC, Class<I> iC) {

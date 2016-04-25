@@ -55,7 +55,7 @@ public class SingleAnswer extends Event {
     /**
      * aip_format
      *
-     * Data format of answer (used to deserialize or cast answer)
+     * Data format of answer (used to fromJSON or cast answer)
      */
     private String aip_format = null;
 
@@ -109,12 +109,12 @@ public class SingleAnswer extends Event {
     //*  Getter and setter methods */
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJSON()
      * @param json
      * @return SingleAnswer
      */
     public static SingleAnswer deserialize(String json) {
-        return Event.deserialize(json, SingleAnswer.class);
+        return Event.fromJSON(json, SingleAnswer.class);
     }
 
     public String getAnswer() {

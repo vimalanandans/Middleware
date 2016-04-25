@@ -326,7 +326,7 @@ public class ShareProcessor {
          * if (QRCodeData.checkVersionTag(inviterShareCode) &&
          * QRCodeData.checkCompatibility(inviterShareCode)) <br>
          * { // retrieve the catchCode QRCodeData catchData =
-         * QRCodeData.deserialize(inviterShareCode); return
+         * QRCodeData.fromJSON(inviterShareCode); return
          * catchData.getCatchCode(); }
          */
         if (inviterShareCode.length() == 7) {

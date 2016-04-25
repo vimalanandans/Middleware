@@ -35,7 +35,7 @@ public class EventLedger extends Ledger {
     }
 
     /**
-     * @param serializedMessage The serializedMessage that is returned by invoking UhuMessage.serialize()
+     * @param serializedMessage The serializedMessage that is returned by invoking UhuMessage.toJSON()
      */
     public void setSerializedMessage(String serializedMessage) {
         this.serializedMessage = serializedMessage;

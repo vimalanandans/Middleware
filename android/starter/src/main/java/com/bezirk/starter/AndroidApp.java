@@ -51,7 +51,7 @@ public class AndroidApp implements IUhuApp {
         // TODO remove the above and send the below serialized object to UI
         //Only to test
         String data = new Gson().toJson(pipeRequest);
-        log.info("pipe request : serialize > " + data);
+        log.info("pipe request : toJSON > " + data);
 
         context.startActivity(intent);
 

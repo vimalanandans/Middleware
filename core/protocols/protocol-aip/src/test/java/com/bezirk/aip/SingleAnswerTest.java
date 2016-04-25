@@ -40,7 +40,7 @@ public class SingleAnswerTest {
         singleAnswer.setSource(source);
         singleAnswer.setSubTopic(subTopic);
 
-        String serializedSingleAnswer = singleAnswer.serialize();
+        String serializedSingleAnswer = singleAnswer.toJSON();
 
         SingleAnswer deserializedSingleAnswer = SingleAnswer.deserialize(serializedSingleAnswer);
 

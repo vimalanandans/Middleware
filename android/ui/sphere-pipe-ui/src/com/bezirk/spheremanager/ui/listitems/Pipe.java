@@ -14,7 +14,7 @@ public class Pipe {
     private URI uri;
 
     public Pipe() {
-        //Empty Constructor for gson.deserialize
+        //Empty Constructor for gson.fromJSON
     }
 
     /**

@@ -36,13 +36,13 @@ public class NoticeUIshowText extends Event {
     }
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJSON()
      *
      * @param json
      * @return
      */
     public static NoticeUIshowText deserialize(String json) {
-        return Event.deserialize(json, NoticeUIshowText.class);
+        return Event.fromJSON(json, NoticeUIshowText.class);
     }
 
     public String getText() {

@@ -29,13 +29,13 @@ public class ObservationTest extends UserObservation {
     }
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJSON()
      *
      * @param json
      * @return Observation
      */
     public static ObservationTest deserialize(String json) {
-        return Event.deserialize(json, ObservationTest.class);
+        return Event.fromJSON(json, ObservationTest.class);
     }
 
     public Integer getObservationsNumberInThisBatch() {

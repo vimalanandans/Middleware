@@ -23,7 +23,7 @@ public class AnswerItem {
     /**
      * aip_format
      *
-     * Data format of answer (used to deserialize or cast answer)
+     * Data format of answer (used to fromJSON or cast answer)
      */
     private String aip_format = null;
 

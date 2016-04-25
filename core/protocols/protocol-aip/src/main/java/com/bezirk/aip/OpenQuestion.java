@@ -37,12 +37,12 @@ public class OpenQuestion extends Question {
 	/* Getter and setter methods */
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJSON()
      * @param json
      * @return OpenQuestion
      */
     public static OpenQuestion deserialize(String json) {
-        return Event.deserialize(json, OpenQuestion.class);
+        return Event.fromJSON(json, OpenQuestion.class);
     }
 
     public String getUntil() {

@@ -19,9 +19,9 @@ public class ResponseKingTest {
         String king = "BOB";
         ResponseKing responseKing = new ResponseKing(location, king);
 
-        String serializedResponseKing = responseKing.serialize();
+        String serializedResponseKing = responseKing.toJSON();
 
-        ResponseKing deserializedResponseKing = ResponseKing.deserialize(serializedResponseKing, ResponseKing.class);
+        ResponseKing deserializedResponseKing = ResponseKing.fromJSON(serializedResponseKing, ResponseKing.class);
 
         assertEquals("King is not equal to the set value.", king, deserializedResponseKing.getKing());
         assertEquals("Location is not equal to the set value.", location, deserializedResponseKing.getLocation());

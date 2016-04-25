@@ -41,7 +41,7 @@ public class IncompleteQuestionTest {
         incompleteQuestion.setResponse(response);
         incompleteQuestion.setSubTopic(subTopic);
 
-        String serializedIncompleteQuestion = incompleteQuestion.serialize();
+        String serializedIncompleteQuestion = incompleteQuestion.toJSON();
         IncompleteQuestion deserializedIncompleteQuestion = IncompleteQuestion.deserialize(serializedIncompleteQuestion);
 
         assertEquals("About is not equal to the set value.", about, deserializedIncompleteQuestion.getAbout());

@@ -113,7 +113,7 @@ public class UnicastEventLocalTest {
         @Override
         public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
             assertEquals("MockReplyEvent", topic);
-            MockReplyEvent reply = Event.deserialize(event, MockReplyEvent.class);
+            MockReplyEvent reply = Event.fromJSON(event, MockReplyEvent.class);
             assertNotNull(reply);
             logger.info("**** REPLY FROM MOCK SERVICE **** " + reply.answer);
             assertNotNull(reply.answer);
@@ -273,7 +273,7 @@ public class UnicastEventLocalTest {
         public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
             logger.info(" **** Received Event *****");
             assertEquals("MockRequestEvent", topic);
-            MockRequestEvent receivedEvent = Event.deserialize(event, MockRequestEvent.class);
+            MockRequestEvent receivedEvent = Event.fromJSON(event, MockRequestEvent.class);
             assertEquals("Who am I?", receivedEvent.question);
             // send the reply
             MockReplyEvent replyEvent = new MockReplyEvent(Message.Flag.REPLY, "MockReplyEvent");

@@ -31,13 +31,13 @@ public class NoticeUIshowPic extends Event {
     }
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJSON()
      *
      * @param json
      * @return
      */
     public static NoticeUIshowPic deserialize(String json) {
-        return Event.deserialize(json, NoticeUIshowPic.class);
+        return Event.fromJSON(json, NoticeUIshowPic.class);
     }
 
     public String getPicURL() {

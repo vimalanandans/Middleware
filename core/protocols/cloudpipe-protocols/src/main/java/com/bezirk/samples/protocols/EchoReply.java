@@ -11,7 +11,7 @@ public class EchoReply extends Event {
     }
 
     public static EchoReply deserialize(String serializedEvent) {
-        return deserialize(serializedEvent, EchoReply.class);
+        return fromJSON(serializedEvent, EchoReply.class);
     }
 
     public String getText() {

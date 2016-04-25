@@ -64,7 +64,7 @@ public class DiscoveryManager implements ICtrlMsgReceiver {
 
                 break;
             case DiscoveryResponse:
-                //if tcMessage.message==null deserialize, else get tcMessage.message and typecast as response
+                //if tcMessage.message==null fromJSON, else get tcMessage.message and typecast as response
                 final DiscoveryResponse response = (DiscoveryResponse) ControlMessage.deserialize(serializedMsg, DiscoveryResponse.class);
                 if (DiscoveryProcessor.getDiscovery().addResponse(response)) {
                     log.debug("Discovery Response added successfully");

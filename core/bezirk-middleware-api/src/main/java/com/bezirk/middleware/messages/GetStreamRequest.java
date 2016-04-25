@@ -28,7 +28,7 @@ public class GetStreamRequest extends Event {
     }
 
     public static GetStreamRequest deserialize(String serializedMessage) {
-        return Event.deserialize(serializedMessage, GetStreamRequest.class);
+        return Event.fromJSON(serializedMessage, GetStreamRequest.class);
     }
 
     public String getSubTopic() {

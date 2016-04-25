@@ -175,7 +175,7 @@ public class Proxy implements Bezirk {
             logger.error("Check for null in target or Event or sender");
             return;
         }
-        proxy.sendMulticastEvent((UhuServiceId) sender, receiver, event.serialize());
+        proxy.sendMulticastEvent((UhuServiceId) sender, receiver, event.toJSON());
     }
 
     @Override
@@ -186,7 +186,7 @@ public class Proxy implements Bezirk {
             logger.error("Check for null in receiver or Event or sender");
             return;
         }
-        proxy.sendUnicastEvent((UhuServiceId) sender, (UhuServiceEndPoint) receiver, event.serialize());
+        proxy.sendUnicastEvent((UhuServiceId) sender, (UhuServiceEndPoint) receiver, event.toJSON());
     }
 
     @Override
@@ -196,7 +196,7 @@ public class Proxy implements Bezirk {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
         activeStreams.put(((UhuServiceId) sender).getUhuServiceId() + streamId, stream.topic);
         UhuServiceEndPoint recipientSEP = (UhuServiceEndPoint) receiver;
-        proxy.sendStream((UhuServiceId) sender, recipientSEP, stream.serialize(), streamId);
+        proxy.sendStream((UhuServiceId) sender, recipientSEP, stream.toJSON(), streamId);
         return streamId;
     }
 
@@ -214,7 +214,7 @@ public class Proxy implements Bezirk {
         }
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
         activeStreams.put(((UhuServiceId) sender).getUhuServiceId() + streamId, stream.topic);
-        proxy.sendStream((UhuServiceId) sender, (UhuServiceEndPoint) receiver, stream.serialize(), filePath, streamId);
+        proxy.sendStream((UhuServiceId) sender, (UhuServiceEndPoint) receiver, stream.toJSON(), filePath, streamId);
         return streamId;
     }
 

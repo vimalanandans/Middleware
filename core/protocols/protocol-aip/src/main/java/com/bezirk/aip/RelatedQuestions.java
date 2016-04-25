@@ -63,12 +63,12 @@ public class RelatedQuestions extends Event {
 	/* Getter and setter methods */
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJSON()
      * @param json
      * @return RelatedQuestions
      */
     public static RelatedQuestions deserialize(String json) {
-        return Event.deserialize(json, RelatedQuestions.class);
+        return Event.fromJSON(json, RelatedQuestions.class);
     }
 
     public String getId() {

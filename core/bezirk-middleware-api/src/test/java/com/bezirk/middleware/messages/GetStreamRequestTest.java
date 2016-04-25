@@ -28,7 +28,7 @@ public class GetStreamRequestTest {
 
         String subTopic = "TestSubTopic";
         com.bezirk.middleware.messages.GetStreamRequest getStreamRequest = new GetStreamRequest(subTopic);
-        String serializedgetStreamRequest = getStreamRequest.serialize();
+        String serializedgetStreamRequest = getStreamRequest.toJSON();
         GetStreamRequest deserializedRequest = GetStreamRequest.deserialize(serializedgetStreamRequest);
 
         assertEquals("Subtopic is not equal to the set value.", subTopic, deserializedRequest.getSubTopic());

@@ -37,8 +37,8 @@ public class UnicastStreamTest {
 	
 	/*
      * --- Deserialization is failing serviceEndpoint doesn't have a no-args constructor-----
-			String serializedUnicastStream = unicastStream.serialize();
-	 		UnicastStream deserializedUnicastStream = UnicastStream.deserialize(serializedUnicastStream, UnicastStream.class);*/
+			String serializedUnicastStream = unicastStream.toJSON();
+	 		UnicastStream deserializedUnicastStream = UnicastStream.fromJSON(serializedUnicastStream, UnicastStream.class);*/
 
         assertEquals("Recipient is not equal to the set value.", recipient, unicastStream.getRecipient());
 

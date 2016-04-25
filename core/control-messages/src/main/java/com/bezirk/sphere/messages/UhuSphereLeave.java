@@ -31,7 +31,7 @@ public class UhuSphereLeave extends com.bezirk.control.messages.UnicastControlMe
 
     /**
      * @param json The Json String that is to be deserialized
-     * @param dC   class to deserialize into
+     * @param dC   class to fromJSON into
      * @return object of class type C
      */
     public static <C> C deserialize(String json, Class<C> dC) {

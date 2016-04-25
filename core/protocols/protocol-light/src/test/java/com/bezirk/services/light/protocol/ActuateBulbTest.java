@@ -26,9 +26,9 @@ public class ActuateBulbTest {
 
         ActuateBulb actuateBulb = new ActuateBulb(location, command);
         actuateBulb.setLightNumber(lightNumber);
-        String serializedActuateBulb = actuateBulb.serialize();
+        String serializedActuateBulb = actuateBulb.toJSON();
 
-        ActuateBulb deserializedActuateBulb = ActuateBulb.deserialize(serializedActuateBulb, ActuateBulb.class);
+        ActuateBulb deserializedActuateBulb = ActuateBulb.fromJSON(serializedActuateBulb, ActuateBulb.class);
 
         assertEquals("Command is not equal to the set value.", command, deserializedActuateBulb.getCommand());
         assertEquals("Location is not equal to the set value.", location, deserializedActuateBulb.getLocation());
@@ -44,9 +44,9 @@ public class ActuateBulbTest {
         actuateBulb.setHubIP(hubIP);
         actuateBulb.setHubMac(hubMac);
 
-        serializedActuateBulb = actuateBulb.serialize();
+        serializedActuateBulb = actuateBulb.toJSON();
 
-        deserializedActuateBulb = ActuateBulb.deserialize(serializedActuateBulb, ActuateBulb.class);
+        deserializedActuateBulb = ActuateBulb.fromJSON(serializedActuateBulb, ActuateBulb.class);
         assertEquals("Command is not equal to the set value.", command, deserializedActuateBulb.getCommand());
         assertEquals("LightNumber is not equal to the set value.", lightNumber, deserializedActuateBulb.getLightNumber());
         assertEquals("HubIP is not equal to the set value.", hubIP, deserializedActuateBulb.getHubIP());
