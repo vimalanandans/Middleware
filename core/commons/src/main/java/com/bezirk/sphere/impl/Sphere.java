@@ -7,12 +7,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
- * Created by GUR1PI on 7/15/2014.
+ * @author Rishab Gulati
  */
 public class Sphere implements Serializable {
 
@@ -29,7 +29,7 @@ public class Sphere implements Serializable {
     /**
      * List of deviceId's who own the sphere
      */
-    protected HashSet<String> ownerDevices;
+    protected Set<String> ownerDevices;
     protected String sphereType;
     /**
      * Map maintains the services which belong to a particular device [device id

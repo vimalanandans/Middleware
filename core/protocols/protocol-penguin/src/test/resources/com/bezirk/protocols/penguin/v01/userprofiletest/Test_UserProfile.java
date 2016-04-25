@@ -192,7 +192,7 @@ public class Test_UserProfile {
         //bobUserProfile.setProfile(profile);
 
         // print serialized user-profile
-        String serialBobUserProfile = profile.serialize();
+        String serialBobUserProfile = profile.toJson();
         System.out.println(serialBobUserProfile);
     }
 

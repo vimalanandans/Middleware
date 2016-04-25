@@ -113,7 +113,7 @@ public class UnicastEventLocalTest {
         @Override
         public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
             assertEquals("MockReplyEvent", topic);
-            MockReplyEvent reply = Event.deserialize(event, MockReplyEvent.class);
+            MockReplyEvent reply = Event.fromJson(event, MockReplyEvent.class);
             assertNotNull(reply);
             logger.info("**** REPLY FROM MOCK SERVICE **** " + reply.answer);
             assertNotNull(reply.answer);
@@ -122,7 +122,7 @@ public class UnicastEventLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream f, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
         }
 
         @Override
@@ -130,11 +130,11 @@ public class UnicastEventLocalTest {
         }
 
         @Override
-        public void streamStatus(short streamId, StreamConditions status) {
+        public void streamStatus(short streamId, StreamStates status) {
         }
 
         @Override
-        public void pipeStatus(Pipe p, PipeConditions status) {
+        public void pipeStatus(Pipe pipe, PipeStates status) {
         }
 
         @Override
@@ -164,7 +164,7 @@ public class UnicastEventLocalTest {
 
 
         @Override
-        public void pipeGranted(Pipe p, PipePolicy allowedIn,
+        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
                                 PipePolicy allowedOut) {
 
         }
@@ -273,7 +273,7 @@ public class UnicastEventLocalTest {
         public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
             logger.info(" **** Received Event *****");
             assertEquals("MockRequestEvent", topic);
-            MockRequestEvent receivedEvent = Event.deserialize(event, MockRequestEvent.class);
+            MockRequestEvent receivedEvent = Event.fromJson(event, MockRequestEvent.class);
             assertEquals("Who am I?", receivedEvent.question);
             // send the reply
             MockReplyEvent replyEvent = new MockReplyEvent(Message.Flag.REPLY, "MockReplyEvent");
@@ -283,7 +283,7 @@ public class UnicastEventLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream f, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
         }
 
         @Override
@@ -291,12 +291,12 @@ public class UnicastEventLocalTest {
         }
 
         @Override
-        public void streamStatus(short streamId, StreamConditions status) {
+        public void streamStatus(short streamId, StreamStates status) {
         }
 
 
         @Override
-        public void pipeStatus(Pipe p, PipeConditions status) {
+        public void pipeStatus(Pipe pipe, PipeStates status) {
         }
 
         @Override
@@ -304,7 +304,7 @@ public class UnicastEventLocalTest {
         }
 
         @Override
-        public void pipeGranted(Pipe p, PipePolicy allowedIn,
+        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
                                 PipePolicy allowedOut) {
 
         }

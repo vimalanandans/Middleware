@@ -24,7 +24,7 @@ import java.net.UnknownHostException;
  * This thread is used to send data on the wire. This thread is started by {@link StreamQueueProcessor}. It reads the data from the file, and write into the IP and port.
  */
 public class StreamSendingThread implements Runnable {
-    private static final Logger LOGGER = LoggerFactory
+    private static final Logger logger = LoggerFactory
             .getLogger(StreamSendingThread.class);
     private static final int BUFFER_SIZE = 1024;                      // size of the buffer
     private final boolean isEncrypted;
@@ -60,34 +60,34 @@ public class StreamSendingThread implements Runnable {
         DataOutputStream dataOutputStream = null;
         int sentStatus = 1;
         try {
-            LOGGER.debug("Thread started to send the data");
+            logger.debug("Thread started to send the data");
             fileInputStream = new FileInputStream(filePath);                              // open the file
             client = new Socket(recipientIP, port);                                       // open the socket
             dataOutputStream = new DataOutputStream(client.getOutputStream());
             if (isEncrypted) {
-                LOGGER.debug("---------- Secure Data transfer requested! -------------");
+                logger.debug("---------- Secure Data transfer requested! -------------");
                 if (UhuValidatorUtility.isObjectNotNull(sphereForSadl)) {
                     sphereForSadl.encryptSphereContent(fileInputStream, dataOutputStream, sphere);
-                    LOGGER.debug("---------- Secure Data transfer Completed! -------------");
+                    logger.debug("---------- Secure Data transfer Completed! -------------");
                 } else {
-                    LOGGER.error("SphereForSadl is not initialized. Unable to process secure streaming request.");
+                    logger.error("SphereForSadl is not initialized. Unable to process secure streaming request.");
                 }
             } else {
-                int noOfBytesReadFromTheFile = 0;
-                byte[] buffer = new byte[BUFFER_SIZE];
+                int noOfBytesReadFromTheFile;
+                final byte[] buffer = new byte[BUFFER_SIZE];
                 while ((noOfBytesReadFromTheFile = fileInputStream.read(buffer)) != -1) {
                     dataOutputStream.write(buffer, 0, noOfBytesReadFromTheFile);                           // write into the buffer
                 }
-                LOGGER.debug("---------- Data has been transferred successfully! -------------");
+                logger.debug("---------- Data has been transferred successfully! -------------");
             }
         } catch (FileNotFoundException e) {
-            LOGGER.debug("Error in Sending stream : " + filePath, e);
+            logger.debug("Error in Sending stream : " + filePath, e);
             sentStatus = 0;
         } catch (UnknownHostException e) {
-            LOGGER.debug("Error in Opening socket to host : " + recipientIP + " , port : " + port, e);
+            logger.debug("Error in Opening socket to host : " + recipientIP + " , port : " + port, e);
             sentStatus = 0;
         } catch (IOException e) {
-            LOGGER.debug("Error in Sending Thread", e);
+            logger.debug("Error in Sending Thread", e);
             sentStatus = 0;
         } finally {
             closeResources(fileInputStream, dataOutputStream);
@@ -101,7 +101,7 @@ public class StreamSendingThread implements Runnable {
 
         } else {
 
-            LOGGER.error("UhuCallback is not provided. Unable to send stream callback.");
+            logger.error("UhuCallback is not provided. Unable to send stream callback.");
         }
 
         /*// GIVE THE CALLBACK TO THE SERVICE - available in commit 7694fb63003 */
@@ -123,7 +123,7 @@ public class StreamSendingThread implements Runnable {
             }
 
         } catch (IOException e) {
-            LOGGER.error("Error in closing the File/ Clients", e);
+            logger.error("Error in closing the File/ Clients", e);
         }
     }
 

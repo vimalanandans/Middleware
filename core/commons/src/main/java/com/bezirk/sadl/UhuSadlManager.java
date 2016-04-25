@@ -37,15 +37,12 @@ import java.util.Set;
  * EventSender/ EventReceiver/ ControlSender/ ControlReceiver by casting ISadlRegistryLookup.
  */
 public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadlControlReceiver, ISadlEventReceiver {
-    /**
-     * Logger for current class
-     */
-    private static final Logger log = LoggerFactory.getLogger(UhuSadlManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuSadlManager.class);
+
     private final Date currentDate = new Date();
     protected ISadlPersistence sadlPersistence = null;
     protected SadlRegistry sadlRegistry = null;
     protected IUhuComms uhuComms = null;
-    private DiscoveryManager discoveryManager = null;
 
     public UhuSadlManager(ISadlPersistence sadlPersistence) {
         this.sadlPersistence = sadlPersistence;
@@ -65,11 +62,9 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
      * because this is out of comms layer
      */
     public void initServiceDiscovery(IUhuComms uhuComms) {
-
-        discoveryManager = new DiscoveryManager(this, uhuComms);
+        DiscoveryManager discoveryManager = new DiscoveryManager(this, uhuComms);
 
         discoveryManager.initDiscovery();
-
     }
 
     /* (non-Javadoc)
@@ -77,12 +72,12 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
      */
     @Override
     public Boolean registerService(final UhuServiceId serviceId) {
-        if (!UhuValidatorUtility.checkUhuServiceId((UhuServiceId) serviceId)) {
-            log.error("Invalid UhuServiceId");
+        if (!UhuValidatorUtility.checkUhuServiceId(serviceId)) {
+            logger.error("Invalid UhuServiceId");
             return false;
         }
         if (isServiceRegisterd(serviceId)) {
-            log.info(serviceId + " Service is already registered");
+            logger.info(serviceId + " Service is already registered");
             return false;
         }
         if (sadlRegistry.registerService(serviceId)) {
@@ -97,12 +92,12 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
      */
     @Override
     public Boolean subscribeService(final UhuServiceId serviceId, final ProtocolRole pRole) {
-        if (!UhuValidatorUtility.checkUhuServiceId((UhuServiceId) serviceId) || !UhuValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
-            log.error("Invalid Subscription, Validation failed");
+        if (!UhuValidatorUtility.checkUhuServiceId(serviceId) || !UhuValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
+            logger.error("Invalid Subscription, Validation failed");
             return false;
         }
         if (!isServiceRegisterd(serviceId)) {
-            log.info("Service tried to subscribe without Registration");
+            logger.info("Service tried to subscribe without Registration");
             return false;
         }
 
@@ -115,8 +110,8 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
 
     @Override
     public Boolean unsubscribe(final UhuServiceId serviceId, final ProtocolRole role) {
-        if (!UhuValidatorUtility.checkUhuServiceId((UhuServiceId) serviceId) || !UhuValidatorUtility.checkProtocolRole((SubscribedRole) role)) {
-            log.error("Invalid UnSubscription, Validation failed");
+        if (!UhuValidatorUtility.checkUhuServiceId(serviceId) || !UhuValidatorUtility.checkProtocolRole((SubscribedRole) role)) {
+            logger.error("Invalid UnSubscription, Validation failed");
             return false;
         }
         if (sadlRegistry.unsubscribe(serviceId, role)) {
@@ -128,8 +123,8 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
 
     @Override
     public Boolean unregisterService(final UhuServiceId serviceId) {
-        if (!UhuValidatorUtility.checkUhuServiceId((UhuServiceId) serviceId)) {
-            log.error("Invalid UnRegistration, Validation failed");
+        if (!UhuValidatorUtility.checkUhuServiceId(serviceId)) {
+            logger.error("Invalid UnRegistration, Validation failed");
             return false;
         }
         if (sadlRegistry.unregisterService(serviceId)) {
@@ -151,7 +146,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
 
     @Override
     public Boolean isServiceRegisterd(UhuServiceId serviceId) {
-        if (UhuValidatorUtility.checkUhuServiceId((UhuServiceId) serviceId)) {
+        if (UhuValidatorUtility.checkUhuServiceId(serviceId)) {
             return sadlRegistry.isServiceRegisterd(serviceId);
         }
         return false;
@@ -165,8 +160,8 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
 
     @Override
     public Boolean isStreamTopicRegistered(String streamTopic, UhuServiceId serviceId) {
-        if (!UhuValidatorUtility.checkForString(streamTopic) || !UhuValidatorUtility.checkUhuServiceId((UhuServiceId) serviceId)) {
-            log.error("Stream Topic or service Id is invalid");
+        if (!UhuValidatorUtility.checkForString(streamTopic) || !UhuValidatorUtility.checkUhuServiceId(serviceId)) {
+            logger.error("Stream Topic or service Id is invalid");
             return false;
         }
         return sadlRegistry.isStreamTopicRegistered(streamTopic, serviceId);
@@ -176,7 +171,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
     @Override
     public Set<UhuDiscoveredService> discoverServices(ProtocolRole pRole, Location location) {
         if (!UhuValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
-            log.error("Discarding Discovery Lookup as ProtocolRole is invalid");
+            logger.error("Discarding Discovery Lookup as ProtocolRole is invalid");
             return null;
         }
         return sadlRegistry.discoverServices(pRole, location);
@@ -189,7 +184,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
         Set<UhuServiceId> invokeList = fetchInvokeList(eLedger);
 
         if (null == invokeList || invokeList.isEmpty()) {
-            log.debug("No services are present to respond to the request");
+            logger.debug("No services are present to respond to the request");
             return false;
         }
         // FIXME: commented decrypt to test the comms-zyre-jni, enable it later
@@ -222,7 +217,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
                         eLedger.getSerializedMessage(), eLedger.getHeader().getTopic(), eLedger.getHeader().getUniqueMsgId());
                 UhuCompManager.getplatformSpecificCallback().onIncomingEvent(eCallbackMessage);
             } else {
-                log.debug("Unknown Service ID!!!!!");
+                logger.debug("Unknown Service ID!!!!!");
             }
         }
     }
@@ -255,7 +250,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
         // Decrypt the event message
         final String decryptedEventMsg = UhuCompManager.getSphereForSadl().decryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getEncryptedMessage());
         if (!UhuValidatorUtility.checkForString(decryptedEventMsg)) {
-            log.debug("Header Decryption Failed: sphereId-" + eLedger.getHeader().getSphereName() + " may not exist");
+            logger.debug("Header Decryption Failed: sphereId-" + eLedger.getHeader().getSphereName() + " may not exist");
 
             return false;
         }
@@ -272,13 +267,13 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
                     String.valueOf(currentDate.getTime()), UhuCompManager.getUpaDevice().getDeviceName(),
                     Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(), eLedger.getHeader().getTopic(), Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {
-            log.error(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
     public boolean checkUnicastEvent(String topic, UhuServiceId recipient) {
-        if (!UhuValidatorUtility.checkForString(topic) || !UhuValidatorUtility.checkUhuServiceId((UhuServiceId) recipient)) {
-            log.error("Unicast Event Check failed -> topic or Recipient is not valid");
+        if (!UhuValidatorUtility.checkForString(topic) || !UhuValidatorUtility.checkUhuServiceId(recipient)) {
+            logger.error("Unicast Event Check failed -> topic or Recipient is not valid");
             return false;
         }
         return sadlRegistry.checkUnicastEvent(topic, recipient);
@@ -288,7 +283,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
 
     public Set<UhuServiceId> checkMulticastEvent(String topic, Location location) {
         if (!UhuValidatorUtility.checkForString(topic)) {
-            log.error("Event Topic or Recipient is valid");
+            logger.error("Event Topic or Recipient is valid");
             return null;
         }
         return sadlRegistry.checkMulticastEvent(topic, location);
@@ -303,7 +298,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
         try {
             sadlRegistry = sadlPersistence.loadSadlRegistry();
         } catch (Exception e) {
-            log.error("Error in loading sadl registry from persistence \n", e);
+            logger.error("Error in loading sadl registry from persistence \n", e);
         }
     }
 
@@ -323,7 +318,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
         try {
             sadlPersistence.persistSadlRegistry();
         } catch (Exception e) {
-            log.error("Error in storing data \n", e);
+            logger.error("Error in storing data \n", e);
         }
     }
 

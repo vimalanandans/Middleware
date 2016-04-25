@@ -75,18 +75,18 @@
 //
 //			clientSocket.send(sendPacket);
 //			clientSocket.close();
-//			log.debug( "multicast Sent");
+//			logger.debug( "multicast Sent");
 //			return true;
 //
 //		} catch (UnknownHostException e) {
-//			log.error( " Problem sending Muliticasts",e);
+//			logger.error( " Problem sending Muliticasts",e);
 //			return false;
 //		} catch (SocketException e) {
-//			log.error( " Problem sending Muliticasts",e);
+//			logger.error( " Problem sending Muliticasts",e);
 //			e.printStackTrace();
 //			return false;
 //		} catch (IOException e) {
-//			log.error(" Problem sending Muliticasts",e);
+//			logger.error(" Problem sending Muliticasts",e);
 //			e.printStackTrace();
 //			return false;
 //		}

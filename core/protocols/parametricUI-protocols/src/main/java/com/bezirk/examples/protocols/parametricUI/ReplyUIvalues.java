@@ -31,13 +31,13 @@ public class ReplyUIvalues extends Event {
     }
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJson()
      *
      * @param json
      * @return
      */
     public static ReplyUIvalues deserialize(String json) {
-        return Event.deserialize(json, ReplyUIvalues.class);
+        return Event.fromJson(json, ReplyUIvalues.class);
     }
 
     public InputValuesStringPair[] getValues() {

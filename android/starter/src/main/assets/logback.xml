@@ -1,5 +1,5 @@
 <configuration>
-    <!-- Create a file appender for a log in the application's data directory -->
+    <!-- Create a file appender for a logger in the application's data directory -->
     <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{0} - %msg%n</pattern>

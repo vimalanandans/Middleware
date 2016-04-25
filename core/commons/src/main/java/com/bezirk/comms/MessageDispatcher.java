@@ -24,7 +24,6 @@ import java.util.Map;
  * Dispatches the incoming events to respective registered listener
  */
 public class MessageDispatcher implements IMessageDispatcher {
-
     private static final Logger logger = LoggerFactory.getLogger(MessageDispatcher.class);
     private final ISadlEventReceiver sadlEventReceiver;
 
@@ -114,7 +113,7 @@ public class MessageDispatcher implements IMessageDispatcher {
         if (tcMessage.getIsMessageFromHost()) { //If the msg is local : set serialized msg
             tcMessage.setSerializedMessage(tcMessage.getMessage().serialize());
         }
-        ControlMessage msg = (ControlMessage) tcMessage.getMessage();
+        ControlMessage msg = tcMessage.getMessage();
         logger.debug("Message decrypted with Discriminator : " + msg.getDiscriminator());
 
         if (LoggingStatus.isLoggingEnabled() && FilterLogMessages.checkSphere(tcMessage.getSphereId())) {

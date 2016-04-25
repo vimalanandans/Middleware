@@ -7,14 +7,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class PipeMulticastHeader extends PipeHeader {
-
     private Address address;
 
     public static <C> C deserialize(String json, Class<C> clazz) {
-        GsonBuilder builder = new GsonBuilder();
+        final GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Pipe.class, new InterfaceAdapter<Pipe>());
         Gson gson = builder.create();
-        return (C) gson.fromJson(json, clazz);
+        return gson.fromJson(json, clazz);
     }
 
     public com.bezirk.control.messages.MulticastHeader toMulticastHeader() {

@@ -28,7 +28,7 @@ public class CloudResponse {
     /**
      */
     public CloudResponse() {
-        // Empty Constructor required for gson.deserialize
+        // Empty Constructor required for gson.fromJson
     }
 
 	/*

@@ -20,7 +20,6 @@ import com.bezirk.middleware.addressing.ServiceId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.Stream;
-import com.bezirk.middleware.serialization.AddressSerializer;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
@@ -69,9 +68,9 @@ public final class Proxy implements Bezirk {
     }
 
     @Override
-    public ServiceId registerService(final String serviceName) {
-        Log.i(TAG, "RegisteringService: " + serviceName);
-        if (serviceName == null) {
+    public ServiceId registerService(final String zirkName) {
+        Log.i(TAG, "RegisteringService: " + zirkName);
+        if (zirkName == null) {
             Log.e(TAG, "Service name Cannot be null during Registration");
             return null;
         }
@@ -79,13 +78,13 @@ public final class Proxy implements Bezirk {
         // TODO: if the service id is uninstalled then owner device shows cached and new one.
 
         final SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(mContext);
-        String serviceIdAsString = shrdPref.getString(serviceName, null);
+        String serviceIdAsString = shrdPref.getString(zirkName, null);
         if (null == serviceIdAsString) {
             // UUID for service id
             serviceIdAsString = UUID.randomUUID().toString();
 
             SharedPreferences.Editor editor = shrdPref.edit();
-            editor.putString(serviceName, serviceIdAsString);
+            editor.putString(zirkName, serviceIdAsString);
             editor.commit();
         }
 
@@ -100,7 +99,7 @@ public final class Proxy implements Bezirk {
         registerIntent.setComponent(componentName);
         registerIntent.setAction(ACTION_UHU_REGISTER);
         registerIntent.putExtra(serviceIdKEY, new Gson().toJson((UhuServiceId) serviceId));
-        registerIntent.putExtra(serviceNameKEY, serviceName);
+        registerIntent.putExtra(serviceNameKEY, zirkName);
 
         ComponentName retName = mContext.startService(registerIntent);
 
@@ -108,7 +107,7 @@ public final class Proxy implements Bezirk {
             Log.e(TAG, "Unable to start the Uhu Service. returning null for service id. Is Uhu installed?");
             return null;
         } else {
-            Log.i(TAG, "Registration request is triggered to Uhu for Service :" + serviceName);
+            Log.i(TAG, "Registration request is triggered to Uhu for Service :" + zirkName);
         }
         return serviceId;
     }
@@ -117,37 +116,37 @@ public final class Proxy implements Bezirk {
 
     //TODO: Test this implementation
     @Override
-    public void unregisterService(final ServiceId serviceId) {
-        Log.i(TAG, "Unregister request for serviceID: " + ((UhuServiceId) serviceId).getUhuServiceId());
+    public void unregisterService(final ServiceId zirkId) {
+        Log.i(TAG, "Unregister request for serviceID: " + ((UhuServiceId) zirkId).getUhuServiceId());
 
         SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(mContext);
         Map<String, ?> keys = shrdPref.getAll();
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
             //find and delete the entry corresponding to this serviceId
-            if (entry.getValue().toString().equalsIgnoreCase(((UhuServiceId) serviceId).getUhuServiceId())) {
+            if (entry.getValue().toString().equalsIgnoreCase(((UhuServiceId) zirkId).getUhuServiceId())) {
                 Log.i(TAG, "Unregistering service: " + entry.getKey());
                 SharedPreferences.Editor editor = shrdPref.edit();
                 editor.remove(entry.getKey());
                 editor.apply();
-                unsubscribe(serviceId, null);
+                unsubscribe(zirkId, null);
             }
         }
     }
 
     @Override
-    public void subscribe(final ServiceId subscriber, final ProtocolRole pRole, final BezirkListener listener) {
-        if (!isRequestValid(subscriber, pRole, listener)) {
+    public void subscribe(final ServiceId subscriber, final ProtocolRole protocolRole, final BezirkListener listener) {
+        if (!isRequestValid(subscriber, protocolRole, listener)) {
             return;
         }
 
-        proxyHelper.addTopicsToMap(pRole.getEventTopics(), eventListenerMap, listener, "Event");
-        proxyHelper.addTopicsToMap(pRole.getStreamTopics(), streamListenerMap, listener, "Stream");
+        proxyHelper.addTopicsToMap(protocolRole.getEventTopics(), eventListenerMap, listener, "Event");
+        proxyHelper.addTopicsToMap(protocolRole.getStreamTopics(), streamListenerMap, listener, "Stream");
         // Send the intent
         Intent subscribeIntent = new Intent();
         subscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         subscribeIntent.setAction(ACTION_UHU_SUBSCRIBE);
         subscribeIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) subscriber));
-        SubscribedRole subRole = new SubscribedRole(pRole);
+        SubscribedRole subRole = new SubscribedRole(protocolRole);
         subscribeIntent.putExtra("protocol", subRole.getSubscribedProtocolRole());
         ComponentName retName = mContext.startService(subscribeIntent);
 
@@ -170,12 +169,12 @@ public final class Proxy implements Bezirk {
     }
 
     @Override
-    public void unsubscribe(final ServiceId subscriber, final ProtocolRole pRole) {
+    public void unsubscribe(final ServiceId subscriber, final ProtocolRole protocolRole) {
         Intent unSubscribeIntent = new Intent();
         unSubscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         unSubscribeIntent.setAction(ACTION_UHU_UNSUBSCRIBE);
         unSubscribeIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) subscriber));
-        String pRoleAsString = (null == pRole) ? null : (new SubscribedRole(pRole).getSubscribedProtocolRole());
+        String pRoleAsString = (null == protocolRole) ? null : (new SubscribedRole(protocolRole).getSubscribedProtocolRole());
         unSubscribeIntent.putExtra("protocol", pRoleAsString);
 
         ComponentName retName = mContext.startService(unSubscribeIntent);
@@ -187,7 +186,7 @@ public final class Proxy implements Bezirk {
     }
 
     @Override
-    public void sendEvent(ServiceId sender, Address target, Event event) {
+    public void sendEvent(ServiceId sender, Address receiver, Event event) {
         // Check for sending the target!
         if (null == event || null == sender) {
             Log.e(TAG, "Check for null in target or Event or sender");
@@ -198,8 +197,8 @@ public final class Proxy implements Bezirk {
         multicastEventIntent.setAction(ACTION_SERVICE_SEND_MULTICAST_EVENT);
         multicastEventIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) sender));
 
-        multicastEventIntent.putExtra("address", new AddressSerializer().toJson(target));
-        multicastEventIntent.putExtra("multicastEvent", event.serialize());
+        multicastEventIntent.putExtra("address", receiver.toJson());
+        multicastEventIntent.putExtra("multicastEvent", event.toJson());
 
         ComponentName retName = mContext.startService(multicastEventIntent);
 
@@ -222,7 +221,7 @@ public final class Proxy implements Bezirk {
         unicastEventIntent.setAction(ACTION_SERVICE_SEND_UNICAST_EVENT);
         unicastEventIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) sender));
         unicastEventIntent.putExtra("receiverSep", new Gson().toJson((UhuServiceEndPoint) receiver));
-        unicastEventIntent.putExtra("eventMsg", event.serialize());
+        unicastEventIntent.putExtra("eventMsg", event.toJson());
         ComponentName retName = mContext.startService(unicastEventIntent);
         if (retName == null) {
             Log.e(TAG, "Unable to start the Uhu Service. returning null for service id. Is Uhu this installed?");
@@ -231,7 +230,7 @@ public final class Proxy implements Bezirk {
     }
 
     @Override
-    public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream stream, PipedOutputStream pipedOutputStream) {
+    public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream stream, PipedOutputStream dataStream) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
         activeStreams.put(streamId, stream.topic);
         UhuServiceEndPoint recipientSEP = (UhuServiceEndPoint) receiver;
@@ -241,7 +240,7 @@ public final class Proxy implements Bezirk {
         multicastStreamIntent.setAction(ACTION_UHU_PUSH_MULTICAST_STREAM);
         multicastStreamIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) sender));
         multicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
-        multicastStreamIntent.putExtra("stream", stream.serialize());
+        multicastStreamIntent.putExtra("stream", stream.toJson());
         multicastStreamIntent.putExtra("localStreamId", streamId);
         ComponentName retName = mContext.startService(multicastStreamIntent);
         if (retName == null) {
@@ -277,7 +276,7 @@ public final class Proxy implements Bezirk {
         unicastStreamIntent.setAction(ACTION_UHU_PUSH_UNICAST_STREAM);
         unicastStreamIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) sender));
         unicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
-        unicastStreamIntent.putExtra("stream", stream.serialize());
+        unicastStreamIntent.putExtra("stream", stream.toJson());
         unicastStreamIntent.putExtra("filePath", filePath);
         unicastStreamIntent.putExtra("localStreamId", streamId);
         ComponentName retName = mContext.startService(unicastStreamIntent);
@@ -335,9 +334,9 @@ public final class Proxy implements Bezirk {
     }
 
     @Override
-    public void discover(ServiceId service, Address scope, ProtocolRole pRole, long timeout, int maxDiscovered, BezirkListener listener) {
+    public void discover(ServiceId zirk, Address scope, ProtocolRole protocolRole, long timeout, int maxResults, BezirkListener listener) {
 
-        if (null == service || null == listener) {
+        if (null == zirk || null == listener) {
             Log.e(TAG, "ServiceId/UhuListener is null");
             return;
         }
@@ -348,18 +347,18 @@ public final class Proxy implements Bezirk {
         Intent discoverIntent = new Intent();
         discoverIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         discoverIntent.setAction(ACTION_SERVICE_DISCOVER);
-        discoverIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) service));
+        discoverIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) zirk));
         discoverIntent.putExtra("address", new Gson().toJson(scope));
-        discoverIntent.putExtra("pRole", new SubscribedRole(pRole).getSubscribedProtocolRole());
+        discoverIntent.putExtra("pRole", new SubscribedRole(protocolRole).getSubscribedProtocolRole());
         discoverIntent.putExtra("timeout", timeout);
-        discoverIntent.putExtra("maxDiscovered", maxDiscovered);
+        discoverIntent.putExtra("maxDiscovered", maxResults);
         discoverIntent.putExtra("discoveryId", discoveryCount);
         mContext.startService(discoverIntent);
         Log.i(TAG, "Discovery Request to UhuStack");
     }
 
     @Override
-    public void setLocation(ServiceId service, Location location) {
+    public void setLocation(ServiceId zirk, Location location) {
         if (null == location) {
             Log.e(TAG, "Location is null or Empty, Services cannot set the location as Null");
             return;
@@ -367,7 +366,7 @@ public final class Proxy implements Bezirk {
         Intent locationIntent = new Intent();
         locationIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         locationIntent.setAction(ACTION_UHU_SETLOCATION);
-        locationIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) service));
+        locationIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) zirk));
         locationIntent.putExtra("locationData", new Gson().toJson(location));
         mContext.startService(locationIntent);
     }

@@ -17,8 +17,8 @@ package com.bezirk.middleware.messages;
  * communication, and roles are the unit of subscription. Protocols specify {@link Event Events} and
  * {@link Stream Streams} that will be sent to recipients subscribed to particular topics. A
  * <code>ProtocolRole</code> specifies those topics for a particular protocol and provides
- * metadata to uniquely identify the protocol to the middleware and describe the purpose of the
- * protocol to users.
+ * metadata to (1) uniquely identify the protocol to the middleware and (2) describe the purpose of
+ * the protocol to users.
  *
  * @see Event
  * @see Stream
@@ -27,9 +27,10 @@ public abstract class ProtocolRole {
     /**
      * Returns the unique name of this protocol, used by the middleware to manage subscriptions
      * and discover services subscribed to the role.
-     * <p></p>
+     * <p>
      * The implementation of this method should return the simple name of the implementing class,
      * for example:
+     * </p>
      * <pre>
      * public class PartyProtocolRole implements ProtocolRole {
      *    {@literal @}Override

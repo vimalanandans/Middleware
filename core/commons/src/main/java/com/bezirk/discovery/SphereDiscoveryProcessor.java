@@ -11,12 +11,11 @@ import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Created by Rishabh Gulati on 12/19/2014.
+ * @author Rishabh Gulati
  */
 public class SphereDiscoveryProcessor implements Runnable {
+    private static final Logger logger = LoggerFactory.getLogger(SphereDiscoveryProcessor.class);
 
-
-    private static final Logger log = LoggerFactory.getLogger(SphereDiscoveryProcessor.class);
     private static SphereDiscovery discovery;
     private final IUhuSphereDiscovery sphereDiscoveryHandler;
     private Boolean running = false;
@@ -37,7 +36,7 @@ public class SphereDiscoveryProcessor implements Runnable {
 
     @Override
     public void run() {
-        log.info("DiscoveryProcessor has started");
+        logger.info("DiscoveryProcessor has started");
         running = true;
         while (running) {
             //Stop by Interrupting Thread
@@ -84,19 +83,19 @@ public class SphereDiscoveryProcessor implements Runnable {
         //If discovery request has timed out
         //	Invoke the requester with the discovered and drop the request
         if (curTime - discRecord.getCreationTime() >= discRecord.getTimeout()) {
-            log.debug("Timeout for sphere discovery, Size of UhuSphereInfos discovered : " + discRecord.getSphereServices().size());
+            logger.debug("Timeout for sphere discovery, Size of UhuSphereInfos discovered : " + discRecord.getSphereServices().size());
             if (sphereDiscoveryHandler != null) {
 
                 sphereDiscoveryHandler.processDiscoveredSphereInfo(discRecord.getSphereServices(), discRecord.getSphereId());
             }
 
             SphereDiscoveryProcessor.discovery.remove(dlbl);
-            log.info("Discovery response added > " + dlbl.getRequester().device);
+            logger.info("Discovery response added > " + dlbl.getRequester().device);
         } else { // time not exceeded wait for some time before trying so that thread over run
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
-                log.error("wait interrupted", e);
+                logger.error("wait interrupted", e);
 
             }
         }
@@ -104,6 +103,6 @@ public class SphereDiscoveryProcessor implements Runnable {
 
     public void stop() {
         running = false;
-        log.info("DiscoveryProcessor has stopped");
+        logger.info("DiscoveryProcessor has stopped");
     }
 }

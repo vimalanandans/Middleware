@@ -11,7 +11,7 @@ public class EchoRequest extends Event {
     }
 
     public static EchoRequest deserialize(String serializedEvent) {
-        return deserialize(serializedEvent, EchoRequest.class);
+        return fromJson(serializedEvent, EchoRequest.class);
     }
 
     public String getText() {

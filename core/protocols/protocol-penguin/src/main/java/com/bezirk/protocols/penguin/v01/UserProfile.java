@@ -28,13 +28,13 @@ public class UserProfile extends Event {
 	/* getters and setters */
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJson()
      *
      * @param json
      * @return Profile
      */
     public static UserProfile deserialize(String json) {
-        return Event.deserialize(json, UserProfile.class);
+        return Event.fromJson(json, UserProfile.class);
     }
 
     public String getId() {

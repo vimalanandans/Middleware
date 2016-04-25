@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class IncrementalParser implements MultiPartParser {
 
-    protected Logger log = LoggerFactory.getLogger(IncrementalParser.class);
+    protected Logger logger = LoggerFactory.getLogger(IncrementalParser.class);
 
     private long bytesRead = 0;
 
@@ -58,11 +58,9 @@ public class IncrementalParser implements MultiPartParser {
      * @return The extracted boundary
      */
     protected String extractBoundary(String contentType) {
-
         String[] keyVal = contentType.split("=");
-        String boundary = "--" + keyVal[1].replaceAll("\"", "");
 
-        return boundary;
+        return "--" + keyVal[1].replaceAll("\"", "");
     }
 
     /**
@@ -81,11 +79,11 @@ public class IncrementalParser implements MultiPartParser {
 
         // 1. Ensure that boundary is the first line in the part
         validateBoundary(expectedBoundary, inStream, contentPart);
-        log.info("Boundary validated for <content>. bytesRead: " + bytesRead);
+        logger.info("Boundary validated for <content>. bytesRead: " + bytesRead);
 
         // 2. Collect headers
         Map<String, String> partHeader = parsePartHeader(inStream, contentPart);
-        log.info("Header parsed for <content>. bytesRead: " + bytesRead);
+        logger.info("Header parsed for <content>. bytesRead: " + bytesRead);
 
         // 3. Make sure header entries are valid for this part
         validateContentHeader(partHeader);
@@ -143,18 +141,18 @@ public class IncrementalParser implements MultiPartParser {
 
         // 1. Ensure that boundary is the first line in the part
         validateBoundary(expectedBoundary, inStream, streamPart);
-        log.info("Boundary for <stream> validated.  bytesRead: " + bytesRead);
+        logger.info("Boundary for <stream> validated.  bytesRead: " + bytesRead);
 
         // 2. Collect headers
         Map<String, String> partHeader = parsePartHeader(inStream, streamPart);
-        log.info("Header for <stream> parsed. bytesread: " + bytesRead);
+        logger.info("Header for <stream> parsed. bytesread: " + bytesRead);
 
         // 3. Make sure header entries are valid for this part
         validateStreamDescriptorHeader(partHeader);
 
         // 4. We have reached the end of the header block.  Now read the stream descriptor
         String streamDesc = readStreamDescriptor(inStream, streamPart);
-        log.info("Descriptor for <stream> parsed. bytesread: " + bytesRead);
+        logger.info("Descriptor for <stream> parsed. bytesread: " + bytesRead);
 
         // The header is valid and we have a stream descriptor, now set the appropriate properties on the StreamPart object
         streamPart.setContentType(partHeader.get(Part.KEY_CONTENT_TYPE));
@@ -193,14 +191,14 @@ public class IncrementalParser implements MultiPartParser {
 
     protected String readPipeHeader(InputStream inStream, Part part) throws IOException {
         final String pipeHeader = streamLineToString(inStream);
-        log.info("Identified uhu header: {}", pipeHeader.toString());
+        logger.info("Identified uhu header: {}", pipeHeader);
 
         return pipeHeader;
     }
 
     protected String readStreamDescriptor(InputStream inStream, Part part) throws IOException {
         final String streamDesc = streamLineToString(inStream);
-        log.info("Identified streamDescriptor: {}", streamDesc.toString());
+        logger.info("Identified streamDescriptor: {}", streamDesc);
 
         return streamDesc;
     }
@@ -224,12 +222,12 @@ public class IncrementalParser implements MultiPartParser {
             // We found the end of a line, so we can grab the line and look for stuff in it
             lineNum++;
             String line = stringBuilder.toString().trim();
-            log.info("FOUND HEADER LINE " + lineNum + ": <" + line + ">");
+            logger.info("FOUND HEADER LINE " + lineNum + ": <" + line + ">");
             stringBuilder = new StringBuilder();
 
             if (line.isEmpty()) {
                 // empty line signifies the end of headers
-                log.info("Identified empty line");
+                logger.info("Identified empty line");
                 break;
             }
             // Split headers into key/value and add to a map ... we will validate them later
@@ -238,7 +236,7 @@ public class IncrementalParser implements MultiPartParser {
                 if (keyVal.length != 2) {
                     throw new Exception("Did not find key:value pair");
                 }
-                log.info("parsed key: " + keyVal[0] + ":" + keyVal[1]);
+                logger.info("parsed key: " + keyVal[0] + ":" + keyVal[1]);
                 partHeader.put(keyVal[0].trim(), keyVal[1].trim());
             }
         }
@@ -271,7 +269,7 @@ public class IncrementalParser implements MultiPartParser {
 
             // Check that this is the first line and it matches the expected value
             if (line.equals(expectedBoundary)) {
-                log.info("Identified boundary: " + line);
+                logger.info("Identified boundary: " + line);
                 part.setBoundary(line);
                 break;
             } else {
@@ -307,13 +305,13 @@ public class IncrementalParser implements MultiPartParser {
                 String contentEncoding = httpHeader.get(key);
                 // We probably don't care about the encoding value so just warn for now
                 if (!contentEncoding.equals(UhuHeaderPart.EXPECTEDVAL_CONTENT_ENCODING)) {
-                    log.warn("Didn't expect to see content encoding value: " + contentEncoding);
+                    logger.warn("Didn't expect to see content encoding value: " + contentEncoding);
                 }
             } else {
-                log.warn("Didn't expect to receive header key: " + key);
+                logger.warn("Didn't expect to receive header key: " + key);
             }
         }
-        log.info("Validated http header for UhuHeaderPart");
+        logger.info("Validated http header for UhuHeaderPart");
     }
 
     /**
@@ -340,13 +338,13 @@ public class IncrementalParser implements MultiPartParser {
                 String contentEncoding = partHeader.get(key);
                 // We provably don't care about the encoding value so just warn for now
                 if (!contentEncoding.equals(StreamDescriptorPart.EXPECTEDVAL_CONTENT_ENCODING)) {
-                    log.warn("Didn't expect to see content encoding value: " + contentEncoding);
+                    logger.warn("Didn't expect to see content encoding value: " + contentEncoding);
                 }
             } else {
-                log.warn("Didn't expect to receive header key: " + key);
+                logger.warn("Didn't expect to receive header key: " + key);
             }
         }
-        log.info("Validated stream part header");
+        logger.info("Validated stream part header");
     }
 
     /**
@@ -373,13 +371,13 @@ public class IncrementalParser implements MultiPartParser {
                 String contentEncoding = partHeader.get(key);
                 // We provably don't care about the encoding value so just warn for now
                 if (!contentEncoding.equals(StreamContentPart.EXPECTEDVAL_CONTENT_ENCODING)) {
-                    log.warn("Didn't expect to see content encoding value: " + contentEncoding);
+                    logger.warn("Didn't expect to see content encoding value: " + contentEncoding);
                 }
             } else {
-                log.warn("Didn't expect to receive header key: " + key);
+                logger.warn("Didn't expect to receive header key: " + key);
             }
         }
-        log.info("Validated content part header");
+        logger.info("Validated content part header");
     }
 
 

@@ -48,12 +48,12 @@ public class GetPreference extends Event {
 	/* getters and setters */
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJson()
      * @param json
      * @return GetPreference
      */
     public static GetPreference deserialize(String json) {
-        return Event.deserialize(json, GetPreference.class);
+        return Event.fromJson(json, GetPreference.class);
     }
 
     public String getType() {

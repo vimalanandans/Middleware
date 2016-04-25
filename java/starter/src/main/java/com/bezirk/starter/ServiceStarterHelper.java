@@ -160,7 +160,7 @@ final class ServiceStarterHelper {
     /**
      * Log the error message with an optional Throwable and then exit
      *
-     * @param errorMsg  Message to log before exiting
+     * @param errorMsg  Message to logger before exiting
      * @param throwable May be null if not relevant
      */
     void fail(final String errorMsg, final Throwable throwable) {

@@ -27,7 +27,7 @@ public class DisambiguationQuestionsTest {
         disambiguationQuestions.setId(id);
         disambiguationQuestions.setSubTopic(subTopic);
 
-        String serializedDisambiguationQuestions = disambiguationQuestions.serialize();
+        String serializedDisambiguationQuestions = disambiguationQuestions.toJson();
 
         DisambiguationQuestions deserializedDisambiguationQuestions = DisambiguationQuestions.deserialize(serializedDisambiguationQuestions);
         assertEquals("DisambiguationQuestionList is not equal to the set value.", disambiguationQuestionList, deserializedDisambiguationQuestions.getDisambiguationQuestions());

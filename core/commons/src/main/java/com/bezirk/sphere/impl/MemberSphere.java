@@ -7,17 +7,13 @@ import com.bezirk.proxy.api.impl.UhuServiceId;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 /**
  * @author Rishabh Gulati
  */
 public final class MemberSphere extends Sphere implements Serializable {
-
-    /**
-     *
-     */
     private static final long serialVersionUID = 4338578155881822594L;
     /**
      * Used to identify if the sphere was a sharable sphere of another device
@@ -36,7 +32,7 @@ public final class MemberSphere extends Sphere implements Serializable {
      *                        the UI and can also be used to evaporate the sphere once its
      *                        use is completed
      */
-    public MemberSphere(String sphereName, String sphereType, HashSet<String> ownerDevices,
+    public MemberSphere(String sphereName, String sphereType, Set<String> ownerDevices,
                         LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices, boolean temporarySphere) {
         super();
         this.temporarySphere = temporarySphere;
@@ -48,7 +44,7 @@ public final class MemberSphere extends Sphere implements Serializable {
      *
      * @param sphereName
      */
-    private void createSphere(String sphereName, String sphereType, HashSet<String> ownerDevices,
+    private void createSphere(String sphereName, String sphereType, Set<String> ownerDevices,
                               LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices) {
         this.sphereName = sphereName;
         this.sphereType = sphereType;

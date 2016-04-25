@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Answer<A> extends Event {
-
     /**
      * UhU topic: answer
      */
@@ -69,12 +68,12 @@ public class Answer<A> extends Event {
 	/* Getter and setter methods */
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJson()
      * @param json
      * @return Answer
      */
     public static Answer<?> deserialize(String json) {
-        return Event.deserialize(json, Answer.class);
+        return Event.fromJson(json, Answer.class);
     }
 
     /** TODO: test */
@@ -95,7 +94,7 @@ public class Answer<A> extends Event {
 
         for (int i = 0; i < jsonObjAnswers.size(); i++) {
             JsonObject jsonObjAnswer = jsonObjAnswers.get(i).getAsJsonObject();
-            I answerItem = (I) gson.fromJson(jsonObjAnswer.toString(), iC);
+            I answerItem = gson.fromJson(jsonObjAnswer.toString(), iC);
             answers.add(answerItem);
         }
 

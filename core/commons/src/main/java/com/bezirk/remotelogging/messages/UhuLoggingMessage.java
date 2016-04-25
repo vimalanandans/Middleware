@@ -44,7 +44,7 @@ public class UhuLoggingMessage {
     public String version = null;
 
     public UhuLoggingMessage() {
-        //	 Empty Constructor used by Json to serialize Deserialize
+        //	 Empty Constructor used by Json to toJson Deserialize
     }
 
     /**
@@ -76,7 +76,7 @@ public class UhuLoggingMessage {
 
     /**
      * @param json The Json String that is to be deserialized
-     * @param dC   class to deserialize into
+     * @param dC   class to fromJson into
      * @return object of class C
      */
     public static <C> C deserialize(String json, Class<C> dC) {

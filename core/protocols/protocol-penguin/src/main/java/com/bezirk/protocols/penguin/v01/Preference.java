@@ -136,13 +136,13 @@ public class Preference /* extends Event */ {
     }
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJson()
      * @param json
      * @return Preference
      */
 	/*
-	public static Preference deserialize(String json) {
-		return Event.deserialize(json, Preference.class);
+	public static Preference fromJson(String json) {
+		return Event.fromJson(json, Preference.class);
 	}
 	*/
 }

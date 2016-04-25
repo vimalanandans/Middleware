@@ -41,7 +41,7 @@
 //	 */
 //	@BeforeClass
 //	public static void setUpBeforeClass() throws Exception {
-//		log.info("***** Setting up SphereRegistryWrapper:GetSphereInfo TestCase *****");
+//		logger.info("***** Setting up SphereRegistryWrapper:GetSphereInfo TestCase *****");
 //		mockSetUp.setUPTestEnv();
 //		registry = mockSetUp.registry;
 //		sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -53,7 +53,7 @@
 //	 */
 //	@AfterClass
 //	public static void tearDownAfterClass() throws Exception {
-//		log.info("***** Shutting down SphereRegistryWrapper:GetSphereInfo TestCase *****");
+//		logger.info("***** Shutting down SphereRegistryWrapper:GetSphereInfo TestCase *****");
 //		mockSetUp.destroyTestSetUp();
 //	}
 //

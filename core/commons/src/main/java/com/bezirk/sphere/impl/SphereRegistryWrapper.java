@@ -29,8 +29,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -42,12 +42,13 @@ import java.util.Set;
  * @author rishabh
  */
 public class SphereRegistryWrapper {
+    private static final Logger logger = LoggerFactory.getLogger(SphereRegistryWrapper.class);
 
     public static final String DEVELOPMENT_DEVICE_ID = "DevDeviceId";
-    private static final Logger logger = LoggerFactory.getLogger(SphereRegistryWrapper.class);
     private static final String DEFAULT_SPHERE_NAME = "Default Sphere";
     private static final String DEVELOPMENT_DEVICE_NAME = "DevDeviceName";
     private static final String DEVELOPMENT_DEVICE_TYPE = "DevDeviceType";
+
     private SphereRegistry registry = null;
     private ISpherePersistence spherePersistence = null;
     private UPADeviceInterface upaDevice;
@@ -654,7 +655,8 @@ public class SphereRegistryWrapper {
                 logger.debug("Registration failed, Service " + serviceId);
             }
         }
-        return (count == sphereIds.size()) ? true : false;
+
+        return count == sphereIds.size();
     }
 
     /**
@@ -883,7 +885,7 @@ public class SphereRegistryWrapper {
                     successfulUpdates++;
                 }
             }
-            success = (successfulUpdates == services) ? true : false;
+            success = successfulUpdates == services;
             persist();
 
         }
@@ -1269,10 +1271,9 @@ public class SphereRegistryWrapper {
             return getQRCodeMatrix(sphereId);
         }
         BitMatrix matrix = null;
-        Writer writer = new QRCodeWriter();
+        final Writer writer = new QRCodeWriter();
 
-        String qrString = null;
-        qrString = getShareCode(sphereId);
+        final String qrString = getShareCode(sphereId);
 
         if (qrString != null) {
             try {
@@ -1329,7 +1330,7 @@ public class SphereRegistryWrapper {
 
                 // create the sphere
                 MemberSphere sphere = new MemberSphere(sphereConfig.getSphereName(), "Development",
-                        new HashSet<String>(Arrays.asList(DEVELOPMENT_DEVICE_ID)),
+                        Collections.singleton(DEVELOPMENT_DEVICE_ID),
                         new LinkedHashMap<String, ArrayList<UhuServiceId>>(), false);
                 addSphere(sphereConfig.getSphereId(), sphere);
                 persist();

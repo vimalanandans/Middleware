@@ -25,8 +25,7 @@ import java.util.Map;
  * @author Rishabh Gulati
  */
 public class ShareProcessor {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShareProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(ShareProcessor.class);
     private static final String SHARE_FAILURE_MSG = "Share Failed";
     private ICryptoInternals crypto;
     private UPADeviceInterface upaDeviceInterface;
@@ -58,8 +57,7 @@ public class ShareProcessor {
      */
     public boolean processShareCode(String shareCode, String sphereId) {
         // sphereId from which the services need to be shared
-        String sharerSphereId = null;
-        ShareRequest shareRequest = null;
+        String sharerSphereId;
 
         /************************************************************************
          * Step1: validate the sharer sphereId passed and set it.
@@ -67,9 +65,9 @@ public class ShareProcessor {
 
         if (sphereRegistryWrapper.containsSphere(sphereId)) {
             sharerSphereId = sphereId;
-            LOGGER.info("Share Process, Step1: sharerSphereId validation complete");
+            logger.info("Share Process, Step1: sharerSphereId validation complete");
         } else {
-            LOGGER.error("Share Process, Step1: sharerSphereId validation failed");
+            logger.error("Share Process, Step1: sharerSphereId validation failed");
             return false;
         }
 
@@ -80,9 +78,9 @@ public class ShareProcessor {
 
         final String inviterShortCode = validateCodeString(shareCode);
         if (inviterShortCode != null) {
-            LOGGER.info("Share Process, Step2: shortCode validation complete");
+            logger.info("Share Process, Step2: shortCode validation complete");
         } else {
-            LOGGER.error("Share Process, Step2: shortCode validation failed");
+            logger.error("Share Process, Step2: shortCode validation failed");
             return false;
         }
 
@@ -92,9 +90,9 @@ public class ShareProcessor {
          ************************************************************************/
 
         if (addCatchCode(inviterShortCode)) {
-            LOGGER.info("Share Process, Step3: crypto procedure complete");
+            logger.info("Share Process, Step3: crypto procedure complete");
         } else {
-            LOGGER.error("Share Process, Step3: crypto procedure failed");
+            logger.error("Share Process, Step3: crypto procedure failed");
             return false;
         }
 
@@ -103,11 +101,11 @@ public class ShareProcessor {
          * sphere
          ************************************************************************/
 
-        shareRequest = prepareRequest(sharerSphereId, inviterShortCode);
+        final ShareRequest shareRequest = prepareRequest(sharerSphereId, inviterShortCode);
         if (shareRequest != null) {
-            LOGGER.info("Share Process, Step4: share request preparation complete");
+            logger.info("Share Process, Step4: share request preparation complete");
         } else {
-            LOGGER.error("Share Process, Step4: share request preparation failed");
+            logger.error("Share Process, Step4: share request preparation failed");
             return false;
         }
 
@@ -116,9 +114,9 @@ public class ShareProcessor {
          ************************************************************************/
 
         if (comms.sendMessage(shareRequest)) {
-            LOGGER.info("Share Process, Step5: share request sending complete");
+            logger.info("Share Process, Step5: share request sending complete");
         } else {
-            LOGGER.error("Share Process, Step5: share request sending failed");
+            logger.error("Share Process, Step5: share request sending failed");
             return false;
         }
 
@@ -133,28 +131,21 @@ public class ShareProcessor {
      * @return - True if response was sent successfully. False otherwise.
      */
     public boolean processRequest(ShareRequest shareRequest) {
-
-        UhuDeviceInfo sharerUhuDeviceInfo = null;
-        String inviterShortCode = null;
-        String inviterSphereId = null;
-        String sharerSphereId = null;
-        ShareResponse shareResponse = null;
-
         /************************************************************************
          * Step1: validate the request
          ************************************************************************/
 
         if (validateRequest(shareRequest)) {
-            LOGGER.info("Share Request Processing, Step1: request validation complete");
+            logger.info("Share Request Processing, Step1: request validation complete");
         } else {
-            LOGGER.error("Share Request Processing, Step1: request validation failed");
+            logger.error("Share Request Processing, Step1: request validation failed");
             return false;
         }
 
-        sharerUhuDeviceInfo = shareRequest.getUhuDeviceInfo();
-        inviterShortCode = shareRequest.getSphereId();
-        inviterSphereId = sphereRegistryWrapper.getSphereIdFromPasscode(inviterShortCode);
-        sharerSphereId = shareRequest.getSharerSphereId();
+        final UhuDeviceInfo sharerUhuDeviceInfo = shareRequest.getUhuDeviceInfo();
+        final String inviterShortCode = shareRequest.getSphereId();
+        final String inviterSphereId = sphereRegistryWrapper.getSphereIdFromPasscode(inviterShortCode);
+        final String sharerSphereId = shareRequest.getSharerSphereId();
 
         // for sending unicast back to the device sharing its services
         String uniqueKey = shareRequest.getUniqueKey();
@@ -165,10 +156,10 @@ public class ShareProcessor {
          ************************************************************************/
 
         if (storeData(inviterSphereId, sharerUhuDeviceInfo)) {
-            LOGGER.info("Share Request Processing, Step2: storing sphere exchange data complete");
+            logger.info("Share Request Processing, Step2: storing sphere exchange data complete");
         } else {
             sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, IUhuSphereListener.Status.FAILURE, SHARE_FAILURE_MSG);
-            LOGGER.error("Share Request Processing, Step2: storing sphere exchange data failed");
+            logger.error("Share Request Processing, Step2: storing sphere exchange data failed");
             return false;
         }
 
@@ -177,12 +168,12 @@ public class ShareProcessor {
          * create response
          ************************************************************************/
 
-        shareResponse = prepareResponse(inviterShortCode, inviterSphereId, recipient, uniqueKey, sharerSphereId);
+        final ShareResponse shareResponse = prepareResponse(inviterShortCode, inviterSphereId, recipient, uniqueKey, sharerSphereId);
         if (shareResponse != null) {
-            LOGGER.info("Share Request Processing, Step3: preparing share response complete");
+            logger.info("Share Request Processing, Step3: preparing share response complete");
         } else {
             sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, IUhuSphereListener.Status.FAILURE, SHARE_FAILURE_MSG);
-            LOGGER.error("Share Request Processing, Step3: preparing share response failed");
+            logger.error("Share Request Processing, Step3: preparing share response failed");
             return false;
         }
 
@@ -191,10 +182,10 @@ public class ShareProcessor {
          ************************************************************************/
 
         if (comms.sendMessage(shareResponse)) {
-            LOGGER.info("Share Request Processing, Step4: share response sending complete");
+            logger.info("Share Request Processing, Step4: share response sending complete");
         } else {
             sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, IUhuSphereListener.Status.FAILURE, SHARE_FAILURE_MSG);
-            LOGGER.error("Share Request Processing, Step4: share response sending failed");
+            logger.error("Share Request Processing, Step4: share response sending failed");
             return false;
         }
 
@@ -212,9 +203,9 @@ public class ShareProcessor {
          ************************************************************************/
 
         if (validateResponse(shareResponse)) {
-            LOGGER.info("Share Response Processing, Step1: response validation complete");
+            logger.info("Share Response Processing, Step1: response validation complete");
         } else {
-            LOGGER.error("Share Response Processing, Step1: response validation failed");
+            logger.error("Share Response Processing, Step1: response validation failed");
             return false;
         }
 
@@ -266,9 +257,9 @@ public class ShareProcessor {
     private boolean storeData(SphereExchangeData sphereExchangeData, UhuDeviceInfo inviterUhuDeviceInfo,
                               String sharerSphereId) {
 
-        LOGGER.debug("Sphere Exchange data:\n" + sphereExchangeData.toString());
-        LOGGER.debug("Uhu Device Info:\n" + inviterUhuDeviceInfo.toString());
-        LOGGER.debug("Sharer sphere Id: " + sharerSphereId);
+        logger.debug("Sphere Exchange data:\n" + sphereExchangeData.toString());
+        logger.debug("Uhu Device Info:\n" + inviterUhuDeviceInfo.toString());
+        logger.debug("Sharer sphere Id: " + sharerSphereId);
         // add device information
         sphereRegistryWrapper.addDevice(sphereExchangeData.getDeviceID(),
                 new DeviceInformation(sphereExchangeData.getDeviceName(), sphereExchangeData.getDeviceType()));
@@ -305,7 +296,7 @@ public class ShareProcessor {
             // sphere key doesn't exist create one
             // TODO: Check this
             if (!crypto.generateKeys(sphereExchangeData.getSphereID(), true)) {
-                LOGGER.error("store data > unable to generated key");
+                logger.error("store data > unable to generated key");
                 return false;
             }
             sphereRegistryWrapper.persist();
@@ -326,7 +317,7 @@ public class ShareProcessor {
          * if (QRCodeData.checkVersionTag(inviterShareCode) &&
          * QRCodeData.checkCompatibility(inviterShareCode)) <br>
          * { // retrieve the catchCode QRCodeData catchData =
-         * QRCodeData.deserialize(inviterShareCode); return
+         * QRCodeData.fromJson(inviterShareCode); return
          * catchData.getCatchCode(); }
          */
         if (inviterShareCode.length() == 7) {
@@ -398,12 +389,12 @@ public class ShareProcessor {
     /**
      * Validate the Share request: shortCode, sphereExchangeData, uhuDeviceInfo
      *
-     * @param sphereCatchRequest
+     * @param shareRequest
      * @return
      */
     private boolean validateRequest(ShareRequest shareRequest) {
         if (shareRequest == null) {
-            LOGGER.error("Sphere share request received is null");
+            logger.error("Sphere share request received is null");
             return false;
         }
 
@@ -413,26 +404,26 @@ public class ShareProcessor {
         String sharerSphereId = shareRequest.getSharerSphereId();
 
         if (sharerUhuDeviceInfo == null) {
-            LOGGER.error("Catched device/Sphere Exchange data is not valid");
+            logger.error("Catched device/Sphere Exchange data is not valid");
             return false;
         }
 
         // sender device is equal to current device ignore the results
         if (sharerUhuDeviceInfo.getDeviceId().equals(upaDeviceInterface.getDeviceId())) {
-            LOGGER.debug("Found request initiated by same device, dropping ShareRequest");
+            logger.debug("Found request initiated by same device, dropping ShareRequest");
             return false;
         }
 
         if ((inviterShortCode == null) || (inviterSphereId == null) || (sharerSphereId == null)
                 || (!sphereRegistryWrapper.existsSphereIdInKeyMaps(inviterShortCode))) {
-            LOGGER.error("Invalid sphere information");
+            logger.error("Invalid sphere information");
             return false;
         }
 
         //check if you are the owner of the sphere for which response is received
         Sphere sphere = sphereRegistryWrapper.getSphere(inviterSphereId);
         if (!(sphere instanceof OwnerSphere)) {
-            LOGGER.debug("Response received for a known sphere. This device does not own the sphere");
+            logger.debug("Response received for a known sphere. This device does not own the sphere");
             return false;
         }
 
@@ -448,7 +439,7 @@ public class ShareProcessor {
      */
     private boolean validateResponse(ShareResponse shareResponse) {
         if (shareResponse == null) {
-            LOGGER.error("Share response received is null");
+            logger.error("Share response received is null");
             return false;
         }
 
@@ -458,17 +449,17 @@ public class ShareProcessor {
         String sharerSphereId = shareResponse.getSharerSphereId();
 
         if (sphereExchangeData == null) {
-            LOGGER.error("sphereExchangeData is not valid");
+            logger.error("sphereExchangeData is not valid");
             return false;
         }
 
         if (uhuDeviceInfo == null) {
-            LOGGER.error("uhuDeviceInfo is not valid");
+            logger.error("uhuDeviceInfo is not valid");
             return false;
         }
 
         if (sharerSphereId == null || !sphereRegistryWrapper.containsSphere(sharerSphereId)) {
-            LOGGER.error("sharerSphereId is not valid");
+            logger.error("sharerSphereId is not valid");
             return false;
         }
 
@@ -476,12 +467,13 @@ public class ShareProcessor {
     }
 
     /**
-     * @param uhuDeviceInfo
+     *x
      * @param inviterShortCode
      * @param inviterSphereId  sphereId pertaining to the sphere which generated the short
      *                         code.
      * @param sharer           - has to be non-null
      * @param uniqueKey
+     * @param sharerSphereId
      * @return
      */
     private ShareResponse prepareResponse(String inviterShortCode, String inviterSphereId, UhuServiceEndPoint sharer,
@@ -489,7 +481,7 @@ public class ShareProcessor {
         ShareResponse shareResponse = null;
         String sphereExchangeData = sphereRegistryWrapper.getShareCodeString(inviterSphereId);
         if (sphereExchangeData == null) {
-            LOGGER.error("Share response not prepared for sphere : " + inviterSphereId);
+            logger.error("Share response not prepared for sphere : " + inviterSphereId);
             return shareResponse;
         }
 

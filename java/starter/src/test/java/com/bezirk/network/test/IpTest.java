@@ -28,12 +28,12 @@
 //				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
 //					InetAddress inetAddress = enumIpAddr.nextElement();
 //					if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-//						log.info("Interface: "+intf.getName()+" IPAddress: " + inetAddress.getHostAddress());
+//						logger.info("Interface: "+intf.getName()+" IPAddress: " + inetAddress.getHostAddress());
 //					}
 //				}
 //			}
 //		} catch (Exception ex) {
-//			log.error(ex.toString());
+//			logger.error(ex.toString());
 //		}
 //	}
 //
@@ -44,16 +44,16 @@
 //			UhuCommsPC.init();
 //			addr = UhuNetworkUtilities.getIpForInterface(NetworkInterface.getByName(UhuComms.getINTERFACE_NAME()));
 //			if(addr == null){
-//				log.error("Failure to resolve ip - Check interface in comms.properties ");
-//				log.error("Possible interface/ ip pairs are: ");
+//				logger.error("Failure to resolve ip - Check interface in comms.properties ");
+//				logger.error("Possible interface/ ip pairs are: ");
 //				Iterator<IntfInetPair> itr = UhuNetworkUtilities.getIntfInetPair().iterator();
 //				while(itr.hasNext()){
 //					IntfInetPair pair = itr.next();
-//					log.error("Interface: "+pair.getIntf().getName()+" IP:"+pair.getInet().getHostAddress());
+//					logger.error("Interface: "+pair.getIntf().getName()+" IP:"+pair.getInet().getHostAddress());
 //				}
 //				fail("Cannot resolve Ip");
 //			}
-//			log.info("Address Obtained: "+ addr.getHostAddress());
+//			logger.info("Address Obtained: "+ addr.getHostAddress());
 //		} catch (SocketException e) {
 //			e.printStackTrace();
 //		}

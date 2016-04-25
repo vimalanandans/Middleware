@@ -9,7 +9,6 @@ package com.bezirk.aip;
 import com.bezirk.middleware.messages.ProtocolRole;
 
 public class QuestionProtocolRole extends ProtocolRole {
-
     private static final String[] topics = {
             Question.topic,
             IncompleteQuestion.topic,
@@ -17,7 +16,6 @@ public class QuestionProtocolRole extends ProtocolRole {
             OpenQuestion.topic
     };
     private String role = this.getClass().getSimpleName();
-    private String desc = "Protocol role for question-type messages";
 
     @Override
     public String getProtocolName() {
@@ -26,7 +24,7 @@ public class QuestionProtocolRole extends ProtocolRole {
 
     @Override
     public String getDescription() {
-        return desc;
+        return "Protocol role for question-type messages";
     }
 
     @Override

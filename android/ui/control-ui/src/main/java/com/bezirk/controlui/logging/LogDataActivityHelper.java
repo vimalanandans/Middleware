@@ -58,7 +58,7 @@ class LogDataActivityHelper {
      */
     private final String RECIPIENT_MULTICAST_VALUE = "MULTI-CAST";
     /**
-     * ConcurrentHashMap that is used to store the log messages and update them.
+     * ConcurrentHashMap that is used to store the logger messages and update them.
      */
     private final ConcurrentMap<String, Integer> logMsgMap = new ConcurrentHashMap<String, Integer>(SIZE_OF_LOG_MSG_MAP);
     private final LogDataActivity logDataActivity;
@@ -67,7 +67,7 @@ class LogDataActivityHelper {
      */
     Handler mHandler;
     /**
-     * IUhuLogging Implementation to handle the logmessage. It receives the log message and gives it to the handler to update the UI.
+     * IUhuLogging Implementation to handle the logmessage. It receives the logger message and gives it to the handler to update the UI.
      */
     private final IUhuLogging loggingHandler = new IUhuLogging() {
         @Override
@@ -78,7 +78,7 @@ class LogDataActivityHelper {
         }
     };
     /**
-     * Integer value referring to the row tag, that will be assigned to each of the log table row
+     * Integer value referring to the row tag, that will be assigned to each of the logger table row
      */
     private int tableRowTagCount;
     /**
@@ -86,7 +86,7 @@ class LogDataActivityHelper {
      */
     private TableLayout mTableLayoutLogData;
     /**
-     * Handle the callback. Update the table layout with the log
+     * Handle the callback. Update the table layout with the logger
      */
     final Handler.Callback handlerCallback = new Handler.Callback() {
 
@@ -122,8 +122,8 @@ class LogDataActivityHelper {
     /**
      * Returns the row tag assicociated with the table row.
      *
-     * @param logMsgId - Message Id of the log msg
-     * @param sphereId - of the log msg
+     * @param logMsgId - Message Id of the logger msg
+     * @param sphereId - of the logger msg
      * @return the row tag if already updted on the table else NEW_ROW_FOR_TABLE value
      */
     Integer getLogRowPosition(final String logMsgId, final String sphereId) {
@@ -296,7 +296,7 @@ class LogDataActivityHelper {
                     logDataActivity.onDestroy();
                 } catch (Exception e) {
                     printToast("ERROR IN STOPPING LOG SERVICE...");
-                    log.error("Error in stopping log service.", e);
+                    log.error("Error in stopping logger service.", e);
                 }
             }
         });

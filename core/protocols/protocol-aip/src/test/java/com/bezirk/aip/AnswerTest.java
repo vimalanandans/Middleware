@@ -28,9 +28,9 @@ public class AnswerTest {
         answer.setId(id);
         answer.setSubTopic(subTopic);
 
-        String serializedAnswer = answer.serialize();
+        String serializedAnswer = answer.toJson();
 
-        Answer<?> deserializedAnswer = Answer.deserialize(serializedAnswer, Answer.class);
+        Answer<?> deserializedAnswer = Answer.fromJson(serializedAnswer, Answer.class);
 
         assertEquals("Answers is not equal to the set value.", answers, deserializedAnswer.getAnswers());
         assertEquals("ID is not equal to the set value.", id, deserializedAnswer.getId());

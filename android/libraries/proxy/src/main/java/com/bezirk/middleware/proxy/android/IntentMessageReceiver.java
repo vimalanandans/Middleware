@@ -204,7 +204,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             Log.e(TAG, "Error in Stream Status received Intent ");
             return;
         }
-        final BezirkListener.StreamConditions streamCondition = (streamStatus == 1) ? BezirkListener.StreamConditions.END_OF_DATA : BezirkListener.StreamConditions.LOST_CONNECTION;
+        final BezirkListener.StreamStates streamCondition = (streamStatus == 1) ? BezirkListener.StreamStates.END_OF_DATA : BezirkListener.StreamStates.LOST_CONNECTION;
         if (Proxy.activeStreams.containsKey(streamId)) {
             final String streamTopic = Proxy.activeStreams.get(streamId);
             if (Proxy.streamListenerMap.containsKey(streamTopic)) {

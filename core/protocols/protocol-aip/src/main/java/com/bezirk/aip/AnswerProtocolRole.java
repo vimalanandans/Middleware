@@ -18,7 +18,6 @@ public class AnswerProtocolRole extends ProtocolRole {
             SingleAnswer.topic
     };
     private String name = this.getClass().getSimpleName();
-    private String desc = "Protocol role for answer-type messages";
 
     @Override
     public String getProtocolName() {
@@ -27,8 +26,7 @@ public class AnswerProtocolRole extends ProtocolRole {
 
     @Override
     public String getDescription() {
-        // TODO Auto-generated method stub
-        return desc;
+        return "Protocol role for answer-type messages";
     }
 
     @Override

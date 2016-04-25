@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Created by GUR1PI on 8/3/2014.
+ * @author Rishab Gulati
  */
 //TODO Move to new package, since this is an object used for encapsulating information to be sent as a signed messages. The control message which uses this object is SignedControlMessage.
 
@@ -32,7 +32,7 @@ public class OwnerLeaveResponse {
 
     /**
      * @param json The Json String that is to be deserialized
-     * @param C    class to deserialize into
+     * @param C    class to fromJson into
      * @return object of class type C
      */
     public static <C> C deserialize(String json, Class<C> dC) {

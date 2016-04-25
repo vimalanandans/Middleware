@@ -50,7 +50,7 @@
 //	@BeforeClass
 //	public static void setUpBeforeClass() throws Exception {
 //
-//		log.info("***** Setting up MessageSenderTest TestCase *****");
+//		logger.info("***** Setting up MessageSenderTest TestCase *****");
 //		mockUtility.setUPTestEnv();
 //		uhuSadlManager = mockUtility.uhuSadlManager;
 //	}
@@ -59,7 +59,7 @@
 //	@AfterClass
 //	public static void tearDownAfterClass() throws Exception {
 //
-//		log.info("***** Shutting down MessageSenderTest Testcase *****");
+//		logger.info("***** Shutting down MessageSenderTest Testcase *****");
 //		mockUtility.destroyTestSetUp();
 //	}
 //
@@ -67,14 +67,14 @@
 //	@Test
 //	public void testMessageSendingService() {
 //
-//		log.info("***** Testing EventSending *****");
+//		logger.info("***** Testing EventSending *****");
 //		testSendEvent();
-//		log.info("***** EventSending tested successfully *****");
+//		logger.info("***** EventSending tested successfully *****");
 //
 //
-//		log.info("***** testing sendControlMessage *****");
+//		logger.info("***** testing sendControlMessage *****");
 //		testSendControlMessage();
-//		log.info("***** ControlMessageSending tested successfully *****");
+//		logger.info("***** ControlMessageSending tested successfully *****");
 //
 //
 //	}

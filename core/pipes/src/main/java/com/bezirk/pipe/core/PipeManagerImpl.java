@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 public class PipeManagerImpl implements PipeManager {
 
 	/*
-	 * Constants
+     * Constants
 	 */
 
     // This the lower bound for the size of the thread pool
@@ -42,10 +42,10 @@ public class PipeManagerImpl implements PipeManager {
     public static final long DEFAULT_THREAD_KEEP_ALIVE_SECS = 5;
 
     public static final String DEFAULT_CERT_FILENAME = "upa.crt";
-	
-	/*
-	 * Private data members
-	 */
+
+    /*
+     * Private data members
+     */
     private static final Logger log = LoggerFactory.getLogger(PipeManagerImpl.class);
     // Thread pool used to send http requests
     private ThreadPoolExecutor sendingThreadPool = null;
@@ -129,7 +129,7 @@ public class PipeManagerImpl implements PipeManager {
 
         // Only add to queue if the location refers to a pipe
         if (addressIsPipe(address)) {
-            //log.info("Adding event to PipeSender queue: " + eventRecord.getSerializedMessage());
+            //logger.info("Adding event to PipeSender queue: " + eventRecord.getSerializedMessage());
             log.info("Address is pipe; adding event to PipeSender queue for pipe: " + address.getPipe());
             executeRemoteMulticastSend((MulticastHeader) uhuHeader, serializedEvent);
         } else {
@@ -240,27 +240,23 @@ public class PipeManagerImpl implements PipeManager {
     }
 
     private ThreadPoolExecutor defaultRemoteSendingPool() {
-        ThreadPoolExecutor pool = new ThreadPoolExecutor(
+        return new ThreadPoolExecutor(
                 DEFAULT_CORE_POOL_SZ,
                 DEFAULT_MAX_POOL_SZ_SENDING,
                 DEFAULT_THREAD_KEEP_ALIVE_SECS,
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<Runnable>()
         );
-
-        return pool;
     }
 
     private ThreadPoolExecutor defaultLocalWritingPool() {
-        ThreadPoolExecutor pool = new ThreadPoolExecutor(
+        return new ThreadPoolExecutor(
                 DEFAULT_CORE_POOL_SZ,
                 DEFAULT_MAX_POOL_SZ_WRITING,
                 DEFAULT_THREAD_KEEP_ALIVE_SECS,
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<Runnable>()
         );
-
-        return pool;
     }
 
     /**

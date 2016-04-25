@@ -6,11 +6,10 @@ import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 
 /**
- * Created by GUR1PI on 8/6/2014.
- */
-
-/**
- * This message is used to initiate 'leave' from a member of the sphere owning a service it shared with owner of the same sphere
+ * This message is used to initiate 'leave' from a member of the sphere owning a service it shared
+ * with owner of the same sphere
+ *
+ * @author Rishab Gulati
  */
 public class MemberLeaveRequest extends MulticastControlMessage {
     //private final String sphere_Name;

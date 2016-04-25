@@ -16,8 +16,7 @@ import org.slf4j.LoggerFactory;
  * this delegates the service / sadl discovery related classes
  */
 public class DiscoveryManager implements ICtrlMsgReceiver {
-
-    private static final Logger log = LoggerFactory.getLogger(DiscoveryManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(DiscoveryManager.class);
 
     private UhuSadlManager sadlManager;
 
@@ -59,20 +58,20 @@ public class DiscoveryManager implements ICtrlMsgReceiver {
     public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
         switch (id) {
             case DiscoveryRequest:
-                final DiscoveryRequest req = (DiscoveryRequest) ControlMessage.deserialize(serializedMsg, DiscoveryRequest.class);
+                final DiscoveryRequest req = ControlMessage.deserialize(serializedMsg, DiscoveryRequest.class);
                 new DiscoveryRequestHandler(sadlManager, req, comms).getDiscoveryResponse();
 
                 break;
             case DiscoveryResponse:
-                //if tcMessage.message==null deserialize, else get tcMessage.message and typecast as response
-                final DiscoveryResponse response = (DiscoveryResponse) ControlMessage.deserialize(serializedMsg, DiscoveryResponse.class);
+                //if tcMessage.message==null fromJson, else get tcMessage.message and typecast as response
+                final DiscoveryResponse response = ControlMessage.deserialize(serializedMsg, DiscoveryResponse.class);
                 if (DiscoveryProcessor.getDiscovery().addResponse(response)) {
-                    log.debug("Discovery Response added successfully");
+                    logger.debug("Discovery Response added successfully");
                 } else
-                    log.debug("Problem w adding response/invoking service listener");
+                    logger.debug("Problem w adding response/invoking service listener");
                 break;
             default:
-                log.error("Unknown control message > " + id);
+                logger.error("Unknown control message > " + id);
                 return false;
         }
         return true;

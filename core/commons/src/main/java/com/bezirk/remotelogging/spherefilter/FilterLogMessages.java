@@ -9,7 +9,7 @@ import com.bezirk.remotelogging.util.Util;
 import java.util.List;
 
 /**
- * This class filters the log messages that are sent to the Logging Service.
+ * This class filters the logger messages that are sent to the Logging Service.
  * It checks if the Event/ Control Message that is sent on the wire belongs to the sphere in
  * which Logging Service is interested and filters the message accordingly.
  */

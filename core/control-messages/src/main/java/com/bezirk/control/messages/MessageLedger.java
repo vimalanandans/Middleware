@@ -16,23 +16,20 @@ public class MessageLedger extends Ledger /*implements Serializable*/ {
     String Msg; // serialized message
 
     public boolean isMulticast() {
-        if (recipient != null &&
-                (recipient.device != null) &&
-                recipient.device.length() != 0) {
-            return false;
-        }
-        return true;
+        return recipient != null &&
+                recipient.device != null &&
+                recipient.device.length() != 0;
     }
 /*
     // wire format is serialized
-    public byte[] serialize()  throws IOException {
+    public byte[] toJson()  throws IOException {
         Gson gson = new Gson();
         return gson.toJson(this).getBytes();
         // send the compressed string
         //return compress (gson.toJson(this));
     }
-    //deserialize data
-    public static MessageLedger deserialize(byte[] data) {
+    //fromJson data
+    public static MessageLedger fromJson(byte[] data) {
 
         MessageLedger wireMessage = null;
         String json = new String(data);

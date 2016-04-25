@@ -116,7 +116,7 @@ public class RemoteSender implements Runnable {
     }
 
     protected void doCloudPipeSend(String serializedEvent, CloudPipe cloudPipe) {
-        Event event = Event.deserialize(serializedEvent, Event.class);
+        Event event = Event.fromJson(serializedEvent, Event.class);
 
         URL url;
         try {
@@ -191,7 +191,7 @@ public class RemoteSender implements Runnable {
                 log.error("Reply was null from client.sendEvent()");
                 return;
             }
-            Event replyEvent = Event.deserialize(serializedReply, Event.class);
+            Event replyEvent = Event.fromJson(serializedReply, Event.class);
             if (!isReplyValid(replyEvent)) {
                 log.error("Reply event not valid. Will not pass to receiver for delivery to service.");
                 return;

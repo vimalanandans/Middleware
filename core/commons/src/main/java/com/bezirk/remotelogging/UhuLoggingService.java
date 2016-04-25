@@ -53,8 +53,8 @@ public class UhuLoggingService extends Thread {
         try {
             while (isRunning) {
                 Socket clientSocket = serverSocket.accept();
-                StringBuilder serializedLoggerMessage = new StringBuilder(new BufferedReader(new InputStreamReader(clientSocket.getInputStream())).readLine());
-                LoggingQueueManager.loadLogReceiverQueue(serializedLoggerMessage.toString());
+                String serializedLoggerMessage = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())).readLine();
+                LoggingQueueManager.loadLogReceiverQueue(serializedLoggerMessage);
             }
         } catch (IOException e) {
             logger.error("Some exception occured \n", e);

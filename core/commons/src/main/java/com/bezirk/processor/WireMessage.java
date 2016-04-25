@@ -44,8 +44,7 @@ public class WireMessage implements Serializable {
 
     static public boolean checkVersion(String msg) {
         // for json format
-        boolean test = msg.contains(MSG_VER);
-        return test;
+        return msg.contains(MSG_VER);
     }
 
     /**
@@ -63,9 +62,9 @@ public class WireMessage implements Serializable {
 
             if (start + end < msg.length())
 
-                // log.info("start > " + start + " end > "+end);
+                // logger.info("start > " + start + " end > "+end);
                 version = msg.substring(start, start + end);
-            //log.info("version > " + version);
+            //logger.info("version > " + version);
         }
 
         return version;
@@ -86,7 +85,7 @@ public class WireMessage implements Serializable {
         }
     }
 
-    //deserialize data
+    //fromJson data
     public static WireMessage deserialize(byte[] data) {
 
         WireMessage wireMessage = null;
@@ -129,19 +128,13 @@ public class WireMessage implements Serializable {
     }
 
     public boolean isMulticast() {
-        if (msgType == WireMsgType.MSG_MULTICAST_CTRL ||
-                msgType == WireMsgType.MSG_MULTICAST_EVENT) {
-            return true;
-        }
-        return false;
+        return msgType == WireMsgType.MSG_MULTICAST_CTRL ||
+                msgType == WireMsgType.MSG_MULTICAST_EVENT;
     }
 
     public boolean isCtrlMsg() {
-        if (msgType == WireMsgType.MSG_MULTICAST_CTRL ||
-                msgType == WireMsgType.MSG_UNICAST_CTRL) {
-            return true;
-        }
-        return false;
+        return msgType == WireMsgType.MSG_MULTICAST_CTRL ||
+                msgType == WireMsgType.MSG_UNICAST_CTRL;
     }
 
     // getter and setter
@@ -242,7 +235,7 @@ public class WireMessage implements Serializable {
 
     /**
 
-     public static <C> C deserialize(String json, Class<C> dC) {
+     public static <C> C fromJson(String json, Class<C> dC) {
      Gson gson = new Gson();
      return (C) gson.fromJson(json, dC);
      }

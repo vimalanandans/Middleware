@@ -1,9 +1,7 @@
 package com.bezirk.test.client;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 /**
  * This class will call the rest controller to test for a service response.
@@ -34,19 +32,17 @@ public class BezirkTestRestClient {
 			 * 
 			 */
             String xmlString = "</xml>";
-            DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpRequest = new HttpPost(url);
             httpRequest.setHeader("Content-Type", "application/xml");
             StringEntity xmlEntity = new StringEntity(xmlString);
             httpRequest.setEntity(xmlEntity);
-            HttpResponse httpresponse = httpClient.execute(httpRequest);
+
 
             // ******************
 			
-			
-			
-			
-			/*HttpClient client = new DefaultHttpClient();
+			/*
+			HttpResponse httpresponse = httpClient.execute(httpRequest);
+			HttpClient client = new DefaultHttpClient();
 			HttpPost httpPost = new HttpPost(url);
 
 			// add header

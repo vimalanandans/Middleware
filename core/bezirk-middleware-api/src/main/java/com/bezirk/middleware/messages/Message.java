@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014 Robert Bosch, LLC. All Rights Reserved.
- * <p>
+ * <p/>
  * Authors: Joao de Sousa, 2014
  * Mansimar Aneja, 2014
  * Vijet Badigannavar, 2014
@@ -12,54 +12,83 @@
  */
 package com.bezirk.middleware.messages;
 
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.addressing.ServiceId;
 import com.google.gson.Gson;
 
 /**
- * Superclass of all messages that services may exchange over Bezirk. Defines JSON (de)serialization.
+ * Base class for all message types Zirks may exchange using the Bezirk middleware. This class
+ * implements the serialization routines required to serialize/deserialize a message for
+ * transfer/reception.
  */
-public class Message {
+public abstract class Message {
+    private static final Gson gson = new Gson();
 
     /**
-     * Hint about the sender's protocol-specific expectations recipients should meet.
+     * Hint about how the sender expects the recipient(s) to handle the message. This is typically
+     * set by the concrete implementation class's constructor.
+     *
+     * @see #topic
+     * @see Message.Flag
      */
     public Flag flag;
 
     /**
-     * Discriminatory property for all messages. Should be set by leaf classes.
-     * Subscription ultimately translates to topics, which are then used by Bezirk during reception
-     * of published messages for matching them with recipients.
+     * The pub-sub topic for this message. Topics are defined by
+     * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles}. A Zirk subscribes to
+     * certain topics by using
+     * {@link com.bezirk.middleware.Bezirk#subscribe(ServiceId, ProtocolRole, BezirkListener)} to
+     * subscribe to a role. When the Bezirk middleware receives a message, it forwards that
+     * message on to any registered Zirk that is subscribed to the role defining the topic.
+     * The concrete implementation of a message specifies the topic, which should usually be the
+     * implementation class's simple name. For example:
+     * <pre>
+     * public class TemperatureReadEvent implements Event {
+     *     public TemperatureReadEvent() {
+     *         super(Flag.NOTICE, TemperatureReadEvent.class.getSimpleName());
+     *     }
+     * }
+     * </pre>
      */
     public String topic;
 
     /**
-     * Intended to help services match requests to (asynchronous) replies, this property is passed,
-     * but ignored by Bezirk. Should be set by requester services (e.g. circular counter), and
-     * echoed back by responder services.
-     * <p/>
-     * May be ignored for notices.
+     * Intended to help Zirks match messages with {@link #flag flags} set to {@link Message.Flag#REQUEST}
+     * with their corresponding {@link Message.Flag#REPLY reply} when the reply is received by a
+     * {@link BezirkListener}. The middleware does not use this property internally.
+     * The Zirk sending the request should set this ID, and the responding Zirk should echo it in
+     * the corresponding reply.
+     * <p>
+     * This property may be ignored for notices.
+     * </p>
      */
     public String msgId;
 
-    protected Message() {
-        // Better to have protected constructor rather than abstract class since there are no abstract methods
-    }
-
     /**
-     * @param json The Json String that is to be deserialized
-     * @param dC   class to deserialize into
-     * @return object of class C
+     * Serialize the message to a JSON string.
+     *
+     * @return JSON representation of the message
      */
-    public static <C> C deserialize(String json, Class<C> dC) {
-        Gson gson = new Gson();
-        return (C) gson.fromJson(json, dC);
-    }
-
-    /**
-     * @return Json representation of the message as a String.
-     */
-    public String serialize() {
-        Gson gson = new Gson();
+    public String toJson() {
         return gson.toJson(this);
+    }
+
+
+    /**
+     * Deserialize the <code>json</code> string to create an object of type <code>objectType</code>.
+     * This method can be used to serialize a message as follows:
+     * <p>
+     * <code>TemperatureReadEvent tempReadEvent = Event.fromJson(event, TemperatureReadEvent.class);</code>.
+     * </p>
+     *
+     * @param <C>        the type of the object represented by <code>json</code>, set by
+     *                   <code>objectType</code>
+     * @param json       the JSON String that is to be deserialized
+     * @param objectType the type of the object represented by <code>json</code>
+     * @return an object of type <code>objectType</code> deserialized from <code>json</code>
+     */
+    public static <C> C fromJson(String json, Class<C> objectType) {
+        return gson.fromJson(json, objectType);
     }
 
     /**
@@ -80,5 +109,4 @@ public class Message {
          */
         REPLY
     }
-
 }

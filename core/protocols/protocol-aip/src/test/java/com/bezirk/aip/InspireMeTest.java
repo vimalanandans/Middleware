@@ -27,8 +27,8 @@ public class InspireMeTest {
         inspireMe.setMaxInspirations(maxInspirations);
         inspireMe.setSubTopic(subTopic);
 
-        String serializedInspireMe = inspireMe.serialize();
-        InspireMe deserializedInspireMe = InspireMe.deserialize(serializedInspireMe, InspireMe.class);
+        String serializedInspireMe = inspireMe.toJson();
+        InspireMe deserializedInspireMe = InspireMe.fromJson(serializedInspireMe, InspireMe.class);
 
         assertEquals("ContextUser is not equal to set value.", user, deserializedInspireMe.getContext().getUser());
         assertEquals("Id is not equal to set value.", id, deserializedInspireMe.getId());

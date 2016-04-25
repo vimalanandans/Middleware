@@ -53,11 +53,8 @@ public class CatchProcessor {
      * @return
      */
     public boolean processCatchCode(String catchCode, String sphereId) {
-
-        String inviterShortCode = null;
         // sphereId in which the services need to be caught
-        String catcherSphereId = null;
-        CatchRequest catchRequest = null;
+        String catcherSphereId;
 
         /************************************************************************
          * Step1: validate the catcher sphereId passed and set it.
@@ -76,7 +73,7 @@ public class CatchProcessor {
          * short code and set the code
          ************************************************************************/
 
-        inviterShortCode = validateCodeString(catchCode);
+        String inviterShortCode = validateCodeString(catchCode);
         if (inviterShortCode != null) {
             LOGGER.info("Catch Process, Step2: shortCode validation complete");
         } else {
@@ -101,7 +98,7 @@ public class CatchProcessor {
          * services[the one providing the catch code]
          ************************************************************************/
 
-        catchRequest = prepareRequest(catcherSphereId, inviterShortCode);
+        CatchRequest catchRequest = prepareRequest(catcherSphereId, inviterShortCode);
         if (catchRequest != null) {
             LOGGER.info("Catch Process, Step4: catch request preparation complete");
         } else {
@@ -186,13 +183,6 @@ public class CatchProcessor {
      * @return
      */
     public boolean processRequest(CatchRequest catchRequest) {
-
-        SphereExchangeData sphereExchangeData = null;
-        UhuDeviceInfo catcherUhuDeviceInfo = null;
-        String inviterShortCode = null;
-        String catcherSphereId = null;
-        CatchResponse sphereCatchResponse = null;
-
         /************************************************************************
          * Step1: validate the request
          ************************************************************************/
@@ -204,10 +194,10 @@ public class CatchProcessor {
             return false;
         }
 
-        sphereExchangeData = SphereExchangeData.deserialize(catchRequest.getSphereExchangeData());
-        catcherUhuDeviceInfo = catchRequest.getUhuDeviceInfo();
-        inviterShortCode = catchRequest.getSphereId();
-        catcherSphereId = sphereExchangeData.getSphereID();
+        SphereExchangeData sphereExchangeData = SphereExchangeData.deserialize(catchRequest.getSphereExchangeData());
+        UhuDeviceInfo catcherUhuDeviceInfo = catchRequest.getUhuDeviceInfo();
+        String inviterShortCode = catchRequest.getSphereId();
+        String catcherSphereId = sphereExchangeData.getSphereID();
 
         /************************************************************************
          * Step2: store sphere exchange data
@@ -226,7 +216,7 @@ public class CatchProcessor {
          * add them to the catcher sphere & create response
          ************************************************************************/
 
-        sphereCatchResponse = prepareResponse(sphereExchangeData, catcherUhuDeviceInfo, inviterShortCode,
+        CatchResponse sphereCatchResponse = prepareResponse(sphereExchangeData, catcherUhuDeviceInfo, inviterShortCode,
                 catcherSphereId);
         if (sphereCatchResponse != null) {
             LOGGER.info("Catch Request Processing, Step3: preparing catch response complete");
@@ -303,7 +293,7 @@ public class CatchProcessor {
          * if (QRCodeData.checkVersionTag(inviterCatchCode) &&
          * QRCodeData.checkCompatibility(inviterCatchCode)) <br>
          * { // retrieve the catchCode QRCodeData catchData =
-         * QRCodeData.deserialize(inviterCatchCode); return
+         * QRCodeData.fromJson(inviterCatchCode); return
          * catchData.getCatchCode(); }
          */
         if (inviterCatchCode.length() == 7) {

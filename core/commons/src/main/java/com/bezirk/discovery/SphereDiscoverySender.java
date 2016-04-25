@@ -20,7 +20,7 @@ import UhuValidatorUtility;*/
 	
 	public SphereDiscoverySender(final String sphere, final int discoveryId, final long timeout, final int maxDiscovered) throws Exception{
 		 if(!UhuValidatorUtility.checkForString(sphere)){
-	            log.error( "Sphere name is null, Dropping discovery request from User");
+	            logger.error( "Sphere name is null, Dropping discovery request from User");
 	            throw new IllegalArgumentException("Sphere name is null, Dropping discovery request from User");
 	        }
 	        final String serviceIdStr = "______SPHERESCANNER#2";
@@ -30,7 +30,7 @@ import UhuValidatorUtility;*/
 	        final DiscoveryRequest discoveryRequest = new DiscoveryRequest(sphere,sender,null,null,discoveryId,timeout,maxDiscovered);
 	        transControlMessage.setMessage(discoveryRequest);
 	        transControlMessage.setSphereId(sphere);
-	        transControlMessage.setSerializedMessage(transControlMessage.getMessage().serialize());
+	        transControlMessage.setSerializedMessage(transControlMessage.getMessage().toJson());
 
             // FIXME commented out because no one is using  this module - Vimal
 	        // MessageQueueManager.getControlSenderQueue().addToQueue(transControlMessage);

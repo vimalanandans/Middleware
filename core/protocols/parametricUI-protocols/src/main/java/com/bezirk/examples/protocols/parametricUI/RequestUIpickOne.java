@@ -37,13 +37,13 @@ public class RequestUIpickOne extends Event {
     }
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJson()
      *
      * @param json
      * @return
      */
     public static RequestUIpickOne deserialize(String json) {
-        return Event.deserialize(json, RequestUIpickOne.class);
+        return Event.fromJson(json, RequestUIpickOne.class);
     }
 
     public String getIntro() {

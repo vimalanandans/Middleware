@@ -26,9 +26,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
  */
 public class EventSenderThread implements Runnable {
-    private static final Logger log = LoggerFactory.getLogger(EventSenderThread.class);
+    private static final Logger logger = LoggerFactory.getLogger(EventSenderThread.class);
     private final static int timeBetweenRetransmits = 100; // time in milliseconds
-    private final static int NumOfRetries = 10;
+    private final static int numOfRetries = 10;
     private final PipeManager pipeManager;
     private final IUhuCommsLegacy uhuComms;
     MessageQueue msgQueue = null;
@@ -43,12 +43,12 @@ public class EventSenderThread implements Runnable {
     @Override
     public void run() {
         running = true;
-        log.info("Uhu Sender Thread has started \n");
+        logger.info("Uhu Sender Thread has started \n");
 
         while (running) {
             if (Thread.currentThread().isInterrupted()) {
                 running = false;
-                log.info("SenderThread has stopped \n");
+                logger.info("SenderThread has stopped \n");
                 continue;
             }
 
@@ -73,13 +73,13 @@ public class EventSenderThread implements Runnable {
                 //If message is sent first time go through the stack until sphere
                 //Otherwise, just invoke UhuComms
                 if (eLedger.getNumOfSends() == 0) {
-                    log.debug("First time through the stack");
+                    logger.debug("First time through the stack");
                     // If this is a Multicast message, check to see if we also need to send it to a pipe
                     Header header = eLedger.getHeader();
                     if (header instanceof MulticastHeader) {
                         processPipes(eLedger);
                     } else {
-                        log.debug("Not a multicast message: " + eLedger.getSerializedMessage());
+                        logger.debug("Not a multicast message: " + eLedger.getSerializedMessage());
                     }
                     spherePassed = goThroSadlAndSpheres(eLedger);
                 } else {
@@ -102,12 +102,12 @@ public class EventSenderThread implements Runnable {
             byte[] encryptMsg = UhuCompManager.getSphereForSadl().encryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getSerializedMessage());
             if (null != encryptMsg) {
                 eLedger.setEncryptedMessage(encryptMsg);
-                log.trace("Sphere passed: set encrypted message");
+                logger.trace("Sphere passed: set encrypted message");
                 return true;
             }
             return false;
         }
-        log.info("SADL failed to send the Msg, May be the msg is local");
+        logger.info("SADL failed to send the Msg, May be the msg is local");
         return false;
     }
 
@@ -151,21 +151,21 @@ public class EventSenderThread implements Runnable {
     private void sendToComms(EventLedger eLedger) {
         //send to comms
         if (UhuCommsSend.send(eLedger)) {
-            log.info(" <<<< Message sent . No of Send " + String.valueOf(eLedger.getNumOfSends()) +
+            logger.info(" <<<< Message sent . No of Send " + String.valueOf(eLedger.getNumOfSends()) +
                     " Msg Id " + eLedger.getHeader().getUniqueMsgId());
         } else {
-            log.info("Message not sent, maybe senderAddress=localAddress");
+            logger.info("Message not sent, maybe senderAddress=localAddress");
         }
     }
 
     private Boolean isMessageValid(EventLedger eventLedger) {
         //Null checker ==> if message is null just continue iteration
         if (eventLedger == null) {
-            log.error(" Null message in SenderQueue");
+            logger.error(" Null message in SenderQueue");
             return false;
         }
         //Check number of times message has been sent
-        if (eventLedger.getNumOfSends().equals(NumOfRetries)) {
+        if (eventLedger.getNumOfSends() == numOfRetries) {
             return false;
         }
         return true;
@@ -176,12 +176,12 @@ public class EventSenderThread implements Runnable {
             String serializedEvent = eLedger.getSerializedMessage();
             pipeManager.processRemoteSend(eLedger.getHeader(), serializedEvent);
         } else {
-            log.debug("pipeManager is null; not checking if message should be sent to a pipe");
+            logger.debug("pipeManager is null; not checking if message should be sent to a pipe");
         }
     }
 
     public void stop() {
-        log.info("Sender Thread has stopped");
+        logger.info("Sender Thread has stopped");
         running = false;
     }
 

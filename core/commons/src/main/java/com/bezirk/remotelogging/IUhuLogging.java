@@ -5,8 +5,8 @@
 package com.bezirk.remotelogging;
 
 /**
- * Generic Interface that each of the platforms should implement to receive the log Messages.
- * The Platforms can process the log message and handle it in UI.
+ * Generic Interface that each of the platforms should implement to receive the logger Messages.
+ * The Platforms can process the logger message and handle it in UI.
  */
 public interface IUhuLogging {
     /**

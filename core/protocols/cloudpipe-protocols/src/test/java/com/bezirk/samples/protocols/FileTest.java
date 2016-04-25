@@ -38,7 +38,7 @@ public class FileTest {
         FileRequest fileRequest = new FileRequest();
         fileRequest.setFileName(fileName);
 
-        String serializedFileRequest = fileRequest.serialize();
+        String serializedFileRequest = fileRequest.toJson();
 
         FileRequest deserializedFileRequest = FileRequest
                 .deserialize(serializedFileRequest);
@@ -72,9 +72,9 @@ public class FileTest {
         FileReply fileReply = new FileReply();
         fileReply.setFileName(fileName);
 
-        String serializedFileReply = fileReply.serialize();
+        String serializedFileReply = fileReply.toJson();
 
-        FileReply deserializedFileReply = FileReply.deserialize(serializedFileReply, FileReply.class);
+        FileReply deserializedFileReply = FileReply.fromJson(serializedFileReply, FileReply.class);
 
         assertEquals("Filename is not equal to the set value.", fileName,
                 deserializedFileReply.getFileName());

@@ -40,7 +40,7 @@
 //	 */
 //	@BeforeClass
 //	public static void setUpBeforeClass() throws Exception {
-//		log.info("***** Setting up SphereRegistryWrapper:GetDefaultSphereId TestCase *****");
+//		logger.info("***** Setting up SphereRegistryWrapper:GetDefaultSphereId TestCase *****");
 //		
 //		// required for reseting the device no's to 0 for each test class
 //		// considering the device no for testing
@@ -57,7 +57,7 @@
 //	 */
 //	@AfterClass
 //	public static void tearDownAfterClass() throws Exception {
-//		log.info("***** Shutting down SphereRegistryWrapper:GetDefaultSphereId TestCase *****");
+//		logger.info("***** Shutting down SphereRegistryWrapper:GetDefaultSphereId TestCase *****");
 //		mockSetUp.destroyTestSetUp();
 //	}
 //

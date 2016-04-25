@@ -21,7 +21,7 @@ public class InitUserProxyUI extends Event {
 	/* getters and setters */
 
     public static InitUserProxyUI deserialize(String json) {
-        return Event.deserialize(json, InitUserProxyUI.class);
+        return Event.fromJson(json, InitUserProxyUI.class);
     }
 
     public String getUser() {

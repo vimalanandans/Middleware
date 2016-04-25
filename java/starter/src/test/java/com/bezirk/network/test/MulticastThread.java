@@ -41,7 +41,7 @@
 //
 //        while (running) {
 //            if (Thread.interrupted()) {
-//                log.info("Event MulicastListener has Stopped");
+//                logger.info("Event MulicastListener has Stopped");
 //                running = false;
 //                continue;
 //            }
@@ -49,24 +49,24 @@
 //            try {
 //                multicastSocket.receive(receivePacket);
 //            } catch (SocketTimeoutException e) {
-//                log.error("Unable to receive data through multicast socket . ",e);
+//                logger.error("Unable to receive data through multicast socket . ",e);
 //            } catch (SocketException e) {
-//                log.info("Event MulicastListener has Stopped \n");
+//                logger.info("Event MulicastListener has Stopped \n");
 //                running = false;
 //                continue;
 //            } catch (IOException e) {
-//                log.error("Unable to receive data through multicast socket . ",e);
+//                logger.error("Unable to receive data through multicast socket . ",e);
 //            }
 //
 //            if (!receivePacket.getAddress().getHostAddress()
 //                    .equals(myAddress.getHostAddress())) {
-//                log.info("Echo Received: SUCCESS");
+//                logger.info("Echo Received: SUCCESS");
 //                EchoTest.success = true;
 //                continue;
 //
 //
 //            } else {
-//                log.error("RECEIVED ON Multicast: "
+//                logger.error("RECEIVED ON Multicast: "
 //                        + "Problem Computing my Address");
 //
 //            }
@@ -83,15 +83,15 @@
 //            myAddress = UhuNetworkUtilities.getIpForInterface(NetworkInterface
 //                    .getByName(UhuComms.getINTERFACE_NAME()));
 //            running = true;
-//            log.info("Event MulicastListener has Started\n");
+//            logger.info("Event MulicastListener has Started\n");
 //
 //
 //        } catch (SocketException e) {
-//            log.error("Unable to setup multicast socket . ",e);
+//            logger.error("Unable to setup multicast socket . ",e);
 //        } catch (UnknownHostException e) {
-//            log.error("Unable to setup multicast socket . ",e);
+//            logger.error("Unable to setup multicast socket . ",e);
 //        } catch (IOException e) {
-//            log.error("Unable to setup multicast socket . ",e);
+//            logger.error("Unable to setup multicast socket . ",e);
 //        }
 //
 //        return myAddress;

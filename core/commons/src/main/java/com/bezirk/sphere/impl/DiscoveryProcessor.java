@@ -31,8 +31,8 @@ import java.util.Set;
  * @author rishabh
  */
 public class DiscoveryProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(DiscoveryProcessor.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DiscoveryProcessor.class);
     private UPADeviceInterface upaDeviceInterface;
     private CommsUtility comms;
     private SphereRegistryWrapper sphereRegistryWrapper;
@@ -41,14 +41,13 @@ public class DiscoveryProcessor {
     // sphere discovery parameters
     private int discoveryId = 0;
     private int maxDiscovered = 20;
-    private int timeout = 5000;
+    private int timeout = 5000; /* ms */
 
     /**
-     * @param sphereUtils
-     * @param crypto
      * @param upaDeviceInterface
-     * @param uhuComms
+     * @param comms
      * @param sphereRegistryWrapper
+     * @param uhuSphereListener
      */
     public DiscoveryProcessor(UPADeviceInterface upaDeviceInterface, CommsUtility comms,
                               SphereRegistryWrapper sphereRegistryWrapper, IUhuSphereListener uhuSphereListener) {
@@ -167,7 +166,7 @@ public class DiscoveryProcessor {
         final String serviceIdStr = "______SPHERESCANNER#1";
         final UhuServiceId serviceId = new UhuServiceId(serviceIdStr);
         final UhuServiceEndPoint sender = UhuNetworkUtilities.getServiceEndPoint(serviceId);
-        LOGGER.debug("Discovery initiator device : " + sender.device);
+        logger.debug("Discovery initiator device : " + sender.device);
 
         // Assign discovery Id
         discoveryId = (++discoveryId) % Integer.MAX_VALUE;
@@ -218,16 +217,16 @@ public class DiscoveryProcessor {
                                 discoveryRequest.getDiscoveryId());
 
                         response.setUhuSphereInfo(discoverResponseSphereInfo);
-                        LOGGER.debug("Discovery Response created. UhuSphereInfo sent\n" + discoverResponseSphereInfo);
+                        logger.debug("Discovery Response created. UhuSphereInfo sent\n" + discoverResponseSphereInfo);
                         return comms.sendMessage(response);
                     }
                 }
 
             } else {
-                LOGGER.debug("UhuSphereInfo or deviceList is null");
+                logger.debug("UhuSphereInfo or deviceList is null");
             }
         } else {
-            LOGGER.debug("SphereDiscovery: Sphere Id is invalid");
+            logger.debug("SphereDiscovery: Sphere Id is invalid");
         }
         return false;
 
@@ -235,12 +234,12 @@ public class DiscoveryProcessor {
 
     private boolean validateRequest(DiscoveryRequest discoveryRequest) {
         if (discoveryRequest.getSender().device.equals(UhuNetworkUtilities.getDeviceIp())) {
-            LOGGER.debug("Msg from same device, ignoring dicovery request");
+            logger.debug("Msg from same device, ignoring dicovery request");
             return false;
         }
 
         if (!sphereRegistryWrapper.containsSphere(discoveryRequest.getSphereId())) {
-            LOGGER.error("Request with invalid sphereId reeived at DiscoveryProcessor");
+            logger.error("Request with invalid sphereId reeived at DiscoveryProcessor");
         }
         return true;
     }

@@ -18,13 +18,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class ControlSenderThread implements Runnable {
+    private static final Logger logger = LoggerFactory.getLogger(ControlSenderThread.class);
+
     private final static int timeBetweenRetransmits = 500; // time in milliseconds
     private final static int MIN_NO_OF_RECEIVERS = 5;
     private final static int SLEEP_TIME = 50; // time in milliseconds
-    MessageQueue msgQueue = null;
-    private Logger log = LoggerFactory.getLogger(ControlSenderThread.class);
-    private Boolean running = false;
-    private int NumOfRetries = 5;
+
+    private MessageQueue msgQueue = null;
+    private int numOfRetries = 5;
     // Sadl Instance in charge of sending
     private IUhuCommsLegacy uhuComms;
 
@@ -35,12 +36,12 @@ public class ControlSenderThread implements Runnable {
 
     @Override
     public void run() {
-        running = true;
-        log.info("Control Sender Thread has started");
+        boolean running = true;
+        logger.info("Control Sender Thread has started");
         while (running) {
             if (Thread.currentThread().isInterrupted()) {
                 running = false;
-                log.info("Control SenderThread has stopped");
+                logger.info("Control SenderThread has stopped");
                 continue;
             }
             //Wait on SendingMessageQueue
@@ -56,7 +57,7 @@ public class ControlSenderThread implements Runnable {
                         try {
                             Thread.sleep(SLEEP_TIME);
                         } catch (InterruptedException e) {
-                            log.error("Waiting for sender control queue interrupted");
+                            logger.error("Waiting for sender control queue interrupted");
                         }
                     }
                     continue;
@@ -64,13 +65,13 @@ public class ControlSenderThread implements Runnable {
                 //if(this.sadlControlSender.sendControlMessage(cMessage)){
                 if (sendControlMessage(cMessage)) {
                     if (UhuCommsSend.sendctrl(cMessage)) {
-                        log.info("Ctrl message- " + cMessage.getMessage().getDiscriminator() + ":" + cMessage.getMessage().getMessageId() + " sent");
+                        logger.info("Ctrl message- " + cMessage.getMessage().getDiscriminator() + ":" + cMessage.getMessage().getMessageId() + " sent");
                     } else {
-                        log.info("Send Failed| Sphere Failed: Could not send msg");
+                        logger.info("Send Failed| Sphere Failed: Could not send msg");
                         removeMessage(cMessage);
                     }
                 } else {
-                    log.info("Sadl Ctrl Send Failed for " + cMessage.getMessage().getDiscriminator() + ". Message is local");
+                    logger.info("Sadl Ctrl Send Failed for " + cMessage.getMessage().getDiscriminator() + ". Message is local");
                     removeMessage(cMessage);
                 }
             }
@@ -121,7 +122,6 @@ public class ControlSenderThread implements Runnable {
 			tempStreamRecord.streamStatus = StreamingStatus.LOCAL;
 			//MessageQueueManager.getStreamingMessageQueue().addToQueue(tempStreamRecord);
 			uhuComms.sendStreamMessage(tempStreamRecord);*/
-            return;
         } else {
             //MessageQueueManager.getControlReceiverQueue().addToQueue(tcMessage);
             uhuComms.addToQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.CONTROL_RECEIVE_QUEUE, tcMessage);
@@ -135,7 +135,7 @@ public class ControlSenderThread implements Runnable {
             return false;
         }
         //Check number of times message has been sent
-        if (cMessage.getNumOfSends() == NumOfRetries) { // && !tcMessage.getMessage().getMessageId().equals(-1)){
+        if (cMessage.getNumOfSends() == numOfRetries) { // && !tcMessage.getMessage().getMessageId().equals(-1)){
             //remove from Send Queue and wait for Acks queue
             removeMessage(cMessage);
             return false;

@@ -74,12 +74,12 @@ public class InspireMe extends Event {
 	/* Getter and setter methods */
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic UhuMessage.fromJson()
      * @param json
      * @return Question
      */
     public static Question deserialize(String json) {
-        return Event.deserialize(json, Question.class);
+        return Event.fromJson(json, Question.class);
     }
 
     public String getSubTopic() {

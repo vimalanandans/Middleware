@@ -21,9 +21,9 @@ public class ResponseLightLocationTest {
         Location location = new Location("FLOOR1/ROOM1/TABLE");
         ResponseLightLocation responseLightLocation = new ResponseLightLocation(lightId, location);
 
-        String serializedResponseLightLocation = responseLightLocation.serialize();
+        String serializedResponseLightLocation = responseLightLocation.toJson();
 
-        ResponseLightLocation deserializedResponseLightLocation = ResponseLightLocation.deserialize(serializedResponseLightLocation, ResponseLightLocation.class);
+        ResponseLightLocation deserializedResponseLightLocation = ResponseLightLocation.fromJson(serializedResponseLightLocation, ResponseLightLocation.class);
         assertEquals("LightId is not matching with the set value.", lightId, deserializedResponseLightLocation.getLightId());
         assertEquals("Location is not matching with the set value.", location, deserializedResponseLightLocation.getLocation());
 

@@ -128,7 +128,7 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream f, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
         }
 
         @Override
@@ -136,11 +136,11 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void streamStatus(short streamId, StreamConditions status) {
+        public void streamStatus(short streamId, StreamStates status) {
         }
 
         @Override
-        public void pipeStatus(Pipe p, PipeConditions status) {
+        public void pipeStatus(Pipe pipe, PipeStates status) {
         }
 
         @Override
@@ -171,7 +171,7 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void pipeGranted(Pipe p, PipePolicy allowedIn,
+        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
                                 PipePolicy allowedOut) {
 
         }
@@ -271,7 +271,7 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream f, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
 
         }
 
@@ -292,7 +292,7 @@ public class StreamLocalTest {
             assertEquals("MockRequestStream", topic);
             assertEquals(sendfilePath, filePath);
             assertEquals(sendStreamId, streamId);
-            assertEquals(request.serialize(), stream);
+            assertEquals(request.toJson(), stream);
             // Read and verify the stream
             FileInputStream fileInputStream = null;
             BufferedReader reader = null;
@@ -320,15 +320,15 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void streamStatus(short streamId, StreamConditions status) {
+        public void streamStatus(short streamId, StreamStates status) {
             assertEquals(sendStreamId, streamId);
-            assertEquals(StreamConditions.END_OF_DATA, status);
+            assertEquals(StreamStates.END_OF_DATA, status);
             logger.info("**** STREAM STATUS SUCCESSFUL FOR END_OF_DATA");
         }
 
 
         @Override
-        public void pipeStatus(Pipe p, PipeConditions status) {
+        public void pipeStatus(Pipe pipe, PipeStates status) {
         }
 
         @Override
@@ -336,7 +336,7 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void pipeGranted(Pipe p, PipePolicy allowedIn,
+        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
                                 PipePolicy allowedOut) {
 
         }

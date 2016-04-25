@@ -24,7 +24,7 @@ public class Pipe {
     private String name;
 
     public Pipe() {
-        //Empty Constructor for gson.deserialize
+        //Empty Constructor for gson.fromJson
     }
 
     /**
@@ -36,7 +36,7 @@ public class Pipe {
 
     /**
      * @param json The Json String that is to be deserialized
-     * @param cL   class to deserialize into
+     * @param cL   class to fromJson into
      * @return object of class C
      */
     public static <C> C deserialize(String json, Class cL) {
@@ -57,15 +57,7 @@ public class Pipe {
     }
 
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
-
-        builder.append("|");
-        builder.append(getClass().getSimpleName());
-        builder.append(",");
-        builder.append(getName());
-        builder.append("|");
-
-        return builder.toString();
+        return "|" + getClass().getSimpleName() + "," + getName() + "|";
     }
 
     /**
