@@ -31,7 +31,7 @@ public class MockUhuService implements BezirkListener {
 
     @Override
     public void receiveStream(String topic, String stream, short streamId,
-                              InputStream f, ServiceEndPoint sender) {
+                              InputStream inputStream, ServiceEndPoint sender) {
         // TODO Auto-generated method stub
 
     }
@@ -44,19 +44,19 @@ public class MockUhuService implements BezirkListener {
     }
 
     @Override
-    public void streamStatus(short streamId, StreamConditions status) {
+    public void streamStatus(short streamId, StreamStates status) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void pipeGranted(Pipe p, PipePolicy allowedIn, PipePolicy allowedOut) {
+    public void pipeGranted(Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut) {
         pipeGrantedCalled = true;
         pipeGranted = true;
     }
 
     @Override
-    public void pipeStatus(Pipe p, PipeConditions status) {
+    public void pipeStatus(Pipe pipe, PipeStates status) {
         // TODO Auto-generated method stub
 
     }

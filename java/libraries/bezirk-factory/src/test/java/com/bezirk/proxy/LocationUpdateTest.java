@@ -153,7 +153,7 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream f, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
         }
 
         @Override
@@ -161,12 +161,12 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void streamStatus(short streamId, StreamConditions status) {
+        public void streamStatus(short streamId, StreamStates status) {
         }
 
 
         @Override
-        public void pipeStatus(Pipe p, PipeConditions status) {
+        public void pipeStatus(Pipe pipe, PipeStates status) {
         }
 
         @Override
@@ -174,7 +174,7 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void pipeGranted(Pipe p, PipePolicy allowedIn,
+        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
                                 PipePolicy allowedOut) {
 
         }
@@ -276,7 +276,7 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream f, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
         }
 
         @Override
@@ -284,11 +284,11 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void streamStatus(short streamId, StreamConditions status) {
+        public void streamStatus(short streamId, StreamStates status) {
         }
 
         @Override
-        public void pipeStatus(Pipe p, PipeConditions status) {
+        public void pipeStatus(Pipe pipe, PipeStates status) {
         }
 
         @Override
@@ -296,7 +296,7 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void pipeGranted(Pipe p, PipePolicy allowedIn,
+        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
                                 PipePolicy allowedOut) {
 
         }

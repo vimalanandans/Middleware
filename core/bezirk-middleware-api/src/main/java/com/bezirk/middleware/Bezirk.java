@@ -124,7 +124,8 @@ public interface Bezirk {
      * Publish a {@link com.bezirk.middleware.messages.Stream} with one specific recipient. The
      * channel's properties are described by <code>stream</code>. The transmitted data is supplied by
      * writes to <code>dataStream</code>. To send a file use
-     * {@link #sendStream(ServiceId, ServiceEndPoint, Stream, String)}.
+     * {@link #sendStream(ServiceId, ServiceEndPoint, Stream, String)}. Streams sent using this
+     * method are assumed to be incremental (see {@link Stream#isIncremental()}).
      *
      * @param sender     id of Zirk sending the stream, as returned by {@link #registerService(String)}
      * @param receiver   intended recipient, as extracted from a received message, or as discovered
@@ -136,7 +137,7 @@ public interface Bezirk {
      *                   <code>dataStream</code> in a thread-safe manner by creating a
      *                   <code>PipedInputStream</code> linked to <code>dataStream</code>
      * @return Bezirk middelware-generated id for the stream, which will be referred to in
-     * {@link BezirkListener#streamStatus(short, BezirkListener.StreamConditions)}
+     * {@link BezirkListener#streamStatus(short, BezirkListener.StreamStates)}
      * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ServiceEndPoint)
      * @see BezirkListener#receiveStream(String, String, short, String, ServiceEndPoint)
      */
@@ -146,7 +147,8 @@ public interface Bezirk {
     /**
      * Publish a file with one specific recipient. This method is identical to
      * {@link Bezirk#sendStream(ServiceId, ServiceEndPoint, Stream, PipedOutputStream)}, except this
-     * version is intended to send a specific file instead of general data.
+     * version is intended to send a specific file instead of general data. Streams sent using this
+     * method are assumed to be non-incremental (see {@link Stream#isIncremental()}).
      *
      * @param sender   id of Zirk sending the stream, as returned by {@link #registerService(String)}
      * @param receiver intended recipient, as extracted from a received message, or as discovered
@@ -155,7 +157,7 @@ public interface Bezirk {
      * @param stream   communication channel's descriptor
      * @param filePath the file whose contents will be sent using the <code>stream</code>
      * @return Bezirk middelware-generated id for the stream, which will be referred to in
-     * {@link BezirkListener#streamStatus(short, BezirkListener.StreamConditions)}
+     * {@link BezirkListener#streamStatus(short, BezirkListener.StreamStates)}
      * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ServiceEndPoint)
      * @see BezirkListener#receiveStream(String, String, short, String, ServiceEndPoint)
      */
@@ -169,6 +171,7 @@ public interface Bezirk {
      * <code>allowedIn</code> and <code>allowedOut</code>, which restrict the messages that can flow
      * into and out of the sphere via the pipe to just those messages belonging to explicitly listed
      * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles's}.
+     * <p><mark>TODO:</mark> What happens if you try to use an unauthorized pipe?</p>
      *
      * @param requester  id of Zirk requesting the pipe, as returned by {@link #registerService(String)}
      * @param pipe       the pipe the Zirk wants permission to use

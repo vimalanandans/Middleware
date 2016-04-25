@@ -7,7 +7,6 @@ import com.bezirk.messagehandler.ServiceIncomingMessage;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.BezirkListener.StreamConditions;
 import com.bezirk.middleware.addressing.DiscoveredService;
 import com.bezirk.middleware.addressing.ServiceEndPoint;
 import com.bezirk.proxy.api.impl.UhuDiscoveredService;
@@ -156,8 +155,8 @@ public class BRForService implements IBoradcastReceiver {
                 for (BezirkListener listner : tempHashSet) {
                     listner.streamStatus(
                             streamStatusCallbackMessage.streamId,
-                            ((1 == streamStatusCallbackMessage.streamStatus) ? StreamConditions.END_OF_DATA
-                                    : StreamConditions.LOST_CONNECTION));
+                            ((1 == streamStatusCallbackMessage.streamStatus) ? BezirkListener.StreamStates.END_OF_DATA
+                                    : BezirkListener.StreamStates.LOST_CONNECTION));
                 }
             }
             activeStreams.remove(activeStreamkey);
