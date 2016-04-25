@@ -20,7 +20,6 @@ import com.bezirk.middleware.addressing.ServiceId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.Stream;
-import com.bezirk.middleware.serialization.AddressSerializer;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
@@ -198,7 +197,7 @@ public final class Proxy implements Bezirk {
         multicastEventIntent.setAction(ACTION_SERVICE_SEND_MULTICAST_EVENT);
         multicastEventIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) sender));
 
-        multicastEventIntent.putExtra("address", new AddressSerializer().toJson(receiver));
+        multicastEventIntent.putExtra("address", receiver.toJson());
         multicastEventIntent.putExtra("multicastEvent", event.toJSON());
 
         ComponentName retName = mContext.startService(multicastEventIntent);

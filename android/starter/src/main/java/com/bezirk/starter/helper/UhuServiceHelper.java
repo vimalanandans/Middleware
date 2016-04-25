@@ -7,7 +7,6 @@ import com.bezirk.comms.UhuComms;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.serialization.AddressSerializer;
 import com.bezirk.proxy.android.ProxyforServices;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
@@ -277,7 +276,7 @@ public final class UhuServiceHelper {
             final Gson gson = new Gson();
             final UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
             if (UhuValidatorUtility.checkUhuServiceId(serviceId)) {
-                final Address address = new AddressSerializer().fromJson(addressAsString);
+                final Address address = Address.fromJson(addressAsString);
                 LOGGER.debug("Sending multicast event from service: " + serviceIdAsString);
                 proxy.sendMulticastEvent(serviceId, address, mEventMsg);
             } else {

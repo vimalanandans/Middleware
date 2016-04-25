@@ -44,7 +44,6 @@ import java.io.PipedOutputStream;
  * @see BezirkListener
  */
 public interface Bezirk {
-
     /**
      * Register a Zirk with the Bezirk middleware. This makes the Zirk available the user,
      * thus allowing her to place it in a sphere to interact with other Zirks. This method must

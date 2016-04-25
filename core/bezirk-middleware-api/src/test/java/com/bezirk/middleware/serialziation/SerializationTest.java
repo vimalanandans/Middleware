@@ -16,7 +16,6 @@ import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
-import com.bezirk.middleware.serialization.AddressSerializer;
 
 import org.junit.Test;
 
@@ -28,18 +27,16 @@ public class SerializationTest {
 
     @Test
     public void testAddressSerializer() throws Exception {
-        AddressSerializer serializer = new AddressSerializer();
-
         Location location = new Location("home", "garage", "garagedoor");
         URI uri = new URI("http://foo/bar");
         Pipe pipe = new CloudPipe("boschPipe", uri);
         Address address = new Address(location, pipe, false);
 
-        String serializedAddress = serializer.toJson(address);
+        String serializedAddress = address.toJson();
         System.out.println("serialized address    : " + serializedAddress);
 
-        Address newAddress = serializer.fromJson(serializedAddress);
-        String serializedNewAddress = serializer.toJson(newAddress);
+        Address newAddress = Address.fromJson(serializedAddress);
+        String serializedNewAddress = newAddress.toJson();
         System.out.println("serialized new address: " + serializedNewAddress);
 
         assertTrue(serializedAddress.equals(serializedNewAddress));

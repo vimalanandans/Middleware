@@ -13,6 +13,9 @@
 package com.bezirk.middleware.addressing;
 
 import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.serialization.InterfaceAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Represents a semantic address for publishing events and streams over Bezirk
@@ -23,6 +26,13 @@ public class Address {
     private final boolean local, remote;
     private final Pipe pipe;
     private final Location location;
+    private static final Gson gson;
+
+    static {
+        final GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Pipe.class, new InterfaceAdapter<Pipe>());
+        gson = builder.create();
+    }
 
     /**
      * Address for local publishing only: no pipes.
@@ -77,5 +87,13 @@ public class Address {
      */
     public Location getLocation() {
         return location;
+    }
+
+    public String toJson() {
+        return gson.toJson(this);
+    }
+
+    public static Address fromJson(String serializedAddress) {
+        return gson.fromJson(serializedAddress, Address.class);
     }
 }
