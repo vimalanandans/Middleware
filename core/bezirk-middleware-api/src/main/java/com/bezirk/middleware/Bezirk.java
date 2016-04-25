@@ -221,7 +221,8 @@ public interface Bezirk {
      * @param protocolRole the role that Zirks we want to discover are subscribed to, or
      *                     <code>null</code> to discover all Zirks in <code>zirk</code>'s
      *                     spheres
-     * @param timeout      max time Bezirk middleware can wait for replies to discovery requests
+     * @param timeout      max time in milliseconds that the Bezirk middleware can wait for replies
+     *                     to discovery requests
      * @param maxResults   number of Zirks the Bezirk middleware is to wait for
      * @param listener     recipient of notifications issued by the Bezirk middleware when the set
      *                     of discovered services is complete
