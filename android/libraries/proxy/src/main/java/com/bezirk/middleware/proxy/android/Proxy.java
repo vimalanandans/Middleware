@@ -253,16 +253,15 @@ public final class Proxy implements Bezirk {
     }
 
     @Override
-    public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream stream, String filePath) {
+    public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream stream, File file) {
 
-        if (null == receiver || null == stream || !StringValidatorUtil.areValidStrings(filePath, stream.topic)) {
+        if (null == receiver || null == stream || !StringValidatorUtil.areValidStrings(stream.topic)) {
             Log.e(TAG, "Check for null values in sendStream()/ Topic might be Empty.");
             return (short) -1;
         }
 
-        File tempFile = new File(filePath);
-        if (!tempFile.exists()) {
-            Log.e(TAG, " No file found at the location: " + filePath);
+        if (!file.exists()) {
+            Log.e(TAG, "Cannot send file stream. File not found: " + file.getPath());
             return (short) -1;
         }
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
@@ -277,7 +276,7 @@ public final class Proxy implements Bezirk {
         unicastStreamIntent.putExtra("serviceId", new Gson().toJson((UhuServiceId) sender));
         unicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
         unicastStreamIntent.putExtra("stream", stream.toJson());
-        unicastStreamIntent.putExtra("filePath", filePath);
+        unicastStreamIntent.putExtra("filePath", file);
         unicastStreamIntent.putExtra("localStreamId", streamId);
         ComponentName retName = mContext.startService(unicastStreamIntent);
         if (retName == null) {

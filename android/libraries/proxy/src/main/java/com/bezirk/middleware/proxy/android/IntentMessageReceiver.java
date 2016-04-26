@@ -19,6 +19,7 @@ import com.bezirk.proxy.api.impl.UhuServiceId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -139,7 +140,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
                 if ("EVENT".equalsIgnoreCase(type)) {
                     listener.receiveEvent(topic, message, sourceSEP);
                 } else if ("STREAM_UNICAST".equalsIgnoreCase(type)) {
-                    listener.receiveStream(topic, message, streamId, filePath, sourceSEP);
+                    listener.receiveStream(topic, message, streamId, new File(filePath), sourceSEP);
                 }
             }
             return true;

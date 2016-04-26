@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class StreamSendingThread implements Runnable {
     private final UhuServiceId senderServiceID;
     private final String recipientIP;                                 // recipient
     private final int port;                                           // the port that the recipient is listening
-    private final String filePath;                                    // path to the file that has to be sent
+    private final File file;                                    // path to the file that has to be sent
     private final String sphere;
     private final ISadlEventReceiver sadlReceiver;
     private final IUhuSphereForSadl sphereForSadl;
@@ -44,7 +45,7 @@ public class StreamSendingThread implements Runnable {
         this.sphere = streamRecord.sphere;
         this.recipientIP = streamRecord.recipientIP;
         this.port = streamRecord.recipientPort;
-        this.filePath = streamRecord.filePath;
+        this.file = streamRecord.file;
         this.isEncrypted = streamRecord.isEncrypted;
         this.localStreamId = streamRecord.localStreamId;
         this.senderServiceID = streamRecord.senderSEP.serviceId;
@@ -54,14 +55,13 @@ public class StreamSendingThread implements Runnable {
 
     @Override
     public void run() {
-
         client = null;
         FileInputStream fileInputStream = null;
         DataOutputStream dataOutputStream = null;
         int sentStatus = 1;
         try {
             logger.debug("Thread started to send the data");
-            fileInputStream = new FileInputStream(filePath);                              // open the file
+            fileInputStream = new FileInputStream(file);                              // open the file
             client = new Socket(recipientIP, port);                                       // open the socket
             dataOutputStream = new DataOutputStream(client.getOutputStream());
             if (isEncrypted) {
@@ -81,7 +81,7 @@ public class StreamSendingThread implements Runnable {
                 logger.debug("---------- Data has been transferred successfully! -------------");
             }
         } catch (FileNotFoundException e) {
-            logger.debug("Error in Sending stream : " + filePath, e);
+            logger.debug("Error in Sending stream : " + file.getPath(), e);
             sentStatus = 0;
         } catch (UnknownHostException e) {
             logger.debug("Error in Opening socket to host : " + recipientIP + " , port : " + port, e);

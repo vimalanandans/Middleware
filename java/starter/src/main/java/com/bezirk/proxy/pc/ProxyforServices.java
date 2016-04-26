@@ -173,7 +173,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     }
 
     @Override
-    public short sendStream(UhuServiceId senderId, UhuServiceEndPoint receiver, String serializedStream, String filePath, short streamId) {
+    public short sendStream(UhuServiceId senderId, UhuServiceEndPoint receiver, String serializedStream, File file, short streamId) {
         final Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(senderId);
         if (null == listOfSphere) {
             log.error("Service Not Registered with any sphere: " + senderId);
@@ -195,7 +195,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
             streamRecord.streamStatus = StreamRecord.StreamingStatus.PENDING;
             streamRecord.recipientIP = receiver.device;
             streamRecord.recipientPort = 0;
-            streamRecord.filePath = filePath;
+            streamRecord.file = file;
             streamRecord.pipedInputStream = null;
             streamRecord.recipientSEP = receiver;
             streamRecord.serializedStream = serializedStream;
@@ -206,12 +206,12 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
                 log.error("Cannot Register Stream, CtrlMsgId is already present in StreamBook");
                 return (short) -1;
             }
-            final File tempFile = new File(filePath);
+
             while (sphereIterator.hasNext()) {
                 final String sphereName = sphereIterator.next();
                 final ControlLedger tcMessage = new ControlLedger();
                 tcMessage.setSphereId(sphereName);
-                final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedStream, stream.topic, tempFile.getName(), streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.allowDrops, streamId);
+                final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedStream, stream.topic, file.getName(), streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.allowDrops, streamId);
                 tcMessage.setSphereId(sphereName);
                 tcMessage.setMessage(request);
                 tcMessage.setSerializedMessage(new Gson().toJson(request));

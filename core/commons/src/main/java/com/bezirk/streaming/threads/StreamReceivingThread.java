@@ -177,7 +177,7 @@ public class StreamReceivingThread implements Runnable {
         if (portRealeased) {
             StreamIncomingMessage uStreamCallbackMsg = new StreamIncomingMessage(
                     recipient.serviceId, streamLabel, serialzedMsg,
-                    tempFile.getAbsolutePath(), streamId, sender);
+                    tempFile, streamId, sender);
             if (UhuValidatorUtility.isObjectNotNull(sadlReceiver)) {
 
                 sadlReceiver.processNewStream(uStreamCallbackMsg);

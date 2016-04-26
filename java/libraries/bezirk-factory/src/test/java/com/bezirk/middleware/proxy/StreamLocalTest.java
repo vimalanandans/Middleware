@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +45,7 @@ public class StreamLocalTest {
     private static final Logger logger = LoggerFactory.getLogger(StreamLocalTest.class);
     private static boolean isStreamSuccess = false;
     private short sendStreamId = -1;
-    private String sendfilePath = null;
+    private File sendFile = new File(StreamLocalTest.class.getClassLoader().getResource("streamingTestFile.txt").getPath());
     private StreamLocalMockRequestStream request = null;
     private StreamLocalMockServiceA mockA;
     private StreamLocalMockServiceB mockB;
@@ -132,7 +133,7 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, String filePath, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, File file, ServiceEndPoint sender) {
         }
 
         @Override
@@ -166,8 +167,7 @@ public class StreamLocalTest {
 
             request = new StreamLocalMockRequestStream(Message.Flag.REQUEST, "MockRequestStream", dService.service);
 
-            sendfilePath = StreamLocalTest.class.getClassLoader().getResource("streamingTestFile.txt").getPath();
-            sendStreamId = uhu.sendStream(myId, dService.service, request, sendfilePath);
+            sendStreamId = uhu.sendStream(myId, dService.service, request, sendFile);
         }
 
         @Override
@@ -276,28 +276,28 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, String filePath, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, File file, ServiceEndPoint sender) {
             logger.info("****** RECEIVED STREAM REQUEST ******");
             assertNotNull(topic);
             assertNotNull(stream);
-            assertNotNull(filePath);
+            assertNotNull(file);
             assertNotNull(sender);
 
             logger.info("topic-> " + topic);
             logger.info("stream-> " + stream);
             logger.info("streamId-> " + streamId);
-            logger.info("filePath-> " + filePath);
+            logger.info("filePath-> " + file);
             logger.info("sender-> " + sender);
 
             assertEquals("MockRequestStream", topic);
-            assertEquals(sendfilePath, filePath);
+            assertEquals(sendFile, file);
             assertEquals(sendStreamId, streamId);
             assertEquals(request.toJson(), stream);
             // Read and verify the stream
             FileInputStream fileInputStream = null;
             BufferedReader reader = null;
             try {
-                fileInputStream = new FileInputStream(filePath);
+                fileInputStream = new FileInputStream(file);
                 reader = new BufferedReader(new InputStreamReader(fileInputStream));
                 String readData = reader.readLine();
                 assertEquals("Streaming test file", readData);

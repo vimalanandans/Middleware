@@ -16,6 +16,8 @@ import com.bezirk.proxy.api.impl.UhuServiceId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+
 /**
  * Created by wya1pi on 8/19/14.
  */
@@ -72,7 +74,7 @@ public class LocalAndroidSender implements LocalUhuSender {
         ServiceMessageHandler callback = UhuCompManager.getplatformSpecificCallback();
         StreamIncomingMessage msg = new StreamIncomingMessage(
                 serviceId, pipeHeader.getTopic(), serializedStream,
-                path, streamid, senderSEP);
+                new File(path), streamid, senderSEP);
 
         log.info("calling callback.onIncomingStream()");
         callback.onIncomingStream(msg);

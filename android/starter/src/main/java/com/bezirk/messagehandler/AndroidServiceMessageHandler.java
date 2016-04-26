@@ -70,7 +70,7 @@ public class AndroidServiceMessageHandler implements ServiceMessageHandler {
             fireintent.putExtra(discriminatorKEY, streamIncomingMessage.getCallbackType());
             fireintent.putExtra(streamTopicKEY, streamIncomingMessage.streamTopic);
             fireintent.putExtra(streamMsgKEY, streamIncomingMessage.serialzedStream);
-            fireintent.putExtra(filePathKEY, streamIncomingMessage.filePath);
+            fireintent.putExtra(filePathKEY, streamIncomingMessage.file.getAbsolutePath());
             fireintent.putExtra(streamIdKEY, streamIncomingMessage.localStreamId); //
             fireintent.putExtra(senderSEPKEY, gson.toJson(streamIncomingMessage.senderSEP));
             fireIntentToService(fireintent);

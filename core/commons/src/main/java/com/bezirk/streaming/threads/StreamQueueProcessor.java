@@ -30,7 +30,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @see StreamRecord
  */
 public class StreamQueueProcessor implements Runnable {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StreamQueueProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(StreamQueueProcessor.class);
 
     private final MessageQueue msgQueue;
 
@@ -59,11 +59,11 @@ public class StreamQueueProcessor implements Runnable {
     @Override
     public void run() {
         boolean running = true;
-        LOGGER.debug("Uhu Stream Processor has started");
+        logger.debug("Uhu Stream Processor has started");
         boolean uhuCallbackPresent = false;
         while (running) {
             if (Thread.currentThread().isInterrupted()) {
-                LOGGER.debug("Stopping Uhu Stream Processor Thread");
+                logger.debug("Stopping Uhu Stream Processor Thread");
                 running = false;
                 continue;
             }
@@ -76,7 +76,7 @@ public class StreamQueueProcessor implements Runnable {
 
             } else {
 
-                LOGGER.error("UhuCallback is not provided. Unable to send stream callback.");
+                logger.error("UhuCallback is not provided. Unable to send stream callback.");
             }
 
             while (it.hasNext()) {
@@ -86,7 +86,7 @@ public class StreamQueueProcessor implements Runnable {
                     processLocalStreamMessage(uhuCallbackPresent, streamRecord);
 
                 } else if (StreamingStatus.ADDRESSED == streamRecord.streamStatus) {
-                    LOGGER.debug("Stream Request is already Addressed.");
+                    logger.debug("Stream Request is already Addressed.");
                 } else if (streamRecord.streamStatus == StreamingStatus.READY) {
                     processStreamReadyMessage(streamRecord);
                 } else if (streamRecord.streamStatus == StreamingStatus.BUSY) {
@@ -100,7 +100,7 @@ public class StreamQueueProcessor implements Runnable {
     private void processStreamBusyMessage(boolean uhuCallbackPresent,
                                           StreamRecord streamRecord) {
 
-        LOGGER.debug("The Receipient is Busy, Giving Callback to the Service");
+        logger.debug("The Receipient is Busy, Giving Callback to the Service");
 
         StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
                 streamRecord.senderSEP.serviceId, 0, streamRecord.localStreamId);
@@ -114,7 +114,7 @@ public class StreamQueueProcessor implements Runnable {
         if (streamRecord.isIncremental
                 || streamRecord.allowDrops) {
 
-            LOGGER.debug("Uhu Supports only RELIABLE-COMPLETE..as of now..");
+            logger.debug("Uhu Supports only RELIABLE-COMPLETE..as of now..");
 
         } else {
 
@@ -123,7 +123,7 @@ public class StreamQueueProcessor implements Runnable {
                 new Thread(new StreamSendingThread(streamRecord, sadlReceiver, sphereForSadl)).start();                       // spawn the thread
             } else {
 
-                LOGGER.error("SphereForSadl is not initialized.");
+                logger.error("SphereForSadl is not initialized.");
             }
         }
     }
@@ -141,7 +141,7 @@ public class StreamQueueProcessor implements Runnable {
         // GIVE CALLBACK FOR RECIPIENT
         StreamIncomingMessage uStreamCallbackMsg = new StreamIncomingMessage(
                 streamRecord.recipientSEP.serviceId, streamRecord.streamTopic,
-                streamRecord.serializedStream, streamRecord.filePath,
+                streamRecord.serializedStream, streamRecord.file,
                 streamRecord.localStreamId, streamRecord.senderSEP);
 
         if (uhuCallbackPresent) {

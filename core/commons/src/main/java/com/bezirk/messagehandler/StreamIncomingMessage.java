@@ -3,6 +3,8 @@ package com.bezirk.messagehandler;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 
+import java.io.File;
+
 
 /**
  * Sub class of StreamMessageStatus that is used to give the stream status notification to the ProxyForUhu.
@@ -19,7 +21,7 @@ public final class StreamIncomingMessage extends ServiceIncomingMessage {
     /**
      * Path to downloaded file.
      */
-    public String filePath;
+    public File file;
     /**
      * LocalStreamId
      */
@@ -34,13 +36,13 @@ public final class StreamIncomingMessage extends ServiceIncomingMessage {
     }
 
     public StreamIncomingMessage(UhuServiceId recipientId, String streamTopic, String serialzedStream,
-                                 String filePath, short localStreamId, UhuServiceEndPoint senderSEP) {
+                                 File file, short localStreamId, UhuServiceEndPoint senderSEP) {
         super();
         callbackDiscriminator = "STREAM_UNICAST";
         recipient = recipientId;
         this.streamTopic = streamTopic;
         this.serialzedStream = serialzedStream;
-        this.filePath = filePath;
+        this.file = file;
         this.localStreamId = localStreamId;
         this.senderSEP = senderSEP;
     }

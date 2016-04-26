@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+
 /**
  * This is a helper class to pass the intent to proxy for service actions.
  * <p/>
@@ -25,7 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class UhuServiceHelper {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UhuServiceHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuServiceHelper.class);
 
     private final ProxyforServices proxy;
 
@@ -40,7 +42,7 @@ public final class UhuServiceHelper {
      * @param intent Intent received
      */
     void subscribeService(Intent intent) {
-        LOGGER.info("Received subscription from service");
+        logger.info("Received subscription from service");
         String serviceIdKEY = "serviceId";
         String subPrtclKEY = "protocol";
 
@@ -54,11 +56,11 @@ public final class UhuServiceHelper {
                 proxy.subscribeService(serviceId, subscribedRole);
 
             } else {
-                LOGGER.error("trying to subscribe with Null serviceId/ pRole");
+                logger.error("trying to subscribe with Null serviceId/ pRole");
             }
 
         } else {
-            LOGGER.error("Error in Service Subscription. Check for the values being sent");
+            logger.error("Error in Service Subscription. Check for the values being sent");
         }
     }
 
@@ -74,18 +76,18 @@ public final class UhuServiceHelper {
         final String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
         final String serviceName = intent.getStringExtra(serviceNameKEY);
 
-        LOGGER.info("Service registration to Uhu. Name : " + serviceName + " Id : " + serviceIdAsString);
+        logger.info("Service registration to Uhu. Name : " + serviceName + " Id : " + serviceIdAsString);
 
         if (UhuValidatorUtility.checkForString(serviceIdAsString) && UhuValidatorUtility.checkForString(serviceName)) {
             final UhuServiceId serviceId = new Gson().fromJson(serviceIdAsString, UhuServiceId.class);
             if (UhuValidatorUtility.checkUhuServiceId(serviceId)) {
                 proxy.registerService(serviceId, serviceName);
             } else {
-                LOGGER.error("Trying to subscribe with null ServiceId");
+                logger.error("Trying to subscribe with null ServiceId");
             }
 
         } else {
-            LOGGER.error("Error in Service Registration. Check for the values being sent");
+            logger.error("Error in Service Registration. Check for the values being sent");
         }
     }
 
@@ -95,7 +97,7 @@ public final class UhuServiceHelper {
      * @param intent Intent received
      */
     void unsubscribeService(Intent intent) {
-        LOGGER.info("Received unsubscribe from service");
+        logger.info("Received unsubscribe from service");
         String serviceIdKEY = "serviceId";
         String subPrtclKEY = "protocol";
 
@@ -113,11 +115,11 @@ public final class UhuServiceHelper {
                 }
 
             } else {
-                LOGGER.error("trying to subscribe with Null serviceId/ pRole");
+                logger.error("trying to subscribe with Null serviceId/ pRole");
             }
 
         } else {
-            LOGGER.error("Error in Service Subscription. Check for the values being sent");
+            logger.error("Error in Service Subscription. Check for the values being sent");
         }
     }
 
@@ -127,7 +129,7 @@ public final class UhuServiceHelper {
      * @param intent Intent received
      */
     void discoverService(Intent intent) {
-        LOGGER.info("Received discovery message from service");
+        logger.info("Received discovery message from service");
         String serviceIdKEY = "serviceId";
         String addressKEY = "address";
         String pRoleKEY = "pRole";
@@ -151,15 +153,15 @@ public final class UhuServiceHelper {
 
             if (UhuValidatorUtility.checkUhuServiceId(serviceId)) {
                 proxy.discover(serviceId, address, pRole, discoveryId, timeout, maxDiscovered);
-                LOGGER.info("Discovery Request pass to Proxy");
+                logger.info("Discovery Request pass to Proxy");
 
             } else {
-                LOGGER.error("Service Id is null, dropping discovery request");
+                logger.error("Service Id is null, dropping discovery request");
             }
 
         } else {
 
-            LOGGER.error(" Invalid arguments received to discover");
+            logger.error(" Invalid arguments received to discover");
         }
     }
 
@@ -169,26 +171,26 @@ public final class UhuServiceHelper {
      * @param intent Intent received
      */
     void sendUnicastStream(Intent intent) {
-        LOGGER.info("------------ Received message to push the Stream ----------------------");
+        logger.info("------------ Received message to push the Stream ----------------------");
         boolean isStreamingValid = UhuComms.isStreamingEnabled();
         if (!isStreamingValid) {
-            LOGGER.error(" Streaming is not enabled!");
+            logger.error(" Streaming is not enabled!");
         }
         final String serviceIdAsString = intent.getStringExtra("serviceId");
         final String recipientAsString = intent.getStringExtra("receiverSEP");
-        final String filePath = intent.getStringExtra("filePath");
+        final File file = new File(intent.getStringExtra("filePath"));
         final String streamAsString = intent.getStringExtra("stream");
         final short localStreamId = intent.getShortExtra("localStreamId", (short) -1);
 
-        if (UhuValidatorUtility.checkForString(serviceIdAsString, recipientAsString, filePath, streamAsString) && -1 != localStreamId) {
+        if (UhuValidatorUtility.checkForString(serviceIdAsString, recipientAsString, streamAsString) && -1 != localStreamId) {
             final Gson gson = new Gson();
             final UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
             final UhuServiceEndPoint recipient = gson.fromJson(recipientAsString, UhuServiceEndPoint.class);
 
-            isStreamingValid = sendStream(filePath, streamAsString, localStreamId, serviceId, recipient);
+            isStreamingValid = sendStream(file, streamAsString, localStreamId, serviceId, recipient);
 
         } else {
-            LOGGER.error("Invalid arguments received");
+            logger.error("Invalid arguments received");
             isStreamingValid = false;
         }
 
@@ -198,14 +200,14 @@ public final class UhuServiceHelper {
         }
     }
 
-    private boolean sendStream(String filePath, String streamAsString, short localStreamId, UhuServiceId serviceId, UhuServiceEndPoint recipient) {
+    private boolean sendStream(File file, String streamAsString, short localStreamId, UhuServiceId serviceId, UhuServiceEndPoint recipient) {
         if (UhuValidatorUtility.checkUhuServiceEndPoint(recipient) && UhuValidatorUtility.checkUhuServiceId(serviceId)) {
-            short sendStreamStatus = proxy.sendStream(serviceId, recipient, streamAsString, filePath, localStreamId);
+            short sendStreamStatus = proxy.sendStream(serviceId, recipient, streamAsString, file, localStreamId);
             if (-1 == sendStreamStatus) {
                 return false;
             }
         } else {
-            LOGGER.error("Recipient SEP or UhuServiceID is not valid ");
+            logger.error("Recipient SEP or UhuServiceID is not valid ");
             return false;
 
         }
@@ -218,10 +220,10 @@ public final class UhuServiceHelper {
      * @param intent Intent received
      */
     void sendMulticastStream(Intent intent) {
-        LOGGER.info("------------ Received message to push the Stream ----------------------");
+        logger.info("------------ Received message to push the Stream ----------------------");
         boolean isStreamingValid = true;
         if (!UhuComms.isStreamingEnabled()) {
-            LOGGER.error(" Streaming is not enabled!");
+            logger.error(" Streaming is not enabled!");
             isStreamingValid = false;
         }
         final String serviceIdAsString = intent.getStringExtra("serviceId");
@@ -242,11 +244,11 @@ public final class UhuServiceHelper {
                 }
 
             } else {
-                LOGGER.error("Invalid arguments received");
+                logger.error("Invalid arguments received");
                 isStreamingValid = false;
             }
         } catch (Exception e) {
-            LOGGER.error("Invalid arguments received", e);
+            logger.error("Invalid arguments received", e);
             isStreamingValid = false;
         }
 
@@ -262,7 +264,7 @@ public final class UhuServiceHelper {
      * @param intent Intent received
      */
     void sendMulticastEvent(Intent intent) {
-        LOGGER.info("Received multicast message from service");
+        logger.info("Received multicast message from service");
         String serviceIdKEY = "serviceId";
         String addressKEY = "address";
         String mEventMsgKEY = "multicastEvent";
@@ -277,15 +279,15 @@ public final class UhuServiceHelper {
             final UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
             if (UhuValidatorUtility.checkUhuServiceId(serviceId)) {
                 final Address address = Address.fromJson(addressAsString);
-                LOGGER.debug("Sending multicast event from service: " + serviceIdAsString);
+                logger.debug("Sending multicast event from service: " + serviceIdAsString);
                 proxy.sendMulticastEvent(serviceId, address, mEventMsg);
             } else {
-                LOGGER.error("trying to send multicast message with Null serviceId");
+                logger.error("trying to send multicast message with Null serviceId");
 
             }
         } else {
 
-            LOGGER.error(" Invalid arguments received to send multicast Event");
+            logger.error(" Invalid arguments received to send multicast Event");
         }
     }
 
@@ -295,7 +297,7 @@ public final class UhuServiceHelper {
      * @param intent Intent received
      */
     void sendUnicastEvent(Intent intent) {
-        LOGGER.info("Received unicast message from service");
+        logger.info("Received unicast message from service");
         String serviceIdKEY = "serviceId";
         String sepKEY = "receiverSep";
         String uEventMsgKEY = "eventMsg";
@@ -310,10 +312,10 @@ public final class UhuServiceHelper {
             if (UhuValidatorUtility.checkUhuServiceId(serviceId) && UhuValidatorUtility.checkUhuServiceEndPoint(serviceEndPoint)) {
                 proxy.sendUnicastEvent(serviceId, serviceEndPoint, msg);
             } else {
-                LOGGER.error("Check unicast parameters");
+                logger.error("Check unicast parameters");
             }
         } else {
-            LOGGER.error(" Invalid arguments received to send Unicast Event");
+            logger.error(" Invalid arguments received to send Unicast Event");
 
         }
     }
@@ -326,7 +328,7 @@ public final class UhuServiceHelper {
     void setLocation(Intent intent) {
         String sid = (String) intent.getExtras().get("serviceId");
         String location = (String) intent.getExtras().get("locationData");
-        LOGGER.info("Received location " + location + " from service");
+        logger.info("Received location " + location + " from service");
 
         if (UhuValidatorUtility.checkForString(sid) && UhuValidatorUtility.checkForString(location)) {
             UhuServiceId serviceId = new Gson().fromJson(sid, UhuServiceId.class);
@@ -335,7 +337,7 @@ public final class UhuServiceHelper {
                 proxy.setLocation(serviceId, loc);
             }
         } else {
-            LOGGER.error("Invalid parameters for location");
+            logger.error("Invalid parameters for location");
         }
     }
 

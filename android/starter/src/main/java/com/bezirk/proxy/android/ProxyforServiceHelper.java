@@ -39,7 +39,7 @@ class ProxyforServiceHelper {
         return tcMessage;
     }
 
-    StreamRecord prepareStreamRecord(UhuServiceEndPoint receiver, String serializedStream, String filePath, short streamId, UhuServiceEndPoint senderSEP, Stream stream) {
+    StreamRecord prepareStreamRecord(UhuServiceEndPoint receiver, String serializedStream, File file, short streamId, UhuServiceEndPoint senderSEP, Stream stream) {
         final StreamRecord streamRecord = new StreamRecord();
         streamRecord.localStreamId = streamId;
         streamRecord.senderSEP = senderSEP;
@@ -50,7 +50,7 @@ class ProxyforServiceHelper {
         streamRecord.streamStatus = StreamRecord.StreamingStatus.PENDING;
         streamRecord.recipientIP = receiver.device;
         streamRecord.recipientPort = 0;
-        streamRecord.filePath = filePath;
+        streamRecord.file = file;
         streamRecord.pipedInputStream = null;
         streamRecord.recipientSEP = receiver;
         streamRecord.serializedStream = serializedStream;

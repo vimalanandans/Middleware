@@ -131,7 +131,7 @@ public class BRForService implements IBoradcastReceiver {
         if (checkDuplicateStream(strmMsg.senderSEP.serviceId.getUhuServiceId(), strmMsg.localStreamId)) {
             if (streamListenerMap.containsKey(strmMsg.streamTopic)) {
                 for (BezirkListener listener : streamListenerMap.get(strmMsg.streamTopic)) {
-                    listener.receiveStream(strmMsg.streamTopic, strmMsg.serialzedStream, strmMsg.localStreamId, strmMsg.filePath, strmMsg.senderSEP);
+                    listener.receiveStream(strmMsg.streamTopic, strmMsg.serialzedStream, strmMsg.localStreamId, strmMsg.file, strmMsg.senderSEP);
                 }
                 return;
             }

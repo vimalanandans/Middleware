@@ -21,6 +21,7 @@ import com.bezirk.middleware.addressing.ServiceId;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.Stream;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Set;
 
@@ -82,10 +83,10 @@ public interface BezirkListener {
      * @param stream   the received stream's descriptor serialized as JSON string
      * @param streamId Bezirk middleware-generated id for the stream, used to refer to the stream in
      *                 {@link #streamStatus(short, StreamStates)}
-     * @param filePath the received file
+     * @param file     the received file
      * @param sender   the Zirk that sent the stream
      */
-    public void receiveStream(String topic, String stream, short streamId, String filePath,
+    public void receiveStream(String topic, String stream, short streamId, File file,
                               ServiceEndPoint sender);
 
     /**

@@ -221,7 +221,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     }
 
     @Override
-    public short sendStream(UhuServiceId senderId, UhuServiceEndPoint receiver, String serializedStream, String filePath, short streamId) {
+    public short sendStream(UhuServiceId senderId, UhuServiceEndPoint receiver, String serializedStream, File file, short streamId) {
         //if Stack was not started correctly, return without any further actions.
         if (!UhuStackHandler.isStackStarted()) {
             log.error("Uhu was not started properly!!!. Restart the stack.");
@@ -239,15 +239,14 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
             final String streamRequestKey = senderSEP.device + ":" + senderSEP.getUhuServiceId().getUhuServiceId() + ":" + streamId;
             final Stream stream = new Gson().fromJson(serializedStream, Stream.class);
 
-            final StreamRecord streamRecord = proxyforServiceHelper.prepareStreamRecord(receiver, serializedStream, filePath, streamId, senderSEP, stream);
+            final StreamRecord streamRecord = proxyforServiceHelper.prepareStreamRecord(receiver, serializedStream, file, streamId, senderSEP, stream);
 
             boolean streamStoreStatus = comms.registerStreamBook(streamRequestKey, streamRecord);
             if (!streamStoreStatus) {
                 log.error("Cannot Register Stream, CtrlMsgId is already present in StreamBook");
                 return (short) -1;
             }
-            final File tempFile = new File(filePath);
-            proxyforServiceHelper.sendStreamToSpheres(sphereIterator, streamRequestKey, streamRecord, tempFile, comms);
+            proxyforServiceHelper.sendStreamToSpheres(sphereIterator, streamRequestKey, streamRecord, file, comms);
         } catch (Exception e) {
             log.error("Cant get the SEP of the sender", e);
             return (short) -1;

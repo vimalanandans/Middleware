@@ -5,6 +5,7 @@ package com.bezirk.streaming.control.Objects;
 
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 
+import java.io.File;
 import java.io.PipedInputStream;
 
 
@@ -22,7 +23,7 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
     public String recipientIP;                    // recipient IP, set by the proxy after getting the stream Response
     public int recipientPort;                    // recipient Port,set by the proxy after getting the stream Response
     public PipedInputStream pipedInputStream;    // set if it is unreliable
-    public String filePath;                        // path to the file
+    public File file;                        // path to the file
     public UhuServiceEndPoint recipientSEP;    // Used for Local streaming.
     public String serializedStream;                // USed for Local Streaming
     public String streamTopic;                    // USed for Local Streaming

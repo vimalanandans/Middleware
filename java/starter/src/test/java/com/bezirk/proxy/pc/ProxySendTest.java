@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.net.UnknownHostException;
 
 import static org.junit.Assert.assertEquals;
@@ -32,7 +33,7 @@ import static org.junit.Assert.fail;
 public class ProxySendTest {
 
     private static final MockSetUpUtilityForUhuPC mockSetUP = new MockSetUpUtilityForUhuPC();
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProxySendTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProxySendTest.class);
     private static UhuSadlManager sadlManager;
     private final String serviceName = "MockServiceA";
     private final String serviceAId = "MockServiceAId";
@@ -40,12 +41,13 @@ public class ProxySendTest {
     private final String serviceBId = "MockServiceBId";
     private final UhuServiceId receiverId = new UhuServiceId(serviceBId);
     private final UhuServiceEndPoint receiver = new UhuServiceEndPoint(receiverId);
-    private final String sendfilePath = com.bezirk.proxy.pc.ProxyforServices.class.getClassLoader().getResource("streamingTest.txt").getPath();
+    private final File sendFile =
+            new File(com.bezirk.proxy.pc.ProxyforServices.class.getClassLoader().getResource("streamingTest.txt").getPath());
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        LOGGER.info("********** Setting up ProxySendTest Testcase **********");
+        logger.info("********** Setting up ProxySendTest Testcase **********");
 
         System.setProperty("InterfaceName", mockSetUP.getInterface().getName());
         mockSetUP.setUPTestEnv();
@@ -59,13 +61,11 @@ public class ProxySendTest {
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-
-        LOGGER.info("********** Shutting down ProxySendTest Testcase **********");
+        logger.info("********** Shutting down ProxySendTest Testcase **********");
 
         System.clearProperty("InterfaceName");
 
         mockSetUP.destroyTestSetUp();
-
     }
 
     @Test
@@ -88,7 +88,7 @@ public class ProxySendTest {
         proxyForServices.registerService(senderId, serviceName);
         String serializedStream = new MockRequestStream(Message.Flag.REQUEST, "MockStream", receiver).toJson();
         receiver.device = "DeviceB";
-        short streamId = proxyForServices.sendStream(senderId, receiver, serializedStream, sendfilePath, (short) 5);
+        short streamId = proxyForServices.sendStream(senderId, receiver, serializedStream, sendFile, (short) 5);
         // checking the stream id is not enough
         assertEquals("Proxy is unable to send stream. ", 1, streamId);
 
@@ -133,9 +133,7 @@ public class ProxySendTest {
             assertEquals("Proxy is unable to add multicast event message to the comms queue.", 2, mockComms.getEventList().size());
             mockComms.clearQueues();
         } catch (Exception e) {
-
             fail("Proxy is unable to send unicast events.");
-
         }
     }
 

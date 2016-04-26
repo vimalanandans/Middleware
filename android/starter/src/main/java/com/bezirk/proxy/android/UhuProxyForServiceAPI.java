@@ -12,6 +12,8 @@ import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 
+import java.io.File;
+
 
 public interface UhuProxyForServiceAPI {
     public void registerService(UhuServiceId serviceId, String serviceName);
@@ -24,7 +26,7 @@ public interface UhuProxyForServiceAPI {
 
     public void discover(UhuServiceId service, Address scope, SubscribedRole pRole, int discoveryId, long timeout, int maxDiscovered);
 
-    public short sendStream(UhuServiceId sender, UhuServiceEndPoint receiver, String serialsedString, String filePath, short streamId);
+    public short sendStream(UhuServiceId sender, UhuServiceEndPoint receiver, String serialsedString, File file, short streamId);
 
     public short sendStream(UhuServiceId sender, UhuServiceEndPoint receiver, String serialsedString, short streamId);
 

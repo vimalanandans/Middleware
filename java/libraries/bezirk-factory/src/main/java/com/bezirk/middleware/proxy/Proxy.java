@@ -201,20 +201,19 @@ public class Proxy implements Bezirk {
     }
 
     @Override
-    public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream stream, String filePath) {
-        if (null == receiver || null == stream || null == filePath || filePath.isEmpty() || stream.topic.isEmpty()) {
+    public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream stream, File file) {
+        if (null == receiver || null == stream || null == file || file == null || stream.topic.isEmpty()) {
             logger.error("Check for null values in sendStream()/ Topic might be Empty");
             return (short) -1;
         }
-
-        File tempFile = new File(filePath);
-        if (!tempFile.exists()) {
-            logger.error(" No file found at the location: " + filePath);
+        if (!file.exists()) {
+            logger.error("Cannot send file stream. File not found: " + file);
             return (short) -1;
         }
+
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
         activeStreams.put(((UhuServiceId) sender).getUhuServiceId() + streamId, stream.topic);
-        proxy.sendStream((UhuServiceId) sender, (UhuServiceEndPoint) receiver, stream.toJson(), filePath, streamId);
+        proxy.sendStream((UhuServiceId) sender, (UhuServiceEndPoint) receiver, stream.toJson(), file, streamId);
         return streamId;
     }
 

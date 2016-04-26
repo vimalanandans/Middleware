@@ -22,6 +22,7 @@ import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.Stream;
 
+import java.io.File;
 import java.io.PipedOutputStream;
 
 
@@ -123,7 +124,7 @@ public interface Bezirk {
      * Publish a {@link com.bezirk.middleware.messages.Stream} with one specific recipient. The
      * channel's properties are described by <code>stream</code>. The transmitted data is supplied by
      * writes to <code>dataStream</code>. To send a file use
-     * {@link #sendStream(ServiceId, ServiceEndPoint, Stream, String)}. Streams sent using this
+     * {@link #sendStream(ServiceId, ServiceEndPoint, Stream, File)}. Streams sent using this
      * method are assumed to be incremental (see {@link Stream#isIncremental()}).
      *
      * @param sender     id of Zirk sending the stream, as returned by {@link #registerService(String)}
@@ -138,7 +139,7 @@ public interface Bezirk {
      * @return Bezirk middelware-generated id for the stream, which will be referred to in
      * {@link BezirkListener#streamStatus(short, BezirkListener.StreamStates)}
      * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ServiceEndPoint)
-     * @see BezirkListener#receiveStream(String, String, short, String, ServiceEndPoint)
+     * @see BezirkListener#receiveStream(String, String, short, File, ServiceEndPoint)
      */
     public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream stream,
                             PipedOutputStream dataStream);
@@ -154,13 +155,13 @@ public interface Bezirk {
      *                 by calling
      *                 {@link #discover(ServiceId, Address, ProtocolRole, long, int, BezirkListener)}
      * @param stream   communication channel's descriptor
-     * @param filePath the file whose contents will be sent using the <code>stream</code>
+     * @param file     the file whose contents will be sent using the <code>stream</code>
      * @return Bezirk middelware-generated id for the stream, which will be referred to in
      * {@link BezirkListener#streamStatus(short, BezirkListener.StreamStates)}
      * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ServiceEndPoint)
-     * @see BezirkListener#receiveStream(String, String, short, String, ServiceEndPoint)
+     * @see BezirkListener#receiveStream(String, String, short, File, ServiceEndPoint)
      */
-    public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream stream, String filePath);
+    public short sendStream(ServiceId sender, ServiceEndPoint receiver, Stream stream, File file);
 
     /**
      * Request the use of a {@link com.bezirk.middleware.addressing.Pipe} to send data outside of the

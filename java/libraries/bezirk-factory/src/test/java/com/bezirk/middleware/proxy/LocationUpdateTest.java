@@ -21,6 +21,7 @@ import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Set;
 
@@ -157,7 +158,7 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, String filePath, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, File file, ServiceEndPoint sender) {
         }
 
         @Override
@@ -280,7 +281,7 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, String filePath, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, File file, ServiceEndPoint sender) {
         }
 
         @Override

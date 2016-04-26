@@ -9,6 +9,7 @@ import com.bezirk.middleware.addressing.ServiceId;
 import com.bezirk.proxy.api.impl.UhuServiceId;
 import com.bezirk.proxy.registration.ServiceRegistration;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Set;
 
@@ -38,7 +39,7 @@ public class MockUhuService implements BezirkListener {
 
     @Override
     public void receiveStream(String topic, String stream, short streamId,
-                              String filePath, ServiceEndPoint sender) {
+                              File file, ServiceEndPoint sender) {
         // TODO Auto-generated method stub
 
     }
