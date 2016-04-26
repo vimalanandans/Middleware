@@ -32,7 +32,7 @@ public interface UhuProxyForServiceAPI {
 
     void setLocation(BezirkZirkId serviceId, Location location);
 
-    void unsubscribe(BezirkZirkId serviceId, SubscribedRole role);
+    boolean unsubscribe(BezirkZirkId serviceId, SubscribedRole role);
 
     void unregister(BezirkZirkId serviceId);
 }

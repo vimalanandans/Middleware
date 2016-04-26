@@ -157,14 +157,13 @@ public class Proxy implements Bezirk {
     }
 
     @Override
-    public void unsubscribe(ZirkId subscriber,
-                            ProtocolRole protocolRole) {
+    public boolean unsubscribe(ZirkId subscriber, ProtocolRole protocolRole) {
         if (null == subscriber || null == protocolRole) {
             logger.error("Null Values for unsubscribe method");
-            return;
+            return false;
         }
-        proxy.unsubscribe((BezirkZirkId) subscriber, new SubscribedRole(protocolRole));
 
+        return proxy.unsubscribe((BezirkZirkId) subscriber, new SubscribedRole(protocolRole));
     }
 
     @Override

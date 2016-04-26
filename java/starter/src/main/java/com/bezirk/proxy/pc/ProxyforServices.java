@@ -235,8 +235,8 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     }
 
     @Override
-    public void unsubscribe(final BezirkZirkId serviceId, final SubscribedRole role) {
-        sadlRegistry.unsubscribe(serviceId, role);
+    public boolean unsubscribe(final BezirkZirkId serviceId, final SubscribedRole role) {
+        return sadlRegistry.unsubscribe(serviceId, role);
     }
 
     @Override

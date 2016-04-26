@@ -169,7 +169,7 @@ public final class Proxy implements Bezirk {
     }
 
     @Override
-    public void unsubscribe(final ZirkId subscriber, final ProtocolRole protocolRole) {
+    public boolean unsubscribe(final ZirkId subscriber, final ProtocolRole protocolRole) {
         Intent unSubscribeIntent = new Intent();
         unSubscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         unSubscribeIntent.setAction(ACTION_UHU_UNSUBSCRIBE);
@@ -181,8 +181,10 @@ public final class Proxy implements Bezirk {
 
         if (retName == null) {
             Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
-            return;
+            return false;
         }
+
+        return true;
     }
 
     @Override

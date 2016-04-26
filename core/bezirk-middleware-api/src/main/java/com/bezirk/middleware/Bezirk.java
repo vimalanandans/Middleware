@@ -93,9 +93,10 @@ public interface Bezirk {
      *
      * @param subscriber   id for registered Zirk, as returned by {@link #registerZirk(String)}
      * @param protocolRole role to unsubscribe from, or <code>null</code> to remove all subscriptions
-     *                     for the Zirk
+     * @return <code>true</code> if <code>subscriber</code> was unsubscribed from at least one
+     * role as a result of this method call
      */
-    public void unsubscribe(ZirkId subscriber, ProtocolRole protocolRole);
+    public boolean unsubscribe(ZirkId subscriber, ProtocolRole protocolRole);
 
     /**
      * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event's topic.
