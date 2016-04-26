@@ -65,6 +65,4 @@ public final class BezirkZirkId implements ZirkId, Serializable {
             return false;
         return true;
     }
-
-
 }

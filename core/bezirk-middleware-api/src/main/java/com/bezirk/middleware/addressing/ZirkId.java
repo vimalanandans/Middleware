@@ -14,13 +14,13 @@ package com.bezirk.middleware.addressing;
 
 
 /**
- * Bezirk generates objects that implement this interface.
- * If one of these objects represents the identity of a Zirk z1, it may be used by z1 for
- * interactions with Bezirk, and may also be used by Bezirk for sphere management.
+ * The middleware-generated identify of a Zirk. This ID is returned by
+ * {@link com.bezirk.middleware.Bezirk#registerZirk(String)} and is used to interact with
+ * the {@link com.bezirk.middleware.Bezirk} API.
+ * <p>
+ * The Bezirk middleware implements this interface.
+ * </p>
  */
 public interface ZirkId {
-
-    public boolean equals(Object obj);
-
-
+// For now, this is a marker interface because there is nothing to offer to a Zirk API wise.
 }

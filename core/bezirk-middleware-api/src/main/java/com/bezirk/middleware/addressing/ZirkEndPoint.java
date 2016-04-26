@@ -12,12 +12,27 @@
  */
 package com.bezirk.middleware.addressing;
 
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.messages.ProtocolRole;
+
+import java.util.Set;
 
 /**
- * Bezirk generates objects that implement this interface.
- * These objects represent a network end point for a Zirk, which can be sent across the network and used in unicasts.
+ * An end point represents a Zirk that another Zirk can directly send messages to (e.g. unicast).
+ * There are a couple ways to get a Zirk's <code>ZirkEndPoint</code> to directly send it messages:
+ * <ul>
+ * <li>Wait to receive a message from the Zirk, in which case the <code>ZirkEndPoint</code>
+ * will be received by the appropriate callback in {@link com.bezirk.middleware.BezirkListener}
+ * (e.g. {@link com.bezirk.middleware.BezirkListener#receiveEvent(String, String, ZirkEndPoint)}).</li>
+ * <li>Use {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)}
+ * to discover all Zirks that subscribe to a particular {@link ProtocolRole}. The results set
+ * retrieved from {@link BezirkListener#discovered(Set)} contains metadata for each discovered
+ * Zirk, including each <code>ZirkEndPoint</code></li>
+ * </ul>
+ * <p>
+ * The Bezirk middleware implements this interface.
+ * </p>
  */
 public interface ZirkEndPoint {
-
-    public boolean equals(Object obj);
+// For now, this is a marker interface because there is nothing to offer to a Zirk API wise.
 }
