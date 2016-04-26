@@ -81,7 +81,7 @@ public class Stream extends Message {
      * @param incremental <code>true</code> if the payload can be processed before all data
      *                    elements arrive
      */
-    public void setIncremental(boolean incremental) {
+    protected void setIncremental(boolean incremental) {
         this.incremental = incremental;
     }
 
@@ -103,7 +103,7 @@ public class Stream extends Message {
      *
      * @param allowDrops <code>true</code> if the stream may be unreliably transmitted
      */
-    public void setAllowDrops(boolean allowDrops) {
+    protected void setAllowDrops(boolean allowDrops) {
         this.allowDrops = allowDrops;
     }
 
@@ -121,7 +121,7 @@ public class Stream extends Message {
      *
      * @param encrypted <code>true</code> if the stream's contents must be encrypted
      */
-    public void setEncrypted(boolean encrypted) {
+    protected void setEncrypted(boolean encrypted) {
         this.encrypted = encrypted;
     }
 }
