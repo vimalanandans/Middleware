@@ -62,7 +62,7 @@ public class BezirkRestRequestHandler extends DefaultHandler {
         String selectedSphere = bezirkCommsManager.getSelectedSphere();
 
         if (selectedSphere == null) {
-            logger.debug("Sphere not selected!!. Select the HTTP Comms Sphere");
+            logger.debug("sphere not selected!!. Select the HTTP Comms sphere");
             //means the user has not set the sphere!!! This has to be set before using the HTTPComms
             return "ERROR:SELECT_SPHERE";
         }

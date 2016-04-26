@@ -19,7 +19,7 @@ public class SphereDiscoveryResponse extends MulticastControlMessage {
     /**
      * Constructor
      *
-     * @param sphereID          Sphere to be created at the recipient device
+     * @param sphereID          sphere to be created at the recipient device
      * @param sphereInformation Information about the sphere to be joined
      * @param services          Services that need to join the target sphere
      */

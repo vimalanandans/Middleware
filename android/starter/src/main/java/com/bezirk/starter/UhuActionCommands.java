@@ -57,7 +57,7 @@ public final class UhuActionCommands {
     /*
      * ------------------------
      *
-     * Bezirk Sphere UI response Commands
+     * Bezirk sphere UI response Commands
      * ------------------------
      */
     public final static String CMD_SPHERE_CREATE_STATUS = "CMD_SPHERE_CREATE_STATUS";

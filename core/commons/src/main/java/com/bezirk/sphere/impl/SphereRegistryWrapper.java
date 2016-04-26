@@ -45,7 +45,7 @@ public class SphereRegistryWrapper {
     private static final Logger logger = LoggerFactory.getLogger(SphereRegistryWrapper.class);
 
     public static final String DEVELOPMENT_DEVICE_ID = "DevDeviceId";
-    private static final String DEFAULT_SPHERE_NAME = "Default Sphere";
+    private static final String DEFAULT_SPHERE_NAME = "Default sphere";
     private static final String DEVELOPMENT_DEVICE_NAME = "DevDeviceName";
     private static final String DEVELOPMENT_DEVICE_TYPE = "DevDeviceType";
 
@@ -115,7 +115,7 @@ public class SphereRegistryWrapper {
     /**
      * Get a sphere from registry.
      *
-     * @param sphereId whose Sphere object is to be retrieved.
+     * @param sphereId whose sphere object is to be retrieved.
      * @return sphere associated with the sphereId if it is present in the
      * spheres map, null otherwise
      */
@@ -179,7 +179,7 @@ public class SphereRegistryWrapper {
      * temporary sphere, then it is skipped.
      *
      * @param sphereId whose UhuSphereInfo object is to be retrieved.
-     * @return : Sphere Info if found else null.<br>
+     * @return : sphere Info if found else null.<br>
      * null if its a temporary sphere.
      */
     public UhuSphereInfo getSphereInfo(String sphereId) {
@@ -258,17 +258,17 @@ public class SphereRegistryWrapper {
      * Add a sphere to the registry.
      *
      * @param sphereId which has to be added to registry. It has to be non-null
-     * @param sphere   - Sphere object which has to be added to the registry. It has
+     * @param sphere   - sphere object which has to be added to the registry. It has
      *                 to be non-null.
      * @return true if the sphere was added in spheres map, false otherwise
      */
     public boolean addSphere(String sphereId, Sphere sphere) {
         if (null == sphere || null == sphereId) {
-            logger.error("Sphere object or sphere Id is null. Adding sphere with sphere id " + sphereId + " failed.");
+            logger.error("sphere object or sphere Id is null. Adding sphere with sphere id " + sphereId + " failed.");
             return false;
         }
         registry.spheres.put(sphereId, sphere);
-        logger.info("Sphere " + sphere.getSphereName() + " with sphereId " + sphereId
+        logger.info("sphere " + sphere.getSphereName() + " with sphereId " + sphereId
                 + " added successfully to spheres map");
         persist();
         return true;
@@ -428,18 +428,18 @@ public class SphereRegistryWrapper {
             status = SphereCreateStatus.SPHERE_NAME_OR_CALLBACK_ERROR;
         }
 
-        logger.info("Create Sphere, sphereId : " + sphereId + ", status : " + status);
+        logger.info("Create sphere, sphereId : " + sphereId + ", status : " + status);
         if (uhuSphereListener != null) {
             uhuSphereListener.onSphereCreateStatus(sphereId, status);
         } else {
-            logger.debug("Create Sphere, no listener registered");
+            logger.debug("Create sphere, no listener registered");
         }
         return sphereId;
 
     }
 
     /**
-     * Initialize the default Sphere and persist the information
+     * Initialize the default sphere and persist the information
      */
     private void initDefaultSphere() {
         String defaultSphereName;
@@ -471,13 +471,13 @@ public class SphereRegistryWrapper {
             String deviceIdSubString = deviceId.substring(deviceId.length() - 5, deviceId.length());
             if (deviceName != null) {
                 if (deviceName.contains(deviceIdSubString)) {
-                    name = "Sphere-" + deviceName;
+                    name = "sphere-" + deviceName;
                 } else {
-                    name = "Sphere-" + deviceName + "-" + deviceIdSubString;
+                    name = "sphere-" + deviceName + "-" + deviceIdSubString;
                 }
             }
         }
-        logger.info("Default Sphere name used: " + name);
+        logger.info("Default sphere name used: " + name);
         return name;
     }
 
@@ -589,7 +589,7 @@ public class SphereRegistryWrapper {
     }
 
     /**
-     * Get set of sphere Ids for the passed serviceId. Sphere set for the given
+     * Get set of sphere Ids for the passed serviceId. sphere set for the given
      * serviceId has to be non-null.
      *
      * @param serviceId whose sphere set is required.
@@ -804,7 +804,7 @@ public class SphereRegistryWrapper {
      */
     public boolean addMemberServices(UhuDeviceInfo uhuDeviceInfo, String sphereId, String ownerDeviceId) {
         if (!containsSphere(sphereId)) {
-            logger.error("Sphere with sphere ID " + sphereId + " not in the registry.");
+            logger.error("sphere with sphere ID " + sphereId + " not in the registry.");
             return false;
         }
 
@@ -843,7 +843,7 @@ public class SphereRegistryWrapper {
      */
     public boolean addLocalServicesToSphere(String sphereId, Iterable<UhuServiceInfo> serviceInfos) {
         if (!containsSphere(sphereId)) {
-            logger.error("Sphere with sphere ID " + sphereId + " not in the registry.");
+            logger.error("sphere with sphere ID " + sphereId + " not in the registry.");
             return false;
         }
         List<UhuServiceId> serviceIds = new ArrayList<UhuServiceId>();
@@ -1142,7 +1142,7 @@ public class SphereRegistryWrapper {
                 spherePersistence.persistSphereRegistry();
             } catch (Exception e) {
                 System.out.println("\nexception\n");
-                logger.error("Error in persisting Sphere Data", e);
+                logger.error("Error in persisting sphere Data", e);
             }
         }
     }

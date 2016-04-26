@@ -55,7 +55,7 @@ public class InformationActivity extends FragmentActivity {
             if (UhuValidatorUtility.isObjectNotNull(sphereInfo)) {
                 sphere = new SphereListItem(sphereInfo);
             } else {
-                Log.e(TAG, "Sphere contains : " + sphereID + " not found");
+                Log.e(TAG, "sphere contains : " + sphereID + " not found");
             }
         } else {
             Log.e(TAG, "MainService is not available");
@@ -214,7 +214,7 @@ public class InformationActivity extends FragmentActivity {
         // don't remember the history
         backToServiceIntent.setFlags(backToServiceIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-        // Member Name (or ID) and Sphere ID has to be provided.
+        // Member Name (or ID) and sphere ID has to be provided.
         backToServiceIntent.putExtra(DeviceListActivity.ARG_DEVICE_ID, getIntent()
                 .getStringExtra(DeviceListActivity.ARG_DEVICE_ID));
 

@@ -81,7 +81,7 @@
             android:defaultValue=""
             android:key="devices" />
 
-        <!-- Added by Rishabh: Development Sphere Implementation-->
+        <!-- Added by Rishabh: Development sphere Implementation-->
 
         <!-- Development mode. True by default. Change to false for turning off development mode-->
         <EditTextPreference
@@ -114,7 +114,7 @@
             android:defaultValue=""
             android:key="defaultSphereName" />
 
-        <!-- Added by Rishabh: Development Sphere Implementation-->
+        <!-- Added by Rishabh: Development sphere Implementation-->
     </PreferenceCategory>
 
 </PreferenceScreen>

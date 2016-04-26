@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
- * Sphere Registry that holds all the sphere Maps
+ * sphere Registry that holds all the sphere Maps
  */
 public class SphereRegistry implements Serializable {
     private static final long serialVersionUID = 682210165778262550L;

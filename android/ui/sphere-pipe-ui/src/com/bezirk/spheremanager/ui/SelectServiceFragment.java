@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A fragment representing a single Sphere detail screen. This fragment is
+ * A fragment representing a single sphere detail screen. This fragment is
  * either contained in a {@link SphereListActivity} in two-pane mode (on
  * tablets) or a {@link DeviceListActivity} on handsets.
  */
@@ -130,7 +130,7 @@ public class SelectServiceFragment extends ListFragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 if (swipeDetector.swipeDetected()) {
-                    // do the onSwipe action on the list --> Change Sphere
+                    // do the onSwipe action on the list --> Change sphere
                     SwipeDetector.Action direction = swipeDetector.getAction();
                     //Log.i("SWIPE", direction.toString());
                     //mCallbacks.onSwiped(direction.toString());
@@ -164,7 +164,7 @@ public class SelectServiceFragment extends ListFragment {
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				if (swipeDetector.swipeDetected()) {
-					// do the onSwipe action on the list --> Change Sphere
+					// do the onSwipe action on the list --> Change sphere
 					Action direction = swipeDetector.getAction();
 					Log.i("SWIPE", direction.toString());
 					mCallbacks.onSwiped(direction.toString());

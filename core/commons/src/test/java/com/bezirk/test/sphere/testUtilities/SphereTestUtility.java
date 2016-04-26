@@ -74,7 +74,7 @@ public class SphereTestUtility {
 
     /**
      * Generates the following<br>
-     * Sphere [Name: {@link #OWNER_SPHERE_NAME_1} Id: {@link #OWNER_SPHERE_ID_1}
+     * sphere [Name: {@link #OWNER_SPHERE_NAME_1} Id: {@link #OWNER_SPHERE_ID_1}
      * Owner: {@link #DEVICE_1}]<br>
      * Contained Services:<br>
      * 1) [Name: {@link #OWNER_SERVICE_NAME_1} Id: {@link #OWNER_SERVICE_ID_1}

@@ -74,7 +74,7 @@ class DeviceControlActivityHelper {
                 actions = UhuActions.ACTION_CHANGE_SPHERE_TYPE;
                 break;
             case R.drawable.ic_delete_database:
-                promptClearConfirmation(listData.get(position).getTitleText(), "Do you want to Clear the Sphere data ?",
+                promptClearConfirmation(listData.get(position).getTitleText(), "Do you want to Clear the sphere data ?",
                         RESULT_DATABASE_CLEAR);
                 break;
             case R.drawable.ic_action_diag: // diag // to be implemented
@@ -299,7 +299,7 @@ class DeviceControlActivityHelper {
             default:
         }
         listData.add(new DataModel(R.drawable.ic_action_dev_mode, "Developer Mode",
-                "Common Sphere across devices", true, switchState, false));
+                "Common sphere across devices", true, switchState, false));
 
     }
 

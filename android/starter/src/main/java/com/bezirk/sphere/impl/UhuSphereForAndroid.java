@@ -53,7 +53,7 @@ public class UhuSphereForAndroid extends UhuSphere implements IUhuSphereListener
     /**
      * Generates the QR code for a sphere
      *
-     * @param sphereId Sphere Id for which the QR code needs to be generated
+     * @param sphereId sphere Id for which the QR code needs to be generated
      * @return
      */
     @Override

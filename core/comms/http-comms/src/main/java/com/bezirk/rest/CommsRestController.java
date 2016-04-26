@@ -44,7 +44,7 @@ public class CommsRestController implements IHttpComms {
 		
 		
 		
-		//**** check what happens to Sadl and Sphere... ***
+		//**** check what happens to Sadl and sphere... ***
 		
 		
 		

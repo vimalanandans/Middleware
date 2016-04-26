@@ -61,7 +61,7 @@ public class DummyContent {
     public static final Map<String, AbstractSphereListItem> ITEM_MAP = new LinkedHashMap<String, AbstractSphereListItem>();
 
     static {
-        //generate UUIDs to have association from Pipe to Sphere
+        //generate UUIDs to have association from Pipe to sphere
         UUID dummySphereUUID = UUID.randomUUID();
         UUID carSphereUUID = UUID.randomUUID();
         UUID smartHomeSphereUUID = UUID.randomUUID();
@@ -348,7 +348,7 @@ public class DummyContent {
         //VIMAL :addItem(new SphereListItem(new DummySphere(carSphereUUID, "Car", true, true, thingsInCarSphere)));
 
 
-        //Another Random Sphere
+        //Another Random sphere
         ArrayList<DeviceListItem> thingsInRandomSphere = new ArrayList<DeviceListItem>();
         thingsInRandomSphere.add(new DeviceListItem("TV", "TV", true, serviceListRandom, informationListOutboundRandom, informationListInboundRandom));
         thingsInRandomSphere.add(new DeviceListItem("Gaming Console", "PS4", true, serviceListRandom, informationListOutboundRandom, informationListInboundRandom));

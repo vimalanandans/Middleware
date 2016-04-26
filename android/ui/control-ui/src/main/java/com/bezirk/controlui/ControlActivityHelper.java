@@ -65,7 +65,7 @@ class ControlActivityHelper {
     void initUI() {
         listData.add(new DataModel(R.drawable.ic_action_sphere_control, "Device Control", "Total Device Control", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_sphere, "Sphere Management", "Control Spheres and Services", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_sphere, "sphere Management", "Control Spheres and Services", false, false, false));
 
         listData.add(new DataModel(R.drawable.ic_action_pipes, "Pipe Management", "Control and configure Pipes", false, false, false));
 
@@ -94,7 +94,7 @@ class ControlActivityHelper {
     }
 
     /**
-     * Start the Sphere Managmenet Activity
+     * Start the sphere Managmenet Activity
      */
     private void uhuStartActivity(int position) {
         Intent intent;

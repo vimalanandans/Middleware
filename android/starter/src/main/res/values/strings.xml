@@ -13,8 +13,8 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
-    <string name="title_sphere_list">Sphere Management</string>
-    <string name="title_sphere_detail">Sphere Detail</string>
+    <string name="title_sphere_list">sphere Management</string>
+    <string name="title_sphere_detail">sphere Detail</string>
     <string name="title_activity_qrfullscreen">Display QR Code</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -22,18 +22,18 @@
     <string name="microReboot">Micro-Reboot</string>
     <string name="restartWifi">Restart Wifi on Reboot</string>
 
-    <string  name="createSphere">Create Sphere</string>
-    <string  name="scanSphereQR">Scan Sphere QR</string>
+    <string  name="createSphere">Create sphere</string>
+    <string  name="scanSphereQR">Scan sphere QR</string>
     --><!--<string  name="displayDeviceQR">Display Device QR</string>-->
     <!-- <string  name="addDeviceSuggested">Add Device</string>
      <string  name="exploreAddLocal">Explore/Add Local Services</string>
-     <string  name="refreshSphere">Refresh Sphere\'s</string>
+     <string  name="refreshSphere">Refresh sphere\'s</string>
 
      <string  name="actionBarTitle"> \'s Spheres</string>
      <string  name="changeProfile">Profile</string>
 
      --><!--<string  name="addDevice">Add Device</string>--><!--
-    <string  name="showSphereQR">Show Sphere QR</string>
+    <string  name="showSphereQR">Show sphere QR</string>
 
     <string  name="printQR">Print QR Code</string>
     <string name="title_activity_menupage">menupageactivity</string>

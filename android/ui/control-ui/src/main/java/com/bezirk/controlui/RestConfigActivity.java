@@ -37,7 +37,7 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
 
         List<DataModel> list = new ArrayList();
         list.add(new DataModel(0, "Rest Server ON / OFF", "Turn ON or OFF Rest server", true, false, false));
-        list.add(new DataModel(1, "Select Rest Sphere", "select sphere", false, false, false));
+        list.add(new DataModel(1, "Select Rest sphere", "select sphere", false, false, false));
 
         GenericListItemView adapter = new GenericListItemView(this, list, this);
         restConfigList.setAdapter(adapter);

@@ -40,7 +40,7 @@ import java.util.List;
 import bezirk.zbarscanner.ScannerActivity;
 
 /**
- * An activity representing a single Sphere detail screen. This activity is only
+ * An activity representing a single sphere detail screen. This activity is only
  * used on handset devices. On tablet-size devices, item details are presented
  * side-by-side with a list of items in a {@link SphereListActivity}.
  * <p/>
@@ -79,7 +79,7 @@ public class DeviceListActivity extends FragmentActivity implements
             if (UhuValidatorUtility.isObjectNotNull(sphereInfo)) {
                 entry = new SphereListItem(sphereInfo);
             } else {
-                Log.e(TAG, "Sphere contains : " + sphereID + " not found");
+                Log.e(TAG, "sphere contains : " + sphereID + " not found");
             }
 
         } else {
@@ -104,7 +104,7 @@ public class DeviceListActivity extends FragmentActivity implements
         if (entry.getmSphere().isThisDeviceOwnsSphere()) {
             textView.setTypeface(null, Typeface.BOLD);
         }
-        textView.setText("Sphere: " + sphereName);
+        textView.setText("sphere: " + sphereName);
 
         ImageView img = (ImageView) view.findViewById(R.id.sphere_icon);
 
@@ -131,7 +131,7 @@ public class DeviceListActivity extends FragmentActivity implements
     protected void onResume() {
         super.onResume();
 
-        // register the intent to receive the Bezirk Sphere Results
+        // register the intent to receive the Bezirk sphere Results
 
         IntentFilter filter = new IntentFilter();
 
@@ -157,7 +157,7 @@ public class DeviceListActivity extends FragmentActivity implements
 
         // SavedInstace has to be provided?
         Intent detailIntent = new Intent(this, SelectServiceActivity.class);
-        // Device Name (or ID) and Sphere ID has to be provided.
+        // Device Name (or ID) and sphere ID has to be provided.
         detailIntent.putExtra(DeviceListActivity.ARG_DEVICE_ID, device_id);
         detailIntent.putExtra(DeviceListFragment.ARG_ITEM_ID, getIntent()
                 .getStringExtra(DeviceListFragment.ARG_ITEM_ID));

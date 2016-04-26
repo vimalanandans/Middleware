@@ -66,7 +66,7 @@ public class ProcessCatchCode {
     /**
      * Test the case where<br>
      * Catch code is valid<br>
-     * Sphere catching the services is valid<br>
+     * sphere catching the services is valid<br>
      */
     @Test
     public final void validCatchCodeValidCatcherSphere() {
@@ -78,7 +78,7 @@ public class ProcessCatchCode {
     /**
      * Test the case where<br>
      * Catch code is invalid<br>
-     * Sphere catching the services is valid<br>
+     * sphere catching the services is valid<br>
      */
     @Test
     public final void invalidCatchCodeValidCatcherSphere() {
@@ -90,7 +90,7 @@ public class ProcessCatchCode {
     /**
      * Test the case where<br>
      * Catch code is valid<br>
-     * Sphere catching the services is invalid<br>
+     * sphere catching the services is invalid<br>
      */
     @Test
     public final void validCatchCodeInvalidCatcherSphere() {
@@ -102,7 +102,7 @@ public class ProcessCatchCode {
     /**
      * Test the case where<br>
      * Catch code is invalid<br>
-     * Sphere catching the services is invalid<br>
+     * sphere catching the services is invalid<br>
      */
     @Test
     public final void invalidCatchCodeInvalidCatcherSphere() {
@@ -114,7 +114,7 @@ public class ProcessCatchCode {
     /**
      * Test the case where<br>
      * Catch code is null<br>
-     * Sphere catching the services is invalid<br>
+     * sphere catching the services is invalid<br>
      */
     @Test(expected = NullPointerException.class)
     public final void nullCatchCodeValidCatcherSphere() {
@@ -126,7 +126,7 @@ public class ProcessCatchCode {
     /**
      * Test the case where<br>
      * Catch code is valid<br>
-     * Sphere catching the services is null<br>
+     * sphere catching the services is null<br>
      */
     @Test
     public final void validCatchCodeNullCatcherSphere() {

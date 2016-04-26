@@ -17,7 +17,7 @@ public class SphereDiscoveryRequest extends MulticastControlMessage {
     /**
      * Constructor
      *
-     * @param sphereID          Sphere id to be scanned for services (target)
+     * @param sphereID          sphere id to be scanned for services (target)
      * @param sphereInformation Information about the sphere to be joined
      * @param services          Services that need to join the target sphere
      */

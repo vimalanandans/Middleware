@@ -116,7 +116,7 @@ public class CreateSphere {
         String sphereId1 = sphereRegistryWrapper.createSphere(sphereName, null, null);
         String sphereId2 = sphereRegistryWrapper.createSphere(sphereName, null, null);
         assertEquals(sphereId1, sphereId2);
-        assertTrue("Sphere Registry missing valid Sphere Id.", registry.spheres.containsKey(sphereId1));
+        assertTrue("sphere Registry missing valid sphere Id.", registry.spheres.containsKey(sphereId1));
     }
 
     /**

@@ -20,7 +20,7 @@ public class DatabaseHelper {
      */
     private final IDatabaseConnection dbConnection;
     /**
-     * Sphere Registry - storing sphere related maps
+     * sphere Registry - storing sphere related maps
      */
     private SphereRegistry sphereRegistry;
     /**
@@ -61,7 +61,7 @@ public class DatabaseHelper {
                 break;
             case DBConstants.COLUMN_2:
                 if (null == sphereRegistry) {
-                    throw new NullPointerException("Sphere Registry cant be null");
+                    throw new NullPointerException("sphere Registry cant be null");
                 }
                 updateDb.updateColumnValue(DBConstants.COLUMN_2, sphereRegistry);
                 break;
@@ -136,7 +136,7 @@ public class DatabaseHelper {
     }
 
     /**
-     * Returns the Sphere Registry to the child classes
+     * Returns the sphere Registry to the child classes
      *
      * @return sphereRegistry
      */

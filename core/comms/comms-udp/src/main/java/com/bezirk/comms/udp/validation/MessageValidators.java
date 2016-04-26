@@ -54,7 +54,7 @@ public class MessageValidators implements Runnable {
         IUhuSphereForSadl sphereIf = UhuCompManager.getSphereForSadl();
 
         if (sphereIf == null) {
-            log.error("Sphere object for the sadl is invalid. msg not decrypted");
+            log.error("sphere object for the sadl is invalid. msg not decrypted");
             return;
         }
 
@@ -149,13 +149,13 @@ public class MessageValidators implements Runnable {
         final byte[] encMsg = cLedger.getEncryptedMessage();
 
         if (!UhuValidatorUtility.checkForString(sphereid) || encMsg == null) {
-            log.error("Sphere or encrypted message is null");
+            log.error("sphere or encrypted message is null");
             return false;
         } else {
             IUhuSphereForSadl sphereIf = UhuCompManager.getSphereForSadl();
 
             if (sphereIf == null) {
-                log.error("Sphere object for the sadl is invalid. msg not decrypted");
+                log.error("sphere object for the sadl is invalid. msg not decrypted");
                 return false;
             }
 

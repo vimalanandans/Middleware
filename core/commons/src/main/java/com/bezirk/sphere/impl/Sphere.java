@@ -21,7 +21,7 @@ public class Sphere implements Serializable {
      */
     private static final long serialVersionUID = -8206651024005270100L;
     private static final Logger LOGGER = LoggerFactory.getLogger(Sphere.class);
-    private static final String DEFAULT_SPHERE_NAME = "Default Sphere";
+    private static final String DEFAULT_SPHERE_NAME = "Default sphere";
     /**
      * Name of the sphere
      */

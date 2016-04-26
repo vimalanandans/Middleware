@@ -63,8 +63,8 @@ public class DialogAddSphereFragment extends DialogFragment {
                 container);
 
         TextView dialogText = (TextView) view.findViewById(R.id.dialog_text);
-        dialogText.setText("Please enter the name of the new Sphere:");
-        getDialog().setTitle("Add Sphere");
+        dialogText.setText("Please enter the name of the new sphere:");
+        getDialog().setTitle("Add sphere");
         getDialog().setCanceledOnTouchOutside(false);
         Button add = (Button) view.findViewById(R.id.add_button);
         add.setOnClickListener(new OnClickListener() {
@@ -76,7 +76,7 @@ public class DialogAddSphereFragment extends DialogFragment {
 
                 String name = newSphereField.getText().toString();
                 if (name.contains(",")) {
-                    printToast("Spl character(,) are not allowed in Sphere Name");
+                    printToast("Spl character(,) are not allowed in sphere Name");
                     return;
                 }
 

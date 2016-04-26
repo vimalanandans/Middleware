@@ -39,7 +39,7 @@ public class UhuCommsSend {
     private final static String SEPERATOR = ",";
 
     /**
-     * The SenderThread invokes this method after the Sphere Layer returns true.
+     * The SenderThread invokes this method after the sphere Layer returns true.
      * Note: The UhuCommsSend sends a unicast if the recipient address has been set and multicast if the recipient address is not set
      *
      * @param tcMessage the Message to be sent
@@ -227,7 +227,7 @@ public class UhuCommsSend {
             //1a. Compute the Encrypted Msg
             byte[] encryptMsg = UhuCompManager.getSphereForSadl().encryptSphereContent(tcMsg.getMessage().getSphereId(), tcMsg.getSerializedMessage());
             if (null == encryptMsg) {
-                logger.info("Uhu Sphere Failed: Could not encrypt msg");
+                logger.info("Uhu sphere Failed: Could not encrypt msg");
                 return false;
             }
             //1b. set encrypted message

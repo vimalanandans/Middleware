@@ -86,7 +86,7 @@ public class CreateDefaultSphere {
         log.info("No of spheres after creating second default sphere: " + registry.spheres.size());
 
         assertTrue("Invalid No. of spheres in registry", registry.spheres.size() == spheres);
-        assertTrue("Sphere Name invalid", registry.spheres.entrySet().iterator().next().getValue().getSphereName()
+        assertTrue("sphere Name invalid", registry.spheres.entrySet().iterator().next().getValue().getSphereName()
                 .equals(sphereConfig.getDefaultSphereName()));
         // TODO : Add name check for the default sphere based on upaDevice
     }
@@ -107,7 +107,7 @@ public class CreateDefaultSphere {
         log.info("No of spheres after creating second default sphere: " + registry.spheres.size());
 
         assertTrue("Invalid No. of spheres in registry", registry.spheres.size() == spheres);
-        assertTrue("Sphere Name invalid",
+        assertTrue("sphere Name invalid",
                 registry.spheres.entrySet().iterator().next().getValue().getSphereName().equals(newSphereName));
     }
 

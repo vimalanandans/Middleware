@@ -86,7 +86,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
             if (sphereInfo != null) {
                 sphere = new SphereListItem(sphereInfo);
             } else {
-                Log.e(TAG, "Sphere contains : " + sphereID + " not found");
+                Log.e(TAG, "sphere contains : " + sphereID + " not found");
             }
         } else {
             Log.e(TAG, "MainService is not available");
@@ -95,7 +95,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
 
         TextView sphere_name = (TextView) view
                 .findViewById(R.id.sphere_associated_to_service);
-        sphere_name.setText("Requests Pipe " + pipeName + " communication through Sphere " + sphere.getmSphere().getSphereName());
+        sphere_name.setText("Requests Pipe " + pipeName + " communication through sphere " + sphere.getmSphere().getSphereName());
         Button addPipeConfirm = (Button) view.findViewById(R.id.add_pipe_confirm);
         addPipeConfirm.setOnClickListener(new OnClickListener() {
 

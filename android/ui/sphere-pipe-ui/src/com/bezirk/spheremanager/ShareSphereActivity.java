@@ -115,7 +115,7 @@ public class ShareSphereActivity extends ActionBarActivity {
             @Override
             public void run() {
                 mImageViewQRCode.setImageBitmap(qrCodeBitmap);
-                actionBar.setTitle("QR-Code for Sphere: " + sphereInfo.getSphereName());
+                actionBar.setTitle("QR-Code for sphere: " + sphereInfo.getSphereName());
             }
         });
     }
@@ -184,7 +184,7 @@ public class ShareSphereActivity extends ActionBarActivity {
                 Intent emailIntent = new Intent(Intent.ACTION_VIEW);
                 emailIntent.setType("application/image");
                 emailIntent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "QR-Code of " + sphereInfo.getSphereName() + " Sphere");
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "QR-Code of " + sphereInfo.getSphereName() + " sphere");
                 emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find attached the QR code of the " + sphereInfo.getSphereName());
                 emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + getQRcodeImage().getAbsolutePath()));
                 startActivity(emailIntent);
@@ -196,7 +196,7 @@ public class ShareSphereActivity extends ActionBarActivity {
         } else if (itemId == R.id.qr_code_id) {
             //show Alert Dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Sphere-ID");
+            builder.setTitle("sphere-ID");
             builder.setMessage("To join to the spere Manually, use the following code:\n " + sphereInfo.getSphereID());
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override

@@ -99,7 +99,7 @@ public class SphereRegistryPersistenceTest {
 		
 				/*create SPhere1, add it to spheres*/
         Sphere homeSphere = new OwnerSphere();
-        homeSphere.setSphereName("Home-Sphere");
+        homeSphere.setSphereName("Home-sphere");
         homeSphere.setSphereType("MOBILE");
 
         LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices = new LinkedHashMap<String, ArrayList<UhuServiceId>>();
@@ -171,8 +171,8 @@ public class SphereRegistryPersistenceTest {
 
 		/*STORING SPHERE KEYS*/
 
-        byte[] sphereKey1 = new String("Sphere-key-1").getBytes();
-        byte[] sphereKey2 = new String("Sphere-key-2").getBytes();
+        byte[] sphereKey1 = new String("sphere-key-1").getBytes();
+        byte[] sphereKey2 = new String("sphere-key-2").getBytes();
 
         byte[] sphereKeyValue1 = new String("SOME DUMMY VALUE").getBytes();
         byte[] sphereKeyValue2 = new String("Some DIFFERENT DUMMY VALUE").getBytes();

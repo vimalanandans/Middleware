@@ -287,22 +287,24 @@ public class IncrementalParser implements MultiPartParser {
      */
     protected void validateUhuHeaderHttpHeader(Map<String, String> httpHeader) throws Exception {
         // Iterate through each header entry in this part
-        for (String key : httpHeader.keySet()) {
+        for (Map.Entry<String, String> entry : httpHeader.entrySet()) {
+            String key = entry.getKey();
+
             // Check that Content-Type matches the expected value
             if (key.equals(Part.KEY_CONTENT_TYPE)) {
-                String contentType = httpHeader.get(key);
+                String contentType = entry.getValue();
                 if (!contentType.equals(UhuHeaderPart.EXPECTEDVAL_CONTENT_TYPE)) {
                     throw new Exception("Content type <" + contentType + "> does not match expected value: " + UhuHeaderPart.EXPECTEDVAL_CONTENT_TYPE);
                 }
             }
             // Check that Content-ID matches the expected value
             else if (key.equals(Part.KEY_CONTENT_ID)) {
-                String contentId = httpHeader.get(key);
+                String contentId = entry.getValue();
                 if (!contentId.contains(UhuHeaderPart.EXPECTEDVAL_CONTENT_ID)) {
                     throw new Exception("Content ID <" + contentId + "> does not match expected value: " + UhuHeaderPart.EXPECTEDVAL_CONTENT_ID);
                 }
             } else if (key.equals(Part.KEY_CONTENT_ENCODING)) {
-                String contentEncoding = httpHeader.get(key);
+                String contentEncoding = entry.getValue();
                 // We probably don't care about the encoding value so just warn for now
                 if (!contentEncoding.equals(UhuHeaderPart.EXPECTEDVAL_CONTENT_ENCODING)) {
                     logger.warn("Didn't expect to see content encoding value: " + contentEncoding);
@@ -320,22 +322,24 @@ public class IncrementalParser implements MultiPartParser {
      */
     protected void validateStreamDescriptorHeader(Map<String, String> partHeader) throws Exception {
         // Iterate through each header entry in this part
-        for (String key : partHeader.keySet()) {
+        for (Map.Entry<String, String> entry : partHeader.entrySet()) {
+            String key = entry.getKey();
+
             // Check that Content-Type matches the expected value
             if (key.equals(Part.KEY_CONTENT_TYPE)) {
-                String contentType = partHeader.get(key);
+                String contentType = entry.getValue();
                 if (!contentType.equals(StreamDescriptorPart.EXPECTEDVAL_CONTENT_TYPE)) {
                     throw new Exception("Content type <" + contentType + "> does not match expected value: " + StreamDescriptorPart.EXPECTEDVAL_CONTENT_TYPE);
                 }
             }
             // Check that Content-ID matches the expected value
             else if (key.equals(Part.KEY_CONTENT_ID)) {
-                String contentId = partHeader.get(key);
+                String contentId = entry.getValue();
                 if (!contentId.contains(StreamDescriptorPart.EXPECTEDVAL_CONTENT_ID)) {
                     throw new Exception("Content ID <" + contentId + "> does not match expected value: " + StreamDescriptorPart.EXPECTEDVAL_CONTENT_ID);
                 }
             } else if (key.equals(Part.KEY_CONTENT_ENCODING)) {
-                String contentEncoding = partHeader.get(key);
+                String contentEncoding = entry.getValue();
                 // We provably don't care about the encoding value so just warn for now
                 if (!contentEncoding.equals(StreamDescriptorPart.EXPECTEDVAL_CONTENT_ENCODING)) {
                     logger.warn("Didn't expect to see content encoding value: " + contentEncoding);

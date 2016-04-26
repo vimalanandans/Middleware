@@ -70,7 +70,7 @@ public final class CryptoEngine implements ICryptoInternals {
                 SphereKeys sKeys = new SphereKeys(new UPABlockCipherService().generateNewKey(128).getEncoded(),
                         pair.getPrivate().getEncoded(), pair.getPublic().getEncoded());
                 registry.putSphereKeys(sphereId, sKeys);
-                LOGGER.debug("Sphere keys successfully added for sphereId : " + sphereId);
+                LOGGER.debug("sphere keys successfully added for sphereId : " + sphereId);
                 success = true;
             } catch (NoSuchAlgorithmException e) {
                 LOGGER.error("Problem adding sphere keys for sphereId : " + sphereId, e);
@@ -167,7 +167,7 @@ public final class CryptoEngine implements ICryptoInternals {
 
             registry.putSphereKeys(sphereId, sKeys);
 
-            LOGGER.debug("Sphere keys successfully added for sphereId : " + sphereId);
+            LOGGER.debug("sphere keys successfully added for sphereId : " + sphereId);
 
             success = true;
 
@@ -391,7 +391,7 @@ public final class CryptoEngine implements ICryptoInternals {
      */
     private boolean validateSphere(String sphereId) {
         if (sphereId != null && registry.isKeymapExist(sphereId)) {
-            LOGGER.debug("CryptoEngine, Sphere validated:" + sphereId);
+            LOGGER.debug("CryptoEngine, sphere validated:" + sphereId);
             return true;
         }
         return false;
@@ -410,7 +410,7 @@ public final class CryptoEngine implements ICryptoInternals {
         final SphereKeys sphereKeys = registry.getSphereKeys(sphereId);
 
         if (sphereKeys != null && sphereKeys.getSphereKey() != null && sphereKeys.getSphereKey().length != 0) {
-            LOGGER.debug("CryptoEngine, Sphere key validated:" + sphereId);
+            LOGGER.debug("CryptoEngine, sphere key validated:" + sphereId);
             return true;
         }
 

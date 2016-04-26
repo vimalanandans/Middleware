@@ -312,10 +312,10 @@ class LogDataActivityHelper {
     }
 
     /**
-     * Gets the Sphere name from the SPhere UI if available, "Un-defined" if not available.
+     * Gets the sphere name from the SPhere UI if available, "Un-defined" if not available.
      *
      * @param sphereId SPhereId of the sphere
-     * @return Sphere Name associated with the sphere Id.
+     * @return sphere Name associated with the sphere Id.
      */
     String getSphereNameFromSphereId(final String sphereId) {
         StringBuilder tempSphereName = new StringBuilder();

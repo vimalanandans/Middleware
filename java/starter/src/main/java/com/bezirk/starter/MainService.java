@@ -149,7 +149,7 @@ public class MainService {
         }
 
         /*************************************
-         * Step2 : Deinit Sphere             *
+         * Step2 : Deinit sphere             *
          *************************************/
         serviceStarterHelper.deinitSphere(this);
 
@@ -238,7 +238,7 @@ public class MainService {
                 .configureUhuDevice(this.uhuConfig);
 
         /**************************************************
-         * Step8 :Initialize Sphere                       *
+         * Step8 :Initialize sphere                       *
          **************************************************/
 
         if (UhuValidatorUtility.isObjectNotNull(uhuDevice)) {
@@ -248,14 +248,14 @@ public class MainService {
 
             if (!UhuValidatorUtility.isObjectNotNull(sphereForPC)) {
 
-                serviceStarterHelper.fail("Problem initializing Sphere.", null);
+                serviceStarterHelper.fail("Problem initializing sphere.", null);
 
             }
 
         }
 
         /**************************************************
-         * Step9 :Display or save Share Sphere QR code    * 
+         * Step9 :Display or save Share sphere QR code    *
          * Enable LoggingGUI                              *
          **************************************************/
         displayQRCode(uhuDevice);

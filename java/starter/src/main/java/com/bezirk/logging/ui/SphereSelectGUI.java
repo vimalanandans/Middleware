@@ -248,7 +248,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
             uhuLoggingManager.startLoggingService(
                     UhuComms.getREMOTE_LOGGING_PORT(), this);
         } catch (Exception e) {
-            LOGGER.error("Error in Sphere Select GUI init.", e);
+            LOGGER.error("Error in sphere Select GUI init.", e);
         }
     }
 

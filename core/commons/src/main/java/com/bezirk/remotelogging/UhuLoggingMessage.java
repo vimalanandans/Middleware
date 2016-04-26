@@ -11,7 +11,7 @@ import com.google.gson.Gson;
  */
 public class UhuLoggingMessage {
     /**
-     * Sphere Name on which the Remote Logging Message is sent.
+     * sphere Name on which the Remote Logging Message is sent.
      */
     public String sphereName = null;
     /**
@@ -51,7 +51,7 @@ public class UhuLoggingMessage {
      * Construct the Logging Message to be sent on the wire. This will be called in UhuCommsSend,
      * EventListenerUtility,ControlListenerUtility
      *
-     * @param sphereName    Name of the Sphere
+     * @param sphereName    Name of the sphere
      * @param uniqueKey     MsgId of the Message
      * @param sender        Sender IP
      * @param recipient     Recipient Ip, null incase of multicast

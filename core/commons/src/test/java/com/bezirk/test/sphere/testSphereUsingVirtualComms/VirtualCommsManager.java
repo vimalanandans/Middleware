@@ -77,7 +77,7 @@ public class VirtualCommsManager {
      */
     public void displayRegistryMapsForDevice(VirtualDevice device) {
         log.info("Spheres map: " + device.sphereRegistry.spheres.toString() + "\n");
-        log.info("Sphere membership map: " + device.sphereRegistry.sphereMembership.toString() + "\n");
+        log.info("sphere membership map: " + device.sphereRegistry.sphereMembership.toString() + "\n");
     }
 
 }

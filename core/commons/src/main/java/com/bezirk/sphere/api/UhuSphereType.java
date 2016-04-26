@@ -3,7 +3,7 @@ package com.bezirk.sphere.api;
 public class UhuSphereType {
 
     // ------------------------
-    // Sphere type constants
+    // sphere type constants
     // ------------------------
     // default sphere is only at the local device
     public static final String UHU_SPHERE_TYPE_DEFAULT = "UHU_SPHERE_DEFAULT";

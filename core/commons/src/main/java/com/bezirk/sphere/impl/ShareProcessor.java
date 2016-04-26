@@ -257,7 +257,7 @@ public class ShareProcessor {
     private boolean storeData(SphereExchangeData sphereExchangeData, UhuDeviceInfo inviterUhuDeviceInfo,
                               String sharerSphereId) {
 
-        logger.debug("Sphere Exchange data:\n" + sphereExchangeData.toString());
+        logger.debug("sphere Exchange data:\n" + sphereExchangeData.toString());
         logger.debug("Uhu Device Info:\n" + inviterUhuDeviceInfo.toString());
         logger.debug("Sharer sphere Id: " + sharerSphereId);
         // add device information
@@ -277,7 +277,7 @@ public class ShareProcessor {
         sphereRegistryWrapper.addMemberServices(inviterUhuDeviceInfo, sphereExchangeData.getSphereID(),
                 sphereExchangeData.getDeviceID());
 
-        // add services from the sharer Sphere
+        // add services from the sharer sphere
         Sphere shareSphere = sphereRegistryWrapper.getSphere(sharerSphereId);
         Map<String, ArrayList<UhuServiceId>> deviceServices = shareSphere.deviceServices;
         if (deviceServices != null && !deviceServices.isEmpty()
@@ -394,7 +394,7 @@ public class ShareProcessor {
      */
     private boolean validateRequest(ShareRequest shareRequest) {
         if (shareRequest == null) {
-            logger.error("Sphere share request received is null");
+            logger.error("sphere share request received is null");
             return false;
         }
 
@@ -404,7 +404,7 @@ public class ShareProcessor {
         String sharerSphereId = shareRequest.getSharerSphereId();
 
         if (sharerUhuDeviceInfo == null) {
-            logger.error("Catched device/Sphere Exchange data is not valid");
+            logger.error("Catched device/sphere Exchange data is not valid");
             return false;
         }
 

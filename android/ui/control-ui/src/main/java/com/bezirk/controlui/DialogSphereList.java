@@ -35,7 +35,7 @@ public class DialogSphereList extends DialogFragment {
         ListView sphereListView = (ListView) view.findViewById(R.id.sphereList);
         ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, sphereList);
         sphereListView.setAdapter(listAdapter);
-        getDialog().setTitle("Select Sphere");
+        getDialog().setTitle("Select sphere");
         sphereListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

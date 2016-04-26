@@ -108,7 +108,7 @@ public class SphereProperties implements ISphereConfig {
         int int24 = 24;
 
         if (preferences.getString(SPHERE_KEY, null).length() == int24) {
-            LOGGER.info("Sphere preferences validated");
+            LOGGER.info("sphere preferences validated");
             return true;
         }
         return false;
@@ -126,7 +126,7 @@ public class SphereProperties implements ISphereConfig {
         sphereKey = preferences.getString(SPHERE_KEY, null).getBytes();
         mode = ("true".equalsIgnoreCase(preferences.getString(SPHERE_MODE, null))) ? IUhuDevMode.Mode.ON : IUhuDevMode.Mode.OFF;
         defaultSphereName = preferences.getString(DEFAULT_SPHERE_NAME, null);
-        LOGGER.info("Sphere name: " + sphereName + " sphereId: " + sphereId + " sphereKey: " + Arrays.toString(sphereKey)
+        LOGGER.info("sphere name: " + sphereName + " sphereId: " + sphereId + " sphereKey: " + Arrays.toString(sphereKey)
                 + " mode: " + mode + " defaultSphereName: " + defaultSphereName);
     }
 

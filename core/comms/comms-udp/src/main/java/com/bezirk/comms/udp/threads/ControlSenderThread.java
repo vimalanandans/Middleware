@@ -67,7 +67,7 @@ public class ControlSenderThread implements Runnable {
                     if (UhuCommsSend.sendctrl(cMessage)) {
                         logger.info("Ctrl message- " + cMessage.getMessage().getDiscriminator() + ":" + cMessage.getMessage().getMessageId() + " sent");
                     } else {
-                        logger.info("Send Failed| Sphere Failed: Could not send msg");
+                        logger.info("Send Failed| sphere Failed: Could not send msg");
                         removeMessage(cMessage);
                     }
                 } else {

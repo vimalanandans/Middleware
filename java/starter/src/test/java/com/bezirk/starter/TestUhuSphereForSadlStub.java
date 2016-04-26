@@ -34,7 +34,7 @@ public class TestUhuSphereForSadlStub {
     public void testGetSphereMembership() {
 
         Iterable<String> spheres = uhuSphereForSadlStub.getSphereMembership(uhuServiceId);
-        assertEquals("Sphere name is not equal to default sphere.", "default sphere", spheres.iterator().next());
+        assertEquals("sphere name is not equal to default sphere.", "default sphere", spheres.iterator().next());
     }
 
     //This is for the unimplemented methods.

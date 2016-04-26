@@ -75,11 +75,11 @@ public class SphereTest {
         UhuServiceId serviceId = new UhuServiceId("TestService");
         assertFalse("Remove service is processed.", sphere.removeService(serviceId));
 
-        assertTrue("Same Sphere is not considered equal to itself.", sphere.equals(sphere));
+        assertTrue("Same sphere is not considered equal to itself.", sphere.equals(sphere));
 
-        assertFalse("Sphere is considered equal to null.", sphere.equals(null));
+        assertFalse("sphere is considered equal to null.", sphere.equals(null));
 
-        assertFalse("Sphere is considered equal to serviceID.", sphere.equals(serviceId));
+        assertFalse("sphere is considered equal to serviceID.", sphere.equals(serviceId));
 
         sphereTemp.ownerDevices = null;
         sphereTemp.deviceServices = null;

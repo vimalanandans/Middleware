@@ -31,7 +31,7 @@ public final class UhuSphereHandler {
     static IUhuDevMode devMode;
 
     /**
-     * deinitialize the Sphere
+     * deinitialize the sphere
      */
     boolean deinitSphere() {
 
@@ -43,7 +43,7 @@ public final class UhuSphereHandler {
     }
 
     /**
-     * create and initialise the Sphere
+     * create and initialise the sphere
      */
     boolean initSphere(UPADeviceInterface uhuDevice, MainService service, ISpherePersistence spherePersistence, UhuPreferences preferences) {
 
@@ -54,7 +54,7 @@ public final class UhuSphereHandler {
             try {
                 sphereRegistry = spherePersistence.loadSphereRegistry();
             } catch (Exception e) {
-                LOGGER.error("Error in loading Sphere Persistence", e);
+                LOGGER.error("Error in loading sphere Persistence", e);
             }
             CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
 

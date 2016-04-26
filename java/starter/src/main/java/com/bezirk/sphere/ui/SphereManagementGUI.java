@@ -90,7 +90,7 @@ public class SphereManagementGUI extends JFrame {
 
     private void initSphereManagement() {
         staticThis = this;
-        setTitle("Sphere Management");
+        setTitle("sphere Management");
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setJMenuBar(menuBar);
@@ -142,9 +142,9 @@ public class SphereManagementGUI extends JFrame {
     private void prepareSettingsMenu(final JMenu settingsMenu) {
         final JMenuItem interfaceMenuItem = new JMenuItem(
                 "Select Network Interface");
-        final JMenuItem catchMenuItem = new JMenuItem("Catch Sphere Code Entry");
+        final JMenuItem catchMenuItem = new JMenuItem("Catch sphere Code Entry");
         final JMenuItem displaySphereCodeMenuItem = new JMenuItem(
-                "Catch Sphere Code Display");
+                "Catch sphere Code Display");
         final JMenuItem commsTestMenuItem = new JMenuItem("Comms Test");
 
         interfaceMenuItem.addActionListener(new ActionListener() {
@@ -220,7 +220,7 @@ public class SphereManagementGUI extends JFrame {
                 JOptionPane.PLAIN_MESSAGE, null, null, "");
 
         if (catchCode != null && !catchCode.isEmpty()) {
-            // send the catch code to the Sphere
+            // send the catch code to the sphere
             sphereManager.processCatchShortCode(catchCode);
         }
     }

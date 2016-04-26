@@ -125,7 +125,7 @@
 //		String deviceName = Device.DEVICE_NAME + Device.DEVICE_NO;
 //		String deviceId = Device.DEVICE_ID + Device.DEVICE_NO;
 //		String deviceIdSubString = deviceId.substring(deviceId.length() - 5, deviceId.length());
-//		String defaultSphereName = "Sphere-" + deviceName + "-" + deviceIdSubString;
+//		String defaultSphereName = "sphere-" + deviceName + "-" + deviceIdSubString;
 //		String defaultSphereId = defaultSphereName + deviceId;
 //		return defaultSphereId;
 //	}

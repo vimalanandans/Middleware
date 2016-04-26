@@ -88,7 +88,7 @@ final class UhuStreamHandler {
             logger.debug("No StreamRecord for this Response or the Stream is already addressed");
             return false;
         }
-        streamRecord.Sphere = streamResponse.getSphereId();
+        streamRecord.sphere = streamResponse.getSphereId();
         streamRecord.streamStatus = streamResponse.status;
 
         streamRecord.recipientIP = streamResponse.streamIp;

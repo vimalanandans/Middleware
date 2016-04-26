@@ -133,7 +133,7 @@ public class SphereProperties implements ISphereConfig {
         if (properties.containsKey(SPHERE_NAME) && properties.containsKey(SPHERE_ID)
                 && properties.containsKey(SPHERE_KEY) && properties.getProperty(SPHERE_KEY).length() == 24
                 && properties.containsKey(SPHERE_MODE) && properties.containsKey(DEFAULT_SPHERE_NAME)) {
-            log.info("Sphere properties validated");
+            log.info("sphere properties validated");
             return true;
         }
         return false;
@@ -153,7 +153,7 @@ public class SphereProperties implements ISphereConfig {
         System.out.println("size of byte array: " + sphereKey.length);
         mode = (properties.getProperty(SPHERE_MODE).equalsIgnoreCase("true")) ? Mode.ON : Mode.OFF;
         defaultSphereName = properties.getProperty(DEFAULT_SPHERE_NAME);
-        log.info("Sphere name: " + sphereName + " sphereId: " + sphereId + " sphereKey: " + Arrays.toString(sphereKey)
+        log.info("sphere name: " + sphereName + " sphereId: " + sphereId + " sphereKey: " + Arrays.toString(sphereKey)
                 + " mode: " + mode + " defaultSphereName: " + defaultSphereName);
     }
 

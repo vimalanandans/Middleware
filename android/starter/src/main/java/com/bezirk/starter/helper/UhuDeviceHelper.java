@@ -56,7 +56,7 @@ public final class UhuDeviceHelper {
     }
 
     /**
-     * create and initialise the Sphere
+     * create and initialise the sphere
      * TODO: Move this code to modular place
      */
     private UhuDevice initDevice(final UhuPreferences preferences, final MainService service) {

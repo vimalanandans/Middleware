@@ -226,7 +226,7 @@ public class DiscoveryProcessor {
                 logger.debug("UhuSphereInfo or deviceList is null");
             }
         } else {
-            logger.debug("SphereDiscovery: Sphere Id is invalid");
+            logger.debug("SphereDiscovery: sphere Id is invalid");
         }
         return false;
 

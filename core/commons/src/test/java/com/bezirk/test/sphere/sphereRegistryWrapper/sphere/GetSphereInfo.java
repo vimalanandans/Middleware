@@ -19,7 +19,7 @@
 //import UhuSphereType;
 //import MemberSphere;
 //import OwnerSphere;
-//import Sphere;
+//import sphere;
 //import SphereRegistryWrapper;
 //import MockSetUpUtility;
 //import SphereTestUtility;
@@ -80,7 +80,7 @@
 //	@Test
 //	public final void validSphere() {
 //		String sphereId = UUID.randomUUID().toString();
-//		Sphere ownerSphere = new OwnerSphere(sphereTestUtility.OWNER_SPHERE_NAME_1,
+//		sphere ownerSphere = new OwnerSphere(sphereTestUtility.OWNER_SPHERE_NAME_1,
 //				sphereTestUtility.DEVICE_1.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_HOME);
 //		registry.spheres.put(sphereId, ownerSphere);
 //
@@ -110,7 +110,7 @@
 //	@Test
 //	public final void temporarySphereReturnsNull() {
 //		String sphereId = UUID.randomUUID().toString();
-//		Sphere tempMemberSphere = new MemberSphere(sphereTestUtility.MEMBER_SPHERE_NAME_1, UhuSphereType.UHU_SPHERE_TYPE_HOME, null, null, true);
+//		sphere tempMemberSphere = new MemberSphere(sphereTestUtility.MEMBER_SPHERE_NAME_1, UhuSphereType.UHU_SPHERE_TYPE_HOME, null, null, true);
 //		registry.spheres.put(sphereId, tempMemberSphere);
 //
 //		assertNull(sphereRegistryWrapper.getSphereInfo(sphereId));

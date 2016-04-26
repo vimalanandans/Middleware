@@ -5,11 +5,11 @@ import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 
 /**
- * // new message SphereCatchRequest Control message for Sphere control
- * messages/Sphere management
+ * // new message SphereCatchRequest Control message for sphere control
+ * messages/sphere management
  */
 public class CatchRequest extends com.bezirk.control.messages.MulticastControlMessage {
-    // private Sphere sphereInformation;
+    // private sphere sphereInformation;
 
 
     private final static ControlMessage.Discriminator discriminator = ControlMessage.Discriminator.CatchRequest;
@@ -17,7 +17,7 @@ public class CatchRequest extends com.bezirk.control.messages.MulticastControlMe
     private final UhuDeviceInfo uhuDeviceInfo;
     private final String sphereExchangeData; // generate 'catch' sphere qr code
     // as string
-    private final String catcherSphereId; // Sphere Id which wished to catch the
+    private final String catcherSphereId; // sphere Id which wished to catch the
     // services of temp sphere
 
     /**

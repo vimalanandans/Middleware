@@ -41,7 +41,7 @@ public class StreamSendingThread implements Runnable {
     public StreamSendingThread(StreamRecord streamRecord,
                                ISadlEventReceiver sadlReceiver, IUhuSphereForSadl sphereForSadl) {
         super();
-        this.sphere = streamRecord.Sphere;
+        this.sphere = streamRecord.sphere;
         this.recipientIP = streamRecord.recipientIP;
         this.port = streamRecord.recipientPort;
         this.filePath = streamRecord.filePath;

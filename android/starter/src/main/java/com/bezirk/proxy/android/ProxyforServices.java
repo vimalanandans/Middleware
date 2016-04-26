@@ -80,7 +80,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
             log.error("SADL Registration failed, Service ID is already registered");
         }
 
-        // Step 2: Register with Sphere
+        // Step 2: Register with sphere
         boolean isSpherePassed = UhuCompManager.getSphereRegistration().registerService(serviceId, serviceName);
 
         if (isSpherePassed) {
@@ -88,7 +88,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
             return;
         } else {
             // unregister the sadl due to failure in sphere
-            log.error("Sphere Registration Failed. unregistring SADL");
+            log.error("sphere Registration Failed. unregistring SADL");
             sadlRegistry.unregisterService(serviceId);
 
         }
@@ -114,7 +114,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
 
         final Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            log.error("Service Not Registered with any Sphere: " + serviceId.getUhuServiceId());
+            log.error("Service Not Registered with any sphere: " + serviceId.getUhuServiceId());
             return;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
@@ -154,7 +154,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
 
         final Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            log.error("Service Not Registered with the Sphere");
+            log.error("Service Not Registered with the sphere");
             return;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
@@ -194,7 +194,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
 
         final Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            log.error("Service Not Registered with the Sphere");
+            log.error("Service Not Registered with the sphere");
             return;
         }
 
@@ -230,7 +230,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
 
         final Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(senderId);
         if (null == listOfSphere) {
-            log.error("Service Not Registered with any Sphere: " + senderId);
+            log.error("Service Not Registered with any sphere: " + senderId);
             return (short) -1;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
@@ -274,7 +274,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
 
         Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(sender);
         if (null == listOfSphere) {
-            log.error("Service Not Registered with any Sphere: " + sender);
+            log.error("Service Not Registered with any sphere: " + sender);
             return (short) -1;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();

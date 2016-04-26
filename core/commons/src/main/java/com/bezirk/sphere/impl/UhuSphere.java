@@ -82,14 +82,14 @@ public class UhuSphere
         }
 
         if (sphereConfig == null) {
-            logger.warn("Sphere Configuration provided is null");
+            logger.warn("sphere Configuration provided is null");
         }
         this.uhuSphereListener = uhuSphereListener;
         this.sphereConfig = sphereConfig;
 
         try {
             registry = spherePersistence.loadSphereRegistry();
-            logger.info("Sphere Registry loaded successfully");
+            logger.info("sphere Registry loaded successfully");
         } catch (Exception e) {
             logger.error("Error in loading sphere Registry from Persistence. Uninstall the app and re-install", e);
             return false;

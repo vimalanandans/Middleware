@@ -2,7 +2,7 @@ package com.bezirk.comms;
 
 import com.bezirk.control.messages.ControlMessage;
 
-// Sadl, Sphere Logger,...who ever wishes to receive the message
+// Sadl, sphere Logger,...who ever wishes to receive the message
 // registers the respective control message Discriminator type
 public interface ICtrlMsgReceiver {
     // interface to process control message.

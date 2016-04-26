@@ -17,7 +17,7 @@ public final class MemberSphere extends Sphere implements Serializable {
     private static final long serialVersionUID = 4338578155881822594L;
     /**
      * Used to identify if the sphere was a sharable sphere of another device
-     * Sphere used for exploring services in that device[catch]
+     * sphere used for exploring services in that device[catch]
      * <p/>
      * Can be used for future explorations or can also be used for deleting
      * sphere information after the temporary transaction is complete

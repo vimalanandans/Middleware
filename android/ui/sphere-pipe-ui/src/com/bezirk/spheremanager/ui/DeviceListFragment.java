@@ -20,7 +20,7 @@ import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
 import com.bezirk.starter.MainService;
 
 /**
- * A fragment representing a single Sphere detail screen. This fragment is
+ * A fragment representing a single sphere detail screen. This fragment is
  * either contained in a {@link SphereListActivity} in two-pane mode (on
  * tablets) or a {@link DeviceListActivity} on handsets.
  */
@@ -85,9 +85,9 @@ public class DeviceListFragment extends ListFragment {
                     setListAdapter(new DeviceListAdapter(getActivity()
                             .getApplicationContext(), sphereInfo.getDeviceList()));
                 }
-                Log.i(TAG, "Sphere : " + sphereID + " doesn't contain any device");
+                Log.i(TAG, "sphere : " + sphereID + " doesn't contain any device");
             } else {
-                Log.e(TAG, "Sphere contains : " + sphereID + " not found");
+                Log.e(TAG, "sphere contains : " + sphereID + " not found");
             }
 
         } else {
@@ -105,7 +105,7 @@ public class DeviceListFragment extends ListFragment {
         TextView textView = (TextView) getActivity().findViewById(R.id.emptyListContent);
         if (getListAdapter() == null) {
             textView.setVisibility(View.VISIBLE);
-            textView.setText("Sphere doesn't contain any device");
+            textView.setText("sphere doesn't contain any device");
             setListShown(true);
             return;
         } else {

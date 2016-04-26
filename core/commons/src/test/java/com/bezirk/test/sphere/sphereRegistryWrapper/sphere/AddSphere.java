@@ -97,7 +97,7 @@ public class AddSphere {
     /**
      * Test method for {@link SphereRegistryWrapper#addSphere(String, Sphere)}.
      * <p/>
-     * <br>Test behavior of addSphere when Sphere object is passed as null.
+     * <br>Test behavior of addSphere when sphere object is passed as null.
      * addSphere is expected to return false.
      */
     @Test
@@ -110,7 +110,7 @@ public class AddSphere {
     /**
      * Test method for {@link SphereRegistryWrapper#addSphere(String, Sphere)}.
      * <p/>
-     * <br>Test behavior of addSphere when Sphere object and sphereId are passed as null.
+     * <br>Test behavior of addSphere when sphere object and sphereId are passed as null.
      * addSphere is expected to return false.
      */
     @Test

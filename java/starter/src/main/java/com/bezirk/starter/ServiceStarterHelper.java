@@ -36,7 +36,7 @@ final class ServiceStarterHelper {
             .getLogger(ServiceStarterHelper.class);
 
     /**
-     * create and initialise the Sphere
+     * create and initialise the sphere
      *
      * @param comms
      * @param registryPersistence
@@ -51,7 +51,7 @@ final class ServiceStarterHelper {
         try {
             sphereRegistry = spherePersistence.loadSphereRegistry();
         } catch (Exception e) {
-            LOGGER.error("Error in loading Sphere Registry", e);
+            LOGGER.error("Error in loading sphere Registry", e);
         }
 
         final CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
@@ -144,7 +144,7 @@ final class ServiceStarterHelper {
     }
 
     /**
-     * deinitialize the Sphere
+     * deinitialize the sphere
      */
     boolean deinitSphere(final MainService service) {
         // clear the reference

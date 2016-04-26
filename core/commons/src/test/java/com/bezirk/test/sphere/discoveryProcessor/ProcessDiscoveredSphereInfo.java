@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * This testcase verifies the processing of discovered sphere info. Sphere
+ * This testcase verifies the processing of discovered sphere info. sphere
  * Registry is queried to verify the discovered services are added to registry.
  *
  * @author AJC6KOR
@@ -92,7 +92,7 @@ public class ProcessDiscoveredSphereInfo {
 
         for (UhuDeviceInfo deviceInfo : uhuDeviceInfos) {
             for (UhuServiceInfo serviceInfo : deviceInfo.getServiceList()) {
-                assertTrue("Sphere registry is not having discovered services.",
+                assertTrue("sphere registry is not having discovered services.",
                         registry.sphereMembership.containsKey(serviceInfo.getServiceId()));
             }
         }

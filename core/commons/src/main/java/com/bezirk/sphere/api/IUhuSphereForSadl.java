@@ -120,7 +120,7 @@ public interface IUhuSphereForSadl {
      * Checks if the service is a part of the sphere
      *
      * @param service  UhuServiceId for finding existence in a sphere
-     * @param sphereId Sphere to be tested
+     * @param sphereId sphere to be tested
      * @return true if the service exist in the sphere false otherwise
      */
     public boolean isServiceInSphere(UhuServiceId service, String sphereId);

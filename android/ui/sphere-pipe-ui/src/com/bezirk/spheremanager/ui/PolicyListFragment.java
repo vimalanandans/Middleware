@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A fragment representing a single Sphere detail screen. This fragment is
+ * A fragment representing a single sphere detail screen. This fragment is
  * either contained in a {@link SphereListActivity} in two-pane mode (on
  * tablets) or a {@link DeviceListActivity} on handsets.
  */

@@ -145,7 +145,7 @@ public class SelectServiceActivity extends FragmentActivity implements
             ft.commit();
             //		}
 
-            // Swipe Detector to change Sphere
+            // Swipe Detector to change sphere
             final SwipeDetector swipeDetector = new SwipeDetector();
             view.setOnTouchListener(swipeDetector);
             view.setOnClickListener(new OnClickListener() {
@@ -153,7 +153,7 @@ public class SelectServiceActivity extends FragmentActivity implements
                 @Override
                 public void onClick(View v) {
                     if (swipeDetector.swipeDetected()) {
-                        // do the onSwipe action --> Change Sphere
+                        // do the onSwipe action --> Change sphere
                         SwipeDetector.Action direction = swipeDetector.getAction();
                         //Log.i("SWIPE", direction.toString());
                         //onSwiped(direction.toString());
@@ -163,7 +163,7 @@ public class SelectServiceActivity extends FragmentActivity implements
 
 
 //            if (callingActivity.equals("com.bosch.upa.spheremanager.ScanActivity")) {
-//                sphere_name.setText("Please select services for Sphere "
+//                sphere_name.setText("Please select services for sphere "
 //                        + sphereInfo.getSphereName());
 //                setTitle("Select services");
 //                LinearLayout finish_button_container = (LinearLayout) view.findViewById(R.id.finish_button_container);
@@ -204,7 +204,7 @@ public class SelectServiceActivity extends FragmentActivity implements
             //			}
             //		});
         } else {
-            Log.e(TAG, "Sphere id : " + sphereID + " not found in sphere list");
+            Log.e(TAG, "sphere id : " + sphereID + " not found in sphere list");
         }
 
         setContentView(view);

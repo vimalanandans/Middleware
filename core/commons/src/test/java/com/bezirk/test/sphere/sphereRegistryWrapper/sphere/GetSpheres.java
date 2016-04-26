@@ -28,7 +28,7 @@
 //import ISphereConfig.Mode;
 //import MemberSphere;
 //import OwnerSphere;
-//import Sphere;
+//import sphere;
 //import SphereRegistryWrapper;
 //import MockSetUpUtility;
 //import SphereTestUtility;
@@ -92,7 +92,7 @@
 //    public final void validSpheres() {
 //
 //        String defaultSphereId = mockSetUp.getDefaultSphereId(registry);
-//        Sphere defaultSphere = sphereRegistryWrapper.getSphere(defaultSphereId);
+//        sphere defaultSphere = sphereRegistryWrapper.getSphere(defaultSphereId);
 //        String defaultSphereName = defaultSphere.getSphereName();
 //        String defaultSphereType = defaultSphere.getSphereType();
 //
@@ -100,7 +100,7 @@
 //        String sphereId1 = UUID.randomUUID().toString();
 //        String sphereName1 = sphereTestUtility.OWNER_SPHERE_NAME_1;
 //        String sphereType1 = UhuSphereType.UHU_SPHERE_TYPE_HOME;
-//        Sphere ownerSphere = new OwnerSphere(sphereName1, sphereTestUtility.DEVICE_1.getDeviceId(), sphereType1);
+//        sphere ownerSphere = new OwnerSphere(sphereName1, sphereTestUtility.DEVICE_1.getDeviceId(), sphereType1);
 //        registry.spheres.put(sphereId1, ownerSphere);
 //
 //        // Create another sphere - a member sphere, and add it to the registry
@@ -117,7 +117,7 @@
 //		deviceServices.put(upaDevice.getDeviceId(), services);
 //		
 //		defaultSphere.setDeviceServices(deviceServices);
-//        Sphere memberSphere = new MemberSphere(sphereName2, sphereType2, devices, deviceServices, false);
+//        sphere memberSphere = new MemberSphere(sphereName2, sphereType2, devices, deviceServices, false);
 //        registry.spheres.put(sphereId2, memberSphere);
 //
 //        

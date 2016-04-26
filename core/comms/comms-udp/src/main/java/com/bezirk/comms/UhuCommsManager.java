@@ -71,7 +71,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
     //Discovery Cleaner thread
     //private Thread discThread;
 
-    // Sphere Discovery thread.
+    // sphere Discovery thread.
     //this is Moved to uhusphere
     // private Thread sphereDiscThread;
     private Thread eSenderThread = null;

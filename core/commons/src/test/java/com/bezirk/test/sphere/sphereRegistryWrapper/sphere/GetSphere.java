@@ -112,7 +112,7 @@ public class GetSphere {
      * {@link SphereRegistryWrapper#getSphere(String)}
      * <p/>
      * <br>
-     * The getSphere method should return null when there is no mapping Sphere
+     * The getSphere method should return null when there is no mapping sphere
      * object for the passed sphereId.
      */
     @Test

@@ -66,7 +66,7 @@ public class ProcessShareCode {
     /**
      * Test the case where<br>
      * Share code is valid<br>
-     * Sphere sharing the services is valid<br>
+     * sphere sharing the services is valid<br>
      */
     @Test
     public final void validShareCodeValidSharerSphere() {
@@ -78,7 +78,7 @@ public class ProcessShareCode {
     /**
      * Test the case where<br>
      * Share code is invalid<br>
-     * Sphere sharing the services is valid<br>
+     * sphere sharing the services is valid<br>
      */
     @Test
     public final void invalidShareCodeValidSharerSphere() {
@@ -90,7 +90,7 @@ public class ProcessShareCode {
     /**
      * Test the case where<br>
      * Share code is valid<br>
-     * Sphere sharing the services is invalid<br>
+     * sphere sharing the services is invalid<br>
      */
     @Test
     public final void validShareCodeInvalidSharerSphere() {
@@ -102,7 +102,7 @@ public class ProcessShareCode {
     /**
      * Test the case where<br>
      * Share code is invalid<br>
-     * Sphere sharing the services is invalid<br>
+     * sphere sharing the services is invalid<br>
      */
     @Test
     public final void invalidShareCodeInvalidSharerSphere() {
@@ -114,7 +114,7 @@ public class ProcessShareCode {
     /**
      * Test the case where<br>
      * Share code is null<br>
-     * Sphere sharing the services is valid<br>
+     * sphere sharing the services is valid<br>
      */
     @Test(expected = NullPointerException.class)
     public final void nullShareCodeValidSharerSphere() {
@@ -126,7 +126,7 @@ public class ProcessShareCode {
     /**
      * Test the case where<br>
      * Share code is valid<br>
-     * Sphere sharing the services is null<br>
+     * sphere sharing the services is null<br>
      */
     @Test
     public final void validShareCodeNullSharerSphere() {

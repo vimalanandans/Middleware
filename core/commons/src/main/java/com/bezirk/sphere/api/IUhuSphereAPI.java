@@ -10,7 +10,7 @@ import com.google.zxing.common.BitMatrix;
 import java.util.List;
 
 /**
- * UhuSphereAPI - Platform-independent API offered by UhU to Sphere management
+ * UhuSphereAPI - Platform-independent API offered by UhU to sphere management
  * application
  *
  * @author Rishabh Gulati, Vimal
@@ -29,8 +29,8 @@ public interface IUhuSphereAPI {
     public String createSphere(String sphereName, String sphereType);
 
     /**
-     * Delete the sphere removes the list of services in the Sphere and informs
-     * other services and deletes the Sphere from internal list
+     * Delete the sphere removes the list of services in the sphere and informs
+     * other services and deletes the sphere from internal list
      */
     public boolean deleteSphere(String sphereId);
 
@@ -38,7 +38,7 @@ public interface IUhuSphereAPI {
      * Get all the spheres visible/authorized to this device uhu This contains
      * the complete data of Spheres and its devices / pipe available
      *
-     * @return : Iterator Sphere Info
+     * @return : Iterator sphere Info
      */
     public Iterable<UhuSphereInfo> getSpheres();
 
@@ -46,7 +46,7 @@ public interface IUhuSphereAPI {
      * Get the sphere Info by sphere Id
      *
      * @param : String sphereId
-     * @return : Sphere Info if found else null
+     * @return : sphere Info if found else null
      */
     public UhuSphereInfo getSphere(String sphereId);
 
@@ -90,13 +90,13 @@ public interface IUhuSphereAPI {
     public Iterable<UhuDeviceInfo> getOtherDevices(String sphereId);
 
     /**
-     * Add services to Sphere (Add the local services to a sphere owned by the
+     * Add services to sphere (Add the local services to a sphere owned by the
      * device)
      *
      * @param: serviceIds
      * of Services to be added
      * @param: sphereId
-     * of Sphere to which the services need to be added
+     * of sphere to which the services need to be added
      * @return: true if request is accepted to process. Task completion via
      * Listener
      * @deprecated: use {@link #addLocalServicesToSphere(String, Iterable)}
@@ -105,13 +105,13 @@ public interface IUhuSphereAPI {
     public boolean addLocalServicesToSphere(Iterable<UhuServiceId> serviceIds, String sphereId);
 
     /**
-     * Add services to Sphere (Add the local services to a sphere owned by the
+     * Add services to sphere (Add the local services to a sphere owned by the
      * device)
      *
      * @param: serviceInfo
      * of Services to be added
      * @param: sphereId
-     * of Sphere to which the services need to be added
+     * of sphere to which the services need to be added
      * @return: true if request is accepted to process. Task completion via
      * Listener
      */
@@ -128,19 +128,19 @@ public interface IUhuSphereAPI {
      * @param: serviceId
      * of Service
      * @param: sphereId
-     * of Sphere
+     * of sphere
      * @return: true if request is accepted to process. Task completion via
      * Listener
      */
     public boolean serviceLeaveRequest(String serviceId, String sphereId);
 
     /**
-     * Expel service from Sphere
+     * Expel service from sphere
      *
      * @param: serviceId
      * of Service
      * @param: sphereId
-     * of Sphere
+     * of sphere
      * @return: true if request is accepted to process. Task completion via
      * Listener
      * @deprecated use {@link #expelDeviceFromSphere(String, String)}
@@ -149,19 +149,19 @@ public interface IUhuSphereAPI {
     public boolean expelServiceFromSphere(String serviceId, String sphereId);
 
     /**
-     * Expel service from Sphere
+     * Expel service from sphere
      *
      * @param: serviceId
      * of Service
      * @param: sphereId
-     * of Sphere
+     * of sphere
      * @return: true if request is accepted to process. Task completion via
      * Listener
      */
     public boolean expelDeviceFromSphere(String deviceId, String sphereId);
 
     /**
-     * TODO Discover Sphere (needs feedback how many discovered, how many
+     * TODO Discover sphere (needs feedback how many discovered, how many
      * cached(may be when it is cached))
      */
 

@@ -31,7 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A fragment representing a single Sphere detail screen. This fragment is
+ * A fragment representing a single sphere detail screen. This fragment is
  * either contained in a {@link SphereListActivity} in two-pane mode (on
  * tablets) or a {@link DeviceListActivity} on handsets.
  */
@@ -126,7 +126,7 @@ public class ScanDeviceFragment extends Fragment {
             Log.e(TAG, "MainService is not available");
         }
         if (sphereInfo == null) {
-            Log.e(TAG, "Sphere contains : " + sphereID + " not found");
+            Log.e(TAG, "sphere contains : " + sphereID + " not found");
         }
 
         if (callingActivity
@@ -173,7 +173,7 @@ public class ScanDeviceFragment extends Fragment {
                         if (spherList != null) {
                             sphereInfo = spherList.get(position);
                         } else {
-                            Log.e(TAG, "Sphere info is not found in " + String.valueOf(position));
+                            Log.e(TAG, "sphere info is not found in " + String.valueOf(position));
                         }
                     }
                     RadioButton clickedButton = (RadioButton) view

@@ -102,7 +102,7 @@ public class EventSenderThread implements Runnable {
             byte[] encryptMsg = UhuCompManager.getSphereForSadl().encryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getSerializedMessage());
             if (null != encryptMsg) {
                 eLedger.setEncryptedMessage(encryptMsg);
-                logger.trace("Sphere passed: set encrypted message");
+                logger.trace("sphere passed: set encrypted message");
                 return true;
             }
             return false;

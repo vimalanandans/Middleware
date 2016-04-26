@@ -112,12 +112,12 @@ public class SphereDiscoveryTest {
         invalidRecepient.device = getInetAddress().getHostAddress();
         response = new SphereDiscoveryResponse(invalidRecepient, sphereId, requestKey, discoveryId);
         response.setUhuSphereInfo(uhuSphereInfo);
-        assertFalse("Sphere Discovery response is added even when recepient is having null serviceID", sphereDiscovery.addResponse(response));
+        assertFalse("sphere Discovery response is added even when recepient is having null serviceID", sphereDiscovery.addResponse(response));
 
 
         response = new SphereDiscoveryResponse(recipient, sphereId, requestKey, 24);
         response.setUhuSphereInfo(uhuSphereInfo);
-        assertFalse("Sphere Discovery response is added even when discovery id is invalid.", sphereDiscovery.addResponse(response));
+        assertFalse("sphere Discovery response is added even when discovery id is invalid.", sphereDiscovery.addResponse(response));
 
     }
 

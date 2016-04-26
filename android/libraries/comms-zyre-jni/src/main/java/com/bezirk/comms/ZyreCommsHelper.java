@@ -15,12 +15,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-/**
- * Created by AJC6KOR on 12/21/2015.
- */
 class ZyreCommsHelper {
-
-    public static final Logger log = LoggerFactory.getLogger(ZyreCommsHelper.class);
+    public static final Logger logger = LoggerFactory.getLogger(ZyreCommsHelper.class);
     public static final String TAG = ZyreCommsHelper.class.getSimpleName();
 
     private final ConcurrentMap<String, List<String>> peers;
@@ -35,29 +31,29 @@ class ZyreCommsHelper {
     void processEvent(String eventType, String peer, String peerGroup, String payload) {
         // A Zyre-enabled device enters the network
         if (eventType.equals("ENTER")) {
-            log.info("peer (" + peer + ") entered network");
+            logger.info("peer (" + peer + ") entered network");
 
         } else if (eventType.equals("WHISPER")) {
-            log.info("data size > " + payload.length());
+            logger.info("data size > " + payload.length());
             commsProcessor.processWireMessage(peer, payload);
 
         } else if (eventType.equals("SHOUT")) {
-            log.info("data size > " + payload.length());
+            logger.info("data size > " + payload.length());
             commsProcessor.processWireMessage(peer, payload);
 
         } else if (eventType.equals("JOIN")) {
             addPeer(peerGroup, peer);
-            log.info("peer (" + peer + ") joined: " + peerGroup);
+            logger.info("peer (" + peer + ") joined: " + peerGroup);
             logKnownDevices();
 
         } else if (eventType.equals("LEAVE")) {
             boolean success = removePeer(peerGroup, peer);
-            log.info("peer (" + peer + ") left " + peerGroup + ":" + success);
+            logger.info("peer (" + peer + ") left " + peerGroup + ":" + success);
             logKnownDevices();
 
         } else if (eventType.equals("EXIT")) {
             boolean isRemovalSuccess = removePeer(peer);
-            log.debug("peer (" + peer + ") exited: " + isRemovalSuccess);
+            logger.debug("peer (" + peer + ") exited: " + isRemovalSuccess);
             logKnownDevices();
 
         } else {
@@ -77,15 +73,15 @@ class ZyreCommsHelper {
             return eventMap;
 
         if (Thread.interrupted()) {
-            log.warn("Interrupted during recv()");
-            log.info("RecvThread exiting");
+            logger.warn("Interrupted during recv()");
+            logger.info("RecvThread exiting");
             return eventMap;
         }
         // Convert the incoming string into a Map
         eventMap = parseMsg(incoming);
 
         if (eventMap.isEmpty() || eventMap.get("event") == null) {
-            log.info("event map has bytes. parse special : experimental ");
+            logger.info("event map has bytes. parse special : experimental ");
             //  return parseMsgExt(incoming);// to be fixed
             return eventMap;
         }
@@ -132,8 +128,8 @@ class ZyreCommsHelper {
     }
 
     void logKnownDevices() {
-        for (String deviceGroup : peers.keySet()) {
-            log.debug("devices in " + deviceGroup + " : " + peers.get(deviceGroup));
+        for (Map.Entry<String, List<String>> entries : peers.entrySet()) {
+            logger.debug("devices in " + entries.getKey() + " : " + entries.getValue());
         }
     }
 
@@ -155,7 +151,7 @@ class ZyreCommsHelper {
 
         for (String peerGroup : peers.keySet()) {
             if (!removePeer(peerGroup, zyreDeviceId)) {
-                log.debug("remove failed: " + zyreDeviceId);
+                logger.debug("remove failed: " + zyreDeviceId);
                 allRemovesSucceeded = false;
             }
         }

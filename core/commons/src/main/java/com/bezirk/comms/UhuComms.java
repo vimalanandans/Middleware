@@ -51,7 +51,7 @@ public final class UhuComms {
     //Logging
     private static int REMOTE_LOGGING_PORT;
     private static boolean isRemoteLoggingServiceEnabled;
-    // Sphere properties
+    // sphere properties
     private static boolean DEMO_SPHERE_MODE;
 
     private static int NO_OF_RETRIES = 0;

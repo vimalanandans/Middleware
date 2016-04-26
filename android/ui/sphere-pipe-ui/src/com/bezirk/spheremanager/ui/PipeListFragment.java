@@ -50,7 +50,7 @@ public class PipeListFragment extends ListFragment {
         }
     };
     /**
-     * Sphere id which holds the pipe list
+     * sphere id which holds the pipe list
      */
     private String sphereId = null;
     /**

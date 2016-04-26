@@ -33,7 +33,7 @@ public class SphereCtrlMsgReceiver implements ICtrlMsgReceiver {
 
         switch (id) {
             case SphereDiscoveryResponse:
-                LOGGER.debug("Processing Sphere Discovery Response");
+                LOGGER.debug("Processing sphere Discovery Response");
                 final SphereDiscoveryResponse discoveryResponse = ControlMessage.deserialize(serializedMsg,
                         SphereDiscoveryResponse.class);
 

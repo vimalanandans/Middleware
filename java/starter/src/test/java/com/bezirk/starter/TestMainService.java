@@ -65,7 +65,7 @@ public class TestMainService {
         ServiceMessageHandler testMock = Mockito.mock(ServiceMessageHandler.class);
         mainService.startStack(testMock);
 
-        assertNotNull("Sphere not initialized in startStack.", mainService.sphereForPC);
+        assertNotNull("sphere not initialized in startStack.", mainService.sphereForPC);
         assertTrue("Uhustack is not started after startstack call", mainService.getStartedStack());
         assertNotNull("ProxyPersistence is null even after startstack", mainService.getUhuProxyPersistence());
         mainService.stopStack();
@@ -75,7 +75,7 @@ public class TestMainService {
         System.setProperty("displayEnable", "false");
         mainService.startStack(testMock);
 
-        assertNotNull("Sphere not initialized in startStack.", mainService.sphereForPC);
+        assertNotNull("sphere not initialized in startStack.", mainService.sphereForPC);
         assertTrue("Uhustack is not started after startstack call", mainService.getStartedStack());
         assertNotNull("ProxyPersistence is null even after startstack", mainService.getUhuProxyPersistence());
 
@@ -99,7 +99,7 @@ public class TestMainService {
 
         mainService.stopStack();
 
-        assertNull("Sphere not cleared in stopstack.", mainService.sphereForPC);
+        assertNull("sphere not cleared in stopstack.", mainService.sphereForPC);
 
     }
 
@@ -116,7 +116,7 @@ public class TestMainService {
         mainService.startStack(Mockito.mock(ServiceMessageHandler.class));
 
         mainService.reboot();
-        assertNotNull("Sphere not intialized after reboot.", mainService.sphereForPC);
+        assertNotNull("sphere not intialized after reboot.", mainService.sphereForPC);
 
         mainService.stopStack();
 

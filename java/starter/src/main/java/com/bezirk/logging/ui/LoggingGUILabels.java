@@ -13,7 +13,7 @@ final class LoggingGUILabels {
 
     static final String LABEL_ABOUT_US = "About Us";
 
-    static final String LABEL_SELECT_SPHERE = "Select Sphere";
+    static final String LABEL_SELECT_SPHERE = "Select sphere";
 
     static final String LABEL_START_LOGGING = "Start Logging";
 
@@ -21,7 +21,7 @@ final class LoggingGUILabels {
 
     static final String LABEL_REMOTE_LOGGING_PORT = "Port";
 
-    static final String LABEL_GET_SPHERE_LIST = "Get Sphere List";
+    static final String LABEL_GET_SPHERE_LIST = "Get sphere List";
 
     static final String LABEL_FRAME_HEADER = "Uhu-Logging";
 
@@ -40,7 +40,7 @@ final class LoggingGUILabels {
      * COLUMN NAMES THAT ARE DISPLAYED IN LOGGING DETAILS GUI
      */
 
-    static final String LABEL_SPHERE = "Sphere";
+    static final String LABEL_SPHERE = "sphere";
 
     static final String LABEL_UNIQUE_ID = "Time-Stamp";
 

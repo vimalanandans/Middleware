@@ -73,7 +73,7 @@ public class SphereSelectLoggingActivity extends ActionBarActivity {
      */
     private TextView mTextViewLoggingVersion, mTextViewDevModeEnableLabel;
     /**
-     * Sphere Check Box
+     * sphere Check Box
      */
     private CheckBox mCheckBoxSpheres[];
     /**
@@ -265,7 +265,7 @@ public class SphereSelectLoggingActivity extends ActionBarActivity {
     }
 
     /**
-     * Task that is used to fetch the Spheres from the Sphere Module
+     * Task that is used to fetch the Spheres from the sphere Module
      */
     protected class FetchSpheresTask extends AsyncTask<Void, Void, Integer> {
         private ProgressDialog mProgressDialog;

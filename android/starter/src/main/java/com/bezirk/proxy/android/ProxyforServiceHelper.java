@@ -46,7 +46,7 @@ class ProxyforServiceHelper {
         streamRecord.allowDrops = false;
         streamRecord.isIncremental = false;
         streamRecord.isEncrypted = stream.isEncrypted();
-        streamRecord.Sphere = null;
+        streamRecord.sphere = null;
         streamRecord.streamStatus = StreamRecord.StreamingStatus.PENDING;
         streamRecord.recipientIP = receiver.device;
         streamRecord.recipientPort = 0;

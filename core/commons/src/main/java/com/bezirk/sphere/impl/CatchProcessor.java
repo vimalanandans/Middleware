@@ -346,7 +346,7 @@ public class CatchProcessor {
         // TODO: What if there are no services in the device performing the
         // catch? Fix it.
         // get the catch sphere services
-        // Sphere sphere = registry.spheres.get(catchSphereId);
+        // sphere sphere = registry.spheres.get(catchSphereId);
         Sphere sphere = sphereRegistryWrapper.getSphere(catcherSphereId);
         Map<String, ArrayList<UhuServiceId>> deviceServices = sphere.deviceServices;
 
@@ -381,7 +381,7 @@ public class CatchProcessor {
      */
     private boolean validateRequest(CatchRequest catchRequest) {
         if (catchRequest == null) {
-            LOGGER.error("Sphere catch request received is null");
+            LOGGER.error("sphere catch request received is null");
             return false;
         }
 
@@ -398,7 +398,7 @@ public class CatchProcessor {
         UhuDeviceInfo catcherUhuDeviceInfo = catchRequest.getUhuDeviceInfo();
 
         if (catcherUhuDeviceInfo == null || sphereExchangeData == null) {
-            LOGGER.error("Catched device/Sphere Exchange data is not valid");
+            LOGGER.error("Catched device/sphere Exchange data is not valid");
             return false;
         }
 
@@ -470,7 +470,7 @@ public class CatchProcessor {
                         sphere.addService(catcherDeviceId, serviceInfoList.getServiceId());
                     }
 
-                    // send local services of temp sharing Sphere Id to catch
+                    // send local services of temp sharing sphere Id to catch
                     // sphere via
                     DeviceInformation deviceInformation = sphereRegistryWrapper
                             .getDeviceInformation(upaDeviceInterface.getDeviceId());

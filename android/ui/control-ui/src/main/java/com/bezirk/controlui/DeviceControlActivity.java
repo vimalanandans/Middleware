@@ -61,8 +61,8 @@ public class DeviceControlActivity extends ActionBarActivity
         listData.add(new DataModel(R.drawable.ic_action_device_type, "Set Device Type", "Change the Device Type from : "
                 + preferences.getString(preferences.DEVICE_TYPE_TAG_PREFERENCE, "")
                 , false, false, false));
-        listData.add(new DataModel(R.drawable.ic_action_sphere_name, "Set Default Sphere Name",
-                "Change the Default Sphere Name from : "
+        listData.add(new DataModel(R.drawable.ic_action_sphere_name, "Set Default sphere Name",
+                "Change the Default sphere Name from : "
                         + preferences.getString(preferences.DEFAULT_SPHERE_NAME_TAG_PREFERENCE, "")
                 , false, false, false));
 

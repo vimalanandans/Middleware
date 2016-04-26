@@ -148,7 +148,7 @@ public class SphereListActivity extends FragmentActivity implements
 
     @Override
     public void addNewSphere(String name, String type) {
-        // add a new Sphere
+        // add a new sphere
         UUID newID = UUID.randomUUID();
         CreateSphereAsyncTask task = new CreateSphereAsyncTask();
         task.execute(new String[]{name, type});
@@ -157,7 +157,7 @@ public class SphereListActivity extends FragmentActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        // register the intent to receive the Bezirk Sphere Results
+        // register the intent to receive the Bezirk sphere Results
         IntentFilter filter = new IntentFilter();
         filter.addAction(UhuActionCommands.SPHERE_NOTIFICATION_ACTION);
         registerReceiver(sphereIntentReceiver, filter);
@@ -189,7 +189,7 @@ public class SphereListActivity extends FragmentActivity implements
         if (info.position == 0) {
             return;
         }
-        menu.setHeaderTitle("Sphere Actions");
+        menu.setHeaderTitle("sphere Actions");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.sphere_actions, menu);
         final List<UhuServiceInfo> serviceInfo = MainService.getSphereHandle().getServiceInfo();
@@ -261,7 +261,7 @@ public class SphereListActivity extends FragmentActivity implements
         @Override
         protected void onPreExecute() {
             progressDialog = new ProgressDialog(SphereListActivity.this);
-            progressDialog.setMessage("Creating Sphere");
+            progressDialog.setMessage("Creating sphere");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setCancelable(false);
             progressDialog.show();
@@ -271,7 +271,7 @@ public class SphereListActivity extends FragmentActivity implements
         protected void onPostExecute(String result) {
             if (result != null) {
                 progressDialog.cancel();
-                Toast.makeText(getApplicationContext(), "New Sphere created as : " + result, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "New sphere created as : " + result, Toast.LENGTH_SHORT).show();
                 final List<UhuServiceInfo> serviceInfo = sphereAPI.getServiceInfo();
                 if (serviceInfo != null) {
                     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -282,7 +282,7 @@ public class SphereListActivity extends FragmentActivity implements
                 }
             } else {
                 progressDialog.cancel();
-                Toast.makeText(getApplicationContext(), "Sphere not created", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "sphere not created", Toast.LENGTH_LONG).show();
             }
         }
     }

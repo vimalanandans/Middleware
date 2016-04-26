@@ -20,8 +20,8 @@ import UhuValidatorUtility;*/
 	
 	public SphereDiscoverySender(final String sphere, final int discoveryId, final long timeout, final int maxDiscovered) throws Exception{
 		 if(!UhuValidatorUtility.checkForString(sphere)){
-	            logger.error( "Sphere name is null, Dropping discovery request from User");
-	            throw new IllegalArgumentException("Sphere name is null, Dropping discovery request from User");
+	            logger.error( "sphere name is null, Dropping discovery request from User");
+	            throw new IllegalArgumentException("sphere name is null, Dropping discovery request from User");
 	        }
 	        final String serviceIdStr = "______SPHERESCANNER#2";
 	        final UhuServiceId serviceId = new UhuServiceId(serviceIdStr);

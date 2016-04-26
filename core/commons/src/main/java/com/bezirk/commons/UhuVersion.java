@@ -28,7 +28,7 @@ public class UhuVersion {
     private static final String WIRE_MESSAGE_VERSION = "0.1";
 
     // DB Version for storing database
-    // Sphere / sadl regisry changes.
+    // sphere / sadl regisry changes.
     private static final String PERSISTENCE_VERSION = "0.1";
 
     static {

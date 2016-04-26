@@ -4,11 +4,11 @@
 package com.bezirk.persistence;
 
 /**
- * Interface for the Sphere to load and store persistence
+ * Interface for the sphere to load and store persistence
  */
 public interface ISpherePersistence {
     /**
-     * Interface to persist the Sphere Registry
+     * Interface to persist the sphere Registry
      *
      * @throws Exception if problem in persisting the data
      */

@@ -272,7 +272,7 @@ public class ManagePipesActivity extends FragmentActivity implements SphereListO
     public void onSphereOfOnePipeLongClicked(String id) {
         FragmentManager fm = getSupportFragmentManager();
         DialogDeleteFragment deleteFragment = new DialogDeleteFragment();
-        deleteFragment.setText("Do you want to remove the association with this Sphere?");
+        deleteFragment.setText("Do you want to remove the association with this sphere?");
         deleteFragment.show(fm, "Dialog Fragment");
 
     }

@@ -106,7 +106,7 @@ public class ControlMessage {
 
 
     /**
-     * The discriminator is of type String and is used to distinguish between control Messages such as Discovery, Sphere , Streaming etc.
+     * The discriminator is of type String and is used to distinguish between control Messages such as Discovery, sphere , Streaming etc.
      *
      * @return the control Message discriminator
      */
