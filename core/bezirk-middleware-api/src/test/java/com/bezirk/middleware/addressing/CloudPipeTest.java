@@ -42,8 +42,8 @@ public class CloudPipeTest {
         }
         com.bezirk.middleware.addressing.CloudPipe cloudPipe = new CloudPipe(name, uri);
 
-        String serializedCloudPipe = cloudPipe.serialize();
-        CloudPipe deserializedCloudPipe = CloudPipe.deserialize(serializedCloudPipe, CloudPipe.class);
+        String serializedCloudPipe = cloudPipe.toJson();
+        CloudPipe deserializedCloudPipe = CloudPipe.fromJson(serializedCloudPipe, CloudPipe.class);
 
         assertEquals("Pipe name is not equal to the set value.", name, deserializedCloudPipe.getName());
         assertEquals("Pipe uri is not equal to the set value.", uri, deserializedCloudPipe.getURI());

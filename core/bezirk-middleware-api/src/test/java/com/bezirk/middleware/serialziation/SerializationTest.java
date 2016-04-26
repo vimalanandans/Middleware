@@ -47,11 +47,11 @@ public class SerializationTest {
         URI uri = new URI("http://foo/bar");
         Pipe pipe = new CloudPipe("boschPipe", uri);
 
-        String serializedPipe = pipe.serialize();
+        String serializedPipe = pipe.toJson();
         System.out.println("Serialized pipe    : " + serializedPipe);
 
-        Pipe newPipe = Pipe.deserialize(serializedPipe, CloudPipe.class);
-        String serializedNewPipe = newPipe.serialize();
+        Pipe newPipe = Pipe.fromJson(serializedPipe, CloudPipe.class);
+        String serializedNewPipe = newPipe.toJson();
         System.out.println("Serialized new pipe: " + serializedNewPipe);
 
         assertTrue(serializedPipe.equals(serializedNewPipe));

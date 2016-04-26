@@ -31,9 +31,9 @@ public class PipeTest {
         String pipeName = "TestPipe";
         pipe.setName(pipeName);
 
-        String serializedPipe = pipe.serialize();
+        String serializedPipe = pipe.toJson();
 
-        Pipe deserializedPipe = Pipe.deserialize(serializedPipe, Pipe.class);
+        Pipe deserializedPipe = Pipe.fromJson(serializedPipe, Pipe.class);
 
         assertEquals("PipeName is not equal to the set value.", pipeName, deserializedPipe.getName());
 

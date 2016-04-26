@@ -130,7 +130,7 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
         try {
             fireIntent.putExtra(serviceIdKEY, gson.toJson(pipeMsg.getRecipient()));
             fireIntent.putExtra(discriminatorKEY, pipeMsg.getCallbackType());
-            fireIntent.putExtra(UhuActions.KEY_PIPE, pipeMsg.getPipe().serialize());
+            fireIntent.putExtra(UhuActions.KEY_PIPE, pipeMsg.getPipe().toJson());
             fireIntent.putExtra(UhuActions.KEY_PIPE_REQ_ID, pipeMsg.getPipeReqId());
             fireIntent.putExtra(UhuActions.KEY_PIPE_POLICY_IN, pipeMsg.getAllowedIn().toJson());
             fireIntent.putExtra(UhuActions.KEY_PIPE_POLICY_OUT, pipeMsg.getAllowedOut().toJson());
