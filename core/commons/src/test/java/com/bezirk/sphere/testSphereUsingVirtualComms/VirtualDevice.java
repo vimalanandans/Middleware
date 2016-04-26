@@ -7,11 +7,11 @@ import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.impl.CatchProcessor;
-import com.bezirk.sphere.impl.OwnerService;
-import com.bezirk.sphere.impl.Service;
+import com.bezirk.sphere.impl.OwnerZirk;
+import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings("deprecation")
 public class VirtualDevice {
     private static final Logger log = LoggerFactory.getLogger(VirtualCommsManager.class);
-    // to keep track of the number of devices being created and also use it in sphere, device and service names.
+    // to keep track of the number of devices being created and also use it in sphere, device and zirk names.
     static int virtualDeviceNumber = 0;
     public SphereRegistryWrapper sphereRegistryWrapper;
     public SphereRegistry sphereRegistry;
@@ -85,28 +85,28 @@ public class VirtualDevice {
         String OWNER_SERVICE_NAME_2 = "OWNER_SERVICE_NAME_" + virtualDeviceNumber + "2";
         String OWNER_SPHERE_NAME = "OWNER_SPHERE_NAME_" + virtualDeviceNumber;
 
-        // create owner sphere and service
+        // create owner sphere and zirk
         String sphereId = sphereRegistryWrapper.createSphere(OWNER_SPHERE_NAME, null, null);
         Sphere sphere = sphereRegistryWrapper.getSphere(sphereId);
 
-        // create service1
+        // create zirk1
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
-        Service service1 = new OwnerService(OWNER_SERVICE_NAME_1, upaDevice.getDeviceId(), sphereSet1);
-        UhuZirkId OWNER_SERVICE_ID_1 = new UhuZirkId(OWNER_SERVICE_NAME_1);
-        sphereRegistryWrapper.addService(OWNER_SERVICE_ID_1.getUhuServiceId(), service1);
+        Zirk zirk1 = new OwnerZirk(OWNER_SERVICE_NAME_1, upaDevice.getDeviceId(), sphereSet1);
+        BezirkZirkId OWNER_SERVICE_ID_1 = new BezirkZirkId(OWNER_SERVICE_NAME_1);
+        sphereRegistryWrapper.addService(OWNER_SERVICE_ID_1.getBezirkZirkId(), zirk1);
 
-        // create service2
+        // create zirk2
         HashSet<String> sphereSet2 = new HashSet<>();
         sphereSet2.add(sphereId);
-        Service service2 = new OwnerService(OWNER_SERVICE_NAME_2, upaDevice.getDeviceId(), sphereSet2);
-        UhuZirkId OWNER_SERVICE_ID_2 = new UhuZirkId(OWNER_SERVICE_NAME_2);
-        sphereRegistryWrapper.addService(OWNER_SERVICE_ID_2.getUhuServiceId(), service2);
+        Zirk zirk2 = new OwnerZirk(OWNER_SERVICE_NAME_2, upaDevice.getDeviceId(), sphereSet2);
+        BezirkZirkId OWNER_SERVICE_ID_2 = new BezirkZirkId(OWNER_SERVICE_NAME_2);
+        sphereRegistryWrapper.addService(OWNER_SERVICE_ID_2.getBezirkZirkId(), zirk2);
 
-        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
 
         // create list of services for the sphere
-        ArrayList<UhuZirkId> services = new ArrayList<>();
+        ArrayList<BezirkZirkId> services = new ArrayList<>();
         services.add(OWNER_SERVICE_ID_1);
         services.add(OWNER_SERVICE_ID_2);
 

@@ -2,11 +2,11 @@ package com.bezirk.sphere.messages;
 
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.MulticastControlMessage;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 /**
- * This message is used to initiate 'leave' from a member of the sphere owning a service it shared
+ * This message is used to initiate 'leave' from a member of the sphere owning a zirk it shared
  * with owner of the same sphere
  *
  * @author Rishab Gulati
@@ -14,7 +14,7 @@ import com.bezirk.proxy.api.impl.UhuZirkId;
 public class MemberLeaveRequest extends MulticastControlMessage {
     //private final String sphere_Name;
     private final static Discriminator discriminator = ControlMessage.Discriminator.MemberLeaveRequest;
-    private final UhuZirkId serviceId;
+    private final BezirkZirkId serviceId;
 
     /**
      * Used with for multicasting the leave request by the member of a sphere
@@ -24,13 +24,13 @@ public class MemberLeaveRequest extends MulticastControlMessage {
      * @param sphere_Name
      * @param sender
      */
-    public MemberLeaveRequest(String sphereID, UhuZirkId serviceId, String sphere_Name, UhuZirkEndPoint sender) {
+    public MemberLeaveRequest(String sphereID, BezirkZirkId serviceId, String sphere_Name, BezirkZirkEndPoint sender) {
         super(sender, sphereID, discriminator);
         this.serviceId = serviceId;
         //this.sphere_Name = sphere_Name;        
     }
 
-    public UhuZirkId getServiceId() {
+    public BezirkZirkId getServiceId() {
         return serviceId;
     }
 

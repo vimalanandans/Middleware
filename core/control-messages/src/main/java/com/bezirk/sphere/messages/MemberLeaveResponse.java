@@ -2,8 +2,8 @@ package com.bezirk.sphere.messages;
 
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.UnicastControlMessage;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 /**
  * This message is used to respond to a SignedControlMessage(discriminator : UhuSphereLeave)
@@ -13,10 +13,10 @@ import com.bezirk.proxy.api.impl.UhuZirkId;
 public class MemberLeaveResponse extends UnicastControlMessage {
     //private final int requestId;
     private final static Discriminator discriminator = ControlMessage.Discriminator.MemberLeaveResponse;
-    //private final UhuZirkEndPoint recipient; //initiator (owner of the sphere)
+    //private final BezirkZirkEndPoint recipient; //initiator (owner of the sphere)
     private final boolean signatureVerified;
     private final boolean removedSuccessfully;
-    private final UhuZirkId serviceId;
+    private final BezirkZirkId serviceId;
     private final String sphere_Name;
 
     /**
@@ -30,10 +30,10 @@ public class MemberLeaveResponse extends UnicastControlMessage {
      * @param serviceId
      * @param sphere_Name
      */
-    public MemberLeaveResponse(String sphereID, int requestId, boolean signatureVerified, boolean removedSuccessfully, UhuZirkEndPoint sender, UhuZirkEndPoint recipient, UhuZirkId serviceId, String sphere_Name, String key) {
+    public MemberLeaveResponse(String sphereID, int requestId, boolean signatureVerified, boolean removedSuccessfully, BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, BezirkZirkId serviceId, String sphere_Name, String key) {
 
         super(sender, recipient, sphereID, discriminator, false, key);
-        //public UnicastControlMessage(UhuZirkEndPoint sender, UhuZirkEndPoint recipient, String sphereName,
+        //public UnicastControlMessage(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereName,
         //String discriminator, Boolean retransmit, String key){
         this.signatureVerified = signatureVerified;
         this.removedSuccessfully = removedSuccessfully;
@@ -46,7 +46,7 @@ public class MemberLeaveResponse extends UnicastControlMessage {
         return removedSuccessfully;
     }
 
-    public UhuZirkId getServiceId() {
+    public BezirkZirkId getServiceId() {
         return serviceId;
     }
 

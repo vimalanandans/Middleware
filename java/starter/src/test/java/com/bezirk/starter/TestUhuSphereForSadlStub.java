@@ -1,6 +1,6 @@
 package com.bezirk.starter;
 
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 public class TestUhuSphereForSadlStub {
     com.bezirk.starter.UhuSphereForSadlStub uhuSphereForSadlStub = new com.bezirk.starter.UhuSphereForSadlStub();
     String testStr = "TestString";
-    UhuZirkId uhuServiceId = new UhuZirkId("123");
+    BezirkZirkId uhuServiceId = new BezirkZirkId("123");
 
     @Test
     public void testEncryptSphereContent() {
@@ -43,14 +43,14 @@ public class TestUhuSphereForSadlStub {
         uhuSphereForSadlStub.encryptSphereContent(null, null, null);
         uhuSphereForSadlStub.decryptSphereContent(null, null, null);
         uhuSphereForSadlStub.processSphereDiscoveryRequest(null);
-        assertNull("ServiceName is non null.", uhuSphereForSadlStub.getServiceName(uhuServiceId));
+        assertNull("ServiceName is non null.", uhuSphereForSadlStub.getZirkName(uhuServiceId));
         assertNull("Device name is non null.", uhuSphereForSadlStub.getDeviceNameFromSphere("testDevId"));
 
     }
 
     @Test
     public void testIsServiceInSphere() {
-        assertTrue("Service is not identified as a member service in sphere.", uhuSphereForSadlStub.isServiceInSphere(uhuServiceId, "123"));
+        assertTrue("Zirk is not identified as a member zirk in sphere.", uhuSphereForSadlStub.isZirkInSphere(uhuServiceId, "123"));
     }
 
 }

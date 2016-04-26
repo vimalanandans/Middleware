@@ -10,12 +10,12 @@ import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.discovery.DiscoveryLabel;
 import com.bezirk.discovery.SphereDiscoveryProcessor;
 import com.bezirk.discovery.SphereDiscoveryRecord;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezrik.network.UhuNetworkUtilities;
 
@@ -70,7 +70,7 @@ public class DiscoveryProcessor {
      * <p/>
      * 2) When the getSphere is operated on a member sphere, we get only the
      * info with the status of active/in-active for a local services, i.e. for
-     * services on that device. For latest information to be added for a Service
+     * services on that device. For latest information to be added for a Zirk
      * we would require this information coming as a part of the discovered
      * services
      *
@@ -80,7 +80,7 @@ public class DiscoveryProcessor {
      * @deprecated use {@link #processDiscoveredSphereInfo(Set, String)}
      */
     @Deprecated
-    public UhuSphereInfo processDiscoveryResponse(Set<UhuDiscoveredZirk> discoveredServices, String sphereId) {
+    public UhuSphereInfo processDiscoveryResponse(Set<BezirkDiscoveredZirk> discoveredServices, String sphereId) {
 
         UhuSphereInfo sphereInfo = null;
 
@@ -91,18 +91,18 @@ public class DiscoveryProcessor {
 
             if (sphereInfo != null) {
                 // get the device list
-                ArrayList<UhuDeviceInfo> devices = sphereInfo.getDeviceList();
+                ArrayList<BezirkDeviceInfo> devices = sphereInfo.getDeviceList();
 
                 if (devices != null && !devices.isEmpty()) {
 
-                    for (UhuDeviceInfo device : devices) {
-                        // get the service list
-                        List<UhuServiceInfo> services = device.getServiceList();
+                    for (BezirkDeviceInfo device : devices) {
+                        // get the zirk list
+                        List<BezirkZirkInfo> services = device.getZirkList();
 
                         if (services != null && !services.isEmpty()) {
 
-                            for (UhuServiceInfo serviceInfo : services) {
-                                // update the service info
+                            for (BezirkZirkInfo serviceInfo : services) {
+                                // update the zirk info
                                 sphereRegistryWrapper.updateUhuServiceInfo(discoveredServices, serviceInfo);
                             }
                         }
@@ -126,20 +126,20 @@ public class DiscoveryProcessor {
         for (UhuSphereInfo uhuSphereInfo : uhuSphereInfoSet) {
             // verify sphereId of UhuSphereInfo object
             if (uhuSphereInfo.getSphereID().equals(sphereId)) {
-                ArrayList<UhuDeviceInfo> uhuDeviceInfoList = uhuSphereInfo.getDeviceList();
+                ArrayList<BezirkDeviceInfo> bezirkDeviceInfoList = uhuSphereInfo.getDeviceList();
 
-                // iterate through UhuDeviceInfo
-                for (UhuDeviceInfo uhuDeviceInfo : uhuDeviceInfoList) {
+                // iterate through BezirkDeviceInfo
+                for (BezirkDeviceInfo bezirkDeviceInfo : bezirkDeviceInfoList) {
                     // add/update device information
-                    sphereRegistryWrapper.addDevice(uhuDeviceInfo.getDeviceId(),
-                            new DeviceInformation(uhuDeviceInfo.getDeviceName(), uhuDeviceInfo.getDeviceType()));
+                    sphereRegistryWrapper.addDevice(bezirkDeviceInfo.getDeviceId(),
+                            new DeviceInformation(bezirkDeviceInfo.getDeviceName(), bezirkDeviceInfo.getDeviceType()));
 
                     // add services
-                    if (sphereRegistryWrapper.addMemberServices(uhuDeviceInfo, uhuSphereInfo.getSphereID(),
-                            uhuDeviceInfo.getDeviceId())) {
-                        for (UhuServiceInfo service : uhuDeviceInfo.getServiceList()) {
+                    if (sphereRegistryWrapper.addMemberServices(bezirkDeviceInfo, uhuSphereInfo.getSphereID(),
+                            bezirkDeviceInfo.getDeviceId())) {
+                        for (BezirkZirkInfo service : bezirkDeviceInfo.getZirkList()) {
                             Sphere sphere = sphereRegistryWrapper.getSphere(uhuSphereInfo.getSphereID());
-                            sphere.addService(uhuDeviceInfo.getDeviceId(), service.getServiceId());
+                            sphere.addService(bezirkDeviceInfo.getDeviceId(), service.getZirkId());
                         }
                         status = true;
                         sphereRegistryWrapper.persist();
@@ -164,8 +164,8 @@ public class DiscoveryProcessor {
         }
         // TODO discuss, for now hardcoded for test
         final String serviceIdStr = "______SPHERESCANNER#1";
-        final UhuZirkId serviceId = new UhuZirkId(serviceIdStr);
-        final UhuZirkEndPoint sender = UhuNetworkUtilities.getServiceEndPoint(serviceId);
+        final BezirkZirkId serviceId = new BezirkZirkId(serviceIdStr);
+        final BezirkZirkEndPoint sender = UhuNetworkUtilities.getServiceEndPoint(serviceId);
         logger.debug("Discovery initiator device : " + sender.device);
 
         // Assign discovery Id
@@ -196,16 +196,16 @@ public class DiscoveryProcessor {
             UhuSphereInfo uhuSphereInfo = sphereRegistryWrapper.getSphereInfo(discoveryRequest.getSphereId());
             if (uhuSphereInfo != null && uhuSphereInfo.getDeviceList() != null) {
                 // send only the services belongs to this device
-                Iterator<UhuDeviceInfo> deviceIterator = uhuSphereInfo.getDeviceList().iterator();
+                Iterator<BezirkDeviceInfo> deviceIterator = uhuSphereInfo.getDeviceList().iterator();
                 while (deviceIterator.hasNext()) {
-                    UhuDeviceInfo localDeviceInfo = deviceIterator.next();
+                    BezirkDeviceInfo localDeviceInfo = deviceIterator.next();
                     // get the local device or development device id
                     if (localDeviceInfo.getDeviceId().equals(upaDeviceInterface.getDeviceId()) || localDeviceInfo
                             .getDeviceId().equalsIgnoreCase(SphereRegistryWrapper.DEVELOPMENT_DEVICE_ID)) {
 
                         // construct the uhu sphere info with only local device
                         // info info
-                        ArrayList<UhuDeviceInfo> localDeviceList = new ArrayList<UhuDeviceInfo>();
+                        ArrayList<BezirkDeviceInfo> localDeviceList = new ArrayList<BezirkDeviceInfo>();
                         localDeviceList.add(localDeviceInfo);
 
                         UhuSphereInfo discoverResponseSphereInfo = new UhuSphereInfo(uhuSphereInfo.getSphereID(),

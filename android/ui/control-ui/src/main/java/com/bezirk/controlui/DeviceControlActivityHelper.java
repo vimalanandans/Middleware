@@ -12,13 +12,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bezirk.actions.UhuActions;
-import com.bezirk.controlui.R;
-import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.sphere.api.IUhuDevMode;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuPreferences;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +85,7 @@ class DeviceControlActivityHelper {
                 return;
         }
 
-        if (UhuValidatorUtility.isObjectNotNull(actions)) {
+        if (BezirkValidatorUtility.isObjectNotNull(actions)) {
             Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
             intent.setAction(actions);
             deviceControlActivity.startService(intent);
@@ -225,7 +224,7 @@ class DeviceControlActivityHelper {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptsView = layoutInflater.inflate(R.layout.prompt_confirm, null);
         IUhuSphereAPI sphereAPI = MainService.getSphereHandle();
-        final List<UhuServiceInfo> uhuServiceInfos = sphereAPI.getServiceInfo();
+        final List<BezirkZirkInfo> bezirkZirkInfos = sphereAPI.getServiceInfo();
         final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(deviceControlActivity.getApplicationContext());
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 context);
@@ -252,10 +251,10 @@ class DeviceControlActivityHelper {
                                 String data = confirmTextView.getText().toString();
                                 log.info("clear database confirmed " + data);
                                 onPromptTextResult(resultId, data);
-                                if (UhuValidatorUtility.isObjectNotNull(uhuServiceInfos) && !uhuServiceInfos.isEmpty()) {
-                                    for (UhuServiceInfo info : uhuServiceInfos) {
-                                        if (sharedPrefs.getAll().containsKey(info.getServiceId())) {
-                                            sharedPrefs.edit().remove(info.getServiceId()).apply();
+                                if (BezirkValidatorUtility.isObjectNotNull(bezirkZirkInfos) && !bezirkZirkInfos.isEmpty()) {
+                                    for (BezirkZirkInfo info : bezirkZirkInfos) {
+                                        if (sharedPrefs.getAll().containsKey(info.getZirkId())) {
+                                            sharedPrefs.edit().remove(info.getZirkId()).apply();
                                         }
                                     }
                                 }

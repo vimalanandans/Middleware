@@ -20,7 +20,7 @@ import com.bezirk.streaming.rtc.ISignaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
 import com.bezirk.streaming.store.StreamStore;
 import com.bezirk.streaming.threads.StreamQueueProcessor;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,9 +53,9 @@ public class UhuStreamManager implements IStreaming {
     public UhuStreamManager(IUhuComms comms,
                             MessageDispatcher msgDispatcher, ISadlEventReceiver sadlReceiver) {
 
-        if (UhuValidatorUtility.isObjectNotNull(comms)
-                && UhuValidatorUtility.isObjectNotNull(msgDispatcher)
-                && UhuValidatorUtility.isObjectNotNull(sadlReceiver)) {
+        if (BezirkValidatorUtility.isObjectNotNull(comms)
+                && BezirkValidatorUtility.isObjectNotNull(msgDispatcher)
+                && BezirkValidatorUtility.isObjectNotNull(sadlReceiver)) {
             this.comms = comms;
             this.msgDispatcher = msgDispatcher;
             this.sadlReceiver = sadlReceiver;

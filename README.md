@@ -76,7 +76,7 @@ Since artifacts are currently not published to maven/nexus, use the following co
     ```
     gradle --init-script init.gradle clean build publishToMavenLocal
     ```
-    *Note: publishToMavenLocal in step 4 is only required if artifacts from java/android are to be used in other projects like examples/services.*
+    *Note: publishToMavenLocal in step 4 is only required if artifacts from java/android are to be used in other projects like examples/zirks.*
 
 ## Proposed directory structure *(experimental)*
 Bezirk *(root/parent directory of all projects)*
@@ -89,7 +89,7 @@ Bezirk *(root/parent directory of all projects)*
         * build.gradle -> android specific build configurations
     * settings.gradle -> contains list of all modules to be include from core, java and android
     * build.gradle -> common configurations across modules/group of modules 
-* core services
+* core zirks
     * wipin
         * core
         * java
@@ -113,7 +113,7 @@ Bezirk *(root/parent directory of all projects)*
     * ...
     * settings.gradle -> contains list of all modules to be include from xlight, party, other examples. *(IMPORTANT: This can be changed going forward such that each major show-case application/example has its own settings.gradle and build configurations)*
     * build.gradle -> common configurations across modules/group of modules 
-* bezirk helper files/configurations. For instance, licensing, gradle helper files required across middleware, core-services and examples.
+* bezirk helper files/configurations. For instance, licensing, gradle helper files required across middleware, core-zirks and examples.
 
 ## Approach
 * Migrate files from existing projects to respective directories to ensure git tracking for future references.
@@ -138,7 +138,7 @@ git log --follow filePath
 ```
 *NOTE: File history might not be visible in stash/repository directly*
 
-## For core-services & show-case application developers
+## For core-zirks & show-case application developers
 * To continue to use your existing projects, point to artifacts of version '2.0.1' instead of projects from Java-Common, Java-Build & Android-Build.
 * Migrate projects to the new structure.
 

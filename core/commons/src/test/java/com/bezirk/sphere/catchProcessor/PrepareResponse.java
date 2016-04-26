@@ -4,7 +4,7 @@
 package com.bezirk.sphere.catchProcessor;
 
 import com.bezirk.commons.UhuId;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.sphere.impl.CatchProcessor;
 import com.bezirk.sphere.impl.SphereExchangeData;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
@@ -54,7 +54,7 @@ public class PrepareResponse {
         /** Reflection to test the private method **/
         parameterTypes = new Class[4];
         parameterTypes[0] = SphereExchangeData.class;
-        parameterTypes[1] = UhuDeviceInfo.class;
+        parameterTypes[1] = BezirkDeviceInfo.class;
         parameterTypes[2] = java.lang.String.class;
         parameterTypes[3] = java.lang.String.class;
         method = CatchProcessor.class.getDeclaredMethod("prepareResponse", parameterTypes);
@@ -96,16 +96,16 @@ public class PrepareResponse {
         String catcherSphereId = sphereTestUtility.generateOwnerCombo();
         String inviterShortCode = new UhuId().getShortIdByHash(catcherSphereId);
         SphereExchangeData sphereExchangeData = sphereTestUtility.getSphereExchangeDataObj();
-        UhuDeviceInfo catcherUhuDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
-        String catcherDeviceId = catcherUhuDeviceInfo.getDeviceId();
+        BezirkDeviceInfo catcherBezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        String catcherDeviceId = catcherBezirkDeviceInfo.getDeviceId();
 
         /** invoke the method under test using reflection **/
-        CatchResponse preparedResponse = (CatchResponse) method.invoke(catchProcessor, sphereExchangeData, catcherUhuDeviceInfo, inviterShortCode, catcherSphereId);
+        CatchResponse preparedResponse = (CatchResponse) method.invoke(catchProcessor, sphereExchangeData, catcherBezirkDeviceInfo, inviterShortCode, catcherSphereId);
 
         assertEquals(catcherSphereId, preparedResponse.getCatcherSphereId());
         assertEquals(catcherDeviceId, preparedResponse.getCatcherDeviceId());
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).device, preparedResponse.getSender().device); // To verify the UhuZirkEndPoint obj
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).serviceId, preparedResponse.getSender().serviceId);// To verify the UhuZirkEndPoint obj
+        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).device, preparedResponse.getSender().device); // To verify the BezirkZirkEndPoint obj
+        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).zirkId, preparedResponse.getSender().zirkId);// To verify the BezirkZirkEndPoint obj
     }
 
     /**
@@ -118,15 +118,15 @@ public class PrepareResponse {
     @Test(expected = InvocationTargetException.class)
     public void nullSphereExchangeDataObjThrowsException() throws Exception {
         SphereExchangeData sphereExchangeData = null;
-        UhuDeviceInfo catcherUhuDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        BezirkDeviceInfo catcherBezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
         String catcherSphereId = sphereTestUtility.generateOwnerCombo();
         String inviterShortCode = new UhuId().getShortIdByHash(catcherSphereId);
         /** invoke the method under test using reflection **/
-        method.invoke(catchProcessor, sphereExchangeData, catcherUhuDeviceInfo, inviterShortCode, catcherSphereId);
+        method.invoke(catchProcessor, sphereExchangeData, catcherBezirkDeviceInfo, inviterShortCode, catcherSphereId);
     }
 
     /**
-     * Test the behavior of the prepareResponse method when UhuDeviceInfo obj is null.
+     * Test the behavior of the prepareResponse method when BezirkDeviceInfo obj is null.
      * <br> Here, InvocationTargetException will be thrown as we are using reflection.<br>
      * InvocationTargetException wraps the actual exception,i.e,NullPointerException.
      *
@@ -135,11 +135,11 @@ public class PrepareResponse {
     @Test(expected = InvocationTargetException.class)
     public void nullUhuDeviceInfoObjThrowsException() throws Exception {
         SphereExchangeData sphereExchangeData = sphereTestUtility.getSphereExchangeDataObj();
-        UhuDeviceInfo catcherUhuDeviceInfo = null;
+        BezirkDeviceInfo catcherBezirkDeviceInfo = null;
         String catcherSphereId = sphereTestUtility.generateOwnerCombo();
         String inviterShortCode = sphereRegistryWrapper.getShareCode(catcherSphereId);
         /** invoke the method under test using reflection **/
-        method.invoke(catchProcessor, sphereExchangeData, catcherUhuDeviceInfo, inviterShortCode, catcherSphereId);
+        method.invoke(catchProcessor, sphereExchangeData, catcherBezirkDeviceInfo, inviterShortCode, catcherSphereId);
     }
 
     /**
@@ -152,11 +152,11 @@ public class PrepareResponse {
     @Test(expected = InvocationTargetException.class)
     public void nullInviterShortCodeThrowsException() throws Exception {
         SphereExchangeData sphereExchangeData = sphereTestUtility.getSphereExchangeDataObj();
-        UhuDeviceInfo catcherUhuDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        BezirkDeviceInfo catcherBezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
         String catcherSphereId = sphereTestUtility.generateOwnerCombo();
         String inviterShortCode = null;
         /** invoke the method under test using reflection **/
-        method.invoke(catchProcessor, sphereExchangeData, catcherUhuDeviceInfo, inviterShortCode, catcherSphereId);
+        method.invoke(catchProcessor, sphereExchangeData, catcherBezirkDeviceInfo, inviterShortCode, catcherSphereId);
     }
 
     /**
@@ -169,11 +169,11 @@ public class PrepareResponse {
     @Test(expected = InvocationTargetException.class)
     public void nullCatcherSphereIdThrowsException() throws Exception {
         SphereExchangeData sphereExchangeData = sphereTestUtility.getSphereExchangeDataObj();
-        UhuDeviceInfo catcherUhuDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        BezirkDeviceInfo catcherBezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
         String catcherSphereId = null;
         String inviterShortCode = sphereRegistryWrapper.getShareCode(catcherSphereId); //this will also be null. Hence exception will be thrown at the same place as the previous test.
         /** invoke the method under test using reflection **/
-        method.invoke(catchProcessor, sphereExchangeData, catcherUhuDeviceInfo, inviterShortCode, catcherSphereId);
+        method.invoke(catchProcessor, sphereExchangeData, catcherBezirkDeviceInfo, inviterShortCode, catcherSphereId);
     }
 
 }

@@ -31,14 +31,14 @@ public interface PipeManager {
     void processLocalWrite(WriteJob writeJob);
 
     /**
-     * Called to send a stream to a local service
+     * Called to send a stream to a local zirk
      *
      * @param localSendJob
      */
     void processLocalSend(LocalStreamSendJob localSendJob);
 
     /**
-     * Called to send an event to a local service
+     * Called to send an event to a local zirk
      *
      * @param pipeHeader
      * @param serializedEvent
@@ -67,11 +67,11 @@ public interface PipeManager {
      * which policies are allowed to pass in and out of the pipe.
      *
      * @param granted     True if the pipe was granted
-     * @param pipe        The Pipe originally requested by the service
+     * @param pipe        The Pipe originally requested by the zirk
      * @param allowedIn   This PipePolicy contains the collection of Protocols allowed into the local sphere
      * @param allowedOut  This PipePolicy contains the collection of Protocols allowed to pass out of the local sphere
      * @param sphereId    The sphere the pipe has been added to
-     * @param uhuListener The uhu service to notify of the status of the pipe request
+     * @param uhuListener The uhu zirk to notify of the status of the pipe request
      */
     void pipeGranted(boolean granted, Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut, String sphereId, BezirkListener uhuListener);
 }

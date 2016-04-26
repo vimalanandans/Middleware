@@ -43,7 +43,7 @@ public class PolicyListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (pipeReqId != null) { // during pipe request trigger from service
+        if (pipeReqId != null) { // during pipe request trigger from zirk
             PolicyListAdapter adapter;
             if (filterSetting.equals("inbound")) {
 

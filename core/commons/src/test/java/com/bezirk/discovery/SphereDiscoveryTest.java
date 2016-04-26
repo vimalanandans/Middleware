@@ -4,8 +4,8 @@ import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.UhuSphere;
 import com.bezirk.sphere.security.CryptoEngine;
@@ -31,9 +31,9 @@ public class SphereDiscoveryTest {
 
 
     private static final String sphereId = "TestSphere";
-    private static final UhuZirkId serviceId = new UhuZirkId("ServiceB");
-    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceId);
-    private static final UhuZirkEndPoint serviceBEndPoint = new UhuZirkEndPoint(new UhuZirkId("ServiceB"));
+    private static final BezirkZirkId zirkId = new BezirkZirkId("ZirkB");
+    private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(zirkId);
+    private static final BezirkZirkEndPoint zirkBEndPoint = new BezirkZirkEndPoint(new BezirkZirkId("Zirk123B"));
 
     private static final String requestKey = "REQUEST_KEY";
     private static InetAddress inetAddr;
@@ -44,7 +44,7 @@ public class SphereDiscoveryTest {
 
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
-        serviceBEndPoint.device = inetAddr.getHostAddress();
+        zirkBEndPoint.device = inetAddr.getHostAddress();
     }
 
     private static InetAddress getInetAddress() {
@@ -93,7 +93,7 @@ public class SphereDiscoveryTest {
 
         sphereDiscovery.addRequest(dlabel, disc);
 
-        DiscoveryLabel dlabelTemp = new DiscoveryLabel(serviceBEndPoint, 14);
+        DiscoveryLabel dlabelTemp = new DiscoveryLabel(zirkBEndPoint, 14);
         sphereDiscovery.addRequest(dlabelTemp, disc);
 
         assertEquals("DiscoveredMap size is not equal to the number of requests added", 2, getDiscoveredMapsize(sphereDiscovery));
@@ -108,7 +108,7 @@ public class SphereDiscoveryTest {
         sphereDiscovery.remove(dlabelTemp);
         assertEquals("DiscoveredMap size is not equal to 1 after removing entry.", 1, getDiscoveredMapsize(sphereDiscovery));
 
-        UhuZirkEndPoint invalidRecepient = new UhuZirkEndPoint(null);
+        BezirkZirkEndPoint invalidRecepient = new BezirkZirkEndPoint(null);
         invalidRecepient.device = getInetAddress().getHostAddress();
         response = new SphereDiscoveryResponse(invalidRecepient, sphereId, requestKey, discoveryId);
         response.setUhuSphereInfo(uhuSphereInfo);

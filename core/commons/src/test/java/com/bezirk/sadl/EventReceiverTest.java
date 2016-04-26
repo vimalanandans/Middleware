@@ -18,9 +18,9 @@
 //import com.bosch.upa.devices.UPADevice;
 //import Location;
 //import SubscribedRole;
-//import UhuDiscoveredZirk;
-//import UhuZirkEndPoint;
-//import UhuZirkId;
+//import BezirkDiscoveredZirk;
+//import BezirkZirkEndPoint;
+//import BezirkZirkId;
 //
 //public class EventReceiverTest {
 //	private static final Logger logger = LoggerFactory.getLogger(EventReceiverTest.class);
@@ -54,8 +54,8 @@
 //
 //	@Test
 //	public void testForUnicastEvent(){
-//		UhuZirkId testService1 = new UhuZirkId("test-service-id-1");
-//		UhuZirkId testService2 = new UhuZirkId("test-service-id-2");
+//		BezirkZirkId testService1 = new BezirkZirkId("test-zirk-id-1");
+//		BezirkZirkId testService2 = new BezirkZirkId("test-zirk-id-2");
 //		
 //		TestProtocolRoleA protocolRoleA = new TestProtocolRoleA();
 //		SubscribedRole subscribedRoleA = new SubscribedRole(protocolRoleA);
@@ -73,10 +73,10 @@
 //		Location defaultLocation = new Location("Room", "Room", "Room");
 //		UPADevice.setDeviceLocation(defaultLocation);
 //		
-//		UhuZirkId testService1 = new UhuZirkId("test-service-id-1");
-//		UhuZirkId testService2 = new UhuZirkId("test-service-id-2");
-//		UhuZirkId testService3 = new UhuZirkId("test-service-id-3");
-//		UhuZirkId testService4 = new UhuZirkId("test-service-id-4");
+//		BezirkZirkId testService1 = new BezirkZirkId("test-zirk-id-1");
+//		BezirkZirkId testService2 = new BezirkZirkId("test-zirk-id-2");
+//		BezirkZirkId testService3 = new BezirkZirkId("test-zirk-id-3");
+//		BezirkZirkId testService4 = new BezirkZirkId("test-zirk-id-4");
 //		
 //		TestProtocolRoleA protocolRoleA = new TestProtocolRoleA();
 //		SubscribedRole subscribedRoleA = new SubscribedRole(protocolRoleA);

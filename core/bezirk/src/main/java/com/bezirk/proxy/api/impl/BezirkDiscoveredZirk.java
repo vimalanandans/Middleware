@@ -18,21 +18,21 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 
 
 /**
- * A tuple that characterizes a discovered service.
+ * A tuple that characterizes a discovered zirk.
  */
-public class UhuDiscoveredZirk implements DiscoveredZirk {
-    public UhuZirkEndPoint service;
+public class BezirkDiscoveredZirk implements DiscoveredZirk {
+    public BezirkZirkEndPoint zirk;
     public String name;
     public String pRole;
     public Location location;
 
 
-    public UhuDiscoveredZirk() {
+    public BezirkDiscoveredZirk() {
         //Empty constructor needed for gson.deserialze
     }
 
-    public UhuDiscoveredZirk(UhuZirkEndPoint service, String sName, String pRole, Location location) {
-        this.service = service;
+    public BezirkDiscoveredZirk(BezirkZirkEndPoint zirk, String sName, String pRole, Location location) {
+        this.zirk = zirk;
         this.name = sName;
         this.pRole = pRole;
         this.location = location;
@@ -40,7 +40,7 @@ public class UhuDiscoveredZirk implements DiscoveredZirk {
 
     @Override
     public ZirkEndPoint getZirkEndPoint() {
-        return this.service;
+        return this.zirk;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class UhuDiscoveredZirk implements DiscoveredZirk {
 
     @Override
     public int hashCode() {
-        String s = service.device + ":" + service.serviceId.toString();
+        String s = zirk.device + ":" + zirk.zirkId.toString();
         return s == null ? 0 : s.hashCode();
     }
 
@@ -73,9 +73,9 @@ public class UhuDiscoveredZirk implements DiscoveredZirk {
         if (obj == this) {
             return true;
         }
-        if (obj instanceof UhuDiscoveredZirk) {
-            UhuDiscoveredZirk serv = (UhuDiscoveredZirk) obj;
-            if (this.service.equals(serv.service)) {
+        if (obj instanceof BezirkDiscoveredZirk) {
+            BezirkDiscoveredZirk serv = (BezirkDiscoveredZirk) obj;
+            if (this.zirk.equals(serv.zirk)) {
                 return true;
             }
         }

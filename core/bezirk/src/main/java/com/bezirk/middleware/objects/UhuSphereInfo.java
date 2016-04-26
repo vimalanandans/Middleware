@@ -9,7 +9,7 @@ public class UhuSphereInfo {
     private final String sphereID;
     private final String sphereName;
     private final String sphereType;
-    private final ArrayList<UhuDeviceInfo> deviceList;
+    private final ArrayList<BezirkDeviceInfo> deviceList;
     private final ArrayList<com.bezirk.middleware.objects.UhuPipeInfo> pipeList;
     // is this device is wons this sphere.
     // This is used only in local device. hence tostring doesn't have
@@ -23,7 +23,7 @@ public class UhuSphereInfo {
      */
     public UhuSphereInfo(final String sphereID, final String sphereName,
                          final String sphereType,
-                         final ArrayList<UhuDeviceInfo> deviceList,
+                         final ArrayList<BezirkDeviceInfo> deviceList,
                          final ArrayList<com.bezirk.middleware.objects.UhuPipeInfo> pipeList) {
         this.sphereID = sphereID;
         this.sphereType = sphereType;
@@ -84,7 +84,7 @@ public class UhuSphereInfo {
     /**
      * @return the deviceList
      */
-    public final ArrayList<UhuDeviceInfo> getDeviceList() {
+    public final ArrayList<BezirkDeviceInfo> getDeviceList() {
         return deviceList;
     }
 

@@ -4,12 +4,12 @@
 package com.bezirk.sphere.sphereRegistryWrapper.device;
 
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuDeviceInfo.UhuDeviceRole;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo.UhuDeviceRole;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuZirkId;
-import com.bezirk.sphere.impl.OwnerService;
-import com.bezirk.sphere.impl.Service;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.sphere.impl.OwnerZirk;
+import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
@@ -83,7 +83,7 @@ public class GetUhuDeviceInfo {
     /**
      * Test method for {@link SphereRegistryWrapper#getUhuDeviceInfo(java.util.Map, HashSet)}.
      * <p/>
-     * <br>When valid map of device id and device services is passed, it should return iterable UhuDeviceInfo objects.
+     * <br>When valid map of device id and device services is passed, it should return iterable BezirkDeviceInfo objects.
      */
     @Test
     public final void validServiceIdsReturnsValidList() {
@@ -94,22 +94,22 @@ public class GetUhuDeviceInfo {
         HashSet<String> spheres = new HashSet<>();
         spheres.add(defaultSphereId);
 
-        String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
-        Service service1 = new OwnerService(serviceName1,
+        String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), spheres);
-        registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
+        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
 
-        ArrayList<UhuZirkId> services = new ArrayList<>();
+        ArrayList<BezirkZirkId> services = new ArrayList<>();
         services.add(serviceId1);
 
-        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
         deviceServices.put(upaDevice.getDeviceId(), services);
         defaultSphere.setDeviceServices(deviceServices);
 
-        List<UhuDeviceInfo> retrievedDevices = (List<UhuDeviceInfo>) sphereRegistryWrapper.getUhuDeviceInfo(deviceServices, (HashSet<String>) defaultSphere.getOwnerDevices());
+        List<BezirkDeviceInfo> retrievedDevices = (List<BezirkDeviceInfo>) sphereRegistryWrapper.getUhuDeviceInfo(deviceServices, (HashSet<String>) defaultSphere.getOwnerDevices());
         for (int i = 0; i < retrievedDevices.size(); i++) {
-            UhuDeviceInfo retrieved = retrievedDevices.get(i);
+            BezirkDeviceInfo retrieved = retrievedDevices.get(i);
             assertEquals(retrieved.getDeviceId(), upaDevice.getDeviceId());
             assertEquals(retrieved.getDeviceName(), upaDevice.getDeviceName());
             assertEquals(retrieved.getDeviceType(), upaDevice.getDeviceType());
@@ -120,7 +120,7 @@ public class GetUhuDeviceInfo {
     /**
      * Test method for {@link SphereRegistryWrapper#getUhuDeviceInfo(java.util.Map, HashSet)}.
      * <p/>
-     * <br>When owner devices HashSet is invalid, it should return iterable UhuDeviceInfo objects. And the UhuDeviceRole will be UHU_MEMBER
+     * <br>When owner devices HashSet is invalid, it should return iterable BezirkDeviceInfo objects. And the UhuDeviceRole will be UHU_MEMBER
      */
     @Test
     public final void invalidOwnerDevicesReturnsValidList() {
@@ -131,16 +131,16 @@ public class GetUhuDeviceInfo {
         HashSet<String> spheres = new HashSet<>();
         spheres.add(defaultSphereId);
 
-        String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
-        Service service1 = new OwnerService(serviceName1,
+        String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), spheres);
-        registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
+        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
 
-        ArrayList<UhuZirkId> services = new ArrayList<>();
+        ArrayList<BezirkZirkId> services = new ArrayList<>();
         services.add(serviceId1);
 
-        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
         deviceServices.put(upaDevice.getDeviceId(), services);
         defaultSphere.setDeviceServices(deviceServices);
 
@@ -149,9 +149,9 @@ public class GetUhuDeviceInfo {
         invalidOwnerDevices.add("InvalidDevice2");
 
         // Passing invalid ownerDevices HashSet
-        List<UhuDeviceInfo> retrievedDevices = (List<UhuDeviceInfo>) sphereRegistryWrapper.getUhuDeviceInfo(deviceServices, invalidOwnerDevices);
+        List<BezirkDeviceInfo> retrievedDevices = (List<BezirkDeviceInfo>) sphereRegistryWrapper.getUhuDeviceInfo(deviceServices, invalidOwnerDevices);
         for (int i = 0; i < retrievedDevices.size(); i++) {
-            UhuDeviceInfo retrieved = retrievedDevices.get(i);
+            BezirkDeviceInfo retrieved = retrievedDevices.get(i);
             assertEquals(retrieved.getDeviceId(), upaDevice.getDeviceId());
             assertEquals(retrieved.getDeviceName(), upaDevice.getDeviceName());
             assertEquals(retrieved.getDeviceType(), upaDevice.getDeviceType());
@@ -174,13 +174,13 @@ public class GetUhuDeviceInfo {
         HashSet<String> spheres = new HashSet<>();
         spheres.add(defaultSphereId);
 
-        String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
-        Service service1 = new OwnerService(serviceName1,
+        String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), spheres);
-        registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
+        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
 
-        ArrayList<UhuZirkId> services = new ArrayList<>();
+        ArrayList<BezirkZirkId> services = new ArrayList<>();
         services.add(serviceId1);
 
         // Passing devices map as null
@@ -201,16 +201,16 @@ public class GetUhuDeviceInfo {
         HashSet<String> spheres = new HashSet<>();
         spheres.add(defaultSphereId);
 
-        String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
-        Service service1 = new OwnerService(serviceName1,
+        String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), spheres);
-        registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
+        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
 
-        ArrayList<UhuZirkId> services = new ArrayList<>();
+        ArrayList<BezirkZirkId> services = new ArrayList<>();
         services.add(serviceId1);
 
-        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
         deviceServices.put(upaDevice.getDeviceId(), services);
         defaultSphere.setDeviceServices(deviceServices);
 

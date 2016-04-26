@@ -1,7 +1,7 @@
 package com.bezirk.middleware.proxy;
 
 import com.bezirk.starter.UhuConfig;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +49,7 @@ public class SpringRunner {
         appHome = System.getenv().get("APP_HOME");
 
         if (appHome == null || appHome.isEmpty()) {
-            appHome = "."; // current working dir means service root
+            appHome = "."; // current working dir means zirk root
         }
     }
 
@@ -89,10 +89,10 @@ public class SpringRunner {
         List<String> startedServices = new ArrayList<String>();
         List<String> failedServices = new ArrayList<String>();
 
-        // For each service: 1. set the data path, 2. initialize, and 3. start
+        // For each zirk: 1. set the data path, 2. initialize, and 3. start
         for (com.bezirk.middleware.proxy.IServiceRunner service : services.values()) {
             String name = service.getClass().getSimpleName();
-            logger.info("Starting uhu service with runner: " + name);
+            logger.info("Starting uhu zirk with runner: " + name);
 
             // 1. Set data path
             String dataPath = buildDataPath(service);
@@ -100,19 +100,19 @@ public class SpringRunner {
             logger.info("Data path was set to: " + service.getDataPath());
 
             try {
-                logger.debug("Initializing service: " + name);
+                logger.debug("Initializing zirk: " + name);
                 service.init(); // 2. Initialize data members, if necessary
-                logger.debug("Running service: " + name);
-                service.run(); //  3. Start the service
+                logger.debug("Running zirk: " + name);
+                service.run(); //  3. Start the zirk
 
-                // Service successfully started
+                // Zirk successfully started
                 startedServices.add(name);
             }
-            // Don't exit uhu if a service fails to start
+            // Don't exit uhu if a zirk fails to start
             catch (Exception e) {
                 failedServices.add(name);
                 System.out.println();
-                logger.error("There was a problem starting service with runner: "
+                logger.error("There was a problem starting zirk with runner: "
                         + name, e);
             }
         }
@@ -124,10 +124,10 @@ public class SpringRunner {
     }
 
     /**
-     * Create the data path for this particular service. If the service
+     * Create the data path for this particular zirk. If the zirk
      * has explicitly set a relative dataPath, we use that value.  If
      * dataPath is not set, dataPath is set to appHome/data.  If the
-     * service specifies an *absolute* path, we set dataPath to the
+     * zirk specifies an *absolute* path, we set dataPath to the
      * default.  This is because we are requiring the dataPath to be
      * relative to appHome.
      *
@@ -136,13 +136,13 @@ public class SpringRunner {
      */
     private String buildDataPath(com.bezirk.middleware.proxy.IServiceRunner service) {
 		
-		/* dataPath is where the service can write its data. We add a 
+		/* dataPath is where the zirk can write its data. We add a
 		 * subDirectory to this later on depending on whether the 
-		 * service has set an explicit path in its app context */
+		 * zirk has set an explicit path in its app context */
         String dataPath = appHome + File.separator;
 
-        // If service has set an explicit *relative* dataPath, use it
-        if (UhuValidatorUtility.checkForString(service.getDataPath())
+        // If zirk has set an explicit *relative* dataPath, use it
+        if (BezirkValidatorUtility.checkForString(service.getDataPath())
                 && !service.getDataPath().equals(".")) {
 			/* Any dataPath supplied by the config file needs to be 
 			   relative to appHome, so we disallow absolute paths here */

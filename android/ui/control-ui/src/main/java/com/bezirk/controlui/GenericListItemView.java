@@ -14,9 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.bezirk.controlui.R;
 import com.bezirk.rest.BezirkRestCommsManager;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import java.util.List;
 
@@ -63,7 +62,7 @@ public class GenericListItemView extends ArrayAdapter<DataModel> {
         /* On / off button */
         if (data.get(position).isToggleButtonEnable()) {
             final ToggleButton toggle = (ToggleButton) rowView.findViewById(R.id.listToggleButton);
-            if (UhuValidatorUtility.isObjectNotNull(toggle)) {
+            if (BezirkValidatorUtility.isObjectNotNull(toggle)) {
                 toggle.setVisibility(View.VISIBLE);
                 data.get(position).setToggleButtonState(BezirkRestCommsManager.getInstance().isStarted());
                 toggle.setChecked(data.get(position).isToggleButtonState());

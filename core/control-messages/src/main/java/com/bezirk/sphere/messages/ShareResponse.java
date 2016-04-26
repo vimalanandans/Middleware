@@ -5,8 +5,8 @@ package com.bezirk.sphere.messages;
 
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.UnicastControlMessage;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 /**
  * @author rishabh
@@ -14,7 +14,7 @@ import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 public class ShareResponse extends UnicastControlMessage {
 
     private final static Discriminator discriminator = ControlMessage.Discriminator.ShareResponse;
-    private final UhuDeviceInfo uhuDeviceInfo;
+    private final BezirkDeviceInfo bezirkDeviceInfo;
     private final String sphereExchangeDataString;
     private final String sharerSphereId;
 
@@ -23,20 +23,20 @@ public class ShareResponse extends UnicastControlMessage {
      * @param recipient-                Has to be non-null.
      * @param uniqueKey-                Has to be non-null.
      * @param shareCode-                Has to be non-null.
-     * @param uhuDeviceInfo-            Has to be non-null.
+     * @param bezirkDeviceInfo-            Has to be non-null.
      * @param sphereExchangeDataString- Has to be non-null.
      * @param sharerSphereId-           Has to be non-null.
      */
-    public ShareResponse(UhuZirkEndPoint sender, UhuZirkEndPoint recipient, String uniqueKey, String shareCode,
-                         UhuDeviceInfo uhuDeviceInfo, String sphereExchangeDataString, String sharerSphereId) {
+    public ShareResponse(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String uniqueKey, String shareCode,
+                         BezirkDeviceInfo bezirkDeviceInfo, String sphereExchangeDataString, String sharerSphereId) {
         super(sender, recipient, shareCode, discriminator, true, uniqueKey);
         // null checks for sender, recipient, shareCode and uniqueKey added here because call to the
         // super method has to be the first line in a constructor.
-        if (uhuDeviceInfo == null || sphereExchangeDataString == null || sharerSphereId == null
+        if (bezirkDeviceInfo == null || sphereExchangeDataString == null || sharerSphereId == null
                 || sender == null || recipient == null || shareCode == null || uniqueKey == null) {
             throw new IllegalArgumentException("Paramters of the constructor have to be non-null");
         }
-        this.uhuDeviceInfo = uhuDeviceInfo;
+        this.bezirkDeviceInfo = bezirkDeviceInfo;
         this.sphereExchangeDataString = sphereExchangeDataString;
         this.sharerSphereId = sharerSphereId;
     }
@@ -51,8 +51,8 @@ public class ShareResponse extends UnicastControlMessage {
     /**
      * @return the services of catching device
      */
-    public final UhuDeviceInfo getUhuDeviceInfo() {
-        return uhuDeviceInfo;
+    public final BezirkDeviceInfo getBezirkDeviceInfo() {
+        return bezirkDeviceInfo;
     }
 
     public String getSharerSphereId() {

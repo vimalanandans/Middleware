@@ -1,6 +1,6 @@
 package com.bezirk.control.messages;
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.google.gson.Gson;
 
 /**
@@ -9,14 +9,14 @@ import com.google.gson.Gson;
 public class Header {
     // Open Fields
     private String sphereName = null; //Dont touch
-    private UhuZirkEndPoint senderSEP = null; // Change to ZirkEndPoint sender
+    private BezirkZirkEndPoint senderSEP = null; // Change to ZirkEndPoint sender
     private String uniqueMsgId = null;
     private String topic = null; //Get topic(=label) from Event
 
     public Header() {
     }
 
-    public Header(String sphereName, UhuZirkEndPoint senderSEP, String uniqueMsgId, String topic) {
+    public Header(String sphereName, BezirkZirkEndPoint senderSEP, String uniqueMsgId, String topic) {
         this.sphereName = sphereName;
         this.senderSEP = senderSEP;
         this.uniqueMsgId = uniqueMsgId;
@@ -54,14 +54,14 @@ public class Header {
     /**
      * @return the senderId of the message
      */
-    public UhuZirkEndPoint getSenderSEP() {
+    public BezirkZirkEndPoint getSenderSEP() {
         return senderSEP;
     }
 
     /**
      * @param senderSEP the senderId of the message. Usually there is a function that retieves the hostId and this is used to set the senderId
      */
-    public void setSenderSEP(UhuZirkEndPoint senderSEP) {
+    public void setSenderSEP(BezirkZirkEndPoint senderSEP) {
         this.senderSEP = senderSEP;
     }
 

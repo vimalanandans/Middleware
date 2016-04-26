@@ -9,8 +9,8 @@ import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -33,9 +33,9 @@ public class BRForService implements IBoradcastReceiver {
     private static final LinkedHashMap<String, Long> duplicateMsgMap = new LinkedHashMap<String, Long>();
     private static final LinkedHashMap<String, Long> duplicateStreamMap = new LinkedHashMap<String, Long>();
     private final HashMap<String, String> activeStreams;
-    private final HashMap<UhuZirkId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap;
+    private final HashMap<BezirkZirkId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap;
     private final HashMap<String, HashSet<BezirkListener>> eventListenerMap;
-    private final HashMap<UhuZirkId, HashSet<BezirkListener>> sidMap;
+    private final HashMap<BezirkZirkId, HashSet<BezirkListener>> sidMap;
     private final HashMap<String, HashSet<BezirkListener>> streamListenerMap;
 
     /**
@@ -46,9 +46,9 @@ public class BRForService implements IBoradcastReceiver {
      * @param streamListenerMap
      */
     public BRForService(HashMap<String, String> activeStreams,
-                        HashMap<UhuZirkId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap,
+                        HashMap<BezirkZirkId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap,
                         HashMap<String, HashSet<BezirkListener>> eventListenerMap,
-                        HashMap<UhuZirkId, HashSet<BezirkListener>> sidMap,
+                        HashMap<BezirkZirkId, HashSet<BezirkListener>> sidMap,
                         HashMap<String, HashSet<BezirkListener>> streamListenerMap) {
         super();
         this.activeStreams = activeStreams;
@@ -102,9 +102,9 @@ public class BRForService implements IBoradcastReceiver {
      * @param eCallbackMessage
      */
     private void handleEventCallback(EventIncomingMessage eCallbackMessage) {
-        logger.debug("About to callback sid:" + eCallbackMessage.getRecipient().getUhuServiceId() + " for id:" + eCallbackMessage.msgId);
+        logger.debug("About to callback sid:" + eCallbackMessage.getRecipient().getBezirkZirkId() + " for id:" + eCallbackMessage.msgId);
         //Make a combined sid for sender and recipient
-        String combinedSid = eCallbackMessage.senderSEP.serviceId.getUhuServiceId() + ":" + eCallbackMessage.getRecipient().getUhuServiceId();
+        String combinedSid = eCallbackMessage.senderSEP.zirkId.getBezirkZirkId() + ":" + eCallbackMessage.getRecipient().getBezirkZirkId();
         if (checkDuplicateMsg(combinedSid, eCallbackMessage.msgId)) {
             HashSet<BezirkListener> tempListenersSidMap = sidMap.get(eCallbackMessage.getRecipient());
             HashSet<BezirkListener> tempListenersTopicsMap = eventListenerMap.get(eCallbackMessage.eventTopic);
@@ -128,7 +128,7 @@ public class BRForService implements IBoradcastReceiver {
      * @param strmMsg streamMessage that will be given back to the services.
      */
     private void handlerStreamUnicastCallback(StreamIncomingMessage strmMsg) {
-        if (checkDuplicateStream(strmMsg.senderSEP.serviceId.getUhuServiceId(), strmMsg.localStreamId)) {
+        if (checkDuplicateStream(strmMsg.senderSEP.zirkId.getBezirkZirkId(), strmMsg.localStreamId)) {
             if (streamListenerMap.containsKey(strmMsg.streamTopic)) {
                 for (BezirkListener listener : streamListenerMap.get(strmMsg.streamTopic)) {
                     listener.receiveStream(strmMsg.streamTopic, strmMsg.serialzedStream, strmMsg.localStreamId, strmMsg.file, strmMsg.senderSEP);
@@ -142,13 +142,13 @@ public class BRForService implements IBoradcastReceiver {
     }
 
     /**
-     * Handles the Stream Status callback and gives the callback to the service. This is called from
+     * Handles the Stream Status callback and gives the callback to the zirk. This is called from
      * platform specific IUhuCallback Implementation.
      *
      * @param streamStatusCallbackMessage StreamStatusCallback that will be invoked for the services.
      */
     private void handleStreamStatusCallback(StreamStatusMessage streamStatusCallbackMessage) {
-        String activeStreamkey = streamStatusCallbackMessage.getRecipient().getUhuServiceId() + streamStatusCallbackMessage.streamId;
+        String activeStreamkey = streamStatusCallbackMessage.getRecipient().getBezirkZirkId() + streamStatusCallbackMessage.streamId;
         if (activeStreams.containsKey(activeStreamkey)) {
             HashSet<BezirkListener> tempHashSet = streamListenerMap.get(activeStreams.get(activeStreamkey));
             if (tempHashSet != null && !tempHashSet.isEmpty()) {
@@ -166,17 +166,17 @@ public class BRForService implements IBoradcastReceiver {
     /**
      * handles the DiscoveryCallback for the Services. This is called from Platform specific IUhuCallback Implementation.
      *
-     * @param discObj - callbackObject to the Service.
+     * @param discObj - callbackObject to the Zirk.
      */
     private void handleDiscoveryCallback(DiscoveryIncomingMessage discObj) {
         if (dListenerMap.containsKey(discObj.getRecipient()) && dListenerMap.get(discObj.getRecipient()).getDiscoveryId() == discObj.discoveryId) {
             final Gson gson = new Gson();
             final String discoveredListAsString = discObj.discoveredList;
             //Deserialiaze
-            Type discoveredListType = new TypeToken<HashSet<UhuDiscoveredZirk>>() {
+            Type discoveredListType = new TypeToken<HashSet<BezirkDiscoveredZirk>>() {
             }.getType();
 
-            final HashSet<UhuDiscoveredZirk> discoveredList = gson.fromJson(discoveredListAsString, discoveredListType);
+            final HashSet<BezirkDiscoveredZirk> discoveredList = gson.fromJson(discoveredListAsString, discoveredListType);
 
             if (null == discoveredList || discoveredList.isEmpty()) {
                 logger.error("Empty discovered List");

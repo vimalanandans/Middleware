@@ -131,7 +131,7 @@ public class UhuCommsSend {
 
 
     /**
-     * This method sends the logger message to the remote service if the logging is enabled.
+     * This method sends the logger message to the remote zirk if the logging is enabled.
      *
      * @param eLedger   is used to extract the contents needed to fill the logger message
      * @param recipient is used to set the recipient in the logger Message.
@@ -147,7 +147,7 @@ public class UhuCommsSend {
     }
 
     /**
-     * This method sends the logger message to the remote service if the logging is enabled.
+     * This method sends the logger message to the remote zirk if the logging is enabled.
      *
      * @param tcMsg   is used to extract the contents needed to fill the logger message
      * @param recipient is used to set the recipient in the logger Message.

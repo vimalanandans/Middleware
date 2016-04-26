@@ -10,7 +10,7 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.DeviceListActivity;
@@ -27,7 +27,7 @@ import com.bezirk.starter.MainService;
 public class InformationListFragment extends ListFragment {
     public static final String TAG = "InformationListFragment";
     private String filterSetting = "inbound";
-    private UhuDeviceInfo item;
+    private BezirkDeviceInfo item;
 
 
     public InformationListFragment() {

@@ -1,8 +1,8 @@
 package com.bezirk.control.messages.discovery;
 
 import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.junit.AfterClass;
@@ -29,8 +29,8 @@ public class SphereDiscoveryResponseTest {
             .getLogger(SphereDiscoveryResponseTest.class);
 
     private static final String sphereId = "TestSphere";
-    private static final UhuZirkId serviceId = new UhuZirkId("ServiceA");
-    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceId);
+    private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+    private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceId);
     private static final String requestKey = "REQUEST_KEY";
     private static InetAddress inetAddr;
     private int discoveryId = 2;

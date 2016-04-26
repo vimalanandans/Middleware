@@ -97,8 +97,8 @@ public class MainService extends Service implements INotificationCallback {
         broadcastReceiver = new NetworkBroadCastReceiver(this, uhuStackHandler);
         registerToWifiBroadcastReceivers(broadcastReceiver);
 
-        // this is needed when the service starts first before uhu stack.
-        // (service sends registration intent before start stack intent)
+        // this is needed when the zirk starts first before uhu stack.
+        // (zirk sends registration intent before start stack intent)
         if (!UhuStackHandler.isStackStarted()) {
             uhuStackHandler.startStack(this);
         }
@@ -161,7 +161,7 @@ public class MainService extends Service implements INotificationCallback {
     // TODO :use iBinder interface to send the handle reference
 
     /***
-     * Set the service as foreground android service
+     * Set the zirk as foreground android zirk
      */
     public Notification buildForegroundNotification(String filename) {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this);
@@ -218,7 +218,7 @@ public class MainService extends Service implements INotificationCallback {
         connectedFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
         connectedFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
 
-        // register the service only once.
+        // register the zirk only once.
         registerReceiver(broadcastReceiver, connectedFilter);
     }
 

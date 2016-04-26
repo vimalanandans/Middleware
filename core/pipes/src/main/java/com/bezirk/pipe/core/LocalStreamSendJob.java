@@ -4,7 +4,7 @@ import com.bezirk.control.messages.pipes.PipeHeader;
 
 /**
  * Class to encapsulate data needed to send the content result of a pipe
- * request to a local service
+ * request to a local zirk
  */
 public class LocalStreamSendJob {
 

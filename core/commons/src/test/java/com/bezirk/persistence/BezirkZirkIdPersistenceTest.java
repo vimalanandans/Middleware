@@ -18,9 +18,9 @@ import static org.junit.Assert.assertNull;
 
 /**
  * This class test the Persistence of the UhuServiceIdPersistence, to check loading and storing of
- * UhuZirkId when the service/s register/s and Unregister/s.
+ * BezirkZirkId when the zirk/s register/s and Unregister/s.
  */
-public class UhuZirkIdPersistenceTest {
+public class BezirkZirkIdPersistenceTest {
     String DBPath = "./";
     IDatabaseConnection dbConnection = null;
 
@@ -53,9 +53,9 @@ public class UhuZirkIdPersistenceTest {
         assertNotNull(proxyRegistry);
         assertNull(proxyRegistry.getUhuServiceId("null"));
         // update the registry
-        proxyRegistry.updateUhuServiceId("service-A", "sid-1");
+        proxyRegistry.updateUhuServiceId("zirk-A", "sid-1");
         proxyPersistence.persistUhuProxyRegistry();
-        proxyRegistry.updateUhuServiceId("service-B", "sid-2");
+        proxyRegistry.updateUhuServiceId("zirk-B", "sid-2");
         proxyPersistence.persistUhuProxyRegistry();
 
         //close the db == Uhu is stopped or Restart the Uhu
@@ -68,16 +68,16 @@ public class UhuZirkIdPersistenceTest {
         proxyPersistence = (IUhuProxyPersistence) regPersistence;
         proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
 
-        assertEquals(proxyRegistry.getUhuServiceId("service-A"), "sid-1");
-        assertEquals(proxyRegistry.getUhuServiceId("service-B"), "sid-2");
-        assertNull(proxyRegistry.getUhuServiceId("service-X")); // should fail
+        assertEquals(proxyRegistry.getUhuServiceId("zirk-A"), "sid-1");
+        assertEquals(proxyRegistry.getUhuServiceId("zirk-B"), "sid-2");
+        assertNull(proxyRegistry.getUhuServiceId("zirk-X")); // should fail
 
     }
 
     /**
      * Check the ServiceIdPersistence. Get the UhuProxyRegistry and update the UhuProxyRegisty with sample
      * ServiceIds. Then close the dbConnection that stimulates restarting or shutting of Bezirk. Delete the
-     * sample service Ids and shut the Bezirk. Check the registry for map that contains no serviceId that
+     * sample zirk Ids and shut the Bezirk. Check the registry for map that contains no zirkId that
      * validates this test case.
      *
      * @throws Exception
@@ -92,12 +92,12 @@ public class UhuZirkIdPersistenceTest {
         assertNotNull(proxyRegistry);
         assertNull(proxyRegistry.getUhuServiceId("null"));
         // update the registry
-        proxyRegistry.updateUhuServiceId("service-A", "sid-1");
+        proxyRegistry.updateUhuServiceId("zirk-A", "sid-1");
         proxyPersistence.persistUhuProxyRegistry();
-        proxyRegistry.updateUhuServiceId("service-B", "sid-2");
+        proxyRegistry.updateUhuServiceId("zirk-B", "sid-2");
         proxyPersistence.persistUhuProxyRegistry();
 
-        proxyRegistry.deleteUhuServiceId("service-A");
+        proxyRegistry.deleteUhuServiceId("zirk-A");
         proxyPersistence.persistUhuProxyRegistry();
 
         //close the db == Uhu is stopped or Restart the Uhu
@@ -110,11 +110,11 @@ public class UhuZirkIdPersistenceTest {
         proxyPersistence = (IUhuProxyPersistence) regPersistence;
         proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
 
-        assertNull(proxyRegistry.getUhuServiceId("service-A")); // should fail
-        assertEquals(proxyRegistry.getUhuServiceId("service-B"), "sid-2");
-        assertNull(proxyRegistry.getUhuServiceId("service-X")); // should fail
+        assertNull(proxyRegistry.getUhuServiceId("zirk-A")); // should fail
+        assertEquals(proxyRegistry.getUhuServiceId("zirk-B"), "sid-2");
+        assertNull(proxyRegistry.getUhuServiceId("zirk-X")); // should fail
 
-        proxyRegistry.deleteUhuServiceId("service-B");
+        proxyRegistry.deleteUhuServiceId("zirk-B");
         proxyPersistence.persistUhuProxyRegistry();
 
         //close the db == Uhu is stopped or Restart the Uhu
@@ -127,9 +127,9 @@ public class UhuZirkIdPersistenceTest {
         proxyPersistence = (IUhuProxyPersistence) regPersistence;
         proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
 
-        assertNull(proxyRegistry.getUhuServiceId("service-A")); // should fail
-        assertNull(proxyRegistry.getUhuServiceId("service-B")); // should fail
-        assertNull(proxyRegistry.getUhuServiceId("service-X")); // should fail
+        assertNull(proxyRegistry.getUhuServiceId("zirk-A")); // should fail
+        assertNull(proxyRegistry.getUhuServiceId("zirk-B")); // should fail
+        assertNull(proxyRegistry.getUhuServiceId("zirk-X")); // should fail
 
     }
 
@@ -150,19 +150,19 @@ public class UhuZirkIdPersistenceTest {
         assertNotNull(proxyRegistry);
         assertNull(proxyRegistry.getUhuServiceId("null"));
         // update the registry
-        proxyRegistry.updateUhuServiceId("service-A", "sid-1");
+        proxyRegistry.updateUhuServiceId("zirk-A", "sid-1");
         proxyPersistence.persistUhuProxyRegistry();
-        proxyRegistry.updateUhuServiceId("service-B", "sid-2");
-        proxyPersistence.persistUhuProxyRegistry();
-
-        proxyRegistry.deleteUhuServiceId("service-A");
-        proxyRegistry.deleteUhuServiceId("service-B");
-
+        proxyRegistry.updateUhuServiceId("zirk-B", "sid-2");
         proxyPersistence.persistUhuProxyRegistry();
 
-        assertNull(proxyRegistry.getUhuServiceId("service-A")); // should fail
-        assertNull(proxyRegistry.getUhuServiceId("service-B")); // should fail
-        assertNull(proxyRegistry.getUhuServiceId("service-X")); // should fail
+        proxyRegistry.deleteUhuServiceId("zirk-A");
+        proxyRegistry.deleteUhuServiceId("zirk-B");
+
+        proxyPersistence.persistUhuProxyRegistry();
+
+        assertNull(proxyRegistry.getUhuServiceId("zirk-A")); // should fail
+        assertNull(proxyRegistry.getUhuServiceId("zirk-B")); // should fail
+        assertNull(proxyRegistry.getUhuServiceId("zirk-X")); // should fail
 
     }
 

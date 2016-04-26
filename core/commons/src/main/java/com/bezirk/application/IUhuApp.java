@@ -8,7 +8,7 @@ import com.bezirk.pipe.core.PipeApprovalException;
 public interface IUhuApp {
 
     /**
-     * A request to the Uhu application (e.g. a UI) to approve a service's
+     * A request to the Uhu application (e.g. a UI) to approve a zirk's
      * request for the specified pipe
      *
      * @param pipeRequestId

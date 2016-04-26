@@ -5,10 +5,10 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
-import com.bezirk.sphere.impl.OwnerService;
-import com.bezirk.sphere.impl.Service;
+import com.bezirk.sphere.impl.OwnerZirk;
+import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.impl.UhuSphere;
@@ -98,25 +98,25 @@ public class AddLocalServicesToSphereWithSphereIds {
         HashSet<String> spheres = new HashSet<>();
         spheres.add(defaultSphereId);
 
-        //Create service 1
-        String serviceName1 = sphereTestUtility.MEMBER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
-        Service service1 = new OwnerService(serviceName1,
+        //Create zirk 1
+        String serviceName1 = sphereTestUtility.MEMBER_ZIRK_NAME_1;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), spheres);
-        registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
+        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
 
-        //Create service 2
-        String serviceName2 = sphereTestUtility.MEMBER_SERVICE_NAME_2;
-        UhuZirkId serviceId2 = new UhuZirkId(serviceName2);
-        Service service2 = new OwnerService(serviceName1,
+        //Create zirk 2
+        String serviceName2 = sphereTestUtility.MEMBER_ZIRK_NAME_2;
+        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
+        Zirk zirk2 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), spheres);
-        registry.sphereMembership.put(serviceId2.getUhuServiceId(), service2);
+        registry.sphereMembership.put(serviceId2.getBezirkZirkId(), zirk2);
 
-        ArrayList<UhuZirkId> services = new ArrayList<>();
+        ArrayList<BezirkZirkId> services = new ArrayList<>();
         services.add(serviceId1);
         services.add(serviceId2);
 
-        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
         deviceServices.put(upaDevice.getDeviceId(), services);
         defaultSphere.setDeviceServices(deviceServices);
 

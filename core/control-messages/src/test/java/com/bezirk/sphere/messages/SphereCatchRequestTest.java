@@ -12,8 +12,8 @@
 //import org.slf4j.LoggerFactory;
 //
 //import SphereVitals;
-//import UhuZirkEndPoint;
-//import UhuZirkId;
+//import BezirkZirkEndPoint;
+//import BezirkZirkId;
 //
 ///**
 // * This testCase verifies the SphereCatchRequest by retrieving the field values after deserialization.
@@ -26,11 +26,11 @@
 //	private static final Logger logger = LoggerFactory
 //			.getLogger(SphereCatchRequestTest.class);
 //
-//	private static final UhuZirkId serviceAId = new UhuZirkId("ServiceA");
-//	private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceAId);
-//	private static final UhuZirkId serviceBId = new UhuZirkId("ServiceB");
+//	private static final BezirkZirkId serviceAId = new BezirkZirkId("ServiceA");
+//	private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceAId);
+//	private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
 //
-//	private static List<UhuZirkId> services = new ArrayList<>();
+//	private static List<BezirkZirkId> services = new ArrayList<>();
 //
 //
 //

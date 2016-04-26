@@ -25,7 +25,7 @@ import java.net.UnknownHostException;
 import java.util.Properties;
 
 /**
- * This is a helper class for service startup which handles the sphere
+ * This is a helper class for zirk startup which handles the sphere
  * initialization and device configuration.
  *
  * @author ajc6kor

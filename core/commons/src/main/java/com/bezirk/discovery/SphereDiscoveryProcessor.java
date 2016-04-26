@@ -83,10 +83,10 @@ public class SphereDiscoveryProcessor implements Runnable {
         //If discovery request has timed out
         //	Invoke the requester with the discovered and drop the request
         if (curTime - discRecord.getCreationTime() >= discRecord.getTimeout()) {
-            logger.debug("Timeout for sphere discovery, Size of UhuSphereInfos discovered : " + discRecord.getSphereServices().size());
+            logger.debug("Timeout for sphere discovery, Size of UhuSphereInfos discovered : " + discRecord.getSphereZirks().size());
             if (sphereDiscoveryHandler != null) {
 
-                sphereDiscoveryHandler.processDiscoveredSphereInfo(discRecord.getSphereServices(), discRecord.getSphereId());
+                sphereDiscoveryHandler.processDiscoveredSphereInfo(discRecord.getSphereZirks(), discRecord.getSphereId());
             }
 
             SphereDiscoveryProcessor.discovery.remove(dlbl);

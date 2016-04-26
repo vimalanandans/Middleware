@@ -6,16 +6,16 @@ import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.addressing.ZirkId;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.registration.ServiceRegistration;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.Set;
 
-public class MockUhuService implements BezirkListener {
+public class MockUhuZirk implements BezirkListener {
 
-    private UhuZirkId serviceId = new UhuZirkId(ServiceRegistration.generateUniqueServiceID());
+    private BezirkZirkId serviceId = new BezirkZirkId(ServiceRegistration.generateUniqueServiceID());
 
     private boolean pipeGrantedCalled = false;
     private boolean pipeGranted = false;

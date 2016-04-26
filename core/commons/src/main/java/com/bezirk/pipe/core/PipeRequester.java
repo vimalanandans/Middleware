@@ -6,7 +6,7 @@ import com.bezirk.messagehandler.PipeRequestIncomingMessage;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Used by a platform to request a pipe on behalf of a service
+ * Used by a platform to request a pipe on behalf of a zirk
  */
 public class PipeRequester implements IPipeRequester, IUhuPipeAPI {
 
@@ -124,11 +124,11 @@ public class PipeRequester implements IPipeRequester, IUhuPipeAPI {
      * which policies are allowed to pass in and out of the pipe.
      *
      * @param approved     True if the pipe was granted
-     * @param pipe        The Pipe originally requested by the service
+     * @param pipe        The Pipe originally requested by the zirk
      * @param allowedIn   This PipePolicy contains the collection of Protocols allowed into the local sphere
      * @param allowedOut  This PipePolicy contains the collection of Protocols allowed to pass out of the local sphere
      * @param sphereId    The sphere the pipe has been added to
-     * @param uhuListener The uhu service to notify of the status of the pipe request
+     * @param uhuListener The uhu zirk to notify of the status of the pipe request
      */
     public void pipeApproved(boolean approved, String pipeRequestId, String pipePassword, String sphereId) throws PipeApprovalException {
         PipeRequest request = outstandingRequests.get(pipeRequestId);
@@ -151,7 +151,7 @@ public class PipeRequester implements IPipeRequester, IUhuPipeAPI {
 
         //INVOKE CALL BACK
         final PipeRequestIncomingMessage pipeMsg = new PipeRequestIncomingMessage(pipe,
-                pipeRequestId, allowedIn, allowedOut, (UhuZirkId) request.getRequestingService());
+                pipeRequestId, allowedIn, allowedOut, (BezirkZirkId) request.getRequestingService());
         UhuCompManager.getplatformSpecificCallback().onPipeApprovedMessage(pipeMsg);
         log.info("pipe approved: " + approved);
 

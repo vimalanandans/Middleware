@@ -22,14 +22,14 @@ import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Stream;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sadl.ISadlRegistry;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.rtc.ISignaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.UhuNetworkUtilities;
 import com.google.gson.Gson;
 
@@ -45,17 +45,17 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     private IUhuComms comms = null;
 
     @Override
-    public void registerService(final UhuZirkId serviceId, final String serviceName) {
+    public void registerService(final BezirkZirkId serviceId, final String serviceName) {
         // Step 1: Register with SADL
         boolean isSADLPassed = sadlRegistry.registerService(serviceId);
         if (isSADLPassed) {
             // Step 2: moved to outside since the sphere persistence is not ready
         } else {
-            log.debug("Don't need to register Service: Service ID is already registered");
+            log.debug("Don't need to register Zirk: Zirk ID is already registered");
         }
         boolean isSpherePassed = UhuCompManager.getSphereRegistration().registerService(serviceId, serviceName);
         if (isSpherePassed) {
-            log.info("Service Registration Complete for: " + serviceName + ", " + serviceId);
+            log.info("Zirk Registration Complete for: " + serviceName + ", " + serviceId);
             return;
         } else {
             // unregister the sadl due to failure in sphere
@@ -66,20 +66,20 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     }
 
     @Override
-    public void subscribeService(final UhuZirkId serviceId, final SubscribedRole pRole) {
+    public void subscribeService(final BezirkZirkId serviceId, final SubscribedRole pRole) {
         sadlRegistry.subscribeService(serviceId, pRole);
     }
 
     @Override
-    public void sendMulticastEvent(final UhuZirkId serviceId, final Address address, final String serializedEventMsg) {
+    public void sendMulticastEvent(final BezirkZirkId serviceId, final Address address, final String serializedEventMsg) {
 
         final Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            log.error("Service Not Registered with any sphere");
+            log.error("Zirk Not Registered with any sphere");
             return;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
-        final UhuZirkEndPoint senderSEP = UhuNetworkUtilities.getServiceEndPoint(serviceId);
+        final BezirkZirkEndPoint senderSEP = UhuNetworkUtilities.getServiceEndPoint(serviceId);
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
         final StringBuilder eventTopic = new StringBuilder(Event.fromJson(serializedEventMsg, Event.class).topic);
 
@@ -97,7 +97,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
             ecMessage.setHeader(mHeader);
             ecMessage.setSerializedHeader(mHeader.serialize());
             //MessageQueueManager.getSendingMessageQueue().addToQueue(ecMessage);
-            if (UhuValidatorUtility.isObjectNotNull(comms)) {
+            if (BezirkValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(ecMessage);
             } else {
                 log.error("Comms manager not initialized");
@@ -108,14 +108,14 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     }
 
     @Override
-    public void sendUnicastEvent(final UhuZirkId serviceId, final UhuZirkEndPoint recipient, final String serializedEventMsg) {
+    public void sendUnicastEvent(final BezirkZirkId serviceId, final BezirkZirkEndPoint recipient, final String serializedEventMsg) {
         final Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            log.error("Service Not Registered with the sphere");
+            log.error("Zirk Not Registered with the sphere");
             return;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
-        final UhuZirkEndPoint senderSEP = UhuNetworkUtilities.getServiceEndPoint(serviceId);
+        final BezirkZirkEndPoint senderSEP = UhuNetworkUtilities.getServiceEndPoint(serviceId);
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
         final StringBuilder eventTopic = new StringBuilder(Event.fromJson(serializedEventMsg, Event.class).topic);
 
@@ -133,7 +133,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
             ecMessage.setHeader(uHeader);
             ecMessage.setSerializedHeader(uHeader.serialize());
             //MessageQueueManager.getSendingMessageQueue().addToQueue(ecMessage);
-            if (UhuValidatorUtility.isObjectNotNull(comms)) {
+            if (BezirkValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(ecMessage);
             } else {
                 log.error("Comms manager not initialized");
@@ -142,16 +142,16 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     }
 
     @Override
-    public void discover(final UhuZirkId serviceId, final Address address, final SubscribedRole pRole, final int discoveryId, final long timeout, final int maxDiscovered) {
+    public void discover(final BezirkZirkId serviceId, final Address address, final SubscribedRole pRole, final int discoveryId, final long timeout, final int maxDiscovered) {
         final Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            log.error("Service Not Registered with the sphere");
+            log.error("Zirk Not Registered with the sphere");
             return;
         }
 
         final Iterator<String> sphereIterator = listOfSphere.iterator();
-        final UhuZirkEndPoint senderSEP = UhuNetworkUtilities.getServiceEndPoint(serviceId);
-        final Location loc = UhuValidatorUtility.isObjectNotNull(address) ? address.getLocation() : null;
+        final BezirkZirkEndPoint senderSEP = UhuNetworkUtilities.getServiceEndPoint(serviceId);
+        final Location loc = BezirkValidatorUtility.isObjectNotNull(address) ? address.getLocation() : null;
 
         while (sphereIterator.hasNext()) {
             final ControlLedger ControlLedger = new ControlLedger();
@@ -161,7 +161,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
             ControlLedger.setMessage(discoveryRequest);
             ControlLedger.setSerializedMessage(ControlLedger.getMessage().serialize());
             //MessageQueueManager.getControlSenderQueue().addToQueue(ControlLedger);
-            if (UhuValidatorUtility.isObjectNotNull(comms)) {
+            if (BezirkValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(ControlLedger);
             } else {
                 log.error("Comms manager not initialized");
@@ -173,16 +173,16 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     }
 
     @Override
-    public short sendStream(UhuZirkId senderId, UhuZirkEndPoint receiver, String serializedStream, File file, short streamId) {
+    public short sendStream(BezirkZirkId senderId, BezirkZirkEndPoint receiver, String serializedStream, File file, short streamId) {
         final Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(senderId);
         if (null == listOfSphere) {
-            log.error("Service Not Registered with any sphere: " + senderId);
+            log.error("Zirk Not Registered with any sphere: " + senderId);
             return (short) -1;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         try {
-            final UhuZirkEndPoint senderSEP = UhuNetworkUtilities.getServiceEndPoint(senderId);
-            final String streamRequestKey = senderSEP.device + ":" + senderSEP.getUhuServiceId().getUhuServiceId() + ":" + streamId;
+            final BezirkZirkEndPoint senderSEP = UhuNetworkUtilities.getServiceEndPoint(senderId);
+            final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getBezirkZirkId() + ":" + streamId;
             final Stream stream = new Gson().fromJson(serializedStream, Stream.class);
 
             final StreamRecord streamRecord = new StreamRecord();
@@ -216,7 +216,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
                 tcMessage.setMessage(request);
                 tcMessage.setSerializedMessage(new Gson().toJson(request));
                 //MessageQueueManager.getControlSenderQueue().addToQueue(tcMessage);
-                if (UhuValidatorUtility.isObjectNotNull(comms)) {
+                if (BezirkValidatorUtility.isObjectNotNull(comms)) {
                     comms.sendMessage(tcMessage);
                 } else {
                     log.error("Comms manager not initialized");
@@ -230,17 +230,17 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     }
 
     @Override
-    public void setLocation(final UhuZirkId serviceId, final Location location) {
+    public void setLocation(final BezirkZirkId serviceId, final Location location) {
         sadlRegistry.setLocation(serviceId, location);
     }
 
     @Override
-    public void unsubscribe(final UhuZirkId serviceId, final SubscribedRole role) {
+    public void unsubscribe(final BezirkZirkId serviceId, final SubscribedRole role) {
         sadlRegistry.unsubscribe(serviceId, role);
     }
 
     @Override
-    public void unregister(UhuZirkId serviceId) {
+    public void unregister(BezirkZirkId serviceId) {
         sadlRegistry.unregisterService(serviceId);
     }
 
@@ -261,7 +261,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
 
 
     @Override
-    public short sendStream(UhuZirkId sender, UhuZirkEndPoint receiver,
+    public short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver,
                             String serialsedString, short streamId) {
 
         ISignaling signalling = null;
@@ -275,18 +275,18 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
 
         Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(sender);
         if (null == listOfSphere) {
-            log.error("Service Not Registered with any sphere: " + sender);
+            log.error("Zirk Not Registered with any sphere: " + sender);
             return (short) -1;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         try {
-            UhuZirkEndPoint senderSEP = UhuNetworkUtilities.getServiceEndPoint(sender);
-            String streamRequestKey = senderSEP.device + ":" + senderSEP.getUhuServiceId().getUhuServiceId() + ":" + streamId;
+            BezirkZirkEndPoint senderSEP = UhuNetworkUtilities.getServiceEndPoint(sender);
+            String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getBezirkZirkId() + ":" + streamId;
 
             String sphereId = null;
             while (sphereIterator.hasNext()) {
                 sphereId = sphereIterator.next();
-                if (UhuCompManager.getSphereForSadl().isServiceInSphere(receiver.getUhuServiceId(), sphereId)) {
+                if (UhuCompManager.getSphereForSadl().isZirkInSphere(receiver.getBezirkZirkId(), sphereId)) {
                     log.debug("Found the sphere:" + sphereId);
                     break;
                 }

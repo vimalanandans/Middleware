@@ -5,7 +5,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.OwnerSphere;
 import com.bezirk.sphere.impl.Sphere;
@@ -79,7 +79,7 @@ public class ValidateServices {
     /**
      * Test method for {@link SphereRegistryWrapper#validateServices(Iterable)}.
      * <p/>
-     * When valid service Ids are passed, it should return True
+     * When valid zirk Ids are passed, it should return True
      */
     @Test
     public final void validDeviceIdReturnsTrue() {
@@ -89,23 +89,23 @@ public class ValidateServices {
         String sphereId = sphereName + upaDevice.getDeviceId();
         Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
 
-        //Create service 1
-        String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
+        //Create zirk 1
+        String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
-        registry.sphereMembership.put(serviceId1.getUhuServiceId(), null);
+        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), null);
 
-        //Create service 2
-        String serviceName2 = sphereTestUtility.OWNER_SERVICE_NAME_2;
-        UhuZirkId serviceId2 = new UhuZirkId(serviceName2);
+        //Create zirk 2
+        String serviceName2 = sphereTestUtility.OWNER_ZIRK_NAME_2;
+        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
         HashSet<String> sphereSet2 = new HashSet<>();
         sphereSet2.add(sphereId);
-        registry.sphereMembership.put(serviceId2.getUhuServiceId(), null);
+        registry.sphereMembership.put(serviceId2.getBezirkZirkId(), null);
 
         registry.spheres.put(sphereId, sphere);
 
-        List<UhuZirkId> serviceIds = new ArrayList<>();
+        List<BezirkZirkId> serviceIds = new ArrayList<>();
         serviceIds.add(serviceId1);
         serviceIds.add(serviceId2);
 
@@ -125,21 +125,21 @@ public class ValidateServices {
         String sphereId = sphereName + upaDevice.getDeviceId();
         Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
 
-        //Create service 1
-        String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
+        //Create zirk 1
+        String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
 
-        //Create service 2
-        String serviceName2 = sphereTestUtility.OWNER_SERVICE_NAME_2;
-        UhuZirkId serviceId2 = new UhuZirkId(serviceName2);
+        //Create zirk 2
+        String serviceName2 = sphereTestUtility.OWNER_ZIRK_NAME_2;
+        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
         HashSet<String> sphereSet2 = new HashSet<>();
         sphereSet2.add(sphereId);
 
         registry.spheres.put(sphereId, sphere);
 
-        List<UhuZirkId> serviceIds = new ArrayList<>();
+        List<BezirkZirkId> serviceIds = new ArrayList<>();
         serviceIds.add(serviceId1);
         serviceIds.add(serviceId2);
 

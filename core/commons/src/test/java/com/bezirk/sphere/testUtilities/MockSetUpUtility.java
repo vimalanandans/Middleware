@@ -7,16 +7,16 @@ import com.bezirk.device.UhuDeviceType;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.discovery.SphereDiscovery;
 import com.bezirk.discovery.SphereDiscoveryProcessor;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuDeviceInfo.UhuDeviceRole;
-import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo.UhuDeviceRole;
 import com.bezirk.persistence.DBConstants;
 import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.persistence.UhuRegistry;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.CatchProcessor;
@@ -138,8 +138,8 @@ public class MockSetUpUtility {
         return null;
     }
 
-    public LinkedHashMap<String, ArrayList<UhuZirkId>> getDeviceServicesList(SphereRegistry registry,
-                                                                             String sphereId) {
+    public LinkedHashMap<String, ArrayList<BezirkZirkId>> getDeviceServicesList(SphereRegistry registry,
+                                                                                String sphereId) {
         DeviceInformation deviceInformation = new DeviceInformation("DEVICE", UhuDeviceType.UHU_DEVICE_TYPE_OTHER);
         registry.devices.put(sphereId, deviceInformation);
         deviceInformation = new DeviceInformation("DEVICE1", UhuDeviceType.UHU_DEVICE_TYPE_OTHER);
@@ -151,63 +151,63 @@ public class MockSetUpUtility {
         deviceInformation = new DeviceInformation("DEVICE3", UhuDeviceType.UHU_DEVICE_TYPE_OTHER);
         String deviceId3 = "Device3";
         registry.devices.put(deviceId3, deviceInformation);
-        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<>();
-        ArrayList<UhuZirkId> device1ServiceSet = new ArrayList<UhuZirkId>();
-        device1ServiceSet.add(new UhuZirkId("Service11"));
-        device1ServiceSet.add(new UhuZirkId("Service12"));
-        device1ServiceSet.add(new UhuZirkId("Service13"));
+        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
+        ArrayList<BezirkZirkId> device1ServiceSet = new ArrayList<BezirkZirkId>();
+        device1ServiceSet.add(new BezirkZirkId("Service11"));
+        device1ServiceSet.add(new BezirkZirkId("Service12"));
+        device1ServiceSet.add(new BezirkZirkId("Service13"));
         deviceServices.put(deviceId1, device1ServiceSet);
-        ArrayList<UhuZirkId> device2ServiceSet = new ArrayList<UhuZirkId>();
-        device2ServiceSet.add(new UhuZirkId("Service21"));
-        device2ServiceSet.add(new UhuZirkId("Service22"));
-        device2ServiceSet.add(new UhuZirkId("Service23"));
+        ArrayList<BezirkZirkId> device2ServiceSet = new ArrayList<BezirkZirkId>();
+        device2ServiceSet.add(new BezirkZirkId("Service21"));
+        device2ServiceSet.add(new BezirkZirkId("Service22"));
+        device2ServiceSet.add(new BezirkZirkId("Service23"));
         deviceServices.put(deviceId2, device2ServiceSet);
-        ArrayList<UhuZirkId> device3ServiceSet = new ArrayList<UhuZirkId>();
-        device3ServiceSet.add(new UhuZirkId("Service31"));
-        device3ServiceSet.add(new UhuZirkId("Service32"));
-        device3ServiceSet.add(new UhuZirkId("Service33"));
+        ArrayList<BezirkZirkId> device3ServiceSet = new ArrayList<BezirkZirkId>();
+        device3ServiceSet.add(new BezirkZirkId("Service31"));
+        device3ServiceSet.add(new BezirkZirkId("Service32"));
+        device3ServiceSet.add(new BezirkZirkId("Service33"));
         deviceServices.put(deviceId3, device3ServiceSet);
 
         return deviceServices;
     }
 
-    public ArrayList<UhuDeviceInfo> getDeviceList() {
-        ArrayList<UhuDeviceInfo> deviceList = new ArrayList<UhuDeviceInfo>();
+    public ArrayList<BezirkDeviceInfo> getDeviceList() {
+        ArrayList<BezirkDeviceInfo> deviceList = new ArrayList<BezirkDeviceInfo>();
 
-        List<UhuServiceInfo> services1 = new ArrayList<UhuServiceInfo>();
-        UhuServiceInfo serviceInfo1 = new UhuServiceInfo("Service11", "Service11", "LOCAL", true, true);
-        UhuServiceInfo serviceInfo2 = new UhuServiceInfo("Service12", "Service12", "LOCAL", true, true);
-        UhuServiceInfo serviceInfo3 = new UhuServiceInfo("Service13", "Service13", "LOCAL", true, true);
+        List<BezirkZirkInfo> services1 = new ArrayList<BezirkZirkInfo>();
+        BezirkZirkInfo serviceInfo1 = new BezirkZirkInfo("Service11", "Service11", "LOCAL", true, true);
+        BezirkZirkInfo serviceInfo2 = new BezirkZirkInfo("Service12", "Service12", "LOCAL", true, true);
+        BezirkZirkInfo serviceInfo3 = new BezirkZirkInfo("Service13", "Service13", "LOCAL", true, true);
         services1.add(serviceInfo1);
         services1.add(serviceInfo2);
         services1.add(serviceInfo3);
 
-        List<UhuServiceInfo> services2 = new ArrayList<UhuServiceInfo>();
-        serviceInfo1 = new UhuServiceInfo("Service21", "Service21", "LOCAL", true, true);
-        serviceInfo2 = new UhuServiceInfo("Service22", "Service22", "LOCAL", true, true);
-        serviceInfo3 = new UhuServiceInfo("Service23", "Service23", "LOCAL", true, true);
+        List<BezirkZirkInfo> services2 = new ArrayList<BezirkZirkInfo>();
+        serviceInfo1 = new BezirkZirkInfo("Service21", "Service21", "LOCAL", true, true);
+        serviceInfo2 = new BezirkZirkInfo("Service22", "Service22", "LOCAL", true, true);
+        serviceInfo3 = new BezirkZirkInfo("Service23", "Service23", "LOCAL", true, true);
         services2.add(serviceInfo1);
         services2.add(serviceInfo2);
         services2.add(serviceInfo3);
 
-        List<UhuServiceInfo> services3 = new ArrayList<UhuServiceInfo>();
-        serviceInfo1 = new UhuServiceInfo("Service31", "Service31", "LOCAL", true, true);
-        serviceInfo2 = new UhuServiceInfo("Service32", "Service32", "LOCAL", true, true);
-        serviceInfo3 = new UhuServiceInfo("Service33", "Service33", "LOCAL", true, true);
+        List<BezirkZirkInfo> services3 = new ArrayList<BezirkZirkInfo>();
+        serviceInfo1 = new BezirkZirkInfo("Service31", "Service31", "LOCAL", true, true);
+        serviceInfo2 = new BezirkZirkInfo("Service32", "Service32", "LOCAL", true, true);
+        serviceInfo3 = new BezirkZirkInfo("Service33", "Service33", "LOCAL", true, true);
         services3.add(serviceInfo1);
         services3.add(serviceInfo2);
         services3.add(serviceInfo3);
 
-        UhuDeviceInfo uhuDeviceInfo1 = new UhuDeviceInfo("Device1", "Device1", UhuDeviceType.UHU_DEVICE_TYPE_OTHER,
+        BezirkDeviceInfo bezirkDeviceInfo1 = new BezirkDeviceInfo("Device1", "Device1", UhuDeviceType.UHU_DEVICE_TYPE_OTHER,
                 UhuDeviceRole.UHU_CONTROL, true, services1);
-        UhuDeviceInfo uhuDeviceInfo2 = new UhuDeviceInfo("Device2", "Device2", UhuDeviceType.UHU_DEVICE_TYPE_OTHER,
+        BezirkDeviceInfo bezirkDeviceInfo2 = new BezirkDeviceInfo("Device2", "Device2", UhuDeviceType.UHU_DEVICE_TYPE_OTHER,
                 UhuDeviceRole.UHU_MEMBER, true, services2);
-        UhuDeviceInfo uhuDeviceInfo3 = new UhuDeviceInfo("Device3", "Device3", UhuDeviceType.UHU_DEVICE_TYPE_OTHER,
+        BezirkDeviceInfo bezirkDeviceInfo3 = new BezirkDeviceInfo("Device3", "Device3", UhuDeviceType.UHU_DEVICE_TYPE_OTHER,
                 UhuDeviceRole.UHU_MEMBER, true, services3);
 
-        deviceList.add(uhuDeviceInfo1);
-        deviceList.add(uhuDeviceInfo2);
-        deviceList.add(uhuDeviceInfo3);
+        deviceList.add(bezirkDeviceInfo1);
+        deviceList.add(bezirkDeviceInfo2);
+        deviceList.add(bezirkDeviceInfo3);
         return deviceList;
     }
 

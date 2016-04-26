@@ -30,7 +30,7 @@ public final class CryptoEngine implements ICryptoInternals {
     private static final String SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
     private static final String KEY_FACTORY_ALGORITHM_PASS = "PBKDF2WithHmacSHA1";
     private static final String REGISTRY_ERROR = "registry is not initialized";
-    // Encryption Service
+    // Encryption Zirk
     private final UPABlockCipherService sphereCipherService = new UPABlockCipherService();
     SphereRegistry registry = null;
 

@@ -4,7 +4,7 @@
 package com.bezirk.sphere.shareProcessor;
 
 import com.bezirk.commons.UhuId;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.messages.ShareResponse;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
@@ -52,7 +52,7 @@ public class PrepareResponse {
         parameterTypes = new Class[5];
         parameterTypes[0] = java.lang.String.class;
         parameterTypes[1] = java.lang.String.class;
-        parameterTypes[2] = UhuZirkEndPoint.class;
+        parameterTypes[2] = BezirkZirkEndPoint.class;
         parameterTypes[3] = java.lang.String.class;
         parameterTypes[4] = java.lang.String.class;
         method = ShareProcessor.class.getDeclaredMethod("prepareResponse", parameterTypes);
@@ -94,15 +94,15 @@ public class PrepareResponse {
         String sharerSphereId = sphereTestUtility.generateOwnerCombo();
         String inviterShortCode = new UhuId().getShortIdByHash(sharerSphereId);
         String inviterSphereId = sphereTestUtility.generateOwnerCombo();
-        UhuZirkEndPoint sharer = new UhuZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
+        BezirkZirkEndPoint sharer = new BezirkZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
         sharer.device = sphereTestUtility.DEVICE_2.getDeviceName();
 
         /** invoke the method under test using reflection **/
         ShareResponse preparedResponse = (ShareResponse) method.invoke(shareProcessor, inviterShortCode, inviterSphereId, sharer, "abcdefg", sharerSphereId);
 
         assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).device, preparedResponse.getSender().device);
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).serviceId, preparedResponse.getSender().serviceId);//Sender service end point
-        assertEquals(sharer, preparedResponse.getRecipient()); //Recipient service end point 
+        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).zirkId, preparedResponse.getSender().zirkId);//Sender zirk end point
+        assertEquals(sharer, preparedResponse.getRecipient()); //Recipient zirk end point
         assertEquals(inviterShortCode, preparedResponse.getSphereId());  //inviterShortCode is initialized in ControlMessage class
         assertEquals(sharerSphereId, preparedResponse.getSharerSphereId());
     }
@@ -118,7 +118,7 @@ public class PrepareResponse {
         String sharerSphereId = sphereTestUtility.generateOwnerCombo();
         String inviterShortCode = new UhuId().getShortIdByHash(sharerSphereId);
         String inviterSphereId = null;
-        UhuZirkEndPoint sharer = new UhuZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
+        BezirkZirkEndPoint sharer = new BezirkZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
         sharer.device = sphereTestUtility.DEVICE_2.getDeviceName();
 
         /** invoke the method under test using reflection **/
@@ -127,7 +127,7 @@ public class PrepareResponse {
     }
 
     /**
-     * Test the behavior of the sendResponse method when sharer UhuZirkEndPoint  is null.
+     * Test the behavior of the sendResponse method when sharer BezirkZirkEndPoint  is null.
      * <br>The method under test is expected to throw exception
      *
      * @throws Exception
@@ -137,7 +137,7 @@ public class PrepareResponse {
         String sharerSphereId = sphereTestUtility.generateOwnerCombo();
         String inviterShortCode = new UhuId().getShortIdByHash(sharerSphereId);
         String inviterSphereId = sphereTestUtility.generateOwnerCombo();
-        UhuZirkEndPoint sharer = null;
+        BezirkZirkEndPoint sharer = null;
 
         /** invoke the method under test using reflection **/
         method.invoke(shareProcessor, inviterShortCode, inviterSphereId, sharer, "abcdefg", sharerSphereId);
@@ -154,7 +154,7 @@ public class PrepareResponse {
         String sharerSphereId = null;
         String inviterShortCode = new UhuId().getShortIdByHash(sphereTestUtility.generateOwnerCombo());
         String inviterSphereId = sphereTestUtility.generateOwnerCombo();
-        UhuZirkEndPoint sharer = new UhuZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
+        BezirkZirkEndPoint sharer = new BezirkZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
         sharer.device = sphereTestUtility.DEVICE_2.getDeviceName();
 
         /** invoke the method under test using reflection **/

@@ -1,8 +1,8 @@
 package com.bezrik.network;
 
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,8 +115,8 @@ public final class UhuNetworkUtilities {
         return null;
     }
 
-    public static UhuZirkEndPoint getServiceEndPoint(UhuZirkId serviceId) {
-        UhuZirkEndPoint sep = new UhuZirkEndPoint(serviceId);
+    public static BezirkZirkEndPoint getServiceEndPoint(BezirkZirkId zirkId) {
+        BezirkZirkEndPoint sep = new BezirkZirkEndPoint(zirkId);
         sep.device = getLocalInet().getHostAddress();
         return sep;
     }

@@ -4,13 +4,13 @@
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
-import com.bezirk.sphere.impl.OwnerService;
+import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
-import com.bezirk.sphere.impl.Service;
+import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
@@ -94,29 +94,29 @@ public class AddLocalServicesToSphereWithServiceInfo {
         String sphereId = sphereName + upaDevice.getDeviceId();
         Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
 
-        //Create service 1
-        String serviceName1 = sphereTestUtility.MEMBER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
+        //Create zirk 1
+        String zirkName1 = sphereTestUtility.MEMBER_ZIRK_NAME_1;
+        BezirkZirkId zirkId1 = new BezirkZirkId(zirkName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
-        Service service1 = new OwnerService(serviceName1,
+        Zirk zirk1 = new OwnerZirk(zirkName1,
                 upaDevice.getDeviceId(), sphereSet1);
-        registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
+        registry.sphereMembership.put(zirkId1.getBezirkZirkId(), zirk1);
 
-        //Create service 2
-        String serviceName2 = sphereTestUtility.MEMBER_SERVICE_NAME_2;
-        UhuZirkId serviceId2 = new UhuZirkId(serviceName2);
+        //Create zirk 2
+        String zirkName2 = sphereTestUtility.MEMBER_ZIRK_NAME_2;
+        BezirkZirkId zirkId2 = new BezirkZirkId(zirkName2);
         HashSet<String> sphereSet2 = new HashSet<>();
         sphereSet2.add(sphereId);
-        Service service2 = new OwnerService(serviceName2,
+        Zirk zirk2 = new OwnerZirk(zirkName2,
                 upaDevice.getDeviceId(), sphereSet2);
-        registry.sphereMembership.put(serviceId2.getUhuServiceId(), service2);
+        registry.sphereMembership.put(zirkId2.getBezirkZirkId(), zirk2);
 
         registry.spheres.put(sphereId, sphere);
 
-        UhuServiceInfo serviceInfo1 = new UhuServiceInfo(serviceId1.getUhuServiceId(), serviceName1, sphereTestUtility.OWNER_SERVICE_NAME_1, true, true);
-        UhuServiceInfo serviceInfo2 = new UhuServiceInfo(serviceId2.getUhuServiceId(), serviceName2, sphereTestUtility.OWNER_SERVICE_NAME_2, true, true);
-        List<UhuServiceInfo> serviceInfo = new ArrayList<>();
+        BezirkZirkInfo serviceInfo1 = new BezirkZirkInfo(zirkId1.getBezirkZirkId(), zirkName1, sphereTestUtility.OWNER_ZIRK_NAME_1, true, true);
+        BezirkZirkInfo serviceInfo2 = new BezirkZirkInfo(zirkId2.getBezirkZirkId(), zirkName2, sphereTestUtility.OWNER_ZIRK_NAME_2, true, true);
+        List<BezirkZirkInfo> serviceInfo = new ArrayList<>();
         serviceInfo.add(serviceInfo1);
         serviceInfo.add(serviceInfo2);
 
@@ -132,28 +132,28 @@ public class AddLocalServicesToSphereWithServiceInfo {
      * it should return False
      */
     @Test
-    public final void servicesNotAddedToRegistryReturnsFalse() {
+    public final void zirksNotAddedToRegistryReturnsFalse() {
 
         // create owner sphere
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_2;
         String sphereId = sphereName + upaDevice.getDeviceId();
         Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
 
-        //Create service 1 but not added to registry
-        String serviceName1 = sphereTestUtility.MEMBER_SERVICE_NAME_3;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
+        //Create zirk 1 but not added to registry
+        String zirkName1 = sphereTestUtility.MEMBER_ZIRK_NAME_3;
+        BezirkZirkId zirkId1 = new BezirkZirkId(zirkName1);
 
-        //Create service 2 but not added to registry
-        String serviceName2 = sphereTestUtility.MEMBER_SERVICE_NAME_4;
-        UhuZirkId serviceId2 = new UhuZirkId(serviceName2);
+        //Create zirk 2 but not added to registry
+        String zirkName2 = sphereTestUtility.MEMBER_ZIRK_NAME_4;
+        BezirkZirkId zirkId2 = new BezirkZirkId(zirkName2);
 
         registry.spheres.put(sphereId, sphere);
 
-        UhuServiceInfo serviceInfo1 = new UhuServiceInfo(serviceId1.getUhuServiceId(), serviceName1, sphereTestUtility.OWNER_SERVICE_NAME_1, true, true);
-        UhuServiceInfo serviceInfo2 = new UhuServiceInfo(serviceId2.getUhuServiceId(), serviceName2, sphereTestUtility.OWNER_SERVICE_NAME_2, true, true);
-        List<UhuServiceInfo> serviceInfo = new ArrayList<>();
-        serviceInfo.add(serviceInfo1);
-        serviceInfo.add(serviceInfo2);
+        BezirkZirkInfo zirkInfo1 = new BezirkZirkInfo(zirkId1.getBezirkZirkId(), zirkName1, sphereTestUtility.OWNER_ZIRK_NAME_1, true, true);
+        BezirkZirkInfo zirkInfo2 = new BezirkZirkInfo(zirkId2.getBezirkZirkId(), zirkName2, sphereTestUtility.OWNER_ZIRK_NAME_2, true, true);
+        List<BezirkZirkInfo> serviceInfo = new ArrayList<>();
+        serviceInfo.add(zirkInfo1);
+        serviceInfo.add(zirkInfo2);
 
         assertFalse(sphereRegistryWrapper.addLocalServicesToSphere(sphereId, serviceInfo));
     }
@@ -172,27 +172,27 @@ public class AddLocalServicesToSphereWithServiceInfo {
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_1;
         String sphereId = sphereName + upaDevice.getDeviceId();
 
-        //Create service 1 but not added to registry
-        String serviceName1 = sphereTestUtility.MEMBER_SERVICE_NAME_3;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
+        //Create zirk 1 but not added to registry
+        String serviceName1 = sphereTestUtility.MEMBER_ZIRK_NAME_3;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
-        Service service1 = new OwnerService(serviceName1,
+        Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), sphereSet1);
-        registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
+        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
 
-        //Create service 2 but not added to registry
-        String serviceName2 = sphereTestUtility.MEMBER_SERVICE_NAME_4;
-        UhuZirkId serviceId2 = new UhuZirkId(serviceName2);
+        //Create zirk 2 but not added to registry
+        String serviceName2 = sphereTestUtility.MEMBER_ZIRK_NAME_4;
+        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
         HashSet<String> sphereSet2 = new HashSet<>();
         sphereSet2.add(sphereId);
-        Service service2 = new OwnerService(serviceName2,
+        Zirk zirk2 = new OwnerZirk(serviceName2,
                 upaDevice.getDeviceId(), sphereSet2);
-        registry.sphereMembership.put(serviceId2.getUhuServiceId(), service2);
+        registry.sphereMembership.put(serviceId2.getBezirkZirkId(), zirk2);
 
-        UhuServiceInfo serviceInfo1 = new UhuServiceInfo(serviceId1.getUhuServiceId(), serviceName1, sphereTestUtility.OWNER_SERVICE_NAME_1, true, true);
-        UhuServiceInfo serviceInfo2 = new UhuServiceInfo(serviceId2.getUhuServiceId(), serviceName2, sphereTestUtility.OWNER_SERVICE_NAME_2, true, true);
-        List<UhuServiceInfo> serviceInfo = new ArrayList<>();
+        BezirkZirkInfo serviceInfo1 = new BezirkZirkInfo(serviceId1.getBezirkZirkId(), serviceName1, sphereTestUtility.OWNER_ZIRK_NAME_1, true, true);
+        BezirkZirkInfo serviceInfo2 = new BezirkZirkInfo(serviceId2.getBezirkZirkId(), serviceName2, sphereTestUtility.OWNER_ZIRK_NAME_2, true, true);
+        List<BezirkZirkInfo> serviceInfo = new ArrayList<>();
         serviceInfo.add(serviceInfo1);
         serviceInfo.add(serviceInfo2);
 

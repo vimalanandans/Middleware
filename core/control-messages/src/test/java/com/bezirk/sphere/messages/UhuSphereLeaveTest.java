@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.junit.AfterClass;
@@ -30,10 +30,10 @@ public class UhuSphereLeaveTest {
 
 
     private static final String sphereId = "TestSphere";
-    private static final UhuZirkId serviceId = new UhuZirkId("ServiceA");
-    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceId);
-    private static final UhuZirkId serviceBId = new UhuZirkId("ServiceB");
-    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceBId);
+    private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+    private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceId);
+    private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
+    private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceBId);
     private static InetAddress inetAddr;
 
     /**
@@ -90,7 +90,7 @@ public class UhuSphereLeaveTest {
         com.bezirk.sphere.messages.UhuSphereLeave uhuSphereLeave = new com.bezirk.sphere.messages.UhuSphereLeave(sphereId, serviceId, sender, recipient);
         String serializedMessage = uhuSphereLeave.serialize();
         com.bezirk.sphere.messages.UhuSphereLeave deserializedUhuSphereLeave = com.bezirk.sphere.messages.UhuSphereLeave.deserialize(serializedMessage, com.bezirk.sphere.messages.UhuSphereLeave.class);
-        assertEquals("Deserialized UhuSphereLeave serviceId are not equal to original serviceId", serviceId, deserializedUhuSphereLeave.getServiceId());
+        assertEquals("Deserialized UhuSphereLeave zirkId are not equal to original zirkId", serviceId, deserializedUhuSphereLeave.getServiceId());
         assertNotNull("Deserialized UhuSphereLeave dont have the time set in it.", deserializedUhuSphereLeave.getTime());
 
     }

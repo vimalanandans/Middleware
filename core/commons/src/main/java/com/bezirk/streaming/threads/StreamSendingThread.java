@@ -4,11 +4,11 @@
 package com.bezirk.streaming.threads;
 
 import com.bezirk.messagehandler.StreamStatusMessage;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sadl.ISadlEventReceiver;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class StreamSendingThread implements Runnable {
     private static final int BUFFER_SIZE = 1024;                      // size of the buffer
     private final boolean isEncrypted;
     private final short localStreamId;
-    private final UhuZirkId senderServiceID;
+    private final BezirkZirkId senderServiceID;
     private final String recipientIP;                                 // recipient
     private final int port;                                           // the port that the recipient is listening
     private final File file;                                    // path to the file that has to be sent
@@ -48,7 +48,7 @@ public class StreamSendingThread implements Runnable {
         this.file = streamRecord.file;
         this.isEncrypted = streamRecord.isEncrypted;
         this.localStreamId = streamRecord.localStreamId;
-        this.senderServiceID = streamRecord.senderSEP.serviceId;
+        this.senderServiceID = streamRecord.senderSEP.zirkId;
         this.sadlReceiver = sadlReceiver;
         this.sphereForSadl = sphereForSadl;
     }
@@ -66,7 +66,7 @@ public class StreamSendingThread implements Runnable {
             dataOutputStream = new DataOutputStream(client.getOutputStream());
             if (isEncrypted) {
                 logger.debug("---------- Secure Data transfer requested! -------------");
-                if (UhuValidatorUtility.isObjectNotNull(sphereForSadl)) {
+                if (BezirkValidatorUtility.isObjectNotNull(sphereForSadl)) {
                     sphereForSadl.encryptSphereContent(fileInputStream, dataOutputStream, sphere);
                     logger.debug("---------- Secure Data transfer Completed! -------------");
                 } else {
@@ -95,7 +95,7 @@ public class StreamSendingThread implements Runnable {
 
         StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
                 senderServiceID, sentStatus, localStreamId);
-        if (UhuValidatorUtility.isObjectNotNull(sadlReceiver)) {
+        if (BezirkValidatorUtility.isObjectNotNull(sadlReceiver)) {
 
             sadlReceiver.processStreamStatus(streamStatusMessage);
 
@@ -111,14 +111,14 @@ public class StreamSendingThread implements Runnable {
     private void closeResources(FileInputStream fileInputStream,
                                 DataOutputStream dataOutputStream) {
         try {
-            if (UhuValidatorUtility.isObjectNotNull(dataOutputStream)) {
+            if (BezirkValidatorUtility.isObjectNotNull(dataOutputStream)) {
                 dataOutputStream.flush();
                 dataOutputStream.close();
             }
-            if (UhuValidatorUtility.isObjectNotNull(fileInputStream)) {
+            if (BezirkValidatorUtility.isObjectNotNull(fileInputStream)) {
                 fileInputStream.close();
             }
-            if (UhuValidatorUtility.isObjectNotNull(client)) {
+            if (BezirkValidatorUtility.isObjectNotNull(client)) {
                 client.close();
             }
 

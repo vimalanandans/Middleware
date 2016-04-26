@@ -11,11 +11,11 @@
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 //
-//import UhuDeviceInfo;
-//import UhuDeviceInfo.UhuDeviceRole;
-//import UhuServiceInfo;
-//import UhuZirkEndPoint;
-//import UhuZirkId;
+//import BezirkDeviceInfo;
+//import BezirkDeviceInfo.UhuDeviceRole;
+//import BezirkZirkInfo;
+//import BezirkZirkEndPoint;
+//import BezirkZirkId;
 //
 ///**
 // * This testCase verifies the SphereShareMemberResponse by retrieving the field values after deserialization.
@@ -30,12 +30,12 @@
 //
 //	private static final String sphereId = "TestSphere";
 //	private static final String serviceAName = "ServiceA";
-//	private static final UhuZirkId serviceAId = new UhuZirkId(serviceAName);
-//	private static final UhuServiceInfo serviceAInfo = new UhuServiceInfo(serviceAId.getUhuServiceId(), serviceAName, "MEMBER",true, true);
-//	private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceAId );
-//	private static List<UhuServiceInfo> services = new ArrayList<>();
+//	private static final BezirkZirkId serviceAId = new BezirkZirkId(serviceAName);
+//	private static final BezirkZirkInfo serviceAInfo = new BezirkZirkInfo(serviceAId.getBezirkZirkId(), serviceAName, "MEMBER",true, true);
+//	private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceAId );
+//	private static List<BezirkZirkInfo> services = new ArrayList<>();
 //	
-//	private static UhuDeviceInfo uhuDeviceInfo =null;
+//	private static BezirkDeviceInfo uhuDeviceInfo =null;
 //
 //	/**
 //	 * @throws java.lang.Exception
@@ -45,7 +45,7 @@
 //		
 //		log.info("***** Setting up SphereShareMemberResponseTest TestCase *****");
 //		services.add(serviceAInfo);
-//		uhuDeviceInfo= new UhuDeviceInfo("TESTDEVICEID", "TESTDEVICE", "PC", UhuDeviceRole.UHU_MEMBER, true, services);
+//		uhuDeviceInfo= new BezirkDeviceInfo("TESTDEVICEID", "TESTDEVICE", "PC", UhuDeviceRole.UHU_MEMBER, true, services);
 //	}
 //
 //	/**
@@ -63,7 +63,7 @@
 //	SphereShareMemberResponse sphereDiscoveryRequest = new SphereShareMemberResponse(sphereId, uhuDeviceInfo, sender);
 //	String serializedMessage = sphereDiscoveryRequest.toJson();
 //	SphereShareMemberResponse deserializedSphereDiscoveryResponse = SphereShareMemberResponse.fromJson(serializedMessage, SphereShareMemberResponse.class);
-//	assertEquals("Deserialized SphereShareMemberResponse is having different device info.",uhuDeviceInfo, deserializedSphereDiscoveryResponse.getUhuDeviceInfo());
+//	assertEquals("Deserialized SphereShareMemberResponse is having different device info.",uhuDeviceInfo, deserializedSphereDiscoveryResponse.getBezirkDeviceInfo());
 //	
 //	}
 //

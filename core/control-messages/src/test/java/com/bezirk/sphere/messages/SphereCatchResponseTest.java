@@ -1,10 +1,10 @@
 package com.bezirk.sphere.messages;
 
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuDeviceInfo.UhuDeviceRole;
-import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo.UhuDeviceRole;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -29,9 +29,9 @@ public class SphereCatchResponseTest {
     private static final Logger log = LoggerFactory
             .getLogger(SphereCatchResponseTest.class);
 
-    private static final UhuZirkId serviceAId = new UhuZirkId(SERVICE_A);
-    private static final UhuServiceInfo serviceAInfo = new UhuServiceInfo(serviceAId.getUhuServiceId(), SERVICE_A, "TEST", true, true);
-    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceAId);
+    private static final BezirkZirkId serviceAId = new BezirkZirkId(SERVICE_A);
+    private static final BezirkZirkInfo serviceAInfo = new BezirkZirkInfo(serviceAId.getBezirkZirkId(), SERVICE_A, "TEST", true, true);
+    private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceAId);
 
     /**
      * @throws java.lang.Exception
@@ -57,9 +57,9 @@ public class SphereCatchResponseTest {
 
         String catchSphereId = "MemberSphereID";
         String catchDeviceId = "TESTDEVICEID2";
-        List<UhuServiceInfo> serviceList = new ArrayList<UhuServiceInfo>();
+        List<BezirkZirkInfo> serviceList = new ArrayList<BezirkZirkInfo>();
         serviceList.add(serviceAInfo);
-        UhuDeviceInfo services = new UhuDeviceInfo(catchDeviceId, "TESTDEVICE", "PC", UhuDeviceRole.UHU_MEMBER, true, serviceList);
+        BezirkDeviceInfo services = new BezirkDeviceInfo(catchDeviceId, "TESTDEVICE", "PC", UhuDeviceRole.UHU_MEMBER, true, serviceList);
         com.bezirk.sphere.messages.CatchResponse sphereCatchResonse = new com.bezirk.sphere.messages.CatchResponse(sender, catchSphereId, catchDeviceId, services);
         String serializedMessage = sphereCatchResonse.serialize();
         com.bezirk.sphere.messages.CatchResponse deserializedSphereCatchResponse = com.bezirk.sphere.messages.CatchResponse.deserialize(serializedMessage, com.bezirk.sphere.messages.CatchResponse.class);

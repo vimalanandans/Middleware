@@ -14,12 +14,11 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 
 import com.bezirk.actions.UhuActions;
-import com.bezirk.controlui.R;
 import com.bezirk.sphere.api.IUhuDevMode;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuActionCommands;
 import com.bezirk.starter.UhuPreferences;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,10 +65,10 @@ public class DeviceControlActivity extends ActionBarActivity
                         + preferences.getString(preferences.DEFAULT_SPHERE_NAME_TAG_PREFERENCE, "")
                 , false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_delete_database, "Clear the Data", "Clear the Spheres, Service and Pipes internal data ", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_delete_database, "Clear the Data", "Clear the Spheres, Zirk and Pipes internal data ", false, false, false));
 
         listData.add(new DataModel(R.drawable.ic_action_diag, "Diagnosis",
-                "Diagnosis of Uhu. Communication test and service logs", false, false, false));
+                "Diagnosis of Uhu. Communication test and zirk logs", false, false, false));
 
         //request current status of development mode, update the list based on the asynchronous response in Broadcast Receiver
         deviceControlActivityHelper.getStatus();
@@ -158,9 +157,9 @@ public class DeviceControlActivity extends ActionBarActivity
         Intent intent;
         String action;
         // we selecting based on image id hence list must have image id and it has to be unique
-        if (UhuValidatorUtility.isObjectNotNull(listData) && !listData.isEmpty()) {
+        if (BezirkValidatorUtility.isObjectNotNull(listData) && !listData.isEmpty()) {
             DataModel dataModel = listData.get(position);
-            if (UhuValidatorUtility.isObjectNotNull(dataModel)) {
+            if (BezirkValidatorUtility.isObjectNotNull(dataModel)) {
                 intent = new Intent(context, MainService.class);
                 switch (dataModel.getImageId()) {
                     case R.drawable.upa_control: // Bezirk On/OFF

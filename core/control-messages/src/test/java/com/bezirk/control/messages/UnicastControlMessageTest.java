@@ -1,8 +1,8 @@
 package com.bezirk.control.messages;
 
 import com.bezirk.control.messages.ControlMessage.Discriminator;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.junit.AfterClass;
@@ -29,10 +29,10 @@ public class UnicastControlMessageTest {
             .getLogger(UnicastControlMessageTest.class);
 
     private static final String sphereId = "TestSphere";
-    private static final UhuZirkId serviceId = new UhuZirkId("ServiceA");
-    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceId);
-    private static final UhuZirkId serviceBId = new UhuZirkId("ServiceB");
-    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceBId);
+    private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+    private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceId);
+    private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
+    private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceBId);
     private static final String key = "TESTKEY";
     private static final Discriminator discriminator = Discriminator.DiscoveryRequest;
     private static final Boolean retransmit = true;

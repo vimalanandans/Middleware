@@ -1,8 +1,8 @@
 package com.bezirk.sphere.messages;
 
 import com.bezirk.control.messages.ControlMessage;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 /**
  * // new message SphereCatchRequest Control message for sphere control
@@ -14,7 +14,7 @@ public class CatchRequest extends com.bezirk.control.messages.MulticastControlMe
 
     private final static ControlMessage.Discriminator discriminator = ControlMessage.Discriminator.CatchRequest;
 
-    private final UhuDeviceInfo uhuDeviceInfo;
+    private final BezirkDeviceInfo bezirkDeviceInfo;
     private final String sphereExchangeData; // generate 'catch' sphere qr code
     // as string
     private final String catcherSphereId; // sphere Id which wished to catch the
@@ -24,20 +24,20 @@ public class CatchRequest extends com.bezirk.control.messages.MulticastControlMe
      * @param sender             - has to be non-null
      * @param inviterShortCode   short code of the inviting sphere. Has to be non-null.
      * @param catcherSphereId    sphereId catching the services from the inviting sphere. Has to be non-null.
-     * @param uhuDeviceInfo      service and device information of the sphere catching the. Has to be non-null.
+     * @param bezirkDeviceInfo      zirk and device information of the sphere catching the. Has to be non-null.
      *                           services
      * @param sphereExchangeData sphere information of the sphere catching the services. Has to be non-null.
      */
-    public CatchRequest(UhuZirkEndPoint sender, String inviterShortCode, String catcherSphereId,
-                        UhuDeviceInfo uhuDeviceInfo, String sphereExchangeData) {
+    public CatchRequest(BezirkZirkEndPoint sender, String inviterShortCode, String catcherSphereId,
+                        BezirkDeviceInfo bezirkDeviceInfo, String sphereExchangeData) {
         super(sender, inviterShortCode, discriminator);
         // null checks for sender and inviterShortCode added here because call to the
         // super method has to be the first line in a constructor.
-        if (catcherSphereId == null || uhuDeviceInfo == null || sphereExchangeData == null
+        if (catcherSphereId == null || bezirkDeviceInfo == null || sphereExchangeData == null
                 || sender == null || inviterShortCode == null) {
             throw new IllegalArgumentException("Paramters of the constructor have to be non-null");
         }
-        this.uhuDeviceInfo = uhuDeviceInfo;
+        this.bezirkDeviceInfo = bezirkDeviceInfo;
         this.sphereExchangeData = sphereExchangeData;
         this.catcherSphereId = catcherSphereId;
     }
@@ -52,8 +52,8 @@ public class CatchRequest extends com.bezirk.control.messages.MulticastControlMe
     /**
      * @return the services of catching device
      */
-    public final UhuDeviceInfo getUhuDeviceInfo() {
-        return uhuDeviceInfo;
+    public final BezirkDeviceInfo getBezirkDeviceInfo() {
+        return bezirkDeviceInfo;
     }
 
     /**

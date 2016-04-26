@@ -1,10 +1,10 @@
 package com.bezirk.sphere.messages;
 
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuDeviceInfo.UhuDeviceRole;
-import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo.UhuDeviceRole;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -27,14 +27,14 @@ public class SphereCatchRequestExtTest {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(SphereCatchRequestExtTest.class);
 
-    private static final UhuZirkId serviceAId = new UhuZirkId("ServiceA");
-    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceAId);
-    private static final UhuZirkId serviceBId = new UhuZirkId("ServiceB");
+    private static final BezirkZirkId serviceAId = new BezirkZirkId("ServiceA");
+    private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceAId);
+    private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
 
-    private static final UhuServiceInfo serviceAInfo = new UhuServiceInfo(serviceAId.getUhuServiceId(), "ServiceA", "TESTA", true, true);
-    private static final UhuServiceInfo serviceBInfo = new UhuServiceInfo(serviceBId.getUhuServiceId(), "ServiceB", "TESTB", true, true);
-    private static List<UhuServiceInfo> services = new ArrayList<>();
-    private static UhuDeviceInfo uhuDeviceInfo = null;
+    private static final BezirkZirkInfo serviceAInfo = new BezirkZirkInfo(serviceAId.getBezirkZirkId(), "ServiceA", "TESTA", true, true);
+    private static final BezirkZirkInfo serviceBInfo = new BezirkZirkInfo(serviceBId.getBezirkZirkId(), "ServiceB", "TESTB", true, true);
+    private static List<BezirkZirkInfo> services = new ArrayList<>();
+    private static BezirkDeviceInfo bezirkDeviceInfo = null;
 
 
     /**
@@ -46,7 +46,7 @@ public class SphereCatchRequestExtTest {
         LOGGER.info("***** Setting up SphereCatchRequestExtTest TestCase *****");
         services.add(serviceAInfo);
         services.add(serviceBInfo);
-        uhuDeviceInfo = new UhuDeviceInfo("TESTDEVICE", "TEST", "PC", UhuDeviceRole.UHU_MEMBER, true, services);
+        bezirkDeviceInfo = new BezirkDeviceInfo("TESTDEVICE", "TEST", "PC", UhuDeviceRole.UHU_MEMBER, true, services);
     }
 
     /**
@@ -65,11 +65,11 @@ public class SphereCatchRequestExtTest {
         String qrServiceCatchSphereString = "QRSTRING";
         String catchSphereId = "CATCHSPHEREID";
         String scannedTempSphereId = "TEMPID";
-        com.bezirk.sphere.messages.CatchRequest sphereCatchRequestExt = new com.bezirk.sphere.messages.CatchRequest(sender, scannedTempSphereId, catchSphereId, uhuDeviceInfo, qrServiceCatchSphereString);
+        com.bezirk.sphere.messages.CatchRequest sphereCatchRequestExt = new com.bezirk.sphere.messages.CatchRequest(sender, scannedTempSphereId, catchSphereId, bezirkDeviceInfo, qrServiceCatchSphereString);
         String serializedMessage = sphereCatchRequestExt.serialize();
         com.bezirk.sphere.messages.CatchRequest deserializedSphereCatchRequestExt = com.bezirk.sphere.messages.CatchRequest.deserialize(serializedMessage, com.bezirk.sphere.messages.CatchRequest.class);
         assertEquals("SphereID not equal to the set value.", catchSphereId, deserializedSphereCatchRequestExt.getCatcherSphereId());
-        assertEquals("UhuDeviceinfo not equal to the set value.", uhuDeviceInfo, deserializedSphereCatchRequestExt.getUhuDeviceInfo());
+        assertEquals("UhuDeviceinfo not equal to the set value.", bezirkDeviceInfo, deserializedSphereCatchRequestExt.getBezirkDeviceInfo());
         assertEquals("CatchSphereString not equal to the set value.", qrServiceCatchSphereString, deserializedSphereCatchRequestExt.getSphereExchangeData());
 
     }

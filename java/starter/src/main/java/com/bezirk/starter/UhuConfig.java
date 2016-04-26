@@ -44,7 +44,7 @@ public class UhuConfig {
         // The launcher script sets this system variable
         String appHome = System.getenv().get("APP_HOME");
         if (appHome == null || appHome.isEmpty()) {
-            //appHome = "."; // current working dir means service root
+            //appHome = "."; // current working dir means zirk root
             // take from temp or user folder because . doesn't work in unix
             //appHome =  System.getProperty("java.io.tmpdir");
             appHome = System.getProperty("user.dir");

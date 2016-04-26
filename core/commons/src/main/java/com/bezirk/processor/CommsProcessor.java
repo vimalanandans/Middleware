@@ -21,7 +21,7 @@ import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.features.CommsFeature;
 import com.bezirk.logging.LogServiceMessageHandler;
 import com.bezirk.pipe.core.PipeManager;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.sadl.UhuSadlManager;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.sphere.security.UPABlockCipherService;
@@ -94,7 +94,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
         }
 
-        // register the logging service message
+        // register the logging zirk message
         msgDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage, ctrlReceiver);
 
         return true;
@@ -378,7 +378,7 @@ public abstract class CommsProcessor implements IUhuComms {
             if (ledger.getIsMulticast()) {
 
                 //TODO: for event message decrypt the header here
-                // if the intended service is available in sadl message is decrypted
+                // if the intended zirk is available in sadl message is decrypted
                 WireMessage wireMessage = prepareWireMessgae(ledger.getHeader().getSphereName(), data);
 
                 // encrypt the header
@@ -416,7 +416,7 @@ public abstract class CommsProcessor implements IUhuComms {
                 {
 
                     //TODO: for event message decrypt the header here
-                    // if the intended service is available in sadl message is decrypted
+                    // if the intended zirk is available in sadl message is decrypted
                     WireMessage wireMessage = prepareWireMessgae(ledger.getHeader().getSphereName(), data);
 
                     // encrypt the header
@@ -648,7 +648,7 @@ public abstract class CommsProcessor implements IUhuComms {
         // fixme: check the version
 
         // device Id
-        UhuZirkEndPoint endPoint = new UhuZirkEndPoint(deviceId, null);
+        BezirkZirkEndPoint endPoint = new BezirkZirkEndPoint(deviceId, null);
         msgLedger.setSender(endPoint);
 
         msgLedger.setMsg(new String(wireMessage.getMsg()));
@@ -675,7 +675,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
         if (setEventHeader(eventLedger, wireMessage)) {
 
-            // override sender service end point device id with local id
+            // override sender zirk end point device id with local id
             eventLedger.getHeader().getSenderSEP().device = deviceId;
 
             eventLedger.setEncryptedMessage(wireMessage.getMsg());

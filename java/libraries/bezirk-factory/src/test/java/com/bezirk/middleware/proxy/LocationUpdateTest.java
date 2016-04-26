@@ -12,7 +12,7 @@ import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -114,7 +114,7 @@ public class LocationUpdateTest {
     }
 
     /**
-     * MockServiceA that is simulating as Service that initiates the Multicast Communication
+     * MockServiceA that is simulating as Zirk that initiates the Multicast Communication
      */
     private final class LocationUpdateMockServiceA implements BezirkListener {
         private final String serviceName = "LocationUpdateMockServiceA";
@@ -123,12 +123,12 @@ public class LocationUpdateTest {
         private LocationUpdateMockServiceProtocolRole pRole;
 
         /**
-         * Setup the Service
+         * Setup the Zirk
          */
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerZirk(serviceName);
-            logger.info("LocationUpdateMockServiceA - regId : " + ((UhuZirkId) myId).getUhuServiceId());
+            logger.info("LocationUpdateMockServiceA - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
             pRole = new LocationUpdateMockServiceProtocolRole();
             uhu.subscribe(myId, pRole, this);
         }
@@ -233,12 +233,12 @@ public class LocationUpdateTest {
         private ZirkId myId = null;
 
         /**
-         * Setup the service
+         * Setup the zirk
          */
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerZirk(serviceName);
-            logger.info("LocationUpdateMockServiceB - regId : " + ((UhuZirkId) myId).getUhuServiceId());
+            logger.info("LocationUpdateMockServiceB - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
             uhu.subscribe(myId, new LocationUpdateMockServiceProtocolRole(), this);
         }
 

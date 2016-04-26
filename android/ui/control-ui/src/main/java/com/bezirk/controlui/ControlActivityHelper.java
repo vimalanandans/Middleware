@@ -18,11 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bezirk.commons.UhuVersion;
-import com.bezirk.controlui.R;
 import com.bezirk.features.CommsFeature;
 import com.bezirk.spheremanager.SphereListActivity;
 import com.bezirk.starter.MainService;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,7 +140,7 @@ class ControlActivityHelper {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if (UhuValidatorUtility.isObjectNotNull(mAlertDialog)) {
+                if (BezirkValidatorUtility.isObjectNotNull(mAlertDialog)) {
                     mAlertDialog.cancel();
                     mAlertDialog = null;
                 }
@@ -149,7 +148,7 @@ class ControlActivityHelper {
         });
 
         uhuVersion.setText("Expected Uhu-Version: " + UhuVersion.UHU_VERSION);
-        if (UhuValidatorUtility.isObjectNotNull(receivedUhuVersion)) {
+        if (BezirkValidatorUtility.isObjectNotNull(receivedUhuVersion)) {
             uhuExpectedVersionStatus.setText("Received Uhu-Version: " + receivedUhuVersion);
         } else {
             uhuExpectedVersionStatus.setText("Received Uhu-Version: " + UhuVersion.UHU_VERSION);

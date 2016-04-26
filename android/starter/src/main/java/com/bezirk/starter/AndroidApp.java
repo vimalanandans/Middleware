@@ -9,7 +9,7 @@ import com.bezirk.application.IUhuApp;
 import com.bezirk.pipe.core.IUhuPipeAPI;
 import com.bezirk.pipe.core.PipeApprovalException;
 import com.bezirk.pipe.core.PipeRequest;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ public class AndroidApp implements IUhuApp {
         intent.setComponent(new ComponentName(COMPONENT_NAME, "com.bosch.upa.spheremanager.PipeActivity"));
         intent.putExtra(UhuActions.KEY_PIPE_REQ_ID, pipeRequestId);
         intent.putExtra(UhuActions.KEY_PIPE_NAME, pipeRequest.getPipe().getName());
-        intent.putExtra(UhuActions.KEY_SENDER_SERVICE_ID, new Gson().toJson((UhuZirkId) pipeRequest.getRequestingService()));
+        intent.putExtra(UhuActions.KEY_SENDER_ZIRK_ID, new Gson().toJson((BezirkZirkId) pipeRequest.getRequestingService()));
 
         // TODO remove the above and send the below serialized object to UI
         //Only to test

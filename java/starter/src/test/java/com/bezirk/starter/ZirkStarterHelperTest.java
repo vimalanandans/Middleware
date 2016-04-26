@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
  *
  * @author AJC6KOR
  */
-public class ServiceStarterHelperTest {
+public class ZirkStarterHelperTest {
 
     private static final MockSetUpUtilityForUhuPC mockSetUP = new MockSetUpUtilityForUhuPC();
 

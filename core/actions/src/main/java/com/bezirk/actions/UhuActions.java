@@ -52,7 +52,7 @@ public class UhuActions {
     // Intent "extra" key constants
     //-----------------------------
 
-    public final static String KEY_SENDER_SERVICE_ID = "SENDER_SERVICE_ID";
+    public final static String KEY_SENDER_ZIRK_ID = "SENDER_ZIRK_ID";
     public final static String KEY_PIPE_REQ_ID = "PIPE_REQ_ID";
     public final static String KEY_PIPE_NAME = "PIPE_NAME";
     public final static String KEY_PIPE_URI = "PIPE_URI";

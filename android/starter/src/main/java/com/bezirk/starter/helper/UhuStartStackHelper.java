@@ -9,7 +9,7 @@ import com.bezirk.comms.ICommsNotification;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.features.CommsFeature;
-import com.bezirk.messagehandler.AndroidServiceMessageHandler;
+import com.bezirk.messagehandler.AndroidZirkMessageHandler;
 import com.bezirk.persistence.IDatabaseConnection;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.util.DatabaseConnectionForAndroid;
@@ -18,7 +18,7 @@ import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.proxy.android.ProxyforServices;
 import com.bezirk.sadl.UhuSadlManager;
 import com.bezirk.starter.MainService;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +70,7 @@ class UhuStartStackHelper {
             return false;
         }
 
-        if (UhuValidatorUtility.checkForString(ipAddress)) {
+        if (BezirkValidatorUtility.checkForString(ipAddress)) {
             LOGGER.info("Wifi Connected to " + wifi.getConnectionInfo().getSSID());
         } else {
             LOGGER.error("Unable to get ip address. Is it connected to network");
@@ -82,7 +82,7 @@ class UhuStartStackHelper {
 
     void setAndroicallback(MainService service) {
         if (UhuCompManager.getplatformSpecificCallback() == null) {
-            AndroidServiceMessageHandler uhuAndroidCallback = new AndroidServiceMessageHandler(service.getApplicationContext());
+            AndroidZirkMessageHandler uhuAndroidCallback = new AndroidZirkMessageHandler(service.getApplicationContext());
             UhuCompManager.setplatformSpecificCallback(uhuAndroidCallback);
         }
     }

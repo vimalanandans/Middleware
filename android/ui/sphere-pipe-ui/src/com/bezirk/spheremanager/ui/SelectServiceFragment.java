@@ -15,8 +15,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.DeviceListActivity;
@@ -60,8 +60,8 @@ public class SelectServiceFragment extends ListFragment {
 
         }
     };
-    private UhuDeviceInfo item;
-    private List<UhuServiceInfo> sl;
+    private BezirkDeviceInfo item;
+    private List<BezirkZirkInfo> sl;
     private SharedPreferences sharedPreferences;
     private ServiceAdapter serviceAdapter;
     /**
@@ -102,9 +102,9 @@ public class SelectServiceFragment extends ListFragment {
         if (sphereInfo != null) {
             int devicePos = getActivity().getIntent().getIntExtra(DeviceListActivity.ARG_DEVICE_ID, 0);
 
-            item = (UhuDeviceInfo) sphereInfo.getDeviceList().get(devicePos);
+            item = (BezirkDeviceInfo) sphereInfo.getDeviceList().get(devicePos);
 
-            sl = item.getServiceList();
+            sl = item.getZirkList();
 
             serviceAdapter = new ServiceAdapter(getActivity()
                     .getApplicationContext(), sl);
@@ -136,22 +136,22 @@ public class SelectServiceFragment extends ListFragment {
                     //mCallbacks.onSwiped(direction.toString());
 
                 } /*else {
-                    // do the onItemClick action --> check/uncheck service
+                    // do the onItemClick action --> check/uncheck zirk
 					// Notify the active callbacks interface (the activity, if
 					// the
 					// fragment is attached to one) that an item has been
 					// selected.
 					CheckBox box = (CheckBox) view
 							.findViewById(R.id.check_service);
-					UhuServiceInfo service = sl.get(position);
+					BezirkZirkInfo zirk = sl.get(position);
 					if (box.isChecked()) {
-						service.setActive(false);
+						zirk.setActive(false);
 						box.setChecked(false);
 					} else {
-						service.setActive(true);
+						zirk.setActive(true);
 						box.setChecked(true);
 					}
-					//sl.add(position, service);
+					//sl.add(position, zirk);
 
 					// TODO: Implementation to change data-source
 					// mCallbacks.onItemSelectedDeviceList(deviceName);
@@ -232,12 +232,12 @@ public class SelectServiceFragment extends ListFragment {
     private void showAlertDialog(final int position) {
         final EditText editText = new EditText(getActivity());
         new AlertDialog.Builder(getActivity())
-                .setTitle("Set user defined service name")
+                .setTitle("Set user defined zirk name")
                 .setView(editText)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        savePreference(sl.get(position).getServiceId(), editText.getText().toString());
+                        savePreference(sl.get(position).getZirkId(), editText.getText().toString());
                         dialog.cancel();
                     }
                 })

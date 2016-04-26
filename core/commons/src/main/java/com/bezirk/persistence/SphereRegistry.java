@@ -4,7 +4,7 @@
 package com.bezirk.persistence;
 
 import com.bezirk.sphere.impl.DeviceInformation;
-import com.bezirk.sphere.impl.Service;
+import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.security.SphereKeys;
 
@@ -18,7 +18,7 @@ import java.util.LinkedHashMap;
 public class SphereRegistry implements Serializable {
     private static final long serialVersionUID = 682210165778262550L;
     public LinkedHashMap<String, Sphere> spheres;
-    public LinkedHashMap<String, Service> sphereMembership;
+    public LinkedHashMap<String, Zirk> sphereMembership;
     public LinkedHashMap<String, DeviceInformation> devices;
     public HashMap<String, SphereKeys> sphereKeyMap;
     public HashMap<String, HashKey> sphereHashKeyMap;
@@ -26,7 +26,7 @@ public class SphereRegistry implements Serializable {
     public SphereRegistry() {
         super();
         this.spheres = new LinkedHashMap<String, Sphere>();
-        this.sphereMembership = new LinkedHashMap<String, Service>();
+        this.sphereMembership = new LinkedHashMap<String, Zirk>();
         this.devices = new LinkedHashMap<String, DeviceInformation>();
         this.sphereKeyMap = new HashMap<String, SphereKeys>();
         this.sphereHashKeyMap = new HashMap<String, HashKey>();

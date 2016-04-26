@@ -1,6 +1,6 @@
 package com.bezirk.discovery;
 
-import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
+import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class DiscoveryRecord {
     private final int max;
     private final long timeout;
     //public DiscoveryResponse response;
-    private final HashSet<UhuDiscoveredZirk> list;
+    private final HashSet<BezirkDiscoveredZirk> list;
     private final long createTime;
 
     //*** public DiscoveryRecord(timeout, max)
@@ -25,7 +25,7 @@ public class DiscoveryRecord {
         this.max = max;
         this.timeout = timeout;
         this.createTime = new Date().getTime();
-        list = new HashSet<UhuDiscoveredZirk>();
+        list = new HashSet<BezirkDiscoveredZirk>();
     }
 
     public int getMax() {
@@ -47,16 +47,16 @@ public class DiscoveryRecord {
         return 0;
     }
 
-    public HashSet<UhuDiscoveredZirk> getList() {
+    public HashSet<BezirkDiscoveredZirk> getList() {
         return list;
     }
 
-    public void updateList(List<UhuDiscoveredZirk> list) {
-        Iterator<UhuDiscoveredZirk> it = list.iterator();
+    public void updateList(List<BezirkDiscoveredZirk> list) {
+        Iterator<BezirkDiscoveredZirk> it = list.iterator();
         while (it.hasNext()) {
-            UhuDiscoveredZirk curServ = it.next();
+            BezirkDiscoveredZirk curServ = it.next();
             if (!this.list.contains(curServ)) { //Check if ZirkEndPoint Exists
-                log.debug("Updating discList w SED-" + curServ.service.device + ":" + curServ.service.serviceId.getUhuServiceId());
+                log.debug("Updating discList w SED-" + curServ.zirk.device + ":" + curServ.zirk.zirkId.getBezirkZirkId());
                 this.list.add(curServ);
             }
 

@@ -47,11 +47,11 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Device Type Selection"></activity>
 
-        <service
+        <zirk
             android:name="com.bezirk.starter.MainService"
             android:exported="true">
 
-        </service>
+        </zirk>
 
         <!--
         <receiver android:name="com.bosch.upa.uhu.sphere.juggler.SphereScanner" >

@@ -3,7 +3,7 @@ package com.bezirk.commstest.ui.threads;
 import com.bezirk.comms.UhuComms;
 import com.bezirk.commstest.ui.PongMessage;
 import com.bezirk.commstest.ui.UIStore;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.UhuNetworkUtilities;
 import com.google.gson.Gson;
 
@@ -39,7 +39,7 @@ public class UnicastReceiver extends Thread {
         InetAddress addr = null;
         try {
             intf = NetworkInterface.getByName(UhuComms.getINTERFACE_NAME());
-            addr = UhuValidatorUtility.isObjectNotNull(intf) ? null
+            addr = BezirkValidatorUtility.isObjectNotNull(intf) ? null
                     : UhuNetworkUtilities.getIpForInterface(intf);
             if (addr == null) {
                 LOGGER.error("ERROR IN STARTING UNICAST LINSTNER");

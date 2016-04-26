@@ -3,7 +3,7 @@
  */
 package com.bezirk.streaming.control.Objects;
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 import java.io.File;
 import java.io.PipedInputStream;
@@ -14,7 +14,7 @@ import java.io.PipedInputStream;
  */
 public class StreamRecord extends com.bezirk.control.messages.Ledger {
     public short localStreamId;
-    public UhuZirkEndPoint senderSEP;
+    public BezirkZirkEndPoint senderSEP;
     public boolean isIncremental;                // used for sending the data, set by the sender
     public boolean allowDrops;                    // used for sending the data, set by the sender
     public boolean isEncrypted;                    // if the DataSend needs to be encrypted
@@ -24,7 +24,7 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
     public int recipientPort;                    // recipient Port,set by the proxy after getting the stream Response
     public PipedInputStream pipedInputStream;    // set if it is unreliable
     public File file;                        // path to the file
-    public UhuZirkEndPoint recipientSEP;    // Used for Local streaming.
+    public BezirkZirkEndPoint recipientSEP;    // Used for Local streaming.
     public String serializedStream;                // USed for Local Streaming
     public String streamTopic;                    // USed for Local Streaming
     /* Streaming Status indicates the status of the Streams.

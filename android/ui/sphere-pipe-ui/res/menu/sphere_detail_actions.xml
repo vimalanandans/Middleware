@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- sphere invite to services -->
+    <!-- sphere invite to zirks -->
     <item
         android:id="@+id/action_share_sphere"
         android:icon="@drawable/ic_action_share_white"
         android:showAsAction="ifRoom"
         android:title="@string/action_share_sphere" />
 
-    <!-- Share services -->
+    <!-- Share zirks -->
     <item
         android:id="@+id/action_scan_qr_service_share"
         android:icon="@drawable/ic_action_qr_service_share"
         android:showAsAction="ifRoom"
         android:title="@string/action_share_sphere_device" />
 
-    <!-- catch services -->
+    <!-- catch zirks -->
 
     <!-- should always be in the overflow -->
 
-    <!-- catch services -->
+    <!-- catch zirks -->
     <item
         android:id="@+id/action_discover_sphere_details"
         android:icon="@drawable/ic_action_refresh"

@@ -3,8 +3,8 @@
  */
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
-import com.bezirk.sphere.impl.OwnerService;
-import com.bezirk.sphere.impl.Service;
+import com.bezirk.sphere.impl.OwnerZirk;
+import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 
@@ -75,8 +75,8 @@ public class IsServiceLocal {
         HashSet<String> sphereSet = new HashSet<>();
         sphereSet.add(sphereId);
         String deviceId = mockSetUp.upaDevice.getDeviceId();
-        Service service = new OwnerService("ServiceA", deviceId, sphereSet);
-        assertTrue(sphereRegistryWrapper.isServiceLocal(service.getOwnerDeviceId()));
+        Zirk zirk = new OwnerZirk("ServiceA", deviceId, sphereSet);
+        assertTrue(sphereRegistryWrapper.isServiceLocal(zirk.getOwnerDeviceId()));
     }
 
 

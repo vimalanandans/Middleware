@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 
 /**
@@ -9,7 +9,7 @@ import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
  */
 public class CatchResponse extends com.bezirk.control.messages.MulticastControlMessage {
     private final static com.bezirk.control.messages.ControlMessage.Discriminator discriminator = com.bezirk.control.messages.ControlMessage.Discriminator.CatchResponse;
-    private UhuDeviceInfo inviterSphereDeviceInfo;
+    private BezirkDeviceInfo inviterSphereDeviceInfo;
     private String catcherSphereId;
     private String catcherDeviceId;
 
@@ -22,7 +22,7 @@ public class CatchResponse extends com.bezirk.control.messages.MulticastControlM
      * @param services          Services that need to join the target sphere. Has to be non-null.
      */
 
-    public CatchResponse(UhuZirkEndPoint sender, String catcherSphereId, String catcherDeviceId, UhuDeviceInfo inviterSphereDeviceInfo) {
+    public CatchResponse(BezirkZirkEndPoint sender, String catcherSphereId, String catcherDeviceId, BezirkDeviceInfo inviterSphereDeviceInfo) {
         super(sender, catcherSphereId, discriminator);
         // null checks for sender and catcherSphereId added here because call to the
         // super method has to be the first line in a constructor.
@@ -38,7 +38,7 @@ public class CatchResponse extends com.bezirk.control.messages.MulticastControlM
     /**
      * @return the services of the scanned sphere as response
      */
-    public final UhuDeviceInfo getInviterSphereDeviceInfo() {
+    public final BezirkDeviceInfo getInviterSphereDeviceInfo() {
         return inviterSphereDeviceInfo;
     }
 

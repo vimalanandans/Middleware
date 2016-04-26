@@ -1,9 +1,9 @@
 package com.bezirk.sphere.impl;
 
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.ICryptoInternals;
 import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.messages.CatchRequest;
@@ -152,18 +152,18 @@ public class CatchProcessor {
         // Catching : add to the services from sharing place
         if (sphereRegistryWrapper.containsSphere(catcherSphereId)) {
 
-            UhuDeviceInfo inviterUhuDeviceInfo = catchResponse.getInviterSphereDeviceInfo();
+            BezirkDeviceInfo inviterBezirkDeviceInfo = catchResponse.getInviterSphereDeviceInfo();
 
             // get device information
-            sphereRegistryWrapper.addDevice(inviterUhuDeviceInfo.getDeviceId(),
-                    new DeviceInformation(inviterUhuDeviceInfo.getDeviceName(), inviterUhuDeviceInfo.getDeviceType()));
+            sphereRegistryWrapper.addDevice(inviterBezirkDeviceInfo.getDeviceId(),
+                    new DeviceInformation(inviterBezirkDeviceInfo.getDeviceName(), inviterBezirkDeviceInfo.getDeviceType()));
 
-            // add the service name and service id to spheremembership map
-            if (sphereRegistryWrapper.addMemberServices(inviterUhuDeviceInfo, catcherSphereId,
-                    inviterUhuDeviceInfo.getDeviceId())) {
-                for (UhuServiceInfo service : inviterUhuDeviceInfo.getServiceList()) {
+            // add the zirk name and zirk id to spheremembership map
+            if (sphereRegistryWrapper.addMemberServices(inviterBezirkDeviceInfo, catcherSphereId,
+                    inviterBezirkDeviceInfo.getDeviceId())) {
+                for (BezirkZirkInfo service : inviterBezirkDeviceInfo.getZirkList()) {
                     Sphere sphere = sphereRegistryWrapper.getSphere(catcherSphereId);
-                    sphere.addService(inviterUhuDeviceInfo.getDeviceId(), service.getServiceId());
+                    sphere.addService(inviterBezirkDeviceInfo.getDeviceId(), service.getZirkId());
                 }
                 // catch response for the request is success
                 sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, IUhuSphereListener.Status.SUCCESS, "Catch successful");
@@ -195,7 +195,7 @@ public class CatchProcessor {
         }
 
         SphereExchangeData sphereExchangeData = SphereExchangeData.deserialize(catchRequest.getSphereExchangeData());
-        UhuDeviceInfo catcherUhuDeviceInfo = catchRequest.getUhuDeviceInfo();
+        BezirkDeviceInfo catcherBezirkDeviceInfo = catchRequest.getBezirkDeviceInfo();
         String inviterShortCode = catchRequest.getSphereId();
         String catcherSphereId = sphereExchangeData.getSphereID();
 
@@ -216,7 +216,7 @@ public class CatchProcessor {
          * add them to the catcher sphere & create response
          ************************************************************************/
 
-        CatchResponse sphereCatchResponse = prepareResponse(sphereExchangeData, catcherUhuDeviceInfo, inviterShortCode,
+        CatchResponse sphereCatchResponse = prepareResponse(sphereExchangeData, catcherBezirkDeviceInfo, inviterShortCode,
                 catcherSphereId);
         if (sphereCatchResponse != null) {
             LOGGER.info("Catch Request Processing, Step3: preparing catch response complete");
@@ -259,7 +259,7 @@ public class CatchProcessor {
         ownerDevices.add(sphereExchangeData.getDeviceID());
 
         Sphere sphere = new MemberSphere(sphereExchangeData.getSphereName(), sphereExchangeData.getSphereType(),
-                ownerDevices, new LinkedHashMap<String, ArrayList<UhuZirkId>>(), false);
+                ownerDevices, new LinkedHashMap<String, ArrayList<BezirkZirkId>>(), false);
 
         sphereRegistryWrapper.addSphere(sphereExchangeData.getSphereID(), sphere);
 
@@ -348,24 +348,24 @@ public class CatchProcessor {
         // get the catch sphere services
         // sphere sphere = registry.spheres.get(catchSphereId);
         Sphere sphere = sphereRegistryWrapper.getSphere(catcherSphereId);
-        Map<String, ArrayList<UhuZirkId>> deviceServices = sphere.deviceServices;
+        Map<String, ArrayList<BezirkZirkId>> deviceServices = sphere.deviceServices;
 
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(upaDeviceInterface.getDeviceId())) {
 
             // get device services of sphere
-            ArrayList<UhuZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
+            ArrayList<BezirkZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
 
             if (services != null && !services.isEmpty()) {
                 DeviceInformation deviceInformation = sphereRegistryWrapper
                         .getDeviceInformation(upaDeviceInterface.getDeviceId());
 
-                UhuDeviceInfo catcherUhuDeviceInfo = new UhuDeviceInfo(upaDeviceInterface.getDeviceId(),
+                BezirkDeviceInfo catcherBezirkDeviceInfo = new BezirkDeviceInfo(upaDeviceInterface.getDeviceId(),
                         deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
-                        (List<UhuServiceInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
+                        (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
 
                 sphereCatchRequest = new CatchRequest(UhuNetworkUtilities.getServiceEndPoint(null), inviterShortCode,
-                        catcherSphereId, catcherUhuDeviceInfo, sphereExchangeData);
+                        catcherSphereId, catcherBezirkDeviceInfo, sphereExchangeData);
 
                 return sphereCatchRequest;
             }
@@ -395,15 +395,15 @@ public class CatchProcessor {
         }
 
         SphereExchangeData sphereExchangeData = SphereExchangeData.deserialize(sphereExchangeDataString);
-        UhuDeviceInfo catcherUhuDeviceInfo = catchRequest.getUhuDeviceInfo();
+        BezirkDeviceInfo catcherBezirkDeviceInfo = catchRequest.getBezirkDeviceInfo();
 
-        if (catcherUhuDeviceInfo == null || sphereExchangeData == null) {
+        if (catcherBezirkDeviceInfo == null || sphereExchangeData == null) {
             LOGGER.error("Catched device/sphere Exchange data is not valid");
             return false;
         }
 
         // sender device is equal to current device ignore the results
-        if (catcherUhuDeviceInfo.getDeviceId().equals(upaDeviceInterface.getDeviceId())) {
+        if (catcherBezirkDeviceInfo.getDeviceId().equals(upaDeviceInterface.getDeviceId())) {
             LOGGER.debug("Found request initiated by same device, dropping SphereCatchRequest");
             return false;
         }
@@ -414,21 +414,21 @@ public class CatchProcessor {
      * Generate the catch response to be sent.
      *
      * @param sphereExchangeData   - has to be non-null
-     * @param catcherUhuDeviceInfo - has to be non-null
+     * @param catcherBezirkDeviceInfo - has to be non-null
      * @param inviterShortCode     - has to be non-null
      * @param -                    catcherSphereId
      * @return - CatchResponse object if all parameters are valid.
-     * <br>- Exception if sphereExchangeData or catcherUhuDeviceInfo are null
+     * <br>- Exception if sphereExchangeData or catcherBezirkDeviceInfo are null
      * <br>- null if catcherSphereId is null.
      */
 
-    private CatchResponse prepareResponse(SphereExchangeData sphereExchangeData, UhuDeviceInfo catcherUhuDeviceInfo,
+    private CatchResponse prepareResponse(SphereExchangeData sphereExchangeData, BezirkDeviceInfo catcherBezirkDeviceInfo,
                                           String inviterShortCode, String catcherSphereId) {
 
         Sphere catchCodeGeneratorSphere = sphereRegistryWrapper
                 .getSphere(sphereRegistryWrapper.getSphereIdFromPasscode(inviterShortCode));
 
-        String catcherDeviceId = catcherUhuDeviceInfo.getDeviceId();
+        String catcherDeviceId = catcherBezirkDeviceInfo.getDeviceId();
 
         /**
          * Important note and open point : If we have a owner sphere S [owned by
@@ -439,12 +439,12 @@ public class CatchProcessor {
          */
 
         // retrieve the services from the catchCodeGeneratorSphere
-        Map<String, ArrayList<UhuZirkId>> deviceServices = catchCodeGeneratorSphere.deviceServices;
+        Map<String, ArrayList<BezirkZirkId>> deviceServices = catchCodeGeneratorSphere.deviceServices;
 
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(upaDeviceInterface.getDeviceId())) {
 
-            ArrayList<UhuZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
+            ArrayList<BezirkZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
 
             if (services == null || services.isEmpty()) {
                 LOGGER.error("No services are at the device, nothing to catch");
@@ -457,17 +457,17 @@ public class CatchProcessor {
                         + catcherSphereId);
 
                 // add remote device services also to new catchSphereId
-                // add the catched service name and service id to
+                // add the catched zirk name and zirk id to
                 // spheremembership map
-                if (sphereRegistryWrapper.addMemberServices(catcherUhuDeviceInfo, catcherSphereId, catcherDeviceId)) {
-                    // get all the device info of catched service
-                    for (UhuServiceInfo serviceInfoList : catcherUhuDeviceInfo.getServiceList()) {
+                if (sphereRegistryWrapper.addMemberServices(catcherBezirkDeviceInfo, catcherSphereId, catcherDeviceId)) {
+                    // get all the device info of catched zirk
+                    for (BezirkZirkInfo serviceInfoList : catcherBezirkDeviceInfo.getZirkList()) {
 
                         // TODO: Check this implementation, addMemberServices
                         // adds the data to the sphere
                         Sphere sphere = sphereRegistryWrapper.getSphere(catcherSphereId);
                         sphere.setSphereType(sphereExchangeData.getSphereType());
-                        sphere.addService(catcherDeviceId, serviceInfoList.getServiceId());
+                        sphere.addService(catcherDeviceId, serviceInfoList.getZirkId());
                     }
 
                     // send local services of temp sharing sphere Id to catch
@@ -476,9 +476,9 @@ public class CatchProcessor {
                             .getDeviceInformation(upaDeviceInterface.getDeviceId());
 
                     // create the device info with only local services
-                    UhuDeviceInfo inviterSphereDeviceInfo = new UhuDeviceInfo(upaDeviceInterface.getDeviceId(),
+                    BezirkDeviceInfo inviterSphereDeviceInfo = new BezirkDeviceInfo(upaDeviceInterface.getDeviceId(),
                             deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
-                            (List<UhuServiceInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
+                            (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
 
                     // FIXME: send unicast for device
                     CatchResponse response = new CatchResponse(UhuNetworkUtilities.getServiceEndPoint(null),

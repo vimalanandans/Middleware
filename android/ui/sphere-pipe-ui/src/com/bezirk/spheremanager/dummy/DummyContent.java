@@ -157,13 +157,13 @@ public class DummyContent {
 
         //random
         List<AbstractInformationListItem> informationListOutboundRandom = new ArrayList<AbstractInformationListItem>();
-        informationListOutboundRandom.add(new InformationListItem("Random Outbound Info", "Provided by Service(s): Random", false));
+        informationListOutboundRandom.add(new InformationListItem("Random Outbound Info", "Provided by Zirk(s): Random", false));
         List<AbstractInformationListItem> informationListInboundRandom = new ArrayList<AbstractInformationListItem>();
-        informationListInboundRandom.add(new InformationListItem("Random Inbound Info", "Used by Service(s): Random", true));
+        informationListInboundRandom.add(new InformationListItem("Random Inbound Info", "Used by Zirk(s): Random", true));
         List<DeviceServiceItem> serviceListRandom = new ArrayList<DeviceServiceItem>();
-        serviceListRandom.add(new DeviceServiceItem("Random Service 1", true));
-        serviceListRandom.add(new DeviceServiceItem("Random Service 2", false));
-        serviceListRandom.add(new DeviceServiceItem("Random Service 3", false));
+        serviceListRandom.add(new DeviceServiceItem("Random Zirk 1", true));
+        serviceListRandom.add(new DeviceServiceItem("Random Zirk 2", false));
+        serviceListRandom.add(new DeviceServiceItem("Random Zirk 3", false));
 
         //end random
         
@@ -190,8 +190,8 @@ public class DummyContent {
         if (dummyDataVariation == 0) {
             //outbound == combined
             //Bob's Phone
-            informationListOutboundBobsPhone.add(new InformationListItem("Contact(s)", "Used/Provided by Service(s): Contacts", true));
-            informationListOutboundBobsPhone.add(new InformationListItem("Appointment(s)", "Used/Provided by Service(s): Calendar", true));
+            informationListOutboundBobsPhone.add(new InformationListItem("Contact(s)", "Used/Provided by Zirk(s): Contacts", true));
+            informationListOutboundBobsPhone.add(new InformationListItem("Appointment(s)", "Used/Provided by Zirk(s): Calendar", true));
             serviceListBob.add(new DeviceServiceItem("Contacts", true));
             serviceListBob.add(new DeviceServiceItem("Calendar", true));
             serviceListBob.add(new DeviceServiceItem("Phone", false));
@@ -200,10 +200,10 @@ public class DummyContent {
             serviceListBob.add(new DeviceServiceItem("Social Media Sharing", false));
 
             //Bob's Car
-            informationListOutboundBobsCar.add(new InformationListItem("Position", "Used/Provided by Service(s): Navigation", true));
-            informationListOutboundBobsCar.add(new InformationListItem("Destination(s)", "Used/Provided by Service(s): Navigation, Navigation Assistance", true));
-            informationListOutboundBobsCar.add(new InformationListItem("Contact(s)", "Used/Provided  by Service(s): Navigation Assistance", true));
-            informationListOutboundBobsCar.add(new InformationListItem("Appointment(s)", "Used/Provided  by Service(s): Navigation Assistance", true));
+            informationListOutboundBobsCar.add(new InformationListItem("Position", "Used/Provided by Zirk(s): Navigation", true));
+            informationListOutboundBobsCar.add(new InformationListItem("Destination(s)", "Used/Provided by Zirk(s): Navigation, Navigation Assistance", true));
+            informationListOutboundBobsCar.add(new InformationListItem("Contact(s)", "Used/Provided  by Zirk(s): Navigation Assistance", true));
+            informationListOutboundBobsCar.add(new InformationListItem("Appointment(s)", "Used/Provided  by Zirk(s): Navigation Assistance", true));
             serviceListBobsCar.add(new DeviceServiceItem("Navigation", true));
             serviceListBobsCar.add(new DeviceServiceItem("Navigation Assistance", true));
             serviceListBobsCar.add(new DeviceServiceItem("Stream Music", false));
@@ -212,10 +212,10 @@ public class DummyContent {
             serviceListBobsCar.add(new DeviceServiceItem("Maintenance Assistance", false));
         } else if (dummyDataVariation == 1) {
             //Bob's Phone
-            informationListOutboundBobsPhone.add(new InformationListItem("Contact(s)", "Provided by Service(s): Contacts", true));
-            informationListOutboundBobsPhone.add(new InformationListItem("Appointment(s)", "Provided by Service(s): Calendar", true));
-            informationListInboundBobsPhone.add(new InformationListItem("Contact(s)", "Used by Service(s): Contacts", true));
-            informationListInboundBobsPhone.add(new InformationListItem("Appointment(s)", "Used by Service(s): Calendar", true));
+            informationListOutboundBobsPhone.add(new InformationListItem("Contact(s)", "Provided by Zirk(s): Contacts", true));
+            informationListOutboundBobsPhone.add(new InformationListItem("Appointment(s)", "Provided by Zirk(s): Calendar", true));
+            informationListInboundBobsPhone.add(new InformationListItem("Contact(s)", "Used by Zirk(s): Contacts", true));
+            informationListInboundBobsPhone.add(new InformationListItem("Appointment(s)", "Used by Zirk(s): Calendar", true));
             serviceListBob.add(new DeviceServiceItem("Contacts", true));
             serviceListBob.add(new DeviceServiceItem("Calendar", true));
             serviceListBob.add(new DeviceServiceItem("Phone", false));
@@ -224,11 +224,11 @@ public class DummyContent {
             serviceListBob.add(new DeviceServiceItem("Social Media Sharing", false));
 
             //Bob's Car
-            informationListOutboundBobsCar.add(new InformationListItem("Position", "Provided by Service(s): Navigation", true));
-            informationListOutboundBobsCar.add(new InformationListItem("Destination(s)", "Provided by Service(s): Navigation, Navigation Assistance", true));
-            informationListInboundBobsCar.add(new InformationListItem("Destination(s)", "Used by Service(s): Navigation, Navigation Assistance", true));
-            informationListInboundBobsCar.add(new InformationListItem("Contact(s)", "Used by Service(s): Navigation Assistance", true));
-            informationListInboundBobsCar.add(new InformationListItem("Appointment(s)", "Used by Service(s): Navigation Assistance", true));
+            informationListOutboundBobsCar.add(new InformationListItem("Position", "Provided by Zirk(s): Navigation", true));
+            informationListOutboundBobsCar.add(new InformationListItem("Destination(s)", "Provided by Zirk(s): Navigation, Navigation Assistance", true));
+            informationListInboundBobsCar.add(new InformationListItem("Destination(s)", "Used by Zirk(s): Navigation, Navigation Assistance", true));
+            informationListInboundBobsCar.add(new InformationListItem("Contact(s)", "Used by Zirk(s): Navigation Assistance", true));
+            informationListInboundBobsCar.add(new InformationListItem("Appointment(s)", "Used by Zirk(s): Navigation Assistance", true));
             serviceListBobsCar.add(new DeviceServiceItem("Navigation", true));
             serviceListBobsCar.add(new DeviceServiceItem("Navigation Assistance", true));
             serviceListBobsCar.add(new DeviceServiceItem("Stream Music", false));
@@ -238,8 +238,8 @@ public class DummyContent {
 
         } else if (dummyDataVariation == 2) {
             //Bob's Phone
-            informationListOutboundBobsPhone.add(new InformationListItem("Contact(s)", "Used/Provided by Service(s): Contacts", true));
-            informationListOutboundBobsPhone.add(new InformationListItem("Appointment(s)", "Used/Provided by Service(s): Calendar", true));
+            informationListOutboundBobsPhone.add(new InformationListItem("Contact(s)", "Used/Provided by Zirk(s): Contacts", true));
+            informationListOutboundBobsPhone.add(new InformationListItem("Appointment(s)", "Used/Provided by Zirk(s): Calendar", true));
             serviceListBob.add(new DeviceServiceItem("Contacts", true));
             serviceListBob.add(new DeviceServiceItem("Calendar", true));
             serviceListBob.add(new DeviceServiceItem("Phone", false));
@@ -248,8 +248,8 @@ public class DummyContent {
             serviceListBob.add(new DeviceServiceItem("Social Media Sharing", false));
 
             //Bob's Car
-            informationListOutboundBobsCar.add(new InformationListItem("Position", "Used/Provided by Service(s): Navigation", true));
-            informationListOutboundBobsCar.add(new InformationListItem("Destination(s)", "Used/Provided by Service(s): Navigation", true));
+            informationListOutboundBobsCar.add(new InformationListItem("Position", "Used/Provided by Zirk(s): Navigation", true));
+            informationListOutboundBobsCar.add(new InformationListItem("Destination(s)", "Used/Provided by Zirk(s): Navigation", true));
             serviceListBobsCar.add(new DeviceServiceItem("Navigation", true));
             serviceListBobsCar.add(new DeviceServiceItem("Stream Music", false));
             serviceListBobsCar.add(new DeviceServiceItem("Travel Guide", false));
@@ -257,19 +257,19 @@ public class DummyContent {
             serviceListBobsCar.add(new DeviceServiceItem("Maintenance Assistance", false));
 
             //Intelligent Navigation
-            informationListOutboundNavigation.add(new InformationListItem("Position", "Used/Provided by Service(s): Navigation Assistance", true));
-            informationListOutboundNavigation.add(new InformationListItem("Destination(s)", "Used/Provided by Service(s): Navigation Assistance", true));
-            informationListOutboundNavigation.add(new InformationListItem("Contact(s)", "Used/Provided by Service(s): Navigation Assistance", true));
-            informationListOutboundNavigation.add(new InformationListItem("Appointment(s)", "Used/Provided by Service(s): Navigation Assistance", true));
+            informationListOutboundNavigation.add(new InformationListItem("Position", "Used/Provided by Zirk(s): Navigation Assistance", true));
+            informationListOutboundNavigation.add(new InformationListItem("Destination(s)", "Used/Provided by Zirk(s): Navigation Assistance", true));
+            informationListOutboundNavigation.add(new InformationListItem("Contact(s)", "Used/Provided by Zirk(s): Navigation Assistance", true));
+            informationListOutboundNavigation.add(new InformationListItem("Appointment(s)", "Used/Provided by Zirk(s): Navigation Assistance", true));
             serviceListNavigation.add(new DeviceServiceItem("Navigation Assistance", true));
             //serviceListNavigation.add(new DeviceServiceItem("",  false));
 
         } else if (dummyDataVariation == 3) {
             //Bob's Phone
-            informationListOutboundBobsPhone.add(new InformationListItem("Contact(s)", "Provided by Service(s): Contacts", true));
-            informationListOutboundBobsPhone.add(new InformationListItem("Appointment(s)", "Provided by Service(s): Calendar", true));
-            informationListInboundBobsPhone.add(new InformationListItem("Contact(s)", "Used by Service(s): Contacts", true));
-            informationListInboundBobsPhone.add(new InformationListItem("Appointment(s)", "Used by Service(s): Calendar", true));
+            informationListOutboundBobsPhone.add(new InformationListItem("Contact(s)", "Provided by Zirk(s): Contacts", true));
+            informationListOutboundBobsPhone.add(new InformationListItem("Appointment(s)", "Provided by Zirk(s): Calendar", true));
+            informationListInboundBobsPhone.add(new InformationListItem("Contact(s)", "Used by Zirk(s): Contacts", true));
+            informationListInboundBobsPhone.add(new InformationListItem("Appointment(s)", "Used by Zirk(s): Calendar", true));
             serviceListBob.add(new DeviceServiceItem("Contacts", true));
             serviceListBob.add(new DeviceServiceItem("Calendar", true));
             serviceListBob.add(new DeviceServiceItem("Phone", false));
@@ -278,9 +278,9 @@ public class DummyContent {
             serviceListBob.add(new DeviceServiceItem("Social Media Sharing", false));
 
             //Bob's Car
-            informationListOutboundBobsCar.add(new InformationListItem("Position", "Provided by Service(s): Navigation", true));
-            informationListOutboundBobsCar.add(new InformationListItem("Destination(s)", "Provided by Service(s): Navigation", true));
-            informationListInboundBobsCar.add(new InformationListItem("Destination(s)", "Used by Service(s): Navigation", true));
+            informationListOutboundBobsCar.add(new InformationListItem("Position", "Provided by Zirk(s): Navigation", true));
+            informationListOutboundBobsCar.add(new InformationListItem("Destination(s)", "Provided by Zirk(s): Navigation", true));
+            informationListInboundBobsCar.add(new InformationListItem("Destination(s)", "Used by Zirk(s): Navigation", true));
             serviceListBobsCar.add(new DeviceServiceItem("Navigation", true));
             serviceListBobsCar.add(new DeviceServiceItem("Stream Music", false));
             serviceListBobsCar.add(new DeviceServiceItem("Travel Guide", false));
@@ -288,11 +288,11 @@ public class DummyContent {
             serviceListBobsCar.add(new DeviceServiceItem("Maintenance Assistance", false));
 
             //Intelligent Navigation
-            informationListOutboundNavigation.add(new InformationListItem("Destination(s)", "Provided by Service(s): Navigation Assistance", true));
-            informationListInboundNavigation.add(new InformationListItem("Location", "Used by Service(s): Navigation Assistance", true));
-            informationListInboundNavigation.add(new InformationListItem("Destination(s)", "Used by Service(s): Navigation Assistance", true));
-            informationListInboundNavigation.add(new InformationListItem("Contact(s)", "Used by Service(s): Navigation Assistance", true));
-            informationListInboundNavigation.add(new InformationListItem("Appointment(s)", "Used by Service(s): Navigation Assistance", true));
+            informationListOutboundNavigation.add(new InformationListItem("Destination(s)", "Provided by Zirk(s): Navigation Assistance", true));
+            informationListInboundNavigation.add(new InformationListItem("Location", "Used by Zirk(s): Navigation Assistance", true));
+            informationListInboundNavigation.add(new InformationListItem("Destination(s)", "Used by Zirk(s): Navigation Assistance", true));
+            informationListInboundNavigation.add(new InformationListItem("Contact(s)", "Used by Zirk(s): Navigation Assistance", true));
+            informationListInboundNavigation.add(new InformationListItem("Appointment(s)", "Used by Zirk(s): Navigation Assistance", true));
             serviceListNavigation.add(new DeviceServiceItem("Navigation Assistance", true));
             //serviceListNavigation.add(new DeviceServiceItem("",  false));
         }
@@ -300,7 +300,7 @@ public class DummyContent {
 
         //Heating-System 
         List<AbstractInformationListItem> informationListOutboundHeating = new ArrayList<AbstractInformationListItem>();
-        informationListOutboundHeating.add(new InformationListItem("Temperature", "Provided by Temperature Service", true));
+        informationListOutboundHeating.add(new InformationListItem("Temperature", "Provided by Temperature Zirk", true));
         informationListOutboundHeating.add(new InformationListItem("Energy consumption", "Provided by Track Energy consumption", true));
         List<AbstractInformationListItem> informationListInboundHeating = new ArrayList<AbstractInformationListItem>();
         informationListInboundHeating.add(new InformationListItem("Temperature preferences", "Used by Intelligent Heating, Party Heating", true));
@@ -312,9 +312,9 @@ public class DummyContent {
 
         //Party attendee's Phone A
         List<AbstractInformationListItem> informationListOutboundPhoneA = new ArrayList<AbstractInformationListItem>();
-        informationListOutboundPhoneA.add(new InformationListItem("Temperature", "Provided by Temperature Service", false));
+        informationListOutboundPhoneA.add(new InformationListItem("Temperature", "Provided by Temperature Zirk", false));
         List<AbstractInformationListItem> informationListInboundPhoneA = new ArrayList<AbstractInformationListItem>();
-        informationListInboundPhoneA.add(new InformationListItem("Temperature", "Provided by Temperature Service", true));
+        informationListInboundPhoneA.add(new InformationListItem("Temperature", "Provided by Temperature Zirk", true));
         List<DeviceServiceItem> serviceListPhoneA = new ArrayList<DeviceServiceItem>();
         serviceListPhoneA.add(new DeviceServiceItem("Stream Music", true));
         serviceListPhoneA.add(new DeviceServiceItem("Intelligent Navigation", false));

@@ -18,10 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bezirk.device.UhuDeviceType;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
-import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.SelectServiceFragment;
 import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
@@ -71,13 +70,13 @@ public class SelectServiceActivity extends FragmentActivity implements
         //Bob's Phone  
 
         if (sphereInfo != null) {
-            UhuDeviceInfo item = sphereInfo.getDeviceList().get(deviceID);
+            BezirkDeviceInfo item = sphereInfo.getDeviceList().get(deviceID);
 
             TextView device_name = (TextView) view
                     .findViewById(R.id.name_of_device);
             device_name.setText(item.getDeviceName());
 
-            if (item.getDeviceRole() == UhuDeviceInfo.UhuDeviceRole.UHU_CONTROL) {
+            if (item.getDeviceRole() == BezirkDeviceInfo.UhuDeviceRole.UHU_CONTROL) {
                 device_name.setTypeface(null, Typeface.BOLD);
             }
 

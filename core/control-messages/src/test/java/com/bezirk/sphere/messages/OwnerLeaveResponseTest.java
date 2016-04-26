@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -23,9 +23,9 @@ public class OwnerLeaveResponseTest {
             .getLogger(OwnerLeaveResponseTest.class);
 
     private static final String sphereId = "TestSphere";
-    private static final UhuZirkId serviceId = new UhuZirkId("ServiceA");
-    private static final UhuZirkId serviceBId = new UhuZirkId("ServiceB");
-    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceBId);
+    private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+    private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
+    private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceBId);
 
 
     /**

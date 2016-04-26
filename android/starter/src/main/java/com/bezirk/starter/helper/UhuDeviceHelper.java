@@ -9,7 +9,7 @@ import com.bezirk.device.UhuDeviceType;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuPreferences;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ public final class UhuDeviceHelper {
     UhuDevice setUhuDevice(final UhuPreferences preferences, final MainService service) {
         UhuDevice uhuDevice = initDevice(preferences, service);
 
-        if (UhuValidatorUtility.isObjectNotNull(uhuDevice)) {
+        if (BezirkValidatorUtility.isObjectNotNull(uhuDevice)) {
 
             UhuCompManager.setUpaDevice(uhuDevice);
 
@@ -103,7 +103,7 @@ public final class UhuDeviceHelper {
 
         String deviceName = preferences.getString(UhuPreferences.DEVICE_NAME_TAG_PREFERENCE, null);
 
-        if (UhuValidatorUtility.checkForString(deviceName)) {
+        if (BezirkValidatorUtility.checkForString(deviceName)) {
             LOGGER.info("device type is already initialized to " + deviceName);
             uhuDevice.setDeviceName(deviceName);
         } else {

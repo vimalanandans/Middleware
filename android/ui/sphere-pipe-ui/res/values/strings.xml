@@ -11,7 +11,7 @@
     <string name="action_share_sphere">Share</string>
     <string name="action_catch_sphere_device">Catch</string>
     <string name="action_share_sphere_device">Share</string>
-    <string name="action_show_all_services_in_sphere">Show all services in Sphere</string>
+    <string name="action_show_all_services_in_sphere">Show all zirks in Sphere</string>
     <string name="refreshSphereDetails">Refresh Sphere Details</string>
     <string name="action_delete">Delete</string>
     <string name="action_add">Add</string>
@@ -32,9 +32,9 @@
     <string name="title_activity_manage_pipes">Pipe Management</string>
     <string name="action_manage_pipes">Manage Pipes</string>
     <string name="title_activity_update_user_credentials">Pipe Management</string>
-    <string name="action_add_services_to_sphere">Add services to sphere</string>
+    <string name="action_add_services_to_sphere">Add zirks to sphere</string>
     <string name="action_delete_sphere">Delete sphere</string>
-    <string name="hint_text">Tap on list item to edit service name</string>
+    <string name="hint_text">Tap on list item to edit zirk name</string>
 
     <!--MENU-->
     <string name="action_print_qrcode">Save/ Print QR-Code</string>

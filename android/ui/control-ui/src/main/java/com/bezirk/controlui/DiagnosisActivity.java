@@ -36,7 +36,7 @@ public class DiagnosisActivity extends ActionBarActivity
                 "Test the default communication is supported with your network and devices", false, false, false));
 
         listData.add(new DataModel(R.drawable.ic_action_logging, "Event Logging",
-                "Enable service communication message logs.", false, false, false));
+                "Enable zirk communication message logs.", false, false, false));
 
         // set the list
         AbsListView list;

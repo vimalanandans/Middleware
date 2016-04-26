@@ -17,15 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bezirk.device.UhuDeviceType;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
-import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.InformationListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.starter.MainService;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 public class InformationActivity extends FragmentActivity {
 
@@ -50,9 +49,9 @@ public class InformationActivity extends FragmentActivity {
 
         IUhuSphereAPI api = MainService.getSphereHandle();
 
-        if (UhuValidatorUtility.isObjectNotNull(api)) {
+        if (BezirkValidatorUtility.isObjectNotNull(api)) {
             UhuSphereInfo sphereInfo = api.getSphere(sphereID);
-            if (UhuValidatorUtility.isObjectNotNull(sphereInfo)) {
+            if (BezirkValidatorUtility.isObjectNotNull(sphereInfo)) {
                 sphere = new SphereListItem(sphereInfo);
             } else {
                 Log.e(TAG, "sphere contains : " + sphereID + " not found");
@@ -61,7 +60,7 @@ public class InformationActivity extends FragmentActivity {
             Log.e(TAG, "MainService is not available");
         }
 
-        UhuDeviceInfo item = sphere.getmSphere().getDeviceList()
+        BezirkDeviceInfo item = sphere.getmSphere().getDeviceList()
                 .get(getIntent().getIntExtra(DeviceListActivity.ARG_DEVICE_ID,
                         0));
         LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext()
@@ -75,7 +74,7 @@ public class InformationActivity extends FragmentActivity {
 
         thing_name.setText(item.getDeviceName());
 
-        if (item.getDeviceRole() == UhuDeviceInfo.UhuDeviceRole.UHU_CONTROL) ;
+        if (item.getDeviceRole() == BezirkDeviceInfo.UhuDeviceRole.UHU_CONTROL) ;
         {
             thing_name.setTypeface(null, Typeface.BOLD);
         }
@@ -180,7 +179,7 @@ public class InformationActivity extends FragmentActivity {
 
             @Override
             public void onClick(View backToServiceView) {
-                //Listener for Back to service
+                //Listener for Back to zirk
                 startActivityForResult(createBackToServiceIntent(), BACKTOSERVICE_CODE_REQUEST);
 
             }

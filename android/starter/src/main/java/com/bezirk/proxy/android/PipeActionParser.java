@@ -8,7 +8,7 @@ import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.core.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRequest;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static com.bezirk.util.UhuValidatorUtility.checkForString;
-import static com.bezirk.util.UhuValidatorUtility.checkUhuServiceId;
+import static com.bezirk.util.BezirkValidatorUtility.checkForString;
+import static com.bezirk.util.BezirkValidatorUtility.checkUhuServiceId;
 
 /**
  * Created by wya1pi on 8/21/14.
@@ -35,7 +35,7 @@ public class PipeActionParser {
 
         String pipeName = intent.getStringExtra(UhuActions.KEY_PIPE_NAME);
         String pipeId = intent.getStringExtra(UhuActions.KEY_PIPE_REQ_ID);
-        String serviceIdAsString = intent.getStringExtra(UhuActions.KEY_SENDER_SERVICE_ID);
+        String serviceIdAsString = intent.getStringExtra(UhuActions.KEY_SENDER_ZIRK_ID);
         String uriString = intent.getStringExtra(UhuActions.KEY_PIPE_URI);
         String pipeClassName = intent.getStringExtra(UhuActions.KEY_PIPE_CLASS);
         String policyIn = intent.getStringExtra(UhuActions.KEY_PIPE_POLICY_IN);
@@ -64,9 +64,9 @@ public class PipeActionParser {
             return null;
         }
 
-        UhuZirkId serviceId = serviceIdFromString(serviceIdAsString);
+        BezirkZirkId serviceId = serviceIdFromString(serviceIdAsString);
         if (serviceId == null) {
-            log.error("Intent not valid because there was a failure validating serviceId");
+            log.error("Intent not valid because there was a failure validating zirkId");
             return null;
         }
 
@@ -94,11 +94,11 @@ public class PipeActionParser {
         return pipeRequest;
     }
 
-    private UhuZirkId serviceIdFromString(String serviceIdAsString) {
+    private BezirkZirkId serviceIdFromString(String serviceIdAsString) {
         Gson gson = new Gson();
-        UhuZirkId serviceId = gson.fromJson(serviceIdAsString, UhuZirkId.class);
+        BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
         if (!checkUhuServiceId(serviceId)) {
-            log.error("serviceId not valid: " + serviceId);
+            log.error("zirkId not valid: " + serviceId);
             return null;
         }
 
@@ -111,7 +111,7 @@ public class PipeActionParser {
         String errorSuffix = "String is null or empty";
 
         if (!checkForString(serviceId)) {
-            log.error("serviceId " + errorSuffix);
+            log.error("zirkId " + errorSuffix);
             stringsValid = false;
         }
         if (!checkForString(pipeName)) {

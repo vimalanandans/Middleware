@@ -4,7 +4,7 @@
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.impl.OwnerService;
+import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 
@@ -69,8 +69,8 @@ public class ContainsService {
     /**
      * Test method for {@link SphereRegistryWrapper#containsService(String)}.
      * <p/>
-     * <br>Check if the service exists in the registry.
-     * containsService should return True when valid service id is passed.
+     * <br>Check if the zirk exists in the registry.
+     * containsService should return True when valid zirk id is passed.
      */
     @Test
     public final void validServiceIdShouldReturnTrue() {
@@ -78,19 +78,19 @@ public class ContainsService {
         HashSet<String> sphereSet = new HashSet<String>();
         String sphereId = UUID.randomUUID().toString();
         sphereSet.add(sphereId);
-        registry.sphereMembership.put(serviceId, new OwnerService("serviceName", "ownerDeviceId", sphereSet));
+        registry.sphereMembership.put(serviceId, new OwnerZirk("serviceName", "ownerDeviceId", sphereSet));
         assertTrue(sphereRegistryWrapper.containsService(serviceId));
     }
 
     /**
      * Test method for {@link SphereRegistryWrapper#containsService(String)}.
      * <p/>
-     * <br>Check if the service exists in the registry.
-     * containsService should return False when invalid service id is passed.
+     * <br>Check if the zirk exists in the registry.
+     * containsService should return False when invalid zirk id is passed.
      */
     @Test
     public final void invalidServiceIdShouldReturnFalse() {
-        //Create a service id, but don't add it to the registry
+        //Create a zirk id, but don't add it to the registry
         String serviceId = UUID.randomUUID().toString();
         assertFalse(sphereRegistryWrapper.containsService(serviceId));
     }

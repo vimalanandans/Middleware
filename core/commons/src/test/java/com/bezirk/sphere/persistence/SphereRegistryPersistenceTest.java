@@ -7,11 +7,11 @@ import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.persistence.UhuRegistry;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.impl.DeviceInformation;
-import com.bezirk.sphere.impl.MemberService;
+import com.bezirk.sphere.impl.MemberZirk;
 import com.bezirk.sphere.impl.MemberSphere;
-import com.bezirk.sphere.impl.OwnerService;
+import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.security.SphereKeys;
@@ -102,16 +102,16 @@ public class SphereRegistryPersistenceTest {
         homeSphere.setSphereName("Home-sphere");
         homeSphere.setSphereType("MOBILE");
 
-        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<String, ArrayList<UhuZirkId>>();
-        ArrayList<UhuZirkId> deviceList = new ArrayList<UhuZirkId>();
-        deviceList.add(new UhuZirkId("device-id-1-sid-1"));
-        deviceList.add(new UhuZirkId("device-id-1-sid-2"));
+        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<String, ArrayList<BezirkZirkId>>();
+        ArrayList<BezirkZirkId> deviceList = new ArrayList<BezirkZirkId>();
+        deviceList.add(new BezirkZirkId("device-id-1-sid-1"));
+        deviceList.add(new BezirkZirkId("device-id-1-sid-2"));
 
         deviceServices.put("device-id-1", deviceList);
 
-        ArrayList<UhuZirkId> deviceList1 = new ArrayList<UhuZirkId>();
-        deviceList1.add(new UhuZirkId("device-id-2-sid-1"));
-        deviceList1.add(new UhuZirkId("device-id-2-sid-2"));
+        ArrayList<BezirkZirkId> deviceList1 = new ArrayList<BezirkZirkId>();
+        deviceList1.add(new BezirkZirkId("device-id-2-sid-1"));
+        deviceList1.add(new BezirkZirkId("device-id-2-sid-2"));
 
         deviceServices.put("device-id-2", deviceList1);
 
@@ -133,19 +133,19 @@ public class SphereRegistryPersistenceTest {
         // create MemberSphere and add it to spheres
 
         //MemberSphere(String sphereName, String sphereType,HashSet<String> ownerDevices,
-        //LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices, boolean temporarySphere
+        //LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices, boolean temporarySphere
 
 
         HashSet<String> ownerDeviceIds = new HashSet<String>();
         ownerDeviceIds.add("dev-2");
         ownerDeviceIds.add("dev-1");
 
-        ArrayList<UhuZirkId> sids = new ArrayList<UhuZirkId>();
-        sids.add(new UhuZirkId("sid1"));
-        sids.add(new UhuZirkId("sid2"));
-        sids.add(new UhuZirkId("sid3"));
+        ArrayList<BezirkZirkId> sids = new ArrayList<BezirkZirkId>();
+        sids.add(new BezirkZirkId("sid1"));
+        sids.add(new BezirkZirkId("sid2"));
+        sids.add(new BezirkZirkId("sid3"));
 
-        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServicesMemSphere = new LinkedHashMap<String, ArrayList<UhuZirkId>>();
+        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServicesMemSphere = new LinkedHashMap<String, ArrayList<BezirkZirkId>>();
         deviceServicesMemSphere.put("sphereId", sids);
 
 
@@ -158,8 +158,8 @@ public class SphereRegistryPersistenceTest {
         sphereSet.add("sphere1");
         sphereSet.add("sphere2");
 
-        MemberService memberService = new MemberService("owner0id-1", "service-1", sphereSet);
-        OwnerService ownerService = new OwnerService("owner0id-1", "service-1", sphereSet);
+        MemberZirk memberService = new MemberZirk("owner0id-1", "zirk-1", sphereSet);
+        OwnerZirk ownerService = new OwnerZirk("owner0id-1", "zirk-1", sphereSet);
 
         sphereRegistry.sphereMembership.put("member", memberService);
         sphereRegistry.sphereMembership.put("owner", ownerService);

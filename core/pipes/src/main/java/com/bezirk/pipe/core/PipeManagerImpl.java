@@ -32,7 +32,7 @@ public class PipeManagerImpl implements PipeManager {
     // This the lower bound for the size of the thread pool
     public static final int DEFAULT_CORE_POOL_SZ = 5;
 
-    // Max size of pool that sends http requests to the remote web service
+    // Max size of pool that sends http requests to the remote web zirk
     public static final int DEFAULT_MAX_POOL_SZ_SENDING = 5;
 
     // Max size of the pool used for writing streams

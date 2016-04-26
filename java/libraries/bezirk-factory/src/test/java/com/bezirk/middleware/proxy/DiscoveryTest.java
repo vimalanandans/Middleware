@@ -14,8 +14,8 @@ import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -38,9 +38,9 @@ import static org.junit.Assert.fail;
  * This test case is used to test for discovery!
  * Three MockServices A,B,C are registered and Subscribed for Protocol Role.
  * Sub-test - 1 :
- * Mock Service A discover based on the protocol Role specifying the location as null, and it should discover 3 services (MockServiceA, MockServiceB, MockServiceC).
+ * Mock Zirk A discover based on the protocol Role specifying the location as null, and it should discover 3 services (MockServiceA, MockServiceB, MockServiceC).
  * Sub-test - 2 :
- * Service C updates it location to new location. Mock Service A discover based on the protocol Role specifying the location to new Location, and it should discover 1 services (MockServiceC).
+ * Zirk C updates it location to new location. Mock Zirk A discover based on the protocol Role specifying the location to new Location, and it should discover 1 services (MockServiceC).
  * The success of both sub-test validates this testcase.
  * More info can be found on Wiki - <Page>
  *
@@ -113,7 +113,7 @@ public class DiscoveryTest {
     }
 
     /**
-     * MockServiceA that is simulating as Service that initiates the Discovery
+     * MockServiceA that is simulating as Zirk that initiates the Discovery
      */
     private final class DiscoveryMockServiceA implements BezirkListener {
         private final String serviceName = "DiscoveryMockServiceA";
@@ -124,7 +124,7 @@ public class DiscoveryTest {
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerZirk(serviceName);
-            logger.info("DiscoveryMockServiceA - regId : " + ((UhuZirkId) myId).getUhuServiceId());
+            logger.info("DiscoveryMockServiceA - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
             pRole = new DiscoveryMockServiceProtocol();
             uhu.subscribe(myId, pRole, this);
         }
@@ -163,11 +163,11 @@ public class DiscoveryTest {
         public void discovered(Set<DiscoveredZirk> zirkSet) {
             logger.info("Received Discovery Response");
             if (zirkSet == null) {
-                fail("Service Set of Discovered Services in Null");
+                fail("Zirk Set of Discovered Services in Null");
                 return;
             }
             if (zirkSet.isEmpty()) {
-                fail("Service Set is Empty");
+                fail("Zirk Set is Empty");
                 return;
             }
             logger.debug("*******Size of the Set********* : " + zirkSet.size());
@@ -191,27 +191,27 @@ public class DiscoveryTest {
 
                     }
                     UPADeviceInterface upaDevice = UhuCompManager.getUpaDevice();
-                    UhuDiscoveredZirk tempDisService = (UhuDiscoveredZirk) iterator.next();
-                    assertNotNull("Discovered Service is null. ", tempDisService);
+                    BezirkDiscoveredZirk tempDisService = (BezirkDiscoveredZirk) iterator.next();
+                    assertNotNull("Discovered Zirk is null. ", tempDisService);
                     switch (tempDisService.name) {
 
                         case "DiscoveryMockServiceA":
                             assertEquals("DiscoveryMockServiceA", tempDisService.name);
                             assertEquals("DiscoveryMockServiceProtocol", tempDisService.pRole);
-                            assertNotNull("Device is not set for DiscoveryMockServiceA.", tempDisService.service.device);
-                            assertEquals("ServiceID is different for DiscoveryMockServiceA.", ((UhuZirkId) myId).getUhuServiceId(), tempDisService.service.serviceId.getUhuServiceId());
+                            assertNotNull("Device is not set for DiscoveryMockServiceA.", tempDisService.zirk.device);
+                            assertEquals("ServiceID is different for DiscoveryMockServiceA.", ((BezirkZirkId) myId).getBezirkZirkId(), tempDisService.zirk.zirkId.getBezirkZirkId());
                             break;
                         case "DiscoveryMockServiceB":
                             assertEquals("DiscoveryMockServiceB", tempDisService.name);
                             assertEquals("DiscoveryMockServiceProtocol", tempDisService.pRole);
-                            assertNotNull("Device is not set for DiscoveryMockServiceB.", tempDisService.service.device);
-                            assertEquals("ServiceID is different for DiscoveryMockServiceB.", serviceBId, tempDisService.service.serviceId.getUhuServiceId());
+                            assertNotNull("Device is not set for DiscoveryMockServiceB.", tempDisService.zirk.device);
+                            assertEquals("ServiceID is different for DiscoveryMockServiceB.", serviceBId, tempDisService.zirk.zirkId.getBezirkZirkId());
                             break;
                         case "DiscoveryMockServiceC":
                             assertEquals("DiscoveryMockServiceC", tempDisService.name);
                             assertEquals("DiscoveryMockServiceProtocol", tempDisService.pRole);
-                            assertNotNull("Device is not set for DiscoveryMockServiceC.", tempDisService.service.device);
-                            assertEquals("ServiceID is different for DiscoveryMockServiceC.", serviceCId, tempDisService.service.serviceId.getUhuServiceId());
+                            assertNotNull("Device is not set for DiscoveryMockServiceC.", tempDisService.zirk.device);
+                            assertEquals("ServiceID is different for DiscoveryMockServiceC.", serviceCId, tempDisService.zirk.zirkId.getBezirkZirkId());
                             break;
                     }
                 }
@@ -225,13 +225,13 @@ public class DiscoveryTest {
 
                 Iterator<DiscoveredZirk> iterator = zirkSet.iterator();
 
-                UhuDiscoveredZirk tempDisService = (UhuDiscoveredZirk) iterator.next();
+                BezirkDiscoveredZirk tempDisService = (BezirkDiscoveredZirk) iterator.next();
                 assertNotNull(tempDisService);
                 assertEquals("DiscoveryMockServiceC", tempDisService.name);
                 assertEquals("DiscoveryMockServiceProtocol", tempDisService.pRole);
                 assertEquals(loc.toString(), tempDisService.location.toString());
-                assertNotNull(tempDisService.service.device);
-                assertEquals(serviceCId, tempDisService.service.serviceId.getUhuServiceId());
+                assertNotNull(tempDisService.zirk.device);
+                assertEquals(serviceCId, tempDisService.zirk.zirkId.getBezirkZirkId());
 
                 isTestWithLocPassed = true;
                 logger.info("**** DISCOVERY SUB-TEST WITH SPECIFIC LOCATION PASSES SUCCESSFULLY ****");
@@ -292,7 +292,7 @@ public class DiscoveryTest {
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerZirk(serviceName);
-            serviceBId = ((UhuZirkId) myId).getUhuServiceId();
+            serviceBId = ((BezirkZirkId) myId).getBezirkZirkId();
             logger.info("DiscoveryMockServiceB - regId : " + serviceBId);
             uhu.subscribe(myId, new DiscoveryMockServiceProtocol(), this);
         }
@@ -345,7 +345,7 @@ public class DiscoveryTest {
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerZirk(serviceName);
-            serviceCId = ((UhuZirkId) myId).getUhuServiceId();
+            serviceCId = ((BezirkZirkId) myId).getBezirkZirkId();
             logger.info("DiscoveryMockServiceC - regId : " + serviceCId);
 
             uhu.subscribe(myId, new DiscoveryMockServiceProtocol(), this);

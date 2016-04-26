@@ -7,16 +7,16 @@ import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
-import com.bezirk.sphere.impl.MemberService;
+import com.bezirk.sphere.impl.MemberZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
-import com.bezirk.sphere.impl.Service;
+import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.UhuSphere;
-import com.bezirk.pipe.MockCallBackService;
-import com.bezirk.pipe.MockUhuService;
+import com.bezirk.pipe.MockCallBackZirk;
+import com.bezirk.pipe.MockUhuZirk;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -34,11 +34,11 @@ import static org.junit.Assert.assertTrue;
 /**
  * This Testcase consists of 3 tests to verifies the processing of events in following scenarios
  * <p/>
- * a) 	MulticastEvent processing when no service in sphere
- * b)	MulticastEvent processing with valid service in sphere.
+ * a) 	MulticastEvent processing when no zirk in sphere
+ * b)	MulticastEvent processing with valid zirk in sphere.
  * c)	NonLocal multicast event with sphereId null.
  * d) 	NonLocal multicast event with valid sphereId.
- * e)	UnicastEvent processing with valid service in sphere.
+ * e)	UnicastEvent processing with valid zirk in sphere.
  * f) 	NonLocal unicast event processing with sphereId null.
  * g) 	NonLocal unicast event processign with valid sphereId.
  *
@@ -49,9 +49,9 @@ public class ProcessEventTest {
     private static final Logger log = LoggerFactory
             .getLogger(ProcessEventTest.class);
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
-    private static UhuZirkId uhuServiceAId = new UhuZirkId("ServiceA");
+    private static BezirkZirkId uhuServiceAId = new BezirkZirkId("ServiceA");
     ;
-    private static UhuZirkId uhuServiceBId = new UhuZirkId("ServiceB");
+    private static BezirkZirkId uhuServiceBId = new BezirkZirkId("ServiceB");
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
     private static UhuSadlManager uhuSadlManager = null;
     private static SadlRegistry sadlRegistry = null;
@@ -102,12 +102,12 @@ public class ProcessEventTest {
         header.setTopic(msgTypeOrLabel);
         eventLedger.setHeader(header);
         isEventProcessed = uhuSadlManager.processEvent(eventLedger);
-        assertFalse("SadlManager returned true for processEvent with MulticastMessage having service out of the sphere.", isEventProcessed);
+        assertFalse("SadlManager returned true for processEvent with MulticastMessage having zirk out of the sphere.", isEventProcessed);
 
-		/*MulticastEvent with service existing in sphere. SadlManager processEvent should return true. */
+		/*MulticastEvent with zirk existing in sphere. SadlManager processEvent should return true. */
         Location loc = new Location(null);
         Address address = new Address(loc);
-        HashSet<UhuZirkId> serviceSet = new HashSet<>();
+        HashSet<BezirkZirkId> serviceSet = new HashSet<>();
         serviceSet.add(uhuServiceAId);
         sadlRegistry.sid.add(uhuServiceAId);
         sadlRegistry.registerService(uhuServiceAId);
@@ -118,25 +118,25 @@ public class ProcessEventTest {
         String deviceId = mockUtility.upaDevice.getDeviceId();
         Sphere sphere = new OwnerSphere(sphereId, deviceId, UhuSphereType.UHU_SPHERE_TYPE_HOME);
         sphereRegistry.spheres.put(sphereId, sphere);
-        Service service = new MemberService("ServiceA", deviceId, sphereSet);
-        sphereRegistry.sphereMembership.put(uhuServiceAId.getUhuServiceId(), service);
+        Zirk zirk = new MemberZirk("ServiceA", deviceId, sphereSet);
+        sphereRegistry.sphereMembership.put(uhuServiceAId.getBezirkZirkId(), zirk);
         sadlRegistry.locationMap.put(uhuServiceAId, loc);
 
 
         UhuSphere uhuSphere = new UhuSphere(mockUtility.cryptoEngine, mockUtility.upaDevice, sphereRegistry);
         UhuCompManager.setSphereForSadl(uhuSphere);
         uhuSphere.initSphere(mockUtility.spherePersistence, mockUtility.uhuComms, null, mockUtility.sphereConfig);
-        MockUhuService mockUhuservice = new MockUhuService();
-        MockCallBackService uhucallback = new MockCallBackService(mockUhuservice);
+        MockUhuZirk mockUhuservice = new MockUhuZirk();
+        MockCallBackZirk uhucallback = new MockCallBackZirk(mockUhuservice);
         UhuCompManager.setplatformSpecificCallback(uhucallback);
 
-        UhuZirkEndPoint senderSEP = new UhuZirkEndPoint(uhuServiceAId);
+        BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(uhuServiceAId);
         header.setSenderSEP(senderSEP);
         header.setSphereName(sphereId);
         header.setAddress(address);
         eventLedger.setHeader(header);
         isEventProcessed = uhuSadlManager.processEvent(eventLedger);
-        assertTrue("SadlManager returned false for processEvent with MulticastMessage having service within the sphere.", isEventProcessed);
+        assertTrue("SadlManager returned false for processEvent with MulticastMessage having zirk within the sphere.", isEventProcessed);
 
 		/* Non Local multicast message with sphereId null. SadlManager processEvent should return false. */
         isEventProcessed = false;
@@ -176,13 +176,13 @@ public class ProcessEventTest {
     @Test
     public void testProcessUnicastEvent() {
 
-		/*UnicastEvent with service existing in sphere. SadlManager processEvent should return true. */
+		/*UnicastEvent with zirk existing in sphere. SadlManager processEvent should return true. */
         EventLedger eventLedger = new EventLedger();
         isEventProcessed = true;
         eventLedger.setIsMulticast(false);
         eventLedger.setIsLocal(true);
-        UhuZirkEndPoint recepient = new UhuZirkEndPoint(uhuServiceBId);
-        HashSet<UhuZirkId> serviceSet = new HashSet<>();
+        BezirkZirkEndPoint recepient = new BezirkZirkEndPoint(uhuServiceBId);
+        HashSet<BezirkZirkId> serviceSet = new HashSet<>();
         serviceSet.add(uhuServiceAId);
         serviceSet.add(uhuServiceBId);
         sadlRegistry.sid.add(uhuServiceAId);
@@ -195,11 +195,11 @@ public class ProcessEventTest {
         UhuSphere uhuSphere = new UhuSphere(mockUtility.cryptoEngine, mockUtility.upaDevice, sphereRegistry);
         uhuSphere.initSphere(mockUtility.spherePersistence, mockUtility.uhuComms, null, mockUtility.sphereConfig);
         UhuCompManager.setSphereForSadl(uhuSphere);
-        MockUhuService mockUhuservice = new MockUhuService();
-        MockCallBackService uhucallback = new MockCallBackService(mockUhuservice);
+        MockUhuZirk mockUhuservice = new MockUhuZirk();
+        MockCallBackZirk uhucallback = new MockCallBackZirk(mockUhuservice);
         UhuCompManager.setplatformSpecificCallback(uhucallback);
 
-        UhuZirkEndPoint senderSEP = new UhuZirkEndPoint(uhuServiceAId);
+        BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(uhuServiceAId);
         UnicastHeader header = new UnicastHeader();
         header.setRecipient(recepient);
         header.setSenderSEP(senderSEP);
@@ -228,10 +228,10 @@ public class ProcessEventTest {
         assertTrue("SadlManager returned false for processEvent with UnicastMessage when sphereId is valid.", isEventProcessed);
 
 		/* Non Local UnicastEvent message with invalid recipient serviceID. SadlManager processEvent should return false. */
-        header.setRecipient(new UhuZirkEndPoint(new UhuZirkId(null)));
+        header.setRecipient(new BezirkZirkEndPoint(new BezirkZirkId(null)));
         eventLedger.setHeader(header);
         isEventProcessed = uhuSadlManager.processEvent(eventLedger);
-        assertFalse("SadlManager returned true for processEvent with UnicastMessage when recipient service id is invalid.", isEventProcessed);
+        assertFalse("SadlManager returned true for processEvent with UnicastMessage when recipient zirk id is invalid.", isEventProcessed);
 
     }
 

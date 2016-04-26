@@ -3,7 +3,7 @@ package com.bezirk.discovery;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.messagehandler.DiscoveryIncomingMessage;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -53,20 +53,20 @@ public class Discovery {
 
     public boolean addResponse(DiscoveryResponse response) {
         synchronized (this) {
-            if (UhuValidatorUtility.checkUhuServiceEndPoint(response
+            if (BezirkValidatorUtility.checkBezirkZirkEndPoint(response
                     .getRecipient())) {
                 final DiscoveryLabel dLabel = new DiscoveryLabel(
                         response.getRecipient(), response.getReqDiscoveryId());
                 final DiscoveryRecord discRecord = discoveredMap.get(dLabel);
-                if (UhuValidatorUtility.isObjectNotNull(discRecord)) {
+                if (BezirkValidatorUtility.isObjectNotNull(discRecord)) {
                     //update discovered services list
-                    discRecord.updateList(response.getServiceList());
+                    discRecord.updateList(response.getZirkList());
                     final long currentTime = new Date().getTime();
                     if (discRecord.getDiscoveredListSize() >= discRecord.getMax()
                             || currentTime - discRecord.getCreationTime() >= discRecord
                             .getTimeout()) {
                         DiscoveryIncomingMessage callbackMessage = new DiscoveryIncomingMessage(
-                                dLabel.getRequester().serviceId,
+                                dLabel.getRequester().zirkId,
                                 gson.toJson(discRecord.getList()),
                                 dLabel.getDiscoveryId(), dLabel.isSphereDiscovery());
                         UhuCompManager.getplatformSpecificCallback()

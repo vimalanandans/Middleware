@@ -2,13 +2,13 @@ package com.bezirk.discovery;
 
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
-import com.bezirk.messagehandler.ServiceMessageHandler;
+import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
-import com.bezirk.pipe.MockCallBackService;
-import com.bezirk.pipe.MockUhuService;
+import com.bezirk.pipe.MockCallBackZirk;
+import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.pipe.MockUhuZirk;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.junit.BeforeClass;
@@ -32,9 +32,9 @@ import static org.junit.Assert.fail;
 public class DiscoveryTest {
 
     private static final String sphereId = "TestSphere";
-    private static final UhuZirkId serviceId = new UhuZirkId("ServiceB");
-    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceId);
-    private static final UhuZirkEndPoint serviceBEndPoint = new UhuZirkEndPoint(new UhuZirkId("ServiceB"));
+    private static final BezirkZirkId zirkId = new BezirkZirkId("ZirkB");
+    private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(zirkId);
+    private static final BezirkZirkEndPoint zirkBEndPoint = new BezirkZirkEndPoint(new BezirkZirkId("Zirk123B"));
 
     private static final String requestKey = "REQUEST_KEY";
     private static InetAddress inetAddr;
@@ -48,7 +48,7 @@ public class DiscoveryTest {
 
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
-        serviceBEndPoint.device = inetAddr.getHostAddress();
+        zirkBEndPoint.device = inetAddr.getHostAddress();
     }
 
     private static InetAddress getInetAddress() {
@@ -91,18 +91,18 @@ public class DiscoveryTest {
         Discovery discovery = new Discovery();
         discovery.addRequest(dlabel, disc);
 
-        DiscoveryLabel dlabelTemp = new DiscoveryLabel(serviceBEndPoint, 14);
+        DiscoveryLabel dlabelTemp = new DiscoveryLabel(zirkBEndPoint, 14);
         discovery.addRequest(dlabelTemp, disc);
 
         assertEquals("DiscoveredMap size is not equal to the number of requests added", 2, getDiscoveredMapsize(discovery));
 
-        ServiceMessageHandler uhucallback = new MockCallBackService(new MockUhuService());
+        ZirkMessageHandler uhucallback = new MockCallBackZirk(new MockUhuZirk());
         UhuCompManager.setplatformSpecificCallback(uhucallback);
 
 		/*Testing addResponse api in discovery*/
         DiscoveryResponse response = new DiscoveryResponse(recipient, sphereId, requestKey, discoveryId);
-        UhuDiscoveredZirk service = getService();
-        response.getServiceList().add(service);
+        BezirkDiscoveredZirk zirk = getZirk();
+        response.getZirkList().add(zirk);
         discovery.addResponse(response);
         assertEquals("DiscoveredMap size is not equal to 1 after adding response.", 1, getDiscoveredMapsize(discovery));
 
@@ -113,7 +113,7 @@ public class DiscoveryTest {
         assertEquals("DiscoveredMap size is not equal to 1 after removing entry.", 1, getDiscoveredMapsize(discovery));
 
 		/*Testing addResponse api in discovery for invalid recepient*/
-        UhuZirkEndPoint invalidRecepient = new UhuZirkEndPoint(null);
+        BezirkZirkEndPoint invalidRecepient = new BezirkZirkEndPoint(null);
         invalidRecepient.device = getInetAddress().getHostAddress();
         response = new DiscoveryResponse(invalidRecepient, sphereId, requestKey, discoveryId);
         assertFalse("Discovery response is added even for invalid recepient.", discovery.addResponse(response));
@@ -132,11 +132,11 @@ public class DiscoveryTest {
 
     }
 
-    private UhuDiscoveredZirk getService() {
-        String serviceName = "ServiceB";
-        UhuZirkEndPoint sep = new UhuZirkEndPoint(new UhuZirkId("ServiceB123"));
-        UhuDiscoveredZirk service = new UhuDiscoveredZirk(sep, serviceName, null, new Location(null));
-        return service;
+    private BezirkDiscoveredZirk getZirk() {
+        String zirkName = "ZirkB";
+        BezirkZirkEndPoint sep = new BezirkZirkEndPoint(new BezirkZirkId("ZirkB123"));
+        BezirkDiscoveredZirk zirk = new BezirkDiscoveredZirk(sep, zirkName, null, new Location(null));
+        return zirk;
     }
 
     private int getDiscoveredMapsize(Discovery discovery) {

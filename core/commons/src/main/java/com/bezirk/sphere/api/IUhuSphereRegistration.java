@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.api;
 
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 /**
  * @author Rishabh Gulati
@@ -11,23 +11,23 @@ import com.bezirk.proxy.api.impl.UhuZirkId;
 public interface IUhuSphereRegistration {
 
     /**
-     * Registers the service with UhuSphere's. In case the service is already
-     * registered, call to this method updates the name of the service to
+     * Registers the zirk with UhuSphere's. In case the zirk is already
+     * registered, call to this method updates the name of the zirk to
      * serviceName passed
      *
-     * @param serviceId   UhuZirkId to be registered
-     * @param serviceName Name to be associated with the service
-     * @return true if service was added successfully
+     * @param serviceId   BezirkZirkId to be registered
+     * @param serviceName Name to be associated with the zirk
+     * @return true if zirk was added successfully
      * <p/>
      * false otherwise
      */
-    public boolean registerService(UhuZirkId serviceId, String serviceName);
+    public boolean registerService(BezirkZirkId serviceId, String serviceName);
 
     /**
-     * Unregisters service
+     * Unregisters zirk
      *
      * @param serviceId
      * @return
      */
-    public boolean unregisterService(UhuZirkId serviceId);
+    public boolean unregisterService(BezirkZirkId serviceId);
 }

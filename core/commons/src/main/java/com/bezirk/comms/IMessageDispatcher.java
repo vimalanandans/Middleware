@@ -16,7 +16,7 @@ public interface IMessageDispatcher {
      */
     public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, ICtrlMsgReceiver receiver);
 
-    // currently sadl consumes all the service message. hence no registration
+    // currently sadl consumes all the zirk message. hence no registration
     // if needed extend similar mechanism to control message dispatching
 
 

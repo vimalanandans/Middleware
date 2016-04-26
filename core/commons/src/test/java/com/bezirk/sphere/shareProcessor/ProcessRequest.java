@@ -1,6 +1,6 @@
 package com.bezirk.sphere.shareProcessor;
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.messages.ShareRequest;
@@ -75,7 +75,7 @@ public class ProcessRequest {
         String sphereId = sphereTestUtility.generateOwnerCombo();
         String shortCode = sphereRegistryWrapper.getShareCode(sphereId);
 
-        UhuZirkEndPoint sender = new UhuZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
+        BezirkZirkEndPoint sender = new BezirkZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
         sender.device = sphereTestUtility.DEVICE_2.getDeviceName();
         ShareRequest shareRequest = new ShareRequest(shortCode, sphereTestUtility.getUhuDeviceInfo(), sender, "");
         assertTrue(shareProcessor.processRequest(shareRequest));
@@ -91,6 +91,6 @@ public class ProcessRequest {
         assertFalse(shareProcessor.processRequest(shareRequest));
     }
     // TODO: add more cases
-    // TODO: expand/improve the SphereUtility for sphere and service generation
+    // TODO: expand/improve the SphereUtility for sphere and zirk generation
     // and also use mockito instead of actual classes especially registry
 }

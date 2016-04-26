@@ -1,8 +1,8 @@
 package com.bezirk.control.messages.discovery;
 
 import com.bezirk.control.messages.ControlMessage.Discriminator;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.junit.AfterClass;
@@ -30,8 +30,8 @@ public class DiscoveryResponseTest {
             .getLogger(DiscoveryResponseTest.class);
 
     private static final String sphereId = "TestSphere";
-    private static final UhuZirkId serviceId = new UhuZirkId("ServiceA");
-    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceId);
+    private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+    private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceId);
     private static final String requestKey = "REQUEST_KEY";
     private static InetAddress inetAddr;
     private int discoveryId = 2;
@@ -92,7 +92,7 @@ public class DiscoveryResponseTest {
         com.bezirk.control.messages.discovery.DiscoveryResponse deserializedDiscoveryResponse = com.bezirk.control.messages.discovery.DiscoveryResponse.deserialize(serializedMessage, com.bezirk.control.messages.discovery.DiscoveryResponse.class);
         assertEquals("DiscoveryId not equal to the set value.", Integer.valueOf(discoveryId), deserializedDiscoveryResponse.getReqDiscoveryId());
         assertEquals("Discriminator not set properly.", Discriminator.DiscoveryResponse, deserializedDiscoveryResponse.getDiscriminator());
-        assertNotNull("Discovered Service list is null", deserializedDiscoveryResponse.getServiceList());
+        assertNotNull("Discovered Service list is null", deserializedDiscoveryResponse.getZirkList());
 
 
     }

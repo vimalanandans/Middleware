@@ -1,6 +1,6 @@
 package com.bezirk.control.messages;
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 /**
  * @author Mansimar Aneja
@@ -22,11 +22,11 @@ public final class GenerateMsgId {
      * @return the msgId
      * Example - 2:192.168.1.124:abc123423
      */
-    public static String generateEvtId(UhuZirkEndPoint sep) {
+    public static String generateEvtId(BezirkZirkEndPoint sep) {
         if (1024 == evtId) {
             evtId = 0;
         }
-        return (++evtId + KEY_SEPERATOR + sep.device + KEY_SEPERATOR + sep.serviceId.getUhuServiceId());
+        return (++evtId + KEY_SEPERATOR + sep.device + KEY_SEPERATOR + sep.zirkId.getBezirkZirkId());
     }
 
     /**

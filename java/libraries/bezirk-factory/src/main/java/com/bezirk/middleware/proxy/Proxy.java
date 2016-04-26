@@ -1,6 +1,6 @@
 package com.bezirk.middleware.proxy;
 
-import com.bezirk.callback.pc.CBkForServicePC;
+import com.bezirk.callback.pc.CBkForZirkPC;
 import com.bezirk.callback.pc.IBoradcastReceiver;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
@@ -15,14 +15,14 @@ import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.Stream;
 import com.bezirk.persistence.IUhuProxyPersistence;
 import com.bezirk.persistence.UhuProxyRegistry;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.proxy.pc.ProxyforServices;
 import com.bezirk.proxy.registration.ServiceRegistration;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuConfig;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +35,8 @@ import java.util.HashSet;
 public class Proxy implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(Proxy.class);
     private static int discoveryCount = 0; // keep track of Discovery Id
-    protected final HashMap<UhuZirkId, DiscoveryBookKeeper> dListenerMap = new HashMap<UhuZirkId, DiscoveryBookKeeper>();
-    protected final HashMap<UhuZirkId, HashSet<BezirkListener>> sidMap = new HashMap<UhuZirkId, HashSet<BezirkListener>>();
+    protected final HashMap<BezirkZirkId, DiscoveryBookKeeper> dListenerMap = new HashMap<BezirkZirkId, DiscoveryBookKeeper>();
+    protected final HashMap<BezirkZirkId, HashSet<BezirkListener>> sidMap = new HashMap<BezirkZirkId, HashSet<BezirkListener>>();
     protected final HashMap<String, HashSet<BezirkListener>> eventListenerMap = new HashMap<String, HashSet<BezirkListener>>();
     protected final HashMap<String, HashSet<BezirkListener>> streamListenerMap = new HashMap<String, HashSet<BezirkListener>>();
     protected final HashMap<String, String> activeStreams = new HashMap<String, String>();
@@ -54,7 +54,7 @@ public class Proxy implements Bezirk {
         mainService = new MainService(proxy, null);
         final IBoradcastReceiver brForService = new BRForService(activeStreams, dListenerMap,
                 eventListenerMap, sidMap, streamListenerMap);
-        CBkForServicePC uhuPcCallback = new CBkForServicePC(brForService);
+        CBkForZirkPC uhuPcCallback = new CBkForZirkPC(brForService);
         mainService.startStack(uhuPcCallback);
         proxyPersistence = mainService.getUhuProxyPersistence();
         try {
@@ -71,7 +71,7 @@ public class Proxy implements Bezirk {
         mainService = new MainService(proxy, uhuConfig);
         BRForService brForService = new BRForService(activeStreams, dListenerMap,
                 eventListenerMap, sidMap, streamListenerMap);
-        CBkForServicePC uhuPcCallback = new CBkForServicePC(brForService);
+        CBkForZirkPC uhuPcCallback = new CBkForZirkPC(brForService);
         mainService.startStack(uhuPcCallback);
         proxyPersistence = mainService.getUhuProxyPersistence();
         try {
@@ -86,7 +86,7 @@ public class Proxy implements Bezirk {
     public ZirkId registerZirk(String zirkName) {
         logger.trace("inside RegisterService");
         if (zirkName == null) {
-            logger.error("Service name Cannot be null during Registration");
+            logger.error("Zirk name Cannot be null during Registration");
             return null;
         }
 
@@ -101,8 +101,8 @@ public class Proxy implements Bezirk {
                 logger.error("Error in persisting the information", e);
             }
         }
-        logger.info("Service-Id-> " + serviceIdAsString);
-        final UhuZirkId serviceId = new UhuZirkId(serviceIdAsString);
+        logger.info("Zirk-Id-> " + serviceIdAsString);
+        final BezirkZirkId serviceId = new BezirkZirkId(serviceIdAsString);
         // Register with Uhu
         proxy.registerService(serviceId, zirkName);
         return serviceId;
@@ -114,15 +114,15 @@ public class Proxy implements Bezirk {
             logger.error("Trying to UnRegister with null ID");
             return;
         }
-        // Clear the Persistence by removing the UhuZirkId of the unregistering Service
-        UhuZirkId sId = (UhuZirkId) zirkId;
-        uhuProxyRegistry.deleteUhuServiceId(sId.getUhuServiceId());
+        // Clear the Persistence by removing the BezirkZirkId of the unregistering Zirk
+        BezirkZirkId sId = (BezirkZirkId) zirkId;
+        uhuProxyRegistry.deleteUhuServiceId(sId.getBezirkZirkId());
         try {
             proxyPersistence.persistUhuProxyRegistry();
         } catch (Exception e) {
             logger.error("Error in persisting the information", e);
         }
-        proxy.unregister((UhuZirkId) zirkId);
+        proxy.unregister((BezirkZirkId) zirkId);
     }
 
     @Override
@@ -135,13 +135,13 @@ public class Proxy implements Bezirk {
             logger.error("ProtocolRole doesn't have any Events/ Streams to subscribe");
             return;
         }
-        if (UhuValidatorUtility.isObjectNotNull(protocolRole.getEventTopics())) {
+        if (BezirkValidatorUtility.isObjectNotNull(protocolRole.getEventTopics())) {
             proxyUtil.addTopicsToMaps(subscriber, protocolRole.getEventTopics(),
                     listener, sidMap, eventListenerMap, "Event");
         } else {
             logger.info("No Events to Subscribe");
         }
-        if (UhuValidatorUtility.isObjectNotNull(protocolRole.getStreamTopics())) {
+        if (BezirkValidatorUtility.isObjectNotNull(protocolRole.getStreamTopics())) {
 
             proxyUtil.addTopicsToMaps(subscriber, protocolRole.getStreamTopics(),
                     listener, sidMap, streamListenerMap, "Stream");
@@ -153,7 +153,7 @@ public class Proxy implements Bezirk {
         SubscribedRole subRole = new SubscribedRole(protocolRole);
 
         //Subscribe to protocol
-        proxy.subscribeService((UhuZirkId) subscriber, subRole);
+        proxy.subscribeService((BezirkZirkId) subscriber, subRole);
     }
 
     @Override
@@ -163,7 +163,7 @@ public class Proxy implements Bezirk {
             logger.error("Null Values for unsubscribe method");
             return;
         }
-        proxy.unsubscribe((UhuZirkId) subscriber, new SubscribedRole(protocolRole));
+        proxy.unsubscribe((BezirkZirkId) subscriber, new SubscribedRole(protocolRole));
 
     }
 
@@ -175,7 +175,7 @@ public class Proxy implements Bezirk {
             logger.error("Check for null in target or Event or sender");
             return;
         }
-        proxy.sendMulticastEvent((UhuZirkId) sender, receiver, event.toJson());
+        proxy.sendMulticastEvent((BezirkZirkId) sender, receiver, event.toJson());
     }
 
     @Override
@@ -186,7 +186,7 @@ public class Proxy implements Bezirk {
             logger.error("Check for null in receiver or Event or sender");
             return;
         }
-        proxy.sendUnicastEvent((UhuZirkId) sender, (UhuZirkEndPoint) receiver, event.toJson());
+        proxy.sendUnicastEvent((BezirkZirkId) sender, (BezirkZirkEndPoint) receiver, event.toJson());
     }
 
     @Override
@@ -194,9 +194,9 @@ public class Proxy implements Bezirk {
                             ZirkEndPoint receiver,
                             Stream stream, PipedOutputStream dataStream) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
-        activeStreams.put(((UhuZirkId) sender).getUhuServiceId() + streamId, stream.topic);
-        UhuZirkEndPoint recipientSEP = (UhuZirkEndPoint) receiver;
-        proxy.sendStream((UhuZirkId) sender, recipientSEP, stream.toJson(), streamId);
+        activeStreams.put(((BezirkZirkId) sender).getBezirkZirkId() + streamId, stream.topic);
+        BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) receiver;
+        proxy.sendStream((BezirkZirkId) sender, recipientSEP, stream.toJson(), streamId);
         return streamId;
     }
 
@@ -212,8 +212,8 @@ public class Proxy implements Bezirk {
         }
 
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
-        activeStreams.put(((UhuZirkId) sender).getUhuServiceId() + streamId, stream.topic);
-        proxy.sendStream((UhuZirkId) sender, (UhuZirkEndPoint) receiver, stream.toJson(), file, streamId);
+        activeStreams.put(((BezirkZirkId) sender).getBezirkZirkId() + streamId, stream.topic);
+        proxy.sendStream((BezirkZirkId) sender, (BezirkZirkEndPoint) receiver, stream.toJson(), file, streamId);
         return streamId;
     }
 
@@ -237,8 +237,8 @@ public class Proxy implements Bezirk {
                          int maxResults, BezirkListener listener) {
         // update discovery map
         discoveryCount = (++discoveryCount) % Integer.MAX_VALUE;
-        dListenerMap.put((UhuZirkId) zirk, new DiscoveryBookKeeper(discoveryCount, listener));
-        proxy.discover((UhuZirkId) zirk, scope, new SubscribedRole(protocolRole), discoveryCount, timeout, maxResults);
+        dListenerMap.put((BezirkZirkId) zirk, new DiscoveryBookKeeper(discoveryCount, listener));
+        proxy.discover((BezirkZirkId) zirk, scope, new SubscribedRole(protocolRole), discoveryCount, timeout, maxResults);
 
     }
 
@@ -249,7 +249,7 @@ public class Proxy implements Bezirk {
             return;
         }
         //Set
-        proxy.setLocation((UhuZirkId) zirk, location);
+        proxy.setLocation((BezirkZirkId) zirk, location);
     }
 
     //Create object for listener, discoveryId pair

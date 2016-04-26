@@ -139,7 +139,7 @@ public class MockUPADevice implements UPADeviceInterface {
     }
 
     /**
-     * If the service location is not set it uses the device location
+     * If the zirk location is not set it uses the device location
      *
      * @return the Device Location
      */

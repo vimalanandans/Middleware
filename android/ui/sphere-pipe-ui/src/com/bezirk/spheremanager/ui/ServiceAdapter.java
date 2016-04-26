@@ -9,18 +9,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.spheremanager.R;
 
 import java.util.List;
 
-public class ServiceAdapter extends ArrayAdapter<UhuServiceInfo> {
+public class ServiceAdapter extends ArrayAdapter<BezirkZirkInfo> {
 
-    private final List<UhuServiceInfo> service;
+    private final List<BezirkZirkInfo> service;
     private LayoutInflater inflater;
     private SharedPreferences sharedPrefs;
 
-    public ServiceAdapter(Context context, List<UhuServiceInfo> service) {
+    public ServiceAdapter(Context context, List<BezirkZirkInfo> service) {
         super(context, 0, service);
         this.service = service;
         inflater = LayoutInflater.from(context);
@@ -30,14 +30,14 @@ public class ServiceAdapter extends ArrayAdapter<UhuServiceInfo> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
-        UhuServiceInfo item = service.get(position);
+        BezirkZirkInfo item = service.get(position);
         view = (View) inflater.inflate(R.layout.layout_service_entry,
                 parent, false);
 
         TextView service_name = (TextView) view.findViewById(R.id.service_name);
 
-        String temp = sharedPrefs.getString(item.getServiceId(), null);
-        service_name.setText(temp == null ? item.getServiceName() : temp);
+        String temp = sharedPrefs.getString(item.getZirkId(), null);
+        service_name.setText(temp == null ? item.getZirkName() : temp);
 
 		/*CheckBox service_active = (CheckBox) view
                 .findViewById(R.id.check_service);*/

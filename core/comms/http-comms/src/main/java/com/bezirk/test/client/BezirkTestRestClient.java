@@ -4,7 +4,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 
 /**
- * This class will call the rest controller to test for a service response.
+ * This class will call the rest controller to test for a zirk response.
  *
  * @author PIK6KOR
  */
@@ -25,7 +25,7 @@ public class BezirkTestRestClient {
     private void sendPost() {
 
         try {
-            String url = "http://192.168.1.3:8080/bezirk/service";
+            String url = "http://192.168.1.3:8080/bezirk/zirk";
 
 			
 			/*

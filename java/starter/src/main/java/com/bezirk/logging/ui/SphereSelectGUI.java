@@ -49,7 +49,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
- * Class that displays the GUI to select the spheres and start the logging Service.
+ * Class that displays the GUI to select the spheres and start the logging Zirk.
  * {@link com.bezirk.remotelogging.logininterface.IUhuLogging}
  */
 public final class SphereSelectGUI extends JFrame implements IUhuLogging {
@@ -207,7 +207,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
         }
     };
     /**
-     * Starts the logging Service by sending the {@link} on the wire to all the spheres and takes the action to the logging screen.
+     * Starts the logging Zirk by sending the {@link} on the wire to all the spheres and takes the action to the logging screen.
      */
     private final transient ActionListener startLoggingButtonListener = new ActionListener() {
 
@@ -229,7 +229,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
     };
 
     /**
-     * Starts the GUI and the Logging service.
+     * Starts the GUI and the Logging zirk.
      *
      * @param comms
      * @param remoteLoggingPort port at which the LoggingService should be started
@@ -357,14 +357,14 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
     }
 
     /**
-     * Stops the GUI. Called when the service is shut down.
+     * Stops the GUI. Called when the zirk is shut down.
      */
     public void shutGUI() {
         if (this != null) {
             try {
                 uhuLoggingManager.stopLoggingService();
             } catch (Exception e) {
-                LOGGER.error("Error in stopping logging service. ", e);
+                LOGGER.error("Error in stopping logging zirk. ", e);
             }
         }
 

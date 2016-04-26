@@ -7,19 +7,19 @@ import java.util.Set;
 /**
  * @author Rishabh Gulati
  */
-public abstract class Service implements Serializable {
+public abstract class Zirk implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = -2130386016234942372L;
-    // set of sphereID's the service is a part of
+    // set of sphereID's the zirk is a part of
     private HashSet<String> sphereSet;
-    private String serviceName;
+    private String zirkName;
     private String ownerDeviceId;
 
-    public Service(String serviceName, String ownerDeviceId, HashSet<String> sphereSet) {
-        this.serviceName = serviceName;
+    public Zirk(String zirkName, String ownerDeviceId, HashSet<String> sphereSet) {
+        this.zirkName = zirkName;
         this.ownerDeviceId = ownerDeviceId;
         this.sphereSet = sphereSet;
     }
@@ -39,17 +39,17 @@ public abstract class Service implements Serializable {
     }
 
     /**
-     * @return the serviceName
+     * @return the zirkName
      */
-    public String getServiceName() {
-        return serviceName;
+    public String getZirkName() {
+        return zirkName;
     }
 
     /**
-     * @param serviceName the serviceName to set
+     * @param zirkName the zirkName to set
      */
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
+    public void setZirkName(String zirkName) {
+        this.zirkName = zirkName;
     }
 
     /**
@@ -67,7 +67,7 @@ public abstract class Service implements Serializable {
     }
 
     /**
-     * Provides the information regarding a service which can be shared Ex. in
+     * Provides the information regarding a zirk which can be shared Ex. in
      * control messages
      *
      * @return
@@ -81,7 +81,7 @@ public abstract class Service implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((ownerDeviceId == null) ? 0 : ownerDeviceId.hashCode());
-        result = prime * result + ((serviceName == null) ? 0 : serviceName.hashCode());
+        result = prime * result + (( zirkName == null) ? 0 :  zirkName.hashCode());
         result = prime * result + ((sphereSet == null) ? 0 : sphereSet.hashCode());
         return result;
     }
@@ -94,16 +94,16 @@ public abstract class Service implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Service other = (Service) obj;
+        Zirk other = (Zirk) obj;
         if (ownerDeviceId == null) {
             if (other.ownerDeviceId != null)
                 return false;
         } else if (!ownerDeviceId.equals(other.ownerDeviceId))
             return false;
-        if (serviceName == null) {
-            if (other.serviceName != null)
+        if ( zirkName == null) {
+            if (other.zirkName != null)
                 return false;
-        } else if (!serviceName.equals(other.serviceName))
+        } else if (! zirkName.equals(other.zirkName))
             return false;
         if (sphereSet == null) {
             if (other.sphereSet != null)

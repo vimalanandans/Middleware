@@ -8,31 +8,31 @@ package com.bezirk.proxy.pc;
 
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import java.io.File;
 
 
 public interface UhuProxyForServiceAPI {
-    void registerService(UhuZirkId serviceId, String serviceName);
+    void registerService(BezirkZirkId serviceId, String serviceName);
 
-    void subscribeService(UhuZirkId serviceId, SubscribedRole pRole);
+    void subscribeService(BezirkZirkId serviceId, SubscribedRole pRole);
 
-    void sendUnicastEvent(UhuZirkId serviceId, UhuZirkEndPoint recipient, String serializedEventMsg);
+    void sendUnicastEvent(BezirkZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg);
 
-    void sendMulticastEvent(UhuZirkId serviceId, Address address, String serializedEventMsg);
+    void sendMulticastEvent(BezirkZirkId serviceId, Address address, String serializedEventMsg);
 
-    void discover(UhuZirkId service, Address scope, SubscribedRole pRole, int discoveryId, long timeout, int maxDiscovered);
+    void discover(BezirkZirkId service, Address scope, SubscribedRole pRole, int discoveryId, long timeout, int maxDiscovered);
 
-    short sendStream(UhuZirkId sender, UhuZirkEndPoint receiver, String serialsedString, File file, short streamId);
+    short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver, String serialsedString, File file, short streamId);
 
-    short sendStream(UhuZirkId sender, UhuZirkEndPoint receiver, String serialsedString, short streamId);
+    short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver, String serialsedString, short streamId);
 
-    void setLocation(UhuZirkId serviceId, Location location);
+    void setLocation(BezirkZirkId serviceId, Location location);
 
-    void unsubscribe(UhuZirkId serviceId, SubscribedRole role);
+    void unsubscribe(BezirkZirkId serviceId, SubscribedRole role);
 
-    void unregister(UhuZirkId serviceId);
+    void unregister(BezirkZirkId serviceId);
 }

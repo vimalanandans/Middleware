@@ -11,7 +11,7 @@
             android:id="@+id/ServiceNameText"
             android:layout_height="wrap_content"
             android:layout_width = "fill_parent"
-            android:text="Service Name : "
+            android:text="Zirk Name : "
             android:textAppearance="?android:attr/textAppearanceMedium" /> -->
     <ListView
         android:id="@+id/list"

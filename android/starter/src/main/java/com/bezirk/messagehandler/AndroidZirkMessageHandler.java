@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This class implements IUhuCallback and provides platform specific implementations for android
  */
-public class AndroidServiceMessageHandler implements ServiceMessageHandler {
+public class AndroidZirkMessageHandler implements ZirkMessageHandler {
     /**
      * This intent action is subscribed by all the ProxyForUhu
      */
@@ -21,13 +21,13 @@ public class AndroidServiceMessageHandler implements ServiceMessageHandler {
      * Used to convert the object to its string
      */
     final Gson gson = new Gson();
-    private static final Logger log = LoggerFactory.getLogger(AndroidServiceMessageHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(AndroidZirkMessageHandler.class);
     /**
      * Context to fire the Intent
      */
     private final Context applicationContext;
 
-    public AndroidServiceMessageHandler(Context context) {
+    public AndroidZirkMessageHandler(Context context) {
         this.applicationContext = context;
     }
 

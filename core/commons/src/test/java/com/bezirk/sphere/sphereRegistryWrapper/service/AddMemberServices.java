@@ -4,7 +4,7 @@
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.OwnerSphere;
@@ -75,7 +75,7 @@ public class AddMemberServices {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#addMemberServices(UhuDeviceInfo, String, String)}.
+     * Test method for {@link SphereRegistryWrapper#addMemberServices(BezirkDeviceInfo, String, String)}.
      * <p/>
      * <br>Test if services are added successfully to the registry and sphere.
      * The test should return True.
@@ -88,18 +88,18 @@ public class AddMemberServices {
         Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
         registry.spheres.put(sphereId, sphere);
 
-        // Create UhuDeviceInfo obj
-        UhuDeviceInfo uhuDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        // Create BezirkDeviceInfo obj
+        BezirkDeviceInfo bezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
 
         // Device Id
         String ownerDeviceId = UUID.randomUUID().toString();
 
-        assertTrue(sphereRegistryWrapper.addMemberServices(uhuDeviceInfo, sphereId, ownerDeviceId));
+        assertTrue(sphereRegistryWrapper.addMemberServices(bezirkDeviceInfo, sphereId, ownerDeviceId));
 
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#addMemberServices(UhuDeviceInfo, String, String)}.
+     * Test method for {@link SphereRegistryWrapper#addMemberServices(BezirkDeviceInfo, String, String)}.
      * <p/>
      * <br>Services are not added if there is no sphere in the registry. Hence this test should return False.
      */
@@ -109,20 +109,20 @@ public class AddMemberServices {
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_2;
         String sphereId = sphereName + upaDevice.getDeviceId();
 
-        // Create UhuDeviceInfo obj
-        UhuDeviceInfo uhuDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        // Create BezirkDeviceInfo obj
+        BezirkDeviceInfo bezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
 
         // Device Id
         String ownerDeviceId = UUID.randomUUID().toString();
 
-        assertFalse(sphereRegistryWrapper.addMemberServices(uhuDeviceInfo, sphereId, ownerDeviceId));
+        assertFalse(sphereRegistryWrapper.addMemberServices(bezirkDeviceInfo, sphereId, ownerDeviceId));
     }
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#addMemberServices(UhuDeviceInfo, String, String)}.
+     * Test method for {@link SphereRegistryWrapper#addMemberServices(BezirkDeviceInfo, String, String)}.
      * <p/>
-     * <br>Create UhuDeviceInfo object without services. The test should return False.
+     * <br>Create BezirkDeviceInfo object without services. The test should return False.
      */
     @Test
     public final void noServicesRegisteredReturnsFalse() {
@@ -130,14 +130,14 @@ public class AddMemberServices {
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_2;
         String sphereId = sphereName + upaDevice.getDeviceId();
 
-        // Create UhuDeviceInfo obj WITHOUT services
-        UhuDeviceInfo uhuDeviceInfo = new UhuDeviceInfo(sphereTestUtility.DEVICE_2.getDeviceId(), sphereTestUtility.DEVICE_2.getDeviceName(),
+        // Create BezirkDeviceInfo obj WITHOUT services
+        BezirkDeviceInfo bezirkDeviceInfo = new BezirkDeviceInfo(sphereTestUtility.DEVICE_2.getDeviceId(), sphereTestUtility.DEVICE_2.getDeviceName(),
                 sphereTestUtility.DEVICE_2.getDeviceType(), null, false, null);
 
         // Device Id
         String ownerDeviceId = UUID.randomUUID().toString();
 
-        assertFalse(sphereRegistryWrapper.addMemberServices(uhuDeviceInfo, sphereId, ownerDeviceId));
+        assertFalse(sphereRegistryWrapper.addMemberServices(bezirkDeviceInfo, sphereId, ownerDeviceId));
 
     }
 

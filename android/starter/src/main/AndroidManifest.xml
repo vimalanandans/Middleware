@@ -33,9 +33,9 @@
 
          </activity>
          -->
-        <service
+        <zirk
             android:name="com.bezirk.starter.MainService"
-            android:exported="true"></service>
+            android:exported="true"></zirk>
 
         <!--<receiver android:name="com.bosch.upa.uhu.sphere.juggler.SphereScanner" >
            <intent-filter>

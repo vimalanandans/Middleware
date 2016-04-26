@@ -2,7 +2,7 @@ package com.bezirk.pipe;
 
 import com.bezirk.application.IUhuApp;
 import com.bezirk.commons.UhuCompManager;
-import com.bezirk.messagehandler.ServiceMessageHandler;
+import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.messages.ProtocolRole;
@@ -44,7 +44,7 @@ public class PipeRequestTests {
     private static URI uri;
     private static UhuPipePolicy allowedInPolicy = null;
     private static UhuPipePolicy allowedOutPolicy = null;
-    // Used to make requests on behalf a uhu service
+    // Used to make requests on behalf a uhu zirk
     private PipeRequester pipeRequester = null;
 
 	
@@ -54,8 +54,8 @@ public class PipeRequestTests {
     private PipeRegistry registry = null;
     // Interface to the uhu application (e.g., android UI)
     private IUhuApp uhuApp = null;
-    // Service used for testing purposes only
-    private MockUhuService mockService = null;
+    // Zirk used for testing purposes only
+    private MockUhuZirk mockService = null;
     private CloudPipe pipe;
 
     /*
@@ -97,10 +97,10 @@ public class PipeRequestTests {
 
         mockApp.setPipeAPI(pipeRequester);
 
-		/* A fake uhu "service" used for this test that implements UhuAPIListener. 
+		/* A fake uhu "zirk" used for this test that implements UhuAPIListener.
 		 * This is used to make sure the pipeGranted() method is called in 
-		 * the service */
-        mockService = new MockUhuService();
+		 * the zirk */
+        mockService = new MockUhuZirk();
 
 		/* Pipe requester needs the registry so that it can update pipe
 		 * information once it has been approved by the user*/
@@ -110,8 +110,8 @@ public class PipeRequestTests {
 		 * application so that it can forward requests for pipes */
         pipeRequester.setApp(uhuApp);
 
-        ServiceMessageHandler mockServiceMessageHandler = new MockCallBackService(mockService);
-        UhuCompManager.setplatformSpecificCallback(mockServiceMessageHandler);
+        ZirkMessageHandler mockZirkMessageHandler = new MockCallBackZirk(mockService);
+        UhuCompManager.setplatformSpecificCallback(mockZirkMessageHandler);
     }
 
     /**
@@ -141,7 +141,7 @@ public class PipeRequestTests {
 
         // Assert that the request was received by the uhu app
         assertTrue("ApprovePipeRequest was not called.", ((MockUhuApp) uhuApp).wasApprovePipeRequestCalled());
-        // Assert that a pipeGranted response was sent back to the requesting service
+        // Assert that a pipeGranted response was sent back to the requesting zirk
         assertTrue("PipeGrant is not called.", mockService.isPipeGrantedCalled());
         // Assert that the pipe was correctly granted
         assertTrue("Pipe is not granted.", mockService.isPipeGranted());

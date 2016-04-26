@@ -2,7 +2,7 @@ package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.ZirkId;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,15 +17,15 @@ class ProxyUtil {
     private static final Logger logger = LoggerFactory.getLogger(ProxyUtil.class);
 
     void addTopicsToMaps(final ZirkId subscriber,
-                         final String[] topics, final BezirkListener listener, HashMap<UhuZirkId, HashSet<BezirkListener>> sidMap, HashMap<String, HashSet<BezirkListener>> listenerMap, String topicType) {
+                         final String[] topics, final BezirkListener listener, HashMap<BezirkZirkId, HashSet<BezirkListener>> sidMap, HashMap<String, HashSet<BezirkListener>> listenerMap, String topicType) {
         for (String topic : topics) {
             //Update Sid Map
-            if (sidMap.containsKey((UhuZirkId) subscriber)) {
-                sidMap.get((UhuZirkId) subscriber).add(listener);
+            if (sidMap.containsKey((BezirkZirkId) subscriber)) {
+                sidMap.get((BezirkZirkId) subscriber).add(listener);
             } else {
                 HashSet<BezirkListener> listeners = new HashSet<BezirkListener>();
                 listeners.add(listener);
-                sidMap.put((UhuZirkId) subscriber, listeners);
+                sidMap.put((BezirkZirkId) subscriber, listeners);
             }
             //Update Event/Stream Map
             if (listenerMap.containsKey(topic)) {

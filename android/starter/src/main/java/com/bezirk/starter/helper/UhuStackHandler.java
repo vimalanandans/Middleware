@@ -13,8 +13,8 @@ import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.UhuDevice;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.proxy.android.ProxyforServices;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.rest.CommsRestController;
 import com.bezirk.rest.IHttpComms;
 import com.bezirk.sadl.UhuSadlManager;
@@ -25,7 +25,7 @@ import com.bezirk.starter.IUhuStackHandler;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuPreferences;
 import com.bezirk.starter.UhuWifiManager;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ import java.net.InetAddress;
 import java.util.Date;
 
 /**
- * Handles all uhu stack control operations requested  by Main Service
+ * Handles all uhu stack control operations requested  by Main Zirk
  * <p/>
  * Created by AJC6KOR on 9/8/2015.
  */
@@ -109,13 +109,13 @@ public final class UhuStackHandler implements IUhuStackHandler {
 
             WifiManager wifi;
             if (!UhuStackHandler.isStackStarted()) {
-                // Need to acquire wifi service as every time u start the stack, pick the new connected wifi access point information.
+                // Need to acquire wifi zirk as every time u start the stack, pick the new connected wifi access point information.
                 wifi = (WifiManager) service.getSystemService(Context.WIFI_SERVICE);
                 if (uhuStartStackHelper.isWifiEnabled(wifi)) {
                     //means wifi is enabled..
                     uhuStartStackHelper.acquireWifiLock(wifi);
 
-                    LOGGER.info("Uhu service start triggered \n");
+                    LOGGER.info("Uhu zirk start triggered \n");
 
                     /*************************************************************
                      * Step 0 : Register to BroadCastListener for Wifi           *
@@ -138,7 +138,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
 
 
                     /*************************************************************
-                     * Step 2 : Set Android callback service                     *
+                     * Step 2 : Set Android callback zirk                     *
                      *************************************************************/
                     uhuStartStackHelper.setAndroicallback(service);
 
@@ -164,7 +164,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
                      *************************************************************/
                     InetAddress inetAddress = androidNetworkUtil.fetchInetAddress(service);
                     comms = uhuStartStackHelper.initializeComms(inetAddress, uhuSadlManager, proxy, errNotificationCallback);
-                    if (!UhuValidatorUtility.isObjectNotNull(comms)) {
+                    if (!BezirkValidatorUtility.isObjectNotNull(comms)) {
                         LOGGER.error("Unable to initialize comms layer. Shutting down uhu.");
                         service.stopSelf();
                     }
@@ -176,7 +176,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     /*************************************************************
                      * Step 8 : Initialize UhuSphere                             *
                      *************************************************************/
-                    if (UhuValidatorUtility.isObjectNotNull(uhuDevice) && !sphereProcessorForMainService.initSphere(uhuDevice, service, registryPersistence, preferences)) {
+                    if (BezirkValidatorUtility.isObjectNotNull(uhuDevice) && !sphereProcessorForMainService.initSphere(uhuDevice, service, registryPersistence, preferences)) {
                         // at the moment the init sphere fails due to persistence. hence delete it
                         // quickfix.delete the database
                         LOGGER.error("delete DB");
@@ -230,7 +230,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
             //Set status of stack
             this.stoppedStack = true;
             UhuStackHandler.startedStack = false;
-            // Close the service for testing quick fix
+            // Close the zirk for testing quick fix
             service.stopSelf();
 
             //close the wifi receiver
@@ -247,7 +247,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
     }
 
     /**
-     * Restarts uhu service by stopping the stack and starting again.
+     * Restarts uhu zirk by stopping the stack and starting again.
      *
      * @param service MainService
      */
@@ -278,7 +278,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
         } else {
             String deviceId = intent.getStringExtra("ADDRESS");
 
-            msgLedger.setRecipient(new UhuZirkEndPoint(deviceId, new UhuZirkId("DIAG")));
+            msgLedger.setRecipient(new BezirkZirkEndPoint(deviceId, new BezirkZirkId("DIAG")));
 
         }
         comms.sendMessage(msgLedger);
@@ -287,7 +287,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
     /* clear the persistence */
     void clearPersistence(MainService service) {
 
-        if (UhuValidatorUtility.isObjectNotNull(registryPersistence)) {
+        if (BezirkValidatorUtility.isObjectNotNull(registryPersistence)) {
             try {
                 registryPersistence.clearPersistence();
             } catch (Exception e) {

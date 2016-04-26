@@ -25,7 +25,7 @@ import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.UhuComms;
 import com.bezirk.controlui.R;
 import com.bezirk.starter.MainService;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.UhuNetworkUtilities;
 import com.google.gson.Gson;
 
@@ -568,7 +568,7 @@ public class CommsTestActivity extends ActionBarActivity {
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!UhuValidatorUtility.checkForString(mSendingPort.getText().toString(), mReceivingPort.getText().toString(),
+                if (!BezirkValidatorUtility.checkForString(mSendingPort.getText().toString(), mReceivingPort.getText().toString(),
                         uSendingPort.getText().toString(), uReceivingPort.getText().toString(), timeInterval.getText().toString())) {
                     printToast("INVALID CONFIG");
                     return;
@@ -742,7 +742,7 @@ public class CommsTestActivity extends ActionBarActivity {
             InetAddress addr = null;
             try {
                 intf = NetworkInterface.getByName(UhuComms.getINTERFACE_NAME());
-                addr = UhuValidatorUtility.isObjectNotNull(intf) ? UhuNetworkUtilities.getIpForInterface(intf) : null;
+                addr = BezirkValidatorUtility.isObjectNotNull(intf) ? UhuNetworkUtilities.getIpForInterface(intf) : null;
                 if (addr == null) {
                     printToast("ERROR IN STARTING UNICAST LISTENER");
                 }

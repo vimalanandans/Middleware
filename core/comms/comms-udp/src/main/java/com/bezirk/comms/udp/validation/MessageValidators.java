@@ -9,7 +9,7 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -45,7 +45,7 @@ public class MessageValidators implements Runnable {
 
     private void processEvent(EventLedger eLedger) {
         //Check Encrypted Header and SphereId
-        if (null == eLedger.getEncryptedHeader() || !UhuValidatorUtility.checkForString(eLedger.getHeader().getSphereName())) {
+        if (null == eLedger.getEncryptedHeader() || !BezirkValidatorUtility.checkForString(eLedger.getHeader().getSphereName())) {
             log.error(" Null Header received, Removed the msg");
             return;
         }
@@ -60,7 +60,7 @@ public class MessageValidators implements Runnable {
 
 
         final String encryptedSerialzedHeader = sphereIf.decryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getEncryptedHeader());
-        if (!UhuValidatorUtility.checkForString(encryptedSerialzedHeader)) {
+        if (!BezirkValidatorUtility.checkForString(encryptedSerialzedHeader)) {
             log.error(" Serialized Decrypted Header is null");
             return;
         }
@@ -88,7 +88,7 @@ public class MessageValidators implements Runnable {
     private Boolean setHeader(EventLedger eLedger, String encryptedSerialzedHeader) {
         if (eLedger.getIsMulticast()) {
             MulticastHeader mHeader = new Gson().fromJson(encryptedSerialzedHeader, MulticastHeader.class);
-            if (!UhuValidatorUtility.checkHeader(mHeader) || null == eLedger.getEncryptedMessage()) {
+            if (!BezirkValidatorUtility.checkHeader(mHeader) || null == eLedger.getEncryptedMessage()) {
                 log.error(" Serialized Decrypted Header (Multicast) is not having all the feilds defined");
                 //MessageQueueManager.getReceiverMessageQueue().removeFromQueue(eLedger);
                 uhuComms.removeFromQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
@@ -97,7 +97,7 @@ public class MessageValidators implements Runnable {
             eLedger.setHeader(mHeader);
         } else {
             UnicastHeader uHeader = new Gson().fromJson(encryptedSerialzedHeader, UnicastHeader.class);
-            if (!UhuValidatorUtility.checkHeader(uHeader)) {
+            if (!BezirkValidatorUtility.checkHeader(uHeader)) {
                 log.error(" Serialized Decrypted Header ( Unicast ) is not having all the feilds defined");
                 //MessageQueueManager.getReceiverMessageQueue().removeFromQueue(eLedger);
                 uhuComms.removeFromQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
@@ -148,7 +148,7 @@ public class MessageValidators implements Runnable {
         final String sphereid = cLedger.getSphereId();
         final byte[] encMsg = cLedger.getEncryptedMessage();
 
-        if (!UhuValidatorUtility.checkForString(sphereid) || encMsg == null) {
+        if (!BezirkValidatorUtility.checkForString(sphereid) || encMsg == null) {
             log.error("sphere or encrypted message is null");
             return false;
         } else {
@@ -160,7 +160,7 @@ public class MessageValidators implements Runnable {
             }
 
             final String decryptMsg = sphereIf.decryptSphereContent(sphereid, encMsg);
-            if (UhuValidatorUtility.checkForString(decryptMsg)) {
+            if (BezirkValidatorUtility.checkForString(decryptMsg)) {
                 log.debug("Ctrl Msg decrypted: " + decryptMsg);
                 cLedger.setSerializedMessage(decryptMsg);
                 return true;

@@ -14,7 +14,7 @@ import java.util.Map;
 
 /*
  * This class is used for book keeping of stream requests.{@link this#streamBook} is used to keep track of all the stream requests that is used at the sender side (SenderSide).
- *  {@link this#portsMap} is used to keep the track of all the ports that have been addressed for the StreamRequests from the service. (Receiving side)
+ *  {@link this#portsMap} is used to keep the track of all the ports that have been addressed for the StreamRequests from the zirk. (Receiving side)
  *
  */
 public class StreamStore {

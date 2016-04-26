@@ -94,7 +94,7 @@ public class PrepareRequest {
         assertEquals(sharerSphereId, preparedRequest.getSharerSphereId());
         assertEquals(inviterShortCode, preparedRequest.getSphereId()); //inviterShortCode is initialized in ControlMessage class
         assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).device, preparedRequest.getSender().device);
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).serviceId, preparedRequest.getSender().serviceId);
+        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).zirkId, preparedRequest.getSender().zirkId);
     }
 
 }

@@ -86,7 +86,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
      */
     private ICommsNotification notification = null;
 
-    //private ServiceMessageHandler uhuCallback = null;
+    //private ZirkMessageHandler uhuCallback = null;
 
     public UhuCommsManager() {
 
@@ -161,7 +161,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
 
         }
 
-        // register the logging service message
+        // register the logging zirk message
         msgDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage, ctrlReceiver);
 
         return true;

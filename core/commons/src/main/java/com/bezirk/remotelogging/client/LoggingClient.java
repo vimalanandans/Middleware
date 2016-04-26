@@ -11,9 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Logging Client that is used to send the logger message to the remote Logging Service. Client will
+ * Logging Client that is used to send the logger message to the remote Logging Zirk. Client will
  * be activated(started)/ Deactivated (Stopped) / Updated after LoggingService Message
- * is received from the Logging Service.
+ * is received from the Logging Zirk.
  */
 public class LoggingClient {
     /**
@@ -21,11 +21,11 @@ public class LoggingClient {
      */
     private static final Logger logger = LoggerFactory.getLogger(LoggingClient.class);
     /**
-     * Remote Logging Service IP
+     * Remote Logging Zirk IP
      */
     private String serviceIP = null;
     /**
-     * Remote Logging Service Port
+     * Remote Logging Zirk Port
      */
     private int servicePort = -1;
     /**
@@ -36,8 +36,8 @@ public class LoggingClient {
     /**
      * Starts the client and the logger sender Processor.
      *
-     * @param remoteIP - IP of the logging Service
-     * @param port     - Port at which the logging Service is listening
+     * @param remoteIP - IP of the logging Zirk
+     * @param port     - Port at which the logging Zirk is listening
      */
     public void startClient(String remoteIP, int port) throws Exception {
         this.serviceIP = remoteIP;
@@ -49,8 +49,8 @@ public class LoggingClient {
     /**
      * Shuts the logging Client.
      *
-     * @param remoteIP Ip of the logging service that is shutting
-     * @param port     port at which the logging service was listening for the clients
+     * @param remoteIP Ip of the logging zirk that is shutting
+     * @param port     port at which the logging zirk was listening for the clients
      */
     public void stopClient(String remoteIP, int port) throws Exception {
         if (null != logSenderQueueProcessor && remoteIP.equals(this.serviceIP) && port == this.servicePort) {
@@ -66,10 +66,10 @@ public class LoggingClient {
     }
 
     /**
-     * Updates the Logging Client with new Logging Service Properties.
+     * Updates the Logging Client with new Logging Zirk Properties.
      *
-     * @param newIP IP address of the new Logging Service
-     * @param port  Port at which the Logging Service is listening
+     * @param newIP IP address of the new Logging Zirk
+     * @param port  Port at which the Logging Zirk is listening
      */
     public void updateClient(String newIP, int port) throws Exception {
         if (!this.serviceIP.equals(newIP) || this.servicePort != port) {

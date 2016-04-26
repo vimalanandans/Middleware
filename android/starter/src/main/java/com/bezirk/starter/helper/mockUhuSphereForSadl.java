@@ -1,7 +1,7 @@
 package com.bezirk.starter.helper;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 
 import java.io.InputStream;
@@ -36,7 +36,7 @@ public class mockUhuSphereForSadl implements IUhuSphereForSadl {
     }
 
     @Override
-    public Iterable<String> getSphereMembership(UhuZirkId serviceId) {
+    public Iterable<String> getSphereMembership(BezirkZirkId serviceId) {
         List<String> sphereIdList = new ArrayList<String>();
 
         sphereIdList.add(0, UUID.randomUUID().toString());
@@ -44,12 +44,12 @@ public class mockUhuSphereForSadl implements IUhuSphereForSadl {
     }
 
     @Override
-    public boolean isServiceInSphere(UhuZirkId service, String sphereId) {
+    public boolean isZirkInSphere(BezirkZirkId service, String sphereId) {
         return true;
     }
 
     @Override
-    public String getServiceName(UhuZirkId serviceId) {
+    public String getZirkName(BezirkZirkId serviceId) {
         return null;
     }
 

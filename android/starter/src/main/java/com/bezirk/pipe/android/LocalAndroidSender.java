@@ -6,12 +6,12 @@ import com.bezirk.commons.UhuCompManager;
 import com.bezirk.control.messages.pipes.PipeHeader;
 import com.bezirk.control.messages.pipes.PipeMulticastHeader;
 import com.bezirk.control.messages.pipes.PipeUnicastHeader;
-import com.bezirk.messagehandler.ServiceMessageHandler;
+import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.pipe.core.LocalUhuSender;
 import com.bezirk.proxy.android.ProxyforServices;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +34,8 @@ public class LocalAndroidSender implements LocalUhuSender {
     public void invokeReceive(PipeHeader pipeHeader, String serializedEvent) {
         log.info("Invoking uhu receive for event:  " + serializedEvent);
 
-        // TODO: how to set an actual service ID??? We're just using the requesting service for now :(
-        UhuZirkId serviceId = pipeHeader.getSenderSEP().getUhuServiceId();
+        // TODO: how to set an actual zirk ID??? We're just using the requesting zirk for now :(
+        BezirkZirkId serviceId = pipeHeader.getSenderSEP().getBezirkZirkId();
 
         if (pipeHeader instanceof PipeUnicastHeader) {
             log.error("Unicast receive not implemented yet");
@@ -61,17 +61,17 @@ public class LocalAndroidSender implements LocalUhuSender {
         PipeMulticastHeader pipeMulticastHeader = (PipeMulticastHeader) pipeHeader;
         log.info("invokeIncoming called with header: " + pipeMulticastHeader.serialize());
 
-        // TODO: how to set an actual service ID??? We're just using the requesting service for now :(
-        UhuZirkEndPoint senderSEP = pipeMulticastHeader.getSenderSEP();
+        // TODO: how to set an actual zirk ID??? We're just using the requesting zirk for now :(
+        BezirkZirkEndPoint senderSEP = pipeMulticastHeader.getSenderSEP();
         if (senderSEP == null) {
             log.error("SenderSEP is null. Can't invoke incoming");
             return;
         }
-        UhuZirkId serviceId = senderSEP.getUhuServiceId();
+        BezirkZirkId serviceId = senderSEP.getBezirkZirkId();
         // TODO: how to create a stream id??
         short streamid = Short.MAX_VALUE;
 
-        ServiceMessageHandler callback = UhuCompManager.getplatformSpecificCallback();
+        ZirkMessageHandler callback = UhuCompManager.getplatformSpecificCallback();
         StreamIncomingMessage msg = new StreamIncomingMessage(
                 serviceId, pipeHeader.getTopic(), serializedStream,
                 new File(path), streamid, senderSEP);

@@ -7,14 +7,14 @@ package com.bezirk.remotelogging;
 import java.util.List;
 
 /**
- * This class filters the logger messages that are sent to the Logging Service.
+ * This class filters the logger messages that are sent to the Logging Zirk.
  * It checks if the Event/ Control Message that is sent on the wire belongs to the sphere in
- * which Logging Service is interested and filters the message accordingly.
+ * which Logging Zirk is interested and filters the message accordingly.
  */
 public final class FilterLogMessages {
 
     /**
-     * List storing the spheres in which Logging Service is Activated.
+     * List storing the spheres in which Logging Zirk is Activated.
      * Ex. [Home, Garage]
      */
     private static List<String> loggingSphereList = null;
@@ -30,12 +30,12 @@ public final class FilterLogMessages {
     }
 
     /**
-     * updates the loggingSphereList with spheres selected by the logging service.
+     * updates the loggingSphereList with spheres selected by the logging zirk.
      * <p/>
      * This method checks if the list contains only ANY_SPHERE mode and if set sets the anySphereEnabled
      * Flag to true.
      *
-     * @param list list of spheres for which Logging Service is activated.
+     * @param list list of spheres for which Logging Zirk is activated.
      */
     public static void setLoggingSphereList(final List<String> list) {
         loggingSphereList = list;
@@ -46,11 +46,11 @@ public final class FilterLogMessages {
 
     /**
      * Checks if the Control/ Event Message that is sent on the wire belongs to the sphere in which
-     * Logging Service is activated
+     * Logging Zirk is activated
      *
      * @param sphereId sphereId of the control/ Event Message
-     * @return true if Logging Service is activated for ANY_SPHERE or if the message belongs to the
-     * sphere in which Logging service is activated. False, otherwise.
+     * @return true if Logging Zirk is activated for ANY_SPHERE or if the message belongs to the
+     * sphere in which Logging zirk is activated. False, otherwise.
      */
     public static boolean checkSphere(final String sphereId) {
         if (loggingSphereList == null) {

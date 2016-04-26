@@ -1,8 +1,8 @@
 package com.bezirk.discovery;
 
 import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
 
 import org.junit.Test;
@@ -28,12 +28,12 @@ public class SphereDiscoveryRecordTest {
         assertEquals("Timeout is not equal to the set value.", timeout, sphereDiscoveryRecord.getTimeout());
         assertEquals("SphereId is not equal to the set value.", sphereId, sphereDiscoveryRecord.getSphereId());
 
-        assertNotNull("SphereServices is null.", sphereDiscoveryRecord.getSphereServices());
+        assertNotNull("SphereServices is null.", sphereDiscoveryRecord.getSphereZirks());
 
-        UhuZirkEndPoint uhuServiceEndPoint = new UhuZirkEndPoint(new UhuZirkId("ServiceA"));
-        uhuServiceEndPoint.device = "DeviceA";
+        BezirkZirkEndPoint bezirkZirkEndPoint = new BezirkZirkEndPoint(new BezirkZirkId("ServiceA"));
+        bezirkZirkEndPoint.device = "DeviceA";
         UhuSphereInfo uhuSphereInfo = new UhuSphereInfo("CarSphere12", "CarSphere", UhuSphereType.UHU_SPHERE_TYPE_CAR, null, null);
-        sphereDiscoveryRecord.updateSet(uhuSphereInfo, uhuServiceEndPoint);
+        sphereDiscoveryRecord.updateSet(uhuSphereInfo, bezirkZirkEndPoint);
 
 
         assertEquals("DiscoveredSetSize is not 1 after updation.", 1, sphereDiscoveryRecord.getDiscoveredSetSize());

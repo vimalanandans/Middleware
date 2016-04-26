@@ -7,11 +7,11 @@ import com.bezirk.comms.IPortFactory;
 import com.bezirk.comms.UhuComms;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.sadl.ISadlEventReceiver;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.streaming.port.PortFactory;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ import java.net.SocketException;
  * This thread is used by the recipient that is interested in receiving the Stream. This Thread opens socket at port ({@link PortFactory#getPort(String)} and
  * waits for the sender to connect. Once the Sender gets connected, a file will be created at {@link UhuComms#DOWNLOAD_PATH+this#fileName} and will read
  * data at a time. After the data transfer it will release the port through {@link PortFactory#releasePort(int)}. From the {@link this#streamLabel}, it will query the UhuSadl
- * to get all the Service Identities via
+ * to get all the Zirk Identities via
  * corresponding to the services.
  * If error occurs during the course, it releases the port and closes the socket and Streams
  *
@@ -46,11 +46,11 @@ public class StreamReceivingThread implements Runnable {
     private static final int BUFFER_SIZE = 1024;
     private final String sphere;
     private final int port;                                                                      // port,received from Port Factory
-    private final String streamLabel;                                                                 // StreamLabel, that the service has subscribed
+    private final String streamLabel;                                                                 // StreamLabel, that the zirk has subscribed
     private final String fileName;
     private final boolean isEncrypted;
-    private final UhuZirkEndPoint recipient;
-    private final UhuZirkEndPoint sender;
+    private final BezirkZirkEndPoint recipient;
+    private final BezirkZirkEndPoint sender;
     private final String serialzedMsg;
     private final short streamId;
     private final IPortFactory portFactory;
@@ -105,7 +105,7 @@ public class StreamReceivingThread implements Runnable {
             inputStream = new DataInputStream(receivingSocket.getInputStream());
 
             if (isEncrypted) {
-                if (UhuValidatorUtility.isObjectNotNull(sphereForSadl)) {
+                if (BezirkValidatorUtility.isObjectNotNull(sphereForSadl)) {
                     sphereForSadl.decryptSphereContent(inputStream, fileOutputStream, sphere);
                 } else {
                     logger.error("SphereForSadl is not initialized. Unable to process secure streaming request.");
@@ -153,18 +153,18 @@ public class StreamReceivingThread implements Runnable {
     private void closeResources(ServerSocket socket, Socket receivingSocket,
                                 FileOutputStream fileOutputStream, DataInputStream inputStream) {
         try {
-            if (UhuValidatorUtility.isObjectNotNull(inputStream)) {
+            if (BezirkValidatorUtility.isObjectNotNull(inputStream)) {
                 inputStream.close();
             }
 
-            if (UhuValidatorUtility.isObjectNotNull(fileOutputStream)) {
+            if (BezirkValidatorUtility.isObjectNotNull(fileOutputStream)) {
                 fileOutputStream.flush();
                 fileOutputStream.close();
             }
-            if (UhuValidatorUtility.isObjectNotNull(receivingSocket)) {                                     // If SocketTimeout Exception occurs, receivingSocket==null
+            if (BezirkValidatorUtility.isObjectNotNull(receivingSocket)) {                                     // If SocketTimeout Exception occurs, receivingSocket==null
                 receivingSocket.close();
             }
-            if (UhuValidatorUtility.isObjectNotNull(socket)) {                                              // If SocketTimeout Exception occurs, socket==null
+            if (BezirkValidatorUtility.isObjectNotNull(socket)) {                                              // If SocketTimeout Exception occurs, socket==null
                 socket.close();
             }
         } catch (IOException e) {
@@ -176,9 +176,9 @@ public class StreamReceivingThread implements Runnable {
     private void notifyStreamFile(File tempFile, boolean portRealeased) {
         if (portRealeased) {
             StreamIncomingMessage uStreamCallbackMsg = new StreamIncomingMessage(
-                    recipient.serviceId, streamLabel, serialzedMsg,
+                    recipient.zirkId, streamLabel, serialzedMsg,
                     tempFile, streamId, sender);
-            if (UhuValidatorUtility.isObjectNotNull(sadlReceiver)) {
+            if (BezirkValidatorUtility.isObjectNotNull(sadlReceiver)) {
 
                 sadlReceiver.processNewStream(uStreamCallbackMsg);
 

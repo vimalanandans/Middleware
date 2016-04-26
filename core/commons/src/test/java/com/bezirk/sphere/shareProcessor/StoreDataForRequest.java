@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.shareProcessor;
 
-import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.sphere.testUtilities.SphereTestUtility;
@@ -46,7 +46,7 @@ public class StoreDataForRequest {
         /** Reflection to test the private method **/
         parameterTypes = new Class[2];
         parameterTypes[0] = java.lang.String.class;
-        parameterTypes[1] = UhuDeviceInfo.class;
+        parameterTypes[1] = BezirkDeviceInfo.class;
         method = ShareProcessor.class.getDeclaredMethod("storeData", parameterTypes);
         method.setAccessible(true);
     }
@@ -83,10 +83,10 @@ public class StoreDataForRequest {
      */
     @Test
     public void validInviterSphereIdAndDeviceInfoReturnsTrue() throws Exception {
-        UhuDeviceInfo sharerUhuDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        BezirkDeviceInfo sharerBezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
         String inviterSphereId = sphereTestUtility.generateOwnerCombo();
         /** invoke the method under test using reflection **/
-        boolean isDataStored = (Boolean) method.invoke(shareProcessor, inviterSphereId, sharerUhuDeviceInfo);
+        boolean isDataStored = (Boolean) method.invoke(shareProcessor, inviterSphereId, sharerBezirkDeviceInfo);
         assertTrue(isDataStored);
     }
 
@@ -98,10 +98,10 @@ public class StoreDataForRequest {
      */
     @Test
     public void invalidInviterSphereIdValidDeviceInfoReturnsFalse() throws Exception {
-        UhuDeviceInfo sharerUhuDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        BezirkDeviceInfo sharerBezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
         String inviterSphereId = "abcdefg";
         /** invoke the method under test using reflection **/
-        boolean isDataStored = (Boolean) method.invoke(shareProcessor, inviterSphereId, sharerUhuDeviceInfo);
+        boolean isDataStored = (Boolean) method.invoke(shareProcessor, inviterSphereId, sharerBezirkDeviceInfo);
         assertFalse(isDataStored);
     }
 

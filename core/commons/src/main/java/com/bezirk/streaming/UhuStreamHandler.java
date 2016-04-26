@@ -11,7 +11,7 @@ import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.store.StreamStore;
 import com.bezirk.streaming.threads.StreamReceivingThread;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.slf4j.Logger;
@@ -55,9 +55,9 @@ final class UhuStreamHandler {
         }
 
         logger.debug("<-Sender->" + streamRequest.getSender().device
-                + streamRequest.getSender().serviceId);
+                + streamRequest.getSender().zirkId);
         logger.debug("<-recipient->" + streamRequest.getRecipient().device
-                + streamRequest.getRecipient().serviceId);
+                + streamRequest.getRecipient().zirkId);
 
         //send device Ip
         String streamIp = UhuNetworkUtilities.getLocalInet().getHostAddress();
@@ -105,7 +105,7 @@ final class UhuStreamHandler {
 
         streamRecord.recipientPort = streamResponse.streamPort;
 
-        if (UhuValidatorUtility.isObjectNotNull(streamQueue)) {
+        if (BezirkValidatorUtility.isObjectNotNull(streamQueue)) {
             streamQueue.addToQueue(streamRecord);
         }
 

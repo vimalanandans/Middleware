@@ -28,7 +28,7 @@ public class BezirkRestCallBackImpl implements BezirkRestCallBack {
         //Response will be the EventLedger
         EventLedger eventLedger = (EventLedger) event;
 
-        //translate Ledger to Response object which will be sent to service
+        //translate Ledger to Response object which will be sent to zirk
         String responseString = translator.translateEventToClientResponse(eventLedger);
 
         //update the response in the map, it will be picked and returned to the client during the GET call.
@@ -36,14 +36,14 @@ public class BezirkRestCallBackImpl implements BezirkRestCallBack {
         //extract the uniqueID and update it to the map
         //TODO :: Parse header either to UnicastHeader or MulticastHeader, and extract it.
         UnicastHeader header = (UnicastHeader) eventLedger.getHeader();
-        Integer key = extractUniqueKey(header.getRecipient().serviceId.getUhuEventId());
+        Integer key = extractUniqueKey(header.getRecipient().zirkId.getBezirkEventId());
 
         LOGGER.debug("Response for Key ::" + key + " is :: " + responseString);
         bezirkCommsManager.appendResponseToMap(key, responseString);
     }
 
     /**
-     * extracts the uniqueid recived from the service ID
+     * extracts the uniqueid recived from the zirk ID
      *
      * @param serviceID
      * @return
@@ -56,7 +56,7 @@ public class BezirkRestCallBackImpl implements BezirkRestCallBack {
             key = serviceID.substring(startIndex + 1, serviceID.length());
         }
 
-        LOGGER.debug("Extracted the key from service id : " + key);
+        LOGGER.debug("Extracted the key from zirk id : " + key);
         return Integer.valueOf(key);
 
     }

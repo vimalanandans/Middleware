@@ -1,7 +1,7 @@
 package com.bezirk.control.messages.logging;
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -25,8 +25,8 @@ public class LoggingServiceMessageTest {
             .getLogger(LoggingServiceMessageTest.class);
 
     private static final String sphereId = "TestSphere";
-    private static final UhuZirkId serviceId = new UhuZirkId("ServiceA");
-    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(
+    private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+    private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(
             serviceId);
 
 

@@ -1,10 +1,10 @@
 package com.bezirk.sphere.impl;
 
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.ICryptoInternals;
 import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.messages.ShareRequest;
@@ -142,20 +142,20 @@ public class ShareProcessor {
             return false;
         }
 
-        final UhuDeviceInfo sharerUhuDeviceInfo = shareRequest.getUhuDeviceInfo();
+        final BezirkDeviceInfo sharerBezirkDeviceInfo = shareRequest.getBezirkDeviceInfo();
         final String inviterShortCode = shareRequest.getSphereId();
         final String inviterSphereId = sphereRegistryWrapper.getSphereIdFromPasscode(inviterShortCode);
         final String sharerSphereId = shareRequest.getSharerSphereId();
 
         // for sending unicast back to the device sharing its services
         String uniqueKey = shareRequest.getUniqueKey();
-        UhuZirkEndPoint recipient = shareRequest.getSender();
+        BezirkZirkEndPoint recipient = shareRequest.getSender();
 
         /************************************************************************
          * Step2: store sphere exchange data
          ************************************************************************/
 
-        if (storeData(inviterSphereId, sharerUhuDeviceInfo)) {
+        if (storeData(inviterSphereId, sharerBezirkDeviceInfo)) {
             logger.info("Share Request Processing, Step2: storing sphere exchange data complete");
         } else {
             sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, IUhuSphereListener.Status.FAILURE, SHARE_FAILURE_MSG);
@@ -214,7 +214,7 @@ public class ShareProcessor {
          ************************************************************************/
 
         if (storeData(SphereExchangeData.deserialize(shareResponse.getSphereExchangeDataString()),
-                shareResponse.getUhuDeviceInfo(), shareResponse.getSharerSphereId())) {
+                shareResponse.getBezirkDeviceInfo(), shareResponse.getSharerSphereId())) {
             sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, IUhuSphereListener.Status.SUCCESS, "Share successful");
             return true;
         } else {
@@ -228,15 +228,15 @@ public class ShareProcessor {
      * request.
      *
      * @param inviterSphereId     - has to be valid and non-null
-     * @param sharerUhuDeviceInfo - has to be non-null
+     * @param sharerBezirkDeviceInfo - has to be non-null
      * @return - True if data was added to the registry successfully, else,
      * False.
      */
-    private boolean storeData(String inviterSphereId, UhuDeviceInfo sharerUhuDeviceInfo) {
-        if (sphereRegistryWrapper.addDevice(sharerUhuDeviceInfo.getDeviceId(),
-                new DeviceInformation(sharerUhuDeviceInfo.getDeviceName(), sharerUhuDeviceInfo.getDeviceType()))
-                && sphereRegistryWrapper.addMemberServices(sharerUhuDeviceInfo, inviterSphereId,
-                sharerUhuDeviceInfo.getDeviceId())) {
+    private boolean storeData(String inviterSphereId, BezirkDeviceInfo sharerBezirkDeviceInfo) {
+        if (sphereRegistryWrapper.addDevice(sharerBezirkDeviceInfo.getDeviceId(),
+                new DeviceInformation(sharerBezirkDeviceInfo.getDeviceName(), sharerBezirkDeviceInfo.getDeviceType()))
+                && sphereRegistryWrapper.addMemberServices(sharerBezirkDeviceInfo, inviterSphereId,
+                sharerBezirkDeviceInfo.getDeviceId())) {
             sphereRegistryWrapper.persist();
             return true;
         }
@@ -247,18 +247,18 @@ public class ShareProcessor {
      * Store the data
      *
      * @param sphereExchangeData   - has to be non-null
-     * @param inviterUhuDeviceInfo - has to be non-null
+     * @param inviterBezirkDeviceInfo - has to be non-null
      * @param sharerSphereId       - has to be non-null
      * @return - True if data was stored successfully in the registry, else
      * False. <br>
      * - NullPointerException is thrown if SphereExchangeData obj is
      * null.
      */
-    private boolean storeData(SphereExchangeData sphereExchangeData, UhuDeviceInfo inviterUhuDeviceInfo,
+    private boolean storeData(SphereExchangeData sphereExchangeData, BezirkDeviceInfo inviterBezirkDeviceInfo,
                               String sharerSphereId) {
 
         logger.debug("sphere Exchange data:\n" + sphereExchangeData.toString());
-        logger.debug("Uhu Device Info:\n" + inviterUhuDeviceInfo.toString());
+        logger.debug("Uhu Device Info:\n" + inviterBezirkDeviceInfo.toString());
         logger.debug("Sharer sphere Id: " + sharerSphereId);
         // add device information
         sphereRegistryWrapper.addDevice(sphereExchangeData.getDeviceID(),
@@ -269,21 +269,21 @@ public class ShareProcessor {
         ownerDevices.add(sphereExchangeData.getDeviceID());
 
         Sphere sphere = new MemberSphere(sphereExchangeData.getSphereName(), sphereExchangeData.getSphereType(),
-                ownerDevices, new LinkedHashMap<String, ArrayList<UhuZirkId>>(), false);
+                ownerDevices, new LinkedHashMap<String, ArrayList<BezirkZirkId>>(), false);
 
         sphereRegistryWrapper.addSphere(sphereExchangeData.getSphereID(), sphere);
 
         // add received services
-        sphereRegistryWrapper.addMemberServices(inviterUhuDeviceInfo, sphereExchangeData.getSphereID(),
+        sphereRegistryWrapper.addMemberServices(inviterBezirkDeviceInfo, sphereExchangeData.getSphereID(),
                 sphereExchangeData.getDeviceID());
 
         // add services from the sharer sphere
         Sphere shareSphere = sphereRegistryWrapper.getSphere(sharerSphereId);
-        Map<String, ArrayList<UhuZirkId>> deviceServices = shareSphere.deviceServices;
+        Map<String, ArrayList<BezirkZirkId>> deviceServices = shareSphere.deviceServices;
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(upaDeviceInterface.getDeviceId())) {
 
-            ArrayList<UhuZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
+            ArrayList<BezirkZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
             sphereRegistryWrapper.addLocalServicesToSphere(services, sphereExchangeData.getSphereID());
         }
 
@@ -362,23 +362,23 @@ public class ShareProcessor {
         ShareRequest shareRequest = null;
 
         Sphere sphere = sphereRegistryWrapper.getSphere(sharerSphereId);
-        Map<String, ArrayList<UhuZirkId>> deviceServices = sphere.deviceServices;
+        Map<String, ArrayList<BezirkZirkId>> deviceServices = sphere.deviceServices;
 
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(upaDeviceInterface.getDeviceId())) {
 
             // get device services of sphere
-            ArrayList<UhuZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
+            ArrayList<BezirkZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
 
             if (services != null && !services.isEmpty()) {
                 DeviceInformation deviceInformation = sphereRegistryWrapper
                         .getDeviceInformation(upaDeviceInterface.getDeviceId());
 
-                UhuDeviceInfo uhuDeviceInfo = new UhuDeviceInfo(upaDeviceInterface.getDeviceId(),
+                BezirkDeviceInfo bezirkDeviceInfo = new BezirkDeviceInfo(upaDeviceInterface.getDeviceId(),
                         deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
-                        (List<UhuServiceInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
+                        (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
 
-                shareRequest = new ShareRequest(inviterShortCode, uhuDeviceInfo,
+                shareRequest = new ShareRequest(inviterShortCode, bezirkDeviceInfo,
                         UhuNetworkUtilities.getServiceEndPoint(null), sharerSphereId);
                 return shareRequest;
             }
@@ -399,17 +399,17 @@ public class ShareProcessor {
         }
 
         String inviterShortCode = shareRequest.getSphereId();
-        UhuDeviceInfo sharerUhuDeviceInfo = shareRequest.getUhuDeviceInfo();
+        BezirkDeviceInfo sharerBezirkDeviceInfo = shareRequest.getBezirkDeviceInfo();
         String inviterSphereId = sphereRegistryWrapper.getSphereIdFromPasscode(inviterShortCode);
         String sharerSphereId = shareRequest.getSharerSphereId();
 
-        if (sharerUhuDeviceInfo == null) {
+        if (sharerBezirkDeviceInfo == null) {
             logger.error("Catched device/sphere Exchange data is not valid");
             return false;
         }
 
         // sender device is equal to current device ignore the results
-        if (sharerUhuDeviceInfo.getDeviceId().equals(upaDeviceInterface.getDeviceId())) {
+        if (sharerBezirkDeviceInfo.getDeviceId().equals(upaDeviceInterface.getDeviceId())) {
             logger.debug("Found request initiated by same device, dropping ShareRequest");
             return false;
         }
@@ -431,7 +431,7 @@ public class ShareProcessor {
     }
 
     /**
-     * Validate the Share response: SphereExchangeData, UhuDeviceInfo,
+     * Validate the Share response: SphereExchangeData, BezirkDeviceInfo,
      * sharerSphereId
      *
      * @param - shareResponse
@@ -445,7 +445,7 @@ public class ShareProcessor {
 
         SphereExchangeData sphereExchangeData = SphereExchangeData
                 .deserialize(shareResponse.getSphereExchangeDataString());
-        UhuDeviceInfo uhuDeviceInfo = shareResponse.getUhuDeviceInfo();
+        BezirkDeviceInfo bezirkDeviceInfo = shareResponse.getBezirkDeviceInfo();
         String sharerSphereId = shareResponse.getSharerSphereId();
 
         if (sphereExchangeData == null) {
@@ -453,8 +453,8 @@ public class ShareProcessor {
             return false;
         }
 
-        if (uhuDeviceInfo == null) {
-            logger.error("uhuDeviceInfo is not valid");
+        if (bezirkDeviceInfo == null) {
+            logger.error("bezirkDeviceInfo is not valid");
             return false;
         }
 
@@ -476,7 +476,7 @@ public class ShareProcessor {
      * @param sharerSphereId
      * @return
      */
-    private ShareResponse prepareResponse(String inviterShortCode, String inviterSphereId, UhuZirkEndPoint sharer,
+    private ShareResponse prepareResponse(String inviterShortCode, String inviterSphereId, BezirkZirkEndPoint sharer,
                                           String uniqueKey, String sharerSphereId) {
         ShareResponse shareResponse = null;
         String sphereExchangeData = sphereRegistryWrapper.getShareCodeString(inviterSphereId);
@@ -486,22 +486,22 @@ public class ShareProcessor {
         }
 
         Sphere sphere = sphereRegistryWrapper.getSphere(inviterSphereId);
-        Map<String, ArrayList<UhuZirkId>> deviceServices = sphere.deviceServices;
+        Map<String, ArrayList<BezirkZirkId>> deviceServices = sphere.deviceServices;
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(upaDeviceInterface.getDeviceId())) {
 
             // get device services of sphere
-            ArrayList<UhuZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
+            ArrayList<BezirkZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
 
             if (services != null && !services.isEmpty()) {
                 DeviceInformation deviceInformation = sphereRegistryWrapper
                         .getDeviceInformation(upaDeviceInterface.getDeviceId());
 
-                UhuDeviceInfo uhuDeviceInfoToSend = new UhuDeviceInfo(upaDeviceInterface.getDeviceId(),
+                BezirkDeviceInfo bezirkDeviceInfoToSend = new BezirkDeviceInfo(upaDeviceInterface.getDeviceId(),
                         deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
-                        (List<UhuServiceInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
+                        (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
                 shareResponse = new ShareResponse(UhuNetworkUtilities.getServiceEndPoint(null), sharer, uniqueKey,
-                        inviterShortCode, uhuDeviceInfoToSend, sphereExchangeData, sharerSphereId);
+                        inviterShortCode, bezirkDeviceInfoToSend, sphereExchangeData, sharerSphereId);
                 return shareResponse;
             }
         }

@@ -6,8 +6,8 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.UnicastStream;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sadl.UhuSadlManager;
 import com.bezirk.util.MockComms;
 import com.bezirk.util.MockProtocolsForUhuPC;
@@ -37,10 +37,10 @@ public class ProxySendTest {
     private static UhuSadlManager sadlManager;
     private final String serviceName = "MockServiceA";
     private final String serviceAId = "MockServiceAId";
-    private final UhuZirkId senderId = new UhuZirkId(serviceAId);
+    private final BezirkZirkId senderId = new BezirkZirkId(serviceAId);
     private final String serviceBId = "MockServiceBId";
-    private final UhuZirkId receiverId = new UhuZirkId(serviceBId);
-    private final UhuZirkEndPoint receiver = new UhuZirkEndPoint(receiverId);
+    private final BezirkZirkId receiverId = new BezirkZirkId(serviceBId);
+    private final BezirkZirkEndPoint receiver = new BezirkZirkEndPoint(receiverId);
     private final File sendFile =
             new File(com.bezirk.proxy.pc.ProxyforServices.class.getClassLoader().getResource("streamingTest.txt").getPath());
 

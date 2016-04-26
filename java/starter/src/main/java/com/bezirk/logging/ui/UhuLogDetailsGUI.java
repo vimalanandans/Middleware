@@ -193,7 +193,7 @@ public class UhuLogDetailsGUI extends JFrame {
     }
 
     /**
-     * Shut the logging Service
+     * Shut the logging Zirk
      */
     public void shutLoggingGUI() {
         sendLoggingServiceMsg(false);

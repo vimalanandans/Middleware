@@ -92,7 +92,7 @@ public class LogDataActivity extends Activity {
                 logDataActivityHelper.mHandler = null;
             } catch (Exception e) {
                 logDataActivityHelper.printToast("ERROR IN STOPPING LOG SERVICE...");
-                log.error("Error in stopping logger service.", e);
+                log.error("Error in stopping logger zirk.", e);
             }
         }
         setResult(RESULT_CODE_FOR_RETURN_ACTIVITY);
@@ -109,7 +109,7 @@ public class LogDataActivity extends Activity {
         @Override
         protected Void doInBackground(String[]... params) {
             spheres = params[0];
-            // it is not a good idea to access the main service directly. the best way to do is via IBinder
+            // it is not a good idea to access the main zirk directly. the best way to do is via IBinder
             MainService.sendLoggingServiceMsgToClients(selSpheres, spheres, false);
             return null;
         }

@@ -1,7 +1,7 @@
 package com.bezirk.sphere.discoveryProcessor;
 
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.impl.DiscoveryProcessor;
@@ -72,7 +72,7 @@ public class ProcessDiscoveredSphereInfo {
 
     /**
      * Test {@link DiscoveryProcessor#processDiscoveredSphereInfo(Set, String)}
-     * Set has valid device(s) with service(s) SphereId is valid
+     * Set has valid device(s) with zirk(s) SphereId is valid
      */
     @Test
     public void testValidSphereInfoSet() {
@@ -80,20 +80,20 @@ public class ProcessDiscoveredSphereInfo {
         int devicesForSphereBefore = SphereRegistryWrapper.getSphere(sphereId).getDeviceServices().size();
 
         HashSet<UhuSphereInfo> discoveredSphereInfoSet = new HashSet<UhuSphereInfo>();
-        ArrayList<UhuDeviceInfo> uhuDeviceInfos = new ArrayList<UhuDeviceInfo>();
-        uhuDeviceInfos.add(sphereTestUtility.getUhuDeviceInfo());
+        ArrayList<BezirkDeviceInfo> bezirkDeviceInfos = new ArrayList<BezirkDeviceInfo>();
+        bezirkDeviceInfos.add(sphereTestUtility.getUhuDeviceInfo());
         UhuSphereInfo uhuSphereInfo = new UhuSphereInfo(sphereId, sphereTestUtility.OWNER_SPHERE_NAME_1, null,
-                uhuDeviceInfos, null);
+                bezirkDeviceInfos, null);
         discoveredSphereInfoSet.add(uhuSphereInfo);
 
         discoveryProcessor.processDiscoveredSphereInfo(discoveredSphereInfoSet, sphereId);
         int devicesForSphereAfter = SphereRegistryWrapper.getSphere(sphereId).getDeviceServices().size();
         assertEquals(devicesForSphereBefore + 1, devicesForSphereAfter);
 
-        for (UhuDeviceInfo deviceInfo : uhuDeviceInfos) {
-            for (UhuServiceInfo serviceInfo : deviceInfo.getServiceList()) {
+        for (BezirkDeviceInfo deviceInfo : bezirkDeviceInfos) {
+            for (BezirkZirkInfo serviceInfo : deviceInfo.getZirkList()) {
                 assertTrue("sphere registry is not having discovered services.",
-                        registry.sphereMembership.containsKey(serviceInfo.getServiceId()));
+                        registry.sphereMembership.containsKey(serviceInfo.getZirkId()));
             }
         }
     }

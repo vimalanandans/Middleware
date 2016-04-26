@@ -19,8 +19,8 @@
 //import com.bosch.upa.devices.UPADevice;
 //import Location;
 //import SubscribedRole;
-//import UhuDiscoveredZirk;
-//import UhuZirkId;
+//import BezirkDiscoveredZirk;
+//import BezirkZirkId;
 //
 //public class ControlReceiverTest {
 //	private static final Logger logger = LoggerFactory.getLogger(ControlReceiverTest.class);
@@ -55,10 +55,10 @@
 //	@Test
 //	@Ignore
 //	public void testForStreamRegistration(){
-//		UhuZirkId testService1 = new UhuZirkId("test-service-id-1");
-//		UhuZirkId testService2 = new UhuZirkId("test-service-id-2");
-//		UhuZirkId testService3 = new UhuZirkId("test-service-id-3");
-//		UhuZirkId testService4 = new UhuZirkId("test-service-id-4");
+//		BezirkZirkId testService1 = new BezirkZirkId("test-zirk-id-1");
+//		BezirkZirkId testService2 = new BezirkZirkId("test-zirk-id-2");
+//		BezirkZirkId testService3 = new BezirkZirkId("test-zirk-id-3");
+//		BezirkZirkId testService4 = new BezirkZirkId("test-zirk-id-4");
 //		
 //		TestProtocolRoleA protocolRoleA = new TestProtocolRoleA();
 //		SubscribedRole subscribedRoleA = new SubscribedRole(protocolRoleA);
@@ -70,10 +70,10 @@
 //		sadlRegistry.registerZirk(testService1);
 //		sadlRegistry.subscribeService(testService1, subscribedRoleA);
 //		sadlRegistry.subscribeService(testService1, subscribedRoleB);
-//		// Service - 2
+//		// Zirk - 2
 //		sadlRegistry.registerZirk(testService2);
 //		sadlRegistry.subscribeService(testService2, subscribedRoleC);
-//		// Service - 3
+//		// Zirk - 3
 //		sadlRegistry.registerZirk(testService3);
 //		sadlRegistry.subscribeService(testService3, subscribedRoleC);
 //		
@@ -95,10 +95,10 @@
 //		Location newLocation = new Location("Room", "Room", "Room");
 //		UPADevice.setDeviceLocation(newLocation);
 //		
-//		UhuZirkId testService1 = new UhuZirkId("test-service-id-1");
-//		UhuZirkId testService2 = new UhuZirkId("test-service-id-2");
-//		UhuZirkId testService3 = new UhuZirkId("test-service-id-3");
-//		UhuZirkId testService4 = new UhuZirkId("test-service-id-4");
+//		BezirkZirkId testService1 = new BezirkZirkId("test-zirk-id-1");
+//		BezirkZirkId testService2 = new BezirkZirkId("test-zirk-id-2");
+//		BezirkZirkId testService3 = new BezirkZirkId("test-zirk-id-3");
+//		BezirkZirkId testService4 = new BezirkZirkId("test-zirk-id-4");
 //		
 //		TestProtocolRoleA protocolRoleA = new TestProtocolRoleA();
 //		SubscribedRole subscribedRoleA = new SubscribedRole(protocolRoleA);
@@ -116,25 +116,25 @@
 //		sadlRegistry.subscribeService(testService3, subscribedRoleA);
 //		
 //		sadlRegistry.printContentsOfMaps();
-//		HashSet<UhuDiscoveredZirk> discoveredServices = null;
+//		HashSet<BezirkDiscoveredZirk> discoveredServices = null;
 //		// TEST FOR DIFFERENT PROTOCOL ROLE;
-//		discoveredServices = (HashSet<UhuDiscoveredZirk>) sadlRegistry.discoverServices(subscribedRoleC, null);
+//		discoveredServices = (HashSet<BezirkDiscoveredZirk>) sadlRegistry.discoverZirks(subscribedRoleC, null);
 //		assertEquals(null, discoveredServices);
 //		// TEST WITH NULL LOCATION
-//		discoveredServices = (HashSet<UhuDiscoveredZirk>) sadlRegistry.discoverServices(subscribedRoleA, null);
+//		discoveredServices = (HashSet<BezirkDiscoveredZirk>) sadlRegistry.discoverZirks(subscribedRoleA, null);
 //		assertEquals(3,discoveredServices.size());
 //		// TEST WITH Location
 //		
 //		Location newLoc = new Location("IfRoom", "IfRoom", "IfRoom");
 //		sadlRegistry.setLocation(testService1, newLoc);
-//		discoveredServices = (HashSet<UhuDiscoveredZirk>) sadlRegistry.discoverServices(subscribedRoleA, newLoc);
+//		discoveredServices = (HashSet<BezirkDiscoveredZirk>) sadlRegistry.discoverZirks(subscribedRoleA, newLoc);
 //		assertEquals(1,discoveredServices.size());
 //		sadlRegistry.setLocation(testService3, newLoc);
-//		discoveredServices = (HashSet<UhuDiscoveredZirk>) sadlRegistry.discoverServices(subscribedRoleC, newLoc);
+//		discoveredServices = (HashSet<BezirkDiscoveredZirk>) sadlRegistry.discoverZirks(subscribedRoleC, newLoc);
 //		assertEquals(null,discoveredServices);
-//		discoveredServices = (HashSet<UhuDiscoveredZirk>) sadlRegistry.discoverServices(subscribedRoleB, null);
+//		discoveredServices = (HashSet<BezirkDiscoveredZirk>) sadlRegistry.discoverZirks(subscribedRoleB, null);
 //		assertEquals(1,discoveredServices.size());
-//		discoveredServices = (HashSet<UhuDiscoveredZirk>) sadlRegistry.discoverServices(subscribedRoleA, newLoc);
+//		discoveredServices = (HashSet<BezirkDiscoveredZirk>) sadlRegistry.discoverZirks(subscribedRoleA, newLoc);
 //		assertEquals(2,discoveredServices.size());
 //	}
 //}

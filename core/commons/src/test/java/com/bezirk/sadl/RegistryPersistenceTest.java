@@ -7,7 +7,7 @@ import com.bezirk.persistence.IDatabaseConnection;
 import com.bezirk.persistence.ISadlPersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.UhuRegistry;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.j256.ormlite.table.TableUtils;
 
 import org.junit.After;
@@ -68,15 +68,15 @@ public class RegistryPersistenceTest {
             SadlRegistry sadlRegistry = sadlPersistence.loadSadlRegistry();
 
             //sadlRegistry.
-            UhuZirkId sid1 = new UhuZirkId("temp-uhuservice-id-1");
-            UhuZirkId sid2 = new UhuZirkId("temp-uhuservice-id-2");
-            UhuZirkId sid3 = new UhuZirkId("temp-uhuservice-id-3");
-            UhuZirkId sid4 = new UhuZirkId("temp-uhuservice-id-4");
-            UhuZirkId sid5 = new UhuZirkId("temp-uhuservice-id-5");
+            BezirkZirkId sid1 = new BezirkZirkId("temp-uhuservice-id-1");
+            BezirkZirkId sid2 = new BezirkZirkId("temp-uhuservice-id-2");
+            BezirkZirkId sid3 = new BezirkZirkId("temp-uhuservice-id-3");
+            BezirkZirkId sid4 = new BezirkZirkId("temp-uhuservice-id-4");
+            BezirkZirkId sid5 = new BezirkZirkId("temp-uhuservice-id-5");
 
 
             //sid
-            HashSet<UhuZirkId> sidMap = new HashSet<UhuZirkId>();
+            HashSet<BezirkZirkId> sidMap = new HashSet<BezirkZirkId>();
             sidMap.add(sid1);
             sidMap.add(sid2);
             sidMap.add(sid3);
@@ -90,7 +90,7 @@ public class RegistryPersistenceTest {
             sadlRegistry.sid.add(sid5);
 
             // Events
-            HashSet<UhuZirkId> tempSet1 = new HashSet<UhuZirkId>();
+            HashSet<BezirkZirkId> tempSet1 = new HashSet<BezirkZirkId>();
             tempSet1.add(sid1);
             tempSet1.add(sid2);
             sadlRegistry.eventMap.put("topic-1", tempSet1);
@@ -150,15 +150,15 @@ public class RegistryPersistenceTest {
 
     private void updateSampleSadlRegistry(SadlRegistry tempSadlRegistry) {
 
-        UhuZirkId sid1 = new UhuZirkId("temp-uhuservice-id-1");
-        UhuZirkId sid2 = new UhuZirkId("temp-uhuservice-id-2");
-        UhuZirkId sid3 = new UhuZirkId("temp-uhuservice-id-3");
-        UhuZirkId sid4 = new UhuZirkId("temp-uhuservice-id-4");
-        UhuZirkId sid5 = new UhuZirkId("temp-uhuservice-id-5");
+        BezirkZirkId sid1 = new BezirkZirkId("temp-uhuservice-id-1");
+        BezirkZirkId sid2 = new BezirkZirkId("temp-uhuservice-id-2");
+        BezirkZirkId sid3 = new BezirkZirkId("temp-uhuservice-id-3");
+        BezirkZirkId sid4 = new BezirkZirkId("temp-uhuservice-id-4");
+        BezirkZirkId sid5 = new BezirkZirkId("temp-uhuservice-id-5");
 
 
         //sid
-        HashSet<UhuZirkId> sidMap = new HashSet<UhuZirkId>();
+        HashSet<BezirkZirkId> sidMap = new HashSet<BezirkZirkId>();
         sidMap.add(sid1);
         sidMap.add(sid2);
         sidMap.add(sid3);
@@ -172,7 +172,7 @@ public class RegistryPersistenceTest {
         tempSadlRegistry.sid.add(sid5);
 
         //protocolMap
-        ConcurrentHashMap<String, HashSet<UhuZirkId>> protocolMap = new ConcurrentHashMap<String, HashSet<UhuZirkId>>();
+        ConcurrentHashMap<String, HashSet<BezirkZirkId>> protocolMap = new ConcurrentHashMap<String, HashSet<BezirkZirkId>>();
         protocolMap.put("protocol-1", sidMap);
 
         tempSadlRegistry.protocolMap.put("protocol-1", sidMap);
@@ -183,20 +183,20 @@ public class RegistryPersistenceTest {
         tempSadlRegistry.protocolDescMap.put("protocol-1", "protocol-desc-1");
         tempSadlRegistry.protocolDescMap.put("protocol-2", "protocol-desc-2");
         //events Map
-        HashSet<UhuZirkId> tempSet1 = new HashSet<UhuZirkId>();
+        HashSet<BezirkZirkId> tempSet1 = new HashSet<BezirkZirkId>();
         tempSet1.add(sid1);
         tempSet1.add(sid2);
         tempSadlRegistry.eventMap.put("topic-1", tempSet1);
-        HashSet<UhuZirkId> tempSet2 = new HashSet<UhuZirkId>();
+        HashSet<BezirkZirkId> tempSet2 = new HashSet<BezirkZirkId>();
         tempSet2.add(sid2);
         tempSet2.add(sid4);
         tempSadlRegistry.eventMap.put("topic-2", tempSet2);
-        HashSet<UhuZirkId> tempSet3 = new HashSet<UhuZirkId>();
+        HashSet<BezirkZirkId> tempSet3 = new HashSet<BezirkZirkId>();
         tempSet3.add(sid1);
         tempSet3.add(sid3);
         tempSadlRegistry.eventMap.put("topic-3", tempSet3);
         //streams Map
-        HashSet<UhuZirkId> tempStreamSet1 = new HashSet<UhuZirkId>();
+        HashSet<BezirkZirkId> tempStreamSet1 = new HashSet<BezirkZirkId>();
         tempStreamSet1.add(sid1);
         tempStreamSet1.add(sid2);
         tempSadlRegistry.streamMap.put("stream-1", tempStreamSet1);

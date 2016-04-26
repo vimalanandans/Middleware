@@ -4,9 +4,9 @@ import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.control.messages.streaming.StreamRequest;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com)
@@ -14,21 +14,21 @@ import com.bezirk.proxy.api.impl.UhuZirkId;
  * Utility class that is used to Validate different Data Structures used in Uhu.
  * UhuDevelopers are advised to create corresponding functions here and validate the data structure.
  */
-public final class UhuValidatorUtility {
+public final class BezirkValidatorUtility {
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
-    private UhuValidatorUtility() {
+    private BezirkValidatorUtility() {
 
     }
 
     /**
-     * Checks for Validity of UhuZirkId.
+     * Checks for Validity of BezirkZirkId.
      *
-     * @param serviceId UhuZirkId that will check for ZirkId
-     * @return true if UhuZirkId is valid, false otherwise
+     * @param serviceId BezirkZirkId that will check for ZirkId
+     * @return true if BezirkZirkId is valid, false otherwise
      */
-    public static boolean checkUhuServiceId(final UhuZirkId serviceId) {
-        if (serviceId == null || !checkForString(serviceId.getUhuServiceId())) {
+    public static boolean checkUhuServiceId(final BezirkZirkId serviceId) {
+        if (serviceId == null || !checkForString(serviceId.getBezirkZirkId())) {
             return false;
         }
         return true;
@@ -43,13 +43,13 @@ public final class UhuValidatorUtility {
     }
 
     /**
-     * Checks for Validity of UhuZirkEndPoint
+     * Checks for Validity of BezirkZirkEndPoint
      *
-     * @param uhuServiceEndPoint - UhuZirkEndPoint that should be validated
+     * @param uhuServiceEndPoint - BezirkZirkEndPoint that should be validated
      * @return true if valid, false otherwise.
      */
-    public static boolean checkUhuServiceEndPoint(final UhuZirkEndPoint uhuServiceEndPoint) {
-        if (uhuServiceEndPoint == null || !checkUhuServiceId(uhuServiceEndPoint.serviceId) || !checkForString(uhuServiceEndPoint.device)) {
+    public static boolean checkBezirkZirkEndPoint(final BezirkZirkEndPoint uhuServiceEndPoint) {
+        if (uhuServiceEndPoint == null || !checkUhuServiceId(uhuServiceEndPoint.zirkId) || !checkForString(uhuServiceEndPoint.device)) {
             return false;
         }
         return true;
@@ -96,7 +96,7 @@ public final class UhuValidatorUtility {
 
     public static boolean checkHeader(final Header mHeader) {
         if (!checkForString(mHeader.getSphereName(), mHeader.getTopic()) ||
-                !checkUhuServiceEndPoint(mHeader.getSenderSEP())) {
+                !checkBezirkZirkEndPoint(mHeader.getSenderSEP())) {
             return false;
         }
 
@@ -105,7 +105,7 @@ public final class UhuValidatorUtility {
     }
 
     public static boolean checkDiscoveryRequest(DiscoveryRequest request) {
-        if (!checkForString(request.getSphereId()) || request.getMessageId() == -1 || !checkUhuServiceEndPoint(request.getSender())) {
+        if (!checkForString(request.getSphereId()) || request.getMessageId() == -1 || !checkBezirkZirkEndPoint(request.getSender())) {
 
             return false;
         }
@@ -120,11 +120,11 @@ public final class UhuValidatorUtility {
         return true;
     }
 
-    private static boolean checkEndPoints(UhuZirkEndPoint... serviceEndPoints) {
+    private static boolean checkEndPoints(BezirkZirkEndPoint... serviceEndPoints) {
 
-        for (UhuZirkEndPoint serviceEndPoint : serviceEndPoints) {
+        for (BezirkZirkEndPoint serviceEndPoint : serviceEndPoints) {
 
-            if (!checkUhuServiceEndPoint(serviceEndPoint)) {
+            if (!checkBezirkZirkEndPoint(serviceEndPoint)) {
 
                 return false;
             }
@@ -166,7 +166,7 @@ public final class UhuValidatorUtility {
 
     }
 
-    public static boolean checkRTCStreamRequest(final UhuZirkId serviceId, final UhuZirkEndPoint sep) {
-        return checkUhuServiceId(serviceId) && checkUhuServiceEndPoint(sep);
+    public static boolean checkRTCStreamRequest(final BezirkZirkId serviceId, final BezirkZirkEndPoint sep) {
+        return checkUhuServiceId(serviceId) && checkBezirkZirkEndPoint(sep);
     }
 }

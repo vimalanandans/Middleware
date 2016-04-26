@@ -13,9 +13,9 @@ import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
-import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -94,9 +94,9 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             return false;
         }
 
-        UhuZirkId serviceId = new Gson().fromJson(receivedServiceId, UhuZirkId.class);
+        BezirkZirkId serviceId = new Gson().fromJson(receivedServiceId, BezirkZirkId.class);
 
-        if (!isRequestForCurrentApp(serviceId.getUhuServiceId())) {
+        if (!isRequestForCurrentApp(serviceId.getBezirkZirkId())) {
             Log.e(TAG, "Intent is not for this Service");
             return false;
         }
@@ -116,9 +116,9 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         }
 
         final String messageId = intent.getStringExtra("msgId");
-        UhuZirkEndPoint sourceOfEventSEP = new Gson().fromJson(eventSender, UhuZirkEndPoint.class);
+        BezirkZirkEndPoint sourceOfEventSEP = new Gson().fromJson(eventSender, BezirkZirkEndPoint.class);
         //Check for duplicate message
-        if (checkDuplicateMsg(sourceOfEventSEP.serviceId.getUhuServiceId(), messageId)) {
+        if (checkDuplicateMsg(sourceOfEventSEP.zirkId.getBezirkZirkId(), messageId)) {
             boolean isEventReceived = receiveEventOrStream(eventTopic, eventMessage, sourceOfEventSEP, (short) 0, null, "EVENT", Proxy.eventListenerMap);
             if (isEventReceived) {
                 return;
@@ -131,7 +131,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         return;
     }
 
-    private boolean receiveEventOrStream(String topic, String message, UhuZirkEndPoint sourceSEP, short streamId,
+    private boolean receiveEventOrStream(String topic, String message, BezirkZirkEndPoint sourceSEP, short streamId,
                                          String filePath, String type, Map<String, ArrayList<BezirkListener>> listenerMap) {
 
         if (listenerMap.containsKey(topic)) {
@@ -181,9 +181,9 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         }
         final short streamId = intent.getShortExtra("streamId", (short) -1);
 
-        UhuZirkEndPoint sourceOfStreamSEP = new Gson().fromJson(senderSep, UhuZirkEndPoint.class);
-        Log.e(TAG, sourceOfStreamSEP.serviceId.getUhuServiceId() + ":" + streamId);
-        if (checkDuplicateStream(sourceOfStreamSEP.serviceId.getUhuServiceId(), streamId)) {
+        BezirkZirkEndPoint sourceOfStreamSEP = new Gson().fromJson(senderSep, BezirkZirkEndPoint.class);
+        Log.e(TAG, sourceOfStreamSEP.zirkId.getBezirkZirkId() + ":" + streamId);
+        if (checkDuplicateStream(sourceOfStreamSEP.zirkId.getBezirkZirkId(), streamId)) {
 
             boolean isStreamReceived = receiveEventOrStream(streamTopic, streamMsg, sourceOfStreamSEP, streamId, filePath, "STREAM_UNICAST",
                     Proxy.streamListenerMap);
@@ -226,10 +226,10 @@ public class IntentMessageReceiver extends BroadcastReceiver {
                 final Gson gson = new Gson();
                 final String discoveredListAsString = intent.getStringExtra("DiscoveredServices");
                 //Deserialiaze
-                Type discoveredListType = new TypeToken<HashSet<UhuDiscoveredZirk>>() {
+                Type discoveredListType = new TypeToken<HashSet<BezirkDiscoveredZirk>>() {
                 }.getType();
 
-                final Set<UhuDiscoveredZirk> discoveredList = gson.fromJson(discoveredListAsString, discoveredListType);
+                final Set<BezirkDiscoveredZirk> discoveredList = gson.fromJson(discoveredListAsString, discoveredListType);
 
                 if (null == discoveredList) {
                     Log.e(TAG, "Empty discovered List");
@@ -313,14 +313,14 @@ public class IntentMessageReceiver extends BroadcastReceiver {
      * @return
      * @author Rishabh
      * <p/>
-     * This methods checks if the passed serviceId belongs to the current application.<br>
+     * This methods checks if the passed zirkId belongs to the current application.<br>
      * Note: An application can have multiple serviceIds
      */
     private boolean isRequestForCurrentApp(final String serviceId) {
         SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(Proxy.mContext);
         Map<String, ?> keys = shrdPref.getAll();
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
-            //find and delete the entry corresponding to this serviceId
+            //find and delete the entry corresponding to this zirkId
             if (entry.getValue().toString().equalsIgnoreCase(serviceId)) {
                 return true;
             }

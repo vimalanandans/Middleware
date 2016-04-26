@@ -84,7 +84,7 @@ public class ShareSphereActivity extends ActionBarActivity {
         if (api != null) {
             sphereInfo = api.getSphere(sphereID);
         } else {
-            printToast("Main Service Not Available");
+            printToast("Main Zirk Not Available");
             NavUtils.navigateUpTo(this, createBackIntent());
         }
 

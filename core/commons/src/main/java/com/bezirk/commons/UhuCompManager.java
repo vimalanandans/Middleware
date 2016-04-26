@@ -1,7 +1,7 @@
 package com.bezirk.commons;
 
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.messagehandler.ServiceMessageHandler;
+import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.sphere.api.IUhuSphereRegistration;
@@ -43,7 +43,7 @@ public final class UhuCompManager {
     private static UPADeviceInterface upaDevice;
 
 
-    private static ServiceMessageHandler platformSpecificCallback;
+    private static ZirkMessageHandler platformSpecificCallback;
 
     private static IUhuSphereForSadl uhuSphereForSadl;
 
@@ -105,11 +105,11 @@ public final class UhuCompManager {
      * setplatformSpecificCallback
      * @param uhucallback
      */
-    public static void setplatformSpecificCallback(ServiceMessageHandler uhucallback) {
+    public static void setplatformSpecificCallback(ZirkMessageHandler uhucallback) {
         UhuCompManager.platformSpecificCallback = uhucallback;
     }
 
-    public static ServiceMessageHandler getplatformSpecificCallback() {
+    public static ZirkMessageHandler getplatformSpecificCallback() {
         return UhuCompManager.platformSpecificCallback;
     }
 
@@ -138,7 +138,7 @@ public final class UhuCompManager {
         return uhuSphereRegistration;
     }
 
-    // this is temporary for setting up service registration with spheres for UI
+    // this is temporary for setting up zirk registration with spheres for UI
     public static void setSphereRegistration(
             IUhuSphereRegistration sphereRegistration) {
         UhuCompManager.uhuSphereRegistration = sphereRegistration;

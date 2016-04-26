@@ -4,8 +4,8 @@
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuZirkId;
-import com.bezirk.sphere.impl.OwnerService;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.sphere.testUtilities.SphereTestUtility;
@@ -71,10 +71,10 @@ public class GetServiceName {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getServiceName(UhuZirkId)}.
+     * Test method for {@link SphereRegistryWrapper#getServiceName(BezirkZirkId)}.
      * <p/>
-     * <br>Test the behavior of getZirkName when valid serviceId is passed.
-     * It should return name associated with the service Id
+     * <br>Test the behavior of getZirkName when valid zirkId is passed.
+     * It should return name associated with the zirk Id
      */
     @Test
     public final void validServiceIdReturnsTheServiceName() {
@@ -83,9 +83,9 @@ public class GetServiceName {
         sphereSet.add(sphereId);
 
         String serviceId = UUID.randomUUID().toString();
-        UhuZirkId uhuServiceId = new UhuZirkId(serviceId);
-        String serviceName = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        OwnerService ownerService = new OwnerService(serviceName, "ownerDeviceId", sphereSet);
+        BezirkZirkId uhuServiceId = new BezirkZirkId(serviceId);
+        String serviceName = sphereTestUtility.OWNER_ZIRK_NAME_1;
+        OwnerZirk ownerService = new OwnerZirk(serviceName, "ownerDeviceId", sphereSet);
         registry.sphereMembership.put(serviceId, ownerService);
 
         String retrievedService = sphereRegistryWrapper.getServiceName(uhuServiceId);
@@ -94,9 +94,9 @@ public class GetServiceName {
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getServiceName(UhuZirkId)}.
+     * Test method for {@link SphereRegistryWrapper#getServiceName(BezirkZirkId)}.
      * <p/>
-     * <br>Test the behavior of getZirkName when serviceId passed is not present in the registry.
+     * <br>Test the behavior of getZirkName when zirkId passed is not present in the registry.
      * It should return null.
      */
     @Test
@@ -105,16 +105,16 @@ public class GetServiceName {
         String sphereId = UUID.randomUUID().toString();
         sphereSet.add(sphereId);
 
-        //Service is created but not added in registry.
+        //Zirk is created but not added in registry.
         String serviceId = UUID.randomUUID().toString();
-        UhuZirkId uhuServiceId = new UhuZirkId(serviceId);
+        BezirkZirkId uhuServiceId = new BezirkZirkId(serviceId);
 
         String retrievedService = sphereRegistryWrapper.getServiceName(uhuServiceId);
         assertNull(retrievedService);
     }
 
 
-    //Test to check the behavior of the method when null is passed is not done as service id cannot be null
+    //Test to check the behavior of the method when null is passed is not done as zirk id cannot be null
     //as per the contract of the method.
 
 

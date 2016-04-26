@@ -3,16 +3,16 @@ package com.bezirk.util;
 import com.bezirk.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.messagehandler.EventIncomingMessage;
 import com.bezirk.messagehandler.PipeRequestIncomingMessage;
-import com.bezirk.messagehandler.ServiceMessageHandler;
+import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
 
 /**
- * Mock callback service implementing IUhuCallback, used for unit testing
+ * Mock callback zirk implementing IUhuCallback, used for unit testing
  *
  * @author AJC6KOR
  */
-public class MockCallbackService implements ServiceMessageHandler {
+public class MockCallbackZirk implements ZirkMessageHandler {
 
     @Override
     public void onIncomingEvent(EventIncomingMessage eventIncomingMessage) {

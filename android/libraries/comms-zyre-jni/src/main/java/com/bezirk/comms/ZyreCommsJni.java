@@ -3,7 +3,7 @@ package com.bezirk.comms;
 import android.util.Log;
 
 import com.bezirk.processor.CommsProcessor;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,7 +103,7 @@ public class ZyreCommsJni extends Thread {
 
     public boolean closeComms() {
 
-        if (UhuValidatorUtility.isObjectNotNull(zyre))
+        if (BezirkValidatorUtility.isObjectNotNull(zyre))
             zyre.destroy();
 
         // what else do to close comes
@@ -118,7 +118,7 @@ public class ZyreCommsJni extends Thread {
      */
     public boolean startZyre() {
 
-        if (UhuValidatorUtility.isObjectNotNull(zyre)) {
+        if (BezirkValidatorUtility.isObjectNotNull(zyre)) {
 
             // join the group
             zyre.join(getGroup());
@@ -158,7 +158,7 @@ public class ZyreCommsJni extends Thread {
         //update flag stop the thread
         listenToEventsFlag = false;
         interrupt();
-        if (UhuValidatorUtility.isObjectNotNull(zyre))
+        if (BezirkValidatorUtility.isObjectNotNull(zyre))
             zyre.destroy();
         return true;
     }
@@ -168,7 +168,7 @@ public class ZyreCommsJni extends Thread {
         // in zyre we are sending ctrl and event in same. isEvent is ignored
         final String data = new String(msg);
 
-        if (UhuValidatorUtility.isObjectNotNull(zyre)) {
+        if (BezirkValidatorUtility.isObjectNotNull(zyre)) {
 
             //creating a new thread as we have a delayed ms wait if zyre was not initialized and this wait cannot happen on the main thread..
             Runnable eventThread = new Thread(new Runnable() {
@@ -205,7 +205,7 @@ public class ZyreCommsJni extends Thread {
 
         // in zyre we are sending ctrl and event in same. isEvent is ignored
         final String data = new String(msg);
-        if (UhuValidatorUtility.isObjectNotNull(zyre)) {
+        if (BezirkValidatorUtility.isObjectNotNull(zyre)) {
 
             /*Each event will be sent in a new thread.
             creating a new thread as we have a delayed ms wait if zyre was not initialized and this wait cannot happen on the main thread..*/

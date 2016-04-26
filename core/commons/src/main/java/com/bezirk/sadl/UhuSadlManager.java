@@ -12,9 +12,9 @@ import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.persistence.ISadlPersistence;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.remotelogging.messages.UhuLoggingMessage;
 import com.bezirk.remotelogging.queues.LoggingQueueManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
@@ -23,7 +23,7 @@ import com.bezirk.remotelogging.util.Util;
 import com.bezirk.rest.BezirkRestCallBack;
 import com.bezirk.rest.BezirkRestCallBackImpl;
 import com.bezirk.rest.BezirkRestCommsManager;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,16 +68,16 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
     }
 
     /* (non-Javadoc)
-     * @see com.bezirk.api.sadl.ISadlRegistry#registerZirk(com.bezirk.api.addressing.UhuZirkId)
+     * @see com.bezirk.api.sadl.ISadlRegistry#registerZirk(com.bezirk.api.addressing.BezirkZirkId)
      */
     @Override
-    public Boolean registerService(final UhuZirkId serviceId) {
-        if (!UhuValidatorUtility.checkUhuServiceId(serviceId)) {
-            logger.error("Invalid UhuZirkId");
+    public Boolean registerService(final BezirkZirkId serviceId) {
+        if (!BezirkValidatorUtility.checkUhuServiceId(serviceId)) {
+            logger.error("Invalid BezirkZirkId");
             return false;
         }
         if (isServiceRegisterd(serviceId)) {
-            logger.info(serviceId + " Service is already registered");
+            logger.info(serviceId + " Zirk is already registered");
             return false;
         }
         if (sadlRegistry.registerService(serviceId)) {
@@ -88,16 +88,16 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
     }
 
     /* (non-Javadoc)
-     * @see ISadlRegistry#subscribeService(com.bezirk.api.addressing.UhuZirkId, ProtocolRole)
+     * @see ISadlRegistry#subscribeService(com.bezirk.api.addressing.BezirkZirkId, ProtocolRole)
      */
     @Override
-    public Boolean subscribeService(final UhuZirkId serviceId, final ProtocolRole pRole) {
-        if (!UhuValidatorUtility.checkUhuServiceId(serviceId) || !UhuValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
+    public Boolean subscribeService(final BezirkZirkId serviceId, final ProtocolRole pRole) {
+        if (!BezirkValidatorUtility.checkUhuServiceId(serviceId) || !BezirkValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
             logger.error("Invalid Subscription, Validation failed");
             return false;
         }
         if (!isServiceRegisterd(serviceId)) {
-            logger.info("Service tried to subscribe without Registration");
+            logger.info("Zirk tried to subscribe without Registration");
             return false;
         }
 
@@ -109,8 +109,8 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
     }
 
     @Override
-    public Boolean unsubscribe(final UhuZirkId serviceId, final ProtocolRole role) {
-        if (!UhuValidatorUtility.checkUhuServiceId(serviceId) || !UhuValidatorUtility.checkProtocolRole((SubscribedRole) role)) {
+    public Boolean unsubscribe(final BezirkZirkId serviceId, final ProtocolRole role) {
+        if (!BezirkValidatorUtility.checkUhuServiceId(serviceId) || !BezirkValidatorUtility.checkProtocolRole((SubscribedRole) role)) {
             logger.error("Invalid UnSubscription, Validation failed");
             return false;
         }
@@ -122,8 +122,8 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
     }
 
     @Override
-    public Boolean unregisterService(final UhuZirkId serviceId) {
-        if (!UhuValidatorUtility.checkUhuServiceId(serviceId)) {
+    public Boolean unregisterService(final BezirkZirkId serviceId) {
+        if (!BezirkValidatorUtility.checkUhuServiceId(serviceId)) {
             logger.error("Invalid UnRegistration, Validation failed");
             return false;
         }
@@ -136,7 +136,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
 
 
     @Override
-    public Boolean setLocation(final UhuZirkId serviceId, final Location location) {
+    public Boolean setLocation(final BezirkZirkId serviceId, final Location location) {
         if (sadlRegistry.setLocation(serviceId, location)) {
             persistSadlRegistry();
             return true;
@@ -145,23 +145,23 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
     }
 
     @Override
-    public Boolean isServiceRegisterd(UhuZirkId serviceId) {
-        if (UhuValidatorUtility.checkUhuServiceId(serviceId)) {
+    public Boolean isServiceRegisterd(BezirkZirkId serviceId) {
+        if (BezirkValidatorUtility.checkUhuServiceId(serviceId)) {
             return sadlRegistry.isServiceRegisterd(serviceId);
         }
         return false;
     }
 
     @Override
-    public Location getLocationForService(UhuZirkId serviceId) {
+    public Location getLocationForService(BezirkZirkId serviceId) {
         return sadlRegistry.getLocationForService(serviceId);
     }
 
 
     @Override
-    public Boolean isStreamTopicRegistered(String streamTopic, UhuZirkId serviceId) {
-        if (!UhuValidatorUtility.checkForString(streamTopic) || !UhuValidatorUtility.checkUhuServiceId(serviceId)) {
-            logger.error("Stream Topic or service Id is invalid");
+    public Boolean isStreamTopicRegistered(String streamTopic, BezirkZirkId serviceId) {
+        if (!BezirkValidatorUtility.checkForString(streamTopic) || !BezirkValidatorUtility.checkUhuServiceId(serviceId)) {
+            logger.error("Stream Topic or zirk Id is invalid");
             return false;
         }
         return sadlRegistry.isStreamTopicRegistered(streamTopic, serviceId);
@@ -169,8 +169,8 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
 
     // SERVICE-NAME NEEDS TO BE FILLED
     @Override
-    public Set<UhuDiscoveredZirk> discoverServices(ProtocolRole pRole, Location location) {
-        if (!UhuValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
+    public Set<BezirkDiscoveredZirk> discoverZirks(ProtocolRole pRole, Location location) {
+        if (!BezirkValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
             logger.error("Discarding Discovery Lookup as ProtocolRole is invalid");
             return null;
         }
@@ -181,7 +181,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
     @Override
     public boolean processEvent(final EventLedger eLedger) {
 
-        Set<UhuZirkId> invokeList = fetchInvokeList(eLedger);
+        Set<BezirkZirkId> invokeList = fetchInvokeList(eLedger);
 
         if (null == invokeList || invokeList.isEmpty()) {
             logger.debug("No services are present to respond to the request");
@@ -196,34 +196,34 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
             sendRemoteLogMessage(eLedger);
         }
 
-        // give a callback to appropriate service..
+        // give a callback to appropriate zirk..
         giveCallback(eLedger, invokeList);
 
         return true;
     }
 
     private void giveCallback(final EventLedger eLedger,
-                              Set<UhuZirkId> invokeList) {
-        // check if the service exists in that sphere then give callback
-        for (UhuZirkId serviceId : invokeList) {
-            if (invokeList.contains(new UhuZirkId("SPOOFED")) &&
+                              Set<BezirkZirkId> invokeList) {
+        // check if the zirk exists in that sphere then give callback
+        for (BezirkZirkId serviceId : invokeList) {
+            if (invokeList.contains(new BezirkZirkId("SPOOFED")) &&
                     eLedger.getHeader().getSphereName().equals(BezirkRestCommsManager.getInstance().getSlectedSphereName())) {
                 //send the response to HTTPComms also..
                 BezirkRestCallBack callBack = new BezirkRestCallBackImpl();
                 callBack.callBackForResponse(eLedger);
 
-            } else if (UhuCompManager.getSphereForSadl().isServiceInSphere(serviceId, eLedger.getHeader().getSphereName())) {
+            } else if (UhuCompManager.getSphereForSadl().isZirkInSphere(serviceId, eLedger.getHeader().getSphereName())) {
                 EventIncomingMessage eCallbackMessage = new EventIncomingMessage(serviceId, eLedger.getHeader().getSenderSEP(),
                         eLedger.getSerializedMessage(), eLedger.getHeader().getTopic(), eLedger.getHeader().getUniqueMsgId());
                 UhuCompManager.getplatformSpecificCallback().onIncomingEvent(eCallbackMessage);
             } else {
-                logger.debug("Unknown Service ID!!!!!");
+                logger.debug("Unknown Zirk ID!!!!!");
             }
         }
     }
 
-    private Set<UhuZirkId> fetchInvokeList(final EventLedger eLedger) {
-        Set<UhuZirkId> invokeList = null;
+    private Set<BezirkZirkId> fetchInvokeList(final EventLedger eLedger) {
+        Set<BezirkZirkId> invokeList = null;
         if (eLedger.getIsMulticast()) {
             MulticastHeader mHeader = (MulticastHeader) eLedger.getHeader();
             Location targetLocation = mHeader.getAddress() == null ? null : mHeader.getAddress().getLocation();
@@ -232,12 +232,12 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
             UnicastHeader uHeader = (UnicastHeader) eLedger.getHeader();
 
             //here i can check for the spoofed event and bypass the sadl validation
-            if (uHeader != null && uHeader.getRecipient().serviceId.getUhuEventId() != null && uHeader.getRecipient().serviceId.getUhuServiceId().equals("THIS-SERVICE-ID-IS-HTTP-SPOOFED")) {
-                invokeList = new HashSet<UhuZirkId>();
-                invokeList.add(new UhuZirkId("SPOOFED"));
-            } else if (this.checkUnicastEvent(uHeader.getTopic(), uHeader.getRecipient().serviceId)) {
-                invokeList = new HashSet<UhuZirkId>();
-                invokeList.add(uHeader.getRecipient().serviceId);
+            if (uHeader != null && uHeader.getRecipient().zirkId.getBezirkEventId() != null && uHeader.getRecipient().zirkId.getBezirkZirkId().equals("THIS-SERVICE-ID-IS-HTTP-SPOOFED")) {
+                invokeList = new HashSet<BezirkZirkId>();
+                invokeList.add(new BezirkZirkId("SPOOFED"));
+            } else if (this.checkUnicastEvent(uHeader.getTopic(), uHeader.getRecipient().zirkId)) {
+                invokeList = new HashSet<BezirkZirkId>();
+                invokeList.add(uHeader.getRecipient().zirkId);
             }
         }
         return invokeList;
@@ -249,7 +249,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
     private Boolean decryptMsg(EventLedger eLedger) {
         // Decrypt the event message
         final String decryptedEventMsg = UhuCompManager.getSphereForSadl().decryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getEncryptedMessage());
-        if (!UhuValidatorUtility.checkForString(decryptedEventMsg)) {
+        if (!BezirkValidatorUtility.checkForString(decryptedEventMsg)) {
             logger.debug("Header Decryption Failed: sphereId-" + eLedger.getHeader().getSphereName() + " may not exist");
 
             return false;
@@ -271,18 +271,18 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
         }
     }
 
-    public boolean checkUnicastEvent(String topic, UhuZirkId recipient) {
-        if (!UhuValidatorUtility.checkForString(topic) || !UhuValidatorUtility.checkUhuServiceId(recipient)) {
+    public boolean checkUnicastEvent(String topic, BezirkZirkId recipient) {
+        if (!BezirkValidatorUtility.checkForString(topic) || !BezirkValidatorUtility.checkUhuServiceId(recipient)) {
             logger.error("Unicast Event Check failed -> topic or Recipient is not valid");
             return false;
         }
         return sadlRegistry.checkUnicastEvent(topic, recipient);
     }
 
-    // Return a HashSet<UhuZirkId> by creating a new one otherwise the receiving components can modify it!
+    // Return a HashSet<BezirkZirkId> by creating a new one otherwise the receiving components can modify it!
 
-    public Set<UhuZirkId> checkMulticastEvent(String topic, Location location) {
-        if (!UhuValidatorUtility.checkForString(topic)) {
+    public Set<BezirkZirkId> checkMulticastEvent(String topic, Location location) {
+        if (!BezirkValidatorUtility.checkForString(topic)) {
             logger.error("Event Topic or Recipient is valid");
             return null;
         }
@@ -290,7 +290,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
     }
 
     @Override
-    public Set<UhuZirkId> getRegisteredServices() {
+    public Set<BezirkZirkId> getRegisteredServices() {
         return sadlRegistry.getRegisteredServices();
     }
 

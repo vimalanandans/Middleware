@@ -1,6 +1,6 @@
 package com.bezirk.control.messages;
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.google.gson.Gson;
 
 /**
@@ -16,7 +16,7 @@ public class ControlMessage {
     private Discriminator discriminator;
     private String uniqueKey = "";
     private Boolean retransmit = true;
-    private UhuZirkEndPoint sender;
+    private BezirkZirkEndPoint sender;
     public ControlMessage() {
         // Empty Constructor required for gson.fromJson
     }
@@ -30,7 +30,7 @@ public class ControlMessage {
      * @param retransmit    {@value true} if the message is to be re-transmitted
      * @param key           UniqueKey that is used to match responses to corresponding requests
      */
-    protected ControlMessage(UhuZirkEndPoint sender, String sphereId,
+    protected ControlMessage(BezirkZirkEndPoint sender, String sphereId,
                              Discriminator discriminator, Boolean retransmit, String key) {
         this.sender = sender;
         this.sphereId = sphereId;
@@ -48,7 +48,7 @@ public class ControlMessage {
      * @param discriminator the message discriminator Eg: DiscoveryRequest, StreamResponse
      * @param retransmit    {@value true} if the message is to be re-transmitted
      */
-    protected ControlMessage(UhuZirkEndPoint sender, String sphereId,
+    protected ControlMessage(BezirkZirkEndPoint sender, String sphereId,
                              Discriminator discriminator, Boolean retransmit) {
         this.sender = sender;
         this.sphereId = sphereId;
@@ -120,7 +120,7 @@ public class ControlMessage {
      *
      * @return ZirkEndPoint of the Sender
      */
-    public UhuZirkEndPoint getSender() {
+    public BezirkZirkEndPoint getSender() {
         return sender;
     }
 

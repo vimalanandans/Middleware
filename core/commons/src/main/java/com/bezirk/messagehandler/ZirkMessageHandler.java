@@ -4,10 +4,10 @@
 package com.bezirk.messagehandler;
 
 /**
- * Platform independent API used to give ServiceMessageHandler to the ProxyForUhu Library.
+ * Platform independent API used to give ZirkMessageHandler to the ProxyForUhu Library.
  * Specific platforms should implement this interface and should inject it in UhuCompManager.
  */
-public interface ServiceMessageHandler {
+public interface ZirkMessageHandler {
     /**
      * Method fires the EventCallbackMessage to the ProxyForUhuLibrary.
      *

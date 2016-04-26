@@ -16,32 +16,32 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * This is an Uhu logging Service. All Platforms have to use this service to enable
+ * This is an Uhu logging Zirk. All Platforms have to use this zirk to enable
  * logging on that platform.<p>
- * This service will listen at a particular port and accept the logging clients.
- * The logging client send the serialized Logging Message. The Service accepts the connection and
+ * This zirk will listen at a particular port and accept the logging clients.
+ * The logging client send the serialized Logging Message. The Zirk accepts the connection and
  * loads the serialized message into ReceiverQueue.
  */
 public class UhuLoggingService extends Thread {
     private static final Logger logger = LoggerFactory.getLogger(UhuLoggingService.class);
 
     /**
-     * TCP listening Port for the service
+     * TCP listening Port for the zirk
      */
     private final int listeningPort;
     /**
-     * Flag to start stop the Service
+     * Flag to start stop the Zirk
      */
     private boolean isRunning = false;
     /**
-     * Socket at which the Service is listening
+     * Socket at which the Zirk is listening
      */
     private ServerSocket serverSocket = null;
 
     /**
      * setup the port.
      *
-     * @param port at which the Service is listening for the clients to connect.
+     * @param port at which the Zirk is listening for the clients to connect.
      */
     public UhuLoggingService(final int port) {
         this.listeningPort = port;
@@ -49,7 +49,7 @@ public class UhuLoggingService extends Thread {
 
     @Override
     public void run() {
-        logger.info("Logging Service is being Started...");
+        logger.info("Logging Zirk is being Started...");
         try {
             while (isRunning) {
                 Socket clientSocket = serverSocket.accept();
@@ -72,7 +72,7 @@ public class UhuLoggingService extends Thread {
     }
 
     /**
-     * Starts the Logging Service
+     * Starts the Logging Zirk
      *
      * @throws IOException if socket is unavailable.
      */
@@ -83,7 +83,7 @@ public class UhuLoggingService extends Thread {
     }
 
     /**
-     * Stops the Logging Service
+     * Stops the Logging Zirk
      *
      * @throws Exception if there is an error while closing the server socket
      */

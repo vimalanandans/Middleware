@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.R;
@@ -30,7 +30,7 @@ import java.util.Map;
 public class DialogServiceListFragment extends DialogFragment {
 
     final IUhuSphereAPI sphereAPI = MainService.getSphereHandle();
-    final List<UhuServiceInfo> servicesToBeAdded = new ArrayList<UhuServiceInfo>();
+    final List<BezirkZirkInfo> servicesToBeAdded = new ArrayList<BezirkZirkInfo>();
     ListView listView;
     Button addBtn, cancelBtn;
     ArrayAdapter<String> arrayAdapter;
@@ -58,17 +58,17 @@ public class DialogServiceListFragment extends DialogFragment {
         getDialog().setTitle(title);
         getDialog().setCanceledOnTouchOutside(false);
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-        final List<UhuServiceInfo> serviceInfo = sphereAPI.getServiceInfo();
+        final List<BezirkZirkInfo> serviceInfo = sphereAPI.getServiceInfo();
         if (serviceInfo != null) {
             services = new String[serviceInfo.size()];
-            Iterator<UhuServiceInfo> serviceInfoIterator = serviceInfo.iterator();
+            Iterator<BezirkZirkInfo> serviceInfoIterator = serviceInfo.iterator();
             int i = 0;
             while (serviceInfoIterator.hasNext()) {
-                UhuServiceInfo uhuServiceInfo = serviceInfoIterator.next();
-                String temp = sharedPrefs.getString(uhuServiceInfo.getServiceId(), null);
-                services[i] = (temp == null) ? uhuServiceInfo.getServiceName() : temp;
+                BezirkZirkInfo bezirkZirkInfo = serviceInfoIterator.next();
+                String temp = sharedPrefs.getString(bezirkZirkInfo.getZirkId(), null);
+                services[i] = (temp == null) ? bezirkZirkInfo.getZirkName() : temp;
                 if (temp != null) {
-                    serviceDisplayNameToServiceName.put(temp, uhuServiceInfo.getServiceName());
+                    serviceDisplayNameToServiceName.put(temp, bezirkZirkInfo.getZirkName());
                 }
                 i++;
             }
@@ -85,8 +85,8 @@ public class DialogServiceListFragment extends DialogFragment {
                 for (int i = 0; i < len; i++)
                     if (checked.get(i)) {
                         String item = listView.getItemAtPosition(i).toString();
-                        if (serviceInfo.get(i).getServiceName().equals(item) ||
-                                serviceInfo.get(i).getServiceName().equals(serviceDisplayNameToServiceName.get(item))) {
+                        if (serviceInfo.get(i).getZirkName().equals(item) ||
+                                serviceInfo.get(i).getZirkName().equals(serviceDisplayNameToServiceName.get(item))) {
                             servicesToBeAdded.add(serviceInfo.get(i));
                         }
                     }

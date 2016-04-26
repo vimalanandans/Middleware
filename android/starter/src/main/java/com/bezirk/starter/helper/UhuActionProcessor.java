@@ -5,14 +5,14 @@ import android.content.Intent;
 import com.bezirk.sphere.api.IUhuDevMode;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuActionCommands;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Takes care of processing intent action based on type.
- * Handles service actions, send actions, stack actions and uhu device actions.
+ * Handles zirk actions, send actions, stack actions and uhu device actions.
  * <p/>
  * Created by AJC6KOR on 9/8/2015.
  */
@@ -35,7 +35,7 @@ public final class UhuActionProcessor {
 
         INTENT_ACTIONS intentAction = INTENT_ACTIONS.getActionUsingMessage(intent.getAction());
 
-        if (UhuValidatorUtility.isObjectNotNull(intentAction)) {
+        if (BezirkValidatorUtility.isObjectNotNull(intentAction)) {
 
             LOGGER.info("Intent Action > " + intentAction.message);
 
@@ -252,7 +252,7 @@ public final class UhuActionProcessor {
         static INTENT_ACTIONS getActionUsingMessage(String actionMessage) {
 
             for (INTENT_ACTIONS intentAction : INTENT_ACTIONS.values()) {
-                if (intentAction.message.equals(actionMessage) && UhuValidatorUtility.isObjectNotNull(intentAction.type)) {
+                if (intentAction.message.equals(actionMessage) && BezirkValidatorUtility.isObjectNotNull(intentAction.type)) {
                     return intentAction;
                 }
             }

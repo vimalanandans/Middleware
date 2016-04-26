@@ -7,7 +7,7 @@ import java.util.HashSet;
  */
 public class ServiceInformation {
 
-    //set of sphereID's the service is a part of
+    //set of sphereID's the zirk is a part of
     private HashSet<String> sphereSet;
     private ServiceVitals serviceVitals;
 

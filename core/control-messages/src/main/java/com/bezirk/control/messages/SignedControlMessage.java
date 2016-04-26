@@ -1,6 +1,6 @@
 package com.bezirk.control.messages;
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 import java.security.SignedObject;
 
@@ -18,7 +18,7 @@ public class SignedControlMessage extends UnicastControlMessage {
      * @param sphereID
      * @param discriminator
      */
-    public SignedControlMessage(UhuZirkEndPoint sender, UhuZirkEndPoint recipient, SignedObject signedObject, String sphereID,
+    public SignedControlMessage(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, SignedObject signedObject, String sphereID,
                                 Discriminator discriminator) {
 
         //retransmit is set to true since this SignedControlMessage is used for requests
@@ -37,7 +37,7 @@ public class SignedControlMessage extends UnicastControlMessage {
      * @param discriminator
      * @param key
      */
-    public SignedControlMessage(UhuZirkEndPoint sender, UhuZirkEndPoint recipient, SignedObject signedObject, String sphereID,
+    public SignedControlMessage(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, SignedObject signedObject, String sphereID,
                                 Discriminator discriminator, String key) {
         //super(sphereID, discriminator);
 

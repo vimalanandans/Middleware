@@ -1,7 +1,7 @@
 package com.bezirk.starter;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 
 import org.slf4j.Logger;
@@ -49,20 +49,20 @@ public class UhuSphereForSadlStub implements IUhuSphereForSadl {
     }
 
     @Override
-    public Iterable<String> getSphereMembership(final UhuZirkId serviceId) {
+    public Iterable<String> getSphereMembership(final BezirkZirkId serviceId) {
         final Set<String> spheres = new HashSet<String>();
         spheres.add("default sphere");
         return spheres;
     }
 
     @Override
-    public boolean isServiceInSphere(final UhuZirkId service, final String sphereId) {
+    public boolean isZirkInSphere(final BezirkZirkId service, final String sphereId) {
 
         return true;
     }
 
     @Override
-    public String getServiceName(final UhuZirkId serviceId) {
+    public String getZirkName(final BezirkZirkId serviceId) {
         // I see, used during sadl discovery
         logger.error("Interface not implemented > getZirkName.");
         return null;

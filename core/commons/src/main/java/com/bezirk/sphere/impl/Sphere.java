@@ -1,6 +1,6 @@
 package com.bezirk.sphere.impl;
 
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,9 +33,9 @@ public class Sphere implements Serializable {
     protected String sphereType;
     /**
      * Map maintains the services which belong to a particular device [device id
-     * : List of UhuZirkId]
+     * : List of BezirkZirkId]
      */
-    protected LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices;
+    protected LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices;
 
     public Sphere() {
     }
@@ -64,19 +64,19 @@ public class Sphere implements Serializable {
     /**
      * @return the deviceServices
      */
-    public final Map<String, ArrayList<UhuZirkId>> getDeviceServices() {
+    public final Map<String, ArrayList<BezirkZirkId>> getDeviceServices() {
         return deviceServices;
     }
 
     /**
      * @param deviceServices the deviceServices to set
      */
-    public final void setDeviceServices(LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices) {
+    public final void setDeviceServices(LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices) {
         this.deviceServices = deviceServices;
     }
 
     /**
-     * Adds a service to the deviceId passed
+     * Adds a zirk to the deviceId passed
      *
      * @param deviceId
      * @param service
@@ -84,12 +84,12 @@ public class Sphere implements Serializable {
      * @Deprecated use {@link #addService(String, String)}
      */
     @Deprecated
-    public final boolean addService(String deviceId, UhuZirkId service) {
-        return addService(deviceId, service.getUhuServiceId());
+    public final boolean addService(String deviceId, BezirkZirkId service) {
+        return addService(deviceId, service.getBezirkZirkId());
     }
 
     /**
-     * Adds a service to the deviceId passed
+     * Adds a zirk to the deviceId passed
      *
      * @param deviceId
      * @param service
@@ -105,7 +105,7 @@ public class Sphere implements Serializable {
         }
 
         if (serviceId == null) {
-            LOGGER.debug("addService: service is null ");
+            LOGGER.debug("addService: zirk is null ");
             return success;
         }
 
@@ -116,17 +116,17 @@ public class Sphere implements Serializable {
 
         // check if deviceId is not present in the map
         if (!deviceServices.containsKey(deviceId)) {
-            deviceServices.put(deviceId, new ArrayList<UhuZirkId>());
+            deviceServices.put(deviceId, new ArrayList<BezirkZirkId>());
         }
 
-        // add the service to the set of serviceId
-        ArrayList<UhuZirkId> serviceList = deviceServices.get(deviceId);
+        // add the zirk to the set of zirkId
+        ArrayList<BezirkZirkId> serviceList = deviceServices.get(deviceId);
 
-        UhuZirkId service = new UhuZirkId(serviceId);
+        BezirkZirkId service = new BezirkZirkId(serviceId);
 
         if (!serviceList.contains(service)) {
             serviceList.add(service);
-            LOGGER.debug("Service " + service + " added to sphere " + sphereName + "\ndevice Id " + deviceId);
+            LOGGER.debug("Zirk " + service + " added to sphere " + sphereName + "\ndevice Id " + deviceId);
         }
 
         success = true;
@@ -141,19 +141,19 @@ public class Sphere implements Serializable {
      * @param services
      * @return
      */
-    public final boolean addServices(String deviceId, Iterable<UhuZirkId> services) {
+    public final boolean addServices(String deviceId, Iterable<BezirkZirkId> services) {
         boolean success = false;
         if (deviceId != null && services != null && deviceServices != null) {
             // check if deviceId is not present in the map
             if (!deviceServices.containsKey(deviceId)) {
-                deviceServices.put(deviceId, new ArrayList<UhuZirkId>());
+                deviceServices.put(deviceId, new ArrayList<BezirkZirkId>());
             }
-            // add all the services to the set of serviceId
-            ArrayList<UhuZirkId> serviceList = deviceServices.get(deviceId);
-            for (UhuZirkId serviceId : services) {
+            // add all the services to the set of zirkId
+            ArrayList<BezirkZirkId> serviceList = deviceServices.get(deviceId);
+            for (BezirkZirkId serviceId : services) {
                 if (!serviceList.contains(serviceId)) {
                     serviceList.add(serviceId);
-                    LOGGER.debug("Service " + serviceId + " added to sphere " + sphereName);
+                    LOGGER.debug("Zirk " + serviceId + " added to sphere " + sphereName);
                 }
             }
             success = true;
@@ -162,16 +162,16 @@ public class Sphere implements Serializable {
     }
 
     /**
-     * Removes a service from the sphere
+     * Removes a zirk from the sphere
      * <p/>
-     * //TODO : What happens if this service is a part of a sphere owned by
-     * another device. If we remove the service we need to inform the owner
+     * //TODO : What happens if this zirk is a part of a sphere owned by
+     * another device. If we remove the zirk we need to inform the owner
      * about the change. What if the owner is not available?
      *
      * @param service
      * @return
      */
-    public final boolean removeService(UhuZirkId service) {
+    public final boolean removeService(BezirkZirkId service) {
         return false;
     }
 

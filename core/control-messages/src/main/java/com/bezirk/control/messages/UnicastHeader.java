@@ -1,16 +1,16 @@
 package com.bezirk.control.messages;
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 public class UnicastHeader extends Header {
-    //TODO: Move UhuZirkEndPoint to Java-Common
-    private UhuZirkEndPoint recipient;
+    //TODO: Move BezirkZirkEndPoint to Java-Common
+    private BezirkZirkEndPoint recipient;
 
-    public UhuZirkEndPoint getRecipient() {
+    public BezirkZirkEndPoint getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(UhuZirkEndPoint recipient) {
+    public void setRecipient(BezirkZirkEndPoint recipient) {
         this.recipient = recipient;
     }
 }

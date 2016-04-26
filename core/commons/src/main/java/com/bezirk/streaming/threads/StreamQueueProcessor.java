@@ -11,7 +11,7 @@ import com.bezirk.sadl.ISadlEventReceiver;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.control.Objects.StreamRecord.StreamingStatus;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +51,7 @@ public class StreamQueueProcessor implements Runnable {
     /**
      * This thread is blocking and will be notified when there are any {@link StreamRecord} in the queue. It pops the {@link StreamRecord} from the queue
      * and checks  {@link StreamingStatus} of the {@link StreamRecord}.If {@link StreamingStatus} is {@link StreamingStatus#READY} , it spawns a  {@link StreamSendingThread}.
-     * If {@link StreamingStatus} is {@link StreamingStatus#BUSY} then a notification has to be given back to the service via onError() ( yet to be implemented ).
+     * If {@link StreamingStatus} is {@link StreamingStatus#BUSY} then a notification has to be given back to the zirk via onError() ( yet to be implemented ).
      * The {@link StreamRecord} is removed from the stream queue}
      *
      * @see java.lang.Runnable#run()
@@ -70,7 +70,7 @@ public class StreamQueueProcessor implements Runnable {
             List<Ledger> streamQueue = new CopyOnWriteArrayList<Ledger>(
                     msgQueue.getQueue()); // pop the Stream record
             Iterator<Ledger> it = streamQueue.iterator();
-            if (UhuValidatorUtility.isObjectNotNull(sadlReceiver)) {
+            if (BezirkValidatorUtility.isObjectNotNull(sadlReceiver)) {
 
                 uhuCallbackPresent = true;
 
@@ -100,10 +100,10 @@ public class StreamQueueProcessor implements Runnable {
     private void processStreamBusyMessage(boolean uhuCallbackPresent,
                                           StreamRecord streamRecord) {
 
-        logger.debug("The Receipient is Busy, Giving Callback to the Service");
+        logger.debug("The Receipient is Busy, Giving Callback to the Zirk");
 
         StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
-                streamRecord.senderSEP.serviceId, 0, streamRecord.localStreamId);
+                streamRecord.senderSEP.zirkId, 0, streamRecord.localStreamId);
 
         if (uhuCallbackPresent) {
             sadlReceiver.processStreamStatus(streamStatusMessage);
@@ -118,7 +118,7 @@ public class StreamQueueProcessor implements Runnable {
 
         } else {
 
-            if (UhuValidatorUtility.isObjectNotNull(sphereForSadl)) {
+            if (BezirkValidatorUtility.isObjectNotNull(sphereForSadl)) {
 
                 new Thread(new StreamSendingThread(streamRecord, sadlReceiver, sphereForSadl)).start();                       // spawn the thread
             } else {
@@ -132,7 +132,7 @@ public class StreamQueueProcessor implements Runnable {
                                            StreamRecord streamRecord) {
         // GIVE THE CALLBACK AS SUCCESS FOR THE SENDER
         StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
-                streamRecord.senderSEP.serviceId, 1, streamRecord.localStreamId);
+                streamRecord.senderSEP.zirkId, 1, streamRecord.localStreamId);
         if (uhuCallbackPresent) {
 
             sadlReceiver.processStreamStatus(streamStatusMessage);
@@ -140,7 +140,7 @@ public class StreamQueueProcessor implements Runnable {
         }
         // GIVE CALLBACK FOR RECIPIENT
         StreamIncomingMessage uStreamCallbackMsg = new StreamIncomingMessage(
-                streamRecord.recipientSEP.serviceId, streamRecord.streamTopic,
+                streamRecord.recipientSEP.zirkId, streamRecord.streamTopic,
                 streamRecord.serializedStream, streamRecord.file,
                 streamRecord.localStreamId, streamRecord.senderSEP);
 

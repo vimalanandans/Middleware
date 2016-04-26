@@ -1,10 +1,10 @@
 package com.bezirk.sphere.api;
 
-import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.UhuPipeInfo;
-import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.google.zxing.common.BitMatrix;
 
 import java.util.List;
@@ -62,19 +62,19 @@ public interface IUhuSphereAPI {
      * Get all the devices visible/authorized to this device uhu *
      *
      * @return : Iterator device info
-     * @deprecated : {@link UhuDeviceInfo} is available inside
-     * {@link UhuServiceInfo} which can be retrieved using
+     * @deprecated : {@link BezirkDeviceInfo} is available inside
+     * {@link BezirkZirkInfo} which can be retrieved using
      * {@link #getSpheres()}
      */
     @Deprecated
-    public Iterable<UhuDeviceInfo> getDevicesOnSphere(String sphereId);
+    public Iterable<BezirkDeviceInfo> getDevicesOnSphere(String sphereId);
 
     /**
      * Get all the pipes visible/authorized to this device uhu *
      *
      * @return : Iterable pipe info
      * @deprecated : {@link UhuPipeInfo} is available inside
-     * {@link UhuServiceInfo} which can be retrieved using
+     * {@link BezirkZirkInfo} which can be retrieved using
      * {@link #getSpheres()}
      */
     @Deprecated
@@ -87,7 +87,7 @@ public interface IUhuSphereAPI {
      * @param sphereId
      * @return Iterable device info
      */
-    public Iterable<UhuDeviceInfo> getOtherDevices(String sphereId);
+    public Iterable<BezirkDeviceInfo> getOtherDevices(String sphereId);
 
     /**
      * Add services to sphere (Add the local services to a sphere owned by the
@@ -101,8 +101,8 @@ public interface IUhuSphereAPI {
      * Listener
      * @deprecated: use {@link #addLocalServicesToSphere(String, Iterable)}
      */
-    @Deprecated // UI has UhuServiceInfo not UhuZirkId
-    public boolean addLocalServicesToSphere(Iterable<UhuZirkId> serviceIds, String sphereId);
+    @Deprecated // UI has BezirkZirkInfo not BezirkZirkId
+    public boolean addLocalServicesToSphere(Iterable<BezirkZirkId> serviceIds, String sphereId);
 
     /**
      * Add services to sphere (Add the local services to a sphere owned by the
@@ -115,7 +115,7 @@ public interface IUhuSphereAPI {
      * @return: true if request is accepted to process. Task completion via
      * Listener
      */
-    public boolean addLocalServicesToSphere(String sphereId, Iterable<UhuServiceInfo> serviceInfo);
+    public boolean addLocalServicesToSphere(String sphereId, Iterable<BezirkZirkInfo> serviceInfo);
 
     /**
      * Add the local services (from default sphere) to the given sphere
@@ -123,10 +123,10 @@ public interface IUhuSphereAPI {
     public boolean addLocalServicesToSphere(String sphereId);
 
     /**
-     * request the service to leave the sphere
+     * request the zirk to leave the sphere
      *
-     * @param: serviceId
-     * of Service
+     * @param: zirkId
+     * of Zirk
      * @param: sphereId
      * of sphere
      * @return: true if request is accepted to process. Task completion via
@@ -135,24 +135,24 @@ public interface IUhuSphereAPI {
     public boolean serviceLeaveRequest(String serviceId, String sphereId);
 
     /**
-     * Expel service from sphere
+     * Expel zirk from sphere
      *
-     * @param: serviceId
-     * of Service
+     * @param: zirkId
+     * of Zirk
      * @param: sphereId
      * of sphere
      * @return: true if request is accepted to process. Task completion via
      * Listener
      * @deprecated use {@link #expelDeviceFromSphere(String, String)}
      */
-    @Deprecated // concept is always expel the device from service
+    @Deprecated // concept is always expel the device from zirk
     public boolean expelServiceFromSphere(String serviceId, String sphereId);
 
     /**
-     * Expel service from sphere
+     * Expel zirk from sphere
      *
-     * @param: serviceId
-     * of Service
+     * @param: zirkId
+     * of Zirk
      * @param: sphereId
      * of sphere
      * @return: true if request is accepted to process. Task completion via
@@ -208,6 +208,6 @@ public interface IUhuSphereAPI {
 
     public boolean discoverSphere(String sphereId);
 
-    public List<UhuServiceInfo> getServiceInfo();
+    public List<BezirkZirkInfo> getServiceInfo();
 
 }

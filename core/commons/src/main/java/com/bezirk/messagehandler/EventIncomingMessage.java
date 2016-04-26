@@ -1,7 +1,7 @@
 package com.bezirk.messagehandler;
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 
 /**
@@ -10,9 +10,9 @@ import com.bezirk.proxy.api.impl.UhuZirkId;
 public final class EventIncomingMessage extends ServiceIncomingMessage {
 
     /**
-     * UhuZirkEndPoint of the the recipient.
+     * BezirkZirkEndPoint of the the recipient.
      */
-    public UhuZirkEndPoint senderSEP;
+    public BezirkZirkEndPoint senderSEP;
     /**
      * Serialized Topic
      */
@@ -22,7 +22,7 @@ public final class EventIncomingMessage extends ServiceIncomingMessage {
      */
     public String eventTopic;
     /**
-     * unique msg id for each event. This is useful to avoid duplicates at ProxyForUhu side when a service is residing in multiple spheres.
+     * unique msg id for each event. This is useful to avoid duplicates at ProxyForUhu side when a zirk is residing in multiple spheres.
      */
     public String msgId;
 
@@ -30,7 +30,7 @@ public final class EventIncomingMessage extends ServiceIncomingMessage {
         callbackDiscriminator = "EVENT";
     }
 
-    public EventIncomingMessage(UhuZirkId recipientId, UhuZirkEndPoint senderSEP, String serialzedEvent, String eventTopic, String msgId) {
+    public EventIncomingMessage(BezirkZirkId recipientId, BezirkZirkEndPoint senderSEP, String serialzedEvent, String eventTopic, String msgId) {
         super();
         callbackDiscriminator = "EVENT";
         recipient = recipientId;

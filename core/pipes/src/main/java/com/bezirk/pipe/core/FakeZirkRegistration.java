@@ -2,9 +2,9 @@ package com.bezirk.pipe.core;
 
 import java.util.Random;
 
-public final class FakeServiceRegistration {
+public final class FakeZirkRegistration {
 
-    private FakeServiceRegistration() {
+    private FakeZirkRegistration() {
         // intentional private constructor to prevent instantiation of this utility class
     }
 

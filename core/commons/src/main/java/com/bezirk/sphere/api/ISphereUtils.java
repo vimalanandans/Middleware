@@ -3,9 +3,9 @@
  */
 package com.bezirk.sphere.api;
 
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.impl.DeviceInformation;
 import com.google.zxing.common.BitMatrix;
 
@@ -15,9 +15,9 @@ import com.google.zxing.common.BitMatrix;
 public interface ISphereUtils {
 
     /**
-     * Checks if the service is a local service
+     * Checks if the zirk is a local zirk
      *
-     * @param deviceId : service owner deviceId
+     * @param deviceId : zirk owner deviceId
      * @return
      */
     public boolean isServiceLocal(String deviceId);
@@ -28,7 +28,7 @@ public interface ISphereUtils {
      * @param serviceIds
      * @return
      */
-    public boolean validateServices(Iterable<UhuZirkId> serviceIds);
+    public boolean validateServices(Iterable<BezirkZirkId> serviceIds);
 
     /**
      * Add the member services
@@ -36,15 +36,15 @@ public interface ISphereUtils {
 
     public DeviceInformation getDeviceInformation(String deviceId);
 
-    public boolean addMemberServices(UhuDeviceInfo uhuDeviceInfo, String sphereId, String ownerDeviceId);
+    public boolean addMemberServices(BezirkDeviceInfo bezirkDeviceInfo, String sphereId, String ownerDeviceId);
 
-    public boolean addLocalServicesToSphere(String sphereId, Iterable<UhuServiceInfo> serviceInfos);
+    public boolean addLocalServicesToSphere(String sphereId, Iterable<BezirkZirkInfo> serviceInfos);
 
-    public boolean addLocalServicesToSphere(Iterable<UhuZirkId> serviceIds, String sphereId);
+    public boolean addLocalServicesToSphere(Iterable<BezirkZirkId> serviceIds, String sphereId);
 
     public boolean addLocalServicesToSphere(String sphereId);
 
-    public Iterable<UhuServiceInfo> getUhuServiceInfo(Iterable<UhuZirkId> services);
+    public Iterable<BezirkZirkInfo> getUhuServiceInfo(Iterable<BezirkZirkId> services);
 
     public String getShareCode(String sphereId);
 

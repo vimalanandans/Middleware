@@ -47,7 +47,7 @@ public class BezirkRestRequestHandler extends DefaultHandler {
 
     @Override
     public String getText() {
-        logger.debug("Called GET service to BEzirkRestRequestHandler!!!, Feature not supported");
+        logger.debug("Called GET zirk to BEzirkRestRequestHandler!!!, Feature not supported");
         return "Not Yet Implemented!!";
     }
 
@@ -222,7 +222,7 @@ public class BezirkRestRequestHandler extends DefaultHandler {
 		 * 
 		 * 202
 		 * Content-Type: application/json
-		 * Location: /bezirk/service/response/123456789
+		 * Location: /bezirk/zirk/response/123456789
 		 * Wait: 5000
 		 * Push:true // retry at certain intervals
 		 * 
@@ -233,7 +233,7 @@ public class BezirkRestRequestHandler extends DefaultHandler {
 
         //set the response as discussed!!!
         NanoHTTPD.Response res = NanoHTTPD.newFixedLengthResponse(getStatus(), getMimeType(), "");
-        res.addHeader("response_uri", "/bezirk/service/response/" + text);
+        res.addHeader("response_uri", "/bezirk/zirk/response/" + text);
         res.addHeader("response_wait", "5000");
         res.addHeader("response_retry", "5000");
 

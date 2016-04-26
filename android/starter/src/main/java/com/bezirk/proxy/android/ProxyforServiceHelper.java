@@ -5,9 +5,9 @@ import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.middleware.messages.Stream;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.streaming.control.Objects.StreamRecord;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -26,8 +26,8 @@ class ProxyforServiceHelper {
         final String sphereName = sphereIterator.next();
         final ControlLedger tcMessage = new ControlLedger();
         tcMessage.setSphereId(sphereName);
-        UhuZirkEndPoint senderSEP = streamRecord.senderSEP;
-        UhuZirkEndPoint receiver = streamRecord.recipientSEP;
+        BezirkZirkEndPoint senderSEP = streamRecord.senderSEP;
+        BezirkZirkEndPoint receiver = streamRecord.recipientSEP;
         String serializedStream = streamRecord.serializedStream;
         String streamTopic = streamRecord.streamTopic;
         short streamId = streamRecord.localStreamId;
@@ -39,7 +39,7 @@ class ProxyforServiceHelper {
         return tcMessage;
     }
 
-    StreamRecord prepareStreamRecord(UhuZirkEndPoint receiver, String serializedStream, File file, short streamId, UhuZirkEndPoint senderSEP, Stream stream) {
+    StreamRecord prepareStreamRecord(BezirkZirkEndPoint receiver, String serializedStream, File file, short streamId, BezirkZirkEndPoint senderSEP, Stream stream) {
         final StreamRecord streamRecord = new StreamRecord();
         streamRecord.localStreamId = streamId;
         streamRecord.senderSEP = senderSEP;
@@ -58,11 +58,11 @@ class ProxyforServiceHelper {
         return streamRecord;
     }
 
-    String getSphereId(UhuZirkEndPoint receiver, Iterator<String> sphereIterator) {
+    String getSphereId(BezirkZirkEndPoint receiver, Iterator<String> sphereIterator) {
         String sphereId = null;
         while (sphereIterator.hasNext()) {
             sphereId = sphereIterator.next();
-            if (UhuCompManager.getSphereForSadl().isServiceInSphere(receiver.getUhuServiceId(), sphereId)) {
+            if (UhuCompManager.getSphereForSadl().isZirkInSphere(receiver.getBezirkZirkId(), sphereId)) {
                 log.debug("Found the sphere:" + sphereId);
                 break;
             }
@@ -73,7 +73,7 @@ class ProxyforServiceHelper {
     void sendStreamToSpheres(Iterator<String> sphereIterator, String streamRequestKey, StreamRecord streamRecord, File tempFile, IUhuComms comms) {
         while (sphereIterator.hasNext()) {
             final ControlLedger tcMessage = prepareMessage(sphereIterator, streamRequestKey, streamRecord, tempFile);
-            if (UhuValidatorUtility.isObjectNotNull(comms)) {
+            if (BezirkValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(tcMessage);
             } else {
                 log.error("Comms manager not initialized");

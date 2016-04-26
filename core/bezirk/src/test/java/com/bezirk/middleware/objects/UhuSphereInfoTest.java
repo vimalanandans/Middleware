@@ -1,6 +1,6 @@
 package com.bezirk.middleware.objects;
 
-import com.bezirk.middleware.objects.UhuDeviceInfo.UhuDeviceRole;
+import com.bezirk.middleware.objects.BezirkDeviceInfo.UhuDeviceRole;
 
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class UhuSphereInfoTest {
         String sphereID = "Sphere24";
         String sphereName = "HomeSphere";
         String sphereType = "OwnerSphere";
-        ArrayList<com.bezirk.middleware.objects.UhuDeviceInfo> deviceList = getDeviceList();
+        ArrayList<BezirkDeviceInfo> deviceList = getDeviceList();
         ArrayList<com.bezirk.middleware.objects.UhuPipeInfo> pipeList = getPipeList();
         com.bezirk.middleware.objects.UhuSphereInfo uhuSphereInfo = new com.bezirk.middleware.objects.UhuSphereInfo(sphereID, sphereName,
                 sphereType, deviceList, pipeList);
@@ -56,26 +56,26 @@ public class UhuSphereInfoTest {
     }
 
 
-    private ArrayList<com.bezirk.middleware.objects.UhuDeviceInfo> getDeviceList() {
+    private ArrayList<BezirkDeviceInfo> getDeviceList() {
         String deviceId = "Device123";
         String deviceName = "DeviceA";
         String deviceType = "PC";
         UhuDeviceRole deviceRole = UhuDeviceRole.UHU_MEMBER;
         boolean deviceActive = true;
-        String serviceName = "ServiceA";
-        String serviceId = "Service123";
-        String serviceType = "MemberService";
+        String zirkName = "ZirkA";
+        String zirkId = "Zirk123";
+        String zirkType = "MemberZirk";
         boolean active = true;
         boolean visible = true;
-        com.bezirk.middleware.objects.UhuServiceInfo uhuServiceInfo = new com.bezirk.middleware.objects.UhuServiceInfo(serviceId, serviceName, serviceType, active, visible);
-        List<UhuServiceInfo> services = new ArrayList<>();
-        services.add(uhuServiceInfo);
+        BezirkZirkInfo bezirkZirkInfo = new BezirkZirkInfo(zirkId, zirkName, zirkType, active, visible);
+        List<BezirkZirkInfo> zirks = new ArrayList<>();
+        zirks.add(bezirkZirkInfo);
 
-        com.bezirk.middleware.objects.UhuDeviceInfo uhuDeviceInfo = new com.bezirk.middleware.objects.UhuDeviceInfo(deviceId, deviceName,
-                deviceType, deviceRole, deviceActive, services);
+        BezirkDeviceInfo bezirkDeviceInfo = new BezirkDeviceInfo(deviceId, deviceName,
+                deviceType, deviceRole, deviceActive, zirks);
 
-        ArrayList<com.bezirk.middleware.objects.UhuDeviceInfo> deviceList = new ArrayList<UhuDeviceInfo>();
-        deviceList.add(uhuDeviceInfo);
+        ArrayList<BezirkDeviceInfo> deviceList = new ArrayList<BezirkDeviceInfo>();
+        deviceList.add(bezirkDeviceInfo);
 
         return deviceList;
     }

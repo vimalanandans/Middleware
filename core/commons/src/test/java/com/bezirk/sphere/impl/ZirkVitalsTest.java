@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
  *
  * @author AJC6KOR
  */
-public class ServiceVitalsTest {
+public class ZirkVitalsTest {
 
     @Test
     public void test() {

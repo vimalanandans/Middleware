@@ -15,7 +15,7 @@ import java.net.Socket;
 
 /**
  * Processes the LogSenderQueue. It makes a blocking call on the Log sender Queue and waits for the queue to be updated.
- * It retrieve the String from the LogSenderQueue and pushes the message onto the Logging Service
+ * It retrieve the String from the LogSenderQueue and pushes the message onto the Logging Zirk
  * and removes it from the queue.
  */
 public class LogSenderQueueProcessor extends Thread {
@@ -24,11 +24,11 @@ public class LogSenderQueueProcessor extends Thread {
      */
     private static final Logger log = LoggerFactory.getLogger(LogSenderQueueProcessor.class);
     /**
-     * Logging Service IP. This will set based on the LoggingMessage from the Logging service.
+     * Logging Zirk IP. This will set based on the LoggingMessage from the Logging zirk.
      */
     private final String remoteServiceIP;
     /**
-     * Logging Service Port. This will set based on the LoggingMessage from the Logging service.
+     * Logging Zirk Port. This will set based on the LoggingMessage from the Logging zirk.
      */
     private final int remoteServicePort;
     /**
@@ -37,10 +37,10 @@ public class LogSenderQueueProcessor extends Thread {
     private boolean isRunning = false;
 
     /**
-     * Setup the Logging Service Parameters
+     * Setup the Logging Zirk Parameters
      *
-     * @param remoteServiceIP IP address of the Logging Service
-     * @param remotePort      Logging Service Port
+     * @param remoteServiceIP IP address of the Logging Zirk
+     * @param remotePort      Logging Zirk Port
      */
     public LogSenderQueueProcessor(String remoteServiceIP, int remotePort) {
         this.remoteServiceIP = remoteServiceIP;
@@ -80,7 +80,7 @@ public class LogSenderQueueProcessor extends Thread {
     /**
      * Starts Processing the Log Sender Queue
      *
-     * @throws Exception if Logging Service is down and unable to connect
+     * @throws Exception if Logging Zirk is down and unable to connect
      */
     public void startProcesing() throws Exception {
         isRunning = true;

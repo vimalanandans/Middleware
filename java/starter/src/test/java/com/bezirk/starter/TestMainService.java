@@ -1,6 +1,6 @@
 package com.bezirk.starter;
 
-import com.bezirk.messagehandler.ServiceMessageHandler;
+import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.proxy.pc.ProxyforServices;
 import com.bezirk.util.MockSetUpUtilityForUhuPC;
 
@@ -42,7 +42,7 @@ public class TestMainService {
 
         //testStartStack();
 
-        //FIXME: in stop stack main service returns null in jenkin buildm where as local build runs smooth.
+        //FIXME: in stop stack main zirk returns null in jenkin buildm where as local build runs smooth.
         //testStopStack();
 
         //testReboot();
@@ -62,7 +62,7 @@ public class TestMainService {
         /** DisplayEnable - true  */
         //System.setProperty("displayEnable", "true");
         com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyforServices, uhuConfigRef);
-        ServiceMessageHandler testMock = Mockito.mock(ServiceMessageHandler.class);
+        ZirkMessageHandler testMock = Mockito.mock(ZirkMessageHandler.class);
         mainService.startStack(testMock);
 
         assertNotNull("sphere not initialized in startStack.", mainService.sphereForPC);
@@ -94,7 +94,7 @@ public class TestMainService {
         com.bezirk.starter.UhuConfig uhuConfigRef = new com.bezirk.starter.UhuConfig();
         uhuConfigRef.setDisplayEnable("false");
         com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyforServices, uhuConfigRef);
-        ServiceMessageHandler testMock = Mockito.mock(ServiceMessageHandler.class);
+        ZirkMessageHandler testMock = Mockito.mock(ZirkMessageHandler.class);
         mainService.startStack(testMock);
 
         mainService.stopStack();
@@ -113,7 +113,7 @@ public class TestMainService {
         com.bezirk.starter.UhuConfig uhuConfigRef = new UhuConfig();
         uhuConfigRef.setDisplayEnable("false");
         com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyforServices, uhuConfigRef);
-        mainService.startStack(Mockito.mock(ServiceMessageHandler.class));
+        mainService.startStack(Mockito.mock(ZirkMessageHandler.class));
 
         mainService.reboot();
         assertNotNull("sphere not intialized after reboot.", mainService.sphereForPC);

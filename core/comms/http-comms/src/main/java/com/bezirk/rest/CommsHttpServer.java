@@ -85,13 +85,13 @@ public class CommsHttpServer extends RouterNanoHTTPD {
         super.addMappings();
         //addRoute("/bezirk", BezirkRestHandler.class);
         //this is the route which handles the request..
-        addRoute("/bezirk/service", BezirkRestRequestHandler.class);
+        addRoute("/bezirk/zirk", BezirkRestRequestHandler.class);
 
         //call the constructor, Should this be done ? cross check again ??
         new BezirkRestRequestHandler();
 
         //reponse route
-        addRoute("/bezirk/service/response/:eventMsgId", BezirkRestResponseHandler.class);
+        addRoute("/bezirk/zirk/response/:eventMsgId", BezirkRestResponseHandler.class);
 
     }
 

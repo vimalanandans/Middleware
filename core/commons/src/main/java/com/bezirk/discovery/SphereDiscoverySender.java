@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 import ControlLedger;
 import DiscoveryRequest;
 import UhuNetworkUtilities;
-import UhuZirkEndPoint;
-import UhuZirkId;
-import UhuValidatorUtility;*/
+import BezirkZirkEndPoint;
+import BezirkZirkId;
+import BezirkValidatorUtility;*/
 
 /**
  * FIXME: Unused module. removed it - Vimal
@@ -19,14 +19,14 @@ import UhuValidatorUtility;*/
 
 	
 	public SphereDiscoverySender(final String sphere, final int discoveryId, final long timeout, final int maxDiscovered) throws Exception{
-		 if(!UhuValidatorUtility.checkForString(sphere)){
+		 if(!BezirkValidatorUtility.checkForString(sphere)){
 	            logger.error( "sphere name is null, Dropping discovery request from User");
 	            throw new IllegalArgumentException("sphere name is null, Dropping discovery request from User");
 	        }
 	        final String serviceIdStr = "______SPHERESCANNER#2";
-	        final UhuZirkId serviceId = new UhuZirkId(serviceIdStr);
+	        final BezirkZirkId zirkId = new BezirkZirkId(serviceIdStr);
 	        final ControlLedger transControlMessage = new ControlLedger();
-	        final UhuZirkEndPoint sender = UhuNetworkUtilities.getZirkEndPoint(serviceId);
+	        final BezirkZirkEndPoint sender = UhuNetworkUtilities.getZirkEndPoint(zirkId);
 	        final DiscoveryRequest discoveryRequest = new DiscoveryRequest(sphere,sender,null,null,discoveryId,timeout,maxDiscovered);
 	        transControlMessage.setMessage(discoveryRequest);
 	        transControlMessage.setSphereId(sphere);

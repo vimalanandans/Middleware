@@ -5,8 +5,8 @@ package com.bezirk.sphere.messages;
 
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.MulticastControlMessage;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 /**
  * @author rishabh
@@ -21,15 +21,15 @@ public class ShareRequest extends MulticastControlMessage {
      * ensure that only S1 and S2 are added since this device only owns these 2
      * services
      * <p/>
-     * Due to this currently only one UhuDeviceInfo is required. If we need to
-     * extend the concept, we could move towards a List of UhuDeviceInfo's
+     * Due to this currently only one BezirkDeviceInfo is required. If we need to
+     * extend the concept, we could move towards a List of BezirkDeviceInfo's
      */
-    private final UhuDeviceInfo uhuDeviceInfo;
+    private final BezirkDeviceInfo bezirkDeviceInfo;
     private final String sharerSphereId;
 
     /**
      * @param shortCode       short code of the device sharing its sphere - Has to be non-null.
-     * @param uhuDeviceInfo   - Has to be non-null.
+     * @param bezirkDeviceInfo   - Has to be non-null.
      * @param sender          - Has to be non-null.
      * @param sharerSphereId: sphereId of the sphere which is sharing its services, required
      *                        in order to complete the process when the ShareResponse is
@@ -38,23 +38,23 @@ public class ShareRequest extends MulticastControlMessage {
      *                        the services. In order to add the services from the sphereId
      *                        which is sharing the services into the new sphere. Has to be non-null.
      */
-    public ShareRequest(String shortCode, UhuDeviceInfo uhuDeviceInfo, UhuZirkEndPoint sender,
+    public ShareRequest(String shortCode, BezirkDeviceInfo bezirkDeviceInfo, BezirkZirkEndPoint sender,
                         String sharerSphereId) {
         super(sender, shortCode, discriminator);
         // null checks for sender and shortCode added here because call to the
         // super method has to be the first line in a constructor.
-        if (shortCode == null || uhuDeviceInfo == null || sender == null || sharerSphereId == null) {
+        if (shortCode == null || bezirkDeviceInfo == null || sender == null || sharerSphereId == null) {
             throw new IllegalArgumentException("Paramters of the constructor have to be non-null");
         }
-        this.uhuDeviceInfo = uhuDeviceInfo;
+        this.bezirkDeviceInfo = bezirkDeviceInfo;
         this.sharerSphereId = sharerSphereId;
     }
 
     /**
-     * @return the uhuDeviceInfo
+     * @return the bezirkDeviceInfo
      */
-    public final UhuDeviceInfo getUhuDeviceInfo() {
-        return uhuDeviceInfo;
+    public final BezirkDeviceInfo getBezirkDeviceInfo() {
+        return bezirkDeviceInfo;
     }
 
     public String getSharerSphereId() {

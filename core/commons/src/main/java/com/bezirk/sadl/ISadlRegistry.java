@@ -2,52 +2,52 @@ package com.bezirk.sadl;
 
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 /**
  * Platform Independent API's for SADL that are used to manipulate the SADL Maps.
  */
 public interface ISadlRegistry {
     /**
-     * Registers a UPA Service with UhuZirkId in SADL.
+     * Registers a UPA Zirk with BezirkZirkId in SADL.
      *
-     * @param serviceId UhuZirkId of the registering Service.
+     * @param serviceId BezirkZirkId of the registering Zirk.
      * @return true is successful, false otherwise.
      */
-    public Boolean registerService(final UhuZirkId serviceId);
+    public Boolean registerService(final BezirkZirkId serviceId);
 
     /**
      * Subscribes the UhuService to SADL.
      *
-     * @param serviceId UhuZirkId of the subscribing UPAService
-     * @param pRole     SubscribedRole of the subscribing Service
+     * @param serviceId BezirkZirkId of the subscribing UPAService
+     * @param pRole     SubscribedRole of the subscribing Zirk
      * @return true if successful, false otherwise.
      */
-    public Boolean subscribeService(final UhuZirkId serviceId, final ProtocolRole pRole);
+    public Boolean subscribeService(final BezirkZirkId serviceId, final ProtocolRole pRole);
 
     /**
-     * Unsubscribes the Service from the SADL.
+     * Unsubscribes the Zirk from the SADL.
      *
-     * @param serviceId UhuZirkId of the Unsubscribing Service
-     * @param role      SubscribedRole of the Service
+     * @param serviceId BezirkZirkId of the Unsubscribing Zirk
+     * @param role      SubscribedRole of the Zirk
      * @return true if successful, false otherwise
      */
-    public Boolean unsubscribe(final UhuZirkId serviceId, final ProtocolRole role);
+    public Boolean unsubscribe(final BezirkZirkId serviceId, final ProtocolRole role);
 
     /**
-     * Un-Registers the Service from SADL.
+     * Un-Registers the Zirk from SADL.
      *
-     * @param serviceId UhuZirkId of the UnRegistering Service
+     * @param serviceId BezirkZirkId of the UnRegistering Zirk
      * @return true if successful, false otherwise
      */
-    public Boolean unregisterService(final UhuZirkId serviceId);
+    public Boolean unregisterService(final BezirkZirkId serviceId);
 
     /**
-     * Update the location of the UPA Service
+     * Update the location of the UPA Zirk
      *
-     * @param serviceId UhuZirkId of the unregistering service
+     * @param serviceId BezirkZirkId of the unregistering zirk
      * @param location  Location of the UhuService
      * @return true if successful, false otherwise
      */
-    public Boolean setLocation(final UhuZirkId serviceId, final Location location);
+    public Boolean setLocation(final BezirkZirkId serviceId, final Location location);
 }

@@ -7,7 +7,7 @@ import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.remotelogging.manager.UhuLoggingManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
 import com.bezirk.remotelogging.status.LoggingStatus;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +16,8 @@ import java.util.Arrays;
 
 
 /**
- * Handles the LogMessage received from the Log Service. It activates/Deactivates/Updates
- * the logging service properties for the client to logger the data.
+ * Handles the LogMessage received from the Log Zirk. It activates/Deactivates/Updates
+ * the logging zirk properties for the client to logger the data.
  */
 public final class LogServiceMessageHandler {
     private static final Logger logger = LoggerFactory.getLogger(LogServiceMessageHandler.class);
@@ -33,7 +33,7 @@ public final class LogServiceMessageHandler {
      * @param loggingServiceMsg
      */
     public void handleLogServiceMessage(final LoggingServiceMessage loggingServiceMsg) {
-        if (UhuValidatorUtility.checkLoggingServiceMessage(loggingServiceMsg)) {
+        if (BezirkValidatorUtility.checkLoggingServiceMessage(loggingServiceMsg)) {
             if (loggingServiceMsg.isLoggingStatus()) {//Start or Update the client
                 if (null == loggingManager) {
                     loggingManager = new UhuLoggingManager();
@@ -46,7 +46,7 @@ public final class LogServiceMessageHandler {
                 FilterLogMessages.setLoggingSphereList(Arrays.asList(loggingServiceMsg.getSphereList()));
                 LoggingStatus.setLoggingEnabled(loggingServiceMsg.isLoggingStatus());
             } else {
-                if (UhuValidatorUtility.isObjectNotNull(loggingManager)) {
+                if (BezirkValidatorUtility.isObjectNotNull(loggingManager)) {
                     try {
                         loggingManager.stopLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(), loggingServiceMsg.getRemoteLoggingServicePort());
                         loggingManager = null;
@@ -61,7 +61,7 @@ public final class LogServiceMessageHandler {
             }
             //LoggingStatus.setLoggingEnabled(loggingServiceMsg.isLoggingStatus());
         } else {
-            logger.error("Logging Service Message failed Validation");
+            logger.error("Logging Zirk Message failed Validation");
         }
     }
 

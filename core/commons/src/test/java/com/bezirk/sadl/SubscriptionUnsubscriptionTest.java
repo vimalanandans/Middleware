@@ -2,8 +2,8 @@ package com.bezirk.sadl;
 
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -24,7 +24,7 @@ public class SubscriptionUnsubscriptionTest {
 
     private final static Logger log = LoggerFactory
             .getLogger(SubscriptionUnsubscriptionTest.class);
-    private static final UhuZirkId dummyServiceId = new UhuZirkId("InvalidServiceForTest");
+    private static final BezirkZirkId dummyServiceId = new BezirkZirkId("InvalidServiceForTest");
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
     private static final MockProtocols mockProtocol = new MockProtocols();
     ;
@@ -36,9 +36,9 @@ public class SubscriptionUnsubscriptionTest {
     private static final SubscribedRole subscribedEventlessPRole = new SubscribedRole(eventlessPRole);
     private static final SubscribedRole subscribedDummyPRole = new SubscribedRole(dummyPRole);
     private static UhuSadlManager uhuSadlManager = null;
-    private static UhuZirkId uhuServiceAId = new UhuZirkId("ServiceA");
-    private static UhuZirkId uhuServiceBId = new UhuZirkId("ServiceB");
-    private static UhuZirkId uhuServiceCId = new UhuZirkId("ServiceC");
+    private static BezirkZirkId uhuServiceAId = new BezirkZirkId("ServiceA");
+    private static BezirkZirkId uhuServiceBId = new BezirkZirkId("ServiceB");
+    private static BezirkZirkId uhuServiceCId = new BezirkZirkId("ServiceC");
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
 
     @BeforeClass
@@ -89,7 +89,7 @@ public class SubscriptionUnsubscriptionTest {
 
         boolean isSubscribed = true;
         /*
-		 * SadlManager should return false when asked to subscribe service with null serviceID.
+		 * SadlManager should return false when asked to subscribe zirk with null serviceID.
 		 * */
         isSubscribed = uhuSadlManager.subscribeService(null, subscribedEventlessPRole);
         assertFalse("SadlManager allowed subscribe for null serviceID", isSubscribed);
@@ -112,7 +112,7 @@ public class SubscriptionUnsubscriptionTest {
 		 * SadlManager should return serviceA id when queried for services subscribed to streamlessProtocol.
 		 * ServiceCId should not be present in this list.
 		 * */
-        Set<UhuZirkId> serviceIdSet = uhuSadlManager.sadlRegistry.protocolMap
+        Set<BezirkZirkId> serviceIdSet = uhuSadlManager.sadlRegistry.protocolMap
                 .get(streamlessPRole.getProtocolName());
 
         assertNotNull("ServiceIdSet is null", serviceIdSet);
@@ -190,7 +190,7 @@ public class SubscriptionUnsubscriptionTest {
 		 * ServiceB should be present in the eventlist for streamless protocol. 
 		 * ServiceA and ServiceC should not be present in the eventlist for streamless protocol.
 		 * */
-        Set<UhuZirkId> serviceIdSet;
+        Set<BezirkZirkId> serviceIdSet;
         for (String topic : streamlessPRole.getEventTopics()) {
 
             serviceIdSet = uhuSadlManager.sadlRegistry.eventMap.get(topic);
@@ -239,7 +239,7 @@ public class SubscriptionUnsubscriptionTest {
 		/*
 		 * SadlManager should return false when invalid serviceID requested to unsubscribe
 		 * */
-        UhuZirkId invalidId = new UhuZirkId("Invalid");
+        BezirkZirkId invalidId = new BezirkZirkId("Invalid");
         assertFalse("SadlManager allowed unregistered serviceID to unsubscribe.", uhuSadlManager.unsubscribe(invalidId, subscribedEventlessPRole));
         assertFalse("SadlManager returned true for invalid unsubscribe request.", uhuSadlManager.unsubscribe(uhuServiceBId, subscribedEventlessPRole));
 

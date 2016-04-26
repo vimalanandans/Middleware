@@ -3,15 +3,15 @@ package com.bezirk.pipe;
 import com.bezirk.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.messagehandler.EventIncomingMessage;
 import com.bezirk.messagehandler.PipeRequestIncomingMessage;
-import com.bezirk.messagehandler.ServiceMessageHandler;
+import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
 
-public class MockCallBackService implements ServiceMessageHandler {
+public class MockCallBackZirk implements ZirkMessageHandler {
 
-    private MockUhuService mockUhuservice = null;
+    private MockUhuZirk mockUhuservice = null;
 
-    public MockCallBackService(MockUhuService mockUhuservice) {
+    public MockCallBackZirk(MockUhuZirk mockUhuservice) {
         super();
         this.mockUhuservice = mockUhuservice;
     }

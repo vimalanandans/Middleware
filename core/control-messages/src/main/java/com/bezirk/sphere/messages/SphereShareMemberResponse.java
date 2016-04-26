@@ -1,9 +1,9 @@
 //package com.bosch.upa.uhu.sphere.messages;
 //
-//import UhuDeviceInfo;
+//import BezirkDeviceInfo;
 //import ControlMessage;
 //import MulticastControlMessage;
-//import UhuZirkEndPoint;
+//import BezirkZirkEndPoint;
 //
 //
 ///**
@@ -17,12 +17,12 @@
 //	 * get S to this function, we currently ensure that only S1 and
 //	 * S2 are added since this device only owns these 2 services
 //	 * 
-//	 * Due to this currently only one UhuDeviceInfo is required. If we need to extend the concept, we could move towards a List of UhuDeviceInfo's
+//	 * Due to this currently only one BezirkDeviceInfo is required. If we need to extend the concept, we could move towards a List of BezirkDeviceInfo's
 //	 */
-//	private final UhuDeviceInfo uhuDeviceInfo;
+//	private final BezirkDeviceInfo uhuDeviceInfo;
 //	private final static Discriminator discriminator = ControlMessage.Discriminator.SphereShareMemberResponse;
 //
-//    public SphereShareMemberResponse(String sphereID, UhuDeviceInfo uhuDeviceInfo, UhuZirkEndPoint sender) {
+//    public SphereShareMemberResponse(String sphereID, BezirkDeviceInfo uhuDeviceInfo, BezirkZirkEndPoint sender) {
 //        super(sender, sphereID, discriminator);        
 //        this.uhuDeviceInfo = uhuDeviceInfo;
 //    }
@@ -30,7 +30,7 @@
 //	/**
 //	 * @return the uhuDeviceInfo
 //	 */
-//	public final UhuDeviceInfo getUhuDeviceInfo() {
+//	public final BezirkDeviceInfo getBezirkDeviceInfo() {
 //		return uhuDeviceInfo;
 //	}
 //

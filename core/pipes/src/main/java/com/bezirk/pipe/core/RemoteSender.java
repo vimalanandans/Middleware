@@ -154,12 +154,12 @@ public class RemoteSender implements Runnable {
 
             // TODO: currently we are setting a fake sender SEP
             /*
-			UhuZirkId serviceId = new UhuZirkId(FakeServiceRegistration.generateUniqueServiceID());
-			UhuZirkEndPoint senderEndpoint = new UhuZirkEndPoint("CloudEchoService", serviceId);
+			BezirkZirkId zirkId = new BezirkZirkId(FakeZirkRegistration.generateUniqueServiceID());
+			BezirkZirkEndPoint senderEndpoint = new BezirkZirkEndPoint("CloudEchoService", zirkId);
 			responsePipeHeader.setSenderSEP(senderEndpoint);
 			*/
 
-            // Use a file to transfer the stream back to the service(s) that requested it
+            // Use a file to transfer the stream back to the zirk(s) that requested it
             String outputFileName = UUID.randomUUID().toString();
             WriteJob job = new WriteJob();
             job.setShortFileName(outputFileName);
@@ -193,14 +193,14 @@ public class RemoteSender implements Runnable {
             }
             Event replyEvent = Event.fromJson(serializedReply, Event.class);
             if (!isReplyValid(replyEvent)) {
-                log.error("Reply event not valid. Will not pass to receiver for delivery to service.");
+                log.error("Reply event not valid. Will not pass to receiver for delivery to zirk.");
                 return;
             }
 
             // TODO: currently we are setting a fake sender SEP
 			/*
-			UhuZirkId serviceId = new UhuZirkId(FakeServiceRegistration.generateUniqueServiceID());
-			UhuZirkEndPoint senderEndpoint = new UhuZirkEndPoint("CloudEchoService", serviceId);
+			BezirkZirkId zirkId = new BezirkZirkId(FakeZirkRegistration.generateUniqueServiceID());
+			BezirkZirkEndPoint senderEndpoint = new BezirkZirkEndPoint("CloudEchoService", zirkId);
 			response.getPipeHeader().setSenderSEP(senderEndpoint);
 			*/
 

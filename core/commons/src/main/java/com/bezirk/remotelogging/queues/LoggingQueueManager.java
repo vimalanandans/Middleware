@@ -21,7 +21,7 @@ public final class LoggingQueueManager {
      */
     private static BlockingQueue<String> logSenderQueue = null;
     /**
-     * Blocking Queue that is used to queue logger messages at the Logging Service.
+     * Blocking Queue that is used to queue logger messages at the Logging Zirk.
      *
      * @see UhuLoggingService
      */

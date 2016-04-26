@@ -10,8 +10,8 @@ import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -34,7 +34,7 @@ import static org.junit.Assert.fail;
  * @Date 24-09-2014
  * This test case is used to test the Unicast Event communication locally!
  * 2 Services - MockServiceA register for ProtocolB , MockServiceB register for ProtocolA.
- * MockService-A - discovers the service based on ProtocolB. MockServiceA sends the Unicast event to the discovered service.
+ * MockService-A - discovers the zirk based on ProtocolB. MockServiceA sends the Unicast event to the discovered zirk.
  * The MockServiceB receives the event and responds with a unicast reply. The MockServiceA receives the reply and validates!
  */
 public class UnicastEventLocalTest {
@@ -84,7 +84,7 @@ public class UnicastEventLocalTest {
     }
 
     /**
-     * The service discovers the MockServiceB and communicate unicastly.
+     * The zirk discovers the MockServiceB and communicate unicastly.
      */
     private final class UnicastMockServiceA implements BezirkListener {
         private final String serviceName = "UnicastMockServiceA";
@@ -93,18 +93,18 @@ public class UnicastEventLocalTest {
         private MockServiceBProtocolRole pRole;
 
         /**
-         * Setup the Service
+         * Setup the Zirk
          */
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerZirk(serviceName);
-            logger.info("MOCK_SERVICE_A - regId : " + ((UhuZirkId) myId).getUhuServiceId());
+            logger.info("MOCK_SERVICE_A - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
             pRole = new MockServiceBProtocolRole();
             uhu.subscribe(myId, pRole, this);
         }
 
         /**
-         * Discover the service
+         * Discover the zirk
          */
         private final void discoverMockService() {
             MockServiceAProtocolRole pRole = new MockServiceAProtocolRole();
@@ -142,25 +142,25 @@ public class UnicastEventLocalTest {
         public void discovered(Set<DiscoveredZirk> zirkSet) {
             logger.info("Received Discovery Response");
             if (zirkSet == null) {
-                fail("Service Set of Discovered Services in Null");
+                fail("Zirk Set of Discovered Services in Null");
                 return;
             }
             if (zirkSet.isEmpty()) {
-                fail("Service Set is Empty");
+                fail("Zirk Set is Empty");
                 return;
             }
 
             assertEquals(1, zirkSet.size());
-            UhuDiscoveredZirk dService = null;
+            BezirkDiscoveredZirk dService = null;
 
             Iterator<DiscoveredZirk> iterator = zirkSet.iterator();
-            dService = (UhuDiscoveredZirk) iterator.next();
+            dService = (BezirkDiscoveredZirk) iterator.next();
             logger.info("DiscoveredServiceName : " + dService.name + "\n" +
                     "Discovered Role : " + dService.pRole + "\n" +
-                    "Discovered SEP" + dService.service + "\n");
+                    "Discovered SEP" + dService.zirk + "\n");
 
             MockRequestEvent request = new MockRequestEvent(Message.Flag.REQUEST, "MockRequestEvent");
-            uhu.sendEvent(myId, dService.service, request);
+            uhu.sendEvent(myId, dService.zirk, request);
         }
 
 
@@ -253,7 +253,7 @@ public class UnicastEventLocalTest {
     }
 
     /**
-     * The service discovers the MockServiceA and communicate unicastly.
+     * The zirk discovers the MockServiceA and communicate unicastly.
      */
     private final class UnicastMockServiceB implements BezirkListener {
         private final String serviceName = "UnicastMockServiceB";
@@ -261,12 +261,12 @@ public class UnicastEventLocalTest {
         private ZirkId myId = null;
 
         /**
-         * Setup the service
+         * Setup the zirk
          */
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerZirk(serviceName);
-            logger.info("UnicastMockServiceB - regId : " + ((UhuZirkId) myId).getUhuServiceId());
+            logger.info("UnicastMockServiceB - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
             uhu.subscribe(myId, new MockServiceAProtocolRole(), this);
         }
 

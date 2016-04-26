@@ -137,6 +137,6 @@ public class ProcessCatchCode {
 
     // TODO: add cases for various combination of inputs and validate the return
     // values
-    // TODO: expand/improve the SphereUtility for sphere and service generation
+    // TODO: expand/improve the SphereUtility for sphere and zirk generation
     // and also use mockito instead of actual classes especially registry
 }

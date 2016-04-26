@@ -101,8 +101,8 @@ public class ScanDeviceFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_scan_device, container,
                 false);
 
-        // show different text to add device to sphere and then service
-        // selecting or to intent sphere selecting and then service selecting
+        // show different text to add device to sphere and then zirk
+        // selecting or to intent sphere selecting and then zirk selecting
         callingActivity = getActivity().getCallingActivity().getClassName();
 
         /*entry = (SphereListItem) DummyContent.ITEM_MAP.get(getActivity()

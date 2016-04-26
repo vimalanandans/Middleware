@@ -1,22 +1,22 @@
 package com.bezirk.discovery;
 
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 public class DiscoveryLabel {
-    private final UhuZirkEndPoint requestor;
+    private final BezirkZirkEndPoint requestor;
     private final int discoveryId;
     private final boolean isSphereDiscovery;
 
 
-    public DiscoveryLabel(UhuZirkEndPoint req, int discoveryId) {
+    public DiscoveryLabel(BezirkZirkEndPoint req, int discoveryId) {
         this.requestor = req;
         this.discoveryId = discoveryId;
         this.isSphereDiscovery = false;
 
     }
 
-    public DiscoveryLabel(UhuZirkEndPoint req, int discoveryId, boolean isSphereDiscovery) {
+    public DiscoveryLabel(BezirkZirkEndPoint req, int discoveryId, boolean isSphereDiscovery) {
         this.requestor = req;
         this.discoveryId = discoveryId;
         this.isSphereDiscovery = isSphereDiscovery;
@@ -26,7 +26,7 @@ public class DiscoveryLabel {
         return isSphereDiscovery;
     }
 
-    public UhuZirkEndPoint getRequester() {
+    public BezirkZirkEndPoint getRequester() {
         return requestor;
     }
 

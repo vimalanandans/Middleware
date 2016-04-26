@@ -3,10 +3,10 @@ package com.bezirk.callback.pc;
 import com.bezirk.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.messagehandler.EventIncomingMessage;
 import com.bezirk.messagehandler.PipeRequestIncomingMessage;
-import com.bezirk.messagehandler.ServiceMessageHandler;
+import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,19 +14,19 @@ import org.slf4j.LoggerFactory;
 /**
  * PC specific callback implementation that is used to give the callback to the ProxyForServices.
  */
-public final class CBkForServicePC implements ServiceMessageHandler {
+public final class CBkForZirkPC implements ZirkMessageHandler {
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(CBkForServicePC.class);
-    private static final String RECEIVERNULLERROR = "Broadcast Receiver For Service is null, cannot give callback";
+            .getLogger(CBkForZirkPC.class);
+    private static final String RECEIVERNULLERROR = "Broadcast Receiver For Zirk is null, cannot give callback";
     private final IBoradcastReceiver brForService;
 
-    public CBkForServicePC(IBoradcastReceiver brForService) {
+    public CBkForZirkPC(IBoradcastReceiver brForService) {
         this.brForService = brForService;
     }
 
     @Override
     public void onIncomingEvent(EventIncomingMessage eventIncomingMessage) {
-        if (UhuValidatorUtility.isObjectNotNull(brForService)) {
+        if (BezirkValidatorUtility.isObjectNotNull(brForService)) {
             brForService.onReceive(eventIncomingMessage);
         } else {
 
@@ -37,7 +37,7 @@ public final class CBkForServicePC implements ServiceMessageHandler {
 
     @Override
     public void onIncomingStream(StreamIncomingMessage streamIncomingMessage) {
-        if (UhuValidatorUtility.isObjectNotNull(brForService)) {
+        if (BezirkValidatorUtility.isObjectNotNull(brForService)) {
             brForService.onReceive(streamIncomingMessage);
         } else {
 
@@ -65,7 +65,7 @@ public final class CBkForServicePC implements ServiceMessageHandler {
 
     @Override
     public void onStreamStatus(StreamStatusMessage streamStatusMessage) {
-        if (UhuValidatorUtility.isObjectNotNull(brForService)) {
+        if (BezirkValidatorUtility.isObjectNotNull(brForService)) {
             brForService.onReceive(streamStatusMessage);
         } else {
 
@@ -76,7 +76,7 @@ public final class CBkForServicePC implements ServiceMessageHandler {
     @Override
     public void onDiscoveryIncomingMessage(
             DiscoveryIncomingMessage discoveryCallback) {
-        if (UhuValidatorUtility.isObjectNotNull(brForService)) {
+        if (BezirkValidatorUtility.isObjectNotNull(brForService)) {
             brForService.onReceive(discoveryCallback);
         } else {
 
@@ -88,7 +88,7 @@ public final class CBkForServicePC implements ServiceMessageHandler {
     @Override
     public void onPipeApprovedMessage(PipeRequestIncomingMessage pipeMsg) {
         throw new RuntimeException(
-                "Method not implemented on PC yet: CBkForServicePC.firePipeApprovedCallBack() ");
+                "Method not implemented on PC yet: CBkForZirkPC.firePipeApprovedCallBack() ");
     }
 
 

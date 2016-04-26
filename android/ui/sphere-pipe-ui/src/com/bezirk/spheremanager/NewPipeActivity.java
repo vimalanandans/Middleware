@@ -19,13 +19,12 @@ import android.widget.Toast;
 
 import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
-import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.SelectSphereListAdapter;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.starter.MainService;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,7 +51,7 @@ public class NewPipeActivity extends Activity {
         //Change Text for First Pipe Screen here
         IUhuSphereAPI api = MainService.getSphereHandle();
 
-        if (UhuValidatorUtility.isObjectNotNull(api)) {
+        if (BezirkValidatorUtility.isObjectNotNull(api)) {
 
             Iterator<UhuSphereInfo> sphereInfo = api.getSpheres().iterator();
 
@@ -94,7 +93,7 @@ public class NewPipeActivity extends Activity {
             });
         } else {
 
-            Log.d(TAG, "main service object is not live. ");
+            Log.d(TAG, "main zirk object is not live. ");
 
         }
         Button yes = (Button) view.findViewById(R.id.add_pipe_yes);

@@ -2,7 +2,7 @@ package com.bezirk.discovery;
 
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
 import com.bezirk.sphere.api.IUhuSphereDiscovery;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,13 +61,13 @@ public class SphereDiscovery {
     public boolean addResponse(SphereDiscoveryResponse response) {
 
         synchronized (this) {
-            if (UhuValidatorUtility.checkUhuServiceEndPoint(response
+            if (BezirkValidatorUtility.checkBezirkZirkEndPoint(response
                     .getRecipient())) {
 
                 final DiscoveryLabel dLabel = new DiscoveryLabel(
                         response.getRecipient(), response.getReqDiscoveryId());
                 final SphereDiscoveryRecord discRecord = discoveredMap.get(dLabel);
-                if (UhuValidatorUtility.isObjectNotNull(discRecord)) {
+                if (BezirkValidatorUtility.isObjectNotNull(discRecord)) {
                     //update sphere discovery record
                     discRecord.updateSet(response.getUhuSphereInfo(),
                             response.getSender());
@@ -75,8 +75,8 @@ public class SphereDiscovery {
                     /* final long currentTime = new Date().getTime();
 					 
 					 if (discRecord.getDiscoveredSetSize() >= discRecord.getMax() || currentTime - discRecord.getCreationTime() >= discRecord.getTimeout()) {
-					 	logger.debug("Timeout for sphere discovery, Size of UhuSphereInfos discovered : "+discRecord.getSphereServices().size());
-					 	sphereDiscoveryHandler.processDiscoveredSphereInfo(discRecord.getSphereServices(), discRecord.getSphereId());                    
+					 	logger.debug("Timeout for sphere discovery, Size of UhuSphereInfos discovered : "+discRecord.getSphereZirks().size());
+					 	sphereDiscoveryHandler.processDiscoveredSphereInfo(discRecord.getSphereZirks(), discRecord.getSphereId());
 					     
 					     discoveredMap.remove(dLabel);
 					     logger.info("Discovery response added > " + dLabel.getRequester().device);

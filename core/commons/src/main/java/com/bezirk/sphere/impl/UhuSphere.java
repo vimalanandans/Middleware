@@ -8,14 +8,14 @@ import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.discovery.SphereDiscovery;
 import com.bezirk.discovery.SphereDiscoveryProcessor;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.UhuPipeInfo;
-import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuDevMode;
 import com.bezirk.sphere.api.IUhuSphereAPI;
@@ -131,12 +131,12 @@ public class UhuSphere
     }
 
     @Override
-    public boolean registerService(UhuZirkId serviceId, String serviceName) {
+    public boolean registerService(BezirkZirkId serviceId, String serviceName) {
         return sphereRegistryWrapper.registerService(serviceId, serviceName);
     }
 
     @Override
-    public boolean unregisterService(UhuZirkId serviceId) {
+    public boolean unregisterService(BezirkZirkId serviceId) {
         // TODO Implement
         return false;
     }
@@ -162,17 +162,17 @@ public class UhuSphere
     }
 
     @Override
-    public Iterable<String> getSphereMembership(UhuZirkId serviceId) {
+    public Iterable<String> getSphereMembership(BezirkZirkId serviceId) {
         return sphereRegistryWrapper.getSphereMembership(serviceId);
     }
 
     @Override
-    public boolean isServiceInSphere(UhuZirkId service, String sphereId) {
+    public boolean isZirkInSphere(BezirkZirkId service, String sphereId) {
         return sphereRegistryWrapper.isServiceInSphere(service, sphereId);
     }
 
     @Override
-    public String getServiceName(UhuZirkId serviceId) {
+    public String getZirkName(BezirkZirkId serviceId) {
         return sphereRegistryWrapper.getServiceName(serviceId);
     }
 
@@ -214,7 +214,7 @@ public class UhuSphere
     }
 
     @Override
-    public Iterable<UhuDeviceInfo> getDevicesOnSphere(String sphereId) {
+    public Iterable<BezirkDeviceInfo> getDevicesOnSphere(String sphereId) {
         // TODO implement
         return null;
     }
@@ -226,18 +226,18 @@ public class UhuSphere
     }
 
     @Override
-    public Iterable<UhuDeviceInfo> getOtherDevices(String sphereId) {
+    public Iterable<BezirkDeviceInfo> getOtherDevices(String sphereId) {
         // TODO implement
         return null;
     }
 
     @Override
-    public boolean addLocalServicesToSphere(Iterable<UhuZirkId> serviceIds, String sphereId) {
+    public boolean addLocalServicesToSphere(Iterable<BezirkZirkId> serviceIds, String sphereId) {
         return sphereRegistryWrapper.addLocalServicesToSphere(serviceIds, sphereId);
     }
 
     @Override
-    public boolean addLocalServicesToSphere(String sphereId, Iterable<UhuServiceInfo> serviceInfo) {
+    public boolean addLocalServicesToSphere(String sphereId, Iterable<BezirkZirkInfo> serviceInfo) {
         return sphereRegistryWrapper.addLocalServicesToSphere(sphereId, serviceInfo);
     }
 
@@ -290,7 +290,7 @@ public class UhuSphere
     }
 
     @Override
-    public List<UhuServiceInfo> getServiceInfo() {
+    public List<BezirkZirkInfo> getServiceInfo() {
         return sphereRegistryWrapper.getServiceInfo();
     }
 
@@ -331,7 +331,7 @@ public class UhuSphere
      * @deprecated use {@link #processDiscoveredSphereInfo(Set, String)} instead
      */
     @Deprecated
-    public UhuSphereInfo processDiscoveryResponse(Set<UhuDiscoveredZirk> discoveredServices, String sphereId) {
+    public UhuSphereInfo processDiscoveryResponse(Set<BezirkDiscoveredZirk> discoveredServices, String sphereId) {
         return discoveryProcessor.processDiscoveryResponse(discoveredServices, sphereId);
     }
 

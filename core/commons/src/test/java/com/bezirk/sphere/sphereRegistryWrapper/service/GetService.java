@@ -4,8 +4,8 @@
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.impl.OwnerService;
-import com.bezirk.sphere.impl.Service;
+import com.bezirk.sphere.impl.OwnerZirk;
+import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 
@@ -70,22 +70,22 @@ public class GetService {
     /**
      * Test method for {@link SphereRegistryWrapper#getService(String)}.
      * <p/>
-     * <br> Test the behavior of getService when valid serviceId is passed.
-     * It should return a Service object associated with the serviceId
+     * <br> Test the behavior of getService when valid zirkId is passed.
+     * It should return a Zirk object associated with the zirkId
      */
     @Test
     public final void validServiceId() {
-        //Create a service and add it to the registry.
+        //Create a zirk and add it to the registry.
         String serviceId = UUID.randomUUID().toString();
         HashSet<String> sphereSet = new HashSet<String>();
         String sphereId = UUID.randomUUID().toString();
         sphereSet.add(sphereId);
-        OwnerService ownerService = new OwnerService("serviceName", "ownerDeviceId", sphereSet);
+        OwnerZirk ownerService = new OwnerZirk("serviceName", "ownerDeviceId", sphereSet);
         registry.sphereMembership.put(serviceId, ownerService);
 
-        Service retrievedService = sphereRegistryWrapper.getService(serviceId);
+        Zirk retrievedZirk = sphereRegistryWrapper.getService(serviceId);
 
-        assertEquals(ownerService, retrievedService);
+        assertEquals(ownerService, retrievedZirk);
     }
 
     /**
@@ -97,21 +97,21 @@ public class GetService {
     @Test
     public final void nullServiceIdShouldRetunNull() {
         String serviceId = null;
-        Service retrievedService = sphereRegistryWrapper.getService(serviceId);
-        assertNull(retrievedService);
+        Zirk retrievedZirk = sphereRegistryWrapper.getService(serviceId);
+        assertNull(retrievedZirk);
     }
 
     /**
      * Test method for {@link SphereRegistryWrapper#getService(String)}.
      * <p/>
-     * <br>When service is not in the registry,
+     * <br>When zirk is not in the registry,
      * getService method is expected to return null.
      */
     @Test
     public final void serviceNotInRegistryRetunsNull() {
         String serviceId = UUID.randomUUID().toString();
-        Service retrievedService = sphereRegistryWrapper.getService(serviceId);
-        assertNull(retrievedService);
+        Zirk retrievedZirk = sphereRegistryWrapper.getService(serviceId);
+        assertNull(retrievedZirk);
     }
 
 

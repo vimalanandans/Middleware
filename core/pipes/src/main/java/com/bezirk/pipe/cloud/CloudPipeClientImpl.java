@@ -25,8 +25,8 @@ public class CloudPipeClientImpl implements CloudPipeClient {
     public static final String CONTENT_PATH = "/cloudpipe/getcontent";
 
 	/*
-	 * Constants that represent REST service paths relative to baseURL, which is 
-	 * the root webserver service path
+	 * Constants that represent REST zirk paths relative to baseURL, which is
+	 * the root webserver zirk path
 	 */
     public static final String CONTENT_MULTIPART_PATH = "/cloudpipe/content";
     public static final String CERT_FILENAME_DEFAULT = "upa.crt";
@@ -39,7 +39,7 @@ public class CloudPipeClientImpl implements CloudPipeClient {
     public static final String VAL_CONTENT_TYPE_APP_JSON = "application/json";
     public static final String VAL_CONTENT_TYPE_MULTIPART_MIXED = "multipart/mixed";
     /**
-     * The root web server path that hosts the Uhu cloudpipe service , i.e.,
+     * The root web server path that hosts the Uhu cloudpipe zirk , i.e.,
      * something like: http://some-host:some-port/services/uhu
      */
     protected URL baseURL = null;

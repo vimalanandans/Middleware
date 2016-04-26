@@ -8,7 +8,7 @@ import javax.net.ssl.SSLSession;
 
 /**
  * Verifies any hostname for any SSLSession. This is OK to use if you are
- * using self-signed certs and the target web service may be
+ * using self-signed certs and the target web zirk may be
  * deployed anywhere.
  * Adapted from: http://stackoverflow.com/questions/14619781/java-io-ioexception-hostname-was-not-verified
  */

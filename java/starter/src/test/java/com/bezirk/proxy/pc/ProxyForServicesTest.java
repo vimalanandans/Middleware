@@ -5,7 +5,7 @@ import com.bezirk.discovery.DiscoveryProcessor;
 import com.bezirk.discovery.DiscoveryRecord;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sadl.UhuSadlManager;
 import com.bezirk.util.MockProtocolsForUhuPC;
 import com.bezirk.util.MockSetUpUtilityForUhuPC;
@@ -36,7 +36,7 @@ public class ProxyForServicesTest {
     private static UhuSadlManager sadlManager;
     private final String serviceName = "MockServiceA";
     private final String serviceAId = "MockServiceAId";
-    private final UhuZirkId uhuServiceAId = new UhuZirkId(serviceAId);
+    private final BezirkZirkId uhuServiceAId = new BezirkZirkId(serviceAId);
     private final MockProtocolsForUhuPC.DummyProtocol dummyProtocol = new MockProtocolsForUhuPC().new DummyProtocol();
     private final SubscribedRole pRole = new SubscribedRole(dummyProtocol);
 
@@ -85,7 +85,7 @@ public class ProxyForServicesTest {
 
         proxyforServices.registerService(uhuServiceAId, serviceName);
 
-        assertTrue("Proxy is unable to register service. ",
+        assertTrue("Proxy is unable to register zirk. ",
                 sadlManager.isServiceRegisterd(uhuServiceAId));
 
         proxyforServices.unregister(uhuServiceAId);
@@ -141,7 +141,7 @@ public class ProxyForServicesTest {
         proxyforServices.setSadlRegistry(sadlManager);
 
         String serviceId = "ServiceB";
-        UhuZirkId uhuServiceBId = new UhuZirkId(serviceId);
+        BezirkZirkId uhuServiceBId = new BezirkZirkId(serviceId);
 
         proxyforServices.registerService(uhuServiceBId, serviceId);
         proxyforServices.subscribeService(uhuServiceBId, pRole);

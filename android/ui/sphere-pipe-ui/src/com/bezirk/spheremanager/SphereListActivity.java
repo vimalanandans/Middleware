@@ -18,10 +18,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
-import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallbacks;
 import com.bezirk.spheremanager.ui.DialogAddSphereFragment;
@@ -192,7 +191,7 @@ public class SphereListActivity extends FragmentActivity implements
         menu.setHeaderTitle("sphere Actions");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.sphere_actions, menu);
-        final List<UhuServiceInfo> serviceInfo = MainService.getSphereHandle().getServiceInfo();
+        final List<BezirkZirkInfo> serviceInfo = MainService.getSphereHandle().getServiceInfo();
         if (serviceInfo == null) {
             menu.getItem(0).setEnabled(false);
         }
@@ -213,7 +212,7 @@ public class SphereListActivity extends FragmentActivity implements
             String sphereId = arrayList.get(menuInfo.position);
             dialogServiceListFragment.setSphereId(sphereId);
             dialogServiceListFragment.setTitle("Add services to sphere");
-            dialogServiceListFragment.show(fragmentManager, "Dialog Service List");
+            dialogServiceListFragment.show(fragmentManager, "Dialog Zirk List");
         }
         /**
          * @MCA7KOR Delete functionality not yet available
@@ -226,7 +225,7 @@ public class SphereListActivity extends FragmentActivity implements
 
     private class CreateSphereAsyncTask extends AsyncTask<String, Void, String> {
         final IUhuSphereAPI sphereAPI = MainService.getSphereHandle();
-        final List<UhuServiceInfo> servicesToBeAdded = new ArrayList<UhuServiceInfo>();
+        final List<BezirkZirkInfo> servicesToBeAdded = new ArrayList<BezirkZirkInfo>();
         String sphereId = null;
 
         @Override
@@ -272,13 +271,13 @@ public class SphereListActivity extends FragmentActivity implements
             if (result != null) {
                 progressDialog.cancel();
                 Toast.makeText(getApplicationContext(), "New sphere created as : " + result, Toast.LENGTH_SHORT).show();
-                final List<UhuServiceInfo> serviceInfo = sphereAPI.getServiceInfo();
+                final List<BezirkZirkInfo> serviceInfo = sphereAPI.getServiceInfo();
                 if (serviceInfo != null) {
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     DialogServiceListFragment dialogServiceListFragment = new DialogServiceListFragment();
                     dialogServiceListFragment.setTitle("Add services to new sphere");
                     dialogServiceListFragment.setSphereId(sphereId);
-                    dialogServiceListFragment.show(fragmentManager, "Dialog Service List");
+                    dialogServiceListFragment.show(fragmentManager, "Dialog Zirk List");
                 }
             } else {
                 progressDialog.cancel();

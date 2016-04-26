@@ -10,7 +10,7 @@ import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
 import com.bezirk.remotelogging.status.LoggingStatus;
 import com.bezirk.remotelogging.util.Util;
 import com.bezirk.sadl.ISadlEventReceiver;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,14 +61,14 @@ public class MessageDispatcher implements IMessageDispatcher {
     }
     // add unregister on need basis
 
-    // currently sadl consumes all the service message. hence no registration
+    // currently sadl consumes all the zirk message. hence no registration
     // if needed extend similar mechanism to control message dispatching
     @Override
     public boolean dispatchServiceMessages(EventLedger eLedger) {
-        if (UhuValidatorUtility.isObjectNotNull(sadlEventReceiver)) {
+        if (BezirkValidatorUtility.isObjectNotNull(sadlEventReceiver)) {
             return sadlEventReceiver.processEvent(eLedger);
         } else {
-            logger.error("no valid service message receivers ");
+            logger.error("no valid zirk message receivers ");
         }
         return false;
     }
@@ -91,7 +91,7 @@ public class MessageDispatcher implements IMessageDispatcher {
         //get the registered receiver
         ICtrlMsgReceiver ctrlReceiver = ctrlReceivers.get(id);
 
-        if (UhuValidatorUtility.isObjectNotNull(ctrlReceiver)) {
+        if (BezirkValidatorUtility.isObjectNotNull(ctrlReceiver)) {
             // invoke the listener
             if (!ctrlReceiver.processControlMessage(id, serializedMsg)) {
                 logger.debug("Receiver not processing id > " + id);
@@ -125,7 +125,7 @@ public class MessageDispatcher implements IMessageDispatcher {
         //get the registered receiver
         ICtrlMsgReceiver ctrlReceiver = ctrlReceivers.get(id);
 
-        if (UhuValidatorUtility.isObjectNotNull(ctrlReceiver)) {
+        if (BezirkValidatorUtility.isObjectNotNull(ctrlReceiver)) {
             // invoke the listener
             if (!ctrlReceiver.processControlMessage(id, tcMessage.getSerializedMessage())) {
                 logger.debug("Receiver not processing id > " + id);

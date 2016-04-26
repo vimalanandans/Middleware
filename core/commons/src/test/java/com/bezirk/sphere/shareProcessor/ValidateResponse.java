@@ -103,7 +103,7 @@ public class ValidateResponse {
     }
 
     /**
-     * IMPORTANT: Testing the behavior of validateResponse method when SphereExchangeData, UhuDeviceInfo or sharerSphereId
+     * IMPORTANT: Testing the behavior of validateResponse method when SphereExchangeData, BezirkDeviceInfo or sharerSphereId
      * objects are null is not required as they cannot be null based on the agreement with the constructor in {@link #ShareResponse}.
      * If they are null, then the constructor of ShareResponse throws an exception.
      */

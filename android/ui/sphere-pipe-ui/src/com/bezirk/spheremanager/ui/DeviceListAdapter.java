@@ -11,18 +11,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bezirk.device.UhuDeviceType;
-import com.bezirk.middleware.objects.UhuDeviceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.spheremanager.R;
 
 import java.util.List;
 
-public class DeviceListAdapter extends ArrayAdapter<UhuDeviceInfo> {
+public class DeviceListAdapter extends ArrayAdapter<BezirkDeviceInfo> {
 
     private final Context context;
-    private final List<UhuDeviceInfo> devices;
+    private final List<BezirkDeviceInfo> devices;
     private LayoutInflater inflater;
 
-    public DeviceListAdapter(Context context, List<UhuDeviceInfo> devices) {
+    public DeviceListAdapter(Context context, List<BezirkDeviceInfo> devices) {
         super(context, 0, devices);
         this.devices = devices;
         this.context = context;
@@ -32,7 +32,7 @@ public class DeviceListAdapter extends ArrayAdapter<UhuDeviceInfo> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
-        UhuDeviceInfo item = devices.get(position);
+        BezirkDeviceInfo item = devices.get(position);
         view = (View) inflater.inflate(R.layout.layout_devicelist_entry,
                 parent, false);
         // set icon for device types
@@ -78,7 +78,7 @@ public class DeviceListAdapter extends ArrayAdapter<UhuDeviceInfo> {
         device_name.setText(item.getDeviceName());
 
         // this device is owner for the sphere
-        if (item.getDeviceRole() == UhuDeviceInfo.UhuDeviceRole.UHU_CONTROL) {
+        if (item.getDeviceRole() == BezirkDeviceInfo.UhuDeviceRole.UHU_CONTROL) {
             device_name.setTypeface(null, Typeface.BOLD);
         }
 

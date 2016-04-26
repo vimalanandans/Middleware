@@ -22,7 +22,7 @@
 //import UnicastControlMessage;
 //
 ///**
-//* This Testcase verifies the behavior of sadlManager send service in the
+//* This Testcase verifies the behavior of sadlManager send zirk in the
 //* following scenarios.
 //*
 //*  a) 	Send local UnicastControl Message

@@ -20,14 +20,14 @@ import android.widget.Toast;
 
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.SelectSphereListAdapter;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.starter.MainService;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -40,9 +40,9 @@ import java.util.List;
 import static com.bezirk.actions.UhuActions.KEY_PIPE_NAME;
 import static com.bezirk.actions.UhuActions.KEY_PIPE_REQ_ID;
 import static com.bezirk.actions.UhuActions.KEY_PIPE_SPHEREID;
-import static com.bezirk.actions.UhuActions.KEY_SENDER_SERVICE_ID;
-import static com.bezirk.util.UhuValidatorUtility.checkForString;
-import static com.bezirk.util.UhuValidatorUtility.checkUhuServiceId;
+import static com.bezirk.actions.UhuActions.KEY_SENDER_ZIRK_ID;
+import static com.bezirk.util.BezirkValidatorUtility.checkForString;
+import static com.bezirk.util.BezirkValidatorUtility.checkUhuServiceId;
 
 public class PipeActivity extends Activity {
     public static final String TAG = "PipeActivity";
@@ -60,7 +60,7 @@ public class PipeActivity extends Activity {
         super.onCreate(savedInstanceState);
         final Intent rxIntent = getIntent();
         final String pipeName = rxIntent.getStringExtra(KEY_PIPE_NAME);
-        final String serviceIdAsString = rxIntent.getStringExtra(KEY_SENDER_SERVICE_ID);
+        final String serviceIdAsString = rxIntent.getStringExtra(KEY_SENDER_ZIRK_ID);
         final String reqId = rxIntent.getStringExtra(KEY_PIPE_REQ_ID);
 
         /*
@@ -73,13 +73,13 @@ public class PipeActivity extends Activity {
         }
 
 
-        UhuZirkId serviceId = serviceIdFromString(serviceIdAsString);
+        BezirkZirkId serviceId = serviceIdFromString(serviceIdAsString);
         if (serviceId == null) {
-            log.error("Intent not valid because there was a failure validating serviceId");
+            log.error("Intent not valid because there was a failure validating zirkId");
             return;
         }
 
-        final String serviceName = UhuCompManager.getSphereForSadl().getServiceName(serviceId);
+        final String serviceName = UhuCompManager.getSphereForSadl().getZirkName(serviceId);
 
         //callingActivity = getCallingActivity().getClassName();
         LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext()
@@ -88,7 +88,7 @@ public class PipeActivity extends Activity {
 
         //Change Text for First Pipe Screen here
         TextView textPipe = (TextView) view.findViewById(R.id.text_pipe);
-        textPipe.setText("Service " + serviceName + " has requested for pipe: " + pipeName);
+        textPipe.setText("Zirk " + serviceName + " has requested for pipe: " + pipeName);
         ListView sphereListView = (ListView) view
                 .findViewById(R.id.sphere_list_for_adding);
 
@@ -107,7 +107,7 @@ public class PipeActivity extends Activity {
             }
 
         } else {
-            Log.d(TAG, "main service object is not live. ");
+            Log.d(TAG, "main zirk object is not live. ");
         }
         SelectSphereListAdapter sla = new SelectSphereListAdapter(getApplicationContext(), sphereList);
 
@@ -119,7 +119,7 @@ public class PipeActivity extends Activity {
                                     int position, long id) {
                 IUhuSphereAPI api = MainService.getSphereHandle();
 
-                if (UhuValidatorUtility.isObjectNotNull(api)) {
+                if (BezirkValidatorUtility.isObjectNotNull(api)) {
 
                     List<UhuSphereInfo> sphereInfoList = (List) api.getSpheres();
                     if (sphereInfoList != null) {
@@ -163,7 +163,7 @@ public class PipeActivity extends Activity {
                     addPipeIntent.putExtra(DeviceListFragment.ARG_ITEM_ID,
                             entry.getId());
                     addPipeIntent.putExtra(KEY_PIPE_NAME, pipeName);
-                    addPipeIntent.putExtra(KEY_SENDER_SERVICE_ID, serviceIdAsString);
+                    addPipeIntent.putExtra(KEY_SENDER_ZIRK_ID, serviceIdAsString);
                     addPipeIntent.putExtra(KEY_PIPE_REQ_ID, reqId);
                     addPipeIntent.putExtra(KEY_PIPE_SPHEREID, sphereId);
                     startActivity(addPipeIntent);
@@ -213,11 +213,11 @@ public class PipeActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private UhuZirkId serviceIdFromString(String serviceIdAsString) {
+    private BezirkZirkId serviceIdFromString(String serviceIdAsString) {
         Gson gson = new Gson();
-        UhuZirkId serviceId = gson.fromJson(serviceIdAsString, UhuZirkId.class);
+        BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
         if (!checkUhuServiceId(serviceId)) {
-            log.error("serviceId not valid: " + serviceId);
+            log.error("zirkId not valid: " + serviceId);
             return null;
         }
 
@@ -230,7 +230,7 @@ public class PipeActivity extends Activity {
         String errorSuffix = "String is null or empty";
 
         if (!checkForString(serviceId)) {
-            log.error("serviceId " + errorSuffix);
+            log.error("zirkId " + errorSuffix);
             stringsValid = false;
         }
         if (!checkForString(pipeName)) {

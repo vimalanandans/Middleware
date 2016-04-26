@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by Vimal on 11/16/2015.
  * <p/>
- * this delegates the service / sadl discovery related classes
+ * this delegates the zirk / sadl discovery related classes
  */
 public class DiscoveryManager implements ICtrlMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(DiscoveryManager.class);
@@ -68,7 +68,7 @@ public class DiscoveryManager implements ICtrlMsgReceiver {
                 if (DiscoveryProcessor.getDiscovery().addResponse(response)) {
                     logger.debug("Discovery Response added successfully");
                 } else
-                    logger.debug("Problem w adding response/invoking service listener");
+                    logger.debug("Problem w adding response/invoking zirk listener");
                 break;
             default:
                 logger.error("Unknown control message > " + id);

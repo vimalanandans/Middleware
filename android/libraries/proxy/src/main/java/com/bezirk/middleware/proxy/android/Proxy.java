@@ -21,9 +21,9 @@ import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.Stream;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -75,12 +75,12 @@ public final class Proxy implements Bezirk {
             return null;
         }
 
-        // TODO: if the service id is uninstalled then owner device shows cached and new one.
+        // TODO: if the zirk id is uninstalled then owner device shows cached and new one.
 
         final SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(mContext);
         String serviceIdAsString = shrdPref.getString(zirkName, null);
         if (null == serviceIdAsString) {
-            // UUID for service id
+            // UUID for zirk id
             serviceIdAsString = UUID.randomUUID().toString();
 
             SharedPreferences.Editor editor = shrdPref.edit();
@@ -88,23 +88,23 @@ public final class Proxy implements Bezirk {
             editor.commit();
         }
 
-        final UhuZirkId serviceId = new UhuZirkId(serviceIdAsString);
-        Log.d(TAG, "UhuZirkId-> " + serviceIdAsString); // Remove this line
+        final BezirkZirkId serviceId = new BezirkZirkId(serviceIdAsString);
+        Log.d(TAG, "BezirkZirkId-> " + serviceIdAsString); // Remove this line
         // Send the Intent to the UhuStack
-        String serviceIdKEY = "serviceId";
+        String serviceIdKEY = "zirkId";
         String serviceNameKEY = "serviceName";
         Intent registerIntent = new Intent();
 
         ComponentName componentName = new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME);
         registerIntent.setComponent(componentName);
         registerIntent.setAction(ACTION_UHU_REGISTER);
-        registerIntent.putExtra(serviceIdKEY, new Gson().toJson((UhuZirkId) serviceId));
+        registerIntent.putExtra(serviceIdKEY, new Gson().toJson((BezirkZirkId) serviceId));
         registerIntent.putExtra(serviceNameKEY, zirkName);
 
         ComponentName retName = mContext.startService(registerIntent);
 
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for service id. Is Uhu installed?");
+            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu installed?");
             return null;
         } else {
             Log.i(TAG, "Registration request is triggered to Uhu for Service :" + zirkName);
@@ -117,14 +117,14 @@ public final class Proxy implements Bezirk {
     //TODO: Test this implementation
     @Override
     public void unregisterZirk(final ZirkId zirkId) {
-        Log.i(TAG, "Unregister request for serviceID: " + ((UhuZirkId) zirkId).getUhuServiceId());
+        Log.i(TAG, "Unregister request for serviceID: " + ((BezirkZirkId) zirkId).getBezirkZirkId());
 
         SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(mContext);
         Map<String, ?> keys = shrdPref.getAll();
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
-            //find and delete the entry corresponding to this serviceId
-            if (entry.getValue().toString().equalsIgnoreCase(((UhuZirkId) zirkId).getUhuServiceId())) {
-                Log.i(TAG, "Unregistering service: " + entry.getKey());
+            //find and delete the entry corresponding to this zirkId
+            if (entry.getValue().toString().equalsIgnoreCase(((BezirkZirkId) zirkId).getBezirkZirkId())) {
+                Log.i(TAG, "Unregistering zirk: " + entry.getKey());
                 SharedPreferences.Editor editor = shrdPref.edit();
                 editor.remove(entry.getKey());
                 editor.apply();
@@ -145,13 +145,13 @@ public final class Proxy implements Bezirk {
         Intent subscribeIntent = new Intent();
         subscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         subscribeIntent.setAction(ACTION_UHU_SUBSCRIBE);
-        subscribeIntent.putExtra("serviceId", new Gson().toJson((UhuZirkId) subscriber));
+        subscribeIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) subscriber));
         SubscribedRole subRole = new SubscribedRole(protocolRole);
         subscribeIntent.putExtra("protocol", subRole.getSubscribedProtocolRole());
         ComponentName retName = mContext.startService(subscribeIntent);
 
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for service id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
             return;
         }
     }
@@ -173,14 +173,14 @@ public final class Proxy implements Bezirk {
         Intent unSubscribeIntent = new Intent();
         unSubscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         unSubscribeIntent.setAction(ACTION_UHU_UNSUBSCRIBE);
-        unSubscribeIntent.putExtra("serviceId", new Gson().toJson((UhuZirkId) subscriber));
+        unSubscribeIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) subscriber));
         String pRoleAsString = (null == protocolRole) ? null : (new SubscribedRole(protocolRole).getSubscribedProtocolRole());
         unSubscribeIntent.putExtra("protocol", pRoleAsString);
 
         ComponentName retName = mContext.startService(unSubscribeIntent);
 
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for service id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
             return;
         }
     }
@@ -195,7 +195,7 @@ public final class Proxy implements Bezirk {
         Intent multicastEventIntent = new Intent();
         multicastEventIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         multicastEventIntent.setAction(ACTION_SERVICE_SEND_MULTICAST_EVENT);
-        multicastEventIntent.putExtra("serviceId", new Gson().toJson((UhuZirkId) sender));
+        multicastEventIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) sender));
 
         multicastEventIntent.putExtra("address", receiver.toJson());
         multicastEventIntent.putExtra("multicastEvent", event.toJson());
@@ -203,7 +203,7 @@ public final class Proxy implements Bezirk {
         ComponentName retName = mContext.startService(multicastEventIntent);
 
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for service id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
             return;
         }
     }
@@ -219,12 +219,12 @@ public final class Proxy implements Bezirk {
         Intent unicastEventIntent = new Intent();
         unicastEventIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         unicastEventIntent.setAction(ACTION_SERVICE_SEND_UNICAST_EVENT);
-        unicastEventIntent.putExtra("serviceId", new Gson().toJson((UhuZirkId) sender));
-        unicastEventIntent.putExtra("receiverSep", new Gson().toJson((UhuZirkEndPoint) receiver));
+        unicastEventIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) sender));
+        unicastEventIntent.putExtra("receiverSep", new Gson().toJson((BezirkZirkEndPoint) receiver));
         unicastEventIntent.putExtra("eventMsg", event.toJson());
         ComponentName retName = mContext.startService(unicastEventIntent);
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for service id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
             return;
         }
     }
@@ -233,18 +233,18 @@ public final class Proxy implements Bezirk {
     public short sendStream(ZirkId sender, ZirkEndPoint receiver, Stream stream, PipedOutputStream dataStream) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
         activeStreams.put(streamId, stream.topic);
-        UhuZirkEndPoint recipientSEP = (UhuZirkEndPoint) receiver;
+        BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) receiver;
 
         final Intent multicastStreamIntent = new Intent();
         multicastStreamIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         multicastStreamIntent.setAction(ACTION_UHU_PUSH_MULTICAST_STREAM);
-        multicastStreamIntent.putExtra("serviceId", new Gson().toJson((UhuZirkId) sender));
+        multicastStreamIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) sender));
         multicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
         multicastStreamIntent.putExtra("stream", stream.toJson());
         multicastStreamIntent.putExtra("localStreamId", streamId);
         ComponentName retName = mContext.startService(multicastStreamIntent);
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for service id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
             return 0;
         }
         Log.d(TAG, "StreamId-> " + streamId);
@@ -268,19 +268,19 @@ public final class Proxy implements Bezirk {
 
         activeStreams.put(streamId, stream.topic);
 
-        UhuZirkEndPoint recipientSEP = (UhuZirkEndPoint) receiver;
+        BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) receiver;
 
         final Intent unicastStreamIntent = new Intent();
         unicastStreamIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         unicastStreamIntent.setAction(ACTION_UHU_PUSH_UNICAST_STREAM);
-        unicastStreamIntent.putExtra("serviceId", new Gson().toJson((UhuZirkId) sender));
+        unicastStreamIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) sender));
         unicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
         unicastStreamIntent.putExtra("stream", stream.toJson());
         unicastStreamIntent.putExtra("filePath", file);
         unicastStreamIntent.putExtra("localStreamId", streamId);
         ComponentName retName = mContext.startService(unicastStreamIntent);
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for service id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
             return 0;
         }
         Log.d(TAG, "StreamId-> " + streamId);
@@ -303,7 +303,7 @@ public final class Proxy implements Bezirk {
         addPipe.setAction(UhuActions.ACTION_PIPE_REQUEST);
         addPipe.putExtra(UhuActions.KEY_PIPE_NAME, pipe.getName());
         addPipe.putExtra(UhuActions.KEY_PIPE_REQ_ID, pipeId);
-        addPipe.putExtra(UhuActions.KEY_SENDER_SERVICE_ID, new Gson().toJson((UhuZirkId) requester));
+        addPipe.putExtra(UhuActions.KEY_SENDER_ZIRK_ID, new Gson().toJson((BezirkZirkId) requester));
 
         if (pipe instanceof CloudPipe) {
             addPipe.putExtra(UhuActions.KEY_PIPE_URI, ((CloudPipe) pipe).getURI().toString());
@@ -321,7 +321,7 @@ public final class Proxy implements Bezirk {
 
         ComponentName retName = mContext.startService(addPipe);
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for service id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
             return;
         }
     }
@@ -346,7 +346,7 @@ public final class Proxy implements Bezirk {
         Intent discoverIntent = new Intent();
         discoverIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         discoverIntent.setAction(ACTION_SERVICE_DISCOVER);
-        discoverIntent.putExtra("serviceId", new Gson().toJson((UhuZirkId) zirk));
+        discoverIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) zirk));
         discoverIntent.putExtra("address", new Gson().toJson(scope));
         discoverIntent.putExtra("pRole", new SubscribedRole(protocolRole).getSubscribedProtocolRole());
         discoverIntent.putExtra("timeout", timeout);
@@ -365,7 +365,7 @@ public final class Proxy implements Bezirk {
         Intent locationIntent = new Intent();
         locationIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         locationIntent.setAction(ACTION_UHU_SETLOCATION);
-        locationIntent.putExtra("serviceId", new Gson().toJson((UhuZirkId) zirk));
+        locationIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) zirk));
         locationIntent.putExtra("locationData", new Gson().toJson(location));
         mContext.startService(locationIntent);
     }

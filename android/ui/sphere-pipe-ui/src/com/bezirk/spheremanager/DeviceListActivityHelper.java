@@ -14,7 +14,7 @@ import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.PipeListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.starter.MainService;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import bezirk.zbarscanner.ScannerActivity;
 
@@ -157,7 +157,7 @@ public class DeviceListActivityHelper {
     boolean processQRcode(String data, String scanType, String sphereID) {
         boolean qrProcessStatus = false;
         IUhuSphereAPI api = MainService.getSphereHandle();
-        if (UhuValidatorUtility.isObjectNotNull(api)) {
+        if (BezirkValidatorUtility.isObjectNotNull(api)) {
             if (scanType.equals(DeviceListActivity.CATCH)) {
                 Log.d(TAG, "processing as catch");
                 qrProcessStatus = api.processCatchQRCodeRequest(data, sphereID);

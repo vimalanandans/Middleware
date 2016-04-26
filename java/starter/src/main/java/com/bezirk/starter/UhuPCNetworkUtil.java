@@ -2,7 +2,7 @@ package com.bezirk.starter;
 
 import com.bezirk.comms.UhuComms;
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.IntfInetPair;
 import com.bezrik.network.UhuNetworkUtilities;
 
@@ -19,7 +19,7 @@ import java.util.Properties;
 import java.util.Scanner;
 
 /**
- * Helper class for main service to fetch the network interface details.
+ * Helper class for main zirk to fetch the network interface details.
  *
  * @author ajc6kor
  */
@@ -99,7 +99,7 @@ final class UhuPCNetworkUtil {
             else {
                 LOGGER.info("Found multiple interfaces, prompting user to choose ...");
                 final String intfName = promptUserForInterface(uhuConfig);
-                if (UhuValidatorUtility.checkForString(intfName)) {
+                if (BezirkValidatorUtility.checkForString(intfName)) {
                     intf = NetworkInterface.getByName(intfName);
                 } else {
                     LOGGER.error("Invalid interface name selected! Uhu is shutting down. . .");

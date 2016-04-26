@@ -90,7 +90,7 @@ public class SphereListFragment extends ListFragment {
                     .getApplicationContext(), sphereList));
 
         } else {
-            Log.d(TAG, "main service object is not live. ");
+            Log.d(TAG, "main zirk object is not live. ");
         }
 
     }

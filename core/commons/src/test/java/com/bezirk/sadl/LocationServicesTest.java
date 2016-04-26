@@ -2,7 +2,7 @@ package com.bezirk.sadl;
 
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
- * This testcase verifies the setting and retrieval of service location.
+ * This testcase verifies the setting and retrieval of zirk location.
  *
  * @author AJC6KOR
  */
@@ -24,9 +24,9 @@ public class LocationServicesTest {
 
     private final static Logger log = LoggerFactory
             .getLogger(LocationServicesTest.class);
-    private static final UhuZirkId uhuServiceAId = new UhuZirkId("ServiceA");
-    private static final UhuZirkId uhuServiceCId = new UhuZirkId("ServiceC");
-    private static final UhuZirkId dummyServiceId = new UhuZirkId("InvalidServiceForTest");
+    private static final BezirkZirkId uhuServiceAId = new BezirkZirkId("ServiceA");
+    private static final BezirkZirkId uhuServiceCId = new BezirkZirkId("ServiceC");
+    private static final BezirkZirkId dummyServiceId = new BezirkZirkId("InvalidServiceForTest");
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
     private static UhuSadlManager uhuSadlManager = null;
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
@@ -66,22 +66,22 @@ public class LocationServicesTest {
 
     private void testNegativeCases() {
         /*
-		 * SadlManager is asked to set location for unregistered serviceId and should return false. 
+		 * SadlManager is asked to set location for unregistered zirkId and should return false.
 		 * */
         UhuCompManager.setUpaDevice(null);
         boolean isLocationSet = uhuSadlManager.setLocation(dummyServiceId, reception);
         assertFalse(isLocationSet);
 
 		/*
-		 * SadlManager asked to get location of unregistered service. It should return null
+		 * SadlManager asked to get location of unregistered zirk. It should return null
 		 * */
         Location nullLocation = uhuSadlManager.getLocationForService(dummyServiceId);
         assertNull(nullLocation);
 		
 		/*
-		 * Dummy Service is registered with SadlManager. 
-		 * SadlManager is queried for the service location of this dummy service.
-		 *It should return null as neither the service nor upaDevice is set up yet.
+		 * Dummy Zirk is registered with SadlManager.
+		 * SadlManager is queried for the zirk location of this dummy zirk.
+		 *It should return null as neither the zirk nor upaDevice is set up yet.
 		 **/
         uhuSadlManager.registerService(dummyServiceId);
         Location invalidLocation = uhuSadlManager.getLocationForService(dummyServiceId);
@@ -91,14 +91,14 @@ public class LocationServicesTest {
         //Configure default upa device.
         UhuCompManager.setUpaDevice(mockUtility.upaDevice);
 		/*
-		 * Dummy Service is registered with SadlManager. 
-		 * SadlManager is queried for the service location of this dummy service.
+		 * Dummy Zirk is registered with SadlManager.
+		 * SadlManager is queried for the zirk location of this dummy zirk.
 		 *It should return default device location as now the default upa device is configured.
 		 **/
         uhuSadlManager.registerService(dummyServiceId);
         Location serviceLocation = uhuSadlManager.getLocationForService(dummyServiceId);
 
-        assertEquals("Service location is not equal to the default device location when service location not set explicitly.", UhuCompManager.getUpaDevice().getDeviceLocation(), serviceLocation);
+        assertEquals("Zirk location is not equal to the default device location when zirk location not set explicitly.", UhuCompManager.getUpaDevice().getDeviceLocation(), serviceLocation);
         uhuSadlManager.unregisterService(dummyServiceId);
 
     }

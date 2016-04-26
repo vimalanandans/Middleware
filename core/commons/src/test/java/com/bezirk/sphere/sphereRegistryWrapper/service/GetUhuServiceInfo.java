@@ -4,13 +4,13 @@
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.middleware.objects.UhuServiceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
-import com.bezirk.sphere.impl.OwnerService;
+import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
-import com.bezirk.sphere.impl.Service;
+import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
@@ -84,7 +84,7 @@ public class GetUhuServiceInfo {
      * Test method for {@link SphereRegistryWrapper#getUhuServiceInfo(Iterable)}.
      * <p/>
      * <br>When valid ZirkId objects are passed,
-     * it should return List of UhuServiceInfo objects
+     * it should return List of BezirkZirkInfo objects
      */
     @Test
     public final void validServiceIdsReturnsTrue() {
@@ -94,47 +94,47 @@ public class GetUhuServiceInfo {
         String sphereId = sphereName + upaDevice.getDeviceId();
         Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
 
-        //Create service 1
-        String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
+        //Create zirk 1
+        String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
         String serviceType1 = "Owner";
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
-        Service service1 = new OwnerService(serviceName1,
+        Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), sphereSet1);
-        registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
+        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
 
-        //Create service 2
-        String serviceName2 = sphereTestUtility.OWNER_SERVICE_NAME_2;
-        UhuZirkId serviceId2 = new UhuZirkId(serviceName2);
+        //Create zirk 2
+        String serviceName2 = sphereTestUtility.OWNER_ZIRK_NAME_2;
+        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
         HashSet<String> sphereSet2 = new HashSet<>();
         String serviceType2 = "Owner";
         sphereSet2.add(sphereId);
-        Service service2 = new OwnerService(serviceName2,
+        Zirk zirk2 = new OwnerZirk(serviceName2,
                 upaDevice.getDeviceId(), sphereSet2);
-        registry.sphereMembership.put(serviceId2.getUhuServiceId(), service2);
+        registry.sphereMembership.put(serviceId2.getBezirkZirkId(), zirk2);
 
         registry.spheres.put(sphereId, sphere);
 
-        List<UhuZirkId> serviceIds = new ArrayList<>();
+        List<BezirkZirkId> serviceIds = new ArrayList<>();
         serviceIds.add(serviceId1);
         serviceIds.add(serviceId2);
 
-        // Create List of UhuServiceInfo objects to compare.
-        UhuServiceInfo serviceInfo1 = new UhuServiceInfo(serviceId1.getUhuServiceId(), serviceName1, serviceType1, true, true);
-        UhuServiceInfo serviceInfo2 = new UhuServiceInfo(serviceId2.getUhuServiceId(), serviceName2, serviceType2, true, true);
-        List<UhuServiceInfo> createdServiceInfo = new ArrayList<>();
+        // Create List of BezirkZirkInfo objects to compare.
+        BezirkZirkInfo serviceInfo1 = new BezirkZirkInfo(serviceId1.getBezirkZirkId(), serviceName1, serviceType1, true, true);
+        BezirkZirkInfo serviceInfo2 = new BezirkZirkInfo(serviceId2.getBezirkZirkId(), serviceName2, serviceType2, true, true);
+        List<BezirkZirkInfo> createdServiceInfo = new ArrayList<>();
         createdServiceInfo.add(serviceInfo1);
         createdServiceInfo.add(serviceInfo2);
 
-        // Get the list of UhuServiceInfo objects from the registry
-        List<UhuServiceInfo> retrievedServices = (List<UhuServiceInfo>) sphereRegistryWrapper.getUhuServiceInfo(serviceIds);
+        // Get the list of BezirkZirkInfo objects from the registry
+        List<BezirkZirkInfo> retrievedServices = (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(serviceIds);
         for (int i = 0; i < retrievedServices.size(); i++) {
-            UhuServiceInfo retrieved = retrievedServices.get(i);
-            UhuServiceInfo created = createdServiceInfo.get(i);
-            assertEquals(created.getServiceId(), retrieved.getServiceId());
-            assertEquals(created.getServiceName(), retrieved.getServiceName());
-            assertEquals(created.getServiceType(), retrieved.getServiceType());
+            BezirkZirkInfo retrieved = retrievedServices.get(i);
+            BezirkZirkInfo created = createdServiceInfo.get(i);
+            assertEquals(created.getZirkId(), retrieved.getZirkId());
+            assertEquals(created.getZirkName(), retrieved.getZirkName());
+            assertEquals(created.getZirkType(), retrieved.getZirkType());
         }
     }
 
@@ -146,7 +146,7 @@ public class GetUhuServiceInfo {
      */
     @Test
     public final void nullServiceIdsReturnsNull() {
-        List<UhuZirkId> serviceIds = null;
+        List<BezirkZirkId> serviceIds = null;
         assertNull(sphereRegistryWrapper.getUhuServiceInfo(serviceIds));
     }
 
@@ -164,34 +164,34 @@ public class GetUhuServiceInfo {
         String sphereId = sphereName + upaDevice.getDeviceId();
         Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
 
-        //Create service 1
-        String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
+        //Create zirk 1
+        String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
         String serviceType1 = "Owner";
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
 
-        //Create service 2
-        String serviceName2 = sphereTestUtility.OWNER_SERVICE_NAME_2;
-        UhuZirkId serviceId2 = new UhuZirkId(serviceName2);
+        //Create zirk 2
+        String serviceName2 = sphereTestUtility.OWNER_ZIRK_NAME_2;
+        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
         HashSet<String> sphereSet2 = new HashSet<>();
         String serviceType2 = "Owner";
         sphereSet2.add(sphereId);
 
         registry.spheres.put(sphereId, sphere);
 
-        List<UhuZirkId> serviceIds = new ArrayList<>();
+        List<BezirkZirkId> serviceIds = new ArrayList<>();
         serviceIds.add(serviceId1);
         serviceIds.add(serviceId2);
 
-        // Create List of UhuServiceInfo objects to compare.
-        UhuServiceInfo serviceInfo1 = new UhuServiceInfo(serviceId1.getUhuServiceId(), serviceName1, serviceType1, true, true);
-        UhuServiceInfo serviceInfo2 = new UhuServiceInfo(serviceId2.getUhuServiceId(), serviceName2, serviceType2, true, true);
-        List<UhuServiceInfo> createdServiceInfo = new ArrayList<>();
+        // Create List of BezirkZirkInfo objects to compare.
+        BezirkZirkInfo serviceInfo1 = new BezirkZirkInfo(serviceId1.getBezirkZirkId(), serviceName1, serviceType1, true, true);
+        BezirkZirkInfo serviceInfo2 = new BezirkZirkInfo(serviceId2.getBezirkZirkId(), serviceName2, serviceType2, true, true);
+        List<BezirkZirkInfo> createdServiceInfo = new ArrayList<>();
         createdServiceInfo.add(serviceInfo1);
         createdServiceInfo.add(serviceInfo2);
 
-        List<UhuServiceInfo> retrievedServices = (List<UhuServiceInfo>) sphereRegistryWrapper.getUhuServiceInfo(serviceIds);
+        List<BezirkZirkInfo> retrievedServices = (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(serviceIds);
         assertTrue(retrievedServices.isEmpty());
     }
 
@@ -199,7 +199,7 @@ public class GetUhuServiceInfo {
     /**
      * Test method for {@link SphereRegistryWrapper#getUhuServiceInfo(Iterable)}.
      * <p/>
-     * <br>When valid serviceId exists but no mapping service to that,
+     * <br>When valid zirkId exists but no mapping zirk to that,
      * it should return empty lists
      */
     @Test
@@ -210,36 +210,36 @@ public class GetUhuServiceInfo {
         String sphereId = sphereName + upaDevice.getDeviceId();
         Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
 
-        //Create service 1
-        String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
+        //Create zirk 1
+        String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
         String serviceType1 = "Owner";
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
-        registry.sphereMembership.put(serviceId1.getUhuServiceId(), null);
+        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), null);
 
-        //Create service 2
-        String serviceName2 = sphereTestUtility.OWNER_SERVICE_NAME_2;
-        UhuZirkId serviceId2 = new UhuZirkId(serviceName2);
+        //Create zirk 2
+        String serviceName2 = sphereTestUtility.OWNER_ZIRK_NAME_2;
+        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
         HashSet<String> sphereSet2 = new HashSet<>();
         String serviceType2 = "Owner";
         sphereSet2.add(sphereId);
-        registry.sphereMembership.put(serviceId2.getUhuServiceId(), null);
+        registry.sphereMembership.put(serviceId2.getBezirkZirkId(), null);
 
         registry.spheres.put(sphereId, sphere);
 
-        List<UhuZirkId> serviceIds = new ArrayList<>();
+        List<BezirkZirkId> serviceIds = new ArrayList<>();
         serviceIds.add(serviceId1);
         serviceIds.add(serviceId2);
 
-        // Create List of UhuServiceInfo objects to compare.
-        UhuServiceInfo serviceInfo1 = new UhuServiceInfo(serviceId1.getUhuServiceId(), serviceName1, serviceType1, true, true);
-        UhuServiceInfo serviceInfo2 = new UhuServiceInfo(serviceId2.getUhuServiceId(), serviceName2, serviceType2, true, true);
-        List<UhuServiceInfo> createdServiceInfo = new ArrayList<>();
+        // Create List of BezirkZirkInfo objects to compare.
+        BezirkZirkInfo serviceInfo1 = new BezirkZirkInfo(serviceId1.getBezirkZirkId(), serviceName1, serviceType1, true, true);
+        BezirkZirkInfo serviceInfo2 = new BezirkZirkInfo(serviceId2.getBezirkZirkId(), serviceName2, serviceType2, true, true);
+        List<BezirkZirkInfo> createdServiceInfo = new ArrayList<>();
         createdServiceInfo.add(serviceInfo1);
         createdServiceInfo.add(serviceInfo2);
 
-        List<UhuServiceInfo> retrievedServices = (List<UhuServiceInfo>) sphereRegistryWrapper.getUhuServiceInfo(serviceIds);
+        List<BezirkZirkInfo> retrievedServices = (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(serviceIds);
         assertTrue(retrievedServices.isEmpty());
     }
 

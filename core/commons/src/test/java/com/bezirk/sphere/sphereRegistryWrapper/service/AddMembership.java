@@ -5,11 +5,11 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
-import com.bezirk.sphere.impl.OwnerService;
+import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
-import com.bezirk.sphere.impl.Service;
+import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
@@ -77,9 +77,9 @@ public class AddMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#addMembership(UhuZirkId, String, String, String)}.
+     * Test method for {@link SphereRegistryWrapper#addMembership(BezirkZirkId, String, String, String)}.
      * <p/>
-     * <br>Test if a new service is added successfully to the registry.
+     * <br>Test if a new zirk is added successfully to the registry.
      * The method should return True.
      */
     @Test
@@ -89,9 +89,9 @@ public class AddMembership {
         String sphereId1 = sphereName + upaDevice.getDeviceId();
         Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
 
-        //Create service 1 but dont add it to registry
-        String serviceName1 = sphereTestUtility.MEMBER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
+        //Create zirk 1 but dont add it to registry
+        String serviceName1 = sphereTestUtility.MEMBER_ZIRK_NAME_1;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
         String ownerDeviceId = upaDevice.getDeviceId();
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
@@ -103,9 +103,9 @@ public class AddMembership {
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#addMembership(UhuZirkId, String, String, String)}.
+     * Test method for {@link SphereRegistryWrapper#addMembership(BezirkZirkId, String, String, String)}.
      * <p/>
-     * <br>If an existing service is being added to the registry, then just the service name is updated.
+     * <br>If an existing zirk is being added to the registry, then just the zirk name is updated.
      * The method should return True.
      */
     @Test
@@ -115,15 +115,15 @@ public class AddMembership {
         String sphereId1 = sphereName + upaDevice.getDeviceId();
         Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
 
-        //Create service 1 and add it to registry
-        String serviceName1 = sphereTestUtility.MEMBER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
+        //Create zirk 1 and add it to registry
+        String serviceName1 = sphereTestUtility.MEMBER_ZIRK_NAME_1;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
         String ownerDeviceId = upaDevice.getDeviceId();
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
-        Service service1 = new OwnerService(serviceName1,
+        Zirk zirk1 = new OwnerZirk(serviceName1,
                 ownerDeviceId, sphereSet1);
-        registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
+        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
 
         registry.spheres.put(sphereId1, sphere);
 
@@ -131,7 +131,7 @@ public class AddMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#addMembership(UhuZirkId, String, String, String)}.
+     * Test method for {@link SphereRegistryWrapper#addMembership(BezirkZirkId, String, String, String)}.
      * <p/>
      * <br>When sphere does not exist, the method will return False
      */
@@ -141,15 +141,15 @@ public class AddMembership {
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_1;
         String sphereId1 = sphereName + upaDevice.getDeviceId();
 
-        //Create service 1 and add it to registry
-        String serviceName1 = sphereTestUtility.MEMBER_SERVICE_NAME_1;
-        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
+        //Create zirk 1 and add it to registry
+        String serviceName1 = sphereTestUtility.MEMBER_ZIRK_NAME_1;
+        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
         String ownerDeviceId = upaDevice.getDeviceId();
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
-        Service service1 = new OwnerService(serviceName1,
+        Zirk zirk1 = new OwnerZirk(serviceName1,
                 ownerDeviceId, sphereSet1);
-        registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
+        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
 
         assertFalse(sphereRegistryWrapper.addMembership(serviceId1, sphereId1, ownerDeviceId, serviceName1));
     }

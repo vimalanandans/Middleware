@@ -2,7 +2,7 @@ package com.bezirk.comms;
 
 import com.bezirk.devices.UPADeviceForPC;
 import com.bezirk.starter.UhuConfig;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,7 +109,7 @@ public final class UhuCommsPC {
     private static void overrideStringProperty(String propName,
                                                Properties props, UhuConfig uhuConfig) {
         final String value = System.getProperty(propName);
-        if (UhuValidatorUtility.checkForString(value)) {
+        if (BezirkValidatorUtility.checkForString(value)) {
             LOGGER.info("found system property: " + propName + ": " + value);
             props.setProperty(propName, value);
 

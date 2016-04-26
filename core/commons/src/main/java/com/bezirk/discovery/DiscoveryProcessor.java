@@ -63,7 +63,7 @@ public class DiscoveryProcessor implements Runnable {
                 //	Invoke the requestor with the discovered and drop the request
                 if (curTime - discRecord.getCreationTime() >= discRecord.getTimeout()) {
                     final Gson gson = new Gson();
-                    DiscoveryIncomingMessage callbackMessage = new DiscoveryIncomingMessage(dlbl.getRequester().serviceId, gson.toJson(discRecord.getList()), dlbl.getDiscoveryId(), dlbl.isSphereDiscovery());
+                    DiscoveryIncomingMessage callbackMessage = new DiscoveryIncomingMessage(dlbl.getRequester().zirkId, gson.toJson(discRecord.getList()), dlbl.getDiscoveryId(), dlbl.isSphereDiscovery());
                     UhuCompManager.getplatformSpecificCallback().onDiscoveryIncomingMessage(callbackMessage);
                     DiscoveryProcessor.discovery.remove(dlbl);
                 }

@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -25,10 +25,10 @@ public class SphereDiscoveryResponseTest {
             .getLogger(SphereDiscoveryResponseTest.class);
 
 
-    private static final UhuZirkId serviceAId = new UhuZirkId("ServiceA");
-    private static final UhuZirkId serviceBId = new UhuZirkId("ServiceB");
+    private static final BezirkZirkId serviceAId = new BezirkZirkId("ServiceA");
+    private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
 
-    private static List<UhuZirkId> services = new ArrayList<>();
+    private static List<BezirkZirkId> services = new ArrayList<>();
 
     /**
      * @throws java.lang.Exception
@@ -54,8 +54,8 @@ public class SphereDiscoveryResponseTest {
     public void testSphereDiscoveryResponse() {
 
         String scannedSphereId = "SCANNEDID";
-        UhuZirkId serviceId = new UhuZirkId("ServiceA");
-        UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceId);
+        BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+        BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceId);
         com.bezirk.sphere.messages.SphereDiscoveryResponse sphereDiscoveryRequest = new com.bezirk.sphere.messages.SphereDiscoveryResponse(scannedSphereId, services, sender);
         String serializedMessage = sphereDiscoveryRequest.serialize();
         com.bezirk.sphere.messages.SphereDiscoveryResponse deserializedSphereDiscoveryResponse = com.bezirk.sphere.messages.SphereDiscoveryResponse.deserialize(serializedMessage, com.bezirk.sphere.messages.SphereDiscoveryResponse.class);

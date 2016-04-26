@@ -9,14 +9,14 @@ import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.UhuDevice;
 import com.bezirk.features.CommsFeature;
-import com.bezirk.messagehandler.ServiceMessageHandler;
+import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.persistence.IDatabaseConnection;
 import com.bezirk.persistence.IUhuProxyPersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.sadl.UhuSadlManager;
 import com.bezirk.sphere.api.IUhuSphereAPI;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.slf4j.Logger;
@@ -107,7 +107,7 @@ public class MainService {
     };
 
     /**
-     * Configure proxy and uhuconfig for main service
+     * Configure proxy and uhuconfig for main zirk
      *
      * @param proxyforServices
      * @param uhuConfigRef
@@ -157,7 +157,7 @@ public class MainService {
          * Step3 : Shutdown RemoteLogging    *
          *************************************/
         if (UhuComms.isRemoteLoggingServiceEnabled()
-                && UhuValidatorUtility.isObjectNotNull(loggingGUI)
+                && BezirkValidatorUtility.isObjectNotNull(loggingGUI)
                 && loggingGUI.isVisible()) {
 
             loggingGUI.shutGUI();
@@ -174,7 +174,7 @@ public class MainService {
      *
      * @param uhuPcCallback
      */
-    public void startStack(final ServiceMessageHandler uhuPcCallback) {
+    public void startStack(final ZirkMessageHandler uhuPcCallback) {
         logger.info("UhuStarter has started \n");
 
         /**************************************************
@@ -241,12 +241,12 @@ public class MainService {
          * Step8 :Initialize sphere                       *
          **************************************************/
 
-        if (UhuValidatorUtility.isObjectNotNull(uhuDevice)) {
+        if (BezirkValidatorUtility.isObjectNotNull(uhuDevice)) {
 
             sphereForPC = serviceStarterHelper.initSphere(uhuDevice,
                     registryPersistence, comms);
 
-            if (!UhuValidatorUtility.isObjectNotNull(sphereForPC)) {
+            if (!BezirkValidatorUtility.isObjectNotNull(sphereForPC)) {
 
                 serviceStarterHelper.fail("Problem initializing sphere.", null);
 
@@ -327,7 +327,7 @@ public class MainService {
         }
     }
 
-    private boolean initComms(final ServiceMessageHandler uhuPcCallback,
+    private boolean initComms(final ZirkMessageHandler uhuPcCallback,
                               final NetworkInterface intf, final UhuSadlManager uhuSadlManager) {
 
         CommsFactory commsFactory = new CommsFactory();

@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.impl;
 
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public final class MemberSphere extends Sphere implements Serializable {
      *                        use is completed
      */
     public MemberSphere(String sphereName, String sphereType, Set<String> ownerDevices,
-                        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices, boolean temporarySphere) {
+                        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices, boolean temporarySphere) {
         super();
         this.temporarySphere = temporarySphere;
         createSphere(sphereName, sphereType, ownerDevices, deviceServices);
@@ -45,7 +45,7 @@ public final class MemberSphere extends Sphere implements Serializable {
      * @param sphereName
      */
     private void createSphere(String sphereName, String sphereType, Set<String> ownerDevices,
-                              LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices) {
+                              LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices) {
         this.sphereName = sphereName;
         this.sphereType = sphereType;
         this.ownerDevices = ownerDevices;

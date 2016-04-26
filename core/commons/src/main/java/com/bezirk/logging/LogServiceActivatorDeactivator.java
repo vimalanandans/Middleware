@@ -7,8 +7,8 @@ import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.UhuComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.slf4j.Logger;
@@ -27,8 +27,8 @@ public final class LogServiceActivatorDeactivator {
     }
 
     public static void sendLoggingServiceMsgToClients(IUhuComms comms, final String[] sphereList, final String[] selectedLogSpheres, final boolean isActivate) {
-        final UhuZirkId myId = new UhuZirkId("UHU-REMOTE-LOGGING-SERVICE");
-        final UhuZirkEndPoint sep = UhuNetworkUtilities.getServiceEndPoint(myId);
+        final BezirkZirkId myId = new BezirkZirkId("UHU-REMOTE-LOGGING-SERVICE");
+        final BezirkZirkEndPoint sep = UhuNetworkUtilities.getServiceEndPoint(myId);
 
         for (String sphereId : sphereList) {
             final ControlLedger controlLedger = new ControlLedger();

@@ -1,7 +1,7 @@
 package com.bezirk.discovery;
 
 import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class SphereDiscoveryRecord {
     private final long timeout;
     // Key is used for identifying the device sending discovery
     // response. Can be replaced with an alternative identifier. Currently the
-    // device field from UhuZirkEndPoint is used
+    // device field from BezirkZirkEndPoint is used
     private final HashMap<String, UhuSphereInfo> sphereInfoMap;
     private final long createTime;
     private final String sphereId;
@@ -58,7 +58,7 @@ public class SphereDiscoveryRecord {
 
     // TODO: change to a single UhuSphereInfo object instead of returning a list
     // of UhuSphereInfo
-    public HashSet<UhuSphereInfo> getSphereServices() {
+    public HashSet<UhuSphereInfo> getSphereZirks() {
         // UhuSphereInfo uhuSphereInfo = null;
         // if (sphereInfoMap.size() != 0) {
         // copy an existing entry using the copy constructor
@@ -72,9 +72,9 @@ public class SphereDiscoveryRecord {
     }
 
     public void updateSet(UhuSphereInfo uhuSphereInfo,
-                          UhuZirkEndPoint uhuServiceEndPoint) {
+                          BezirkZirkEndPoint bezirkZirkEndPoint) {
         // updating if the value already exists to get the latest version
-        sphereInfoMap.put(uhuServiceEndPoint.device, uhuSphereInfo);
+        sphereInfoMap.put(bezirkZirkEndPoint.device, uhuSphereInfo);
         //printMap();
     }
 

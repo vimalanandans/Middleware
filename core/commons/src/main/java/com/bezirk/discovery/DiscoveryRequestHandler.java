@@ -5,9 +5,9 @@ import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
-import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sadl.ISadlControlReceiver;
 
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ public class DiscoveryRequestHandler {
 
     public void getDiscoveryResponse() {
         final Boolean success = (null == discReq.getProtocol()) ? handleSphereDiscovery(discReq) :
-                handleServiceDiscovery(discReq);
+                handleZirkDiscovery(discReq);
 
         if (success) {
             populateReceiverQueue(response);
@@ -64,24 +64,24 @@ public class DiscoveryRequestHandler {
         return true;
     }
 
-    private Boolean handleServiceDiscovery(DiscoveryRequest req) {
-        Set<UhuDiscoveredZirk> dServiceList = this.sadlCtrl.discoverServices(req.getProtocol(), req.getLocation());
-        if (null == dServiceList || dServiceList.isEmpty()) {
+    private Boolean handleZirkDiscovery(DiscoveryRequest req) {
+        Set<BezirkDiscoveredZirk> dZirkList = this.sadlCtrl.discoverZirks(req.getProtocol(), req.getLocation());
+        if (null == dZirkList || dZirkList.isEmpty()) {
             return false;
         }
-        Iterator<UhuDiscoveredZirk> dServices = dServiceList.iterator();
-        while (dServices.hasNext()) {
-            UhuDiscoveredZirk dService = dServices.next();
-            UhuZirkId sid = ((UhuZirkEndPoint) dService.getZirkEndPoint()).getUhuServiceId();
+        Iterator<BezirkDiscoveredZirk> dZirks = dZirkList.iterator();
+        while (dZirks.hasNext()) {
+            BezirkDiscoveredZirk dZirk = dZirks.next();
+            BezirkZirkId sid = ((BezirkZirkEndPoint) dZirk.getZirkEndPoint()).getBezirkZirkId();
 
-            if (UhuCompManager.getSphereForSadl().isServiceInSphere(sid, req.getSphereId())) {
-                //Set the Service Name
-                dService.name = UhuCompManager.getSphereForSadl().getServiceName(sid);
-                //Populate response service list
-                response.getServiceList().add(dService);
+            if (UhuCompManager.getSphereForSadl().isZirkInSphere(sid, req.getSphereId())) {
+                //Set the Zirk Name
+                dZirk.name = UhuCompManager.getSphereForSadl().getZirkName(sid);
+                //Populate response zirk list
+                response.getZirkList().add(dZirk);
             }
         }
-        if (null == response.getServiceList() || response.getServiceList().isEmpty()) {
+        if (null == response.getZirkList() || response.getZirkList().isEmpty()) {
             return false;
         }
 

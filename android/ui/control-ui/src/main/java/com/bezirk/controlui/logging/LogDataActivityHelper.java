@@ -158,7 +158,7 @@ class LogDataActivityHelper {
     }
 
     /**
-     * Starts the Logging Service and LogReceiverProcessor.
+     * Starts the Logging Zirk and LogReceiverProcessor.
      */
     void startLogService() {
         try {
@@ -181,7 +181,7 @@ class LogDataActivityHelper {
         }
         logDataActivity.selSpheres = selectedSphereList.clone();
 
-        // it is not a good idea to access the main service directly. the best way to do is via IBinder
+        // it is not a good idea to access the main zirk directly. the best way to do is via IBinder
         MainService.sendLoggingServiceMsgToClients(logDataActivity.selSpheres, tempLoggingSphereList, true);
 
     }
@@ -296,7 +296,7 @@ class LogDataActivityHelper {
                     logDataActivity.onDestroy();
                 } catch (Exception e) {
                     printToast("ERROR IN STOPPING LOG SERVICE...");
-                    log.error("Error in stopping logger service.", e);
+                    log.error("Error in stopping logger zirk.", e);
                 }
             }
         });

@@ -4,7 +4,7 @@
 package com.bezirk.sphere.api;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -105,34 +105,34 @@ public interface IUhuSphereForSadl {
 
     /**
      * Provides iterable collection of sphereIds associated with passed
-     * UhuZirkId
+     * BezirkZirkId
      *
-     * @param serviceId UhuZirkId for retrieving stored membership information
+     * @param serviceId BezirkZirkId for retrieving stored membership information
      * @return Iterable Collection of sphereIds for the passed ZirkId
      * <p/>
-     * null in case the serviceId passed is null or not registered
+     * null in case the zirkId passed is null or not registered
      */
-    public Iterable<String> getSphereMembership(UhuZirkId serviceId);
+    public Iterable<String> getSphereMembership(BezirkZirkId serviceId);
 
     // TODO add to wiki : found while refactoring to the new API
 
     /**
-     * Checks if the service is a part of the sphere
+     * Checks if the zirk is a part of the sphere
      *
-     * @param service  UhuZirkId for finding existence in a sphere
+     * @param service  BezirkZirkId for finding existence in a sphere
      * @param sphereId sphere to be tested
-     * @return true if the service exist in the sphere false otherwise
+     * @return true if the zirk exist in the sphere false otherwise
      */
-    public boolean isServiceInSphere(UhuZirkId service, String sphereId);
+    public boolean isZirkInSphere(BezirkZirkId service, String sphereId);
 
     /**
-     * Gets the service name of the passed UhuZirkId
+     * Gets the zirk name of the passed BezirkZirkId
      *
-     * @param serviceId UhuZirkId for retrieving the service name
-     * @return Service name if the service id is valid and not null null
+     * @param serviceId BezirkZirkId for retrieving the zirk name
+     * @return Zirk name if the zirk id is valid and not null null
      * otherwise
      */
-    public String getServiceName(UhuZirkId serviceId);
+    public String getZirkName(BezirkZirkId serviceId);
 
     /**
      * This method handles processing the sphere related discovery request

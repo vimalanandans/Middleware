@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import static org.junit.Assert.assertTrue;
 
 /**
- * This testcase verifies the working of Callback service for PC.
+ * This testcase verifies the working of Callback zirk for PC.
  *
  * @modified by AJC6KOR
  */
@@ -24,7 +24,7 @@ public class TestCBkForServicePC {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestCBkForServicePC.class);
     private final com.bezirk.callback.pc.IBoradcastReceiver BRForService = new BRForServiceMock();
-    private final com.bezirk.callback.pc.CBkForServicePC cBkForServicePC = new CBkForServicePC(BRForService);
+    private final CBkForZirkPC cBkForServicePC = new CBkForZirkPC(BRForService);
     private boolean receivedEvent = false;
     private boolean receivedUnicastStream = false;
     private boolean receivedStreamStatus = false;
@@ -59,14 +59,14 @@ public class TestCBkForServicePC {
         EventIncomingMessage eventCallbackMessage = new EventIncomingMessage();
         cBkForServicePC.onIncomingEvent(eventCallbackMessage);
 
-        assertTrue("Callback Service is unable to fire eventCallback. ", receivedEvent);
+        assertTrue("Callback Zirk is unable to fire eventCallback. ", receivedEvent);
     }
 
     private void testFireUnicastStreamCallback() {
         StreamIncomingMessage unicastStreamCallbackMessage = new StreamIncomingMessage();
         cBkForServicePC.onIncomingStream(unicastStreamCallbackMessage);
 
-        assertTrue("Callback Service is unable to fire Unicast stream.", receivedUnicastStream);
+        assertTrue("Callback Zirk is unable to fire Unicast stream.", receivedUnicastStream);
 
     }
 
@@ -80,7 +80,7 @@ public class TestCBkForServicePC {
         StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage();
         cBkForServicePC.onStreamStatus(streamStatusCallbackMessage);
 
-        assertTrue("Callback Service is unable to fire stream status.", receivedStreamStatus);
+        assertTrue("Callback Zirk is unable to fire stream status.", receivedStreamStatus);
 
     }
 
@@ -88,7 +88,7 @@ public class TestCBkForServicePC {
         DiscoveryIncomingMessage discoveryCallbackMessage = new DiscoveryIncomingMessage();
         cBkForServicePC.onDiscoveryIncomingMessage(discoveryCallbackMessage);
 
-        assertTrue("Callback Service is unable to fire Discovery callback.", receivedDiscovery);
+        assertTrue("Callback Zirk is unable to fire Discovery callback.", receivedDiscovery);
 
     }
 

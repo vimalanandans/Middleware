@@ -7,7 +7,7 @@ import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.security.CryptoEngine;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 import com.google.zxing.common.BitMatrix;
 
 import org.slf4j.Logger;
@@ -73,7 +73,7 @@ public class UhuSphereForPC extends UhuSphere implements IUhuQRCode,
     public boolean saveQRCode(String filePath, String filePrefix) {
         String fileName = null;
 
-        if (UhuValidatorUtility.checkForString(filePath)) {
+        if (BezirkValidatorUtility.checkForString(filePath)) {
             final File folder = new File(filePath);
 
             if (!folder.exists()) {

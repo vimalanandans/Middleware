@@ -8,35 +8,34 @@ import java.util.List;
 /**
  * @author Rishabh Gulati
  */
-public class UhuDeviceInfo {
-
+public class BezirkDeviceInfo {
     private final String deviceId;
     private final String deviceName;
     private final String deviceType;
     private final UhuDeviceRole deviceRole;
     private final boolean deviceActive;
-    private final List<UhuServiceInfo> services;
+    private final List<BezirkZirkInfo> zirks;
 
     /**
-     * // We need Service Info not service id. this services will be deprecated
+     * // We need Zirk Info not zirk id. this zirks will be deprecated
      *
      * @param deviceId
      * @param deviceName
      * @param deviceType
      * @param deviceRole
      * @param deviceActive
-     * @param services
+     * @param zirks
      */
-    // We need Service Info not service id. this services will be deprecated
-    public UhuDeviceInfo(final String deviceId, final String deviceName,
-                         final String deviceType, final UhuDeviceRole deviceRole,
-                         final boolean deviceActive, final List<UhuServiceInfo> services) {
+    // We need Zerk Info not zirk id. this zirks will be deprecated
+    public BezirkDeviceInfo(final String deviceId, final String deviceName,
+                            final String deviceType, final UhuDeviceRole deviceRole,
+                            final boolean deviceActive, final List<BezirkZirkInfo> zirks) {
         this.deviceId = deviceId;
         this.deviceName = deviceName;
         this.deviceType = deviceType;
         this.deviceRole = deviceRole;
         this.deviceActive = deviceActive;
-        this.services = services;
+        this.zirks = zirks;
     }
 
     /**
@@ -75,10 +74,10 @@ public class UhuDeviceInfo {
     }
 
     /**
-     * @return the service info list
+     * @return the zirk info list
      */
-    public final List<UhuServiceInfo> getServiceList() {
-        return services;
+    public final List<BezirkZirkInfo> getZirkList() {
+        return zirks;
     }
 
     /* (non-Javadoc)
@@ -86,10 +85,10 @@ public class UhuDeviceInfo {
      */
     @Override
     public String toString() {
-        return "UhuDeviceInfo [deviceId=" + deviceId + ",\ndeviceName="
+        return "BezirkDeviceInfo [deviceId=" + deviceId + ",\ndeviceName="
                 + deviceName + ",\ndeviceType=" + deviceType + ",\ndeviceRole="
-                + deviceRole + ",\ndeviceActive=" + deviceActive + ",\nservices="
-                + services + "]";
+                + deviceRole + ",\ndeviceActive=" + deviceActive + ",\nzirks="
+                + zirks + "]";
     }
 
     /* (non-Javadoc)
@@ -115,7 +114,7 @@ public class UhuDeviceInfo {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        UhuDeviceInfo other = (UhuDeviceInfo) obj;
+        BezirkDeviceInfo other = (BezirkDeviceInfo) obj;
         if (deviceId == null) {
             if (other.deviceId != null)
                 return false;

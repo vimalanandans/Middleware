@@ -32,7 +32,7 @@ import com.bezirk.spheremanager.ui.PipeListFragment.ShowPipesCallbacks;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuActionCommands;
-import com.bezirk.util.UhuValidatorUtility;
+import com.bezirk.util.BezirkValidatorUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,10 +73,10 @@ public class DeviceListActivity extends FragmentActivity implements
 
         IUhuSphereAPI api = MainService.getSphereHandle();
 
-        if (UhuValidatorUtility.isObjectNotNull(api)) {
+        if (BezirkValidatorUtility.isObjectNotNull(api)) {
 
             UhuSphereInfo sphereInfo = api.getSphere(sphereID);
-            if (UhuValidatorUtility.isObjectNotNull(sphereInfo)) {
+            if (BezirkValidatorUtility.isObjectNotNull(sphereInfo)) {
                 entry = new SphereListItem(sphereInfo);
             } else {
                 Log.e(TAG, "sphere contains : " + sphereID + " not found");
@@ -179,7 +179,7 @@ public class DeviceListActivity extends FragmentActivity implements
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.sphere_detail_actions, menu);
 
-        if (UhuValidatorUtility.isObjectNotNull(entry)) {
+        if (BezirkValidatorUtility.isObjectNotNull(entry)) {
             // disable the menu items for member sphere
             if (!entry.getmSphere().isThisDeviceOwnsSphere()) {
                 MenuItem item = null;
@@ -222,7 +222,7 @@ public class DeviceListActivity extends FragmentActivity implements
         } else if (itemId == R.id.action_scan_qr_service_catch) { // For Catch services
             deviceListActivityHelper.scanQR(CATCH);
             return true;
-        } else if (itemId == R.id.action_scan_qr_service_share) { // For Share service
+        } else if (itemId == R.id.action_scan_qr_service_share) { // For Share zirk
             deviceListActivityHelper.scanQR(SHARE);
             return true;
         } else if (itemId == R.id.action_share_sphere) { // invite to the sphere
@@ -243,12 +243,12 @@ public class DeviceListActivity extends FragmentActivity implements
     /* add the local services to the sphere
     * */
     void addLocalServicesToSphere() {
-        if (UhuValidatorUtility.isObjectNotNull(MainService.getSphereHandle().getServiceInfo())) {
+        if (BezirkValidatorUtility.isObjectNotNull(MainService.getSphereHandle().getServiceInfo())) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             DialogServiceListFragment dialogServiceListFragment = new DialogServiceListFragment();
             dialogServiceListFragment.setSphereId(sphereID);
             dialogServiceListFragment.setTitle("Add services to sphere");
-            dialogServiceListFragment.show(fragmentManager, "Dialog Service List");
+            dialogServiceListFragment.show(fragmentManager, "Dialog Zirk List");
         } else {
             Toast.makeText(getApplicationContext(), "No services in the device", Toast.LENGTH_SHORT).show();
         }
@@ -279,15 +279,15 @@ public class DeviceListActivity extends FragmentActivity implements
 
         PipeRegistry pipeRegistry = MainService.getPipeRegistryHandle();
 
-        if (UhuValidatorUtility.isObjectNotNull(pipeRegistry)) {
+        if (BezirkValidatorUtility.isObjectNotNull(pipeRegistry)) {
 
             List<PipeRecord> pipeRecords = new ArrayList<PipeRecord>(pipeRegistry.allPipes());
 
-            if (UhuValidatorUtility.isObjectNotNull(pipeRecords) && UhuValidatorUtility.isObjectNotNull(pipeRecords.get(position))) {
+            if (BezirkValidatorUtility.isObjectNotNull(pipeRecords) && BezirkValidatorUtility.isObjectNotNull(pipeRecords.get(position))) {
 
                 PipeRecord pipeRecord = pipeRecords.get(position);
 
-                if (UhuValidatorUtility.isObjectNotNull(pipeRecord.getPassword())) {
+                if (BezirkValidatorUtility.isObjectNotNull(pipeRecord.getPassword())) {
 
                     Intent pipeManagementIntent = new Intent(getApplicationContext(), UpdateUserCredentialsActivity.class);
                     pipeManagementIntent.putExtra("pipeId", position);

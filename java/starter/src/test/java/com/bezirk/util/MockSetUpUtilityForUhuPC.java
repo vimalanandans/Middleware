@@ -90,7 +90,7 @@ public class MockSetUpUtilityForUhuPC {
         uhuSphere.initSphere(spherePersistence, uhuComms, sphereListener, sphereConfig);
         UhuCompManager.setSphereRegistration((IUhuSphereRegistration) uhuSphere);
         UhuCompManager.setSphereForSadl(uhuSphere);
-        UhuCompManager.setplatformSpecificCallback(new MockCallbackService());
+        UhuCompManager.setplatformSpecificCallback(new MockCallbackZirk());
     }
 
 
@@ -136,7 +136,7 @@ public class MockSetUpUtilityForUhuPC {
         try {
 
             NetworkInterface intf = getInterface();
-            if (UhuValidatorUtility.isObjectNotNull(intf)) {
+            if (BezirkValidatorUtility.isObjectNotNull(intf)) {
 
                 return UhuNetworkUtilities.getIpForInterface(intf);
 

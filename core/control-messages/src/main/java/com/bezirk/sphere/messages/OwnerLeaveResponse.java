@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
-import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
-import com.bezirk.proxy.api.impl.UhuZirkId;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -15,13 +15,13 @@ import org.slf4j.LoggerFactory;
 
 public class OwnerLeaveResponse {
     private static final Logger LOGGER = LoggerFactory.getLogger(OwnerLeaveResponse.class);
-    //private final UhuZirkEndPoint recipient; //TODO check if redundant field is actually needed for further verification of the signed message
+    //private final BezirkZirkEndPoint recipient; //TODO check if redundant field is actually needed for further verification of the signed message
     private final boolean removedSuccessfully;
     private final String sphereID; //TODO check if redundant field is actually needed for further verification of the signed message
-    private final UhuZirkId serviceId;
+    private final BezirkZirkId serviceId;
     private final long time;
 
-    public OwnerLeaveResponse(String sphereID, UhuZirkId serviceId, UhuZirkEndPoint recipient, boolean removedSuccessfully) {
+    public OwnerLeaveResponse(String sphereID, BezirkZirkId serviceId, BezirkZirkEndPoint recipient, boolean removedSuccessfully) {
         this.sphereID = sphereID;
         this.serviceId = serviceId;
         //this.recipient = recipient;
@@ -44,11 +44,11 @@ public class OwnerLeaveResponse {
         return sphereID;
     }
 
-    public UhuZirkId getServiceId() {
+    public BezirkZirkId getServiceId() {
         return serviceId;
     }
 
-//    public UhuZirkEndPoint getRecipient() {
+//    public BezirkZirkEndPoint getRecipient() {
 //        return recipient;
 //    }
 

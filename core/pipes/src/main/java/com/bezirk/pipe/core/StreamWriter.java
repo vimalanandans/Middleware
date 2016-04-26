@@ -12,7 +12,7 @@ import java.io.InputStream;
 
 /**
  * Class used to write a stream to disk so that it can be passed to a
- * local uhu service
+ * local uhu zirk
  */
 public class StreamWriter implements Runnable {
     private static int numThreads = 0;
@@ -22,7 +22,7 @@ public class StreamWriter implements Runnable {
     private WriteJob writeJob;
 
     // Used to call back to the pipemonitor with the result from run(),
-    // which is the name of the file to pass to the local uhu service
+    // which is the name of the file to pass to the local uhu zirk
     private PipeManagerImpl pipeMonitor;
 
 

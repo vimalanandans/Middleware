@@ -11,7 +11,7 @@ public final class DBConstants {
     public static final String COLUMN_0 = "_id";
     public static final String COLUMN_1 = "sadlregistry";
     public static final String COLUMN_2 = "sphereregistry";
-    public static final String COLUMN_3 = "serviceId";
+    public static final String COLUMN_3 = "zirkId";
     /* Database Connection Properties */
     public static final String DB_FILE_NAME = "mw_database.sqlite";
     public static final String DB_URL_PATH = "jdbc:sqlite:";
