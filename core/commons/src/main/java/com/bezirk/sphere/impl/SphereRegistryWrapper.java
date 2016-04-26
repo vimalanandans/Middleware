@@ -1081,14 +1081,16 @@ public class SphereRegistryWrapper {
 
             List<BezirkDeviceInfo> deviceInfoList = new ArrayList<>();
 
-            for (String deviceId : devices.keySet()) {
+            for (Map.Entry<String, ArrayList<BezirkZirkId>> entry : devices.entrySet()) {
+                String deviceId = entry.getKey();
+
                 DeviceInformation deviceInformation = getDeviceInformation(deviceId);
 
                 if (deviceInformation != null) {
                     BezirkDeviceInfo deviceInfo = new BezirkDeviceInfo(deviceId, deviceInformation.getDeviceName(),
                             deviceInformation.getDeviceType(),
                             ownerDevices.contains(deviceId) ? UhuDeviceRole.UHU_CONTROL : UhuDeviceRole.UHU_MEMBER,
-                            true, (List<BezirkZirkInfo>) getUhuServiceInfo(devices.get(deviceId)));
+                            true, (List<BezirkZirkInfo>) getUhuServiceInfo(entry.getValue()));
                     deviceInfoList.add(deviceInfo);
                 } else {
                     logger.error("Device information for device : " + deviceId + " is null");

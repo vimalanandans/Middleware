@@ -42,14 +42,16 @@ public class Hashids {
             this.minHashLength = minHashLength;
         this.alphabet = alphabet;
 
-        String uniqueAlphabet = "";
+        final StringBuilder uniqueAlphabet = new StringBuilder();
         for (int i = 0; i < this.alphabet.length(); i++) {
-            if (!uniqueAlphabet.contains("" + this.alphabet.charAt(i))) {
-                uniqueAlphabet += "" + this.alphabet.charAt(i);
+            String newCharacter = "" + this.alphabet.charAt(i);
+
+            if (uniqueAlphabet.indexOf(newCharacter) == -1) {
+                uniqueAlphabet.append(newCharacter);
             }
         }
 
-        this.alphabet = uniqueAlphabet;
+        this.alphabet = uniqueAlphabet.toString();
 
         int minAlphabetLength = 16;
         if (this.alphabet.length() < minAlphabetLength) {
@@ -218,14 +220,14 @@ public class Hashids {
      * @return decryped numbers
      */
     public String decodeHex(String hash) {
-        String result = "";
+        final StringBuilder result = new StringBuilder();
         long[] numbers = this.decode(hash);
 
         for (long number : numbers) {
-            result += Long.toHexString(number).substring(1);
+            result.append(Long.toHexString(number).substring(1));
         }
 
-        return result;
+        return result.toString();
     }
 
     private String _encode(long... numbers) {
@@ -238,7 +240,8 @@ public class Hashids {
         //char lottery = ret;
         long num;
         int sepsIndex, guardIndex;
-        String buffer, ret_str = ret + "";
+        String buffer;
+        final StringBuilder tempStr = new StringBuilder(ret + "");
         char guard;
 
         for (int i = 0; i < numbers.length; i++) {
@@ -248,41 +251,43 @@ public class Hashids {
             alphabet = this.consistentShuffle(alphabet, buffer.substring(0, alphabet.length()));
             String last = this.hash(num, alphabet);
 
-            ret_str += last;
+            tempStr.append(last);
 
             if (i + 1 < numbers.length) {
                 num %= ((int) last.toCharArray()[0] + i);
                 sepsIndex = (int) (num % this.seps.length());
-                ret_str += this.seps.toCharArray()[sepsIndex];
+                tempStr.append(this.seps.toCharArray()[sepsIndex]);
             }
         }
 
-        if (ret_str.length() < this.minHashLength) {
-            guardIndex = (numberHashInt + (int) (ret_str.toCharArray()[0])) % this.guards.length();
+        String encodedNumbers = tempStr.toString();
+
+        if (encodedNumbers.length() < this.minHashLength) {
+            guardIndex = (numberHashInt + (int) (encodedNumbers.toCharArray()[0])) % this.guards.length();
             guard = this.guards.toCharArray()[guardIndex];
 
-            ret_str = guard + ret_str;
+            encodedNumbers = guard + encodedNumbers;
 
-            if (ret_str.length() < this.minHashLength) {
-                guardIndex = (numberHashInt + (int) (ret_str.toCharArray()[2])) % this.guards.length();
+            if (encodedNumbers.length() < this.minHashLength) {
+                guardIndex = (numberHashInt + (int) (encodedNumbers.toCharArray()[2])) % this.guards.length();
                 guard = this.guards.toCharArray()[guardIndex];
 
-                ret_str += guard;
+                encodedNumbers += guard;
             }
         }
 
         int halfLen = alphabet.length() / 2;
-        while (ret_str.length() < this.minHashLength) {
+        while (encodedNumbers.length() < this.minHashLength) {
             alphabet = this.consistentShuffle(alphabet, alphabet);
-            ret_str = alphabet.substring(halfLen) + ret_str + alphabet.substring(0, halfLen);
-            int excess = ret_str.length() - this.minHashLength;
+            encodedNumbers = alphabet.substring(halfLen) + encodedNumbers + alphabet.substring(0, halfLen);
+            int excess = encodedNumbers.length() - this.minHashLength;
             if (excess > 0) {
                 int start_pos = excess / 2;
-                ret_str = ret_str.substring(start_pos, start_pos + this.minHashLength);
+                encodedNumbers = encodedNumbers.substring(start_pos, start_pos + this.minHashLength);
             }
         }
 
-        return ret_str;
+        return encodedNumbers;
     }
 
     private long[] _decode(String hash, String alphabet) {

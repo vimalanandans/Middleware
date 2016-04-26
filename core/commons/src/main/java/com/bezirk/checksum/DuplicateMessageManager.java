@@ -19,10 +19,12 @@ public final class DuplicateMessageManager {
     }
 
     public static boolean checkDuplicateEvent(final byte[] checksumOfMsg) {
-        String string = CheckSumUtil.bytesToHex(checksumOfMsg);
-        if (null == checksumOfMsg) {
+        if (checksumOfMsg == null) {
             return true;
         }
+
+        String string = CheckSumUtil.bytesToHex(checksumOfMsg);
+
         if (duplicateEventsCheck.contains(string)) {
             return true;
         }

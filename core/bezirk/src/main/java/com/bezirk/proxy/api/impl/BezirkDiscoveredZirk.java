@@ -62,7 +62,7 @@ public class BezirkDiscoveredZirk implements DiscoveredZirk {
     @Override
     public int hashCode() {
         String s = zirk.device + ":" + zirk.zirkId.toString();
-        return s == null ? 0 : s.hashCode();
+        return s.hashCode();
     }
 
     @Override

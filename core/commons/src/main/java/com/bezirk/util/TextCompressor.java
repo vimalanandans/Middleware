@@ -8,14 +8,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.zip.Deflater;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class TextCompressor {
-
-    public static final Logger log = LoggerFactory.getLogger(TextCompressor.class);
+    private static final Logger logger = LoggerFactory.getLogger(TextCompressor.class);
 
     /**
      * Uses a gzip compression to compress the String, a better option for a lengthier string. But the smaller string will have a space overhead. and returns a compressed byte[]
@@ -34,7 +32,7 @@ public class TextCompressor {
             gzip.write(str);
             gzip.close();
         } catch (IOException e) {
-            log.error("Exception while compressing the bytes", e);
+            logger.error("Exception while compressing the bytes", e);
 
         }
         return obj.toByteArray();
@@ -49,20 +47,23 @@ public class TextCompressor {
      */
     public static String decompress(byte[] str) {
         if (str == null || str.length == 0) {
-            return Arrays.toString(str);
+            return "";
         }
-        String outStr = "";
+
+        final StringBuilder outStr = new StringBuilder();
+
         try {
             GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(str));
             BufferedReader bf = new BufferedReader(new InputStreamReader(gis, "UTF-8"));
             String line;
             while ((line = bf.readLine()) != null) {
-                outStr += line;
+                outStr.append(line);
             }
         } catch (Exception e) {
-            log.error("Exception while decompressing the bytes", e);
+            logger.error("Exception while decompressing the bytes", e);
         }
-        return outStr;
+
+        return outStr.toString();
     }
 
 
@@ -85,12 +86,12 @@ public class TextCompressor {
                 baos.write(tmp, 0, size);
             }
         } catch (Exception ex) {
-            log.error("Exception while compress Byte ArrayUsingDeflater", ex);
+            logger.error("Exception while compress Byte ArrayUsingDeflater", ex);
         } finally {
             try {
                 if (baos != null) baos.close();
             } catch (Exception ex) {
-                log.error("Exception while closing ByteArrayOutputStream", ex);
+                logger.error("Exception while closing ByteArrayOutputStream", ex);
             }
         }
 

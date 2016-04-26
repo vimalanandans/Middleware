@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class BezirkRestCallBackImpl implements BezirkRestCallBack {
     //logger
-    private static final Logger LOGGER = LoggerFactory.getLogger(BezirkRestCallBackImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkRestCallBackImpl.class);
 
     //translator utilities class
     private final BezirkRequestTranslator translator = new BezirkRequestTranslator();
@@ -38,27 +38,27 @@ public class BezirkRestCallBackImpl implements BezirkRestCallBack {
         UnicastHeader header = (UnicastHeader) eventLedger.getHeader();
         Integer key = extractUniqueKey(header.getRecipient().zirkId.getBezirkEventId());
 
-        LOGGER.debug("Response for Key ::" + key + " is :: " + responseString);
+        logger.debug("Response for Key ::" + key + " is :: " + responseString);
         bezirkCommsManager.appendResponseToMap(key, responseString);
     }
 
     /**
-     * extracts the uniqueid recived from the zirk ID
+     * extracts the uniqueid received from the zirk ID
      *
-     * @param serviceID
+     * @param zirkID
      * @return
      */
-    private Integer extractUniqueKey(String serviceID) {
-
-        String key = null;
-        int startIndex = serviceID.indexOf("$");
+    private Integer extractUniqueKey(String zirkID) {
+        String key;
+        int startIndex = zirkID.indexOf("$");
         if (startIndex > -1) {
-            key = serviceID.substring(startIndex + 1, serviceID.length());
+            key = zirkID.substring(startIndex + 1, zirkID.length());
+        }   else {
+            key = "-1";
         }
 
-        LOGGER.debug("Extracted the key from zirk id : " + key);
+        logger.debug("Extracted the key from zirk id: {}", key);
+
         return Integer.valueOf(key);
-
     }
-
 }
