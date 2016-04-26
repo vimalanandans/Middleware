@@ -13,7 +13,8 @@ import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.GetStreamRequest;
-import com.bezirk.pipe.cloud.CloudPipeClientImpl;
+import com.bezirk.pipe.cloud.BezirkCloudPipeClient;
+import com.bezirk.pipe.cloud.CloudPipeClient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +28,7 @@ import java.util.UUID;
  * Class used to hold data needed to send
  */
 public class RemoteSender implements Runnable {
-
-    private static final Logger log = LoggerFactory.getLogger(RemoteSender.class);
+    private static final Logger logger = LoggerFactory.getLogger(RemoteSender.class);
 
     /**
      * Reference to the pipe registry so that pipes can be searched for
@@ -56,23 +56,23 @@ public class RemoteSender implements Runnable {
         boolean valid = true;
 
         if (pipeMonitor == null) {
-            log.error(err + "pipeMonitor is null");
+            logger.error(err + "pipeMonitor is null");
             valid = false;
         }
         if (serializedEvent == null) {
-            log.error(err + "serializedEvent is null");
+            logger.error(err + "serializedEvent is null");
             valid = false;
         }
         if (pipeRegistry == null) {
-            log.error(err + "pipeRegistry is null");
+            logger.error(err + "pipeRegistry is null");
             valid = false;
         }
         if (uhuHeader == null) {
-            log.error(err + "uhuHeader is null");
+            logger.error(err + "uhuHeader is null");
             valid = false;
         }
         if (certFileName == null) {
-            log.error(err + "certFileName is null");
+            logger.error(err + "certFileName is null");
             valid = false;
         }
 
@@ -81,12 +81,12 @@ public class RemoteSender implements Runnable {
 
     public void run() {
         if (!validateDataMembers()) {
-            log.error("Cannot execute PipeSender.run() b/c data members are not specified correctly");
+            logger.error("Cannot execute PipeSender.run() b/c data members are not specified correctly");
             return;
         }
 
         if (uhuHeader instanceof UnicastHeader) {
-            log.error("Unicast send to a pipe not yet supported. Can't execute RemoteSender.run()");
+            logger.error("Unicast send to a pipe not yet supported. Can't execute RemoteSender.run()");
             return;
         }
 
@@ -101,17 +101,17 @@ public class RemoteSender implements Runnable {
         // Check if the event's location represents a registered pipe
         Pipe pipe = address.getPipe();
         if (!pipeRegistry.isRegistered(pipe)) {
-            log.error("Pipe is not registered: " + pipe);
+            logger.error("Pipe is not registered: " + pipe);
             return;
         }
 
         // Pipe is registered, send the event to the pipe
-        log.info("Sending to pipe: " + pipe);
+        logger.info("Sending to pipe: " + pipe);
 
         if (pipe instanceof CloudPipe) {
             doCloudPipeSend(serializedEvent, (CloudPipe) pipe);
         } else {
-            log.error("Unknown pipe type: " + pipe.getClass().getCanonicalName());
+            logger.error("Unknown pipe type: " + pipe.getClass().getCanonicalName());
         }
     }
 
@@ -122,33 +122,33 @@ public class RemoteSender implements Runnable {
         try {
             url = cloudPipe.getURI().toURL();
         } catch (MalformedURLException e) {
-            log.error("Can't send to cloud pipe.  URI is not a valid URL: " + cloudPipe.getURI(), e);
+            logger.error("Can't send to cloud pipe.  URI is not a valid URL: " + cloudPipe.getURI(), e);
             return;
         }
 
         // TODO: check outgoing event to see if it conforms to allowedOut PipePolicy
 
-        com.bezirk.pipe.cloud.CloudPipeClient client = new CloudPipeClientImpl(url, certFileName);
-        log.info("Sending to pipe: " + cloudPipe);
+        CloudPipeClient client = new BezirkCloudPipeClient(url, certFileName);
+        logger.info("Sending to pipe: " + cloudPipe);
 
         // Send request for a stream
         if (event.topic.equals(GetStreamRequest.TOPIC)) {
             // Retrieve content as a multipart HTTP response
             CloudStreamResponse response = client.retrieveContent(pipeHeader, serializedEvent);
             if (response == null) {
-                log.error("Response was null from client.retrieveContentMultipart()");
+                logger.error("Response was null from client.retrieveContentMultipart()");
                 return;
             }
 
             // The multipart response consists of a StreamDescriptor and the actual stream Content
             String serializedStreamDesc = response.getStreamDescriptor();
-            log.debug("response streamDesc: " + serializedStreamDesc);
+            logger.debug("response streamDesc: " + serializedStreamDesc);
             InputStream inStream = response.getStreamContent();
             PipeHeader responsePipeHeader = response.getPipeHeader();
-            log.debug("response pipeHeader: " + responsePipeHeader.serialize());
+            logger.debug("response pipeHeader: " + responsePipeHeader.serialize());
 
             if (inStream == null) {
-                log.error("received null inputStream from pipeclient.retrieveContentMultipart()");
+                logger.error("received null inputStream from pipeclient.retrieveContentMultipart()");
                 return;
             }
 
@@ -174,11 +174,11 @@ public class RemoteSender implements Runnable {
         }
         // Send a general Event
         else {
-            log.info("PipeClient.sendEvent(): " + cloudPipe);
+            logger.info("PipeClient.sendEvent(): " + cloudPipe);
             // Send the event to the cloudpipe
             CloudResponse response = client.sendEvent(pipeHeader, serializedEvent);
             if (response == null) {
-                log.error("An error occurred in sendEvent().  CloudResponse was null");
+                logger.error("An error occurred in sendEvent().  CloudResponse was null");
                 return;
             }
 
@@ -188,12 +188,12 @@ public class RemoteSender implements Runnable {
 
             String serializedReply = response.getSerializedEvent();
             if (serializedReply == null) {
-                log.error("Reply was null from client.sendEvent()");
+                logger.error("Reply was null from client.sendEvent()");
                 return;
             }
             Event replyEvent = Event.fromJson(serializedReply, Event.class);
             if (!isReplyValid(replyEvent)) {
-                log.error("Reply event not valid. Will not pass to receiver for delivery to zirk.");
+                logger.error("Reply event not valid. Will not pass to receiver for delivery to zirk.");
                 return;
             }
 
@@ -211,22 +211,22 @@ public class RemoteSender implements Runnable {
 
     private boolean isReplyValid(Event reply) {
         if (reply == null) {
-            log.error("Event is not valid (it is null): ");
+            logger.error("Event is not valid (it is null): ");
             return false;
         }
 
         // Make sure the topic is valid
         String replyTopic = reply.topic;
         if (replyTopic == null || replyTopic.trim().equals("")) {
-            log.error("Topic not set on reply event");
+            logger.error("Topic not set on reply event");
             return false;
         }
-        log.debug("Received response from cloudpipe endpoint on topic: " + replyTopic);
+        logger.debug("Received response from cloudpipe endpoint on topic: " + replyTopic);
 
         // Make sure the event does not represent an exception
         // FIXME: How should we specify and/or detect errors from the pipe endpoint?
         if (replyTopic.contains("Exception")) {
-            log.error("Received exception from cloudpipe");
+            logger.error("Received exception from cloudpipe");
             return false;
         }
 

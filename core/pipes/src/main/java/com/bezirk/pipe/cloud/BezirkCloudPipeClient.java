@@ -18,7 +18,8 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 
-public class CloudPipeClientImpl implements CloudPipeClient {
+public class BezirkCloudPipeClient implements CloudPipeClient {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkCloudPipeClient.class);
 
     // TODO: should these constants live in the CloudPipe library class?
     public static final String EVENT_PATH = "/cloudpipe/sendevent";
@@ -43,7 +44,6 @@ public class CloudPipeClientImpl implements CloudPipeClient {
      * something like: http://some-host:some-port/services/uhu
      */
     protected URL baseURL = null;
-    protected Logger log = LoggerFactory.getLogger(CloudPipeClientImpl.class);
     protected URL eventURL = null;
     protected URL contentURL = null;
     protected URL contentMultipartURL = null;
@@ -54,19 +54,19 @@ public class CloudPipeClientImpl implements CloudPipeClient {
     protected SelfSignedContextBuilder ssCertBuilder = new SelfSignedContextBuilder();
     protected String certFileName = CERT_FILENAME_DEFAULT;
 
-    public CloudPipeClientImpl(URL baseURL, String certFileName) {
+    public BezirkCloudPipeClient(URL baseURL, String certFileName) {
         this.baseURL = baseURL;
         this.certFileName = certFileName;
 
         try {
             initUrls();
-            log.info("configuring SSL Context");
+            logger.info("configuring SSL Context");
             ssCertBuilder.setCertFileName(certFileName);
             sslContext = ssCertBuilder.build();
         } catch (MalformedURLException e) {
-            log.error("URL not valid: ", e);
+            logger.error("URL not valid: ", e);
         } catch (Exception e) {
-            log.error("SSL could not be configured: ", e);
+            logger.error("SSL could not be configured: ", e);
 
         }
     }
@@ -93,15 +93,15 @@ public class CloudPipeClientImpl implements CloudPipeClient {
     @Override
     public CloudResponse sendEvent(PipeHeader pipeHeader, String serializedEvent) {
         if (eventURL == null) {
-            log.error("Cannot sendEvent. eventURL is null");
+            logger.error("Cannot sendEvent. eventURL is null");
             return null;
         }
         if (pipeHeader == null) {
-            log.error("Cannot sendEvent. pipeHeader is null");
+            logger.error("Cannot sendEvent. pipeHeader is null");
             return null;
         }
         if (serializedEvent == null) {
-            log.error("Cannot sendEvent. serializedEvent is null");
+            logger.error("Cannot sendEvent. serializedEvent is null");
             return null;
         }
 
@@ -112,7 +112,7 @@ public class CloudPipeClientImpl implements CloudPipeClient {
             conn = (HttpsURLConnection) eventURL.openConnection();
             response = postJson(conn, pipeHeader, serializedEvent);
         } catch (Exception e) {
-            log.error("problem opening http connection", e);
+            logger.error("problem opening http connection", e);
         } finally {
             conn.disconnect();
         }
@@ -125,15 +125,15 @@ public class CloudPipeClientImpl implements CloudPipeClient {
         CloudStreamResponse response = new CloudStreamResponse();
 
         if (contentMultipartURL == null) {
-            log.error("Cannot retrieveContent(). contentMultipartURL is null");
+            logger.error("Cannot retrieveContent(). contentMultipartURL is null");
             return null;
         }
         if (pipeHeader == null) {
-            log.error("Cannot sendEvent. pipeHeader is null");
+            logger.error("Cannot sendEvent. pipeHeader is null");
             return null;
         }
         if (serializedEvent == null) {
-            log.error("Cannot sendEvent. serializedEvent is null");
+            logger.error("Cannot sendEvent. serializedEvent is null");
             return null;
         }
 
@@ -142,7 +142,7 @@ public class CloudPipeClientImpl implements CloudPipeClient {
             conn = (HttpsURLConnection) contentMultipartURL.openConnection();
             response = (CloudStreamResponse) postJson(conn, pipeHeader, serializedEvent);
         } catch (Exception e) {
-            log.error("problem opening http connection: ", e);
+            logger.error("problem opening http connection: ", e);
 
         }
         // TODO: how to disconnect this connection object, since it should live after this method returns?
@@ -170,7 +170,7 @@ public class CloudPipeClientImpl implements CloudPipeClient {
         conn.setSSLSocketFactory(sslContext.getSocketFactory());
 
         // Create a POST request
-        log.debug("about to post event: " + body);
+        logger.debug("about to post event: " + body);
         conn.setDoOutput(true);
         conn.setChunkedStreamingMode(0); // setting this to 0 gives us the system default  request buffer size
         conn.setRequestMethod("POST");
@@ -179,7 +179,7 @@ public class CloudPipeClientImpl implements CloudPipeClient {
 
         // Send the request
         PrintWriter writer = new PrintWriter(conn.getOutputStream());
-        log.info("sending event: " + body);
+        logger.info("sending event: " + body);
         writer.print(body);
         writer.flush();
 
@@ -194,9 +194,9 @@ public class CloudPipeClientImpl implements CloudPipeClient {
         Map<String, List<String>> httpHeader = conn.getHeaderFields();
 
         // Dump header for debugging
-        if (log.isInfoEnabled()) {
+        if (logger.isInfoEnabled()) {
             //if (logger.isDebugEnabled()) {
-            log.info("Dumping header ...");
+            logger.info("Dumping header ...");
             System.out.println("*** BEGIN header ***");
             for (String key : httpHeader.keySet()) {
                 System.out.println("  " + key + " : " + httpHeader.get(key) + " (list items: " + httpHeader.get(key).size() + ")");
@@ -211,14 +211,14 @@ public class CloudPipeClientImpl implements CloudPipeClient {
         }
         String contentType = contentTypeList.get(0);
         InputStream inStream = conn.getInputStream();
-        log.info("Received a response with Content-Type: " + contentType);
+        logger.info("Received a response with Content-Type: " + contentType);
 
         // Return this response object
         CloudResponse response;
 
         // Multipart response containing a stream descriptor + stream content
         if (contentType.contains(VAL_CONTENT_TYPE_MULTIPART_MIXED)) {
-            log.info("Parsing multiparts");
+            logger.info("Parsing multiparts");
             response = multiPartParser.parse(httpHeader, inStream);
         } else if (contentType.contains(VAL_CONTENT_TYPE_APP_JSON)) {
             // Single part response containing a regular uhu event
@@ -230,7 +230,7 @@ public class CloudPipeClientImpl implements CloudPipeClient {
             response.setPipeHeader(extractPipeHeaderFromHttpHeader(httpHeader));
         } else {
             String err = "Unexpected content-type: " + contentType;
-            log.error(err);
+            logger.error(err);
             throw new Exception(err);
         }
 
