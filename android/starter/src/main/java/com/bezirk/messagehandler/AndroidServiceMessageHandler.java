@@ -132,8 +132,8 @@ public class AndroidServiceMessageHandler implements ServiceMessageHandler {
             fireIntent.putExtra(discriminatorKEY, pipeMsg.getCallbackType());
             fireIntent.putExtra(UhuActions.KEY_PIPE, pipeMsg.getPipe().serialize());
             fireIntent.putExtra(UhuActions.KEY_PIPE_REQ_ID, pipeMsg.getPipeReqId());
-            fireIntent.putExtra(UhuActions.KEY_PIPE_POLICY_IN, pipeMsg.getAllowedIn().serialize());
-            fireIntent.putExtra(UhuActions.KEY_PIPE_POLICY_OUT, pipeMsg.getAllowedOut().serialize());
+            fireIntent.putExtra(UhuActions.KEY_PIPE_POLICY_IN, pipeMsg.getAllowedIn().toJson());
+            fireIntent.putExtra(UhuActions.KEY_PIPE_POLICY_OUT, pipeMsg.getAllowedOut().toJson());
 
             fireIntentToService(fireIntent);
         } catch (Exception e) {

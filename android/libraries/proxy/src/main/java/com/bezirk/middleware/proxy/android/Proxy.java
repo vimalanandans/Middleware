@@ -294,7 +294,7 @@ public final class Proxy implements Bezirk {
      *   1. register the pipe with the PipeManager, or
      *   2. if the pipe already exists, overwrite an existing pipe with the same uri
      */
-    public void requestPipe(ServiceId requester, Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut, BezirkListener listener) {
+    public void requestPipeAuthorization(ServiceId requester, Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut, BezirkListener listener) {
         //Update Listener Map
         final String pipeId = UUID.randomUUID().toString();
         pipeListenerMap.put(pipeId, listener);
@@ -313,8 +313,8 @@ public final class Proxy implements Bezirk {
         addPipe.putExtra(UhuActions.KEY_PIPE_CLASS, pipe.getClass().getCanonicalName());
 
         // Add Pipe Policys
-        addPipe.putExtra(UhuActions.KEY_PIPE_POLICY_IN, allowedIn == null ? null : new UhuPipePolicy(allowedIn).serialize());
-        addPipe.putExtra(UhuActions.KEY_PIPE_POLICY_OUT, allowedOut == null ? null : new UhuPipePolicy(allowedOut).serialize());
+        addPipe.putExtra(UhuActions.KEY_PIPE_POLICY_IN, allowedIn == null ? null : new UhuPipePolicy(allowedIn).toJson());
+        addPipe.putExtra(UhuActions.KEY_PIPE_POLICY_OUT, allowedOut == null ? null : new UhuPipePolicy(allowedOut).toJson());
 
         Log.i(TAG, "Sending intent for pipe class: " + pipe.getClass().getCanonicalName());
 

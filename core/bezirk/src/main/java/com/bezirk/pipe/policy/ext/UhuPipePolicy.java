@@ -13,8 +13,8 @@ public class UhuPipePolicy extends PipePolicy {
     }
 
     @Override
-    public boolean isAuthorized(String pRoleName) {
-        return this.allowedProtocols.contains(pRoleName);
+    public boolean isAuthorized(String protocolRoleName) {
+        return this.allowedProtocols.contains(protocolRoleName);
     }
 
     public HashSet<String> getAllowedProtocols() {

@@ -12,109 +12,107 @@
  */
 package com.bezirk.middleware.addressing;
 
+import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.google.gson.Gson;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
- * Defines the reasons to allow each protocol. Bezirk internally defines a subclass
- * for managing protocol authorization.
+ * Base class for (1) defining the {@link ProtocolRole ProtocolRoles} that may be transmitted via
+ * a pipe and (2) documenting the rationale for allowing each role. These policies may be displayed
+ * to the user to help them decide whether or not they want to allow the use of a particular pipe.
+ * Polices are directional, meaning typically a policy will be created to specify what roles are
+ * allowed to send data out of a sphere using a pipe and another policy will define the roles for
+ * sending data into a sphere using the pipe. The authorization process is initiated by calling
+ * {@link com.bezirk.middleware.Bezirk#requestPipeAuthorization(ServiceId, Pipe, PipePolicy, PipePolicy, BezirkListener)}.
  */
-public class PipePolicy {
-    // private final HashMap<ProtocolRole, String> reasonMap = new
-    // HashMap<ProtocolRole, String>();
-
+public abstract class PipePolicy {
     // Map of protocal names and reasons
-    private HashMap<String, String> reasonMap = new HashMap<String, String>();
+    private Map<String, String> reasonMap = new HashMap<String, String>();
+
+    private static final Gson gson = new Gson();
 
     /**
-     * @param json The Json String that is to be deserialized
-     * @param cL   class to fromJson into
-     * @return object of class C
+     * Serialize the policy to a JSON string.
+     *
+     * @return JSON representation of the policy
      */
-    public static <C> C deserialize(String json, Class cL) {
-        Gson gson = new Gson();
-        return (C) gson.fromJson(json, cL);
+    public String toJson() {
+        return gson.toJson(this);
     }
 
     /**
-     * @param pRole
-     * @param reason describes the benefit for the user for allowing this protocol
+     * Deserialize the <code>json</code> string to create an object of type <code>objectType</code>.
+     *
+     * @param <C>        the type of the object represented by <code>json</code>, set by
+     *                   <code>objectType</code>
+     * @param json       the JSON String that is to be deserialized
+     * @param objectType the type of the object represented by <code>json</code>
+     * @return an object of type <code>objectType</code> deserialized from <code>json</code>
      */
-    public void addProtocol(ProtocolRole pRole, String reason) {
-        // reasonMap.put(pRole, reason);
-        reasonMap.put(pRole.getProtocolName(), reason);
-
+    public static <C> C fromJson(String json, Class objectType) {
+        return (C) gson.fromJson(json, objectType);
     }
 
-    //
-    // /**
-    // * @param pRole
-    // * @return the stated reason for allowing this protocol, or NULL if the
-    // protocol is not defined in the policy
-    // */
-    // public String getReason(ProtocolRole pRole) {
-    // return reasonMap.get(pRole);
-    // }
+    /**
+     * Whitelist a role to allow it to transmit data using a particular pipe, and document
+     * the rationale for why the role should be allowed with a user-friendly message.
+     *
+     * @param protocolRole a new role that should be allowed to send data using aa pipe
+     * @param reason       describes the benefit for the user for allowing this role
+     */
+    public void addAllowedProtocol(ProtocolRole protocolRole, String reason) {
+        reasonMap.put(protocolRole.getProtocolName(), reason);
+    }
 
-    // returns list of protocol names
+    /**
+     * Returns the names of protocol roles allowed to send data on any pipe associated with this
+     * policy.
+     *
+     * @return the names of protocol roles allowed to send data on any pipe associated with this
+     * policy.
+     */
     public Set<String> getProtocolNames() {
         // reasonMap.put(pRole, reason);
         return reasonMap.keySet();
 
     }
 
-    // /**
-    // * Bezirk internally defines a subclass for managing policies, which
-    // overrides this method.
-    // *
-    // * @return false
-    // */
-    // public boolean isAuthorized(ProtocolRole pRole) {
-    // return false;
-    // }
-
     /**
-     * @param pRoleName
-     * @return the stated reason for allowing this protocol, or NULL if the
-     * protocol is not defined in the policy
-     */
-    public String getReason(String pRoleName) {
-        return reasonMap.get(pRoleName);
-    }
-
-    /**
-     * Bezirk internally defines a subclass for managing policies, which overrides
-     * this method.
+     * Returns the rationale for why a particular protocol role is allowed to send data
+     * on pipes associated with this policy.
      *
-     * @return false
+     * @param protocolRoleName the name of the protocol role whose rationale for why the role is
+     *                         allowed should be returned
+     * @return the stated reason for allowing <code>protocolRoleName</code>, or <code>null</code> if
+     * the protocol is not defined in the policy
      */
-    public boolean isAuthorized(String pRoleName) {
-        return false;
+    public String getReason(String protocolRoleName) {
+        return reasonMap.get(protocolRoleName);
     }
 
     /**
-     * @return Json representation of the message as a String.
+     * Returns <code>true</code> if this policy authorizes the use of <code>protocolRoleName</code>.
+     *
+     * @param protocolRoleName the name of the protocol role whose authorizations state is to be
+     *                         checked
+     * @return <code>true</code> if this policy authorizes the use of <code>protocolRoleName</code>
      */
-    public String serialize() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
-    }
+    public abstract boolean isAuthorized(String protocolRoleName);
 
-    public HashMap<String, String> getReasonMap() {
+    public Map<String, String> getReasonMap() {
         return reasonMap;
     }
 
-    public void setReasonMap(HashMap<String, String> map) {
+    public void setReasonMap(Map<String, String> map) {
         this.reasonMap = map;
     }
 
-    /**
-     * A Pipe
-     */
+    @Override
     public boolean equals(Object that) {
         if (that instanceof PipePolicy) {
             Collection<String> thoseProtocols = ((PipePolicy) that)
@@ -126,7 +124,6 @@ public class PipePolicy {
         }
 
         return false;
-
     }
 
     @Override

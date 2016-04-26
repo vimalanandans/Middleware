@@ -77,9 +77,9 @@ public class CallBackMessageTest {
         } catch (URISyntaxException e) {
             fail("Failed to create cloudpipe");
         }
-        PipePolicy allowedIn = new PipePolicy();
+        PipePolicy allowedIn = new MockPipePolicy();
         UhuPipePolicy allowedInPolicy = new UhuPipePolicy(allowedIn);
-        PipePolicy allowedOut = new PipePolicy();
+        PipePolicy allowedOut = new MockPipePolicy();
         UhuPipePolicy allowedOutPolicy = new UhuPipePolicy(allowedOut);
         String pipeReqId = "Request123";
         UhuServiceId recipient = new UhuServiceId("TestService");
@@ -91,8 +91,6 @@ public class CallBackMessageTest {
         assertEquals("Pipe is not equal to the set value in pipeRequestCallbackMessage.", pipe, pipeRequestIncomingMessage.getPipe());
         assertEquals("PipeReqId is not equal to the set value in pipeRequestCallbackMessage.", pipeReqId, pipeRequestIncomingMessage.getPipeReqId());
         assertEquals("Recepient is not equal to the set value in pipeRequestCallbackMessage.", recipient, pipeRequestIncomingMessage.getRecipient());
-
-
     }
 
     private void testMulticastCallbackMessage() {
@@ -137,4 +135,9 @@ public class CallBackMessageTest {
         assertEquals("Callbackdiscriminator is not set to DISCOVERY for discoverycallbackmessage.", "DISCOVERY", discoveryCallBackMessage.callbackDiscriminator);
     }
 
+    private class MockPipePolicy extends PipePolicy {
+        public boolean isAuthorized(String protocolRoleName) {
+            return false;
+        }
+    }
 }

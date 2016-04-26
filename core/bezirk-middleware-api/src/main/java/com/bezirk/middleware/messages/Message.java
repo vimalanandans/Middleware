@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 
 /**
  * Base class for all message types Zirks may exchange using the Bezirk middleware. This class
- * implements the serialization routines required to serialize/deserialize a message for
+ * implements the serialization routines required to toJson/fromJson a message for
  * transfer/reception.
  */
 public abstract class Message {
@@ -76,7 +76,7 @@ public abstract class Message {
 
     /**
      * Deserialize the <code>json</code> string to create an object of type <code>objectType</code>.
-     * This method can be used to serialize a message as follows:
+     * This method can be used to toJson a message as follows:
      * <p>
      * <code>TemperatureReadEvent tempReadEvent = Event.fromJson(event, TemperatureReadEvent.class);</code>.
      * </p>

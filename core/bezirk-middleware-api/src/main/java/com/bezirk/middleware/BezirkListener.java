@@ -101,7 +101,7 @@ public interface BezirkListener {
     /**
      * Called by the Bezirk middleware when a user grants or denies a Zirk authorization to use a pipe.
      * Pipe authorization is requested using
-     * {@link Bezirk#requestPipe(ServiceId, Pipe, PipePolicy, PipePolicy, BezirkListener)}.
+     * {@link Bezirk#requestPipeAuthorization(ServiceId, Pipe, PipePolicy, PipePolicy, BezirkListener)}.
      *
      * @param pipe       the pipe the user authorized the Zirk implementing this interface
      *                   to use, or <code>null</code> if authorization was denied

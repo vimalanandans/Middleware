@@ -219,8 +219,8 @@ public class Proxy implements Bezirk {
     }
 
     @Override
-    public void requestPipe(ServiceId requester, Pipe pipe, PipePolicy allowedIn,
-                            PipePolicy allowedOut, BezirkListener listener) {
+    public void requestPipeAuthorization(ServiceId requester, Pipe pipe, PipePolicy allowedIn,
+                                         PipePolicy allowedOut, BezirkListener listener) {
         // TODO Auto-generated method stub
 
     }

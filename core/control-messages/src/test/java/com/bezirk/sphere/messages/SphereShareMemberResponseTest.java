@@ -61,8 +61,8 @@
 //	public void testSphereShareMemberResponse() {
 //
 //	SphereShareMemberResponse sphereDiscoveryRequest = new SphereShareMemberResponse(sphereId, uhuDeviceInfo, sender);
-//	String serializedMessage = sphereDiscoveryRequest.serialize();
-//	SphereShareMemberResponse deserializedSphereDiscoveryResponse = SphereShareMemberResponse.deserialize(serializedMessage, SphereShareMemberResponse.class);
+//	String serializedMessage = sphereDiscoveryRequest.toJson();
+//	SphereShareMemberResponse deserializedSphereDiscoveryResponse = SphereShareMemberResponse.fromJson(serializedMessage, SphereShareMemberResponse.class);
 //	assertEquals("Deserialized SphereShareMemberResponse is having different device info.",uhuDeviceInfo, deserializedSphereDiscoveryResponse.getUhuDeviceInfo());
 //	
 //	}

@@ -182,13 +182,13 @@ public interface Bezirk {
      *                   authorizes the creation of a pipe
      * @see BezirkListener#pipeGranted(Pipe, PipePolicy, PipePolicy)
      */
-    public void requestPipe(ServiceId requester, Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut,
-                            BezirkListener listener);
+    public void requestPipeAuthorization(ServiceId requester, Pipe pipe, PipePolicy allowedIn,
+                                         PipePolicy allowedOut, BezirkListener listener);
 
     /**
      * Fetch the security policies governing an authorized <code>pipe</code>. If the pipe is not
      * authorized, this method does nothing. Use
-     * {@link #requestPipe(ServiceId, Pipe, PipePolicy, PipePolicy, BezirkListener)} to request
+     * {@link #requestPipeAuthorization(ServiceId, Pipe, PipePolicy, PipePolicy, BezirkListener)} to request
      * the authority to use a pipe.
      *
      * @param pipe     the authorized pipe whose policy we want to retrieve

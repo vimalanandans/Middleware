@@ -17,6 +17,7 @@ import com.bezirk.middleware.messages.ProtocolRole;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -30,24 +31,22 @@ import static org.junit.Assert.assertTrue;
  * @author AJC6KOR
  */
 public class PipePolicyTest {
-
     @Test
     public void test() {
-
         ProtocolRole pRole = new MockProtocolRole();
 
-        HashMap<String, String> reasonMap = new HashMap<>();
+        Map<String, String> reasonMap = new HashMap<>();
         String protocolName = "TestProtocol";
         String reason = "Used for testing";
         reasonMap.put(protocolName, reason);
 
-        com.bezirk.middleware.addressing.PipePolicy pipePolicy = new PipePolicy();
+        PipePolicy pipePolicy = new MockPipePolicy();
         pipePolicy.setReasonMap(reasonMap);
-        pipePolicy.addProtocol(pRole, reason);
+        pipePolicy.addAllowedProtocol(pRole, reason);
 
-        String serializedPipePolicy = pipePolicy.serialize();
+        String serializedPipePolicy = pipePolicy.toJson();
 
-        PipePolicy deserializedPipePolicy = PipePolicy.deserialize(serializedPipePolicy, PipePolicy.class);
+        PipePolicy deserializedPipePolicy = PipePolicy.fromJson(serializedPipePolicy, MockPipePolicy.class);
 
         assertEquals("ReasonMap is not equal to the set value.", reasonMap, deserializedPipePolicy.getReasonMap());
         assertTrue("Test Protocol name is missing in pipe policy protocol names.", deserializedPipePolicy.getProtocolNames().contains(protocolName));
@@ -61,7 +60,7 @@ public class PipePolicyTest {
         assertNotEquals("Reason for test protocol from pipe policy matches with unkown reason.", reason, deserializedPipePolicy.getReason(protocolName));
 
 
-        PipePolicy tempPipePolicy = new PipePolicy();
+        PipePolicy tempPipePolicy = new MockPipePolicy();
         assertFalse("PipePolicies with different reason maps are considered equal.", tempPipePolicy.equals(pipePolicy));
         tempPipePolicy.setReasonMap(reasonMap);
         assertTrue("PipePolicies with same reason maps are considered unequal.", tempPipePolicy.equals(pipePolicy));
@@ -69,4 +68,9 @@ public class PipePolicyTest {
         assertFalse("PipePolicy and protocol are conidered equal", pipePolicy.equals(pRole));
     }
 
+    private class MockPipePolicy extends PipePolicy {
+        public boolean isAuthorized(String protocolRoleName) {
+            return false;
+        }
+    }
 }

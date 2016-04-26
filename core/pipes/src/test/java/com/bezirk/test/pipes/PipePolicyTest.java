@@ -18,16 +18,21 @@ public class PipePolicyTest {
     private final ProtocolRole pRole1 = new UserProxyRole();
     private final ProtocolRole pRole2 = new SmartServiceRole();
 
-
     @Test
     public void test() {
-        PipePolicy policy = new PipePolicy();
-        policy.addProtocol(pRole1, reason1);
-        policy.addProtocol(pRole2, reason2);
-        String sPolicy = policy.serialize();
+        PipePolicy policy = new MockPipePolicy();
+        policy.addAllowedProtocol(pRole1, reason1);
+        policy.addAllowedProtocol(pRole2, reason2);
+        String sPolicy = policy.toJson();
         System.out.println("Policy try out: " + sPolicy);
-        PipePolicy deserializedPolicy = PipePolicy.deserialize(sPolicy, PipePolicy.class);
+        PipePolicy deserializedPolicy = PipePolicy.fromJson(sPolicy, MockPipePolicy.class);
         assertTrue(deserializedPolicy.getReason(pRole1.getProtocolName()).equals(reason1));
         assertTrue(deserializedPolicy.getReason(pRole2.getProtocolName()).equals(reason2));
+    }
+
+    private class MockPipePolicy extends PipePolicy {
+        public boolean isAuthorized(String protocolRoleName) {
+            return false;
+        }
     }
 }

@@ -7,8 +7,8 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.UhuDiscoveredService;
 import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 import com.bezirk.proxy.api.impl.UhuServiceId;
-import com.bezirk.test.pipe.MockCallBackService;
-import com.bezirk.test.pipe.MockUhuService;
+import com.bezirk.pipe.MockCallBackService;
+import com.bezirk.pipe.MockUhuService;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.junit.BeforeClass;

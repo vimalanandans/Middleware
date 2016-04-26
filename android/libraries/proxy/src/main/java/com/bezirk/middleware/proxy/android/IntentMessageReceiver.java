@@ -254,8 +254,8 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             Log.i(TAG, jsonInPolicy);
             Log.i(TAG, "-- RECEIVED Out Policy --");
             Log.i(TAG, jsonOutPolicy);
-            final UhuPipePolicy policyIn = PipePolicy.deserialize(jsonInPolicy, UhuPipePolicy.class);
-            final UhuPipePolicy policyOut = PipePolicy.deserialize(jsonOutPolicy, UhuPipePolicy.class);
+            final UhuPipePolicy policyIn = PipePolicy.fromJson(jsonInPolicy, UhuPipePolicy.class);
+            final UhuPipePolicy policyOut = PipePolicy.fromJson(jsonOutPolicy, UhuPipePolicy.class);
             final Pipe pipe = Pipe.deserialize(jsonPipe, CloudPipe.class);
             Proxy.pipeListenerMap.get(pipeId).pipeGranted(pipe, policyIn, policyOut);
         } else {

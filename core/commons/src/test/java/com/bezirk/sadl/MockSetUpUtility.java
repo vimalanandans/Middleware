@@ -13,7 +13,7 @@ import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.persistence.UhuRegistry;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.security.CryptoEngine;
-import com.bezirk.test.sphere.testUtilities.SpherePropertiesMock;
+import com.bezirk.sphere.testUtilities.SpherePropertiesMock;
 import com.bezrik.network.UhuNetworkUtilities;
 import com.j256.ormlite.table.TableUtils;
 

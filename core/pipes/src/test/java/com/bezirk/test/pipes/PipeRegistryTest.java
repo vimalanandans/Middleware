@@ -81,7 +81,7 @@ public class PipeRegistryTest {
         assertNull(origRecord.getAllowedIn());
 
         // Update the pipe's record with new policies
-        PipePolicy in = new PipePolicy();
+        PipePolicy in = new MockPipePolicy();
         registry.update(pipe, in, null);
 
         // Demonstrate that the allowedIn policies have changed
@@ -126,5 +126,11 @@ public class PipeRegistryTest {
 
         // This should throw an exception since update() is being called before add()
         registry.update(pipe, null, null);
+    }
+
+    private class MockPipePolicy extends PipePolicy {
+        public boolean isAuthorized(String protocolRoleName) {
+            return false;
+        }
     }
 }

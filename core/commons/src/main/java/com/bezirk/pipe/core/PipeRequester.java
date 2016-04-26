@@ -42,12 +42,12 @@ public class PipeRequester implements IPipeRequester, IUhuPipeAPI {
      */
     public void requestPipe(PipeRequest request) throws PipeApprovalException {
 
-        log.info("requestPipe() called for: " + request.getPipe());
+        log.info("requestPipeAuthorization() called for: " + request.getPipe());
 
         Pipe pipe = request.getPipe();
         PipeRecord existingRecord = registry.lookup(pipe);
 
-        log.info("in requestPipe(). registry has items: " + registry.allPipes().size());
+        log.info("in requestPipeAuthorization(). registry has items: " + registry.allPipes().size());
         for (PipeRecord r : registry.allPipes()) {
             log.info("   pipe item: " + r.getPipe());
         }

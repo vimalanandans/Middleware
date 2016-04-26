@@ -68,8 +68,8 @@
 //		String joinSphereName ="Home"; 
 //		SphereCatchRequest sphereCatchRequest = new SphereCatchRequest(joinSphereId, joinSphereType, scannedSphereId,
 //				services, sender, joinDeviceId, joinDeviceName, joinDeviceType, sphereVitals, joinSphereName);
-//		String serializedMessage = sphereCatchRequest.serialize();
-//		SphereCatchRequest deserializedSphereCatchRequest = SphereCatchRequest.deserialize(serializedMessage, SphereCatchRequest.class);
+//		String serializedMessage = sphereCatchRequest.toJson();
+//		SphereCatchRequest deserializedSphereCatchRequest = SphereCatchRequest.fromJson(serializedMessage, SphereCatchRequest.class);
 //		assertEquals("Services not equal to the set value.",services,deserializedSphereCatchRequest.getServices());
 //		assertEquals("JoinSphereId not equal to the set value.",joinSphereId, deserializedSphereCatchRequest.getJoinSphereId());
 //		assertEquals("JoinDeviceId not equal to the set value.",joinDeviceId, deserializedSphereCatchRequest.getJoinDeviceId());

@@ -15,8 +15,8 @@ import com.bezirk.sphere.impl.OwnerSphere;
 import com.bezirk.sphere.impl.Service;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.UhuSphere;
-import com.bezirk.test.pipe.MockCallBackService;
-import com.bezirk.test.pipe.MockUhuService;
+import com.bezirk.pipe.MockCallBackService;
+import com.bezirk.pipe.MockUhuService;
 
 import org.junit.After;
 import org.junit.AfterClass;

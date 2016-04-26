@@ -41,8 +41,8 @@ public class PipeActionParser {
         String policyIn = intent.getStringExtra(UhuActions.KEY_PIPE_POLICY_IN);
         String policyOut = intent.getStringExtra(UhuActions.KEY_PIPE_POLICY_OUT);
 
-        UhuPipePolicy allowedIn = PipePolicy.deserialize(policyIn, UhuPipePolicy.class);
-        UhuPipePolicy allowedOut = PipePolicy.deserialize(policyOut, UhuPipePolicy.class);
+        UhuPipePolicy allowedIn = PipePolicy.fromJson(policyIn, UhuPipePolicy.class);
+        UhuPipePolicy allowedOut = PipePolicy.fromJson(policyOut, UhuPipePolicy.class);
         PipePolicyUtility.policyInMap.put(pipeId, allowedIn);
         PipePolicyUtility.policyOutMap.put(pipeId, allowedOut);
 
