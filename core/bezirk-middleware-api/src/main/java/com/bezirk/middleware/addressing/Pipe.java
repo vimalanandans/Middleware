@@ -12,42 +12,74 @@
  */
 package com.bezirk.middleware.addressing;
 
+import com.bezirk.middleware.BezirkListener;
 import com.google.gson.Gson;
 
 /**
- * Represents a pipe with a name.
- *
- * @see CloudPipe
+ * A pipe is a user-authorized communication channel used to send messages from a Zirk
+ * to a non-Bezirk endpoint on the Internet or between one Zirk and another Zirk in a separate
+ * sphere (i.e. pipes allow Zirks that do not share spheres to communicate). Pipes have security
+ * policies associated with them, where the policies are instantiations of
+ * {@link PipePolicy}. To initiate the authorization process, a Zirk must call
+ * {@link com.bezirk.middleware.Bezirk#requestPipeAuthorization(ZirkId, Pipe, PipePolicy, PipePolicy, BezirkListener)}.
  */
 public class Pipe {
-    protected String type = getClass().getCanonicalName();
+    protected String type = getClass().getSimpleName();
     private String name;
 
+    private static final Gson gson = new Gson();
+
     public Pipe() {
-        //Empty Constructor for gson.fromJson
+        //Empty ctor for gson.fromJson
     }
 
     /**
-     * @param pName suggested name for the pipe - which may be changed by the user via Bezirk UIs
+     * Creates a pipe with the user-friendly name <code>pipeName</code>. The user can change
+     * this name in the Bezirk UI.
+     *
+     * @param pipeName suggested name for the pipe, user-changeable
      */
-    public Pipe(String pName) {
-        this.name = pName;
+    public Pipe(String pipeName) {
+        this.name = pipeName;
     }
 
     /**
-     * @param json The Json String that is to be deserialized
-     * @param cL   class to fromJson into
-     * @return object of class C
+     * Serialize the policy to a JSON string.
+     *
+     * @return JSON representation of the policy
      */
-    public static <C> C deserialize(String json, Class cL) {
-        Gson gson = new Gson();
-        return (C) gson.fromJson(json, cL);
+    public String toJson() {
+        return gson.toJson(this);
     }
 
+    /**
+     * Deserialize the <code>json</code> string to create an object of type <code>objectType</code>.
+     *
+     * @param <C>        the type of the object represented by <code>json</code>, set by
+     *                   <code>objectType</code>
+     * @param json       the JSON String that is to be deserialized
+     * @param objectType the type of the object represented by <code>json</code>
+     * @return an object of type <code>objectType</code> deserialized from <code>json</code>
+     */
+    public static <C> C fromJson(String json, Class objectType) {
+        return (C) gson.fromJson(json, objectType);
+    }
+
+    /**
+     * Returns the name of this pipe.
+     *
+     * @return the name of this pipe
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set the name of this pipe. This is typically used when the user changes the pipe's name
+     * using the Bezirk UI.
+     *
+     * @param name the new name for this pipe
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -58,13 +90,5 @@ public class Pipe {
 
     public String toString() {
         return "|" + getClass().getSimpleName() + "," + getName() + "|";
-    }
-
-    /**
-     * @return Json representation of the message as a String.
-     */
-    public String serialize() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
     }
 }
