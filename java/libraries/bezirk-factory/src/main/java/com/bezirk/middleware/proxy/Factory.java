@@ -1,4 +1,4 @@
-package com.bezirk.proxy;
+package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.starter.UhuConfig;

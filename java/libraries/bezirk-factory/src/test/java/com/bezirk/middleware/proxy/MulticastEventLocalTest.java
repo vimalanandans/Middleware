@@ -1,4 +1,4 @@
-package com.bezirk.proxy;
+package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
@@ -92,7 +92,7 @@ public class MulticastEventLocalTest {
     @After
     public void destroyMockservices() {
 
-        Bezirk uhu = Factory.getInstance();
+        Bezirk uhu = com.bezirk.middleware.proxy.Factory.getInstance();
         uhu.unregisterService(mockA.myId);
         uhu.unregisterService(mockB.myId);
         uhu.unregisterService(mockC.myId);
@@ -111,7 +111,7 @@ public class MulticastEventLocalTest {
          * Setup the Service
          */
         private final void setupMockService() {
-            uhu = Factory.getInstance();
+            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerService(serviceName);
             logger.info("MulticastMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             pRole = new MulticastMockServiceProtocolRole();
@@ -221,7 +221,7 @@ public class MulticastEventLocalTest {
          * Setup the service
          */
         private final void setupMockService() {
-            uhu = Factory.getInstance();
+            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerService(serviceName);
             logger.info("MulticastMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             uhu.subscribe(myId, new MulticastEventLocalTest.MulticastMockServiceProtocolRole(), this);
@@ -277,7 +277,7 @@ public class MulticastEventLocalTest {
          * Setup the service
          */
         private final void setupMockService() {
-            uhu = Factory.getInstance();
+            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerService(serviceName);
             logger.info("MulticastMockServiceC - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             uhu.subscribe(myId, new MulticastMockServiceProtocolRole(), this);

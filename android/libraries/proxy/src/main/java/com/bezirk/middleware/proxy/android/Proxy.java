@@ -1,4 +1,4 @@
-package com.bezirk.proxy.android;
+package com.bezirk.middleware.proxy.android;
 
 import android.content.ComponentName;
 import android.content.Context;

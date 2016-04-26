@@ -1,4 +1,4 @@
-package com.bezirk.proxy;
+package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
@@ -77,7 +77,7 @@ public class UnicastEventLocalTest {
     @After
     public void destroyMockservices() {
 
-        Bezirk uhu = Factory.getInstance();
+        Bezirk uhu = com.bezirk.middleware.proxy.Factory.getInstance();
         uhu.unregisterService(mockA.myId);
         uhu.unregisterService(mockB.myId);
     }
@@ -95,7 +95,7 @@ public class UnicastEventLocalTest {
          * Setup the Service
          */
         private final void setupMockService() {
-            uhu = Factory.getInstance();
+            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerService(serviceName);
             logger.info("MOCK_SERVICE_A - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             pRole = new MockServiceBProtocolRole();
@@ -263,7 +263,7 @@ public class UnicastEventLocalTest {
          * Setup the service
          */
         private final void setupMockService() {
-            uhu = Factory.getInstance();
+            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
             myId = uhu.registerService(serviceName);
             logger.info("UnicastMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
             uhu.subscribe(myId, new MockServiceAProtocolRole(), this);

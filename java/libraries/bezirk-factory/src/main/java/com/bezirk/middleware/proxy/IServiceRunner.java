@@ -1,4 +1,4 @@
-package com.bezirk.proxy;
+package com.bezirk.middleware.proxy;
 
 /**
  * Represents a uhu service that can be started on the PC platform

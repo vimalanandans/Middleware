@@ -1,4 +1,4 @@
-package com.bezirk.proxy;
+package com.bezirk.middleware.proxy;
 
 import com.bezirk.callback.pc.IBoradcastReceiver;
 import com.bezirk.messagehandler.DiscoveryIncomingMessage;
@@ -33,7 +33,7 @@ public class BRForService implements IBoradcastReceiver {
     private static final LinkedHashMap<String, Long> duplicateMsgMap = new LinkedHashMap<String, Long>();
     private static final LinkedHashMap<String, Long> duplicateStreamMap = new LinkedHashMap<String, Long>();
     private final HashMap<String, String> activeStreams;
-    private final HashMap<UhuServiceId, Proxy.DiscoveryBookKeeper> dListenerMap;
+    private final HashMap<UhuServiceId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap;
     private final HashMap<String, HashSet<BezirkListener>> eventListenerMap;
     private final HashMap<UhuServiceId, HashSet<BezirkListener>> sidMap;
     private final HashMap<String, HashSet<BezirkListener>> streamListenerMap;
@@ -46,7 +46,7 @@ public class BRForService implements IBoradcastReceiver {
      * @param streamListenerMap
      */
     public BRForService(HashMap<String, String> activeStreams,
-                        HashMap<UhuServiceId, Proxy.DiscoveryBookKeeper> dListenerMap,
+                        HashMap<UhuServiceId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap,
                         HashMap<String, HashSet<BezirkListener>> eventListenerMap,
                         HashMap<UhuServiceId, HashSet<BezirkListener>> sidMap,
                         HashMap<String, HashSet<BezirkListener>> streamListenerMap) {

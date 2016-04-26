@@ -1,4 +1,4 @@
-package com.bezirk.proxy;
+package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.proxy.api.impl.UhuServiceId;
@@ -40,7 +40,7 @@ public class RegistrationUnregistrationTest {
         Bezirk uhu = null;
         UhuServiceId serviceId = null;
 
-        uhu = Factory.getInstance();
+        uhu = com.bezirk.middleware.proxy.Factory.getInstance();
         serviceId = (UhuServiceId) uhu.registerService(serviceName);
         String uhuServiceId = serviceId.getUhuServiceId();
         assertNotNull("ServiceID is null after registration.", uhuServiceId);
