@@ -6,7 +6,7 @@ import com.bezirk.messagehandler.PipeRequestIncomingMessage;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,7 +151,7 @@ public class PipeRequester implements IPipeRequester, IUhuPipeAPI {
 
         //INVOKE CALL BACK
         final PipeRequestIncomingMessage pipeMsg = new PipeRequestIncomingMessage(pipe,
-                pipeRequestId, allowedIn, allowedOut, (UhuServiceId) request.getRequestingService());
+                pipeRequestId, allowedIn, allowedOut, (UhuZirkId) request.getRequestingService());
         UhuCompManager.getplatformSpecificCallback().onPipeApprovedMessage(pipeMsg);
         log.info("pipe approved: " + approved);
 

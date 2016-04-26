@@ -4,7 +4,7 @@ import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 import com.bezirk.sphere.impl.DiscoveryProcessor;
 import com.bezirk.sphere.testUtilities.MockProtocols;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
@@ -57,7 +57,7 @@ public class ProcessRequest {
         SubscribedRole subscribedRole = new SubscribedRole(protocolRole);
         Location location = new Location("OFFICE1", "BLOCK1", "ROOM1");
 
-        UhuServiceEndPoint sender = new UhuServiceEndPoint(sphereTestUtility.OWNER_SERVICE_ID_1);
+        UhuZirkEndPoint sender = new UhuZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_1);
         sender.device = sphereTestUtility.DEVICE_2.getDeviceId();
         // sender.device = new Device().getDeviceId();
         // String sphereId = createSphereWithDeviceServices();

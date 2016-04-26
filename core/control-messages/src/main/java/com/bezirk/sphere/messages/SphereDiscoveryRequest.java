@@ -2,7 +2,7 @@ package com.bezirk.sphere.messages;
 
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.MulticastControlMessage;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 
 
 /**
@@ -23,7 +23,7 @@ public class SphereDiscoveryRequest extends MulticastControlMessage {
      */
 
     public SphereDiscoveryRequest(String scanSphereId,
-                                  UhuServiceEndPoint sender) {
+                                  UhuZirkEndPoint sender) {
         super(sender, scanSphereId, discriminator);
     }
 

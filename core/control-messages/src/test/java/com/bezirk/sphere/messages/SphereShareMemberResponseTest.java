@@ -14,8 +14,8 @@
 //import UhuDeviceInfo;
 //import UhuDeviceInfo.UhuDeviceRole;
 //import UhuServiceInfo;
-//import UhuServiceEndPoint;
-//import UhuServiceId;
+//import UhuZirkEndPoint;
+//import UhuZirkId;
 //
 ///**
 // * This testCase verifies the SphereShareMemberResponse by retrieving the field values after deserialization.
@@ -30,9 +30,9 @@
 //
 //	private static final String sphereId = "TestSphere";
 //	private static final String serviceAName = "ServiceA";
-//	private static final UhuServiceId serviceAId = new UhuServiceId(serviceAName);
+//	private static final UhuZirkId serviceAId = new UhuZirkId(serviceAName);
 //	private static final UhuServiceInfo serviceAInfo = new UhuServiceInfo(serviceAId.getUhuServiceId(), serviceAName, "MEMBER",true, true);
-//	private static final UhuServiceEndPoint sender = new UhuServiceEndPoint(serviceAId );
+//	private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceAId );
 //	private static List<UhuServiceInfo> services = new ArrayList<>();
 //	
 //	private static UhuDeviceInfo uhuDeviceInfo =null;

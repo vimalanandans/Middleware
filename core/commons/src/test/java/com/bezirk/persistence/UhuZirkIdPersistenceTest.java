@@ -18,9 +18,9 @@ import static org.junit.Assert.assertNull;
 
 /**
  * This class test the Persistence of the UhuServiceIdPersistence, to check loading and storing of
- * UhuServiceId when the service/s register/s and Unregister/s.
+ * UhuZirkId when the service/s register/s and Unregister/s.
  */
-public class UhuServiceIdPersistenceTest {
+public class UhuZirkIdPersistenceTest {
     String DBPath = "./";
     IDatabaseConnection dbConnection = null;
 

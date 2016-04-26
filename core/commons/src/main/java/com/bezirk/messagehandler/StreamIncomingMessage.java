@@ -1,7 +1,7 @@
 package com.bezirk.messagehandler;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import java.io.File;
 
@@ -27,16 +27,16 @@ public final class StreamIncomingMessage extends ServiceIncomingMessage {
      */
     public short localStreamId;
     /**
-     * ServiceEndPoint of the recipient
+     * ZirkEndPoint of the recipient
      */
-    public UhuServiceEndPoint senderSEP;
+    public UhuZirkEndPoint senderSEP;
 
     public StreamIncomingMessage() {
         callbackDiscriminator = "STREAM_UNICAST";
     }
 
-    public StreamIncomingMessage(UhuServiceId recipientId, String streamTopic, String serialzedStream,
-                                 File file, short localStreamId, UhuServiceEndPoint senderSEP) {
+    public StreamIncomingMessage(UhuZirkId recipientId, String streamTopic, String serialzedStream,
+                                 File file, short localStreamId, UhuZirkEndPoint senderSEP) {
         super();
         callbackDiscriminator = "STREAM_UNICAST";
         recipient = recipientId;

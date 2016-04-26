@@ -9,8 +9,8 @@ import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuDiscoveredService;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.ICryptoInternals;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.ISphereUtils;
@@ -158,7 +158,7 @@ public class SphereRegistryWrapper {
     // MemberSphere sphere = new MemberSphere(sphereConfig.getSphereName(),
     // "Development",
     // new HashSet<String>(Arrays.asList(DEVELOPMENT_DEVICE_ID)),
-    // new LinkedHashMap<String, ArrayList<UhuServiceId>>(), false);
+    // new LinkedHashMap<String, ArrayList<UhuZirkId>>(), false);
     // addSphere(sphereConfig.getSphereId(), sphere);
     // // persist();
     // }
@@ -561,14 +561,14 @@ public class SphereRegistryWrapper {
      * @return - List of UhuServiceInfo objects.<br>
      * - null, if no services passed.<br>
      */
-    public Iterable<UhuServiceInfo> getUhuServiceInfo(Iterable<UhuServiceId> serviceIds) {
+    public Iterable<UhuServiceInfo> getUhuServiceInfo(Iterable<UhuZirkId> serviceIds) {
         if (serviceIds == null) {
             logger.debug("No Services passed");
             return null;
         }
 
         List<UhuServiceInfo> serviceInfoList = new ArrayList<UhuServiceInfo>();
-        for (UhuServiceId servId : serviceIds) {
+        for (UhuZirkId servId : serviceIds) {
 
             if (containsService(servId.getUhuServiceId())) {
 
@@ -596,7 +596,7 @@ public class SphereRegistryWrapper {
      * @return - Set of sphereIds<br>
      * - Null if service does not exist<br>
      */
-    public Iterable<String> getSphereMembership(UhuServiceId serviceId) {
+    public Iterable<String> getSphereMembership(UhuZirkId serviceId) {
 
         Set<String> spheres = null;
 
@@ -612,13 +612,13 @@ public class SphereRegistryWrapper {
      * registered, call to this method updates the name of the service to
      * serviceName passed
      *
-     * @param serviceId   UhuServiceId to be registered - has to be non-null
+     * @param serviceId   UhuZirkId to be registered - has to be non-null
      * @param serviceName Name to be associated with the service - has to be non-null
      * @return true if service was added successfully
      * <p/>
      * false otherwise
      */
-    public boolean registerService(UhuServiceId serviceId, String serviceName) {
+    public boolean registerService(UhuZirkId serviceId, String serviceName) {
         List<String> spheresForRegistration = new ArrayList<>();
         // these deviceIds correspond to the respective spheresForRegistration
         // for dev sphere, deviceId is a globally used deviceId
@@ -635,7 +635,7 @@ public class SphereRegistryWrapper {
         return registerService(serviceId, serviceName, spheresForRegistration, deviceIdsForRegistration);
     }
 
-    private boolean registerService(UhuServiceId serviceId, String serviceName, List<String> sphereIds,
+    private boolean registerService(UhuZirkId serviceId, String serviceName, List<String> sphereIds,
                                     List<String> deviceIds) {
         int count = 0;
         for (String sphereId : sphereIds) {
@@ -674,7 +674,7 @@ public class SphereRegistryWrapper {
      * @return - True if service membership was added successfully, False
      * otherwise.
      */
-    public boolean addMembership(UhuServiceId serviceId, String sphereId, String ownerDeviceId, String serviceName) {
+    public boolean addMembership(UhuZirkId serviceId, String sphereId, String ownerDeviceId, String serviceName) {
         if (containsSphere(sphereId)) {
             Service service;
             if (!containsService(serviceId.getUhuServiceId())) {
@@ -708,10 +708,10 @@ public class SphereRegistryWrapper {
      *                   non null
      * @return - True, if all the services are validated. False otherwise.
      */
-    public boolean validateServices(Iterable<UhuServiceId> serviceIds) {
+    public boolean validateServices(Iterable<UhuZirkId> serviceIds) {
         boolean valid = false;
         if (serviceIds != null) {
-            for (UhuServiceId service : serviceIds) {
+            for (UhuZirkId service : serviceIds) {
                 if (!containsService(service.getUhuServiceId())) {
                     return valid;
                 }
@@ -724,12 +724,12 @@ public class SphereRegistryWrapper {
     /**
      * Check if the sphere is part of the service's sphere set.
      *
-     * @param service  - UhuServiceId object of the service. It has to be non-null
+     * @param service  - UhuZirkId object of the service. It has to be non-null
      * @param sphereId whose existence is the sphere set has to be checked.
      * @return - true if the service is part of the sphere. <br>
      * false otherwise.
      */
-    public boolean isServiceInSphere(UhuServiceId service, String sphereId) {
+    public boolean isServiceInSphere(UhuZirkId service, String sphereId) {
 
         boolean serviceInSphere = false;
         if (containsService(service.getUhuServiceId()) && containsSphere(sphereId)) {
@@ -749,7 +749,7 @@ public class SphereRegistryWrapper {
      * @param serviceId of the Service whose name is required. It has to be non-null
      * @return - service name if the service exists. Else return null.
      */
-    public String getServiceName(UhuServiceId serviceId) {
+    public String getServiceName(UhuZirkId serviceId) {
         String serviceName = null;
 
         if (containsService(serviceId.getUhuServiceId())) {
@@ -837,7 +837,7 @@ public class SphereRegistryWrapper {
      * from the list of UhuServiceInfo objects.
      *
      * @param sphereId     of the sphere to be added in the sphere set of the services
-     * @param serviceInfos - List of UhuServiceInfo objects from which UhuServiceId list
+     * @param serviceInfos - List of UhuServiceInfo objects from which UhuZirkId list
      *                     is retrieved. It has to be non-null
      * @return - True if the service was added. False otherwise.
      */
@@ -846,7 +846,7 @@ public class SphereRegistryWrapper {
             logger.error("sphere with sphere ID " + sphereId + " not in the registry.");
             return false;
         }
-        List<UhuServiceId> serviceIds = new ArrayList<UhuServiceId>();
+        List<UhuZirkId> serviceIds = new ArrayList<UhuZirkId>();
 
         // Aggregate the list of service IDs.
         for (UhuServiceInfo serviceInfo : serviceInfos) {
@@ -866,7 +866,7 @@ public class SphereRegistryWrapper {
      * sphere Id was updated in sphere set of all services. - False
      * otherwise.
      */
-    public boolean addLocalServicesToSphere(Iterable<UhuServiceId> serviceIds, String sphereId) {
+    public boolean addLocalServicesToSphere(Iterable<UhuZirkId> serviceIds, String sphereId) {
         boolean success = false;
         int services = 0;
         if (serviceIds instanceof Collection<?>) {
@@ -880,7 +880,7 @@ public class SphereRegistryWrapper {
             int successfulUpdates = 0;
 
             // Add all the services to the registry. If they are already present
-            for (UhuServiceId serviceId : serviceIds) {
+            for (UhuZirkId serviceId : serviceIds) {
                 if (updateMembership(serviceId, sphereId)) {
                     successfulUpdates++;
                 }
@@ -947,7 +947,7 @@ public class SphereRegistryWrapper {
      * present. <br>
      * - False otherwise.
      */
-    private boolean updateMembership(UhuServiceId serviceId, String sphereId) {
+    private boolean updateMembership(UhuZirkId serviceId, String sphereId) {
 
         // Check if the service id and sphere id are present in the registry.
         // If yes, then update the sphere set of the service id.
@@ -973,8 +973,8 @@ public class SphereRegistryWrapper {
      * @param discoveredServices
      * @param serviceInfo
      */
-    public void updateUhuServiceInfo(Set<UhuDiscoveredService> discoveredServices, UhuServiceInfo serviceInfo) {
-        for (UhuDiscoveredService discoveredServ : discoveredServices) {
+    public void updateUhuServiceInfo(Set<UhuDiscoveredZirk> discoveredServices, UhuServiceInfo serviceInfo) {
+        for (UhuDiscoveredZirk discoveredServ : discoveredServices) {
             if (discoveredServ.service.getUhuServiceId().getUhuServiceId().equals(serviceInfo.getServiceId())) {
                 serviceInfo.setActive(true);
             }
@@ -1074,7 +1074,7 @@ public class SphereRegistryWrapper {
      * <p/>
      * null otherwise
      */
-    public Iterable<UhuDeviceInfo> getUhuDeviceInfo(Map<String, ArrayList<UhuServiceId>> devices,
+    public Iterable<UhuDeviceInfo> getUhuDeviceInfo(Map<String, ArrayList<UhuZirkId>> devices,
                                                     HashSet<String> ownerDevices) {
 
         if (!devices.isEmpty()) {
@@ -1331,7 +1331,7 @@ public class SphereRegistryWrapper {
                 // create the sphere
                 MemberSphere sphere = new MemberSphere(sphereConfig.getSphereName(), "Development",
                         Collections.singleton(DEVELOPMENT_DEVICE_ID),
-                        new LinkedHashMap<String, ArrayList<UhuServiceId>>(), false);
+                        new LinkedHashMap<String, ArrayList<UhuZirkId>>(), false);
                 addSphere(sphereConfig.getSphereId(), sphere);
                 persist();
             }
@@ -1364,7 +1364,7 @@ public class SphereRegistryWrapper {
         // MemberSphere sphere = new MemberSphere(sphereConfig.getSphereName(),
         // "Development",
         // new HashSet<String>(Arrays.asList(DEVELOPMENT_DEVICE_ID)),
-        // new LinkedHashMap<String, ArrayList<UhuServiceId>>(), false);
+        // new LinkedHashMap<String, ArrayList<UhuZirkId>>(), false);
         // addSphere(sphereConfig.getSphereId(), sphere);
         // // persist();
         // }

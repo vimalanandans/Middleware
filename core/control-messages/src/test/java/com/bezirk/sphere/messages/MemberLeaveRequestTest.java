@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -23,8 +23,8 @@ public class MemberLeaveRequestTest {
 
     private static final String sphereId = "TestSphere";
     private static final String sphereName = "Test";
-    private static final UhuServiceId serviceId = new UhuServiceId("ServiceA");
-    private static final UhuServiceEndPoint sender = new UhuServiceEndPoint(serviceId);
+    private static final UhuZirkId serviceId = new UhuZirkId("ServiceA");
+    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceId);
 
     /**
      * @throws java.lang.Exception
@@ -52,7 +52,7 @@ public class MemberLeaveRequestTest {
         com.bezirk.sphere.messages.MemberLeaveRequest memberLeaveRequest = new com.bezirk.sphere.messages.MemberLeaveRequest(sphereId, serviceId, sphereName, sender);
         String serializedMessage = memberLeaveRequest.serialize();
         com.bezirk.sphere.messages.MemberLeaveRequest deserializedMemberLeaveRequest = com.bezirk.sphere.messages.MemberLeaveRequest.deserialize(serializedMessage, com.bezirk.sphere.messages.MemberLeaveRequest.class);
-        assertEquals("ServiceId not equal to the set value.", serviceId, deserializedMemberLeaveRequest.getServiceId());
+        assertEquals("ZirkId not equal to the set value.", serviceId, deserializedMemberLeaveRequest.getServiceId());
 
 
     }

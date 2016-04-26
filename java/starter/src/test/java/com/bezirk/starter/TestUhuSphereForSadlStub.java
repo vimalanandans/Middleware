@@ -1,6 +1,6 @@
 package com.bezirk.starter;
 
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 public class TestUhuSphereForSadlStub {
     com.bezirk.starter.UhuSphereForSadlStub uhuSphereForSadlStub = new com.bezirk.starter.UhuSphereForSadlStub();
     String testStr = "TestString";
-    UhuServiceId uhuServiceId = new UhuServiceId("123");
+    UhuZirkId uhuServiceId = new UhuZirkId("123");
 
     @Test
     public void testEncryptSphereContent() {

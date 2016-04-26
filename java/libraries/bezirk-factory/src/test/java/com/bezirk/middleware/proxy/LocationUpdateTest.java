@@ -3,16 +3,16 @@ package com.bezirk.middleware.proxy;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.Address;
-import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.middleware.addressing.ServiceEndPoint;
-import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -109,8 +109,8 @@ public class LocationUpdateTest {
     public void destroyMockservices() {
 
         Bezirk uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-        uhu.unregisterService(mockA.myId);
-        uhu.unregisterService(mockB.myId);
+        uhu.unregisterZirk(mockA.myId);
+        uhu.unregisterZirk(mockB.myId);
     }
 
     /**
@@ -119,7 +119,7 @@ public class LocationUpdateTest {
     private final class LocationUpdateMockServiceA implements BezirkListener {
         private final String serviceName = "LocationUpdateMockServiceA";
         private Bezirk uhu = null;
-        private ServiceId myId = null;
+        private ZirkId myId = null;
         private LocationUpdateMockServiceProtocolRole pRole;
 
         /**
@@ -127,8 +127,8 @@ public class LocationUpdateTest {
          */
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerService(serviceName);
-            logger.info("LocationUpdateMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            myId = uhu.registerZirk(serviceName);
+            logger.info("LocationUpdateMockServiceA - regId : " + ((UhuZirkId) myId).getUhuServiceId());
             pRole = new LocationUpdateMockServiceProtocolRole();
             uhu.subscribe(myId, pRole, this);
         }
@@ -150,15 +150,15 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
+        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -171,7 +171,7 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void discovered(Set<DiscoveredService> serviceSet) {
+        public void discovered(Set<DiscoveredZirk> zirkSet) {
         }
 
         @Override
@@ -230,15 +230,15 @@ public class LocationUpdateTest {
     private final class LocationUpdateMockServiceB implements BezirkListener {
         private final String serviceName = "LocationUpdateMockServiceB";
         private Bezirk uhu = null;
-        private ServiceId myId = null;
+        private ZirkId myId = null;
 
         /**
          * Setup the service
          */
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerService(serviceName);
-            logger.info("LocationUpdateMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            myId = uhu.registerZirk(serviceName);
+            logger.info("LocationUpdateMockServiceB - regId : " + ((UhuZirkId) myId).getUhuServiceId());
             uhu.subscribe(myId, new LocationUpdateMockServiceProtocolRole(), this);
         }
 
@@ -257,7 +257,7 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
+        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
             logger.info(" **** Received Event *****");
 
             ++countPingServiceB;
@@ -277,11 +277,11 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -293,7 +293,7 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void discovered(Set<DiscoveredService> serviceSet) {
+        public void discovered(Set<DiscoveredZirk> zirkSet) {
         }
 
         @Override

@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
 import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 
 
 /**
@@ -22,7 +22,7 @@ public class CatchResponse extends com.bezirk.control.messages.MulticastControlM
      * @param services          Services that need to join the target sphere. Has to be non-null.
      */
 
-    public CatchResponse(UhuServiceEndPoint sender, String catcherSphereId, String catcherDeviceId, UhuDeviceInfo inviterSphereDeviceInfo) {
+    public CatchResponse(UhuZirkEndPoint sender, String catcherSphereId, String catcherDeviceId, UhuDeviceInfo inviterSphereDeviceInfo) {
         super(sender, catcherSphereId, discriminator);
         // null checks for sender and catcherSphereId added here because call to the
         // super method has to be the first line in a constructor.

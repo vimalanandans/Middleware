@@ -3,7 +3,7 @@
  */
 package com.bezirk.control.messages.streaming;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
 /**
@@ -35,7 +35,7 @@ public class StreamResponse extends com.bezirk.control.messages.UnicastControlMe
      */
     public String sReqKey;
 
-    public StreamResponse(UhuServiceEndPoint sender, UhuServiceEndPoint recipient, String sphereName, String strmKey,
+    public StreamResponse(UhuZirkEndPoint sender, UhuZirkEndPoint recipient, String sphereName, String strmKey,
                           StreamRecord.StreamingStatus status, String streamIp, int streamPort) {
         super(sender, recipient, sphereName, discriminator, false, strmKey);
         this.status = status;

@@ -4,8 +4,8 @@ import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.Test;
 
@@ -82,7 +82,7 @@ public class CallBackMessageTest {
         PipePolicy allowedOut = new MockPipePolicy();
         UhuPipePolicy allowedOutPolicy = new UhuPipePolicy(allowedOut);
         String pipeReqId = "Request123";
-        UhuServiceId recipient = new UhuServiceId("TestService");
+        UhuZirkId recipient = new UhuZirkId("TestService");
 
         pipeRequestIncomingMessage = new PipeRequestIncomingMessage(pipe, pipeReqId, allowedInPolicy, allowedOutPolicy, recipient);
 
@@ -110,8 +110,8 @@ public class CallBackMessageTest {
         EventIncomingMessage deserializedcallbackMessage = EventIncomingMessage.deserialize(serializedCallback, EventIncomingMessage.class);
         assertEquals("Callbackdiscriminator is not set to EVENT for eventCallbackMessage.", "EVENT", deserializedcallbackMessage.getCallbackType());
 
-        UhuServiceId recipientId = new UhuServiceId("TestService");
-        UhuServiceEndPoint senderSEP = new UhuServiceEndPoint(new UhuServiceId("SenderServiceID"));
+        UhuZirkId recipientId = new UhuZirkId("TestService");
+        UhuZirkEndPoint senderSEP = new UhuZirkEndPoint(new UhuZirkId("SenderServiceID"));
         String serialzedEvent = "TestEvent";
         String eventTopic = "TestTopic";
         String msgId = "1234";

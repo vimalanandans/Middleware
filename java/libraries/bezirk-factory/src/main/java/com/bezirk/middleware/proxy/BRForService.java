@@ -7,10 +7,10 @@ import com.bezirk.messagehandler.ServiceIncomingMessage;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.DiscoveredService;
-import com.bezirk.middleware.addressing.ServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuDiscoveredService;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.middleware.addressing.DiscoveredZirk;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -33,9 +33,9 @@ public class BRForService implements IBoradcastReceiver {
     private static final LinkedHashMap<String, Long> duplicateMsgMap = new LinkedHashMap<String, Long>();
     private static final LinkedHashMap<String, Long> duplicateStreamMap = new LinkedHashMap<String, Long>();
     private final HashMap<String, String> activeStreams;
-    private final HashMap<UhuServiceId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap;
+    private final HashMap<UhuZirkId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap;
     private final HashMap<String, HashSet<BezirkListener>> eventListenerMap;
-    private final HashMap<UhuServiceId, HashSet<BezirkListener>> sidMap;
+    private final HashMap<UhuZirkId, HashSet<BezirkListener>> sidMap;
     private final HashMap<String, HashSet<BezirkListener>> streamListenerMap;
 
     /**
@@ -46,9 +46,9 @@ public class BRForService implements IBoradcastReceiver {
      * @param streamListenerMap
      */
     public BRForService(HashMap<String, String> activeStreams,
-                        HashMap<UhuServiceId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap,
+                        HashMap<UhuZirkId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap,
                         HashMap<String, HashSet<BezirkListener>> eventListenerMap,
-                        HashMap<UhuServiceId, HashSet<BezirkListener>> sidMap,
+                        HashMap<UhuZirkId, HashSet<BezirkListener>> sidMap,
                         HashMap<String, HashSet<BezirkListener>> streamListenerMap) {
         super();
         this.activeStreams = activeStreams;
@@ -113,7 +113,7 @@ public class BRForService implements IBoradcastReceiver {
                 while (listenerIterator.hasNext()) {
                     BezirkListener invokingListener = listenerIterator.next();
                     if (tempListenersTopicsMap.contains(invokingListener)) {
-                        invokingListener.receiveEvent(eCallbackMessage.eventTopic, eCallbackMessage.serialzedEvent, (ServiceEndPoint) eCallbackMessage.senderSEP);
+                        invokingListener.receiveEvent(eCallbackMessage.eventTopic, eCallbackMessage.serialzedEvent, (ZirkEndPoint) eCallbackMessage.senderSEP);
                     }
                 }
             }
@@ -173,17 +173,17 @@ public class BRForService implements IBoradcastReceiver {
             final Gson gson = new Gson();
             final String discoveredListAsString = discObj.discoveredList;
             //Deserialiaze
-            Type discoveredListType = new TypeToken<HashSet<UhuDiscoveredService>>() {
+            Type discoveredListType = new TypeToken<HashSet<UhuDiscoveredZirk>>() {
             }.getType();
 
-            final HashSet<UhuDiscoveredService> discoveredList = gson.fromJson(discoveredListAsString, discoveredListType);
+            final HashSet<UhuDiscoveredZirk> discoveredList = gson.fromJson(discoveredListAsString, discoveredListType);
 
             if (null == discoveredList || discoveredList.isEmpty()) {
                 logger.error("Empty discovered List");
                 return;
             }
 
-            dListenerMap.get(discObj.getRecipient()).getListener().discovered(new HashSet<DiscoveredService>(discoveredList));
+            dListenerMap.get(discObj.getRecipient()).getListener().discovered(new HashSet<DiscoveredZirk>(discoveredList));
         }
     }
 

@@ -3,8 +3,8 @@ package com.bezirk.sphere.impl;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.ICryptoInternals;
 import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.messages.ShareRequest;
@@ -149,7 +149,7 @@ public class ShareProcessor {
 
         // for sending unicast back to the device sharing its services
         String uniqueKey = shareRequest.getUniqueKey();
-        UhuServiceEndPoint recipient = shareRequest.getSender();
+        UhuZirkEndPoint recipient = shareRequest.getSender();
 
         /************************************************************************
          * Step2: store sphere exchange data
@@ -269,7 +269,7 @@ public class ShareProcessor {
         ownerDevices.add(sphereExchangeData.getDeviceID());
 
         Sphere sphere = new MemberSphere(sphereExchangeData.getSphereName(), sphereExchangeData.getSphereType(),
-                ownerDevices, new LinkedHashMap<String, ArrayList<UhuServiceId>>(), false);
+                ownerDevices, new LinkedHashMap<String, ArrayList<UhuZirkId>>(), false);
 
         sphereRegistryWrapper.addSphere(sphereExchangeData.getSphereID(), sphere);
 
@@ -279,11 +279,11 @@ public class ShareProcessor {
 
         // add services from the sharer sphere
         Sphere shareSphere = sphereRegistryWrapper.getSphere(sharerSphereId);
-        Map<String, ArrayList<UhuServiceId>> deviceServices = shareSphere.deviceServices;
+        Map<String, ArrayList<UhuZirkId>> deviceServices = shareSphere.deviceServices;
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(upaDeviceInterface.getDeviceId())) {
 
-            ArrayList<UhuServiceId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
+            ArrayList<UhuZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
             sphereRegistryWrapper.addLocalServicesToSphere(services, sphereExchangeData.getSphereID());
         }
 
@@ -362,13 +362,13 @@ public class ShareProcessor {
         ShareRequest shareRequest = null;
 
         Sphere sphere = sphereRegistryWrapper.getSphere(sharerSphereId);
-        Map<String, ArrayList<UhuServiceId>> deviceServices = sphere.deviceServices;
+        Map<String, ArrayList<UhuZirkId>> deviceServices = sphere.deviceServices;
 
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(upaDeviceInterface.getDeviceId())) {
 
             // get device services of sphere
-            ArrayList<UhuServiceId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
+            ArrayList<UhuZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
 
             if (services != null && !services.isEmpty()) {
                 DeviceInformation deviceInformation = sphereRegistryWrapper
@@ -476,7 +476,7 @@ public class ShareProcessor {
      * @param sharerSphereId
      * @return
      */
-    private ShareResponse prepareResponse(String inviterShortCode, String inviterSphereId, UhuServiceEndPoint sharer,
+    private ShareResponse prepareResponse(String inviterShortCode, String inviterSphereId, UhuZirkEndPoint sharer,
                                           String uniqueKey, String sharerSphereId) {
         ShareResponse shareResponse = null;
         String sphereExchangeData = sphereRegistryWrapper.getShareCodeString(inviterSphereId);
@@ -486,12 +486,12 @@ public class ShareProcessor {
         }
 
         Sphere sphere = sphereRegistryWrapper.getSphere(inviterSphereId);
-        Map<String, ArrayList<UhuServiceId>> deviceServices = sphere.deviceServices;
+        Map<String, ArrayList<UhuZirkId>> deviceServices = sphere.deviceServices;
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(upaDeviceInterface.getDeviceId())) {
 
             // get device services of sphere
-            ArrayList<UhuServiceId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
+            ArrayList<UhuZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
 
             if (services != null && !services.isEmpty()) {
                 DeviceInformation deviceInformation = sphereRegistryWrapper

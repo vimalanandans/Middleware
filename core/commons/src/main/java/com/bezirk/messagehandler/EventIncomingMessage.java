@@ -1,7 +1,7 @@
 package com.bezirk.messagehandler;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 
 /**
@@ -10,9 +10,9 @@ import com.bezirk.proxy.api.impl.UhuServiceId;
 public final class EventIncomingMessage extends ServiceIncomingMessage {
 
     /**
-     * UhuServiceEndPoint of the the recipient.
+     * UhuZirkEndPoint of the the recipient.
      */
-    public UhuServiceEndPoint senderSEP;
+    public UhuZirkEndPoint senderSEP;
     /**
      * Serialized Topic
      */
@@ -30,7 +30,7 @@ public final class EventIncomingMessage extends ServiceIncomingMessage {
         callbackDiscriminator = "EVENT";
     }
 
-    public EventIncomingMessage(UhuServiceId recipientId, UhuServiceEndPoint senderSEP, String serialzedEvent, String eventTopic, String msgId) {
+    public EventIncomingMessage(UhuZirkId recipientId, UhuZirkEndPoint senderSEP, String serialzedEvent, String eventTopic, String msgId) {
         super();
         callbackDiscriminator = "EVENT";
         recipient = recipientId;

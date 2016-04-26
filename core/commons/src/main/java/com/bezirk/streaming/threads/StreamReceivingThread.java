@@ -7,7 +7,7 @@ import com.bezirk.comms.IPortFactory;
 import com.bezirk.comms.UhuComms;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 import com.bezirk.sadl.ISadlEventReceiver;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.streaming.port.PortFactory;
@@ -49,8 +49,8 @@ public class StreamReceivingThread implements Runnable {
     private final String streamLabel;                                                                 // StreamLabel, that the service has subscribed
     private final String fileName;
     private final boolean isEncrypted;
-    private final UhuServiceEndPoint recipient;
-    private final UhuServiceEndPoint sender;
+    private final UhuZirkEndPoint recipient;
+    private final UhuZirkEndPoint sender;
     private final String serialzedMsg;
     private final short streamId;
     private final IPortFactory portFactory;

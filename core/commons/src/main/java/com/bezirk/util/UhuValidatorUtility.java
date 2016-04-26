@@ -5,8 +5,8 @@ import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com)
@@ -22,12 +22,12 @@ public final class UhuValidatorUtility {
     }
 
     /**
-     * Checks for Validity of UhuServiceId.
+     * Checks for Validity of UhuZirkId.
      *
-     * @param serviceId UhuServiceId that will check for ServiceId
-     * @return true if UhuServiceId is valid, false otherwise
+     * @param serviceId UhuZirkId that will check for ZirkId
+     * @return true if UhuZirkId is valid, false otherwise
      */
-    public static boolean checkUhuServiceId(final UhuServiceId serviceId) {
+    public static boolean checkUhuServiceId(final UhuZirkId serviceId) {
         if (serviceId == null || !checkForString(serviceId.getUhuServiceId())) {
             return false;
         }
@@ -43,12 +43,12 @@ public final class UhuValidatorUtility {
     }
 
     /**
-     * Checks for Validity of UhuServiceEndPoint
+     * Checks for Validity of UhuZirkEndPoint
      *
-     * @param uhuServiceEndPoint - UhuServiceEndPoint that should be validated
+     * @param uhuServiceEndPoint - UhuZirkEndPoint that should be validated
      * @return true if valid, false otherwise.
      */
-    public static boolean checkUhuServiceEndPoint(final UhuServiceEndPoint uhuServiceEndPoint) {
+    public static boolean checkUhuServiceEndPoint(final UhuZirkEndPoint uhuServiceEndPoint) {
         if (uhuServiceEndPoint == null || !checkUhuServiceId(uhuServiceEndPoint.serviceId) || !checkForString(uhuServiceEndPoint.device)) {
             return false;
         }
@@ -120,9 +120,9 @@ public final class UhuValidatorUtility {
         return true;
     }
 
-    private static boolean checkEndPoints(UhuServiceEndPoint... serviceEndPoints) {
+    private static boolean checkEndPoints(UhuZirkEndPoint... serviceEndPoints) {
 
-        for (UhuServiceEndPoint serviceEndPoint : serviceEndPoints) {
+        for (UhuZirkEndPoint serviceEndPoint : serviceEndPoints) {
 
             if (!checkUhuServiceEndPoint(serviceEndPoint)) {
 
@@ -166,7 +166,7 @@ public final class UhuValidatorUtility {
 
     }
 
-    public static boolean checkRTCStreamRequest(final UhuServiceId serviceId, final UhuServiceEndPoint sep) {
+    public static boolean checkRTCStreamRequest(final UhuZirkId serviceId, final UhuZirkEndPoint sep) {
         return checkUhuServiceId(serviceId) && checkUhuServiceEndPoint(sep);
     }
 }

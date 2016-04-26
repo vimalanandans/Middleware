@@ -7,7 +7,7 @@ import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.middleware.objects.UhuDeviceInfo.UhuDeviceRole;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.impl.OwnerService;
 import com.bezirk.sphere.impl.Service;
 import com.bezirk.sphere.impl.Sphere;
@@ -95,15 +95,15 @@ public class GetUhuDeviceInfo {
         spheres.add(defaultSphereId);
 
         String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         Service service1 = new OwnerService(serviceName1,
                 upaDevice.getDeviceId(), spheres);
         registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
 
-        ArrayList<UhuServiceId> services = new ArrayList<>();
+        ArrayList<UhuZirkId> services = new ArrayList<>();
         services.add(serviceId1);
 
-        LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<>();
         deviceServices.put(upaDevice.getDeviceId(), services);
         defaultSphere.setDeviceServices(deviceServices);
 
@@ -132,15 +132,15 @@ public class GetUhuDeviceInfo {
         spheres.add(defaultSphereId);
 
         String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         Service service1 = new OwnerService(serviceName1,
                 upaDevice.getDeviceId(), spheres);
         registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
 
-        ArrayList<UhuServiceId> services = new ArrayList<>();
+        ArrayList<UhuZirkId> services = new ArrayList<>();
         services.add(serviceId1);
 
-        LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<>();
         deviceServices.put(upaDevice.getDeviceId(), services);
         defaultSphere.setDeviceServices(deviceServices);
 
@@ -175,12 +175,12 @@ public class GetUhuDeviceInfo {
         spheres.add(defaultSphereId);
 
         String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         Service service1 = new OwnerService(serviceName1,
                 upaDevice.getDeviceId(), spheres);
         registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
 
-        ArrayList<UhuServiceId> services = new ArrayList<>();
+        ArrayList<UhuZirkId> services = new ArrayList<>();
         services.add(serviceId1);
 
         // Passing devices map as null
@@ -202,15 +202,15 @@ public class GetUhuDeviceInfo {
         spheres.add(defaultSphereId);
 
         String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         Service service1 = new OwnerService(serviceName1,
                 upaDevice.getDeviceId(), spheres);
         registry.sphereMembership.put(serviceId1.getUhuServiceId(), service1);
 
-        ArrayList<UhuServiceId> services = new ArrayList<>();
+        ArrayList<UhuZirkId> services = new ArrayList<>();
         services.add(serviceId1);
 
-        LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<>();
         deviceServices.put(upaDevice.getDeviceId(), services);
         defaultSphere.setDeviceServices(deviceServices);
 

@@ -6,8 +6,8 @@ import com.bezirk.control.messages.pipes.PipeMulticastHeader;
 import com.bezirk.control.messages.pipes.PipeUnicastHeader;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.Test;
 
@@ -41,8 +41,8 @@ public class PipeHeaderConversionTest {
         Location location = new Location("BobsHouse");
         Address address = new Address(location);
         pipeMulticastHeader.setAddress(address);
-        UhuServiceId id = new UhuServiceId("test-id-string");
-        UhuServiceEndPoint senderSEP = new UhuServiceEndPoint(id);
+        UhuZirkId id = new UhuZirkId("test-id-string");
+        UhuZirkEndPoint senderSEP = new UhuZirkEndPoint(id);
         pipeMulticastHeader.setSenderSEP(senderSEP);
         pipeMulticastHeader.setTopic("test-topic");
 
@@ -51,11 +51,11 @@ public class PipeHeaderConversionTest {
 
     private PipeUnicastHeader createPipeUnicastHeader() {
         PipeUnicastHeader pipeUnicastHeader = new PipeUnicastHeader();
-        UhuServiceId recipientId = new UhuServiceId("test-id-recipient");
-        UhuServiceEndPoint recipientSEP = new UhuServiceEndPoint(recipientId);
+        UhuZirkId recipientId = new UhuZirkId("test-id-recipient");
+        UhuZirkEndPoint recipientSEP = new UhuZirkEndPoint(recipientId);
         pipeUnicastHeader.setRecipient(recipientSEP);
-        UhuServiceId senderId = new UhuServiceId("test-id-sender");
-        UhuServiceEndPoint senderSEP = new UhuServiceEndPoint(senderId);
+        UhuZirkId senderId = new UhuZirkId("test-id-sender");
+        UhuZirkEndPoint senderSEP = new UhuZirkEndPoint(senderId);
         pipeUnicastHeader.setSenderSEP(senderSEP);
         pipeUnicastHeader.setTopic("test-topic");
 

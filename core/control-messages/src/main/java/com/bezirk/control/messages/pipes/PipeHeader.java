@@ -1,21 +1,21 @@
 package com.bezirk.control.messages.pipes;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 import com.google.gson.Gson;
 
 public class PipeHeader {
 
     public static final String KEY_UHU_HEADER = "Uhu-Header";
 
-    protected UhuServiceEndPoint senderSEP;
+    protected UhuZirkEndPoint senderSEP;
 
     protected String topic;
 
-    public UhuServiceEndPoint getSenderSEP() {
+    public UhuZirkEndPoint getSenderSEP() {
         return senderSEP;
     }
 
-    public void setSenderSEP(UhuServiceEndPoint senderSEP) {
+    public void setSenderSEP(UhuZirkEndPoint senderSEP) {
         this.senderSEP = senderSEP;
     }
 

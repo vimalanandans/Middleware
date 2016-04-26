@@ -6,7 +6,7 @@ package com.bezirk.sphere.messages;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 
 /**
  * @author rishabh
@@ -27,7 +27,7 @@ public class ShareResponse extends UnicastControlMessage {
      * @param sphereExchangeDataString- Has to be non-null.
      * @param sharerSphereId-           Has to be non-null.
      */
-    public ShareResponse(UhuServiceEndPoint sender, UhuServiceEndPoint recipient, String uniqueKey, String shareCode,
+    public ShareResponse(UhuZirkEndPoint sender, UhuZirkEndPoint recipient, String uniqueKey, String shareCode,
                          UhuDeviceInfo uhuDeviceInfo, String sphereExchangeDataString, String sharerSphereId) {
         super(sender, recipient, shareCode, discriminator, true, uniqueKey);
         // null checks for sender, recipient, shareCode and uniqueKey added here because call to the

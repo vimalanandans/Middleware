@@ -6,7 +6,7 @@ package test;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.proxy.Factory;
@@ -18,12 +18,12 @@ import com.bezirk.middleware.proxy.Factory;
 public class Test {
 
     private Bezirk bezirk;
-    private ServiceId myId;
+    private ZirkId myId;
 
     public Test() {
         // set up sending messages over bezirk
         bezirk = Factory.getInstance();
-        myId = bezirk.registerService(Test.class.getSimpleName());
+        myId = bezirk.registerZirk(Test.class.getSimpleName());
     }
 
     /**

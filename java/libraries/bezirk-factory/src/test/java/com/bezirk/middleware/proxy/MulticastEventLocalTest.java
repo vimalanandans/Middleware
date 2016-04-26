@@ -3,16 +3,16 @@ package com.bezirk.middleware.proxy;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.Address;
-import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.middleware.addressing.ServiceEndPoint;
-import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -94,9 +94,9 @@ public class MulticastEventLocalTest {
     public void destroyMockservices() {
 
         Bezirk uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-        uhu.unregisterService(mockA.myId);
-        uhu.unregisterService(mockB.myId);
-        uhu.unregisterService(mockC.myId);
+        uhu.unregisterZirk(mockA.myId);
+        uhu.unregisterZirk(mockB.myId);
+        uhu.unregisterZirk(mockC.myId);
     }
 
     /**
@@ -105,7 +105,7 @@ public class MulticastEventLocalTest {
     private final class MulticastMockServiceA implements BezirkListener {
         private final String serviceName = "MulticastMockServiceA";
         private Bezirk uhu = null;
-        private ServiceId myId = null;
+        private ZirkId myId = null;
         private MulticastMockServiceProtocolRole pRole;
 
         /**
@@ -113,8 +113,8 @@ public class MulticastEventLocalTest {
          */
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerService(serviceName);
-            logger.info("MulticastMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            myId = uhu.registerZirk(serviceName);
+            logger.info("MulticastMockServiceA - regId : " + ((UhuZirkId) myId).getUhuServiceId());
             pRole = new MulticastMockServiceProtocolRole();
             uhu.subscribe(myId, pRole, this);
         }
@@ -138,15 +138,15 @@ public class MulticastEventLocalTest {
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
+        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -159,7 +159,7 @@ public class MulticastEventLocalTest {
         }
 
         @Override
-        public void discovered(Set<DiscoveredService> serviceSet) {
+        public void discovered(Set<DiscoveredZirk> zirkSet) {
         }
 
         @Override
@@ -216,20 +216,20 @@ public class MulticastEventLocalTest {
     private final class MulticastMockServiceB implements BezirkListener {
         private final String serviceName = "MulticastMockServiceB";
         private Bezirk uhu = null;
-        private ServiceId myId = null;
+        private ZirkId myId = null;
 
         /**
          * Setup the service
          */
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerService(serviceName);
-            logger.info("MulticastMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            myId = uhu.registerZirk(serviceName);
+            logger.info("MulticastMockServiceB - regId : " + ((UhuZirkId) myId).getUhuServiceId());
             uhu.subscribe(myId, new MulticastEventLocalTest.MulticastMockServiceProtocolRole(), this);
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
+        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
             logger.info(" **** Received Event *****");
 
             assertEquals("MockRequestEvent", topic);
@@ -240,11 +240,11 @@ public class MulticastEventLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -256,7 +256,7 @@ public class MulticastEventLocalTest {
         }
 
         @Override
-        public void discovered(Set<DiscoveredService> serviceSet) {
+        public void discovered(Set<DiscoveredZirk> zirkSet) {
         }
 
         @Override
@@ -272,15 +272,15 @@ public class MulticastEventLocalTest {
     private final class MulticastMockServiceC implements BezirkListener {
         private final String serviceName = "MulticastMockServiceC";
         private Bezirk uhu = null;
-        private ServiceId myId = null;
+        private ZirkId myId = null;
 
         /**
          * Setup the service
          */
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerService(serviceName);
-            logger.info("MulticastMockServiceC - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            myId = uhu.registerZirk(serviceName);
+            logger.info("MulticastMockServiceC - regId : " + ((UhuZirkId) myId).getUhuServiceId());
             uhu.subscribe(myId, new MulticastMockServiceProtocolRole(), this);
         }
 
@@ -293,7 +293,7 @@ public class MulticastEventLocalTest {
 
         @Override
         public void receiveEvent(String topic, String event,
-                                 ServiceEndPoint sender) {
+                                 ZirkEndPoint sender) {
             logger.info(" **** Received Event *****");
 
             assertEquals("MockRequestEvent", topic);
@@ -310,11 +310,11 @@ public class MulticastEventLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -326,7 +326,7 @@ public class MulticastEventLocalTest {
         }
 
         @Override
-        public void discovered(Set<DiscoveredService> serviceSet) {
+        public void discovered(Set<DiscoveredZirk> zirkSet) {
         }
 
         @Override

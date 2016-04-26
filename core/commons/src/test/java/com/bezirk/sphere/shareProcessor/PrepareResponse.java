@@ -4,7 +4,7 @@
 package com.bezirk.sphere.shareProcessor;
 
 import com.bezirk.commons.UhuId;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.messages.ShareResponse;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
@@ -52,7 +52,7 @@ public class PrepareResponse {
         parameterTypes = new Class[5];
         parameterTypes[0] = java.lang.String.class;
         parameterTypes[1] = java.lang.String.class;
-        parameterTypes[2] = UhuServiceEndPoint.class;
+        parameterTypes[2] = UhuZirkEndPoint.class;
         parameterTypes[3] = java.lang.String.class;
         parameterTypes[4] = java.lang.String.class;
         method = ShareProcessor.class.getDeclaredMethod("prepareResponse", parameterTypes);
@@ -94,7 +94,7 @@ public class PrepareResponse {
         String sharerSphereId = sphereTestUtility.generateOwnerCombo();
         String inviterShortCode = new UhuId().getShortIdByHash(sharerSphereId);
         String inviterSphereId = sphereTestUtility.generateOwnerCombo();
-        UhuServiceEndPoint sharer = new UhuServiceEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
+        UhuZirkEndPoint sharer = new UhuZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
         sharer.device = sphereTestUtility.DEVICE_2.getDeviceName();
 
         /** invoke the method under test using reflection **/
@@ -118,7 +118,7 @@ public class PrepareResponse {
         String sharerSphereId = sphereTestUtility.generateOwnerCombo();
         String inviterShortCode = new UhuId().getShortIdByHash(sharerSphereId);
         String inviterSphereId = null;
-        UhuServiceEndPoint sharer = new UhuServiceEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
+        UhuZirkEndPoint sharer = new UhuZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
         sharer.device = sphereTestUtility.DEVICE_2.getDeviceName();
 
         /** invoke the method under test using reflection **/
@@ -127,7 +127,7 @@ public class PrepareResponse {
     }
 
     /**
-     * Test the behavior of the sendResponse method when sharer UhuServiceEndPoint  is null.
+     * Test the behavior of the sendResponse method when sharer UhuZirkEndPoint  is null.
      * <br>The method under test is expected to throw exception
      *
      * @throws Exception
@@ -137,7 +137,7 @@ public class PrepareResponse {
         String sharerSphereId = sphereTestUtility.generateOwnerCombo();
         String inviterShortCode = new UhuId().getShortIdByHash(sharerSphereId);
         String inviterSphereId = sphereTestUtility.generateOwnerCombo();
-        UhuServiceEndPoint sharer = null;
+        UhuZirkEndPoint sharer = null;
 
         /** invoke the method under test using reflection **/
         method.invoke(shareProcessor, inviterShortCode, inviterSphereId, sharer, "abcdefg", sharerSphereId);
@@ -154,7 +154,7 @@ public class PrepareResponse {
         String sharerSphereId = null;
         String inviterShortCode = new UhuId().getShortIdByHash(sphereTestUtility.generateOwnerCombo());
         String inviterSphereId = sphereTestUtility.generateOwnerCombo();
-        UhuServiceEndPoint sharer = new UhuServiceEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
+        UhuZirkEndPoint sharer = new UhuZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
         sharer.device = sphereTestUtility.DEVICE_2.getDeviceName();
 
         /** invoke the method under test using reflection **/

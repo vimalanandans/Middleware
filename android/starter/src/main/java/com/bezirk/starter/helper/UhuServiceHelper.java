@@ -9,8 +9,8 @@ import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.android.ProxyforServices;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.util.UhuValidatorUtility;
 import com.google.gson.Gson;
 
@@ -50,7 +50,7 @@ public final class UhuServiceHelper {
         String protocolRoleAsString = intent.getStringExtra(subPrtclKEY);
         if (UhuValidatorUtility.checkForString(serviceIdAsString) && UhuValidatorUtility.checkForString(protocolRoleAsString)) {
             final Gson gson = new Gson();
-            final UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
+            final UhuZirkId serviceId = gson.fromJson(serviceIdAsString, UhuZirkId.class);
             final SubscribedRole subscribedRole = gson.fromJson(protocolRoleAsString, SubscribedRole.class);
             if (UhuValidatorUtility.checkUhuServiceId(serviceId) && UhuValidatorUtility.checkProtocolRole(subscribedRole)) {
                 proxy.subscribeService(serviceId, subscribedRole);
@@ -79,11 +79,11 @@ public final class UhuServiceHelper {
         logger.info("Service registration to Uhu. Name : " + serviceName + " Id : " + serviceIdAsString);
 
         if (UhuValidatorUtility.checkForString(serviceIdAsString) && UhuValidatorUtility.checkForString(serviceName)) {
-            final UhuServiceId serviceId = new Gson().fromJson(serviceIdAsString, UhuServiceId.class);
+            final UhuZirkId serviceId = new Gson().fromJson(serviceIdAsString, UhuZirkId.class);
             if (UhuValidatorUtility.checkUhuServiceId(serviceId)) {
                 proxy.registerService(serviceId, serviceName);
             } else {
-                logger.error("Trying to subscribe with null ServiceId");
+                logger.error("Trying to subscribe with null ZirkId");
             }
 
         } else {
@@ -105,7 +105,7 @@ public final class UhuServiceHelper {
         final String protocolRoleAsString = intent.getStringExtra(subPrtclKEY);
         if (UhuValidatorUtility.checkForString(serviceIdAsString)) {
             final Gson gson = new Gson();
-            final UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
+            final UhuZirkId serviceId = gson.fromJson(serviceIdAsString, UhuZirkId.class);
             final SubscribedRole subscribedRole = gson.fromJson(protocolRoleAsString, SubscribedRole.class);
             if (UhuValidatorUtility.checkUhuServiceId(serviceId)) {
                 if (UhuValidatorUtility.isObjectNotNull(subscribedRole)) {
@@ -144,7 +144,7 @@ public final class UhuServiceHelper {
 
         if (UhuValidatorUtility.checkForString(serviceIdAsString) && UhuValidatorUtility.checkForString(addressAsString) && UhuValidatorUtility.checkForString(pRoleMsg)) {
             final Gson gson = new Gson();
-            final UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
+            final UhuZirkId serviceId = gson.fromJson(serviceIdAsString, UhuZirkId.class);
             final Address address = gson.fromJson(addressAsString, Address.class);
             final SubscribedRole pRole = gson.fromJson(pRoleMsg, SubscribedRole.class);
             final long timeout = intent.getLongExtra(timeoutKEY, 1000);
@@ -184,8 +184,8 @@ public final class UhuServiceHelper {
 
         if (UhuValidatorUtility.checkForString(serviceIdAsString, recipientAsString, streamAsString) && -1 != localStreamId) {
             final Gson gson = new Gson();
-            final UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
-            final UhuServiceEndPoint recipient = gson.fromJson(recipientAsString, UhuServiceEndPoint.class);
+            final UhuZirkId serviceId = gson.fromJson(serviceIdAsString, UhuZirkId.class);
+            final UhuZirkEndPoint recipient = gson.fromJson(recipientAsString, UhuZirkEndPoint.class);
 
             isStreamingValid = sendStream(file, streamAsString, localStreamId, serviceId, recipient);
 
@@ -195,12 +195,12 @@ public final class UhuServiceHelper {
         }
 
         if (!isStreamingValid) {
-            StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(new Gson().fromJson(serviceIdAsString, UhuServiceId.class), 0, localStreamId);
+            StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(new Gson().fromJson(serviceIdAsString, UhuZirkId.class), 0, localStreamId);
             UhuCompManager.getplatformSpecificCallback().onStreamStatus(streamStatusCallbackMessage);
         }
     }
 
-    private boolean sendStream(File file, String streamAsString, short localStreamId, UhuServiceId serviceId, UhuServiceEndPoint recipient) {
+    private boolean sendStream(File file, String streamAsString, short localStreamId, UhuZirkId serviceId, UhuZirkEndPoint recipient) {
         if (UhuValidatorUtility.checkUhuServiceEndPoint(recipient) && UhuValidatorUtility.checkUhuServiceId(serviceId)) {
             short sendStreamStatus = proxy.sendStream(serviceId, recipient, streamAsString, file, localStreamId);
             if (-1 == sendStreamStatus) {
@@ -234,8 +234,8 @@ public final class UhuServiceHelper {
 
         try {
             final Gson gson = new Gson();
-            final UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
-            final UhuServiceEndPoint recipient = gson.fromJson(recipientAsString, UhuServiceEndPoint.class);
+            final UhuZirkId serviceId = gson.fromJson(serviceIdAsString, UhuZirkId.class);
+            final UhuZirkEndPoint recipient = gson.fromJson(recipientAsString, UhuZirkEndPoint.class);
 
             if (UhuValidatorUtility.checkRTCStreamRequest(serviceId, recipient)) {
 
@@ -253,7 +253,7 @@ public final class UhuServiceHelper {
         }
 
         if (!isStreamingValid) {
-            StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(new Gson().fromJson(serviceIdAsString, UhuServiceId.class), 0, localStreamId);
+            StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(new Gson().fromJson(serviceIdAsString, UhuZirkId.class), 0, localStreamId);
             UhuCompManager.getplatformSpecificCallback().onStreamStatus(streamStatusCallbackMessage);
         }
     }
@@ -276,7 +276,7 @@ public final class UhuServiceHelper {
         // Validate intent properties
         if (UhuValidatorUtility.checkForString(serviceIdAsString) && UhuValidatorUtility.checkForString(addressAsString) && UhuValidatorUtility.checkForString(mEventMsg)) {
             final Gson gson = new Gson();
-            final UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
+            final UhuZirkId serviceId = gson.fromJson(serviceIdAsString, UhuZirkId.class);
             if (UhuValidatorUtility.checkUhuServiceId(serviceId)) {
                 final Address address = Address.fromJson(addressAsString);
                 logger.debug("Sending multicast event from service: " + serviceIdAsString);
@@ -307,8 +307,8 @@ public final class UhuServiceHelper {
         final String msg = intent.getStringExtra(uEventMsgKEY);
         if (UhuValidatorUtility.checkForString(serviceIdAsString) && UhuValidatorUtility.checkForString(sepAsString) && UhuValidatorUtility.checkForString(msg)) {
             final Gson gson = new Gson();
-            final UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
-            final UhuServiceEndPoint serviceEndPoint = gson.fromJson(sepAsString, UhuServiceEndPoint.class);
+            final UhuZirkId serviceId = gson.fromJson(serviceIdAsString, UhuZirkId.class);
+            final UhuZirkEndPoint serviceEndPoint = gson.fromJson(sepAsString, UhuZirkEndPoint.class);
             if (UhuValidatorUtility.checkUhuServiceId(serviceId) && UhuValidatorUtility.checkUhuServiceEndPoint(serviceEndPoint)) {
                 proxy.sendUnicastEvent(serviceId, serviceEndPoint, msg);
             } else {
@@ -331,7 +331,7 @@ public final class UhuServiceHelper {
         logger.info("Received location " + location + " from service");
 
         if (UhuValidatorUtility.checkForString(sid) && UhuValidatorUtility.checkForString(location)) {
-            UhuServiceId serviceId = new Gson().fromJson(sid, UhuServiceId.class);
+            UhuZirkId serviceId = new Gson().fromJson(sid, UhuZirkId.class);
             Location loc = new Gson().fromJson(location, Location.class);
             if (UhuValidatorUtility.checkUhuServiceId(serviceId)) {
                 proxy.setLocation(serviceId, loc);

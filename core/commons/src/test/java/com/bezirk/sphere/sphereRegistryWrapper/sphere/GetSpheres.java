@@ -22,7 +22,7 @@
 //import UPADeviceInterface;
 //import UhuSphereInfo;
 //import SphereRegistry;
-//import UhuServiceId;
+//import UhuZirkId;
 //import ISphereConfig;
 //import UhuSphereType;
 //import ISphereConfig.Mode;
@@ -111,8 +111,8 @@
 //        HashSet<String> devices = new HashSet<>();
 //        devices.add(sphereTestUtility.DEVICE_2.getDeviceId());
 //        // Map of device id and service ids
-//        LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices = new LinkedHashMap<>();
-//        ArrayList<UhuServiceId> services = new ArrayList<>();
+//        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<>();
+//        ArrayList<UhuZirkId> services = new ArrayList<>();
 //		services.add(sphereTestUtility.MEMBER_SERVICE_ID_1);
 //		deviceServices.put(upaDevice.getDeviceId(), services);
 //		

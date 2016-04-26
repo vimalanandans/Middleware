@@ -26,7 +26,7 @@ package com.bezirk.middleware.messages;
 public abstract class ProtocolRole {
     /**
      * Returns the unique name of this protocol, used by the middleware to manage subscriptions
-     * and discover services subscribed to the role.
+     * and discover Zirks subscribed to the role.
      * <p>
      * The implementation of this method should return the simple name of the implementing class,
      * for example:

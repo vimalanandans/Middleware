@@ -4,7 +4,7 @@
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.impl.OwnerService;
 import com.bezirk.sphere.impl.OwnerSphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
@@ -69,7 +69,7 @@ public class IsServiceInSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(UhuServiceId, String)}.
+     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(UhuZirkId, String)}.
      * <p/>
      * <br>Test the behavior of isServiceInSphere when valid service and sphereId is passed.
      * isServiceInSphere should return True if the sphere id is in the sphere set of the service.
@@ -79,7 +79,7 @@ public class IsServiceInSphere {
 
         //Create service and sphere set
         String serviceId = UUID.randomUUID().toString();
-        UhuServiceId service = new UhuServiceId(serviceId);
+        UhuZirkId service = new UhuZirkId(serviceId);
         HashSet<String> sphereSet = new HashSet<String>();
         String sphereId = UUID.randomUUID().toString();
         sphereSet.add(sphereId);
@@ -93,7 +93,7 @@ public class IsServiceInSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(UhuServiceId, String)}.
+     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(UhuZirkId, String)}.
      * <p/>
      * <br>Test the behavior of isServiceInSphere when valid service and sphereId is passed.
      * But the sphereId is not part of the sphere set.
@@ -104,7 +104,7 @@ public class IsServiceInSphere {
 
         // create a service and service set
         String serviceId = UUID.randomUUID().toString();
-        UhuServiceId service = new UhuServiceId(serviceId);
+        UhuZirkId service = new UhuZirkId(serviceId);
         HashSet<String> sphereSet = new HashSet<String>();
         String sphereId = UUID.randomUUID().toString();
 
@@ -120,7 +120,7 @@ public class IsServiceInSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(UhuServiceId, String)}.
+     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(UhuZirkId, String)}.
      * <p/>
      * <br>Test the behavior of isServiceInSphere when wrong service id is passed.
      * isServiceInSphere should return False
@@ -130,7 +130,7 @@ public class IsServiceInSphere {
 
         // create a service and service set but not added to registry
         String serviceId = UUID.randomUUID().toString();
-        UhuServiceId service = new UhuServiceId(serviceId);
+        UhuZirkId service = new UhuZirkId(serviceId);
         String sphereId = UUID.randomUUID().toString();
 
         // It should return false because the service id is not added to registry
@@ -138,7 +138,7 @@ public class IsServiceInSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(UhuServiceId, String)}.
+     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(UhuZirkId, String)}.
      * <p/>
      * <br>Test the behavior of isServiceInSphere when service id is passed as null.
      * isServiceInSphere should throw an exception
@@ -154,7 +154,7 @@ public class IsServiceInSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(UhuServiceId, String)}.
+     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(UhuZirkId, String)}.
      * <p/>
      * <br>Test the behavior of isServiceInSphere when null sphereId is passed.
      * isServiceInSphere should return False.
@@ -164,7 +164,7 @@ public class IsServiceInSphere {
 
         //Create service and sphere set
         String serviceId = UUID.randomUUID().toString();
-        UhuServiceId service = new UhuServiceId(serviceId);
+        UhuZirkId service = new UhuZirkId(serviceId);
         HashSet<String> sphereSet = new HashSet<String>();
         String sphereId = UUID.randomUUID().toString();
         sphereSet.add(sphereId);

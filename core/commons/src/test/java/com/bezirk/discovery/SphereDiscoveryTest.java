@@ -4,8 +4,8 @@ import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.UhuSphere;
 import com.bezirk.sphere.security.CryptoEngine;
@@ -31,9 +31,9 @@ public class SphereDiscoveryTest {
 
 
     private static final String sphereId = "TestSphere";
-    private static final UhuServiceId serviceId = new UhuServiceId("ServiceB");
-    private static final UhuServiceEndPoint recipient = new UhuServiceEndPoint(serviceId);
-    private static final UhuServiceEndPoint serviceBEndPoint = new UhuServiceEndPoint(new UhuServiceId("ServiceB"));
+    private static final UhuZirkId serviceId = new UhuZirkId("ServiceB");
+    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceId);
+    private static final UhuZirkEndPoint serviceBEndPoint = new UhuZirkEndPoint(new UhuZirkId("ServiceB"));
 
     private static final String requestKey = "REQUEST_KEY";
     private static InetAddress inetAddr;
@@ -108,7 +108,7 @@ public class SphereDiscoveryTest {
         sphereDiscovery.remove(dlabelTemp);
         assertEquals("DiscoveredMap size is not equal to 1 after removing entry.", 1, getDiscoveredMapsize(sphereDiscovery));
 
-        UhuServiceEndPoint invalidRecepient = new UhuServiceEndPoint(null);
+        UhuZirkEndPoint invalidRecepient = new UhuZirkEndPoint(null);
         invalidRecepient.device = getInetAddress().getHostAddress();
         response = new SphereDiscoveryResponse(invalidRecepient, sphereId, requestKey, discoveryId);
         response.setUhuSphereInfo(uhuSphereInfo);

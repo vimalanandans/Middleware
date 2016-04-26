@@ -1,6 +1,6 @@
 package com.bezirk.control.messages;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 
 /**
  * Created by Vimal on 12/9/2015.
@@ -11,8 +11,8 @@ import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
 public class MessageLedger extends Ledger /*implements Serializable*/ {
 
     String MsgType; // Generic Message type
-    UhuServiceEndPoint sender;
-    UhuServiceEndPoint recipient;
+    UhuZirkEndPoint sender;
+    UhuZirkEndPoint recipient;
     String Msg; // serialized message
 
     public boolean isMulticast() {
@@ -44,19 +44,19 @@ public class MessageLedger extends Ledger /*implements Serializable*/ {
     }
 */
 
-    public UhuServiceEndPoint getSender() {
+    public UhuZirkEndPoint getSender() {
         return sender;
     }
 
-    public void setSender(UhuServiceEndPoint sender) {
+    public void setSender(UhuZirkEndPoint sender) {
         this.sender = sender;
     }
 
-    public UhuServiceEndPoint getRecipient() {
+    public UhuZirkEndPoint getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(UhuServiceEndPoint recipient) {
+    public void setRecipient(UhuZirkEndPoint recipient) {
         this.recipient = recipient;
     }
 

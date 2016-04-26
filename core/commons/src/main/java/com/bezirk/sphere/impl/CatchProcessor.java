@@ -3,7 +3,7 @@ package com.bezirk.sphere.impl;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.ICryptoInternals;
 import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.messages.CatchRequest;
@@ -259,7 +259,7 @@ public class CatchProcessor {
         ownerDevices.add(sphereExchangeData.getDeviceID());
 
         Sphere sphere = new MemberSphere(sphereExchangeData.getSphereName(), sphereExchangeData.getSphereType(),
-                ownerDevices, new LinkedHashMap<String, ArrayList<UhuServiceId>>(), false);
+                ownerDevices, new LinkedHashMap<String, ArrayList<UhuZirkId>>(), false);
 
         sphereRegistryWrapper.addSphere(sphereExchangeData.getSphereID(), sphere);
 
@@ -348,13 +348,13 @@ public class CatchProcessor {
         // get the catch sphere services
         // sphere sphere = registry.spheres.get(catchSphereId);
         Sphere sphere = sphereRegistryWrapper.getSphere(catcherSphereId);
-        Map<String, ArrayList<UhuServiceId>> deviceServices = sphere.deviceServices;
+        Map<String, ArrayList<UhuZirkId>> deviceServices = sphere.deviceServices;
 
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(upaDeviceInterface.getDeviceId())) {
 
             // get device services of sphere
-            ArrayList<UhuServiceId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
+            ArrayList<UhuZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
 
             if (services != null && !services.isEmpty()) {
                 DeviceInformation deviceInformation = sphereRegistryWrapper
@@ -439,12 +439,12 @@ public class CatchProcessor {
          */
 
         // retrieve the services from the catchCodeGeneratorSphere
-        Map<String, ArrayList<UhuServiceId>> deviceServices = catchCodeGeneratorSphere.deviceServices;
+        Map<String, ArrayList<UhuZirkId>> deviceServices = catchCodeGeneratorSphere.deviceServices;
 
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(upaDeviceInterface.getDeviceId())) {
 
-            ArrayList<UhuServiceId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
+            ArrayList<UhuZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
 
             if (services == null || services.isEmpty()) {
                 LOGGER.error("No services are at the device, nothing to catch");

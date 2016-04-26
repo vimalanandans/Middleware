@@ -4,9 +4,9 @@ import com.bezirk.commons.UhuCompManager;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.messagehandler.ServiceMessageHandler;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.proxy.api.impl.UhuDiscoveredService;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.pipe.MockCallBackService;
 import com.bezirk.pipe.MockUhuService;
 import com.bezrik.network.UhuNetworkUtilities;
@@ -32,9 +32,9 @@ import static org.junit.Assert.fail;
 public class DiscoveryTest {
 
     private static final String sphereId = "TestSphere";
-    private static final UhuServiceId serviceId = new UhuServiceId("ServiceB");
-    private static final UhuServiceEndPoint recipient = new UhuServiceEndPoint(serviceId);
-    private static final UhuServiceEndPoint serviceBEndPoint = new UhuServiceEndPoint(new UhuServiceId("ServiceB"));
+    private static final UhuZirkId serviceId = new UhuZirkId("ServiceB");
+    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceId);
+    private static final UhuZirkEndPoint serviceBEndPoint = new UhuZirkEndPoint(new UhuZirkId("ServiceB"));
 
     private static final String requestKey = "REQUEST_KEY";
     private static InetAddress inetAddr;
@@ -101,7 +101,7 @@ public class DiscoveryTest {
 
 		/*Testing addResponse api in discovery*/
         DiscoveryResponse response = new DiscoveryResponse(recipient, sphereId, requestKey, discoveryId);
-        UhuDiscoveredService service = getService();
+        UhuDiscoveredZirk service = getService();
         response.getServiceList().add(service);
         discovery.addResponse(response);
         assertEquals("DiscoveredMap size is not equal to 1 after adding response.", 1, getDiscoveredMapsize(discovery));
@@ -113,7 +113,7 @@ public class DiscoveryTest {
         assertEquals("DiscoveredMap size is not equal to 1 after removing entry.", 1, getDiscoveredMapsize(discovery));
 
 		/*Testing addResponse api in discovery for invalid recepient*/
-        UhuServiceEndPoint invalidRecepient = new UhuServiceEndPoint(null);
+        UhuZirkEndPoint invalidRecepient = new UhuZirkEndPoint(null);
         invalidRecepient.device = getInetAddress().getHostAddress();
         response = new DiscoveryResponse(invalidRecepient, sphereId, requestKey, discoveryId);
         assertFalse("Discovery response is added even for invalid recepient.", discovery.addResponse(response));
@@ -132,10 +132,10 @@ public class DiscoveryTest {
 
     }
 
-    private UhuDiscoveredService getService() {
+    private UhuDiscoveredZirk getService() {
         String serviceName = "ServiceB";
-        UhuServiceEndPoint sep = new UhuServiceEndPoint(new UhuServiceId("ServiceB123"));
-        UhuDiscoveredService service = new UhuDiscoveredService(sep, serviceName, null, new Location(null));
+        UhuZirkEndPoint sep = new UhuZirkEndPoint(new UhuZirkId("ServiceB123"));
+        UhuDiscoveredZirk service = new UhuDiscoveredZirk(sep, serviceName, null, new Location(null));
         return service;
     }
 

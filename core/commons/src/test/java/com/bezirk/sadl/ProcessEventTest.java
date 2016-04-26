@@ -7,8 +7,8 @@ import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.MemberService;
 import com.bezirk.sphere.impl.OwnerSphere;
@@ -49,9 +49,9 @@ public class ProcessEventTest {
     private static final Logger log = LoggerFactory
             .getLogger(ProcessEventTest.class);
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
-    private static UhuServiceId uhuServiceAId = new UhuServiceId("ServiceA");
+    private static UhuZirkId uhuServiceAId = new UhuZirkId("ServiceA");
     ;
-    private static UhuServiceId uhuServiceBId = new UhuServiceId("ServiceB");
+    private static UhuZirkId uhuServiceBId = new UhuZirkId("ServiceB");
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
     private static UhuSadlManager uhuSadlManager = null;
     private static SadlRegistry sadlRegistry = null;
@@ -107,7 +107,7 @@ public class ProcessEventTest {
 		/*MulticastEvent with service existing in sphere. SadlManager processEvent should return true. */
         Location loc = new Location(null);
         Address address = new Address(loc);
-        HashSet<UhuServiceId> serviceSet = new HashSet<>();
+        HashSet<UhuZirkId> serviceSet = new HashSet<>();
         serviceSet.add(uhuServiceAId);
         sadlRegistry.sid.add(uhuServiceAId);
         sadlRegistry.registerService(uhuServiceAId);
@@ -130,7 +130,7 @@ public class ProcessEventTest {
         MockCallBackService uhucallback = new MockCallBackService(mockUhuservice);
         UhuCompManager.setplatformSpecificCallback(uhucallback);
 
-        UhuServiceEndPoint senderSEP = new UhuServiceEndPoint(uhuServiceAId);
+        UhuZirkEndPoint senderSEP = new UhuZirkEndPoint(uhuServiceAId);
         header.setSenderSEP(senderSEP);
         header.setSphereName(sphereId);
         header.setAddress(address);
@@ -181,8 +181,8 @@ public class ProcessEventTest {
         isEventProcessed = true;
         eventLedger.setIsMulticast(false);
         eventLedger.setIsLocal(true);
-        UhuServiceEndPoint recepient = new UhuServiceEndPoint(uhuServiceBId);
-        HashSet<UhuServiceId> serviceSet = new HashSet<>();
+        UhuZirkEndPoint recepient = new UhuZirkEndPoint(uhuServiceBId);
+        HashSet<UhuZirkId> serviceSet = new HashSet<>();
         serviceSet.add(uhuServiceAId);
         serviceSet.add(uhuServiceBId);
         sadlRegistry.sid.add(uhuServiceAId);
@@ -199,7 +199,7 @@ public class ProcessEventTest {
         MockCallBackService uhucallback = new MockCallBackService(mockUhuservice);
         UhuCompManager.setplatformSpecificCallback(uhucallback);
 
-        UhuServiceEndPoint senderSEP = new UhuServiceEndPoint(uhuServiceAId);
+        UhuZirkEndPoint senderSEP = new UhuZirkEndPoint(uhuServiceAId);
         UnicastHeader header = new UnicastHeader();
         header.setRecipient(recepient);
         header.setSenderSEP(senderSEP);
@@ -228,7 +228,7 @@ public class ProcessEventTest {
         assertTrue("SadlManager returned false for processEvent with UnicastMessage when sphereId is valid.", isEventProcessed);
 
 		/* Non Local UnicastEvent message with invalid recipient serviceID. SadlManager processEvent should return false. */
-        header.setRecipient(new UhuServiceEndPoint(new UhuServiceId(null)));
+        header.setRecipient(new UhuZirkEndPoint(new UhuZirkId(null)));
         eventLedger.setHeader(header);
         isEventProcessed = uhuSadlManager.processEvent(eventLedger);
         assertFalse("SadlManager returned true for processEvent with UnicastMessage when recipient service id is invalid.", isEventProcessed);

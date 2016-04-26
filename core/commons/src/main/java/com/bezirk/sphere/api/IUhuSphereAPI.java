@@ -4,7 +4,7 @@ import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.middleware.objects.UhuPipeInfo;
 import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.google.zxing.common.BitMatrix;
 
 import java.util.List;
@@ -101,8 +101,8 @@ public interface IUhuSphereAPI {
      * Listener
      * @deprecated: use {@link #addLocalServicesToSphere(String, Iterable)}
      */
-    @Deprecated // UI has UhuServiceInfo not UhuServiceId
-    public boolean addLocalServicesToSphere(Iterable<UhuServiceId> serviceIds, String sphereId);
+    @Deprecated // UI has UhuServiceInfo not UhuZirkId
+    public boolean addLocalServicesToSphere(Iterable<UhuZirkId> serviceIds, String sphereId);
 
     /**
      * Add services to sphere (Add the local services to a sphere owned by the

@@ -104,8 +104,8 @@ public class PrepareResponse {
 
         assertEquals(catcherSphereId, preparedResponse.getCatcherSphereId());
         assertEquals(catcherDeviceId, preparedResponse.getCatcherDeviceId());
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).device, preparedResponse.getSender().device); // To verify the UhuServiceEndPoint obj
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).serviceId, preparedResponse.getSender().serviceId);// To verify the UhuServiceEndPoint obj
+        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).device, preparedResponse.getSender().device); // To verify the UhuZirkEndPoint obj
+        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).serviceId, preparedResponse.getSender().serviceId);// To verify the UhuZirkEndPoint obj
     }
 
     /**

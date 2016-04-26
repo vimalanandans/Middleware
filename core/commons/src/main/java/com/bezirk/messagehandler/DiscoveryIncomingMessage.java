@@ -1,6 +1,6 @@
 package com.bezirk.messagehandler;
 
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 /**
  * Pojo class for Discovery notifier containing all the fields that are necessary to give the notification to the ProxyForUhuLibrary.
@@ -21,7 +21,7 @@ public final class DiscoveryIncomingMessage extends ServiceIncomingMessage {
         callbackDiscriminator = "DISCOVERY";
     }
 
-    public DiscoveryIncomingMessage(UhuServiceId serviceId, String discoveredList, int discoveryId, Boolean isSphereDiscovery) {
+    public DiscoveryIncomingMessage(UhuZirkId serviceId, String discoveredList, int discoveryId, Boolean isSphereDiscovery) {
         super();
         callbackDiscriminator = "DISCOVERY";
         recipient = serviceId;

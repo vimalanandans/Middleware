@@ -1,12 +1,12 @@
 package com.bezirk.pipe;
 
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.middleware.addressing.ServiceEndPoint;
-import com.bezirk.middleware.addressing.ServiceId;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.addressing.ZirkId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.proxy.registration.ServiceRegistration;
 
 import java.io.File;
@@ -15,31 +15,31 @@ import java.util.Set;
 
 public class MockUhuService implements BezirkListener {
 
-    private UhuServiceId serviceId = new UhuServiceId(ServiceRegistration.generateUniqueServiceID());
+    private UhuZirkId serviceId = new UhuZirkId(ServiceRegistration.generateUniqueServiceID());
 
     private boolean pipeGrantedCalled = false;
     private boolean pipeGranted = false;
 
-    public ServiceId getServiceId() {
+    public ZirkId getServiceId() {
         return serviceId;
     }
 
     @Override
-    public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
+    public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
     public void receiveStream(String topic, String stream, short streamId,
-                              InputStream inputStream, ServiceEndPoint sender) {
+                              InputStream inputStream, ZirkEndPoint sender) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
     public void receiveStream(String topic, String stream, short streamId,
-                              File file, ServiceEndPoint sender) {
+                              File file, ZirkEndPoint sender) {
         // TODO Auto-generated method stub
 
     }
@@ -63,7 +63,7 @@ public class MockUhuService implements BezirkListener {
     }
 
     @Override
-    public void discovered(Set<DiscoveredService> serviceSet) {
+    public void discovered(Set<DiscoveredZirk> zirkSet) {
         // TODO Auto-generated method stub
 
     }

@@ -14,8 +14,8 @@ import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuDiscoveredService;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuDevMode;
 import com.bezirk.sphere.api.IUhuSphereAPI;
@@ -131,12 +131,12 @@ public class UhuSphere
     }
 
     @Override
-    public boolean registerService(UhuServiceId serviceId, String serviceName) {
+    public boolean registerService(UhuZirkId serviceId, String serviceName) {
         return sphereRegistryWrapper.registerService(serviceId, serviceName);
     }
 
     @Override
-    public boolean unregisterService(UhuServiceId serviceId) {
+    public boolean unregisterService(UhuZirkId serviceId) {
         // TODO Implement
         return false;
     }
@@ -162,17 +162,17 @@ public class UhuSphere
     }
 
     @Override
-    public Iterable<String> getSphereMembership(UhuServiceId serviceId) {
+    public Iterable<String> getSphereMembership(UhuZirkId serviceId) {
         return sphereRegistryWrapper.getSphereMembership(serviceId);
     }
 
     @Override
-    public boolean isServiceInSphere(UhuServiceId service, String sphereId) {
+    public boolean isServiceInSphere(UhuZirkId service, String sphereId) {
         return sphereRegistryWrapper.isServiceInSphere(service, sphereId);
     }
 
     @Override
-    public String getServiceName(UhuServiceId serviceId) {
+    public String getServiceName(UhuZirkId serviceId) {
         return sphereRegistryWrapper.getServiceName(serviceId);
     }
 
@@ -232,7 +232,7 @@ public class UhuSphere
     }
 
     @Override
-    public boolean addLocalServicesToSphere(Iterable<UhuServiceId> serviceIds, String sphereId) {
+    public boolean addLocalServicesToSphere(Iterable<UhuZirkId> serviceIds, String sphereId) {
         return sphereRegistryWrapper.addLocalServicesToSphere(serviceIds, sphereId);
     }
 
@@ -331,7 +331,7 @@ public class UhuSphere
      * @deprecated use {@link #processDiscoveredSphereInfo(Set, String)} instead
      */
     @Deprecated
-    public UhuSphereInfo processDiscoveryResponse(Set<UhuDiscoveredService> discoveredServices, String sphereId) {
+    public UhuSphereInfo processDiscoveryResponse(Set<UhuDiscoveredZirk> discoveredServices, String sphereId) {
         return discoveryProcessor.processDiscoveryResponse(discoveredServices, sphereId);
     }
 

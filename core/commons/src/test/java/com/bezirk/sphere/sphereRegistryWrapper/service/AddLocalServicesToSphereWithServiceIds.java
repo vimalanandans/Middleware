@@ -5,7 +5,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.OwnerService;
 import com.bezirk.sphere.impl.OwnerSphere;
@@ -95,7 +95,7 @@ public class AddLocalServicesToSphereWithServiceIds {
 
         //Create service 1
         String serviceName1 = sphereTestUtility.MEMBER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
         Service service1 = new OwnerService(serviceName1,
@@ -104,7 +104,7 @@ public class AddLocalServicesToSphereWithServiceIds {
 
         //Create service 2
         String serviceName2 = sphereTestUtility.MEMBER_SERVICE_NAME_2;
-        UhuServiceId serviceId2 = new UhuServiceId(serviceName2);
+        UhuZirkId serviceId2 = new UhuZirkId(serviceName2);
         HashSet<String> sphereSet2 = new HashSet<>();
         sphereSet2.add(sphereId);
         Service service2 = new OwnerService(serviceName2,
@@ -113,7 +113,7 @@ public class AddLocalServicesToSphereWithServiceIds {
 
         registry.spheres.put(sphereId, sphere);
 
-        List<UhuServiceId> serviceIds = new ArrayList<>();
+        List<UhuZirkId> serviceIds = new ArrayList<>();
         serviceIds.add(serviceId1);
         serviceIds.add(serviceId2);
 
@@ -138,15 +138,15 @@ public class AddLocalServicesToSphereWithServiceIds {
 
         //Create service 1 but not added to registry
         String serviceName1 = sphereTestUtility.MEMBER_SERVICE_NAME_3;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
 
         //Create service 2 but not added to registry
         String serviceName2 = sphereTestUtility.MEMBER_SERVICE_NAME_4;
-        UhuServiceId serviceId2 = new UhuServiceId(serviceName2);
+        UhuZirkId serviceId2 = new UhuZirkId(serviceName2);
 
         registry.spheres.put(sphereId, sphere);
 
-        List<UhuServiceId> serviceIds = new ArrayList<>();
+        List<UhuZirkId> serviceIds = new ArrayList<>();
         serviceIds.add(serviceId1);
         serviceIds.add(serviceId2);
 

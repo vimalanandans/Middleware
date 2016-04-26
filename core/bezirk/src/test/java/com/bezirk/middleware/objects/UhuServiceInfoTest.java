@@ -24,7 +24,7 @@ public class UhuServiceInfoTest {
         boolean visible = true;
         com.bezirk.middleware.objects.UhuServiceInfo uhuServiceInfo = new com.bezirk.middleware.objects.UhuServiceInfo(serviceId, serviceName, serviceType, active, visible);
 
-        assertEquals("ServiceId is not equal to the set value.", serviceId, uhuServiceInfo.getServiceId());
+        assertEquals("ZirkId is not equal to the set value.", serviceId, uhuServiceInfo.getServiceId());
         assertEquals("ServiceName is not equal to the set value.", serviceName, uhuServiceInfo.getServiceName());
         assertEquals("ServiceType is not equal to the set value.", serviceType, uhuServiceInfo.getServiceType());
         assertTrue("Service is considered inactive.", uhuServiceInfo.isActive());

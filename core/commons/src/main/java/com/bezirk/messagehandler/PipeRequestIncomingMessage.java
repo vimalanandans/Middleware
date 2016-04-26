@@ -2,7 +2,7 @@ package com.bezirk.messagehandler;
 
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 public class PipeRequestIncomingMessage extends ServiceIncomingMessage {
 
@@ -15,7 +15,7 @@ public class PipeRequestIncomingMessage extends ServiceIncomingMessage {
         this.callbackDiscriminator = "PIPE-APPROVED";
     }
 
-    public PipeRequestIncomingMessage(Pipe pipe, String pipeReqId, UhuPipePolicy allowedIn, UhuPipePolicy allowedOut, UhuServiceId recipient) {
+    public PipeRequestIncomingMessage(Pipe pipe, String pipeReqId, UhuPipePolicy allowedIn, UhuPipePolicy allowedOut, UhuZirkId recipient) {
         this.callbackDiscriminator = "PIPE-APPROVED";
         this.pipe = pipe;
         this.pipeReqId = pipeReqId;

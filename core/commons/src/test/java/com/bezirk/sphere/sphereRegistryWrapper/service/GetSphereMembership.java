@@ -5,7 +5,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.MemberSphere;
 import com.bezirk.sphere.impl.OwnerService;
@@ -79,7 +79,7 @@ public class GetSphereMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getSphereMembership(UhuServiceId)}.
+     * Test method for {@link SphereRegistryWrapper#getSphereMembership(UhuZirkId)}.
      * <p/>
      * <br>When valid serviceId is passed,
      * it should return the sphere set for that service.
@@ -103,7 +103,7 @@ public class GetSphereMembership {
 
         //Create service 1
         String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
         sphereSet1.add(sphereId2);
@@ -115,7 +115,7 @@ public class GetSphereMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getSphereMembership(UhuServiceId)}.
+     * Test method for {@link SphereRegistryWrapper#getSphereMembership(UhuZirkId)}.
      * <p/>
      * <br>When sphere set for the given service id is empty
      * it should throw exception
@@ -125,7 +125,7 @@ public class GetSphereMembership {
 
         //Create service 1
         String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         HashSet<String> sphereSet1 = null;
         OwnerService ownerService = new OwnerService(serviceName1, "ownerDeviceId", sphereSet1);
         registry.sphereMembership.put(serviceId1.getUhuServiceId(), ownerService);
@@ -134,7 +134,7 @@ public class GetSphereMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getSphereMembership(UhuServiceId)}.
+     * Test method for {@link SphereRegistryWrapper#getSphereMembership(UhuZirkId)}.
      * <p/>
      * <br>When invalid serviceId(service id does not exist in registry) is passed,
      * it should return null.
@@ -151,7 +151,7 @@ public class GetSphereMembership {
 
         //Create service 1
         String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
         OwnerService ownerService = new OwnerService(serviceName1, "ownerDeviceId", sphereSet1);
@@ -159,7 +159,7 @@ public class GetSphereMembership {
 
         //Create service 2 but not added to registry
         String serviceName2 = sphereTestUtility.OWNER_SERVICE_NAME_2;
-        UhuServiceId serviceId2 = new UhuServiceId(serviceName2);
+        UhuZirkId serviceId2 = new UhuZirkId(serviceName2);
 
         // Pass serviceId2 which is not in registry.
         assertNull(sphereRegistryWrapper.getSphereMembership(serviceId2));

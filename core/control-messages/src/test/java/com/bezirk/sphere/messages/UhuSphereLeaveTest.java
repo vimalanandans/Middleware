@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.junit.AfterClass;
@@ -30,10 +30,10 @@ public class UhuSphereLeaveTest {
 
 
     private static final String sphereId = "TestSphere";
-    private static final UhuServiceId serviceId = new UhuServiceId("ServiceA");
-    private static final UhuServiceEndPoint sender = new UhuServiceEndPoint(serviceId);
-    private static final UhuServiceId serviceBId = new UhuServiceId("ServiceB");
-    private static final UhuServiceEndPoint recipient = new UhuServiceEndPoint(serviceBId);
+    private static final UhuZirkId serviceId = new UhuZirkId("ServiceA");
+    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceId);
+    private static final UhuZirkId serviceBId = new UhuZirkId("ServiceB");
+    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceBId);
     private static InetAddress inetAddr;
 
     /**

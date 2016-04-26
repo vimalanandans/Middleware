@@ -5,8 +5,8 @@ import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.control.messages.streaming.StreamRequest;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sadl.ISadlEventReceiver;
 import com.bezirk.sadl.UhuSadlManager;
 import com.bezrik.network.UhuNetworkUtilities;
@@ -33,8 +33,8 @@ import static org.junit.Assert.assertTrue;
 public class MessageDispatcherTest {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageDispatcherTest.class);
-    private static final UhuServiceId serviceId = new UhuServiceId("ServiceA");
-    private static final UhuServiceEndPoint recipient = new UhuServiceEndPoint(serviceId);
+    private static final UhuZirkId serviceId = new UhuZirkId("ServiceA");
+    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceId);
     private static InetAddress inetAddr;
 
     boolean requestReceived = false;
@@ -87,7 +87,7 @@ public class MessageDispatcherTest {
         messageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, receiver);
 
         ControlLedger tcMessage = new ControlLedger();
-        UhuServiceEndPoint sender = new UhuServiceEndPoint("DeviceA", new UhuServiceId("MockServiceA"));
+        UhuZirkEndPoint sender = new UhuZirkEndPoint("DeviceA", new UhuZirkId("MockServiceA"));
         ControlMessage discoveryRequest = new DiscoveryRequest(null, sender, null, null, 0, 0, 0);
         tcMessage.setMessage(discoveryRequest);
         messageDispatcher.dispatchControlMessages(tcMessage);

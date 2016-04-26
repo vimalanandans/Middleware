@@ -9,31 +9,31 @@ package com.bezirk.proxy.android;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import java.io.File;
 
 
 public interface UhuProxyForServiceAPI {
-    public void registerService(UhuServiceId serviceId, String serviceName);
+    public void registerService(UhuZirkId serviceId, String serviceName);
 
-    public void subscribeService(UhuServiceId serviceId, SubscribedRole pRole);
+    public void subscribeService(UhuZirkId serviceId, SubscribedRole pRole);
 
-    public void sendUnicastEvent(UhuServiceId serviceId, UhuServiceEndPoint recipient, String serializedEventMsg);
+    public void sendUnicastEvent(UhuZirkId serviceId, UhuZirkEndPoint recipient, String serializedEventMsg);
 
-    public void sendMulticastEvent(UhuServiceId serviceId, Address address, String serializedEventMsg);
+    public void sendMulticastEvent(UhuZirkId serviceId, Address address, String serializedEventMsg);
 
-    public void discover(UhuServiceId service, Address scope, SubscribedRole pRole, int discoveryId, long timeout, int maxDiscovered);
+    public void discover(UhuZirkId service, Address scope, SubscribedRole pRole, int discoveryId, long timeout, int maxDiscovered);
 
-    public short sendStream(UhuServiceId sender, UhuServiceEndPoint receiver, String serialsedString, File file, short streamId);
+    public short sendStream(UhuZirkId sender, UhuZirkEndPoint receiver, String serialsedString, File file, short streamId);
 
-    public short sendStream(UhuServiceId sender, UhuServiceEndPoint receiver, String serialsedString, short streamId);
+    public short sendStream(UhuZirkId sender, UhuZirkEndPoint receiver, String serialsedString, short streamId);
 
-    public void setLocation(UhuServiceId serviceId, Location location);
+    public void setLocation(UhuZirkId serviceId, Location location);
 
-    public void unsubscribe(UhuServiceId serviceId, SubscribedRole role);
+    public void unsubscribe(UhuZirkId serviceId, SubscribedRole role);
 
-    public void unregister(UhuServiceId serviceId);
+    public void unregister(UhuZirkId serviceId);
 
 }

@@ -16,7 +16,7 @@ import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.persistence.UhuRegistry;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.CatchProcessor;
@@ -138,8 +138,8 @@ public class MockSetUpUtility {
         return null;
     }
 
-    public LinkedHashMap<String, ArrayList<UhuServiceId>> getDeviceServicesList(SphereRegistry registry,
-                                                                                String sphereId) {
+    public LinkedHashMap<String, ArrayList<UhuZirkId>> getDeviceServicesList(SphereRegistry registry,
+                                                                             String sphereId) {
         DeviceInformation deviceInformation = new DeviceInformation("DEVICE", UhuDeviceType.UHU_DEVICE_TYPE_OTHER);
         registry.devices.put(sphereId, deviceInformation);
         deviceInformation = new DeviceInformation("DEVICE1", UhuDeviceType.UHU_DEVICE_TYPE_OTHER);
@@ -151,21 +151,21 @@ public class MockSetUpUtility {
         deviceInformation = new DeviceInformation("DEVICE3", UhuDeviceType.UHU_DEVICE_TYPE_OTHER);
         String deviceId3 = "Device3";
         registry.devices.put(deviceId3, deviceInformation);
-        LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices = new LinkedHashMap<>();
-        ArrayList<UhuServiceId> device1ServiceSet = new ArrayList<UhuServiceId>();
-        device1ServiceSet.add(new UhuServiceId("Service11"));
-        device1ServiceSet.add(new UhuServiceId("Service12"));
-        device1ServiceSet.add(new UhuServiceId("Service13"));
+        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<>();
+        ArrayList<UhuZirkId> device1ServiceSet = new ArrayList<UhuZirkId>();
+        device1ServiceSet.add(new UhuZirkId("Service11"));
+        device1ServiceSet.add(new UhuZirkId("Service12"));
+        device1ServiceSet.add(new UhuZirkId("Service13"));
         deviceServices.put(deviceId1, device1ServiceSet);
-        ArrayList<UhuServiceId> device2ServiceSet = new ArrayList<UhuServiceId>();
-        device2ServiceSet.add(new UhuServiceId("Service21"));
-        device2ServiceSet.add(new UhuServiceId("Service22"));
-        device2ServiceSet.add(new UhuServiceId("Service23"));
+        ArrayList<UhuZirkId> device2ServiceSet = new ArrayList<UhuZirkId>();
+        device2ServiceSet.add(new UhuZirkId("Service21"));
+        device2ServiceSet.add(new UhuZirkId("Service22"));
+        device2ServiceSet.add(new UhuZirkId("Service23"));
         deviceServices.put(deviceId2, device2ServiceSet);
-        ArrayList<UhuServiceId> device3ServiceSet = new ArrayList<UhuServiceId>();
-        device3ServiceSet.add(new UhuServiceId("Service31"));
-        device3ServiceSet.add(new UhuServiceId("Service32"));
-        device3ServiceSet.add(new UhuServiceId("Service33"));
+        ArrayList<UhuZirkId> device3ServiceSet = new ArrayList<UhuZirkId>();
+        device3ServiceSet.add(new UhuZirkId("Service31"));
+        device3ServiceSet.add(new UhuZirkId("Service32"));
+        device3ServiceSet.add(new UhuZirkId("Service33"));
         deviceServices.put(deviceId3, device3ServiceSet);
 
         return deviceServices;

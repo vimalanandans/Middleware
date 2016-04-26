@@ -15,12 +15,9 @@ package com.bezirk.middleware.addressing;
 
 /**
  * Bezirk generates objects that implement this interface.
- * If one of these objects represents the identity of a service s1, it may be used by s1 for
- * interactions with Bezirk, and may also be used by Bezirk for sphere management.
+ * These objects represent a network end point for a Zirk, which can be sent across the network and used in unicasts.
  */
-public interface ServiceId {
+public interface ZirkEndPoint {
 
     public boolean equals(Object obj);
-
-
 }

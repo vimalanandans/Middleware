@@ -1,8 +1,8 @@
 package com.bezirk.control.messages.discovery;
 
 import com.bezirk.control.messages.ControlMessage.Discriminator;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.junit.AfterClass;
@@ -30,8 +30,8 @@ public class DiscoveryResponseTest {
             .getLogger(DiscoveryResponseTest.class);
 
     private static final String sphereId = "TestSphere";
-    private static final UhuServiceId serviceId = new UhuServiceId("ServiceA");
-    private static final UhuServiceEndPoint recipient = new UhuServiceEndPoint(serviceId);
+    private static final UhuZirkId serviceId = new UhuZirkId("ServiceA");
+    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceId);
     private static final String requestKey = "REQUEST_KEY";
     private static InetAddress inetAddr;
     private int discoveryId = 2;

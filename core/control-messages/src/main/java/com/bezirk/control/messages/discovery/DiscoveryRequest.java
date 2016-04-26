@@ -4,7 +4,7 @@ import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.MulticastControlMessage;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 
 public class DiscoveryRequest extends MulticastControlMessage {
     private final static Discriminator discriminator = ControlMessage.Discriminator.DiscoveryRequest;
@@ -24,7 +24,7 @@ public class DiscoveryRequest extends MulticastControlMessage {
      * @param timeout
      * @param maxDiscovered
      */
-    public DiscoveryRequest(String sphereId, UhuServiceEndPoint sender, Location location, SubscribedRole protocol, int discoveryId, long timeout, int maxDiscovered) {
+    public DiscoveryRequest(String sphereId, UhuZirkEndPoint sender, Location location, SubscribedRole protocol, int discoveryId, long timeout, int maxDiscovered) {
         super(sender, sphereId, discriminator);
         this.location = location;
         this.protocol = protocol;

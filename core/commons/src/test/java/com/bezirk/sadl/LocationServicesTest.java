@@ -2,7 +2,7 @@ package com.bezirk.sadl;
 
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -24,9 +24,9 @@ public class LocationServicesTest {
 
     private final static Logger log = LoggerFactory
             .getLogger(LocationServicesTest.class);
-    private static final UhuServiceId uhuServiceAId = new UhuServiceId("ServiceA");
-    private static final UhuServiceId uhuServiceCId = new UhuServiceId("ServiceC");
-    private static final UhuServiceId dummyServiceId = new UhuServiceId("InvalidServiceForTest");
+    private static final UhuZirkId uhuServiceAId = new UhuZirkId("ServiceA");
+    private static final UhuZirkId uhuServiceCId = new UhuZirkId("ServiceC");
+    private static final UhuZirkId dummyServiceId = new UhuZirkId("InvalidServiceForTest");
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
     private static UhuSadlManager uhuSadlManager = null;
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");

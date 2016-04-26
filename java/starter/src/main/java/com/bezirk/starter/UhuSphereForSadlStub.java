@@ -1,7 +1,7 @@
 package com.bezirk.starter;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 
 import org.slf4j.Logger;
@@ -18,13 +18,13 @@ import java.util.Set;
  * suppose to be a package altered via build
  */
 public class UhuSphereForSadlStub implements IUhuSphereForSadl {
-    private static final Logger LOGGER = LoggerFactory.getLogger(IUhuSphereForSadl.class);
+    private static final Logger logger = LoggerFactory.getLogger(IUhuSphereForSadl.class);
 
     @Override
     public byte[] encryptSphereContent(final String sphereId, final String serializedContent) {
 
         if (serializedContent == null) {
-            LOGGER.error("Serialized content null for send to sphere: " + sphereId);
+            logger.error("Serialized content null for send to sphere: " + sphereId);
             return null;
         }
 
@@ -39,45 +39,45 @@ public class UhuSphereForSadlStub implements IUhuSphereForSadl {
     @Override
     public void encryptSphereContent(final InputStream inputStream, final OutputStream outputStream,
                                      final String sphereId) {
-        LOGGER.error("Interface not implemented > encryptSphereContent");
+        logger.error("Interface not implemented > encryptSphereContent");
     }
 
     @Override
     public void decryptSphereContent(final InputStream inputStream, final OutputStream outputStream,
                                      final String sphereId) {
-        LOGGER.error("Interface not implemented > decryptSphereContent");
+        logger.error("Interface not implemented > decryptSphereContent");
     }
 
     @Override
-    public Iterable<String> getSphereMembership(final UhuServiceId serviceId) {
+    public Iterable<String> getSphereMembership(final UhuZirkId serviceId) {
         final Set<String> spheres = new HashSet<String>();
         spheres.add("default sphere");
         return spheres;
     }
 
     @Override
-    public boolean isServiceInSphere(final UhuServiceId service, final String sphereId) {
+    public boolean isServiceInSphere(final UhuZirkId service, final String sphereId) {
 
         return true;
     }
 
     @Override
-    public String getServiceName(final UhuServiceId serviceId) {
+    public String getServiceName(final UhuZirkId serviceId) {
         // I see, used during sadl discovery
-        LOGGER.error("Interface not implemented > getServiceName.");
+        logger.error("Interface not implemented > getZirkName.");
         return null;
     }
 
     @Override
     public void processSphereDiscoveryRequest(final DiscoveryRequest discoveryRequest) {
         // I see, used during sadl discovery
-        LOGGER.error("Interface not implemented > processSphereDiscoveryRequest.");
+        logger.error("Interface not implemented > processSphereDiscoveryRequest.");
 
     }
 
     @Override
     public String getDeviceNameFromSphere(final String deviceId) {
-        LOGGER.error("Interface not implemented > getDeviceNameFromSphere.");
+        logger.error("Interface not implemented > getDeviceNameFromSphere.");
         return null;
     }
 }

@@ -1,8 +1,8 @@
 package com.bezirk.proxy.api.impl;
 
-import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.ServiceEndPoint;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
 
 /**
  * @author: Joao de Sousa (CR/RTC3-NA)
@@ -20,18 +20,18 @@ import com.bezirk.middleware.addressing.ServiceEndPoint;
 /**
  * A tuple that characterizes a discovered service.
  */
-public class UhuDiscoveredService implements DiscoveredService {
-    public UhuServiceEndPoint service;
+public class UhuDiscoveredZirk implements DiscoveredZirk {
+    public UhuZirkEndPoint service;
     public String name;
     public String pRole;
     public Location location;
 
 
-    public UhuDiscoveredService() {
+    public UhuDiscoveredZirk() {
         //Empty constructor needed for gson.deserialze
     }
 
-    public UhuDiscoveredService(UhuServiceEndPoint service, String sName, String pRole, Location location) {
+    public UhuDiscoveredZirk(UhuZirkEndPoint service, String sName, String pRole, Location location) {
         this.service = service;
         this.name = sName;
         this.pRole = pRole;
@@ -39,12 +39,12 @@ public class UhuDiscoveredService implements DiscoveredService {
     }
 
     @Override
-    public ServiceEndPoint getServiceEndPoint() {
+    public ZirkEndPoint getZirkEndPoint() {
         return this.service;
     }
 
     @Override
-    public String getServiceName() {
+    public String getZirkName() {
         return this.name;
     }
 
@@ -73,8 +73,8 @@ public class UhuDiscoveredService implements DiscoveredService {
         if (obj == this) {
             return true;
         }
-        if (obj instanceof UhuDiscoveredService) {
-            UhuDiscoveredService serv = (UhuDiscoveredService) obj;
+        if (obj instanceof UhuDiscoveredZirk) {
+            UhuDiscoveredZirk serv = (UhuDiscoveredZirk) obj;
             if (this.service.equals(serv.service)) {
                 return true;
             }

@@ -5,7 +5,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.OwnerService;
 import com.bezirk.sphere.impl.OwnerSphere;
@@ -57,7 +57,7 @@ public class UpdateMembership {
         upaDevice = mockSetUp.upaDevice;
         sphereTestUtility = new SphereTestUtility(mockSetUp.sphereRegistryWrapper, mockSetUp.upaDevice);
         parameterTypes = new Class[2];
-        parameterTypes[0] = UhuServiceId.class;
+        parameterTypes[0] = UhuZirkId.class;
         parameterTypes[1] = java.lang.String.class;
         method = SphereRegistryWrapper.class.getDeclaredMethod("updateMembership", parameterTypes);
         method.setAccessible(true);
@@ -88,7 +88,7 @@ public class UpdateMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#updateMembership(UhuServiceId serviceId, String sphereId)}.
+     * Test method for {@link SphereRegistryWrapper#updateMembership(UhuZirkId serviceId, String sphereId)}.
      * <p/>
      * Test if a new sphere is added successfully to the service's sphere set.
      *
@@ -105,7 +105,7 @@ public class UpdateMembership {
 
         //Create service 1
         String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
         Service service1 = new OwnerService(serviceName1,
@@ -123,7 +123,7 @@ public class UpdateMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#updateMembership(UhuServiceId serviceId, String sphereId)}.
+     * Test method for {@link SphereRegistryWrapper#updateMembership(UhuZirkId serviceId, String sphereId)}.
      * <p/>
      * If existing sphere Id is passed, it returns true.
      *
@@ -140,7 +140,7 @@ public class UpdateMembership {
 
         //Create service 1
         String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
         Service service1 = new OwnerService(serviceName1,
@@ -156,7 +156,7 @@ public class UpdateMembership {
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#updateMembership(UhuServiceId serviceId, String sphereId)}.
+     * Test method for {@link SphereRegistryWrapper#updateMembership(UhuZirkId serviceId, String sphereId)}.
      * <p/>
      * If an invalid service ID is passed, the method should return False.
      *
@@ -173,7 +173,7 @@ public class UpdateMembership {
 
         //Create service 1, but not added to the registry
         String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_2;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
 
         registry.spheres.put(sphereId1, sphere);
 
@@ -182,7 +182,7 @@ public class UpdateMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#updateMembership(UhuServiceId serviceId, String sphereId)}.
+     * Test method for {@link SphereRegistryWrapper#updateMembership(UhuZirkId serviceId, String sphereId)}.
      * <p/>
      * If an invalid sphere ID is passed, the method should return False.
      *
@@ -198,7 +198,7 @@ public class UpdateMembership {
 
         //Create service 1
         String serviceName1 = sphereTestUtility.OWNER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
         Service service1 = new OwnerService(serviceName1,

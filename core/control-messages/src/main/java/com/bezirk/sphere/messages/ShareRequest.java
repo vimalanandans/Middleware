@@ -6,7 +6,7 @@ package com.bezirk.sphere.messages;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.MulticastControlMessage;
 import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 
 /**
  * @author rishabh
@@ -38,7 +38,7 @@ public class ShareRequest extends MulticastControlMessage {
      *                        the services. In order to add the services from the sphereId
      *                        which is sharing the services into the new sphere. Has to be non-null.
      */
-    public ShareRequest(String shortCode, UhuDeviceInfo uhuDeviceInfo, UhuServiceEndPoint sender,
+    public ShareRequest(String shortCode, UhuDeviceInfo uhuDeviceInfo, UhuZirkEndPoint sender,
                         String sharerSphereId) {
         super(sender, shortCode, discriminator);
         // null checks for sender and shortCode added here because call to the

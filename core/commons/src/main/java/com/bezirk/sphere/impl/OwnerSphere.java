@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.impl;
 
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public final class OwnerSphere extends Sphere implements Serializable {
         this.sphereName = sphereName;
         this.sphereType = sphereType;
         this.ownerDevices = ownerDevices;
-        this.deviceServices = new LinkedHashMap<String, ArrayList<UhuServiceId>>();
+        this.deviceServices = new LinkedHashMap<String, ArrayList<UhuZirkId>>();
     }
 
 }

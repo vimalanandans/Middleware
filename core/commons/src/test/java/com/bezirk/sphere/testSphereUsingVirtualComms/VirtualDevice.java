@@ -7,7 +7,7 @@ import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.ISpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.impl.CatchProcessor;
 import com.bezirk.sphere.impl.OwnerService;
@@ -93,20 +93,20 @@ public class VirtualDevice {
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
         Service service1 = new OwnerService(OWNER_SERVICE_NAME_1, upaDevice.getDeviceId(), sphereSet1);
-        UhuServiceId OWNER_SERVICE_ID_1 = new UhuServiceId(OWNER_SERVICE_NAME_1);
+        UhuZirkId OWNER_SERVICE_ID_1 = new UhuZirkId(OWNER_SERVICE_NAME_1);
         sphereRegistryWrapper.addService(OWNER_SERVICE_ID_1.getUhuServiceId(), service1);
 
         // create service2
         HashSet<String> sphereSet2 = new HashSet<>();
         sphereSet2.add(sphereId);
         Service service2 = new OwnerService(OWNER_SERVICE_NAME_2, upaDevice.getDeviceId(), sphereSet2);
-        UhuServiceId OWNER_SERVICE_ID_2 = new UhuServiceId(OWNER_SERVICE_NAME_2);
+        UhuZirkId OWNER_SERVICE_ID_2 = new UhuZirkId(OWNER_SERVICE_NAME_2);
         sphereRegistryWrapper.addService(OWNER_SERVICE_ID_2.getUhuServiceId(), service2);
 
-        LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<>();
 
         // create list of services for the sphere
-        ArrayList<UhuServiceId> services = new ArrayList<>();
+        ArrayList<UhuZirkId> services = new ArrayList<>();
         services.add(OWNER_SERVICE_ID_1);
         services.add(OWNER_SERVICE_ID_2);
 

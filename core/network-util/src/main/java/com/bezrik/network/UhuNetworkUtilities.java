@@ -1,8 +1,8 @@
 package com.bezrik.network;
 
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,8 +115,8 @@ public final class UhuNetworkUtilities {
         return null;
     }
 
-    public static UhuServiceEndPoint getServiceEndPoint(UhuServiceId serviceId) {
-        UhuServiceEndPoint sep = new UhuServiceEndPoint(serviceId);
+    public static UhuZirkEndPoint getServiceEndPoint(UhuZirkId serviceId) {
+        UhuZirkEndPoint sep = new UhuZirkEndPoint(serviceId);
         sep.device = getLocalInet().getHostAddress();
         return sep;
     }

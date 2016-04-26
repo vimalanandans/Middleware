@@ -1,6 +1,6 @@
 package com.bezirk.sadl;
 
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import java.util.Set;
 
@@ -12,15 +12,15 @@ public interface ISadlRegistryLookup {
     /**
      * Checks if the service is registered with SADL.
      *
-     * @param serviceId UhuServiceId of the Service that has to be checked
+     * @param serviceId UhuZirkId of the Service that has to be checked
      * @return true if successful, false otherwise
      */
-    public Boolean isServiceRegisterd(final UhuServiceId serviceId);
+    public Boolean isServiceRegisterd(final UhuZirkId serviceId);
 
     /**
      * Returns the Set of Registered Services.
      *
      * @return set of registered Services.
      */
-    public Set<UhuServiceId> getRegisteredServices();
+    public Set<UhuZirkId> getRegisteredServices();
 }

@@ -2,7 +2,7 @@ package com.bezirk.sadl;
 
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -36,10 +36,10 @@ public class RegistrationUnregistrationTest {
     private final static Logger log = LoggerFactory
             .getLogger(RegistrationUnregistrationTest.class);
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
-    private static final UhuServiceId uhuServiceAId = new UhuServiceId("ServiceA");
-    private static final UhuServiceId uhuServiceBId = new UhuServiceId("ServiceB");
-    private static final UhuServiceId uhuServiceCId = new UhuServiceId("ServiceC");
-    private static final UhuServiceId dummyServiceId = new UhuServiceId("InvalidServiceForTest");
+    private static final UhuZirkId uhuServiceAId = new UhuZirkId("ServiceA");
+    private static final UhuZirkId uhuServiceBId = new UhuZirkId("ServiceB");
+    private static final UhuZirkId uhuServiceCId = new UhuZirkId("ServiceC");
+    private static final UhuZirkId dummyServiceId = new UhuZirkId("InvalidServiceForTest");
     private static final MockProtocols mockProtocols = new MockProtocols();
     private static final Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
     private static UhuSadlManager uhuSadlManager = null;
@@ -124,7 +124,7 @@ public class RegistrationUnregistrationTest {
         assertTrue("SadlManager dont have ServiceA id in registered service list.", isServiceRegistered);
 		
 		/*SadlManager should return false when queried for unregistered serviceid*/
-        UhuServiceId invalidService = new UhuServiceId("TestRegister");
+        UhuZirkId invalidService = new UhuZirkId("TestRegister");
         isServiceRegistered = uhuSadlManager.isServiceRegisterd(invalidService);
         assertFalse("Service is registered", isServiceRegistered);
 
@@ -150,11 +150,11 @@ public class RegistrationUnregistrationTest {
         isUnregistered = uhuSadlManager.unregisterService(uhuServiceAId);
         assertTrue("SadlManager couldn't unregister ServiceA.", isUnregistered);
 
-        Set<UhuServiceId> registeredServices = uhuSadlManager
+        Set<UhuZirkId> registeredServices = uhuSadlManager
                 .getRegisteredServices();
 
         boolean serviceAFound = false;
-        for (UhuServiceId serviceId : registeredServices) {
+        for (UhuZirkId serviceId : registeredServices) {
 
             if (serviceId.equals(uhuServiceAId)) {
                 serviceAFound = true;
@@ -176,7 +176,7 @@ public class RegistrationUnregistrationTest {
 		/*SadlManager should return false when not able to persist unregistration data to registry.*/
 		/*
 		mockUtility.clearSadlPersistence();
-		isUnregistered = uhuSadlManager.unregisterService(uhuServiceBId);
+		isUnregistered = uhuSadlManager.unregisterZirk(uhuServiceBId);
 		assertTrue(isUnregistered);
 		mockUtility.restoreSadlPersistence();
 		uhuSadlManager= mockUtility.uhuSadlManager;
@@ -192,7 +192,7 @@ public class RegistrationUnregistrationTest {
      */
     private void testGetRegisteredServices() {
 
-        Set<UhuServiceId> registeredServiceSet = uhuSadlManager
+        Set<UhuZirkId> registeredServiceSet = uhuSadlManager
                 .getRegisteredServices();
 
         assertNotNull("SadlManager couldn't fetch registered service list.", registeredServiceSet);
@@ -211,7 +211,7 @@ public class RegistrationUnregistrationTest {
      */
 
     private void unregisterfrommaps() {
-        UhuServiceId uhu = new UhuServiceId("ServiceTestA");
+        UhuZirkId uhu = new UhuZirkId("ServiceTestA");
         uhuSadlManager.registerService(uhu);
         SubscribedRole sRole = new SubscribedRole(mockProtocols.new NewProtocolRole());
         uhuSadlManager.subscribeService(uhu, sRole);

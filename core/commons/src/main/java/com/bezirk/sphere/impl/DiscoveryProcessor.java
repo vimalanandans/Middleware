@@ -13,9 +13,9 @@ import com.bezirk.discovery.SphereDiscoveryRecord;
 import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.middleware.objects.UhuServiceInfo;
 import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.proxy.api.impl.UhuDiscoveredService;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezrik.network.UhuNetworkUtilities;
 
@@ -80,7 +80,7 @@ public class DiscoveryProcessor {
      * @deprecated use {@link #processDiscoveredSphereInfo(Set, String)}
      */
     @Deprecated
-    public UhuSphereInfo processDiscoveryResponse(Set<UhuDiscoveredService> discoveredServices, String sphereId) {
+    public UhuSphereInfo processDiscoveryResponse(Set<UhuDiscoveredZirk> discoveredServices, String sphereId) {
 
         UhuSphereInfo sphereInfo = null;
 
@@ -164,8 +164,8 @@ public class DiscoveryProcessor {
         }
         // TODO discuss, for now hardcoded for test
         final String serviceIdStr = "______SPHERESCANNER#1";
-        final UhuServiceId serviceId = new UhuServiceId(serviceIdStr);
-        final UhuServiceEndPoint sender = UhuNetworkUtilities.getServiceEndPoint(serviceId);
+        final UhuZirkId serviceId = new UhuZirkId(serviceIdStr);
+        final UhuZirkEndPoint sender = UhuNetworkUtilities.getServiceEndPoint(serviceId);
         logger.debug("Discovery initiator device : " + sender.device);
 
         // Assign discovery Id

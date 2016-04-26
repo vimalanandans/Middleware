@@ -4,7 +4,7 @@
 package com.bezirk.sphere.api;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -105,34 +105,34 @@ public interface IUhuSphereForSadl {
 
     /**
      * Provides iterable collection of sphereIds associated with passed
-     * UhuServiceId
+     * UhuZirkId
      *
-     * @param serviceId UhuServiceId for retrieving stored membership information
-     * @return Iterable Collection of sphereIds for the passed ServiceId
+     * @param serviceId UhuZirkId for retrieving stored membership information
+     * @return Iterable Collection of sphereIds for the passed ZirkId
      * <p/>
      * null in case the serviceId passed is null or not registered
      */
-    public Iterable<String> getSphereMembership(UhuServiceId serviceId);
+    public Iterable<String> getSphereMembership(UhuZirkId serviceId);
 
     // TODO add to wiki : found while refactoring to the new API
 
     /**
      * Checks if the service is a part of the sphere
      *
-     * @param service  UhuServiceId for finding existence in a sphere
+     * @param service  UhuZirkId for finding existence in a sphere
      * @param sphereId sphere to be tested
      * @return true if the service exist in the sphere false otherwise
      */
-    public boolean isServiceInSphere(UhuServiceId service, String sphereId);
+    public boolean isServiceInSphere(UhuZirkId service, String sphereId);
 
     /**
-     * Gets the service name of the passed UhuServiceId
+     * Gets the service name of the passed UhuZirkId
      *
-     * @param serviceId UhuServiceId for retrieving the service name
+     * @param serviceId UhuZirkId for retrieving the service name
      * @return Service name if the service id is valid and not null null
      * otherwise
      */
-    public String getServiceName(UhuServiceId serviceId);
+    public String getServiceName(UhuZirkId serviceId);
 
     /**
      * This method handles processing the sphere related discovery request

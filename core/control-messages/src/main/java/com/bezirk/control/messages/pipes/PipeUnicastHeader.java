@@ -1,11 +1,11 @@
 package com.bezirk.control.messages.pipes;
 
 import com.bezirk.control.messages.UnicastHeader;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 
 public class PipeUnicastHeader extends PipeHeader {
 
-    private UhuServiceEndPoint recipient;
+    private UhuZirkEndPoint recipient;
 
     public UnicastHeader toUnicastHeader() {
         UnicastHeader unicastHeader = new UnicastHeader();
@@ -20,11 +20,11 @@ public class PipeUnicastHeader extends PipeHeader {
         return unicastHeader;
     }
 
-    public UhuServiceEndPoint getRecipient() {
+    public UhuZirkEndPoint getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(UhuServiceEndPoint recipient) {
+    public void setRecipient(UhuZirkEndPoint recipient) {
         this.recipient = recipient;
     }
 

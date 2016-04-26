@@ -10,8 +10,8 @@ import com.bezirk.messagehandler.ServiceMessageHandler;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.pipe.core.LocalUhuSender;
 import com.bezirk.proxy.android.ProxyforServices;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ public class LocalAndroidSender implements LocalUhuSender {
         log.info("Invoking uhu receive for event:  " + serializedEvent);
 
         // TODO: how to set an actual service ID??? We're just using the requesting service for now :(
-        UhuServiceId serviceId = pipeHeader.getSenderSEP().getUhuServiceId();
+        UhuZirkId serviceId = pipeHeader.getSenderSEP().getUhuServiceId();
 
         if (pipeHeader instanceof PipeUnicastHeader) {
             log.error("Unicast receive not implemented yet");
@@ -62,12 +62,12 @@ public class LocalAndroidSender implements LocalUhuSender {
         log.info("invokeIncoming called with header: " + pipeMulticastHeader.serialize());
 
         // TODO: how to set an actual service ID??? We're just using the requesting service for now :(
-        UhuServiceEndPoint senderSEP = pipeMulticastHeader.getSenderSEP();
+        UhuZirkEndPoint senderSEP = pipeMulticastHeader.getSenderSEP();
         if (senderSEP == null) {
             log.error("SenderSEP is null. Can't invoke incoming");
             return;
         }
-        UhuServiceId serviceId = senderSEP.getUhuServiceId();
+        UhuZirkId serviceId = senderSEP.getUhuServiceId();
         // TODO: how to create a stream id??
         short streamid = Short.MAX_VALUE;
 

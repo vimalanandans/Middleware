@@ -20,9 +20,8 @@ import android.widget.Toast;
 
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.IUhuSphereAPI;
-import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.SelectSphereListAdapter;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
@@ -74,7 +73,7 @@ public class PipeActivity extends Activity {
         }
 
 
-        UhuServiceId serviceId = serviceIdFromString(serviceIdAsString);
+        UhuZirkId serviceId = serviceIdFromString(serviceIdAsString);
         if (serviceId == null) {
             log.error("Intent not valid because there was a failure validating serviceId");
             return;
@@ -214,9 +213,9 @@ public class PipeActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private UhuServiceId serviceIdFromString(String serviceIdAsString) {
+    private UhuZirkId serviceIdFromString(String serviceIdAsString) {
         Gson gson = new Gson();
-        UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
+        UhuZirkId serviceId = gson.fromJson(serviceIdAsString, UhuZirkId.class);
         if (!checkUhuServiceId(serviceId)) {
             log.error("serviceId not valid: " + serviceId);
             return null;

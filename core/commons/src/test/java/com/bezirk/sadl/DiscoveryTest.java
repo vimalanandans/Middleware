@@ -3,9 +3,9 @@ package com.bezirk.sadl;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuDiscoveredService;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -38,14 +38,14 @@ public class DiscoveryTest {
     private static final ProtocolRole streamlessPRole = mockService.new StreamlessProtocol();
     private static final SubscribedRole subscribedStreamlessPRole = new SubscribedRole(streamlessPRole);
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
-    private static UhuServiceId uhuServiceAId = new UhuServiceId("ServiceA"), uhuServiceBId = new UhuServiceId("ServiceB");
+    private static UhuZirkId uhuServiceAId = new UhuZirkId("ServiceA"), uhuServiceBId = new UhuZirkId("ServiceB");
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
     private static UhuSadlManager uhuSadlManager = null;
-    private Set<UhuDiscoveredService> discoveredServiceSet;
+    private Set<UhuDiscoveredZirk> discoveredServiceSet;
 
-    private Set<UhuServiceId> uhuServiceIdSet;
+    private Set<UhuZirkId> uhuServiceIdSet;
 
-    private UhuServiceId dServiceId;
+    private UhuZirkId dServiceId;
 
 
     @BeforeClass
@@ -72,13 +72,13 @@ public class DiscoveryTest {
 
 		/*Test1 : SadlManager should return null discoveredServiceSet when protocolRole is null.*/
         discoveredServiceSet = uhuSadlManager.discoverServices(null, reception);
-        assertNull("DiscoveredService set is not null when services not available.", discoveredServiceSet);
+        assertNull("DiscoveredZirk set is not null when services not available.", discoveredServiceSet);
 
 		/*No services are subscribed to streamlessProtocol yet. 
 		 * DiscoveredServiceSet should be null.
 		 * */
         discoveredServiceSet = uhuSadlManager.discoverServices(subscribedStreamlessPRole, reception);
-        assertNull("DiscoveredService set is not null when services not available.", discoveredServiceSet);
+        assertNull("DiscoveredZirk set is not null when services not available.", discoveredServiceSet);
 		
 		
 		/* ServiceA and ServiceB are registered and subscribed to StreamlessProtocolRole.
@@ -103,7 +103,7 @@ public class DiscoveryTest {
 		 * near to reception.SadlManager should return null discoveredServiceSet */
         discoveredServiceSet = uhuSadlManager.discoverServices(subscribedStreamlessPRole,
                 reception);
-        assertNull("DiscoveredService set is not null when services not available.", discoveredServiceSet);
+        assertNull("DiscoveredZirk set is not null when services not available.", discoveredServiceSet);
 		
 		/*ServiceA is set to the location "OFFICE1/BLOCK1/RECEPTION"*/
         uhuSadlManager.setLocation(uhuServiceAId, reception);
@@ -128,24 +128,24 @@ public class DiscoveryTest {
         assertTrue("ServiceB was not discovered when no location in request.", uhuServiceIdSet.contains(uhuServiceBId));
     }
 
-    private Set<UhuServiceId> discoverServicesUsingProtocolAndLocation(
+    private Set<UhuZirkId> discoverServicesUsingProtocolAndLocation(
             ProtocolRole protocolRole, Location loc) {
         discoveredServiceSet = uhuSadlManager.discoverServices(protocolRole, loc);
         uhuServiceIdSet = getUhuServiceIdSetOfDiscoveredServices(discoveredServiceSet);
         return uhuServiceIdSet;
     }
 
-    private Set<UhuServiceId> getUhuServiceIdSetOfDiscoveredServices(
-            Set<UhuDiscoveredService> discoveredServiceSet) {
-        UhuServiceEndPoint serviceEndPoint;
+    private Set<UhuZirkId> getUhuServiceIdSetOfDiscoveredServices(
+            Set<UhuDiscoveredZirk> discoveredServiceSet) {
+        UhuZirkEndPoint serviceEndPoint;
         uhuServiceIdSet = null;
 
         if (discoveredServiceSet != null) {
             uhuServiceIdSet = new HashSet<>();
 
-            for (UhuDiscoveredService discoveredService : discoveredServiceSet) {
-                serviceEndPoint = (UhuServiceEndPoint) (discoveredService
-                        .getServiceEndPoint());
+            for (UhuDiscoveredZirk discoveredService : discoveredServiceSet) {
+                serviceEndPoint = (UhuZirkEndPoint) (discoveredService
+                        .getZirkEndPoint());
                 dServiceId = serviceEndPoint.getUhuServiceId();
                 uhuServiceIdSet.add(dServiceId);
 

@@ -25,15 +25,15 @@ public interface ISadlEventReceiver {
      * @return true if topic is subscribed, false otherwise.
      */
     // Not used anymore
-    /*public boolean checkUnicastEvent(final String topic, final UhuServiceId recipient);
+    /*public boolean checkUnicastEvent(final String topic, final UhuZirkId recipient);
 	/**
 	 * Checks if Event has any subscribers and returns the list. If location is null, default location is considered and matched.
 	 * @param topic - Topic of the incoming Event
 	 * @param location - Location of the intended Service
-	 * @return set of UhuServiceId that the event has subscribed, null otherwise.
+	 * @return set of UhuZirkId that the event has subscribed, null otherwise.
 	 */
     // Not used anymore
-	/*public Set<UhuServiceId> checkMulticastEvent(final String topic, final Location location);*/
+	/*public Set<UhuZirkId> checkMulticastEvent(final String topic, final Location location);*/
 
 
     /**

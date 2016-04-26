@@ -13,8 +13,8 @@ import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.UhuDevice;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.proxy.android.ProxyforServices;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.rest.CommsRestController;
 import com.bezirk.rest.IHttpComms;
 import com.bezirk.sadl.UhuSadlManager;
@@ -278,7 +278,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
         } else {
             String deviceId = intent.getStringExtra("ADDRESS");
 
-            msgLedger.setRecipient(new UhuServiceEndPoint(deviceId, new UhuServiceId("DIAG")));
+            msgLedger.setRecipient(new UhuZirkEndPoint(deviceId, new UhuZirkId("DIAG")));
 
         }
         comms.sendMessage(msgLedger);

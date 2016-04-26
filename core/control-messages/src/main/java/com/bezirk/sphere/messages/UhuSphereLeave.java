@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.google.gson.Gson;
 
 /**
@@ -11,7 +11,7 @@ import com.google.gson.Gson;
  */
 public class UhuSphereLeave extends com.bezirk.control.messages.UnicastControlMessage {
     private final static Discriminator discriminator = com.bezirk.control.messages.ControlMessage.Discriminator.UhuSphereLeave;
-    private final UhuServiceId serviceId;
+    private final UhuZirkId serviceId;
     private final long time;
 
     /**
@@ -21,9 +21,9 @@ public class UhuSphereLeave extends com.bezirk.control.messages.UnicastControlMe
      * @param serviceId
      * @param recipient
      */
-    public UhuSphereLeave(String sphereID, UhuServiceId serviceId, UhuServiceEndPoint sender, UhuServiceEndPoint recipient) {
+    public UhuSphereLeave(String sphereID, UhuZirkId serviceId, UhuZirkEndPoint sender, UhuZirkEndPoint recipient) {
         super(sender, recipient, sphereID, discriminator, true);
-        //public UnicastControlMessage(UhuServiceEndPoint sender, UhuServiceEndPoint recipient, String sphereName,
+        //public UnicastControlMessage(UhuZirkEndPoint sender, UhuZirkEndPoint recipient, String sphereName,
         //String discriminator, Boolean retransmit, String key){
         this.serviceId = serviceId;
         this.time = System.currentTimeMillis();
@@ -39,7 +39,7 @@ public class UhuSphereLeave extends com.bezirk.control.messages.UnicastControlMe
         return gson.fromJson(json, dC);
     }
 
-    public UhuServiceId getServiceId() {
+    public UhuZirkId getServiceId() {
         return serviceId;
     }
 

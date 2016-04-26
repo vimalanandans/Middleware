@@ -30,10 +30,10 @@ import com.google.gson.GsonBuilder;
  * Zirks or endpoints outside of your Zirk's sphere(s).
  * <p>
  * This class is used when sending
- * {@link com.bezirk.middleware.Bezirk#sendEvent(ServiceId, Address, Event) events} or
- * {@link com.bezirk.middleware.Bezirk#sendStream(ServiceId, ServiceEndPoint, Stream, java.io.File) streams}, when
- * {@link com.bezirk.middleware.Bezirk#discover(ServiceId, Address, ProtocolRole, long, int, BezirkListener) discovering}
- * services, and in any other context where it is useful to narrow a message's set of recipients
+ * {@link com.bezirk.middleware.Bezirk#sendEvent(ZirkId, Address, Event) events} or
+ * {@link com.bezirk.middleware.Bezirk#sendStream(ZirkId, ZirkEndPoint, Stream, java.io.File) streams}, when
+ * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener) discovering}
+ * Zirks, and in any other context where it is useful to narrow a message's set of recipients
  * beyond what can be achieved with simply a {@link ProtocolRole}.
  * </p>
  *

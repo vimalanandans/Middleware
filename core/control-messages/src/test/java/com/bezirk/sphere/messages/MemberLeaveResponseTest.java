@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.junit.AfterClass;
@@ -29,10 +29,10 @@ public class MemberLeaveResponseTest {
 
     private static final String sphereId = "TestSphere";
     private static final String sphereName = "Test";
-    private static final UhuServiceId serviceId = new UhuServiceId("ServiceA");
-    private static final UhuServiceEndPoint sender = new UhuServiceEndPoint(serviceId);
-    private static final UhuServiceId serviceBId = new UhuServiceId("ServiceB");
-    private static final UhuServiceEndPoint recipient = new UhuServiceEndPoint(serviceBId);
+    private static final UhuZirkId serviceId = new UhuZirkId("ServiceA");
+    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceId);
+    private static final UhuZirkId serviceBId = new UhuZirkId("ServiceB");
+    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceBId);
     private static final String key = "TESTKEY";
 
     private static InetAddress inetAddr;
@@ -93,7 +93,7 @@ public class MemberLeaveResponseTest {
         com.bezirk.sphere.messages.MemberLeaveResponse memberLeaveResponse = new com.bezirk.sphere.messages.MemberLeaveResponse(sphereId, 0, true, true, sender, recipient, serviceId, sphereName, key);
         String serializedMessage = memberLeaveResponse.serialize();
         com.bezirk.sphere.messages.MemberLeaveResponse deserializedMemberLeaveResponse = com.bezirk.sphere.messages.MemberLeaveResponse.deserialize(serializedMessage, com.bezirk.sphere.messages.MemberLeaveResponse.class);
-        assertEquals("ServiceId not equal to the set value.", serviceId, deserializedMemberLeaveResponse.getServiceId());
+        assertEquals("ZirkId not equal to the set value.", serviceId, deserializedMemberLeaveResponse.getServiceId());
         assertEquals("SphereName not equal to the set value.", sphereName, deserializedMemberLeaveResponse.getSphere_Name());
         assertTrue("IsRemovedSuccessfully not equal to the set value.", deserializedMemberLeaveResponse.isRemovedSuccessfully());
         assertTrue("IsSignatureVerified not equal to the set value.", deserializedMemberLeaveResponse.isSignatureVerified());

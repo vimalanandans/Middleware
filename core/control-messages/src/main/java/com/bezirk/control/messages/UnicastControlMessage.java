@@ -1,12 +1,12 @@
 package com.bezirk.control.messages;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 import com.bezrik.network.UhuNetworkUtilities;
 
 public class UnicastControlMessage extends ControlMessage {
 
     private Boolean isLocal = false;
-    private UhuServiceEndPoint recipient;
+    private UhuZirkEndPoint recipient;
 
     /**
      * Empty Constructor required for gson.fromJson
@@ -26,7 +26,7 @@ public class UnicastControlMessage extends ControlMessage {
      * @param retransmit    {@value true} if the message is to be re-transmitted
      * @param key           UniqueKey that is used to match responses to corresponding requests
      */
-    public UnicastControlMessage(UhuServiceEndPoint sender, UhuServiceEndPoint recipient, String sphereId,
+    public UnicastControlMessage(UhuZirkEndPoint sender, UhuZirkEndPoint recipient, String sphereId,
                                  Discriminator discriminator, Boolean retransmit, String key) {
         super(sender, sphereId, discriminator, retransmit, key);
         this.recipient = recipient;
@@ -48,7 +48,7 @@ public class UnicastControlMessage extends ControlMessage {
      * @param discriminator the message discriminator Eg: DiscoveryRequest, StreamResponse
      * @param retransmit    {@value true} if the message is to be re-transmitted
      */
-    public UnicastControlMessage(UhuServiceEndPoint sender, UhuServiceEndPoint recipient, String sphereId,
+    public UnicastControlMessage(UhuZirkEndPoint sender, UhuZirkEndPoint recipient, String sphereId,
                                  Discriminator discriminator, Boolean retransmit) {
         super(sender, sphereId, discriminator, retransmit);
         this.recipient = recipient;
@@ -62,7 +62,7 @@ public class UnicastControlMessage extends ControlMessage {
         return isLocal;
     }
 
-    public UhuServiceEndPoint getRecipient() {
+    public UhuZirkEndPoint getRecipient() {
         return recipient;
     }
 

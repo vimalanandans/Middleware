@@ -27,7 +27,7 @@ public class StreamStore {
     // Read after receiving a StreamResponse message
     private final Map<String, StreamRecord> streamBook = new HashMap<String, StreamRecord>();
 
-    // Maps key:[msgId:ServiceEndPoint] --- value: [Integer]
+    // Maps key:[msgId:ZirkEndPoint] --- value: [Integer]
     // Updated by the PortFactory during assigning a new Port
     // Read during each ControlMessage received to check if the request is
     // always processed!
@@ -38,7 +38,7 @@ public class StreamStore {
      * this#portsMap} when a {@link StreamRequest} is received and the ports are
      * available.
      * 
-     * @param portMapkey - [ MsgId:ServiceEndPoint:DeviceID ] that uniquely
+     * @param portMapkey - [ MsgId:ZirkEndPoint:DeviceID ] that uniquely
      * identifies the port that is mapped to the StreamRequest. It is used to
      * avoid duplication of the requests.
      * 

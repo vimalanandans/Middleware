@@ -14,7 +14,7 @@ package com.bezirk.middleware.messages;
 
 
 /**
- * This event class represents a request for a stream to be returned as a response to a service.
+ * This event class represents a request for a stream to be returned as a response to a Zirk.
  * This is needed in Bezirk TEMPORARILY to support the initial integration of the CloudPipe feature.
  */
 public class GetStreamRequest extends Event {

@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import ControlLedger;
 import DiscoveryRequest;
 import UhuNetworkUtilities;
-import UhuServiceEndPoint;
-import UhuServiceId;
+import UhuZirkEndPoint;
+import UhuZirkId;
 import UhuValidatorUtility;*/
 
 /**
@@ -24,9 +24,9 @@ import UhuValidatorUtility;*/
 	            throw new IllegalArgumentException("sphere name is null, Dropping discovery request from User");
 	        }
 	        final String serviceIdStr = "______SPHERESCANNER#2";
-	        final UhuServiceId serviceId = new UhuServiceId(serviceIdStr);
+	        final UhuZirkId serviceId = new UhuZirkId(serviceIdStr);
 	        final ControlLedger transControlMessage = new ControlLedger();
-	        final UhuServiceEndPoint sender = UhuNetworkUtilities.getServiceEndPoint(serviceId);
+	        final UhuZirkEndPoint sender = UhuNetworkUtilities.getZirkEndPoint(serviceId);
 	        final DiscoveryRequest discoveryRequest = new DiscoveryRequest(sphere,sender,null,null,discoveryId,timeout,maxDiscovered);
 	        transControlMessage.setMessage(discoveryRequest);
 	        transControlMessage.setSphereId(sphere);

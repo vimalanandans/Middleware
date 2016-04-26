@@ -1,6 +1,6 @@
 package com.bezirk.control.messages;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 
 public class MulticastControlMessage extends ControlMessage {
 
@@ -21,7 +21,7 @@ public class MulticastControlMessage extends ControlMessage {
      * @param discriminator the message discriminator Eg: DiscoveryRequest, StreamResponse
      * @param key           UniqueKey that is used to match responses to corresponding requests
      */
-    public MulticastControlMessage(UhuServiceEndPoint sender, String sphereId,
+    public MulticastControlMessage(UhuZirkEndPoint sender, String sphereId,
                                    Discriminator discriminator, String key) {
         //Notice last boolean is set to true : This is because all multicasts are retransmitted
         super(sender, sphereId, discriminator, true, key);
@@ -35,7 +35,7 @@ public class MulticastControlMessage extends ControlMessage {
      * @param sphereName    This is the sphereId
      * @param discriminator the message discriminator Eg: DiscoveryRequest, StreamResponse
      */
-    public MulticastControlMessage(UhuServiceEndPoint sender, String sphereId,
+    public MulticastControlMessage(UhuZirkEndPoint sender, String sphereId,
                                    Discriminator discriminator) {
         //Notice last boolean is set to true : This is because all multicasts are retransmitted
         super(sender, sphereId, discriminator, true);

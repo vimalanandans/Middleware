@@ -4,7 +4,7 @@
 package com.bezirk.streaming.threads;
 
 import com.bezirk.messagehandler.StreamStatusMessage;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sadl.ISadlEventReceiver;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
@@ -30,7 +30,7 @@ public class StreamSendingThread implements Runnable {
     private static final int BUFFER_SIZE = 1024;                      // size of the buffer
     private final boolean isEncrypted;
     private final short localStreamId;
-    private final UhuServiceId senderServiceID;
+    private final UhuZirkId senderServiceID;
     private final String recipientIP;                                 // recipient
     private final int port;                                           // the port that the recipient is listening
     private final File file;                                    // path to the file that has to be sent

@@ -1,18 +1,18 @@
 package com.bezirk.proxy.api.impl;
 
-import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.addressing.ZirkId;
 
 import java.io.Serializable;
 
-public final class UhuServiceId implements ServiceId, Serializable {
+public final class UhuZirkId implements ZirkId, Serializable {
     private final String uhuServiceId;
     private String uhuEventId;
 
-    public UhuServiceId(String serviceId) {
+    public UhuZirkId(String serviceId) {
         this.uhuServiceId = serviceId;
     }
 
-    public UhuServiceId(String serviceId, String uhuEventId) {
+    public UhuZirkId(String serviceId, String uhuEventId) {
         this.uhuServiceId = serviceId;
         this.uhuEventId = uhuEventId;
     }
@@ -27,7 +27,7 @@ public final class UhuServiceId implements ServiceId, Serializable {
 
     @Override
     public String toString() {
-        return "UhuServiceId{" +
+        return "UhuZirkId{" +
                 "uhuServiceId='" + uhuServiceId + '\'' +
                 "uhuEventId='" + uhuEventId + '\'' +
                 '}';
@@ -52,7 +52,7 @@ public final class UhuServiceId implements ServiceId, Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        UhuServiceId other = (UhuServiceId) obj;
+        UhuZirkId other = (UhuZirkId) obj;
         if (uhuEventId == null) {
             if (other.uhuEventId != null)
                 return false;

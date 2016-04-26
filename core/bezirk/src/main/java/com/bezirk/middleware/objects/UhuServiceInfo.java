@@ -3,7 +3,7 @@
  */
 package com.bezirk.middleware.objects;
 
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 /**
  * @author Rishabh Gulati
@@ -23,7 +23,7 @@ public class UhuServiceInfo {
      * @param visible
      */
     @Deprecated
-    public UhuServiceInfo(UhuServiceId serviceId, String serviceName, String serviceType, boolean active,
+    public UhuServiceInfo(UhuZirkId serviceId, String serviceName, String serviceType, boolean active,
                           boolean visible) {
         this.serviceId = serviceId.getUhuServiceId();
         this.serviceType = serviceType;
@@ -45,8 +45,8 @@ public class UhuServiceInfo {
      * @return the serviceId
      */
     @Deprecated
-    public final UhuServiceId getUhuServiceId() {
-        return new UhuServiceId(serviceId);
+    public final UhuZirkId getUhuServiceId() {
+        return new UhuZirkId(serviceId);
     }
 
     public String getServiceId() {

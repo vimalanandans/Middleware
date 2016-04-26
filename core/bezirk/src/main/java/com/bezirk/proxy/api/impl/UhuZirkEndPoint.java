@@ -1,17 +1,17 @@
 package com.bezirk.proxy.api.impl;
 
-import com.bezirk.middleware.addressing.ServiceEndPoint;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
 
-public class UhuServiceEndPoint implements ServiceEndPoint {
+public class UhuZirkEndPoint implements ZirkEndPoint {
     public String device;
-    public UhuServiceId serviceId;
+    public UhuZirkId serviceId;
 
-    public UhuServiceEndPoint(String d, UhuServiceId serviceId) {
+    public UhuZirkEndPoint(String d, UhuZirkId serviceId) {
         device = d;
         this.serviceId = serviceId;
     }
 
-    public UhuServiceEndPoint(UhuServiceId serviceId) {
+    public UhuZirkEndPoint(UhuZirkId serviceId) {
         device = null;
         this.serviceId = serviceId;
     }
@@ -30,14 +30,14 @@ public class UhuServiceEndPoint implements ServiceEndPoint {
         if (obj == this) {
             return true;
         }
-        if (obj instanceof UhuServiceEndPoint) {
-            UhuServiceEndPoint curEp = (UhuServiceEndPoint) obj;
+        if (obj instanceof UhuZirkEndPoint) {
+            UhuZirkEndPoint curEp = (UhuZirkEndPoint) obj;
             return this.device.equals(curEp.device) && this.serviceId.equals(curEp.serviceId);
         }
         return false;
     }
 
-    public UhuServiceId getUhuServiceId() {
+    public UhuZirkId getUhuServiceId() {
         return serviceId;
     }
 }

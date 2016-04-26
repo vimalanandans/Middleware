@@ -1,8 +1,8 @@
 package com.bezirk.control.messages;
 
 import com.bezirk.control.messages.ControlMessage.Discriminator;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -33,8 +33,8 @@ public class ControlLedgerTest {
     private static final Boolean retransmit = true;
     private static final Discriminator discriminator = Discriminator.DiscoveryRequest;
     private static final String sphereId = "TestSphere";
-    private static final UhuServiceId serviceId = new UhuServiceId("ServiceA");
-    private static final UhuServiceEndPoint sender = new UhuServiceEndPoint(serviceId);
+    private static final UhuZirkId serviceId = new UhuZirkId("ServiceA");
+    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceId);
     private static final com.bezirk.control.messages.ControlMessage message = new ControlMessage(sender, sphereId, discriminator, retransmit);
     private static final byte[] sendData = "DataToBeSent".getBytes();
     private static final String serializedMessage = message.serialize();

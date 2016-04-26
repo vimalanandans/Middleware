@@ -3,8 +3,8 @@ package com.bezirk.sphere.messages;
 import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.middleware.objects.UhuDeviceInfo.UhuDeviceRole;
 import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -27,9 +27,9 @@ public class SphereCatchRequestExtTest {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(SphereCatchRequestExtTest.class);
 
-    private static final UhuServiceId serviceAId = new UhuServiceId("ServiceA");
-    private static final UhuServiceEndPoint sender = new UhuServiceEndPoint(serviceAId);
-    private static final UhuServiceId serviceBId = new UhuServiceId("ServiceB");
+    private static final UhuZirkId serviceAId = new UhuZirkId("ServiceA");
+    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceAId);
+    private static final UhuZirkId serviceBId = new UhuZirkId("ServiceB");
 
     private static final UhuServiceInfo serviceAInfo = new UhuServiceInfo(serviceAId.getUhuServiceId(), "ServiceA", "TESTA", true, true);
     private static final UhuServiceInfo serviceBInfo = new UhuServiceInfo(serviceBId.getUhuServiceId(), "ServiceB", "TESTB", true, true);

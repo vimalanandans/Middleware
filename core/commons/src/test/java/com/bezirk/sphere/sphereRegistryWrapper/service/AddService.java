@@ -70,7 +70,7 @@ public class AddService {
     /**
      * Test method for {@link SphereRegistryWrapper#addService(String, Service)}.
      * <p/>
-     * <br>When valid ServiceId and Service object is passed to addService, the service is added to the registry and the method
+     * <br>When valid ZirkId and Service object is passed to addService, the service is added to the registry and the method
      * should return True
      */
     @Test

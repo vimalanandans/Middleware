@@ -3,7 +3,7 @@ package com.bezirk.sadl;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -29,11 +29,11 @@ public class EventStreamTest {
     private final static Logger log = LoggerFactory
             .getLogger(EventStreamTest.class);
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
-    private static final UhuServiceId uhuServiceAId = new UhuServiceId(
+    private static final UhuZirkId uhuServiceAId = new UhuZirkId(
             "ServiceA");
-    private static final UhuServiceId uhuServiceBId = new UhuServiceId(
+    private static final UhuZirkId uhuServiceBId = new UhuZirkId(
             "ServiceB");
-    private static final UhuServiceId uhuServiceCId = new UhuServiceId(
+    private static final UhuZirkId uhuServiceCId = new UhuZirkId(
             "ServiceC");
     private static final MockProtocols mockService = new MockProtocols();
     private static final ProtocolRole streamlessPRole = mockService.new StreamlessProtocol();
@@ -152,7 +152,7 @@ public class EventStreamTest {
     private void testCheckMulticastEvent() {
 
         String topic = "MockEvent1";
-        Set<UhuServiceId> subscribedServiceSet;
+        Set<UhuZirkId> subscribedServiceSet;
         subscribedServiceSet = uhuSadlManager.checkMulticastEvent(null,
                 reception);
         assertNull("SadlManager returned non null subscribed servicelist for null event with location : OFFICE1/BLOCK1/RECEPTION ", subscribedServiceSet);

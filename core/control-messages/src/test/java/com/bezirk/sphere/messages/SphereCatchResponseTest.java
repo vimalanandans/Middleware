@@ -3,8 +3,8 @@ package com.bezirk.sphere.messages;
 import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.middleware.objects.UhuDeviceInfo.UhuDeviceRole;
 import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -29,9 +29,9 @@ public class SphereCatchResponseTest {
     private static final Logger log = LoggerFactory
             .getLogger(SphereCatchResponseTest.class);
 
-    private static final UhuServiceId serviceAId = new UhuServiceId(SERVICE_A);
+    private static final UhuZirkId serviceAId = new UhuZirkId(SERVICE_A);
     private static final UhuServiceInfo serviceAInfo = new UhuServiceInfo(serviceAId.getUhuServiceId(), SERVICE_A, "TEST", true, true);
-    private static final UhuServiceEndPoint sender = new UhuServiceEndPoint(serviceAId);
+    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceAId);
 
     /**
      * @throws java.lang.Exception

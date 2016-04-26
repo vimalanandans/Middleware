@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -44,8 +44,8 @@ public class SphereDiscoveryRequestTest {
     public void testSphereDiscoveryRequest() {
 
         String scanSphereId = "SCANNEDID";
-        UhuServiceId serviceId = new UhuServiceId("ServiceA");
-        UhuServiceEndPoint sender = new UhuServiceEndPoint(serviceId);
+        UhuZirkId serviceId = new UhuZirkId("ServiceA");
+        UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceId);
         com.bezirk.sphere.messages.SphereDiscoveryRequest sphereDiscoveryRequest = new com.bezirk.sphere.messages.SphereDiscoveryRequest(scanSphereId, sender);
         String serializedMessage = sphereDiscoveryRequest.serialize();
         com.bezirk.sphere.messages.SphereDiscoveryRequest deserializedSphereDiscoveryRequest = com.bezirk.sphere.messages.SphereDiscoveryRequest.deserialize(serializedMessage, com.bezirk.sphere.messages.SphereDiscoveryRequest.class);

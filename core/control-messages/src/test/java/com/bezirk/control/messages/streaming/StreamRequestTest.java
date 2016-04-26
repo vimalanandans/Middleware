@@ -2,8 +2,8 @@ package com.bezirk.control.messages.streaming;
 
 import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.junit.AfterClass;
@@ -32,10 +32,10 @@ public class StreamRequestTest {
     private static final String sphereName = "Home";
     private static final Location location = new Location("OFFICE1", "BLOCk1", "ROOM1");
     private static final String key = "TESTKEY";
-    private static final UhuServiceId serviceAId = new UhuServiceId("ServiceA");
-    private static final UhuServiceId serviceBId = new UhuServiceId("ServiceB");
-    private static final UhuServiceEndPoint recipient = new UhuServiceEndPoint(serviceAId);
-    private static final UhuServiceEndPoint sender = new UhuServiceEndPoint(serviceBId);
+    private static final UhuZirkId serviceAId = new UhuZirkId("ServiceA");
+    private static final UhuZirkId serviceBId = new UhuZirkId("ServiceB");
+    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceAId);
+    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceBId);
     private static final short localStreamId = 10;
     private static InetAddress inetAddr;
 

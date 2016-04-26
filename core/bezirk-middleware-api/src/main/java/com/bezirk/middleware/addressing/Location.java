@@ -42,7 +42,7 @@ import java.io.Serializable;
  * a light Zirk to a new light may be prompted to enter the location of the light as a string. If
  * the user is using a Zirk that provides location awareness as a service, the names may also be
  * set by the location Zirk. The location of a Zirk operating a Thing is set using
- * {@link com.bezirk.middleware.Bezirk#setLocation(ServiceId, Location)}.
+ * {@link com.bezirk.middleware.Bezirk#setLocation(ZirkId, Location)}.
  * </p>
  * <h4>Representing Semantic Addresses as Strings</h4>
  * Semantic addresses are represented as strings by listing each scope in descending order
@@ -61,7 +61,7 @@ import java.io.Serializable;
  * a sphere subscribed to the message's topic. This is equivalent to not using a semantic
  * address. However, any of the scopes may be skipped if necessary to define the desired set
  * of Things. Once again using the building example, the following addresses refer to different
- * sets of Things whose services are within a sphere subscribed to the targeted topic:
+ * sets of Things whose Zirks are within a sphere subscribed to the targeted topic:
  * </p>
  * <ul>
  * <li><code>"floor1//"</code> refers to all Things on floor 1.</li>

@@ -2,7 +2,7 @@ package com.bezirk.control.messages.logging;
 
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.MulticastControlMessage;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 
 public class LoggingServiceMessage extends MulticastControlMessage {
     private final static Discriminator discriminator = ControlMessage.Discriminator.LoggingServiceMessage;
@@ -15,7 +15,7 @@ public class LoggingServiceMessage extends MulticastControlMessage {
     public LoggingServiceMessage() {
     }
 
-    public LoggingServiceMessage(UhuServiceEndPoint sender, String sphereId, String serverIp, int serverPort,
+    public LoggingServiceMessage(UhuZirkEndPoint sender, String sphereId, String serverIp, int serverPort,
                                  String[] sphereList, boolean loggingStatus) {
         super(sender, sphereId, discriminator);
         this.remoteLoggingServiceIP = serverIp;

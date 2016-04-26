@@ -1,8 +1,8 @@
 package com.bezirk.control.messages.streaming;
 
 import com.bezirk.control.messages.ControlMessage.Discriminator;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.streaming.control.Objects.StreamRecord.StreamingStatus;
 import com.bezrik.network.UhuNetworkUtilities;
 
@@ -30,10 +30,10 @@ public class StreamResponseTest {
             .getLogger(StreamResponseTest.class);
 
     private static final String sphereName = "Home";
-    private static final UhuServiceId serviceAId = new UhuServiceId("ServiceA");
-    private static final UhuServiceId serviceBId = new UhuServiceId("ServiceB");
-    private static final UhuServiceEndPoint recipient = new UhuServiceEndPoint(serviceAId);
-    private static final UhuServiceEndPoint sender = new UhuServiceEndPoint(serviceBId);
+    private static final UhuZirkId serviceAId = new UhuZirkId("ServiceA");
+    private static final UhuZirkId serviceBId = new UhuZirkId("ServiceB");
+    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceAId);
+    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(serviceBId);
     private static InetAddress inetAddr;
     private String strmKey = "STREAM_KEY";
     private String streamIp = UhuNetworkUtilities.getDeviceIp();

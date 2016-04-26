@@ -98,8 +98,8 @@ public class PrepareRequest {
 
         assertEquals(catcherSphereId, preparedRequest.getCatcherSphereId());
         assertEquals(sphereExchangeData, preparedRequest.getSphereExchangeData());
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).device, preparedRequest.getSender().device); // To verify the UhuServiceEndPoint obj
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).serviceId, preparedRequest.getSender().serviceId);// To verify the UhuServiceEndPoint obj
+        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).device, preparedRequest.getSender().device); // To verify the UhuZirkEndPoint obj
+        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).serviceId, preparedRequest.getSender().serviceId);// To verify the UhuZirkEndPoint obj
     }
 
     /**

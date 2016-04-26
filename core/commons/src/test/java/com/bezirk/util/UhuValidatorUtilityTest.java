@@ -6,8 +6,8 @@ import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.junit.BeforeClass;
@@ -30,10 +30,10 @@ public class UhuValidatorUtilityTest {
 
     private static final Logger log = LoggerFactory.getLogger(UhuValidatorUtilityTest.class);
 
-    static UhuServiceEndPoint sender = new UhuServiceEndPoint(new UhuServiceId("MockServiceA"));
+    static UhuZirkEndPoint sender = new UhuZirkEndPoint(new UhuZirkId("MockServiceA"));
     static String serviceId = "MockServiceB";
-    static UhuServiceId uhuServiceId = new UhuServiceId(serviceId);
-    static UhuServiceEndPoint recipient = new UhuServiceEndPoint(uhuServiceId);
+    static UhuZirkId uhuServiceId = new UhuZirkId(serviceId);
+    static UhuZirkEndPoint recipient = new UhuZirkEndPoint(uhuServiceId);
     private static InetAddress inetAddr;
     String sphereId = "testSphere";
     boolean isValid = false;
@@ -104,17 +104,17 @@ public class UhuValidatorUtilityTest {
         assertTrue("Non null serviceEndpoint is considered invalid by validator", isValid);
 
 		/*-------------- Negative cases --------------*/
-        UhuServiceId uhuSid = null;
-        UhuServiceEndPoint uhuServiceEndPoint = new UhuServiceEndPoint(uhuSid);
+        UhuZirkId uhuSid = null;
+        UhuZirkEndPoint uhuServiceEndPoint = new UhuZirkEndPoint(uhuSid);
         isValid = UhuValidatorUtility.checkUhuServiceEndPoint(uhuServiceEndPoint);
         assertFalse("Null serviceEndpoint is considered valid by validator", isValid);
 
-        uhuSid = new UhuServiceId(null);
-        uhuServiceEndPoint = new UhuServiceEndPoint(uhuSid);
+        uhuSid = new UhuZirkId(null);
+        uhuServiceEndPoint = new UhuZirkEndPoint(uhuSid);
         isValid = UhuValidatorUtility.checkUhuServiceEndPoint(uhuServiceEndPoint);
         assertFalse("Null serviceEndpoint is considered valid by validator", isValid);
 
-        uhuServiceEndPoint = new UhuServiceEndPoint(uhuServiceId);
+        uhuServiceEndPoint = new UhuZirkEndPoint(uhuServiceId);
         isValid = UhuValidatorUtility.checkUhuServiceEndPoint(uhuServiceEndPoint);
         assertFalse("Null serviceEndpoint is considered valid by validator", isValid);
 
@@ -130,7 +130,7 @@ public class UhuValidatorUtilityTest {
         isValid = UhuValidatorUtility.checkUhuServiceId(null);
         assertFalse("Null serviceID is considered valid by validator", isValid);
 
-        isValid = UhuValidatorUtility.checkUhuServiceId(new UhuServiceId(null));
+        isValid = UhuValidatorUtility.checkUhuServiceId(new UhuZirkId(null));
         assertFalse("Null serviceID is considered valid by validator", isValid);
     }
 
@@ -171,7 +171,7 @@ public class UhuValidatorUtilityTest {
         isValid = UhuValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
-        UhuServiceEndPoint recepient = new UhuServiceEndPoint(new UhuServiceId("test"));
+        UhuZirkEndPoint recepient = new UhuZirkEndPoint(new UhuZirkId("test"));
         recepient.device = "";
         request = new StreamRequest(sender, recepient, sphereId,
                 null, null, "testString", "testLabel", "testFile", true, true, true, (short) 3);
@@ -281,7 +281,7 @@ public class UhuValidatorUtilityTest {
         isValid = UhuValidatorUtility.checkDiscoveryRequest(discoveryRequest);
         assertFalse("Invalid discoveryRequest is considered valid by validator.", isValid);
 
-        UhuServiceEndPoint sep = new UhuServiceEndPoint(uhuServiceId);
+        UhuZirkEndPoint sep = new UhuZirkEndPoint(uhuServiceId);
         discoveryRequest = new DiscoveryRequest(sphereId, sep, null, null, 2, 60000, 3);
         isValid = UhuValidatorUtility.checkDiscoveryRequest(discoveryRequest);
         assertFalse("Invalid discoveryRequest is considered valid by validator.", isValid);

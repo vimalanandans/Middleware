@@ -8,7 +8,7 @@ import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.core.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRequest;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -64,7 +64,7 @@ public class PipeActionParser {
             return null;
         }
 
-        UhuServiceId serviceId = serviceIdFromString(serviceIdAsString);
+        UhuZirkId serviceId = serviceIdFromString(serviceIdAsString);
         if (serviceId == null) {
             log.error("Intent not valid because there was a failure validating serviceId");
             return null;
@@ -94,9 +94,9 @@ public class PipeActionParser {
         return pipeRequest;
     }
 
-    private UhuServiceId serviceIdFromString(String serviceIdAsString) {
+    private UhuZirkId serviceIdFromString(String serviceIdAsString) {
         Gson gson = new Gson();
-        UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
+        UhuZirkId serviceId = gson.fromJson(serviceIdAsString, UhuZirkId.class);
         if (!checkUhuServiceId(serviceId)) {
             log.error("serviceId not valid: " + serviceId);
             return null;

@@ -1,7 +1,7 @@
 package com.bezirk.control.messages;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -21,12 +21,12 @@ public class UnicastHeaderTest {
     private static final Logger log = LoggerFactory
             .getLogger(UnicastHeaderTest.class);
 
-    private static final UhuServiceId serviceId = new UhuServiceId("ServiceA");
-    private static final UhuServiceEndPoint senderSEP = new UhuServiceEndPoint(
+    private static final UhuZirkId serviceId = new UhuZirkId("ServiceA");
+    private static final UhuZirkEndPoint senderSEP = new UhuZirkEndPoint(
             serviceId);
     private static final String sphereName = "TestSphere";
-    private static final UhuServiceId serviceBId = new UhuServiceId("ServiceB");
-    private static final UhuServiceEndPoint recipient = new UhuServiceEndPoint(serviceBId);
+    private static final UhuZirkId serviceBId = new UhuZirkId("ServiceB");
+    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(serviceBId);
     private static final String messageId = GenerateMsgId.generateEvtId(senderSEP);
     private static final String topic = "Message";
 

@@ -9,13 +9,13 @@ import android.util.Log;
 
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.CloudPipe;
-import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
-import com.bezirk.proxy.api.impl.UhuDiscoveredService;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -83,7 +83,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
 
     private boolean isValidRequest(String receivedServiceId) {
         if (null == receivedServiceId) {
-            Log.e(TAG, "ServiceId is malfunctioning");
+            Log.e(TAG, "ZirkId is malfunctioning");
             return false;
         }
         Log.d(TAG, "receivedServiceId" + receivedServiceId);
@@ -94,7 +94,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             return false;
         }
 
-        UhuServiceId serviceId = new Gson().fromJson(receivedServiceId, UhuServiceId.class);
+        UhuZirkId serviceId = new Gson().fromJson(receivedServiceId, UhuZirkId.class);
 
         if (!isRequestForCurrentApp(serviceId.getUhuServiceId())) {
             Log.e(TAG, "Intent is not for this Service");
@@ -116,7 +116,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         }
 
         final String messageId = intent.getStringExtra("msgId");
-        UhuServiceEndPoint sourceOfEventSEP = new Gson().fromJson(eventSender, UhuServiceEndPoint.class);
+        UhuZirkEndPoint sourceOfEventSEP = new Gson().fromJson(eventSender, UhuZirkEndPoint.class);
         //Check for duplicate message
         if (checkDuplicateMsg(sourceOfEventSEP.serviceId.getUhuServiceId(), messageId)) {
             boolean isEventReceived = receiveEventOrStream(eventTopic, eventMessage, sourceOfEventSEP, (short) 0, null, "EVENT", Proxy.eventListenerMap);
@@ -131,7 +131,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         return;
     }
 
-    private boolean receiveEventOrStream(String topic, String message, UhuServiceEndPoint sourceSEP, short streamId,
+    private boolean receiveEventOrStream(String topic, String message, UhuZirkEndPoint sourceSEP, short streamId,
                                          String filePath, String type, Map<String, ArrayList<BezirkListener>> listenerMap) {
 
         if (listenerMap.containsKey(topic)) {
@@ -181,7 +181,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         }
         final short streamId = intent.getShortExtra("streamId", (short) -1);
 
-        UhuServiceEndPoint sourceOfStreamSEP = new Gson().fromJson(senderSep, UhuServiceEndPoint.class);
+        UhuZirkEndPoint sourceOfStreamSEP = new Gson().fromJson(senderSep, UhuZirkEndPoint.class);
         Log.e(TAG, sourceOfStreamSEP.serviceId.getUhuServiceId() + ":" + streamId);
         if (checkDuplicateStream(sourceOfStreamSEP.serviceId.getUhuServiceId(), streamId)) {
 
@@ -226,17 +226,17 @@ public class IntentMessageReceiver extends BroadcastReceiver {
                 final Gson gson = new Gson();
                 final String discoveredListAsString = intent.getStringExtra("DiscoveredServices");
                 //Deserialiaze
-                Type discoveredListType = new TypeToken<HashSet<UhuDiscoveredService>>() {
+                Type discoveredListType = new TypeToken<HashSet<UhuDiscoveredZirk>>() {
                 }.getType();
 
-                final Set<UhuDiscoveredService> discoveredList = gson.fromJson(discoveredListAsString, discoveredListType);
+                final Set<UhuDiscoveredZirk> discoveredList = gson.fromJson(discoveredListAsString, discoveredListType);
 
                 if (null == discoveredList) {
                     Log.e(TAG, "Empty discovered List");
                     return;
                 }
 
-                Proxy.DiscoveryListener.discovered(new HashSet<DiscoveredService>(discoveredList));
+                Proxy.DiscoveryListener.discovered(new HashSet<DiscoveredZirk>(discoveredList));
             } else {
                 Log.e(TAG, "Discovery Id not matched");
             }

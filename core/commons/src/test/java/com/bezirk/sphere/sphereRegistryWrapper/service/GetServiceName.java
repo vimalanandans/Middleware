@@ -4,7 +4,7 @@
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.impl.OwnerService;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
@@ -71,9 +71,9 @@ public class GetServiceName {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getServiceName(UhuServiceId)}.
+     * Test method for {@link SphereRegistryWrapper#getServiceName(UhuZirkId)}.
      * <p/>
-     * <br>Test the behavior of getServiceName when valid serviceId is passed.
+     * <br>Test the behavior of getZirkName when valid serviceId is passed.
      * It should return name associated with the service Id
      */
     @Test
@@ -83,7 +83,7 @@ public class GetServiceName {
         sphereSet.add(sphereId);
 
         String serviceId = UUID.randomUUID().toString();
-        UhuServiceId uhuServiceId = new UhuServiceId(serviceId);
+        UhuZirkId uhuServiceId = new UhuZirkId(serviceId);
         String serviceName = sphereTestUtility.OWNER_SERVICE_NAME_1;
         OwnerService ownerService = new OwnerService(serviceName, "ownerDeviceId", sphereSet);
         registry.sphereMembership.put(serviceId, ownerService);
@@ -94,9 +94,9 @@ public class GetServiceName {
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getServiceName(UhuServiceId)}.
+     * Test method for {@link SphereRegistryWrapper#getServiceName(UhuZirkId)}.
      * <p/>
-     * <br>Test the behavior of getServiceName when serviceId passed is not present in the registry.
+     * <br>Test the behavior of getZirkName when serviceId passed is not present in the registry.
      * It should return null.
      */
     @Test
@@ -107,7 +107,7 @@ public class GetServiceName {
 
         //Service is created but not added in registry.
         String serviceId = UUID.randomUUID().toString();
-        UhuServiceId uhuServiceId = new UhuServiceId(serviceId);
+        UhuZirkId uhuServiceId = new UhuZirkId(serviceId);
 
         String retrievedService = sphereRegistryWrapper.getServiceName(uhuServiceId);
         assertNull(retrievedService);

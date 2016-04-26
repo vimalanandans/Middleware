@@ -13,7 +13,7 @@
 package com.bezirk.middleware.messages;
 
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.addressing.ZirkId;
 import com.google.gson.Gson;
 
 /**
@@ -37,7 +37,7 @@ public abstract class Message {
      * The pub-sub topic for this message. Topics are defined by
      * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles}. A Zirk subscribes to
      * certain topics by using
-     * {@link com.bezirk.middleware.Bezirk#subscribe(ServiceId, ProtocolRole, BezirkListener)} to
+     * {@link com.bezirk.middleware.Bezirk#subscribe(ZirkId, ProtocolRole, BezirkListener)} to
      * subscribe to a role. When the Bezirk middleware receives a message, it forwards that
      * message on to any registered Zirk that is subscribed to the role defining the topic.
      * The concrete implementation of a message specifies the topic, which should usually be the

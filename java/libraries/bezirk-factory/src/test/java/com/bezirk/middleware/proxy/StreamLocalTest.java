@@ -2,16 +2,16 @@ package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.middleware.addressing.ServiceEndPoint;
-import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.UnicastStream;
-import com.bezirk.proxy.api.impl.UhuDiscoveredService;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -90,8 +90,8 @@ public class StreamLocalTest {
     @After
     public void destroySetUp() {
         Bezirk uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-        uhu.unregisterService(mockA.myId);
-        uhu.unregisterService(mockB.myId);
+        uhu.unregisterZirk(mockA.myId);
+        uhu.unregisterZirk(mockB.myId);
     }
 
     /**
@@ -100,7 +100,7 @@ public class StreamLocalTest {
     private final class StreamLocalMockServiceA implements BezirkListener {
         private final String serviceName = "StreamLocalMockServiceA";
         private Bezirk uhu = null;
-        private ServiceId myId = null;
+        private ZirkId myId = null;
         private StreamLocalDummyProtocolRole pRole;
 
         /**
@@ -108,8 +108,8 @@ public class StreamLocalTest {
          */
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerService(serviceName);
-            logger.info("StreamLocalMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            myId = uhu.registerZirk(serviceName);
+            logger.info("StreamLocalMockServiceA - regId : " + ((UhuZirkId) myId).getUhuServiceId());
             pRole = new StreamLocalDummyProtocolRole();
             uhu.subscribe(myId, pRole, this);
 
@@ -125,15 +125,15 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
+        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -145,22 +145,22 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void discovered(Set<DiscoveredService> serviceSet) {
+        public void discovered(Set<DiscoveredZirk> zirkSet) {
             logger.info("Received Discovery Response");
-            if (serviceSet == null) {
+            if (zirkSet == null) {
                 fail("Service Set of Discovered Services in Null");
                 return;
             }
-            if (serviceSet.isEmpty()) {
+            if (zirkSet.isEmpty()) {
                 fail("Service Set is Empty");
                 return;
             }
 
-            assertEquals(1, serviceSet.size());
-            UhuDiscoveredService dService = null;
+            assertEquals(1, zirkSet.size());
+            UhuDiscoveredZirk dService = null;
 
-            Iterator<DiscoveredService> iterator = serviceSet.iterator();
-            dService = (UhuDiscoveredService) iterator.next();
+            Iterator<DiscoveredZirk> iterator = zirkSet.iterator();
+            dService = (UhuDiscoveredZirk) iterator.next();
             logger.info("DiscoveredServiceName : " + dService.name + "\n" +
                     "Discovered Role : " + dService.pRole + "\n" +
                     "Discovered SEP" + dService.service + "\n");
@@ -240,7 +240,7 @@ public class StreamLocalTest {
     private final class StreamLocalMockRequestStream extends UnicastStream {
 
         private StreamLocalMockRequestStream(Flag flag, String topic,
-                                             ServiceEndPoint recipient) {
+                                             ZirkEndPoint recipient) {
             super(flag, topic, recipient);
         }
 
@@ -253,30 +253,30 @@ public class StreamLocalTest {
     private final class StreamLocalMockServiceB implements BezirkListener {
         private final String serviceName = "StreamLocalMockServiceB";
         private Bezirk uhu = null;
-        private ServiceId myId = null;
+        private ZirkId myId = null;
 
         /**
          * Setup the service
          */
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerService(serviceName);
-            logger.info("StreamLocalMockServiceB - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            myId = uhu.registerZirk(serviceName);
+            logger.info("StreamLocalMockServiceB - regId : " + ((UhuZirkId) myId).getUhuServiceId());
             uhu.subscribe(myId, new StreamLocalMockServiceProtocolRole(), this);
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
+        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
 
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
 
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
             logger.info("****** RECEIVED STREAM REQUEST ******");
             assertNotNull(topic);
             assertNotNull(stream);
@@ -332,7 +332,7 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void discovered(Set<DiscoveredService> serviceSet) {
+        public void discovered(Set<DiscoveredZirk> zirkSet) {
         }
 
         @Override

@@ -5,7 +5,7 @@ import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.middleware.messages.Stream;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.UhuValidatorUtility;
 import com.google.gson.Gson;
@@ -26,8 +26,8 @@ class ProxyforServiceHelper {
         final String sphereName = sphereIterator.next();
         final ControlLedger tcMessage = new ControlLedger();
         tcMessage.setSphereId(sphereName);
-        UhuServiceEndPoint senderSEP = streamRecord.senderSEP;
-        UhuServiceEndPoint receiver = streamRecord.recipientSEP;
+        UhuZirkEndPoint senderSEP = streamRecord.senderSEP;
+        UhuZirkEndPoint receiver = streamRecord.recipientSEP;
         String serializedStream = streamRecord.serializedStream;
         String streamTopic = streamRecord.streamTopic;
         short streamId = streamRecord.localStreamId;
@@ -39,7 +39,7 @@ class ProxyforServiceHelper {
         return tcMessage;
     }
 
-    StreamRecord prepareStreamRecord(UhuServiceEndPoint receiver, String serializedStream, File file, short streamId, UhuServiceEndPoint senderSEP, Stream stream) {
+    StreamRecord prepareStreamRecord(UhuZirkEndPoint receiver, String serializedStream, File file, short streamId, UhuZirkEndPoint senderSEP, Stream stream) {
         final StreamRecord streamRecord = new StreamRecord();
         streamRecord.localStreamId = streamId;
         streamRecord.senderSEP = senderSEP;
@@ -58,7 +58,7 @@ class ProxyforServiceHelper {
         return streamRecord;
     }
 
-    String getSphereId(UhuServiceEndPoint receiver, Iterator<String> sphereIterator) {
+    String getSphereId(UhuZirkEndPoint receiver, Iterator<String> sphereIterator) {
         String sphereId = null;
         while (sphereIterator.hasNext()) {
             sphereId = sphereIterator.next();

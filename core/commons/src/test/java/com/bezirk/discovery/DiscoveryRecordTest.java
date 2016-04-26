@@ -1,8 +1,8 @@
 package com.bezirk.discovery;
 
-import com.bezirk.proxy.api.impl.UhuDiscoveredService;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.Test;
 
@@ -32,9 +32,9 @@ public class DiscoveryRecordTest {
         assertNotNull("DiscoveredList is null.", discoveryRecord.getList());
 
 
-        List<UhuDiscoveredService> list = new ArrayList<UhuDiscoveredService>();
-        UhuDiscoveredService discoveredService = new UhuDiscoveredService();
-        discoveredService.service = new UhuServiceEndPoint(new UhuServiceId("ServiceA"));
+        List<UhuDiscoveredZirk> list = new ArrayList<UhuDiscoveredZirk>();
+        UhuDiscoveredZirk discoveredService = new UhuDiscoveredZirk();
+        discoveredService.service = new UhuZirkEndPoint(new UhuZirkId("ServiceA"));
         list.add(discoveredService);
         discoveryRecord.updateList(list);
 

@@ -7,15 +7,15 @@ import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.Address;
-import com.bezirk.middleware.addressing.DiscoveredService;
+import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.middleware.addressing.ServiceEndPoint;
-import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.proxy.api.impl.UhuDiscoveredService;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -107,9 +107,9 @@ public class DiscoveryTest {
     public void destroyMockservices() {
 
         Bezirk uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-        uhu.unregisterService(mockA.myId);
-        uhu.unregisterService(mockB.myId);
-        uhu.unregisterService(mockC.myId);
+        uhu.unregisterZirk(mockA.myId);
+        uhu.unregisterZirk(mockB.myId);
+        uhu.unregisterZirk(mockC.myId);
     }
 
     /**
@@ -118,13 +118,13 @@ public class DiscoveryTest {
     private final class DiscoveryMockServiceA implements BezirkListener {
         private final String serviceName = "DiscoveryMockServiceA";
         private Bezirk uhu = null;
-        private ServiceId myId = null;
+        private ZirkId myId = null;
         private DiscoveryMockServiceProtocol pRole;
 
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerService(serviceName);
-            logger.info("DiscoveryMockServiceA - regId : " + ((UhuServiceId) myId).getUhuServiceId());
+            myId = uhu.registerZirk(serviceName);
+            logger.info("DiscoveryMockServiceA - regId : " + ((UhuZirkId) myId).getUhuServiceId());
             pRole = new DiscoveryMockServiceProtocol();
             uhu.subscribe(myId, pRole, this);
         }
@@ -139,15 +139,15 @@ public class DiscoveryTest {
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
+        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -160,21 +160,21 @@ public class DiscoveryTest {
         }
 
         @Override
-        public void discovered(Set<DiscoveredService> serviceSet) {
+        public void discovered(Set<DiscoveredZirk> zirkSet) {
             logger.info("Received Discovery Response");
-            if (serviceSet == null) {
+            if (zirkSet == null) {
                 fail("Service Set of Discovered Services in Null");
                 return;
             }
-            if (serviceSet.isEmpty()) {
+            if (zirkSet.isEmpty()) {
                 fail("Service Set is Empty");
                 return;
             }
-            logger.debug("*******Size of the Set********* : " + serviceSet.size());
+            logger.debug("*******Size of the Set********* : " + zirkSet.size());
 
-            if (isTestWithNullLocPassed == false && serviceSet.size() == 3) {
+            if (isTestWithNullLocPassed == false && zirkSet.size() == 3) {
 
-                Iterator<DiscoveredService> iterator = serviceSet.iterator();
+                Iterator<DiscoveredZirk> iterator = zirkSet.iterator();
                 while (iterator.hasNext()) {
                     //Himadri: Accepting Rishab's Changes on top of Vijet's
 
@@ -191,7 +191,7 @@ public class DiscoveryTest {
 
                     }
                     UPADeviceInterface upaDevice = UhuCompManager.getUpaDevice();
-                    UhuDiscoveredService tempDisService = (UhuDiscoveredService) iterator.next();
+                    UhuDiscoveredZirk tempDisService = (UhuDiscoveredZirk) iterator.next();
                     assertNotNull("Discovered Service is null. ", tempDisService);
                     switch (tempDisService.name) {
 
@@ -199,7 +199,7 @@ public class DiscoveryTest {
                             assertEquals("DiscoveryMockServiceA", tempDisService.name);
                             assertEquals("DiscoveryMockServiceProtocol", tempDisService.pRole);
                             assertNotNull("Device is not set for DiscoveryMockServiceA.", tempDisService.service.device);
-                            assertEquals("ServiceID is different for DiscoveryMockServiceA.", ((UhuServiceId) myId).getUhuServiceId(), tempDisService.service.serviceId.getUhuServiceId());
+                            assertEquals("ServiceID is different for DiscoveryMockServiceA.", ((UhuZirkId) myId).getUhuServiceId(), tempDisService.service.serviceId.getUhuServiceId());
                             break;
                         case "DiscoveryMockServiceB":
                             assertEquals("DiscoveryMockServiceB", tempDisService.name);
@@ -219,13 +219,13 @@ public class DiscoveryTest {
                 isTestWithNullLocPassed = true;
                 return;
             }
-            if (isTestWithNullLocPassed == true && isTestWithLocPassed == false && serviceSet.size() == 1) {
+            if (isTestWithNullLocPassed == true && isTestWithLocPassed == false && zirkSet.size() == 1) {
                 logger.info("Discovery subtest with location passed");
 
 
-                Iterator<DiscoveredService> iterator = serviceSet.iterator();
+                Iterator<DiscoveredZirk> iterator = zirkSet.iterator();
 
-                UhuDiscoveredService tempDisService = (UhuDiscoveredService) iterator.next();
+                UhuDiscoveredZirk tempDisService = (UhuDiscoveredZirk) iterator.next();
                 assertNotNull(tempDisService);
                 assertEquals("DiscoveryMockServiceC", tempDisService.name);
                 assertEquals("DiscoveryMockServiceProtocol", tempDisService.pRole);
@@ -284,31 +284,31 @@ public class DiscoveryTest {
     private final class DiscoveryMockServiceB implements BezirkListener {
         private final String serviceName = "DiscoveryMockServiceB";
         private Bezirk uhu = null;
-        private ServiceId myId = null;
+        private ZirkId myId = null;
 
         public DiscoveryMockServiceB() {
         }
 
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerService(serviceName);
-            serviceBId = ((UhuServiceId) myId).getUhuServiceId();
+            myId = uhu.registerZirk(serviceName);
+            serviceBId = ((UhuZirkId) myId).getUhuServiceId();
             logger.info("DiscoveryMockServiceB - regId : " + serviceBId);
             uhu.subscribe(myId, new DiscoveryMockServiceProtocol(), this);
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
+        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
         }
 
         @Override
         public void receiveStream(String topic, String stream, short streamId,
-                                  InputStream inputStream, ServiceEndPoint sender) {
+                                  InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
         public void receiveStream(String topic, String stream, short streamId,
-                                  File file, ServiceEndPoint sender) {
+                                  File file, ZirkEndPoint sender) {
         }
 
 
@@ -322,7 +322,7 @@ public class DiscoveryTest {
         }
 
         @Override
-        public void discovered(Set<DiscoveredService> serviceSet) {
+        public void discovered(Set<DiscoveredZirk> zirkSet) {
         }
 
         @Override
@@ -340,12 +340,12 @@ public class DiscoveryTest {
     private final class DiscoveryMockServiceC implements BezirkListener {
         private final String serviceName = "DiscoveryMockServiceC";
         private Bezirk uhu = null;
-        private ServiceId myId = null;
+        private ZirkId myId = null;
 
         private final void setupMockService() {
             uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerService(serviceName);
-            serviceCId = ((UhuServiceId) myId).getUhuServiceId();
+            myId = uhu.registerZirk(serviceName);
+            serviceCId = ((UhuZirkId) myId).getUhuServiceId();
             logger.info("DiscoveryMockServiceC - regId : " + serviceCId);
 
             uhu.subscribe(myId, new DiscoveryMockServiceProtocol(), this);
@@ -356,15 +356,15 @@ public class DiscoveryTest {
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ServiceEndPoint sender) {
+        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ServiceEndPoint sender) {
+        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -377,7 +377,7 @@ public class DiscoveryTest {
         }
 
         @Override
-        public void discovered(Set<DiscoveredService> serviceSet) {
+        public void discovered(Set<DiscoveredZirk> zirkSet) {
         }
 
         @Override

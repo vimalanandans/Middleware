@@ -2,7 +2,7 @@ package com.bezirk.sphere.messages;
 
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.middleware.objects.UhuDeviceInfo;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 
 /**
  * // new message SphereCatchRequest Control message for sphere control
@@ -28,7 +28,7 @@ public class CatchRequest extends com.bezirk.control.messages.MulticastControlMe
      *                           services
      * @param sphereExchangeData sphere information of the sphere catching the services. Has to be non-null.
      */
-    public CatchRequest(UhuServiceEndPoint sender, String inviterShortCode, String catcherSphereId,
+    public CatchRequest(UhuZirkEndPoint sender, String inviterShortCode, String catcherSphereId,
                         UhuDeviceInfo uhuDeviceInfo, String sphereExchangeData) {
         super(sender, inviterShortCode, discriminator);
         // null checks for sender and inviterShortCode added here because call to the

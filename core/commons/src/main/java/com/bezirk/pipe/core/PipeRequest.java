@@ -3,11 +3,11 @@ package com.bezirk.pipe.core;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.middleware.addressing.ServiceId;
+import com.bezirk.middleware.addressing.ZirkId;
 
 public class PipeRequest {
 
-    private ServiceId requestingService = null;
+    private ZirkId requestingService = null;
 
     // NOTE: we only support CloudPipes for now
     private CloudPipe pipe = null;
@@ -20,11 +20,11 @@ public class PipeRequest {
         this.id = id;
     }
 
-    public ServiceId getRequestingService() {
+    public ZirkId getRequestingService() {
         return requestingService;
     }
 
-    public void setRequestingService(ServiceId requestingService) {
+    public void setRequestingService(ZirkId requestingService) {
         this.requestingService = requestingService;
     }
 

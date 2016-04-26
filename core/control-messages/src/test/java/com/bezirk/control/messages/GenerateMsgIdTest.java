@@ -1,7 +1,7 @@
 package com.bezirk.control.messages;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -47,8 +47,8 @@ public class GenerateMsgIdTest {
     @Test
     public void testGenerateEvtId() {
 
-        UhuServiceId serviceId = new UhuServiceId("ServiceA");
-        UhuServiceEndPoint sep = new UhuServiceEndPoint("DeviceA", serviceId);
+        UhuZirkId serviceId = new UhuZirkId("ServiceA");
+        UhuZirkEndPoint sep = new UhuZirkEndPoint("DeviceA", serviceId);
         String eventId = com.bezirk.control.messages.GenerateMsgId.generateEvtId(sep);
         sep.device = "DeviceB";
         assertNotEquals("Same messageId generated for different devices", eventId, com.bezirk.control.messages.GenerateMsgId.generateEvtId(sep));

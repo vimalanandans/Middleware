@@ -7,8 +7,8 @@ import com.bezirk.commons.UhuId;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.OwnerService;
 import com.bezirk.sphere.impl.Service;
@@ -44,22 +44,22 @@ public class SphereTestUtility {
     /* owner services names and ids */
     public final String OWNER_SERVICE_NAME_1 = "OWNER_SERVICE_NAME_1";
     // public final String MEMBER_SPHERE_ID_2 = UUID.randomUUID().toString();
-    public final UhuServiceId OWNER_SERVICE_ID_1 = new UhuServiceId(OWNER_SERVICE_NAME_1);
+    public final UhuZirkId OWNER_SERVICE_ID_1 = new UhuZirkId(OWNER_SERVICE_NAME_1);
     public final String OWNER_SERVICE_NAME_2 = "OWNER_SERVICE_NAME_2";
-    public final UhuServiceId OWNER_SERVICE_ID_2 = new UhuServiceId(OWNER_SERVICE_NAME_2);
+    public final UhuZirkId OWNER_SERVICE_ID_2 = new UhuZirkId(OWNER_SERVICE_NAME_2);
     public final String OWNER_SERVICE_NAME_3 = "OWNER_SERVICE_NAME_3";
-    public final UhuServiceId OWNER_SERVICE_ID_3 = new UhuServiceId(OWNER_SERVICE_NAME_3);
+    public final UhuZirkId OWNER_SERVICE_ID_3 = new UhuZirkId(OWNER_SERVICE_NAME_3);
     public final String OWNER_SERVICE_NAME_4 = "OWNER_SERVICE_NAME_4";
-    public final UhuServiceId OWNER_SERVICE_ID_4 = new UhuServiceId(OWNER_SERVICE_NAME_4);
+    public final UhuZirkId OWNER_SERVICE_ID_4 = new UhuZirkId(OWNER_SERVICE_NAME_4);
     /* member services names and ids */
     public final String MEMBER_SERVICE_NAME_1 = "MEMBER_SERVICE_NAME_1";
-    public final UhuServiceId MEMBER_SERVICE_ID_1 = new UhuServiceId(MEMBER_SERVICE_NAME_1);
+    public final UhuZirkId MEMBER_SERVICE_ID_1 = new UhuZirkId(MEMBER_SERVICE_NAME_1);
     public final String MEMBER_SERVICE_NAME_2 = "MEMBER_SERVICE_NAME_2";
-    public final UhuServiceId MEMBER_SERVICE_ID_2 = new UhuServiceId(MEMBER_SERVICE_NAME_2);
+    public final UhuZirkId MEMBER_SERVICE_ID_2 = new UhuZirkId(MEMBER_SERVICE_NAME_2);
     public final String MEMBER_SERVICE_NAME_3 = "MEMBER_SERVICE_NAME_3";
-    public final UhuServiceId MEMBER_SERVICE_ID_3 = new UhuServiceId(MEMBER_SERVICE_NAME_3);
+    public final UhuZirkId MEMBER_SERVICE_ID_3 = new UhuZirkId(MEMBER_SERVICE_NAME_3);
     public final String MEMBER_SERVICE_NAME_4 = "MEMBER_SERVICE_NAME_4";
-    public final UhuServiceId MEMBER_SERVICE_ID_4 = new UhuServiceId(MEMBER_SERVICE_NAME_4);
+    public final UhuZirkId MEMBER_SERVICE_ID_4 = new UhuZirkId(MEMBER_SERVICE_NAME_4);
     /* devices */
     public final UPADeviceInterface DEVICE_1;
     public final UPADeviceInterface DEVICE_2;
@@ -100,10 +100,10 @@ public class SphereTestUtility {
         Service service2 = new OwnerService(OWNER_SERVICE_NAME_2, DEVICE_1.getDeviceId(), sphereSet2);
         sphereRegistryWrapper.addService(OWNER_SERVICE_ID_2.getUhuServiceId(), service2);
 
-        LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices = new LinkedHashMap<>();
 
         // create list of services for the sphere
-        ArrayList<UhuServiceId> services = new ArrayList<>();
+        ArrayList<UhuZirkId> services = new ArrayList<>();
         services.add(OWNER_SERVICE_ID_1);
         services.add(OWNER_SERVICE_ID_2);
 
@@ -184,7 +184,7 @@ public class SphereTestUtility {
 
     /**
      * Generates a CatchResponse object consisting of:
-     * UhuServiceEndPoint object: {@link #DEVICE_2}
+     * UhuZirkEndPoint object: {@link #DEVICE_2}
      * catcherSphereId: {@link #generateOwnerCombo()}
      * catcherDeviceId: {@link #DEVICE_1}
      * UhuDeviceInfo object: {@link #getUhuDeviceInfo()}
@@ -195,7 +195,7 @@ public class SphereTestUtility {
         String catcherSphereId = generateOwnerCombo();
 
         /**create the CatchResponse**/
-        UhuServiceEndPoint sender = new UhuServiceEndPoint(OWNER_SERVICE_ID_3);
+        UhuZirkEndPoint sender = new UhuZirkEndPoint(OWNER_SERVICE_ID_3);
         sender.device = DEVICE_2.getDeviceName();
         CatchResponse catchResponse = new CatchResponse(sender, catcherSphereId, DEVICE_1.getDeviceId(), getUhuDeviceInfo());
         return catchResponse;
@@ -203,7 +203,7 @@ public class SphereTestUtility {
 
     /**
      * Generates a CatchRequest object consisting of:
-     * UhuServiceEndPoint object: {@link #DEVICE_3}
+     * UhuZirkEndPoint object: {@link #DEVICE_3}
      * catcherSphereId: {@link #generateOwnerCombo()}
      * inviterShortCode: {@link #sphereUtils.getShareCode(catcherSphereId)}
      * UhuDeviceInfo object: {@link #getUhuDeviceInfo()}
@@ -218,7 +218,7 @@ public class SphereTestUtility {
         String sphereExchangeData = getExchangeData();
 
         /**create the CatchRequest**/
-        UhuServiceEndPoint sender = new UhuServiceEndPoint(OWNER_SERVICE_ID_3);
+        UhuZirkEndPoint sender = new UhuZirkEndPoint(OWNER_SERVICE_ID_3);
         sender.device = DEVICE_2.getDeviceName();
         CatchRequest catchRequest = new CatchRequest(sender, inviterShortCode, catcherSphereId, getUhuDeviceInfo(), sphereExchangeData);
         return catchRequest;
@@ -226,7 +226,7 @@ public class SphereTestUtility {
 
     /**
      * Generates a ShareRequest object consisting of:
-     * UhuServiceEndPoint object: {@link #DEVICE_3}
+     * UhuZirkEndPoint object: {@link #DEVICE_3}
      * sharerSphereId: {@link #generateOwnerCombo()}
      * shortCode: {@link #UhuId().getShortIdByHash(sharerSphereId)}
      * UhuDeviceInfo object: {@link #getUhuDeviceInfo()}
@@ -236,7 +236,7 @@ public class SphereTestUtility {
     public final ShareRequest getShareRequestObj() {
         String sharerSphereId = generateOwnerCombo();
         String shortCode = new UhuId().getShortIdByHash(sharerSphereId);
-        UhuServiceEndPoint sender = new UhuServiceEndPoint(OWNER_SERVICE_ID_3);
+        UhuZirkEndPoint sender = new UhuZirkEndPoint(OWNER_SERVICE_ID_3);
         /**create the ShareRequest**/
         ShareRequest shareRequest = new ShareRequest(shortCode, getUhuDeviceInfo(), sender, sharerSphereId);
         return shareRequest;
@@ -244,8 +244,8 @@ public class SphereTestUtility {
 
     /**
      * Generates a ShareResponse object consisting of:
-     * UhuServiceEndPoint sender object: {@link UhuNetworkUtilities.getServiceEndPoint(null)}
-     * UhuServiceEndPoint recipient object: {@link #DEVICE_3}
+     * UhuZirkEndPoint sender object: {@link UhuNetworkUtilities.getServiceEndPoint(null)}
+     * UhuZirkEndPoint recipient object: {@link #DEVICE_3}
      * uniqueKey: null
      * sharerSphereId: {@link #generateOwnerCombo()}
      * shortCode: {@link #UhuId().getShortIdByHash(sharerSphereId)}
@@ -257,8 +257,8 @@ public class SphereTestUtility {
     public final ShareResponse getShareResponseObj() {
         String sharerSphereId = generateOwnerCombo();
         String shortCode = new UhuId().getShortIdByHash(sharerSphereId);
-        UhuServiceEndPoint sender = UhuNetworkUtilities.getServiceEndPoint(null);
-        UhuServiceEndPoint recipient = new UhuServiceEndPoint(OWNER_SERVICE_ID_3);
+        UhuZirkEndPoint sender = UhuNetworkUtilities.getServiceEndPoint(null);
+        UhuZirkEndPoint recipient = new UhuZirkEndPoint(OWNER_SERVICE_ID_3);
         recipient.device = DEVICE_2.getDeviceName();
         String sphereExchangeData = getExchangeData();
         /**create the ShareRequest**/

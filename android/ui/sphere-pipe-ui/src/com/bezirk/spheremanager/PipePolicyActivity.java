@@ -19,9 +19,8 @@ import com.bezirk.pipe.core.PipeApprovalException;
 import com.bezirk.pipe.core.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRequester;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.IUhuSphereAPI;
-import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.PolicyListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
@@ -52,7 +51,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
         final String pipeReqId = rxIntent.getStringExtra(KEY_PIPE_REQ_ID);
         final String sphereId = rxIntent.getStringExtra(KEY_PIPE_SPHEREID);
 
-        UhuServiceId serviceId = serviceIdFromString(serviceIdAsString);
+        UhuZirkId serviceId = serviceIdFromString(serviceIdAsString);
         if (serviceId == null) {
             log.error("Intent not valid because there was a failure validating serviceId");
             return;
@@ -223,9 +222,9 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    private UhuServiceId serviceIdFromString(String serviceIdAsString) {
+    private UhuZirkId serviceIdFromString(String serviceIdAsString) {
         Gson gson = new Gson();
-        UhuServiceId serviceId = gson.fromJson(serviceIdAsString, UhuServiceId.class);
+        UhuZirkId serviceId = gson.fromJson(serviceIdAsString, UhuZirkId.class);
         if (!checkUhuServiceId(serviceId)) {
             log.error("serviceId not valid: " + serviceId);
             return null;

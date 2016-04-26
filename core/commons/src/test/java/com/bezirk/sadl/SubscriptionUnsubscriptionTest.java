@@ -3,7 +3,7 @@ package com.bezirk.sadl;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -25,7 +24,7 @@ public class SubscriptionUnsubscriptionTest {
 
     private final static Logger log = LoggerFactory
             .getLogger(SubscriptionUnsubscriptionTest.class);
-    private static final UhuServiceId dummyServiceId = new UhuServiceId("InvalidServiceForTest");
+    private static final UhuZirkId dummyServiceId = new UhuZirkId("InvalidServiceForTest");
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
     private static final MockProtocols mockProtocol = new MockProtocols();
     ;
@@ -37,9 +36,9 @@ public class SubscriptionUnsubscriptionTest {
     private static final SubscribedRole subscribedEventlessPRole = new SubscribedRole(eventlessPRole);
     private static final SubscribedRole subscribedDummyPRole = new SubscribedRole(dummyPRole);
     private static UhuSadlManager uhuSadlManager = null;
-    private static UhuServiceId uhuServiceAId = new UhuServiceId("ServiceA");
-    private static UhuServiceId uhuServiceBId = new UhuServiceId("ServiceB");
-    private static UhuServiceId uhuServiceCId = new UhuServiceId("ServiceC");
+    private static UhuZirkId uhuServiceAId = new UhuZirkId("ServiceA");
+    private static UhuZirkId uhuServiceBId = new UhuZirkId("ServiceB");
+    private static UhuZirkId uhuServiceCId = new UhuZirkId("ServiceC");
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
 
     @BeforeClass
@@ -113,7 +112,7 @@ public class SubscriptionUnsubscriptionTest {
 		 * SadlManager should return serviceA id when queried for services subscribed to streamlessProtocol.
 		 * ServiceCId should not be present in this list.
 		 * */
-        Set<UhuServiceId> serviceIdSet = uhuSadlManager.sadlRegistry.protocolMap
+        Set<UhuZirkId> serviceIdSet = uhuSadlManager.sadlRegistry.protocolMap
                 .get(streamlessPRole.getProtocolName());
 
         assertNotNull("ServiceIdSet is null", serviceIdSet);
@@ -191,7 +190,7 @@ public class SubscriptionUnsubscriptionTest {
 		 * ServiceB should be present in the eventlist for streamless protocol. 
 		 * ServiceA and ServiceC should not be present in the eventlist for streamless protocol.
 		 * */
-        Set<UhuServiceId> serviceIdSet;
+        Set<UhuZirkId> serviceIdSet;
         for (String topic : streamlessPRole.getEventTopics()) {
 
             serviceIdSet = uhuSadlManager.sadlRegistry.eventMap.get(topic);
@@ -240,7 +239,7 @@ public class SubscriptionUnsubscriptionTest {
 		/*
 		 * SadlManager should return false when invalid serviceID requested to unsubscribe
 		 * */
-        UhuServiceId invalidId = new UhuServiceId("Invalid");
+        UhuZirkId invalidId = new UhuZirkId("Invalid");
         assertFalse("SadlManager allowed unregistered serviceID to unsubscribe.", uhuSadlManager.unsubscribe(invalidId, subscribedEventlessPRole));
         assertFalse("SadlManager returned true for invalid unsubscribe request.", uhuSadlManager.unsubscribe(uhuServiceBId, subscribedEventlessPRole));
 
@@ -252,7 +251,7 @@ public class SubscriptionUnsubscriptionTest {
 	/*	SadlManager should return false when not able to persist unsubscribe data to registry.*/
 			
 /*		mockUtility.clearSadlPersistence();
-		isUnsubscribed= uhuSadlManager.unregisterService(uhuServiceBId);
+		isUnsubscribed= uhuSadlManager.unregisterZirk(uhuServiceBId);
 		assertFalse(isUnsubscribed);
 		mockUtility.restoreSadlPersistence();
 		uhuSadlManager= mockUtility.uhuSadlManager;

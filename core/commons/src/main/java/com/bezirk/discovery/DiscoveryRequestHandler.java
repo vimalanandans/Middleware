@@ -5,9 +5,9 @@ import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
-import com.bezirk.proxy.api.impl.UhuDiscoveredService;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sadl.ISadlControlReceiver;
 
 import org.slf4j.Logger;
@@ -65,14 +65,14 @@ public class DiscoveryRequestHandler {
     }
 
     private Boolean handleServiceDiscovery(DiscoveryRequest req) {
-        Set<UhuDiscoveredService> dServiceList = this.sadlCtrl.discoverServices(req.getProtocol(), req.getLocation());
+        Set<UhuDiscoveredZirk> dServiceList = this.sadlCtrl.discoverServices(req.getProtocol(), req.getLocation());
         if (null == dServiceList || dServiceList.isEmpty()) {
             return false;
         }
-        Iterator<UhuDiscoveredService> dServices = dServiceList.iterator();
+        Iterator<UhuDiscoveredZirk> dServices = dServiceList.iterator();
         while (dServices.hasNext()) {
-            UhuDiscoveredService dService = dServices.next();
-            UhuServiceId sid = ((UhuServiceEndPoint) dService.getServiceEndPoint()).getUhuServiceId();
+            UhuDiscoveredZirk dService = dServices.next();
+            UhuZirkId sid = ((UhuZirkEndPoint) dService.getZirkEndPoint()).getUhuServiceId();
 
             if (UhuCompManager.getSphereForSadl().isServiceInSphere(sid, req.getSphereId())) {
                 //Set the Service Name

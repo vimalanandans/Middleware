@@ -1,8 +1,8 @@
 package com.bezirk.control.messages.streaming.rtc;
 
 import com.bezirk.control.messages.streaming.rtc.RTCControlMessage.RTCControlMessageType;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.junit.AfterClass;
@@ -28,11 +28,11 @@ public class RTCControlMessageTest {
     private static final Logger log = LoggerFactory
             .getLogger(RTCControlMessageTest.class);
 
-    private static final UhuServiceId serviceAId = new UhuServiceId("ServiceA");
-    private static final UhuServiceEndPoint sender = new UhuServiceEndPoint(
+    private static final UhuZirkId serviceAId = new UhuZirkId("ServiceA");
+    private static final UhuZirkEndPoint sender = new UhuZirkEndPoint(
             serviceAId);
-    private static final UhuServiceId serviceBId = new UhuServiceId("ServiceB");
-    private static final UhuServiceEndPoint recipient = new UhuServiceEndPoint(
+    private static final UhuZirkId serviceBId = new UhuZirkId("ServiceB");
+    private static final UhuZirkEndPoint recipient = new UhuZirkEndPoint(
             serviceBId);
     private static InetAddress inetAddr;
 

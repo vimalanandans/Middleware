@@ -154,8 +154,8 @@ public class RemoteSender implements Runnable {
 
             // TODO: currently we are setting a fake sender SEP
             /*
-			UhuServiceId serviceId = new UhuServiceId(FakeServiceRegistration.generateUniqueServiceID());
-			UhuServiceEndPoint senderEndpoint = new UhuServiceEndPoint("CloudEchoService", serviceId);
+			UhuZirkId serviceId = new UhuZirkId(FakeServiceRegistration.generateUniqueServiceID());
+			UhuZirkEndPoint senderEndpoint = new UhuZirkEndPoint("CloudEchoService", serviceId);
 			responsePipeHeader.setSenderSEP(senderEndpoint);
 			*/
 
@@ -199,8 +199,8 @@ public class RemoteSender implements Runnable {
 
             // TODO: currently we are setting a fake sender SEP
 			/*
-			UhuServiceId serviceId = new UhuServiceId(FakeServiceRegistration.generateUniqueServiceID());
-			UhuServiceEndPoint senderEndpoint = new UhuServiceEndPoint("CloudEchoService", serviceId);
+			UhuZirkId serviceId = new UhuZirkId(FakeServiceRegistration.generateUniqueServiceID());
+			UhuZirkEndPoint senderEndpoint = new UhuZirkEndPoint("CloudEchoService", serviceId);
 			response.getPipeHeader().setSenderSEP(senderEndpoint);
 			*/
 

@@ -3,7 +3,7 @@
 //import UhuDeviceInfo;
 //import ControlMessage;
 //import MulticastControlMessage;
-//import UhuServiceEndPoint;
+//import UhuZirkEndPoint;
 //
 //
 ///**
@@ -22,7 +22,7 @@
 //	private final UhuDeviceInfo uhuDeviceInfo;
 //	private final static Discriminator discriminator = ControlMessage.Discriminator.SphereShareMemberResponse;
 //
-//    public SphereShareMemberResponse(String sphereID, UhuDeviceInfo uhuDeviceInfo, UhuServiceEndPoint sender) {
+//    public SphereShareMemberResponse(String sphereID, UhuDeviceInfo uhuDeviceInfo, UhuZirkEndPoint sender) {
 //        super(sender, sphereID, discriminator);        
 //        this.uhuDeviceInfo = uhuDeviceInfo;
 //    }

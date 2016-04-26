@@ -1,7 +1,7 @@
 package com.bezirk.discovery;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.junit.Test;
 
@@ -18,8 +18,8 @@ public class DiscoveryLabelTest {
     public void test() {
 
         int discoveryId = 12;
-        UhuServiceId uhuServiceId = new UhuServiceId("ServiceA");
-        UhuServiceEndPoint requester = new UhuServiceEndPoint(uhuServiceId);
+        UhuZirkId uhuServiceId = new UhuZirkId("ServiceA");
+        UhuZirkEndPoint requester = new UhuZirkEndPoint(uhuServiceId);
         requester.device = "DeviceA";
         DiscoveryLabel discoveryLabel = new DiscoveryLabel(requester, discoveryId);
 
@@ -32,12 +32,12 @@ public class DiscoveryLabelTest {
         assertTrue("DiscoveryLabels with same requester and id are not considered equal", discoveryLabelTemp.equals(discoveryLabel));
         assertFalse("DiscoveryLabel is considered equal to requester.", discoveryLabelTemp.equals(requester));
 
-        requester = new UhuServiceEndPoint(new UhuServiceId("ServiceB"));
+        requester = new UhuZirkEndPoint(new UhuZirkId("ServiceB"));
         requester.device = "DeviceB";
         discoveryLabelTemp = new DiscoveryLabel(requester, discoveryId, true);
         assertFalse("DiscoveryLabels with different requester are considered equal", discoveryLabelTemp.equals(discoveryLabel));
 
-        requester = new UhuServiceEndPoint(uhuServiceId);
+        requester = new UhuZirkEndPoint(uhuServiceId);
         requester.device = "DeviceA";
         discoveryId = 34;
         discoveryLabelTemp = new DiscoveryLabel(requester, discoveryId, true);

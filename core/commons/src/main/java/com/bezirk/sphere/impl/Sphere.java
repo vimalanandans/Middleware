@@ -1,6 +1,6 @@
 package com.bezirk.sphere.impl;
 
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,9 +33,9 @@ public class Sphere implements Serializable {
     protected String sphereType;
     /**
      * Map maintains the services which belong to a particular device [device id
-     * : List of UhuServiceId]
+     * : List of UhuZirkId]
      */
-    protected LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices;
+    protected LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices;
 
     public Sphere() {
     }
@@ -64,14 +64,14 @@ public class Sphere implements Serializable {
     /**
      * @return the deviceServices
      */
-    public final Map<String, ArrayList<UhuServiceId>> getDeviceServices() {
+    public final Map<String, ArrayList<UhuZirkId>> getDeviceServices() {
         return deviceServices;
     }
 
     /**
      * @param deviceServices the deviceServices to set
      */
-    public final void setDeviceServices(LinkedHashMap<String, ArrayList<UhuServiceId>> deviceServices) {
+    public final void setDeviceServices(LinkedHashMap<String, ArrayList<UhuZirkId>> deviceServices) {
         this.deviceServices = deviceServices;
     }
 
@@ -84,7 +84,7 @@ public class Sphere implements Serializable {
      * @Deprecated use {@link #addService(String, String)}
      */
     @Deprecated
-    public final boolean addService(String deviceId, UhuServiceId service) {
+    public final boolean addService(String deviceId, UhuZirkId service) {
         return addService(deviceId, service.getUhuServiceId());
     }
 
@@ -116,13 +116,13 @@ public class Sphere implements Serializable {
 
         // check if deviceId is not present in the map
         if (!deviceServices.containsKey(deviceId)) {
-            deviceServices.put(deviceId, new ArrayList<UhuServiceId>());
+            deviceServices.put(deviceId, new ArrayList<UhuZirkId>());
         }
 
         // add the service to the set of serviceId
-        ArrayList<UhuServiceId> serviceList = deviceServices.get(deviceId);
+        ArrayList<UhuZirkId> serviceList = deviceServices.get(deviceId);
 
-        UhuServiceId service = new UhuServiceId(serviceId);
+        UhuZirkId service = new UhuZirkId(serviceId);
 
         if (!serviceList.contains(service)) {
             serviceList.add(service);
@@ -141,16 +141,16 @@ public class Sphere implements Serializable {
      * @param services
      * @return
      */
-    public final boolean addServices(String deviceId, Iterable<UhuServiceId> services) {
+    public final boolean addServices(String deviceId, Iterable<UhuZirkId> services) {
         boolean success = false;
         if (deviceId != null && services != null && deviceServices != null) {
             // check if deviceId is not present in the map
             if (!deviceServices.containsKey(deviceId)) {
-                deviceServices.put(deviceId, new ArrayList<UhuServiceId>());
+                deviceServices.put(deviceId, new ArrayList<UhuZirkId>());
             }
             // add all the services to the set of serviceId
-            ArrayList<UhuServiceId> serviceList = deviceServices.get(deviceId);
-            for (UhuServiceId serviceId : services) {
+            ArrayList<UhuZirkId> serviceList = deviceServices.get(deviceId);
+            for (UhuZirkId serviceId : services) {
                 if (!serviceList.contains(serviceId)) {
                     serviceList.add(serviceId);
                     LOGGER.debug("Service " + serviceId + " added to sphere " + sphereName);
@@ -171,7 +171,7 @@ public class Sphere implements Serializable {
      * @param service
      * @return
      */
-    public final boolean removeService(UhuServiceId service) {
+    public final boolean removeService(UhuZirkId service) {
         return false;
     }
 

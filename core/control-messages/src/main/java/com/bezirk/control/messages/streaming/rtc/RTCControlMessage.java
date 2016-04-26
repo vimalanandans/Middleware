@@ -1,6 +1,6 @@
 package com.bezirk.control.messages.streaming.rtc;
 
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 
 /**
  * This message is internally used by uhu for RTC handshake.
@@ -30,7 +30,7 @@ public class RTCControlMessage extends com.bezirk.control.messages.UnicastContro
      * @param msgType   Type of the RTC handshake message
      * @param rtcMsg    Actual message content
      */
-    public RTCControlMessage(UhuServiceEndPoint sender, UhuServiceEndPoint recipient, String sphereId, String uniqueKey, RTCControlMessageType msgType, String rtcMsg) {
+    public RTCControlMessage(UhuZirkEndPoint sender, UhuZirkEndPoint recipient, String sphereId, String uniqueKey, RTCControlMessageType msgType, String rtcMsg) {
         super(sender, recipient, sphereId, discriminator, false, uniqueKey);
         this.setRtcMsg(rtcMsg);
         this.setMsgType(msgType);

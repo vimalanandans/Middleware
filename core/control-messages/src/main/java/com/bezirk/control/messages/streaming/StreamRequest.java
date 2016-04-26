@@ -6,7 +6,7 @@ package com.bezirk.control.messages.streaming;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 
 /**
  * This Message is internally sent by the Uhu for hand shaking with the recipient.
@@ -50,7 +50,7 @@ public class StreamRequest extends UnicastControlMessage {
      */
     public short localStreamId = (short) -1;
 
-    public StreamRequest(UhuServiceEndPoint sender, UhuServiceEndPoint recipient, String sphereName,
+    public StreamRequest(UhuZirkEndPoint sender, UhuZirkEndPoint recipient, String sphereName,
                          String key, Location location, String serialzedString, String streamLabel, String fileName, boolean isEncrypted,
                          boolean isIncremental, boolean allowDrops, short localStreamId) {
         super(sender, recipient, sphereName, discriminator, false, key);

@@ -3,8 +3,8 @@ package com.bezirk.sadl;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.proxy.api.impl.UhuDiscoveredService;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuDiscoveredZirk;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezrik.network.UhuNetworkUtilities;
 
 import org.slf4j.Logger;
@@ -32,14 +32,14 @@ public class SadlRegistry implements Serializable {
      */
     private final Location defaultLocation = new Location(null, null, null);
     /**
-     * Stores the list of Registered UhuServiceId's of the Services.
+     * Stores the list of Registered UhuZirkId's of the Services.
      */
-    protected HashSet<UhuServiceId> sid = null;
+    protected HashSet<UhuZirkId> sid = null;
     /**
      * Stores the list of Services associated with the Protocol. Typically used in Discovery.
      * [Key -> Value] = [ProtocolName -> [Set of ServiceIds]]
      */
-    protected ConcurrentMap<String, Set<UhuServiceId>> protocolMap = null;
+    protected ConcurrentMap<String, Set<UhuZirkId>> protocolMap = null;
     /**
      * Stores the Protocol Description associated with the ProtocolRole. Typically used in Discovery.
      * [Key -> Value] = [ProtocolName -> Protocol description]
@@ -49,25 +49,25 @@ public class SadlRegistry implements Serializable {
      * Stores the serviceIds mapped to the event topics. Typically used in Sending/ Receiving Event.
      * [Key -> Value] = [eventTopic -> [Set of ServiceIds]]
      */
-    protected ConcurrentMap<String, Set<UhuServiceId>> eventMap = null;
+    protected ConcurrentMap<String, Set<UhuZirkId>> eventMap = null;
     /**
      * Stores the ServiceIds mapped to the stream topics. Typically used in Streaming.
      * [Key -> Value] = [streamTopic -> [Set of ServiceIds]]
      */
-    protected ConcurrentMap<String, Set<UhuServiceId>> streamMap = null;
+    protected ConcurrentMap<String, Set<UhuZirkId>> streamMap = null;
     /**
      * Stores the location of the Services.
-     * [Key -> Value] = [UhuServiceId -> Location]
+     * [Key -> Value] = [UhuZirkId -> Location]
      */
-    protected ConcurrentHashMap<UhuServiceId, Location> locationMap = null;
+    protected ConcurrentHashMap<UhuZirkId, Location> locationMap = null;
 
     public SadlRegistry() {
-        sid = new HashSet<UhuServiceId>();
-        protocolMap = new ConcurrentHashMap<String, Set<UhuServiceId>>();
+        sid = new HashSet<UhuZirkId>();
+        protocolMap = new ConcurrentHashMap<String, Set<UhuZirkId>>();
         protocolDescMap = new ConcurrentHashMap<String, String>();
-        eventMap = new ConcurrentHashMap<String, Set<UhuServiceId>>();
-        streamMap = new ConcurrentHashMap<String, Set<UhuServiceId>>();
-        locationMap = new ConcurrentHashMap<UhuServiceId, Location>();
+        eventMap = new ConcurrentHashMap<String, Set<UhuZirkId>>();
+        streamMap = new ConcurrentHashMap<String, Set<UhuZirkId>>();
+        locationMap = new ConcurrentHashMap<UhuZirkId, Location>();
     }
 
     @Override
@@ -152,7 +152,7 @@ public class SadlRegistry implements Serializable {
      * @param serviceId of the service being registered
      * @return true if registered, false otherwise
      */
-    public Boolean registerService(final UhuServiceId serviceId) {
+    public Boolean registerService(final UhuZirkId serviceId) {
 
         sid.add(serviceId);
         // Update the location!
@@ -169,19 +169,19 @@ public class SadlRegistry implements Serializable {
      * @param pRole     protocolRole of the service.
      * @return true if subscribed, false otherwise
      */
-    public Boolean subscribeService(final UhuServiceId serviceId, final ProtocolRole pRole) {
+    public Boolean subscribeService(final UhuZirkId serviceId, final ProtocolRole pRole) {
         final String protocolName = pRole.getProtocolName();
         final String protocolDescription = pRole.getDescription();
         final String[] eventsTopics = pRole.getEventTopics();
         final String[] streamTopics = pRole.getStreamTopics();
 
         // Update the Protocol Map
-        final Set<UhuServiceId> protocolServices;
+        final Set<UhuZirkId> protocolServices;
         if (protocolMap.containsKey(protocolName)) {
             protocolServices = protocolMap.get(protocolName);
             protocolServices.add(serviceId);
         } else {
-            protocolServices = new HashSet<UhuServiceId>();
+            protocolServices = new HashSet<UhuZirkId>();
             protocolServices.add(serviceId);
         }
 
@@ -196,11 +196,11 @@ public class SadlRegistry implements Serializable {
             logger.info("Protocol doesnot contain any Events to subscribe");
         } else {
             for (String eventTopic : eventsTopics) {
-                final HashSet<UhuServiceId> evntsResServices;
+                final HashSet<UhuZirkId> evntsResServices;
                 if (eventMap.containsKey(eventTopic)) {
-                    evntsResServices = (HashSet<UhuServiceId>) eventMap.get(eventTopic);
+                    evntsResServices = (HashSet<UhuZirkId>) eventMap.get(eventTopic);
                 } else {
-                    evntsResServices = new HashSet<UhuServiceId>();
+                    evntsResServices = new HashSet<UhuZirkId>();
                 }
 
                 evntsResServices.add(serviceId);
@@ -212,11 +212,11 @@ public class SadlRegistry implements Serializable {
             logger.info("Protocol does not contain any Streams to subscribe");
         } else {
             for (String streamTopic : streamTopics) {
-                final HashSet<UhuServiceId> strmsResServices;
+                final HashSet<UhuZirkId> strmsResServices;
                 if (streamMap.containsKey(streamTopic)) {
-                    strmsResServices = (HashSet<UhuServiceId>) streamMap.get(streamTopic);
+                    strmsResServices = (HashSet<UhuZirkId>) streamMap.get(streamTopic);
                 } else {
-                    strmsResServices = new HashSet<UhuServiceId>();
+                    strmsResServices = new HashSet<UhuZirkId>();
                 }
 
                 strmsResServices.add(serviceId);
@@ -235,9 +235,9 @@ public class SadlRegistry implements Serializable {
      * @param role      protocolRole of the service being unsubscribed
      * @return true if unsubscribed, false otherwise
      */
-    public Boolean unsubscribe(final UhuServiceId serviceId, final ProtocolRole role) {
+    public Boolean unsubscribe(final UhuZirkId serviceId, final ProtocolRole role) {
         if (protocolMap.containsKey(role.getProtocolName())) {
-            final Set<UhuServiceId> serviceIdSet = protocolMap.get(role.getProtocolName());
+            final Set<UhuZirkId> serviceIdSet = protocolMap.get(role.getProtocolName());
 
             if (!serviceIdSet.remove(serviceId)) {
                 logger.info("Service is Trying to unsubscribe that it has not subscribed to");
@@ -279,7 +279,7 @@ public class SadlRegistry implements Serializable {
      * @param serviceId
      * @return
      */
-    public Boolean unregisterService(final UhuServiceId serviceId) {
+    public Boolean unregisterService(final UhuZirkId serviceId) {
         if (isServiceRegisterd(serviceId)) {
             // Remove the events from event Map
             removeSidFromMaps(serviceId, eventMap, false);
@@ -300,11 +300,11 @@ public class SadlRegistry implements Serializable {
     /**
      * Update the location of the Service
      *
-     * @param serviceId ServiceId of the service
+     * @param serviceId ZirkId of the service
      * @param location  Location of the service
      * @return true if updated, false otherwise
      */
-    public Boolean setLocation(final UhuServiceId serviceId, final Location location) {
+    public Boolean setLocation(final UhuZirkId serviceId, final Location location) {
         if (isServiceRegisterd(serviceId)) {
             locationMap.put(serviceId, location);
             return true;
@@ -314,12 +314,12 @@ public class SadlRegistry implements Serializable {
     }
 
     /**
-     * Checks if ServiceId is registed
+     * Checks if ZirkId is registed
      *
      * @param serviceId of the Service
-     * @return true if sid contains ServiceId, false otherwise
+     * @return true if sid contains ZirkId, false otherwise
      */
-    public Boolean isServiceRegisterd(UhuServiceId serviceId) {
+    public Boolean isServiceRegisterd(UhuZirkId serviceId) {
         return sid.contains(serviceId);
     }
 
@@ -329,7 +329,7 @@ public class SadlRegistry implements Serializable {
      * @param serviceId whose location needs to be known
      * @return Location of the service
      */
-    public Location getLocationForService(UhuServiceId serviceId) {
+    public Location getLocationForService(UhuZirkId serviceId) {
         if (isServiceRegisterd(serviceId)) {
             try {
                 return (defaultLocation.equals(locationMap.get(serviceId)) ? UhuCompManager.getUpaDevice().getDeviceLocation() : locationMap.get(serviceId));
@@ -349,9 +349,9 @@ public class SadlRegistry implements Serializable {
      * @param serviceId
      * @param eventMap2
      */
-    private void removeTopicFromMap(final String topic, final UhuServiceId serviceId, final Map<String, Set<UhuServiceId>> eventMap2) {
+    private void removeTopicFromMap(final String topic, final UhuZirkId serviceId, final Map<String, Set<UhuZirkId>> eventMap2) {
         if (eventMap2.containsKey(topic)) {
-            HashSet<UhuServiceId> serviceIdSetEvents = (HashSet<UhuServiceId>) eventMap2.get(topic);
+            HashSet<UhuZirkId> serviceIdSetEvents = (HashSet<UhuZirkId>) eventMap2.get(topic);
             if (serviceIdSetEvents.contains(serviceId)) {
                 serviceIdSetEvents.remove(serviceId);
                 if (serviceIdSetEvents.isEmpty()) {
@@ -371,10 +371,10 @@ public class SadlRegistry implements Serializable {
      * @param eventMap2
      * @param isProtocol
      */
-    private void removeSidFromMaps(final UhuServiceId serviceId, final Map<String, Set<UhuServiceId>> eventMap2, final boolean isProtocol) {
-        Iterator<Entry<String, Set<UhuServiceId>>> iterator = eventMap2.entrySet().iterator();
+    private void removeSidFromMaps(final UhuZirkId serviceId, final Map<String, Set<UhuZirkId>> eventMap2, final boolean isProtocol) {
+        Iterator<Entry<String, Set<UhuZirkId>>> iterator = eventMap2.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, Set<UhuServiceId>> entry = iterator.next();
+            Map.Entry<String, Set<UhuZirkId>> entry = iterator.next();
             if (entry.getValue().contains(serviceId)) {
                 entry.getValue().remove(serviceId);
                 if (entry.getValue().isEmpty()) {
@@ -394,7 +394,7 @@ public class SadlRegistry implements Serializable {
      * @param serviceId
      * @return
      */
-    public Boolean isStreamTopicRegistered(String streamTopic, UhuServiceId serviceId) {
+    public Boolean isStreamTopicRegistered(String streamTopic, UhuZirkId serviceId) {
         return isServiceRegisterd(serviceId) && streamMap.containsKey(streamTopic) && streamMap.get(streamTopic).contains(serviceId);
     }
 
@@ -405,22 +405,22 @@ public class SadlRegistry implements Serializable {
      * @param location
      * @return
      */
-    public Set<UhuDiscoveredService> discoverServices(ProtocolRole pRole, Location location) {
+    public Set<UhuDiscoveredZirk> discoverServices(ProtocolRole pRole, Location location) {
         if (!protocolMap.containsKey(pRole.getProtocolName())) {
             logger.debug("No services are subscribed for this protocol Role");
             return null;
         }
-        final HashSet<UhuDiscoveredService> discoveredServices = new HashSet<UhuDiscoveredService>();
+        final HashSet<UhuDiscoveredZirk> discoveredServices = new HashSet<UhuDiscoveredZirk>();
         // Get all the services associated with the protocols
-        final Set<UhuServiceId> services = protocolMap.get(pRole.getProtocolName());
-        for (UhuServiceId serviceId : services) {
+        final Set<UhuZirkId> services = protocolMap.get(pRole.getProtocolName());
+        for (UhuZirkId serviceId : services) {
             Location serviceLocation = getLocationForService(serviceId);
 
             if (null != location && !location.subsumes(serviceLocation)) {
                 logger.debug("inside if before continue, Location didnot match");
                 continue;
             }
-            discoveredServices.add(new UhuDiscoveredService(UhuNetworkUtilities.getServiceEndPoint(serviceId), null, pRole.getProtocolName(), serviceLocation));
+            discoveredServices.add(new UhuDiscoveredZirk(UhuNetworkUtilities.getServiceEndPoint(serviceId), null, pRole.getProtocolName(), serviceLocation));
         }
         if (discoveredServices.isEmpty()) {
             logger.debug("No services are present in the location: " + location.toString() + " subscribed to Protocol Role:  " + pRole.getProtocolName());
@@ -437,28 +437,28 @@ public class SadlRegistry implements Serializable {
      * @param recipient recipient
      * @return true if registered, false otherwise
      */
-    public boolean checkUnicastEvent(String topic, UhuServiceId recipient) {
+    public boolean checkUnicastEvent(String topic, UhuZirkId recipient) {
         return isServiceRegisterd(recipient) && eventMap.containsKey(topic) && eventMap.get(topic).contains(recipient);
     }
 
     /**
-     * Returns the Set<UhuServiceId> associated with the Topic and Location
+     * Returns the Set<UhuZirkId> associated with the Topic and Location
      *
      * @param topic    topic of the Event
      * @param location of the Service
-     * @return Set<UhuServiceId> if the servives are present, null otherwise
+     * @return Set<UhuZirkId> if the servives are present, null otherwise
      */
-    public Set<UhuServiceId> checkMulticastEvent(String topic, Location location) {
-        HashSet<UhuServiceId> services = null;
+    public Set<UhuZirkId> checkMulticastEvent(String topic, Location location) {
+        HashSet<UhuZirkId> services = null;
 
         if (eventMap.containsKey(topic)) {
             if (null == location) {
-                return new HashSet<UhuServiceId>(eventMap.get(topic));
+                return new HashSet<UhuZirkId>(eventMap.get(topic));
             }
 
-            HashSet<UhuServiceId> tempServices = (HashSet<UhuServiceId>) eventMap.get(topic);
-            services = new HashSet<UhuServiceId>();
-            for (UhuServiceId serviceId : tempServices) {
+            HashSet<UhuZirkId> tempServices = (HashSet<UhuZirkId>) eventMap.get(topic);
+            services = new HashSet<UhuZirkId>();
+            for (UhuZirkId serviceId : tempServices) {
                 Location serviceLocation = getLocationForService(serviceId);
                 if (serviceLocation != null && location.subsumes(serviceLocation)) {
                     services.add(serviceId);
@@ -476,8 +476,8 @@ public class SadlRegistry implements Serializable {
      *
      * @return the list of Registered Service
      */
-    public Set<UhuServiceId> getRegisteredServices() {
-        return new HashSet<UhuServiceId>(sid);
+    public Set<UhuZirkId> getRegisteredServices() {
+        return new HashSet<UhuZirkId>(sid);
     }
 
     /**

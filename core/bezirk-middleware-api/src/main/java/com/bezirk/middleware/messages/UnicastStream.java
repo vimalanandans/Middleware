@@ -12,7 +12,7 @@
  */
 package com.bezirk.middleware.messages;
 
-import com.bezirk.middleware.addressing.ServiceEndPoint;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
 
 /**
  * Base class for streams with one recipient. Extend {@link MulticastStream} for streams that
@@ -20,10 +20,10 @@ import com.bezirk.middleware.addressing.ServiceEndPoint;
  *
  * @see Stream
  * @see MulticastStream
- * @see com.bezirk.middleware.addressing.ServiceEndPoint
+ * @see ZirkEndPoint
  */
 public abstract class UnicastStream extends Stream {
-    private final ServiceEndPoint recipient;
+    private final ZirkEndPoint recipient;
 
     /**
      * Create a <code>Stream</code> with one recipient where the recipient is in one of the sender's
@@ -33,7 +33,7 @@ public abstract class UnicastStream extends Stream {
      * @param topic     the pub-sub topic for this stream
      * @param recipient the specific component that should receive this stream
      */
-    public UnicastStream(Flag flag, String topic, ServiceEndPoint recipient) {
+    public UnicastStream(Flag flag, String topic, ZirkEndPoint recipient) {
         super(flag, topic);
         this.recipient = recipient;
     }
@@ -43,7 +43,7 @@ public abstract class UnicastStream extends Stream {
      *
      * @return the endpoint that is the recipient of this stream
      */
-    public ServiceEndPoint getRecipient() {
+    public ZirkEndPoint getRecipient() {
         return recipient;
     }
 }

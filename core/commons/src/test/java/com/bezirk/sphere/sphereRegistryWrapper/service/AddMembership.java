@@ -5,7 +5,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.OwnerService;
 import com.bezirk.sphere.impl.OwnerSphere;
@@ -77,7 +77,7 @@ public class AddMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#addMembership(UhuServiceId, String, String, String)}.
+     * Test method for {@link SphereRegistryWrapper#addMembership(UhuZirkId, String, String, String)}.
      * <p/>
      * <br>Test if a new service is added successfully to the registry.
      * The method should return True.
@@ -91,7 +91,7 @@ public class AddMembership {
 
         //Create service 1 but dont add it to registry
         String serviceName1 = sphereTestUtility.MEMBER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         String ownerDeviceId = upaDevice.getDeviceId();
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
@@ -103,7 +103,7 @@ public class AddMembership {
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#addMembership(UhuServiceId, String, String, String)}.
+     * Test method for {@link SphereRegistryWrapper#addMembership(UhuZirkId, String, String, String)}.
      * <p/>
      * <br>If an existing service is being added to the registry, then just the service name is updated.
      * The method should return True.
@@ -117,7 +117,7 @@ public class AddMembership {
 
         //Create service 1 and add it to registry
         String serviceName1 = sphereTestUtility.MEMBER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         String ownerDeviceId = upaDevice.getDeviceId();
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
@@ -131,7 +131,7 @@ public class AddMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#addMembership(UhuServiceId, String, String, String)}.
+     * Test method for {@link SphereRegistryWrapper#addMembership(UhuZirkId, String, String, String)}.
      * <p/>
      * <br>When sphere does not exist, the method will return False
      */
@@ -143,7 +143,7 @@ public class AddMembership {
 
         //Create service 1 and add it to registry
         String serviceName1 = sphereTestUtility.MEMBER_SERVICE_NAME_1;
-        UhuServiceId serviceId1 = new UhuServiceId(serviceName1);
+        UhuZirkId serviceId1 = new UhuZirkId(serviceName1);
         String ownerDeviceId = upaDevice.getDeviceId();
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);

@@ -21,7 +21,7 @@ import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.features.CommsFeature;
 import com.bezirk.logging.LogServiceMessageHandler;
 import com.bezirk.pipe.core.PipeManager;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
+import com.bezirk.proxy.api.impl.UhuZirkEndPoint;
 import com.bezirk.sadl.UhuSadlManager;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.sphere.security.UPABlockCipherService;
@@ -648,7 +648,7 @@ public abstract class CommsProcessor implements IUhuComms {
         // fixme: check the version
 
         // device Id
-        UhuServiceEndPoint endPoint = new UhuServiceEndPoint(deviceId, null);
+        UhuZirkEndPoint endPoint = new UhuZirkEndPoint(deviceId, null);
         msgLedger.setSender(endPoint);
 
         msgLedger.setMsg(new String(wireMessage.getMsg()));

@@ -5,7 +5,7 @@ package com.bezirk.sphere.api;
 
 import com.bezirk.middleware.objects.UhuDeviceInfo;
 import com.bezirk.middleware.objects.UhuServiceInfo;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.UhuZirkId;
 import com.bezirk.sphere.impl.DeviceInformation;
 import com.google.zxing.common.BitMatrix;
 
@@ -28,7 +28,7 @@ public interface ISphereUtils {
      * @param serviceIds
      * @return
      */
-    public boolean validateServices(Iterable<UhuServiceId> serviceIds);
+    public boolean validateServices(Iterable<UhuZirkId> serviceIds);
 
     /**
      * Add the member services
@@ -40,11 +40,11 @@ public interface ISphereUtils {
 
     public boolean addLocalServicesToSphere(String sphereId, Iterable<UhuServiceInfo> serviceInfos);
 
-    public boolean addLocalServicesToSphere(Iterable<UhuServiceId> serviceIds, String sphereId);
+    public boolean addLocalServicesToSphere(Iterable<UhuZirkId> serviceIds, String sphereId);
 
     public boolean addLocalServicesToSphere(String sphereId);
 
-    public Iterable<UhuServiceInfo> getUhuServiceInfo(Iterable<UhuServiceId> services);
+    public Iterable<UhuServiceInfo> getUhuServiceInfo(Iterable<UhuZirkId> services);
 
     public String getShareCode(String sphereId);
 

@@ -12,7 +12,7 @@
  */
 package com.bezirk.middleware.messages;
 
-import com.bezirk.middleware.addressing.ServiceEndPoint;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Message.Flag;
 
 import org.junit.Test;
@@ -25,27 +25,19 @@ import static org.junit.Assert.assertEquals;
  * @author AJC6KOR
  */
 public class UnicastStreamTest {
-
     @Test
     public void test() {
-
         Flag flag = Flag.REQUEST;
         String topic = "TestTopic";
-        MockServiceEndpoint recipient = new MockServiceEndpoint("ServiceA");
+        MockZirkEndpoint recipient = new MockZirkEndpoint("ZirkA");
         com.bezirk.middleware.messages.UnicastStream unicastStream = new MockUnicastStream(flag, topic, recipient);
-
-	
-	/*
-     * --- Deserialization is failing serviceEndpoint doesn't have a no-args constructor-----
-			String serializedUnicastStream = unicastStream.toJson();
-	 		UnicastStream deserializedUnicastStream = UnicastStream.fromJson(serializedUnicastStream, UnicastStream.class);*/
 
         assertEquals("Recipient is not equal to the set value.", recipient, unicastStream.getRecipient());
 
     }
 
     private class MockUnicastStream extends UnicastStream {
-        MockUnicastStream(Flag flag, String topic, ServiceEndPoint recipient) {
+        MockUnicastStream(Flag flag, String topic, ZirkEndPoint recipient) {
             super(flag, topic, recipient);
         }
     }
