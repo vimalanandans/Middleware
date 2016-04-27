@@ -8,9 +8,10 @@ import java.util.Locale;
 
 /**
  * Hold the Uhu Config
- * <p/>
+ * <p>
  * At the moment it holds the data about Uhu PC TODO: Move this file to
  * java-common so that all the configurations are inside this module.
+ * </p>
  */
 public class UhuConfig {
 

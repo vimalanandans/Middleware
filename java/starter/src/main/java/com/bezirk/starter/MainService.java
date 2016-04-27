@@ -30,8 +30,6 @@ import javax.swing.SwingUtilities;
 
 /**
  * MainService for uhu-pc which controls the uhu stack
- *
- * @modified AJC6KOR
  */
 public class MainService {
     private static final Logger logger = LoggerFactory

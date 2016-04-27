@@ -22,6 +22,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * <p>
+ * <b style="color:darkred;">This JavaDoc is for an API class that is currently incomplete.</b>
+ * </p>
  * Base class for (1) defining the {@link ProtocolRole ProtocolRoles} that may be transmitted via
  * a pipe and (2) documenting the rationale for allowing each role. These policies may be displayed
  * to the user to help them decide whether or not they want to allow the use of a particular pipe.

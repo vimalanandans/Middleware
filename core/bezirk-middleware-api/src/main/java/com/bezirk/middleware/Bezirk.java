@@ -173,7 +173,6 @@ public interface Bezirk {
      * <code>allowedIn</code> and <code>allowedOut</code>, which restrict the messages that can flow
      * into and out of the sphere via the pipe to just those messages belonging to explicitly listed
      * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles's}.
-     * <p><mark>TODO:</mark> What happens if you try to use an unauthorized pipe?</p>
      *
      * @param requester  id of Zirk requesting the pipe, as returned by {@link #registerZirk(String)}
      * @param pipe       the pipe the Zirk wants permission to use
