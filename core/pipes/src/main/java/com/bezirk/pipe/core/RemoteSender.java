@@ -9,10 +9,8 @@ import com.bezirk.control.messages.pipes.CloudStreamResponse;
 import com.bezirk.control.messages.pipes.PipeHeader;
 import com.bezirk.control.messages.pipes.PipeMulticastHeader;
 import com.bezirk.middleware.addressing.Address;
-import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.GetStreamRequest;
 import com.bezirk.pipe.cloud.BezirkCloudPipeClient;
 import com.bezirk.pipe.cloud.CloudPipeClient;
 

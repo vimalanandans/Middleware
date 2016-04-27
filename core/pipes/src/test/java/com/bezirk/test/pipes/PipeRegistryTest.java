@@ -1,6 +1,5 @@
 package com.bezirk.test.pipes;
 
-import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.core.PipeApprovalException;

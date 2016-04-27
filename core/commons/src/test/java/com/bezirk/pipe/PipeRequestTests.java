@@ -3,7 +3,6 @@ package com.bezirk.pipe;
 import com.bezirk.application.IUhuApp;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.messagehandler.ZirkMessageHandler;
-import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.pipe.core.PipeApprovalException;

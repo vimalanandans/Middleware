@@ -1,6 +1,5 @@
 package com.bezirk.messagehandler;
 
-import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.policy.ext.UhuPipePolicy;

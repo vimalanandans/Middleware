@@ -3,7 +3,6 @@ package com.bezirk.proxy.android;
 import android.content.Intent;
 
 import com.bezirk.actions.UhuActions;
-import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.core.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRequest;

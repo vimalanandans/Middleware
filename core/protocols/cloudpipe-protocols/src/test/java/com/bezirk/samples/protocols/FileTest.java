@@ -1,7 +1,5 @@
 package com.bezirk.samples.protocols;
 
-import com.bezirk.middleware.messages.GetStreamRequest;
-
 import org.junit.Test;
 
 import java.util.Arrays;

@@ -13,7 +13,6 @@
 package com.bezirk.middleware.serialziation;
 
 import com.bezirk.middleware.addressing.Address;
-import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
 

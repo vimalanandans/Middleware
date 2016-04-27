@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;

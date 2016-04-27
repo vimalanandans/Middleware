@@ -2,7 +2,6 @@ package com.bezirk.test.pipes;
 
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.middleware.addressing.Address;
-import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.pipe.mgr.LocalUhuSender;
 import com.bezirk.pipe.mgr.PipeManager;

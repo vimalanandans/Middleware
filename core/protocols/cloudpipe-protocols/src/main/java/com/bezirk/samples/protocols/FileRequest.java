@@ -1,7 +1,6 @@
 package com.bezirk.samples.protocols;
 
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.GetStreamRequest;
 
 public class FileRequest extends GetStreamRequest {
 

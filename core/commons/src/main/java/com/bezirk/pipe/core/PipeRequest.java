@@ -1,7 +1,6 @@
 package com.bezirk.pipe.core;
 
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.CloudPipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkId;
 
