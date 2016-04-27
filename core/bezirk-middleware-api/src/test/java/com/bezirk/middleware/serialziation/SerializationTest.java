@@ -28,8 +28,7 @@ public class SerializationTest {
     public void testAddressSerializer() throws Exception {
         Location location = new Location("home", "garage", "garagedoor");
         URI uri = new URI("http://foo/bar");
-        Pipe pipe = new CloudPipe("boschPipe", uri);
-        Address address = new Address(location, pipe);
+        Address address = new Address(location);
 
         String serializedAddress = address.toJson();
         System.out.println("serialized address    : " + serializedAddress);
@@ -39,21 +38,6 @@ public class SerializationTest {
         System.out.println("serialized new address: " + serializedNewAddress);
 
         assertTrue(serializedAddress.equals(serializedNewAddress));
-    }
-
-    @Test
-    public void testPipeSerialization() throws Exception {
-        URI uri = new URI("http://foo/bar");
-        Pipe pipe = new CloudPipe("boschPipe", uri);
-
-        String serializedPipe = pipe.toJson();
-        System.out.println("Serialized pipe    : " + serializedPipe);
-
-        Pipe newPipe = Pipe.fromJson(serializedPipe, CloudPipe.class);
-        String serializedNewPipe = newPipe.toJson();
-        System.out.println("Serialized new pipe: " + serializedNewPipe);
-
-        assertTrue(serializedPipe.equals(serializedNewPipe));
     }
 
 }

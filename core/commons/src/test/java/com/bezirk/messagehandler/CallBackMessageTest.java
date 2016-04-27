@@ -29,8 +29,6 @@ public class CallBackMessageTest {
 
         testMulticastCallbackMessage();
 
-        testPipeRequestCallbackMessage();
-
         testStreamStatusCallbackMessage();
 
         testUnicastStreamCallbackMessage();
@@ -60,36 +58,6 @@ public class CallBackMessageTest {
 
         streamStatusMessage = new StreamStatusMessage(null, 0, (short) 0);
         assertEquals("Callbackdiscriminator is not set to STREAM_STATUS for streamStatusCallbackMessage.", "STREAM_STATUS", streamStatusMessage.callbackDiscriminator);
-    }
-
-    private void testPipeRequestCallbackMessage() {
-        PipeRequestIncomingMessage pipeRequestIncomingMessage = new PipeRequestIncomingMessage();
-        assertEquals("Callbackdiscriminator is not set to PIPE-APPROVED for pipeRequestCallbackMessage.", "PIPE-APPROVED", pipeRequestIncomingMessage.callbackDiscriminator);
-
-        String serializedCallback = pipeRequestIncomingMessage.serialize();
-        PipeRequestIncomingMessage deserializedcallbackMessage = PipeRequestIncomingMessage.deserialize(serializedCallback, PipeRequestIncomingMessage.class);
-        assertEquals("Callbackdiscriminator is not set to PIPE-APPROVED for pipeRequestCallbackMessage.", "PIPE-APPROVED", deserializedcallbackMessage.getCallbackType());
-
-        Pipe pipe = null;
-        try {
-            pipe = new CloudPipe("test", new URI("http;//test.com"));
-        } catch (URISyntaxException e) {
-            fail("Failed to create cloudpipe");
-        }
-        PipePolicy allowedIn = new MockPipePolicy();
-        UhuPipePolicy allowedInPolicy = new UhuPipePolicy(allowedIn);
-        PipePolicy allowedOut = new MockPipePolicy();
-        UhuPipePolicy allowedOutPolicy = new UhuPipePolicy(allowedOut);
-        String pipeReqId = "Request123";
-        BezirkZirkId recipient = new BezirkZirkId("TestService");
-
-        pipeRequestIncomingMessage = new PipeRequestIncomingMessage(pipe, pipeReqId, allowedInPolicy, allowedOutPolicy, recipient);
-
-        assertEquals("AllowedInPolicy is not equal to the set value in pipeRequestCallbackMessage.", allowedInPolicy, pipeRequestIncomingMessage.getAllowedIn());
-        assertEquals("AllowedOutPolicy is not equal to the set value in pipeRequestCallbackMessage.", allowedOutPolicy, pipeRequestIncomingMessage.getAllowedOut());
-        assertEquals("Pipe is not equal to the set value in pipeRequestCallbackMessage.", pipe, pipeRequestIncomingMessage.getPipe());
-        assertEquals("PipeReqId is not equal to the set value in pipeRequestCallbackMessage.", pipeReqId, pipeRequestIncomingMessage.getPipeReqId());
-        assertEquals("Recepient is not equal to the set value in pipeRequestCallbackMessage.", recipient, pipeRequestIncomingMessage.getRecipient());
     }
 
     private void testMulticastCallbackMessage() {
