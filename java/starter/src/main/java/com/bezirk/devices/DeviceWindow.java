@@ -88,7 +88,7 @@ public class DeviceWindow extends JFrame {
         textFieldNear = new JTextField();
         textFieldNear.setBounds(234, 132, 155, 19);
         textFieldNear.setText(upaDevice.getDeviceLocation() == null ? ""
-                : upaDevice.getDeviceLocation().getLandmark());
+                : upaDevice.getDeviceLocation().getNarrowScope());
         contentPane.add(textFieldNear);
         textFieldNear.setColumns(10);
 
