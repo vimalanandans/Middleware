@@ -20,11 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * This testcase verifies the Stream by setting the properties and retrieving them after deserialization.
- *
- * @author AJC6KOR
- */
 public class StreamTest {
 
     @Test

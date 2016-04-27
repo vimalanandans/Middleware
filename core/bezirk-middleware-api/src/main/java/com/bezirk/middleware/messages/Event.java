@@ -1,14 +1,19 @@
 /**
- * Copyright (C) 2014 Robert Bosch, LLC. All Rights Reserved.
- * <p/>
- * Authors: Joao de Sousa, 2014
- * Mansimar Aneja, 2014
- * Vijet Badigannavar, 2014
- * Samarjit Das, 2014
- * Cory Henson, 2014
- * Sunil Kumar Meena, 2014
- * Adam Wynne, 2014
- * Jan Zibuschka, 2014
+ * This file is part of Bezirk-Middleware-API.
+ * <p>
+ * Bezirk-Middleware-API is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * </p>
+ * <p>
+ * Bezirk-Middleware-API is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * </p>
+ * You should have received a copy of the GNU General Public License
+ * along with Bezirk-Middleware-API.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bezirk.middleware.messages;
 

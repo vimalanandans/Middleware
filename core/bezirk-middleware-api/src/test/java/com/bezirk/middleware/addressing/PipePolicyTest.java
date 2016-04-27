@@ -1,15 +1,3 @@
-/**
- * Copyright (C) 2014 Robert Bosch, LLC. All Rights Reserved.
- * <p/>
- * Authors: Joao de Sousa, 2014
- * Mansimar Aneja, 2014
- * Vijet Badigannavar, 2014
- * Samarjit Das, 2014
- * Cory Henson, 2014
- * Sunil Kumar Meena, 2014
- * Adam Wynne, 2014
- * Jan Zibuschka, 2014
- */
 package com.bezirk.middleware.addressing;
 
 import com.bezirk.middleware.messages.ProtocolRole;
@@ -24,12 +12,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * This testcase verifies the PipePolicy by setting the properties and retrieving them after deserialization.
- * This alse includes tests for verifying equals check.
- *
- * @author AJC6KOR
- */
 public class PipePolicyTest {
     @Test
     public void test() {
