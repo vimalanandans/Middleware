@@ -222,7 +222,7 @@ public class Location implements Serializable {
     /**
      * @return the narrowest scope that helps resolve this <code>Location</code>'s set of Things
      */
-    public String getNarrowSpope() {
+    public String getNarrowScope() {
         return narrowScope;
     }
 

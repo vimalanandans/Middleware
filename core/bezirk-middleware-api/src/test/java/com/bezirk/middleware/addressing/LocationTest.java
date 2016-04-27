@@ -41,13 +41,13 @@ public class LocationTest {
 
         assertEquals("Area is not equal to the set value", "BLOCK2", tempLoc.getIntermediateScope());
         assertEquals("Region is not equal to the set value.", "OFFICE1", tempLoc.getWideScope());
-        assertEquals("Landmark is not equal to the set value.", "FLOOR1", tempLoc.getLandmark());
+        assertEquals("Landmark is not equal to the set value.", "FLOOR1", tempLoc.getNarrowScope());
 
         Location testLoc = new Location(null, null, null);
         assertFalse("Location subsumes the invalid temp location. ", tempLoc.subsumes(testLoc));
 
         Location regionAreaLoc = new Location("OFFICE1/BLOCk1");
-        assertNull("Landmark is found for location with only region and area", regionAreaLoc.getLandmark());
+        assertNull("Landmark is found for location with only region and area", regionAreaLoc.getNarrowScope());
 
         testLoc = new Location("OFFICE1/BLOCK2/FLOOR1");
         assertEquals("Similar locations have different hashcode.", testLoc.hashCode(), tempLoc.hashCode());
