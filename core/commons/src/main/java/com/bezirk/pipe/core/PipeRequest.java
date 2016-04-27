@@ -1,6 +1,7 @@
 package com.bezirk.pipe.core;
 
 import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkId;
 
@@ -9,7 +10,7 @@ public class PipeRequest {
     private ZirkId requestingService = null;
 
     // NOTE: we only support CloudPipes for now
-    private CloudPipe pipe = null;
+    private Pipe pipe = null;
     private PipePolicy allowedIn = null;
     private PipePolicy allowedOut = null;
     private BezirkListener listener = null;
@@ -27,11 +28,11 @@ public class PipeRequest {
         this.requestingService = requestingService;
     }
 
-    public CloudPipe getPipe() {
+    public Pipe getPipe() {
         return pipe;
     }
 
-    public void setPipe(CloudPipe requestedPipe) {
+    public void setPipe(Pipe requestedPipe) {
         this.pipe = requestedPipe;
     }
 

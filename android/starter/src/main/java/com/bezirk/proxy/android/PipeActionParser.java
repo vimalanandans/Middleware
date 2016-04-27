@@ -73,7 +73,7 @@ public class PipeActionParser {
          * Create the PipeRequest object
          */
 
-        CloudPipe pipe = null;
+        /*CloudPipe pipe = null;
 
         if (pipeClassName.equals(CloudPipe.class.getCanonicalName())) {
             log.debug("Creating cloud pipe");
@@ -81,10 +81,10 @@ public class PipeActionParser {
         } else {
             log.error("Unknown pipe type: " + pipeClassName);
             return null;
-        }
+        }*/
 
         PipeRequest pipeRequest = new PipeRequest(pipeId);
-        pipeRequest.setPipe(pipe);
+        //pipeRequest.setPipe(pipe);
         pipeRequest.setRequestingService(serviceId);
 
         pipeRequest.setAllowedIn(allowedIn);

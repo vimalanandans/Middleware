@@ -45,7 +45,6 @@ public class AndroidApp implements IUhuApp {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setComponent(new ComponentName(COMPONENT_NAME, "com.bosch.upa.spheremanager.PipeActivity"));
         intent.putExtra(UhuActions.KEY_PIPE_REQ_ID, pipeRequestId);
-        intent.putExtra(UhuActions.KEY_PIPE_NAME, pipeRequest.getPipe().getName());
         intent.putExtra(UhuActions.KEY_SENDER_ZIRK_ID, new Gson().toJson((BezirkZirkId) pipeRequest.getRequestingService()));
 
         // TODO remove the above and send the below serialized object to UI

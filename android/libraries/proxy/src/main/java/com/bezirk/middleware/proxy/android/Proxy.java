@@ -306,10 +306,6 @@ public final class Proxy implements Bezirk {
         addPipe.putExtra(UhuActions.KEY_PIPE_REQ_ID, pipeId);
         addPipe.putExtra(UhuActions.KEY_SENDER_ZIRK_ID, new Gson().toJson((BezirkZirkId) requester));
 
-        if (pipe instanceof CloudPipe) {
-            addPipe.putExtra(UhuActions.KEY_PIPE_URI, ((CloudPipe) pipe).getURI().toString());
-        }
-
         addPipe.putExtra(UhuActions.KEY_PIPE_CLASS, pipe.getClass().getCanonicalName());
 
         // Add Pipe Policys
