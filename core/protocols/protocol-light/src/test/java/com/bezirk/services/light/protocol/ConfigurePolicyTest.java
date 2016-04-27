@@ -34,7 +34,7 @@ public class ConfigurePolicyTest {
         ConfigurePolicy configurePolicy = new ConfigurePolicy(loc, policy, "Bright Light");
 
 
-        assertEquals("Floor", configurePolicy.getLocation().getArea());
+        assertEquals("Floor", configurePolicy.getLocation().getIntermediateScope());
         assertEquals("KOH", configurePolicy.getPolicy().toString());
         assertEquals("Bright Light", configurePolicy.getPresenceSentivity());
         assertEquals("No-King", configurePolicy.getKing());

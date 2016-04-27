@@ -12,6 +12,9 @@
  */
 package com.bezirk.middleware.addressing;
 
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.messages.ProtocolRole;
+
 import java.io.Serializable;
 
 /**
@@ -21,7 +24,7 @@ import java.io.Serializable;
  * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles}), which may be too
  * coarse-grained for some cases. A semantic address is used to more precisely scope
  * message recipients after topic-based filtering occurs.
- * <h4>Scopes</h4>
+ * <h1>Scopes</h1>
  * <p>
  * To identify a Thing or set of Things, a semantic address contains three scopes of
  * increasing specificity that resolve to place a specific Thing or Things in scope:
@@ -44,13 +47,13 @@ import java.io.Serializable;
  * set by the location Zirk. The location of a Zirk operating a Thing is set using
  * {@link com.bezirk.middleware.Bezirk#setLocation(ZirkId, Location)}.
  * </p>
- * <h4>Representing Semantic Addresses as Strings</h4>
+ * <h1>Representing Semantic Addresses as Strings</h1>
  * Semantic addresses are represented as strings by listing each scope in descending order
  * separated by a forward slash: <code>"wide scope/intermediate scope/narrow scope"</code>.
  * For example, using the scopes in the examples from the previous section, the semantic
  * addresses are represented by the following strings:
  * <code>"floor 1/kitchen/ceiling light"</code> and <code>"floor 1/kitchen/window"</code>.
- * <h4>Specifying Scopes</h4>
+ * <h1>Specifying Scopes</h1>
  * The relative size of each scope is dependent on the specific context the semantic address
  * exists withing. The previous examples were within the context of Things in a building, however
  * in a context where Things are traffic controls for municipalities the wide scope may be a
@@ -75,8 +78,56 @@ import java.io.Serializable;
  * <li><code>"//light"</code> refers to all things named &quot;light&quot; in the
  * building.</li>
  * </ul>
- * <h4>Practical Example</h4>
- * <mark><strong>TODO</strong></mark>: We need to show some code here.
+ * <h1>Practical Example</h1>
+ * Setting a Things physical location during initial configuration is a typical reason to use
+ * a semantic address. The exact contents of this address can come from user-input when a Zirk makes
+ * an initial connection to the Thing, or from a Zirk providing location awareness services. In
+ * practice, a user will typically train a location awareness Zirk to teach the service the names
+ * of each scope in some location (e.g. the names of floors and rooms on those floors), which will
+ * later act as material to construct a <code>Location</code>. In this scenario, a Zirk first
+ * connecting to a device will query the location service asking for the user's current location
+ * and will use the reply to set a starter wide scope and intermediate scope. The Zirk will then
+ * assign the narrow scope a default name for the Thing, and the user can choose to override the
+ * initial values for any scope.
+ * <p>
+ * Assuming a Zirk already
+ * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener) discovered}
+ * the location service and lights were already configured, the Zirk would turn on all lights in
+ * the user's current location using code similar to the following:
+ * </p>
+ * <pre>
+ *     private class LightLocationListener implements BezirkListener {
+ *         // Passed to ctor
+ *         private final Bezirk bezirk;
+ *         private final ZirkId lightId;
+ *
+ *         // ...
+ *
+ *         {@literal @}Override
+ *         public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
+ *              // Receive an event containing the user's current location
+ *              if (UserLocationEvent.topic.equals(topic)) {
+ *                  UserLocationEvent locationEvent = Message.deserialize(event, UserLocationEvent.class);
+ *                  Location userLocation = locationEvent.getLocation();
+ *
+ *                  // Create a semantic address referring to all Things in the user's current
+ *                  // room
+ *                  Location lightLocation = new Location(userLocation.getWideScope(),
+ *                                                        userLocation.getIntermediateScope(),
+ *                                                        null);
+ *
+ *                  // Send an event to all Things at the semantic address subscribed to the
+ *                  // light protocol telling the Things to turn on
+ *                  bezirk.sendEvent(lightId, new Address(lightLocation),
+ *                                   new ActuateLightEvent(LightOperations.ON);
+ *              }
+ *         }
+ *
+ *         // ...
+ *     }
+ * </pre>
+ *
+ *
  */
 public class Location implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -164,14 +215,14 @@ public class Location implements Serializable {
     /**
      * @return the middle scope that helps resolve this <code>Location</code>'s set of Things
      */
-    public String getArea() {
+    public String getIntermediateScope() {
         return intermediateScope;
     }
 
     /**
      * @return the narrowest scope that helps resolve this <code>Location</code>'s set of Things
      */
-    public String getLandmark() {
+    public String getNarrowSpope() {
         return narrowScope;
     }
 

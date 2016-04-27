@@ -39,7 +39,7 @@ public class LocationTest {
         tempLoc = new Location("OFFICE1/BLOCK2/FLOOR1");
         assertFalse("Location subsumes the invalid temp location. ", location.subsumes(tempLoc));
 
-        assertEquals("Area is not equal to the set value", "BLOCK2", tempLoc.getArea());
+        assertEquals("Area is not equal to the set value", "BLOCK2", tempLoc.getIntermediateScope());
         assertEquals("Region is not equal to the set value.", "OFFICE1", tempLoc.getWideScope());
         assertEquals("Landmark is not equal to the set value.", "FLOOR1", tempLoc.getLandmark());
 

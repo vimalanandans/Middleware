@@ -75,8 +75,8 @@ public class DeviceWindow extends JFrame {
         textFieldIn.setColumns(10);
         textFieldIn.setBounds(234, 96, 155, 20);
         textFieldIn
-                .setText(upaDevice.getDeviceLocation().getArea() == null ? ""
-                        : upaDevice.getDeviceLocation().getArea());
+                .setText(upaDevice.getDeviceLocation().getIntermediateScope() == null ? ""
+                        : upaDevice.getDeviceLocation().getIntermediateScope());
         contentPane.add(textFieldIn);
 
         final JLabel lblNear = new JLabel("Near");
