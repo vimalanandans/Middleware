@@ -256,8 +256,8 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             Log.i(TAG, jsonOutPolicy);
             final UhuPipePolicy policyIn = PipePolicy.fromJson(jsonInPolicy, UhuPipePolicy.class);
             final UhuPipePolicy policyOut = PipePolicy.fromJson(jsonOutPolicy, UhuPipePolicy.class);
-            final Pipe pipe = Pipe.fromJson(jsonPipe, CloudPipe.class);
-            Proxy.pipeListenerMap.get(pipeId).pipeGranted(pipe, policyIn, policyOut);
+            // final Pipe pipe = Pipe.fromJson(jsonPipe, CloudPipe.class);
+            // Proxy.pipeListenerMap.get(pipeId).pipeGranted(pipe, policyIn, policyOut);
         } else {
             Log.e(TAG, "Pipe with this Id:" + pipeId + " is not in Map");
         }
