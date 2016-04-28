@@ -401,29 +401,31 @@ public class SadlRegistry implements Serializable {
     /**
      * Checks for Discovery based on the Protocol Role and Location
      *
-     * @param pRole
+     * @param protocolRole
      * @param location
      * @return
      */
-    public Set<BezirkDiscoveredZirk> discoverServices(ProtocolRole pRole, Location location) {
-        if (!protocolMap.containsKey(pRole.getProtocolName())) {
+    public Set<BezirkDiscoveredZirk> discoverServices(ProtocolRole protocolRole, Location location) {
+        if (!protocolMap.containsKey(protocolRole.getProtocolName())) {
             logger.debug("No services are subscribed for this protocol Role");
             return null;
         }
         final HashSet<BezirkDiscoveredZirk> discoveredServices = new HashSet<BezirkDiscoveredZirk>();
         // Get all the services associated with the protocols
-        final Set<BezirkZirkId> services = protocolMap.get(pRole.getProtocolName());
+        final Set<BezirkZirkId> services = protocolMap.get(protocolRole.getProtocolName());
         for (BezirkZirkId serviceId : services) {
             Location serviceLocation = getLocationForService(serviceId);
 
             if (null != location && !location.subsumes(serviceLocation)) {
-                logger.debug("inside if before continue, Location didnot match");
+                logger.debug("inside if before continue, Location did not match");
                 continue;
             }
-            discoveredServices.add(new BezirkDiscoveredZirk(UhuNetworkUtilities.getServiceEndPoint(serviceId), null, pRole.getProtocolName(), serviceLocation));
+            discoveredServices.add(new BezirkDiscoveredZirk(
+                    UhuNetworkUtilities.getServiceEndPoint(serviceId), null, protocolRole, serviceLocation));
         }
         if (discoveredServices.isEmpty()) {
-            logger.debug("No services are present in the location: " + location.toString() + " subscribed to Protocol Role:  " + pRole.getProtocolName());
+            logger.debug("No services are present in the location: {} subscribed to Protocol Role: {}",
+                    location.toString(), protocolRole.getProtocolName());
             return null;
         }
         return discoveredServices;

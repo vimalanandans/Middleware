@@ -211,6 +211,8 @@ public class Location implements Serializable {
     }
 
     /**
+     * Return the largest scope that helps resolve this <code>Location</code>'s set of Things.
+     *
      * @return the largest scope that helps resolve this <code>Location</code>'s set of Things
      */
     public String getWideScope() {
@@ -218,6 +220,8 @@ public class Location implements Serializable {
     }
 
     /**
+     *  Return the middle scope that helps resolve this <code>Location</code>'s set of Things.
+     *
      * @return the middle scope that helps resolve this <code>Location</code>'s set of Things
      */
     public String getIntermediateScope() {
@@ -225,6 +229,8 @@ public class Location implements Serializable {
     }
 
     /**
+     *  Return the narrowest scope that helps resolve this <code>Location</code>'s set of Things.
+     *
      * @return the narrowest scope that helps resolve this <code>Location</code>'s set of Things
      */
     public String getNarrowScope() {
@@ -241,15 +247,18 @@ public class Location implements Serializable {
      * if <code>M.getLocation().subsumes(S.getLocation()) == true</code>.
      * </p>
      *
-     * @param loc the location that may be subsumed by this
+     * @param location the location that may be subsumed by this
      * @return whether location is subsumed by this
      */
-    public boolean subsumes(Location loc) {
-        return matchParam(wideScope, loc.wideScope) && matchParam(intermediateScope, loc.intermediateScope) && matchParam(narrowScope, loc.narrowScope);
+    public boolean subsumes(Location location) {
+        return matchParam(wideScope, location.wideScope) &&
+                matchParam(intermediateScope, location.intermediateScope) &&
+                matchParam(narrowScope, location.narrowScope);
     }
 
     private boolean matchParam(String thisParam, String compareParam) {
-        return thisParam == null || thisParam.equalsIgnoreCase("null") || thisParam.equalsIgnoreCase(compareParam);
+        return thisParam == null || thisParam.equalsIgnoreCase("null") ||
+                thisParam.equalsIgnoreCase(compareParam);
     }
 
     /**
@@ -260,7 +269,8 @@ public class Location implements Serializable {
      * '/'
      */
     public String toString() {
-        return String.valueOf(this.wideScope) + "/" + String.valueOf(this.intermediateScope) + "/" + String.valueOf(this.narrowScope);
+        return String.valueOf(this.wideScope) + "/" + String.valueOf(this.intermediateScope) + "/" +
+                String.valueOf(this.narrowScope);
     }
 
     @Override

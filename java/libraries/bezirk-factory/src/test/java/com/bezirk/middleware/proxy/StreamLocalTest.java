@@ -162,7 +162,7 @@ public class StreamLocalTest {
             Iterator<DiscoveredZirk> iterator = zirkSet.iterator();
             dService = (BezirkDiscoveredZirk) iterator.next();
             logger.info("DiscoveredServiceName : " + dService.name + "\n" +
-                    "Discovered Role : " + dService.pRole + "\n" +
+                    "Discovered Role : " + dService.protocolRole + "\n" +
                     "Discovered SEP" + dService.zirk + "\n");
 
             request = new StreamLocalMockRequestStream(Message.Flag.REQUEST, "MockRequestStream", dService.zirk);

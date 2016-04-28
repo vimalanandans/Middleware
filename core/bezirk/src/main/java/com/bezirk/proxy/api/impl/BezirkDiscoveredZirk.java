@@ -3,6 +3,7 @@ package com.bezirk.proxy.api.impl;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.messages.ProtocolRole;
 
 /**
  * @author: Joao de Sousa (CR/RTC3-NA)
@@ -23,7 +24,7 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 public class BezirkDiscoveredZirk implements DiscoveredZirk {
     public BezirkZirkEndPoint zirk;
     public String name;
-    public String pRole;
+    public ProtocolRole protocolRole;
     public Location location;
 
 
@@ -31,10 +32,10 @@ public class BezirkDiscoveredZirk implements DiscoveredZirk {
         //Empty constructor needed for gson.deserialze
     }
 
-    public BezirkDiscoveredZirk(BezirkZirkEndPoint zirk, String sName, String pRole, Location location) {
+    public BezirkDiscoveredZirk(BezirkZirkEndPoint zirk, String zirkName, ProtocolRole protocolRole, Location location) {
         this.zirk = zirk;
-        this.name = sName;
-        this.pRole = pRole;
+        this.name = zirkName;
+        this.protocolRole = protocolRole;
         this.location = location;
     }
 
@@ -49,8 +50,8 @@ public class BezirkDiscoveredZirk implements DiscoveredZirk {
     }
 
     @Override
-    public String getProtocol() {
-        return this.pRole;
+    public ProtocolRole getProtocolRole() {
+        return this.protocolRole;
     }
 
     @Override

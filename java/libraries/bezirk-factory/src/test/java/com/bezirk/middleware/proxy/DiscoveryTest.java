@@ -197,19 +197,19 @@ public class DiscoveryTest {
 
                         case "DiscoveryMockServiceA":
                             assertEquals("DiscoveryMockServiceA", tempDisService.name);
-                            assertEquals("DiscoveryMockServiceProtocol", tempDisService.pRole);
+                            assertEquals("DiscoveryMockServiceProtocol", tempDisService.protocolRole);
                             assertNotNull("Device is not set for DiscoveryMockServiceA.", tempDisService.zirk.device);
                             assertEquals("ServiceID is different for DiscoveryMockServiceA.", ((BezirkZirkId) myId).getBezirkZirkId(), tempDisService.zirk.zirkId.getBezirkZirkId());
                             break;
                         case "DiscoveryMockServiceB":
                             assertEquals("DiscoveryMockServiceB", tempDisService.name);
-                            assertEquals("DiscoveryMockServiceProtocol", tempDisService.pRole);
+                            assertEquals("DiscoveryMockServiceProtocol", tempDisService.protocolRole);
                             assertNotNull("Device is not set for DiscoveryMockServiceB.", tempDisService.zirk.device);
                             assertEquals("ServiceID is different for DiscoveryMockServiceB.", serviceBId, tempDisService.zirk.zirkId.getBezirkZirkId());
                             break;
                         case "DiscoveryMockServiceC":
                             assertEquals("DiscoveryMockServiceC", tempDisService.name);
-                            assertEquals("DiscoveryMockServiceProtocol", tempDisService.pRole);
+                            assertEquals("DiscoveryMockServiceProtocol", tempDisService.protocolRole);
                             assertNotNull("Device is not set for DiscoveryMockServiceC.", tempDisService.zirk.device);
                             assertEquals("ServiceID is different for DiscoveryMockServiceC.", serviceCId, tempDisService.zirk.zirkId.getBezirkZirkId());
                             break;
@@ -228,7 +228,7 @@ public class DiscoveryTest {
                 BezirkDiscoveredZirk tempDisService = (BezirkDiscoveredZirk) iterator.next();
                 assertNotNull(tempDisService);
                 assertEquals("DiscoveryMockServiceC", tempDisService.name);
-                assertEquals("DiscoveryMockServiceProtocol", tempDisService.pRole);
+                assertEquals("DiscoveryMockServiceProtocol", tempDisService.protocolRole);
                 assertEquals(loc.toString(), tempDisService.location.toString());
                 assertNotNull(tempDisService.zirk.device);
                 assertEquals(serviceCId, tempDisService.zirk.zirkId.getBezirkZirkId());

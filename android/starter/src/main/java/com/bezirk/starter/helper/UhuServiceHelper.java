@@ -56,7 +56,7 @@ public final class UhuServiceHelper {
                 proxy.subscribeService(serviceId, subscribedRole);
 
             } else {
-                logger.error("trying to subscribe with Null zirkId/ pRole");
+                logger.error("trying to subscribe with Null zirkId/ protocolRole");
             }
 
         } else {
@@ -115,7 +115,7 @@ public final class UhuServiceHelper {
                 }
 
             } else {
-                logger.error("trying to subscribe with Null zirkId/ pRole");
+                logger.error("trying to subscribe with Null zirkId/ protocolRole");
             }
 
         } else {
@@ -132,7 +132,7 @@ public final class UhuServiceHelper {
         logger.info("Received discovery message from zirk");
         String serviceIdKEY = "zirkId";
         String addressKEY = "address";
-        String pRoleKEY = "pRole";
+        String pRoleKEY = "protocolRole";
         String timeoutKEY = "timeout";
         String maxDiscoveredKEY = "maxDiscovered";
         String discoveryIdKEY = "discoveryId";

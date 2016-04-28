@@ -156,7 +156,7 @@ public class UnicastEventLocalTest {
             Iterator<DiscoveredZirk> iterator = zirkSet.iterator();
             dService = (BezirkDiscoveredZirk) iterator.next();
             logger.info("DiscoveredServiceName : " + dService.name + "\n" +
-                    "Discovered Role : " + dService.pRole + "\n" +
+                    "Discovered Role : " + dService.protocolRole + "\n" +
                     "Discovered SEP" + dService.zirk + "\n");
 
             MockRequestEvent request = new MockRequestEvent(Message.Flag.REQUEST, "MockRequestEvent");

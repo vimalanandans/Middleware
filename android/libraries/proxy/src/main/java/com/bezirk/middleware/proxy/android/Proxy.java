@@ -345,7 +345,7 @@ public final class Proxy implements Bezirk {
         discoverIntent.setAction(ACTION_SERVICE_DISCOVER);
         discoverIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) zirk));
         discoverIntent.putExtra("address", new Gson().toJson(scope));
-        discoverIntent.putExtra("pRole", new SubscribedRole(protocolRole).getSubscribedProtocolRole());
+        discoverIntent.putExtra("protocolRole", new SubscribedRole(protocolRole).getSubscribedProtocolRole());
         discoverIntent.putExtra("timeout", timeout);
         discoverIntent.putExtra("maxDiscovered", maxResults);
         discoverIntent.putExtra("discoveryId", discoveryCount);

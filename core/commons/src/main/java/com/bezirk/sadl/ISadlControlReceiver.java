@@ -22,11 +22,11 @@ public interface ISadlControlReceiver {
     public Boolean isStreamTopicRegistered(final String streamTopic, final BezirkZirkId serviceId);
 
     /**
-     * Returns all {@link BezirkDiscoveredZirk} that are subscribed to pRole.
+     * Returns all {@link BezirkDiscoveredZirk} that are subscribed to protocolRole.
      *
      * @param pRole    - Protocol Role of the Services
      * @param location - Location where the services should reside
-     * @return if location is null, all the services subscibed to the pRole are returned, null is returned if no services subscribe to the role or subscribe to the role and not in the same location.
+     * @return if location is null, all the services subscibed to the protocolRole are returned, null is returned if no services subscribe to the role or subscribe to the role and not in the same location.
      */
     public Set<BezirkDiscoveredZirk> discoverZirks(final ProtocolRole pRole, final Location location);
 

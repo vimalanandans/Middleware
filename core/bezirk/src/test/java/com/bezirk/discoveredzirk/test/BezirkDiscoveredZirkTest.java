@@ -1,9 +1,11 @@
 package com.bezirk.discoveredzirk.test;
 
 import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
+import com.bezirk.util.MockProtocolRole;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,8 +36,10 @@ public class BezirkDiscoveredZirkTest {
 
     @Test
     public void test() {
-        BezirkDiscoveredZirk ds1 = new BezirkDiscoveredZirk(sed1, new String("AreYouHotonAndroid"), new String("UserInput"), new Location(null));
-        BezirkDiscoveredZirk ds2 = new BezirkDiscoveredZirk(sed2, new String("AreYouHotonAndroid"), new String("UserInput"), new Location(null));
+        BezirkDiscoveredZirk ds1 = new BezirkDiscoveredZirk(sed1, new String("AreYouHotonAndroid"),
+                new MockProtocolRole(), new Location(null));
+        BezirkDiscoveredZirk ds2 = new BezirkDiscoveredZirk(sed2, new String("AreYouHotonAndroid"),
+                new MockProtocolRole(), new Location(null));
         assertEquals(ds1, ds2);
         if (!list.contains(ds1)) {
             list.add(ds1);
@@ -46,12 +50,12 @@ public class BezirkDiscoveredZirkTest {
         BezirkZirkEndPoint zirkEndPoint = new BezirkZirkEndPoint(zirkId);
         zirkEndPoint.device = "DeviceA";
         String zirkName = "ZirkA";
-        String pRole = "TestProtocol";
+        ProtocolRole mockRole = new MockProtocolRole();
         Location location = new Location("OFFICE1/BLOCK1/FLOOR1");
-        BezirkDiscoveredZirk bezirkDiscoveredZirk = new BezirkDiscoveredZirk(zirkEndPoint, zirkName, pRole, location);
+        BezirkDiscoveredZirk bezirkDiscoveredZirk = new BezirkDiscoveredZirk(zirkEndPoint, zirkName, mockRole, location);
 
         assertEquals("Location is not equal to the set value.", location, bezirkDiscoveredZirk.getLocation());
-        assertEquals("Protocol is not equal to the set value.", pRole, bezirkDiscoveredZirk.getProtocol());
+        assertEquals("Protocol is not equal to the set value.", mockRole, bezirkDiscoveredZirk.getProtocolRole());
         assertEquals("ZirkEndPoint is not equal to the set value.", zirkEndPoint, bezirkDiscoveredZirk.getZirkEndPoint());
         assertEquals("ZirkName is not equal to the set value.", zirkName, bezirkDiscoveredZirk.getZirkName());
 
@@ -61,7 +65,7 @@ public class BezirkDiscoveredZirkTest {
         assertFalse("BezirkDiscoveredZirk is considered as equal to zirkEndPoint.", bezirkDiscoveredZirk.equals(zirkEndPoint));
 
 
-        bezirkDiscoveredZirkTemp = new BezirkDiscoveredZirk(zirkEndPoint, zirkName, pRole, location);
+        bezirkDiscoveredZirkTemp = new BezirkDiscoveredZirk(zirkEndPoint, zirkName, mockRole, location);
         assertTrue("Similar BezirkDiscoveredZirks are not considered equal.", bezirkDiscoveredZirk.equals(bezirkDiscoveredZirkTemp));
         zirkId = new BezirkZirkId("ZirkB");
         bezirkDiscoveredZirkTemp.zirk = new BezirkZirkEndPoint(zirkId);

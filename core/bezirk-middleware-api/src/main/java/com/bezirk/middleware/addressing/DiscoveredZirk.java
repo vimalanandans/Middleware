@@ -49,7 +49,15 @@ public interface DiscoveredZirk {
      */
     public String getZirkName();
 
-    public String getProtocol();
+    /**
+     * Get the <code>ProtocolRole</code> this Zirk subscribes to that was searched for using the
+     * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener
+     * Disovery API}.
+     *
+     * @return the <code>ProtocolRole</code> this Zirk subscribes to that was searched for to
+     * disocover the Zirk
+     */
+    public ProtocolRole getProtocolRole();
 
     /**
      * The semantic address of the Zirk subscribed to the targeted role
