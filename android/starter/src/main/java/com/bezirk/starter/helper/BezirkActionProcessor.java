@@ -4,7 +4,7 @@ import android.content.Intent;
 
 import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.UhuActionCommands;
+import com.bezirk.starter.BezirkActionCommands;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
  * <p/>
  * Created by AJC6KOR on 9/8/2015.
  */
-public final class UhuActionProcessor {
-    private static final Logger logger = LoggerFactory.getLogger(UhuActionProcessor.class);
+public final class BezirkActionProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkActionProcessor.class);
 
     private static final String CONTROL_UI_NOTIFICATION_ACTION = "com.bosch.upa.uhu.controluinotfication";
     private static final int START_CODE = 100;
@@ -28,10 +28,10 @@ public final class UhuActionProcessor {
      *
      * @param intent
      * @param service
-     * @param uhuServiceHelper
-     * @param uhuStackHandler
+     * @param bezirkServiceHelper
+     * @param bezirkStackHandler
      */
-    public void processUhuAction(Intent intent, MainService service, UhuServiceHelper uhuServiceHelper, UhuStackHandler uhuStackHandler) {
+    public void processUhuAction(Intent intent, MainService service, BezirkServiceHelper bezirkServiceHelper, BezirkStackHandler bezirkStackHandler) {
 
         INTENT_ACTIONS intentAction = INTENT_ACTIONS.getActionUsingMessage(intent.getAction());
 
@@ -43,16 +43,16 @@ public final class UhuActionProcessor {
             switch (actionType) {
 
                 case BEZIRK_STACK_ACTION:
-                    processUhuStackAction(service, intent, intentAction, uhuStackHandler);
+                    processUhuStackAction(service, intent, intentAction, bezirkStackHandler);
                     break;
                 case DEVICE_ACTION:
                     processDeviceActions(intentAction, service);
                     break;
                 case SEND_ACTION:
-                    processSendActions(intentAction, intent, uhuServiceHelper);
+                    processSendActions(intentAction, intent, bezirkServiceHelper);
                     break;
                 case SERVICE_ACTION:
-                    processServiceActions(intentAction, intent, service, uhuServiceHelper);
+                    processServiceActions(intentAction, intent, service, bezirkServiceHelper);
                     break;
                 default:
                     logger.warn("Received unknown intent action: " + intentAction.message);
@@ -65,28 +65,28 @@ public final class UhuActionProcessor {
 
     }
 
-    private void processUhuStackAction(MainService service, Intent intent, INTENT_ACTIONS intentAction, UhuStackHandler uhuStackHandler) {
+    private void processUhuStackAction(MainService service, Intent intent, INTENT_ACTIONS intentAction, BezirkStackHandler bezirkStackHandler) {
         switch (intentAction) {
             case ACTION_START_BEZIRK:
-                uhuStackHandler.startStack(service);
+                bezirkStackHandler.startStack(service);
                 break;
             case ACTION_STOP_BEZIRK:
-                uhuStackHandler.stopStack(service);
+                bezirkStackHandler.stopStack(service);
                 break;
             case ACTION_REBOOT:
-                uhuStackHandler.reboot(service);
+                bezirkStackHandler.reboot(service);
                 break;
             case ACTION_CLEAR_PERSISTENCE:
-                uhuStackHandler.clearPersistence(service);
+                bezirkStackHandler.clearPersistence(service);
                 break;
             case ACTION_DIAG_PING:
-                uhuStackHandler.diagPing(intent);
+                bezirkStackHandler.diagPing(intent);
                 break;
             case ACTION_START_REST_SERVER:
-                uhuStackHandler.startStopRestServer(START_CODE);
+                bezirkStackHandler.startStopRestServer(START_CODE);
                 break;
             case ACTION_STOP_REST_SERVER:
-                uhuStackHandler.startStopRestServer(STOP_CODE);
+                bezirkStackHandler.startStopRestServer(STOP_CODE);
                 break;
             default:
                 logger.warn("Received unknown intent action: " + intentAction.message);
@@ -99,21 +99,21 @@ public final class UhuActionProcessor {
         switch (intentAction) {
 
             case ACTION_CHANGE_DEVICE_NAME:
-                sendIntent(UhuActionCommands.CMD_CHANGE_DEVICE_NAME_STATUS, true, service);
+                sendIntent(BezirkActionCommands.CMD_CHANGE_DEVICE_NAME_STATUS, true, service);
                 break;
             case ACTION_CHANGE_DEVICE_TYPE:
-                sendIntent(UhuActionCommands.CMD_CHANGE_DEVICE_TYPE_STATUS, true, service);
+                sendIntent(BezirkActionCommands.CMD_CHANGE_DEVICE_TYPE_STATUS, true, service);
                 break;
             case ACTION_DEV_MODE_ON:
-                sendIntent(UhuActionCommands.CMD_DEV_MODE_ON_STATUS, UhuStackHandler.getDevMode().switchMode(BezirkDevMode.Mode.ON), service);
+                sendIntent(BezirkActionCommands.CMD_DEV_MODE_ON_STATUS, BezirkStackHandler.getDevMode().switchMode(BezirkDevMode.Mode.ON), service);
                 break;
             case ACTION_DEV_MODE_OFF:
-                sendIntent(UhuActionCommands.CMD_DEV_MODE_OFF_STATUS, UhuStackHandler.getDevMode().switchMode(BezirkDevMode.Mode.OFF), service);
+                sendIntent(BezirkActionCommands.CMD_DEV_MODE_OFF_STATUS, BezirkStackHandler.getDevMode().switchMode(BezirkDevMode.Mode.OFF), service);
                 break;
             case ACTION_DEV_MODE_STATUS:
                 BezirkDevMode.Mode mode = null;
                 mode = getDevMode();
-                sendIntent(UhuActionCommands.CMD_DEV_MODE_STATUS, mode, service);
+                sendIntent(BezirkActionCommands.CMD_DEV_MODE_STATUS, mode, service);
                 break;
             default:
                 logger.warn("Received unknown intent action: {}", intentAction.message);
@@ -124,33 +124,33 @@ public final class UhuActionProcessor {
 
     private BezirkDevMode.Mode getDevMode() {
         BezirkDevMode.Mode mode;
-        if (UhuStackHandler.getDevMode() == null) {
+        if (BezirkStackHandler.getDevMode() == null) {
             // if user wifi supplicant status is Disconnected and on Init he clicks on DeviceControl, devMode will be null.
             mode = BezirkDevMode.Mode.OFF;
         } else {
-            mode = UhuStackHandler.getDevMode().getStatus();
+            mode = BezirkStackHandler.getDevMode().getStatus();
         }
         return mode;
     }
 
-    private void processServiceActions(INTENT_ACTIONS intentAction, Intent intent, MainService service, UhuServiceHelper uhuServiceHelper) {
+    private void processServiceActions(INTENT_ACTIONS intentAction, Intent intent, MainService service, BezirkServiceHelper bezirkServiceHelper) {
 
         switch (intentAction) {
 
             case ACTION_BEZIRK_REGISTER:
-                uhuServiceHelper.registerService(intent);
+                bezirkServiceHelper.registerService(intent);
                 break;
             case ACTION_BEZIRK_SUBSCRIBE:
-                uhuServiceHelper.subscribeService(intent);
+                bezirkServiceHelper.subscribeService(intent);
                 break;
             case ACTION_BEZIRK_SETLOCATION:
-                uhuServiceHelper.setLocation(intent);
+                bezirkServiceHelper.setLocation(intent);
                 break;
             case ACTION_SERVICE_DISCOVER:
-                uhuServiceHelper.discoverService(intent);
+                bezirkServiceHelper.discoverService(intent);
                 break;
             case ACTION_BEZIRK_UNSUBSCRIBE:
-                uhuServiceHelper.unsubscribeService(intent);
+                bezirkServiceHelper.unsubscribeService(intent);
                 break;
             case ACTION_PIPE_REQUEST:
                 service.processPipeRequest(intent);
@@ -161,20 +161,20 @@ public final class UhuActionProcessor {
         }
     }
 
-    private void processSendActions(INTENT_ACTIONS intentAction, Intent intent, UhuServiceHelper uhuServiceHelper) {
+    private void processSendActions(INTENT_ACTIONS intentAction, Intent intent, BezirkServiceHelper bezirkServiceHelper) {
 
         switch (intentAction) {
             case ACTION_SERVICE_SEND_MULTICAST_EVENT:
-                uhuServiceHelper.sendMulticastEvent(intent);
+                bezirkServiceHelper.sendMulticastEvent(intent);
                 break;
             case ACTION_SERVICE_SEND_UNICAST_EVENT:
-                uhuServiceHelper.sendUnicastEvent(intent);
+                bezirkServiceHelper.sendUnicastEvent(intent);
                 break;
             case ACTION_BEZIRK_PUSH_UNICAST_STREAM:
-                uhuServiceHelper.sendUnicastStream(intent);
+                bezirkServiceHelper.sendUnicastStream(intent);
                 break;
             case ACTION_BEZIRK_PUSH_MULTICAST_STREAM:
-                uhuServiceHelper.sendMulticastStream(intent);
+                bezirkServiceHelper.sendMulticastStream(intent);
                 break;
             default:
                 logger.warn("Received unknown intent action: " + intentAction.message);

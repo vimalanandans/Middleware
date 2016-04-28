@@ -1,7 +1,7 @@
 package com.bezirk.starter;
 
 import com.bezirk.comms.BezirkCommsPC;
-import com.bezirk.util.MockSetUpUtilityForUhuPC;
+import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -19,7 +19,7 @@ import static org.junit.Assert.fail;
  */
 public class UhuPCNetworkUtilTest {
 
-    private static MockSetUpUtilityForUhuPC mockSetUP = new MockSetUpUtilityForUhuPC();
+    private static MockSetUpUtilityForBezirkPC mockSetUP = new MockSetUpUtilityForBezirkPC();
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {

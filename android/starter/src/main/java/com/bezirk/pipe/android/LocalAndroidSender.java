@@ -8,7 +8,7 @@ import com.bezirk.control.messages.pipes.PipeMulticastHeader;
 import com.bezirk.control.messages.pipes.PipeUnicastHeader;
 import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.messagehandler.StreamIncomingMessage;
-import com.bezirk.pipe.core.LocalUhuSender;
+import com.bezirk.pipe.core.LocalBezirkSender;
 import com.bezirk.proxy.android.ProxyforServices;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
@@ -21,7 +21,7 @@ import java.io.File;
 /**
  * Created by wya1pi on 8/19/14.
  */
-public class LocalAndroidSender implements LocalUhuSender {
+public class LocalAndroidSender implements LocalBezirkSender {
 
 
     // TODO: we need a slightly cleaner way to get an instance of the proxy here (ASW)

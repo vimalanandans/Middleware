@@ -41,10 +41,10 @@ import javax.swing.table.DefaultTableModel;
 /**
  * Class that shows the Log Details of the connected logging clients.
  */
-public class UhuLogDetailsGUI extends JFrame {
+public class BezirkLogDetailsGUI extends JFrame {
     private static final long serialVersionUID = 1210684068159783241L;
 
-    private static final Logger logger = LoggerFactory.getLogger(UhuLogDetailsGUI.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkLogDetailsGUI.class);
     /**
      * Value to be displayed for the Recipient during MULTICAST
      */
@@ -102,8 +102,8 @@ public class UhuLogDetailsGUI extends JFrame {
      *
      * @param loggingService loggingService that will be listening at a particular socket
      */
-    public UhuLogDetailsGUI(BezirkComms comms, String[] spheres, JFrame frame,
-                            boolean isDeveloperModeEnabled) {
+    public BezirkLogDetailsGUI(BezirkComms comms, String[] spheres, JFrame frame,
+                               boolean isDeveloperModeEnabled) {
         this.sphereSelectFrame = frame;
         selectedSpheres = spheres.clone();
         this.isDeveloperModeEnabled = isDeveloperModeEnabled;

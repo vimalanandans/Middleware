@@ -1,77 +1,63 @@
-package com.bezirk.starter;
+package com.bezirk.starter.helper;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-/**
- * Created by vnd2kor on 6/12/2015.
- * This is the stub code for making sphere opaque or flat without encryption
- * This is the Quick fix. in actual this suppose to be a package altered via build
- */
-public class UhuSphereForSadlStub implements BezirkSphereForSadl {
-    private static final Logger log = LoggerFactory.getLogger(UhuSphereForSadlStub.class);
-
+public class mockBezirkSphereForSadl implements BezirkSphereForSadl {
     @Override
     public byte[] encryptSphereContent(String sphereId, String serializedContent) {
-
         return serializedContent.getBytes();
     }
 
     @Override
     public String decryptSphereContent(String sphereId, byte[] serializedContent) {
-        String data = new String(serializedContent);
-        return data;
+        return new String(serializedContent);
     }
 
     @Override
     public void encryptSphereContent(InputStream inputStream, OutputStream outputStream, String sphereId) {
-        log.error("Interface not implemented > encryptSphereContent");
+        //Not mandatory for mock implementation
+
     }
 
     @Override
     public void decryptSphereContent(InputStream inputStream, OutputStream outputStream, String sphereId) {
-        log.error("Interface not implemented > decryptSphereContent");
+        //Not mandatory for mock implementation
     }
 
     @Override
     public Iterable<String> getSphereMembership(BezirkZirkId serviceId) {
-        Set<String> spheres = new HashSet<String>();
-        spheres.add("default sphere");
-        return spheres;
+        List<String> sphereIdList = new ArrayList<String>();
+
+        sphereIdList.add(0, UUID.randomUUID().toString());
+        return sphereIdList;
     }
 
     @Override
     public boolean isZirkInSphere(BezirkZirkId service, String sphereId) {
-
         return true;
     }
 
     @Override
     public String getZirkName(BezirkZirkId serviceId) {
-        // I see, used during sadl discovery
-        log.error("Interface not implemented > getZirkName.");
         return null;
     }
 
     @Override
     public void processSphereDiscoveryRequest(DiscoveryRequest discoveryRequest) {
-        // I see, used during sadl discovery
-        log.error("Interface not implemented > processSphereDiscoveryRequest.");
+        //Not mandatory for mock implementation
 
     }
 
     @Override
     public String getDeviceNameFromSphere(String deviceId) {
-        log.error("Interface not implemented > getDeviceNameFromSphere.");
         return null;
     }
 }

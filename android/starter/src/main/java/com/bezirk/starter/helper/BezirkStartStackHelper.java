@@ -29,8 +29,8 @@ import java.net.UnknownHostException;
 /**
  * Created by AJC6KOR on 1/11/2016.
  */
-class UhuStartStackHelper {
-    private static final Logger logger = LoggerFactory.getLogger(UhuStartStackHelper.class);
+class BezirkStartStackHelper {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkStartStackHelper.class);
 
     boolean isWifiEnabled(WifiManager wifi) {
         return wifi != null && wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;

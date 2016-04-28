@@ -12,7 +12,7 @@ import com.bezirk.middleware.messages.ProtocolRole;
  *
  * @author AJC6KOR
  */
-public class MockProtocolsForUhuPC {
+public class MockProtocolsForBezirkPC {
 
 
     public class MockEvent1 extends Event {

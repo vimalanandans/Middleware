@@ -2,7 +2,7 @@ package com.bezirk.starter;
 
 import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.proxy.pc.ProxyforServices;
-import com.bezirk.util.MockSetUpUtilityForUhuPC;
+import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestMainService {
 
-    private static MockSetUpUtilityForUhuPC mockSetUP = new MockSetUpUtilityForUhuPC();
+    private static MockSetUpUtilityForBezirkPC mockSetUP = new MockSetUpUtilityForBezirkPC();
 
 
     @BeforeClass

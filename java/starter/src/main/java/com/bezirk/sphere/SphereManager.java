@@ -1,22 +1,24 @@
 package com.bezirk.sphere;
 
+import com.bezirk.sphere.impl.BezirkQRCode;
+
 /**
  * Created by GUR1PI on 10/6/2014.
  */
 public final class SphereManager {
 
-    private static com.bezirk.sphere.impl.IUhuQRCode uhuQRCode;
+    private static BezirkQRCode bezirkQRCode;
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
     private SphereManager() {
 
     }
 
-    public static com.bezirk.sphere.impl.IUhuQRCode getUhuQRCode() {
-        return uhuQRCode;
+    public static BezirkQRCode getBezirkQRCode() {
+        return bezirkQRCode;
     }
 
-    public static void setUhuQRCode(com.bezirk.sphere.impl.IUhuQRCode uhuQRCode) {
-        SphereManager.uhuQRCode = uhuQRCode;
+    public static void setBezirkQRCode(BezirkQRCode bezirkQRCode) {
+        SphereManager.bezirkQRCode = bezirkQRCode;
     }
 }

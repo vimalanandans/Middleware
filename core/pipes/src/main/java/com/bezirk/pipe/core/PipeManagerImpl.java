@@ -60,7 +60,7 @@ public class PipeManagerImpl implements PipeManager {
      * Interface methods won't execute if this is set to false.
      */
     private boolean initialized = false;
-    private LocalUhuSender localUhuSender = null;
+    private LocalBezirkSender localBezirkSender = null;
 
     private File outputDir = null;
 
@@ -164,7 +164,7 @@ public class PipeManagerImpl implements PipeManager {
         log.info("Executing local stream send: " + job);
         String serializedStreamDesc = job.getStreamDescriptor();
 
-        localUhuSender.invokeIncoming(job.getPipeHeader(), serializedStreamDesc, job.getFilePath());
+        localBezirkSender.invokeIncoming(job.getPipeHeader(), serializedStreamDesc, job.getFilePath());
     }
 
     public void processLocalSend(PipeHeader pipeHeader, String serializedEvent) {
@@ -173,7 +173,7 @@ public class PipeManagerImpl implements PipeManager {
             return;
         }
         log.info("Executing local event send: " + serializedEvent);
-        localUhuSender.invokeReceive(pipeHeader, serializedEvent);
+        localBezirkSender.invokeReceive(pipeHeader, serializedEvent);
     }
 
     @Override
@@ -267,7 +267,7 @@ public class PipeManagerImpl implements PipeManager {
     protected boolean validateDataMembers() {
         boolean valid = true;
 
-        if (localUhuSender == null) {
+        if (localBezirkSender == null) {
             log.error("local uhu sender is null.");
             valid = false;
         }
@@ -320,8 +320,8 @@ public class PipeManagerImpl implements PipeManager {
         this.pipeRegistry = pipeRegistry;
     }
 
-    public void setLocalSender(LocalUhuSender localSender) {
-        this.localUhuSender = localSender;
+    public void setLocalSender(LocalBezirkSender localSender) {
+        this.localBezirkSender = localSender;
     }
 
     public void stop() {

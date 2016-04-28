@@ -22,7 +22,7 @@ import javax.imageio.ImageIO;
 /**
  * Created by GUR1PI on 8/9/2014.
  */
-public class BezirkSphereForPC extends BezirkSphere implements IUhuQRCode,
+public class BezirkSphereForPC extends BezirkSphere implements BezirkQRCode,
         BezirkSphereListener {
 
     private static final Logger logger = LoggerFactory.getLogger(BezirkSphereForPC.class);

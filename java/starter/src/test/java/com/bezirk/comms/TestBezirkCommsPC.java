@@ -7,8 +7,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class TestUhuCommsPC {
-
+public class TestBezirkCommsPC {
     @Test
     public void testLoadProperties() {
         try {

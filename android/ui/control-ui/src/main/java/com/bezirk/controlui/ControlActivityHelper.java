@@ -39,7 +39,7 @@ class ControlActivityHelper {
     private final String BR_SYSTEM_STATUS_ACTION = "com.bezirk.systemstatus";
     private final ControlActivity controlActivity;
     boolean stackVersionMismatch;
-    private String receivedUhuVersion = BezirkVersion.BEZIRK_VERSION;
+    private String receivedBezirkVersion = BezirkVersion.BEZIRK_VERSION;
     /**
      * Broadcast receiver to receive the status from the stack if there is  a version mismatch
      */
@@ -47,7 +47,7 @@ class ControlActivityHelper {
         @Override
         public void onReceive(Context context, Intent intent) {
             stackVersionMismatch = true;
-            receivedUhuVersion = intent.getExtras().getString("misMatchVersiosion");
+            receivedBezirkVersion = intent.getExtras().getString("misMatchVersiosion");
             controlActivity.invalidateOptionsMenu();
         }
     };
@@ -132,9 +132,9 @@ class ControlActivityHelper {
         AlertDialog.Builder builder = new AlertDialog.Builder(controlActivity);
         builder.setTitle("STACK STATUS");
         View alertView = LayoutInflater.from(controlActivity).inflate(R.layout.layout_alert_dialog_system_status, null);
-        final TextView uhuVersion = (TextView) alertView.findViewById(R.id.versionUhu);
-        final TextView uhuStatus = (TextView) alertView.findViewById(R.id.versionStatus);
-        final TextView uhuExpectedVersionStatus = (TextView) alertView.findViewById(R.id.receivedVersionUhu);
+        final TextView bezirkVersion = (TextView) alertView.findViewById(R.id.versionUhu);
+        final TextView bezirkStatus = (TextView) alertView.findViewById(R.id.versionStatus);
+        final TextView bezirkExpectedVersionStatus = (TextView) alertView.findViewById(R.id.receivedVersionBezirk);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -147,15 +147,15 @@ class ControlActivityHelper {
             }
         });
 
-        uhuVersion.setText("Expected Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
-        if (BezirkValidatorUtility.isObjectNotNull(receivedUhuVersion)) {
-            uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + receivedUhuVersion);
+        bezirkVersion.setText("Expected Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
+        if (BezirkValidatorUtility.isObjectNotNull(receivedBezirkVersion)) {
+            bezirkExpectedVersionStatus.setText("Received Bezirk-Version: " + receivedBezirkVersion);
         } else {
-            uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
+            bezirkExpectedVersionStatus.setText("Received Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
         }
 
         if (stackVersionMismatch) {
-            uhuStatus.setText("Different versions of Bezirk exist in the network, there might be failure in the communication");
+            bezirkStatus.setText("Different versions of Bezirk exist in the network, there might be failure in the communication");
         }
 
         builder.setView(alertView);

@@ -2,7 +2,7 @@ package com.bezirk.proxytest;
 
 import org.junit.Test;
 
-public class UhuProxyTest {
+public class BezirkProxyTest {
 
     @Test
     public void testAddPipe() {

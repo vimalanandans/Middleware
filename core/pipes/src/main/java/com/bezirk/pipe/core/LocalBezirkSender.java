@@ -7,7 +7,7 @@ import com.bezirk.control.messages.pipes.PipeHeader;
  * to each platform.  Specifically, each platform should implement this interface in order to have
  * messages routed from remote systems connected by pipes to a locally running uhu instance
  */
-public interface LocalUhuSender {
+public interface LocalBezirkSender {
 
     /**
      * Invoke the appropriate uhu services' receive method for the specified event

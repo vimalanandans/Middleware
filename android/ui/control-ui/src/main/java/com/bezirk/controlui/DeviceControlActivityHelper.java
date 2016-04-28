@@ -16,7 +16,7 @@ import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.UhuPreferences;
+import com.bezirk.starter.BezirkPreferences;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -40,7 +40,7 @@ class DeviceControlActivityHelper {
 
     private final DeviceControlActivity deviceControlActivity;
     private final Context context;
-    private final UhuPreferences preferences;
+    private final BezirkPreferences preferences;
 
     DeviceControlActivityHelper(DeviceControlActivity deviceControlActivity, Context context) {
         this.deviceControlActivity = deviceControlActivity;

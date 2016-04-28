@@ -235,7 +235,7 @@ public class MainService {
          * Step7 :Create and configure the BezirkDevice      *
          **************************************************/
         final BezirkDevice bezirkDevice = serviceStarterHelper
-                .configureUhuDevice(this.bezirkConfig);
+                .configureBezirkDevice(this.bezirkConfig);
 
         /**************************************************
          * Step8 :Initialize sphere                       *

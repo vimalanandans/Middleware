@@ -7,8 +7,8 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sadl.BezirkSadlManager;
-import com.bezirk.util.MockProtocolsForUhuPC;
-import com.bezirk.util.MockSetUpUtilityForUhuPC;
+import com.bezirk.util.MockProtocolsForBezirkPC;
+import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -32,12 +32,12 @@ import static org.junit.Assert.fail;
 public class ProxyForServicesTest {
     private static final Logger logger = LoggerFactory.getLogger(ProxyForServicesTest.class);
 
-    private static final MockSetUpUtilityForUhuPC mockSetUP = new MockSetUpUtilityForUhuPC();
+    private static final MockSetUpUtilityForBezirkPC mockSetUP = new MockSetUpUtilityForBezirkPC();
     private static BezirkSadlManager sadlManager;
     private final String serviceName = "MockServiceA";
     private final String serviceAId = "MockServiceAId";
     private final BezirkZirkId uhuServiceAId = new BezirkZirkId(serviceAId);
-    private final MockProtocolsForUhuPC.DummyProtocol dummyProtocol = new MockProtocolsForUhuPC().new DummyProtocol();
+    private final MockProtocolsForBezirkPC.DummyProtocol dummyProtocol = new MockProtocolsForBezirkPC().new DummyProtocol();
     private final SubscribedRole pRole = new SubscribedRole(dummyProtocol);
 
     @BeforeClass

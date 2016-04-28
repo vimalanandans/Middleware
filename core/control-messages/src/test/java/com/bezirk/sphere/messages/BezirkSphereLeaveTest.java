@@ -86,7 +86,7 @@ public class BezirkSphereLeaveTest {
     }
 
     @Test
-    public void testUhuSphereLeave() {
+    public void testBezirkSphereLeave() {
         BezirkSphereLeave bezirkSphereLeave = new BezirkSphereLeave(sphereId, serviceId, sender, recipient);
         String serializedMessage = bezirkSphereLeave.serialize();
         BezirkSphereLeave deserializedBezirkSphereLeave = BezirkSphereLeave.deserialize(serializedMessage, BezirkSphereLeave.class);

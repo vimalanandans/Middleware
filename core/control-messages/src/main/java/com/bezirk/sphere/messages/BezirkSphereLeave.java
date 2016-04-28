@@ -10,7 +10,7 @@ import com.google.gson.Gson;
  * @author Rishabh Gulati
  */
 public class BezirkSphereLeave extends com.bezirk.control.messages.UnicastControlMessage {
-    private final static Discriminator discriminator = com.bezirk.control.messages.ControlMessage.Discriminator.UhuSphereLeave;
+    private final static Discriminator discriminator = com.bezirk.control.messages.ControlMessage.Discriminator.BezirkSphereLeave;
     private final BezirkZirkId serviceId;
     private final long time;
 

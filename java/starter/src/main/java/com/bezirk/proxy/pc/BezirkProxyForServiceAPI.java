@@ -15,7 +15,7 @@ import com.bezirk.proxy.api.impl.SubscribedRole;
 import java.io.File;
 
 
-public interface UhuProxyForServiceAPI {
+public interface BezirkProxyForServiceAPI {
     void registerService(BezirkZirkId serviceId, String serviceName);
 
     void subscribeService(BezirkZirkId serviceId, SubscribedRole pRole);

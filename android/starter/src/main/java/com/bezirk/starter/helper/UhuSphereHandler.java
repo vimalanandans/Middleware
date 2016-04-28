@@ -14,7 +14,7 @@ import com.bezirk.sphere.impl.SphereProperties;
 import com.bezirk.sphere.impl.BezirkSphereForAndroid;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.UhuPreferences;
+import com.bezirk.starter.BezirkPreferences;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +45,7 @@ public final class UhuSphereHandler {
     /**
      * create and initialise the sphere
      */
-    boolean initSphere(UPADeviceInterface uhuDevice, MainService service, SpherePersistence spherePersistence, UhuPreferences preferences) {
+    boolean initSphere(UPADeviceInterface uhuDevice, MainService service, SpherePersistence spherePersistence, BezirkPreferences preferences) {
 
         /** start the sphere related init*/
         if (sphereForAndroid == null) {
@@ -67,7 +67,7 @@ public final class UhuSphereHandler {
             ISphereConfig sphereConfig = new SphereProperties(preferences);
             sphereConfig.init();
 
-            if (!(uhuSphereForAndroid.initSphere(spherePersistence, UhuStackHandler.getUhuComms()))) {
+            if (!(uhuSphereForAndroid.initSphere(spherePersistence, BezirkStackHandler.getBezirkComms()))) {
                 // at the moment the init sphere fails due to persistence
                 return false;
             }
@@ -78,7 +78,7 @@ public final class UhuSphereHandler {
             BezirkCompManager.setSphereRegistration((BezirkSphereRegistration) sphereForAndroid);
 
             BezirkCompManager.setSphereForSadl((BezirkSphereForSadl) sphereForAndroid);
-            BezirkComms uhuComms = UhuStackHandler.getUhuComms();
+            BezirkComms uhuComms = BezirkStackHandler.getBezirkComms();
             uhuComms.setSphereForSadl((BezirkSphereForSadl) sphereForAndroid);
         }
         return true;

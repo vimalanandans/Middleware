@@ -12,8 +12,8 @@ import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.security.CryptoEngine;
-import com.bezirk.starter.UhuActionCommands;
-import com.bezirk.starter.UhuPreferences;
+import com.bezirk.starter.BezirkActionCommands;
+import com.bezirk.starter.BezirkPreferences;
 import com.google.zxing.common.BitMatrix;
 
 import org.slf4j.Logger;
@@ -23,11 +23,11 @@ public class BezirkSphereForAndroid extends BezirkSphere implements BezirkSphere
     private static final Logger logger = LoggerFactory.getLogger(BezirkSphereForAndroid.class);
 
     private final Context applicationContext;
-    private final UhuPreferences preferences;
+    private final BezirkPreferences preferences;
     private ISphereConfig sphereConfig;
 
     public BezirkSphereForAndroid(CryptoEngine cryptoEngine, UPADeviceInterface upaDevice,
-                                  SphereRegistry sphereRegistry, Context context, UhuPreferences preferences) {
+                                  SphereRegistry sphereRegistry, Context context, BezirkPreferences preferences) {
         super(cryptoEngine, upaDevice, sphereRegistry);
         this.preferences = preferences;
         applicationContext = context;
@@ -107,13 +107,13 @@ public class BezirkSphereForAndroid extends BezirkSphere implements BezirkSphere
     @Override
     public void onCatchStatus(Status status, String message) {
         logger.debug("received info from listener, status: " + status.toString() + " message: " + message);
-        sendIntent(status.toString(), message, UhuActionCommands.CMD_SPHERE_CATCH_STATUS);
+        sendIntent(status.toString(), message, BezirkActionCommands.CMD_SPHERE_CATCH_STATUS);
     }
 
     @Override
     public void onShareStatus(Status status, String message) {
         logger.debug("received info from listener, status: " + status.toString() + " message: " + message);
-        sendIntent(status.toString(), message, UhuActionCommands.CMD_SPHERE_SHARE_STATUS);
+        sendIntent(status.toString(), message, BezirkActionCommands.CMD_SPHERE_SHARE_STATUS);
     }
 
     @Override
@@ -126,17 +126,17 @@ public class BezirkSphereForAndroid extends BezirkSphere implements BezirkSphere
     public void onSphereDiscovered(final boolean status, final String sphereId) {
         // TODO Auto-generated method stub
         logger.info("onSphereDiscovered status : " + sphereId);
-        sendIntent(true, sphereId, UhuActionCommands.CMD_SPHERE_DISCOVERY_STATUS);
+        sendIntent(true, sphereId, BezirkActionCommands.CMD_SPHERE_DISCOVERY_STATUS);
 
     }
 
     void sendIntent(String status, String message, String command) {
         Intent intent = new Intent();
 
-        intent.setAction(UhuActionCommands.SPHERE_NOTIFICATION_ACTION);
-        intent.putExtra(UhuActionCommands.BEZIRK_ACTION_COMMANDS, command);
-        intent.putExtra(UhuActionCommands.BEZIRK_ACTION_COMMAND_STATUS, status);
-        intent.putExtra(UhuActionCommands.BEZIRK_ACTION_COMMAND_MESSAGE, message);
+        intent.setAction(BezirkActionCommands.SPHERE_NOTIFICATION_ACTION);
+        intent.putExtra(BezirkActionCommands.BEZIRK_ACTION_COMMANDS, command);
+        intent.putExtra(BezirkActionCommands.BEZIRK_ACTION_COMMAND_STATUS, status);
+        intent.putExtra(BezirkActionCommands.BEZIRK_ACTION_COMMAND_MESSAGE, message);
 
         // this sends only to the active activity
         if (applicationContext != null)
@@ -146,10 +146,10 @@ public class BezirkSphereForAndroid extends BezirkSphere implements BezirkSphere
     void sendIntent(boolean status, String sphereId, String command) {
         Intent intent = new Intent();
 
-        intent.setAction(UhuActionCommands.SPHERE_NOTIFICATION_ACTION);
-        intent.putExtra(UhuActionCommands.BEZIRK_ACTION_COMMANDS, command);
-        intent.putExtra(UhuActionCommands.BEZIRK_ACTION_COMMAND_STATUS, status);
-        intent.putExtra(UhuActionCommands.BEZIRK_ACTION_COMMAND_SPHERE_ID, sphereId);
+        intent.setAction(BezirkActionCommands.SPHERE_NOTIFICATION_ACTION);
+        intent.putExtra(BezirkActionCommands.BEZIRK_ACTION_COMMANDS, command);
+        intent.putExtra(BezirkActionCommands.BEZIRK_ACTION_COMMAND_STATUS, status);
+        intent.putExtra(BezirkActionCommands.BEZIRK_ACTION_COMMAND_SPHERE_ID, sphereId);
 
         // this sends only to the active activity
         if (applicationContext != null)

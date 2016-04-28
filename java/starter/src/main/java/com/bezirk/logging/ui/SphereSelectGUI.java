@@ -180,7 +180,7 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
      *
      * @see BezirkLoggingService
      */
-    private transient UhuLogDetailsGUI uhu;
+    private transient BezirkLogDetailsGUI uhu;
     private transient BezirkLoggingManager bezirkLoggingManager;
     private final transient WindowAdapter closeButtonListener = new WindowAdapter() {
         @Override
@@ -218,7 +218,7 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
                 selectedSpheres = tempArray;
             }
 
-            uhu = new UhuLogDetailsGUI(comms, selectedSpheres, thisFrame,
+            uhu = new BezirkLogDetailsGUI(comms, selectedSpheres, thisFrame,
                     isDeveoperModeEnabled);
         }
     };

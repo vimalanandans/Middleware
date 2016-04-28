@@ -7,7 +7,7 @@ import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.sphere.api.BezirkSphereAPI;
-import com.bezirk.util.MockSetUpUtilityForUhuPC;
+import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
  */
 public class ZirkStarterHelperTest {
 
-    private static final MockSetUpUtilityForUhuPC mockSetUP = new MockSetUpUtilityForUhuPC();
+    private static final MockSetUpUtilityForBezirkPC mockSetUP = new MockSetUpUtilityForBezirkPC();
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -82,7 +82,7 @@ public class ZirkStarterHelperTest {
         com.bezirk.starter.ServiceStarterHelper helper = new com.bezirk.starter.ServiceStarterHelper();
         BezirkConfig bezirkConfig = new BezirkConfig();
 
-        BezirkDevice bezirkDevice = helper.configureUhuDevice(bezirkConfig);
+        BezirkDevice bezirkDevice = helper.configureBezirkDevice(bezirkConfig);
 
         assertNotNull("BezirkDevice is null after configuragtion. ", bezirkDevice);
 
@@ -95,7 +95,7 @@ public class ZirkStarterHelperTest {
 
         bezirkConfig.setDisplayEnable("false");
 
-        bezirkDevice = helper.configureUhuDevice(bezirkConfig);
+        bezirkDevice = helper.configureBezirkDevice(bezirkConfig);
 
         assertEquals("Bezirk Device Type is not configured to EMBEDDED KIT when display is disabled.", BezirkDeviceType.BEZIRK_DEVICE_TYPE_EMBEDDED_KIT, bezirkDevice.getDeviceType());
     }

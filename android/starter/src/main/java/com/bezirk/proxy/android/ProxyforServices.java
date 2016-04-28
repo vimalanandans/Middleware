@@ -29,7 +29,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.sadl.ISadlRegistry;
-import com.bezirk.starter.helper.UhuStackHandler;
+import com.bezirk.starter.helper.BezirkStackHandler;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
@@ -65,7 +65,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
 
         //TODO this code is common across all the methods here, implement a annotation.
         //if Stack was not started correctly, return without any further actions.
-        if (!UhuStackHandler.isStackStarted()) {
+        if (!BezirkStackHandler.isStackStarted()) {
             log.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
@@ -97,7 +97,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     @Override
     public void subscribeService(final BezirkZirkId serviceId, final SubscribedRole pRole) {
         //if Stack was not started correctly, return without any further actions.
-        if (!UhuStackHandler.isStackStarted()) {
+        if (!BezirkStackHandler.isStackStarted()) {
             log.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
@@ -107,7 +107,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     @Override
     public void sendMulticastEvent(final BezirkZirkId serviceId, final Address address, final String serializedEventMsg) {
         //if Stack was not started correctly, return without any further actions.
-        if (!UhuStackHandler.isStackStarted()) {
+        if (!BezirkStackHandler.isStackStarted()) {
             log.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
@@ -147,7 +147,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     @Override
     public void sendUnicastEvent(final BezirkZirkId serviceId, final BezirkZirkEndPoint recipient, final String serializedEventMsg) {
         //if Stack was not started correctly, return without any further actions.
-        if (!UhuStackHandler.isStackStarted()) {
+        if (!BezirkStackHandler.isStackStarted()) {
             log.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
@@ -187,7 +187,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     @Override
     public void discover(final BezirkZirkId serviceId, final Address address, final SubscribedRole pRole, final int discoveryId, final long timeout, final int maxDiscovered) {
         //if Stack was not started correctly, return without any further actions.
-        if (!UhuStackHandler.isStackStarted()) {
+        if (!BezirkStackHandler.isStackStarted()) {
             log.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
@@ -223,7 +223,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     @Override
     public short sendStream(BezirkZirkId senderId, BezirkZirkEndPoint receiver, String serializedStream, File file, short streamId) {
         //if Stack was not started correctly, return without any further actions.
-        if (!UhuStackHandler.isStackStarted()) {
+        if (!BezirkStackHandler.isStackStarted()) {
             log.error("Bezirk was not started properly!!!. Restart the stack.");
             return (short) -1;
         }
@@ -257,7 +257,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     @Override
     public short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver, String serializedString, short streamId) {
         //if Stack was not started correctly, return without any further actions.
-        if (!UhuStackHandler.isStackStarted()) {
+        if (!BezirkStackHandler.isStackStarted()) {
             log.error("Bezirk was not started properly!!!. Restart the stack.");
             return (short) -1;
         }
@@ -294,7 +294,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     @Override
     public void setLocation(final BezirkZirkId serviceId, final Location location) {
         //if Stack was not started correctly, return without any further actions.
-        if (!UhuStackHandler.isStackStarted()) {
+        if (!BezirkStackHandler.isStackStarted()) {
             log.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
@@ -305,7 +305,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     @Override
     public void unsubscribe(final BezirkZirkId serviceId, final SubscribedRole role) {
         //if Stack was not started correctly, return without any further actions.
-        if (!UhuStackHandler.isStackStarted()) {
+        if (!BezirkStackHandler.isStackStarted()) {
             log.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
@@ -316,7 +316,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     @Override
     public void unregister(BezirkZirkId serviceId) {
         //if Stack was not started correctly, return without any further actions.
-        if (!UhuStackHandler.isStackStarted()) {
+        if (!BezirkStackHandler.isStackStarted()) {
             log.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }

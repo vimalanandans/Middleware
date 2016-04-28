@@ -4,12 +4,12 @@ package com.bezirk.starter;
  * singleton class, only one state
  * Created by PIK6KOR on 12/14/2015.
  */
-public final class UhuWifiManager {
+public final class BezirkWifiManager {
 
-    private static UhuWifiManager context;
+    private static BezirkWifiManager context;
     private String connectedWifiSSID;
 
-    private UhuWifiManager() {
+    private BezirkWifiManager() {
         //private constructor
     }
 
@@ -18,10 +18,10 @@ public final class UhuWifiManager {
      *
      * @return
      */
-    public static UhuWifiManager getInstance() {
-        synchronized (UhuWifiManager.class) {
+    public static BezirkWifiManager getInstance() {
+        synchronized (BezirkWifiManager.class) {
             if (context == null) {
-                context = new UhuWifiManager();
+                context = new BezirkWifiManager();
             }
             return context;
         }

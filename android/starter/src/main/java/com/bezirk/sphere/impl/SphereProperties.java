@@ -2,7 +2,7 @@ package com.bezirk.sphere.impl;
 
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.BezirkDevMode;
-import com.bezirk.starter.UhuPreferences;
+import com.bezirk.starter.BezirkPreferences;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ public class SphereProperties implements ISphereConfig {
     private static final String SPHERE_KEY = "sphereKey";
     private static final String SPHERE_MODE = "devMode";
     private static final String DEFAULT_SPHERE_NAME = "defaultSphereName";
-    UhuPreferences preferences;
+    BezirkPreferences preferences;
     private BezirkDevMode.Mode mode;
     /* Development sphere variables */
     private String sphereName;
@@ -29,7 +29,7 @@ public class SphereProperties implements ISphereConfig {
     /**
      * @param preferences: should not be null
      */
-    public SphereProperties(UhuPreferences preferences) {
+    public SphereProperties(BezirkPreferences preferences) {
         this.preferences = preferences;
     }
 

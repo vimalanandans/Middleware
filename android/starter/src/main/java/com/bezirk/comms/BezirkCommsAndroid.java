@@ -3,7 +3,7 @@ package com.bezirk.comms;
 import android.os.Environment;
 
 import com.bezirk.devices.UPADeviceForAndroid;
-import com.bezirk.starter.UhuPreferences;
+import com.bezirk.starter.BezirkPreferences;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,17 +11,16 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 
 /**
- * Created by Mansimar Aneja ANM1PI on 9/5/2014.
  * This class contains the platform specific
  */
-public final class UhuCommsAndroid {
-    private static final Logger logger = LoggerFactory.getLogger(UhuCommsAndroid.class);
+public final class BezirkCommsAndroid {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkCommsAndroid.class);
 
     /* To avoid default public constructor. */
-    private UhuCommsAndroid() {
+    private BezirkCommsAndroid() {
     }
 
-    public static void init(UhuPreferences pref) {
+    public static void init(BezirkPreferences pref) {
 
         //Initialize UPADeviceForAndroid preferences
         UPADeviceForAndroid.setPreferences(pref.getSharedPreferences());

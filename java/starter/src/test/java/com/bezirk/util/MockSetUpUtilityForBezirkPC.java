@@ -41,10 +41,10 @@ import java.util.Enumeration;
  *
  * @author AJC6KOR
  */
-public class MockSetUpUtilityForUhuPC {
+public class MockSetUpUtilityForBezirkPC {
 
     private final static Logger log = LoggerFactory
-            .getLogger(MockSetUpUtilityForUhuPC.class);
+            .getLogger(MockSetUpUtilityForBezirkPC.class);
 
     private static final String DBPath = "./";
     private static final String DBVersion = DBConstants.DB_VERSION;
@@ -155,7 +155,7 @@ public class MockSetUpUtilityForUhuPC {
         return regPersistence;
     }
 
-    public BezirkComms getUhuComms() {
+    public BezirkComms getBezirkComms() {
 
         return uhuComms;
     }

@@ -134,7 +134,7 @@ public class ControlMessage {
 
     public enum Discriminator {
         DiscoveryRequest, DiscoveryResponse, MemberLeaveRequest, MemberLeaveResponse,
-        OwnerLeaveResponse, UhuSphereLeave, ShareResponse, CatchRequest,
+        OwnerLeaveResponse, BezirkSphereLeave, ShareResponse, CatchRequest,
         CatchResponse, ShareRequest,
         StreamRequest, StreamResponse, SphereDiscoveryRequest, SphereDiscoveryResponse,
         LoggingServiceMessage, RTCControlMessage,

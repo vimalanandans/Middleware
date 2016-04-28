@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.BezirkComms;
-import com.bezirk.comms.UhuCommsAndroid;
+import com.bezirk.comms.BezirkCommsAndroid;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.persistence.RegistryPersistence;
@@ -23,8 +23,8 @@ import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.BezirkSphereForAndroid;
 import com.bezirk.starter.IUhuStackHandler;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.UhuPreferences;
-import com.bezirk.starter.UhuWifiManager;
+import com.bezirk.starter.BezirkPreferences;
+import com.bezirk.starter.BezirkWifiManager;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -39,8 +39,8 @@ import java.util.Date;
  * <p/>
  * Created by AJC6KOR on 9/8/2015.
  */
-public final class UhuStackHandler implements IUhuStackHandler {
-    private static final Logger logger = LoggerFactory.getLogger(UhuStackHandler.class);
+public final class BezirkStackHandler implements IUhuStackHandler {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkStackHandler.class);
 
     private static Boolean startedStack = false;
     private static Boolean stoppedStack;
@@ -59,15 +59,15 @@ public final class UhuStackHandler implements IUhuStackHandler {
     private final ProxyforServices proxy;
 
     private final CommsNotification errNotificationCallback;
-    private final UhuWifiManager uhuWifiManager;
-    private final UhuStartStackHelper uhuStartStackHelper;
+    private final BezirkWifiManager bezirkWifiManager;
+    private final BezirkStartStackHelper bezirkStartStackHelper;
     private RegistryPersistence registryPersistence;
 
-    public UhuStackHandler(ProxyforServices proxy, CommsNotification errorNotificationCallback) {
+    public BezirkStackHandler(ProxyforServices proxy, CommsNotification errorNotificationCallback) {
         this.proxy = proxy;
         this.errNotificationCallback = errorNotificationCallback;
-        this.uhuWifiManager = UhuWifiManager.getInstance();
-        this.uhuStartStackHelper = new UhuStartStackHelper();
+        this.bezirkWifiManager = BezirkWifiManager.getInstance();
+        this.bezirkStartStackHelper = new BezirkStartStackHelper();
     }
 
     /**
@@ -84,7 +84,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
     /**
      * @return commsManager
      */
-    public static BezirkComms getUhuComms() {
+    public static BezirkComms getBezirkComms() {
 
         return comms;
     }
@@ -107,12 +107,12 @@ public final class UhuStackHandler implements IUhuStackHandler {
         synchronized (this) {
 
             WifiManager wifi;
-            if (!UhuStackHandler.isStackStarted()) {
+            if (!BezirkStackHandler.isStackStarted()) {
                 // Need to acquire wifi zirk as every time u start the stack, pick the new connected wifi access point information.
                 wifi = (WifiManager) service.getSystemService(Context.WIFI_SERVICE);
-                if (uhuStartStackHelper.isWifiEnabled(wifi)) {
+                if (bezirkStartStackHelper.isWifiEnabled(wifi)) {
                     //means wifi is enabled..
-                    uhuStartStackHelper.acquireWifiLock(wifi);
+                    bezirkStartStackHelper.acquireWifiLock(wifi);
 
                     logger.info("Bezirk zirk start triggered \n");
 
@@ -122,7 +122,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
                      *************************************************************/
                     WifiInfo wifiInfo = wifi.getConnectionInfo();
                     //set the Wifi you have connected to ::
-                    uhuWifiManager.setConnectedWifiSSID(wifiInfo.getSSID());
+                    bezirkWifiManager.setConnectedWifiSSID(wifiInfo.getSSID());
 
                     //If Wifi is not enabled send a notification to user.
 
@@ -131,7 +131,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     /*************************************************************
                      * Step 1 : Fetches ipAddress from Wifi connection           *
                      *************************************************************/
-                    if (!uhuStartStackHelper.isIPAddressValid(service, wifi, androidNetworkUtil))
+                    if (!bezirkStartStackHelper.isIPAddressValid(service, wifi, androidNetworkUtil))
                         return;
                     Toast.makeText(service.getApplicationContext(), "Starting Bezirk....", Toast.LENGTH_SHORT).show();
 
@@ -139,18 +139,18 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     /*************************************************************
                      * Step 2 : Set Android callback zirk                     *
                      *************************************************************/
-                    uhuStartStackHelper.setAndroicallback(service);
+                    bezirkStartStackHelper.setAndroicallback(service);
 
                     /*************************************************************
                      * Step 3 :  Initialize UhuCommsForAndroid with preferences  *
                      *************************************************************/
-                    UhuPreferences preferences = new UhuPreferences(service);
-                    UhuCommsAndroid.init(preferences);
+                    BezirkPreferences preferences = new BezirkPreferences(service);
+                    BezirkCommsAndroid.init(preferences);
 
                     /*************************************************************
                      * Step 4 : Initialize Registry Persistence                  *
                      *************************************************************/
-                    registryPersistence = uhuStartStackHelper.initializeRegistryPersistence(service);
+                    registryPersistence = bezirkStartStackHelper.initializeRegistryPersistence(service);
 
                     /*************************************************************
                      * Step 5 : Initialize BezirkSadlManager and set sadl for proxy *
@@ -162,7 +162,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
                      * Step 6 : Initialize BezirkCommsManager                       *
                      *************************************************************/
                     InetAddress inetAddress = androidNetworkUtil.fetchInetAddress(service);
-                    comms = uhuStartStackHelper.initializeComms(inetAddress, bezirkSadlManager, proxy, errNotificationCallback);
+                    comms = bezirkStartStackHelper.initializeComms(inetAddress, bezirkSadlManager, proxy, errNotificationCallback);
                     if (!BezirkValidatorUtility.isObjectNotNull(comms)) {
                         logger.error("Unable to initialize comms layer. Shutting down uhu.");
                         service.stopSelf();
@@ -197,8 +197,8 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     int FOREGROUND_ID = 1336;
                     service.startForeground(FOREGROUND_ID,
                             service.buildForegroundNotification("Bezirk ON"));
-                    UhuStackHandler.stoppedStack = false;
-                    UhuStackHandler.startedStack = true;
+                    BezirkStackHandler.stoppedStack = false;
+                    BezirkStackHandler.startedStack = true;
                 } else {
                     logger.debug("Disconnected from network!!!");
                     Toast.makeText(service.getApplicationContext(), "You have to be connected to a network to start using UhU!!", Toast.LENGTH_SHORT).show();
@@ -228,7 +228,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
 
             //Set status of stack
             this.stoppedStack = true;
-            UhuStackHandler.startedStack = false;
+            BezirkStackHandler.startedStack = false;
             // Close the zirk for testing quick fix
             service.stopSelf();
 

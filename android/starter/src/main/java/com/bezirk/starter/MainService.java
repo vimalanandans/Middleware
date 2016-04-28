@@ -29,9 +29,9 @@ import com.bezirk.proxy.android.PipeActionParser;
 import com.bezirk.proxy.android.ProxyforServices;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.starter.helper.NetworkBroadCastReceiver;
-import com.bezirk.starter.helper.UhuActionProcessor;
-import com.bezirk.starter.helper.UhuServiceHelper;
-import com.bezirk.starter.helper.UhuStackHandler;
+import com.bezirk.starter.helper.BezirkActionProcessor;
+import com.bezirk.starter.helper.BezirkServiceHelper;
+import com.bezirk.starter.helper.BezirkStackHandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,16 +40,16 @@ import org.slf4j.LoggerFactory;
 public class MainService extends Service implements INotificationCallback {
     private static final Logger logger = LoggerFactory.getLogger(MainService.class);
 
-    private final UhuActionProcessor uhuActionProcessor = new UhuActionProcessor();
+    private final BezirkActionProcessor bezirkActionProcessor = new BezirkActionProcessor();
     private final PipeActionParser pipeActionParser = new PipeActionParser();
-    private UhuServiceHelper uhuServiceHelper;
-    private UhuStackHandler uhuStackHandler;
+    private BezirkServiceHelper bezirkServiceHelper;
+    private BezirkStackHandler bezirkStackHandler;
     private CommsNotification commsNotification;
 
     private NetworkBroadCastReceiver broadcastReceiver;
 
     public static Boolean getStartedStack() {
-        return UhuStackHandler.isStackStarted();
+        return BezirkStackHandler.isStackStarted();
     }
 
     /**
@@ -57,13 +57,13 @@ public class MainService extends Service implements INotificationCallback {
      */
     public static boolean sendLoggingServiceMsgToClients(final String[] selSpheres,
                                                          final String[] tempLoggingSphereList, boolean isActivate) {
-        LogServiceActivatorDeactivator.sendLoggingServiceMsgToClients(UhuStackHandler.getUhuComms(), selSpheres, tempLoggingSphereList, isActivate);
+        LogServiceActivatorDeactivator.sendLoggingServiceMsgToClients(BezirkStackHandler.getBezirkComms(), selSpheres, tempLoggingSphereList, isActivate);
         return true;
     }
 
     // TODO :use iBinder interface to send the handle reference
     public static BezirkSphereAPI getSphereHandle() {
-        return UhuStackHandler.getSphereForAndroid();
+        return BezirkStackHandler.getSphereForAndroid();
     }
 
     /**
@@ -85,22 +85,22 @@ public class MainService extends Service implements INotificationCallback {
         //Acquire the Wifi Lock for Multicast
         logger.info("Bezirk Services is Created");
         final ProxyforServices proxy = new ProxyforServices(this);
-        uhuServiceHelper = new UhuServiceHelper(proxy);
+        bezirkServiceHelper = new BezirkServiceHelper(proxy);
         //Gain permissions for multicast
 
         //initialize the commsNotification object
         commsNotification = new com.bezirk.starter.CommsNotification(this);
 
-        uhuStackHandler = new UhuStackHandler(proxy, commsNotification);
+        bezirkStackHandler = new BezirkStackHandler(proxy, commsNotification);
 
         //register to the broadcast receiver to receive changes in network state.
-        broadcastReceiver = new NetworkBroadCastReceiver(this, uhuStackHandler);
+        broadcastReceiver = new NetworkBroadCastReceiver(this, bezirkStackHandler);
         registerToWifiBroadcastReceivers(broadcastReceiver);
 
         // this is needed when the zirk starts first before uhu stack.
         // (zirk sends registration intent before start stack intent)
-        if (!UhuStackHandler.isStackStarted()) {
-            uhuStackHandler.startStack(this);
+        if (!BezirkStackHandler.isStackStarted()) {
+            bezirkStackHandler.startStack(this);
         }
     }
 
@@ -108,7 +108,7 @@ public class MainService extends Service implements INotificationCallback {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         if (intent != null) {
-            uhuActionProcessor.processUhuAction(intent, this, uhuServiceHelper, uhuStackHandler);
+            bezirkActionProcessor.processUhuAction(intent, this, bezirkServiceHelper, bezirkStackHandler);
         }
 
         return START_STICKY;
@@ -118,9 +118,9 @@ public class MainService extends Service implements INotificationCallback {
 
     @Override
     public void onDestroy() {
-        if (!uhuStackHandler.isStackStopped()) {
+        if (!bezirkStackHandler.isStackStopped()) {
 
-            uhuStackHandler.stopStack(this);
+            bezirkStackHandler.stopStack(this);
         }
         super.onDestroy();
     }

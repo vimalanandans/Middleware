@@ -6,7 +6,7 @@ package com.bezirk.starter;
  * At the moment this is specific to android. if this shall be
  */
 
-public final class UhuActionCommands {
+public final class BezirkActionCommands {
 
     public final static String SPHERE_NOTIFICATION_ACTION = "com.bosch.upa.uhu.spherenotfication";
 
@@ -68,7 +68,7 @@ public final class UhuActionCommands {
 
     public final static String CMD_SPHERE_DISCOVERY_STATUS = "CMD_SPHERE_DISCOVERY_STATUS";
 
-    private UhuActionCommands() {
+    private BezirkActionCommands() {
         //Utility class. Hence hiding the default public constructor
     }
 

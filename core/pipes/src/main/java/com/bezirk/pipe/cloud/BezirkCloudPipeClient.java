@@ -245,8 +245,8 @@ public class BezirkCloudPipeClient implements CloudPipeClient {
         if (headerValue == null) {
             throw new Exception("Bezirk header was not returned in http header in the response to sendEvent()");
         }
-        String seralizedUhuHeader = headerValue.get(0);
-        PipeMulticastHeader multicastHeader = PipeMulticastHeader.deserialize(seralizedUhuHeader, PipeMulticastHeader.class);
+        String seralizedBezirkHeader = headerValue.get(0);
+        PipeMulticastHeader multicastHeader = PipeMulticastHeader.deserialize(seralizedBezirkHeader, PipeMulticastHeader.class);
         if (multicastHeader == null) {
             throw new Exception("Bezirk pipe header could not be deserialized: " + multicastHeader);
         }

@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.bezirk.starter.IUhuStackHandler;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.UhuWifiManager;
+import com.bezirk.starter.BezirkWifiManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
 
     private final MainService mainService;
     private final IUhuStackHandler stackHandler;
-    private UhuWifiManager uhuWifiManager;
+    private BezirkWifiManager bezirkWifiManager;
 
     public NetworkBroadCastReceiver(MainService mainService, IUhuStackHandler stackHandler) {
         this.mainService = mainService;
@@ -32,7 +32,7 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        uhuWifiManager = UhuWifiManager.getInstance();
+        bezirkWifiManager = BezirkWifiManager.getInstance();
 
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -68,7 +68,7 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
         switch (extraWifiState) {
             case WifiManager.WIFI_STATE_DISABLED:
                 Log.i("SupplicantState", "Wifi Disabled");
-                uhuWifiManager.setConnectedWifiSSID(null);
+                bezirkWifiManager.setConnectedWifiSSID(null);
                 break;
             case WifiManager.WIFI_STATE_ENABLED:
                 Log.i("SupplicantState", "Wifi Connected");
@@ -81,7 +81,7 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
     }
 
     private void handleConnectedState(Context context, WifiInfo wifiInfo) {
-        if (UhuStackHandler.getUhuComms() == null && mainService != null) {
+        if (BezirkStackHandler.getBezirkComms() == null && mainService != null) {
                 /*it is observed in few devices that, after receiving completed supplicant state the wifi manager will not retrieve the connection correctly.
                 Hence making this separated thread sleep for 3 sec and then starting the stack.*/
             try {
@@ -93,12 +93,12 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
             }
 
             return;
-        } else if (uhuWifiManager.getConnectedWifiSSID() == null || !uhuWifiManager.getConnectedWifiSSID().equals(wifiInfo.getSSID())) {
+        } else if (bezirkWifiManager.getConnectedWifiSSID() == null || !bezirkWifiManager.getConnectedWifiSSID().equals(wifiInfo.getSSID())) {
             //restart comms
             String message = "Bezirk has been reconfigured to Wifi Access Point! " + wifiInfo.getSSID();
             new RestartCommsAsyncTask(context, message, stackHandler).execute();
         }
-        uhuWifiManager.setConnectedWifiSSID(wifiInfo.getSSID());
+        bezirkWifiManager.setConnectedWifiSSID(wifiInfo.getSSID());
     }
 
 }

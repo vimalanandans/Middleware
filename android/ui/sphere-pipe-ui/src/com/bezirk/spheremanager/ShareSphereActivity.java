@@ -56,13 +56,13 @@ public class ShareSphereActivity extends ActionBarActivity {
 
     private String BR_SYSTEM_STATUS_ACTION = "com.bezirk.systemstatus";
     private boolean showWarning = false;
-    private String receivedUhuVersion = BezirkVersion.BEZIRK_VERSION;
+    private String receivedBezirkVersion = BezirkVersion.BEZIRK_VERSION;
     private final BroadcastReceiver systemStatusBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "Version Mismatch");
             showWarning = true;
-            receivedUhuVersion = intent.getExtras().getString("misMatchVersion");
+            receivedBezirkVersion = intent.getExtras().getString("misMatchVersion");
             invalidateOptionsMenu();
         }
     };
@@ -229,9 +229,9 @@ public class ShareSphereActivity extends ActionBarActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("STACK STATUS");
         View alertView = LayoutInflater.from(this).inflate(R.layout.layout_menu_dialog_status, null);
-        final TextView uhuVersion = (TextView) alertView.findViewById(R.id.versionUhu);
+        final TextView uhuVersion = (TextView) alertView.findViewById(R.id.versionBezirk);
         final TextView uhuStatus = (TextView) alertView.findViewById(R.id.versionStatus);
-        final TextView uhuExpectedVersionStatus = (TextView) alertView.findViewById(R.id.receivedVersionUhu);
+        final TextView uhuExpectedVersionStatus = (TextView) alertView.findViewById(R.id.receivedVersionBezirk);
 
         class CustomClickListener implements DialogInterface.OnClickListener {
             @Override
@@ -247,8 +247,8 @@ public class ShareSphereActivity extends ActionBarActivity {
         builder.setPositiveButton("OK", new CustomClickListener());
 
         uhuVersion.setText("Expected Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
-        if (receivedUhuVersion != null) {
-            uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + receivedUhuVersion);
+        if (receivedBezirkVersion != null) {
+            uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + receivedBezirkVersion);
         } else {
             uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
         }

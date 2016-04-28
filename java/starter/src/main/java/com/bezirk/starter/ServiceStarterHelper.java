@@ -15,6 +15,7 @@ import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.sphere.api.BezirkSphereRegistration;
+import com.bezirk.sphere.impl.BezirkQRCode;
 import com.bezirk.sphere.impl.BezirkSphereForPC;
 import com.bezirk.sphere.security.CryptoEngine;
 
@@ -69,7 +70,7 @@ final class ServiceStarterHelper {
         BezirkCompManager
                 .setSphereRegistration((BezirkSphereRegistration) sphereForPC);
 
-        com.bezirk.sphere.SphereManager.setUhuQRCode((com.bezirk.sphere.impl.IUhuQRCode) sphereForPC);
+        com.bezirk.sphere.SphereManager.setBezirkQRCode((BezirkQRCode) sphereForPC);
 
         final BezirkSphereForSadl sphereForSadl = (BezirkSphereForSadl) sphereForPC;
         BezirkCompManager.setSphereForSadl(sphereForSadl);
@@ -114,7 +115,7 @@ final class ServiceStarterHelper {
      * @param bezirkConfig
      * @return
      */
-    BezirkDevice configureUhuDevice(final BezirkConfig bezirkConfig) {
+    BezirkDevice configureBezirkDevice(final BezirkConfig bezirkConfig) {
         final BezirkDevice bezirkDevice = new BezirkDevice();
 
         String deviceIdString = null;

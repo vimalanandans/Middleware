@@ -100,12 +100,12 @@ public class JyreCommsManager implements IUhuComms {
         return false;
     }
 
-    public void setUhuCallback(ServiceMessageHandler uhuCallback) {
+    public void setBezirkCallback(ServiceMessageHandler bezirkCallback) {
         // TODO Auto-generated method stub
 
     }
 
-    public void setSphereForSadl(IUhuSphereForSadl uhuSphere) {
+    public void setSphereForSadl(IUhuSphereForSadl bezirkSphere) {
         // TODO Auto-generated method stub
 
     }

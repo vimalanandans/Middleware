@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 /**
  * Created by Rishabh Gulati on 12/5/2014.
  */
-public interface IUhuQRCode {
+public interface BezirkQRCode {
 
     /**
      * Currently implemented for only the default sphere. When the sphereId is

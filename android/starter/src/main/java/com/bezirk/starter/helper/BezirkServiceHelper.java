@@ -25,13 +25,13 @@ import java.io.File;
  * <p/>
  * Created by AJC6KOR on 9/2/2015.
  */
-public final class UhuServiceHelper {
+public final class BezirkServiceHelper {
 
-    private static final Logger logger = LoggerFactory.getLogger(UhuServiceHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkServiceHelper.class);
 
     private final ProxyforServices proxy;
 
-    public UhuServiceHelper(ProxyforServices proxy) {
+    public BezirkServiceHelper(ProxyforServices proxy) {
 
         this.proxy = proxy;
     }

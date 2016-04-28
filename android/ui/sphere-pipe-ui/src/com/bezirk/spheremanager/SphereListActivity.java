@@ -27,7 +27,7 @@ import com.bezirk.spheremanager.ui.DialogAddSphereFragment;
 import com.bezirk.spheremanager.ui.DialogServiceListFragment;
 import com.bezirk.spheremanager.ui.SphereListFragment;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.UhuActionCommands;
+import com.bezirk.starter.BezirkActionCommands;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -158,7 +158,7 @@ public class SphereListActivity extends FragmentActivity implements
         super.onResume();
         // register the intent to receive the Bezirk sphere Results
         IntentFilter filter = new IntentFilter();
-        filter.addAction(UhuActionCommands.SPHERE_NOTIFICATION_ACTION);
+        filter.addAction(BezirkActionCommands.SPHERE_NOTIFICATION_ACTION);
         registerReceiver(sphereIntentReceiver, filter);
     }
 
@@ -304,13 +304,13 @@ public class SphereListActivity extends FragmentActivity implements
 
             Log.i(TAG, "Received Intent for Device control >" + intent.getAction());
 
-            String command = intent.getStringExtra(UhuActionCommands.BEZIRK_ACTION_COMMANDS);
+            String command = intent.getStringExtra(BezirkActionCommands.BEZIRK_ACTION_COMMANDS);
 
             Log.i(TAG, "Command > " + command);
 
 
-            if (command.equals(UhuActionCommands.CMD_SPHERE_DISCOVERY_STATUS)) {
-                boolean Status = intent.getBooleanExtra(UhuActionCommands.BEZIRK_ACTION_COMMAND_STATUS, false);
+            if (command.equals(BezirkActionCommands.CMD_SPHERE_DISCOVERY_STATUS)) {
+                boolean Status = intent.getBooleanExtra(BezirkActionCommands.BEZIRK_ACTION_COMMAND_STATUS, false);
 
                 if (Status) // when status is true
                 {
@@ -321,11 +321,11 @@ public class SphereListActivity extends FragmentActivity implements
                     Toast.makeText(parent, "FAILED : " + command, Toast.LENGTH_SHORT).show();
                 }
 
-            } else if (command.equals(UhuActionCommands.CMD_SPHERE_CATCH_STATUS) ||
-                    command.equals(UhuActionCommands.CMD_SPHERE_SHARE_STATUS)) {
+            } else if (command.equals(BezirkActionCommands.CMD_SPHERE_CATCH_STATUS) ||
+                    command.equals(BezirkActionCommands.CMD_SPHERE_SHARE_STATUS)) {
 
-                String Status = intent.getStringExtra(UhuActionCommands.BEZIRK_ACTION_COMMAND_STATUS);
-                String message = intent.getStringExtra(UhuActionCommands.BEZIRK_ACTION_COMMAND_MESSAGE);
+                String Status = intent.getStringExtra(BezirkActionCommands.BEZIRK_ACTION_COMMAND_STATUS);
+                String message = intent.getStringExtra(BezirkActionCommands.BEZIRK_ACTION_COMMAND_MESSAGE);
                 Toast.makeText(parent, message, Toast.LENGTH_LONG).show();
             }
 

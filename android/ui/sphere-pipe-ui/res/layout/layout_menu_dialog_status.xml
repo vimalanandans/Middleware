@@ -6,14 +6,14 @@
     tools:context=".ControlActivity">
 
     <TextView
-        android:id="@+id/versionUhu"
+        android:id="@+id/versionBezirk"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="Bezirk Version" />
 
     <TextView
-        android:id="@+id/receivedVersionUhu"
+        android:id="@+id/receivedVersionBezirk"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"

@@ -104,7 +104,7 @@ public class SphereManagementGUI extends JFrame {
 
         JLabel lblQR;
         try {
-            lblQR = new JLabel(new ImageIcon(com.bezirk.sphere.SphereManager.getUhuQRCode()
+            lblQR = new JLabel(new ImageIcon(com.bezirk.sphere.SphereManager.getBezirkQRCode()
                     .getQRCode()));
             lblQR.setBounds(100, 100, 600, 600);
             contentPane.add(lblQR);
@@ -223,7 +223,7 @@ public class SphereManagementGUI extends JFrame {
 
         // get the catch code from the sphere
 
-        final String defaultSphereCode = com.bezirk.sphere.SphereManager.getUhuQRCode()
+        final String defaultSphereCode = com.bezirk.sphere.SphereManager.getBezirkQRCode()
                 .getDefaultSphereCode();
         final String displayString = "Enter the Catch code : " + defaultSphereCode;
 

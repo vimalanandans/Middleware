@@ -4,13 +4,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class TestUhuConfig {
+public class TestBezirkConfig {
     BezirkConfig bezirkConfig = new BezirkConfig();
-
 
     @Test
     public void testIsDispalyEnabled() {
-
         bezirkConfig.setDisplayEnable("TRUE");
         assertTrue("DisplayEnable is not equal to the set value.", bezirkConfig.isDisplayEnabled());
 
@@ -19,12 +17,10 @@ public class TestUhuConfig {
 
         bezirkConfig.setDisplayEnable("enable");
         assertFalse("DisplayEnable is not equal to the set value.", bezirkConfig.isDisplayEnabled());
-
     }
 
     @Test
     public void testGetDisplayEnable() {
-
         String displayEnable = Boolean.FALSE.toString();
         bezirkConfig.setDisplayEnable(displayEnable);
         assertEquals("DisplayEnable is not equal to the set value.", displayEnable, bezirkConfig.getDisplayEnable());
