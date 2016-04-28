@@ -1,6 +1,6 @@
 package com.bezirk.device;
 
-public class UhuDeviceType {
+public class BezirkDeviceType {
     //------------------------
     // Device type constants
     //------------------------

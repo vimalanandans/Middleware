@@ -1,7 +1,7 @@
 package com.bezirk.persistence;
 
 
-public interface IUhuProxyPersistence {
+public interface BezirkProxyPersistence {
     /**
      * Persists the UhuProxyRegistry
      *

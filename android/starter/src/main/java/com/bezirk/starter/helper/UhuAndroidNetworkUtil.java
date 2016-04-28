@@ -2,7 +2,7 @@ package com.bezirk.starter.helper;
 
 import android.net.wifi.WifiManager;
 
-import com.bezirk.comms.UhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.IntfInetPair;
@@ -59,7 +59,7 @@ public final class UhuAndroidNetworkUtil {
         NetworkInterface networkInterface;
         InetAddress inetAddress = null;
         try {
-            networkInterface = NetworkInterface.getByName(UhuComms.getINTERFACE_NAME());
+            networkInterface = NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME());
             inetAddress = BezirkValidatorUtility.isObjectNotNull(networkInterface) ? UhuNetworkUtilities.getIpForInterface(networkInterface) : null;
             if (inetAddress == null) {
                 LOGGER.error("Could not resolve ip - Check InterfaceName in preferences.xml");

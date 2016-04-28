@@ -1,6 +1,6 @@
 package com.bezirk.discovery;
 
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
@@ -32,8 +32,8 @@ public class SphereDiscoveryRecordTest {
 
         BezirkZirkEndPoint bezirkZirkEndPoint = new BezirkZirkEndPoint(new BezirkZirkId("ServiceA"));
         bezirkZirkEndPoint.device = "DeviceA";
-        UhuSphereInfo uhuSphereInfo = new UhuSphereInfo("CarSphere12", "CarSphere", UhuSphereType.UHU_SPHERE_TYPE_CAR, null, null);
-        sphereDiscoveryRecord.updateSet(uhuSphereInfo, bezirkZirkEndPoint);
+        BezirkSphereInfo bezirkSphereInfo = new BezirkSphereInfo("CarSphere12", "CarSphere", UhuSphereType.UHU_SPHERE_TYPE_CAR, null, null);
+        sphereDiscoveryRecord.updateSet(bezirkSphereInfo, bezirkZirkEndPoint);
 
 
         assertEquals("DiscoveredSetSize is not 1 after updation.", 1, sphereDiscoveryRecord.getDiscoveredSetSize());

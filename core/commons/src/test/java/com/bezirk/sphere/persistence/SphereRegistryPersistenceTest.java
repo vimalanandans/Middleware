@@ -1,12 +1,12 @@
 package com.bezirk.sphere.persistence;
 
 import com.bezirk.persistence.DBConstants;
+import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.DatabaseConnectionForJava;
-import com.bezirk.persistence.IDatabaseConnection;
-import com.bezirk.persistence.ISpherePersistence;
+import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.persistence.UhuRegistry;
+import com.bezirk.persistence.BezirkRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.impl.DeviceInformation;
 import com.bezirk.sphere.impl.MemberZirk;
@@ -38,7 +38,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class SphereRegistryPersistenceTest {
     String DBPath = "./";
-    IDatabaseConnection dbConnection = null;
+    DatabaseConnection dbConnection = null;
 
     @Before
     public void before() throws IOException {
@@ -48,7 +48,7 @@ public class SphereRegistryPersistenceTest {
     @After
     public void tearDown() throws NullPointerException, SQLException, Exception {
         // Deleting the uhu_database.sqlite is not happening so after each test, I am dropping the table
-        TableUtils.dropTable(dbConnection.getDatabaseConnection(), UhuRegistry.class, true);
+        TableUtils.dropTable(dbConnection.getDatabaseConnection(), BezirkRegistry.class, true);
     }
 
     /**
@@ -66,10 +66,10 @@ public class SphereRegistryPersistenceTest {
     public void sphereRegistryIntegrationTest() {
         String DBVersion = DBConstants.DB_VERSION;
         try {
-            IDatabaseConnection dbConnection = new DatabaseConnectionForJava(DBPath);
+            DatabaseConnection dbConnection = new DatabaseConnectionForJava(DBPath);
             RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBVersion);
 
-            ISpherePersistence spherePersistence = regPersistence;
+            SpherePersistence spherePersistence = regPersistence;
             SphereRegistry sphereRegistry = spherePersistence.loadSphereRegistry();
 
             updateSphereData(sphereRegistry);
@@ -78,9 +78,9 @@ public class SphereRegistryPersistenceTest {
             //close the connection;
             dbConnection.getDatabaseConnection().close();
             //Assume the application is closed and is restarted
-            IDatabaseConnection tempDBConnection = new DatabaseConnectionForJava(DBPath);
+            DatabaseConnection tempDBConnection = new DatabaseConnectionForJava(DBPath);
             RegistryPersistence tempRegPersistence = new RegistryPersistence(tempDBConnection, DBVersion);
-            ISpherePersistence tempSpherePersistence = (ISpherePersistence) tempRegPersistence;
+            SpherePersistence tempSpherePersistence = (SpherePersistence) tempRegPersistence;
             //load the registry
             SphereRegistry retrievedRegistry = tempSpherePersistence.loadSphereRegistry();
             SphereRegistry storedRegistry = new SphereRegistry();

@@ -15,8 +15,8 @@ import java.util.Properties;
  * that uses the version to be compatible and process accordingly.
  * the main uhu version is read from build file
  */
-public class UhuVersion {
-    private transient static final Logger logger = LoggerFactory.getLogger(UhuVersion.class);
+public class BezirkVersion {
+    private transient static final Logger logger = LoggerFactory.getLogger(BezirkVersion.class);
 
     private static final String DEFAULT_BEZIRK_VERSION = "1.1";
 

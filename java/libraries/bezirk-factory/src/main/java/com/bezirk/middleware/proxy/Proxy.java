@@ -13,7 +13,7 @@ import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.Stream;
-import com.bezirk.persistence.IUhuProxyPersistence;
+import com.bezirk.persistence.BezirkProxyPersistence;
 import com.bezirk.persistence.UhuProxyRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
@@ -42,7 +42,7 @@ public class Proxy implements Bezirk {
     protected final HashMap<String, String> activeStreams = new HashMap<String, String>();
     private final ProxyforServices proxy;
     private final ProxyUtil proxyUtil;
-    private final IUhuProxyPersistence proxyPersistence;
+    private final BezirkProxyPersistence proxyPersistence;
     private final MainService mainService;
     // Stream
     private short streamFactory = 0;

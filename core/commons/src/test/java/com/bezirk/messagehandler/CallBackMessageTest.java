@@ -1,15 +1,10 @@
 package com.bezirk.messagehandler;
 
-import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.pipe.policy.ext.UhuPipePolicy;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 import org.junit.Test;
-
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import static org.junit.Assert.*;
 

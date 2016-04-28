@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.SelectSphereListAdapter;
@@ -53,12 +53,12 @@ public class NewPipeActivity extends Activity {
 
         if (BezirkValidatorUtility.isObjectNotNull(api)) {
 
-            Iterator<UhuSphereInfo> sphereInfo = api.getSpheres().iterator();
+            Iterator<BezirkSphereInfo> sphereInfo = api.getSpheres().iterator();
 
             final List<AbstractSphereListItem> sphereList = new ArrayList<AbstractSphereListItem>();
 
             while (sphereInfo.hasNext()) {
-                UhuSphereInfo info = sphereInfo.next();
+                BezirkSphereInfo info = sphereInfo.next();
                 sphereList.add(new SphereListItem(info));
             }
 

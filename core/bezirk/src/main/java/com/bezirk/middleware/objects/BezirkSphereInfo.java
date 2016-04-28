@@ -5,12 +5,12 @@ import java.util.ArrayList;
 /**
  * @author Rishabh Gulati
  */
-public class UhuSphereInfo {
+public class BezirkSphereInfo {
     private final String sphereID;
     private final String sphereName;
     private final String sphereType;
     private final ArrayList<BezirkDeviceInfo> deviceList;
-    private final ArrayList<com.bezirk.middleware.objects.UhuPipeInfo> pipeList;
+    private final ArrayList<BezirkPipeInfo> pipeList;
     // is this device is wons this sphere.
     // This is used only in local device. hence tostring doesn't have
     private boolean isThisDeviceOwnsSphere;
@@ -21,10 +21,10 @@ public class UhuSphereInfo {
      * @param deviceList
      * @param pipeList
      */
-    public UhuSphereInfo(final String sphereID, final String sphereName,
-                         final String sphereType,
-                         final ArrayList<BezirkDeviceInfo> deviceList,
-                         final ArrayList<com.bezirk.middleware.objects.UhuPipeInfo> pipeList) {
+    public BezirkSphereInfo(final String sphereID, final String sphereName,
+                            final String sphereType,
+                            final ArrayList<BezirkDeviceInfo> deviceList,
+                            final ArrayList<BezirkPipeInfo> pipeList) {
         this.sphereID = sphereID;
         this.sphereType = sphereType;
         this.sphereName = sphereName;
@@ -34,10 +34,10 @@ public class UhuSphereInfo {
 
     /**
      * Copy constructor
-     * Requires not null {@link UhuSphereInfo}} to be passed
+     * Requires not null {@link BezirkSphereInfo}} to be passed
      */
 
-    public UhuSphereInfo(UhuSphereInfo other) {
+    public BezirkSphereInfo(BezirkSphereInfo other) {
         this.sphereID = other.sphereID;
         this.sphereType = other.sphereType;
         this.sphereName = other.sphereName;
@@ -91,7 +91,7 @@ public class UhuSphereInfo {
     /**
      * @return the pipeList
      */
-    public final ArrayList<com.bezirk.middleware.objects.UhuPipeInfo> getPipeList() {
+    public final ArrayList<BezirkPipeInfo> getPipeList() {
         return pipeList;
     }
 
@@ -100,7 +100,7 @@ public class UhuSphereInfo {
      */
     @Override
     public String toString() {
-        return "UhuSphereInfo [sphereID=" + sphereID + ",\nsphereName="
+        return "BezirkSphereInfo [sphereID=" + sphereID + ",\nsphereName="
                 + sphereName + ",\nsphereType=" + sphereType + ",\ndeviceList=" + deviceList + ",\npipeList="
                 + pipeList + "]";
     }

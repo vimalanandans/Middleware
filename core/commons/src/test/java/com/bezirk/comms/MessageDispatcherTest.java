@@ -83,7 +83,7 @@ public class MessageDispatcherTest {
         ISadlEventReceiver uhusadlManager = new UhuSadlManager(null);
         MessageDispatcher messageDispatcher = new MessageDispatcher(uhusadlManager);
 
-        ICtrlMsgReceiver receiver = new MockReceiver();
+        CtrlMsgReceiver receiver = new MockReceiver();
         messageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, receiver);
 
         ControlLedger tcMessage = new ControlLedger();
@@ -108,13 +108,13 @@ public class MessageDispatcherTest {
 
         assertFalse("Unknown Message type is recieved by mock receiver.", unKnownMessageReceived);
 
-        ICtrlMsgReceiver duplicateReceiver = new MockReceiver();
+        CtrlMsgReceiver duplicateReceiver = new MockReceiver();
         assertFalse("Duplicte receiver is allowed to register for the same message type.", messageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, duplicateReceiver));
 
 
     }
 
-    class MockReceiver implements ICtrlMsgReceiver {
+    class MockReceiver implements CtrlMsgReceiver {
 
         @Override
         public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {

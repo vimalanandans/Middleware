@@ -1,8 +1,8 @@
 package com.bezirk.sphere.testSphereUsingVirtualComms;
 
 import com.bezirk.comms.CommsProperties;
-import com.bezirk.comms.ICommsNotification;
-import com.bezirk.comms.ICtrlMsgReceiver;
+import com.bezirk.comms.CommsNotification;
+import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.comms.IPortFactory;
 import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.comms.MessageQueue;
@@ -65,7 +65,7 @@ public class UhuCommsMock implements IUhuCommsLegacy {
 
     @Override
     public boolean registerNotification(
-            ICommsNotification errNotificationCallback) {
+            CommsNotification errNotificationCallback) {
         // TODO Auto-generated method stub
         return false;
     }
@@ -79,7 +79,7 @@ public class UhuCommsMock implements IUhuCommsLegacy {
 
     @Override
     public boolean registerControlMessageReceiver(Discriminator id,
-                                                  ICtrlMsgReceiver receiver) {
+                                                  CtrlMsgReceiver receiver) {
         // TODO Auto-generated method stub
         return false;
     }

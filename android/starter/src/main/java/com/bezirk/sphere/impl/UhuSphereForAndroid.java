@@ -7,7 +7,7 @@ import android.graphics.Color;
 
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.persistence.ISpherePersistence;
+import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuSphereListener;
@@ -36,7 +36,7 @@ public class UhuSphereForAndroid extends UhuSphere implements IUhuSphereListener
         applicationContext = context;
     }
 
-    public boolean initSphere(ISpherePersistence spherePersistence, IUhuComms uhuComms) {
+    public boolean initSphere(SpherePersistence spherePersistence, IUhuComms uhuComms) {
         initializeSphereConfig();
         if (sphereConfig == null) LOGGER.error("SphereConfig is null");
         return super.initSphere(spherePersistence, uhuComms, this, sphereConfig);

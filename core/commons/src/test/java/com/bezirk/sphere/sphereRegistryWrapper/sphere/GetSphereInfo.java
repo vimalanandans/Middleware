@@ -75,7 +75,7 @@
 //	/**
 //	 * Test method for {@link SphereRegistryWrapper#getSphereInfo(String)}.
 //	 * 
-//	 * <br>Check the validity of the sphere information retrieved from UhuSphereInfo object
+//	 * <br>Check the validity of the sphere information retrieved from BezirkSphereInfo object
 //	 */
 //	@Test
 //	public final void validSphere() {

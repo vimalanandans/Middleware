@@ -69,7 +69,7 @@ public class SphereDiscovery {
                 final SphereDiscoveryRecord discRecord = discoveredMap.get(dLabel);
                 if (BezirkValidatorUtility.isObjectNotNull(discRecord)) {
                     //update sphere discovery record
-                    discRecord.updateSet(response.getUhuSphereInfo(),
+                    discRecord.updateSet(response.getBezirkSphereInfo(),
                             response.getSender());
                     notifyAll();
                     /* final long currentTime = new Date().getTime();

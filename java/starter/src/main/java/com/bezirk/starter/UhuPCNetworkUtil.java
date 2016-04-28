@@ -1,6 +1,6 @@
 package com.bezirk.starter;
 
-import com.bezirk.comms.UhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.IntfInetPair;
@@ -34,7 +34,7 @@ final class UhuPCNetworkUtil {
         NetworkInterface intf = null;
 
         // Resolve the NetworkInterface object for supplied InterfaceName
-        intf = resolveInterface(UhuComms.getINTERFACE_NAME(), uhuConfig);
+        intf = resolveInterface(BezirkComms.getINTERFACE_NAME(), uhuConfig);
 
         // If we chose a different Interface than what is written in the
         // config file and the config file is writable (it is not in a jar),

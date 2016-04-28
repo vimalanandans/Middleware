@@ -3,7 +3,7 @@ package com.bezirk.starter.helper;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.persistence.ISpherePersistence;
+import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuDevMode;
@@ -45,7 +45,7 @@ public final class UhuSphereHandler {
     /**
      * create and initialise the sphere
      */
-    boolean initSphere(UPADeviceInterface uhuDevice, MainService service, ISpherePersistence spherePersistence, UhuPreferences preferences) {
+    boolean initSphere(UPADeviceInterface uhuDevice, MainService service, SpherePersistence spherePersistence, UhuPreferences preferences) {
 
         /** start the sphere related init*/
         if (sphereForAndroid == null) {

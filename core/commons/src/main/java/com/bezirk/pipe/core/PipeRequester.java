@@ -1,11 +1,11 @@
 package com.bezirk.pipe.core;
 
-import com.bezirk.application.IUhuApp;
+import com.bezirk.application.BezirkApp;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.messagehandler.PipeRequestIncomingMessage;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.pipe.policy.ext.UhuPipePolicy;
+import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Used by a platform to request a pipe on behalf of a zirk
  */
-public class PipeRequester implements IPipeRequester, IUhuPipeAPI {
+public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
 
     private static final Logger log = LoggerFactory.getLogger(PipeRequester.class);
 
@@ -27,7 +27,7 @@ public class PipeRequester implements IPipeRequester, IUhuPipeAPI {
     private PipeRegistry registry = null;
 
     // Interface to interact with the user-facing uhu app
-    private IUhuApp app = null;
+    private BezirkApp app = null;
 
     public PipeRequester() {
         // no-arg constructor used for flexibility (e.g. calling it as a bean)
@@ -116,7 +116,7 @@ public class PipeRequester implements IPipeRequester, IUhuPipeAPI {
     }
     
     /*
-     * Methods that implement IUhuPipeAPI
+     * Methods that implement BezirkPipeAPI
      */
 
     /**
@@ -134,8 +134,8 @@ public class PipeRequester implements IPipeRequester, IUhuPipeAPI {
         PipeRequest request = outstandingRequests.get(pipeRequestId);
 
         Pipe pipe = request.getPipe();
-        UhuPipePolicy allowedIn = PipePolicyUtility.policyInMap.get(request.getId());
-        UhuPipePolicy allowedOut = PipePolicyUtility.policyOutMap.get(request.getId());
+        BezirkPipePolicy allowedIn = PipePolicyUtility.policyInMap.get(request.getId());
+        BezirkPipePolicy allowedOut = PipePolicyUtility.policyOutMap.get(request.getId());
 
         // For now, we are ignoring the approved boolean and using the pipePolicy.isApproved() to indicate approval
         if (registry.isRegistered(pipe)) {
@@ -171,7 +171,7 @@ public class PipeRequester implements IPipeRequester, IUhuPipeAPI {
         this.registry = registry;
     }
 
-    public void setApp(IUhuApp app) {
+    public void setApp(BezirkApp app) {
         this.app = app;
     }
 

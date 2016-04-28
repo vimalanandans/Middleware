@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.shareProcessor;
 
-import com.bezirk.commons.UhuId;
+import com.bezirk.commons.BezirkId;
 import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.messages.ShareRequest;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
@@ -87,7 +87,7 @@ public class PrepareRequest {
     @Test
     public void validParametersReturnsTrue() throws Exception {
         String sharerSphereId = sphereTestUtility.generateOwnerCombo();
-        String inviterShortCode = new UhuId().getShortIdByHash(sharerSphereId);
+        String inviterShortCode = new BezirkId().getShortIdByHash(sharerSphereId);
         /** invoke the method under test using reflection **/
         ShareRequest preparedRequest = (ShareRequest) method.invoke(shareProcessor, sharerSphereId, inviterShortCode);
 

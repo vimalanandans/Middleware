@@ -1,21 +1,21 @@
 package com.bezirk.messagehandler;
 
 import com.bezirk.middleware.addressing.Pipe;
-import com.bezirk.pipe.policy.ext.UhuPipePolicy;
+import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 public class PipeRequestIncomingMessage extends ServiceIncomingMessage {
 
     private Pipe pipe;
     private String pipeReqId;
-    private UhuPipePolicy allowedIn;
-    private UhuPipePolicy allowedOut;
+    private BezirkPipePolicy allowedIn;
+    private BezirkPipePolicy allowedOut;
 
     public PipeRequestIncomingMessage() { // Empty Constructor for Gson
         this.callbackDiscriminator = "PIPE-APPROVED";
     }
 
-    public PipeRequestIncomingMessage(Pipe pipe, String pipeReqId, UhuPipePolicy allowedIn, UhuPipePolicy allowedOut, BezirkZirkId recipient) {
+    public PipeRequestIncomingMessage(Pipe pipe, String pipeReqId, BezirkPipePolicy allowedIn, BezirkPipePolicy allowedOut, BezirkZirkId recipient) {
         this.callbackDiscriminator = "PIPE-APPROVED";
         this.pipe = pipe;
         this.pipeReqId = pipeReqId;
@@ -33,11 +33,11 @@ public class PipeRequestIncomingMessage extends ServiceIncomingMessage {
         return pipeReqId;
     }
 
-    public UhuPipePolicy getAllowedIn() {
+    public BezirkPipePolicy getAllowedIn() {
         return allowedIn;
     }
 
-    public UhuPipePolicy getAllowedOut() {
+    public BezirkPipePolicy getAllowedOut() {
         return allowedOut;
     }
 }

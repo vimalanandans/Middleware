@@ -1,8 +1,8 @@
 package com.bezirk.util;
 
 import com.bezirk.comms.CommsProperties;
-import com.bezirk.comms.ICommsNotification;
-import com.bezirk.comms.ICtrlMsgReceiver;
+import com.bezirk.comms.CommsNotification;
+import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
@@ -108,7 +108,7 @@ public class MockComms implements IUhuComms {
 
     @Override
     public boolean registerNotification(
-            ICommsNotification errNotificationCallback) {
+            CommsNotification errNotificationCallback) {
         // TODO Auto-generated method stub
         return false;
     }
@@ -122,7 +122,7 @@ public class MockComms implements IUhuComms {
 
     @Override
     public boolean registerControlMessageReceiver(Discriminator id,
-                                                  ICtrlMsgReceiver receiver) {
+                                                  CtrlMsgReceiver receiver) {
         // TODO Auto-generated method stub
         return true;
     }

@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.commons.UhuVersion;
+import com.bezirk.commons.BezirkVersion;
 import com.bezirk.features.CommsFeature;
 import com.bezirk.spheremanager.SphereListActivity;
 import com.bezirk.starter.MainService;
@@ -39,7 +39,7 @@ class ControlActivityHelper {
     private final String BR_SYSTEM_STATUS_ACTION = "com.bezirk.systemstatus";
     private final ControlActivity controlActivity;
     boolean stackVersionMismatch;
-    private String receivedUhuVersion = UhuVersion.UHU_VERSION;
+    private String receivedUhuVersion = BezirkVersion.UHU_VERSION;
     /**
      * Broadcast receiver to receive the status from the stack if there is  a version mismatch
      */
@@ -147,11 +147,11 @@ class ControlActivityHelper {
             }
         });
 
-        uhuVersion.setText("Expected Uhu-Version: " + UhuVersion.UHU_VERSION);
+        uhuVersion.setText("Expected Uhu-Version: " + BezirkVersion.UHU_VERSION);
         if (BezirkValidatorUtility.isObjectNotNull(receivedUhuVersion)) {
             uhuExpectedVersionStatus.setText("Received Uhu-Version: " + receivedUhuVersion);
         } else {
-            uhuExpectedVersionStatus.setText("Received Uhu-Version: " + UhuVersion.UHU_VERSION);
+            uhuExpectedVersionStatus.setText("Received Uhu-Version: " + BezirkVersion.UHU_VERSION);
         }
 
         if (stackVersionMismatch) {
@@ -175,9 +175,9 @@ class ControlActivityHelper {
         final TextView aboutVersionText = (TextView) dialog.findViewById(R.id.about_version_text);
 
         String appName = controlActivity.getString(R.string.app_name);
-        String aboutText = appName + " v" + UhuVersion.UHU_VERSION + ", Jan 2016, " + controlActivity.getString(R.string.about_copyright_text);
+        String aboutText = appName + " v" + BezirkVersion.UHU_VERSION + ", Jan 2016, " + controlActivity.getString(R.string.about_copyright_text);
         aboutVersionText.setText(aboutText);
-        //aboutVersionText.setText("UPA v"+ UhuVersion.UHU_VERSION + ", July 2015, � Bosch");
+        //aboutVersionText.setText("UPA v"+ BezirkVersion.UHU_VERSION + ", July 2015, � Bosch");
 
         // Set dialog title
         dialog.setTitle("About " + appName);

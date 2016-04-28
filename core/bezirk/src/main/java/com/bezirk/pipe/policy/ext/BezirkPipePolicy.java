@@ -4,10 +4,10 @@ import com.bezirk.middleware.addressing.PipePolicy;
 
 import java.util.HashSet;
 
-public class UhuPipePolicy extends PipePolicy {
+public class BezirkPipePolicy extends PipePolicy {
     private HashSet<String> allowedProtocols = new HashSet<String>();
 
-    public UhuPipePolicy(PipePolicy policy) {
+    public BezirkPipePolicy(PipePolicy policy) {
         this.setReasonMap(policy.getReasonMap());
         allowedProtocols.addAll(policy.getReasonMap().keySet());
     }

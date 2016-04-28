@@ -1,6 +1,6 @@
 package com.bezirk.statckstatus.ui;
 
-import com.bezirk.commons.UhuVersion;
+import com.bezirk.commons.BezirkVersion;
 
 import javax.swing.JOptionPane;
 
@@ -21,7 +21,7 @@ public final class StackStatusUI {
                     .showMessageDialog(
                             null,
                             "Expected message version: "
-                                    + UhuVersion.getWireVersion()
+                                    + BezirkVersion.getWireVersion()
                                     + "\n\n"
                                     + "Received message version: "
                                     + receivedVersion

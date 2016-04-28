@@ -10,7 +10,7 @@ import com.bezirk.streaming.control.Objects.StreamRecord;
  *
  * @author ajc6kor
  */
-public interface IStreaming {
+public interface Streaming {
 
 
     /**

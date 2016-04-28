@@ -6,7 +6,7 @@ package com.bezirk.middleware.objects;
 /**
  * @author Rishabh Gulati
  */
-public class UhuPipeInfo {
+public class BezirkPipeInfo {
 
     private final String pipeId;
 
@@ -19,7 +19,7 @@ public class UhuPipeInfo {
      * @param pipeName
      * @param pipeURL
      */
-    public UhuPipeInfo(final String pipeId, final String pipeName, final String pipeURL) {
+    public BezirkPipeInfo(final String pipeId, final String pipeName, final String pipeURL) {
         this.pipeId = pipeId;
         this.pipeName = pipeName;
         this.pipeURL = pipeURL;
@@ -51,7 +51,7 @@ public class UhuPipeInfo {
      */
     @Override
     public String toString() {
-        return "UhuPipeInfo [pipeId=" + pipeId + ",\npipeName=" + pipeName
+        return "BezirkPipeInfo [pipeId=" + pipeId + ",\npipeName=" + pipeName
                 + ",\npipeURL=" + pipeURL + "]";
     }
 

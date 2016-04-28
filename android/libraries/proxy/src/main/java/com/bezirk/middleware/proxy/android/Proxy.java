@@ -19,7 +19,7 @@ import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.Stream;
-import com.bezirk.pipe.policy.ext.UhuPipePolicy;
+import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
@@ -309,8 +309,8 @@ public final class Proxy implements Bezirk {
         addPipe.putExtra(UhuActions.KEY_PIPE_CLASS, pipe.getClass().getCanonicalName());
 
         // Add Pipe Policys
-        addPipe.putExtra(UhuActions.KEY_PIPE_POLICY_IN, allowedIn == null ? null : new UhuPipePolicy(allowedIn).toJson());
-        addPipe.putExtra(UhuActions.KEY_PIPE_POLICY_OUT, allowedOut == null ? null : new UhuPipePolicy(allowedOut).toJson());
+        addPipe.putExtra(UhuActions.KEY_PIPE_POLICY_IN, allowedIn == null ? null : new BezirkPipePolicy(allowedIn).toJson());
+        addPipe.putExtra(UhuActions.KEY_PIPE_POLICY_OUT, allowedOut == null ? null : new BezirkPipePolicy(allowedOut).toJson());
 
         Log.i(TAG, "Sending intent for pipe class: " + pipe.getClass().getCanonicalName());
 

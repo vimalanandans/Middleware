@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.catchProcessor;
 
-import com.bezirk.commons.UhuId;
+import com.bezirk.commons.BezirkId;
 import com.bezirk.sphere.impl.CatchProcessor;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.messages.CatchRequest;
@@ -90,7 +90,7 @@ public class PrepareRequest {
     @Test
     public void validSphereIdAndInviterShortCodeReturnsCatchRequestObj() throws Exception {
         String catcherSphereId = sphereTestUtility.generateOwnerCombo();
-        String inviterShortCode = new UhuId().getShortIdByHash(catcherSphereId);
+        String inviterShortCode = new BezirkId().getShortIdByHash(catcherSphereId);
         String sphereExchangeData = sphereRegistryWrapper.getShareCodeString(catcherSphereId);
 
         /** invoke the method under test using reflection **/

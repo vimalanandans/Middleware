@@ -5,12 +5,12 @@ import android.widget.Toast;
 
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.CommsFactory;
-import com.bezirk.comms.ICommsNotification;
+import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.features.CommsFeature;
 import com.bezirk.messagehandler.AndroidZirkMessageHandler;
-import com.bezirk.persistence.IDatabaseConnection;
+import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.util.DatabaseConnectionForAndroid;
 import com.bezirk.pipe.android.PipeCommsFactory;
@@ -39,7 +39,7 @@ class UhuStartStackHelper {
     }
 
     RegistryPersistence initializeRegistryPersistence(MainService service) {
-        IDatabaseConnection dbConnection = new DatabaseConnectionForAndroid(service);
+        DatabaseConnection dbConnection = new DatabaseConnectionForAndroid(service);
         String DB_VERSION = "0.0.4";
         RegistryPersistence registryPersistence = null;
 
@@ -87,7 +87,7 @@ class UhuStartStackHelper {
         }
     }
 
-    IUhuComms initializeComms(InetAddress inetAddress, UhuSadlManager uhuSadlManager, ProxyforServices proxy, ICommsNotification errNotificationCallback) {
+    IUhuComms initializeComms(InetAddress inetAddress, UhuSadlManager uhuSadlManager, ProxyforServices proxy, CommsNotification errNotificationCallback) {
         // Instantiate pipeManager before SenderThread so that it is ready to start sending over pipes
         PipeManager pipeComms = PipeCommsFactory.createPipeComms();
 

@@ -8,13 +8,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.zip.CRC32;
 
 
-public final class UhuCheckSum {
-    private static final Logger logger = LoggerFactory.getLogger(UhuCheckSum.class);
+public final class BezirkCheckSum {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkCheckSum.class);
 
     private final static String ALGORITHM = "SHA";
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
-    private UhuCheckSum() {
+    private BezirkCheckSum() {
 
     }
 

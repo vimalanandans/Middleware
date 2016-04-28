@@ -2,7 +2,7 @@ package com.bezirk.sphere.impl;
 
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.persistence.ISpherePersistence;
+import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuSphereListener;
@@ -142,7 +142,7 @@ public class UhuSphereForPC extends UhuSphere implements IUhuQRCode,
 
     }
 
-    public void initSphere(ISpherePersistence spherePersistence, IUhuComms uhuComms, ISphereConfig sphereConfig) {
+    public void initSphere(SpherePersistence spherePersistence, IUhuComms uhuComms, ISphereConfig sphereConfig) {
         super.initSphere(spherePersistence, uhuComms, this, sphereConfig);
     }
 

@@ -10,7 +10,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.bezirk.pipe.core.PipePolicyUtility;
-import com.bezirk.pipe.policy.ext.UhuPipePolicy;
+import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.listitems.AbstractPolicyListItem;
 import com.bezirk.spheremanager.ui.listitems.ProtocolItem;
@@ -70,8 +70,8 @@ public class PolicyListAdapter extends ArrayAdapter<AbstractPolicyListItem> {
 
             @Override
             public void onClick(View v) {
-                UhuPipePolicy policyIn = PipePolicyUtility.policyInMap.get(pipeReqId);
-                UhuPipePolicy policyOut = PipePolicyUtility.policyOutMap.get(pipeReqId);
+                BezirkPipePolicy policyIn = PipePolicyUtility.policyInMap.get(pipeReqId);
+                BezirkPipePolicy policyOut = PipePolicyUtility.policyOutMap.get(pipeReqId);
                 if (policy_active.isChecked()) {
                     policy_active.setChecked(false);
                     item.setActive(false);

@@ -2,11 +2,11 @@ package com.bezirk.sadl;
 
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.persistence.DBConstants;
+import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.DatabaseConnectionForJava;
-import com.bezirk.persistence.IDatabaseConnection;
-import com.bezirk.persistence.ISadlPersistence;
+import com.bezirk.persistence.SadlPersistence;
 import com.bezirk.persistence.RegistryPersistence;
-import com.bezirk.persistence.UhuRegistry;
+import com.bezirk.persistence.BezirkRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.j256.ormlite.table.TableUtils;
 
@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 
 public class RegistryPersistenceTest {
     String DBPath = "./";
-    IDatabaseConnection dbConnection = null;
+    DatabaseConnection dbConnection = null;
 
     @Before
     public void before() throws IOException {
@@ -34,7 +34,7 @@ public class RegistryPersistenceTest {
     @After
     public void tearDown() throws NullPointerException, SQLException, Exception {
         // Deleting the uhu_database.sqlite is not happening so after each test, I am dropping the table
-        TableUtils.dropTable(dbConnection.getDatabaseConnection(), UhuRegistry.class, true);
+        TableUtils.dropTable(dbConnection.getDatabaseConnection(), BezirkRegistry.class, true);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class RegistryPersistenceTest {
 //	@Test  //Constructor tests - checkDatabase() and super
 //	public void testRegistryPersistenceForDefault() throws NullPointerException, SQLException, IOException, Exception{
 //		String DBVersion = DBConstants.DB_VERSION;
-//		//IDatabaseConnection dbConnection = new DatabaseConnectionForJava(DBPath);
+//		//DatabaseConnection dbConnection = new DatabaseConnectionForJava(DBPath);
 //		RegistryPersistence regPersistence = new RegistryPersistence(dbConnection,DBVersion);
 //		//table should be created
 //		assertTrue(dbConnection.getPersistenceDAO().isTableExists());
@@ -60,10 +60,10 @@ public class RegistryPersistenceTest {
     public void testRegistryPersistenceLoad() {
         String DBVersion = DBConstants.DB_VERSION;
         try {
-            IDatabaseConnection dbConnection = new DatabaseConnectionForJava(DBPath);
+            DatabaseConnection dbConnection = new DatabaseConnectionForJava(DBPath);
             RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBVersion);
 
-            ISadlPersistence sadlPersistence = (ISadlPersistence) regPersistence;
+            SadlPersistence sadlPersistence = (SadlPersistence) regPersistence;
 
             SadlRegistry sadlRegistry = sadlPersistence.loadSadlRegistry();
 
@@ -128,7 +128,7 @@ public class RegistryPersistenceTest {
         String DBVersion = DBConstants.DB_VERSION;
         RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBVersion);
         //give it to sadl
-        ISadlPersistence sadlPersistence = (ISadlPersistence) regPersistence;
+        SadlPersistence sadlPersistence = (SadlPersistence) regPersistence;
         // load the sadl registry
         SadlRegistry aboutToPersist = sadlPersistence.loadSadlRegistry();
         //update
@@ -138,9 +138,9 @@ public class RegistryPersistenceTest {
         //close the connection;
         dbConnection.getDatabaseConnection().close();
         //Assume the application is closed and is restarted
-        IDatabaseConnection tempDBConnection = new DatabaseConnectionForJava(DBPath);
+        DatabaseConnection tempDBConnection = new DatabaseConnectionForJava(DBPath);
         RegistryPersistence tempRegPersistence = new RegistryPersistence(tempDBConnection, DBVersion);
-        ISadlPersistence tempSadlPersistence = (ISadlPersistence) tempRegPersistence;
+        SadlPersistence tempSadlPersistence = (SadlPersistence) tempRegPersistence;
         //load the registry
         SadlRegistry retrievedRegistry = tempSadlPersistence.loadSadlRegistry();
         SadlRegistry storedRegistry = new SadlRegistry();

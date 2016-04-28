@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.api;
 
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 
 import java.util.Set;
 
@@ -12,5 +12,5 @@ import java.util.Set;
  */
 public interface IUhuSphereDiscovery {
 
-    public void processDiscoveredSphereInfo(Set<UhuSphereInfo> discoveredSphereInfoSet, String sphereId);
+    public void processDiscoveredSphereInfo(Set<BezirkSphereInfo> discoveredSphereInfoSet, String sphereId);
 }

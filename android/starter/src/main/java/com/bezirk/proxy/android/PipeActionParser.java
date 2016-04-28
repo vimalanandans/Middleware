@@ -6,7 +6,7 @@ import com.bezirk.actions.UhuActions;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.core.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRequest;
-import com.bezirk.pipe.policy.ext.UhuPipePolicy;
+import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.google.gson.Gson;
 
@@ -23,10 +23,10 @@ import static com.bezirk.util.BezirkValidatorUtility.checkUhuServiceId;
  * Created by wya1pi on 8/21/14.
  */
 public class PipeActionParser {
-    private static final Logger log = LoggerFactory.getLogger(PipeActionParser.class);
+    private static final Logger logger = LoggerFactory.getLogger(PipeActionParser.class);
 
     public PipeRequest parsePipeRequest(Intent intent) {
-        log.info("Validating intent: " + intent.getAction());
+        logger.info("Validating intent: {}", intent.getAction());
 
         /*
          * Get strings out of the intent
@@ -40,8 +40,8 @@ public class PipeActionParser {
         String policyIn = intent.getStringExtra(UhuActions.KEY_PIPE_POLICY_IN);
         String policyOut = intent.getStringExtra(UhuActions.KEY_PIPE_POLICY_OUT);
 
-        UhuPipePolicy allowedIn = PipePolicy.fromJson(policyIn, UhuPipePolicy.class);
-        UhuPipePolicy allowedOut = PipePolicy.fromJson(policyOut, UhuPipePolicy.class);
+        BezirkPipePolicy allowedIn = PipePolicy.fromJson(policyIn, BezirkPipePolicy.class);
+        BezirkPipePolicy allowedOut = PipePolicy.fromJson(policyOut, BezirkPipePolicy.class);
         PipePolicyUtility.policyInMap.put(pipeId, allowedIn);
         PipePolicyUtility.policyOutMap.put(pipeId, allowedOut);
 
@@ -51,7 +51,7 @@ public class PipeActionParser {
          */
 
         if (!stringsValid(serviceIdAsString, pipeName, uriString, pipeClassName)) {
-            log.error("Intent not valid because intent extra strings not set correctly");
+            logger.error("Intent not valid because intent extra strings not set correctly");
             return null;
         }
 
@@ -59,13 +59,13 @@ public class PipeActionParser {
         try {
             pipeUri = new URI(uriString);
         } catch (URISyntaxException e) {
-            log.error("Intent not valid because pipeUri could not be parsed", e);
+            logger.error("Intent not valid because pipeUri could not be parsed", e);
             return null;
         }
 
         BezirkZirkId serviceId = serviceIdFromString(serviceIdAsString);
         if (serviceId == null) {
-            log.error("Intent not valid because there was a failure validating zirkId");
+            logger.error("Intent not valid because there was a failure validating zirkId");
             return null;
         }
 
@@ -76,10 +76,10 @@ public class PipeActionParser {
         /*CloudPipe pipe = null;
 
         if (pipeClassName.equals(CloudPipe.class.getCanonicalName())) {
-            log.debug("Creating cloud pipe");
+            logger.debug("Creating cloud pipe");
             pipe = new CloudPipe(pipeName, pipeUri);
         } else {
-            log.error("Unknown pipe type: " + pipeClassName);
+            logger.error("Unknown pipe type: " + pipeClassName);
             return null;
         }*/
 
@@ -97,7 +97,7 @@ public class PipeActionParser {
         Gson gson = new Gson();
         BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
         if (!checkUhuServiceId(serviceId)) {
-            log.error("zirkId not valid: " + serviceId);
+            logger.error("zirkId not valid: " + serviceId);
             return null;
         }
 
@@ -110,19 +110,19 @@ public class PipeActionParser {
         String errorSuffix = "String is null or empty";
 
         if (!checkForString(serviceId)) {
-            log.error("zirkId " + errorSuffix);
+            logger.error("zirkId " + errorSuffix);
             stringsValid = false;
         }
         if (!checkForString(pipeName)) {
-            log.error("pipeName " + errorSuffix);
+            logger.error("pipeName " + errorSuffix);
             stringsValid = false;
         }
         if (!checkForString(uriString)) {
-            log.error("uri " + errorSuffix);
+            logger.error("uri " + errorSuffix);
             stringsValid = false;
         }
         if (!checkForString(pipeClassName)) {
-            log.error("Pipe class " + errorSuffix);
+            logger.error("Pipe class " + errorSuffix);
             stringsValid = false;
         }
 

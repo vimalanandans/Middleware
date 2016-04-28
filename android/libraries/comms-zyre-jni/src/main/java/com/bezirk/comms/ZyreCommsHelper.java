@@ -129,7 +129,7 @@ class ZyreCommsHelper {
 
     void logKnownDevices() {
         for (Map.Entry<String, List<String>> entries : peers.entrySet()) {
-            logger.debug("devices in " + entries.getKey() + " : " + entries.getValue());
+            logger.debug("devices in {} : {}", entries.getKey(), entries.getValue());
         }
     }
 

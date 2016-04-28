@@ -1,8 +1,8 @@
 package com.bezirk.sphere.discoveryProcessor;
 
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
-import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.impl.DiscoveryProcessor;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
@@ -79,12 +79,12 @@ public class ProcessDiscoveredSphereInfo {
         String sphereId = sphereTestUtility.generateOwnerCombo();
         int devicesForSphereBefore = SphereRegistryWrapper.getSphere(sphereId).getDeviceServices().size();
 
-        HashSet<UhuSphereInfo> discoveredSphereInfoSet = new HashSet<UhuSphereInfo>();
+        HashSet<BezirkSphereInfo> discoveredSphereInfoSet = new HashSet<BezirkSphereInfo>();
         ArrayList<BezirkDeviceInfo> bezirkDeviceInfos = new ArrayList<BezirkDeviceInfo>();
         bezirkDeviceInfos.add(sphereTestUtility.getUhuDeviceInfo());
-        UhuSphereInfo uhuSphereInfo = new UhuSphereInfo(sphereId, sphereTestUtility.OWNER_SPHERE_NAME_1, null,
+        BezirkSphereInfo bezirkSphereInfo = new BezirkSphereInfo(sphereId, sphereTestUtility.OWNER_SPHERE_NAME_1, null,
                 bezirkDeviceInfos, null);
-        discoveredSphereInfoSet.add(uhuSphereInfo);
+        discoveredSphereInfoSet.add(bezirkSphereInfo);
 
         discoveryProcessor.processDiscoveredSphereInfo(discoveredSphereInfoSet, sphereId);
         int devicesForSphereAfter = SphereRegistryWrapper.getSphere(sphereId).getDeviceServices().size();

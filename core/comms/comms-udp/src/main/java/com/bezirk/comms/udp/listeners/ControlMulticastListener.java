@@ -1,8 +1,8 @@
 package com.bezirk.comms.udp.listeners;
 
-import com.bezirk.comms.ICommsNotification;
+import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.IUhuCommsLegacy;
-import com.bezirk.comms.UhuComms;
 import com.bezirk.comms.udp.validation.MessageValidators;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezrik.network.UhuNetworkUtilities;
@@ -27,22 +27,22 @@ public class ControlMulticastListener implements Runnable {
     private Boolean running = false;
     private InetAddress myAddress;
     private IUhuCommsLegacy uhuComms = null;
-    private ICommsNotification commsErrNotificationError = null;
+    private CommsNotification commsErrNotificationError = null;
 
     public ControlMulticastListener(MulticastSocket multicastSocket, IUhuCommsLegacy uhuComms,
-                                    ICommsNotification commsNotificationCallback) {
+                                    CommsNotification commsNotificationCallback) {
         this.multicastSocket = multicastSocket;
         this.commsErrNotificationError = commsNotificationCallback;
-        executor = Executors.newFixedThreadPool(UhuComms.getPOOL_SIZE());
+        executor = Executors.newFixedThreadPool(BezirkComms.getPOOL_SIZE());
         this.uhuComms = uhuComms;
     }
 
     @Override
     public void run() {
-        byte[] buf = new byte[UhuComms.getMAX_BUFFER_SIZE()];
+        byte[] buf = new byte[BezirkComms.getMAX_BUFFER_SIZE()];
         DatagramPacket receivePacket;
         try {
-            multicastSocket.joinGroup(InetAddress.getByName(UhuComms.getCTRL_MULTICAST_ADDRESS()));
+            multicastSocket.joinGroup(InetAddress.getByName(BezirkComms.getCTRL_MULTICAST_ADDRESS()));
             running = true;
             myAddress = UhuNetworkUtilities.getLocalInet();
             if (myAddress == null) {

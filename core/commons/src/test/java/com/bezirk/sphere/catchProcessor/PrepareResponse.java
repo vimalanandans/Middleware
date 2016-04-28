@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.catchProcessor;
 
-import com.bezirk.commons.UhuId;
+import com.bezirk.commons.BezirkId;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.sphere.impl.CatchProcessor;
 import com.bezirk.sphere.impl.SphereExchangeData;
@@ -94,7 +94,7 @@ public class PrepareResponse {
     @Test
     public void validParametersCatchResponseObjTrue() throws Exception {
         String catcherSphereId = sphereTestUtility.generateOwnerCombo();
-        String inviterShortCode = new UhuId().getShortIdByHash(catcherSphereId);
+        String inviterShortCode = new BezirkId().getShortIdByHash(catcherSphereId);
         SphereExchangeData sphereExchangeData = sphereTestUtility.getSphereExchangeDataObj();
         BezirkDeviceInfo catcherBezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
         String catcherDeviceId = catcherBezirkDeviceInfo.getDeviceId();
@@ -120,7 +120,7 @@ public class PrepareResponse {
         SphereExchangeData sphereExchangeData = null;
         BezirkDeviceInfo catcherBezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
         String catcherSphereId = sphereTestUtility.generateOwnerCombo();
-        String inviterShortCode = new UhuId().getShortIdByHash(catcherSphereId);
+        String inviterShortCode = new BezirkId().getShortIdByHash(catcherSphereId);
         /** invoke the method under test using reflection **/
         method.invoke(catchProcessor, sphereExchangeData, catcherBezirkDeviceInfo, inviterShortCode, catcherSphereId);
     }

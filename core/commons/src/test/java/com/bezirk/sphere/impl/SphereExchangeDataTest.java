@@ -1,6 +1,6 @@
 package com.bezirk.sphere.impl;
 
-import com.bezirk.device.UhuDeviceType;
+import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.sphere.api.UhuSphereType;
 
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class SphereExchangeDataTest {
 
         String deviceId = "Device123";
         String deviceName = "DeviceA";
-        String deviceType = UhuDeviceType.UHU_DEVICE_TYPE_CAR;
+        String deviceType = BezirkDeviceType.UHU_DEVICE_TYPE_CAR;
         byte[] spherePublicKeyBytes = "spherepublicKey".getBytes();
         String sphereId = "TestSphere123";
         byte[] sphereKeyBytes = "sphereKey".getBytes();

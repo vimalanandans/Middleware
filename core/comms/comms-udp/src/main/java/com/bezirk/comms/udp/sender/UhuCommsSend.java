@@ -1,9 +1,9 @@
 package com.bezirk.comms.udp.sender;
 
-import com.bezirk.checksum.UhuCheckSum;
+import com.bezirk.checksum.BezirkCheckSum;
 import com.bezirk.commons.UhuCompManager;
-import com.bezirk.commons.UhuVersion;
-import com.bezirk.comms.UhuComms;
+import com.bezirk.commons.BezirkVersion;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.MulticastControlMessage;
@@ -86,9 +86,9 @@ public class UhuCommsSend {
             }
 
             //fill the checksum
-            tcMessage.setChecksum(UhuCheckSum.computeCRC(sendData));
+            tcMessage.setChecksum(BezirkCheckSum.computeCRC(sendData));
 
-            StringBuilder tempString = new StringBuilder(UhuVersion.UHU_VERSION + SEPERATOR);
+            StringBuilder tempString = new StringBuilder(BezirkVersion.UHU_VERSION + SEPERATOR);
             byte[] dataOnWire = new byte[tempString.toString().getBytes().length + tcMessage.getChecksum().length + sendData.length];
             try {
                 //arraycopy(Object src, int srcPos, Object dest, int destPos, int length);
@@ -168,11 +168,11 @@ public class UhuCommsSend {
         try {
             DatagramSocket clientSocket = new DatagramSocket();
             if (isEvent) {
-                ipAddress = InetAddress.getByName(UhuComms.getMULTICAST_ADDRESS());
-                sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, UhuComms.getMULTICAST_PORT());
+                ipAddress = InetAddress.getByName(BezirkComms.getMULTICAST_ADDRESS());
+                sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, BezirkComms.getMULTICAST_PORT());
             } else {
-                ipAddress = InetAddress.getByName(UhuComms.getCTRL_MULTICAST_ADDRESS());
-                sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, UhuComms.getCTRL_MULTICAST_PORT());
+                ipAddress = InetAddress.getByName(BezirkComms.getCTRL_MULTICAST_ADDRESS());
+                sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, BezirkComms.getCTRL_MULTICAST_PORT());
             }
             clientSocket.send(sendPacket);
             clientSocket.close();
@@ -199,9 +199,9 @@ public class UhuCommsSend {
             ipAddress = InetAddress.getByName(address);
             DatagramPacket sendPacket;
             if (isEvent)
-                sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, UhuComms.getUNICAST_PORT());
+                sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, BezirkComms.getUNICAST_PORT());
             else
-                sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, UhuComms.getCTRL_UNICAST_PORT());
+                sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, BezirkComms.getCTRL_UNICAST_PORT());
             clientSocket.send(sendPacket);
             clientSocket.close();
             return true;
@@ -247,8 +247,8 @@ public class UhuCommsSend {
             System.arraycopy(msgClosed, 0, sendData, msgOpen.getBytes().length, msgClosed.length);
             //2b. Set the sendData
 
-            tcMsg.setChecksum(UhuCheckSum.computeCRC(sendData));
-            StringBuilder tempString = new StringBuilder(UhuVersion.UHU_VERSION + SEPERATOR);
+            tcMsg.setChecksum(BezirkCheckSum.computeCRC(sendData));
+            StringBuilder tempString = new StringBuilder(BezirkVersion.UHU_VERSION + SEPERATOR);
             byte[] dataOnWire = new byte[tempString.toString().getBytes().length + tcMsg.getChecksum().length + sendData.length];
             try {
                 System.arraycopy(tempString.toString().getBytes(), 0, dataOnWire, 0, tempString.toString().length());

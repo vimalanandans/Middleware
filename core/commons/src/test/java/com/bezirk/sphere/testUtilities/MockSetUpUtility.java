@@ -3,7 +3,7 @@ package com.bezirk.sphere.testUtilities;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.control.messages.ControlLedger;
-import com.bezirk.device.UhuDeviceType;
+import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.discovery.SphereDiscovery;
 import com.bezirk.discovery.SphereDiscoveryProcessor;
@@ -12,10 +12,10 @@ import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.BezirkDeviceInfo.UhuDeviceRole;
 import com.bezirk.persistence.DBConstants;
 import com.bezirk.persistence.DatabaseConnectionForJava;
-import com.bezirk.persistence.ISpherePersistence;
+import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.persistence.UhuRegistry;
+import com.bezirk.persistence.BezirkRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.UhuSphereType;
@@ -56,7 +56,7 @@ public class MockSetUpUtility {
     public CryptoEngine cryptoEngine;
     public UPADeviceInterface upaDevice;
     public SphereRegistry registry;
-    public ISpherePersistence spherePersistence;
+    public SpherePersistence spherePersistence;
     public SphereRegistryWrapper sphereRegistryWrapper;
     public ShareProcessor shareProcessor;
     public CatchProcessor catchProcessor;
@@ -73,7 +73,7 @@ public class MockSetUpUtility {
 
         getInetAddress();
 
-        spherePersistence = (ISpherePersistence) regPersistence;
+        spherePersistence = (SpherePersistence) regPersistence;
         upaDevice = new Device();
         sphereConfig = new SpherePropertiesMock();
         registry = spherePersistence.loadSphereRegistry();
@@ -110,7 +110,7 @@ public class MockSetUpUtility {
     }
 
     public void destroyTestSetUp() throws SQLException, IOException, Exception {
-        TableUtils.dropTable(dbConnection.getDatabaseConnection(), UhuRegistry.class, true);
+        TableUtils.dropTable(dbConnection.getDatabaseConnection(), BezirkRegistry.class, true);
     }
 
     InetAddress getInetAddress() {
@@ -140,15 +140,15 @@ public class MockSetUpUtility {
 
     public LinkedHashMap<String, ArrayList<BezirkZirkId>> getDeviceServicesList(SphereRegistry registry,
                                                                                 String sphereId) {
-        DeviceInformation deviceInformation = new DeviceInformation("DEVICE", UhuDeviceType.UHU_DEVICE_TYPE_OTHER);
+        DeviceInformation deviceInformation = new DeviceInformation("DEVICE", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER);
         registry.devices.put(sphereId, deviceInformation);
-        deviceInformation = new DeviceInformation("DEVICE1", UhuDeviceType.UHU_DEVICE_TYPE_OTHER);
+        deviceInformation = new DeviceInformation("DEVICE1", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER);
         String deviceId1 = upaDevice.getDeviceId();
         registry.devices.put(deviceId1, deviceInformation);
-        deviceInformation = new DeviceInformation("DEVICE2", UhuDeviceType.UHU_DEVICE_TYPE_OTHER);
+        deviceInformation = new DeviceInformation("DEVICE2", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER);
         String deviceId2 = "Device2";
         registry.devices.put(deviceId2, deviceInformation);
-        deviceInformation = new DeviceInformation("DEVICE3", UhuDeviceType.UHU_DEVICE_TYPE_OTHER);
+        deviceInformation = new DeviceInformation("DEVICE3", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER);
         String deviceId3 = "Device3";
         registry.devices.put(deviceId3, deviceInformation);
         LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
@@ -198,11 +198,11 @@ public class MockSetUpUtility {
         services3.add(serviceInfo2);
         services3.add(serviceInfo3);
 
-        BezirkDeviceInfo bezirkDeviceInfo1 = new BezirkDeviceInfo("Device1", "Device1", UhuDeviceType.UHU_DEVICE_TYPE_OTHER,
+        BezirkDeviceInfo bezirkDeviceInfo1 = new BezirkDeviceInfo("Device1", "Device1", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER,
                 UhuDeviceRole.UHU_CONTROL, true, services1);
-        BezirkDeviceInfo bezirkDeviceInfo2 = new BezirkDeviceInfo("Device2", "Device2", UhuDeviceType.UHU_DEVICE_TYPE_OTHER,
+        BezirkDeviceInfo bezirkDeviceInfo2 = new BezirkDeviceInfo("Device2", "Device2", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER,
                 UhuDeviceRole.UHU_MEMBER, true, services2);
-        BezirkDeviceInfo bezirkDeviceInfo3 = new BezirkDeviceInfo("Device3", "Device3", UhuDeviceType.UHU_DEVICE_TYPE_OTHER,
+        BezirkDeviceInfo bezirkDeviceInfo3 = new BezirkDeviceInfo("Device3", "Device3", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER,
                 UhuDeviceRole.UHU_MEMBER, true, services3);
 
         deviceList.add(bezirkDeviceInfo1);

@@ -2,8 +2,8 @@ package com.bezirk.starter;
 
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.IUhuCommsLegacy;
-import com.bezirk.device.UhuDevice;
-import com.bezirk.device.UhuDeviceType;
+import com.bezirk.device.BezirkDevice;
+import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.sphere.api.IUhuSphereAPI;
@@ -82,22 +82,22 @@ public class ZirkStarterHelperTest {
         com.bezirk.starter.ServiceStarterHelper helper = new com.bezirk.starter.ServiceStarterHelper();
         com.bezirk.starter.UhuConfig uhuConfig = new UhuConfig();
 
-        UhuDevice uhuDevice = helper.configureUhuDevice(uhuConfig);
+        BezirkDevice bezirkDevice = helper.configureUhuDevice(uhuConfig);
 
-        assertNotNull("UhuDevice is null after configuragtion. ", uhuDevice);
+        assertNotNull("BezirkDevice is null after configuragtion. ", bezirkDevice);
 
-        assertNotNull("UhuDeviceType is null after configuragtion. ", uhuDevice.getDeviceType());
+        assertNotNull("BezirkDeviceType is null after configuragtion. ", bezirkDevice.getDeviceType());
 
-        assertEquals("Uhu Device Type is not configured to PC when display is enabled.", UhuDeviceType.UHU_DEVICE_TYPE_PC, uhuDevice.getDeviceType());
+        assertEquals("Uhu Device Type is not configured to PC when display is enabled.", BezirkDeviceType.UHU_DEVICE_TYPE_PC, bezirkDevice.getDeviceType());
 
-        assertNotNull("UhuDeviceLocation is null after configuragtion. ", uhuDevice.getDeviceLocation());
+        assertNotNull("UhuDeviceLocation is null after configuragtion. ", bezirkDevice.getDeviceLocation());
 
 
         uhuConfig.setDisplayEnable("false");
 
-        uhuDevice = helper.configureUhuDevice(uhuConfig);
+        bezirkDevice = helper.configureUhuDevice(uhuConfig);
 
-        assertEquals("Uhu Device Type is not configured to EMBEDDED KIT when display is disabled.", UhuDeviceType.UHU_DEVICE_TYPE_EMBEDDED_KIT, uhuDevice.getDeviceType());
+        assertEquals("Uhu Device Type is not configured to EMBEDDED KIT when display is disabled.", BezirkDeviceType.UHU_DEVICE_TYPE_EMBEDDED_KIT, bezirkDevice.getDeviceType());
     }
 
 }

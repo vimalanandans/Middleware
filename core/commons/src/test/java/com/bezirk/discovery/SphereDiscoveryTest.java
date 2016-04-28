@@ -2,7 +2,7 @@ package com.bezirk.discovery;
 
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
@@ -100,8 +100,8 @@ public class SphereDiscoveryTest {
 
 
         SphereDiscoveryResponse response = new SphereDiscoveryResponse(recipient, sphereId, requestKey, discoveryId);
-        UhuSphereInfo uhuSphereInfo = new UhuSphereInfo(sphereId, "Test", UhuSphereType.UHU_SPHERE_TYPE_HOME, null, null);
-        response.setUhuSphereInfo(uhuSphereInfo);
+        BezirkSphereInfo bezirkSphereInfo = new BezirkSphereInfo(sphereId, "Test", UhuSphereType.UHU_SPHERE_TYPE_HOME, null, null);
+        response.setBezirkSphereInfo(bezirkSphereInfo);
 
         assertTrue("Unable to add response to SphereDiscovery.", sphereDiscovery.addResponse(response));
 
@@ -111,12 +111,12 @@ public class SphereDiscoveryTest {
         BezirkZirkEndPoint invalidRecepient = new BezirkZirkEndPoint(null);
         invalidRecepient.device = getInetAddress().getHostAddress();
         response = new SphereDiscoveryResponse(invalidRecepient, sphereId, requestKey, discoveryId);
-        response.setUhuSphereInfo(uhuSphereInfo);
+        response.setBezirkSphereInfo(bezirkSphereInfo);
         assertFalse("sphere Discovery response is added even when recepient is having null serviceID", sphereDiscovery.addResponse(response));
 
 
         response = new SphereDiscoveryResponse(recipient, sphereId, requestKey, 24);
-        response.setUhuSphereInfo(uhuSphereInfo);
+        response.setBezirkSphereInfo(bezirkSphereInfo);
         assertFalse("sphere Discovery response is added even when discovery id is invalid.", sphereDiscovery.addResponse(response));
 
     }

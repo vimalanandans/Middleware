@@ -1,6 +1,6 @@
 package com.bezirk.control.messages.discovery;
 
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezrik.network.UhuNetworkUtilities;
@@ -87,11 +87,11 @@ public class SphereDiscoveryResponseTest {
     public void testSphereDiscoveryResponse() {
 
         com.bezirk.control.messages.discovery.SphereDiscoveryResponse sphereDiscoveryResponse = new com.bezirk.control.messages.discovery.SphereDiscoveryResponse(recipient, sphereId, requestKey, discoveryId);
-        UhuSphereInfo uhuSphereInfo = new UhuSphereInfo("TestSphereID", "Test", null, null, null);
-        sphereDiscoveryResponse.setUhuSphereInfo(uhuSphereInfo);
+        BezirkSphereInfo bezirkSphereInfo = new BezirkSphereInfo("TestSphereID", "Test", null, null, null);
+        sphereDiscoveryResponse.setBezirkSphereInfo(bezirkSphereInfo);
         String serializedMessage = sphereDiscoveryResponse.serialize();
         com.bezirk.control.messages.discovery.SphereDiscoveryResponse deserializedSphereDiscoveryResponse = com.bezirk.control.messages.discovery.SphereDiscoveryResponse.deserialize(serializedMessage, com.bezirk.control.messages.discovery.SphereDiscoveryResponse.class);
-        assertEquals("UhuSphereInfo not equal to the set value.", uhuSphereInfo.getSphereID(), deserializedSphereDiscoveryResponse.getUhuSphereInfo().getSphereID());
+        assertEquals("BezirkSphereInfo not equal to the set value.", bezirkSphereInfo.getSphereID(), deserializedSphereDiscoveryResponse.getBezirkSphereInfo().getSphereID());
         assertEquals("DiscoveryId not equal to the set value.", Integer.valueOf(discoveryId), deserializedSphereDiscoveryResponse.getReqDiscoveryId());
 
 

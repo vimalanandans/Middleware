@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.bezirk.persistence.DBConstants;
-import com.bezirk.persistence.IDatabaseConnection;
-import com.bezirk.persistence.UhuRegistry;
+import com.bezirk.persistence.DatabaseConnection;
+import com.bezirk.persistence.BezirkRegistry;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
@@ -20,12 +20,12 @@ import java.sql.SQLException;
 /**
  * Created by hkh5kor on 10/7/2014.
  */
-public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implements IDatabaseConnection {
+public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implements DatabaseConnection {
     private static final int DATABASE_VERSION = 1;
     private static final Logger log = LoggerFactory.getLogger(DatabaseConnectionForAndroid.class);
     private final Context mContext;
     private ConnectionSource dbConnectionSource;
-    private Dao<UhuRegistry, Integer> uhuPersistenceDao;
+    private Dao<BezirkRegistry, Integer> uhuPersistenceDao;
 
     public DatabaseConnectionForAndroid(Context context) {
         super(context, context.getFilesDir().getPath() + File.separator + DBConstants.DB_FILE_NAME, null, DATABASE_VERSION);
@@ -40,9 +40,9 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
     }
 
     @Override
-    public Dao<UhuRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException, Exception {
+    public Dao<BezirkRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException, Exception {
         if (null == uhuPersistenceDao) {
-            uhuPersistenceDao = getDao(UhuRegistry.class);
+            uhuPersistenceDao = getDao(BezirkRegistry.class);
             uhuPersistenceDao.setAutoCommit(true);
         }
         return uhuPersistenceDao;

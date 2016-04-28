@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bezirk.commons.UhuCompManager;
-import com.bezirk.comms.UhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.controlui.R;
 import com.bezirk.remotelogging.loginterface.IUhuLogging;
 import com.bezirk.remotelogging.manager.UhuLoggingManager;
@@ -149,7 +149,7 @@ class LogDataActivityHelper {
         try {
             TableRow updatingTableRow = (TableRow) mTableLayoutLogData.findViewWithTag(String.valueOf(rowTagValue));
             TextView countTextView = (TextView) updatingTableRow.getChildAt(5); // 5th Clid
-            int countValue = Integer.valueOf(countTextView.getText().toString()) + 1;
+            int countValue = Integer.parseInt(countTextView.getText().toString()) + 1;
             countTextView.setText(String.valueOf(countValue));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -163,7 +163,7 @@ class LogDataActivityHelper {
     void startLogService() {
         try {
             logDataActivity.mUhuLoggingManager = new UhuLoggingManager();
-            logDataActivity.mUhuLoggingManager.startLoggingService(UhuComms.getREMOTE_LOGGING_PORT(), loggingHandler);
+            logDataActivity.mUhuLoggingManager.startLoggingService(BezirkComms.getREMOTE_LOGGING_PORT(), loggingHandler);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

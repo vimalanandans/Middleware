@@ -1,19 +1,19 @@
 package com.bezirk.util;
 
 import com.bezirk.commons.UhuCompManager;
-import com.bezirk.comms.ICommsNotification;
+import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.UhuCommsPC;
-import com.bezirk.device.UhuDevice;
-import com.bezirk.device.UhuDeviceType;
+import com.bezirk.device.BezirkDevice;
+import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.DBConstants;
 import com.bezirk.persistence.DatabaseConnectionForJava;
-import com.bezirk.persistence.ISadlPersistence;
-import com.bezirk.persistence.ISpherePersistence;
+import com.bezirk.persistence.SadlPersistence;
+import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.persistence.UhuRegistry;
+import com.bezirk.persistence.BezirkRegistry;
 import com.bezirk.sadl.UhuSadlManager;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuSphereListener;
@@ -50,9 +50,9 @@ public class MockSetUpUtilityForUhuPC {
     private static final String DBVersion = DBConstants.DB_VERSION;
     private static InetAddress inetAddr;
     UhuSadlManager uhuSadlManager = null;
-    ISadlPersistence sadlPersistence;
-    ISpherePersistence spherePersistence;
-    UhuDevice upaDevice;
+    SadlPersistence sadlPersistence;
+    SpherePersistence spherePersistence;
+    BezirkDevice upaDevice;
     CryptoEngine cryptoEngine;
     SphereRegistry sphereRegistry;
     IUhuComms uhuComms;
@@ -70,10 +70,10 @@ public class MockSetUpUtilityForUhuPC {
         inetAddr = getInetAddress();
         UhuCommsPC.init();
 
-        spherePersistence = (ISpherePersistence) regPersistence;
+        spherePersistence = (SpherePersistence) regPersistence;
         sphereRegistry = new SphereRegistry();
         cryptoEngine = new CryptoEngine(sphereRegistry);
-        sadlPersistence = (ISadlPersistence) regPersistence;
+        sadlPersistence = (SadlPersistence) regPersistence;
         uhuSadlManager = new UhuSadlManager(sadlPersistence);
         sphereConfig = new SphereProperties();
         sphereConfig.init();
@@ -81,7 +81,7 @@ public class MockSetUpUtilityForUhuPC {
         uhuComms = new MockComms();
         uhuComms.initComms(null, inetAddr, uhuSadlManager, null);
         uhuSadlManager.initSadlManager(uhuComms);
-        uhuComms.registerNotification(Mockito.mock(ICommsNotification.class));
+        uhuComms.registerNotification(Mockito.mock(CommsNotification.class));
         uhuComms.startComms();
 
         setUpUpaDevice();
@@ -98,10 +98,10 @@ public class MockSetUpUtilityForUhuPC {
      * @throws UnknownHostException
      */
     private void setUpUpaDevice() throws UnknownHostException {
-        upaDevice = new UhuDevice();
+        upaDevice = new BezirkDevice();
         String deviceIdString = InetAddress.getLocalHost().getHostName();
         upaDevice.initDevice(deviceIdString,
-                UhuDeviceType.UHU_DEVICE_TYPE_PC);
+                BezirkDeviceType.UHU_DEVICE_TYPE_PC);
         UhuCompManager.setUpaDevice(upaDevice);
     }
 
@@ -182,6 +182,6 @@ public class MockSetUpUtilityForUhuPC {
         UhuCompManager.setUpaDevice(null);
 
         TableUtils.dropTable(dbConnection.getDatabaseConnection(),
-                UhuRegistry.class, true);
+                BezirkRegistry.class, true);
     }
 }

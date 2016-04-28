@@ -1,6 +1,6 @@
 package com.bezirk.sphere.security;
 
-import com.bezirk.commons.UhuId;
+import com.bezirk.commons.BezirkId;
 import com.bezirk.middleware.objects.SphereVitals;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.ICryptoInternals;
@@ -88,7 +88,7 @@ public final class CryptoEngine implements ICryptoInternals {
             // create salt string
             // note salt is generated from algorithm string.
             // if algorithm changes old passwords won't work
-            String saltString = new UhuId().getShortIdByName(KEY_FACTORY_ALGORITHM_PASS);
+            String saltString = new BezirkId().getShortIdByName(KEY_FACTORY_ALGORITHM_PASS);
             byte[] salt = saltString.getBytes();
 
             PBEKeySpec password = new PBEKeySpec(code.toCharArray(), salt, 1000, 128);
@@ -151,7 +151,7 @@ public final class CryptoEngine implements ICryptoInternals {
 
             if (fromSphereId) { // create from sphere id
                 // get short id from sphere id
-                String hashId = new UhuId().getShortIdByHash(sphereId);
+                String hashId = new BezirkId().getShortIdByHash(sphereId);
 
                 // create sphere key from pass code
                 sphereKey = generateKey(hashId);

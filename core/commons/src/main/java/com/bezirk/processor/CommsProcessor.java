@@ -2,12 +2,12 @@ package com.bezirk.processor;
 
 
 import com.bezirk.commons.UhuCompManager;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.CommsProperties;
-import com.bezirk.comms.ICommsNotification;
-import com.bezirk.comms.ICtrlMsgReceiver;
+import com.bezirk.comms.CommsNotification;
+import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.MessageDispatcher;
-import com.bezirk.comms.UhuComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
@@ -61,7 +61,7 @@ public abstract class CommsProcessor implements IUhuComms {
     UhuSadlManager uhuSadlManager = null;
 
     //generic notifications
-    List ICommsNotification = new ArrayList<ICommsNotification>();
+    List ICommsNotification = new ArrayList<CommsNotification>();
     //Quickfix : using the logging manger from udp comms. fix this.
     LogServiceMessageHandler logServiceMsgHandler = null;
 
@@ -72,7 +72,7 @@ public abstract class CommsProcessor implements IUhuComms {
      * This parameter will be injected in all the components that will be checking for versions to
      * be compatible before they are processed.
      */
-    private com.bezirk.comms.ICommsNotification notification = null;
+    private CommsNotification notification = null;
 
     //private final byte[] testKey = {'B','E','Z','I','R','K','_','G','R','O','U','P','N','E','W','1'};
     private ExecutorService executor;
@@ -86,7 +86,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
         msgDispatcher = new MessageDispatcher(uhuSadlManager);
 
-        if (UhuComms.isStreamingEnabled()) {
+        if (BezirkComms.isStreamingEnabled()) {
 
             uhuStreamManager = new UhuStreamManager(this, msgDispatcher, sadl);
 
@@ -107,7 +107,7 @@ public abstract class CommsProcessor implements IUhuComms {
         // old ones are cleared with stopComms
         executor = Executors.newFixedThreadPool(THREAD_SIZE);
 
-        if (UhuComms.isStreamingEnabled()) {
+        if (BezirkComms.isStreamingEnabled()) {
 
             if (uhuStreamManager != null) {
                 uhuStreamManager.startStreams();
@@ -128,7 +128,7 @@ public abstract class CommsProcessor implements IUhuComms {
             // and then shutdownnow
         }
 
-        if (UhuComms.isStreamingEnabled()) {
+        if (BezirkComms.isStreamingEnabled()) {
 
             if (uhuStreamManager != null) {
                 uhuStreamManager.endStreams();
@@ -750,7 +750,7 @@ public abstract class CommsProcessor implements IUhuComms {
     }
 
     @Override
-    public boolean registerNotification(ICommsNotification notification) {
+    public boolean registerNotification(CommsNotification notification) {
 
         //If notification is null.. register the notification object
         if (this.notification == null) {
@@ -774,7 +774,7 @@ public abstract class CommsProcessor implements IUhuComms {
     }
 
     @Override
-    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, ICtrlMsgReceiver receiver) {
+    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver) {
 
         return msgDispatcher.registerControlMessageReceiver(id, receiver);
 
@@ -825,7 +825,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
             if (!WireMessage.checkVersion(msg)) {
                 String mismatchedVersion = WireMessage.getVersion(msg);
-				/*logger.error("Unknown message received. Uhu version > "+ UhuVersion.getWireVersion() +
+				/*logger.error("Unknown message received. Uhu version > "+ BezirkVersion.getWireVersion() +
 						" . Incoming msg version > " + mismatchedVersion);*/
                 notification.versionMismatch(mismatchedVersion);
                 return;
@@ -863,7 +863,7 @@ public abstract class CommsProcessor implements IUhuComms {
         }
     }
 
-    class CommCtrlReceiver implements ICtrlMsgReceiver {
+    class CommCtrlReceiver implements CtrlMsgReceiver {
         @Override
         // FIXME : remove the below Log related quickfix, by moving the implementation to respective module
         public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {

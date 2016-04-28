@@ -3,7 +3,7 @@
  */
 package com.bezirk.control.messages.discovery;
 
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezrik.network.UhuNetworkUtilities;
 
@@ -16,7 +16,7 @@ public final class SphereDiscoveryResponse extends com.bezirk.control.messages.U
     //ZirkEndPoint for this response only contains deviceID
     private static final BezirkZirkEndPoint sender = UhuNetworkUtilities.getServiceEndPoint(null);
     private final Integer reqDiscoveryId;
-    private UhuSphereInfo uhuSphereInfo;
+    private BezirkSphereInfo bezirkSphereInfo;
 
 
     public SphereDiscoveryResponse(BezirkZirkEndPoint recipient, String sphereId, String reqKey, int discId) {
@@ -27,18 +27,18 @@ public final class SphereDiscoveryResponse extends com.bezirk.control.messages.U
 
 
     /**
-     * @return the uhuSphereInfo
+     * @return the bezirkSphereInfo
      */
-    public final UhuSphereInfo getUhuSphereInfo() {
-        return uhuSphereInfo;
+    public final BezirkSphereInfo getBezirkSphereInfo() {
+        return bezirkSphereInfo;
     }
 
 
     /**
-     * @param uhuSphereInfo the uhuSphereInfo to set
+     * @param bezirkSphereInfo the bezirkSphereInfo to set
      */
-    public final void setUhuSphereInfo(UhuSphereInfo uhuSphereInfo) {
-        this.uhuSphereInfo = uhuSphereInfo;
+    public final void setBezirkSphereInfo(BezirkSphereInfo bezirkSphereInfo) {
+        this.bezirkSphereInfo = bezirkSphereInfo;
     }
 
 

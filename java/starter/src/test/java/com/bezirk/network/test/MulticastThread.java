@@ -12,7 +12,7 @@
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 //
-//import com.bezirk.comms.UhuComms;
+//import com.bezirk.comms.BezirkComms;
 //import com.bezrik.network.UhuNetworkUtilities;
 //
 ///**
@@ -35,7 +35,7 @@
 //    @Override
 //    public void run() {
 //
-//        byte[] buf = new byte[UhuComms.getMAX_BUFFER_SIZE()];
+//        byte[] buf = new byte[BezirkComms.getMAX_BUFFER_SIZE()];
 //        DatagramPacket receivePacket;
 //        InetAddress myAddress = setUpListener();
 //
@@ -78,10 +78,10 @@
 //        InetAddress myAddress =null;
 //
 //        try {
-//            multicastSocket.joinGroup(InetAddress.getByName(UhuComms
+//            multicastSocket.joinGroup(InetAddress.getByName(BezirkComms
 //                    .getMULTICAST_ADDRESS()));
 //            myAddress = UhuNetworkUtilities.getIpForInterface(NetworkInterface
-//                    .getByName(UhuComms.getINTERFACE_NAME()));
+//                    .getByName(BezirkComms.getINTERFACE_NAME()));
 //            running = true;
 //            logger.info("Event MulicastListener has Started\n");
 //

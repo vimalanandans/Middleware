@@ -55,7 +55,7 @@ public interface IUhuComms {
     //@Deprecated // use register Notification
     //public boolean initErrorNotificationCallback(ICommsErrorNotification errNotificationCallback);
 
-    public boolean registerNotification(ICommsNotification notification);
+    public boolean registerNotification(CommsNotification notification);
 
     /**
      * Initialize the communications
@@ -64,7 +64,7 @@ public interface IUhuComms {
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
                              UhuSadlManager sadl, PipeManager pipe);
 
-    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, ICtrlMsgReceiver receiver);
+    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
 
     /**
      * Set the sphere for sadl. for late initialization

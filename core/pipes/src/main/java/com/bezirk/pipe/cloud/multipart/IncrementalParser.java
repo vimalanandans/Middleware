@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class IncrementalParser implements MultiPartParser {
-
-    protected Logger logger = LoggerFactory.getLogger(IncrementalParser.class);
+    protected static final Logger logger = LoggerFactory.getLogger(IncrementalParser.class);
 
     private long bytesRead = 0;
 
@@ -357,32 +356,32 @@ public class IncrementalParser implements MultiPartParser {
      */
     protected void validateContentHeader(Map<String, String> partHeader) throws Exception {
         // Iterate through each header entry in this part
-        for (String key : partHeader.keySet()) {
+        for (Map.Entry<String, String> entry : partHeader.entrySet()) {
+            final String key = entry.getKey();
+
             // Check that Content-Type matches the expected value
-            if (key.equals(Part.KEY_CONTENT_TYPE)) {
-                String contentType = partHeader.get(key);
+            if (Part.KEY_CONTENT_TYPE.equals(key)) {
+                String contentType = entry.getValue();
                 if (!contentType.equals(StreamContentPart.EXPECTEDVAL_CONTENT_TYPE)) {
                     throw new Exception("Content type <" + contentType + "> does not match expected value: " + StreamContentPart.EXPECTEDVAL_CONTENT_TYPE);
                 }
             }
             // Check that Content-ID matches the expected value
-            else if (key.equals(Part.KEY_CONTENT_ID)) {
-                String contentId = partHeader.get(key);
+            else if (Part.KEY_CONTENT_ID.equals(key)) {
+                String contentId = entry.getValue();
                 if (!contentId.contains(StreamContentPart.EXPECTEDVAL_CONTENT_ID)) {
                     throw new Exception("Content ID <" + contentId + "> does not match expected value: " + StreamContentPart.EXPECTEDVAL_CONTENT_ID);
                 }
-            } else if (key.equals(Part.KEY_CONTENT_ENCODING)) {
-                String contentEncoding = partHeader.get(key);
+            } else if (Part.KEY_CONTENT_ENCODING.equals(key)) {
+                String contentEncoding = entry.getValue();
                 // We provably don't care about the encoding value so just warn for now
                 if (!contentEncoding.equals(StreamContentPart.EXPECTEDVAL_CONTENT_ENCODING)) {
-                    logger.warn("Didn't expect to see content encoding value: " + contentEncoding);
+                    logger.warn("Didn't expect to see content encoding value: {}", contentEncoding);
                 }
             } else {
-                logger.warn("Didn't expect to receive header key: " + key);
+                logger.warn("Didn't expect to receive header key: {}", key);
             }
         }
         logger.info("Validated content part header");
     }
-
-
 }

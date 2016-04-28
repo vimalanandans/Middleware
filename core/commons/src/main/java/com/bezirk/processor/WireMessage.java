@@ -1,6 +1,6 @@
 package com.bezirk.processor;
 
-import com.bezirk.commons.UhuVersion;
+import com.bezirk.commons.BezirkVersion;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
@@ -26,10 +26,10 @@ public class WireMessage implements Serializable {
     public static final Logger log = LoggerFactory.getLogger(WireMessage.class);
     private static final String MSG_VER_STRING = "\"msgVer\":\"";
     /// if the parser type is json, to check the message version VERSION STRING
-    private static final String MSG_VER = MSG_VER_STRING + UhuVersion.getWireVersion() + "\"";
-    //private String msgVer = UhuVersion.UHU_VERSION;
+    private static final String MSG_VER = MSG_VER_STRING + BezirkVersion.getWireVersion() + "\"";
+    //private String msgVer = BezirkVersion.UHU_VERSION;
     // increment the wire message version in uhu version. when there is a change in message format
-    private String msgVer = UhuVersion.getWireVersion();
+    private String msgVer = BezirkVersion.getWireVersion();
     private String sphereId; // sphere id
     private WireMsgType msgType; // control / event. do we need?
     private MsgParserType parserType; // type of parser JSON / BSON for event/ctrl messages

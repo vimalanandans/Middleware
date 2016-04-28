@@ -14,11 +14,11 @@ public class CheckSumTest {
         assertNotNull("Hex returned by checksumutil is null. ", hex);
 
         byte[] dataToBeComputed = "dataTobeComputed".getBytes();
-        byte[] checkSum = UhuCheckSum.computeCheckSum(dataToBeComputed);
+        byte[] checkSum = BezirkCheckSum.computeCheckSum(dataToBeComputed);
         assertNotNull("CheckSum returned by uhuchecksum is null. ", checkSum);
         assertTrue("CheckSum returned by uhuchecksum is empy. ", checkSum.length > 0);
 
-        byte[] crc = UhuCheckSum.computeCRC(dataToBeComputed);
+        byte[] crc = BezirkCheckSum.computeCRC(dataToBeComputed);
         assertNotNull("CRC returned by uhuchecksum is null. ", crc);
         assertTrue("CRC returned by uhuchecksum is empy. ", crc.length > 0);
 

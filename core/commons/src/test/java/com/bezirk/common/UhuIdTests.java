@@ -1,6 +1,6 @@
 package com.bezirk.common;
 
-import com.bezirk.commons.UhuId;
+import com.bezirk.commons.BezirkId;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -32,7 +32,7 @@ public class UhuIdTests {
 
         // tested for count 10000000L. for faster build reduced to 100
         for (count = 0; count < 100L; count++) {
-            String id = new UhuId().getId();
+            String id = new BezirkId().getId();
             if (data.containsKey(id)) {
                 log.error("it is not unique id. Already added in " + data.get(id) + " id > " + id + " at " + count);
                 assertTrue(false);
@@ -55,7 +55,7 @@ public class UhuIdTests {
     // hence two different parities shall find the id based
     public final void testShortIdConversion() {
 
-        UhuId shortId = new UhuId();
+        BezirkId shortId = new BezirkId();
         //String uniqueId = "87f78d90-4b95-49f5-b720-68b3f8add3ba";
         String uniqueId = shortId.getId();
 
@@ -84,12 +84,12 @@ public class UhuIdTests {
 
         String testString = "test";
 
-        UhuId uhuId = new UhuId();
+        BezirkId bezirkId = new BezirkId();
 
-        String hexValue = uhuId.convertStringtoHex(testString);
+        String hexValue = bezirkId.convertStringtoHex(testString);
 
-        assertEquals("String cannot be retrieved from Hex format.", testString, uhuId.convertHexToString(hexValue));
+        assertEquals("String cannot be retrieved from Hex format.", testString, bezirkId.convertHexToString(hexValue));
 
-        assertNotNull("ShortId is not generated", uhuId.getShortId());
+        assertNotNull("ShortId is not generated", bezirkId.getShortId());
     }
 }

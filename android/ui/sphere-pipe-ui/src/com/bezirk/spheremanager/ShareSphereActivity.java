@@ -26,11 +26,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.commons.UhuVersion;
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.commons.BezirkVersion;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.sphere.impl.IUhuQRCode;
-import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.starter.MainService;
 
@@ -49,7 +48,7 @@ public class ShareSphereActivity extends ActionBarActivity {
     static final int BACK_INTENT = 8;
 
     private String sphereID = null;
-    private UhuSphereInfo sphereInfo = null;
+    private BezirkSphereInfo sphereInfo = null;
     private ImageView mImageViewQRCode = null;
     private Bitmap qrCodeBitmap = null;
     private File qrCodeFile = null;
@@ -57,7 +56,7 @@ public class ShareSphereActivity extends ActionBarActivity {
 
     private String BR_SYSTEM_STATUS_ACTION = "com.bezirk.systemstatus";
     private boolean showWarning = false;
-    private String receivedUhuVersion = UhuVersion.UHU_VERSION;
+    private String receivedUhuVersion = BezirkVersion.UHU_VERSION;
     private final BroadcastReceiver systemStatusBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -247,11 +246,11 @@ public class ShareSphereActivity extends ActionBarActivity {
 
         builder.setPositiveButton("OK", new CustomClickListener());
 
-        uhuVersion.setText("Expected Uhu-Version: " + UhuVersion.UHU_VERSION);
+        uhuVersion.setText("Expected Uhu-Version: " + BezirkVersion.UHU_VERSION);
         if (receivedUhuVersion != null) {
             uhuExpectedVersionStatus.setText("Received Uhu-Version: " + receivedUhuVersion);
         } else {
-            uhuExpectedVersionStatus.setText("Received Uhu-Version: " + UhuVersion.UHU_VERSION);
+            uhuExpectedVersionStatus.setText("Received Uhu-Version: " + BezirkVersion.UHU_VERSION);
         }
 
         if (showWarning) {

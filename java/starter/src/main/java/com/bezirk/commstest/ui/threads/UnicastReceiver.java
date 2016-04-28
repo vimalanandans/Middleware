@@ -1,6 +1,6 @@
 package com.bezirk.commstest.ui.threads;
 
-import com.bezirk.comms.UhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.commstest.ui.PongMessage;
 import com.bezirk.commstest.ui.UIStore;
 import com.bezirk.util.BezirkValidatorUtility;
@@ -38,7 +38,7 @@ public class UnicastReceiver extends Thread {
         NetworkInterface intf;
         InetAddress addr = null;
         try {
-            intf = NetworkInterface.getByName(UhuComms.getINTERFACE_NAME());
+            intf = NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME());
             addr = BezirkValidatorUtility.isObjectNotNull(intf) ? null
                     : UhuNetworkUtilities.getIpForInterface(intf);
             if (addr == null) {

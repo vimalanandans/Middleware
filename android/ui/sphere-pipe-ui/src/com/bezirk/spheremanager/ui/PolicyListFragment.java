@@ -10,7 +10,7 @@ import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.core.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRecord;
 import com.bezirk.pipe.core.PipeRegistry;
-import com.bezirk.pipe.policy.ext.UhuPipePolicy;
+import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.SphereListActivity;
 import com.bezirk.spheremanager.ui.listitems.AbstractPolicyListItem;
@@ -122,14 +122,14 @@ public class PolicyListFragment extends ListFragment {
     }
 
     public void updateInboundList() {
-        UhuPipePolicy policyIn = PipePolicyUtility.policyInMap.get(pipeReqId);
+        BezirkPipePolicy policyIn = PipePolicyUtility.policyInMap.get(pipeReqId);
         for (String protocolName : policyIn.getReasonMap().keySet()) {
             policyListInbound.add(new ProtocolItem(protocolName, policyIn.getReasonMap().get(protocolName), true, true));
         }
     }
 
     public void updateOutboundList() {
-        UhuPipePolicy policyOut = PipePolicyUtility.policyOutMap.get(pipeReqId);
+        BezirkPipePolicy policyOut = PipePolicyUtility.policyOutMap.get(pipeReqId);
         for (String protocolName : policyOut.getReasonMap().keySet()) {
             policyListOutbound.add(new ProtocolItem(protocolName, policyOut.getReasonMap().get(protocolName), true, true));
         }

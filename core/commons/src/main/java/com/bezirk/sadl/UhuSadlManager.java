@@ -11,7 +11,7 @@ import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.persistence.ISadlPersistence;
+import com.bezirk.persistence.SadlPersistence;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
@@ -40,11 +40,11 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
     private static final Logger logger = LoggerFactory.getLogger(UhuSadlManager.class);
 
     private final Date currentDate = new Date();
-    protected ISadlPersistence sadlPersistence = null;
+    protected SadlPersistence sadlPersistence = null;
     protected SadlRegistry sadlRegistry = null;
     protected IUhuComms uhuComms = null;
 
-    public UhuSadlManager(ISadlPersistence sadlPersistence) {
+    public UhuSadlManager(SadlPersistence sadlPersistence) {
         this.sadlPersistence = sadlPersistence;
         loadSadlRegistry();
     }
@@ -207,7 +207,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
         // check if the zirk exists in that sphere then give callback
         for (BezirkZirkId serviceId : invokeList) {
             if (invokeList.contains(new BezirkZirkId("SPOOFED")) &&
-                    eLedger.getHeader().getSphereName().equals(BezirkRestCommsManager.getInstance().getSlectedSphereName())) {
+                    eLedger.getHeader().getSphereName().equals(BezirkRestCommsManager.getInstance().getSelectedSphereName())) {
                 //send the response to HTTPComms also..
                 BezirkRestCallBack callBack = new BezirkRestCallBackImpl();
                 callBack.callBackForResponse(eLedger);

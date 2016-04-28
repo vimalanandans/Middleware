@@ -9,7 +9,7 @@ import com.bezirk.sadl.SadlRegistry;
 /**
  * Interface for the SADL to load and persist the registry
  */
-public interface ISadlPersistence {
+public interface SadlPersistence {
     /**
      * Persist the SadlRegistry
      *

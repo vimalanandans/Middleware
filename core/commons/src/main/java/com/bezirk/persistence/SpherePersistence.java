@@ -6,7 +6,7 @@ package com.bezirk.persistence;
 /**
  * Interface for the sphere to load and store persistence
  */
-public interface ISpherePersistence {
+public interface SpherePersistence {
     /**
      * Interface to persist the sphere Registry
      *

@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.shareProcessor;
 
-import com.bezirk.commons.UhuId;
+import com.bezirk.commons.BezirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.messages.ShareResponse;
@@ -92,7 +92,7 @@ public class PrepareResponse {
     @Test
     public void validParametersReturnsShareResponseObj() throws Exception {
         String sharerSphereId = sphereTestUtility.generateOwnerCombo();
-        String inviterShortCode = new UhuId().getShortIdByHash(sharerSphereId);
+        String inviterShortCode = new BezirkId().getShortIdByHash(sharerSphereId);
         String inviterSphereId = sphereTestUtility.generateOwnerCombo();
         BezirkZirkEndPoint sharer = new BezirkZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
         sharer.device = sphereTestUtility.DEVICE_2.getDeviceName();
@@ -116,7 +116,7 @@ public class PrepareResponse {
     @Test
     public void nullInviterSphereIdReturnsNull() throws Exception {
         String sharerSphereId = sphereTestUtility.generateOwnerCombo();
-        String inviterShortCode = new UhuId().getShortIdByHash(sharerSphereId);
+        String inviterShortCode = new BezirkId().getShortIdByHash(sharerSphereId);
         String inviterSphereId = null;
         BezirkZirkEndPoint sharer = new BezirkZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
         sharer.device = sphereTestUtility.DEVICE_2.getDeviceName();
@@ -135,7 +135,7 @@ public class PrepareResponse {
     @Test(expected = InvocationTargetException.class)
     public void nullSharerThrowsException() throws Exception {
         String sharerSphereId = sphereTestUtility.generateOwnerCombo();
-        String inviterShortCode = new UhuId().getShortIdByHash(sharerSphereId);
+        String inviterShortCode = new BezirkId().getShortIdByHash(sharerSphereId);
         String inviterSphereId = sphereTestUtility.generateOwnerCombo();
         BezirkZirkEndPoint sharer = null;
 
@@ -152,7 +152,7 @@ public class PrepareResponse {
     @Test(expected = InvocationTargetException.class)
     public void nullSharerSphereIdReturnsNull() throws Exception {
         String sharerSphereId = null;
-        String inviterShortCode = new UhuId().getShortIdByHash(sphereTestUtility.generateOwnerCombo());
+        String inviterShortCode = new BezirkId().getShortIdByHash(sphereTestUtility.generateOwnerCombo());
         String inviterSphereId = sphereTestUtility.generateOwnerCombo();
         BezirkZirkEndPoint sharer = new BezirkZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
         sharer.device = sphereTestUtility.DEVICE_2.getDeviceName();

@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.SphereListAdapter.ListItems;
@@ -16,13 +16,13 @@ import com.bezirk.spheremanager.ui.SphereListAdapter.ListItems;
 public class SphereListItem implements AbstractSphereListItem {
 
     //private DummySphere mSphere;
-    private UhuSphereInfo mSphere;
+    private BezirkSphereInfo mSphere;
 
-    public SphereListItem(UhuSphereInfo sphere) {
+    public SphereListItem(BezirkSphereInfo sphere) {
         this.mSphere = sphere;
     }
 
-    public UhuSphereInfo getmSphere() {
+    public BezirkSphereInfo getmSphere() {
         return mSphere;
     }
 
@@ -40,7 +40,7 @@ public class SphereListItem implements AbstractSphereListItem {
 
         textView.setText(mSphere.getSphereName());
 
-        // FIXME: use as part of UhuSphereInfo to find the sphere info
+        // FIXME: use as part of BezirkSphereInfo to find the sphere info
         // make it bold for owner sphere
         if (mSphere.isThisDeviceOwnsSphere()) {
             textView.setTypeface(null, Typeface.BOLD);

@@ -1,8 +1,8 @@
 package com.bezirk.comms.udp.listeners;
 
-import com.bezirk.comms.ICommsNotification;
+import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.IUhuCommsLegacy;
-import com.bezirk.comms.UhuComms;
 import com.bezirk.comms.udp.validation.MessageValidators;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezrik.network.UhuNetworkUtilities;
@@ -25,19 +25,19 @@ public class ControlUnicastListener implements Runnable {
     private Boolean running = false;
     private ExecutorService executor;
     private IUhuCommsLegacy uhuComms = null;
-    private ICommsNotification notification = null;
+    private CommsNotification notification = null;
 
-    public ControlUnicastListener(DatagramSocket unicastSocket, IUhuCommsLegacy uhuComms, ICommsNotification notification) {
+    public ControlUnicastListener(DatagramSocket unicastSocket, IUhuCommsLegacy uhuComms, CommsNotification notification) {
         this.ctrlUcastSocket = unicastSocket;
         this.notification = notification;
-        executor = Executors.newFixedThreadPool(UhuComms.getPOOL_SIZE());
+        executor = Executors.newFixedThreadPool(BezirkComms.getPOOL_SIZE());
         this.uhuComms = uhuComms;
     }
 
     @Override
     public void run() {
         logger.info("Control UnicastListener has Started");
-        byte[] receiveData = new byte[UhuComms.getMAX_BUFFER_SIZE()];
+        byte[] receiveData = new byte[BezirkComms.getMAX_BUFFER_SIZE()];
         DatagramPacket receivePacket;
         running = true;
         InetAddress myAddress = UhuNetworkUtilities.getLocalInet();

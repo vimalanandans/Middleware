@@ -20,7 +20,7 @@ public class BezirkRestCommsManager {
 
     //TODO Punith: move to commons
 
-    private static BezirkRestCommsManager commsManager;
+    private static volatile BezirkRestCommsManager commsManager;
 
     private IUhuComms uhuComms;
 
@@ -29,7 +29,7 @@ public class BezirkRestCommsManager {
 
     private String selectedSphere;
 
-    private String slectedSphereName;
+    private String selectedSphereName;
 
     private boolean isStarted = false;
 
@@ -77,12 +77,12 @@ public class BezirkRestCommsManager {
         this.selectedSphere = selectedSphere;
     }
 
-    public String getSlectedSphereName() {
-        return slectedSphereName;
+    public String getSelectedSphereName() {
+        return selectedSphereName;
     }
 
-    public void setSlectedSphereName(String slectedSphereName) {
-        this.slectedSphereName = slectedSphereName;
+    public void setSelectedSphereName(String selectedSphereName) {
+        this.selectedSphereName = selectedSphereName;
     }
 
     public Queue<EventLedger> getRequestQueue() {
@@ -119,7 +119,6 @@ public class BezirkRestCommsManager {
 
         //Think if you have to re-insert or you just want to append as above.
     }
-
 
     /**
      * sender thread, picks from the pool and sends the data accross comms

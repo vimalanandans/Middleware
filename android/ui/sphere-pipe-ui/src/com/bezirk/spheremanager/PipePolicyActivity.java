@@ -14,11 +14,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.bezirk.commons.UhuCompManager;
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.pipe.core.PipeApprovalException;
 import com.bezirk.pipe.core.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRequester;
-import com.bezirk.pipe.policy.ext.UhuPipePolicy;
+import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
@@ -81,7 +81,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
         IUhuSphereAPI api = MainService.getSphereHandle();
 
         if (BezirkValidatorUtility.isObjectNotNull(api)) {
-            UhuSphereInfo sphereInfo = api.getSphere(sphereID);
+            BezirkSphereInfo sphereInfo = api.getSphere(sphereID);
             if (sphereInfo != null) {
                 sphere = new SphereListItem(sphereInfo);
             } else {
@@ -101,8 +101,8 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
             @Override
             public void onClick(View v) {
                 //TODO Send back selected Policy
-                UhuPipePolicy policyIn = PipePolicyUtility.policyInMap.get(pipeReqId);
-                UhuPipePolicy policyOut = PipePolicyUtility.policyOutMap.get(pipeReqId);
+                BezirkPipePolicy policyIn = PipePolicyUtility.policyInMap.get(pipeReqId);
+                BezirkPipePolicy policyOut = PipePolicyUtility.policyOutMap.get(pipeReqId);
                 for (String role : policyIn.getReasonMap().keySet()) {
                     log.info("In Protocol: " + role + " is Authorized?: " + policyIn.isAuthorized(role));
                 }

@@ -9,9 +9,8 @@ import android.util.Log;
 
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
-import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.pipe.policy.ext.UhuPipePolicy;
+import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
@@ -254,8 +253,8 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             Log.i(TAG, jsonInPolicy);
             Log.i(TAG, "-- RECEIVED Out Policy --");
             Log.i(TAG, jsonOutPolicy);
-            final UhuPipePolicy policyIn = PipePolicy.fromJson(jsonInPolicy, UhuPipePolicy.class);
-            final UhuPipePolicy policyOut = PipePolicy.fromJson(jsonOutPolicy, UhuPipePolicy.class);
+            final BezirkPipePolicy policyIn = PipePolicy.fromJson(jsonInPolicy, BezirkPipePolicy.class);
+            final BezirkPipePolicy policyOut = PipePolicy.fromJson(jsonOutPolicy, BezirkPipePolicy.class);
             // final Pipe pipe = Pipe.fromJson(jsonPipe, CloudPipe.class);
             // Proxy.pipeListenerMap.get(pipeId).pipeGranted(pipe, policyIn, policyOut);
         } else {

@@ -9,10 +9,10 @@ import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.discovery.SphereDiscovery;
 import com.bezirk.discovery.SphereDiscoveryProcessor;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.middleware.objects.UhuPipeInfo;
-import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.persistence.ISpherePersistence;
+import com.bezirk.middleware.objects.BezirkPipeInfo;
+import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
@@ -71,11 +71,11 @@ public class UhuSphere
     }
 
     /* Initialize uhu sphere */
-    public boolean initSphere(ISpherePersistence spherePersistence, IUhuComms uhuComms,
+    public boolean initSphere(SpherePersistence spherePersistence, IUhuComms uhuComms,
                               IUhuSphereListener uhuSphereListener, ISphereConfig sphereConfig) {
 
         if (spherePersistence == null || uhuComms == null) {
-            logger.error("Null passed to for ISpherePersistence or IUhuComms");
+            logger.error("Null passed to for SpherePersistence or IUhuComms");
         }
         if (uhuSphereListener == null) {
             logger.warn("IUhuSphereListener passed as null");
@@ -199,17 +199,17 @@ public class UhuSphere
     }
 
     @Override
-    public Iterable<UhuSphereInfo> getSpheres() {
+    public Iterable<BezirkSphereInfo> getSpheres() {
         return sphereRegistryWrapper.getSpheres();
     }
 
     @Override
-    public UhuSphereInfo getSphere(String sphereId) {
+    public BezirkSphereInfo getSphere(String sphereId) {
         return sphereRegistryWrapper.getSphereInfo(sphereId);
     }
 
     @Override
-    public boolean isThisDeviceOwnsSphere(UhuSphereInfo sphereInfo) {
+    public boolean isThisDeviceOwnsSphere(BezirkSphereInfo sphereInfo) {
         return sphereRegistryWrapper.isThisDeviceOwnsSphere(sphereInfo);
     }
 
@@ -220,7 +220,7 @@ public class UhuSphere
     }
 
     @Override
-    public Iterable<UhuPipeInfo> getPipesOnSphere(String sphereId) {
+    public Iterable<BezirkPipeInfo> getPipesOnSphere(String sphereId) {
         // TODO implement
         return null;
     }
@@ -331,12 +331,12 @@ public class UhuSphere
      * @deprecated use {@link #processDiscoveredSphereInfo(Set, String)} instead
      */
     @Deprecated
-    public UhuSphereInfo processDiscoveryResponse(Set<BezirkDiscoveredZirk> discoveredServices, String sphereId) {
+    public BezirkSphereInfo processDiscoveryResponse(Set<BezirkDiscoveredZirk> discoveredServices, String sphereId) {
         return discoveryProcessor.processDiscoveryResponse(discoveredServices, sphereId);
     }
 
     @Override
-    public void processDiscoveredSphereInfo(Set<UhuSphereInfo> discoveredSphereInfoSet, String sphereId) {
+    public void processDiscoveredSphereInfo(Set<BezirkSphereInfo> discoveredSphereInfoSet, String sphereId) {
         discoveryProcessor.processDiscoveredSphereInfo(discoveredSphereInfoSet, sphereId);
     }
 

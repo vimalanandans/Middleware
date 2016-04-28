@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNull;
  */
 public class BezirkZirkIdPersistenceTest {
     String DBPath = "./";
-    IDatabaseConnection dbConnection = null;
+    DatabaseConnection dbConnection = null;
 
     @Before
     public void before() throws IOException {
@@ -32,7 +32,7 @@ public class BezirkZirkIdPersistenceTest {
     @After
     public void tearDown() throws NullPointerException, SQLException, Exception {
         // Deleting the uhu_database.sqlite is not happening so after each test, I am dropping the table
-        TableUtils.dropTable(dbConnection.getDatabaseConnection(), UhuRegistry.class, true);
+        TableUtils.dropTable(dbConnection.getDatabaseConnection(), BezirkRegistry.class, true);
     }
 
     /**
@@ -47,7 +47,7 @@ public class BezirkZirkIdPersistenceTest {
     public void testForUhuServiceIdPersistenceRegistration() throws Exception {
         RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
         assertNotNull(regPersistence);
-        IUhuProxyPersistence proxyPersistence = (IUhuProxyPersistence) regPersistence;
+        BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
 
         UhuProxyRegistry proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
         assertNotNull(proxyRegistry);
@@ -65,7 +65,7 @@ public class BezirkZirkIdPersistenceTest {
         regPersistence = null;
         //Check if the data is persisted
         regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
-        proxyPersistence = (IUhuProxyPersistence) regPersistence;
+        proxyPersistence = (BezirkProxyPersistence) regPersistence;
         proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
 
         assertEquals(proxyRegistry.getUhuServiceId("zirk-A"), "sid-1");
@@ -86,7 +86,7 @@ public class BezirkZirkIdPersistenceTest {
     public void testForUhuServiceIdPersistenceUnRegistrationWithBezirkStartUp() throws Exception {
         RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
         assertNotNull(regPersistence);
-        IUhuProxyPersistence proxyPersistence = (IUhuProxyPersistence) regPersistence;
+        BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
 
         UhuProxyRegistry proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
         assertNotNull(proxyRegistry);
@@ -107,7 +107,7 @@ public class BezirkZirkIdPersistenceTest {
         regPersistence = null;
         //Check if the data is persisted
         regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
-        proxyPersistence = (IUhuProxyPersistence) regPersistence;
+        proxyPersistence = (BezirkProxyPersistence) regPersistence;
         proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
 
         assertNull(proxyRegistry.getUhuServiceId("zirk-A")); // should fail
@@ -124,7 +124,7 @@ public class BezirkZirkIdPersistenceTest {
         regPersistence = null;
 
         regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
-        proxyPersistence = (IUhuProxyPersistence) regPersistence;
+        proxyPersistence = (BezirkProxyPersistence) regPersistence;
         proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
 
         assertNull(proxyRegistry.getUhuServiceId("zirk-A")); // should fail
@@ -144,7 +144,7 @@ public class BezirkZirkIdPersistenceTest {
     public void testForUhuServiceIdPersistenceUnRegistrationWithoutBezirkStartUp() throws Exception {
         RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
         assertNotNull(regPersistence);
-        IUhuProxyPersistence proxyPersistence = (IUhuProxyPersistence) regPersistence;
+        BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
 
         UhuProxyRegistry proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
         assertNotNull(proxyRegistry);

@@ -9,8 +9,7 @@ import android.widget.ListView;
 
 import com.bezirk.actions.UhuActions;
 import com.bezirk.commons.UhuCompManager;
-import com.bezirk.controlui.R;
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.rest.BezirkRestCommsManager;
 import com.bezirk.starter.MainService;
 
@@ -60,17 +59,17 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
     public void onSphereSelectCallback(int position) {
 
         Map<String, String> sphereList = new LinkedHashMap();
-        Iterator<UhuSphereInfo> sphereInfoIterator = UhuCompManager.getSphereUI().getSpheres().iterator();
+        Iterator<BezirkSphereInfo> sphereInfoIterator = UhuCompManager.getSphereUI().getSpheres().iterator();
         while (sphereInfoIterator.hasNext()) {
-            UhuSphereInfo uhuSphereInfo = sphereInfoIterator.next();
-            sphereList.put(uhuSphereInfo.getSphereID(), uhuSphereInfo.getSphereName());
+            BezirkSphereInfo bezirkSphereInfo = sphereInfoIterator.next();
+            sphereList.put(bezirkSphereInfo.getSphereID(), bezirkSphereInfo.getSphereName());
         }
 
         int i = 0;
         for (Map.Entry<String, String> entry : sphereList.entrySet()) {
             if (position == i) {
                 restCommsManager.setSelectedSphere(entry.getKey());
-                restCommsManager.setSlectedSphereName(entry.getKey());
+                restCommsManager.setSelectedSphereName(entry.getKey());
             }
             i++;
         }
@@ -84,7 +83,7 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
         List<String> sphereList = new ArrayList();
 
         sphereList.clear();
-        Iterator<UhuSphereInfo> sphereInfoIterator = UhuCompManager.getSphereUI().getSpheres().iterator();
+        Iterator<BezirkSphereInfo> sphereInfoIterator = UhuCompManager.getSphereUI().getSpheres().iterator();
         while (sphereInfoIterator.hasNext()) {
             sphereList.add(sphereInfoIterator.next().getSphereName());
         }

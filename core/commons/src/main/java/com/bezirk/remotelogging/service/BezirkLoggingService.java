@@ -22,8 +22,8 @@ import java.net.Socket;
  * The logging client send the serialized Logging Message. The Zirk accepts the connection and
  * loads the serialized message into ReceiverQueue.
  */
-public class UhuLoggingService extends Thread {
-    private static final Logger logger = LoggerFactory.getLogger(UhuLoggingService.class);
+public class BezirkLoggingService extends Thread {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkLoggingService.class);
 
     /**
      * TCP listening Port for the zirk
@@ -43,7 +43,7 @@ public class UhuLoggingService extends Thread {
      *
      * @param port at which the Zirk is listening for the clients to connect.
      */
-    public UhuLoggingService(final int port) {
+    public BezirkLoggingService(final int port) {
         this.listeningPort = port;
     }
 

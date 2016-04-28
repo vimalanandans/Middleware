@@ -1,8 +1,8 @@
 package com.bezirk.comms.udp.listeners;
 
 import com.bezirk.checksum.DuplicateMessageManager;
-import com.bezirk.commons.UhuVersion;
-import com.bezirk.comms.ICommsNotification;
+import com.bezirk.commons.BezirkVersion;
+import com.bezirk.comms.CommsNotification;
 import com.bezirk.control.messages.EventLedger;
 
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public final class EventListenerUtility {
         //This is a utitlity class
     }
 
-    public static Boolean constructMsg(EventLedger receivedMessage, DatagramPacket receivePacket, ICommsNotification errCallaback) {
+    public static Boolean constructMsg(EventLedger receivedMessage, DatagramPacket receivePacket, CommsNotification errCallaback) {
         //Set the message is not local field
         receivedMessage.setIsLocal(false);
 
@@ -46,8 +46,8 @@ public final class EventListenerUtility {
                 String headerPart = new String(reconHeader, 0, reconHeader.length);
                 switch (headerCount) {
                     case -1:
-                        if (!headerPart.equals(UhuVersion.UHU_VERSION)) {
-                            log.error("UPGRADE UHU. UHU VERSION MISMATCH. device version > " + UhuVersion.UHU_VERSION + " Recieved msg version " + headerPart);
+                        if (!headerPart.equals(BezirkVersion.UHU_VERSION)) {
+                            log.error("UPGRADE UHU. UHU VERSION MISMATCH. device version > " + BezirkVersion.UHU_VERSION + " Recieved msg version " + headerPart);
                             if (null != errCallaback) {
                                 errCallaback.versionMismatch(headerPart);
                             }

@@ -17,13 +17,13 @@ public final class LoggingQueueManager {
     /**
      * Blocking Queue that is used to queue logger messages at the logging client.
      */
-    private static BlockingQueue<String> logSenderQueue = null;
+    private static volatile BlockingQueue<String> logSenderQueue = null;
     /**
      * Blocking Queue that is used to queue logger messages at the Logging Zirk.
      *
      * @see UhuLoggingService
      */
-    private static BlockingQueue<String> logReceiverQueue = null;
+    private static volatile BlockingQueue<String> logReceiverQueue = null;
 
     /**
      * Private Constructor to make this Utility class

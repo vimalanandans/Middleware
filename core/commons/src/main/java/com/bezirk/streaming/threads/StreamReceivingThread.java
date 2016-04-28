@@ -3,8 +3,8 @@
  */
 package com.bezirk.streaming.threads;
 
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.IPortFactory;
-import com.bezirk.comms.UhuComms;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
@@ -27,14 +27,14 @@ import java.net.SocketException;
 
 /**
  * This thread is used by the recipient that is interested in receiving the Stream. This Thread opens socket at port ({@link PortFactory#getPort(String)} and
- * waits for the sender to connect. Once the Sender gets connected, a file will be created at {@link UhuComms#DOWNLOAD_PATH+this#fileName} and will read
+ * waits for the sender to connect. Once the Sender gets connected, a file will be created at {@link BezirkComms#DOWNLOAD_PATH+this#fileName} and will read
  * data at a time. After the data transfer it will release the port through {@link PortFactory#releasePort(int)}. From the {@link this#streamLabel}, it will query the UhuSadl
  * to get all the Zirk Identities via
  * corresponding to the services.
  * If error occurs during the course, it releases the port and closes the socket and Streams
  *
  * @see com.bezirk.proxy
- * @see UhuComms
+ * @see BezirkComms
  * @see PortFactory
  */
 public class StreamReceivingThread implements Runnable {
@@ -100,7 +100,7 @@ public class StreamReceivingThread implements Runnable {
             socket.setSoTimeout(CONNECTION_TIMEOUT_TIME);
             receivingSocket = socket.accept();
 
-            tempFile = new File(UhuComms.getDOWNLOAD_PATH() + fileName);
+            tempFile = new File(BezirkComms.getDOWNLOAD_PATH() + fileName);
             fileOutputStream = new FileOutputStream(tempFile);
             inputStream = new DataInputStream(receivingSocket.getInputStream());
 
@@ -120,7 +120,7 @@ public class StreamReceivingThread implements Runnable {
                 }
             }
             logger.debug("--- File Received--- & saved at "
-                    + UhuComms.getDOWNLOAD_PATH() + fileName);
+                    + BezirkComms.getDOWNLOAD_PATH() + fileName);
 
             notifyStreamFile(tempFile, portFactory.releasePort(port));
             streamErrored = false;

@@ -17,9 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.device.UhuDeviceType;
+import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.SelectServiceFragment;
@@ -56,7 +56,7 @@ public class SelectServiceActivity extends FragmentActivity implements
         deviceID = getIntent().getIntExtra(DeviceListActivity.ARG_DEVICE_ID, 0);
 
         ///SphereListItem sphere = (SphereListItem) DummyContent.ITEM_MAP.get(sphereID);
-        UhuSphereInfo sphereInfo = null;
+        BezirkSphereInfo sphereInfo = null;
 
         IUhuSphereAPI api = MainService.getSphereHandle();
 
@@ -94,37 +94,37 @@ public class SelectServiceActivity extends FragmentActivity implements
                     .findViewById(R.id.device_type_detail);
 
             // set icons
-            if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_SMARTPHONE)) {
+            if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_SMARTPHONE)) {
                 imageView.setImageResource(R.drawable.ic_smartphone);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_TABLET)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_TABLET)) {
                 imageView.setImageResource(R.drawable.ic_tablet);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_FAN)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_FAN)) {
                 imageView.setImageResource(R.drawable.ic_fan);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_LIGHT)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_LIGHT)) {
                 imageView.setImageResource(R.drawable.ic_light);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_PRINTER)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_PRINTER)) {
                 imageView.setImageResource(R.drawable.ic_printer);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_THERMOSTAT)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_THERMOSTAT)) {
                 imageView.setImageResource(R.drawable.ic_thermostat);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_PC)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_PC)) {
                 imageView.setImageResource(R.drawable.ic_pc);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_WASHING_MACHINE)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_WASHING_MACHINE)) {
                 imageView.setImageResource(R.drawable.ic_washingmachine);
             } else if (item.getDeviceType().startsWith("Chainsaw")) { //sorry no chainsaw now
                 imageView.setImageResource(R.drawable.ic_chainsaw);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_TV)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_TV)) {
                 imageView.setImageResource(R.drawable.ic_tv);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_COFFEE)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_COFFEE)) {
                 imageView.setImageResource(R.drawable.ic_coffee);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_HEATING)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_HEATING)) {
                 imageView.setImageResource(R.drawable.ic_heating);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_MICROWAVE)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_MICROWAVE)) {
                 imageView.setImageResource(R.drawable.ic_microwave);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_GAME)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_GAME)) {
                 imageView.setImageResource(R.drawable.ic_controller);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_CAR)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_CAR)) {
                 imageView.setImageResource(R.drawable.ic_car);
-            } else if (item.getDeviceType().equalsIgnoreCase(UhuDeviceType.UHU_DEVICE_TYPE_CLOUD)) {
+            } else if (item.getDeviceType().equalsIgnoreCase(BezirkDeviceType.UHU_DEVICE_TYPE_CLOUD)) {
                 imageView.setImageResource(R.drawable.ic_cloud);
             } else {
                 // do nothing
@@ -298,7 +298,7 @@ public class SelectServiceActivity extends FragmentActivity implements
                 return;
             }
 
-            List<UhuSphereInfo> sphereInfos = (List) api.getSpheres();
+            List<BezirkSphereInfo> sphereInfos = (List) api.getSpheres();
 
             String[] previousEnties = new String[sphereInfos.size()];
             int iteration = 0;
@@ -310,7 +310,7 @@ public class SelectServiceActivity extends FragmentActivity implements
             lastEntry = key;
         }*/
             // find the last entry
-            UhuSphereInfo sphereInfo = sphereInfos.get(sphereInfos.size() - 1);
+            BezirkSphereInfo sphereInfo = sphereInfos.get(sphereInfos.size() - 1);
 
             if (direction.equals("TB") || direction.equals("BT")) {
                 // do nothing

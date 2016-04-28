@@ -7,7 +7,7 @@ import com.bezirk.control.messages.MessageLedger;
  * Notification from comms to platform specific uhu middleware application regarding
  * diagnostic, error messages
  */
-public interface ICommsNotification {
+public interface CommsNotification {
     /**
      * Will be invoked if there is mismatch in the versions.
      *

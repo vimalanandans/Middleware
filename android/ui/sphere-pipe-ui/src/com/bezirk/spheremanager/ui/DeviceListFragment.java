@@ -11,7 +11,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.R;
@@ -79,7 +79,7 @@ public class DeviceListFragment extends ListFragment {
 
         if (api != null) {
 
-            UhuSphereInfo sphereInfo = api.getSphere(sphereID);
+            BezirkSphereInfo sphereInfo = api.getSphere(sphereID);
             if (sphereInfo != null) {
                 if (sphereInfo.getDeviceList() != null) {
                     setListAdapter(new DeviceListAdapter(getActivity()

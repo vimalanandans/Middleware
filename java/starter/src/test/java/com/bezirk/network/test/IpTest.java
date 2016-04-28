@@ -1,6 +1,6 @@
 //package com.bezirk.network.test;
 //
-//import com.bezirk.comms.UhuComms;
+//import com.bezirk.comms.BezirkComms;
 //import com.bezirk.comms.UhuCommsPC;
 //import com.bezrik.network.IntfInetPair;
 //import com.bezrik.network.UhuNetworkUtilities;
@@ -42,7 +42,7 @@
 //		InetAddress addr;
 //		try {
 //			UhuCommsPC.init();
-//			addr = UhuNetworkUtilities.getIpForInterface(NetworkInterface.getByName(UhuComms.getINTERFACE_NAME()));
+//			addr = UhuNetworkUtilities.getIpForInterface(NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME()));
 //			if(addr == null){
 //				logger.error("Failure to resolve ip - Check interface in comms.properties ");
 //				logger.error("Possible interface/ ip pairs are: ");

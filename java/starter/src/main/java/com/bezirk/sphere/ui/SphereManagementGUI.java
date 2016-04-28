@@ -1,6 +1,6 @@
 package com.bezirk.sphere.ui;
 
-import com.bezirk.commons.UhuVersion;
+import com.bezirk.commons.BezirkVersion;
 import com.bezirk.commstest.ui.CommsTestJFrame;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.sphere.api.IUhuSphereAPI;
@@ -48,7 +48,7 @@ public class SphereManagementGUI extends JFrame {
     private static SphereManagementGUI staticThis;
     private JLabel warningLbl;
     private JMenuBar menuBar;
-    private transient String misMatchVersion = UhuVersion.UHU_VERSION;
+    private transient String misMatchVersion = BezirkVersion.UHU_VERSION;
     private transient UhuSphere sphereManager;
 
     /**

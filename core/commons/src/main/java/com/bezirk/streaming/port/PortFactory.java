@@ -3,8 +3,8 @@
  */
 package com.bezirk.streaming.port;
 
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.IPortFactory;
-import com.bezirk.comms.UhuComms;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.streaming.store.StreamStore;
@@ -22,7 +22,7 @@ import java.util.Set;
  * keeps a record in the portsMap in StreamUtilities to avoid reassigning of ports when it receives the same request. PortFactory is also responsible
  * for releasing the ports once the streaming is completed.
  *
- * @see UhuComms
+ * @see BezirkComms
  */
 public class PortFactory implements IPortFactory {
     private static final Logger LOGGER = LoggerFactory
@@ -34,11 +34,11 @@ public class PortFactory implements IPortFactory {
     private int lastAssignedPort; // used to assign the next port when the request comes!
 
     /**
-     * Called by the {@link UhuComms} if the streaming is Enabled in the properties file. It initializes the beginning and ending ports.
+     * Called by the {@link BezirkComms} if the streaming is Enabled in the properties file. It initializes the beginning and ending ports.
      * It initializes the PortFactory.lastAssignedPort to the statingPort.
      *
      * @param startPort : Beginning port that can be used for Streaming. RANGE (of ports that can be used for Streaming) =  {@link PortFactory#startingPort - PortFactory#endPort }
-     * @see UhuComms
+     * @see BezirkComms
      */
     public PortFactory(int startPort, StreamStore streamStore) {
         LOGGER.info("-- Inside PortFactory constructor ---- ");
@@ -51,7 +51,7 @@ public class PortFactory implements IPortFactory {
     /**
      * This method is called by ControlReceiverThread when it receives a {@link ControlMessage} with Discriminator set to "StreamRequest". This method receives the
      * Key as [ MsgId:ServiceName:DeviceId ] from the {@link StreamRequest} and checks if any ports are available and return the int as positive value if available or -1 if not.
-     * If Uhu has already opened the {@link UhuComms#MAX_SUPPORTED_STREAMS} then it returns -1. If the port is available and the key is not duplicate( i,e the Request has
+     * If Uhu has already opened the {@link BezirkComms#MAX_SUPPORTED_STREAMS} then it returns -1. If the port is available and the key is not duplicate( i,e the Request has
      * arrived for the first time ) then it updates the activePorts Map with the port and portsMap in StreamStore with portMapKey and port.
      *
      * @param portMapKey key in form [MsgId:ServiceName:DeviceId] that used to keep track of active Stream
@@ -64,7 +64,7 @@ public class PortFactory implements IPortFactory {
 
             int nextPort = -1;
 
-            if (activePorts.size() == UhuComms.getMAX_SUPPORTED_STREAMS()) {
+            if (activePorts.size() == BezirkComms.getMAX_SUPPORTED_STREAMS()) {
                 LOGGER.debug("MAX STREAMS REACHED");
                 return nextPort;
             }

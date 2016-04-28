@@ -10,7 +10,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.pipe.core.PipeRecord;
 import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
@@ -93,7 +93,7 @@ public class SphereListOfOnePipeFragment extends ListFragment {
 
                 sphereListItems = new ArrayList<AbstractSphereListItem>();
 
-                UhuSphereInfo sphereInfo = MainService.getSphereHandle().getSphere(sphereId);
+                BezirkSphereInfo sphereInfo = MainService.getSphereHandle().getSphere(sphereId);
 
                 sphereListItems.add(new SphereListItem(sphereInfo));
 

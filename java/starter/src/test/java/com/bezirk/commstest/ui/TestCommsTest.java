@@ -1,7 +1,7 @@
 package com.bezirk.commstest.ui;
 
 import com.bezirk.commons.UhuCompManager;
-import com.bezirk.comms.UhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.devices.UPADeviceForPC;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezrik.network.UhuNetworkUtilities;
@@ -63,7 +63,7 @@ public class TestCommsTest {
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
                         UhuNetworkUtilities.getIpForInterface(intf);
-                        UhuComms.setINTERFACE_NAME(intf.toString());
+                        BezirkComms.setINTERFACE_NAME(intf.toString());
 
                     }
 

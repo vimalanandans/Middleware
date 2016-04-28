@@ -1,17 +1,17 @@
 package com.bezirk.starter;
 
 import com.bezirk.commons.UhuCompManager;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.CommsFactory;
-import com.bezirk.comms.ICommsNotification;
+import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.IUhuComms;
-import com.bezirk.comms.UhuComms;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.control.messages.MessageLedger;
-import com.bezirk.device.UhuDevice;
+import com.bezirk.device.BezirkDevice;
 import com.bezirk.features.CommsFeature;
 import com.bezirk.messagehandler.ZirkMessageHandler;
-import com.bezirk.persistence.IDatabaseConnection;
-import com.bezirk.persistence.IUhuProxyPersistence;
+import com.bezirk.persistence.DatabaseConnection;
+import com.bezirk.persistence.BezirkProxyPersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.sadl.UhuSadlManager;
@@ -71,7 +71,7 @@ public class MainService {
      *
      * @author Vijet Badigannavar
      */
-    private final ICommsNotification errNotificationCallback = new ICommsNotification() {
+    private final CommsNotification errNotificationCallback = new CommsNotification() {
 
         /**
          * Display warning if uhu version is mismatching.
@@ -154,7 +154,7 @@ public class MainService {
         /*************************************
          * Step3 : Shutdown RemoteLogging    *
          *************************************/
-        if (UhuComms.isRemoteLoggingServiceEnabled()
+        if (BezirkComms.isRemoteLoggingServiceEnabled()
                 && BezirkValidatorUtility.isObjectNotNull(loggingGUI)
                 && loggingGUI.isVisible()) {
 
@@ -193,7 +193,7 @@ public class MainService {
             com.bezirk.comms.UhuCommsPC.init(uhuConfig);
 
         } catch (Exception e) {
-            serviceStarterHelper.fail("Problem initializing UhuComms", e);
+            serviceStarterHelper.fail("Problem initializing BezirkComms", e);
         }
 
         /**************************************************
@@ -230,18 +230,18 @@ public class MainService {
             serviceStarterHelper.fail("Problem initializing Comms.", null);
         }
         /**************************************************
-         * Step7 :Create and configure the UhuDevice      *
+         * Step7 :Create and configure the BezirkDevice      *
          **************************************************/
-        final UhuDevice uhuDevice = serviceStarterHelper
+        final BezirkDevice bezirkDevice = serviceStarterHelper
                 .configureUhuDevice(this.uhuConfig);
 
         /**************************************************
          * Step8 :Initialize sphere                       *
          **************************************************/
 
-        if (BezirkValidatorUtility.isObjectNotNull(uhuDevice)) {
+        if (BezirkValidatorUtility.isObjectNotNull(bezirkDevice)) {
 
-            sphereForPC = serviceStarterHelper.initSphere(uhuDevice,
+            sphereForPC = serviceStarterHelper.initSphere(bezirkDevice,
                     registryPersistence, comms);
 
             if (!BezirkValidatorUtility.isObjectNotNull(sphereForPC)) {
@@ -256,7 +256,7 @@ public class MainService {
          * Step9 :Display or save Share sphere QR code    *
          * Enable LoggingGUI                              *
          **************************************************/
-        displayQRCode(uhuDevice);
+        displayQRCode(bezirkDevice);
 
         /**************************************************
          * Step10 : Set status of stack                   *
@@ -265,14 +265,14 @@ public class MainService {
         this.startedStack = true;
     }
 
-    private void displayQRCode(final UhuDevice uhuDevice) {
+    private void displayQRCode(final BezirkDevice bezirkDevice) {
         if (uhuConfig.isDisplayEnabled()) {
             // commented to test in beaglebone. uncomment it for PC
             frame = new com.bezirk.sphere.ui.SphereManagementGUI(sphereForPC);
             frame.setVisible(true);
 
             // Check if the Logging is enabled and start the LoggingGUI
-            if (UhuComms.isRemoteLoggingServiceEnabled()) {
+            if (BezirkComms.isRemoteLoggingServiceEnabled()) {
                 logger.info("*** REMOTE LOGGING SERVICE IS ENABLED");
                 SwingUtilities.invokeLater(new Runnable() {
 
@@ -286,7 +286,7 @@ public class MainService {
             // save the qr code
             // if display is not stored then save the QR code
             ((com.bezirk.sphere.impl.UhuSphereForPC) sphereForPC).saveQRCode(uhuConfig.getDataPath(),
-                    uhuDevice.getDeviceName());
+                    bezirkDevice.getDeviceName());
         }
     }
 
@@ -308,12 +308,12 @@ public class MainService {
     /**
      * @return registryPersistence
      */
-    public IUhuProxyPersistence getUhuProxyPersistence() {
+    public BezirkProxyPersistence getUhuProxyPersistence() {
         return registryPersistence;
     }
 
     private void initializeRegistryPersistence() {
-        final IDatabaseConnection dbConnection = new com.bezirk.persistence.DatabaseConnectionForJava(
+        final DatabaseConnection dbConnection = new com.bezirk.persistence.DatabaseConnectionForJava(
                 uhuConfig.getDataPath());
         try {
             registryPersistence = new RegistryPersistence(dbConnection,

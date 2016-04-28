@@ -9,10 +9,10 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public final class DatabaseConnectionForJava implements IDatabaseConnection {
+public final class DatabaseConnectionForJava implements DatabaseConnection {
 
     private final String dbFilePath;
-    private Dao<UhuRegistry, Integer> uhuPersistenceDao;
+    private Dao<BezirkRegistry, Integer> uhuPersistenceDao;
 
     public DatabaseConnectionForJava(String dbFileLocation) {
         dbFilePath = dbFileLocation;
@@ -28,11 +28,11 @@ public final class DatabaseConnectionForJava implements IDatabaseConnection {
     }
 
     @Override
-    public Dao<UhuRegistry, Integer> getPersistenceDAO()
+    public Dao<BezirkRegistry, Integer> getPersistenceDAO()
             throws NullPointerException, SQLException, IOException, Exception {
         if (null == uhuPersistenceDao) {
             uhuPersistenceDao = DaoManager.createDao(getDatabaseConnection(),
-                    UhuRegistry.class);
+                    BezirkRegistry.class);
         }
         return uhuPersistenceDao;
     }

@@ -84,7 +84,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
      *
      * @author Vijet Badigannavar
      */
-    private ICommsNotification notification = null;
+    private CommsNotification notification = null;
 
     //private ZirkMessageHandler uhuCallback = null;
 
@@ -113,10 +113,10 @@ public class UhuCommsManager implements IUhuCommsLegacy {
 
         //Start Listener Sockets
         try {
-            eMSocket = new MulticastSocket(UhuComms.getMULTICAST_PORT());
-            eUSocket = new DatagramSocket(UhuComms.getUNICAST_PORT(), addr);
-            cMSocket = new MulticastSocket(UhuComms.getCTRL_MULTICAST_PORT());
-            cUSocket = new DatagramSocket(UhuComms.getCTRL_UNICAST_PORT(), addr);
+            eMSocket = new MulticastSocket(BezirkComms.getMULTICAST_PORT());
+            eUSocket = new DatagramSocket(BezirkComms.getUNICAST_PORT(), addr);
+            cMSocket = new MulticastSocket(BezirkComms.getCTRL_MULTICAST_PORT());
+            cUSocket = new DatagramSocket(BezirkComms.getCTRL_UNICAST_PORT(), addr);
 
             eMSocket.setInterface(addr);
 
@@ -154,7 +154,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
 
         cSenderThread = new Thread(new ControlSenderThread(this, controlSenderQueue));
 
-        if (UhuComms.isStreamingEnabled()) {
+        if (BezirkComms.isStreamingEnabled()) {
 
             this.uhuStreamManager = new UhuStreamManager(this, msgDispatcher, uhuSadlManager);
             uhuStreamManager.initStreams();
@@ -182,7 +182,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
         if (cUSocket != null)
             cUSocket.close();
 
-        if (UhuComms.isStreamingEnabled()) {
+        if (BezirkComms.isStreamingEnabled()) {
 
             if (uhuStreamManager != null) {
                 uhuStreamManager.endStreams();
@@ -226,7 +226,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
       /*  if(sphereDiscThread != null)
             sphereDiscThread.start(); */
 
-        if (UhuComms.isStreamingEnabled()) {
+        if (BezirkComms.isStreamingEnabled()) {
 
             if (uhuStreamManager != null) {
                 uhuStreamManager.startStreams();
@@ -265,7 +265,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
             cSenderThread.interrupt();
 
 
-        if (UhuComms.isStreamingEnabled()) {
+        if (BezirkComms.isStreamingEnabled()) {
 
             if (uhuStreamManager != null) {
                 uhuStreamManager.endStreams();
@@ -522,12 +522,12 @@ public class UhuCommsManager implements IUhuCommsLegacy {
 
     }
 
-    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, ICtrlMsgReceiver receiver) {
+    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver) {
         return msgDispatcher.registerControlMessageReceiver(id, receiver);
     }
 
     @Override
-    public boolean registerNotification(ICommsNotification notification) {
+    public boolean registerNotification(CommsNotification notification) {
 
         if (null != notification) {
             this.notification = notification;
@@ -554,7 +554,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
         return false;
     }
 
-    class CommCtrlReceiver implements ICtrlMsgReceiver {
+    class CommCtrlReceiver implements CtrlMsgReceiver {
         @Override
         // FIXME : remove the below Log related quickfix, by moving the implementation to respective module
         public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {

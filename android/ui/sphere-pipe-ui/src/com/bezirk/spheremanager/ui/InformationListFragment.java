@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.R;
@@ -47,7 +47,7 @@ public class InformationListFragment extends ListFragment {
 
         String sphereID = getActivity().getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
 
-        UhuSphereInfo sphereInfo = null;
+        BezirkSphereInfo sphereInfo = null;
 
         IUhuSphereAPI api = MainService.getSphereHandle();
 

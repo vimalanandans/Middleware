@@ -15,9 +15,9 @@ import java.util.UUID;
 /**
  * @author Rishabh Gulati
  */
-public class UhuDevice implements UPADeviceInterface {
+public class BezirkDevice implements UPADeviceInterface {
 
-    private static final Logger log = LoggerFactory.getLogger(UhuDevice.class);
+    private static final Logger log = LoggerFactory.getLogger(BezirkDevice.class);
 
     private String deviceId;
     private String deviceName;
@@ -31,9 +31,9 @@ public class UhuDevice implements UPADeviceInterface {
         //else initialize and persist
         deviceId = UUID.randomUUID().toString();
 
-        deviceName = "UhuDevice-" + deviceId.substring(deviceId.length() - 5, deviceId.length());
+        deviceName = "BezirkDevice-" + deviceId.substring(deviceId.length() - 5, deviceId.length());
 
-        deviceType = "UhuDeviceType(Phone/tablet/PC)";
+        deviceType = "BezirkDeviceType(Phone/tablet/PC)";
 
         deviceLocation = null;
 

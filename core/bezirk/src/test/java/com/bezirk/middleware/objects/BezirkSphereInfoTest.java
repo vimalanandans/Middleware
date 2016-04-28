@@ -10,11 +10,11 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * This testcase verifies the UhuSphereInfo by setting the properties and retrieving them.
+ * This testcase verifies the BezirkSphereInfo by setting the properties and retrieving them.
  *
  * @author AJC6KOR
  */
-public class UhuSphereInfoTest {
+public class BezirkSphereInfoTest {
 
     @Test
     public void test() {
@@ -23,34 +23,34 @@ public class UhuSphereInfoTest {
         String sphereName = "HomeSphere";
         String sphereType = "OwnerSphere";
         ArrayList<BezirkDeviceInfo> deviceList = getDeviceList();
-        ArrayList<com.bezirk.middleware.objects.UhuPipeInfo> pipeList = getPipeList();
-        com.bezirk.middleware.objects.UhuSphereInfo uhuSphereInfo = new com.bezirk.middleware.objects.UhuSphereInfo(sphereID, sphereName,
+        ArrayList<BezirkPipeInfo> pipeList = getPipeList();
+        BezirkSphereInfo bezirkSphereInfo = new BezirkSphereInfo(sphereID, sphereName,
                 sphereType, deviceList, pipeList);
-        uhuSphereInfo.setThisDeviceOwnsSphere(true);
+        bezirkSphereInfo.setThisDeviceOwnsSphere(true);
 
-        assertEquals("DeviceList is not equal to the set value.", deviceList, uhuSphereInfo.getDeviceList());
-        assertEquals("PipeList is not equal to the set value.", pipeList, uhuSphereInfo.getPipeList());
-        assertEquals("SphereID is not equal to the set value.", sphereID, uhuSphereInfo.getSphereID());
-        assertEquals("SphereName is not equal to the set value.", sphereName, uhuSphereInfo.getSphereName());
-        assertEquals("SphereType is not equal to the set value.", sphereType, uhuSphereInfo.getSphereType());
-        assertTrue("Device is not considered as owner of sphere.", uhuSphereInfo.isThisDeviceOwnsSphere());
+        assertEquals("DeviceList is not equal to the set value.", deviceList, bezirkSphereInfo.getDeviceList());
+        assertEquals("PipeList is not equal to the set value.", pipeList, bezirkSphereInfo.getPipeList());
+        assertEquals("SphereID is not equal to the set value.", sphereID, bezirkSphereInfo.getSphereID());
+        assertEquals("SphereName is not equal to the set value.", sphereName, bezirkSphereInfo.getSphereName());
+        assertEquals("SphereType is not equal to the set value.", sphereType, bezirkSphereInfo.getSphereType());
+        assertTrue("Device is not considered as owner of sphere.", bezirkSphereInfo.isThisDeviceOwnsSphere());
 
         sphereName = "TestSphere";
-        com.bezirk.middleware.objects.UhuSphereInfo uhuSphereInfoTemp = new UhuSphereInfo(sphereID, sphereName,
+        BezirkSphereInfo bezirkSphereInfoTemp = new BezirkSphereInfo(sphereID, sphereName,
                 sphereType, deviceList, pipeList);
-        assertFalse("Different uhuSphereInfo has same string representation.", uhuSphereInfo.toString().equalsIgnoreCase(uhuSphereInfoTemp.toString()));
+        assertFalse("Different bezirkSphereInfo has same string representation.", bezirkSphereInfo.toString().equalsIgnoreCase(bezirkSphereInfoTemp.toString()));
     }
 
 
-    private ArrayList<com.bezirk.middleware.objects.UhuPipeInfo> getPipeList() {
+    private ArrayList<BezirkPipeInfo> getPipeList() {
 
         String pipeId = "Pipe24";
         String pipeName = "TestPipe";
         String pipeURL = "http://test.com";
-        com.bezirk.middleware.objects.UhuPipeInfo uhuPipeInfo = new com.bezirk.middleware.objects.UhuPipeInfo(pipeId, pipeName, pipeURL);
+        BezirkPipeInfo bezirkPipeInfo = new BezirkPipeInfo(pipeId, pipeName, pipeURL);
 
-        ArrayList<com.bezirk.middleware.objects.UhuPipeInfo> pipeList = new ArrayList<com.bezirk.middleware.objects.UhuPipeInfo>();
-        pipeList.add(uhuPipeInfo);
+        ArrayList<BezirkPipeInfo> pipeList = new ArrayList<BezirkPipeInfo>();
+        pipeList.add(bezirkPipeInfo);
 
         return pipeList;
     }

@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.shareProcessor;
 
-import com.bezirk.commons.UhuId;
+import com.bezirk.commons.BezirkId;
 import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.sphere.testUtilities.SphereTestUtility;
@@ -83,7 +83,7 @@ public class AddCatchCode {
     @Test
     public void validInviterShortCodeReturnsTrue() throws Exception {
         String sphereId = sphereTestUtility.generateOwnerCombo();
-        String inviterShortCode = new UhuId().getShortIdByHash(sphereId);
+        String inviterShortCode = new BezirkId().getShortIdByHash(sphereId);
         /** invoke the method under test using reflection **/
         boolean isShortCodeAdded = (Boolean) method.invoke(shareProcessor, inviterShortCode);
         assertTrue(isShortCodeAdded);

@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.bezirk.actions.UhuActions;
-import com.bezirk.application.IUhuApp;
-import com.bezirk.pipe.core.IUhuPipeAPI;
+import com.bezirk.application.BezirkApp;
+import com.bezirk.pipe.core.BezirkPipeAPI;
 import com.bezirk.pipe.core.PipeApprovalException;
 import com.bezirk.pipe.core.PipeRequest;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
@@ -18,14 +18,14 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by wya1pi on 12/16/14.
  */
-public class AndroidApp implements IUhuApp {
+public class AndroidApp implements BezirkApp {
 
     private static final Logger log = LoggerFactory.getLogger(AndroidApp.class);
     private static final String COMPONENT_NAME = "com.bosch.upa.uhu.controlui";
-    private final IUhuPipeAPI pipeAPI;
+    private final BezirkPipeAPI pipeAPI;
     private Context context;
 
-    public AndroidApp(Context context, IUhuPipeAPI pipeApi) {
+    public AndroidApp(Context context, BezirkPipeAPI pipeApi) {
         this.context = context;
         this.pipeAPI = pipeApi;
     }

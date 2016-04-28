@@ -1,12 +1,12 @@
 package com.bezirk.streaming;
 
-import com.bezirk.comms.ICtrlMsgReceiver;
+import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.comms.IPortFactory;
-import com.bezirk.comms.IStreaming;
+import com.bezirk.comms.Streaming;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.MessageDispatcher;
 import com.bezirk.comms.MessageQueue;
-import com.bezirk.comms.UhuComms;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.streaming.StreamRequest;
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  *         streaming. It also includes the StreamControlReceiver which process
  *         the stream request and stream responses.
  */
-public class UhuStreamManager implements IStreaming {
+public class UhuStreamManager implements Streaming {
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(UhuStreamManager.class);
@@ -131,7 +131,7 @@ public class UhuStreamManager implements IStreaming {
 
 
             portFactory = new PortFactory(
-                    UhuComms.getSTARTING_PORT_FOR_STREAMING(), streamStore);
+                    BezirkComms.getSTARTING_PORT_FOR_STREAMING(), streamStore);
 
             if (msgDispatcher == null) {
 
@@ -201,7 +201,7 @@ public class UhuStreamManager implements IStreaming {
         this.streamQueueProcessor.setSphereForSadl(sphereForSadl);
     }
 
-    class StreamCtrlReceiver implements ICtrlMsgReceiver {
+    class StreamCtrlReceiver implements CtrlMsgReceiver {
 
         @Override
         public boolean processControlMessage(ControlMessage.Discriminator id,

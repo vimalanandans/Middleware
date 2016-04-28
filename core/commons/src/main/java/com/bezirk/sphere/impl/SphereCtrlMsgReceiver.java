@@ -1,6 +1,6 @@
 package com.bezirk.sphere.impl;
 
-import com.bezirk.comms.ICtrlMsgReceiver;
+import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by Vimal on 5/19/2015. control message handler for sphere
  */
-public class SphereCtrlMsgReceiver implements ICtrlMsgReceiver {
+public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SphereCtrlMsgReceiver.class);
 

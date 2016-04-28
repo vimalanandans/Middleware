@@ -13,9 +13,9 @@ import java.sql.SQLException;
  * of the Uhu that needs to be persisted. The different layers will get the corrosponding interfaces through
  * which they can load/ save the data to the persistence
  */
-public class RegistryPersistence extends DatabaseHelper implements ISadlPersistence, ISpherePersistence, IUhuProxyPersistence {
+public class RegistryPersistence extends DatabaseHelper implements SadlPersistence, SpherePersistence, BezirkProxyPersistence {
 
-    public RegistryPersistence(IDatabaseConnection dbConnection, String DBVesion) throws NullPointerException, SQLException, IOException, Exception {
+    public RegistryPersistence(DatabaseConnection dbConnection, String DBVesion) throws NullPointerException, SQLException, IOException, Exception {
         super(dbConnection);
         checkDatabase(DBVesion);
     }

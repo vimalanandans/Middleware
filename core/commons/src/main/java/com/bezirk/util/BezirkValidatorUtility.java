@@ -28,10 +28,7 @@ public final class BezirkValidatorUtility {
      * @return true if BezirkZirkId is valid, false otherwise
      */
     public static boolean checkUhuServiceId(final BezirkZirkId serviceId) {
-        if (serviceId == null || !checkForString(serviceId.getBezirkZirkId())) {
-            return false;
-        }
-        return true;
+        return !(serviceId == null || !checkForString(serviceId.getBezirkZirkId()));
     }
 
     /**
@@ -49,10 +46,7 @@ public final class BezirkValidatorUtility {
      * @return true if valid, false otherwise.
      */
     public static boolean checkBezirkZirkEndPoint(final BezirkZirkEndPoint uhuServiceEndPoint) {
-        if (uhuServiceEndPoint == null || !checkUhuServiceId(uhuServiceEndPoint.zirkId) || !checkForString(uhuServiceEndPoint.device)) {
-            return false;
-        }
-        return true;
+        return !(uhuServiceEndPoint == null || !checkUhuServiceId(uhuServiceEndPoint.zirkId) || !checkForString(uhuServiceEndPoint.device));
     }
 
     /**
@@ -62,62 +56,42 @@ public final class BezirkValidatorUtility {
      * @return true if valid, false otherwise
      */
     public static boolean checkProtocolRole(final SubscribedRole role) {
-        if (null == role || !checkForString(role.getProtocolName())) {
-
-            return false;
-        }
-        return true;
+        return !(null == role || !checkForString(role.getProtocolName()));
     }
 
     /**
      * Checks for Validity of String for Not null and not empty
      *
-     * @param str - string to be validated
+     * @param stringValues - string to be validated
      * @return true if valid(not null & non empty), false otherwise
      */
     public static boolean checkForString(final String... stringValues) {
-
         if (stringValues == null || stringValues.length == 0) {
-
             return false;
         }
 
         for (String str : stringValues) {
-
             if (str == null || str.isEmpty()) {
-
                 return false;
             }
-
         }
 
         return true;
     }
 
     public static boolean checkHeader(final Header mHeader) {
-        if (!checkForString(mHeader.getSphereName(), mHeader.getTopic()) ||
-                !checkBezirkZirkEndPoint(mHeader.getSenderSEP())) {
-            return false;
-        }
-
-        return true;
+        return !(!checkForString(mHeader.getSphereName(), mHeader.getTopic()) ||
+                !checkBezirkZirkEndPoint(mHeader.getSenderSEP()));
 
     }
 
     public static boolean checkDiscoveryRequest(DiscoveryRequest request) {
-        if (!checkForString(request.getSphereId()) || request.getMessageId() == -1 || !checkBezirkZirkEndPoint(request.getSender())) {
+        return !(!checkForString(request.getSphereId()) || request.getMessageId() == -1 || !checkBezirkZirkEndPoint(request.getSender()));
 
-            return false;
-        }
-
-        return true;
     }
 
     public static boolean checkStreamRequest(final StreamRequest request) {
-        if (null == request || !checkForString(request.serialzedString, request.fileName, request.streamLabel, request.getSphereId()) || !checkEndPoints(request.getSender(), request.getRecipient())) {
-            return false;
-        }
-        return true;
+        return !(null == request || !checkForString(request.serialzedString, request.fileName, request.streamLabel, request.getSphereId()) || !checkEndPoints(request.getSender(), request.getRecipient()));
     }
 
     private static boolean checkEndPoints(BezirkZirkEndPoint... serviceEndPoints) {
@@ -137,21 +111,14 @@ public final class BezirkValidatorUtility {
 
 
     public static boolean checkLoggingServiceMessage(final LoggingServiceMessage logServiceMsg) {
-        if (null == logServiceMsg || !checkRemoteLoggingIPAndPort(logServiceMsg) || !checkSphereListIsEmpty(logServiceMsg.getSphereList())) {
-            return false;
-        }
-        return true;
+        return !(null == logServiceMsg || !checkRemoteLoggingIPAndPort(logServiceMsg) || !checkSphereListIsEmpty(logServiceMsg.getSphereList()));
     }
 
     private static boolean checkRemoteLoggingIPAndPort(
             LoggingServiceMessage logServiceMsg) {
 
-        if (!checkForString(logServiceMsg.getRemoteLoggingServiceIP()) ||
-                logServiceMsg.getRemoteLoggingServicePort() == -1) {
-
-            return false;
-        }
-        return true;
+        return !(!checkForString(logServiceMsg.getRemoteLoggingServiceIP()) ||
+                logServiceMsg.getRemoteLoggingServicePort() == -1);
     }
 
     private static boolean checkSphereListIsEmpty(String[] sphereList) {

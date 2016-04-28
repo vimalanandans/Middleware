@@ -18,7 +18,7 @@ public class DatabaseHelper {
     /**
      * Platform specific Database Connection
      */
-    private final IDatabaseConnection dbConnection;
+    private final DatabaseConnection dbConnection;
     /**
      * sphere Registry - storing sphere related maps
      */
@@ -33,7 +33,7 @@ public class DatabaseHelper {
     private UhuProxyRegistry uhuProxyRegistry;
 
 
-    protected DatabaseHelper(IDatabaseConnection dbConnection) {
+    protected DatabaseHelper(DatabaseConnection dbConnection) {
         super();
         this.dbConnection = dbConnection;
         this.sphereRegistry = null;
@@ -51,7 +51,7 @@ public class DatabaseHelper {
      * @throws Exception
      */
     protected void updateRegistry(String columnName) throws NullPointerException, SQLException, IOException, Exception {
-        UpdateBuilder<UhuRegistry, Integer> updateDb = dbConnection.getPersistenceDAO().updateBuilder();
+        UpdateBuilder<BezirkRegistry, Integer> updateDb = dbConnection.getPersistenceDAO().updateBuilder();
         switch (columnName) {
             case DBConstants.COLUMN_1:
                 if (null == sadlRegistry) {
@@ -85,8 +85,8 @@ public class DatabaseHelper {
      * @throws IOException          if connection to the database is not successful.
      */
     protected void loadRegistry() throws NullPointerException, IOException, Exception {
-        QueryBuilder<UhuRegistry, Integer> queryBuilder = dbConnection.getPersistenceDAO().queryBuilder();
-        UhuRegistry tempRegistry = queryBuilder.queryForFirst();
+        QueryBuilder<BezirkRegistry, Integer> queryBuilder = dbConnection.getPersistenceDAO().queryBuilder();
+        BezirkRegistry tempRegistry = queryBuilder.queryForFirst();
         sadlRegistry = tempRegistry.getSadlRegistry();
         sphereRegistry = tempRegistry.getSphereRegistry();
         uhuProxyRegistry = tempRegistry.getUhuProxyRegistry();
@@ -108,7 +108,7 @@ public class DatabaseHelper {
             dropTable();
         }
         if (dbConnection != null && !dbConnection.getPersistenceDAO().isTableExists()) {
-            TableUtils.createTable(dbConnection.getDatabaseConnection(), UhuRegistry.class);
+            TableUtils.createTable(dbConnection.getDatabaseConnection(), BezirkRegistry.class);
             insertInitialRow();
         }
         return true;
@@ -124,7 +124,7 @@ public class DatabaseHelper {
      */
     private void dropTable() throws NullPointerException, SQLException, IOException, Exception {
         if (dbConnection != null) {
-            TableUtils.dropTable(dbConnection.getDatabaseConnection(), UhuRegistry.class, true);
+            TableUtils.dropTable(dbConnection.getDatabaseConnection(), BezirkRegistry.class, true);
         }
     }
 
@@ -132,7 +132,7 @@ public class DatabaseHelper {
      * Insert the only row into the database
      */
     private void insertInitialRow() throws NullPointerException, SQLException, IOException, Exception {
-        dbConnection.getPersistenceDAO().createOrUpdate(new UhuRegistry(1, new SadlRegistry(), new SphereRegistry(), new UhuProxyRegistry()));
+        dbConnection.getPersistenceDAO().createOrUpdate(new BezirkRegistry(1, new SadlRegistry(), new SphereRegistry(), new UhuProxyRegistry()));
     }
 
     /**

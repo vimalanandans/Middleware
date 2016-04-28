@@ -12,7 +12,7 @@ import java.sql.SQLException;
 /**
  * Common Interface that is used to make connection to the database using Ormlite.
  */
-public interface IDatabaseConnection {
+public interface DatabaseConnection {
     /**
      * Returns the ConnectionSource of the Database Connection.
      *
@@ -33,5 +33,5 @@ public interface IDatabaseConnection {
      * @throws IOException          if the database file is not present
      * @throws Exception
      */
-    public Dao<UhuRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException, Exception;
+    public Dao<BezirkRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException, Exception;
 }

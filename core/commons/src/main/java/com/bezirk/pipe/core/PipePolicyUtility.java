@@ -1,12 +1,12 @@
 package com.bezirk.pipe.core;
 
-import com.bezirk.pipe.policy.ext.UhuPipePolicy;
+import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 
 import java.util.HashMap;
 
 public final class PipePolicyUtility {
-    public static final HashMap<String, UhuPipePolicy> policyInMap = new HashMap<String, UhuPipePolicy>();
-    public static final HashMap<String, UhuPipePolicy> policyOutMap = new HashMap<String, UhuPipePolicy>();
+    public static final HashMap<String, BezirkPipePolicy> policyInMap = new HashMap<String, BezirkPipePolicy>();
+    public static final HashMap<String, BezirkPipePolicy> policyOutMap = new HashMap<String, BezirkPipePolicy>();
     public static final HashMap<String, PipeRequester> pipeRequesterMap = new HashMap<String, PipeRequester>();
 
     private PipePolicyUtility() {

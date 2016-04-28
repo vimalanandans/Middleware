@@ -40,8 +40,8 @@ public class MessageDispatcher implements IMessageDispatcher {
     */
     private final Date currentDate = new Date();
     // Map of control receivers
-    Map<ControlMessage.Discriminator, ICtrlMsgReceiver> ctrlReceivers =
-            new HashMap<ControlMessage.Discriminator, ICtrlMsgReceiver>();
+    Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
+            new HashMap<ControlMessage.Discriminator, CtrlMsgReceiver>();
 
     public MessageDispatcher(ISadlEventReceiver sadlEventReceiver) {
         this.sadlEventReceiver = sadlEventReceiver;
@@ -51,7 +51,7 @@ public class MessageDispatcher implements IMessageDispatcher {
      * register control Message receivers
      */
     @Override
-    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, ICtrlMsgReceiver receiver) {
+    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver) {
         if (ctrlReceivers.containsKey(id)) {
             logger.debug("Registration is rejected. id is already registered > " + id);
             return false; // unregister first
@@ -89,7 +89,7 @@ public class MessageDispatcher implements IMessageDispatcher {
 
 
         //get the registered receiver
-        ICtrlMsgReceiver ctrlReceiver = ctrlReceivers.get(id);
+        CtrlMsgReceiver ctrlReceiver = ctrlReceivers.get(id);
 
         if (BezirkValidatorUtility.isObjectNotNull(ctrlReceiver)) {
             // invoke the listener
@@ -123,7 +123,7 @@ public class MessageDispatcher implements IMessageDispatcher {
         ControlMessage.Discriminator id = msg.getDiscriminator();
 
         //get the registered receiver
-        ICtrlMsgReceiver ctrlReceiver = ctrlReceivers.get(id);
+        CtrlMsgReceiver ctrlReceiver = ctrlReceivers.get(id);
 
         if (BezirkValidatorUtility.isObjectNotNull(ctrlReceiver)) {
             // invoke the listener

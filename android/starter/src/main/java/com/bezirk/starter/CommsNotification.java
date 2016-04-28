@@ -2,7 +2,6 @@ package com.bezirk.starter;
 
 import android.content.Intent;
 
-import com.bezirk.comms.ICommsNotification;
 import com.bezirk.control.messages.MessageLedger;
 
 import org.slf4j.Logger;
@@ -14,7 +13,7 @@ import org.slf4j.LoggerFactory;
  * <p/>
  * Created by pik6kor on 1/7/2016.
  */
-public class CommsNotification implements ICommsNotification {
+public class CommsNotification implements com.bezirk.comms.CommsNotification {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommsNotification.class);
     private final String BR_SYSTEM_STATUS_ACTION = "com.bezirk.systemstatus";

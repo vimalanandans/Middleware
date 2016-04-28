@@ -26,6 +26,10 @@ public class BezirkRestCallBackImpl implements BezirkRestCallBack {
     @Override
     public void callBackForResponse(Ledger event) {
         //Response will be the EventLedger
+        if (!(event instanceof EventLedger)) {
+            throw new AssertionError("Expected event to be an instance of EventLedger, but it isn't");
+        }
+
         EventLedger eventLedger = (EventLedger) event;
 
         //translate Ledger to Response object which will be sent to zirk
@@ -38,7 +42,7 @@ public class BezirkRestCallBackImpl implements BezirkRestCallBack {
         UnicastHeader header = (UnicastHeader) eventLedger.getHeader();
         Integer key = extractUniqueKey(header.getRecipient().zirkId.getBezirkEventId());
 
-        logger.debug("Response for Key ::" + key + " is :: " + responseString);
+        if (logger.isDebugEnabled()) logger.debug("Response for Key ::{} is :: {}", key, responseString);
         bezirkCommsManager.appendResponseToMap(key, responseString);
     }
 

@@ -11,7 +11,7 @@ package com.bezirk.remotelogging;
  */
 public final class UhuLoggingManager {
     /**
-     * UhuLoggingService
+     * BezirkLoggingService
      */
     private UhuLoggingService uhuLoggingService = null;
     /**

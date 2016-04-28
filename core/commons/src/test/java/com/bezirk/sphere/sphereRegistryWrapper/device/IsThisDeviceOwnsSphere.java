@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.sphereRegistryWrapper.device;
 
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.OwnerSphere;
@@ -72,7 +72,7 @@ public class IsThisDeviceOwnsSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#isThisDeviceOwnsSphere(UhuSphereInfo)}.
+     * Test method for {@link SphereRegistryWrapper#isThisDeviceOwnsSphere(BezirkSphereInfo)}.
      * <p/>
      * <br>Test if the device owns sphere.
      */
@@ -82,12 +82,12 @@ public class IsThisDeviceOwnsSphere {
         Sphere ownerSphere = new OwnerSphere(sphereTestUtility.OWNER_SPHERE_NAME_1,
                 sphereTestUtility.DEVICE_1.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_HOME);
         registry.spheres.put(sphereId, ownerSphere);
-        UhuSphereInfo sphereInfo = new UhuSphereInfo(sphereId, ownerSphere.getSphereName(), ownerSphere.getSphereType(), null, null);
+        BezirkSphereInfo sphereInfo = new BezirkSphereInfo(sphereId, ownerSphere.getSphereName(), ownerSphere.getSphereType(), null, null);
         assertTrue(sphereRegistryWrapper.isThisDeviceOwnsSphere(sphereInfo));
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#isThisDeviceOwnsSphere(UhuSphereInfo)}.
+     * Test method for {@link SphereRegistryWrapper#isThisDeviceOwnsSphere(BezirkSphereInfo)}.
      * <p/>
      * <br>Test if the device owns sphere, but the sphere is not added to registry.
      * Returns false.
@@ -97,7 +97,7 @@ public class IsThisDeviceOwnsSphere {
         String sphereId = UUID.randomUUID().toString();
         Sphere ownerSphere = new OwnerSphere(sphereTestUtility.OWNER_SPHERE_NAME_1,
                 sphereTestUtility.DEVICE_1.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_HOME);
-        UhuSphereInfo sphereInfo = new UhuSphereInfo(sphereId, ownerSphere.getSphereName(), ownerSphere.getSphereType(), null, null);
+        BezirkSphereInfo sphereInfo = new BezirkSphereInfo(sphereId, ownerSphere.getSphereName(), ownerSphere.getSphereType(), null, null);
         assertFalse(sphereRegistryWrapper.isThisDeviceOwnsSphere(sphereInfo));
     }
 

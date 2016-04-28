@@ -18,8 +18,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallbacks;
@@ -202,7 +202,7 @@ public class SphereListActivity extends FragmentActivity implements
         FragmentManager fragmentManager = getSupportFragmentManager();
         DialogServiceListFragment dialogServiceListFragment = new DialogServiceListFragment();
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Iterator<UhuSphereInfo> itr = MainService.getSphereHandle().getSpheres().iterator();
+        Iterator<BezirkSphereInfo> itr = MainService.getSphereHandle().getSpheres().iterator();
 
         ArrayList<String> arrayList = new ArrayList<String>();
         while (itr.hasNext()) {

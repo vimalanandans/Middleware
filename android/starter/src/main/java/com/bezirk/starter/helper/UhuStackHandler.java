@@ -6,11 +6,11 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
-import com.bezirk.comms.ICommsNotification;
+import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.UhuCommsAndroid;
 import com.bezirk.control.messages.MessageLedger;
-import com.bezirk.device.UhuDevice;
+import com.bezirk.device.BezirkDevice;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.proxy.android.ProxyforServices;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
@@ -59,12 +59,12 @@ public final class UhuStackHandler implements IUhuStackHandler {
 
     private final ProxyforServices proxy;
 
-    private final ICommsNotification errNotificationCallback;
+    private final CommsNotification errNotificationCallback;
     private final UhuWifiManager uhuWifiManager;
     private final UhuStartStackHelper uhuStartStackHelper;
     private RegistryPersistence registryPersistence;
 
-    public UhuStackHandler(ProxyforServices proxy, ICommsNotification errorNotificationCallback) {
+    public UhuStackHandler(ProxyforServices proxy, CommsNotification errorNotificationCallback) {
         this.proxy = proxy;
         this.errNotificationCallback = errorNotificationCallback;
         this.uhuWifiManager = UhuWifiManager.getInstance();
@@ -169,14 +169,14 @@ public final class UhuStackHandler implements IUhuStackHandler {
                         service.stopSelf();
                     }
                     /*************************************************************
-                     * Step 7 : Configure UhuDevice with preferences             *
+                     * Step 7 : Configure BezirkDevice with preferences             *
                      *************************************************************/
-                    UhuDevice uhuDevice = uhuDeviceHelper.setUhuDevice(preferences, service);
+                    BezirkDevice bezirkDevice = uhuDeviceHelper.setUhuDevice(preferences, service);
 
                     /*************************************************************
                      * Step 8 : Initialize UhuSphere                             *
                      *************************************************************/
-                    if (BezirkValidatorUtility.isObjectNotNull(uhuDevice) && !sphereProcessorForMainService.initSphere(uhuDevice, service, registryPersistence, preferences)) {
+                    if (BezirkValidatorUtility.isObjectNotNull(bezirkDevice) && !sphereProcessorForMainService.initSphere(bezirkDevice, service, registryPersistence, preferences)) {
                         // at the moment the init sphere fails due to persistence. hence delete it
                         // quickfix.delete the database
                         LOGGER.error("delete DB");
@@ -188,7 +188,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     }
 
                     /*************************************************************
-                     * Step 9 : Start UhuComms after sphere initialization       *
+                     * Step 9 : Start BezirkComms after sphere initialization       *
                      *************************************************************/
                     comms.startComms();
 

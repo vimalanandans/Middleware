@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.R;
@@ -94,8 +94,8 @@ public class ScanDeviceSelectSphereFragment extends Fragment {
         List<AbstractSphereListItem> sphereItemList = new ArrayList<AbstractSphereListItem>();
 
         if (api != null) {
-            Iterator<UhuSphereInfo> sphereInfo = api.getSpheres().iterator();
-            // convert the list of UhuSphereInfo to SphereListItem
+            Iterator<BezirkSphereInfo> sphereInfo = api.getSpheres().iterator();
+            // convert the list of BezirkSphereInfo to SphereListItem
             while (sphereInfo.hasNext())
                 sphereItemList.add(new SphereListItem(sphereInfo.next()));
 
@@ -131,9 +131,9 @@ public class ScanDeviceSelectSphereFragment extends Fragment {
         IUhuSphereAPI api = MainService.getSphereHandle();
 
         if (api != null) {
-            List<UhuSphereInfo> sphereList = (List) api.getSpheres();
+            List<BezirkSphereInfo> sphereList = (List) api.getSpheres();
             if (sphereList != null) {
-                UhuSphereInfo sphereInfo = sphereList.get(position);
+                BezirkSphereInfo sphereInfo = sphereList.get(position);
                 if (sphereInfo != null) {
                     itemID = sphereInfo.getSphereID();
                 } else {

@@ -16,7 +16,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.R;
@@ -70,7 +70,7 @@ public class ScanDeviceFragment extends Fragment {
     };
     private RadioButton previousClickedButton = null;
     private String callingActivity;
-    private UhuSphereInfo sphereInfo;
+    private BezirkSphereInfo sphereInfo;
     /**
      * The fragment's current callback object, which is notified of list item
      * clicks.
@@ -117,8 +117,8 @@ public class ScanDeviceFragment extends Fragment {
 
             sphereInfo = api.getSphere(sphereID);
 
-            Iterator<UhuSphereInfo> sphereInfo = api.getSpheres().iterator();
-            // convert the list of UhuSphereInfo to SphereListItem
+            Iterator<BezirkSphereInfo> sphereInfo = api.getSpheres().iterator();
+            // convert the list of BezirkSphereInfo to SphereListItem
             while (sphereInfo.hasNext())
                 sphereItemList.add(new SphereListItem(sphereInfo.next()));
 
@@ -169,7 +169,7 @@ public class ScanDeviceFragment extends Fragment {
 
                     if (api != null) {
                         //entry = (SphereListItem) DummyContent.ITEMS.get(position);
-                        List<UhuSphereInfo> spherList = (List) api.getSpheres();
+                        List<BezirkSphereInfo> spherList = (List) api.getSpheres();
                         if (spherList != null) {
                             sphereInfo = spherList.get(position);
                         } else {

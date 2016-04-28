@@ -4,23 +4,14 @@ package com.bezirk.pipe.core;
 import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
-import com.bezirk.control.messages.pipes.CloudResponse;
-import com.bezirk.control.messages.pipes.CloudStreamResponse;
 import com.bezirk.control.messages.pipes.PipeHeader;
 import com.bezirk.control.messages.pipes.PipeMulticastHeader;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.pipe.cloud.BezirkCloudPipeClient;
-import com.bezirk.pipe.cloud.CloudPipeClient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.UUID;
 
 /**
  * Class used to hold data needed to send

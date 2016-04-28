@@ -4,7 +4,7 @@
 package com.bezirk.sphere.sphereRegistryWrapper;
 
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.persistence.ISpherePersistence;
+import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.ICryptoInternals;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
@@ -14,7 +14,7 @@ import org.junit.Test;
 public class SphereRegistryWrapperConstructor {
 
     private static SphereRegistryWrapper sphereRegistryWrapper;
-    private static ISpherePersistence spherePersistence = null;
+    private static SpherePersistence spherePersistence = null;
     private static SphereRegistry registry = null;
     private static UPADeviceInterface upaDevice = null;
     private ICryptoInternals crypto = null;

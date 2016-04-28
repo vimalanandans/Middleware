@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.testUtilities;
 
-import com.bezirk.commons.UhuId;
+import com.bezirk.commons.BezirkId;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
@@ -235,7 +235,7 @@ public class SphereTestUtility {
      */
     public final ShareRequest getShareRequestObj() {
         String sharerSphereId = generateOwnerCombo();
-        String shortCode = new UhuId().getShortIdByHash(sharerSphereId);
+        String shortCode = new BezirkId().getShortIdByHash(sharerSphereId);
         BezirkZirkEndPoint sender = new BezirkZirkEndPoint(OWNER_SERVICE_ID_3);
         /**create the ShareRequest**/
         ShareRequest shareRequest = new ShareRequest(shortCode, getUhuDeviceInfo(), sender, sharerSphereId);
@@ -256,7 +256,7 @@ public class SphereTestUtility {
      */
     public final ShareResponse getShareResponseObj() {
         String sharerSphereId = generateOwnerCombo();
-        String shortCode = new UhuId().getShortIdByHash(sharerSphereId);
+        String shortCode = new BezirkId().getShortIdByHash(sharerSphereId);
         BezirkZirkEndPoint sender = UhuNetworkUtilities.getServiceEndPoint(null);
         BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(OWNER_SERVICE_ID_3);
         recipient.device = DEVICE_2.getDeviceName();

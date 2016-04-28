@@ -20,7 +20,7 @@
 //import org.slf4j.LoggerFactory;
 //
 //import UPADeviceInterface;
-//import UhuSphereInfo;
+//import BezirkSphereInfo;
 //import SphereRegistry;
 //import BezirkZirkId;
 //import ISphereConfig;
@@ -121,16 +121,16 @@
 //        registry.spheres.put(sphereId2, memberSphere);
 //
 //        
-//        UhuSphereInfo defaultInfo = new UhuSphereInfo(defaultSphereId, defaultSphereName, defaultSphereType, null,
+//        BezirkSphereInfo defaultInfo = new BezirkSphereInfo(defaultSphereId, defaultSphereName, defaultSphereType, null,
 //                null);
-//        UhuSphereInfo sphereInfo1 = new UhuSphereInfo(sphereId1, sphereName1, sphereType1, null, null);
-//        UhuSphereInfo sphereInfo2 = new UhuSphereInfo(sphereId2, sphereName2, sphereType2, null, null);
-//        List<UhuSphereInfo> createdSphereInfo = new ArrayList<>();
+//        BezirkSphereInfo sphereInfo1 = new BezirkSphereInfo(sphereId1, sphereName1, sphereType1, null, null);
+//        BezirkSphereInfo sphereInfo2 = new BezirkSphereInfo(sphereId2, sphereName2, sphereType2, null, null);
+//        List<BezirkSphereInfo> createdSphereInfo = new ArrayList<>();
 //        createdSphereInfo.add(defaultInfo);
 //        createdSphereInfo.add(sphereInfo1);
 //        createdSphereInfo.add(sphereInfo2);
 //
-//        List<UhuSphereInfo> retrievedSpheres = (List<UhuSphereInfo>) sphereRegistryWrapper.getSpheres();
+//        List<BezirkSphereInfo> retrievedSpheres = (List<BezirkSphereInfo>) sphereRegistryWrapper.getSpheres();
 //        System.out.println(retrievedSpheres.size());
 //        int j = 0; // for iterating over created spheres, variable 'i' depends
 //                   // on size of stored spheres which can vary based on the mode
@@ -140,8 +140,8 @@
 //            if (sphereConfig.getMode() == Mode.DEV && i == 1) {
 //                continue;
 //            }
-//            UhuSphereInfo retrieved = retrievedSpheres.get(i);
-//            UhuSphereInfo created = createdSphereInfo.get(j++);
+//            BezirkSphereInfo retrieved = retrievedSpheres.get(i);
+//            BezirkSphereInfo created = createdSphereInfo.get(j++);
 //            assertEquals(created.getSphereID(), retrieved.getSphereID());
 //            assertEquals(created.getSphereName(), retrieved.getSphereName());
 //            assertEquals(created.getSphereType(), retrieved.getSphereType());

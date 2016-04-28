@@ -1,13 +1,13 @@
 package com.bezirk.sphere.impl;
 
-import com.bezirk.commons.UhuId;
+import com.bezirk.commons.BezirkId;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.SphereVitals;
 import com.bezirk.middleware.objects.BezirkDeviceInfo.UhuDeviceRole;
-import com.bezirk.middleware.objects.UhuSphereInfo;
-import com.bezirk.persistence.ISpherePersistence;
+import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
@@ -50,7 +50,7 @@ public class SphereRegistryWrapper {
     private static final String DEVELOPMENT_DEVICE_TYPE = "DevDeviceType";
 
     private SphereRegistry registry = null;
-    private ISpherePersistence spherePersistence = null;
+    private SpherePersistence spherePersistence = null;
     private UPADeviceInterface upaDevice;
     private IUhuSphereListener sphereListener;
     private ISphereConfig sphereConfig;
@@ -67,13 +67,13 @@ public class SphereRegistryWrapper {
     private boolean deviceIdControl = false;
 
     /**
-     * Constructor to initialize SphereRegistry object and ISpherePersistence
+     * Constructor to initialize SphereRegistry object and SpherePersistence
      * interface object
      *
      * @param registry          - SphereRegistry object. Should not be null.
-     * @param spherePersistence - ISpherePersistence interface object. Should not be null.
+     * @param spherePersistence - SpherePersistence interface object. Should not be null.
      */
-    public SphereRegistryWrapper(SphereRegistry registry, ISpherePersistence spherePersistence,
+    public SphereRegistryWrapper(SphereRegistry registry, SpherePersistence spherePersistence,
                                  UPADeviceInterface upaDevice, ICryptoInternals crypto, IUhuSphereListener sphereListener,
                                  ISphereConfig sphereConfig) {
         if (null == registry || null == spherePersistence || null == upaDevice || null == crypto
@@ -175,15 +175,15 @@ public class SphereRegistryWrapper {
     // }
 
     /**
-     * Get the UhuSphereInfo object for the sphere Id passed. If the sphere is a
+     * Get the BezirkSphereInfo object for the sphere Id passed. If the sphere is a
      * temporary sphere, then it is skipped.
      *
-     * @param sphereId whose UhuSphereInfo object is to be retrieved.
+     * @param sphereId whose BezirkSphereInfo object is to be retrieved.
      * @return : sphere Info if found else null.<br>
      * null if its a temporary sphere.
      */
-    public UhuSphereInfo getSphereInfo(String sphereId) {
-        UhuSphereInfo sphereInfo = null;
+    public BezirkSphereInfo getSphereInfo(String sphereId) {
+        BezirkSphereInfo sphereInfo = null;
 
         if (containsSphere(sphereId)) {
             Sphere sphere = getSphere(sphereId);
@@ -196,14 +196,14 @@ public class SphereRegistryWrapper {
                 ArrayList<BezirkDeviceInfo> devices = (devicesIterable != null)
                         ? (ArrayList<BezirkDeviceInfo>) devicesIterable : null;
 
-                sphereInfo = new UhuSphereInfo(sphereId, sphere.getSphereName(), sphere.getSphereType(), devices, null);
+                sphereInfo = new BezirkSphereInfo(sphereId, sphere.getSphereName(), sphere.getSphereType(), devices, null);
 
                 if (sphere instanceof OwnerSphere) {
                     sphereInfo.setThisDeviceOwnsSphere(true);
                 } else {
                     sphereInfo.setThisDeviceOwnsSphere(false);
                 }
-                logger.info("UhuSphereInfo returned\n" + sphereInfo.toString());
+                logger.info("BezirkSphereInfo returned\n" + sphereInfo.toString());
             } else {
                 logger.debug("Temporary sphere:" + sphereId + " skipped");
             }
@@ -212,20 +212,20 @@ public class SphereRegistryWrapper {
     }
 
     /**
-     * Get UhuSphereInfo objects for all the spheres stored in the registry.
+     * Get BezirkSphereInfo objects for all the spheres stored in the registry.
      *
-     * @return - List of UhuSphereInfo objects for each sphere in the registry.
+     * @return - List of BezirkSphereInfo objects for each sphere in the registry.
      * <br>
      * - null, if there are no spheres in the registry.
      */
-    public Iterable<UhuSphereInfo> getSpheres() {
-        List<UhuSphereInfo> spheres = null;
+    public Iterable<BezirkSphereInfo> getSpheres() {
+        List<BezirkSphereInfo> spheres = null;
         Set<String> sphereIds = getSphereIds();
 
         if (sphereIds != null && !sphereIds.isEmpty()) {
-            spheres = new ArrayList<UhuSphereInfo>();
+            spheres = new ArrayList<BezirkSphereInfo>();
             for (String sphereId : sphereIds) {
-                UhuSphereInfo spInfo = getSphereInfo(sphereId);
+                BezirkSphereInfo spInfo = getSphereInfo(sphereId);
                 if (spInfo != null) {
                     spheres.add(spInfo);
                 }
@@ -771,7 +771,7 @@ public class SphereRegistryWrapper {
         String defaultSphereId = getDefaultSphereId();
 
         // get the sphere info from default sphere id
-        UhuSphereInfo sphereInfo = getSphereInfo(defaultSphereId);
+        BezirkSphereInfo sphereInfo = getSphereInfo(defaultSphereId);
         List<BezirkDeviceInfo> deviceInfoList = sphereInfo.getDeviceList();
 
         if (deviceInfoList == null) {
@@ -904,7 +904,7 @@ public class SphereRegistryWrapper {
         String defaultSphereId = getDefaultSphereId();
 
         // get the sphere info from default sphere id
-        UhuSphereInfo sphereInfo = getSphereInfo(defaultSphereId);
+        BezirkSphereInfo sphereInfo = getSphereInfo(defaultSphereId);
 
         List<BezirkDeviceInfo> deviceInfoList = sphereInfo.getDeviceList();
 
@@ -1120,11 +1120,11 @@ public class SphereRegistryWrapper {
     /**
      * Checks if the sphere is owner sphere.
      *
-     * @param sphereInfo - UhuSphereInfo object whose from which the sphere ID is
+     * @param sphereInfo - BezirkSphereInfo object whose from which the sphere ID is
      *                   retrieved.
      * @return - True, if the sphere is owner sphere. False otherwise.
      */
-    public boolean isThisDeviceOwnsSphere(UhuSphereInfo sphereInfo) {
+    public boolean isThisDeviceOwnsSphere(BezirkSphereInfo sphereInfo) {
         if (containsSphere(sphereInfo.getSphereID())) {
 
             Sphere sphere = getSphere(sphereInfo.getSphereID());
@@ -1169,7 +1169,7 @@ public class SphereRegistryWrapper {
     public String getShareCode(String sphereId) {
         String qrString = null;
         if (containsSphere(sphereId)) {
-            qrString = new UhuId().getShortIdByHash(sphereId);
+            qrString = new BezirkId().getShortIdByHash(sphereId);
         } else {
             logger.error("Invalid sphereId for generation BitMatrix");
         }

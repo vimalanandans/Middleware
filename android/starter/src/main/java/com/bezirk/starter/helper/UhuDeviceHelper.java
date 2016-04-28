@@ -4,8 +4,8 @@ import android.content.Context;
 import android.telephony.TelephonyManager;
 
 import com.bezirk.commons.UhuCompManager;
-import com.bezirk.device.UhuDevice;
-import com.bezirk.device.UhuDeviceType;
+import com.bezirk.device.BezirkDevice;
+import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuPreferences;
@@ -26,28 +26,28 @@ public final class UhuDeviceHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(UhuDeviceHelper.class);
 
     /**
-     * Initialize UhuDevice with preferences
+     * Initialize BezirkDevice with preferences
      *
      * @param preferences
      * @param service
      * @return
      */
-    UhuDevice setUhuDevice(final UhuPreferences preferences, final MainService service) {
-        UhuDevice uhuDevice = initDevice(preferences, service);
+    BezirkDevice setUhuDevice(final UhuPreferences preferences, final MainService service) {
+        BezirkDevice bezirkDevice = initDevice(preferences, service);
 
-        if (BezirkValidatorUtility.isObjectNotNull(uhuDevice)) {
+        if (BezirkValidatorUtility.isObjectNotNull(bezirkDevice)) {
 
-            UhuCompManager.setUpaDevice(uhuDevice);
+            UhuCompManager.setUpaDevice(bezirkDevice);
 
             //Load Location
             Location deviceLocation = loadLocation(preferences);
-            uhuDevice.setDeviceLocation(deviceLocation);
+            bezirkDevice.setDeviceLocation(deviceLocation);
 
         } else {
             LOGGER.error(" ### unable to init device");
         }
 
-        return uhuDevice;
+        return bezirkDevice;
     }
 
     private Location loadLocation(final UhuPreferences preferences) {
@@ -59,7 +59,7 @@ public final class UhuDeviceHelper {
      * create and initialise the sphere
      * TODO: Move this code to modular place
      */
-    private UhuDevice initDevice(final UhuPreferences preferences, final MainService service) {
+    private BezirkDevice initDevice(final UhuPreferences preferences, final MainService service) {
 
         String deviceId = preferences.getString(UhuPreferences.DEVICE_ID_TAG_PREFERENCE, null);
 
@@ -93,23 +93,23 @@ public final class UhuDeviceHelper {
         if (deviceType == null) {
             LOGGER.info("device type is not initialized. setting to default");
 
-            deviceType = UhuDeviceType.UHU_DEVICE_TYPE_SMARTPHONE;
+            deviceType = BezirkDeviceType.UHU_DEVICE_TYPE_SMARTPHONE;
         }
 
 
-        UhuDevice uhuDevice = new UhuDevice();
+        BezirkDevice bezirkDevice = new BezirkDevice();
 
-        uhuDevice.initDevice(deviceId, deviceType);
+        bezirkDevice.initDevice(deviceId, deviceType);
 
         String deviceName = preferences.getString(UhuPreferences.DEVICE_NAME_TAG_PREFERENCE, null);
 
         if (BezirkValidatorUtility.checkForString(deviceName)) {
             LOGGER.info("device type is already initialized to " + deviceName);
-            uhuDevice.setDeviceName(deviceName);
+            bezirkDevice.setDeviceName(deviceName);
         } else {
             LOGGER.info("device type is not initialized. setting to default, type based name ");
         }
 
-        return uhuDevice;
+        return bezirkDevice;
     }
 }

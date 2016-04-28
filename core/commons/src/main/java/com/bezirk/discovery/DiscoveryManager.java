@@ -1,6 +1,6 @@
 package com.bezirk.discovery;
 
-import com.bezirk.comms.ICtrlMsgReceiver;
+import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * <p/>
  * this delegates the zirk / sadl discovery related classes
  */
-public class DiscoveryManager implements ICtrlMsgReceiver {
+public class DiscoveryManager implements CtrlMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(DiscoveryManager.class);
 
     private UhuSadlManager sadlManager;

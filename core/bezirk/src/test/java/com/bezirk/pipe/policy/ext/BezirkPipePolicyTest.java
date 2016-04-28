@@ -12,11 +12,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * This testcase verifies the UhuPipePolicy by setting the properties and retrieving them after deserialization.
+ * This testcase verifies the BezirkPipePolicy by setting the properties and retrieving them after deserialization.
  *
  * @author AJC6KOR
  */
-public class UhuPipePolicyTest {
+public class BezirkPipePolicyTest {
 
     @Test
     public void test() {
@@ -27,14 +27,14 @@ public class UhuPipePolicyTest {
 
         PipePolicy pipePolicy = new MockPipePolicy();
         pipePolicy.setReasonMap(reasonMap);
-        com.bezirk.pipe.policy.ext.UhuPipePolicy bezirkPipePolicy = new com.bezirk.pipe.policy.ext.UhuPipePolicy(pipePolicy);
+        BezirkPipePolicy bezirkPipePolicy = new BezirkPipePolicy(pipePolicy);
 
         String serializedUhuPipePolicy = bezirkPipePolicy.toJson();
-        com.bezirk.pipe.policy.ext.UhuPipePolicy deserializedUhuPipePolicy = com.bezirk.pipe.policy.ext.UhuPipePolicy.fromJson(serializedUhuPipePolicy, com.bezirk.pipe.policy.ext.UhuPipePolicy.class);
+        BezirkPipePolicy deserializedBezirkPipePolicy = BezirkPipePolicy.fromJson(serializedUhuPipePolicy, BezirkPipePolicy.class);
 
-        assertTrue("TestProtocol is missing in the list of protocol names in uhupipepolicy.", deserializedUhuPipePolicy.getProtocolNames().contains(protocolName));
-        assertTrue("TestProtocol is missing in the list of allowed protocol names in uhupipepolicy.", deserializedUhuPipePolicy.getAllowedProtocols().contains(protocolName));
-        assertEquals("TestProtocol is missing in the list of protocol names in uhupipepolicy.", reasonMap, deserializedUhuPipePolicy.getReasonMap());
+        assertTrue("TestProtocol is missing in the list of protocol names in uhupipepolicy.", deserializedBezirkPipePolicy.getProtocolNames().contains(protocolName));
+        assertTrue("TestProtocol is missing in the list of allowed protocol names in uhupipepolicy.", deserializedBezirkPipePolicy.getAllowedProtocols().contains(protocolName));
+        assertEquals("TestProtocol is missing in the list of protocol names in uhupipepolicy.", reasonMap, deserializedBezirkPipePolicy.getReasonMap());
 
 
         bezirkPipePolicy.authorize(protocolName);

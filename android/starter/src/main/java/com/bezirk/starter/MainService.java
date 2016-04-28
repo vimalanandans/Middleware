@@ -16,8 +16,8 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import com.bezirk.R;
-import com.bezirk.application.IUhuApp;
-import com.bezirk.comms.ICommsNotification;
+import com.bezirk.application.BezirkApp;
+import com.bezirk.comms.CommsNotification;
 import com.bezirk.logging.LogServiceActivatorDeactivator;
 import com.bezirk.pipe.android.PipeRegistryFactory;
 import com.bezirk.pipe.core.PipeApprovalException;
@@ -44,7 +44,7 @@ public class MainService extends Service implements INotificationCallback {
     private final PipeActionParser pipeActionParser = new PipeActionParser();
     private UhuServiceHelper uhuServiceHelper;
     private UhuStackHandler uhuStackHandler;
-    private ICommsNotification commsNotification;
+    private CommsNotification commsNotification;
 
     private NetworkBroadCastReceiver broadcastReceiver;
 
@@ -89,7 +89,7 @@ public class MainService extends Service implements INotificationCallback {
         //Gain permissions for multicast
 
         //initialize the commsNotification object
-        commsNotification = new CommsNotification(this);
+        commsNotification = new com.bezirk.starter.CommsNotification(this);
 
         uhuStackHandler = new UhuStackHandler(proxy, commsNotification);
 
@@ -142,7 +142,7 @@ public class MainService extends Service implements INotificationCallback {
 
         PipeRequest pipeRequest = pipeActionParser.parsePipeRequest(intent);
         PipeRequester myPipeRequester = new PipeRequester();
-        IUhuApp uhuApp = new AndroidApp(this, myPipeRequester);
+        BezirkApp uhuApp = new AndroidApp(this, myPipeRequester);
         myPipeRequester.setApp(uhuApp);
         myPipeRequester.setRegistry(PipeRegistryFactory.getPipeRegistry());
 

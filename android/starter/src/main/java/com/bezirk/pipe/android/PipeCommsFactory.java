@@ -1,6 +1,6 @@
 package com.bezirk.pipe.android;
 
-import com.bezirk.comms.UhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.pipe.core.PipeManagerImpl;
 import com.bezirk.pipe.core.PipeRegistry;
@@ -22,7 +22,7 @@ public final class PipeCommsFactory {
         LocalAndroidSender localSender = new LocalAndroidSender();
 
         // Where to write files retrieved from the pipe
-        File outputDir = new File(UhuComms.getDOWNLOAD_PATH());
+        File outputDir = new File(BezirkComms.getDOWNLOAD_PATH());
 
         // Set up and initialize pipe manager
         PipeManagerImpl pipeManagerImpl = new PipeManagerImpl();

@@ -13,7 +13,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * persisted.
  */
 @DatabaseTable(tableName = "uhuregistry")
-public class UhuRegistry {
+public class BezirkRegistry {
     @DatabaseField(id = true, columnName = DBConstants.COLUMN_0)
     private int id;
     @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = DBConstants.COLUMN_1)
@@ -24,12 +24,12 @@ public class UhuRegistry {
     private UhuProxyRegistry uhuProxyRegistry;
 
 
-    public UhuRegistry() {
+    public BezirkRegistry() {
         // TODO Auto-generated constructor stub
     }
 
-    public UhuRegistry(int id, SadlRegistry sadlRegistry,
-                       SphereRegistry sphereRegistry, UhuProxyRegistry uhuProxyRegistry) {
+    public BezirkRegistry(int id, SadlRegistry sadlRegistry,
+                          SphereRegistry sphereRegistry, UhuProxyRegistry uhuProxyRegistry) {
         super();
         this.id = id;
         this.sadlRegistry = sadlRegistry;

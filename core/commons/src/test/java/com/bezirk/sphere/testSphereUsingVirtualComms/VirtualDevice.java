@@ -5,7 +5,7 @@ package com.bezirk.sphere.testSphereUsingVirtualComms;
 
 import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezirk.persistence.ISpherePersistence;
+import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.ISphereConfig;
@@ -55,7 +55,7 @@ public class VirtualDevice {
         uhuSphere = new UhuSphere(cryptoEngine, upaDevice, sphereRegistry);
 
         //Create mock SpherePersistence object for registry
-        ISpherePersistence spherePersistence = mock(ISpherePersistence.class);
+        SpherePersistence spherePersistence = mock(SpherePersistence.class);
         when(spherePersistence.loadSphereRegistry()).thenReturn(sphereRegistry);
         Mockito.doNothing().when(spherePersistence).persistSphereRegistry();
 

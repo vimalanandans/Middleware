@@ -2,12 +2,12 @@ package com.bezirk.starter;
 
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.IUhuComms;
-import com.bezirk.device.UhuDevice;
-import com.bezirk.device.UhuDeviceType;
+import com.bezirk.device.BezirkDevice;
+import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.devices.UPADeviceForPC;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.persistence.ISpherePersistence;
+import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.pipe.core.PipeManager;
@@ -46,7 +46,7 @@ final class ServiceStarterHelper {
                              final RegistryPersistence registryPersistence, final IUhuComms comms) {
 
         // init the actual
-        final ISpherePersistence spherePersistence = registryPersistence;
+        final SpherePersistence spherePersistence = registryPersistence;
         SphereRegistry sphereRegistry = null;
         try {
             sphereRegistry = spherePersistence.loadSphereRegistry();
@@ -110,13 +110,13 @@ final class ServiceStarterHelper {
     }
 
     /**
-     * Initializes the UhuDevice and configures the location
+     * Initializes the BezirkDevice and configures the location
      *
      * @param uhuConfig
      * @return
      */
-    UhuDevice configureUhuDevice(final UhuConfig uhuConfig) {
-        final UhuDevice uhuDevice = new UhuDevice();
+    BezirkDevice configureUhuDevice(final UhuConfig uhuConfig) {
+        final BezirkDevice bezirkDevice = new BezirkDevice();
 
         String deviceIdString = null;
 
@@ -127,20 +127,20 @@ final class ServiceStarterHelper {
         }
 
         if (uhuConfig.isDisplayEnabled()) {
-            uhuDevice.initDevice(deviceIdString,
-                    UhuDeviceType.UHU_DEVICE_TYPE_PC);
+            bezirkDevice.initDevice(deviceIdString,
+                    BezirkDeviceType.UHU_DEVICE_TYPE_PC);
         } else {
-            uhuDevice.initDevice(deviceIdString,
-                    UhuDeviceType.UHU_DEVICE_TYPE_EMBEDDED_KIT);
+            bezirkDevice.initDevice(deviceIdString,
+                    BezirkDeviceType.UHU_DEVICE_TYPE_EMBEDDED_KIT);
         }
 
-        UhuCompManager.setUpaDevice(uhuDevice);
+        UhuCompManager.setUpaDevice(bezirkDevice);
 
         // Load Location
         final Location deviceLocation = loadLocation();
-        uhuDevice.setDeviceLocation(deviceLocation);
+        bezirkDevice.setDeviceLocation(deviceLocation);
 
-        return uhuDevice;
+        return bezirkDevice;
     }
 
     /**

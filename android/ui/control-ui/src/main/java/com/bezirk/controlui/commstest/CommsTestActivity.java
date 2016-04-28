@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bezirk.commons.UhuCompManager;
-import com.bezirk.comms.UhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.controlui.R;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
@@ -292,12 +292,12 @@ public class CommsTestActivity extends ActionBarActivity {
         pongMessage.pingId = msg.pingId;
 
         String sendDataString = new Gson().toJson(pongMessage);
-        byte[] sendData = sendDataString.getBytes();
-        InetAddress ipAddress;
         try {
             if (USE_UHU_UDP) {
-                DatagramSocket clientSocket = new DatagramSocket();
-                ipAddress = InetAddress.getByName(msg.deviceIp);
+                final byte[] sendData = sendDataString.getBytes();
+
+                final DatagramSocket clientSocket = new DatagramSocket();
+                InetAddress ipAddress = InetAddress.getByName(msg.deviceIp);
                 DatagramPacket sendPacket;
                 sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, unicastSendingPort);
                 clientSocket.send(sendPacket);
@@ -597,7 +597,7 @@ public class CommsTestActivity extends ActionBarActivity {
     }
 
     private void configurePorts(EditText mSendingPort, EditText mReceivingPort, EditText uSendingPort, EditText uReceivingPort, EditText timeInterval) {
-        multicastSendingPort = Integer.valueOf(mSendingPort.getText().toString().trim());
+        multicastSendingPort = Integer.parseInt(mSendingPort.getText().toString().trim());
         multicastReceivingPort = Integer.valueOf(mReceivingPort.getText().toString().trim());
         unicastSendingPort = Integer.valueOf(uSendingPort.getText().toString().trim());
         unicastReceivingPort = Integer.valueOf(uReceivingPort.getText().toString().trim());
@@ -741,7 +741,7 @@ public class CommsTestActivity extends ActionBarActivity {
             NetworkInterface intf;
             InetAddress addr = null;
             try {
-                intf = NetworkInterface.getByName(UhuComms.getINTERFACE_NAME());
+                intf = NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME());
                 addr = BezirkValidatorUtility.isObjectNotNull(intf) ? UhuNetworkUtilities.getIpForInterface(intf) : null;
                 if (addr == null) {
                     printToast("ERROR IN STARTING UNICAST LISTENER");

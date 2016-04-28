@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
@@ -79,10 +79,10 @@ public class SphereListFragment extends ListFragment {
 
         IUhuSphereAPI api = MainService.getSphereHandle();
         if (api != null) {
-            Iterator<UhuSphereInfo> sphereInfo = api.getSpheres().iterator();
+            Iterator<BezirkSphereInfo> sphereInfo = api.getSpheres().iterator();
 
             while (sphereInfo.hasNext()) {
-                UhuSphereInfo info = sphereInfo.next();
+                BezirkSphereInfo info = sphereInfo.next();
 
                 sphereList.add(new SphereListItem(info));
             }
@@ -166,9 +166,9 @@ public class SphereListFragment extends ListFragment {
         IUhuSphereAPI api = MainService.getSphereHandle();
 
         if (api != null) {
-            List<UhuSphereInfo> sphereList = (List) api.getSpheres();
+            List<BezirkSphereInfo> sphereList = (List) api.getSpheres();
             if (sphereList != null) {
-                UhuSphereInfo sphereInfo = sphereList.get(position);
+                BezirkSphereInfo sphereInfo = sphereList.get(position);
                 if (sphereInfo != null) {
                     itemID = sphereInfo.getSphereID();
                 } else {

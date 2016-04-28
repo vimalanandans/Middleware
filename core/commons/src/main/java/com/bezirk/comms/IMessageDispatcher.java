@@ -14,7 +14,7 @@ public interface IMessageDispatcher {
     /**
      * register control Message receivers
      */
-    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, ICtrlMsgReceiver receiver);
+    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
 
     // currently sadl consumes all the zirk message. hence no registration
     // if needed extend similar mechanism to control message dispatching

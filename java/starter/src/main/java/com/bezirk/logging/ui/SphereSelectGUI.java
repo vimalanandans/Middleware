@@ -6,12 +6,12 @@ package com.bezirk.logging.ui;
 
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.IUhuComms;
-import com.bezirk.comms.UhuComms;
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.comms.BezirkComms;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.remotelogging.loginterface.IUhuLogging;
 import com.bezirk.remotelogging.manager.UhuLoggingManager;
 import com.bezirk.remotelogging.messages.UhuLoggingMessage;
-import com.bezirk.remotelogging.service.UhuLoggingService;
+import com.bezirk.remotelogging.service.BezirkLoggingService;
 import com.bezirk.remotelogging.util.Util;
 
 import org.slf4j.Logger;
@@ -106,7 +106,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
             rightSphereListModel.removeAllElements();
             leftSphereListModel.addElement(Util.ANY_SPHERE);
             try {
-                final Iterator<UhuSphereInfo> sphereInfoIterator = UhuCompManager
+                final Iterator<BezirkSphereInfo> sphereInfoIterator = UhuCompManager
                         .getSphereUI().getSpheres().iterator();
                 while (sphereInfoIterator.hasNext()) {
                     leftSphereListModel.addElement(sphereInfoIterator.next()
@@ -183,7 +183,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
     /**
      * Thread that starts and stops the LoggingService.
      *
-     * @see UhuLoggingService
+     * @see BezirkLoggingService
      */
     private transient UhuLogDetailsGUI uhu;
     private transient UhuLoggingManager uhuLoggingManager;
@@ -246,7 +246,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
         try {
             uhuLoggingManager = new UhuLoggingManager();
             uhuLoggingManager.startLoggingService(
-                    UhuComms.getREMOTE_LOGGING_PORT(), this);
+                    BezirkComms.getREMOTE_LOGGING_PORT(), this);
         } catch (Exception e) {
             LOGGER.error("Error in sphere Select GUI init.", e);
         }

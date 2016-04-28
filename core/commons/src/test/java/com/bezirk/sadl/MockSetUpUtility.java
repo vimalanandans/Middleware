@@ -6,11 +6,11 @@ import com.bezirk.comms.IUhuComms;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.DBConstants;
 import com.bezirk.persistence.DatabaseConnectionForJava;
-import com.bezirk.persistence.ISadlPersistence;
-import com.bezirk.persistence.ISpherePersistence;
+import com.bezirk.persistence.SadlPersistence;
+import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.persistence.UhuRegistry;
+import com.bezirk.persistence.BezirkRegistry;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.sphere.testUtilities.SpherePropertiesMock;
@@ -43,8 +43,8 @@ public class MockSetUpUtility {
     private static final String DBVersion = DBConstants.DB_VERSION;
     private static InetAddress inetAddr;
     UhuSadlManager uhuSadlManager = null;
-    ISadlPersistence sadlPersistence;
-    ISpherePersistence spherePersistence;
+    SadlPersistence sadlPersistence;
+    SpherePersistence spherePersistence;
     UPADeviceInterface upaDevice;
     CryptoEngine cryptoEngine;
     SphereRegistry sphereRegistry;
@@ -90,10 +90,10 @@ public class MockSetUpUtility {
         getInetAddress();
 
         sphereConfig = new SpherePropertiesMock();
-        spherePersistence = (ISpherePersistence) regPersistence;
+        spherePersistence = (SpherePersistence) regPersistence;
         sphereRegistry = new SphereRegistry();
         cryptoEngine = new CryptoEngine(sphereRegistry);
-        sadlPersistence = (ISadlPersistence) regPersistence;
+        sadlPersistence = (SadlPersistence) regPersistence;
         uhuSadlManager = new UhuSadlManager(sadlPersistence);
         uhuComms = mock(IUhuComms.class);
         CommsProperties commsProperties = new CommsProperties();
@@ -116,7 +116,7 @@ public class MockSetUpUtility {
         ((RegistryPersistence) uhuSadlManager.sadlPersistence)
                 .clearPersistence();
         TableUtils.dropTable(dbConnection.getDatabaseConnection(),
-                UhuRegistry.class, true);
+                BezirkRegistry.class, true);
     }
 
     void clearSadlPersistence() {

@@ -11,8 +11,8 @@ import com.bezirk.discovery.DiscoveryLabel;
 import com.bezirk.discovery.SphereDiscoveryProcessor;
 import com.bezirk.discovery.SphereDiscoveryRecord;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
@@ -61,7 +61,7 @@ public class DiscoveryProcessor {
      * Process the discovered services for a sphere to incorporate more details
      * about the services.
      * <p/>
-     * The current implementation is limited to changing the UhuSphereInfo
+     * The current implementation is limited to changing the BezirkSphereInfo
      * object received by the {@link #getSphereInfo(String)} method. This
      * implies :
      * <p/>
@@ -80,9 +80,9 @@ public class DiscoveryProcessor {
      * @deprecated use {@link #processDiscoveredSphereInfo(Set, String)}
      */
     @Deprecated
-    public UhuSphereInfo processDiscoveryResponse(Set<BezirkDiscoveredZirk> discoveredServices, String sphereId) {
+    public BezirkSphereInfo processDiscoveryResponse(Set<BezirkDiscoveredZirk> discoveredServices, String sphereId) {
 
-        UhuSphereInfo sphereInfo = null;
+        BezirkSphereInfo sphereInfo = null;
 
         if (discoveredServices != null && !discoveredServices.isEmpty()) {
 
@@ -116,17 +116,17 @@ public class DiscoveryProcessor {
     // TODO Reduce complexity
 
     /**
-     * Process UhuSphereInfo set retrieved from running sphere discovery
+     * Process BezirkSphereInfo set retrieved from running sphere discovery
      *
-     * @param uhuSphereInfoSet - should be not null
+     * @param bezirkSphereInfoSet - should be not null
      * @param sphereId
      */
-    public void processDiscoveredSphereInfo(Set<UhuSphereInfo> uhuSphereInfoSet, String sphereId) {
+    public void processDiscoveredSphereInfo(Set<BezirkSphereInfo> bezirkSphereInfoSet, String sphereId) {
         boolean status = false;
-        for (UhuSphereInfo uhuSphereInfo : uhuSphereInfoSet) {
-            // verify sphereId of UhuSphereInfo object
-            if (uhuSphereInfo.getSphereID().equals(sphereId)) {
-                ArrayList<BezirkDeviceInfo> bezirkDeviceInfoList = uhuSphereInfo.getDeviceList();
+        for (BezirkSphereInfo bezirkSphereInfo : bezirkSphereInfoSet) {
+            // verify sphereId of BezirkSphereInfo object
+            if (bezirkSphereInfo.getSphereID().equals(sphereId)) {
+                ArrayList<BezirkDeviceInfo> bezirkDeviceInfoList = bezirkSphereInfo.getDeviceList();
 
                 // iterate through BezirkDeviceInfo
                 for (BezirkDeviceInfo bezirkDeviceInfo : bezirkDeviceInfoList) {
@@ -135,10 +135,10 @@ public class DiscoveryProcessor {
                             new DeviceInformation(bezirkDeviceInfo.getDeviceName(), bezirkDeviceInfo.getDeviceType()));
 
                     // add services
-                    if (sphereRegistryWrapper.addMemberServices(bezirkDeviceInfo, uhuSphereInfo.getSphereID(),
+                    if (sphereRegistryWrapper.addMemberServices(bezirkDeviceInfo, bezirkSphereInfo.getSphereID(),
                             bezirkDeviceInfo.getDeviceId())) {
                         for (BezirkZirkInfo service : bezirkDeviceInfo.getZirkList()) {
-                            Sphere sphere = sphereRegistryWrapper.getSphere(uhuSphereInfo.getSphereID());
+                            Sphere sphere = sphereRegistryWrapper.getSphere(bezirkSphereInfo.getSphereID());
                             sphere.addService(bezirkDeviceInfo.getDeviceId(), service.getZirkId());
                         }
                         status = true;
@@ -193,10 +193,10 @@ public class DiscoveryProcessor {
      */
     public boolean processRequest(DiscoveryRequest discoveryRequest) {
         if (validateRequest(discoveryRequest)) {
-            UhuSphereInfo uhuSphereInfo = sphereRegistryWrapper.getSphereInfo(discoveryRequest.getSphereId());
-            if (uhuSphereInfo != null && uhuSphereInfo.getDeviceList() != null) {
+            BezirkSphereInfo bezirkSphereInfo = sphereRegistryWrapper.getSphereInfo(discoveryRequest.getSphereId());
+            if (bezirkSphereInfo != null && bezirkSphereInfo.getDeviceList() != null) {
                 // send only the services belongs to this device
-                Iterator<BezirkDeviceInfo> deviceIterator = uhuSphereInfo.getDeviceList().iterator();
+                Iterator<BezirkDeviceInfo> deviceIterator = bezirkSphereInfo.getDeviceList().iterator();
                 while (deviceIterator.hasNext()) {
                     BezirkDeviceInfo localDeviceInfo = deviceIterator.next();
                     // get the local device or development device id
@@ -208,22 +208,22 @@ public class DiscoveryProcessor {
                         ArrayList<BezirkDeviceInfo> localDeviceList = new ArrayList<BezirkDeviceInfo>();
                         localDeviceList.add(localDeviceInfo);
 
-                        UhuSphereInfo discoverResponseSphereInfo = new UhuSphereInfo(uhuSphereInfo.getSphereID(),
-                                uhuSphereInfo.getSphereName(), uhuSphereInfo.getSphereType(), localDeviceList,
-                                uhuSphereInfo.getPipeList());
+                        BezirkSphereInfo discoverResponseSphereInfo = new BezirkSphereInfo(bezirkSphereInfo.getSphereID(),
+                                bezirkSphereInfo.getSphereName(), bezirkSphereInfo.getSphereType(), localDeviceList,
+                                bezirkSphereInfo.getPipeList());
 
                         SphereDiscoveryResponse response = new SphereDiscoveryResponse(discoveryRequest.getSender(),
                                 discoveryRequest.getSphereId(), discoveryRequest.getUniqueKey(),
                                 discoveryRequest.getDiscoveryId());
 
-                        response.setUhuSphereInfo(discoverResponseSphereInfo);
-                        logger.debug("Discovery Response created. UhuSphereInfo sent\n" + discoverResponseSphereInfo);
+                        response.setBezirkSphereInfo(discoverResponseSphereInfo);
+                        logger.debug("Discovery Response created. BezirkSphereInfo sent\n" + discoverResponseSphereInfo);
                         return comms.sendMessage(response);
                     }
                 }
 
             } else {
-                logger.debug("UhuSphereInfo or deviceList is null");
+                logger.debug("BezirkSphereInfo or deviceList is null");
             }
         } else {
             logger.debug("SphereDiscovery: sphere Id is invalid");

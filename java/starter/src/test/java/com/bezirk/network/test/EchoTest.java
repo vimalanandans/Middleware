@@ -1,6 +1,6 @@
 //package com.bezirk.network.test;
 //
-//import com.bezirk.comms.UhuComms;
+//import com.bezirk.comms.BezirkComms;
 //import com.bezirk.comms.UhuCommsPC;
 //import com.bezrik.network.UhuNetworkUtilities;
 //
@@ -36,9 +36,9 @@
 //		UhuCommsPC.init();
 //
 //		try {
-//			eMSocket = new MulticastSocket(UhuComms.getMULTICAST_PORT());
+//			eMSocket = new MulticastSocket(BezirkComms.getMULTICAST_PORT());
 //
-//			InetAddress addr = UhuNetworkUtilities.getIpForInterface(NetworkInterface.getByName(UhuComms.getINTERFACE_NAME()));
+//			InetAddress addr = UhuNetworkUtilities.getIpForInterface(NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME()));
 //
 //			assertNotNull("Could not compute Ip for NetworkInterface - Check Interface Name in comms.properties", addr);
 //			eMSocket.setInterface(addr);
@@ -70,8 +70,8 @@
 //		try {
 //			DatagramSocket clientSocket = new DatagramSocket();
 //
-//			ipAddress = InetAddress.getByName(UhuComms.getMULTICAST_ADDRESS());
-//			sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, UhuComms.getMULTICAST_PORT());
+//			ipAddress = InetAddress.getByName(BezirkComms.getMULTICAST_ADDRESS());
+//			sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, BezirkComms.getMULTICAST_PORT());
 //
 //			clientSocket.send(sendPacket);
 //			clientSocket.close();

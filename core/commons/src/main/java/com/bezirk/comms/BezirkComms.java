@@ -12,17 +12,17 @@ import java.util.LinkedHashMap;
 /**
  * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
  *         <p/>
- *         The UhuComms class serves a dual purpose
- *         1. It is used to intilialize several static variables such as portNumbers, addresses, queueSizes that are necessary for comms. This is done in {@link UhuComms#init()} method
+ *         The BezirkComms class serves a dual purpose
+ *         1. It is used to intilialize several static variables such as portNumbers, addresses, queueSizes that are necessary for comms. This is done in {@link BezirkComms#init()} method
  *         <p/>
  *         2. The class also deals with the reception of duplicate messages
  *         If a duplicate message is received Sadl uses this class to detect duplicacy of the message.
  *         Subsequently, Sadl acks the duplicate message and drops it (since the message has already been processed)
  */
-public final class UhuComms {
+public final class BezirkComms {
 
     // Comms properties
-    private static final Logger logger = LoggerFactory.getLogger(UhuComms.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkComms.class);
     private static final int retransmitTime = 10000;
     private static final int mapSize = 10;
     private static LinkedHashMap<String, Long> duplicateMap = new LinkedHashMap<String, Long>();
@@ -57,7 +57,7 @@ public final class UhuComms {
     private static int NO_OF_RETRIES = 0;
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
-    private UhuComms() {
+    private BezirkComms() {
     }
 
 
@@ -163,7 +163,7 @@ public final class UhuComms {
     }
 
     public static void setStreamingEnabled(boolean isStreamingEnabled) {
-        UhuComms.isStreamingEnabled = isStreamingEnabled;
+        BezirkComms.isStreamingEnabled = isStreamingEnabled;
     }
 
     public static String getDOWNLOAD_PATH() {
@@ -188,7 +188,7 @@ public final class UhuComms {
 
     public static void setRemoteLoggingServiceEnabled(
             boolean isRemoteLoggingServiceEnabled) {
-        UhuComms.isRemoteLoggingServiceEnabled = isRemoteLoggingServiceEnabled;
+        BezirkComms.isRemoteLoggingServiceEnabled = isRemoteLoggingServiceEnabled;
     }
 
     public static boolean isDEMO_SPHERE_MODE() {

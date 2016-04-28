@@ -13,8 +13,7 @@ import java.util.Properties;
 public final class UhuCommsPC {
     public static final String PROPS_FILE = "comms.properties";
     // Comms properties
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(UhuCommsPC.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuCommsPC.class);
 
     private UhuCommsPC() {
         /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
@@ -30,7 +29,7 @@ public final class UhuCommsPC {
         try {
             props = loadProperties();
         } catch (Exception e) {
-            LOGGER.error("Could not read comms properties file", e);
+            logger.error("Could not read comms properties file", e);
         }
 
         // overrides the value for these properties if it is set as a system
@@ -38,61 +37,63 @@ public final class UhuCommsPC {
         overrideStringProperty("InterfaceName", props, uhuConfig);
         overrideStringProperty("displayEnable", props, uhuConfig);
 
-        UhuComms.setINTERFACE_NAME(props.getProperty("InterfaceName"));
-        UhuComms.setMULTICAST_ADDRESS(props.getProperty("EMulticastAddress"));
-        UhuComms.setMULTICAST_PORT(Integer.valueOf(props
-                .getProperty("EMulticastPort")));
-        UhuComms.setUNICAST_PORT(Integer.valueOf(props
+        BezirkComms.setINTERFACE_NAME(props.getProperty("InterfaceName"));
+        BezirkComms.setMULTICAST_ADDRESS(props.getProperty("EMulticastAddress"));
+        BezirkComms.setMULTICAST_PORT(Integer.parseInt(props.getProperty("EMulticastPort")));
+        BezirkComms.setUNICAST_PORT(Integer.parseInt(props
                 .getProperty("EUnicastPort")));
-        UhuComms.setCTRL_MULTICAST_ADDRESS(props
+        BezirkComms.setCTRL_MULTICAST_ADDRESS(props
                 .getProperty("CMulticastAddress"));
-        UhuComms.setCTRL_MULTICAST_PORT(Integer.valueOf(props
+        BezirkComms.setCTRL_MULTICAST_PORT(Integer.valueOf(props
                 .getProperty("CMulticastPort")));
-        UhuComms.setCTRL_UNICAST_PORT(Integer.valueOf(props
+        BezirkComms.setCTRL_UNICAST_PORT(Integer.valueOf(props
                 .getProperty("CUnicastPort")));
-        UhuComms.setMAX_BUFFER_SIZE(Integer.valueOf(props
+        BezirkComms.setMAX_BUFFER_SIZE(Integer.valueOf(props
                 .getProperty("MaxBufferSize")));
 
-        UhuComms.setPOOL_SIZE(Integer.valueOf(props
+        BezirkComms.setPOOL_SIZE(Integer.valueOf(props
                 .getProperty("MessageValidatorPool")));
 
-        UhuComms.setSTARTING_PORT_FOR_STREAMING(Integer.valueOf(props
+        BezirkComms.setSTARTING_PORT_FOR_STREAMING(Integer.valueOf(props
                 .getProperty("StartPort"))); // get the starting Port
-        UhuComms.setENDING_PORT_FOR_STREAMING(Integer.valueOf(props
+        BezirkComms.setENDING_PORT_FOR_STREAMING(Integer.valueOf(props
                 .getProperty("EndPort"))); // get the last port
-        UhuComms.setMAX_SUPPORTED_STREAMS(Integer.valueOf(props
+        BezirkComms.setMAX_SUPPORTED_STREAMS(Integer.valueOf(props
                 .getProperty("NoOfActiveThreads"))); // No of active Threads
-        UhuComms.setStreamingEnabled(Boolean.valueOf(props
+        BezirkComms.setStreamingEnabled(Boolean.valueOf(props
                 .getProperty("StreamingEnabled"))); // flag to check if
         // Streaming Enabled
 
-        UhuComms.setNO_OF_RETRIES(Integer.valueOf(props
+        BezirkComms.setNO_OF_RETRIES(Integer.valueOf(props
                 .getProperty("NoOfRetries")));
 
-        if (UhuComms.isStreamingEnabled()) {
+        if (BezirkComms.isStreamingEnabled()) {
             // port factory is part of comms manager
-            // UhuComms.portFactory = new
-            // PortFactory(UhuComms.STARTING_PORT_FOR_STREAMING,
-            // UhuComms.ENDING_PORT_FOR_STREAMING); // initialize the
+            // BezirkComms.portFactory = new
+            // PortFactory(BezirkComms.STARTING_PORT_FOR_STREAMING,
+            // BezirkComms.ENDING_PORT_FOR_STREAMING); // initialize the
             // PortFactory
             if (uhuConfig == null) {
-                UhuComms.setDOWNLOAD_PATH(props.getProperty("FileSharePath"));
+                BezirkComms.setDOWNLOAD_PATH(props.getProperty("FileSharePath"));
             } else {
-                UhuComms.setDOWNLOAD_PATH(uhuConfig.getDataPath()
+                BezirkComms.setDOWNLOAD_PATH(uhuConfig.getDataPath()
                         + File.separator + "downloads");
             }
             final File createDownloadFolder = new File(
-                    UhuComms.getDOWNLOAD_PATH());
+                    BezirkComms.getDOWNLOAD_PATH());
             if (!createDownloadFolder.exists()) {
-                createDownloadFolder.mkdir();
+                if (!createDownloadFolder.mkdir()) {
+                    logger.error("Failed to create download direction: {}",
+                            createDownloadFolder.getAbsolutePath());
+                }
             }
         }
 
-        UhuComms.setDEMO_SPHERE_MODE(Boolean.valueOf(props.getProperty(
+        BezirkComms.setDEMO_SPHERE_MODE(Boolean.valueOf(props.getProperty(
                 "DemoSphereMode", "false")));
-        UhuComms.setREMOTE_LOGGING_PORT(Integer.valueOf(props
+        BezirkComms.setREMOTE_LOGGING_PORT(Integer.valueOf(props
                 .getProperty("RemoteLoggingPort")));
-        UhuComms.setRemoteLoggingServiceEnabled(Boolean.valueOf(props
+        BezirkComms.setRemoteLoggingServiceEnabled(Boolean.valueOf(props
                 .getProperty("RemoteLoggingEnabled")));
     }
 
@@ -110,7 +111,7 @@ public final class UhuCommsPC {
                                                Properties props, UhuConfig uhuConfig) {
         final String value = System.getProperty(propName);
         if (BezirkValidatorUtility.checkForString(value)) {
-            LOGGER.info("found system property: " + propName + ": " + value);
+            logger.info("found system property: " + propName + ": " + value);
             props.setProperty(propName, value);
 
             if ("displayEnable".equals(propName)) {

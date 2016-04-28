@@ -1,8 +1,8 @@
 package com.bezirk.comms.udp.listeners;
 
-import com.bezirk.comms.ICommsNotification;
+import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.IUhuCommsLegacy;
-import com.bezirk.comms.UhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.udp.validation.MessageValidators;
 import com.bezirk.control.messages.EventLedger;
 import com.bezrik.network.UhuNetworkUtilities;
@@ -31,19 +31,19 @@ public class EventUnicastListener implements Runnable {
     private final ExecutorService executor;
     private Boolean running = false;
     private IUhuCommsLegacy uhuComms = null;
-    private ICommsNotification commsErrNotificationError = null;
+    private CommsNotification commsErrNotificationError = null;
 
 
-    public EventUnicastListener(DatagramSocket unicastSocket, IUhuCommsLegacy uhuComms, ICommsNotification commsNotificationCallback) {
+    public EventUnicastListener(DatagramSocket unicastSocket, IUhuCommsLegacy uhuComms, CommsNotification commsNotificationCallback) {
         this.unicastSocket = unicastSocket;
         this.commsErrNotificationError = commsNotificationCallback;
-        executor = Executors.newFixedThreadPool(UhuComms.getPOOL_SIZE());
+        executor = Executors.newFixedThreadPool(BezirkComms.getPOOL_SIZE());
         this.uhuComms = uhuComms;
     }
 
     @Override
     public void run() {
-        byte[] receiveData = new byte[UhuComms.getMAX_BUFFER_SIZE()];
+        byte[] receiveData = new byte[BezirkComms.getMAX_BUFFER_SIZE()];
         DatagramPacket receivePacket;
         running = true;
         InetAddress myAddress = UhuNetworkUtilities.getLocalInet();

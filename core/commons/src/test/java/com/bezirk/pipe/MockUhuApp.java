@@ -1,20 +1,20 @@
 package com.bezirk.pipe;
 
-import com.bezirk.application.IUhuApp;
-import com.bezirk.pipe.core.IUhuPipeAPI;
+import com.bezirk.application.BezirkApp;
+import com.bezirk.pipe.core.BezirkPipeAPI;
 import com.bezirk.pipe.core.PipeApprovalException;
 import com.bezirk.pipe.core.PipeRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MockUhuApp implements IUhuApp {
+public class MockUhuApp implements BezirkApp {
 
     private static final Logger log = LoggerFactory.getLogger(MockUhuApp.class);
 
     private boolean approvePipeRequestCalled = false;
 
-    private IUhuPipeAPI pipeAPI = null;
+    private BezirkPipeAPI pipeAPI = null;
 
     public MockUhuApp() {
     }
@@ -41,11 +41,11 @@ public class MockUhuApp implements IUhuApp {
         return approvePipeRequestCalled;
     }
 
-    public IUhuPipeAPI getPipeAPI() {
+    public BezirkPipeAPI getPipeAPI() {
         return pipeAPI;
     }
 
-    public void setPipeAPI(IUhuPipeAPI pipeAPI) {
+    public void setPipeAPI(BezirkPipeAPI pipeAPI) {
         log.info("Setting pipeAPI: " + pipeAPI);
         this.pipeAPI = pipeAPI;
     }

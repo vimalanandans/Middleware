@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bezirk.commons.UhuCompManager;
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.pipe.core.PipeRecord;
 import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.sphere.api.IUhuSphereAPI;
@@ -75,7 +75,7 @@ public class DeviceListActivity extends FragmentActivity implements
 
         if (BezirkValidatorUtility.isObjectNotNull(api)) {
 
-            UhuSphereInfo sphereInfo = api.getSphere(sphereID);
+            BezirkSphereInfo sphereInfo = api.getSphere(sphereID);
             if (BezirkValidatorUtility.isObjectNotNull(sphereInfo)) {
                 entry = new SphereListItem(sphereInfo);
             } else {

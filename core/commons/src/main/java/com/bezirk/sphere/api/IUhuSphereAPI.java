@@ -1,9 +1,9 @@
 package com.bezirk.sphere.api;
 
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkPipeInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.middleware.objects.UhuPipeInfo;
-import com.bezirk.middleware.objects.UhuSphereInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.google.zxing.common.BitMatrix;
 
@@ -40,7 +40,7 @@ public interface IUhuSphereAPI {
      *
      * @return : Iterator sphere Info
      */
-    public Iterable<UhuSphereInfo> getSpheres();
+    public Iterable<BezirkSphereInfo> getSpheres();
 
     /**
      * Get the sphere Info by sphere Id
@@ -48,15 +48,15 @@ public interface IUhuSphereAPI {
      * @param : String sphereId
      * @return : sphere Info if found else null
      */
-    public UhuSphereInfo getSphere(String sphereId);
+    public BezirkSphereInfo getSphere(String sphereId);
 
     /**
      * Get the sphere Info by sphere Id
      *
-     * @param : UhuSphereInfo
+     * @param : BezirkSphereInfo
      * @return : true if this device owns this sphere or not
      */
-    public boolean isThisDeviceOwnsSphere(UhuSphereInfo sphereInfo);
+    public boolean isThisDeviceOwnsSphere(BezirkSphereInfo sphereInfo);
 
     /**
      * Get all the devices visible/authorized to this device uhu *
@@ -73,12 +73,12 @@ public interface IUhuSphereAPI {
      * Get all the pipes visible/authorized to this device uhu *
      *
      * @return : Iterable pipe info
-     * @deprecated : {@link UhuPipeInfo} is available inside
+     * @deprecated : {@link BezirkPipeInfo} is available inside
      * {@link BezirkZirkInfo} which can be retrieved using
      * {@link #getSpheres()}
      */
     @Deprecated
-    public Iterable<UhuPipeInfo> getPipesOnSphere(String sphereId);
+    public Iterable<BezirkPipeInfo> getPipesOnSphere(String sphereId);
 
     /**
      * Get all devices known to this Uhu apart from the one's that are a part of

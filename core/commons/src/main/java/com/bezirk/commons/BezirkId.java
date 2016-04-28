@@ -9,7 +9,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.UUID;
 
-public class UhuId {
+public class BezirkId {
 
     //final String hashCharName = "0123456789abcdef";
     SecureRandom rand = new SecureRandom();
@@ -94,6 +94,6 @@ public class UhuId {
     /** get hash id*/
     private Hashids getHashId() {
         // here the salt is class name
-        return new Hashids(UhuId.class.getName(), 7);
+        return new Hashids(BezirkId.class.getName(), 7);
     }
 }

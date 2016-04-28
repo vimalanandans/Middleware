@@ -5,7 +5,7 @@ import com.bezirk.pipe.core.PipeApprovalException;
 /**
  * Platform independent interface offered by a uhu sphere management application to uhu
  */
-public interface IUhuApp {
+public interface BezirkApp {
 
     /**
      * A request to the Uhu application (e.g. a UI) to approve a zirk's

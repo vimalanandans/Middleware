@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bezirk.commons.UhuCompManager;
-import com.bezirk.middleware.objects.UhuSphereInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
@@ -98,10 +98,10 @@ public class PipeActivity extends Activity {
         List<AbstractSphereListItem> sphereList = new ArrayList<AbstractSphereListItem>();
 
         if (api != null) {
-            Iterator<UhuSphereInfo> sphereInfo = api.getSpheres().iterator();
+            Iterator<BezirkSphereInfo> sphereInfo = api.getSpheres().iterator();
 
             while (sphereInfo.hasNext()) {
-                UhuSphereInfo info = sphereInfo.next();
+                BezirkSphereInfo info = sphereInfo.next();
 
                 sphereList.add(new SphereListItem(info));
             }
@@ -121,9 +121,9 @@ public class PipeActivity extends Activity {
 
                 if (BezirkValidatorUtility.isObjectNotNull(api)) {
 
-                    List<UhuSphereInfo> sphereInfoList = (List) api.getSpheres();
+                    List<BezirkSphereInfo> sphereInfoList = (List) api.getSpheres();
                     if (sphereInfoList != null) {
-                        UhuSphereInfo sphereInfo = sphereInfoList.get(position);
+                        BezirkSphereInfo sphereInfo = sphereInfoList.get(position);
                         sphereId = sphereInfo.getSphereID();
                         entry = new SphereListItem(sphereInfo);
                     } else {

@@ -1,8 +1,8 @@
 package com.bezirk.comms.udp.listeners;
 
 import com.bezirk.checksum.DuplicateMessageManager;
-import com.bezirk.commons.UhuVersion;
-import com.bezirk.comms.ICommsNotification;
+import com.bezirk.commons.BezirkVersion;
+import com.bezirk.comms.CommsNotification;
 import com.bezirk.control.messages.ControlLedger;
 
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public final class ControlListenerUtility {
         // This a utility class
     }
 
-    public static boolean constructMsg(ControlLedger receivedMessage, DatagramPacket receivePacket, ICommsNotification notification) throws Exception {
+    public static boolean constructMsg(ControlLedger receivedMessage, DatagramPacket receivePacket, CommsNotification notification) throws Exception {
         //Reconstruct the message SphereName, EncryptedBytes
         boolean isMsgDuplicate = false;
         final byte[] received = new byte[receivePacket.getLength()];
@@ -42,8 +42,8 @@ public final class ControlListenerUtility {
                 switch (countSeperator) {
                     case 0:
                         String tempString = new String(Arrays.copyOfRange(received, 0, i));
-                        if (!UhuVersion.UHU_VERSION.equals(tempString)) {
-                            logger.error("UPGRADE UHU. UHU VERSION MISMATCH. device version > " + UhuVersion.UHU_VERSION + " Received msg version " + tempString);
+                        if (!BezirkVersion.UHU_VERSION.equals(tempString)) {
+                            logger.error("UPGRADE UHU. UHU VERSION MISMATCH. device version > " + BezirkVersion.UHU_VERSION + " Received msg version " + tempString);
                             if (null != notification) {
                                 notification.versionMismatch(tempString);
                             }

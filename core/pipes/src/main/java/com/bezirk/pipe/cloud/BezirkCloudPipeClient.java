@@ -114,7 +114,7 @@ public class BezirkCloudPipeClient implements CloudPipeClient {
         } catch (Exception e) {
             logger.error("problem opening http connection", e);
         } finally {
-            conn.disconnect();
+            if (conn != null) conn.disconnect();
         }
 
         return response;
@@ -197,11 +197,13 @@ public class BezirkCloudPipeClient implements CloudPipeClient {
         if (logger.isInfoEnabled()) {
             //if (logger.isDebugEnabled()) {
             logger.info("Dumping header ...");
-            System.out.println("*** BEGIN header ***");
-            for (String key : httpHeader.keySet()) {
-                System.out.println("  " + key + " : " + httpHeader.get(key) + " (list items: " + httpHeader.get(key).size() + ")");
+            logger.info("*** BEGIN header ***");
+            for (Map.Entry<String, List<String>> entry : httpHeader.entrySet()) {
+                final List<String> fieldValues = entry.getValue();
+                logger.info("  {} : {} (# list items: {})", entry.getKey(), fieldValues,
+                        fieldValues.size());
             }
-            System.out.println("*** END header ***");
+            logger.info("*** END header ***");
         }
 
         // Extract selected HTTP header keys/values that we need
