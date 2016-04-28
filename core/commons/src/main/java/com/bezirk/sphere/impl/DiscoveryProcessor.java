@@ -17,7 +17,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.IUhuSphereListener;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -165,7 +165,7 @@ public class DiscoveryProcessor {
         // TODO discuss, for now hardcoded for test
         final String serviceIdStr = "______SPHERESCANNER#1";
         final BezirkZirkId serviceId = new BezirkZirkId(serviceIdStr);
-        final BezirkZirkEndPoint sender = UhuNetworkUtilities.getServiceEndPoint(serviceId);
+        final BezirkZirkEndPoint sender = BezirkNetworkUtilities.getServiceEndPoint(serviceId);
         logger.debug("Discovery initiator device : " + sender.device);
 
         // Assign discovery Id
@@ -233,7 +233,7 @@ public class DiscoveryProcessor {
     }
 
     private boolean validateRequest(DiscoveryRequest discoveryRequest) {
-        if (discoveryRequest.getSender().device.equals(UhuNetworkUtilities.getDeviceIp())) {
+        if (discoveryRequest.getSender().device.equals(BezirkNetworkUtilities.getDeviceIp())) {
             logger.debug("Msg from same device, ignoring dicovery request");
             return false;
         }

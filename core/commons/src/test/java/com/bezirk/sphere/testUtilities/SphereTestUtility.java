@@ -19,7 +19,7 @@ import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.messages.ShareRequest;
 import com.bezirk.sphere.messages.ShareResponse;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -244,7 +244,7 @@ public class SphereTestUtility {
 
     /**
      * Generates a ShareResponse object consisting of:
-     * BezirkZirkEndPoint sender object: {@link UhuNetworkUtilities.getServiceEndPoint(null)}
+     * BezirkZirkEndPoint sender object: {@link BezirkNetworkUtilities.getServiceEndPoint(null)}
      * BezirkZirkEndPoint recipient object: {@link #DEVICE_3}
      * uniqueKey: null
      * sharerSphereId: {@link #generateOwnerCombo()}
@@ -257,7 +257,7 @@ public class SphereTestUtility {
     public final ShareResponse getShareResponseObj() {
         String sharerSphereId = generateOwnerCombo();
         String shortCode = new BezirkId().getShortIdByHash(sharerSphereId);
-        BezirkZirkEndPoint sender = UhuNetworkUtilities.getServiceEndPoint(null);
+        BezirkZirkEndPoint sender = BezirkNetworkUtilities.getServiceEndPoint(null);
         BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(OWNER_SERVICE_ID_3);
         recipient.device = DEVICE_2.getDeviceName();
         String sphereExchangeData = getExchangeData();

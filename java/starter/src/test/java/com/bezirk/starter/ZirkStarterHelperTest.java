@@ -1,12 +1,12 @@
 package com.bezirk.starter;
 
+import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.IUhuComms;
-import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.RegistryPersistence;
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.util.MockSetUpUtilityForUhuPC;
 
 import org.junit.AfterClass;
@@ -51,17 +51,17 @@ public class ZirkStarterHelperTest {
     /**
      * Positive Testcase :
      * <p/>
-     * UhuSphere should be non null after successful invocation of initSphere in MainService.
+     * BezirkSphere should be non null after successful invocation of initSphere in MainService.
      */
     private void testInitSphere() {
 
         com.bezirk.starter.ServiceStarterHelper helper = new com.bezirk.starter.ServiceStarterHelper();
         UPADeviceInterface uhuDevice = mockSetUP.getUpaDevice();
         RegistryPersistence registryPersistence = mockSetUP.getRegistryPersistence();
-        IUhuComms commsLegacy = Mockito.mock(IUhuCommsLegacy.class);
-        IUhuSphereAPI uhuSphere = helper.initSphere(uhuDevice, registryPersistence, commsLegacy);
+        IUhuComms commsLegacy = Mockito.mock(BezirkCommsLegacy.class);
+        BezirkSphereAPI uhuSphere = helper.initSphere(uhuDevice, registryPersistence, commsLegacy);
 
-        assertNotNull("UhuSphere is not initialized. ", uhuSphere);
+        assertNotNull("BezirkSphere is not initialized. ", uhuSphere);
 
     }
 
@@ -70,34 +70,34 @@ public class ZirkStarterHelperTest {
      * <p/>
      * This covers two scenarios :
      * <p/>
-     * a) UhuConfig Display Enabled
+     * a) BezirkConfig Display Enabled
      * <p/>
      * In this case the uhudevice type should be set as PC upon device configuration.
      * <p/>
-     * b) UhuConfig Display disabled
+     * b) BezirkConfig Display disabled
      * <p/>
      * In this case the uhudevice type should be set as EMBEDDED_KIT upon device configuration.
      */
     private void testConfigureUhuDevice() {
         com.bezirk.starter.ServiceStarterHelper helper = new com.bezirk.starter.ServiceStarterHelper();
-        com.bezirk.starter.UhuConfig uhuConfig = new UhuConfig();
+        BezirkConfig bezirkConfig = new BezirkConfig();
 
-        BezirkDevice bezirkDevice = helper.configureUhuDevice(uhuConfig);
+        BezirkDevice bezirkDevice = helper.configureUhuDevice(bezirkConfig);
 
         assertNotNull("BezirkDevice is null after configuragtion. ", bezirkDevice);
 
         assertNotNull("BezirkDeviceType is null after configuragtion. ", bezirkDevice.getDeviceType());
 
-        assertEquals("Uhu Device Type is not configured to PC when display is enabled.", BezirkDeviceType.UHU_DEVICE_TYPE_PC, bezirkDevice.getDeviceType());
+        assertEquals("Bezirk Device Type is not configured to PC when display is enabled.", BezirkDeviceType.UHU_DEVICE_TYPE_PC, bezirkDevice.getDeviceType());
 
         assertNotNull("UhuDeviceLocation is null after configuragtion. ", bezirkDevice.getDeviceLocation());
 
 
-        uhuConfig.setDisplayEnable("false");
+        bezirkConfig.setDisplayEnable("false");
 
-        bezirkDevice = helper.configureUhuDevice(uhuConfig);
+        bezirkDevice = helper.configureUhuDevice(bezirkConfig);
 
-        assertEquals("Uhu Device Type is not configured to EMBEDDED KIT when display is disabled.", BezirkDeviceType.UHU_DEVICE_TYPE_EMBEDDED_KIT, bezirkDevice.getDeviceType());
+        assertEquals("Bezirk Device Type is not configured to EMBEDDED KIT when display is disabled.", BezirkDeviceType.UHU_DEVICE_TYPE_EMBEDDED_KIT, bezirkDevice.getDeviceType());
     }
 
 }

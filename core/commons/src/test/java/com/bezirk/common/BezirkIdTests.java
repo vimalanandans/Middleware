@@ -16,8 +16,8 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by vnd2kor on 2/25/2015.
  */
-public class UhuIdTests {
-    private static final Logger log = LoggerFactory.getLogger(UhuIdTests.class);
+public class BezirkIdTests {
+    private static final Logger log = LoggerFactory.getLogger(BezirkIdTests.class);
 
     @Test
     // test the uniqueness of the short id
@@ -64,10 +64,10 @@ public class UhuIdTests {
 
         log.info("short id for " + uniqueId + " .id1 > " + shortId1 + " id2 > " + shortId2);
 
-        String shortId3 = shortId.getShortIdByName(UhuIdTests.class.getName());
-        String shortId4 = shortId.getShortIdByName(UhuIdTests.class.getName());
+        String shortId3 = shortId.getShortIdByName(BezirkIdTests.class.getName());
+        String shortId4 = shortId.getShortIdByName(BezirkIdTests.class.getName());
 
-        log.info("short id for " + UhuIdTests.class.getName() + " > id3 > " + shortId3 + " > id4 >" + shortId4);
+        log.info("short id for " + BezirkIdTests.class.getName() + " > id3 > " + shortId3 + " > id4 >" + shortId4);
 
         assertTrue(shortId1 != shortId2);
         assertTrue(shortId3 != shortId4);

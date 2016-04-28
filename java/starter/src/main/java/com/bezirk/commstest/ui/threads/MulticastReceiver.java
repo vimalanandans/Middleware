@@ -4,7 +4,7 @@ import com.bezirk.commstest.ui.CommsTestConstants;
 import com.bezirk.commstest.ui.IUpdateResponse;
 import com.bezirk.commstest.ui.PingMessage;
 import com.bezirk.commstest.ui.PongMessage;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public class MulticastReceiver extends Thread {
             multicastSocket = new MulticastSocket(multicastReceivingPort);
             multicastSocket.joinGroup(InetAddress.getByName(ctrlMCastAddr));
             isRunning = true;
-            myAddress = UhuNetworkUtilities.getLocalInet();
+            myAddress = BezirkNetworkUtilities.getLocalInet();
             if (myAddress == null) {
                 logger.error("ERROR IN STARTING RECEIVER");
             }

@@ -1,8 +1,8 @@
 package com.bezirk.commstest.ui;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.commstest.ui.threads.UnicastReceiver;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -20,10 +20,10 @@ public final class CommsTest {
     private static final Logger logger = LoggerFactory.getLogger(CommsTest.class);
 
     private static final String CTRL_MULTICAST_ADDRESS = "224.5.5.5";
-    private final String name = UhuCompManager.getUpaDevice().getDeviceName();
+    private final String name = BezirkCompManager.getUpaDevice().getDeviceName();
     private final com.bezirk.commstest.ui.IUpdateResponse responseUI;
     private final UIStore uiStore = new UIStore();
-    private final String myAddress = UhuNetworkUtilities.getDeviceIp();
+    private final String myAddress = BezirkNetworkUtilities.getDeviceIp();
     private int multicastSendingPort = CommsTestConstants.DEFAULT_MULTICAST_SENDING_PORT;
     private UnicastReceiver uReceiver;
     private com.bezirk.commstest.ui.threads.MulticastReceiver mReceiver;

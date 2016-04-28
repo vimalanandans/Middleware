@@ -1,11 +1,11 @@
 package com.bezirk.comms.udp.listeners;
 
 import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.comms.udp.validation.MessageValidators;
 import com.bezirk.control.messages.ControlLedger;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +24,10 @@ public class ControlUnicastListener implements Runnable {
     private DatagramSocket ctrlUcastSocket;
     private Boolean running = false;
     private ExecutorService executor;
-    private IUhuCommsLegacy uhuComms = null;
+    private BezirkCommsLegacy uhuComms = null;
     private CommsNotification notification = null;
 
-    public ControlUnicastListener(DatagramSocket unicastSocket, IUhuCommsLegacy uhuComms, CommsNotification notification) {
+    public ControlUnicastListener(DatagramSocket unicastSocket, BezirkCommsLegacy uhuComms, CommsNotification notification) {
         this.ctrlUcastSocket = unicastSocket;
         this.notification = notification;
         executor = Executors.newFixedThreadPool(BezirkComms.getPOOL_SIZE());
@@ -40,7 +40,7 @@ public class ControlUnicastListener implements Runnable {
         byte[] receiveData = new byte[BezirkComms.getMAX_BUFFER_SIZE()];
         DatagramPacket receivePacket;
         running = true;
-        InetAddress myAddress = UhuNetworkUtilities.getLocalInet();
+        InetAddress myAddress = BezirkNetworkUtilities.getLocalInet();
 
         while (running) {
             if (Thread.interrupted()) {

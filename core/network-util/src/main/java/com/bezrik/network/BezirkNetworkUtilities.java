@@ -19,11 +19,11 @@ import java.util.List;
  *
  * @author Jan Zibuschka (jan.zibuschka@de.bosch.com) *
  */
-public final class UhuNetworkUtilities {
-    private static final Logger log = LoggerFactory.getLogger(UhuNetworkUtilities.class);
+public final class BezirkNetworkUtilities {
+    private static final Logger log = LoggerFactory.getLogger(BezirkNetworkUtilities.class);
     private static NetworkInterface curInterface = null;
 
-    private UhuNetworkUtilities() {
+    private BezirkNetworkUtilities() {
         //This is a utility class
     }
 

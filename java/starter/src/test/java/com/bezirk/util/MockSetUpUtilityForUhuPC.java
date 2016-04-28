@@ -1,9 +1,9 @@
 package com.bezirk.util;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.IUhuComms;
-import com.bezirk.comms.UhuCommsPC;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.devices.UPADeviceInterface;
@@ -14,14 +14,14 @@ import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.persistence.BezirkRegistry;
-import com.bezirk.sadl.UhuSadlManager;
+import com.bezirk.sadl.BezirkSadlManager;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuSphereListener;
-import com.bezirk.sphere.api.IUhuSphereRegistration;
+import com.bezirk.sphere.api.BezirkSphereRegistration;
+import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.impl.SphereProperties;
-import com.bezirk.sphere.impl.UhuSphere;
 import com.bezirk.sphere.security.CryptoEngine;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 import com.j256.ormlite.table.TableUtils;
 
 import org.mockito.Mockito;
@@ -49,7 +49,7 @@ public class MockSetUpUtilityForUhuPC {
     private static final String DBPath = "./";
     private static final String DBVersion = DBConstants.DB_VERSION;
     private static InetAddress inetAddr;
-    UhuSadlManager uhuSadlManager = null;
+    BezirkSadlManager bezirkSadlManager = null;
     SadlPersistence sadlPersistence;
     SpherePersistence spherePersistence;
     BezirkDevice upaDevice;
@@ -68,29 +68,29 @@ public class MockSetUpUtilityForUhuPC {
                 dbConnection, DBVersion);
 
         inetAddr = getInetAddress();
-        UhuCommsPC.init();
+        BezirkCommsPC.init();
 
         spherePersistence = (SpherePersistence) regPersistence;
         sphereRegistry = new SphereRegistry();
         cryptoEngine = new CryptoEngine(sphereRegistry);
         sadlPersistence = (SadlPersistence) regPersistence;
-        uhuSadlManager = new UhuSadlManager(sadlPersistence);
+        bezirkSadlManager = new BezirkSadlManager(sadlPersistence);
         sphereConfig = new SphereProperties();
         sphereConfig.init();
 
         uhuComms = new MockComms();
-        uhuComms.initComms(null, inetAddr, uhuSadlManager, null);
-        uhuSadlManager.initSadlManager(uhuComms);
+        uhuComms.initComms(null, inetAddr, bezirkSadlManager, null);
+        bezirkSadlManager.initSadlManager(uhuComms);
         uhuComms.registerNotification(Mockito.mock(CommsNotification.class));
         uhuComms.startComms();
 
         setUpUpaDevice();
-        UhuSphere uhuSphere = new UhuSphere(cryptoEngine, upaDevice, sphereRegistry);
+        BezirkSphere bezirkSphere = new BezirkSphere(cryptoEngine, upaDevice, sphereRegistry);
         IUhuSphereListener sphereListener = Mockito.mock(IUhuSphereListener.class);
-        uhuSphere.initSphere(spherePersistence, uhuComms, sphereListener, sphereConfig);
-        UhuCompManager.setSphereRegistration((IUhuSphereRegistration) uhuSphere);
-        UhuCompManager.setSphereForSadl(uhuSphere);
-        UhuCompManager.setplatformSpecificCallback(new MockCallbackZirk());
+        bezirkSphere.initSphere(spherePersistence, uhuComms, sphereListener, sphereConfig);
+        BezirkCompManager.setSphereRegistration((BezirkSphereRegistration) bezirkSphere);
+        BezirkCompManager.setSphereForSadl(bezirkSphere);
+        BezirkCompManager.setplatformSpecificCallback(new MockCallbackZirk());
     }
 
 
@@ -102,7 +102,7 @@ public class MockSetUpUtilityForUhuPC {
         String deviceIdString = InetAddress.getLocalHost().getHostName();
         upaDevice.initDevice(deviceIdString,
                 BezirkDeviceType.UHU_DEVICE_TYPE_PC);
-        UhuCompManager.setUpaDevice(upaDevice);
+        BezirkCompManager.setUpaDevice(upaDevice);
     }
 
     public NetworkInterface getInterface() {
@@ -138,7 +138,7 @@ public class MockSetUpUtilityForUhuPC {
             NetworkInterface intf = getInterface();
             if (BezirkValidatorUtility.isObjectNotNull(intf)) {
 
-                return UhuNetworkUtilities.getIpForInterface(intf);
+                return BezirkNetworkUtilities.getIpForInterface(intf);
 
             }
 
@@ -160,8 +160,8 @@ public class MockSetUpUtilityForUhuPC {
         return uhuComms;
     }
 
-    public UhuSadlManager getUhuSadlManager() throws UnknownHostException {
-        return uhuSadlManager;
+    public BezirkSadlManager getBezirkSadlManager() throws UnknownHostException {
+        return bezirkSadlManager;
     }
 
     public UPADeviceInterface getUpaDevice() {
@@ -176,10 +176,10 @@ public class MockSetUpUtilityForUhuPC {
         uhuComms.closeComms();
         regPersistence.clearPersistence();
 
-        UhuCompManager.setSphereRegistration(null);
-        UhuCompManager.setSphereForSadl(null);
-        UhuCompManager.setplatformSpecificCallback(null);
-        UhuCompManager.setUpaDevice(null);
+        BezirkCompManager.setSphereRegistration(null);
+        BezirkCompManager.setSphereForSadl(null);
+        BezirkCompManager.setplatformSpecificCallback(null);
+        BezirkCompManager.setUpaDevice(null);
 
         TableUtils.dropTable(dbConnection.getDatabaseConnection(),
                 BezirkRegistry.class, true);

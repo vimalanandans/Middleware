@@ -12,7 +12,7 @@ import java.io.OutputStream;
 /**
  * @author Rishabh Gulati
  */
-public interface IUhuSphereForSadl {
+public interface BezirkSphereForSadl {
 
     /**
      * Encrypts the serializedContent with sphereKey associated with the

@@ -1,6 +1,6 @@
 package com.bezirk.sphere.testSphereUsingVirtualComms;
 
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +59,7 @@ public class VirtualCommsManager {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
-                        inetAddr = UhuNetworkUtilities.getIpForInterface(intf);
+                        inetAddr = BezirkNetworkUtilities.getIpForInterface(intf);
                         return inetAddr;
                     }
                 }

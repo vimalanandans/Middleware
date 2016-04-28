@@ -3,7 +3,7 @@ package com.bezirk.control.messages;
 import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -74,7 +74,7 @@ public class UnicastControlMessageTest {
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
 
-                        inetAddr = UhuNetworkUtilities.getIpForInterface(intf);
+                        inetAddr = BezirkNetworkUtilities.getIpForInterface(intf);
                         return inetAddr;
                     }
 

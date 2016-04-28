@@ -18,10 +18,10 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.SelectSphereListAdapter;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
@@ -42,7 +42,7 @@ import static com.bezirk.actions.BezirkActions.KEY_PIPE_REQ_ID;
 import static com.bezirk.actions.BezirkActions.KEY_PIPE_SPHEREID;
 import static com.bezirk.actions.BezirkActions.KEY_SENDER_ZIRK_ID;
 import static com.bezirk.util.BezirkValidatorUtility.checkForString;
-import static com.bezirk.util.BezirkValidatorUtility.checkUhuServiceId;
+import static com.bezirk.util.BezirkValidatorUtility.checkBezirkZirkId;
 
 public class PipeActivity extends Activity {
     public static final String TAG = "PipeActivity";
@@ -79,7 +79,7 @@ public class PipeActivity extends Activity {
             return;
         }
 
-        final String serviceName = UhuCompManager.getSphereForSadl().getZirkName(serviceId);
+        final String serviceName = BezirkCompManager.getSphereForSadl().getZirkName(serviceId);
 
         //callingActivity = getCallingActivity().getClassName();
         LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext()
@@ -93,7 +93,7 @@ public class PipeActivity extends Activity {
                 .findViewById(R.id.sphere_list_for_adding);
 
 
-        IUhuSphereAPI api = MainService.getSphereHandle();
+        BezirkSphereAPI api = MainService.getSphereHandle();
 
         List<AbstractSphereListItem> sphereList = new ArrayList<AbstractSphereListItem>();
 
@@ -117,7 +117,7 @@ public class PipeActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                IUhuSphereAPI api = MainService.getSphereHandle();
+                BezirkSphereAPI api = MainService.getSphereHandle();
 
                 if (BezirkValidatorUtility.isObjectNotNull(api)) {
 
@@ -216,7 +216,7 @@ public class PipeActivity extends Activity {
     private BezirkZirkId serviceIdFromString(String serviceIdAsString) {
         Gson gson = new Gson();
         BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
-        if (!checkUhuServiceId(serviceId)) {
+        if (!checkBezirkZirkId(serviceId)) {
             log.error("zirkId not valid: " + serviceId);
             return null;
         }

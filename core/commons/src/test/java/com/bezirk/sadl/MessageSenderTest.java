@@ -40,7 +40,7 @@
 //	private static final Logger logger = LoggerFactory
 //			.getLogger(MessageSenderTest.class);
 //
-//	private static UhuSadlManager uhuSadlManager = null;
+//	private static BezirkSadlManager bezirkSadlManager = null;
 //
 //	private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
 //
@@ -52,7 +52,7 @@
 //
 //		logger.info("***** Setting up MessageSenderTest TestCase *****");
 //		mockUtility.setUPTestEnv();
-//		uhuSadlManager = mockUtility.uhuSadlManager;
+//		bezirkSadlManager = mockUtility.bezirkSadlManager;
 //	}
 //
 //
@@ -103,7 +103,7 @@
 //		when(unicastMessage.getIsLocal()).thenReturn(true);
 //		when(unicastMessage.getDiscriminator()).thenReturn(Discriminator.StreamRequest);
 //		ctrlLedger.setMessage(unicastMessage);
-//		isMessageSend = uhuSadlManager.sendControlMessage(ctrlLedger);
+//		isMessageSend = bezirkSadlManager.sendControlMessage(ctrlLedger);
 //
 //		assertFalse("SadlManager returned true for local stream send request",isMessageSend);
 //
@@ -112,7 +112,7 @@
 //		isMessageSend =true;
 //		when(unicastMessage.getDiscriminator()).thenReturn(Discriminator.DiscoveryRequest);
 //		ctrlLedger.setMessage(unicastMessage);
-//		isMessageSend = uhuSadlManager.sendControlMessage(ctrlLedger);
+//		isMessageSend = bezirkSadlManager.sendControlMessage(ctrlLedger);
 //		assertFalse("SadlManager returned true for local discovery send request.",isMessageSend);
 //
 //
@@ -122,7 +122,7 @@
 //		when(unicastMessage.getIsLocal()).thenReturn(false);
 //		when(unicastMessage.getDiscriminator()).thenReturn(Discriminator.StreamRequest);
 //		ctrlLedger.setMessage(unicastMessage);
-//		isMessageSend = uhuSadlManager.sendControlMessage(ctrlLedger);
+//		isMessageSend = bezirkSadlManager.sendControlMessage(ctrlLedger);
 //		assertTrue("SadlManager returned false for multicast stream send request.",isMessageSend);
 //
 //		/*Remote UnicastMessage with discoveryRequest discriminator.
@@ -130,7 +130,7 @@
 //		isMessageSend =false;
 //		when(unicastMessage.getDiscriminator()).thenReturn(Discriminator.DiscoveryRequest);
 //		ctrlLedger.setMessage(unicastMessage);
-//		isMessageSend = uhuSadlManager.sendControlMessage(ctrlLedger);
+//		isMessageSend = bezirkSadlManager.sendControlMessage(ctrlLedger);
 //		assertTrue("SadlManager returned false for multicast discovery send request.",isMessageSend);
 //	}
 //
@@ -143,7 +143,7 @@
 //		when(multicastMessage.getDiscriminator()).thenReturn(Discriminator.StreamRequest);
 //		ctrlLedger.setMessage(multicastMessage);
 //		isMessageSend = false;
-//		isMessageSend = uhuSadlManager.sendControlMessage(ctrlLedger);
+//		isMessageSend = bezirkSadlManager.sendControlMessage(ctrlLedger);
 //		assertTrue("SadlManager returned false for multicast stream send request.",isMessageSend);
 //
 //		/*
@@ -151,7 +151,7 @@
 //		 * SadlManager should return true as it is a multicast message*/
 //		isMessageSend =false;
 //		when(multicastMessage.getDiscriminator()).thenReturn(Discriminator.DiscoveryRequest);
-//		isMessageSend = uhuSadlManager.sendControlMessage(ctrlLedger);
+//		isMessageSend = bezirkSadlManager.sendControlMessage(ctrlLedger);
 //		assertTrue("SadlManager returned false for multicast discovery send request.",isMessageSend);
 //	}
 //
@@ -177,14 +177,14 @@
 //		eventLedger.setIsMulticast(true);
 //		eventLedger.setNumOfSends(0);
 //		isMessageSend=false;
-//		isMessageSend = uhuSadlManager.sendEvent(eventLedger);
+//		isMessageSend = bezirkSadlManager.sendEvent(eventLedger);
 //		assertTrue("SadlManager returned true for sendEvent with MulticastMessage having NumOfSends =0",isMessageSend );
 //
 //		/* MulticastEvent with NumOfSends =1. SadlManager sendEvent should return true. */
 //		isMessageSend=false;
 //		eventLedger.setIsLocal(false);
 //		eventLedger.setNumOfSends(1);
-//		isMessageSend = uhuSadlManager.sendEvent(eventLedger);
+//		isMessageSend = bezirkSadlManager.sendEvent(eventLedger);
 //		assertTrue("SadlManager returned fasle for sendEvent with MulticastMessage having NumOfSends =1",isMessageSend);
 //	}
 //
@@ -196,7 +196,7 @@
 //		eventLedger.setIsMulticast(false);
 //		eventLedger.setIsLocal(true);
 //		eventLedger.setNumOfSends(0);
-//		isMessageSend = uhuSadlManager.sendEvent(eventLedger);
+//		isMessageSend = bezirkSadlManager.sendEvent(eventLedger);
 //		assertFalse("SadlManager returned true for sendEvent with local Message having NumOfSends =0",isMessageSend);
 //
 //		/*Local UnicastEvent with NumOfSends =1. SadlManager sendEvent should return false as it is a local Message. */
@@ -204,7 +204,7 @@
 //		eventLedger.setIsMulticast(false);
 //		eventLedger.setIsLocal(true);
 //		eventLedger.setNumOfSends(1);
-//		isMessageSend = uhuSadlManager.sendEvent(eventLedger);
+//		isMessageSend = bezirkSadlManager.sendEvent(eventLedger);
 //		assertFalse("SadlManager returned true for sendEvent with local Message having NumOfSends =1",isMessageSend);
 //
 //		/* Remote UnicastEvent with NumOfSends =0. SadlManager sendEvent should return false as it is a local Message. */
@@ -212,7 +212,7 @@
 //		eventLedger.setIsMulticast(false);
 //		eventLedger.setIsLocal(false);
 //		eventLedger.setNumOfSends(0);
-//		isMessageSend = uhuSadlManager.sendEvent(eventLedger);
+//		isMessageSend = bezirkSadlManager.sendEvent(eventLedger);
 //		assertTrue("SadlManager returned false for sendEvent with remote Message having NumOfSends =0",isMessageSend);
 //
 //		/*Remote UnicastEvent with NumOfSends =1. SadlManager sendEvent should return false as it is a local Message. */
@@ -220,7 +220,7 @@
 //		eventLedger.setIsMulticast(false);
 //		eventLedger.setIsLocal(false);
 //		eventLedger.setNumOfSends(1);
-//		isMessageSend = uhuSadlManager.sendEvent(eventLedger);
+//		isMessageSend = bezirkSadlManager.sendEvent(eventLedger);
 //		assertTrue("SadlManager returned false for sendEvent with remote Message having NumOfSends =1",isMessageSend);
 //	}
 //

@@ -2,7 +2,7 @@ package com.bezirk.starter.helper;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,7 +13,7 @@ import java.util.UUID;
 /**
  * Created by vnd2kor on 11/18/2015.
  */
-public class mockUhuSphereForSadl implements IUhuSphereForSadl {
+public class mockUhuSphereForSadl implements BezirkSphereForSadl {
     @Override
     public byte[] encryptSphereContent(String sphereId, String serializedContent) {
         return serializedContent.getBytes();

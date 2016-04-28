@@ -7,11 +7,11 @@ import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
-import com.bezirk.sphere.impl.UhuSphere;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.sphere.testUtilities.SphereTestUtility;
 
@@ -39,7 +39,7 @@ public class AddLocalServicesToSphereWithSphereIds {
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
     private static UPADeviceInterface upaDevice;
-    private static UhuSphere uhuSphere;
+    private static BezirkSphere bezirkSphere;
     private static SphereTestUtility sphereTestUtility;
 
     /**
@@ -52,7 +52,7 @@ public class AddLocalServicesToSphereWithSphereIds {
         registry = mockSetUp.registry;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
         upaDevice = mockSetUp.upaDevice;
-        uhuSphere = mockSetUp.uhuSphere;
+        bezirkSphere = mockSetUp.bezirkSphere;
         sphereTestUtility = new SphereTestUtility(mockSetUp.sphereRegistryWrapper, mockSetUp.upaDevice);
     }
 
@@ -121,7 +121,7 @@ public class AddLocalServicesToSphereWithSphereIds {
         defaultSphere.setDeviceServices(deviceServices);
 
         //add this sphereId to the sphere set of the services
-        String testSphereId = uhuSphere.createSphere("TESTDEFAULTSPHERE", UhuSphereType.UHU_SPHERE_TYPE_OTHER);
+        String testSphereId = bezirkSphere.createSphere("TESTDEFAULTSPHERE", UhuSphereType.UHU_SPHERE_TYPE_OTHER);
 
         assertTrue(sphereRegistryWrapper.addLocalServicesToSphere(testSphereId));
     }

@@ -29,8 +29,8 @@ public class BezirkPipePolicyTest {
         pipePolicy.setReasonMap(reasonMap);
         BezirkPipePolicy bezirkPipePolicy = new BezirkPipePolicy(pipePolicy);
 
-        String serializedUhuPipePolicy = bezirkPipePolicy.toJson();
-        BezirkPipePolicy deserializedBezirkPipePolicy = BezirkPipePolicy.fromJson(serializedUhuPipePolicy, BezirkPipePolicy.class);
+        String serializedBezirkPipePolicy = bezirkPipePolicy.toJson();
+        BezirkPipePolicy deserializedBezirkPipePolicy = BezirkPipePolicy.fromJson(serializedBezirkPipePolicy, BezirkPipePolicy.class);
 
         assertTrue("TestProtocol is missing in the list of protocol names in uhupipepolicy.", deserializedBezirkPipePolicy.getProtocolNames().contains(protocolName));
         assertTrue("TestProtocol is missing in the list of allowed protocol names in uhupipepolicy.", deserializedBezirkPipePolicy.getAllowedProtocols().contains(protocolName));

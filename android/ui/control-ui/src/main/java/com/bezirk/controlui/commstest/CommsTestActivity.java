@@ -21,12 +21,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.controlui.R;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -55,8 +55,8 @@ public class CommsTestActivity extends ActionBarActivity {
 
     private static final String TAG = CommsTestActivity.class.getSimpleName();
 
-    private final String myAddress = UhuNetworkUtilities.getDeviceIp(),
-            name = UhuCompManager.getUpaDevice().getDeviceName(), ctrlMCastAddress = "224.5.5.5",
+    private final String myAddress = BezirkNetworkUtilities.getDeviceIp(),
+            name = BezirkCompManager.getUpaDevice().getDeviceName(), ctrlMCastAddress = "224.5.5.5",
             BR_COMMS_DIAG_ACTION = "ACTION_DIAG_PING", BR_COMMS_DIAG_RESPONSE = "com.bezirk.comms.diag";
 
     // till the code is going to be compleltey refactored
@@ -655,7 +655,7 @@ public class CommsTestActivity extends ActionBarActivity {
                 multicastSocket = new MulticastSocket(multicastReceivingPort);
                 multicastSocket.joinGroup(InetAddress.getByName(ctrlMCastAddr));
                 isRunning = true;
-                myAddress = UhuNetworkUtilities.getLocalInet();
+                myAddress = BezirkNetworkUtilities.getLocalInet();
                 if (myAddress == null) {
                     printToast("ERROR IN STARTING RECEIVER");
                 }
@@ -742,7 +742,7 @@ public class CommsTestActivity extends ActionBarActivity {
             InetAddress addr = null;
             try {
                 intf = NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME());
-                addr = BezirkValidatorUtility.isObjectNotNull(intf) ? UhuNetworkUtilities.getIpForInterface(intf) : null;
+                addr = BezirkValidatorUtility.isObjectNotNull(intf) ? BezirkNetworkUtilities.getIpForInterface(intf) : null;
                 if (addr == null) {
                     printToast("ERROR IN STARTING UNICAST LISTENER");
                 }

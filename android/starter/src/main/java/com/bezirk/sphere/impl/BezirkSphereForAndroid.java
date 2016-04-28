@@ -22,15 +22,15 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by GUR1PI on 8/9/2014.
  */
-public class UhuSphereForAndroid extends UhuSphere implements IUhuSphereListener, IUhuQRCode {
+public class BezirkSphereForAndroid extends BezirkSphere implements IUhuSphereListener, IUhuQRCode {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UhuSphereForAndroid.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BezirkSphereForAndroid.class);
     private final Context applicationContext;
     private final UhuPreferences preferences;
     private ISphereConfig sphereConfig;
 
-    public UhuSphereForAndroid(CryptoEngine cryptoEngine, UPADeviceInterface upaDevice,
-                               SphereRegistry sphereRegistry, Context context, UhuPreferences preferences) {
+    public BezirkSphereForAndroid(CryptoEngine cryptoEngine, UPADeviceInterface upaDevice,
+                                  SphereRegistry sphereRegistry, Context context, UhuPreferences preferences) {
         super(cryptoEngine, upaDevice, sphereRegistry);
         this.preferences = preferences;
         applicationContext = context;

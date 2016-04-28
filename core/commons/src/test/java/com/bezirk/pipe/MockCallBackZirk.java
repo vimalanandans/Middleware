@@ -8,12 +8,11 @@ import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
 
 public class MockCallBackZirk implements ZirkMessageHandler {
+    private MockBezirkZirk mockBezirkZirk = null;
 
-    private MockUhuZirk mockUhuservice = null;
-
-    public MockCallBackZirk(MockUhuZirk mockUhuservice) {
+    public MockCallBackZirk(MockBezirkZirk mockBezirkZirk) {
         super();
-        this.mockUhuservice = mockUhuservice;
+        this.mockBezirkZirk = mockBezirkZirk;
     }
 
     @Override
@@ -42,8 +41,8 @@ public class MockCallBackZirk implements ZirkMessageHandler {
     @Override
     public void onPipeApprovedMessage(PipeRequestIncomingMessage pipeMsg) {
 
-        this.mockUhuservice.setPipeGranted(true);
-        this.mockUhuservice.setPipeGrantedCalled(true);
+        this.mockBezirkZirk.setPipeGranted(true);
+        this.mockBezirkZirk.setPipeGrantedCalled(true);
 
 
     }

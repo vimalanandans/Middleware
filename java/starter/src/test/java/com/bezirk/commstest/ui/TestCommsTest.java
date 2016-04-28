@@ -1,10 +1,10 @@
 package com.bezirk.commstest.ui;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.devices.UPADeviceForPC;
 import com.bezirk.devices.UPADeviceInterface;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class TestCommsTest {
     public void init() {
         upaDevice.setDeviceLocation(null);
         upaDevice.setDeviceName("Test-PC");
-        UhuCompManager.setUpaDevice(upaDevice);
+        BezirkCompManager.setUpaDevice(upaDevice);
         getInetAddress();
         IUpdateResponseMock responseUT = new IUpdateResponseMock();
         commsTest = new CommsTest(responseUT);
@@ -62,7 +62,7 @@ public class TestCommsTest {
                     if (!inetAddress.isLoopbackAddress()
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
-                        UhuNetworkUtilities.getIpForInterface(intf);
+                        BezirkNetworkUtilities.getIpForInterface(intf);
                         BezirkComms.setINTERFACE_NAME(intf.toString());
 
                     }

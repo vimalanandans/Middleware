@@ -1,7 +1,7 @@
 apply plugin: 'java'
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Uhu Network Utilities', 'Implementation-Version': version
+        attributes 'Implementation-Title': 'Bezirk Network Utilities', 'Implementation-Version': version
     }
 }
 

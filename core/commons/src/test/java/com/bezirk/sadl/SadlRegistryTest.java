@@ -145,7 +145,7 @@ public class SadlRegistryTest {
 		 */
 
         results = sadleObj1.equals(sadlobj3);
-        assertFalse("Both Objects having different Uhu Zirk Ids", results);
+        assertFalse("Both Objects having different Bezirk Zirk Ids", results);
 
 		/*
 		 * 3. Making sadlobj3 'null' and then comparing sadlobj2 with

@@ -1,6 +1,6 @@
 package com.bezirk.discovery;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.messagehandler.DiscoveryIncomingMessage;
 import com.google.gson.Gson;
 
@@ -64,7 +64,7 @@ public class DiscoveryProcessor implements Runnable {
                 if (curTime - discRecord.getCreationTime() >= discRecord.getTimeout()) {
                     final Gson gson = new Gson();
                     DiscoveryIncomingMessage callbackMessage = new DiscoveryIncomingMessage(dlbl.getRequester().zirkId, gson.toJson(discRecord.getList()), dlbl.getDiscoveryId(), dlbl.isSphereDiscovery());
-                    UhuCompManager.getplatformSpecificCallback().onDiscoveryIncomingMessage(callbackMessage);
+                    BezirkCompManager.getplatformSpecificCallback().onDiscoveryIncomingMessage(callbackMessage);
                     DiscoveryProcessor.discovery.remove(dlbl);
                 }
             }

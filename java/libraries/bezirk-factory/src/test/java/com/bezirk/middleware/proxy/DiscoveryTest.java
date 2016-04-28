@@ -1,7 +1,7 @@
 package com.bezirk.middleware.proxy;
 
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.devices.UPADeviceForPC;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.Bezirk;
@@ -184,13 +184,13 @@ public class DiscoveryTest {
                         props = UPADeviceForPC.loadProperties();
                         String location = props.getProperty("DeviceLocation");
                         upaDeviceForPC.setDeviceLocation(new Location(location));
-                        UhuCompManager.setUpaDevice(upaDeviceForPC);
+                        BezirkCompManager.setUpaDevice(upaDeviceForPC);
                     } catch (Exception e) {
 
                         fail("Exception in setting device location. " + e.getMessage());
 
                     }
-                    UPADeviceInterface upaDevice = UhuCompManager.getUpaDevice();
+                    UPADeviceInterface upaDevice = BezirkCompManager.getUpaDevice();
                     BezirkDiscoveredZirk tempDisService = (BezirkDiscoveredZirk) iterator.next();
                     assertNotNull("Discovered Zirk is null. ", tempDisService);
                     switch (tempDisService.name) {

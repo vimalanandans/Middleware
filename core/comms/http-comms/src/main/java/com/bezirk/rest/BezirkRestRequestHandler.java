@@ -37,7 +37,7 @@ public class BezirkRestRequestHandler extends DefaultHandler {
         //initialize the comms to the one which is active
         this.bezirkCommsManager = BezirkRestCommsManager.getInstance();
 
-        if (bezirkCommsManager.getUhuComms() == null) {
+        if (bezirkCommsManager.getBezirkComms() == null) {
             //Logger.e("Comms has not yet initialized!!!");
             return;
         }

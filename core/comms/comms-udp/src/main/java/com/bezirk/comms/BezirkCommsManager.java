@@ -15,8 +15,8 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.logging.LogServiceMessageHandler;
 import com.bezirk.pipe.core.PipeManager;
-import com.bezirk.sadl.UhuSadlManager;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
+import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.BezirkStreamManager;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
@@ -39,12 +39,12 @@ import java.util.ArrayList;
  * @modified Vijet Badigannavar added IUhuVersionMismatchCallback as a member variable
  */
 
-public class BezirkCommsManager implements IUhuCommsLegacy {
+public class BezirkCommsManager implements BezirkCommsLegacy {
     private static final Logger logger = LoggerFactory.getLogger(BezirkCommsManager.class);
 
     MessageDispatcher msgDispatcher = null;
     CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver();
-    UhuSadlManager uhuSadlManager = null;
+    BezirkSadlManager bezirkSadlManager = null;
     LogServiceMessageHandler logServiceMsgHandler = null;
     private BezirkStreamManager bezirkStreamManager = null;
     /**
@@ -97,11 +97,11 @@ public class BezirkCommsManager implements IUhuCommsLegacy {
      */
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             UhuSadlManager uhuSadlManager, PipeManager pipe) {
+                             BezirkSadlManager bezirkSadlManager, PipeManager pipe) {
 
-        this.uhuSadlManager = uhuSadlManager;
+        this.bezirkSadlManager = bezirkSadlManager;
 
-        msgDispatcher = new MessageDispatcher(uhuSadlManager);
+        msgDispatcher = new MessageDispatcher(bezirkSadlManager);
 
         receiverMessageQueue = new MessageQueue();
 
@@ -156,7 +156,7 @@ public class BezirkCommsManager implements IUhuCommsLegacy {
 
         if (BezirkComms.isStreamingEnabled()) {
 
-            this.bezirkStreamManager = new BezirkStreamManager(this, msgDispatcher, uhuSadlManager);
+            this.bezirkStreamManager = new BezirkStreamManager(this, msgDispatcher, bezirkSadlManager);
             bezirkStreamManager.initStreams();
 
         }
@@ -538,10 +538,10 @@ public class BezirkCommsManager implements IUhuCommsLegacy {
     }
 
     /* (non-Javadoc)
-     * @see IUhuComms#setSphereForSadl(IUhuSphereForSadl)
+     * @see IUhuComms#setSphereForSadl(BezirkSphereForSadl)
      */
     @Override
-    public void setSphereForSadl(IUhuSphereForSadl uhuSphere) {
+    public void setSphereForSadl(BezirkSphereForSadl uhuSphere) {
         bezirkStreamManager.setSphereForSadl(uhuSphere);
     }
 

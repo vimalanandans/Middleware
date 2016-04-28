@@ -5,7 +5,7 @@ package com.bezirk.messagehandler;
 
 /**
  * Platform independent API used to give ZirkMessageHandler to the ProxyForUhu Library.
- * Specific platforms should implement this interface and should inject it in UhuCompManager.
+ * Specific platforms should implement this interface and should inject it in BezirkCompManager.
  */
 public interface ZirkMessageHandler {
     /**

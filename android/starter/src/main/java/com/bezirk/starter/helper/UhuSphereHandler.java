@@ -1,17 +1,17 @@
 package com.bezirk.starter.helper;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuDevMode;
-import com.bezirk.sphere.api.IUhuSphereAPI;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
-import com.bezirk.sphere.api.IUhuSphereRegistration;
+import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereRegistration;
 import com.bezirk.sphere.impl.SphereProperties;
-import com.bezirk.sphere.impl.UhuSphereForAndroid;
+import com.bezirk.sphere.impl.BezirkSphereForAndroid;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuPreferences;
@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 public final class UhuSphereHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UhuSphereHandler.class);
-    static IUhuSphereAPI sphereForAndroid;
+    static BezirkSphereAPI sphereForAndroid;
     static IUhuDevMode devMode;
 
     /**
@@ -58,9 +58,9 @@ public final class UhuSphereHandler {
             }
             CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
 
-            sphereForAndroid = new UhuSphereForAndroid(cryptoEngine, uhuDevice, sphereRegistry, service.getApplicationContext(), preferences);
+            sphereForAndroid = new BezirkSphereForAndroid(cryptoEngine, uhuDevice, sphereRegistry, service.getApplicationContext(), preferences);
 
-            UhuSphereForAndroid uhuSphereForAndroid = (UhuSphereForAndroid) UhuSphereHandler.sphereForAndroid;
+            BezirkSphereForAndroid uhuSphereForAndroid = (BezirkSphereForAndroid) UhuSphereHandler.sphereForAndroid;
 
             uhuSphereForAndroid.setUhuSphereListener(uhuSphereForAndroid);
 
@@ -74,12 +74,12 @@ public final class UhuSphereHandler {
 
             devMode = (IUhuDevMode) sphereForAndroid;
 
-            UhuCompManager.setSphereUI(sphereForAndroid);
-            UhuCompManager.setSphereRegistration((IUhuSphereRegistration) sphereForAndroid);
+            BezirkCompManager.setSphereUI(sphereForAndroid);
+            BezirkCompManager.setSphereRegistration((BezirkSphereRegistration) sphereForAndroid);
 
-            UhuCompManager.setSphereForSadl((IUhuSphereForSadl) sphereForAndroid);
+            BezirkCompManager.setSphereForSadl((BezirkSphereForSadl) sphereForAndroid);
             IUhuComms uhuComms = UhuStackHandler.getUhuComms();
-            uhuComms.setSphereForSadl((IUhuSphereForSadl) sphereForAndroid);
+            uhuComms.setSphereForSadl((BezirkSphereForSadl) sphereForAndroid);
         }
         return true;
     }

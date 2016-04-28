@@ -5,8 +5,8 @@ import android.net.wifi.WifiManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
+import com.bezrik.network.BezirkNetworkUtilities;
 import com.bezrik.network.IntfInetPair;
-import com.bezrik.network.UhuNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +60,7 @@ public final class UhuAndroidNetworkUtil {
         InetAddress inetAddress = null;
         try {
             networkInterface = NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME());
-            inetAddress = BezirkValidatorUtility.isObjectNotNull(networkInterface) ? UhuNetworkUtilities.getIpForInterface(networkInterface) : null;
+            inetAddress = BezirkValidatorUtility.isObjectNotNull(networkInterface) ? BezirkNetworkUtilities.getIpForInterface(networkInterface) : null;
             if (inetAddress == null) {
                 LOGGER.error("Could not resolve ip - Check InterfaceName in preferences.xml");
                 LOGGER.error("Possible interface and ip pairs are:");
@@ -77,7 +77,7 @@ public final class UhuAndroidNetworkUtil {
     }
 
     private void printInfInetPairs() {
-        for (IntfInetPair pair : UhuNetworkUtilities.getIntfInetPair()) {
+        for (IntfInetPair pair : BezirkNetworkUtilities.getIntfInetPair()) {
 
             LOGGER.error("Interface: " + pair.getIntf().getName() + " IP:" + pair.getInet().getHostAddress());
         }

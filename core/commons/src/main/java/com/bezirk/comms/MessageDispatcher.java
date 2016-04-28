@@ -1,6 +1,6 @@
 package com.bezirk.comms;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
@@ -146,7 +146,7 @@ public class MessageDispatcher implements IMessageDispatcher {
                     new BezirkLoggingMessage(
                             tcMessage.getSphereId(),
                             String.valueOf(currentDate.getTime()),
-                            UhuCompManager.getUpaDevice().getDeviceName(),
+                            BezirkCompManager.getUpaDevice().getDeviceName(),
                             Util.CONTROL_RECEIVER_VALUE,
                             tcMessage.getMessage().getUniqueKey(),
                             tcMessage.getMessage().getDiscriminator().name(),
@@ -163,7 +163,7 @@ public class MessageDispatcher implements IMessageDispatcher {
                     new BezirkLoggingMessage(
                             msg.getSphereId(),
                             String.valueOf(currentDate.getTime()),
-                            UhuCompManager.getUpaDevice().getDeviceName(),
+                            BezirkCompManager.getUpaDevice().getDeviceName(),
                             Util.CONTROL_RECEIVER_VALUE,
                             msg.getUniqueKey(),
                             msg.getDiscriminator().name(),

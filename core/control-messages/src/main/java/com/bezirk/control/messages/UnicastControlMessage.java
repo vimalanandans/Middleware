@@ -1,7 +1,7 @@
 package com.bezirk.control.messages;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 public class UnicastControlMessage extends ControlMessage {
 
@@ -32,7 +32,7 @@ public class UnicastControlMessage extends ControlMessage {
         this.recipient = recipient;
         //Check if msg is local
         // device is generic may (udp) or may not (zyre) contain the ip. check generic means
-        if (recipient.device.equals(UhuNetworkUtilities.getLocalInet().getHostAddress())) {
+        if (recipient.device.equals(BezirkNetworkUtilities.getLocalInet().getHostAddress())) {
 
             this.isLocal = true;
         }
@@ -53,7 +53,7 @@ public class UnicastControlMessage extends ControlMessage {
         super(sender, sphereId, discriminator, retransmit);
         this.recipient = recipient;
         //Check if msg is local
-        if (recipient.device.equals(UhuNetworkUtilities.getLocalInet().getHostAddress())) {
+        if (recipient.device.equals(BezirkNetworkUtilities.getLocalInet().getHostAddress())) {
             this.isLocal = true;
         }
     }

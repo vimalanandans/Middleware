@@ -68,7 +68,7 @@ public class DeviceControlActivity extends ActionBarActivity
         listData.add(new DataModel(R.drawable.ic_delete_database, "Clear the Data", "Clear the Spheres, Zirk and Pipes internal data ", false, false, false));
 
         listData.add(new DataModel(R.drawable.ic_action_diag, "Diagnosis",
-                "Diagnosis of Uhu. Communication test and zirk logs", false, false, false));
+                "Diagnosis of Bezirk. Communication test and zirk logs", false, false, false));
 
         //request current status of development mode, update the list based on the asynchronous response in Broadcast Receiver
         deviceControlActivityHelper.getStatus();

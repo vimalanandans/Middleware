@@ -4,7 +4,7 @@ import com.bezirk.comms.BezirkComms;
 import com.bezirk.commstest.ui.PongMessage;
 import com.bezirk.commstest.ui.UIStore;
 import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -40,7 +40,7 @@ public class UnicastReceiver extends Thread {
         try {
             intf = NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME());
             addr = BezirkValidatorUtility.isObjectNotNull(intf) ? null
-                    : UhuNetworkUtilities.getIpForInterface(intf);
+                    : BezirkNetworkUtilities.getIpForInterface(intf);
             if (addr == null) {
                 LOGGER.error("ERROR IN STARTING UNICAST LINSTNER");
             }

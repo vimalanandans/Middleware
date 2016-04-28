@@ -96,7 +96,7 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
             return;
         } else if (uhuWifiManager.getConnectedWifiSSID() == null || !uhuWifiManager.getConnectedWifiSSID().equals(wifiInfo.getSSID())) {
             //restart comms
-            String message = "Uhu has been reconfigured to Wifi Access Point! " + wifiInfo.getSSID();
+            String message = "Bezirk has been reconfigured to Wifi Access Point! " + wifiInfo.getSSID();
             new RestartCommsAsyncTask(context, message, stackHandler).execute();
         }
         uhuWifiManager.setConnectedWifiSSID(wifiInfo.getSSID());

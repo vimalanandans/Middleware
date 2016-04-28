@@ -1,6 +1,6 @@
 package com.bezirk.devices;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.middleware.addressing.Location;
 
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class DeviceWindow extends JFrame {
      * Create the frame.
      */
     public DeviceWindow() {
-        final com.bezirk.devices.UPADeviceInterface upaDevice = UhuCompManager.getUpaDevice();
+        final com.bezirk.devices.UPADeviceInterface upaDevice = BezirkCompManager.getUpaDevice();
 
         setTitle("Device Location Window");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -112,7 +112,7 @@ public class DeviceWindow extends JFrame {
     }
 
     public static void saveParamChanges() {
-        final com.bezirk.devices.UPADeviceInterface upaDevice = UhuCompManager.getUpaDevice();
+        final com.bezirk.devices.UPADeviceInterface upaDevice = BezirkCompManager.getUpaDevice();
         try {
             final Properties props = UPADeviceForPC.loadProperties();
 

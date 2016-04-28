@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.SphereListActivity;
@@ -109,7 +109,7 @@ public class ScanDeviceFragment extends Fragment {
                 .getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID));*/
         String sphereID = getActivity().getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
 
-        final IUhuSphereAPI api = MainService.getSphereHandle();
+        final BezirkSphereAPI api = MainService.getSphereHandle();
 
         List<AbstractSphereListItem> sphereItemList = new ArrayList<AbstractSphereListItem>();
 

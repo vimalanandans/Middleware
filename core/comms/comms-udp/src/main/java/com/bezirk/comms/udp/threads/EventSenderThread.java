@@ -4,8 +4,8 @@
 package com.bezirk.comms.udp.threads;
 
 
-import com.bezirk.commons.UhuCompManager;
-import com.bezirk.comms.IUhuCommsLegacy;
+import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.comms.udp.sender.BezirkCommsSend;
 import com.bezirk.control.messages.EventLedger;
@@ -30,11 +30,11 @@ public class EventSenderThread implements Runnable {
     private final static int timeBetweenRetransmits = 100; // time in milliseconds
     private final static int numOfRetries = 10;
     private final PipeManager pipeManager;
-    private final IUhuCommsLegacy uhuComms;
+    private final BezirkCommsLegacy uhuComms;
     MessageQueue msgQueue = null;
     private Boolean running = false;
 
-    public EventSenderThread(IUhuCommsLegacy uhuComms, MessageQueue msgQueue, PipeManager pipeManager) {
+    public EventSenderThread(BezirkCommsLegacy uhuComms, MessageQueue msgQueue, PipeManager pipeManager) {
         this.uhuComms = uhuComms;
         this.msgQueue = msgQueue;
         this.pipeManager = pipeManager;
@@ -43,7 +43,7 @@ public class EventSenderThread implements Runnable {
     @Override
     public void run() {
         running = true;
-        logger.info("Uhu Sender Thread has started \n");
+        logger.info("Bezirk Sender Thread has started \n");
 
         while (running) {
             if (Thread.currentThread().isInterrupted()) {
@@ -99,7 +99,7 @@ public class EventSenderThread implements Runnable {
     private Boolean goThroSadlAndSpheres(EventLedger eLedger) {
         //CHECK THIS ENCRYPTION CODE
         if (updateLocalMessageQueues(eLedger)) {
-            byte[] encryptMsg = UhuCompManager.getSphereForSadl().encryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getSerializedMessage());
+            byte[] encryptMsg = BezirkCompManager.getSphereForSadl().encryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getSerializedMessage());
             if (null != encryptMsg) {
                 eLedger.setEncryptedMessage(encryptMsg);
                 logger.trace("sphere passed: set encrypted message");
@@ -118,7 +118,7 @@ public class EventSenderThread implements Runnable {
         if (eMessage.getIsMulticast() && eMessage.getNumOfSends() == 0) {
             //add to the receiver queue
             //MessageQueueManager.getReceiverMessageQueue().addToQueue(eMessage);
-            uhuComms.addToQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eMessage);
+            uhuComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eMessage);
             return true;
         }
         //the message is a local unicast
@@ -126,10 +126,10 @@ public class EventSenderThread implements Runnable {
         else if (eMessage.getIsLocal()) {
             //add to the receiver queue
             //MessageQueueManager.getReceiverMessageQueue().addToQueue(eMessage);
-            uhuComms.addToQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eMessage);
+            uhuComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eMessage);
             //must remove from Sending messageQueue
             //MessageQueueManager.getSendingMessageQueue().removeFromQueue(eMessage);
-            uhuComms.removeFromQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_SEND_QUEUE, eMessage);
+            uhuComms.removeFromQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_SEND_QUEUE, eMessage);
             return false;
         }
         //must go through uHu as message is a unicast and not local

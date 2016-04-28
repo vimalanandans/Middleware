@@ -11,7 +11,7 @@ import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.sphere.testUtilities.SphereTestUtility;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -104,8 +104,8 @@ public class PrepareResponse {
 
         assertEquals(catcherSphereId, preparedResponse.getCatcherSphereId());
         assertEquals(catcherDeviceId, preparedResponse.getCatcherDeviceId());
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).device, preparedResponse.getSender().device); // To verify the BezirkZirkEndPoint obj
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).zirkId, preparedResponse.getSender().zirkId);// To verify the BezirkZirkEndPoint obj
+        assertEquals(BezirkNetworkUtilities.getServiceEndPoint(null).device, preparedResponse.getSender().device); // To verify the BezirkZirkEndPoint obj
+        assertEquals(BezirkNetworkUtilities.getServiceEndPoint(null).zirkId, preparedResponse.getSender().zirkId);// To verify the BezirkZirkEndPoint obj
     }
 
     /**

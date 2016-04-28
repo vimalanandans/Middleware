@@ -1,6 +1,6 @@
 package com.bezirk.commstest.ui;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -74,7 +74,7 @@ public class CommsTestUIHelper {
         deviceNameTxt.setBounds(new Rectangle(120, 10, 575, 25));
         deviceNameTxt.setFont(new Font(TAHOMA_FONT, 1, 12));
         deviceNameTxt.setEditable(false);
-        deviceNameTxt.setText(UhuCompManager.getUpaDevice().getDeviceName());
+        deviceNameTxt.setText(BezirkCompManager.getUpaDevice().getDeviceName());
         deviceNameTxt.setForeground(Color.GRAY);
     }
 

@@ -1,14 +1,14 @@
 package com.bezirk.comms.udp.validation;
 
-import com.bezirk.commons.UhuCompManager;
-import com.bezirk.comms.IUhuCommsLegacy;
+import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.util.BezirkValidatorUtility;
 import com.google.gson.Gson;
 
@@ -26,9 +26,9 @@ public class MessageValidators implements Runnable {
 
     private Ledger ledger;
     private String computedDevId;
-    private IUhuCommsLegacy uhuComms = null;
+    private BezirkCommsLegacy uhuComms = null;
 
-    public MessageValidators(String devId, Ledger l, IUhuCommsLegacy uhuComms) {
+    public MessageValidators(String devId, Ledger l, BezirkCommsLegacy uhuComms) {
         this.ledger = l;
         this.computedDevId = devId;
         this.uhuComms = uhuComms;
@@ -51,7 +51,7 @@ public class MessageValidators implements Runnable {
         }
 
         //Decrypt Header
-        IUhuSphereForSadl sphereIf = UhuCompManager.getSphereForSadl();
+        BezirkSphereForSadl sphereIf = BezirkCompManager.getSphereForSadl();
 
         if (sphereIf == null) {
             log.error("sphere object for the sadl is invalid. msg not decrypted");
@@ -81,7 +81,7 @@ public class MessageValidators implements Runnable {
 
         //Clarify Add received message to receiverMessagerQueue
         //MessageQueueManager.getReceiverMessageQueue().addToQueue(eLedger);
-        uhuComms.addToQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
+        uhuComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
 
     }
 
@@ -91,7 +91,7 @@ public class MessageValidators implements Runnable {
             if (!BezirkValidatorUtility.checkHeader(mHeader) || null == eLedger.getEncryptedMessage()) {
                 log.error(" Serialized Decrypted Header (Multicast) is not having all the feilds defined");
                 //MessageQueueManager.getReceiverMessageQueue().removeFromQueue(eLedger);
-                uhuComms.removeFromQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
+                uhuComms.removeFromQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
                 return false;
             }
             eLedger.setHeader(mHeader);
@@ -100,7 +100,7 @@ public class MessageValidators implements Runnable {
             if (!BezirkValidatorUtility.checkHeader(uHeader)) {
                 log.error(" Serialized Decrypted Header ( Unicast ) is not having all the feilds defined");
                 //MessageQueueManager.getReceiverMessageQueue().removeFromQueue(eLedger);
-                uhuComms.removeFromQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
+                uhuComms.removeFromQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
                 return false;
             }
             eLedger.setHeader(uHeader);
@@ -131,7 +131,7 @@ public class MessageValidators implements Runnable {
 		This module is no longer needed. because no one calls addmessage
          * and only the checking the record present in the message validator
          * - Vimal
-		success = UhuCompManager.getMsgBookKeeper().processMsg(cLedger);
+		success = BezirkCompManager.getMsgBookKeeper().processMsg(cLedger);
 		if(!success){
 			logger.debug("Dropping Duplicate Msg: "+ cLedger.getMessage().getUniqueKey());
 			return;
@@ -140,7 +140,7 @@ public class MessageValidators implements Runnable {
 
         //populate Receiver Queue
         //MessageQueueManager.getControlReceiverQueue().addToQueue(cLedger);
-        uhuComms.addToQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.CONTROL_RECEIVE_QUEUE, cLedger);
+        uhuComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.CONTROL_RECEIVE_QUEUE, cLedger);
     }
 
     // Clarify and change the Message
@@ -152,7 +152,7 @@ public class MessageValidators implements Runnable {
             log.error("sphere or encrypted message is null");
             return false;
         } else {
-            IUhuSphereForSadl sphereIf = UhuCompManager.getSphereForSadl();
+            BezirkSphereForSadl sphereIf = BezirkCompManager.getSphereForSadl();
 
             if (sphereIf == null) {
                 log.error("sphere object for the sadl is invalid. msg not decrypted");

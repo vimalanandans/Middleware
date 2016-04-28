@@ -7,12 +7,12 @@ import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.control.messages.streaming.StreamResponse;
 import com.bezirk.sadl.ISadlEventReceiver;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.store.StreamStore;
 import com.bezirk.streaming.threads.StreamReceivingThread;
 import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ final class BezirkStreamHandler {
      */
     boolean handleStreamRequest(final StreamRequest streamRequest, final IUhuComms comms,
                                 final IPortFactory portFactory, final StreamStore streamStore,
-                                final ISadlEventReceiver sadlReceiver, final IUhuSphereForSadl sphereForSadl) {
+                                final ISadlEventReceiver sadlReceiver, final BezirkSphereForSadl sphereForSadl) {
 
         // Check if the request is duplicate
         StreamRecord.StreamingStatus status = StreamRecord.StreamingStatus.ADDRESSED;
@@ -60,7 +60,7 @@ final class BezirkStreamHandler {
                 + streamRequest.getRecipient().zirkId);
 
         //send device Ip
-        String streamIp = UhuNetworkUtilities.getLocalInet().getHostAddress();
+        String streamIp = BezirkNetworkUtilities.getLocalInet().getHostAddress();
 
         StreamResponse streamResponse = new StreamResponse(
                 streamRequest.getRecipient(), streamRequest.getSender(),

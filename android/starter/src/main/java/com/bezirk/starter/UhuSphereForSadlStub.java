@@ -2,7 +2,7 @@ package com.bezirk.starter;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ import java.util.Set;
  * This is the stub code for making sphere opaque or flat without encryption
  * This is the Quick fix. in actual this suppose to be a package altered via build
  */
-public class UhuSphereForSadlStub implements IUhuSphereForSadl {
+public class UhuSphereForSadlStub implements BezirkSphereForSadl {
     private static final Logger log = LoggerFactory.getLogger(UhuSphereForSadlStub.class);
 
     @Override

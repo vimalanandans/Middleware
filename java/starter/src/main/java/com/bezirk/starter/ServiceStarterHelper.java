@@ -1,6 +1,6 @@
 package com.bezirk.starter;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.device.BezirkDeviceType;
@@ -12,9 +12,10 @@ import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.IUhuSphereAPI;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
-import com.bezirk.sphere.api.IUhuSphereRegistration;
+import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereRegistration;
+import com.bezirk.sphere.impl.BezirkSphereForPC;
 import com.bezirk.sphere.security.CryptoEngine;
 
 import org.slf4j.Logger;
@@ -40,8 +41,8 @@ final class ServiceStarterHelper {
      * @param registryPersistence
      * @param comms
      */
-    IUhuSphereAPI initSphere(final UPADeviceInterface uhuDevice,
-                             final RegistryPersistence registryPersistence, final IUhuComms comms) {
+    BezirkSphereAPI initSphere(final UPADeviceInterface uhuDevice,
+                               final RegistryPersistence registryPersistence, final IUhuComms comms) {
 
         // init the actual
         final SpherePersistence spherePersistence = registryPersistence;
@@ -53,25 +54,25 @@ final class ServiceStarterHelper {
         }
 
         final CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
-        IUhuSphereAPI sphereForPC = new com.bezirk.sphere.impl.UhuSphereForPC(cryptoEngine, uhuDevice,
+        BezirkSphereAPI sphereForPC = new BezirkSphereForPC(cryptoEngine, uhuDevice,
                 sphereRegistry);
 
         // UhuSphereForAndroid implements the listener, hence set the
         // listener object as same.
-        final com.bezirk.sphere.impl.UhuSphereForPC uhuSphereForPC = (com.bezirk.sphere.impl.UhuSphereForPC) sphereForPC;
+        final BezirkSphereForPC uhuSphereForPC = (BezirkSphereForPC) sphereForPC;
         uhuSphereForPC.setUhuSphereListener(uhuSphereForPC);
         ISphereConfig sphereConfig = new com.bezirk.sphere.impl.SphereProperties();
         sphereConfig.init();
         uhuSphereForPC.initSphere(registryPersistence, comms, sphereConfig);
 
-        UhuCompManager.setSphereUI(sphereForPC);
-        UhuCompManager
-                .setSphereRegistration((IUhuSphereRegistration) sphereForPC);
+        BezirkCompManager.setSphereUI(sphereForPC);
+        BezirkCompManager
+                .setSphereRegistration((BezirkSphereRegistration) sphereForPC);
 
         com.bezirk.sphere.SphereManager.setUhuQRCode((com.bezirk.sphere.impl.IUhuQRCode) sphereForPC);
 
-        final IUhuSphereForSadl sphereForSadl = (IUhuSphereForSadl) sphereForPC;
-        UhuCompManager.setSphereForSadl(sphereForSadl);
+        final BezirkSphereForSadl sphereForSadl = (BezirkSphereForSadl) sphereForPC;
+        BezirkCompManager.setSphereForSadl(sphereForSadl);
 
         try {
 
@@ -81,7 +82,7 @@ final class ServiceStarterHelper {
         } catch (Exception e) {
 
             logger.error(
-                    "Comms should also implement IUhuCommsLegacy to set sphere for sadl.",
+                    "Comms should also implement BezirkCommsLegacy to set sphere for sadl.",
                     e);
             sphereForPC = null;
         }
@@ -110,10 +111,10 @@ final class ServiceStarterHelper {
     /**
      * Initializes the BezirkDevice and configures the location
      *
-     * @param uhuConfig
+     * @param bezirkConfig
      * @return
      */
-    BezirkDevice configureUhuDevice(final UhuConfig uhuConfig) {
+    BezirkDevice configureUhuDevice(final BezirkConfig bezirkConfig) {
         final BezirkDevice bezirkDevice = new BezirkDevice();
 
         String deviceIdString = null;
@@ -124,7 +125,7 @@ final class ServiceStarterHelper {
             logger.error("Exception in fetching hostname.", e);
         }
 
-        if (uhuConfig.isDisplayEnabled()) {
+        if (bezirkConfig.isDisplayEnabled()) {
             bezirkDevice.initDevice(deviceIdString,
                     BezirkDeviceType.UHU_DEVICE_TYPE_PC);
         } else {
@@ -132,7 +133,7 @@ final class ServiceStarterHelper {
                     BezirkDeviceType.UHU_DEVICE_TYPE_EMBEDDED_KIT);
         }
 
-        UhuCompManager.setUpaDevice(bezirkDevice);
+        BezirkCompManager.setUpaDevice(bezirkDevice);
 
         // Load Location
         final Location deviceLocation = loadLocation();

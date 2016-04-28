@@ -1,7 +1,7 @@
 package com.bezirk.pipe.core;
 
 import com.bezirk.application.BezirkApp;
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.messagehandler.PipeRequestIncomingMessage;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
@@ -152,7 +152,7 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
         //INVOKE CALL BACK
         final PipeRequestIncomingMessage pipeMsg = new PipeRequestIncomingMessage(pipe,
                 pipeRequestId, allowedIn, allowedOut, (BezirkZirkId) request.getRequestingService());
-        UhuCompManager.getplatformSpecificCallback().onPipeApprovedMessage(pipeMsg);
+        BezirkCompManager.getplatformSpecificCallback().onPipeApprovedMessage(pipeMsg);
         log.info("pipe approved: " + approved);
 
         // Clear request

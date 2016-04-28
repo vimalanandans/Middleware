@@ -1,6 +1,6 @@
 package com.bezirk.middleware.proxy;
 
-import com.bezirk.starter.UhuConfig;
+import com.bezirk.starter.BezirkConfig;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -63,17 +63,17 @@ public class SpringRunner {
         logger.info("Initializing Spring context.");
         springContext = new ClassPathXmlApplicationContext(configFile);
 
-        UhuConfig uhuConfig = (UhuConfig) springContext.getBean("uhuSettings");
+        BezirkConfig bezirkConfig = (BezirkConfig) springContext.getBean("uhuSettings");
 
-        if (uhuConfig == null) {
+        if (bezirkConfig == null) {
             logger.error("uhuSettings was not found");
             return;
         }
 
         logger.info("Starting Bezirk...");
-        String uhuDataPath = uhuConfig.getDataPath();
-        uhuConfig.setDataPath(appHome + File.separator + uhuDataPath);
-        Proxy api = (Proxy) Factory.getInstance(uhuConfig);
+        String uhuDataPath = bezirkConfig.getDataPath();
+        bezirkConfig.setDataPath(appHome + File.separator + uhuDataPath);
+        Proxy api = (Proxy) Factory.getInstance(bezirkConfig);
 
         // Get all ServiceRunners specified in the app context
         Map<String, com.bezirk.middleware.proxy.IServiceRunner> services = springContext.getBeansOfType(com.bezirk.middleware.proxy.IServiceRunner.class);
@@ -117,7 +117,7 @@ public class SpringRunner {
             }
         }
 
-        logger.info("Uhu has started with these services:" + startedServices);
+        logger.info("Bezirk has started with these services:" + startedServices);
         if (!failedServices.isEmpty()) {
             logger.warn("These services could not be started:" + failedServices);
         }
@@ -149,7 +149,7 @@ public class SpringRunner {
             File userSpecifiedPath = new File(service.getDataPath());
             if (userSpecifiedPath.isAbsolute()) {
                 dataPath += DATA_DIR_RELATIVE;
-                logger.warn("Uhu services should not specify an absolute dataPath. Setting dataPath to: "
+                logger.warn("Bezirk services should not specify an absolute dataPath. Setting dataPath to: "
                         + dataPath);
             }
             // Set the user-specified path relative to appHome

@@ -5,7 +5,7 @@ import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
-import com.bezirk.sadl.UhuSadlManager;
+import com.bezirk.sadl.BezirkSadlManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +18,13 @@ import org.slf4j.LoggerFactory;
 public class DiscoveryManager implements CtrlMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(DiscoveryManager.class);
 
-    private UhuSadlManager sadlManager;
+    private BezirkSadlManager sadlManager;
 
     private IUhuComms comms;
 
     private Thread discThread;
 
-    public DiscoveryManager(UhuSadlManager sadlManager, IUhuComms comms) {
+    public DiscoveryManager(BezirkSadlManager sadlManager, IUhuComms comms) {
         this.sadlManager = sadlManager;
         this.comms = comms;
     }

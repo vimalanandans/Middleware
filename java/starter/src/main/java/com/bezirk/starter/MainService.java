@@ -1,7 +1,8 @@
 package com.bezirk.starter;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.IUhuComms;
@@ -14,10 +15,11 @@ import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.BezirkProxyPersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.pipe.core.PipeManager;
-import com.bezirk.sadl.UhuSadlManager;
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.impl.BezirkSphereForPC;
 import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,11 +44,11 @@ public class MainService {
     private final com.bezirk.proxy.pc.ProxyforServices proxyforServices;
     private final UhuPCNetworkUtil uhuPcNetworkUtil = new UhuPCNetworkUtil();
     private final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
-    IUhuSphereAPI sphereForPC;
+    BezirkSphereAPI sphereForPC;
     /**
      * List of configurations
      */
-    UhuConfig uhuConfig;
+    BezirkConfig bezirkConfig;
     // Booleans to start and stop stack gracefully
     private Boolean startedStack = false;
     private Boolean stoppedStack = false;
@@ -80,12 +82,12 @@ public class MainService {
         public void versionMismatch(final String misMatchVersionId) {
             logger.info("mismatch version " + misMatchVersionId);
             if ((++errorCallbackCount) % MAX_ERROR_REPEAT_COUNT == 0) {
-                if (uhuConfig.isDisplayEnabled()) {
+                if (bezirkConfig.isDisplayEnabled()) {
                     if (frame != null) {
                         frame.showWarningIcon(true, misMatchVersionId);
                     }
                 } else {
-                    logger.error("Mismatch in Uhu Version, Check the versions of all the devices");
+                    logger.error("Mismatch in Bezirk Version, Check the versions of all the devices");
                 }
             }
         }
@@ -108,19 +110,19 @@ public class MainService {
      * Configure proxy and uhuconfig for main zirk
      *
      * @param proxyforServices
-     * @param uhuConfigRef
+     * @param bezirkConfigRef
      */
     public MainService(final com.bezirk.proxy.pc.ProxyforServices proxyforServices,
-                       final UhuConfig uhuConfigRef) {
+                       final BezirkConfig bezirkConfigRef) {
 
         this.proxyforServices = proxyforServices;
 
-        uhuConfig = uhuConfigRef;
+        bezirkConfig = bezirkConfigRef;
 
         /** get the config */
-        if (uhuConfig == null) {
+        if (bezirkConfig == null) {
             logger.debug("unable to find the uhu config. using default values. check uhu.xml");
-            this.uhuConfig = new UhuConfig();
+            this.bezirkConfig = new BezirkConfig();
         }
 
     }
@@ -178,19 +180,19 @@ public class MainService {
         /**************************************************
          * Step1 : Set Platform specific call back        *
          **************************************************/
-        if (null == UhuCompManager.getplatformSpecificCallback()
+        if (null == BezirkCompManager.getplatformSpecificCallback()
                 && uhuPcCallback != null) {
-            UhuCompManager.setplatformSpecificCallback(uhuPcCallback);
+            BezirkCompManager.setplatformSpecificCallback(uhuPcCallback);
         }
 
         /**************************************************
-         * Step2 : Configure UhuCommsPC                   *
+         * Step2 : Configure BezirkCommsPC                   *
          **************************************************/
         try {
             // Initialize Comms, which reads properties including
             // InterfaceName from config file. Any system properties will
             // override those written in the config file
-            com.bezirk.comms.UhuCommsPC.init(uhuConfig);
+            BezirkCommsPC.init(bezirkConfig);
 
         } catch (Exception e) {
             serviceStarterHelper.fail("Problem initializing BezirkComms", e);
@@ -202,7 +204,7 @@ public class MainService {
 
         NetworkInterface intf = null;
         try {
-            intf = uhuPcNetworkUtil.fetchNetworkInterface(this.uhuConfig);
+            intf = uhuPcNetworkUtil.fetchNetworkInterface(this.bezirkConfig);
         } catch (Exception e) {
             serviceStarterHelper.fail("Error in fetching interface name", e);
         }
@@ -213,19 +215,19 @@ public class MainService {
         initializeRegistryPersistence();
 
         /**************************************************
-         * Step5 : Create UhuSadlManager                  *
+         * Step5 : Create BezirkSadlManager                  *
          **************************************************/
-        final UhuSadlManager uhuSadlManager = new UhuSadlManager(
+        final BezirkSadlManager bezirkSadlManager = new BezirkSadlManager(
                 registryPersistence);
 
         // Inject to proxyForServices
-        proxyforServices.setSadlRegistry(uhuSadlManager);
+        proxyforServices.setSadlRegistry(bezirkSadlManager);
 
         /**************************************************
          * Step6 :Initialize the comms.                   *
          **************************************************/
         final boolean isCommsInitialized = initComms(uhuPcCallback, intf,
-                uhuSadlManager);
+                bezirkSadlManager);
         if (!isCommsInitialized) {
             serviceStarterHelper.fail("Problem initializing Comms.", null);
         }
@@ -233,7 +235,7 @@ public class MainService {
          * Step7 :Create and configure the BezirkDevice      *
          **************************************************/
         final BezirkDevice bezirkDevice = serviceStarterHelper
-                .configureUhuDevice(this.uhuConfig);
+                .configureUhuDevice(this.bezirkConfig);
 
         /**************************************************
          * Step8 :Initialize sphere                       *
@@ -266,7 +268,7 @@ public class MainService {
     }
 
     private void displayQRCode(final BezirkDevice bezirkDevice) {
-        if (uhuConfig.isDisplayEnabled()) {
+        if (bezirkConfig.isDisplayEnabled()) {
             // commented to test in beaglebone. uncomment it for PC
             frame = new com.bezirk.sphere.ui.SphereManagementGUI(sphereForPC);
             frame.setVisible(true);
@@ -285,7 +287,7 @@ public class MainService {
         } else {
             // save the qr code
             // if display is not stored then save the QR code
-            ((com.bezirk.sphere.impl.UhuSphereForPC) sphereForPC).saveQRCode(uhuConfig.getDataPath(),
+            ((BezirkSphereForPC) sphereForPC).saveQRCode(bezirkConfig.getDataPath(),
                     bezirkDevice.getDeviceName());
         }
     }
@@ -308,25 +310,25 @@ public class MainService {
     /**
      * @return registryPersistence
      */
-    public BezirkProxyPersistence getUhuProxyPersistence() {
+    public BezirkProxyPersistence getBezirkProxyPersistence() {
         return registryPersistence;
     }
 
     private void initializeRegistryPersistence() {
         final DatabaseConnection dbConnection = new com.bezirk.persistence.DatabaseConnectionForJava(
-                uhuConfig.getDataPath());
+                bezirkConfig.getDataPath());
         try {
             registryPersistence = new RegistryPersistence(dbConnection,
                     DB_VERSION);
         } catch (Exception e1) {
             logger.error("Error in loading Registry Persistence from:"
-                    + uhuConfig.getDataPath(), e1);
+                    + bezirkConfig.getDataPath(), e1);
             System.exit(0);
         }
     }
 
     private boolean initComms(final ZirkMessageHandler uhuPcCallback,
-                              final NetworkInterface intf, final UhuSadlManager uhuSadlManager) {
+                              final NetworkInterface intf, final BezirkSadlManager bezirkSadlManager) {
 
         CommsFactory commsFactory = new CommsFactory();
 
@@ -360,13 +362,13 @@ public class MainService {
         final PipeManager pipeManager = serviceStarterHelper
                 .createPipeManager();
 
-        final InetAddress addr = UhuNetworkUtilities.getIpForInterface(intf);
+        final InetAddress addr = BezirkNetworkUtilities.getIpForInterface(intf);
 
         /*
          * CommsProperties is not used by comms manager. Properties are handled
-         * by UhuCommsPC
+         * by BezirkCommsPC
          */
-        comms.initComms(null, addr, uhuSadlManager, pipeManager);
+        comms.initComms(null, addr, bezirkSadlManager, pipeManager);
         comms.startComms();
 
         // the comms manager for the proxy
@@ -380,7 +382,7 @@ public class MainService {
          	*/
 
         // init the comms manager for sadl
-        uhuSadlManager.initSadlManager(comms);
+        bezirkSadlManager.initSadlManager(comms);
 
         return true;
     }

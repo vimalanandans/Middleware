@@ -2,7 +2,7 @@ package com.bezirk.pipe.android;
 
 import android.app.Service;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.control.messages.pipes.PipeHeader;
 import com.bezirk.control.messages.pipes.PipeMulticastHeader;
 import com.bezirk.control.messages.pipes.PipeUnicastHeader;
@@ -71,7 +71,7 @@ public class LocalAndroidSender implements LocalUhuSender {
         // TODO: how to create a stream id??
         short streamid = Short.MAX_VALUE;
 
-        ZirkMessageHandler callback = UhuCompManager.getplatformSpecificCallback();
+        ZirkMessageHandler callback = BezirkCompManager.getplatformSpecificCallback();
         StreamIncomingMessage msg = new StreamIncomingMessage(
                 serviceId, pipeHeader.getTopic(), serializedStream,
                 new File(path), streamid, senderSEP);

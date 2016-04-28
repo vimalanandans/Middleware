@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Use it only with in udp communication
  */
 @Deprecated // this should not be used outside comms
-public interface IUhuCommsLegacy extends IUhuComms {
+public interface BezirkCommsLegacy extends IUhuComms {
 
     /**
      * set the receiver event and control queues (message IN from external world )

@@ -72,7 +72,7 @@ public class EncryptDecryptStream {
         ByteArrayInputStream contentInStream = new ByteArrayInputStream(content.getBytes());
         ByteArrayOutputStream contentOutStream = new ByteArrayOutputStream();
         cryptoEngine.decryptSphereContent(contentInStream, contentOutStream, "Test");
-        assertEquals("Uhu decrypted contentStream with invalid spehreId", 0, contentOutStream.size());
+        assertEquals("Bezirk decrypted contentStream with invalid spehreId", 0, contentOutStream.size());
     }
 
     @Test
@@ -80,7 +80,7 @@ public class EncryptDecryptStream {
         ByteArrayInputStream contentInStream = new ByteArrayInputStream(content.getBytes());
         ByteArrayOutputStream contentOutStream = new ByteArrayOutputStream();
         cryptoEngine.decryptSphereContent(contentInStream, contentOutStream, null);
-        assertEquals("Uhu decrypted contentStream without sphereId", 0, contentOutStream.size());
+        assertEquals("Bezirk decrypted contentStream without sphereId", 0, contentOutStream.size());
     }
 
     @Test
@@ -88,7 +88,7 @@ public class EncryptDecryptStream {
         ByteArrayInputStream contentInStream = new ByteArrayInputStream(content.getBytes());
         ByteArrayOutputStream contentOutStream = new ByteArrayOutputStream();
         cryptoEngine.encryptSphereContent(contentInStream, contentOutStream, "Test");
-        assertEquals("Uhu encrypted contentStream without sphereId", 0, contentOutStream.size());
+        assertEquals("Bezirk encrypted contentStream without sphereId", 0, contentOutStream.size());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class EncryptDecryptStream {
         ByteArrayInputStream contentInStream = new ByteArrayInputStream(content.getBytes());
         ByteArrayOutputStream contentOutStream = new ByteArrayOutputStream();
         cryptoEngine.encryptSphereContent(contentInStream, contentOutStream, null);
-        assertEquals("Uhu encrypted contentStream without sphereId", 0, contentOutStream.size());
+        assertEquals("Bezirk encrypted contentStream without sphereId", 0, contentOutStream.size());
     }
 
 }

@@ -8,7 +8,7 @@ import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.messages.ShareRequest;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.sphere.testUtilities.SphereTestUtility;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -93,8 +93,8 @@ public class PrepareRequest {
 
         assertEquals(sharerSphereId, preparedRequest.getSharerSphereId());
         assertEquals(inviterShortCode, preparedRequest.getSphereId()); //inviterShortCode is initialized in ControlMessage class
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).device, preparedRequest.getSender().device);
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).zirkId, preparedRequest.getSender().zirkId);
+        assertEquals(BezirkNetworkUtilities.getServiceEndPoint(null).device, preparedRequest.getSender().device);
+        assertEquals(BezirkNetworkUtilities.getServiceEndPoint(null).zirkId, preparedRequest.getSender().zirkId);
     }
 
 }

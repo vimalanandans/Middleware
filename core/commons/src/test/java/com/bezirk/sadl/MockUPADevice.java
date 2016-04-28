@@ -3,7 +3,7 @@ package com.bezirk.sadl;
 import com.bezirk.devices.DeviceDetails;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.addressing.Location;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.apache.shiro.codec.Hex;
 import org.slf4j.Logger;
@@ -52,7 +52,7 @@ public class MockUPADevice implements UPADeviceInterface {
             log.error(e.getMessage());
         }
 
-        deviceDetails.setDeviceId(Hex.encodeToString(UhuNetworkUtilities.getLocalMACAddress()));
+        deviceDetails.setDeviceId(Hex.encodeToString(BezirkNetworkUtilities.getLocalMACAddress()));
         deviceDetails.setDeviceName(deviceName);
         deviceDetails.setDeviceLocation(new Location(location));
 

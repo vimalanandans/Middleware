@@ -1,6 +1,6 @@
 package com.bezirk.sadl;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.devices.UPADeviceInterface;
@@ -14,7 +14,7 @@ import com.bezirk.persistence.BezirkRegistry;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.sphere.testUtilities.SpherePropertiesMock;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 import com.j256.ormlite.table.TableUtils;
 
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ public class MockSetUpUtility {
     private static final String DBPath = "./";
     private static final String DBVersion = DBConstants.DB_VERSION;
     private static InetAddress inetAddr;
-    UhuSadlManager uhuSadlManager = null;
+    BezirkSadlManager bezirkSadlManager = null;
     SadlPersistence sadlPersistence;
     SpherePersistence spherePersistence;
     UPADeviceInterface upaDevice;
@@ -66,7 +66,7 @@ public class MockSetUpUtility {
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
 
-                        inetAddr = UhuNetworkUtilities.getIpForInterface(intf);
+                        inetAddr = BezirkNetworkUtilities.getIpForInterface(intf);
                         return inetAddr;
                     }
 
@@ -94,26 +94,26 @@ public class MockSetUpUtility {
         sphereRegistry = new SphereRegistry();
         cryptoEngine = new CryptoEngine(sphereRegistry);
         sadlPersistence = (SadlPersistence) regPersistence;
-        uhuSadlManager = new UhuSadlManager(sadlPersistence);
+        bezirkSadlManager = new BezirkSadlManager(sadlPersistence);
         uhuComms = mock(IUhuComms.class);
         CommsProperties commsProperties = new CommsProperties();
-        uhuComms.initComms(commsProperties, inetAddr, uhuSadlManager, null);
+        uhuComms.initComms(commsProperties, inetAddr, bezirkSadlManager, null);
         uhuComms.startComms();
-        uhuSadlManager.initSadlManager(uhuComms);
+        bezirkSadlManager.initSadlManager(uhuComms);
 
         setupUpaDevice();
-/*		UhuSphere sphereForSadl = new UhuSphere(cryptoEngine, upaDevice, sphereRegistry);
-        UhuCompManager.setSphereForSadl(sphereForSadl );*/
+/*		BezirkSphere sphereForSadl = new BezirkSphere(cryptoEngine, upaDevice, sphereRegistry);
+        BezirkCompManager.setSphereForSadl(sphereForSadl );*/
     }
 
     void setupUpaDevice() {
         upaDevice = new MockUPADevice();
-        UhuCompManager.setUpaDevice(upaDevice);
+        BezirkCompManager.setUpaDevice(upaDevice);
     }
 
     void destroyTestSetUp() throws SQLException,
             IOException, Exception {
-        ((RegistryPersistence) uhuSadlManager.sadlPersistence)
+        ((RegistryPersistence) bezirkSadlManager.sadlPersistence)
                 .clearPersistence();
         TableUtils.dropTable(dbConnection.getDatabaseConnection(),
                 BezirkRegistry.class, true);
@@ -121,12 +121,12 @@ public class MockSetUpUtility {
 
     void clearSadlPersistence() {
 
-        uhuSadlManager.sadlPersistence = null;
+        bezirkSadlManager.sadlPersistence = null;
     }
 
     void restoreSadlPersistence() {
 
-        uhuSadlManager.sadlPersistence = this.sadlPersistence;
+        bezirkSadlManager.sadlPersistence = this.sadlPersistence;
     }
 
 }

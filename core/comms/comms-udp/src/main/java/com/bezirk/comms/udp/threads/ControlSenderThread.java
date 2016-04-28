@@ -1,6 +1,6 @@
 package com.bezirk.comms.udp.threads;
 
-import com.bezirk.comms.IUhuCommsLegacy;
+import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.comms.udp.sender.BezirkCommsSend;
 import com.bezirk.control.messages.ControlLedger;
@@ -27,9 +27,9 @@ public class ControlSenderThread implements Runnable {
     private MessageQueue msgQueue = null;
     private int numOfRetries = 5;
     // Sadl Instance in charge of sending
-    private IUhuCommsLegacy uhuComms;
+    private BezirkCommsLegacy uhuComms;
 
-    public ControlSenderThread(IUhuCommsLegacy uhuComms, MessageQueue msgQueue) {
+    public ControlSenderThread(BezirkCommsLegacy uhuComms, MessageQueue msgQueue) {
         this.uhuComms = uhuComms;
         this.msgQueue = msgQueue;
     }
@@ -124,7 +124,7 @@ public class ControlSenderThread implements Runnable {
 			uhuComms.sendStreamMessage(tempStreamRecord);*/
         } else {
             //MessageQueueManager.getControlReceiverQueue().addToQueue(tcMessage);
-            uhuComms.addToQueue(IUhuCommsLegacy.COMM_QUEUE_TYPE.CONTROL_RECEIVE_QUEUE, tcMessage);
+            uhuComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.CONTROL_RECEIVE_QUEUE, tcMessage);
         }
     }
 

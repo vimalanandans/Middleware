@@ -12,11 +12,11 @@ public class TestUhuCommsPC {
     @Test
     public void testLoadProperties() {
         try {
-            assertNotNull("Properties is null", com.bezirk.comms.UhuCommsPC.loadProperties());
-            assertTrue("UhuCommsPc properties is empty.", com.bezirk.comms.UhuCommsPC.loadProperties().size() > 0);
-            assertFalse("UhuCommsPc properties is empty.", com.bezirk.comms.UhuCommsPC.loadProperties().isEmpty());
+            assertNotNull("Properties is null", BezirkCommsPC.loadProperties());
+            assertTrue("UhuCommsPc properties is empty.", BezirkCommsPC.loadProperties().size() > 0);
+            assertFalse("UhuCommsPc properties is empty.", BezirkCommsPC.loadProperties().isEmpty());
             //Following test case will fail if we remove the EmulticastPortVal property or if the port value is set as more than 9999
-            int EmulticastPortVal = Integer.valueOf(com.bezirk.comms.UhuCommsPC.loadProperties().getProperty("EMulticastPort"));
+            int EmulticastPortVal = Integer.valueOf(BezirkCommsPC.loadProperties().getProperty("EMulticastPort"));
             assertTrue("EmulticastPortVal value is different from default value range.", 0 <= EmulticastPortVal && 9999 >= EmulticastPortVal);
         } catch (Exception e) {
 

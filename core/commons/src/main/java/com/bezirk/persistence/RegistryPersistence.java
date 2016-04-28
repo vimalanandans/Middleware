@@ -47,7 +47,7 @@ public class RegistryPersistence extends DatabaseHelper implements SadlPersisten
     }
 
     @Override
-    public BezirkProxyRegistry loadUhuProxyRegistry() throws Exception {
+    public BezirkProxyRegistry loadBezirkProxyRegistry() throws Exception {
         if (null == getBezirkProxyRegistry()) {
             loadRegistry();
         }
@@ -56,7 +56,7 @@ public class RegistryPersistence extends DatabaseHelper implements SadlPersisten
 
 
     @Override
-    public void persistUhuProxyRegistry() throws Exception {
+    public void persistBezirkProxyRegistry() throws Exception {
         updateRegistry(DBConstants.COLUMN_3);
     }
 

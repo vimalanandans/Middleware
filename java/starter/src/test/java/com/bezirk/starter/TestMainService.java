@@ -57,17 +57,17 @@ public class TestMainService {
     private void testStartStack() {
 
         ProxyforServices proxyforServices = new ProxyforServices();
-        com.bezirk.starter.UhuConfig uhuConfigRef = new com.bezirk.starter.UhuConfig();
-        uhuConfigRef.setDisplayEnable("false");
+        BezirkConfig bezirkConfigRef = new BezirkConfig();
+        bezirkConfigRef.setDisplayEnable("false");
         /** DisplayEnable - true  */
         //System.setProperty("displayEnable", "true");
-        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyforServices, uhuConfigRef);
+        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyforServices, bezirkConfigRef);
         ZirkMessageHandler testMock = Mockito.mock(ZirkMessageHandler.class);
         mainService.startStack(testMock);
 
         assertNotNull("sphere not initialized in startStack.", mainService.sphereForPC);
         assertTrue("Uhustack is not started after startstack call", mainService.getStartedStack());
-        assertNotNull("ProxyPersistence is null even after startstack", mainService.getUhuProxyPersistence());
+        assertNotNull("ProxyPersistence is null even after startstack", mainService.getBezirkProxyPersistence());
         mainService.stopStack();
 
         /** DisplayEnable - false  */
@@ -77,7 +77,7 @@ public class TestMainService {
 
         assertNotNull("sphere not initialized in startStack.", mainService.sphereForPC);
         assertTrue("Uhustack is not started after startstack call", mainService.getStartedStack());
-        assertNotNull("ProxyPersistence is null even after startstack", mainService.getUhuProxyPersistence());
+        assertNotNull("ProxyPersistence is null even after startstack", mainService.getBezirkProxyPersistence());
 
         System.clearProperty("displayEnable");
         mainService.stopStack();
@@ -91,9 +91,9 @@ public class TestMainService {
     private void testStopStack() {
 
         ProxyforServices proxyforServices = new ProxyforServices();
-        com.bezirk.starter.UhuConfig uhuConfigRef = new com.bezirk.starter.UhuConfig();
-        uhuConfigRef.setDisplayEnable("false");
-        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyforServices, uhuConfigRef);
+        BezirkConfig bezirkConfigRef = new BezirkConfig();
+        bezirkConfigRef.setDisplayEnable("false");
+        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyforServices, bezirkConfigRef);
         ZirkMessageHandler testMock = Mockito.mock(ZirkMessageHandler.class);
         mainService.startStack(testMock);
 
@@ -110,9 +110,9 @@ public class TestMainService {
      */
     private void testReboot() {
         ProxyforServices proxyforServices = new ProxyforServices();
-        com.bezirk.starter.UhuConfig uhuConfigRef = new UhuConfig();
-        uhuConfigRef.setDisplayEnable("false");
-        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyforServices, uhuConfigRef);
+        BezirkConfig bezirkConfigRef = new BezirkConfig();
+        bezirkConfigRef.setDisplayEnable("false");
+        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyforServices, bezirkConfigRef);
         mainService.startStack(Mockito.mock(ZirkMessageHandler.class));
 
         mainService.reboot();

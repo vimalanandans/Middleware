@@ -1,6 +1,6 @@
 package com.bezirk.sadl;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
@@ -14,9 +14,9 @@ import com.bezirk.sphere.impl.MemberZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
 import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.Sphere;
-import com.bezirk.sphere.impl.UhuSphere;
+import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.pipe.MockCallBackZirk;
-import com.bezirk.pipe.MockUhuZirk;
+import com.bezirk.pipe.MockBezirkZirk;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -53,7 +53,7 @@ public class ProcessEventTest {
     ;
     private static BezirkZirkId uhuServiceBId = new BezirkZirkId("ServiceB");
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
-    private static UhuSadlManager uhuSadlManager = null;
+    private static BezirkSadlManager bezirkSadlManager = null;
     private static SadlRegistry sadlRegistry = null;
     private static SphereRegistry sphereRegistry = null;
     private boolean isEventProcessed = false;
@@ -78,7 +78,7 @@ public class ProcessEventTest {
     public void setUp() throws Exception {
 
         mockUtility.setUPTestEnv();
-        uhuSadlManager = mockUtility.uhuSadlManager;
+        bezirkSadlManager = mockUtility.bezirkSadlManager;
         sadlRegistry = mockUtility.sadlPersistence.loadSadlRegistry();
         sphereRegistry = mockUtility.spherePersistence.loadSphereRegistry();
 
@@ -101,7 +101,7 @@ public class ProcessEventTest {
         String msgTypeOrLabel = "SimpleMessage";
         header.setTopic(msgTypeOrLabel);
         eventLedger.setHeader(header);
-        isEventProcessed = uhuSadlManager.processEvent(eventLedger);
+        isEventProcessed = bezirkSadlManager.processEvent(eventLedger);
         assertFalse("SadlManager returned true for processEvent with MulticastMessage having zirk out of the sphere.", isEventProcessed);
 
 		/*MulticastEvent with zirk existing in sphere. SadlManager processEvent should return true. */
@@ -123,19 +123,19 @@ public class ProcessEventTest {
         sadlRegistry.locationMap.put(uhuServiceAId, loc);
 
 
-        UhuSphere uhuSphere = new UhuSphere(mockUtility.cryptoEngine, mockUtility.upaDevice, sphereRegistry);
-        UhuCompManager.setSphereForSadl(uhuSphere);
-        uhuSphere.initSphere(mockUtility.spherePersistence, mockUtility.uhuComms, null, mockUtility.sphereConfig);
-        MockUhuZirk mockUhuservice = new MockUhuZirk();
+        BezirkSphere bezirkSphere = new BezirkSphere(mockUtility.cryptoEngine, mockUtility.upaDevice, sphereRegistry);
+        BezirkCompManager.setSphereForSadl(bezirkSphere);
+        bezirkSphere.initSphere(mockUtility.spherePersistence, mockUtility.uhuComms, null, mockUtility.sphereConfig);
+        MockBezirkZirk mockUhuservice = new MockBezirkZirk();
         MockCallBackZirk uhucallback = new MockCallBackZirk(mockUhuservice);
-        UhuCompManager.setplatformSpecificCallback(uhucallback);
+        BezirkCompManager.setplatformSpecificCallback(uhucallback);
 
         BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(uhuServiceAId);
         header.setSenderSEP(senderSEP);
         header.setSphereName(sphereId);
         header.setAddress(address);
         eventLedger.setHeader(header);
-        isEventProcessed = uhuSadlManager.processEvent(eventLedger);
+        isEventProcessed = bezirkSadlManager.processEvent(eventLedger);
         assertTrue("SadlManager returned false for processEvent with MulticastMessage having zirk within the sphere.", isEventProcessed);
 
 		/* Non Local multicast message with sphereId null. SadlManager processEvent should return false. */
@@ -143,7 +143,7 @@ public class ProcessEventTest {
         header.setSphereName(null);
         eventLedger.setHeader(header);
         eventLedger.setIsLocal(false);
-        isEventProcessed = uhuSadlManager.processEvent(eventLedger);
+        isEventProcessed = bezirkSadlManager.processEvent(eventLedger);
         assertFalse("SadlManager returned true for processEvent with MulticastMessage when sphereId is null.", isEventProcessed);
 
 		/* Non Local multicast message with valid sphereId and message . SadlManager processEvent should return true. */
@@ -153,7 +153,7 @@ public class ProcessEventTest {
         String serializedContent = "Test Message";
         byte[] encryptedMessage = mockUtility.cryptoEngine.encryptSphereContent(sphereId, serializedContent);
         eventLedger.setEncryptedMessage(encryptedMessage);
-        isEventProcessed = uhuSadlManager.processEvent(eventLedger);
+        isEventProcessed = bezirkSadlManager.processEvent(eventLedger);
         assertTrue("SadlManager returned false for processEvent with MulticastMessage when sphereId is valid.", isEventProcessed);
 
 		/*---------- NEED TO FIND WAY TO START LOGGER SERVICE TO TEST THIS----------*/
@@ -166,7 +166,7 @@ public class ProcessEventTest {
 		FilterLogMessages.setLoggingSphereList(loggingSphereList);
 		ArrayList<String> sphereList = new ArrayList<String>();
 		sphereList.add(sphereId);
-		isEventProcessed =uhuSadlManager.processEvent(eventLedger);
+		isEventProcessed =bezirkSadlManager.processEvent(eventLedger);
 		assertTrue("SadlManager returned false for processEvent with MulticastLogMessage when sphereId is valid and logging is enabled.",isEventProcessed);*/
 		
 		
@@ -192,12 +192,12 @@ public class ProcessEventTest {
         sadlRegistry.eventMap.put("SimpleMessage", serviceSet);
         sadlRegistry.locationMap.put(uhuServiceAId, reception);
 
-        UhuSphere uhuSphere = new UhuSphere(mockUtility.cryptoEngine, mockUtility.upaDevice, sphereRegistry);
-        uhuSphere.initSphere(mockUtility.spherePersistence, mockUtility.uhuComms, null, mockUtility.sphereConfig);
-        UhuCompManager.setSphereForSadl(uhuSphere);
-        MockUhuZirk mockUhuservice = new MockUhuZirk();
+        BezirkSphere bezirkSphere = new BezirkSphere(mockUtility.cryptoEngine, mockUtility.upaDevice, sphereRegistry);
+        bezirkSphere.initSphere(mockUtility.spherePersistence, mockUtility.uhuComms, null, mockUtility.sphereConfig);
+        BezirkCompManager.setSphereForSadl(bezirkSphere);
+        MockBezirkZirk mockUhuservice = new MockBezirkZirk();
         MockCallBackZirk uhucallback = new MockCallBackZirk(mockUhuservice);
-        UhuCompManager.setplatformSpecificCallback(uhucallback);
+        BezirkCompManager.setplatformSpecificCallback(uhucallback);
 
         BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(uhuServiceAId);
         UnicastHeader header = new UnicastHeader();
@@ -207,13 +207,13 @@ public class ProcessEventTest {
         header.setTopic(msgTypeOrLabel);
         eventLedger.setHeader(header);
 
-        isEventProcessed = uhuSadlManager.processEvent(eventLedger);
+        isEventProcessed = bezirkSadlManager.processEvent(eventLedger);
         assertTrue("SadlManager returned false for sendEvent with local Message", isEventProcessed);
 
 		/* Non Local UnicastEvent message with sphereId null. SadlManager processEvent should return false. */
         isEventProcessed = false;
         eventLedger.setIsLocal(false);
-        isEventProcessed = uhuSadlManager.processEvent(eventLedger);
+        isEventProcessed = bezirkSadlManager.processEvent(eventLedger);
         assertFalse("SadlManager returned true for processEvent with UnicastMessage when sphereId is null.", isEventProcessed);
 
 		/* Non Local UnicastEvent message with valid sphereId and message . SadlManager processEvent should return true. */
@@ -224,13 +224,13 @@ public class ProcessEventTest {
         String serializedContent = "Test Message";
         byte[] encryptedMessage = mockUtility.cryptoEngine.encryptSphereContent(sphereId, serializedContent);
         eventLedger.setEncryptedMessage(encryptedMessage);
-        isEventProcessed = uhuSadlManager.processEvent(eventLedger);
+        isEventProcessed = bezirkSadlManager.processEvent(eventLedger);
         assertTrue("SadlManager returned false for processEvent with UnicastMessage when sphereId is valid.", isEventProcessed);
 
 		/* Non Local UnicastEvent message with invalid recipient serviceID. SadlManager processEvent should return false. */
         header.setRecipient(new BezirkZirkEndPoint(new BezirkZirkId(null)));
         eventLedger.setHeader(header);
-        isEventProcessed = uhuSadlManager.processEvent(eventLedger);
+        isEventProcessed = bezirkSadlManager.processEvent(eventLedger);
         assertFalse("SadlManager returned true for processEvent with UnicastMessage when recipient zirk id is invalid.", isEventProcessed);
 
     }

@@ -21,7 +21,7 @@ import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.pc.ProxyforServices;
 import com.bezirk.proxy.registration.ServiceRegistration;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.UhuConfig;
+import com.bezirk.starter.BezirkConfig;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -56,26 +56,26 @@ public class Proxy implements Bezirk {
                 eventListenerMap, sidMap, streamListenerMap);
         CBkForZirkPC uhuPcCallback = new CBkForZirkPC(brForService);
         mainService.startStack(uhuPcCallback);
-        proxyPersistence = mainService.getUhuProxyPersistence();
+        proxyPersistence = mainService.getBezirkProxyPersistence();
         try {
-            bezirkProxyRegistry = proxyPersistence.loadUhuProxyRegistry();
+            bezirkProxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         } catch (Exception e) {
             logger.error("Error in Loding BezirkProxyRegistry", e);
             System.exit(0);
         }
     }
 
-    public Proxy(UhuConfig uhuConfig) {
+    public Proxy(BezirkConfig bezirkConfig) {
         proxy = new ProxyforServices();
         proxyUtil = new ProxyUtil();
-        mainService = new MainService(proxy, uhuConfig);
+        mainService = new MainService(proxy, bezirkConfig);
         BRForService brForService = new BRForService(activeStreams, dListenerMap,
                 eventListenerMap, sidMap, streamListenerMap);
         CBkForZirkPC uhuPcCallback = new CBkForZirkPC(brForService);
         mainService.startStack(uhuPcCallback);
-        proxyPersistence = mainService.getUhuProxyPersistence();
+        proxyPersistence = mainService.getBezirkProxyPersistence();
         try {
-            bezirkProxyRegistry = proxyPersistence.loadUhuProxyRegistry();
+            bezirkProxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         } catch (Exception e) {
             logger.error("Error in Loding BezirkProxyRegistry", e);
             System.exit(0);
@@ -90,19 +90,19 @@ public class Proxy implements Bezirk {
             return null;
         }
 
-        String serviceIdAsString = bezirkProxyRegistry.getUhuServiceId(zirkName);
+        String zirkIdAsString = bezirkProxyRegistry.getBezirkServiceId(zirkName);
 
-        if (null == serviceIdAsString) {
-            serviceIdAsString = ServiceRegistration.generateUniqueServiceID() + ":" + zirkName;
-            bezirkProxyRegistry.updateUhuServiceId(zirkName, serviceIdAsString);
+        if (null == zirkIdAsString) {
+            zirkIdAsString = ServiceRegistration.generateUniqueServiceID() + ":" + zirkName;
+            bezirkProxyRegistry.updateBezirkZirkId(zirkName, zirkIdAsString);
             try {
-                proxyPersistence.persistUhuProxyRegistry();
+                proxyPersistence.persistBezirkProxyRegistry();
             } catch (Exception e) {
                 logger.error("Error in persisting the information", e);
             }
         }
-        logger.info("Zirk-Id-> " + serviceIdAsString);
-        final BezirkZirkId serviceId = new BezirkZirkId(serviceIdAsString);
+        logger.info("Zirk-Id-> " + zirkIdAsString);
+        final BezirkZirkId serviceId = new BezirkZirkId(zirkIdAsString);
         // Register with Bezirk
         proxy.registerService(serviceId, zirkName);
         return serviceId;
@@ -116,9 +116,9 @@ public class Proxy implements Bezirk {
         }
         // Clear the Persistence by removing the BezirkZirkId of the unregistering Zirk
         BezirkZirkId sId = (BezirkZirkId) zirkId;
-        bezirkProxyRegistry.deleteUhuServiceId(sId.getBezirkZirkId());
+        bezirkProxyRegistry.deleteBezirkZirkId(sId.getBezirkZirkId());
         try {
-            proxyPersistence.persistUhuProxyRegistry();
+            proxyPersistence.persistBezirkProxyRegistry();
         } catch (Exception e) {
             logger.error("Error in persisting the information", e);
         }

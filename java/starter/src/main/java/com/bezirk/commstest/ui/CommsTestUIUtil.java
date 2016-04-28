@@ -1,6 +1,6 @@
 package com.bezirk.commstest.ui;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -42,7 +42,7 @@ public class CommsTestUIUtil {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                String receivedMsgs = commsTest.getSelectedServices(UhuCompManager.getUpaDevice().getDeviceName() + ":" + (actionPerformer.pingCount));
+                String receivedMsgs = commsTest.getSelectedServices(BezirkCompManager.getUpaDevice().getDeviceName() + ":" + (actionPerformer.pingCount));
                 if (receivedMsgs != null && !receivedMsgs.isEmpty()) {
                     JOptionPane.showMessageDialog(null, receivedMsgs, "DEVICES THAT RESPONDED TO PING MESSAGE", JOptionPane.PLAIN_MESSAGE);
                 }

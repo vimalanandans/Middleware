@@ -5,7 +5,7 @@ import com.bezirk.control.messages.GenerateMsgId;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 /**
  * this class will translate all the request to Bezirk EventLedger
@@ -24,7 +24,7 @@ public class BezirkRequestTranslator {
 
         //set sender zirk end point.
         BezirkZirkId uhuServiceId = new BezirkZirkId(requestObject.getEventServiceId(), requestObject.getUniqueEventId());
-        BezirkZirkEndPoint mySEP = UhuNetworkUtilities.getServiceEndPoint(uhuServiceId);
+        BezirkZirkEndPoint mySEP = BezirkNetworkUtilities.getServiceEndPoint(uhuServiceId);
 
 
         //prepare the event based on the type, update the message with Origin and MessageId

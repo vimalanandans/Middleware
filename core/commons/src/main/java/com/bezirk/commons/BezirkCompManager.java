@@ -2,9 +2,9 @@ package com.bezirk.commons;
 
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.messagehandler.ZirkMessageHandler;
-import com.bezirk.sphere.api.IUhuSphereAPI;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
-import com.bezirk.sphere.api.IUhuSphereRegistration;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereRegistration;
 import com.bezirk.streaming.rtc.Signaling;
 
 /**
@@ -24,7 +24,7 @@ import com.bezirk.streaming.rtc.Signaling;
  * -Vimal
  * */
 @Deprecated
-public final class UhuCompManager {
+public final class BezirkCompManager {
 
     /**
      * This module is no longer needed. because no one calls addmessage
@@ -45,11 +45,11 @@ public final class UhuCompManager {
 
     private static ZirkMessageHandler platformSpecificCallback;
 
-    private static IUhuSphereForSadl uhuSphereForSadl;
+    private static BezirkSphereForSadl uhuSphereForSadl;
 
-    private static IUhuSphereAPI uhuSphereAPI;
+    private static BezirkSphereAPI uhuSphereAPI;
 
-    private static IUhuSphereRegistration uhuSphereRegistration;
+    private static BezirkSphereRegistration uhuSphereRegistration;
 
     //private static IUhuSphereMessages uhuSphereMessages;
 
@@ -61,7 +61,7 @@ public final class UhuCompManager {
 
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
-    private UhuCompManager() {
+    private BezirkCompManager() {
 
     }
 
@@ -70,7 +70,7 @@ public final class UhuCompManager {
     }
 
     public static void setSignaling(Signaling signaling) {
-        UhuCompManager.signaling = signaling;
+        BezirkCompManager.signaling = signaling;
     }
 
     /**
@@ -85,7 +85,7 @@ public final class UhuCompManager {
      *            the upaDevice to set
      */
     public static void setUpaDevice(UPADeviceInterface upaDevice) {
-        UhuCompManager.upaDevice = upaDevice;
+        BezirkCompManager.upaDevice = upaDevice;
     }
 
 
@@ -94,11 +94,11 @@ public final class UhuCompManager {
      * @param mK
      */
     /*public static void setMsgBookKeeper(MessageBookKeeper mK){
-		UhuCompManager.msgKeeper = mK;
+		BezirkCompManager.msgKeeper = mK;
 	}
 	
 	public static MessageBookKeeper getMsgBookKeeper(){
-		return UhuCompManager.msgKeeper;
+		return BezirkCompManager.msgKeeper;
 	}*/
 
     /**
@@ -106,42 +106,42 @@ public final class UhuCompManager {
      * @param uhucallback
      */
     public static void setplatformSpecificCallback(ZirkMessageHandler uhucallback) {
-        UhuCompManager.platformSpecificCallback = uhucallback;
+        BezirkCompManager.platformSpecificCallback = uhucallback;
     }
 
     public static ZirkMessageHandler getplatformSpecificCallback() {
-        return UhuCompManager.platformSpecificCallback;
+        return BezirkCompManager.platformSpecificCallback;
     }
 
     // this is temporary for sadl to use the spheres
-    public static IUhuSphereForSadl getSphereForSadl() {
+    public static BezirkSphereForSadl getSphereForSadl() {
         return uhuSphereForSadl;
     }
 
     // this is temporary for setting up spheres for sadl
-    public static void setSphereForSadl(IUhuSphereForSadl sphereForSadl) {
-        UhuCompManager.uhuSphereForSadl = sphereForSadl;
+    public static void setSphereForSadl(BezirkSphereForSadl sphereForSadl) {
+        BezirkCompManager.uhuSphereForSadl = sphereForSadl;
     }
 
     // this is temporary for UI to use the spheres
-    public static IUhuSphereAPI getSphereUI() {
+    public static BezirkSphereAPI getSphereUI() {
         return uhuSphereAPI;
     }
 
     // this is temporary for setting up spheres for UI
-    public static void setSphereUI(IUhuSphereAPI uhuSphereAPI) {
-        UhuCompManager.uhuSphereAPI = uhuSphereAPI;
+    public static void setSphereUI(BezirkSphereAPI uhuSphereAPI) {
+        BezirkCompManager.uhuSphereAPI = uhuSphereAPI;
     }
 
     // this is temporary for proxyForServices to use registration
-    public static IUhuSphereRegistration getSphereRegistration() {
+    public static BezirkSphereRegistration getSphereRegistration() {
         return uhuSphereRegistration;
     }
 
     // this is temporary for setting up zirk registration with spheres for UI
     public static void setSphereRegistration(
-            IUhuSphereRegistration sphereRegistration) {
-        UhuCompManager.uhuSphereRegistration = sphereRegistration;
+            BezirkSphereRegistration sphereRegistration) {
+        BezirkCompManager.uhuSphereRegistration = sphereRegistration;
     }
 
     /**
@@ -156,7 +156,7 @@ public final class UhuCompManager {
      */
 	/*public static void setUhuSphereMessages(
 			IUhuSphereMessages uhuSphereMessages) {
-		UhuCompManager.uhuSphereMessages = uhuSphereMessages;
+		BezirkCompManager.uhuSphereMessages = uhuSphereMessages;
 	}*/
 
 

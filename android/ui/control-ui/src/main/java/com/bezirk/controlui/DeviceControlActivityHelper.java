@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.bezirk.actions.BezirkActions;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.sphere.api.IUhuDevMode;
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuPreferences;
 import com.bezirk.util.BezirkValidatorUtility;
@@ -223,7 +223,7 @@ class DeviceControlActivityHelper {
 // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptsView = layoutInflater.inflate(R.layout.prompt_confirm, null);
-        IUhuSphereAPI sphereAPI = MainService.getSphereHandle();
+        BezirkSphereAPI sphereAPI = MainService.getSphereHandle();
         final List<BezirkZirkInfo> bezirkZirkInfos = sphereAPI.getServiceInfo();
         final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(deviceControlActivity.getApplicationContext());
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(

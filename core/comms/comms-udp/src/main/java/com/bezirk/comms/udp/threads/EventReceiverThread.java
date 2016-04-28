@@ -40,11 +40,11 @@ public class EventReceiverThread implements Runnable {
 
         while (running) {
             running = true;
-            log.info("Uhu Receiver Thread has started \n");
+            log.info("Bezirk Receiver Thread has started \n");
 
             while (running) {
                 if (Thread.currentThread().isInterrupted()) {
-                    log.info("Uhu ReceiverThread has Stopped");
+                    log.info("Bezirk ReceiverThread has Stopped");
                     running = false;
                     continue;
                 }

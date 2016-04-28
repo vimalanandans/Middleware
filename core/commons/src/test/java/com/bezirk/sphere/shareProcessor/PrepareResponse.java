@@ -9,7 +9,7 @@ import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.messages.ShareResponse;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.sphere.testUtilities.SphereTestUtility;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -100,8 +100,8 @@ public class PrepareResponse {
         /** invoke the method under test using reflection **/
         ShareResponse preparedResponse = (ShareResponse) method.invoke(shareProcessor, inviterShortCode, inviterSphereId, sharer, "abcdefg", sharerSphereId);
 
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).device, preparedResponse.getSender().device);
-        assertEquals(UhuNetworkUtilities.getServiceEndPoint(null).zirkId, preparedResponse.getSender().zirkId);//Sender zirk end point
+        assertEquals(BezirkNetworkUtilities.getServiceEndPoint(null).device, preparedResponse.getSender().device);
+        assertEquals(BezirkNetworkUtilities.getServiceEndPoint(null).zirkId, preparedResponse.getSender().zirkId);//Sender zirk end point
         assertEquals(sharer, preparedResponse.getRecipient()); //Recipient zirk end point
         assertEquals(inviterShortCode, preparedResponse.getSphereId());  //inviterShortCode is initialized in ControlMessage class
         assertEquals(sharerSphereId, preparedResponse.getSharerSphereId());

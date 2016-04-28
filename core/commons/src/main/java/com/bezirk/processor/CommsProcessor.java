@@ -1,7 +1,7 @@
 package com.bezirk.processor;
 
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CommsNotification;
@@ -22,13 +22,13 @@ import com.bezirk.features.CommsFeature;
 import com.bezirk.logging.LogServiceMessageHandler;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.sadl.UhuSadlManager;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
+import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.sphere.security.UPABlockCipherService;
 import com.bezirk.streaming.BezirkStreamManager;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.TextCompressor;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -58,7 +58,7 @@ public abstract class CommsProcessor implements IUhuComms {
     MessageDispatcher msgDispatcher = null;
 
     //LogServiceMessageHandler logServiceMsgHandler = null;
-    UhuSadlManager uhuSadlManager = null;
+    BezirkSadlManager bezirkSadlManager = null;
 
     //generic notifications
     List ICommsNotification = new ArrayList<CommsNotification>();
@@ -80,11 +80,11 @@ public abstract class CommsProcessor implements IUhuComms {
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             UhuSadlManager sadl, PipeManager pipe) {
+                             BezirkSadlManager sadl, PipeManager pipe) {
 
-        this.uhuSadlManager = sadl;
+        this.bezirkSadlManager = sadl;
 
-        msgDispatcher = new MessageDispatcher(uhuSadlManager);
+        msgDispatcher = new MessageDispatcher(bezirkSadlManager);
 
         if (BezirkComms.isStreamingEnabled()) {
 
@@ -321,7 +321,7 @@ public abstract class CommsProcessor implements IUhuComms {
         //msg = cipherService.encrypt(msgData, testKey).getBytes();
         // temp fix of sending the byte stream
         String msgDataString = new String(msgData);
-        byte[] msg = UhuCompManager.getSphereForSadl().encryptSphereContent(sphereId, msgDataString);
+        byte[] msg = BezirkCompManager.getSphereForSadl().encryptSphereContent(sphereId, msgDataString);
 
         long endTime = System.nanoTime();
         logger.info("Encryption Took " + (endTime - startTime) + " nano seconds");
@@ -350,7 +350,7 @@ public abstract class CommsProcessor implements IUhuComms {
                 || (msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED)) {
 
             //message = cipherService.decrypt(wireMessage.getMsg(), testKey).getBytes();
-            String data = UhuCompManager.getSphereForSadl().decryptSphereContent(sphereId, msgData);
+            String data = BezirkCompManager.getSphereForSadl().decryptSphereContent(sphereId, msgData);
 
             if (data != null) {
                 msg = data.getBytes();
@@ -626,7 +626,7 @@ public abstract class CommsProcessor implements IUhuComms {
     //enable the above code later. Quickfix network device id is taken as local ip as of now
     // for zyre this needs to return from actual comms
     public String getDeviceId() {
-        return UhuNetworkUtilities.getDeviceIp();
+        return BezirkNetworkUtilities.getDeviceIp();
     }
 
     //public abstract String getDeviceId();
@@ -635,7 +635,7 @@ public abstract class CommsProcessor implements IUhuComms {
     // for zyre this needs to return from actual comms
     public boolean isLocalMessage(String deviceId) {
 
-        return deviceId.equals(UhuNetworkUtilities.getDeviceIp());
+        return deviceId.equals(BezirkNetworkUtilities.getDeviceIp());
     }
 
     //public abstract String isLocalMessage();
@@ -781,7 +781,7 @@ public abstract class CommsProcessor implements IUhuComms {
     }
 
     @Override
-    public void setSphereForSadl(IUhuSphereForSadl uhuSphere) {
+    public void setSphereForSadl(BezirkSphereForSadl uhuSphere) {
         bezirkStreamManager.setSphereForSadl(uhuSphere);
     }
 

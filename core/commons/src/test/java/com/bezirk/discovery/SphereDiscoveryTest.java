@@ -7,9 +7,9 @@ import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.UhuSphereType;
-import com.bezirk.sphere.impl.UhuSphere;
+import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.security.CryptoEngine;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -61,7 +61,7 @@ public class SphereDiscoveryTest {
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
 
-                        inetAddr = UhuNetworkUtilities.getIpForInterface(intf);
+                        inetAddr = BezirkNetworkUtilities.getIpForInterface(intf);
                         return inetAddr;
                     }
 
@@ -87,9 +87,9 @@ public class SphereDiscoveryTest {
         UPADeviceInterface upaDevice = null;
         SphereRegistry sphereRegistry = new SphereRegistry();
         CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
-        UhuSphere uhuSphere = new UhuSphere(cryptoEngine, upaDevice, sphereRegistry);
+        BezirkSphere bezirkSphere = new BezirkSphere(cryptoEngine, upaDevice, sphereRegistry);
 
-        SphereDiscovery sphereDiscovery = new SphereDiscovery(uhuSphere);
+        SphereDiscovery sphereDiscovery = new SphereDiscovery(bezirkSphere);
 
         sphereDiscovery.addRequest(dlabel, disc);
 

@@ -12,7 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.SphereListActivity;
@@ -89,7 +89,7 @@ public class ScanDeviceSelectSphereFragment extends Fragment {
         //		.getApplicationContext(), DummyContent.ITEMS);
         SphereListAdapter sla = null;
 
-        IUhuSphereAPI api = MainService.getSphereHandle();
+        BezirkSphereAPI api = MainService.getSphereHandle();
 
         List<AbstractSphereListItem> sphereItemList = new ArrayList<AbstractSphereListItem>();
 
@@ -128,7 +128,7 @@ public class ScanDeviceSelectSphereFragment extends Fragment {
 
     String getSphereId(int position) {
         String itemID = "";
-        IUhuSphereAPI api = MainService.getSphereHandle();
+        BezirkSphereAPI api = MainService.getSphereHandle();
 
         if (api != null) {
             List<BezirkSphereInfo> sphereList = (List) api.getSpheres();

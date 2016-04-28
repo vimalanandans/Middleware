@@ -27,7 +27,7 @@ import com.bezirk.pipe.core.PipeRequest;
 import com.bezirk.pipe.core.PipeRequester;
 import com.bezirk.proxy.android.PipeActionParser;
 import com.bezirk.proxy.android.ProxyforServices;
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.starter.helper.NetworkBroadCastReceiver;
 import com.bezirk.starter.helper.UhuActionProcessor;
 import com.bezirk.starter.helper.UhuServiceHelper;
@@ -62,7 +62,7 @@ public class MainService extends Service implements INotificationCallback {
     }
 
     // TODO :use iBinder interface to send the handle reference
-    public static IUhuSphereAPI getSphereHandle() {
+    public static BezirkSphereAPI getSphereHandle() {
         return UhuStackHandler.getSphereForAndroid();
     }
 
@@ -83,7 +83,7 @@ public class MainService extends Service implements INotificationCallback {
     public void onCreate() {
         super.onCreate();
         //Acquire the Wifi Lock for Multicast
-        LOGGER.info("Uhu Services is Created");
+        LOGGER.info("Bezirk Services is Created");
         final ProxyforServices proxy = new ProxyforServices(this);
         uhuServiceHelper = new UhuServiceHelper(proxy);
         //Gain permissions for multicast

@@ -16,14 +16,14 @@ import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.IUhuDevMode;
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.api.IUhuSphereDiscovery;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.api.IUhuSphereMessages;
-import com.bezirk.sphere.api.IUhuSphereRegistration;
+import com.bezirk.sphere.api.BezirkSphereRegistration;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.messages.ShareRequest;
@@ -42,10 +42,10 @@ import java.util.Set;
 /**
  * @author rishabh
  */
-public class UhuSphere
-        implements IUhuSphereAPI, IUhuSphereForSadl, IUhuSphereRegistration, IUhuSphereDiscovery, IUhuSphereMessages, IUhuDevMode {
+public class BezirkSphere
+        implements BezirkSphereAPI, BezirkSphereForSadl, BezirkSphereRegistration, IUhuSphereDiscovery, IUhuSphereMessages, IUhuDevMode {
 
-    private static final Logger logger = LoggerFactory.getLogger(UhuSphere.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkSphere.class);
     private CryptoEngine cryptoEngine = null;
     private UPADeviceInterface upaDevice = null;
     private SphereRegistry registry = null;
@@ -57,10 +57,10 @@ public class UhuSphere
     private DiscoveryProcessor discoveryProcessor = null;
     private SphereRegistryWrapper sphereRegistryWrapper = null;
 
-    public UhuSphere(CryptoEngine cryptoEngine, UPADeviceInterface upaDevice, SphereRegistry sphereRegistry) {
+    public BezirkSphere(CryptoEngine cryptoEngine, UPADeviceInterface upaDevice, SphereRegistry sphereRegistry) {
 
         if (cryptoEngine == null || upaDevice == null || sphereRegistry == null) {
-            logger.error("Exiting UhuSphere setup. A parameter to the constructor is null");
+            logger.error("Exiting BezirkSphere setup. A parameter to the constructor is null");
             return;
         }
 

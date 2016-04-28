@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.InformationListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
@@ -47,7 +47,7 @@ public class InformationActivity extends FragmentActivity {
                 .get(sphereID);*/
         SphereListItem sphere = null;
 
-        IUhuSphereAPI api = MainService.getSphereHandle();
+        BezirkSphereAPI api = MainService.getSphereHandle();
 
         if (BezirkValidatorUtility.isObjectNotNull(api)) {
             BezirkSphereInfo sphereInfo = api.getSphere(sphereID);

@@ -8,10 +8,10 @@ import com.bezirk.proxy.api.impl.BezirkZirkId;
 /**
  * @author Rishabh Gulati
  */
-public interface IUhuSphereRegistration {
+public interface BezirkSphereRegistration {
 
     /**
-     * Registers the zirk with UhuSphere's. In case the zirk is already
+     * Registers the zirk with BezirkSphere's. In case the zirk is already
      * registered, call to this method updates the name of the zirk to
      * serviceName passed
      *

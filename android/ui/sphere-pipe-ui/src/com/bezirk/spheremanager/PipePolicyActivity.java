@@ -13,14 +13,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.pipe.core.PipeApprovalException;
 import com.bezirk.pipe.core.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRequester;
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.PolicyListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
@@ -35,7 +35,7 @@ import static com.bezirk.actions.BezirkActions.KEY_PIPE_NAME;
 import static com.bezirk.actions.BezirkActions.KEY_PIPE_REQ_ID;
 import static com.bezirk.actions.BezirkActions.KEY_PIPE_SPHEREID;
 import static com.bezirk.actions.BezirkActions.KEY_SENDER_ZIRK_ID;
-import static com.bezirk.util.BezirkValidatorUtility.checkUhuServiceId;
+import static com.bezirk.util.BezirkValidatorUtility.checkBezirkZirkId;
 
 public class PipePolicyActivity extends FragmentActivity implements OnClickListener {
     static final String TAG = PipePolicyActivity.class.getSimpleName();
@@ -57,7 +57,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
             return;
         }
 
-        final String serviceName = UhuCompManager.getSphereForSadl().getZirkName(serviceId);
+        final String serviceName = BezirkCompManager.getSphereForSadl().getZirkName(serviceId);
 
         LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -78,7 +78,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
 
         SphereListItem sphere = null;
 
-        IUhuSphereAPI api = MainService.getSphereHandle();
+        BezirkSphereAPI api = MainService.getSphereHandle();
 
         if (BezirkValidatorUtility.isObjectNotNull(api)) {
             BezirkSphereInfo sphereInfo = api.getSphere(sphereID);
@@ -225,7 +225,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
     private BezirkZirkId serviceIdFromString(String serviceIdAsString) {
         Gson gson = new Gson();
         BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
-        if (!checkUhuServiceId(serviceId)) {
+        if (!checkBezirkZirkId(serviceId)) {
             log.error("zirkId not valid: " + serviceId);
             return null;
         }

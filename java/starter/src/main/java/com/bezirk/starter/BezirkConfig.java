@@ -13,13 +13,13 @@ import java.util.Locale;
  * java-common so that all the configurations are inside this module.
  * </p>
  */
-public class UhuConfig {
+public class BezirkConfig {
 
     /**
      * Relative data path
      */
     public static final String DATA_PATH_REL = "data" + File.separator + "uhu";
-    private static final Logger logger = LoggerFactory.getLogger(UhuConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkConfig.class);
     /**
      * This will hold the full data path, which will be relative to APP_HOME or
      */
@@ -30,7 +30,7 @@ public class UhuConfig {
      */
     private String displayEnable = "true";
 
-    public UhuConfig() {
+    public BezirkConfig() {
         // load the resources
         initDataPath();
     }

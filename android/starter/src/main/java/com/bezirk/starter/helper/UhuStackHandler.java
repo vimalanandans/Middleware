@@ -17,10 +17,10 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.rest.CommsRestController;
 import com.bezirk.rest.HttpComms;
-import com.bezirk.sadl.UhuSadlManager;
+import com.bezirk.sadl.BezirkSadlManager;
 import com.bezirk.sphere.api.IUhuDevMode;
-import com.bezirk.sphere.api.IUhuSphereAPI;
-import com.bezirk.sphere.impl.UhuSphereForAndroid;
+import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.impl.BezirkSphereForAndroid;
 import com.bezirk.starter.IUhuStackHandler;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuPreferences;
@@ -74,7 +74,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
     /**
      * @return sphereForAndroid
      */
-    public static IUhuSphereAPI getSphereForAndroid() {
+    public static BezirkSphereAPI getSphereForAndroid() {
         return UhuSphereHandler.sphereForAndroid;
     }
 
@@ -115,7 +115,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     //means wifi is enabled..
                     uhuStartStackHelper.acquireWifiLock(wifi);
 
-                    LOGGER.info("Uhu zirk start triggered \n");
+                    LOGGER.info("Bezirk zirk start triggered \n");
 
                     /*************************************************************
                      * Step 0 : Register to BroadCastListener for Wifi           *
@@ -154,16 +154,16 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     registryPersistence = uhuStartStackHelper.initializeRegistryPersistence(service);
 
                     /*************************************************************
-                     * Step 5 : Initialize UhuSadlManager and set sadl for proxy *
+                     * Step 5 : Initialize BezirkSadlManager and set sadl for proxy *
                      *************************************************************/
-                    UhuSadlManager uhuSadlManager = new UhuSadlManager(registryPersistence);
-                    proxy.setSadlRegistry(uhuSadlManager);
+                    BezirkSadlManager bezirkSadlManager = new BezirkSadlManager(registryPersistence);
+                    proxy.setSadlRegistry(bezirkSadlManager);
 
                     /*************************************************************
                      * Step 6 : Initialize BezirkCommsManager                       *
                      *************************************************************/
                     InetAddress inetAddress = androidNetworkUtil.fetchInetAddress(service);
-                    comms = uhuStartStackHelper.initializeComms(inetAddress, uhuSadlManager, proxy, errNotificationCallback);
+                    comms = uhuStartStackHelper.initializeComms(inetAddress, bezirkSadlManager, proxy, errNotificationCallback);
                     if (!BezirkValidatorUtility.isObjectNotNull(comms)) {
                         LOGGER.error("Unable to initialize comms layer. Shutting down uhu.");
                         service.stopSelf();
@@ -174,7 +174,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     BezirkDevice bezirkDevice = uhuDeviceHelper.setUhuDevice(preferences, service);
 
                     /*************************************************************
-                     * Step 8 : Initialize UhuSphere                             *
+                     * Step 8 : Initialize BezirkSphere                             *
                      *************************************************************/
                     if (BezirkValidatorUtility.isObjectNotNull(bezirkDevice) && !sphereProcessorForMainService.initSphere(bezirkDevice, service, registryPersistence, preferences)) {
                         // at the moment the init sphere fails due to persistence. hence delete it
@@ -197,7 +197,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
                      *************************************************************/
                     int FOREGROUND_ID = 1336;
                     service.startForeground(FOREGROUND_ID,
-                            service.buildForegroundNotification("Uhu ON"));
+                            service.buildForegroundNotification("Bezirk ON"));
                     UhuStackHandler.stoppedStack = false;
                     UhuStackHandler.startedStack = true;
                 } else {
@@ -253,7 +253,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
      */
     void reboot(MainService service) {
         //display in long period of time
-        Toast.makeText(service.getApplicationContext(), "Uhu is Rebooting", Toast.LENGTH_LONG).show();
+        Toast.makeText(service.getApplicationContext(), "Bezirk is Rebooting", Toast.LENGTH_LONG).show();
         long startTime = new Date().getTime();
         if (!stoppedStack) {
             stopStack(service);
@@ -301,10 +301,10 @@ public final class UhuStackHandler implements IUhuStackHandler {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ((UhuSphereForAndroid) UhuSphereHandler.sphereForAndroid).initSphere(registryPersistence, comms);
+                ((BezirkSphereForAndroid) UhuSphereHandler.sphereForAndroid).initSphere(registryPersistence, comms);
             }
         }).start();
-        Toast.makeText(service.getApplicationContext(), "Uhu Data Cleared", Toast.LENGTH_SHORT).show();
+        Toast.makeText(service.getApplicationContext(), "Bezirk Data Cleared", Toast.LENGTH_SHORT).show();
     }
 
     /**

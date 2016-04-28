@@ -1,6 +1,6 @@
 package com.bezirk.discovery;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.middleware.addressing.Location;
@@ -8,8 +8,8 @@ import com.bezirk.pipe.MockCallBackZirk;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.pipe.MockUhuZirk;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezirk.pipe.MockBezirkZirk;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -65,7 +65,7 @@ public class DiscoveryTest {
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
 
-                        inetAddr = UhuNetworkUtilities.getIpForInterface(intf);
+                        inetAddr = BezirkNetworkUtilities.getIpForInterface(intf);
                         return inetAddr;
                     }
 
@@ -96,8 +96,8 @@ public class DiscoveryTest {
 
         assertEquals("DiscoveredMap size is not equal to the number of requests added", 2, getDiscoveredMapsize(discovery));
 
-        ZirkMessageHandler uhucallback = new MockCallBackZirk(new MockUhuZirk());
-        UhuCompManager.setplatformSpecificCallback(uhucallback);
+        ZirkMessageHandler uhucallback = new MockCallBackZirk(new MockBezirkZirk());
+        BezirkCompManager.setplatformSpecificCallback(uhucallback);
 
 		/*Testing addResponse api in discovery*/
         DiscoveryResponse response = new DiscoveryResponse(recipient, sphereId, requestKey, discoveryId);

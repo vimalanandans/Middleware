@@ -11,11 +11,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class FeaturesTest {
     @Test
-    public void TestUhuComms() {
+    public void TestBezirkComms() {
         /**
          * Make sure you have features.properties as per the feature implementation
          * features.properties should contain the below
-         COMMS_UHU=true
+         COMMS_BEZIRK=true
          COMMS_ZYRE=false
          TODO : use TogglzRule from http://www.togglz.org/documentation/testing.html
          * */
@@ -25,8 +25,8 @@ public class FeaturesTest {
 
         }
 
-        assertTrue("Uhu comms should be enabled", CommsFeature.COMMS_UHU.isActive());
-        assertFalse("Uhu zyre shouldn't be enabled", CommsFeature.COMMS_ZYRE.isActive());
-        assertFalse("Uhu secure should be null or not defined ", CommsFeature.COMMS_SECURE.isActive());
+        assertTrue("Bezirk comms should be enabled", CommsFeature.COMMS_UHU.isActive());
+        assertFalse("Bezirk zyre shouldn't be enabled", CommsFeature.COMMS_ZYRE.isActive());
+        assertFalse("Bezirk secure should be null or not defined ", CommsFeature.COMMS_SECURE.isActive());
     }
 }

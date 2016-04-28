@@ -11,7 +11,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.controlui.R;
 import com.bezirk.remotelogging.loginterface.IUhuLogging;
@@ -256,7 +256,7 @@ class LogDataActivityHelper {
     String getDeviceNameFromDeviceId(final String deviceId) {
         if (deviceId == null)
             return RECIPIENT_MULTICAST_VALUE;
-        String tempDeviceName = UhuCompManager.getSphereForSadl().getDeviceNameFromSphere(deviceId);
+        String tempDeviceName = BezirkCompManager.getSphereForSadl().getDeviceNameFromSphere(deviceId);
         return (null == tempDeviceName) ? deviceId : tempDeviceName;
     }
 
@@ -320,7 +320,7 @@ class LogDataActivityHelper {
     String getSphereNameFromSphereId(final String sphereId) {
         StringBuilder tempSphereName = new StringBuilder();
         try {
-            tempSphereName.append(UhuCompManager.getSphereUI().getSphere(sphereId).getSphereName());
+            tempSphereName.append(BezirkCompManager.getSphereUI().getSphere(sphereId).getSphereName());
         } catch (NullPointerException ne) {
             log.error("Error in fetching sphereName from sphere UI", ne);
             tempSphereName.append("Un-defined");

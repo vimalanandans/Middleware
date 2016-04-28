@@ -1,8 +1,7 @@
 package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
-import com.bezirk.starter.UhuConfig;
-
+import com.bezirk.starter.BezirkConfig;
 
 public abstract class Factory {
     private static Bezirk instance = null;
@@ -22,10 +21,10 @@ public abstract class Factory {
     /**
      * TODO move this to java common
      */
-    public static Bezirk getInstance(UhuConfig uhuConfig) {
+    public static Bezirk getInstance(BezirkConfig bezirkConfig) {
         synchronized (Factory.class) {
             if (instance == null) {
-                instance = (Bezirk) new Proxy(uhuConfig);
+                instance = (Bezirk) new Proxy(bezirkConfig);
             }
             return instance;
         }

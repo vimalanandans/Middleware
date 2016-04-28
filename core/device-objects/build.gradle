@@ -1,7 +1,7 @@
 apply plugin: 'java'
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Uhu Device Objects', 'Implementation-Version': version
+        attributes 'Implementation-Title': 'Bezirk Device Objects', 'Implementation-Version': version
     }
 }
 

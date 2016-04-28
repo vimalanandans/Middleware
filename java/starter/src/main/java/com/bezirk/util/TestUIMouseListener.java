@@ -1,6 +1,6 @@
 package com.bezirk.util;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.statckstatus.ui.StackStatusUI;
 
 import java.awt.event.MouseEvent;
@@ -32,7 +32,7 @@ public class TestUIMouseListener implements MouseListener {
 
         if ("commsUI".equalsIgnoreCase(uiType)) {
             final String receivedMsgs = commsTest
-                    .getSelectedServices(UhuCompManager.getUpaDevice()
+                    .getSelectedServices(BezirkCompManager.getUpaDevice()
                             .getDeviceName() + ":" + pingCount);
             if (BezirkValidatorUtility.checkForString(receivedMsgs)) {
                 JOptionPane.showMessageDialog(null, receivedMsgs,

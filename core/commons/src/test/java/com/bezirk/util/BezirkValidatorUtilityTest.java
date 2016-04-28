@@ -8,7 +8,7 @@ import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -61,7 +61,7 @@ public class BezirkValidatorUtilityTest {
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
 
-                        inetAddr = UhuNetworkUtilities.getIpForInterface(intf);
+                        inetAddr = BezirkNetworkUtilities.getIpForInterface(intf);
                         return inetAddr;
                     }
 
@@ -123,14 +123,14 @@ public class BezirkValidatorUtilityTest {
     private void testCheckUhuServiceId() {
 
 		/*-------------- Positive cases --------------*/
-        isValid = BezirkValidatorUtility.checkUhuServiceId(uhuServiceId);
+        isValid = BezirkValidatorUtility.checkBezirkZirkId(uhuServiceId);
         assertTrue("Non null serviceID is considered invalid by validator", isValid);
 
 		/*-------------- Negative cases --------------*/
-        isValid = BezirkValidatorUtility.checkUhuServiceId(null);
+        isValid = BezirkValidatorUtility.checkBezirkZirkId(null);
         assertFalse("Null serviceID is considered valid by validator", isValid);
 
-        isValid = BezirkValidatorUtility.checkUhuServiceId(new BezirkZirkId(null));
+        isValid = BezirkValidatorUtility.checkBezirkZirkId(new BezirkZirkId(null));
         assertFalse("Null serviceID is considered valid by validator", isValid);
     }
 

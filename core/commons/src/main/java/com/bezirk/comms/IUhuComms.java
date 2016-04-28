@@ -3,8 +3,8 @@ package com.bezirk.comms;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.pipe.core.PipeManager;
-import com.bezirk.sadl.UhuSadlManager;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
+import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
 import java.net.InetAddress;
@@ -62,14 +62,14 @@ public interface IUhuComms {
      * creates queues, threads, sockets
      **/
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             UhuSadlManager sadl, PipeManager pipe);
+                             BezirkSadlManager sadl, PipeManager pipe);
 
     public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
 
     /**
      * Set the sphere for sadl. for late initialization
      */
-    public void setSphereForSadl(final IUhuSphereForSadl uhuSphere);
+    public void setSphereForSadl(final BezirkSphereForSadl uhuSphere);
 
 }
 

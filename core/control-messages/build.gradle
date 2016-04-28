@@ -1,7 +1,7 @@
 apply plugin: 'java'
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Control Messages for Uhu', 'Implementation-Version': version
+        attributes 'Implementation-Title': 'Control Messages for Bezirk', 'Implementation-Version': version
     }
 }
 

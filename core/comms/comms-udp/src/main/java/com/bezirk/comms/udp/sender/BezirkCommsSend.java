@@ -1,7 +1,7 @@
 package com.bezirk.comms.udp.sender;
 
 import com.bezirk.checksum.BezirkCheckSum;
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.commons.BezirkVersion;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlLedger;
@@ -61,7 +61,7 @@ public class BezirkCommsSend {
         if (tcMessage.getNumOfSends() == 1) {
             String preHeader = "," + tcMessage.getHeader().getSphereName() + ",";
 
-            byte[] header = UhuCompManager.getSphereForSadl().encryptSphereContent(tcMessage.getHeader().getSphereName(), tcMessage.getSerializedHeader());
+            byte[] header = BezirkCompManager.getSphereForSadl().encryptSphereContent(tcMessage.getHeader().getSphereName(), tcMessage.getSerializedHeader());
             if (header == null) {
                 logger.error(" Failed: Header cannot be encrypted");
                 return false;
@@ -139,7 +139,7 @@ public class BezirkCommsSend {
     private static void sendEventLogMessage(final EventLedger eLedger, final String recipient) {
         try {
             LoggingQueueManager.loadLogSenderQueue(new BezirkLoggingMessage(eLedger.getHeader().getSphereName(),
-                    String.valueOf(currentDate.getTime()), UhuCompManager.getUpaDevice().getDeviceName(), recipient, eLedger.getHeader().getUniqueMsgId(),
+                    String.valueOf(currentDate.getTime()), BezirkCompManager.getUpaDevice().getDeviceName(), recipient, eLedger.getHeader().getUniqueMsgId(),
                     eLedger.getHeader().getTopic(), Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_SEND.name(), Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
@@ -155,7 +155,7 @@ public class BezirkCommsSend {
     private static void sendControlLogMessage(ControlLedger tcMsg, String recipient) {
         try {
             LoggingQueueManager.loadLogSenderQueue(new BezirkLoggingMessage(tcMsg.getSphereId(),
-                    String.valueOf(currentDate.getTime()), UhuCompManager.getUpaDevice().getDeviceName(), recipient, tcMsg.getMessage().getUniqueKey(),
+                    String.valueOf(currentDate.getTime()), BezirkCompManager.getUpaDevice().getDeviceName(), recipient, tcMsg.getMessage().getUniqueKey(),
                     tcMsg.getMessage().getDiscriminator().toString(), Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND.name(), Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
@@ -225,9 +225,9 @@ public class BezirkCommsSend {
 
         if (tcMsg.getNumOfSends() == 1) { //only do this for the for the first transmit
             //1a. Compute the Encrypted Msg
-            byte[] encryptMsg = UhuCompManager.getSphereForSadl().encryptSphereContent(tcMsg.getMessage().getSphereId(), tcMsg.getSerializedMessage());
+            byte[] encryptMsg = BezirkCompManager.getSphereForSadl().encryptSphereContent(tcMsg.getMessage().getSphereId(), tcMsg.getSerializedMessage());
             if (null == encryptMsg) {
-                logger.info("Uhu sphere Failed: Could not encrypt msg");
+                logger.info("Bezirk sphere Failed: Could not encrypt msg");
                 return false;
             }
             //1b. set encrypted message

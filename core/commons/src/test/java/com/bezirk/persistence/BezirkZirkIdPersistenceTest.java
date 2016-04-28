@@ -49,14 +49,14 @@ public class BezirkZirkIdPersistenceTest {
         assertNotNull(regPersistence);
         BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
 
-        BezirkProxyRegistry proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
+        BezirkProxyRegistry proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         assertNotNull(proxyRegistry);
-        assertNull(proxyRegistry.getUhuServiceId("null"));
+        assertNull(proxyRegistry.getBezirkServiceId("null"));
         // update the registry
-        proxyRegistry.updateUhuServiceId("zirk-A", "sid-1");
-        proxyPersistence.persistUhuProxyRegistry();
-        proxyRegistry.updateUhuServiceId("zirk-B", "sid-2");
-        proxyPersistence.persistUhuProxyRegistry();
+        proxyRegistry.updateBezirkZirkId("zirk-A", "sid-1");
+        proxyPersistence.persistBezirkProxyRegistry();
+        proxyRegistry.updateBezirkZirkId("zirk-B", "sid-2");
+        proxyPersistence.persistBezirkProxyRegistry();
 
         //close the db == Bezirk is stopped or Restart the Bezirk
         dbConnection.getDatabaseConnection().close();
@@ -66,11 +66,11 @@ public class BezirkZirkIdPersistenceTest {
         //Check if the data is persisted
         regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
         proxyPersistence = (BezirkProxyPersistence) regPersistence;
-        proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
+        proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 
-        assertEquals(proxyRegistry.getUhuServiceId("zirk-A"), "sid-1");
-        assertEquals(proxyRegistry.getUhuServiceId("zirk-B"), "sid-2");
-        assertNull(proxyRegistry.getUhuServiceId("zirk-X")); // should fail
+        assertEquals(proxyRegistry.getBezirkServiceId("zirk-A"), "sid-1");
+        assertEquals(proxyRegistry.getBezirkServiceId("zirk-B"), "sid-2");
+        assertNull(proxyRegistry.getBezirkServiceId("zirk-X")); // should fail
 
     }
 
@@ -88,17 +88,17 @@ public class BezirkZirkIdPersistenceTest {
         assertNotNull(regPersistence);
         BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
 
-        BezirkProxyRegistry proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
+        BezirkProxyRegistry proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         assertNotNull(proxyRegistry);
-        assertNull(proxyRegistry.getUhuServiceId("null"));
+        assertNull(proxyRegistry.getBezirkServiceId("null"));
         // update the registry
-        proxyRegistry.updateUhuServiceId("zirk-A", "sid-1");
-        proxyPersistence.persistUhuProxyRegistry();
-        proxyRegistry.updateUhuServiceId("zirk-B", "sid-2");
-        proxyPersistence.persistUhuProxyRegistry();
+        proxyRegistry.updateBezirkZirkId("zirk-A", "sid-1");
+        proxyPersistence.persistBezirkProxyRegistry();
+        proxyRegistry.updateBezirkZirkId("zirk-B", "sid-2");
+        proxyPersistence.persistBezirkProxyRegistry();
 
-        proxyRegistry.deleteUhuServiceId("zirk-A");
-        proxyPersistence.persistUhuProxyRegistry();
+        proxyRegistry.deleteBezirkZirkId("zirk-A");
+        proxyPersistence.persistBezirkProxyRegistry();
 
         //close the db == Bezirk is stopped or Restart the Bezirk
         dbConnection.getDatabaseConnection().close();
@@ -108,14 +108,14 @@ public class BezirkZirkIdPersistenceTest {
         //Check if the data is persisted
         regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
         proxyPersistence = (BezirkProxyPersistence) regPersistence;
-        proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
+        proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 
-        assertNull(proxyRegistry.getUhuServiceId("zirk-A")); // should fail
-        assertEquals(proxyRegistry.getUhuServiceId("zirk-B"), "sid-2");
-        assertNull(proxyRegistry.getUhuServiceId("zirk-X")); // should fail
+        assertNull(proxyRegistry.getBezirkServiceId("zirk-A")); // should fail
+        assertEquals(proxyRegistry.getBezirkServiceId("zirk-B"), "sid-2");
+        assertNull(proxyRegistry.getBezirkServiceId("zirk-X")); // should fail
 
-        proxyRegistry.deleteUhuServiceId("zirk-B");
-        proxyPersistence.persistUhuProxyRegistry();
+        proxyRegistry.deleteBezirkZirkId("zirk-B");
+        proxyPersistence.persistBezirkProxyRegistry();
 
         //close the db == Bezirk is stopped or Restart the Bezirk
         dbConnection.getDatabaseConnection().close();
@@ -125,11 +125,11 @@ public class BezirkZirkIdPersistenceTest {
 
         regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
         proxyPersistence = (BezirkProxyPersistence) regPersistence;
-        proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
+        proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 
-        assertNull(proxyRegistry.getUhuServiceId("zirk-A")); // should fail
-        assertNull(proxyRegistry.getUhuServiceId("zirk-B")); // should fail
-        assertNull(proxyRegistry.getUhuServiceId("zirk-X")); // should fail
+        assertNull(proxyRegistry.getBezirkServiceId("zirk-A")); // should fail
+        assertNull(proxyRegistry.getBezirkServiceId("zirk-B")); // should fail
+        assertNull(proxyRegistry.getBezirkServiceId("zirk-X")); // should fail
 
     }
 
@@ -146,23 +146,23 @@ public class BezirkZirkIdPersistenceTest {
         assertNotNull(regPersistence);
         BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
 
-        BezirkProxyRegistry proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
+        BezirkProxyRegistry proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         assertNotNull(proxyRegistry);
-        assertNull(proxyRegistry.getUhuServiceId("null"));
+        assertNull(proxyRegistry.getBezirkServiceId("null"));
         // update the registry
-        proxyRegistry.updateUhuServiceId("zirk-A", "sid-1");
-        proxyPersistence.persistUhuProxyRegistry();
-        proxyRegistry.updateUhuServiceId("zirk-B", "sid-2");
-        proxyPersistence.persistUhuProxyRegistry();
+        proxyRegistry.updateBezirkZirkId("zirk-A", "sid-1");
+        proxyPersistence.persistBezirkProxyRegistry();
+        proxyRegistry.updateBezirkZirkId("zirk-B", "sid-2");
+        proxyPersistence.persistBezirkProxyRegistry();
 
-        proxyRegistry.deleteUhuServiceId("zirk-A");
-        proxyRegistry.deleteUhuServiceId("zirk-B");
+        proxyRegistry.deleteBezirkZirkId("zirk-A");
+        proxyRegistry.deleteBezirkZirkId("zirk-B");
 
-        proxyPersistence.persistUhuProxyRegistry();
+        proxyPersistence.persistBezirkProxyRegistry();
 
-        assertNull(proxyRegistry.getUhuServiceId("zirk-A")); // should fail
-        assertNull(proxyRegistry.getUhuServiceId("zirk-B")); // should fail
-        assertNull(proxyRegistry.getUhuServiceId("zirk-X")); // should fail
+        assertNull(proxyRegistry.getBezirkServiceId("zirk-A")); // should fail
+        assertNull(proxyRegistry.getBezirkServiceId("zirk-B")); // should fail
+        assertNull(proxyRegistry.getBezirkServiceId("zirk-X")); // should fail
 
     }
 

@@ -1,5 +1,5 @@
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Protocols for Uhu Basics Sample Code', 'Implementation-Version': version
+        attributes 'Implementation-Title': 'Protocols for Bezirk Basics Sample Code', 'Implementation-Version': version
     }
 }

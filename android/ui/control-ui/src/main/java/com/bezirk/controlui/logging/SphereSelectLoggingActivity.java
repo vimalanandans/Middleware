@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.controlui.R;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.remotelogging.util.Util;
@@ -281,7 +281,7 @@ public class SphereSelectLoggingActivity extends ActionBarActivity {
         @Override
         protected Integer doInBackground(Void... params) {
             try {
-                Iterator<BezirkSphereInfo> sphereInfoIterator = UhuCompManager.getSphereUI().getSpheres().iterator();
+                Iterator<BezirkSphereInfo> sphereInfoIterator = BezirkCompManager.getSphereUI().getSpheres().iterator();
                 while (sphereInfoIterator.hasNext()) {
                     sphereList.add(sphereInfoIterator.next().getSphereID());
                 }

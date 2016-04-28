@@ -20,11 +20,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.pipe.core.PipeRecord;
 import com.bezirk.pipe.core.PipeRegistry;
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallbacks;
 import com.bezirk.spheremanager.ui.DialogServiceListFragment;
@@ -71,7 +71,7 @@ public class DeviceListActivity extends FragmentActivity implements
 
         sphereID = getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
 
-        IUhuSphereAPI api = MainService.getSphereHandle();
+        BezirkSphereAPI api = MainService.getSphereHandle();
 
         if (BezirkValidatorUtility.isObjectNotNull(api)) {
 
@@ -229,7 +229,7 @@ public class DeviceListActivity extends FragmentActivity implements
             deviceListActivityHelper.shareSphere();
             return true;
         } else if (itemId == R.id.action_discover_sphere_details) {
-            UhuCompManager.getSphereUI().discoverSphere(getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID));
+            BezirkCompManager.getSphereUI().discoverSphere(getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID));
             return true;
         } else if (itemId == R.id.action_add_device_services_to_sphere) {
             addLocalServicesToSphere();

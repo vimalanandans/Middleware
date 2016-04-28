@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import com.bezirk.commons.BezirkVersion;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.IUhuQRCode;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.starter.MainService;
@@ -78,7 +78,7 @@ public class ShareSphereActivity extends ActionBarActivity {
         final ActionBar actionBar = getActionBar();
         sphereID = getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
 
-        IUhuSphereAPI api = MainService.getSphereHandle();
+        BezirkSphereAPI api = MainService.getSphereHandle();
 
         if (api != null) {
             sphereInfo = api.getSphere(sphereID);
@@ -246,15 +246,15 @@ public class ShareSphereActivity extends ActionBarActivity {
 
         builder.setPositiveButton("OK", new CustomClickListener());
 
-        uhuVersion.setText("Expected Uhu-Version: " + BezirkVersion.UHU_VERSION);
+        uhuVersion.setText("Expected Bezirk-Version: " + BezirkVersion.UHU_VERSION);
         if (receivedUhuVersion != null) {
-            uhuExpectedVersionStatus.setText("Received Uhu-Version: " + receivedUhuVersion);
+            uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + receivedUhuVersion);
         } else {
-            uhuExpectedVersionStatus.setText("Received Uhu-Version: " + BezirkVersion.UHU_VERSION);
+            uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + BezirkVersion.UHU_VERSION);
         }
 
         if (showWarning) {
-            uhuStatus.setText("Different versions of Uhu exist in the network, there might be failure in the communication");
+            uhuStatus.setText("Different versions of Bezirk exist in the network, there might be failure in the communication");
         }
 
         builder.setView(alertView);

@@ -1,11 +1,11 @@
 package com.bezirk.comms.udp.listeners;
 
+import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.udp.validation.MessageValidators;
 import com.bezirk.control.messages.EventLedger;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +30,11 @@ public class EventUnicastListener implements Runnable {
     private final DatagramSocket unicastSocket;
     private final ExecutorService executor;
     private Boolean running = false;
-    private IUhuCommsLegacy uhuComms = null;
+    private BezirkCommsLegacy uhuComms = null;
     private CommsNotification commsErrNotificationError = null;
 
 
-    public EventUnicastListener(DatagramSocket unicastSocket, IUhuCommsLegacy uhuComms, CommsNotification commsNotificationCallback) {
+    public EventUnicastListener(DatagramSocket unicastSocket, BezirkCommsLegacy uhuComms, CommsNotification commsNotificationCallback) {
         this.unicastSocket = unicastSocket;
         this.commsErrNotificationError = commsNotificationCallback;
         executor = Executors.newFixedThreadPool(BezirkComms.getPOOL_SIZE());
@@ -46,7 +46,7 @@ public class EventUnicastListener implements Runnable {
         byte[] receiveData = new byte[BezirkComms.getMAX_BUFFER_SIZE()];
         DatagramPacket receivePacket;
         running = true;
-        InetAddress myAddress = UhuNetworkUtilities.getLocalInet();
+        InetAddress myAddress = BezirkNetworkUtilities.getLocalInet();
         if (myAddress == null) {
             logger.error("Cannot resolve Ip: About to stop thread");
             return;

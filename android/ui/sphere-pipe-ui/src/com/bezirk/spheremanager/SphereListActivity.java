@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallbacks;
 import com.bezirk.spheremanager.ui.DialogAddSphereFragment;
@@ -224,7 +224,7 @@ public class SphereListActivity extends FragmentActivity implements
     }
 
     private class CreateSphereAsyncTask extends AsyncTask<String, Void, String> {
-        final IUhuSphereAPI sphereAPI = MainService.getSphereHandle();
+        final BezirkSphereAPI sphereAPI = MainService.getSphereHandle();
         final List<BezirkZirkInfo> servicesToBeAdded = new ArrayList<BezirkZirkInfo>();
         String sphereId = null;
 

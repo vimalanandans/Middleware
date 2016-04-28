@@ -16,7 +16,7 @@ import java.util.List;
  * @author Rishabh Gulati, Vimal
  */
 
-public interface IUhuSphereAPI {
+public interface BezirkSphereAPI {
 
     /**
      * Creates a sphere

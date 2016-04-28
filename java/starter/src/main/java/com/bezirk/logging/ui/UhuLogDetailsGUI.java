@@ -4,7 +4,7 @@
  */
 package com.bezirk.logging.ui;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.logging.LogServiceActivatorDeactivator;
 import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
@@ -268,7 +268,7 @@ public class UhuLogDetailsGUI extends JFrame {
 
             return RECIPIENT_MULTICAST_VALUE;
         }
-        final String tempDeviceName = UhuCompManager.getSphereForSadl()
+        final String tempDeviceName = BezirkCompManager.getSphereForSadl()
                 .getDeviceNameFromSphere(deviceId);
         return (null == tempDeviceName) ? deviceId : tempDeviceName;
     }
@@ -282,7 +282,7 @@ public class UhuLogDetailsGUI extends JFrame {
     private String getSphereNameFromSphereId(final String sphereId) {
         final StringBuilder tempSphereName = new StringBuilder();
         try {
-            tempSphereName.append(UhuCompManager.getSphereUI()
+            tempSphereName.append(BezirkCompManager.getSphereUI()
                     .getSphere(sphereId).getSphereName());
         } catch (NullPointerException ne) {
             LOGGER.error("Error in fetching sphereName from sphere UI", ne);

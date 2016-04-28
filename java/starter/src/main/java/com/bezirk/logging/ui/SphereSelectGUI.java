@@ -4,7 +4,7 @@
  */
 package com.bezirk.logging.ui;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
@@ -106,7 +106,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
             rightSphereListModel.removeAllElements();
             leftSphereListModel.addElement(Util.ANY_SPHERE);
             try {
-                final Iterator<BezirkSphereInfo> sphereInfoIterator = UhuCompManager
+                final Iterator<BezirkSphereInfo> sphereInfoIterator = BezirkCompManager
                         .getSphereUI().getSpheres().iterator();
                 while (sphereInfoIterator.hasNext()) {
                     leftSphereListModel.addElement(sphereInfoIterator.next()

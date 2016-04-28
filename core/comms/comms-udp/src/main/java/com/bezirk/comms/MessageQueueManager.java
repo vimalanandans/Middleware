@@ -41,7 +41,7 @@ public class MessageQueueManager {
      * @see MessageQueue
      */
     private void setSendingMessageQueue(MessageQueue sendingMsgQueue) {
-        log.info("Uhu Sending Message Queue has been initialized\n");
+        log.info("Bezirk Sending Message Queue has been initialized\n");
         MessageQueueManager.sendingMessageQueue = sendingMsgQueue;
     }
 
@@ -60,7 +60,7 @@ public class MessageQueueManager {
      * @see MessageQueue
      */
     private void setReceiverMessageQueue(MessageQueue receiverMessageQueue) {
-        log.info("Uhu Receiver Message Queue has been initialized\n");
+        log.info("Bezirk Receiver Message Queue has been initialized\n");
         MessageQueueManager.receiverMessageQueue = receiverMessageQueue;
     }
 

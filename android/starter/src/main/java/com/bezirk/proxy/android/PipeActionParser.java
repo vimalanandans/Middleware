@@ -17,7 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import static com.bezirk.util.BezirkValidatorUtility.checkForString;
-import static com.bezirk.util.BezirkValidatorUtility.checkUhuServiceId;
+import static com.bezirk.util.BezirkValidatorUtility.checkBezirkZirkId;
 
 /**
  * Created by wya1pi on 8/21/14.
@@ -96,7 +96,7 @@ public class PipeActionParser {
     private BezirkZirkId serviceIdFromString(String serviceIdAsString) {
         Gson gson = new Gson();
         BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
-        if (!checkUhuServiceId(serviceId)) {
+        if (!checkBezirkZirkId(serviceId)) {
             logger.error("zirkId not valid: " + serviceId);
             return null;
         }

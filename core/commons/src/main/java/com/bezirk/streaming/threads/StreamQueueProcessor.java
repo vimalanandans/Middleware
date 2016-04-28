@@ -8,7 +8,7 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.sadl.ISadlEventReceiver;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.control.Objects.StreamRecord.StreamingStatus;
 import com.bezirk.util.BezirkValidatorUtility;
@@ -36,7 +36,7 @@ public class StreamQueueProcessor implements Runnable {
 
     private final ISadlEventReceiver sadlReceiver;
 
-    private IUhuSphereForSadl sphereForSadl;
+    private BezirkSphereForSadl sphereForSadl;
 
     public StreamQueueProcessor(MessageQueue msgQueue, ISadlEventReceiver sadlReceiver) {
         this.sadlReceiver = sadlReceiver;
@@ -44,7 +44,7 @@ public class StreamQueueProcessor implements Runnable {
 
     }
 
-    public void setSphereForSadl(IUhuSphereForSadl sphereForSadl) {
+    public void setSphereForSadl(BezirkSphereForSadl sphereForSadl) {
         this.sphereForSadl = sphereForSadl;
     }
 
@@ -59,11 +59,11 @@ public class StreamQueueProcessor implements Runnable {
     @Override
     public void run() {
         boolean running = true;
-        logger.debug("Uhu Stream Processor has started");
+        logger.debug("Bezirk Stream Processor has started");
         boolean uhuCallbackPresent = false;
         while (running) {
             if (Thread.currentThread().isInterrupted()) {
-                logger.debug("Stopping Uhu Stream Processor Thread");
+                logger.debug("Stopping Bezirk Stream Processor Thread");
                 running = false;
                 continue;
             }
@@ -114,7 +114,7 @@ public class StreamQueueProcessor implements Runnable {
         if (streamRecord.isIncremental
                 || streamRecord.allowDrops) {
 
-            logger.debug("Uhu Supports only RELIABLE-COMPLETE..as of now..");
+            logger.debug("Bezirk Supports only RELIABLE-COMPLETE..as of now..");
 
         } else {
 

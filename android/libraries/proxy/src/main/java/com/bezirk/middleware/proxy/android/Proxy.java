@@ -103,10 +103,10 @@ public final class Proxy implements Bezirk {
         ComponentName retName = mContext.startService(registerIntent);
 
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu installed?");
+            Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk installed?");
             return null;
         } else {
-            Log.i(TAG, "Registration request is triggered to Uhu for Service :" + zirkName);
+            Log.i(TAG, "Registration request is triggered to Bezirk for Service :" + zirkName);
         }
         return serviceId;
     }
@@ -150,7 +150,7 @@ public final class Proxy implements Bezirk {
         ComponentName retName = mContext.startService(subscribeIntent);
 
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
             return;
         }
     }
@@ -179,7 +179,7 @@ public final class Proxy implements Bezirk {
         ComponentName retName = mContext.startService(unSubscribeIntent);
 
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
             return false;
         }
 
@@ -204,7 +204,7 @@ public final class Proxy implements Bezirk {
         ComponentName retName = mContext.startService(multicastEventIntent);
 
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
             return;
         }
     }
@@ -225,7 +225,7 @@ public final class Proxy implements Bezirk {
         unicastEventIntent.putExtra("eventMsg", event.toJson());
         ComponentName retName = mContext.startService(unicastEventIntent);
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
             return;
         }
     }
@@ -245,7 +245,7 @@ public final class Proxy implements Bezirk {
         multicastStreamIntent.putExtra("localStreamId", streamId);
         ComponentName retName = mContext.startService(multicastStreamIntent);
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
             return 0;
         }
         Log.d(TAG, "StreamId-> " + streamId);
@@ -281,7 +281,7 @@ public final class Proxy implements Bezirk {
         unicastStreamIntent.putExtra("localStreamId", streamId);
         ComponentName retName = mContext.startService(unicastStreamIntent);
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
             return 0;
         }
         Log.d(TAG, "StreamId-> " + streamId);
@@ -318,7 +318,7 @@ public final class Proxy implements Bezirk {
 
         ComponentName retName = mContext.startService(addPipe);
         if (retName == null) {
-            Log.e(TAG, "Unable to start the Uhu Service. returning null for zirk id. Is Uhu this installed?");
+            Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
             return;
         }
     }

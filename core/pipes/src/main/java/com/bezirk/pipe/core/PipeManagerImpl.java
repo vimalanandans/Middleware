@@ -112,7 +112,7 @@ public class PipeManagerImpl implements PipeManager {
         log.info("beginning processRemoteSend() ...");
 
         if (uhuHeader == null) {
-            log.error("Uhu Header is null.  Not sending via cloudpipe: " + serializedEvent);
+            log.error("Bezirk Header is null.  Not sending via cloudpipe: " + serializedEvent);
             return;
         }
         if (uhuHeader instanceof UnicastHeader) {

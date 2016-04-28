@@ -22,15 +22,15 @@ import javax.imageio.ImageIO;
 /**
  * Created by GUR1PI on 8/9/2014.
  */
-public class UhuSphereForPC extends UhuSphere implements IUhuQRCode,
+public class BezirkSphereForPC extends BezirkSphere implements IUhuQRCode,
         IUhuSphereListener {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(UhuSphereForPC.class);
+            .getLogger(BezirkSphereForPC.class);
     private final SphereUI sphereUI;
 
-    public UhuSphereForPC(CryptoEngine cryptoEngine,
-                          UPADeviceInterface upaDevice, SphereRegistry sphereRegistry) {
+    public BezirkSphereForPC(CryptoEngine cryptoEngine,
+                             UPADeviceInterface upaDevice, SphereRegistry sphereRegistry) {
         super(cryptoEngine, upaDevice, sphereRegistry);
         sphereUI = new SphereUI();
     }

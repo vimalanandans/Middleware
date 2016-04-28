@@ -1,11 +1,11 @@
 package com.bezirk.comms.udp.listeners;
 
+import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.udp.validation.MessageValidators;
 import com.bezirk.control.messages.EventLedger;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +33,11 @@ public class EventMulticastListener implements Runnable {
     private final ExecutorService executor;
     private Boolean running = false;
     private InetAddress myAddress;
-    private IUhuCommsLegacy uhuComms = null;
+    private BezirkCommsLegacy uhuComms = null;
     private CommsNotification commsErrNotificationError = null;
 
 
-    public EventMulticastListener(MulticastSocket multicastSocket, IUhuCommsLegacy uhuComms, CommsNotification commsNotificationCallback) {
+    public EventMulticastListener(MulticastSocket multicastSocket, BezirkCommsLegacy uhuComms, CommsNotification commsNotificationCallback) {
         this.multicastSocket = multicastSocket;
         this.commsErrNotificationError = commsNotificationCallback;
         executor = Executors.newFixedThreadPool(BezirkComms.getPOOL_SIZE());
@@ -50,7 +50,7 @@ public class EventMulticastListener implements Runnable {
         DatagramPacket receivePacket;
         try {
             multicastSocket.joinGroup(InetAddress.getByName(BezirkComms.getMULTICAST_ADDRESS()));
-            myAddress = UhuNetworkUtilities.getLocalInet();
+            myAddress = BezirkNetworkUtilities.getLocalInet();
             if (myAddress == null) {
                 logger.error("Cannot resolve Ip: About to stop thread");
                 return;

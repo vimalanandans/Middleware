@@ -13,7 +13,7 @@
 //import org.slf4j.LoggerFactory;
 //
 //import com.bezirk.comms.BezirkComms;
-//import com.bezrik.network.UhuNetworkUtilities;
+//import com.bezrik.network.BezirkNetworkUtilities;
 //
 ///**
 // * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
@@ -80,7 +80,7 @@
 //        try {
 //            multicastSocket.joinGroup(InetAddress.getByName(BezirkComms
 //                    .getMULTICAST_ADDRESS()));
-//            myAddress = UhuNetworkUtilities.getIpForInterface(NetworkInterface
+//            myAddress = BezirkNetworkUtilities.getIpForInterface(NetworkInterface
 //                    .getByName(BezirkComms.getINTERFACE_NAME()));
 //            running = true;
 //            logger.info("Event MulicastListener has Started\n");

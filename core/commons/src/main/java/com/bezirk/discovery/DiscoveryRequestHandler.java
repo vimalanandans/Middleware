@@ -1,6 +1,6 @@
 package com.bezirk.discovery;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
@@ -59,7 +59,7 @@ public class DiscoveryRequestHandler {
 
     private Boolean handleSphereDiscovery(DiscoveryRequest discoveryRequest) {
 
-        UhuCompManager.getSphereForSadl().processSphereDiscoveryRequest(discoveryRequest);
+        BezirkCompManager.getSphereForSadl().processSphereDiscoveryRequest(discoveryRequest);
 
         return true;
     }
@@ -74,9 +74,9 @@ public class DiscoveryRequestHandler {
             BezirkDiscoveredZirk dZirk = dZirks.next();
             BezirkZirkId sid = ((BezirkZirkEndPoint) dZirk.getZirkEndPoint()).getBezirkZirkId();
 
-            if (UhuCompManager.getSphereForSadl().isZirkInSphere(sid, req.getSphereId())) {
+            if (BezirkCompManager.getSphereForSadl().isZirkInSphere(sid, req.getSphereId())) {
                 //Set the Zirk Name
-                dZirk.name = UhuCompManager.getSphereForSadl().getZirkName(sid);
+                dZirk.name = BezirkCompManager.getSphereForSadl().getZirkName(sid);
                 //Populate response zirk list
                 response.getZirkList().add(dZirk);
             }

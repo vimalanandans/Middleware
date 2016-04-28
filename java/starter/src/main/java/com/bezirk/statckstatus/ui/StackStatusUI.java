@@ -14,7 +14,7 @@ public final class StackStatusUI {
     public static void showStackStatusUI(boolean status,
                                          String receivedVersion) {
         if (status) {
-            JOptionPane.showMessageDialog(null, "Uhu-is functioning normally",
+            JOptionPane.showMessageDialog(null, "Bezirk-is functioning normally",
                     "STACK-STATUS", JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane
@@ -26,7 +26,7 @@ public final class StackStatusUI {
                                     + "Received message version: "
                                     + receivedVersion
                                     + "\n\n\n"
-                                    + " Different Versions of Uhu exist in the network, there might be failure in the communication",
+                                    + " Different Versions of Bezirk exist in the network, there might be failure in the communication",
                             "STACK-STATUS", JOptionPane.ERROR_MESSAGE);
 
         }

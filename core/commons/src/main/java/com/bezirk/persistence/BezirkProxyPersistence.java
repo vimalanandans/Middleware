@@ -7,7 +7,7 @@ public interface BezirkProxyPersistence {
      *
      * @throws Exception if persisting is not possible
      */
-    public void persistUhuProxyRegistry() throws Exception;
+    public void persistBezirkProxyRegistry() throws Exception;
 
     /**
      * Loads the BezirkProxyRegistry
@@ -15,5 +15,5 @@ public interface BezirkProxyPersistence {
      * @return BezirkProxyRegistry
      * @throws Exception if loading is not possible
      */
-    public BezirkProxyRegistry loadUhuProxyRegistry() throws Exception;
+    public BezirkProxyRegistry loadBezirkProxyRegistry() throws Exception;
 }

@@ -5,20 +5,20 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestUhuConfig {
-    com.bezirk.starter.UhuConfig uhuConfig = new com.bezirk.starter.UhuConfig();
+    BezirkConfig bezirkConfig = new BezirkConfig();
 
 
     @Test
     public void testIsDispalyEnabled() {
 
-        uhuConfig.setDisplayEnable("TRUE");
-        assertTrue("DisplayEnable is not equal to the set value.", uhuConfig.isDisplayEnabled());
+        bezirkConfig.setDisplayEnable("TRUE");
+        assertTrue("DisplayEnable is not equal to the set value.", bezirkConfig.isDisplayEnabled());
 
-        uhuConfig.setDisplayEnable("true");
-        assertTrue("DisplayEnable is not equal to the set value.", uhuConfig.isDisplayEnabled());
+        bezirkConfig.setDisplayEnable("true");
+        assertTrue("DisplayEnable is not equal to the set value.", bezirkConfig.isDisplayEnabled());
 
-        uhuConfig.setDisplayEnable("enable");
-        assertFalse("DisplayEnable is not equal to the set value.", uhuConfig.isDisplayEnabled());
+        bezirkConfig.setDisplayEnable("enable");
+        assertFalse("DisplayEnable is not equal to the set value.", bezirkConfig.isDisplayEnabled());
 
     }
 
@@ -26,15 +26,15 @@ public class TestUhuConfig {
     public void testGetDisplayEnable() {
 
         String displayEnable = Boolean.FALSE.toString();
-        uhuConfig.setDisplayEnable(displayEnable);
-        assertEquals("DisplayEnable is not equal to the set value.", displayEnable, uhuConfig.getDisplayEnable());
+        bezirkConfig.setDisplayEnable(displayEnable);
+        assertEquals("DisplayEnable is not equal to the set value.", displayEnable, bezirkConfig.getDisplayEnable());
     }
 
     @Test
     public void testGetDataPath() {
         String dataPath = "dataPath";
-        uhuConfig.setDataPath(dataPath);
-        assertEquals("TestDataPath is not equal to the set value.", dataPath, uhuConfig.getDataPath());
+        bezirkConfig.setDataPath(dataPath);
+        assertEquals("TestDataPath is not equal to the set value.", dataPath, bezirkConfig.getDataPath());
 
 
     }

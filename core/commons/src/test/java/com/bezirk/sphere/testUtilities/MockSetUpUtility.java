@@ -1,7 +1,7 @@
 package com.bezirk.sphere.testUtilities;
 
+import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.CommsProperties;
-import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.devices.UPADeviceInterface;
@@ -25,9 +25,9 @@ import com.bezirk.sphere.impl.DiscoveryProcessor;
 import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
-import com.bezirk.sphere.impl.UhuSphere;
+import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.security.CryptoEngine;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 import com.j256.ormlite.table.TableUtils;
 
 import org.slf4j.Logger;
@@ -52,7 +52,7 @@ public class MockSetUpUtility {
     private static final Logger log = LoggerFactory.getLogger(MockSetUpUtility.class);
     private static final String DBPath = "./";
     private static final String DBVersion = DBConstants.DB_VERSION;
-    public UhuSphere uhuSphere = null;
+    public BezirkSphere bezirkSphere = null;
     public CryptoEngine cryptoEngine;
     public UPADeviceInterface upaDevice;
     public SphereRegistry registry;
@@ -78,35 +78,35 @@ public class MockSetUpUtility {
         sphereConfig = new SpherePropertiesMock();
         registry = spherePersistence.loadSphereRegistry();
         cryptoEngine = new CryptoEngine(registry);
-        uhuSphere = new UhuSphere(cryptoEngine, upaDevice, registry);
+        bezirkSphere = new BezirkSphere(cryptoEngine, upaDevice, registry);
         sphereRegistryWrapper = new SphereRegistryWrapper(registry, spherePersistence, upaDevice, cryptoEngine, null, sphereConfig);
         sphereRegistryWrapper.init();
         // create default sphere
-        // uhuSphere.createSphere(null, null);
+        // bezirkSphere.createSphere(null, null);
 
-        SphereDiscovery discovery = new SphereDiscovery(uhuSphere);
+        SphereDiscovery discovery = new SphereDiscovery(bezirkSphere);
         SphereDiscoveryProcessor.setDiscovery(discovery);
-        IUhuCommsLegacy uhuComms = mock(IUhuCommsLegacy.class);
+        BezirkCommsLegacy uhuComms = mock(BezirkCommsLegacy.class);
         when(uhuComms.sendMessage(any(ControlLedger.class))).thenReturn(true);
         CommsProperties commsProperties = new CommsProperties();
         uhuComms.initComms(commsProperties, inetAddr, null, null);
         uhuComms.startComms();
-        uhuSphere.initSphere(spherePersistence, uhuComms, null, sphereConfig);
+        bezirkSphere.initSphere(spherePersistence, uhuComms, null, sphereConfig);
 
-        Field spField = uhuSphere.getClass().getDeclaredField("shareProcessor");
+        Field spField = bezirkSphere.getClass().getDeclaredField("shareProcessor");
         spField.setAccessible(true);
-        shareProcessor = (ShareProcessor) spField.get(uhuSphere);
+        shareProcessor = (ShareProcessor) spField.get(bezirkSphere);
 
-        Field cpField = uhuSphere.getClass().getDeclaredField("catchProcessor");
+        Field cpField = bezirkSphere.getClass().getDeclaredField("catchProcessor");
         cpField.setAccessible(true);
-        catchProcessor = (CatchProcessor) cpField.get(uhuSphere);
+        catchProcessor = (CatchProcessor) cpField.get(bezirkSphere);
 
-        Field dpField = uhuSphere.getClass().getDeclaredField("discoveryProcessor");
+        Field dpField = bezirkSphere.getClass().getDeclaredField("discoveryProcessor");
         dpField.setAccessible(true);
-        discoveryProcessor = (DiscoveryProcessor) dpField.get(uhuSphere);
+        discoveryProcessor = (DiscoveryProcessor) dpField.get(bezirkSphere);
 
         // create default sphere
-        // uhuSphere.createSphere(null, null);
+        // bezirkSphere.createSphere(null, null);
     }
 
     public void destroyTestSetUp() throws SQLException, IOException, Exception {
@@ -124,7 +124,7 @@ public class MockSetUpUtility {
                     if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
 
-                        inetAddr = UhuNetworkUtilities.getIpForInterface(intf);
+                        inetAddr = BezirkNetworkUtilities.getIpForInterface(intf);
                         return inetAddr;
                     }
 

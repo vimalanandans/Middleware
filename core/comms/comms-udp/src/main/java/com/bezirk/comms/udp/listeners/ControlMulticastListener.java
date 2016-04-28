@@ -2,10 +2,10 @@ package com.bezirk.comms.udp.listeners;
 
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.IUhuCommsLegacy;
+import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.udp.validation.MessageValidators;
 import com.bezirk.control.messages.ControlLedger;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +26,10 @@ public class ControlMulticastListener implements Runnable {
     private final ExecutorService executor;
     private Boolean running = false;
     private InetAddress myAddress;
-    private IUhuCommsLegacy uhuComms = null;
+    private BezirkCommsLegacy uhuComms = null;
     private CommsNotification commsErrNotificationError = null;
 
-    public ControlMulticastListener(MulticastSocket multicastSocket, IUhuCommsLegacy uhuComms,
+    public ControlMulticastListener(MulticastSocket multicastSocket, BezirkCommsLegacy uhuComms,
                                     CommsNotification commsNotificationCallback) {
         this.multicastSocket = multicastSocket;
         this.commsErrNotificationError = commsNotificationCallback;
@@ -44,7 +44,7 @@ public class ControlMulticastListener implements Runnable {
         try {
             multicastSocket.joinGroup(InetAddress.getByName(BezirkComms.getCTRL_MULTICAST_ADDRESS()));
             running = true;
-            myAddress = UhuNetworkUtilities.getLocalInet();
+            myAddress = BezirkNetworkUtilities.getLocalInet();
             if (myAddress == null) {
                 logger.error("Cannot resolve Ip: About to stop thread");
                 return;

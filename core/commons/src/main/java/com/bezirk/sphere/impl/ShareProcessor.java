@@ -10,7 +10,7 @@ import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.messages.ShareRequest;
 import com.bezirk.sphere.messages.ShareResponse;
 import com.bezirk.sphere.security.SphereKeys;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -258,7 +258,7 @@ public class ShareProcessor {
                               String sharerSphereId) {
 
         logger.debug("sphere Exchange data:\n" + sphereExchangeData.toString());
-        logger.debug("Uhu Device Info:\n" + inviterBezirkDeviceInfo.toString());
+        logger.debug("Bezirk Device Info:\n" + inviterBezirkDeviceInfo.toString());
         logger.debug("Sharer sphere Id: " + sharerSphereId);
         // add device information
         sphereRegistryWrapper.addDevice(sphereExchangeData.getDeviceID(),
@@ -379,7 +379,7 @@ public class ShareProcessor {
                         (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
 
                 shareRequest = new ShareRequest(inviterShortCode, bezirkDeviceInfo,
-                        UhuNetworkUtilities.getServiceEndPoint(null), sharerSphereId);
+                        BezirkNetworkUtilities.getServiceEndPoint(null), sharerSphereId);
                 return shareRequest;
             }
         }
@@ -500,7 +500,7 @@ public class ShareProcessor {
                 BezirkDeviceInfo bezirkDeviceInfoToSend = new BezirkDeviceInfo(upaDeviceInterface.getDeviceId(),
                         deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
                         (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
-                shareResponse = new ShareResponse(UhuNetworkUtilities.getServiceEndPoint(null), sharer, uniqueKey,
+                shareResponse = new ShareResponse(BezirkNetworkUtilities.getServiceEndPoint(null), sharer, uniqueKey,
                         inviterShortCode, bezirkDeviceInfoToSend, sphereExchangeData, sharerSphereId);
                 return shareResponse;
             }

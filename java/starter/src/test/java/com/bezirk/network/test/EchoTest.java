@@ -1,7 +1,7 @@
 //package com.bezirk.network.test;
 //
 //import com.bezirk.comms.BezirkComms;
-//import com.bezirk.comms.UhuCommsPC;
+//import com.bezirk.comms.BezirkCommsPC;
 //import com.bezrik.network.UhuNetworkUtilities;
 //
 //import org.junit.After;
@@ -33,7 +33,7 @@
 //	public static Boolean success = false;
 //	@Before
 //	public void setUpListener(){
-//		UhuCommsPC.init();
+//		BezirkCommsPC.init();
 //
 //		try {
 //			eMSocket = new MulticastSocket(BezirkComms.getMULTICAST_PORT());

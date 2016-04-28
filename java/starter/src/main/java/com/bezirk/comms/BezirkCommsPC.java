@@ -1,7 +1,7 @@
 package com.bezirk.comms;
 
 import com.bezirk.devices.UPADeviceForPC;
-import com.bezirk.starter.UhuConfig;
+import com.bezirk.starter.BezirkConfig;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -10,12 +10,12 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Properties;
 
-public final class UhuCommsPC {
+public final class BezirkCommsPC {
     public static final String PROPS_FILE = "comms.properties";
     // Comms properties
-    private static final Logger logger = LoggerFactory.getLogger(UhuCommsPC.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkCommsPC.class);
 
-    private UhuCommsPC() {
+    private BezirkCommsPC() {
         /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
     }
 
@@ -23,7 +23,7 @@ public final class UhuCommsPC {
         init(null);
     }
 
-    public static void init(UhuConfig uhuConfig) {
+    public static void init(BezirkConfig bezirkConfig) {
         Properties props = new Properties();
         // First try loading from the current directory
         try {
@@ -34,8 +34,8 @@ public final class UhuCommsPC {
 
         // overrides the value for these properties if it is set as a system
         // property
-        overrideStringProperty("InterfaceName", props, uhuConfig);
-        overrideStringProperty("displayEnable", props, uhuConfig);
+        overrideStringProperty("InterfaceName", props, bezirkConfig);
+        overrideStringProperty("displayEnable", props, bezirkConfig);
 
         BezirkComms.setINTERFACE_NAME(props.getProperty("InterfaceName"));
         BezirkComms.setMULTICAST_ADDRESS(props.getProperty("EMulticastAddress"));
@@ -73,10 +73,10 @@ public final class UhuCommsPC {
             // PortFactory(BezirkComms.STARTING_PORT_FOR_STREAMING,
             // BezirkComms.ENDING_PORT_FOR_STREAMING); // initialize the
             // PortFactory
-            if (uhuConfig == null) {
+            if (bezirkConfig == null) {
                 BezirkComms.setDOWNLOAD_PATH(props.getProperty("FileSharePath"));
             } else {
-                BezirkComms.setDOWNLOAD_PATH(uhuConfig.getDataPath()
+                BezirkComms.setDOWNLOAD_PATH(bezirkConfig.getDataPath()
                         + File.separator + "downloads");
             }
             final File createDownloadFolder = new File(
@@ -108,14 +108,14 @@ public final class UhuCommsPC {
      * @return
      */
     private static void overrideStringProperty(String propName,
-                                               Properties props, UhuConfig uhuConfig) {
+                                               Properties props, BezirkConfig bezirkConfig) {
         final String value = System.getProperty(propName);
         if (BezirkValidatorUtility.checkForString(value)) {
             logger.info("found system property: " + propName + ": " + value);
             props.setProperty(propName, value);
 
             if ("displayEnable".equals(propName)) {
-                uhuConfig.setDisplayEnable(value);
+                bezirkConfig.setDisplayEnable(value);
             }
         } else {
             return;

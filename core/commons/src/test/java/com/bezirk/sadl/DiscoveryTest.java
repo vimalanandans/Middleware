@@ -40,7 +40,7 @@ public class DiscoveryTest {
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
     private static BezirkZirkId uhuServiceAId = new BezirkZirkId("ServiceA"), uhuServiceBId = new BezirkZirkId("ServiceB");
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
-    private static UhuSadlManager uhuSadlManager = null;
+    private static BezirkSadlManager bezirkSadlManager = null;
     private Set<BezirkDiscoveredZirk> discoveredServiceSet;
 
     private Set<BezirkZirkId> uhuServiceIdSet;
@@ -54,7 +54,7 @@ public class DiscoveryTest {
         log.info("############# Setting up DiscoveryTest TestCase ################");
 
         mockUtility.setUPTestEnv();
-        uhuSadlManager = mockUtility.uhuSadlManager;
+        bezirkSadlManager = mockUtility.bezirkSadlManager;
 
     }
 
@@ -71,23 +71,23 @@ public class DiscoveryTest {
     public void testDiscoverServices() {
 
 		/*Test1 : SadlManager should return null discoveredServiceSet when protocolRole is null.*/
-        discoveredServiceSet = uhuSadlManager.discoverZirks(null, reception);
+        discoveredServiceSet = bezirkSadlManager.discoverZirks(null, reception);
         assertNull("DiscoveredZirk set is not null when services not available.", discoveredServiceSet);
 
 		/*No services are subscribed to streamlessProtocol yet. 
 		 * DiscoveredServiceSet should be null.
 		 * */
-        discoveredServiceSet = uhuSadlManager.discoverZirks(subscribedStreamlessPRole, reception);
+        discoveredServiceSet = bezirkSadlManager.discoverZirks(subscribedStreamlessPRole, reception);
         assertNull("DiscoveredZirk set is not null when services not available.", discoveredServiceSet);
 		
 		
 		/* ServiceA and ServiceB are registered and subscribed to StreamlessProtocolRole.
 		 * ServiceB has its location set to null */
-        uhuSadlManager.registerService(uhuServiceAId);
-        uhuSadlManager.subscribeService(uhuServiceAId, subscribedStreamlessPRole);
-        uhuSadlManager.registerService(uhuServiceBId);
-        uhuSadlManager.subscribeService(uhuServiceBId, subscribedStreamlessPRole);
-        uhuSadlManager.setLocation(uhuServiceBId, new Location(null, null, null));
+        bezirkSadlManager.registerService(uhuServiceAId);
+        bezirkSadlManager.subscribeService(uhuServiceAId, subscribedStreamlessPRole);
+        bezirkSadlManager.registerService(uhuServiceBId);
+        bezirkSadlManager.subscribeService(uhuServiceBId, subscribedStreamlessPRole);
+        bezirkSadlManager.setLocation(uhuServiceBId, new Location(null, null, null));
 
         testDiscoveryWithSpecificLocation();
         testDiscoveryWithNullLocation();
@@ -101,12 +101,12 @@ public class DiscoveryTest {
 		
 		/*SadlManager is queried to discover services subscribed to StreamlessProtocolRole 
 		 * near to reception.SadlManager should return null discoveredServiceSet */
-        discoveredServiceSet = uhuSadlManager.discoverZirks(subscribedStreamlessPRole,
+        discoveredServiceSet = bezirkSadlManager.discoverZirks(subscribedStreamlessPRole,
                 reception);
         assertNull("DiscoveredZirk set is not null when services not available.", discoveredServiceSet);
 		
 		/*ServiceA is set to the location "OFFICE1/BLOCK1/RECEPTION"*/
-        uhuSadlManager.setLocation(uhuServiceAId, reception);
+        bezirkSadlManager.setLocation(uhuServiceAId, reception);
 		
 		/*	SadlManager should return serviceA for the discovery now. */
         uhuServiceIdSet = discoverServicesUsingProtocolAndLocation(subscribedStreamlessPRole,
@@ -130,7 +130,7 @@ public class DiscoveryTest {
 
     private Set<BezirkZirkId> discoverServicesUsingProtocolAndLocation(
             ProtocolRole protocolRole, Location loc) {
-        discoveredServiceSet = uhuSadlManager.discoverZirks(protocolRole, loc);
+        discoveredServiceSet = bezirkSadlManager.discoverZirks(protocolRole, loc);
         uhuServiceIdSet = getUhuServiceIdSetOfDiscoveredServices(discoveredServiceSet);
         return uhuServiceIdSet;
     }

@@ -1,6 +1,6 @@
 package com.bezirk.starter;
 
-import com.bezirk.comms.UhuCommsPC;
+import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.util.MockSetUpUtilityForUhuPC;
 
 import org.junit.AfterClass;
@@ -44,18 +44,18 @@ public class UhuPCNetworkUtilTest {
     /**
      * Positive Testcase :
      * <p/>
-     * Network interface is fetched after initializing UhuCommsPC.
+     * Network interface is fetched after initializing BezirkCommsPC.
      * Utility should return interface successfully.
      */
     private void testFetchNetworkInterface() {
 
         com.bezirk.starter.UhuPCNetworkUtil uhuPCNetworkUtil = new com.bezirk.starter.UhuPCNetworkUtil();
-        com.bezirk.starter.UhuConfig uhuConfig = new UhuConfig();
+        BezirkConfig bezirkConfig = new BezirkConfig();
 
-        UhuCommsPC.init();
+        BezirkCommsPC.init();
         NetworkInterface intf = null;
         try {
-            intf = uhuPCNetworkUtil.fetchNetworkInterface(uhuConfig);
+            intf = uhuPCNetworkUtil.fetchNetworkInterface(bezirkConfig);
         } catch (Exception e) {
             fail("Unable to fetch network interface. " + e.getMessage());
         }

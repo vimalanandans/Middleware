@@ -23,7 +23,7 @@ final class LoggingGUILabels {
 
     static final String LABEL_GET_SPHERE_LIST = "Get sphere List";
 
-    static final String LABEL_FRAME_HEADER = "Uhu-Logging";
+    static final String LABEL_FRAME_HEADER = "Bezirk-Logging";
 
     static final String LABEL_BUTTON_CLEAR_LOG = "Clear Log";
 
@@ -35,7 +35,7 @@ final class LoggingGUILabels {
 
     static final String LABEL_SELECTED_SPHERE = "Selected Spheres";
 
-    static final String LABEL_ENABLE_DEVELOPER_MODE = "Enable Uhu Developer Option";
+    static final String LABEL_ENABLE_DEVELOPER_MODE = "Enable Bezirk Developer Option";
     /*
      * COLUMN NAMES THAT ARE DISPLAYED IN LOGGING DETAILS GUI
      */

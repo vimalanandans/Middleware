@@ -1,24 +1,24 @@
 package com.bezirk.sphere.testSphereUsingVirtualComms;
 
+import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.comms.IPortFactory;
-import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.pipe.core.PipeManager;
-import com.bezirk.sadl.UhuSadlManager;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
+import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
 
 @SuppressWarnings("deprecation")
-public class UhuCommsMock implements IUhuCommsLegacy {
+public class UhuCommsMock implements BezirkCommsLegacy {
 
     //The message (request/response) that was received/sent by a device.
     public ControlLedger message;
@@ -72,7 +72,7 @@ public class UhuCommsMock implements IUhuCommsLegacy {
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             UhuSadlManager sadl, PipeManager pipe) {
+                             BezirkSadlManager sadl, PipeManager pipe) {
         // TODO Auto-generated method stub
         return false;
     }
@@ -85,7 +85,7 @@ public class UhuCommsMock implements IUhuCommsLegacy {
     }
 
     @Override
-    public void setSphereForSadl(IUhuSphereForSadl uhuSphere) {
+    public void setSphereForSadl(BezirkSphereForSadl uhuSphere) {
         // TODO Auto-generated method stub
 
     }

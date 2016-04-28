@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.bezirk.actions.BezirkActions;
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.rest.BezirkRestCommsManager;
 import com.bezirk.starter.MainService;
@@ -59,7 +59,7 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
     public void onSphereSelectCallback(int position) {
 
         Map<String, String> sphereList = new LinkedHashMap();
-        Iterator<BezirkSphereInfo> sphereInfoIterator = UhuCompManager.getSphereUI().getSpheres().iterator();
+        Iterator<BezirkSphereInfo> sphereInfoIterator = BezirkCompManager.getSphereUI().getSpheres().iterator();
         while (sphereInfoIterator.hasNext()) {
             BezirkSphereInfo bezirkSphereInfo = sphereInfoIterator.next();
             sphereList.put(bezirkSphereInfo.getSphereID(), bezirkSphereInfo.getSphereName());
@@ -83,7 +83,7 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
         List<String> sphereList = new ArrayList();
 
         sphereList.clear();
-        Iterator<BezirkSphereInfo> sphereInfoIterator = UhuCompManager.getSphereUI().getSpheres().iterator();
+        Iterator<BezirkSphereInfo> sphereInfoIterator = BezirkCompManager.getSphereUI().getSpheres().iterator();
         while (sphereInfoIterator.hasNext()) {
             sphereList.add(sphereInfoIterator.next().getSphereName());
         }

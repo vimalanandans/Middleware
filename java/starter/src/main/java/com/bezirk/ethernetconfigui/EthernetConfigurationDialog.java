@@ -25,7 +25,7 @@ public class EthernetConfigurationDialog {
         }
         final String[] interfaceNames = temp.toArray(new String[temp.size()]);
         return (String) JOptionPane.showInputDialog(null,
-                "Choose Interface Name", "Uhu Ethernet Configuration",
+                "Choose Interface Name", "Bezirk Ethernet Configuration",
                 JOptionPane.QUESTION_MESSAGE, null, interfaceNames, null);
 
     }

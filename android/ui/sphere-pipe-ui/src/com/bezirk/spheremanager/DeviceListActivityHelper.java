@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.bezirk.sphere.api.IUhuSphereAPI;
+import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.PipeListFragment;
@@ -156,7 +156,7 @@ public class DeviceListActivityHelper {
 
     boolean processQRcode(String data, String scanType, String sphereID) {
         boolean qrProcessStatus = false;
-        IUhuSphereAPI api = MainService.getSphereHandle();
+        BezirkSphereAPI api = MainService.getSphereHandle();
         if (BezirkValidatorUtility.isObjectNotNull(api)) {
             if (scanType.equals(DeviceListActivity.CATCH)) {
                 Log.d(TAG, "processing as catch");

@@ -20,12 +20,12 @@ import static org.junit.Assert.assertTrue;
 public class BezirkDeviceInfoTest {
     @Test
     public void test() {
-        testUhuDeviceInfo();
+        testBezirkDeviceInfo();
 
         testEquality();
     }
 
-    private void testUhuDeviceInfo() {
+    private void testBezirkDeviceInfo() {
         String deviceId = "Device123";
         String deviceName = "DeviceA";
         String deviceType = "PC";

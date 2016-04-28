@@ -8,8 +8,8 @@ import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sadl.ISadlEventReceiver;
-import com.bezirk.sadl.UhuSadlManager;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezirk.sadl.BezirkSadlManager;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -63,7 +63,7 @@ public class MessageDispatcherTest {
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
 
-                        inetAddr = UhuNetworkUtilities.getIpForInterface(intf);
+                        inetAddr = BezirkNetworkUtilities.getIpForInterface(intf);
                         return inetAddr;
                     }
 
@@ -80,7 +80,7 @@ public class MessageDispatcherTest {
     @Test
     public void test() {
 
-        ISadlEventReceiver uhusadlManager = new UhuSadlManager(null);
+        ISadlEventReceiver uhusadlManager = new BezirkSadlManager(null);
         MessageDispatcher messageDispatcher = new MessageDispatcher(uhusadlManager);
 
         CtrlMsgReceiver receiver = new MockReceiver();

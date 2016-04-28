@@ -27,7 +27,7 @@ public final class BezirkValidatorUtility {
      * @param serviceId BezirkZirkId that will check for ZirkId
      * @return true if BezirkZirkId is valid, false otherwise
      */
-    public static boolean checkUhuServiceId(final BezirkZirkId serviceId) {
+    public static boolean checkBezirkZirkId(final BezirkZirkId serviceId) {
         return !(serviceId == null || !checkForString(serviceId.getBezirkZirkId()));
     }
 
@@ -46,7 +46,7 @@ public final class BezirkValidatorUtility {
      * @return true if valid, false otherwise.
      */
     public static boolean checkBezirkZirkEndPoint(final BezirkZirkEndPoint uhuServiceEndPoint) {
-        return !(uhuServiceEndPoint == null || !checkUhuServiceId(uhuServiceEndPoint.zirkId) || !checkForString(uhuServiceEndPoint.device));
+        return !(uhuServiceEndPoint == null || !checkBezirkZirkId(uhuServiceEndPoint.zirkId) || !checkForString(uhuServiceEndPoint.device));
     }
 
     /**
@@ -134,6 +134,6 @@ public final class BezirkValidatorUtility {
     }
 
     public static boolean checkRTCStreamRequest(final BezirkZirkId serviceId, final BezirkZirkEndPoint sep) {
-        return checkUhuServiceId(serviceId) && checkBezirkZirkEndPoint(sep);
+        return checkBezirkZirkId(serviceId) && checkBezirkZirkEndPoint(sep);
     }
 }

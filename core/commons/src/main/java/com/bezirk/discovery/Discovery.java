@@ -1,6 +1,6 @@
 package com.bezirk.discovery;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.util.BezirkValidatorUtility;
@@ -69,7 +69,7 @@ public class Discovery {
                                 dLabel.getRequester().zirkId,
                                 gson.toJson(discRecord.getList()),
                                 dLabel.getDiscoveryId(), dLabel.isSphereDiscovery());
-                        UhuCompManager.getplatformSpecificCallback()
+                        BezirkCompManager.getplatformSpecificCallback()
                                 .onDiscoveryIncomingMessage(callbackMessage);
                         discoveredMap.remove(dLabel);
                         return true;

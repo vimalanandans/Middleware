@@ -57,7 +57,7 @@ public class BezirkRestCommsManager {
         return commsManager;
     }
 
-    public IUhuComms getUhuComms() {
+    public IUhuComms getBezirkComms() {
         return uhuComms;
     }
 

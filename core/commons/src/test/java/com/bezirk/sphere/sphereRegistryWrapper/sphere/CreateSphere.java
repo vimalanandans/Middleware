@@ -87,7 +87,7 @@ public class CreateSphere {
         String sphereName = "";
         String sphereId = sphereName + upaDevice.getDeviceId();
         sphereRegistryWrapper.createSphere(sphereName, null, null);
-        assertFalse("Uhu allowed sphere creation with empty name.", registry.spheres.containsKey(sphereId));
+        assertFalse("Bezirk allowed sphere creation with empty name.", registry.spheres.containsKey(sphereId));
     }
 
     /**
@@ -101,7 +101,7 @@ public class CreateSphere {
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_1;
         String sphereId = sphereName + upaDevice.getDeviceId();
         sphereRegistryWrapper.createSphere(sphereName, null, null);
-        assertTrue("Uhu dint allow valid sphere to be created.", registry.spheres.containsKey(sphereId));
+        assertTrue("Bezirk dint allow valid sphere to be created.", registry.spheres.containsKey(sphereId));
     }
 
     /**

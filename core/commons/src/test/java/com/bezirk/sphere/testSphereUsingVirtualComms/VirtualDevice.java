@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.testSphereUsingVirtualComms;
 
-import com.bezirk.comms.IUhuCommsLegacy;
+import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
@@ -15,7 +15,7 @@ import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
-import com.bezirk.sphere.impl.UhuSphere;
+import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.sphere.testUtilities.SpherePropertiesMock;
 
@@ -41,18 +41,18 @@ public class VirtualDevice {
     public UPADeviceInterface upaDevice;
     public ISphereConfig sphereConfig;
     public CryptoEngine cryptoEngine;
-    public UhuSphere uhuSphere;
+    public BezirkSphere bezirkSphere;
     public ShareProcessor shareProcessor;
     public CatchProcessor catchProcessor;
     public String sphereId = null;
 
-    public VirtualDevice(IUhuCommsLegacy uhuComms) throws Exception {
+    public VirtualDevice(BezirkCommsLegacy uhuComms) throws Exception {
         sphereConfig = new SpherePropertiesMock();
 
         upaDevice = new Device(virtualDeviceNumber);
         sphereRegistry = new SphereRegistry();
         cryptoEngine = new CryptoEngine(sphereRegistry);
-        uhuSphere = new UhuSphere(cryptoEngine, upaDevice, sphereRegistry);
+        bezirkSphere = new BezirkSphere(cryptoEngine, upaDevice, sphereRegistry);
 
         //Create mock SpherePersistence object for registry
         SpherePersistence spherePersistence = mock(SpherePersistence.class);
@@ -63,19 +63,19 @@ public class VirtualDevice {
         sphereRegistryWrapper = new SphereRegistryWrapper(sphereRegistry, spherePersistence, upaDevice, cryptoEngine, null, sphereConfig);
         sphereRegistryWrapper.init();
 
-        uhuSphere.initSphere(spherePersistence, uhuComms, null, sphereConfig);
+        bezirkSphere.initSphere(spherePersistence, uhuComms, null, sphereConfig);
 
         // Prepare the sphere in the given device and also add services to it.
         sphereId = prepareSphereAndReturnSphereId(sphereRegistryWrapper, upaDevice, Integer.toString(virtualDeviceNumber));
         log.info("Created sphere with sphere ID " + sphereId + "\n");
 
-        Field spField = uhuSphere.getClass().getDeclaredField("shareProcessor");
+        Field spField = bezirkSphere.getClass().getDeclaredField("shareProcessor");
         spField.setAccessible(true);
-        shareProcessor = (ShareProcessor) spField.get(uhuSphere);
+        shareProcessor = (ShareProcessor) spField.get(bezirkSphere);
 
-        Field cpField = uhuSphere.getClass().getDeclaredField("catchProcessor");
+        Field cpField = bezirkSphere.getClass().getDeclaredField("catchProcessor");
         cpField.setAccessible(true);
-        catchProcessor = (CatchProcessor) cpField.get(uhuSphere);
+        catchProcessor = (CatchProcessor) cpField.get(bezirkSphere);
 
         virtualDeviceNumber++;
     }

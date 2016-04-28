@@ -3,7 +3,7 @@ package com.bezirk.starter.helper;
 import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.IUhuComms;
@@ -16,7 +16,7 @@ import com.bezirk.persistence.util.DatabaseConnectionForAndroid;
 import com.bezirk.pipe.android.PipeCommsFactory;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.proxy.android.ProxyforServices;
-import com.bezirk.sadl.UhuSadlManager;
+import com.bezirk.sadl.BezirkSadlManager;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
 
@@ -81,13 +81,13 @@ class UhuStartStackHelper {
     }
 
     void setAndroicallback(MainService service) {
-        if (UhuCompManager.getplatformSpecificCallback() == null) {
+        if (BezirkCompManager.getplatformSpecificCallback() == null) {
             AndroidZirkMessageHandler uhuAndroidCallback = new AndroidZirkMessageHandler(service.getApplicationContext());
-            UhuCompManager.setplatformSpecificCallback(uhuAndroidCallback);
+            BezirkCompManager.setplatformSpecificCallback(uhuAndroidCallback);
         }
     }
 
-    IUhuComms initializeComms(InetAddress inetAddress, UhuSadlManager uhuSadlManager, ProxyforServices proxy, CommsNotification errNotificationCallback) {
+    IUhuComms initializeComms(InetAddress inetAddress, BezirkSadlManager bezirkSadlManager, ProxyforServices proxy, CommsNotification errNotificationCallback) {
         // Instantiate pipeManager before SenderThread so that it is ready to start sending over pipes
         PipeManager pipeComms = PipeCommsFactory.createPipeComms();
 
@@ -114,10 +114,10 @@ class UhuStartStackHelper {
         comms.registerNotification(errNotificationCallback);
 
         /** initialize the communications */
-        comms.initComms(null, inetAddress, uhuSadlManager, pipeComms);
+        comms.initComms(null, inetAddress, bezirkSadlManager, pipeComms);
 
         // init the comms manager for sadl
-        uhuSadlManager.initSadlManager(comms);
+        bezirkSadlManager.initSadlManager(comms);
 
         return comms;
     }

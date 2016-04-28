@@ -1,10 +1,11 @@
 package com.bezirk.starter;
 
 import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.util.BezirkValidatorUtility;
+import com.bezrik.network.BezirkNetworkUtilities;
 import com.bezrik.network.IntfInetPair;
-import com.bezrik.network.UhuNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +27,13 @@ import java.util.Scanner;
 final class UhuPCNetworkUtil {
     private static final Logger logger = LoggerFactory.getLogger(UhuPCNetworkUtil.class);
 
-    NetworkInterface fetchNetworkInterface(final UhuConfig uhuConfig)
+    NetworkInterface fetchNetworkInterface(final BezirkConfig bezirkConfig)
             throws SocketException, NullPointerException, Exception {
 
         NetworkInterface intf = null;
 
         // Resolve the NetworkInterface object for supplied InterfaceName
-        intf = resolveInterface(BezirkComms.getINTERFACE_NAME(), uhuConfig);
+        intf = resolveInterface(BezirkComms.getINTERFACE_NAME(), bezirkConfig);
 
         // If we chose a different Interface than what is written in the
         // config file and the config file is writable (it is not in a jar),
@@ -51,13 +52,13 @@ final class UhuPCNetworkUtil {
      * interface
      *
      * @param interfaceName
-     * @param uhuConfig
+     * @param bezirkConfig
      * @return
      * @throws SocketException
      * @throws NullPointerException
      */
     private NetworkInterface resolveInterface(final String interfaceName,
-                                              final UhuConfig uhuConfig) throws SocketException,
+                                              final BezirkConfig bezirkConfig) throws SocketException,
             NullPointerException {
         final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
         // Try to resolve interface for supplied interfaceName
@@ -68,7 +69,7 @@ final class UhuPCNetworkUtil {
         if (intf == null) {
             logger.info("Configured interface " + interfaceName
                     + " could not be resolved. Trying to detect interface.");
-            final List<IntfInetPair> interfaces = UhuNetworkUtilities
+            final List<IntfInetPair> interfaces = BezirkNetworkUtilities
                     .getIntfInetPair();
             final int numInf = interfaces.size();
 
@@ -96,11 +97,11 @@ final class UhuPCNetworkUtil {
             // prompt the user to choose from available interfaces
             else {
                 logger.info("Found multiple interfaces, prompting user to choose ...");
-                final String intfName = promptUserForInterface(uhuConfig);
+                final String intfName = promptUserForInterface(bezirkConfig);
                 if (BezirkValidatorUtility.checkForString(intfName)) {
                     intf = NetworkInterface.getByName(intfName);
                 } else {
-                    logger.error("Invalid interface name selected! Uhu is shutting down. . .");
+                    logger.error("Invalid interface name selected! Bezirk is shutting down. . .");
                     System.exit(0);
                 }
                 logger.info("User chose interface: " + intf.getName());
@@ -120,11 +121,11 @@ final class UhuPCNetworkUtil {
      * @return
      * @throws SocketException
      */
-    private String promptUserForInterface(final UhuConfig uhuConfig)
+    private String promptUserForInterface(final BezirkConfig bezirkConfig)
             throws SocketException {
         String interfaceName = null;
-        if (uhuConfig.isDisplayEnabled()) {
-            final Iterator<IntfInetPair> itr = UhuNetworkUtilities
+        if (bezirkConfig.isDisplayEnabled()) {
+            final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
                     .getIntfInetPair().iterator();
             final com.bezirk.ethernetconfigui.EthernetConfigurationDialog ethConfigDialog = new com.bezirk.ethernetconfigui.EthernetConfigurationDialog(
                     itr);
@@ -132,7 +133,7 @@ final class UhuPCNetworkUtil {
         }
         // If UI is not enabled, prompt user to enter interface via console
         else {
-            final Iterator<IntfInetPair> displayIterator = UhuNetworkUtilities
+            final Iterator<IntfInetPair> displayIterator = BezirkNetworkUtilities
                     .getIntfInetPair().iterator();
             while (displayIterator.hasNext()) {
                 final IntfInetPair pair = displayIterator.next();
@@ -144,7 +145,7 @@ final class UhuPCNetworkUtil {
                     intfScanner.next());
             interfaceName = tempInterfaceName.toString();
 
-            final Iterator<IntfInetPair> itr = UhuNetworkUtilities
+            final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
                     .getIntfInetPair().iterator();
             while (itr.hasNext()) {
                 final IntfInetPair pair = itr.next();
@@ -173,11 +174,11 @@ final class UhuPCNetworkUtil {
      */
     private boolean updateInterfaceInPropsFile(final NetworkInterface intf) {
         try {
-            final Properties properties = com.bezirk.comms.UhuCommsPC.loadProperties();
+            final Properties properties = BezirkCommsPC.loadProperties();
 
             // Get the path to the properties file
             final String path = UPADeviceInterface.class.getClassLoader()
-                    .getResource(com.bezirk.comms.UhuCommsPC.PROPS_FILE).getPath();
+                    .getResource(BezirkCommsPC.PROPS_FILE).getPath();
             final FileOutputStream output = new FileOutputStream(path);
 
             /*
@@ -185,7 +186,7 @@ final class UhuPCNetworkUtil {
              * Interface was chosen and the config file was not loaded from a
              * jar (as signified by a "!" being in the path)
              */
-            if (!intf.getName().equals(com.bezirk.comms.UhuCommsPC.PROPS_FILE)
+            if (!intf.getName().equals(BezirkCommsPC.PROPS_FILE)
                     && !path.contains("!")) {
                 properties.setProperty("InterfaceName", intf.getName());
                 properties.store(output, null);

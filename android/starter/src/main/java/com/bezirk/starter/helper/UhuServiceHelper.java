@@ -2,7 +2,7 @@ package com.bezirk.starter.helper;
 
 import android.content.Intent;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.Address;
@@ -52,7 +52,7 @@ public final class UhuServiceHelper {
             final Gson gson = new Gson();
             final BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
             final SubscribedRole subscribedRole = gson.fromJson(protocolRoleAsString, SubscribedRole.class);
-            if (BezirkValidatorUtility.checkUhuServiceId(serviceId) && BezirkValidatorUtility.checkProtocolRole(subscribedRole)) {
+            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId) && BezirkValidatorUtility.checkProtocolRole(subscribedRole)) {
                 proxy.subscribeService(serviceId, subscribedRole);
 
             } else {
@@ -76,11 +76,11 @@ public final class UhuServiceHelper {
         final String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
         final String serviceName = intent.getStringExtra(serviceNameKEY);
 
-        logger.info("Zirk registration to Uhu. Name : " + serviceName + " Id : " + serviceIdAsString);
+        logger.info("Zirk registration to Bezirk. Name : " + serviceName + " Id : " + serviceIdAsString);
 
         if (BezirkValidatorUtility.checkForString(serviceIdAsString) && BezirkValidatorUtility.checkForString(serviceName)) {
             final BezirkZirkId serviceId = new Gson().fromJson(serviceIdAsString, BezirkZirkId.class);
-            if (BezirkValidatorUtility.checkUhuServiceId(serviceId)) {
+            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
                 proxy.registerService(serviceId, serviceName);
             } else {
                 logger.error("Trying to subscribe with null ZirkId");
@@ -107,7 +107,7 @@ public final class UhuServiceHelper {
             final Gson gson = new Gson();
             final BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
             final SubscribedRole subscribedRole = gson.fromJson(protocolRoleAsString, SubscribedRole.class);
-            if (BezirkValidatorUtility.checkUhuServiceId(serviceId)) {
+            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
                 if (BezirkValidatorUtility.isObjectNotNull(subscribedRole)) {
                     proxy.unsubscribe(serviceId, subscribedRole);
                 } else {
@@ -151,7 +151,7 @@ public final class UhuServiceHelper {
             final int maxDiscovered = intent.getIntExtra(maxDiscoveredKEY, 1);
             final int discoveryId = intent.getIntExtra(discoveryIdKEY, 1);
 
-            if (BezirkValidatorUtility.checkUhuServiceId(serviceId)) {
+            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
                 proxy.discover(serviceId, address, pRole, discoveryId, timeout, maxDiscovered);
                 logger.info("Discovery Request pass to Proxy");
 
@@ -196,12 +196,12 @@ public final class UhuServiceHelper {
 
         if (!isStreamingValid) {
             StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(new Gson().fromJson(serviceIdAsString, BezirkZirkId.class), 0, localStreamId);
-            UhuCompManager.getplatformSpecificCallback().onStreamStatus(streamStatusCallbackMessage);
+            BezirkCompManager.getplatformSpecificCallback().onStreamStatus(streamStatusCallbackMessage);
         }
     }
 
     private boolean sendStream(File file, String streamAsString, short localStreamId, BezirkZirkId serviceId, BezirkZirkEndPoint recipient) {
-        if (BezirkValidatorUtility.checkBezirkZirkEndPoint(recipient) && BezirkValidatorUtility.checkUhuServiceId(serviceId)) {
+        if (BezirkValidatorUtility.checkBezirkZirkEndPoint(recipient) && BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
             short sendStreamStatus = proxy.sendStream(serviceId, recipient, streamAsString, file, localStreamId);
             if (-1 == sendStreamStatus) {
                 return false;
@@ -254,7 +254,7 @@ public final class UhuServiceHelper {
 
         if (!isStreamingValid) {
             StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(new Gson().fromJson(serviceIdAsString, BezirkZirkId.class), 0, localStreamId);
-            UhuCompManager.getplatformSpecificCallback().onStreamStatus(streamStatusCallbackMessage);
+            BezirkCompManager.getplatformSpecificCallback().onStreamStatus(streamStatusCallbackMessage);
         }
     }
 
@@ -277,7 +277,7 @@ public final class UhuServiceHelper {
         if (BezirkValidatorUtility.checkForString(serviceIdAsString) && BezirkValidatorUtility.checkForString(addressAsString) && BezirkValidatorUtility.checkForString(mEventMsg)) {
             final Gson gson = new Gson();
             final BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
-            if (BezirkValidatorUtility.checkUhuServiceId(serviceId)) {
+            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
                 final Address address = Address.fromJson(addressAsString);
                 logger.debug("Sending multicast event from zirk: " + serviceIdAsString);
                 proxy.sendMulticastEvent(serviceId, address, mEventMsg);
@@ -309,7 +309,7 @@ public final class UhuServiceHelper {
             final Gson gson = new Gson();
             final BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
             final BezirkZirkEndPoint serviceEndPoint = gson.fromJson(sepAsString, BezirkZirkEndPoint.class);
-            if (BezirkValidatorUtility.checkUhuServiceId(serviceId) && BezirkValidatorUtility.checkBezirkZirkEndPoint(serviceEndPoint)) {
+            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId) && BezirkValidatorUtility.checkBezirkZirkEndPoint(serviceEndPoint)) {
                 proxy.sendUnicastEvent(serviceId, serviceEndPoint, msg);
             } else {
                 logger.error("Check unicast parameters");
@@ -333,7 +333,7 @@ public final class UhuServiceHelper {
         if (BezirkValidatorUtility.checkForString(sid) && BezirkValidatorUtility.checkForString(location)) {
             BezirkZirkId serviceId = new Gson().fromJson(sid, BezirkZirkId.class);
             Location loc = new Gson().fromJson(location, Location.class);
-            if (BezirkValidatorUtility.checkUhuServiceId(serviceId)) {
+            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
                 proxy.setLocation(serviceId, loc);
             }
         } else {

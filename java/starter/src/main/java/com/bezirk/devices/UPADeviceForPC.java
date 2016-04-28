@@ -1,7 +1,7 @@
 package com.bezirk.devices;
 
 import com.bezirk.middleware.addressing.Location;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.apache.shiro.codec.Hex;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class UPADeviceForPC implements com.bezirk.devices.UPADeviceInterface {
 
             deviceName = fetchDeviceName();
 
-            deviceDetails.setDeviceId(Hex.encodeToString(UhuNetworkUtilities
+            deviceDetails.setDeviceId(Hex.encodeToString(BezirkNetworkUtilities
                     .getLocalMACAddress()));
             deviceDetails.setDeviceName(deviceName);
             deviceDetails.setDeviceLocation(new Location(location));

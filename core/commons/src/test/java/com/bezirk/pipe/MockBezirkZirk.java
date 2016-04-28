@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Set;
 
-public class MockUhuZirk implements BezirkListener {
+public class MockBezirkZirk implements BezirkListener {
 
     private BezirkZirkId serviceId = new BezirkZirkId(ServiceRegistration.generateUniqueServiceID());
 

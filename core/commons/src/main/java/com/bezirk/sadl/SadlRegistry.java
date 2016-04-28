@@ -1,11 +1,11 @@
 package com.bezirk.sadl;
 
-import com.bezirk.commons.UhuCompManager;
+import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezrik.network.UhuNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -332,7 +332,7 @@ public class SadlRegistry implements Serializable {
     public Location getLocationForService(BezirkZirkId serviceId) {
         if (isServiceRegisterd(serviceId)) {
             try {
-                return (defaultLocation.equals(locationMap.get(serviceId)) ? UhuCompManager.getUpaDevice().getDeviceLocation() : locationMap.get(serviceId));
+                return (defaultLocation.equals(locationMap.get(serviceId)) ? BezirkCompManager.getUpaDevice().getDeviceLocation() : locationMap.get(serviceId));
             } catch (Exception e) {
                 logger.error("Exception in fetching the device Location", e);
                 return null;
@@ -421,7 +421,7 @@ public class SadlRegistry implements Serializable {
                 continue;
             }
             discoveredServices.add(new BezirkDiscoveredZirk(
-                    UhuNetworkUtilities.getServiceEndPoint(serviceId), null, protocolRole, serviceLocation));
+                    BezirkNetworkUtilities.getServiceEndPoint(serviceId), null, protocolRole, serviceLocation));
         }
         if (discoveredServices.isEmpty()) {
             logger.debug("No services are present in the location: {} subscribed to Protocol Role: {}",
