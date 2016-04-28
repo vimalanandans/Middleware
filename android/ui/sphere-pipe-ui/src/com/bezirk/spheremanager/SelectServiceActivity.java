@@ -76,7 +76,7 @@ public class SelectServiceActivity extends FragmentActivity implements
                     .findViewById(R.id.name_of_device);
             device_name.setText(item.getDeviceName());
 
-            if (item.getDeviceRole() == BezirkDeviceInfo.UhuDeviceRole.UHU_CONTROL) {
+            if (item.getDeviceRole() == BezirkDeviceInfo.BezirkDeviceRole.UHU_CONTROL) {
                 device_name.setTypeface(null, Typeface.BOLD);
             }
 

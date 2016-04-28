@@ -16,7 +16,7 @@ public class CloudResponse {
     protected Map<String, List<String>> httpHeader;
 
     /**
-     * Uhu header information needed for routing to local services
+     * Bezirk header information needed for routing to local services
      */
     protected PipeHeader pipeHeader = null;
 

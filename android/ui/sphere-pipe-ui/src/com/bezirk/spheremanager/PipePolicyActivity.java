@@ -31,10 +31,10 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.bezirk.actions.UhuActions.KEY_PIPE_NAME;
-import static com.bezirk.actions.UhuActions.KEY_PIPE_REQ_ID;
-import static com.bezirk.actions.UhuActions.KEY_PIPE_SPHEREID;
-import static com.bezirk.actions.UhuActions.KEY_SENDER_ZIRK_ID;
+import static com.bezirk.actions.BezirkActions.KEY_PIPE_NAME;
+import static com.bezirk.actions.BezirkActions.KEY_PIPE_REQ_ID;
+import static com.bezirk.actions.BezirkActions.KEY_PIPE_SPHEREID;
+import static com.bezirk.actions.BezirkActions.KEY_SENDER_ZIRK_ID;
 import static com.bezirk.util.BezirkValidatorUtility.checkUhuServiceId;
 
 public class PipePolicyActivity extends FragmentActivity implements OnClickListener {

@@ -19,7 +19,7 @@ public final class SignalingFactory {
     private static final Logger log = LoggerFactory.getLogger(SignalingFactory.class);
 
     /**
-     * Singleton Object holding the implementation of {@link ISignaling}
+     * Singleton Object holding the implementation of {@link Signaling}
      */
     private static Object signaling = null;
 

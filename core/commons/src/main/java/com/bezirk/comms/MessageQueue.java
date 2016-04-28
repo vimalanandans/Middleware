@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * @see EventUnicastListener
  */
 public class MessageQueue {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageQueue.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageQueue.class);
     private final static int MaxSize = 1000;
     private final ArrayList<Ledger> queue = new ArrayList<Ledger>();
 
@@ -37,14 +37,14 @@ public class MessageQueue {
                 try {
                     wait();
                 } catch (InterruptedException e) {
-                    LOGGER.error(
+                    logger.error(
                             "Interrupted while waiting when the queue was full ",
                             e);
                 }
             }
             if (queue.contains(message)) {
 
-                LOGGER.warn("message w/ already present in sender queue");
+                logger.warn("message w/ already present in sender queue");
 
             } else {
 
@@ -70,7 +70,7 @@ public class MessageQueue {
                 notifyAll();
             } else {
 
-                LOGGER.warn("message already removed from sender queue");
+                logger.warn("message already removed from sender queue");
 
             }
         }
@@ -86,7 +86,7 @@ public class MessageQueue {
                 try {
                     wait();
                 } catch (InterruptedException e) {
-                    LOGGER.warn("Send/Receive Queue Interrupted");
+                    logger.warn("Send/Receive Queue Interrupted");
                 }
             }
             return queue;

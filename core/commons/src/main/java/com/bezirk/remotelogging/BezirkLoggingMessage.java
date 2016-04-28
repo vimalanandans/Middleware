@@ -7,9 +7,9 @@ package com.bezirk.remotelogging;
 import com.google.gson.Gson;
 
 /**
- * This class defines the Uhu Logging Message that are used by the Platforms for Remote Logging.
+ * This class defines the Bezirk Logging Message that are used by the Platforms for Remote Logging.
  */
-public class UhuLoggingMessage {
+public class BezirkLoggingMessage {
     /**
      * sphere Name on which the Remote Logging Message is sent.
      */
@@ -43,7 +43,7 @@ public class UhuLoggingMessage {
      */
     public String version = null;
 
-    public UhuLoggingMessage() {
+    public BezirkLoggingMessage() {
         //	 Empty Constructor used by Json to toJson Deserialize
     }
 
@@ -60,9 +60,9 @@ public class UhuLoggingMessage {
      * @param typeOfMessage one of (EVENT-SEND, EVENT-RECEIVE, CONTROL-MESSAGE-SEND, CONTROL-MESSAGE-RECEIVE)
      * @param version       Version of the Logging Message
      */
-    public UhuLoggingMessage(String sphereName, String timeStamp,
-                             String sender, String recipient, String uniqueMsgId, String topic,
-                             String typeOfMessage, String version) {
+    public BezirkLoggingMessage(String sphereName, String timeStamp,
+                                String sender, String recipient, String uniqueMsgId, String topic,
+                                String typeOfMessage, String version) {
         super();
         this.sphereName = sphereName;
         this.timeStamp = timeStamp;

@@ -6,7 +6,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 /**
- * This message is used to respond to a SignedControlMessage(discriminator : UhuSphereLeave)
+ * This message is used to respond to a SignedControlMessage(discriminator : BezirkSphereLeave)
  *
  * @author Rishab Gulati
  */

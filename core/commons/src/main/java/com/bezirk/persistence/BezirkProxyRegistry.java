@@ -3,7 +3,7 @@ package com.bezirk.persistence;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class UhuProxyRegistry implements Serializable {
+public class BezirkProxyRegistry implements Serializable {
 
     private final HashMap<String, String> serviceIdsMap = new HashMap<String, String>();
 

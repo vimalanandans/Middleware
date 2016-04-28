@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 
-import com.bezirk.actions.UhuActions;
+import com.bezirk.actions.BezirkActions;
 import com.bezirk.sphere.api.IUhuDevMode;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuActionCommands;
@@ -163,12 +163,12 @@ public class DeviceControlActivity extends ActionBarActivity
                 intent = new Intent(context, MainService.class);
                 switch (dataModel.getImageId()) {
                     case R.drawable.upa_control: // Bezirk On/OFF
-                        action = checkStatus ? UhuActions.ACTION_START_UHU : UhuActions.ACTION_STOP_UHU;
+                        action = checkStatus ? BezirkActions.ACTION_START_UHU : BezirkActions.ACTION_STOP_UHU;
                         intent.setAction(action);
                         startService(intent);
                         break;
                     case R.drawable.ic_action_dev_mode: //dev mode on/off
-                        action = checkStatus ? UhuActions.ACTION_DEV_MODE_ON : UhuActions.ACTION_DEV_MODE_OFF;
+                        action = checkStatus ? BezirkActions.ACTION_DEV_MODE_ON : BezirkActions.ACTION_DEV_MODE_OFF;
                         intent.setAction(action);
                         startService(intent);
                         break;

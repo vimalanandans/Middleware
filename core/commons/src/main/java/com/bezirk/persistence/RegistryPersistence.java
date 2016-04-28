@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 /**
- * This common Registry class for the Uhu platform. It implements all the interfaces for different modules
- * of the Uhu that needs to be persisted. The different layers will get the corrosponding interfaces through
+ * This common Registry class for the Bezirk platform. It implements all the interfaces for different modules
+ * of the Bezirk that needs to be persisted. The different layers will get the corrosponding interfaces through
  * which they can load/ save the data to the persistence
  */
 public class RegistryPersistence extends DatabaseHelper implements SadlPersistence, SpherePersistence, BezirkProxyPersistence {
@@ -47,11 +47,11 @@ public class RegistryPersistence extends DatabaseHelper implements SadlPersisten
     }
 
     @Override
-    public UhuProxyRegistry loadUhuProxyRegistry() throws Exception {
-        if (null == getUhuProxyRegistry()) {
+    public BezirkProxyRegistry loadUhuProxyRegistry() throws Exception {
+        if (null == getBezirkProxyRegistry()) {
             loadRegistry();
         }
-        return getUhuProxyRegistry();
+        return getBezirkProxyRegistry();
     }
 
 

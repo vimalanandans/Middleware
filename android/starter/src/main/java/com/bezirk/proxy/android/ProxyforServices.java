@@ -31,7 +31,7 @@ import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.sadl.ISadlRegistry;
 import com.bezirk.starter.helper.UhuStackHandler;
 import com.bezirk.streaming.control.Objects.StreamRecord;
-import com.bezirk.streaming.rtc.ISignaling;
+import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
 import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.UhuNetworkUtilities;
@@ -262,9 +262,9 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
             return (short) -1;
         }
 
-        ISignaling signaling = null;
-        if (SignalingFactory.getSignalingInstance() instanceof ISignaling) {
-            signaling = (ISignaling) SignalingFactory.getSignalingInstance();
+        Signaling signaling = null;
+        if (SignalingFactory.getSignalingInstance() instanceof Signaling) {
+            signaling = (Signaling) SignalingFactory.getSignalingInstance();
         }
         if (signaling == null) {
             log.error("Feature not enabled.");

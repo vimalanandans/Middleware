@@ -20,7 +20,7 @@ import java.util.concurrent.Executors;
 
 /**
  * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
- *         The UhuCommsUnicastListener is a thread that listens for messages that unicasted on the Uhu network
+ *         The UhuCommsUnicastListener is a thread that listens for messages that unicasted on the Bezirk network
  *         On receiving a unicastPacket, the UhuCommsMulticastListener recreates the PackagedMessage and populates the ReceiverMessageQueue
  *         Note: the UhuCommsUnicastListener drops all echo messages(messages sent by the host device)
  */

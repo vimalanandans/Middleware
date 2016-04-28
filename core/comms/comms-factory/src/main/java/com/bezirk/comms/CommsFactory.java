@@ -26,7 +26,7 @@ public class CommsFactory {
         switch (activeComms) {
             default:
             case COMMS_UHU:
-                uhuComms = new UhuCommsManager();
+                uhuComms = new BezirkCommsManager();
                 log.debug("udp comms is created. ");
                 break;
             case COMMS_ZYRE_JNI:

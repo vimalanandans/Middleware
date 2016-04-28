@@ -31,7 +31,7 @@ dependencies {
 
     compile project(':java:libraries:comms-zyre-jni')
 
-    // Enable this to include Uhu-RTC
+    // Enable this to include Bezirk-RTC
     //	compile project(':uhu-pc-rtc')
 
     // external deps

@@ -17,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
  *         <p/>
  *         This class is a thread that is used to process Control messages that are within the Control Receiver Queue
- *         The thread interacts within the Uhu Internal Components in order to process the Control message and invoke services (if necessary)
+ *         The thread interacts within the Bezirk Internal Components in order to process the Control message and invoke services (if necessary)
  */
 public class ControlReceiverThread implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(ControlReceiverThread.class);

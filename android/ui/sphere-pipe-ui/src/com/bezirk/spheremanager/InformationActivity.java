@@ -74,7 +74,7 @@ public class InformationActivity extends FragmentActivity {
 
         thing_name.setText(item.getDeviceName());
 
-        if (item.getDeviceRole() == BezirkDeviceInfo.UhuDeviceRole.UHU_CONTROL) ;
+        if (item.getDeviceRole() == BezirkDeviceInfo.BezirkDeviceRole.UHU_CONTROL) ;
         {
             thing_name.setTypeface(null, Typeface.BOLD);
         }

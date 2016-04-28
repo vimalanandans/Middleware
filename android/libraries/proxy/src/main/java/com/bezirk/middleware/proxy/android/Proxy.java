@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.bezirk.actions.UhuActions;
+import com.bezirk.actions.BezirkActions;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.Address;
@@ -301,16 +301,16 @@ public final class Proxy implements Bezirk {
 
         Intent addPipe = new Intent();
         addPipe.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
-        addPipe.setAction(UhuActions.ACTION_PIPE_REQUEST);
-        addPipe.putExtra(UhuActions.KEY_PIPE_NAME, pipe.getName());
-        addPipe.putExtra(UhuActions.KEY_PIPE_REQ_ID, pipeId);
-        addPipe.putExtra(UhuActions.KEY_SENDER_ZIRK_ID, new Gson().toJson((BezirkZirkId) requester));
+        addPipe.setAction(BezirkActions.ACTION_PIPE_REQUEST);
+        addPipe.putExtra(BezirkActions.KEY_PIPE_NAME, pipe.getName());
+        addPipe.putExtra(BezirkActions.KEY_PIPE_REQ_ID, pipeId);
+        addPipe.putExtra(BezirkActions.KEY_SENDER_ZIRK_ID, new Gson().toJson((BezirkZirkId) requester));
 
-        addPipe.putExtra(UhuActions.KEY_PIPE_CLASS, pipe.getClass().getCanonicalName());
+        addPipe.putExtra(BezirkActions.KEY_PIPE_CLASS, pipe.getClass().getCanonicalName());
 
         // Add Pipe Policys
-        addPipe.putExtra(UhuActions.KEY_PIPE_POLICY_IN, allowedIn == null ? null : new BezirkPipePolicy(allowedIn).toJson());
-        addPipe.putExtra(UhuActions.KEY_PIPE_POLICY_OUT, allowedOut == null ? null : new BezirkPipePolicy(allowedOut).toJson());
+        addPipe.putExtra(BezirkActions.KEY_PIPE_POLICY_IN, allowedIn == null ? null : new BezirkPipePolicy(allowedIn).toJson());
+        addPipe.putExtra(BezirkActions.KEY_PIPE_POLICY_OUT, allowedOut == null ? null : new BezirkPipePolicy(allowedOut).toJson());
 
         Log.i(TAG, "Sending intent for pipe class: " + pipe.getClass().getCanonicalName());
 

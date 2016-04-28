@@ -15,7 +15,7 @@ import com.bezirk.persistence.SadlPersistence;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.remotelogging.messages.UhuLoggingMessage;
+import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
 import com.bezirk.remotelogging.queues.LoggingQueueManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
 import com.bezirk.remotelogging.status.LoggingStatus;
@@ -263,7 +263,7 @@ public class UhuSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadl
      */
     private void sendRemoteLogMessage(EventLedger eLedger) {
         try {
-            LoggingQueueManager.loadLogSenderQueue(new UhuLoggingMessage(eLedger.getHeader().getSphereName(),
+            LoggingQueueManager.loadLogSenderQueue(new BezirkLoggingMessage(eLedger.getHeader().getSphereName(),
                     String.valueOf(currentDate.getTime()), UhuCompManager.getUpaDevice().getDeviceName(),
                     Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(), eLedger.getHeader().getTopic(), Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {

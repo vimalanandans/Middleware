@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Uhu versions holds all the versions of uhu
+ * Bezirk versions holds all the versions of uhu
  * will be used by all the components to
  * that uses the version to be compatible and process accordingly.
  * the main uhu version is read from build file

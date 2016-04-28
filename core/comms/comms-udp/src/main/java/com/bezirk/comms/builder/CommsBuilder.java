@@ -1,7 +1,7 @@
 package com.bezirk.comms.builder;
 
 import com.bezirk.comms.IUhuComms;
-import com.bezirk.comms.UhuCommsManager;
+import com.bezirk.comms.BezirkCommsManager;
 
 /**
  * Created by vnd2kor on 4/13/2015.
@@ -13,8 +13,8 @@ public class CommsBuilder {
     static public IUhuComms createComms() {
         IUhuComms comms;
 
-        // for Uhu (as of now)
-        comms = new UhuCommsManager();
+        // for Bezirk (as of now)
+        comms = new BezirkCommsManager();
 
         return comms;
     }

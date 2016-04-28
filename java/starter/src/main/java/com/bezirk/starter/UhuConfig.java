@@ -7,9 +7,9 @@ import java.io.File;
 import java.util.Locale;
 
 /**
- * Hold the Uhu Config
+ * Hold the Bezirk Config
  * <p>
- * At the moment it holds the data about Uhu PC TODO: Move this file to
+ * At the moment it holds the data about Bezirk PC TODO: Move this file to
  * java-common so that all the configurations are inside this module.
  * </p>
  */
@@ -19,7 +19,7 @@ public class UhuConfig {
      * Relative data path
      */
     public static final String DATA_PATH_REL = "data" + File.separator + "uhu";
-    private static final Logger LOGGER = LoggerFactory.getLogger(UhuConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuConfig.class);
     /**
      * This will hold the full data path, which will be relative to APP_HOME or
      */
@@ -59,11 +59,11 @@ public class UhuConfig {
         final File dataDir = new File(dataPath);
         if (dataDir.exists()) {
 
-            LOGGER.info("Using existing dataDir:" + dataDir);
+            logger.info("Using existing dataDir:" + dataDir);
 
         } else {
 
-            LOGGER.info("Creating dataDir: " + dataDir);
+            logger.info("Creating dataDir: " + dataDir);
             dataDir.mkdirs();
         }
     }

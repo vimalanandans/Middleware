@@ -4,7 +4,7 @@
  */
 package com.bezirk.remotelogging.loginterface;
 
-import com.bezirk.remotelogging.messages.UhuLoggingMessage;
+import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
 
 /**
  * Generic Interface that each of the platforms should implement to receive the logger Messages.
@@ -12,9 +12,9 @@ import com.bezirk.remotelogging.messages.UhuLoggingMessage;
  */
 public interface IUhuLogging {
     /**
-     * Callback given by the Uhu-Logging module to the platform specific logging.
+     * Callback given by the Bezirk-Logging module to the platform specific logging.
      *
-     * @param uhuLogMessage UhuLoggingMessage containing the Logging information.
+     * @param uhuLogMessage BezirkLoggingMessage containing the Logging information.
      */
-    public void handleLogMessage(UhuLoggingMessage uhuLogMessage);
+    public void handleLogMessage(BezirkLoggingMessage uhuLogMessage);
 }

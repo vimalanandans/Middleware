@@ -78,7 +78,7 @@ public class DeviceListAdapter extends ArrayAdapter<BezirkDeviceInfo> {
         device_name.setText(item.getDeviceName());
 
         // this device is owner for the sphere
-        if (item.getDeviceRole() == BezirkDeviceInfo.UhuDeviceRole.UHU_CONTROL) {
+        if (item.getDeviceRole() == BezirkDeviceInfo.BezirkDeviceRole.UHU_CONTROL) {
             device_name.setTypeface(null, Typeface.BOLD);
         }
 

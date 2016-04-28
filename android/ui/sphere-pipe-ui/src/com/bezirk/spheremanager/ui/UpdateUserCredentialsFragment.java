@@ -97,7 +97,7 @@ public class UpdateUserCredentialsFragment extends Fragment {
                     public void onClick(View v) {
                         EditText password = (EditText) view.findViewById(R.id.password);
 
-                        //FIXME : Setting the local record copy. need to send it to Uhu
+                        //FIXME : Setting the local record copy. need to send it to Bezirk
                         Toast.makeText(getActivity(), "FIXME : Setting the local record copy. need to send it to Uhu", Toast.LENGTH_SHORT).show();
                         pipeRecords.get(pipeId).setPassword(password.getText().toString());
 

@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  * @author vbd4kor
- *         This class tests the Uhu for Registration and Unregistration Scenario.
+ *         This class tests the Bezirk for Registration and Unregistration Scenario.
  *         Steps: 1. registers the zirk with UhuFactory
  *         2. Check the Sid Map if it contains the ZirkId
  *         3. register the same zirk Again and check if the same zirk is generated.
@@ -22,7 +22,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class RegistrationUnregistrationTest {
     private static final Logger logger = LoggerFactory.getLogger(RegistrationUnregistrationTest.class);
-
 
     @BeforeClass
     public static void setup() {

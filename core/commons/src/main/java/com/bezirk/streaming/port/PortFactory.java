@@ -51,7 +51,7 @@ public class PortFactory implements IPortFactory {
     /**
      * This method is called by ControlReceiverThread when it receives a {@link ControlMessage} with Discriminator set to "StreamRequest". This method receives the
      * Key as [ MsgId:ServiceName:DeviceId ] from the {@link StreamRequest} and checks if any ports are available and return the int as positive value if available or -1 if not.
-     * If Uhu has already opened the {@link BezirkComms#MAX_SUPPORTED_STREAMS} then it returns -1. If the port is available and the key is not duplicate( i,e the Request has
+     * If Bezirk has already opened the {@link BezirkComms#MAX_SUPPORTED_STREAMS} then it returns -1. If the port is available and the key is not duplicate( i,e the Request has
      * arrived for the first time ) then it updates the activePorts Map with the port and portsMap in StreamStore with portMapKey and port.
      *
      * @param portMapKey key in form [MsgId:ServiceName:DeviceId] that used to keep track of active Stream

@@ -60,7 +60,7 @@
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-//		// commented by Vimal. This test is too specific to Uhu / Udp Comms. hence this tests are not needed.
+//		// commented by Vimal. This test is too specific to Bezirk / Udp Comms. hence this tests are not needed.
 //		//assertTrue("Echo Test Failed.",EchoTest.success);
 //	}
 //

@@ -5,7 +5,7 @@
 package com.bezirk.remotelogging.processors;
 
 import com.bezirk.remotelogging.loginterface.IUhuLogging;
-import com.bezirk.remotelogging.messages.UhuLoggingMessage;
+import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
 import com.bezirk.remotelogging.queues.LoggingQueueManager;
 import com.bezirk.remotelogging.util.Util;
 import com.google.gson.Gson;
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Processes the LogReceiverQueue. It makes a blocking call on the Log Receiver Queue and
  * waits for the queue to be updated. It retrieve the String from the LogReceiverQueue and
- * converts (de-serializes) it into the UhuLoggingMessage and gives it to the platform specific
+ * converts (de-serializes) it into the BezirkLoggingMessage and gives it to the platform specific
  * UhuLoggingHandler to update the UI.
  */
 public class LogReceiverQueueProcessor extends Thread {
@@ -33,7 +33,7 @@ public class LogReceiverQueueProcessor extends Thread {
      */
     private boolean isRunning = false;
     /**
-     * Gson to fromJson into UhuLoggingMessage
+     * Gson to fromJson into BezirkLoggingMessage
      */
     private Gson gson = null;
 
@@ -53,7 +53,7 @@ public class LogReceiverQueueProcessor extends Thread {
                 StringBuilder logMsgString = LoggingQueueManager.fetchFromLogReceiverQueue();
 
                 try {
-                    UhuLoggingMessage logMsg = gson.fromJson(logMsgString.toString(), UhuLoggingMessage.class);
+                    BezirkLoggingMessage logMsg = gson.fromJson(logMsgString.toString(), BezirkLoggingMessage.class);
                     if (Util.LOGGING_VERSION.equals(logMsg.version)) {
                         platformSpecificLogger.handleLogMessage(logMsg);
                     } else {

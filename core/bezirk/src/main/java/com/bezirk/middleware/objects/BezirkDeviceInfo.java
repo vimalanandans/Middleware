@@ -12,7 +12,7 @@ public class BezirkDeviceInfo {
     private final String deviceId;
     private final String deviceName;
     private final String deviceType;
-    private final UhuDeviceRole deviceRole;
+    private final BezirkDeviceRole deviceRole;
     private final boolean deviceActive;
     private final List<BezirkZirkInfo> zirks;
 
@@ -28,7 +28,7 @@ public class BezirkDeviceInfo {
      */
     // We need Zerk Info not zirk id. this zirks will be deprecated
     public BezirkDeviceInfo(final String deviceId, final String deviceName,
-                            final String deviceType, final UhuDeviceRole deviceRole,
+                            final String deviceType, final BezirkDeviceRole deviceRole,
                             final boolean deviceActive, final List<BezirkZirkInfo> zirks) {
         this.deviceId = deviceId;
         this.deviceName = deviceName;
@@ -62,7 +62,7 @@ public class BezirkDeviceInfo {
     /**
      * @return the deviceRole
      */
-    public final UhuDeviceRole getDeviceRole() {
+    public final BezirkDeviceRole getDeviceRole() {
         return deviceRole;
     }
 
@@ -123,7 +123,7 @@ public class BezirkDeviceInfo {
         return true;
     }
 
-    public enum UhuDeviceRole {
+    public enum BezirkDeviceRole {
         UHU_MEMBER, // this device has control role for this sphere
         UHU_CONTROL // this device has member role for this sphere
     }

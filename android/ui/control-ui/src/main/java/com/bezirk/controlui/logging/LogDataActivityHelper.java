@@ -15,8 +15,8 @@ import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.controlui.R;
 import com.bezirk.remotelogging.loginterface.IUhuLogging;
-import com.bezirk.remotelogging.manager.UhuLoggingManager;
-import com.bezirk.remotelogging.messages.UhuLoggingMessage;
+import com.bezirk.remotelogging.manager.BezirkLoggingManager;
+import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
 import com.bezirk.remotelogging.util.Util;
 import com.bezirk.starter.MainService;
 
@@ -67,11 +67,11 @@ class LogDataActivityHelper {
      */
     Handler mHandler;
     /**
-     * IUhuLogging Implementation to handle the logmessage. It receives the logger message and gives it to the handler to update the UI.
+     * BezirkLogging Implementation to handle the logmessage. It receives the logger message and gives it to the handler to update the UI.
      */
     private final IUhuLogging loggingHandler = new IUhuLogging() {
         @Override
-        public void handleLogMessage(UhuLoggingMessage uhuLogMessage) {
+        public void handleLogMessage(BezirkLoggingMessage uhuLogMessage) {
             Message msg = mHandler.obtainMessage();
             msg.obj = uhuLogMessage;
             mHandler.sendMessage(msg);
@@ -92,7 +92,7 @@ class LogDataActivityHelper {
 
         @Override
         public boolean handleMessage(final Message msg) {
-            UhuLoggingMessage logMsg = (UhuLoggingMessage) msg.obj;
+            BezirkLoggingMessage logMsg = (BezirkLoggingMessage) msg.obj;
 
             if (!logDataActivity.isDeveloperModeEnabled && (logMsg.typeOfMessage.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name()) ||
                     logMsg.typeOfMessage.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND.name()))) {
@@ -162,8 +162,8 @@ class LogDataActivityHelper {
      */
     void startLogService() {
         try {
-            logDataActivity.mUhuLoggingManager = new UhuLoggingManager();
-            logDataActivity.mUhuLoggingManager.startLoggingService(BezirkComms.getREMOTE_LOGGING_PORT(), loggingHandler);
+            logDataActivity.mBezirkLoggingManager = new BezirkLoggingManager();
+            logDataActivity.mBezirkLoggingManager.startLoggingService(BezirkComms.getREMOTE_LOGGING_PORT(), loggingHandler);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -189,7 +189,7 @@ class LogDataActivityHelper {
     /**
      * Returns the Table Row setup with all the contents with properties to be displayed
      */
-    TableRow getLogTableRow(final UhuLoggingMessage logMsg) {
+    TableRow getLogTableRow(final BezirkLoggingMessage logMsg) {
         final TableRow.LayoutParams tableRowLayoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
         final TableRow.LayoutParams tableLayoutLayoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
         tableLayoutLayoutParams.gravity = Gravity.CENTER;
@@ -289,8 +289,8 @@ class LogDataActivityHelper {
             public void onClick(DialogInterface dialog, int which) {
                 mHandler = null;
                 try {
-                    logDataActivity.mUhuLoggingManager.stopLoggingService();
-                    logDataActivity.mUhuLoggingManager = null;
+                    logDataActivity.mBezirkLoggingManager.stopLoggingService();
+                    logDataActivity.mBezirkLoggingManager = null;
                     logDataActivity.new ShutDownLoggingServiceTask().execute(logDataActivity.selSpheres);
                     printToast("STOPPING LOG SERVICE...");
                     logDataActivity.onDestroy();

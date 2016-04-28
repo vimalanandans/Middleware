@@ -28,9 +28,9 @@ public class DatabaseHelper {
      */
     private SadlRegistry sadlRegistry;
     /**
-     * Uhu Proxy Registry -  Stores only UhuServiceIds. It will be used only on the PC side
+     * Bezirk Proxy Registry -  Stores only UhuServiceIds. It will be used only on the PC side
      */
-    private UhuProxyRegistry uhuProxyRegistry;
+    private BezirkProxyRegistry bezirkProxyRegistry;
 
 
     protected DatabaseHelper(DatabaseConnection dbConnection) {
@@ -38,7 +38,7 @@ public class DatabaseHelper {
         this.dbConnection = dbConnection;
         this.sphereRegistry = null;
         this.sadlRegistry = null;
-        this.uhuProxyRegistry = null;
+        this.bezirkProxyRegistry = null;
     }
 
     /**
@@ -66,10 +66,10 @@ public class DatabaseHelper {
                 updateDb.updateColumnValue(DBConstants.COLUMN_2, sphereRegistry);
                 break;
             case DBConstants.COLUMN_3:
-                if (null == uhuProxyRegistry) {
+                if (null == bezirkProxyRegistry) {
                     throw new NullPointerException("UhuProxy Registry cant be null");
                 }
-                updateDb.updateColumnValue(DBConstants.COLUMN_3, uhuProxyRegistry);
+                updateDb.updateColumnValue(DBConstants.COLUMN_3, bezirkProxyRegistry);
                 break;
 
             default:
@@ -89,7 +89,7 @@ public class DatabaseHelper {
         BezirkRegistry tempRegistry = queryBuilder.queryForFirst();
         sadlRegistry = tempRegistry.getSadlRegistry();
         sphereRegistry = tempRegistry.getSphereRegistry();
-        uhuProxyRegistry = tempRegistry.getUhuProxyRegistry();
+        bezirkProxyRegistry = tempRegistry.getBezirkProxyRegistry();
     }
 
     /**
@@ -132,7 +132,7 @@ public class DatabaseHelper {
      * Insert the only row into the database
      */
     private void insertInitialRow() throws NullPointerException, SQLException, IOException, Exception {
-        dbConnection.getPersistenceDAO().createOrUpdate(new BezirkRegistry(1, new SadlRegistry(), new SphereRegistry(), new UhuProxyRegistry()));
+        dbConnection.getPersistenceDAO().createOrUpdate(new BezirkRegistry(1, new SadlRegistry(), new SphereRegistry(), new BezirkProxyRegistry()));
     }
 
     /**
@@ -156,10 +156,10 @@ public class DatabaseHelper {
     /**
      * Returns UhuProxyRegisty associated with the Proxy
      *
-     * @return UhuProxyRegistry
+     * @return BezirkProxyRegistry
      */
-    protected UhuProxyRegistry getUhuProxyRegistry() {
-        return uhuProxyRegistry;
+    protected BezirkProxyRegistry getBezirkProxyRegistry() {
+        return bezirkProxyRegistry;
     }
 
     /**
@@ -168,6 +168,6 @@ public class DatabaseHelper {
     protected void clearPersistence() throws NullPointerException, SQLException, IOException, Exception {
         sadlRegistry.clearRegistry();
         sphereRegistry.clearRegistry();
-        uhuProxyRegistry.clearRegistry();
+        bezirkProxyRegistry.clearRegistry();
     }
 }

@@ -19,14 +19,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * This testCase verifies the UhuSphereLeave by retrieving the field values after deserialization.
+ * This testCase verifies the BezirkSphereLeave by retrieving the field values after deserialization.
  *
  * @author AJC6KOR
  */
-public class UhuSphereLeaveTest {
+public class BezirkSphereLeaveTest {
 
     private static final Logger log = LoggerFactory
-            .getLogger(UhuSphereLeaveTest.class);
+            .getLogger(BezirkSphereLeaveTest.class);
 
 
     private static final String sphereId = "TestSphere";
@@ -42,7 +42,7 @@ public class UhuSphereLeaveTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up UhuSphereLeaveTest TestCase *****");
+        log.info("***** Setting up BezirkSphereLeaveTest TestCase *****");
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
 
@@ -54,7 +54,7 @@ public class UhuSphereLeaveTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down UhuSphereLeaveTest TestCase *****");
+        log.info("***** Shutting down BezirkSphereLeaveTest TestCase *****");
     }
 
     private static InetAddress getInetAddress() {
@@ -87,11 +87,11 @@ public class UhuSphereLeaveTest {
 
     @Test
     public void testUhuSphereLeave() {
-        com.bezirk.sphere.messages.UhuSphereLeave uhuSphereLeave = new com.bezirk.sphere.messages.UhuSphereLeave(sphereId, serviceId, sender, recipient);
-        String serializedMessage = uhuSphereLeave.serialize();
-        com.bezirk.sphere.messages.UhuSphereLeave deserializedUhuSphereLeave = com.bezirk.sphere.messages.UhuSphereLeave.deserialize(serializedMessage, com.bezirk.sphere.messages.UhuSphereLeave.class);
-        assertEquals("Deserialized UhuSphereLeave zirkId are not equal to original zirkId", serviceId, deserializedUhuSphereLeave.getServiceId());
-        assertNotNull("Deserialized UhuSphereLeave dont have the time set in it.", deserializedUhuSphereLeave.getTime());
+        BezirkSphereLeave bezirkSphereLeave = new BezirkSphereLeave(sphereId, serviceId, sender, recipient);
+        String serializedMessage = bezirkSphereLeave.serialize();
+        BezirkSphereLeave deserializedBezirkSphereLeave = BezirkSphereLeave.deserialize(serializedMessage, BezirkSphereLeave.class);
+        assertEquals("Deserialized BezirkSphereLeave zirkId are not equal to original zirkId", serviceId, deserializedBezirkSphereLeave.getServiceId());
+        assertNotNull("Deserialized BezirkSphereLeave dont have the time set in it.", deserializedBezirkSphereLeave.getTime());
 
     }
 }

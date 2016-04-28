@@ -9,7 +9,7 @@ import com.bezirk.discovery.SphereDiscovery;
 import com.bezirk.discovery.SphereDiscoveryProcessor;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.middleware.objects.BezirkDeviceInfo.UhuDeviceRole;
+import com.bezirk.middleware.objects.BezirkDeviceInfo.BezirkDeviceRole;
 import com.bezirk.persistence.DBConstants;
 import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.persistence.SpherePersistence;
@@ -199,11 +199,11 @@ public class MockSetUpUtility {
         services3.add(serviceInfo3);
 
         BezirkDeviceInfo bezirkDeviceInfo1 = new BezirkDeviceInfo("Device1", "Device1", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER,
-                UhuDeviceRole.UHU_CONTROL, true, services1);
+                BezirkDeviceInfo.BezirkDeviceRole.UHU_CONTROL, true, services1);
         BezirkDeviceInfo bezirkDeviceInfo2 = new BezirkDeviceInfo("Device2", "Device2", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER,
-                UhuDeviceRole.UHU_MEMBER, true, services2);
+                BezirkDeviceRole.UHU_MEMBER, true, services2);
         BezirkDeviceInfo bezirkDeviceInfo3 = new BezirkDeviceInfo("Device3", "Device3", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER,
-                UhuDeviceRole.UHU_MEMBER, true, services3);
+                BezirkDeviceRole.UHU_MEMBER, true, services3);
 
         deviceList.add(bezirkDeviceInfo1);
         deviceList.add(bezirkDeviceInfo2);

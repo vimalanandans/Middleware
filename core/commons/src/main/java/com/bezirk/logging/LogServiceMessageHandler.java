@@ -4,7 +4,7 @@
 package com.bezirk.logging;
 
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
-import com.bezirk.remotelogging.manager.UhuLoggingManager;
+import com.bezirk.remotelogging.manager.BezirkLoggingManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
 import com.bezirk.remotelogging.status.LoggingStatus;
 import com.bezirk.util.BezirkValidatorUtility;
@@ -24,7 +24,7 @@ public final class LogServiceMessageHandler {
     /**
      * Logging Manager to start/ stop the logging client
      */
-    private UhuLoggingManager loggingManager = null;
+    private BezirkLoggingManager loggingManager = null;
 
     /**
      * Handles the LogServiceMessage.
@@ -36,7 +36,7 @@ public final class LogServiceMessageHandler {
         if (BezirkValidatorUtility.checkLoggingServiceMessage(loggingServiceMsg)) {
             if (loggingServiceMsg.isLoggingStatus()) {//Start or Update the client
                 if (null == loggingManager) {
-                    loggingManager = new UhuLoggingManager();
+                    loggingManager = new BezirkLoggingManager();
                 }
                 try {
                     loggingManager.startLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(), loggingServiceMsg.getRemoteLoggingServicePort());

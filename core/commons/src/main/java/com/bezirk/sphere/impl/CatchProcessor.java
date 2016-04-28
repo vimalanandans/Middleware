@@ -24,8 +24,8 @@ import java.util.Map;
  * @author rishabh
  */
 public class CatchProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(CatchProcessor.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CatchProcessor.class);
     private static final String CATCH_FAILURE_MSG = "Catch Failed";
     private SphereRegistryWrapper sphereRegistryWrapper;
     private ICryptoInternals crypto;
@@ -62,9 +62,9 @@ public class CatchProcessor {
 
         if (sphereRegistryWrapper.containsSphere(sphereId)) {
             catcherSphereId = sphereId;
-            LOGGER.info("Catch Process, Step1: catcherSphereId validation complete");
+            logger.info("Catch Process, Step1: catcherSphereId validation complete");
         } else {
-            LOGGER.error("Catch Process, Step1: catcherSphereId validation failed");
+            logger.error("Catch Process, Step1: catcherSphereId validation failed");
             return false;
         }
 
@@ -75,9 +75,9 @@ public class CatchProcessor {
 
         String inviterShortCode = validateCodeString(catchCode);
         if (inviterShortCode != null) {
-            LOGGER.info("Catch Process, Step2: shortCode validation complete");
+            logger.info("Catch Process, Step2: shortCode validation complete");
         } else {
-            LOGGER.error("Catch Process, Step2: shortCode validation failed");
+            logger.error("Catch Process, Step2: shortCode validation failed");
             return false;
         }
 
@@ -87,9 +87,9 @@ public class CatchProcessor {
          ************************************************************************/
 
         if (addCatchCode(inviterShortCode)) {
-            LOGGER.info("Catch Process, Step3: crypto procedure complete");
+            logger.info("Catch Process, Step3: crypto procedure complete");
         } else {
-            LOGGER.error("Catch Process, Step3: crypto procedure failed");
+            logger.error("Catch Process, Step3: crypto procedure failed");
             return false;
         }
 
@@ -100,9 +100,9 @@ public class CatchProcessor {
 
         CatchRequest catchRequest = prepareRequest(catcherSphereId, inviterShortCode);
         if (catchRequest != null) {
-            LOGGER.info("Catch Process, Step4: catch request preparation complete");
+            logger.info("Catch Process, Step4: catch request preparation complete");
         } else {
-            LOGGER.error("Catch Process, Step4: catch request preparation failed");
+            logger.error("Catch Process, Step4: catch request preparation failed");
             return false;
         }
 
@@ -111,9 +111,9 @@ public class CatchProcessor {
          ************************************************************************/
 
         if (comms.sendMessage(catchRequest)) {
-            LOGGER.info("Catch Process, Step5: catch request sending complete");
+            logger.info("Catch Process, Step5: catch request sending complete");
         } else {
-            LOGGER.error("Catch Process, Step5: catch request sending failed");
+            logger.error("Catch Process, Step5: catch request sending failed");
             return false;
         }
 
@@ -139,13 +139,13 @@ public class CatchProcessor {
         // remove this check[not required, once the response is made
         // unicast]
         if (catchResponse.getInviterSphereDeviceInfo().getDeviceId().equals(upaDeviceInterface.getDeviceId())) {
-            LOGGER.debug("Found response initiated by same device, dropping SphereCatchRequest");
+            logger.debug("Found response initiated by same device, dropping SphereCatchRequest");
             return false;
         }
 
         // Check if the catch request is initiated by the current device
         if (!catcherDeviceId.equals(upaDeviceInterface.getDeviceId())) {
-            LOGGER.debug("Catch request not initiated by the current device");
+            logger.debug("Catch request not initiated by the current device");
             return false;
         }
 
@@ -167,7 +167,7 @@ public class CatchProcessor {
                 }
                 // catch response for the request is success
                 sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, IUhuSphereListener.Status.SUCCESS, "Catch successful");
-                LOGGER.info("Got Catch response. catch process completed");
+                logger.info("Got Catch response. catch process completed");
                 return true;
             }
         }
@@ -188,9 +188,9 @@ public class CatchProcessor {
          ************************************************************************/
 
         if (validateRequest(catchRequest)) {
-            LOGGER.info("Catch Request Processing, Step1: request validation complete");
+            logger.info("Catch Request Processing, Step1: request validation complete");
         } else {
-            LOGGER.error("Catch Request Processing, Step1: request validation failed");
+            logger.error("Catch Request Processing, Step1: request validation failed");
             return false;
         }
 
@@ -204,10 +204,10 @@ public class CatchProcessor {
          ************************************************************************/
 
         if (storeData(sphereExchangeData)) {
-            LOGGER.info("Catch Request Processing, Step2: storing sphere exchange data complete");
+            logger.info("Catch Request Processing, Step2: storing sphere exchange data complete");
         } else {
             sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, IUhuSphereListener.Status.FAILURE, CATCH_FAILURE_MSG);
-            LOGGER.error("Catch Request Processing, Step2: storing sphere exchange data failed");
+            logger.error("Catch Request Processing, Step2: storing sphere exchange data failed");
             return false;
         }
 
@@ -219,10 +219,10 @@ public class CatchProcessor {
         CatchResponse sphereCatchResponse = prepareResponse(sphereExchangeData, catcherBezirkDeviceInfo, inviterShortCode,
                 catcherSphereId);
         if (sphereCatchResponse != null) {
-            LOGGER.info("Catch Request Processing, Step3: preparing catch response complete");
+            logger.info("Catch Request Processing, Step3: preparing catch response complete");
         } else {
             sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, IUhuSphereListener.Status.FAILURE, CATCH_FAILURE_MSG);
-            LOGGER.error("Catch Request Processing, Step3: preparing catch response failed");
+            logger.error("Catch Request Processing, Step3: preparing catch response failed");
             return false;
         }
 
@@ -231,10 +231,10 @@ public class CatchProcessor {
          ************************************************************************/
 
         if (comms.sendMessage(sphereCatchResponse)) {
-            LOGGER.info("Catch Request Processing, Step4: catch response sending complete");
+            logger.info("Catch Request Processing, Step4: catch response sending complete");
         } else {
             sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, IUhuSphereListener.Status.FAILURE, CATCH_FAILURE_MSG);
-            LOGGER.error("Catch Request Processing, Step4: catch response sending failed");
+            logger.error("Catch Request Processing, Step4: catch response sending failed");
             return false;
         }
 
@@ -272,7 +272,7 @@ public class CatchProcessor {
             // sphere key doesn't exist create one
             // TODO: Check this
             if (!crypto.generateKeys(sphereExchangeData.getSphereID(), true)) {
-                LOGGER.error("store data > unable to generated key");
+                logger.error("store data > unable to generated key");
                 return false;
             }
             sphereRegistryWrapper.persist();
@@ -339,7 +339,7 @@ public class CatchProcessor {
         CatchRequest sphereCatchRequest = null;
         String sphereExchangeData = sphereRegistryWrapper.getShareCodeString(catcherSphereId);
         if (sphereExchangeData == null) {
-            LOGGER.error("Catch request not prepared for " + catcherSphereId);
+            logger.error("Catch request not prepared for " + catcherSphereId);
             return sphereCatchRequest;
         }
 
@@ -381,7 +381,7 @@ public class CatchProcessor {
      */
     private boolean validateRequest(CatchRequest catchRequest) {
         if (catchRequest == null) {
-            LOGGER.error("sphere catch request received is null");
+            logger.error("sphere catch request received is null");
             return false;
         }
 
@@ -390,7 +390,7 @@ public class CatchProcessor {
 
         if ((sphereExchangeDataString == null) || (inviterShortCode == null)
                 || (!sphereRegistryWrapper.existsSphereIdInKeyMaps(inviterShortCode))) {
-            LOGGER.error("Invalid sphere information");
+            logger.error("Invalid sphere information");
             return false;
         }
 
@@ -398,13 +398,13 @@ public class CatchProcessor {
         BezirkDeviceInfo catcherBezirkDeviceInfo = catchRequest.getBezirkDeviceInfo();
 
         if (catcherBezirkDeviceInfo == null || sphereExchangeData == null) {
-            LOGGER.error("Catched device/sphere Exchange data is not valid");
+            logger.error("Catched device/sphere Exchange data is not valid");
             return false;
         }
 
         // sender device is equal to current device ignore the results
         if (catcherBezirkDeviceInfo.getDeviceId().equals(upaDeviceInterface.getDeviceId())) {
-            LOGGER.debug("Found request initiated by same device, dropping SphereCatchRequest");
+            logger.debug("Found request initiated by same device, dropping SphereCatchRequest");
             return false;
         }
         return true;
@@ -447,13 +447,13 @@ public class CatchProcessor {
             ArrayList<BezirkZirkId> services = deviceServices.get(upaDeviceInterface.getDeviceId());
 
             if (services == null || services.isEmpty()) {
-                LOGGER.error("No services are at the device, nothing to catch");
+                logger.error("No services are at the device, nothing to catch");
                 return null;
             }
 
             // add the local services to catchSphereId
             if (sphereRegistryWrapper.addLocalServicesToSphere(services, catcherSphereId)) {
-                LOGGER.debug("Services from sphere with shortCode : " + inviterShortCode + " added to catch sphere id"
+                logger.debug("Services from sphere with shortCode : " + inviterShortCode + " added to catch sphere id"
                         + catcherSphereId);
 
                 // add remote device services also to new catchSphereId
@@ -484,16 +484,16 @@ public class CatchProcessor {
                     CatchResponse response = new CatchResponse(UhuNetworkUtilities.getServiceEndPoint(null),
                             catcherSphereId, catcherDeviceId, inviterSphereDeviceInfo);
 
-                    LOGGER.debug("Response prepared");
+                    logger.debug("Response prepared");
                     return response;
                 } else {
-                    LOGGER.error("Response creation failed at add member services");
+                    logger.error("Response creation failed at add member services");
                 }
             } else {
-                LOGGER.error("Response creation failed at add services to sphere");
+                logger.error("Response creation failed at add services to sphere");
             }
         }
-        LOGGER.error("Response creation failed. clear data base manuallys ");
+        logger.error("Response creation failed. clear data base manuallys ");
         return null;
     }
 

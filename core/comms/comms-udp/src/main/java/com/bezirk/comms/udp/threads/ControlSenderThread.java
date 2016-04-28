@@ -2,7 +2,7 @@ package com.bezirk.comms.udp.threads;
 
 import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.comms.MessageQueue;
-import com.bezirk.comms.udp.sender.UhuCommsSend;
+import com.bezirk.comms.udp.sender.BezirkCommsSend;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
@@ -64,7 +64,7 @@ public class ControlSenderThread implements Runnable {
                 }
                 //if(this.sadlControlSender.sendControlMessage(cMessage)){
                 if (sendControlMessage(cMessage)) {
-                    if (UhuCommsSend.sendctrl(cMessage)) {
+                    if (BezirkCommsSend.sendctrl(cMessage)) {
                         logger.info("Ctrl message- " + cMessage.getMessage().getDiscriminator() + ":" + cMessage.getMessage().getMessageId() + " sent");
                     } else {
                         logger.info("Send Failed| sphere Failed: Could not send msg");

@@ -2,19 +2,14 @@
  * @author Vijet Badigannavar (bvijet@in.bosch.com)
  * @modified 3/30/2015
  */
-package com.bezirk.remotelogging.manager;
-
-import com.bezirk.remotelogging.client.LoggingClient;
-import com.bezirk.remotelogging.loginterface.IUhuLogging;
-import com.bezirk.remotelogging.processors.LogReceiverQueueProcessor;
-import com.bezirk.remotelogging.service.BezirkLoggingService;
+package com.bezirk.remotelogging;
 
 
 /**
  * Logging Manager class that starts/stops LoggingServices and LoggingClient.
  * The platforms need to instantiate this manager and can start stop the zirk.
  */
-public final class UhuLoggingManager {
+public final class BezirkLoggingManager {
     /**
      * BezirkLoggingService
      */
@@ -28,7 +23,7 @@ public final class UhuLoggingManager {
      */
     private LoggingClient logClient = null;
 
-    public UhuLoggingManager() {
+    public BezirkLoggingManager() {
         // TODO Auto-generated constructor stub
     }
 
@@ -39,7 +34,7 @@ public final class UhuLoggingManager {
      * @param platformSpecificHandler handler to give callback once the zirk receives the request
      * @throws Exception if handler is null, or something goes wrong while processing.
      */
-    public void startLoggingService(final int loggingPort, final IUhuLogging platformSpecificHandler) throws Exception {
+    public void startLoggingService(final int loggingPort, final BezirkLogging platformSpecificHandler) throws Exception {
         if (bezirkLoggingService == null && platformSpecificHandler != null) {
             bezirkLoggingService = new BezirkLoggingService(loggingPort);
             receiverQueueProcessor = new LogReceiverQueueProcessor(platformSpecificHandler);

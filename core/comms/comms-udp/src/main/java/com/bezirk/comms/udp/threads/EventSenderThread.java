@@ -7,7 +7,7 @@ package com.bezirk.comms.udp.threads;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.IUhuCommsLegacy;
 import com.bezirk.comms.MessageQueue;
-import com.bezirk.comms.udp.sender.UhuCommsSend;
+import com.bezirk.comms.udp.sender.BezirkCommsSend;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.Ledger;
@@ -150,7 +150,7 @@ public class EventSenderThread implements Runnable {
 
     private void sendToComms(EventLedger eLedger) {
         //send to comms
-        if (UhuCommsSend.send(eLedger)) {
+        if (BezirkCommsSend.send(eLedger)) {
             logger.info(" <<<< Message sent . No of Send " + String.valueOf(eLedger.getNumOfSends()) +
                     " Msg Id " + eLedger.getHeader().getUniqueMsgId());
         } else {

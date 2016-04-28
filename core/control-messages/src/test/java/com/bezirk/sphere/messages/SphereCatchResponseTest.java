@@ -2,7 +2,6 @@ package com.bezirk.sphere.messages;
 
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
-import com.bezirk.middleware.objects.BezirkDeviceInfo.UhuDeviceRole;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 
@@ -59,7 +58,7 @@ public class SphereCatchResponseTest {
         String catchDeviceId = "TESTDEVICEID2";
         List<BezirkZirkInfo> serviceList = new ArrayList<BezirkZirkInfo>();
         serviceList.add(serviceAInfo);
-        BezirkDeviceInfo services = new BezirkDeviceInfo(catchDeviceId, "TESTDEVICE", "PC", UhuDeviceRole.UHU_MEMBER, true, serviceList);
+        BezirkDeviceInfo services = new BezirkDeviceInfo(catchDeviceId, "TESTDEVICE", "PC", BezirkDeviceInfo.BezirkDeviceRole.UHU_MEMBER, true, serviceList);
         com.bezirk.sphere.messages.CatchResponse sphereCatchResonse = new com.bezirk.sphere.messages.CatchResponse(sender, catchSphereId, catchDeviceId, services);
         String serializedMessage = sphereCatchResonse.serialize();
         com.bezirk.sphere.messages.CatchResponse deserializedSphereCatchResponse = com.bezirk.sphere.messages.CatchResponse.deserialize(serializedMessage, com.bezirk.sphere.messages.CatchResponse.class);

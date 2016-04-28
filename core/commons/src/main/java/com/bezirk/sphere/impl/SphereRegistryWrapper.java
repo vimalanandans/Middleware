@@ -6,7 +6,7 @@ import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.SphereVitals;
-import com.bezirk.middleware.objects.BezirkDeviceInfo.UhuDeviceRole;
+import com.bezirk.middleware.objects.BezirkDeviceInfo.BezirkDeviceRole;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
@@ -1089,7 +1089,7 @@ public class SphereRegistryWrapper {
                 if (deviceInformation != null) {
                     BezirkDeviceInfo deviceInfo = new BezirkDeviceInfo(deviceId, deviceInformation.getDeviceName(),
                             deviceInformation.getDeviceType(),
-                            ownerDevices.contains(deviceId) ? UhuDeviceRole.UHU_CONTROL : UhuDeviceRole.UHU_MEMBER,
+                            ownerDevices.contains(deviceId) ? BezirkDeviceRole.UHU_CONTROL : BezirkDeviceRole.UHU_MEMBER,
                             true, (List<BezirkZirkInfo>) getUhuServiceInfo(entry.getValue()));
                     deviceInfoList.add(deviceInfo);
                 } else {

@@ -3,17 +3,17 @@ package com.bezirk.persistence;
 
 public interface BezirkProxyPersistence {
     /**
-     * Persists the UhuProxyRegistry
+     * Persists the BezirkProxyRegistry
      *
      * @throws Exception if persisting is not possible
      */
     public void persistUhuProxyRegistry() throws Exception;
 
     /**
-     * Loads the UhuProxyRegistry
+     * Loads the BezirkProxyRegistry
      *
-     * @return UhuProxyRegistry
+     * @return BezirkProxyRegistry
      * @throws Exception if loading is not possible
      */
-    public UhuProxyRegistry loadUhuProxyRegistry() throws Exception;
+    public BezirkProxyRegistry loadUhuProxyRegistry() throws Exception;
 }

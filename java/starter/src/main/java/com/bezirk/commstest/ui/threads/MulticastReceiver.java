@@ -8,6 +8,7 @@ import com.bezrik.network.UhuNetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -21,9 +22,8 @@ import java.net.MulticastSocket;
  * @author AJC6KOR
  */
 public class MulticastReceiver extends Thread {
+    private static final Logger logger = LoggerFactory.getLogger(MulticastReceiver.class);
 
-    private static final Logger LOGGER = org.slf4j.LoggerFactory
-            .getLogger(MulticastReceiver.class);
     private final String deviceName;
     private final String deviceIP;
     private final IUpdateResponse responseUI;
@@ -45,10 +45,10 @@ public class MulticastReceiver extends Thread {
             isRunning = true;
             myAddress = UhuNetworkUtilities.getLocalInet();
             if (myAddress == null) {
-                LOGGER.error("ERROR IN STARTING RECEIVER");
+                logger.error("ERROR IN STARTING RECEIVER");
             }
         } catch (IOException e) {
-            LOGGER.error("ERROR IN STARTING RECEIVER", e);
+            logger.error("ERROR IN STARTING RECEIVER", e);
         }
     }
 
@@ -65,7 +65,7 @@ public class MulticastReceiver extends Thread {
                 isRunning = false;
                 continue;
             }
-            LOGGER.debug("Started listening multcst");
+            logger.debug("Started listening multcst");
 
             receivePacket.setData(buf);
             receivePacket.setLength(buf.length);
@@ -73,17 +73,17 @@ public class MulticastReceiver extends Thread {
                 multicastSocket.receive(receivePacket);
             } catch (Exception e) {
                 isRunning = false;
-                LOGGER.error("EXCEPTION IN RECEIVING", e);
+                logger.error("EXCEPTION IN RECEIVING", e);
                 continue;
             }
-            LOGGER.debug("Something received");
+            logger.debug("Something received");
 
             if (myAddress
                     .getHostAddress()
                     .trim()
                     .equals(receivePacket.getAddress().getHostAddress()
                             .trim())) {
-                LOGGER.debug("local ping received");
+                logger.debug("local ping received");
             } else {
                 recData = new byte[receivePacket.getLength()];
                 System.arraycopy(receivePacket.getData(), 0, recData, 0,
@@ -106,7 +106,7 @@ public class MulticastReceiver extends Thread {
             // send Pong
             sendPong(msg);
         } catch (Exception e) {
-            LOGGER.error("Error in parsing JSON", e);
+            logger.error("Error in parsing JSON", e);
         }
     }
 
@@ -150,7 +150,7 @@ public class MulticastReceiver extends Thread {
             responseUI.updateUIPongSent(msg);
             return true;
         } catch (Exception e) {
-            LOGGER.error("ERROR in SENDING PONG", e);
+            logger.error("ERROR in SENDING PONG", e);
         }
         return true;
     }

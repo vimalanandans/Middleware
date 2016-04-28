@@ -18,19 +18,19 @@ public class BezirkRegistryTest {
         int id = 35;
         SadlRegistry sadlRegistry = new SadlRegistry();
         SphereRegistry sphereRegistry = new SphereRegistry();
-        UhuProxyRegistry uhuProxyRegistry = new UhuProxyRegistry();
+        BezirkProxyRegistry bezirkProxyRegistry = new BezirkProxyRegistry();
 
         BezirkRegistry bezirkRegistry = new BezirkRegistry();
 
         bezirkRegistry.setId(id);
         bezirkRegistry.setSadlRegistry(sadlRegistry);
         bezirkRegistry.setSphereRegistry(sphereRegistry);
-        bezirkRegistry.setUhuProxyRegistry(uhuProxyRegistry);
+        bezirkRegistry.setBezirkProxyRegistry(bezirkProxyRegistry);
 
         assertEquals("ID is not equal to the set value.", id, bezirkRegistry.getId());
         assertEquals("SadlRegistry is not equal to the set value.", sadlRegistry, bezirkRegistry.getSadlRegistry());
         assertEquals("SphererRegistry is not equal to the set value.", sphereRegistry, bezirkRegistry.getSphereRegistry());
-        assertEquals("UhuProxyRegistry is not equal to the set value.", uhuProxyRegistry, bezirkRegistry.getUhuProxyRegistry());
+        assertEquals("BezirkProxyRegistry is not equal to the set value.", bezirkProxyRegistry, bezirkRegistry.getBezirkProxyRegistry());
     }
 
 }

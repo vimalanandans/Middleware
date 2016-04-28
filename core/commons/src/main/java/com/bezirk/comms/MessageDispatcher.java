@@ -4,7 +4,7 @@ import com.bezirk.commons.UhuCompManager;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
-import com.bezirk.remotelogging.messages.UhuLoggingMessage;
+import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
 import com.bezirk.remotelogging.queues.LoggingQueueManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
 import com.bezirk.remotelogging.status.LoggingStatus;
@@ -143,7 +143,7 @@ public class MessageDispatcher implements IMessageDispatcher {
     private void sendRemoteLogMessage(ControlLedger tcMessage) {
         try {
             LoggingQueueManager.loadLogSenderQueue(
-                    new UhuLoggingMessage(
+                    new BezirkLoggingMessage(
                             tcMessage.getSphereId(),
                             String.valueOf(currentDate.getTime()),
                             UhuCompManager.getUpaDevice().getDeviceName(),
@@ -160,7 +160,7 @@ public class MessageDispatcher implements IMessageDispatcher {
     private void sendRemoteLogMessage(ControlMessage msg) {
         try {
             LoggingQueueManager.loadLogSenderQueue(
-                    new UhuLoggingMessage(
+                    new BezirkLoggingMessage(
                             msg.getSphereId(),
                             String.valueOf(currentDate.getTime()),
                             UhuCompManager.getUpaDevice().getDeviceName(),

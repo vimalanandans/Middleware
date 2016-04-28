@@ -7,7 +7,7 @@ package com.bezirk.logging.ui;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.comms.IUhuComms;
 import com.bezirk.logging.LogServiceActivatorDeactivator;
-import com.bezirk.remotelogging.messages.UhuLoggingMessage;
+import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
 import com.bezirk.remotelogging.util.Util;
 
 import org.slf4j.Logger;
@@ -212,7 +212,7 @@ public class UhuLogDetailsGUI extends JFrame {
                 selectedSpheres, loggingSpheres, isActivateLogging);
     }
 
-    public void updateTable(UhuLoggingMessage uhuLogMessage) {
+    public void updateTable(BezirkLoggingMessage uhuLogMessage) {
 
         if (!isDeveloperModeEnabled
                 && uhuLogMessage.typeOfMessage

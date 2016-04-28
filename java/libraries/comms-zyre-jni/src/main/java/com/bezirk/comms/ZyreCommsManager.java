@@ -11,16 +11,12 @@ import org.slf4j.LoggerFactory;
 import java.net.InetAddress;
 
 /**
- * vimal : Uhu Communication manager for zyre - jni
+ * vimal : Bezirk Communication manager for zyre - jni
  * this extends zyre specific comms all the queue, sockets, receiver threads etc etc
  */
 
 public class ZyreCommsManager extends CommsProcessor {
-
-    private static final Logger log = LoggerFactory.getLogger(ZyreCommsManager.class);
-
     private ZyreCommsJni comms = null;
-
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,

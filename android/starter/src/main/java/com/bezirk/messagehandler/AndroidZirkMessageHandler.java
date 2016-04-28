@@ -3,7 +3,7 @@ package com.bezirk.messagehandler;
 import android.content.Context;
 import android.content.Intent;
 
-import com.bezirk.actions.UhuActions;
+import com.bezirk.actions.BezirkActions;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -130,10 +130,10 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
         try {
             fireIntent.putExtra(serviceIdKEY, gson.toJson(pipeMsg.getRecipient()));
             fireIntent.putExtra(discriminatorKEY, pipeMsg.getCallbackType());
-            fireIntent.putExtra(UhuActions.KEY_PIPE, pipeMsg.getPipe().toJson());
-            fireIntent.putExtra(UhuActions.KEY_PIPE_REQ_ID, pipeMsg.getPipeReqId());
-            fireIntent.putExtra(UhuActions.KEY_PIPE_POLICY_IN, pipeMsg.getAllowedIn().toJson());
-            fireIntent.putExtra(UhuActions.KEY_PIPE_POLICY_OUT, pipeMsg.getAllowedOut().toJson());
+            fireIntent.putExtra(BezirkActions.KEY_PIPE, pipeMsg.getPipe().toJson());
+            fireIntent.putExtra(BezirkActions.KEY_PIPE_REQ_ID, pipeMsg.getPipeReqId());
+            fireIntent.putExtra(BezirkActions.KEY_PIPE_POLICY_IN, pipeMsg.getAllowedIn().toJson());
+            fireIntent.putExtra(BezirkActions.KEY_PIPE_POLICY_OUT, pipeMsg.getAllowedOut().toJson());
 
             fireIntentToService(fireIntent);
         } catch (Exception e) {

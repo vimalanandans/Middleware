@@ -9,7 +9,7 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 /**
- * This Message is internally sent by the Uhu for hand shaking with the recipient.
+ * This Message is internally sent by the Bezirk for hand shaking with the recipient.
  */
 public class StreamRequest extends UnicastControlMessage {
     /**

@@ -1,6 +1,6 @@
 package com.bezirk.actions;
 
-public class UhuActions {
+public class BezirkActions {
 
     //------------------------
     // Component constants
@@ -13,12 +13,12 @@ public class UhuActions {
     // Action name constants
     //------------------------
     //------------------------
-    // Uhu Pipe Actions
+    // Bezirk Pipe Actions
     //------------------------
     public final static String ACTION_PIPE_REQUEST = "PIPE_REQUEST";
 
     //------------------------
-    // Uhu Control Actions
+    // Bezirk Control Actions
     //------------------------
     public final static String ACTION_START_UHU = "START_UHU";
 

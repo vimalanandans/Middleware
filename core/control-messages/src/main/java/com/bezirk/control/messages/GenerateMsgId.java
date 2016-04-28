@@ -4,7 +4,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 /**
  * @author Mansimar Aneja
- *         This class is used to generate messageIds for both Events and Control messages on behalf of the Uhu Stack
+ *         This class is used to generate messageIds for both Events and Control messages on behalf of the Bezirk Stack
  */
 public final class GenerateMsgId {
 

@@ -21,7 +21,7 @@ public class BezirkRegistry {
     @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = DBConstants.COLUMN_2)
     private SphereRegistry sphereRegistry;
     @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = DBConstants.COLUMN_3)
-    private UhuProxyRegistry uhuProxyRegistry;
+    private BezirkProxyRegistry bezirkProxyRegistry;
 
 
     public BezirkRegistry() {
@@ -29,12 +29,12 @@ public class BezirkRegistry {
     }
 
     public BezirkRegistry(int id, SadlRegistry sadlRegistry,
-                          SphereRegistry sphereRegistry, UhuProxyRegistry uhuProxyRegistry) {
+                          SphereRegistry sphereRegistry, BezirkProxyRegistry bezirkProxyRegistry) {
         super();
         this.id = id;
         this.sadlRegistry = sadlRegistry;
         this.sphereRegistry = sphereRegistry;
-        this.uhuProxyRegistry = uhuProxyRegistry;
+        this.bezirkProxyRegistry = bezirkProxyRegistry;
     }
 
     public int getId() {
@@ -61,12 +61,12 @@ public class BezirkRegistry {
         this.sphereRegistry = sphereRegistry;
     }
 
-    public UhuProxyRegistry getUhuProxyRegistry() {
-        return uhuProxyRegistry;
+    public BezirkProxyRegistry getBezirkProxyRegistry() {
+        return bezirkProxyRegistry;
     }
 
-    public void setUhuProxyRegistry(UhuProxyRegistry uhuProxyRegistry) {
-        this.uhuProxyRegistry = uhuProxyRegistry;
+    public void setBezirkProxyRegistry(BezirkProxyRegistry bezirkProxyRegistry) {
+        this.bezirkProxyRegistry = bezirkProxyRegistry;
     }
 
 }

@@ -10,12 +10,12 @@ package com.bezirk.devices;
  * In Android we get "Dalvik Core Library"
  * In regular JVM we get "Java Platform API Specification"
  */
-public final class UhuOsPlatform {
+public final class BezirkOsPlatform {
 
     public final static String UPA_SERV__RUNTIME_ENV__ANDROID = "Dalvik Core Library";
     public final static String UPA_SERV__RUNTIME_ENV__JAVA = "Java Platform API Specification";
 
-    private UhuOsPlatform() {
+    private BezirkOsPlatform() {
         //this is a Utility class
     }
 

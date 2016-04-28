@@ -17,7 +17,7 @@ import com.bezirk.logging.LogServiceMessageHandler;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.sadl.UhuSadlManager;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
-import com.bezirk.streaming.UhuStreamManager;
+import com.bezirk.streaming.BezirkStreamManager;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 /**
- * Uhu Communication manager
+ * Bezirk Communication manager
  * this handles all the queue, sockets, receiver threads etc etc
  * Note : this code is handling many legacy workaround
  * when implementing new IUhuComms, make sure you clean this. Vimal
@@ -39,14 +39,14 @@ import java.util.ArrayList;
  * @modified Vijet Badigannavar added IUhuVersionMismatchCallback as a member variable
  */
 
-public class UhuCommsManager implements IUhuCommsLegacy {
-    private static final Logger logger = LoggerFactory.getLogger(UhuCommsManager.class);
+public class BezirkCommsManager implements IUhuCommsLegacy {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkCommsManager.class);
 
     MessageDispatcher msgDispatcher = null;
     CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver();
     UhuSadlManager uhuSadlManager = null;
     LogServiceMessageHandler logServiceMsgHandler = null;
-    private UhuStreamManager uhuStreamManager = null;
+    private BezirkStreamManager bezirkStreamManager = null;
     /**
      * Queues for the comms Deprecated
      */
@@ -88,7 +88,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
 
     //private ZirkMessageHandler uhuCallback = null;
 
-    public UhuCommsManager() {
+    public BezirkCommsManager() {
 
     }
 
@@ -156,8 +156,8 @@ public class UhuCommsManager implements IUhuCommsLegacy {
 
         if (BezirkComms.isStreamingEnabled()) {
 
-            this.uhuStreamManager = new UhuStreamManager(this, msgDispatcher, uhuSadlManager);
-            uhuStreamManager.initStreams();
+            this.bezirkStreamManager = new BezirkStreamManager(this, msgDispatcher, uhuSadlManager);
+            bezirkStreamManager.initStreams();
 
         }
 
@@ -184,8 +184,8 @@ public class UhuCommsManager implements IUhuCommsLegacy {
 
         if (BezirkComms.isStreamingEnabled()) {
 
-            if (uhuStreamManager != null) {
-                uhuStreamManager.endStreams();
+            if (bezirkStreamManager != null) {
+                bezirkStreamManager.endStreams();
             }
         }
         return true;
@@ -228,8 +228,8 @@ public class UhuCommsManager implements IUhuCommsLegacy {
 
         if (BezirkComms.isStreamingEnabled()) {
 
-            if (uhuStreamManager != null) {
-                uhuStreamManager.startStreams();
+            if (bezirkStreamManager != null) {
+                bezirkStreamManager.startStreams();
             }
         }
 
@@ -267,8 +267,8 @@ public class UhuCommsManager implements IUhuCommsLegacy {
 
         if (BezirkComms.isStreamingEnabled()) {
 
-            if (uhuStreamManager != null) {
-                uhuStreamManager.endStreams();
+            if (bezirkStreamManager != null) {
+                bezirkStreamManager.endStreams();
             }
         }
 
@@ -353,9 +353,9 @@ public class UhuCommsManager implements IUhuCommsLegacy {
      */
     public MessageQueue getStreamingMessageQueue() {
 
-        if (uhuStreamManager != null) {
+        if (bezirkStreamManager != null) {
 
-            return uhuStreamManager.getStreamingMessageQueue();
+            return bezirkStreamManager.getStreamingMessageQueue();
         }
         return null;
     }
@@ -367,9 +367,9 @@ public class UhuCommsManager implements IUhuCommsLegacy {
      */
     public void setStreamingMessageQueue(MessageQueue streamingMessageQueue) {
 
-        if (uhuStreamManager != null) {
+        if (bezirkStreamManager != null) {
 
-            uhuStreamManager.setStreamingMessageQueue(streamingMessageQueue);
+            bezirkStreamManager.setStreamingMessageQueue(streamingMessageQueue);
         }
 
     }
@@ -416,8 +416,8 @@ public class UhuCommsManager implements IUhuCommsLegacy {
                 break;
 
             case STREAMING_QUEUE:
-                if (uhuStreamManager != null) {
-                    queue = uhuStreamManager.getStreamingMessageQueue();
+                if (bezirkStreamManager != null) {
+                    queue = bezirkStreamManager.getStreamingMessageQueue();
                 }
                 break;
             default:
@@ -455,13 +455,13 @@ public class UhuCommsManager implements IUhuCommsLegacy {
     @Override
     public boolean sendStreamMessage(Ledger message) {
 
-        if (uhuStreamManager != null) {
+        if (bezirkStreamManager != null) {
 
-            uhuStreamManager.sendStreamMessage(message);
+            bezirkStreamManager.sendStreamMessage(message);
             return true;
         } else {
 
-            logger.error("UhuStreamManager is not initialized.");
+            logger.error("BezirkStreamManager is not initialized.");
             return false;
         }
 
@@ -470,12 +470,12 @@ public class UhuCommsManager implements IUhuCommsLegacy {
     @Override
     public boolean sendStream(String uniqueKey) {
 
-        if (uhuStreamManager != null) {
+        if (bezirkStreamManager != null) {
 
-            return uhuStreamManager.sendStream(uniqueKey);
+            return bezirkStreamManager.sendStream(uniqueKey);
         } else {
 
-            logger.error("UhuStreamManager is not initialized.");
+            logger.error("BezirkStreamManager is not initialized.");
             return false;
         }
 
@@ -484,12 +484,12 @@ public class UhuCommsManager implements IUhuCommsLegacy {
     @Override
     public boolean registerStreamBook(String key, StreamRecord sRecord) {
 
-        if (uhuStreamManager != null) {
+        if (bezirkStreamManager != null) {
 
-            return uhuStreamManager.registerStreamBook(key, sRecord);
+            return bezirkStreamManager.registerStreamBook(key, sRecord);
         } else {
 
-            logger.error("UhuStreamManager is not initialized.");
+            logger.error("BezirkStreamManager is not initialized.");
             return false;
         }
 
@@ -498,13 +498,13 @@ public class UhuCommsManager implements IUhuCommsLegacy {
     @Override
     public IPortFactory getPortFactory() {
 
-        if (uhuStreamManager != null) {
+        if (bezirkStreamManager != null) {
 
-            return uhuStreamManager.getPortFactory();
+            return bezirkStreamManager.getPortFactory();
 
         } else {
 
-            logger.error("UhuStreamManager is not initialized.");
+            logger.error("BezirkStreamManager is not initialized.");
             return null;
         }
 
@@ -542,7 +542,7 @@ public class UhuCommsManager implements IUhuCommsLegacy {
      */
     @Override
     public void setSphereForSadl(IUhuSphereForSadl uhuSphere) {
-        uhuStreamManager.setSphereForSadl(uhuSphere);
+        bezirkStreamManager.setSphereForSadl(uhuSphere);
     }
 
     /**

@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  */
 
 @Deprecated
-// No Global Queue manager. functionalities  are moved to UhuCommsManager// Delete this file later
+// No Global Queue manager. functionalities  are moved to BezirkCommsManager// Delete this file later
 public class MessageQueueManager {
     //private final static String TAG = MessageQueueManager.class.getCanonicalName();
     private static final Logger log = LoggerFactory.getLogger(MessageQueueManager.class);

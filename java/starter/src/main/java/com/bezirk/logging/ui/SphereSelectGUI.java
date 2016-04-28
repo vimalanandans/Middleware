@@ -9,8 +9,8 @@ import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.remotelogging.loginterface.IUhuLogging;
-import com.bezirk.remotelogging.manager.UhuLoggingManager;
-import com.bezirk.remotelogging.messages.UhuLoggingMessage;
+import com.bezirk.remotelogging.manager.BezirkLoggingManager;
+import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
 import com.bezirk.remotelogging.service.BezirkLoggingService;
 import com.bezirk.remotelogging.util.Util;
 
@@ -186,7 +186,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
      * @see BezirkLoggingService
      */
     private transient UhuLogDetailsGUI uhu;
-    private transient UhuLoggingManager uhuLoggingManager;
+    private transient BezirkLoggingManager bezirkLoggingManager;
     private final transient WindowAdapter closeButtonListener = new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent arg0) {
@@ -244,8 +244,8 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
         }
 
         try {
-            uhuLoggingManager = new UhuLoggingManager();
-            uhuLoggingManager.startLoggingService(
+            bezirkLoggingManager = new BezirkLoggingManager();
+            bezirkLoggingManager.startLoggingService(
                     BezirkComms.getREMOTE_LOGGING_PORT(), this);
         } catch (Exception e) {
             LOGGER.error("Error in sphere Select GUI init.", e);
@@ -362,7 +362,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
     public void shutGUI() {
         if (this != null) {
             try {
-                uhuLoggingManager.stopLoggingService();
+                bezirkLoggingManager.stopLoggingService();
             } catch (Exception e) {
                 LOGGER.error("Error in stopping logging zirk. ", e);
             }
@@ -371,7 +371,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
     }
 
     @Override
-    public void handleLogMessage(UhuLoggingMessage uhuLogMessage) {
+    public void handleLogMessage(BezirkLoggingMessage uhuLogMessage) {
         if (null != uhu) {
 
             uhu.updateTable(uhuLogMessage);

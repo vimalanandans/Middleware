@@ -1,6 +1,6 @@
 package com.bezirk.middleware.objects;
 
-import com.bezirk.middleware.objects.BezirkDeviceInfo.UhuDeviceRole;
+import com.bezirk.middleware.objects.BezirkDeviceInfo.BezirkDeviceRole;
 
 import org.junit.Test;
 
@@ -60,7 +60,7 @@ public class BezirkSphereInfoTest {
         String deviceId = "Device123";
         String deviceName = "DeviceA";
         String deviceType = "PC";
-        UhuDeviceRole deviceRole = UhuDeviceRole.UHU_MEMBER;
+        BezirkDeviceRole deviceRole = BezirkDeviceRole.UHU_MEMBER;
         boolean deviceActive = true;
         String zirkName = "ZirkA";
         String zirkId = "Zirk123";

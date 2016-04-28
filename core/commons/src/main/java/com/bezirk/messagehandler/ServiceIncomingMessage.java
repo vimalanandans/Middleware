@@ -4,7 +4,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.google.gson.Gson;
 
 /**
- * Base class of the Callback messages used in Uhu.
+ * Base class of the Callback messages used in Bezirk.
  */
 public class ServiceIncomingMessage {
     /**

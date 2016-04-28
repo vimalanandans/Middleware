@@ -3,7 +3,7 @@ package com.bezirk.rest;
 /**
  * @author PIK6KOR
  */
-public class CommsRestController implements IHttpComms {
+public class CommsRestController implements HttpComms {
 
     private CommsHttpServer commsHttpServer;
 

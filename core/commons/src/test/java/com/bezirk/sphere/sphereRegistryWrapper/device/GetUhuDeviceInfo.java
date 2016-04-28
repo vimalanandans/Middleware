@@ -5,7 +5,6 @@ package com.bezirk.sphere.sphereRegistryWrapper.device;
 
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
-import com.bezirk.middleware.objects.BezirkDeviceInfo.UhuDeviceRole;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.impl.OwnerZirk;
@@ -120,7 +119,7 @@ public class GetUhuDeviceInfo {
     /**
      * Test method for {@link SphereRegistryWrapper#getUhuDeviceInfo(java.util.Map, HashSet)}.
      * <p/>
-     * <br>When owner devices HashSet is invalid, it should return iterable BezirkDeviceInfo objects. And the UhuDeviceRole will be UHU_MEMBER
+     * <br>When owner devices HashSet is invalid, it should return iterable BezirkDeviceInfo objects. And the BezirkDeviceRole will be UHU_MEMBER
      */
     @Test
     public final void invalidOwnerDevicesReturnsValidList() {
@@ -155,7 +154,7 @@ public class GetUhuDeviceInfo {
             assertEquals(retrieved.getDeviceId(), upaDevice.getDeviceId());
             assertEquals(retrieved.getDeviceName(), upaDevice.getDeviceName());
             assertEquals(retrieved.getDeviceType(), upaDevice.getDeviceType());
-            assertEquals(retrieved.getDeviceRole(), UhuDeviceRole.UHU_MEMBER);
+            assertEquals(retrieved.getDeviceRole(), BezirkDeviceInfo.BezirkDeviceRole.UHU_MEMBER);
         }
     }
 

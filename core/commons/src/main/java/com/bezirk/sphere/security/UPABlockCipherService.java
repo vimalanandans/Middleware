@@ -1,6 +1,6 @@
 package com.bezirk.sphere.security;
 
-import com.bezirk.devices.UhuOsPlatform;
+import com.bezirk.devices.BezirkOsPlatform;
 
 import org.apache.shiro.crypto.DefaultBlockCipherService;
 import org.apache.shiro.crypto.OperationMode;
@@ -24,7 +24,7 @@ public class UPABlockCipherService extends DefaultBlockCipherService {
 
     public UPABlockCipherService() {
         super(ENCRYPTION_ALGORITHM);
-        if (!bouncyRegistered && UhuOsPlatform.getCurrentOSPlatform().equals(UhuOsPlatform.UPA_SERV__RUNTIME_ENV__JAVA))
+        if (!bouncyRegistered && BezirkOsPlatform.getCurrentOSPlatform().equals(BezirkOsPlatform.UPA_SERV__RUNTIME_ENV__JAVA))
             registerBouncy();
         setMode(operationMode);
         setPaddingScheme(paddingScheme);

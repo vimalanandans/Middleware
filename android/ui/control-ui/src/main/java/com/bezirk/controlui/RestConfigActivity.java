@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.bezirk.actions.UhuActions;
+import com.bezirk.actions.BezirkActions;
 import com.bezirk.commons.UhuCompManager;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.rest.BezirkRestCommsManager;
@@ -99,10 +99,10 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
         Intent intent = new Intent(this, MainService.class);
 
         if (checkStatus) {
-            action = UhuActions.ACTION_REST_START_UHU;
+            action = BezirkActions.ACTION_REST_START_UHU;
             restCommsManager.setStarted(true);
         } else {
-            action = UhuActions.ACTION_REST_STOP_UHU;
+            action = BezirkActions.ACTION_REST_STOP_UHU;
             restCommsManager.setStarted(false);
         }
         intent.setAction(action);

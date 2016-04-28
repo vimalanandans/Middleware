@@ -178,7 +178,7 @@ public class SmartHomeVocab {
      * unit of measurement
      */
     public static class uom {
-        // Uhu Location
+        // Bezirk Location
         // see: http://tahiti.si.de.bosch.com:7990/projects/UPA/repos/platform/browse/Java-Common/uhu/uhu-API/src/main/java/com/bosch/upa/uhu/api/addressing/Location.java?at=refs%2Fheads%2Ftopic%2Fplatform-0.5
         public static final String UHU_LOCATION = "http://upa.bosch.com/vocab/shv#UHU_LOCATION";
 

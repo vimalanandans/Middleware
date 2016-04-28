@@ -16,7 +16,7 @@ import com.bezirk.proxy.android.ProxyforServices;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.rest.CommsRestController;
-import com.bezirk.rest.IHttpComms;
+import com.bezirk.rest.HttpComms;
 import com.bezirk.sadl.UhuSadlManager;
 import com.bezirk.sphere.api.IUhuDevMode;
 import com.bezirk.sphere.api.IUhuSphereAPI;
@@ -99,7 +99,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
     }
 
     /**
-     * Starts all layers of Uhu Stack
+     * Starts all layers of Bezirk Stack
      *
      * @param service MainService
      */
@@ -160,7 +160,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     proxy.setSadlRegistry(uhuSadlManager);
 
                     /*************************************************************
-                     * Step 6 : Initialize UhuCommsManager                       *
+                     * Step 6 : Initialize BezirkCommsManager                       *
                      *************************************************************/
                     InetAddress inetAddress = androidNetworkUtil.fetchInetAddress(service);
                     comms = uhuStartStackHelper.initializeComms(inetAddress, uhuSadlManager, proxy, errNotificationCallback);
@@ -353,7 +353,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
     @Override
     public void startStopRestServer(int startStopStatus) {
         //if http feature is enabled, start the httpServer.//http server instance.
-        IHttpComms httpServer = new CommsRestController();
+        HttpComms httpServer = new CommsRestController();
 
         if (startStopStatus == 100) {
             httpServer.startHttpComms();

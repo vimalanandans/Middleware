@@ -7,9 +7,9 @@ import com.bezirk.messagehandler.ServiceIncomingMessage;
  */
 public interface IBoradcastReceiver {
     /**
-     * Receives the UhuCallbackMessge from the Uhu-pc and handles accordingly.
+     * Receives the UhuCallbackMessge from the Bezirk-pc and handles accordingly.
      *
-     * @param callbackMessage - one of the subclasses of UhuCallbackMessage.
+     * @param incomingMessage
      */
     void onReceive(ServiceIncomingMessage incomingMessage);
 }

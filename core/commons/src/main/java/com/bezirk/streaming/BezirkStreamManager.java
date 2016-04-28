@@ -16,7 +16,7 @@ import com.bezirk.sadl.ISadlEventReceiver;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.port.PortFactory;
-import com.bezirk.streaming.rtc.ISignaling;
+import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
 import com.bezirk.streaming.store.StreamStore;
 import com.bezirk.streaming.threads.StreamQueueProcessor;
@@ -28,20 +28,20 @@ import org.slf4j.LoggerFactory;
 /**
  * @author ajc6kor
  *         <p/>
- *         UhuStreamManager manages all queues,sockets and threads related to
+ *         BezirkStreamManager manages all queues,sockets and threads related to
  *         streaming. It also includes the StreamControlReceiver which process
  *         the stream request and stream responses.
  */
-public class UhuStreamManager implements Streaming {
+public class BezirkStreamManager implements Streaming {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(UhuStreamManager.class);
+            .getLogger(BezirkStreamManager.class);
     private final StreamCtrlReceiver ctrlReceiver = new StreamCtrlReceiver();
     private IUhuSphereForSadl sphereForSadl = null;
     private MessageQueue streamingMessageQueue = null;
     private StreamQueueProcessor streamQueueProcessor = null;
     private Thread sStreamingThread = null;
-    private UhuStreamHandler uhuStreamHandler = null;
+    private BezirkStreamHandler bezirkStreamHandler = null;
     private IPortFactory portFactory;
     private MessageDispatcher msgDispatcher;
     private IUhuComms comms = null;
@@ -50,8 +50,8 @@ public class UhuStreamManager implements Streaming {
 
     private ISadlEventReceiver sadlReceiver = null;
 
-    public UhuStreamManager(IUhuComms comms,
-                            MessageDispatcher msgDispatcher, ISadlEventReceiver sadlReceiver) {
+    public BezirkStreamManager(IUhuComms comms,
+                               MessageDispatcher msgDispatcher, ISadlEventReceiver sadlReceiver) {
 
         if (BezirkValidatorUtility.isObjectNotNull(comms)
                 && BezirkValidatorUtility.isObjectNotNull(msgDispatcher)
@@ -59,10 +59,10 @@ public class UhuStreamManager implements Streaming {
             this.comms = comms;
             this.msgDispatcher = msgDispatcher;
             this.sadlReceiver = sadlReceiver;
-            uhuStreamHandler = new UhuStreamHandler();
+            bezirkStreamHandler = new BezirkStreamHandler();
         } else {
 
-            LOGGER.error("Unable to initialize UhuStreamManager. Please ensure ControlSenderQueue, MessageDispatcher and UhuCallback are initialized.");
+            LOGGER.error("Unable to initialize BezirkStreamManager. Please ensure ControlSenderQueue, MessageDispatcher and UhuCallback are initialized.");
         }
 
     }
@@ -232,7 +232,7 @@ public class UhuStreamManager implements Streaming {
 
                 final StreamResponse streamResponse = ControlMessage
                         .deserialize(serializedMsg, StreamResponse.class);
-                uhuStreamHandler.handleStreamResponse(streamResponse,
+                bezirkStreamHandler.handleStreamResponse(streamResponse,
                         streamingMessageQueue, streamStore);
 
             } catch (Exception e) {
@@ -248,7 +248,7 @@ public class UhuStreamManager implements Streaming {
 
                 final StreamRequest streamRequest = ControlMessage.deserialize(
                         serializedMsg, StreamRequest.class);
-                uhuStreamHandler.handleStreamRequest(streamRequest,
+                bezirkStreamHandler.handleStreamRequest(streamRequest,
                         comms, portFactory,
                         streamStore, sadlReceiver, sphereForSadl);
 
@@ -260,9 +260,9 @@ public class UhuStreamManager implements Streaming {
         }
 
         private void processRTCMessage(String serializedMsg) {
-            ISignaling signaling = null;
-            if (SignalingFactory.getSignalingInstance() instanceof ISignaling) {
-                signaling = (ISignaling) SignalingFactory
+            Signaling signaling = null;
+            if (SignalingFactory.getSignalingInstance() instanceof Signaling) {
+                signaling = (Signaling) SignalingFactory
                         .getSignalingInstance();
             }
             if (signaling == null) {

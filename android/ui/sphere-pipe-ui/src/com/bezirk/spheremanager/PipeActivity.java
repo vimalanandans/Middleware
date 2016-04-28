@@ -37,10 +37,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.bezirk.actions.UhuActions.KEY_PIPE_NAME;
-import static com.bezirk.actions.UhuActions.KEY_PIPE_REQ_ID;
-import static com.bezirk.actions.UhuActions.KEY_PIPE_SPHEREID;
-import static com.bezirk.actions.UhuActions.KEY_SENDER_ZIRK_ID;
+import static com.bezirk.actions.BezirkActions.KEY_PIPE_NAME;
+import static com.bezirk.actions.BezirkActions.KEY_PIPE_REQ_ID;
+import static com.bezirk.actions.BezirkActions.KEY_PIPE_SPHEREID;
+import static com.bezirk.actions.BezirkActions.KEY_SENDER_ZIRK_ID;
 import static com.bezirk.util.BezirkValidatorUtility.checkForString;
 import static com.bezirk.util.BezirkValidatorUtility.checkUhuServiceId;
 

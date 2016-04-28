@@ -5,7 +5,7 @@ import com.bezirk.control.messages.UnicastControlMessage;
 /**
  * API for using uhu as signaling
  */
-public interface ISignaling {
+public interface Signaling {
 
     /**
      * Starts the actual handshaking between two parties

@@ -18,8 +18,7 @@ import org.slf4j.LoggerFactory;
  * Created by Vimal on 5/19/2015. control message handler for sphere
  */
 public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SphereCtrlMsgReceiver.class);
+    private static final Logger logger = LoggerFactory.getLogger(SphereCtrlMsgReceiver.class);
 
     IUhuSphereMessages uhuSphereMessages = null;
 
@@ -33,7 +32,7 @@ public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
 
         switch (id) {
             case SphereDiscoveryResponse:
-                LOGGER.debug("Processing sphere Discovery Response");
+                logger.debug("Processing sphere Discovery Response");
                 final SphereDiscoveryResponse discoveryResponse = ControlMessage.deserialize(serializedMsg,
                         SphereDiscoveryResponse.class);
 
@@ -42,27 +41,27 @@ public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
                 break;
             case CatchRequest:
                 final CatchRequest catchRequest = ControlMessage.deserialize(serializedMsg, CatchRequest.class);
-                LOGGER.debug("Catch Request " + catchRequest.getSphereId());
+                logger.debug("Catch Request " + catchRequest.getSphereId());
                 uhuSphereMessages.processCatchRequestExt(catchRequest);
                 break;
             case CatchResponse:
                 final CatchResponse catchResponse = ControlMessage.deserialize(serializedMsg, CatchResponse.class);
 
-                LOGGER.debug("Catch Response " + catchResponse.getSphereId());
+                logger.debug("Catch Response " + catchResponse.getSphereId());
                 uhuSphereMessages.processCatchResponse(catchResponse);
                 break;
             case ShareRequest:
                 ShareRequest shareRequest = ControlMessage.deserialize(serializedMsg, ShareRequest.class);
-                LOGGER.debug("Share Request " + shareRequest.getSphereId());
+                logger.debug("Share Request " + shareRequest.getSphereId());
                 uhuSphereMessages.processShareRequest(shareRequest);
                 break;
             case ShareResponse:
                 ShareResponse shareResponse = ControlMessage.deserialize(serializedMsg, ShareResponse.class);
-                LOGGER.debug("Share Response " + shareResponse.getSphereId());
+                logger.debug("Share Response " + shareResponse.getSphereId());
                 uhuSphereMessages.processShareResponse(shareResponse);
                 break;
             default: // unregistered message
-                LOGGER.error("unregistrered message. dispatcher map of is corrupted ? ");
+                logger.error("unregistrered message. dispatcher map of is corrupted ? ");
                 return false;
         }
         return true;
@@ -83,7 +82,7 @@ public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
             comms.registerControlMessageReceiver(ControlMessage.Discriminator.ShareResponse, this);
             return true;
         } else {
-            LOGGER.error("invalid comms");
+            logger.error("invalid comms");
         }
         return false;
     }

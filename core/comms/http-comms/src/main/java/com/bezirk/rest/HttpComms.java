@@ -1,6 +1,6 @@
 package com.bezirk.rest;
 
-public interface IHttpComms {
+public interface HttpComms {
 
     public boolean startHttpComms();
 

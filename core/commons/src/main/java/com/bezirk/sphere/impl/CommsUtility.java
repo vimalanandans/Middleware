@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
  * @author rishabh
  */
 public final class CommsUtility {
+    private static final Logger logger = LoggerFactory.getLogger(CommsUtility.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommsUtility.class);
     private IUhuComms uhuComms;
 
     public CommsUtility(IUhuComms uhuComms) {
@@ -30,10 +30,10 @@ public final class CommsUtility {
 
         // send the message
         if (uhuComms != null) {
-            LOGGER.debug("Sending message: " + controlMessage.getDiscriminator());
+            logger.debug("Sending message: " + controlMessage.getDiscriminator());
             return uhuComms.sendMessage(transControlMessage);
         }
-        LOGGER.error("Failed to send message: " + controlMessage.getDiscriminator());
+        logger.error("Failed to send message: " + controlMessage.getDiscriminator());
         return false;
     }
 }

@@ -25,7 +25,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.sadl.UhuSadlManager;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.sphere.security.UPABlockCipherService;
-import com.bezirk.streaming.UhuStreamManager;
+import com.bezirk.streaming.BezirkStreamManager;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.TextCompressor;
 import com.bezrik.network.UhuNetworkUtilities;
@@ -54,7 +54,7 @@ public abstract class CommsProcessor implements IUhuComms {
     private static final int THREAD_SIZE = 4;
     private final UPABlockCipherService cipherService = new UPABlockCipherService();
 
-    //private UhuStreamManager uhuStreamManager = null;
+    //private BezirkStreamManager bezirkStreamManager = null;
     MessageDispatcher msgDispatcher = null;
 
     //LogServiceMessageHandler logServiceMsgHandler = null;
@@ -76,7 +76,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
     //private final byte[] testKey = {'B','E','Z','I','R','K','_','G','R','O','U','P','N','E','W','1'};
     private ExecutorService executor;
-    private UhuStreamManager uhuStreamManager = null;
+    private BezirkStreamManager bezirkStreamManager = null;
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
@@ -88,9 +88,9 @@ public abstract class CommsProcessor implements IUhuComms {
 
         if (BezirkComms.isStreamingEnabled()) {
 
-            uhuStreamManager = new UhuStreamManager(this, msgDispatcher, sadl);
+            bezirkStreamManager = new BezirkStreamManager(this, msgDispatcher, sadl);
 
-            uhuStreamManager.initStreams();
+            bezirkStreamManager.initStreams();
 
         }
 
@@ -109,8 +109,8 @@ public abstract class CommsProcessor implements IUhuComms {
 
         if (BezirkComms.isStreamingEnabled()) {
 
-            if (uhuStreamManager != null) {
-                uhuStreamManager.startStreams();
+            if (bezirkStreamManager != null) {
+                bezirkStreamManager.startStreams();
             }
         }
 
@@ -130,8 +130,8 @@ public abstract class CommsProcessor implements IUhuComms {
 
         if (BezirkComms.isStreamingEnabled()) {
 
-            if (uhuStreamManager != null) {
-                uhuStreamManager.endStreams();
+            if (bezirkStreamManager != null) {
+                bezirkStreamManager.endStreams();
             }
         }
 
@@ -141,8 +141,8 @@ public abstract class CommsProcessor implements IUhuComms {
     @Override
     public boolean closeComms() {
         /* in stop we end streams already, so skip the below
-        if (uhuStreamManager != null) {
-            uhuStreamManager.endStreams();
+        if (bezirkStreamManager != null) {
+            bezirkStreamManager.endStreams();
         } */
 
         return true;
@@ -454,13 +454,13 @@ public abstract class CommsProcessor implements IUhuComms {
      * send the stream data
      */
     public boolean sendStreamMessage(Ledger message) {
-        if (uhuStreamManager != null) {
+        if (bezirkStreamManager != null) {
 
-            uhuStreamManager.sendStreamMessage(message);
+            bezirkStreamManager.sendStreamMessage(message);
             return true;
         } else {
 
-            logger.error("UhuStreamManager is not initialized.");
+            logger.error("BezirkStreamManager is not initialized.");
             return false;
         }
 
@@ -725,12 +725,12 @@ public abstract class CommsProcessor implements IUhuComms {
 
     @Override
     public boolean sendStream(String uniqueKey) {
-        if (uhuStreamManager != null) {
+        if (bezirkStreamManager != null) {
             logger.info("sending stream >" + uniqueKey);
-            return uhuStreamManager.sendStream(uniqueKey);
+            return bezirkStreamManager.sendStream(uniqueKey);
         } else {
 
-            logger.error("UhuStreamManager is not initialized.");
+            logger.error("BezirkStreamManager is not initialized.");
             return false;
         }
     }
@@ -738,13 +738,13 @@ public abstract class CommsProcessor implements IUhuComms {
     @Override
     public boolean registerStreamBook(String key, StreamRecord sRecord) {
 
-        if (uhuStreamManager != null) {
+        if (bezirkStreamManager != null) {
 
-            return uhuStreamManager.registerStreamBook(key, sRecord);
+            return bezirkStreamManager.registerStreamBook(key, sRecord);
 
         } else {
 
-            logger.error("UhuStreamManager is not initialized.");
+            logger.error("BezirkStreamManager is not initialized.");
             return false;
         }
     }
@@ -782,7 +782,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
     @Override
     public void setSphereForSadl(IUhuSphereForSadl uhuSphere) {
-        uhuStreamManager.setSphereForSadl(uhuSphere);
+        bezirkStreamManager.setSphereForSadl(uhuSphere);
     }
 
     /**
@@ -825,7 +825,7 @@ public abstract class CommsProcessor implements IUhuComms {
 
             if (!WireMessage.checkVersion(msg)) {
                 String mismatchedVersion = WireMessage.getVersion(msg);
-				/*logger.error("Unknown message received. Uhu version > "+ BezirkVersion.getWireVersion() +
+				/*logger.error("Unknown message received. Bezirk version > "+ BezirkVersion.getWireVersion() +
 						" . Incoming msg version > " + mismatchedVersion);*/
                 notification.versionMismatch(mismatchedVersion);
                 return;

@@ -9,7 +9,7 @@ import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.MulticastControlMessage;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.control.messages.UnicastHeader;
-import com.bezirk.remotelogging.messages.UhuLoggingMessage;
+import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
 import com.bezirk.remotelogging.queues.LoggingQueueManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
 import com.bezirk.remotelogging.status.LoggingStatus;
@@ -28,19 +28,19 @@ import java.util.Date;
 
 /**
  * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
- *         The UhuCommsSend represents the comms layer in the sender side. It supports both unicast and multicast
+ *         The BezirkCommsSend represents the comms layer in the sender side. It supports both unicast and multicast
  *         In the current implementation, unicast and multicast are based on UDP
  *         Both events and ctrl messages use this to send messages
  */
 
-public class UhuCommsSend {
-    private static final Logger logger = LoggerFactory.getLogger(UhuCommsSend.class);
+public class BezirkCommsSend {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkCommsSend.class);
     private final static Date currentDate = new Date();
     private final static String SEPERATOR = ",";
 
     /**
      * The SenderThread invokes this method after the sphere Layer returns true.
-     * Note: The UhuCommsSend sends a unicast if the recipient address has been set and multicast if the recipient address is not set
+     * Note: The BezirkCommsSend sends a unicast if the recipient address has been set and multicast if the recipient address is not set
      *
      * @param tcMessage the Message to be sent
      * @return true if the message is sent successfully
@@ -138,7 +138,7 @@ public class UhuCommsSend {
      */
     private static void sendEventLogMessage(final EventLedger eLedger, final String recipient) {
         try {
-            LoggingQueueManager.loadLogSenderQueue(new UhuLoggingMessage(eLedger.getHeader().getSphereName(),
+            LoggingQueueManager.loadLogSenderQueue(new BezirkLoggingMessage(eLedger.getHeader().getSphereName(),
                     String.valueOf(currentDate.getTime()), UhuCompManager.getUpaDevice().getDeviceName(), recipient, eLedger.getHeader().getUniqueMsgId(),
                     eLedger.getHeader().getTopic(), Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_SEND.name(), Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {
@@ -154,7 +154,7 @@ public class UhuCommsSend {
      */
     private static void sendControlLogMessage(ControlLedger tcMsg, String recipient) {
         try {
-            LoggingQueueManager.loadLogSenderQueue(new UhuLoggingMessage(tcMsg.getSphereId(),
+            LoggingQueueManager.loadLogSenderQueue(new BezirkLoggingMessage(tcMsg.getSphereId(),
                     String.valueOf(currentDate.getTime()), UhuCompManager.getUpaDevice().getDeviceName(), recipient, tcMsg.getMessage().getUniqueKey(),
                     tcMsg.getMessage().getDiscriminator().toString(), Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND.name(), Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {
@@ -265,12 +265,12 @@ public class UhuCommsSend {
         //Send the message
         if (tcMsg.getMessage() instanceof MulticastControlMessage) {
             logger.info("About to send: " + tcMsg.getMessage().getDiscriminator().toString());
-            isSent = UhuCommsSend.sendMulticast(tcMsg.getDataOnWire(), false);
+            isSent = BezirkCommsSend.sendMulticast(tcMsg.getDataOnWire(), false);
         } else if (tcMsg.getMessage() instanceof UnicastControlMessage) {
             logger.info("About to send: " + tcMsg.getMessage().getDiscriminator().toString());
             UnicastControlMessage uMsg = (UnicastControlMessage) tcMsg.getMessage();
             recipient = uMsg.getRecipient().device;
-            isSent = UhuCommsSend.sendUnicast(tcMsg.getDataOnWire(), recipient, false);
+            isSent = BezirkCommsSend.sendUnicast(tcMsg.getDataOnWire(), recipient, false);
         }
 
         if (isSent && LoggingStatus.isLoggingEnabled() && tcMsg.getNumOfSends() == 1) {

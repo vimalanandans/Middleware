@@ -15,12 +15,8 @@ import java.util.Set;
  * @author Rishab Gulati
  */
 public class Sphere implements Serializable {
-
-    /**
-     *
-     */
     private static final long serialVersionUID = -8206651024005270100L;
-    private static final Logger LOGGER = LoggerFactory.getLogger(Sphere.class);
+    private static final Logger logger = LoggerFactory.getLogger(Sphere.class);
     private static final String DEFAULT_SPHERE_NAME = "Default sphere";
     /**
      * Name of the sphere
@@ -92,25 +88,24 @@ public class Sphere implements Serializable {
      * Adds a zirk to the deviceId passed
      *
      * @param deviceId
-     * @param service
+     * @param zirkId
      * @return
      */
-    public final boolean addService(String deviceId, String serviceId) {
-
+    public final boolean addService(String deviceId, String zirkId) {
         boolean success = false;
 
         if (deviceId == null) {
-            LOGGER.debug("addService: deviceid is null ");
+            logger.debug("addService: deviceid is null ");
             return success;
         }
 
-        if (serviceId == null) {
-            LOGGER.debug("addService: zirk is null ");
+        if (zirkId == null) {
+            logger.debug("addService: zirk is null ");
             return success;
         }
 
         if (deviceServices == null) {
-            LOGGER.debug("addService: deviceServices is null ");
+            logger.debug("addService: deviceServices is null ");
             return success;
         }
 
@@ -122,11 +117,11 @@ public class Sphere implements Serializable {
         // add the zirk to the set of zirkId
         ArrayList<BezirkZirkId> serviceList = deviceServices.get(deviceId);
 
-        BezirkZirkId service = new BezirkZirkId(serviceId);
+        BezirkZirkId service = new BezirkZirkId(zirkId);
 
         if (!serviceList.contains(service)) {
             serviceList.add(service);
-            LOGGER.debug("Zirk " + service + " added to sphere " + sphereName + "\ndevice Id " + deviceId);
+            logger.debug("Zirk " + service + " added to sphere " + sphereName + "\ndevice Id " + deviceId);
         }
 
         success = true;
@@ -153,7 +148,7 @@ public class Sphere implements Serializable {
             for (BezirkZirkId serviceId : services) {
                 if (!serviceList.contains(serviceId)) {
                     serviceList.add(serviceId);
-                    LOGGER.debug("Zirk " + serviceId + " added to sphere " + sphereName);
+                    logger.debug("Zirk " + serviceId + " added to sphere " + sphereName);
                 }
             }
             success = true;

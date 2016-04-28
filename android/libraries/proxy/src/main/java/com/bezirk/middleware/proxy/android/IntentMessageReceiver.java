@@ -26,10 +26,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.bezirk.actions.UhuActions.KEY_PIPE;
-import static com.bezirk.actions.UhuActions.KEY_PIPE_POLICY_IN;
-import static com.bezirk.actions.UhuActions.KEY_PIPE_POLICY_OUT;
-import static com.bezirk.actions.UhuActions.KEY_PIPE_REQ_ID;
+import static com.bezirk.actions.BezirkActions.KEY_PIPE;
+import static com.bezirk.actions.BezirkActions.KEY_PIPE_POLICY_IN;
+import static com.bezirk.actions.BezirkActions.KEY_PIPE_POLICY_OUT;
+import static com.bezirk.actions.BezirkActions.KEY_PIPE_REQ_ID;
 
 /**
  * Created by AJC6KOR on 11/19/2015.

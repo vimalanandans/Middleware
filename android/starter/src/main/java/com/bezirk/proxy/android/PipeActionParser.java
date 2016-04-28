@@ -2,7 +2,7 @@ package com.bezirk.proxy.android;
 
 import android.content.Intent;
 
-import com.bezirk.actions.UhuActions;
+import com.bezirk.actions.BezirkActions;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.core.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRequest;
@@ -32,13 +32,13 @@ public class PipeActionParser {
          * Get strings out of the intent
          */
 
-        String pipeName = intent.getStringExtra(UhuActions.KEY_PIPE_NAME);
-        String pipeId = intent.getStringExtra(UhuActions.KEY_PIPE_REQ_ID);
-        String serviceIdAsString = intent.getStringExtra(UhuActions.KEY_SENDER_ZIRK_ID);
-        String uriString = intent.getStringExtra(UhuActions.KEY_PIPE_URI);
-        String pipeClassName = intent.getStringExtra(UhuActions.KEY_PIPE_CLASS);
-        String policyIn = intent.getStringExtra(UhuActions.KEY_PIPE_POLICY_IN);
-        String policyOut = intent.getStringExtra(UhuActions.KEY_PIPE_POLICY_OUT);
+        String pipeName = intent.getStringExtra(BezirkActions.KEY_PIPE_NAME);
+        String pipeId = intent.getStringExtra(BezirkActions.KEY_PIPE_REQ_ID);
+        String serviceIdAsString = intent.getStringExtra(BezirkActions.KEY_SENDER_ZIRK_ID);
+        String uriString = intent.getStringExtra(BezirkActions.KEY_PIPE_URI);
+        String pipeClassName = intent.getStringExtra(BezirkActions.KEY_PIPE_CLASS);
+        String policyIn = intent.getStringExtra(BezirkActions.KEY_PIPE_POLICY_IN);
+        String policyOut = intent.getStringExtra(BezirkActions.KEY_PIPE_POLICY_OUT);
 
         BezirkPipePolicy allowedIn = PipePolicy.fromJson(policyIn, BezirkPipePolicy.class);
         BezirkPipePolicy allowedOut = PipePolicy.fromJson(policyOut, BezirkPipePolicy.class);

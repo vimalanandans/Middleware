@@ -4,7 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
-import com.bezirk.actions.UhuActions;
+import com.bezirk.actions.BezirkActions;
 import com.bezirk.application.BezirkApp;
 import com.bezirk.pipe.core.BezirkPipeAPI;
 import com.bezirk.pipe.core.PipeApprovalException;
@@ -44,8 +44,8 @@ public class AndroidApp implements BezirkApp {
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setComponent(new ComponentName(COMPONENT_NAME, "com.bosch.upa.spheremanager.PipeActivity"));
-        intent.putExtra(UhuActions.KEY_PIPE_REQ_ID, pipeRequestId);
-        intent.putExtra(UhuActions.KEY_SENDER_ZIRK_ID, new Gson().toJson((BezirkZirkId) pipeRequest.getRequestingService()));
+        intent.putExtra(BezirkActions.KEY_PIPE_REQ_ID, pipeRequestId);
+        intent.putExtra(BezirkActions.KEY_SENDER_ZIRK_ID, new Gson().toJson((BezirkZirkId) pipeRequest.getRequestingService()));
 
         // TODO remove the above and send the below serialized object to UI
         //Only to test

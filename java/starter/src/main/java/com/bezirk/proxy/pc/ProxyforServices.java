@@ -1,6 +1,6 @@
 /**
  * @author: Marcelo Cataldo (CR/RTC3-NA)
- * @description: This class implements Android-specific Uhu Proxy.
+ * @description: This class implements Android-specific Bezirk Proxy.
  */
 package com.bezirk.proxy.pc;
 
@@ -27,7 +27,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.sadl.ISadlRegistry;
 import com.bezirk.streaming.control.Objects.StreamRecord;
-import com.bezirk.streaming.rtc.ISignaling;
+import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
 import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.UhuNetworkUtilities;
@@ -40,7 +40,7 @@ import java.io.File;
 import java.util.Iterator;
 
 public class ProxyforServices implements UhuProxyForServiceAPI {
-    private static final Logger log = LoggerFactory.getLogger(ProxyforServices.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProxyforServices.class);
     private ISadlRegistry sadlRegistry = null;
     private IUhuComms comms = null;
 
@@ -51,15 +51,15 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
         if (isSADLPassed) {
             // Step 2: moved to outside since the sphere persistence is not ready
         } else {
-            log.debug("Don't need to register Zirk: Zirk ID is already registered");
+            logger.debug("Don't need to register Zirk: Zirk ID is already registered");
         }
         boolean isSpherePassed = UhuCompManager.getSphereRegistration().registerService(serviceId, serviceName);
         if (isSpherePassed) {
-            log.info("Zirk Registration Complete for: " + serviceName + ", " + serviceId);
+            logger.info("Zirk Registration Complete for: " + serviceName + ", " + serviceId);
             return;
         } else {
             // unregister the sadl due to failure in sphere
-            log.error("sphere Registration Failed. unregistring SADL");
+            logger.error("sphere Registration Failed. unregistring SADL");
             sadlRegistry.unregisterService(serviceId);
 
         }
@@ -75,7 +75,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
 
         final Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            log.error("Zirk Not Registered with any sphere");
+            logger.error("Zirk Not Registered with any sphere");
             return;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
@@ -100,7 +100,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
             if (BezirkValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(ecMessage);
             } else {
-                log.error("Comms manager not initialized");
+                logger.error("Comms manager not initialized");
             }
 
         }
@@ -111,7 +111,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     public void sendUnicastEvent(final BezirkZirkId serviceId, final BezirkZirkEndPoint recipient, final String serializedEventMsg) {
         final Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            log.error("Zirk Not Registered with the sphere");
+            logger.error("Zirk Not Registered with the sphere");
             return;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
@@ -136,7 +136,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
             if (BezirkValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(ecMessage);
             } else {
-                log.error("Comms manager not initialized");
+                logger.error("Comms manager not initialized");
             }
         }
     }
@@ -145,7 +145,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     public void discover(final BezirkZirkId serviceId, final Address address, final SubscribedRole pRole, final int discoveryId, final long timeout, final int maxDiscovered) {
         final Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            log.error("Zirk Not Registered with the sphere");
+            logger.error("Zirk Not Registered with the sphere");
             return;
         }
 
@@ -164,7 +164,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
             if (BezirkValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(ControlLedger);
             } else {
-                log.error("Comms manager not initialized");
+                logger.error("Comms manager not initialized");
             }
         }
         final DiscoveryLabel discoveryLabel = new DiscoveryLabel(senderSEP, discoveryId);
@@ -176,7 +176,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     public short sendStream(BezirkZirkId senderId, BezirkZirkEndPoint receiver, String serializedStream, File file, short streamId) {
         final Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(senderId);
         if (null == listOfSphere) {
-            log.error("Zirk Not Registered with any sphere: " + senderId);
+            logger.error("Zirk Not Registered with any sphere: " + senderId);
             return (short) -1;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
@@ -203,7 +203,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
 
             boolean streamStoreStatus = comms.registerStreamBook(streamRequestKey, streamRecord);
             if (!streamStoreStatus) {
-                log.error("Cannot Register Stream, CtrlMsgId is already present in StreamBook");
+                logger.error("Cannot Register Stream, CtrlMsgId is already present in StreamBook");
                 return (short) -1;
             }
 
@@ -219,11 +219,11 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
                 if (BezirkValidatorUtility.isObjectNotNull(comms)) {
                     comms.sendMessage(tcMessage);
                 } else {
-                    log.error("Comms manager not initialized");
+                    logger.error("Comms manager not initialized");
                 }
             }
         } catch (Exception e) {
-            log.error("Cant get the SEP of the sender", e);
+            logger.error("Cant get the SEP of the sender", e);
             return (short) -1;
         }
         return (short) 1;
@@ -264,18 +264,18 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     public short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver,
                             String serialsedString, short streamId) {
 
-        ISignaling signalling = null;
-        if (SignalingFactory.getSignalingInstance() instanceof ISignaling) {
-            signalling = (ISignaling) SignalingFactory.getSignalingInstance();
+        Signaling signalling = null;
+        if (SignalingFactory.getSignalingInstance() instanceof Signaling) {
+            signalling = (Signaling) SignalingFactory.getSignalingInstance();
         }
         if (signalling == null) {
-            log.error("Feature not enabled.");
+            logger.error("Feature not enabled.");
             return (short) -1;
         }
 
         Iterable<String> listOfSphere = UhuCompManager.getSphereForSadl().getSphereMembership(sender);
         if (null == listOfSphere) {
-            log.error("Zirk Not Registered with any sphere: " + sender);
+            logger.error("Zirk Not Registered with any sphere: " + sender);
             return (short) -1;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
@@ -287,7 +287,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
             while (sphereIterator.hasNext()) {
                 sphereId = sphereIterator.next();
                 if (UhuCompManager.getSphereForSadl().isZirkInSphere(receiver.getBezirkZirkId(), sphereId)) {
-                    log.debug("Found the sphere:" + sphereId);
+                    logger.debug("Found the sphere:" + sphereId);
                     break;
                 }
             }
@@ -296,7 +296,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
                 signalling.startSignaling(request);
             }
         } catch (Exception e) {
-            log.error("Cant get the SEP of the sender", e);
+            logger.error("Cant get the SEP of the sender", e);
             return (short) -1;
         }
         return (short) 1;

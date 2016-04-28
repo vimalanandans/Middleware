@@ -9,7 +9,7 @@ import com.google.gson.Gson;
  *
  * @author Rishabh Gulati
  */
-public class UhuSphereLeave extends com.bezirk.control.messages.UnicastControlMessage {
+public class BezirkSphereLeave extends com.bezirk.control.messages.UnicastControlMessage {
     private final static Discriminator discriminator = com.bezirk.control.messages.ControlMessage.Discriminator.UhuSphereLeave;
     private final BezirkZirkId serviceId;
     private final long time;
@@ -21,7 +21,7 @@ public class UhuSphereLeave extends com.bezirk.control.messages.UnicastControlMe
      * @param serviceId
      * @param recipient
      */
-    public UhuSphereLeave(String sphereID, BezirkZirkId serviceId, BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient) {
+    public BezirkSphereLeave(String sphereID, BezirkZirkId serviceId, BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient) {
         super(sender, recipient, sphereID, discriminator, true);
         //public UnicastControlMessage(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereName,
         //String discriminator, Boolean retransmit, String key){

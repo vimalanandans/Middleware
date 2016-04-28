@@ -49,7 +49,7 @@ public class BezirkZirkIdPersistenceTest {
         assertNotNull(regPersistence);
         BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
 
-        UhuProxyRegistry proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
+        BezirkProxyRegistry proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
         assertNotNull(proxyRegistry);
         assertNull(proxyRegistry.getUhuServiceId("null"));
         // update the registry
@@ -58,7 +58,7 @@ public class BezirkZirkIdPersistenceTest {
         proxyRegistry.updateUhuServiceId("zirk-B", "sid-2");
         proxyPersistence.persistUhuProxyRegistry();
 
-        //close the db == Uhu is stopped or Restart the Uhu
+        //close the db == Bezirk is stopped or Restart the Bezirk
         dbConnection.getDatabaseConnection().close();
         proxyPersistence = null;
         proxyRegistry = null;
@@ -75,7 +75,7 @@ public class BezirkZirkIdPersistenceTest {
     }
 
     /**
-     * Check the ServiceIdPersistence. Get the UhuProxyRegistry and update the UhuProxyRegisty with sample
+     * Check the ServiceIdPersistence. Get the BezirkProxyRegistry and update the UhuProxyRegisty with sample
      * ServiceIds. Then close the dbConnection that stimulates restarting or shutting of Bezirk. Delete the
      * sample zirk Ids and shut the Bezirk. Check the registry for map that contains no zirkId that
      * validates this test case.
@@ -88,7 +88,7 @@ public class BezirkZirkIdPersistenceTest {
         assertNotNull(regPersistence);
         BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
 
-        UhuProxyRegistry proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
+        BezirkProxyRegistry proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
         assertNotNull(proxyRegistry);
         assertNull(proxyRegistry.getUhuServiceId("null"));
         // update the registry
@@ -100,7 +100,7 @@ public class BezirkZirkIdPersistenceTest {
         proxyRegistry.deleteUhuServiceId("zirk-A");
         proxyPersistence.persistUhuProxyRegistry();
 
-        //close the db == Uhu is stopped or Restart the Uhu
+        //close the db == Bezirk is stopped or Restart the Bezirk
         dbConnection.getDatabaseConnection().close();
         proxyPersistence = null;
         proxyRegistry = null;
@@ -117,7 +117,7 @@ public class BezirkZirkIdPersistenceTest {
         proxyRegistry.deleteUhuServiceId("zirk-B");
         proxyPersistence.persistUhuProxyRegistry();
 
-        //close the db == Uhu is stopped or Restart the Uhu
+        //close the db == Bezirk is stopped or Restart the Bezirk
         dbConnection.getDatabaseConnection().close();
         proxyPersistence = null;
         proxyRegistry = null;
@@ -134,7 +134,7 @@ public class BezirkZirkIdPersistenceTest {
     }
 
     /**
-     * Check the ServiceIdPersistence. Get the UhuProxyRegistry and update the UhuProxyRegisty with sample
+     * Check the ServiceIdPersistence. Get the BezirkProxyRegistry and update the UhuProxyRegisty with sample
      * ServiceIds. Then close the dbConnection that stimulates restarting or shutting of Bezirk. Check the
      * same and verify.
      *
@@ -146,7 +146,7 @@ public class BezirkZirkIdPersistenceTest {
         assertNotNull(regPersistence);
         BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
 
-        UhuProxyRegistry proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
+        BezirkProxyRegistry proxyRegistry = proxyPersistence.loadUhuProxyRegistry();
         assertNotNull(proxyRegistry);
         assertNull(proxyRegistry.getUhuServiceId("null"));
         // update the registry

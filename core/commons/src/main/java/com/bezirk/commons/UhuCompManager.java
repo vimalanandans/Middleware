@@ -5,15 +5,15 @@ import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.sphere.api.IUhuSphereAPI;
 import com.bezirk.sphere.api.IUhuSphereForSadl;
 import com.bezirk.sphere.api.IUhuSphereRegistration;
-import com.bezirk.streaming.rtc.ISignaling;
+import com.bezirk.streaming.rtc.Signaling;
 
 /**
  * @author hkh5kor
  * @Date: 11-09-2014
  * <p/>
  * This is a Util Class for injecting the instance of
- * SQLConnectionForJava or SQLConnectionForAndroid in Uhu-PC or
- * Uhu-Android respectively. The injected instance will be later used in
+ * SQLConnectionForJava or SQLConnectionForAndroid in Bezirk-PC or
+ * Bezirk-Android respectively. The injected instance will be later used in
  * the Java-Commons
  */
 
@@ -57,7 +57,7 @@ public final class UhuCompManager {
      * For Real Time Communication
      */
 
-    private static ISignaling signaling;
+    private static Signaling signaling;
 
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
@@ -65,11 +65,11 @@ public final class UhuCompManager {
 
     }
 
-    public static ISignaling getSignaling() {
+    public static Signaling getSignaling() {
         return signaling;
     }
 
-    public static void setSignaling(ISignaling signaling) {
+    public static void setSignaling(Signaling signaling) {
         UhuCompManager.signaling = signaling;
     }
 

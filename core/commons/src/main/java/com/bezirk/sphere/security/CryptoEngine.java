@@ -24,8 +24,8 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public final class CryptoEngine implements ICryptoInternals {
+    private static final Logger logger = LoggerFactory.getLogger(CryptoEngine.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CryptoEngine.class);
     private static final String KEY_FACTORY_ALGORITHM = "DSA";
     private static final String SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
     private static final String KEY_FACTORY_ALGORITHM_PASS = "PBKDF2WithHmacSHA1";
@@ -37,7 +37,7 @@ public final class CryptoEngine implements ICryptoInternals {
     /* initialize the registry reference */
     public CryptoEngine(SphereRegistry registry) {
         if (registry == null) {
-            LOGGER.error(REGISTRY_ERROR);
+            logger.error(REGISTRY_ERROR);
         } else {
             this.registry = registry;
         }
@@ -57,7 +57,7 @@ public final class CryptoEngine implements ICryptoInternals {
         boolean success = false;
 
         if (registry == null) {
-            LOGGER.error(REGISTRY_ERROR);
+            logger.error(REGISTRY_ERROR);
             return success;
         }
 
@@ -70,10 +70,10 @@ public final class CryptoEngine implements ICryptoInternals {
                 SphereKeys sKeys = new SphereKeys(new UPABlockCipherService().generateNewKey(128).getEncoded(),
                         pair.getPrivate().getEncoded(), pair.getPublic().getEncoded());
                 registry.putSphereKeys(sphereId, sKeys);
-                LOGGER.debug("sphere keys successfully added for sphereId : " + sphereId);
+                logger.debug("sphere keys successfully added for sphereId : " + sphereId);
                 success = true;
             } catch (NoSuchAlgorithmException e) {
-                LOGGER.error("Problem adding sphere keys for sphereId : " + sphereId, e);
+                logger.error("Problem adding sphere keys for sphereId : " + sphereId, e);
             }
         }
         return success;
@@ -99,9 +99,9 @@ public final class CryptoEngine implements ICryptoInternals {
             SecretKey encKey = new SecretKeySpec(key.getEncoded(), "AES");
             return encKey.getEncoded();
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("Error generating key", e);
+            logger.error("Error generating key", e);
         } catch (InvalidKeySpecException e) {
-            LOGGER.error("Error generating key", e);
+            logger.error("Error generating key", e);
         }
         return null;
     }
@@ -121,7 +121,7 @@ public final class CryptoEngine implements ICryptoInternals {
 
             pair = keyGen.generateKeyPair();
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("Problem generating key pair", e);
+            logger.error("Problem generating key pair", e);
         }
         return pair;
     }
@@ -142,7 +142,7 @@ public final class CryptoEngine implements ICryptoInternals {
         boolean success = false;
 
         if (registry == null) {
-            LOGGER.error(REGISTRY_ERROR);
+            logger.error(REGISTRY_ERROR);
             return success;
         }
 
@@ -167,7 +167,7 @@ public final class CryptoEngine implements ICryptoInternals {
 
             registry.putSphereKeys(sphereId, sKeys);
 
-            LOGGER.debug("sphere keys successfully added for sphereId : " + sphereId);
+            logger.debug("sphere keys successfully added for sphereId : " + sphereId);
 
             success = true;
 
@@ -177,10 +177,10 @@ public final class CryptoEngine implements ICryptoInternals {
 
     public final void addMemberKeys(String sphereId, SphereKeys sphereKeys) {
         if (registry == null) {
-            LOGGER.error(REGISTRY_ERROR);
+            logger.error(REGISTRY_ERROR);
             return;
         }
-        LOGGER.debug("CryptoEngine, Member keys being added for:" + sphereId);
+        logger.debug("CryptoEngine, Member keys being added for:" + sphereId);
         registry.putSphereKeys(sphereId, sphereKeys);
     }
 
@@ -198,10 +198,10 @@ public final class CryptoEngine implements ICryptoInternals {
      */
     public final byte[] encryptSphereContent(String sphereId, String serializedContent) {
 
-        LOGGER.debug("sphereId for encryption:" + sphereId + " content:" + serializedContent);
+        logger.debug("sphereId for encryption:" + sphereId + " content:" + serializedContent);
 
         if (registry == null) {
-            LOGGER.error(REGISTRY_ERROR);
+            logger.error(REGISTRY_ERROR);
             return null;
         }
 
@@ -213,7 +213,7 @@ public final class CryptoEngine implements ICryptoInternals {
                         .encrypt(serializedContent.getBytes(), registry.getSphereKeys(sphereId).getSphereKey())
                         .getBytes();
             } catch (Exception e) {
-                LOGGER.error("Error while encrypting the content", e);
+                logger.error("Error while encrypting the content", e);
             }
         } else if (validateHashKey(sphereId) && serializedContent != null) {
             try {
@@ -221,7 +221,7 @@ public final class CryptoEngine implements ICryptoInternals {
                         .encrypt(serializedContent.getBytes(), registry.getSphereHashKeys(sphereId).getHashKey())
                         .getBytes();
             } catch (Exception e) {
-                LOGGER.error("Error while encrypting the content", e);
+                logger.error("Error while encrypting the content", e);
             }
         }
         return encryptedContent;
@@ -243,7 +243,7 @@ public final class CryptoEngine implements ICryptoInternals {
     public final String decryptSphereContent(String sphereId, byte[] serializedContent) {
 
         if (registry == null) {
-            LOGGER.error(REGISTRY_ERROR);
+            logger.error(REGISTRY_ERROR);
             return null;
         }
 
@@ -255,15 +255,15 @@ public final class CryptoEngine implements ICryptoInternals {
                     decryptedString = new String(sphereCipherService
                             .decrypt(serializedContent, registry.getSphereKeys(sphereId).getSphereKey()).getBytes());
                 } catch (Exception e) {
-                    LOGGER.error("Error while decrypting the content", e);
+                    logger.error("Error while decrypting the content", e);
                 }
             } else if (validateHashKey(sphereId) && serializedContent != null) {
-                LOGGER.info("hash id. processing decrept for " + sphereId);
+                logger.info("hash id. processing decrept for " + sphereId);
                 try {
                     decryptedString = new String(sphereCipherService
                             .decrypt(serializedContent, registry.getSphereHashKeys(sphereId).getHashKey()).getBytes());
                 } catch (Exception e) {
-                    LOGGER.error("Error while decrypting the content with hash id " + sphereId, e);
+                    logger.error("Error while decrypting the content with hash id " + sphereId, e);
                 }
             }
         }
@@ -301,7 +301,7 @@ public final class CryptoEngine implements ICryptoInternals {
     public void encryptSphereContent(InputStream in, OutputStream out, String sphereId) {
 
         if (registry == null) {
-            LOGGER.error(REGISTRY_ERROR);
+            logger.error(REGISTRY_ERROR);
             return;
         }
 
@@ -309,7 +309,7 @@ public final class CryptoEngine implements ICryptoInternals {
             try {
                 sphereCipherService.encrypt(in, out, registry.getSphereKeys(sphereId).getSphereKey());
             } catch (Exception e) {
-                LOGGER.error("Error while encrypting the content", e);
+                logger.error("Error while encrypting the content", e);
             }
         }
     }
@@ -344,14 +344,14 @@ public final class CryptoEngine implements ICryptoInternals {
      */
     public void decryptSphereContent(InputStream in, OutputStream out, String sphereId) {
         if (registry == null) {
-            LOGGER.error(REGISTRY_ERROR);
+            logger.error(REGISTRY_ERROR);
             return;
         }
         if (validateSphere(sphereId) && validateSphereKey(sphereId) && in != null && out != null) {
             try {
                 sphereCipherService.decrypt(in, out, registry.getSphereKeys(sphereId).getSphereKey());
             } catch (Exception e) {
-                LOGGER.error("Error while decrypting the content", e);
+                logger.error("Error while decrypting the content", e);
             }
         }
     }
@@ -367,7 +367,7 @@ public final class CryptoEngine implements ICryptoInternals {
         SphereVitals vitals = null;
 
         if (registry == null) {
-            LOGGER.error(REGISTRY_ERROR);
+            logger.error(REGISTRY_ERROR);
             return null;
         }
 
@@ -391,7 +391,7 @@ public final class CryptoEngine implements ICryptoInternals {
      */
     private boolean validateSphere(String sphereId) {
         if (sphereId != null && registry.isKeymapExist(sphereId)) {
-            LOGGER.debug("CryptoEngine, sphere validated:" + sphereId);
+            logger.debug("CryptoEngine, sphere validated:" + sphereId);
             return true;
         }
         return false;
@@ -410,7 +410,7 @@ public final class CryptoEngine implements ICryptoInternals {
         final SphereKeys sphereKeys = registry.getSphereKeys(sphereId);
 
         if (sphereKeys != null && sphereKeys.getSphereKey() != null && sphereKeys.getSphereKey().length != 0) {
-            LOGGER.debug("CryptoEngine, sphere key validated:" + sphereId);
+            logger.debug("CryptoEngine, sphere key validated:" + sphereId);
             return true;
         }
 

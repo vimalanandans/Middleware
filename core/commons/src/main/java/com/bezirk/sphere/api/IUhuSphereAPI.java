@@ -81,7 +81,7 @@ public interface IUhuSphereAPI {
     public Iterable<BezirkPipeInfo> getPipesOnSphere(String sphereId);
 
     /**
-     * Get all devices known to this Uhu apart from the one's that are a part of
+     * Get all devices known to this Bezirk apart from the one's that are a part of
      * the sphereId passed
      *
      * @param sphereId

@@ -16,7 +16,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * This is an Uhu logging Zirk. All Platforms have to use this zirk to enable
+ * This is an Bezirk logging Zirk. All Platforms have to use this zirk to enable
  * logging on that platform.<p>
  * This zirk will listen at a particular port and accept the logging clients.
  * The logging client send the serialized Logging Message. The Zirk accepts the connection and

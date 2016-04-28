@@ -18,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
  *         <p/>
  *         This class is a thread that is used to process events that are within the Event Receiver Queue
- *         This thread interacts within the Uhu Internal Components to determine the zirk(s) that are to be invoked (if any)
+ *         This thread interacts within the Bezirk Internal Components to determine the zirk(s) that are to be invoked (if any)
  */
 public class EventReceiverThread implements Runnable {
 

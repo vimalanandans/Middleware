@@ -200,7 +200,7 @@ class ControlActivityHelper {
         //Intialize preferences
         PreferenceManager.setDefaultValues(activity, R.xml.preferences, false);
 
-        //Start Uhu
+        //Start Bezirk
         Intent serviceIntent = new Intent(activity.getApplicationContext(), MainService.class);
         serviceIntent.setAction("START_UHU");
         activity.startService(serviceIntent);

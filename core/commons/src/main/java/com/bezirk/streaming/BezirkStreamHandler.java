@@ -21,9 +21,9 @@ import org.slf4j.LoggerFactory;
  * This handler handles the StreamRequests and Responses and places them in
  * appropriate processing threads.
  */
-final class UhuStreamHandler {
+final class BezirkStreamHandler {
     private static final Logger logger = LoggerFactory
-            .getLogger(UhuStreamHandler.class);
+            .getLogger(BezirkStreamHandler.class);
 
     /**
      * The assumption is that the ControlReceiverThread has already checked for

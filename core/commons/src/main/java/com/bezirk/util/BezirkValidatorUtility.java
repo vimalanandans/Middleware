@@ -11,7 +11,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkId;
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com)
  * @Date 4-11-2014
- * Utility class that is used to Validate different Data Structures used in Uhu.
+ * Utility class that is used to Validate different Data Structures used in Bezirk.
  * UhuDevelopers are advised to create corresponding functions here and validate the data structure.
  */
 public final class BezirkValidatorUtility {

@@ -7,7 +7,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
 /**
- * This Message is internally sent by the Uhu for hand shaking with the sender.
+ * This Message is internally sent by the Bezirk for hand shaking with the sender.
  */
 public class StreamResponse extends com.bezirk.control.messages.UnicastControlMessage {
     /**

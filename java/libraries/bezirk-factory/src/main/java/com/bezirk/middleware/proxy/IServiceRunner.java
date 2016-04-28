@@ -22,7 +22,7 @@ public interface IServiceRunner {
     void run() throws Exception;
 
     /**
-     * Used to get the absolute path to the data directory. Uhu services
+     * Used to get the absolute path to the data directory. Bezirk services
      * should read and write files to this directory.
      *
      * @return absolutePath
@@ -31,8 +31,8 @@ public interface IServiceRunner {
     String getDataPath();
 
     /**
-     * Uhu uses this to tell the zirk where data can be written.
-     * Uhu services should read and write files to this directory.
+     * Bezirk uses this to tell the zirk where data can be written.
+     * Bezirk services should read and write files to this directory.
      *
      * @param dataPath
      */

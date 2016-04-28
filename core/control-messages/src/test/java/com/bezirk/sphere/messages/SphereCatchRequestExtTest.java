@@ -2,7 +2,7 @@ package com.bezirk.sphere.messages;
 
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.middleware.objects.BezirkDeviceInfo.UhuDeviceRole;
+import com.bezirk.middleware.objects.BezirkDeviceInfo.BezirkDeviceRole;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
@@ -46,7 +46,7 @@ public class SphereCatchRequestExtTest {
         LOGGER.info("***** Setting up SphereCatchRequestExtTest TestCase *****");
         services.add(serviceAInfo);
         services.add(serviceBInfo);
-        bezirkDeviceInfo = new BezirkDeviceInfo("TESTDEVICE", "TEST", "PC", UhuDeviceRole.UHU_MEMBER, true, services);
+        bezirkDeviceInfo = new BezirkDeviceInfo("TESTDEVICE", "TEST", "PC", BezirkDeviceRole.UHU_MEMBER, true, services);
     }
 
     /**

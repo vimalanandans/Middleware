@@ -12,7 +12,7 @@
 //import org.slf4j.LoggerFactory;
 //
 //import BezirkDeviceInfo;
-//import BezirkDeviceInfo.UhuDeviceRole;
+//import BezirkDeviceInfo.BezirkDeviceRole;
 //import BezirkZirkInfo;
 //import BezirkZirkEndPoint;
 //import BezirkZirkId;
@@ -45,7 +45,7 @@
 //		
 //		log.info("***** Setting up SphereShareMemberResponseTest TestCase *****");
 //		services.add(serviceAInfo);
-//		uhuDeviceInfo= new BezirkDeviceInfo("TESTDEVICEID", "TESTDEVICE", "PC", UhuDeviceRole.UHU_MEMBER, true, services);
+//		uhuDeviceInfo= new BezirkDeviceInfo("TESTDEVICEID", "TESTDEVICE", "PC", BezirkDeviceRole.UHU_MEMBER, true, services);
 //	}
 //
 //	/**
