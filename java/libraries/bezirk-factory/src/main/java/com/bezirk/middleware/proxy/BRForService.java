@@ -135,7 +135,7 @@ public class BRForService implements BroadcastReceiver {
                 }
                 return;
             }
-            logger.error(" StreamListnerMap doesnt have a mapped Stream");
+            logger.error(" StreamListenerMap does not have a mapped Stream");
             return;
         }
         logger.error("Duplicate Stream Request Received");
@@ -152,8 +152,8 @@ public class BRForService implements BroadcastReceiver {
         if (activeStreams.containsKey(activeStreamkey)) {
             HashSet<BezirkListener> tempHashSet = streamListenerMap.get(activeStreams.get(activeStreamkey));
             if (tempHashSet != null && !tempHashSet.isEmpty()) {
-                for (BezirkListener listner : tempHashSet) {
-                    listner.streamStatus(
+                for (BezirkListener listener : tempHashSet) {
+                    listener.streamStatus(
                             streamStatusCallbackMessage.streamId,
                             ((1 == streamStatusCallbackMessage.streamStatus) ? BezirkListener.StreamStates.END_OF_DATA
                                     : BezirkListener.StreamStates.LOST_CONNECTION));

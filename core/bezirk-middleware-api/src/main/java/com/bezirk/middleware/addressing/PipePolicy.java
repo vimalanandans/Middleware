@@ -39,7 +39,9 @@ import java.util.Set;
  * {@link com.bezirk.middleware.Bezirk#requestPipeAuthorization(ZirkId, Pipe, PipePolicy, PipePolicy, BezirkListener)}.
  */
 public abstract class PipePolicy {
-    // Map of protocal names and reasons
+    /**
+     * Map of protocol names to reasons
+     */
     private Map<String, String> reasonMap = new HashMap<String, String>();
 
     private static final Gson gson = new Gson();

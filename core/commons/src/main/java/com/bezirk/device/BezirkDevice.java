@@ -44,7 +44,7 @@ public class BezirkDevice implements UPADeviceInterface {
         //load the information
         //else initialize and persist
         if (deviceID == null) {
-            logger.error("device id unkown. generating its own");
+            logger.error("device id unknown. generating its own");
             this.deviceId = UUID.randomUUID().toString();
         } else {
 

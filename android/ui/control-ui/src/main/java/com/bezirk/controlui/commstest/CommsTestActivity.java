@@ -685,7 +685,7 @@ public class CommsTestActivity extends ActionBarActivity {
                     Log.e(TAG, "Exception in receiving.", e);
                     continue;
                 }
-                if (myAddress.getHostAddress().toString().trim().equals(receivePacket.getAddress().getHostAddress().trim())) {
+                if (myAddress.getHostAddress().trim().equals(receivePacket.getAddress().getHostAddress().trim())) {
                     Log.d("TAG", "local ping received");
                     continue;
                 } else {

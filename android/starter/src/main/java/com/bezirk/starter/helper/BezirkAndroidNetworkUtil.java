@@ -21,8 +21,6 @@ import java.nio.ByteOrder;
 /**
  * Helper class used by MainService to fetch the network interface
  * of android device
- * <p/>
- * Created by AJC6KOR on 9/8/2015.
  */
 public final class BezirkAndroidNetworkUtil {
     private static final Logger logger = LoggerFactory.getLogger(BezirkAndroidNetworkUtil.class);

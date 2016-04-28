@@ -57,7 +57,7 @@ public class Stream extends Message {
     private boolean encrypted;
 
     /**
-     * The concrete implentation of a <code>Stream</code> must specify the stream's flag
+     * The concrete implementation of a <code>Stream</code> must specify the stream's flag
      * and topic. Message flags and topics are documented in {@link Message}.
      *
      * @param flag  flag to mark the intent of this stream

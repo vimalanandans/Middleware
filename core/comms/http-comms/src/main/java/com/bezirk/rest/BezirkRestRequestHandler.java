@@ -98,7 +98,7 @@ public class BezirkRestRequestHandler extends DefaultHandler {
             NanoHTTPD.IHTTPSession session) {
         BezirkHttpRequest requestObject = new BezirkHttpRequest();
 
-        String httpBody = retreiveHttpBody(session);
+        String httpBody = retrieveHttpBody(session);
         requestObject.setEventMsg(httpBody);
 
 
@@ -141,7 +141,7 @@ public class BezirkRestRequestHandler extends DefaultHandler {
      * @param session
      * @return
      */
-    private String retreiveHttpBody(NanoHTTPD.IHTTPSession session) {
+    private String retrieveHttpBody(NanoHTTPD.IHTTPSession session) {
         //Test
         String inputStreamString = null;
         try {

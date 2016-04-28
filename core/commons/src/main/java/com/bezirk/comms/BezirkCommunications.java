@@ -64,24 +64,24 @@ public final class BezirkCommunications {
         return INTERFACE_NAME;
     }
 
-    public static void setINTERFACE_NAME(String iNTERFACE_NAME) {
-        INTERFACE_NAME = iNTERFACE_NAME;
+    public static void setINTERFACE_NAME(String INTERFACE_NAME) {
+        BezirkCommunications.INTERFACE_NAME = INTERFACE_NAME;
     }
 
     public static String getMULTICAST_ADDRESS() {
         return MULTICAST_ADDRESS;
     }
 
-    public static void setMULTICAST_ADDRESS(String mULTICAST_ADDRESS) {
-        MULTICAST_ADDRESS = mULTICAST_ADDRESS;
+    public static void setMULTICAST_ADDRESS(String MULTICAST_ADDRESS) {
+        BezirkCommunications.MULTICAST_ADDRESS = MULTICAST_ADDRESS;
     }
 
     public static int getMULTICAST_PORT() {
         return MULTICAST_PORT;
     }
 
-    public static void setMULTICAST_PORT(int mULTICAST_PORT) {
-        MULTICAST_PORT = mULTICAST_PORT;
+    public static void setMULTICAST_PORT(int MULTICAST_PORT) {
+        BezirkCommunications.MULTICAST_PORT = MULTICAST_PORT;
     }
 
     public static int getUNICAST_PORT() {
@@ -169,8 +169,8 @@ public final class BezirkCommunications {
         return DOWNLOAD_PATH;
     }
 
-    public static void setDOWNLOAD_PATH(String dOWNLOAD_PATH) {
-        DOWNLOAD_PATH = dOWNLOAD_PATH;
+    public static void setDOWNLOAD_PATH(String DOWNLOAD_PATH) {
+        BezirkCommunications.DOWNLOAD_PATH = DOWNLOAD_PATH;
     }
 
     public static int getREMOTE_LOGGING_PORT() {

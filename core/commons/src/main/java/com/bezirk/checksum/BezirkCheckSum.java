@@ -51,7 +51,7 @@ public final class BezirkCheckSum {
             Long crcValue = crc32.getValue();
             computedCheckSum = String.valueOf(crcValue).getBytes();
         } catch (Exception e) {
-            logger.error("Error occured while computing checksum using crc32", e);
+            logger.error("Error occurred while computing checksum using crc32", e);
         }
         return computedCheckSum;
     }

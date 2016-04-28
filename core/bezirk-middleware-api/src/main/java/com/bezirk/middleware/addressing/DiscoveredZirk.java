@@ -55,7 +55,7 @@ public interface DiscoveredZirk {
      * Discovery API}.
      *
      * @return the <code>ProtocolRole</code> this Zirk subscribes to that was searched for to
-     * disocover the Zirk
+     * discover the Zirk
      */
     public ProtocolRole getProtocolRole();
 

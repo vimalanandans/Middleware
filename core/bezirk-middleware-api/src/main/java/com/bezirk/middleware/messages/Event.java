@@ -32,7 +32,7 @@ package com.bezirk.middleware.messages;
  */
 public class Event extends Message {
     /**
-     * The concrete implentation of an <code>Event</code> must specify the event's flag
+     * The concrete implementation of an <code>Event</code> must specify the event's flag
      * and topic. Message flags and topics are documented in {@link Message}.
      *
      * @param flag  flag to mark the intent of this event

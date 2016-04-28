@@ -221,7 +221,7 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
     }
 
     @Override
-    public short sendStream(BezirkZirkId senderId, BezirkZirkEndPoint receiver, String serializedStream, File file, short streamId) {
+    public short sendStream(BezirkZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId) {
         //if Stack was not started correctly, return without any further actions.
         if (!BezirkStackHandler.isStackStarted()) {
             log.error("Bezirk was not started properly!!!. Restart the stack.");
@@ -237,9 +237,9 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
         try {
             final BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(senderId);
             final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getBezirkZirkId() + ":" + streamId;
-            final Stream stream = new Gson().fromJson(serializedStream, Stream.class);
+            final Stream stream = new Gson().fromJson(serializedString, Stream.class);
 
-            final StreamRecord streamRecord = proxyforServiceHelper.prepareStreamRecord(receiver, serializedStream, file, streamId, senderSEP, stream);
+            final StreamRecord streamRecord = proxyforServiceHelper.prepareStreamRecord(receiver, serializedString, file, streamId, senderSEP, stream);
 
             boolean streamStoreStatus = comms.registerStreamBook(streamRequestKey, streamRecord);
             if (!streamStoreStatus) {

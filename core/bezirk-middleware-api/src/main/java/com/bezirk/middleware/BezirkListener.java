@@ -70,7 +70,7 @@ public interface BezirkListener {
      * @param stream      the received stream's descriptor serialized as JSON string
      * @param streamId    Bezirk middleware-generated id for the stream, used to refer to the stream in
      *                    {@link #streamStatus(short, StreamStates)}
-     * @param inputStream inputstream containing the received data
+     * @param inputStream input stream containing the received data
      * @param sender      the Zirk that sent the stream
      */
     public void receiveStream(String topic, String stream, short streamId, InputStream inputStream,

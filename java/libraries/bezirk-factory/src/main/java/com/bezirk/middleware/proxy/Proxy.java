@@ -25,7 +25,6 @@ import com.bezirk.starter.BezirkConfig;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.PipedOutputStream;

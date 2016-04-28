@@ -143,7 +143,7 @@ public interface Bezirk {
      *                   caller. Internally, the Bezirk middleware will read data from the
      *                   <code>dataStream</code> in a thread-safe manner by creating a
      *                   <code>PipedInputStream</code> linked to <code>dataStream</code>
-     * @return Bezirk middelware-generated id for the stream, which will be referred to in
+     * @return Bezirk middleware-generated id for the stream, which will be referred to in
      * {@link BezirkListener#streamStatus(short, BezirkListener.StreamStates)}
      * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ZirkEndPoint)
      * @see BezirkListener#receiveStream(String, String, short, File, ZirkEndPoint)
@@ -163,7 +163,7 @@ public interface Bezirk {
      *                 {@link #discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)}
      * @param stream   communication channel's descriptor
      * @param file     the file whose contents will be sent using the <code>stream</code>
-     * @return Bezirk middelware-generated id for the stream, which will be referred to in
+     * @return Bezirk middleware-generated id for the stream, which will be referred to in
      * {@link BezirkListener#streamStatus(short, BezirkListener.StreamStates)}
      * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ZirkEndPoint)
      * @see BezirkListener#receiveStream(String, String, short, File, ZirkEndPoint)
@@ -241,13 +241,13 @@ public interface Bezirk {
 
     /**
      * Inform the Bezirk middleware of the Zirk's {@link com.bezirk.middleware.addressing.Location}.
-     * This method is useful when the Zirk controls a device that is in a location distrinct from
+     * This method is useful when the Zirk controls a device that is in a location distinct from
      * the device that is executing the Zirk. The location is used whenever an
      * {@link com.bezirk.middleware.addressing.Address} is used (e.g. when sending an event,
      * discovering Zirks subscribed to a role, etc.).
      *
      * @param zirk     id of Zirk whose location is being set, as returned by {@link #registerZirk(String)}
-     * @param location the physical location of the Thing <code>Zirk</code> controlss
+     * @param location the physical location of the Thing <code>Zirk</code> controls
      */
     public void setLocation(ZirkId zirk, Location location);
 }

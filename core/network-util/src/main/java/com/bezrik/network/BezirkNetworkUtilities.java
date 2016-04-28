@@ -41,7 +41,7 @@ public final class BezirkNetworkUtilities {
                 }
             }
         } catch (Exception ex) {
-            log.error("Error occured while getting IntfInetPair \n", ex);
+            log.error("Error occurred while getting IntfInetPair \n", ex);
         }
         return list;
     }
@@ -69,7 +69,7 @@ public final class BezirkNetworkUtilities {
                 }
             }
         } catch (Exception ex) {
-            log.error("Error occured while getting IpForInterface \n", ex);
+            log.error("Error occurred while getting IpForInterface \n", ex);
         }
         return null;
     }
@@ -110,7 +110,7 @@ public final class BezirkNetworkUtilities {
                 }
             }
         } catch (Exception ex) {
-            log.error("Error occured while getting LocalMACAddress \n", ex);
+            log.error("Error occurred while getting LocalMACAddress \n", ex);
         }
         return null;
     }

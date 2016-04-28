@@ -44,7 +44,7 @@ public class CommsTestActionPerformer {
         if (res == JOptionPane.OK_OPTION) {
             if (arePortsNumeric(unicastSendingPort, unicastReceivingPort,
                     multicastSendingPort, multicastReceivingPort)
-                    || timer.getText().toString().isEmpty()) {
+                    || timer.getText().isEmpty()) {
 
                 commsTest
                         .updateConfiguration(Integer
@@ -75,10 +75,10 @@ public class CommsTestActionPerformer {
                                     JTextField unicastReceivingPort, JTextField multicastSendingPort,
                                     JTextField multicastReceivingPort) {
 
-        return isNumeric(unicastSendingPort.getText().toString())
-                || isNumeric(unicastReceivingPort.getText().toString())
-                || isNumeric(multicastSendingPort.getText().toString())
-                || isNumeric(multicastReceivingPort.getText().toString());
+        return isNumeric(unicastSendingPort.getText())
+                || isNumeric(unicastReceivingPort.getText())
+                || isNumeric(multicastSendingPort.getText())
+                || isNumeric(multicastReceivingPort.getText());
 
     }
 
@@ -114,7 +114,7 @@ public class CommsTestActionPerformer {
                 new JLabel(
                         "4. Check the comms is started on all the devices( When the config changes, you need to manually start it."),
                 new JLabel(
-                        "5. Make sure your device is not conncted to any VPN networks!"),
+                        "5. Make sure your device is not connected to any VPN networks!"),
                 new JLabel(
                         "6. If still the communication does not happen, contact the platform team.")};
         JOptionPane

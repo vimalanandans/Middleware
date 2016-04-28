@@ -11,7 +11,7 @@ public interface BezirkQRCode {
     public Bitmap getQRCode(String sphereId);
 
     /**
-     * Retrives the QRCode with specific dimensions. This method is useful to show QRCode of different sizes on different devices.
+     * Retrieves the QRCode with specific dimensions. This method is useful to show QRCode of different sizes on different devices.
      *
      * @param sphereId Name of the sphere that will be imprinted in the QRCode image
      * @param width    width of the image

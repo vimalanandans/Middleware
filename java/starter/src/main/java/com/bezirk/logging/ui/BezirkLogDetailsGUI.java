@@ -67,7 +67,7 @@ public class BezirkLogDetailsGUI extends JFrame {
     private final transient Map<String, Integer> logMsgMap = new LinkedHashMap<String, Integer>(
             SIZE_OF_LOG_MSG_MAP);
     /**
-     * To print the timestamp of the recieved msg
+     * To print the timestamp of the received msg
      */
     private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS", Locale.GERMANY);
     transient BezirkComms comms;
@@ -111,7 +111,7 @@ public class BezirkLogDetailsGUI extends JFrame {
         try {
             jbInit();
         } catch (Exception e1) {
-            logger.debug("Error in Log Deatails GUI.", e1);
+            logger.debug("Error in Log Details GUI.", e1);
         }
 
         sendLoggingServiceMsg(true);
@@ -271,9 +271,9 @@ public class BezirkLogDetailsGUI extends JFrame {
     }
 
     /**
-     * Gets the sphere name from the SPhere UI if available, "Un-defined" if not available.
+     * Gets the sphere name from the Sphere UI if available, "Un-defined" if not available.
      *
-     * @param sphereId SPhereId of the sphere
+     * @param sphereId SphereId of the sphere
      * @return sphere Name associated with the sphere Id.
      */
     private String getSphereNameFromSphereId(final String sphereId) {

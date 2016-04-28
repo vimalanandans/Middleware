@@ -38,7 +38,7 @@ public class BezirkConfig {
     /**
      * Set the application home directory. If we are running from the binary
      * distribution, appHome is set to: /path/to/bezirk-main-VERS. If we are
-     * running from the developement envronment, appHome is set to the project
+     * running from the development environment, appHome is set to the project
      * root directory.
      */
     private void initDataPath() {
@@ -63,8 +63,10 @@ public class BezirkConfig {
 
         } else {
 
-            logger.info("Creating dataDir: " + dataDir);
-            dataDir.mkdirs();
+            logger.info("Creating dataDir: {}", dataDir);
+            if (!dataDir.mkdirs()) {
+                logger.error("Failed to create dataDir");
+            }
         }
     }
 

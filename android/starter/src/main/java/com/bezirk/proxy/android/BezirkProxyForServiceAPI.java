@@ -26,9 +26,9 @@ public interface BezirkProxyForServiceAPI {
 
     public void discover(BezirkZirkId service, Address scope, SubscribedRole pRole, int discoveryId, long timeout, int maxDiscovered);
 
-    public short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver, String serialsedString, File file, short streamId);
+    public short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId);
 
-    public short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver, String serialsedString, short streamId);
+    public short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver, String serializedString, short streamId);
 
     public void setLocation(BezirkZirkId serviceId, Location location);
 

@@ -117,7 +117,7 @@ public class DeviceListActivity extends FragmentActivity implements
         //TODO: Just for Survey:
         catchDeviceButton.setVisibility(view.GONE);
         shareSphereButton.setVisibility(view.GONE);
-        Log.v(TAG, entry.getmSphere().getSphereID().toString());
+        Log.v(TAG, entry.getmSphere().getSphereID());
         setContentView(view);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);

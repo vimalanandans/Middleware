@@ -173,7 +173,7 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
     }
 
     @Override
-    public short sendStream(BezirkZirkId senderId, BezirkZirkEndPoint receiver, String serializedStream, File file, short streamId) {
+    public short sendStream(BezirkZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId) {
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(senderId);
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with any sphere: " + senderId);
@@ -183,7 +183,7 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
         try {
             final BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(senderId);
             final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getBezirkZirkId() + ":" + streamId;
-            final Stream stream = new Gson().fromJson(serializedStream, Stream.class);
+            final Stream stream = new Gson().fromJson(serializedString, Stream.class);
 
             final StreamRecord streamRecord = new StreamRecord();
             streamRecord.localStreamId = streamId;
@@ -198,7 +198,7 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
             streamRecord.file = file;
             streamRecord.pipedInputStream = null;
             streamRecord.recipientSEP = receiver;
-            streamRecord.serializedStream = serializedStream;
+            streamRecord.serializedStream = serializedString;
             streamRecord.streamTopic = stream.topic;
 
             boolean streamStoreStatus = comms.registerStreamBook(streamRequestKey, streamRecord);
@@ -211,7 +211,7 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
                 final String sphereName = sphereIterator.next();
                 final ControlLedger tcMessage = new ControlLedger();
                 tcMessage.setSphereId(sphereName);
-                final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedStream, stream.topic, file.getName(), streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.allowDrops, streamId);
+                final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedString, stream.topic, file.getName(), streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.allowDrops, streamId);
                 tcMessage.setSphereId(sphereName);
                 tcMessage.setMessage(request);
                 tcMessage.setSerializedMessage(new Gson().toJson(request));
@@ -262,7 +262,7 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
 
     @Override
     public short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver,
-                            String serialsedString, short streamId) {
+                            String serializedString, short streamId) {
 
         Signaling signalling = null;
         if (SignalingFactory.getSignalingInstance() instanceof Signaling) {

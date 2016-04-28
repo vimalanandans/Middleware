@@ -102,7 +102,7 @@ public class SphereListItem implements AbstractSphereListItem {
 
     @Override
     public String getId() {
-        return mSphere.getSphereID().toString();
+        return mSphere.getSphereID();
     }
 
 }

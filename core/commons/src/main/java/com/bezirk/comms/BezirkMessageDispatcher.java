@@ -33,7 +33,7 @@ public class BezirkMessageDispatcher implements MessageDispatcher {
 
     private MessageQueue msgQueue = null;
 
-    // temp implemenetation.
+    // temp implementation.
     MessageQueue ctrlSenderQueue = null;
     MessageQueue streamQueue = null;
     PortFactory  portFactory = null;

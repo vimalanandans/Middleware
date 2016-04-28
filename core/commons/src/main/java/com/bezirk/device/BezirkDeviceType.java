@@ -23,7 +23,7 @@ public class BezirkDeviceType {
 
     public final static String BEZIRK_DEVICE_TYPE_MICROWAVE = "BEZIRK_Microwave";
 
-    public final static String BEZIRK_DEVICE_TYPE_WASHING_MACHINE = "BEZIRK_WashingMashine";
+    public final static String BEZIRK_DEVICE_TYPE_WASHING_MACHINE = "BEZIRK_WashingMachine";
 
     public final static String BEZIRK_DEVICE_TYPE_HEATING = "BEZIRK_Heating";
 

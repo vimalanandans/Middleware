@@ -112,8 +112,10 @@ public final class CommsTest {
         }
         final StringBuilder builder = new StringBuilder(35);
         for (final com.bezirk.commstest.ui.PongMessage pong : pongs) {
-            builder.append("Device-Name: " + pong.deviceName + " IP: "
-                    + pong.senderIP);
+            builder.append("Device-Name: ");
+            builder.append(pong.deviceName);
+            builder.append(" IP: ");
+            builder.append(pong.senderIP);
             builder.append('\n');
         }
         return builder.toString();

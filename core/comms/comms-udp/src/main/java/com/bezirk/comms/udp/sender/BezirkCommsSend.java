@@ -57,7 +57,7 @@ public class BezirkCommsSend {
 
         //Construct a message header using the updated message
         // header msgId, sender, BoolAck, AckId
-        //checksum,sphereName,HeaderLenght,encrypted(Header+Data)
+        //checksum,sphereName,HeaderLength,encrypted(Header+Data)
         if (tcMessage.getNumOfSends() == 1) {
             String preHeader = "," + tcMessage.getHeader().getSphereName() + ",";
 

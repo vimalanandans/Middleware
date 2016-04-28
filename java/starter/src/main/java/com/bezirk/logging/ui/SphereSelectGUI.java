@@ -126,7 +126,7 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
             final int index = leftSphereList.getSelectedIndex();
             tempArray = new String[leftSphereListModel.size()];
 
-            final String temp = leftSphereListModel.elementAt(index).toString();
+            final String temp = leftSphereListModel.elementAt(index);
             if (temp.equals(Util.ANY_SPHERE)) {
                 rightSphereListModel.addElement(Util.ANY_SPHERE);
                 for (int i = 0; i < size; i++) {
