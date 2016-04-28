@@ -1,9 +1,5 @@
 package com.bezirk.controlui;
 
-/**
- * Created by vnd2kor on 11/13/2014.
- */
-
 import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;

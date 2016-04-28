@@ -24,9 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-/**
- * Created by AJC6KOR on 12/22/2015.
- */
 class DeviceControlActivityHelper {
 
     private static final Logger log = LoggerFactory.getLogger(DeviceControlActivityHelper.class);

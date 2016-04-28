@@ -128,9 +128,8 @@ public class UpdateUserCredentialsActivity extends FragmentActivity implements U
         setContentView(view);
     }
 
-
     private void updateContainer() {
-        if (filterSetting == "login") {
+        if ("login".equals(filterSetting)) {
             //PolicyListFragment has to be replaced to show new DataStructure
             UpdateUserCredentialsFragment updateUserCredentialsFragment = new UpdateUserCredentialsFragment();
             updateUserCredentialsFragment.setPipeId(getIntent().getIntExtra("pipeId", 1));

@@ -16,11 +16,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Iterator;
 
-/**
- * Created by AJC6KOR on 1/11/2016.
- */
-class ProxyforServiceHelper {
-    private static final Logger log = LoggerFactory.getLogger(ProxyforServiceHelper.class);
+class ProxyForServiceHelper {
+    private static final Logger log = LoggerFactory.getLogger(ProxyForServiceHelper.class);
 
     private ControlLedger prepareMessage(Iterator<String> sphereIterator, String streamRequestKey, StreamRecord streamRecord, File tempFile) {
         final String sphereName = sphereIterator.next();

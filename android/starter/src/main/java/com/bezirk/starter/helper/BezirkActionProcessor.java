@@ -111,8 +111,7 @@ public final class BezirkActionProcessor {
                 sendIntent(BezirkActionCommands.CMD_DEV_MODE_OFF_STATUS, BezirkStackHandler.getDevMode().switchMode(BezirkDevMode.Mode.OFF), service);
                 break;
             case ACTION_DEV_MODE_STATUS:
-                BezirkDevMode.Mode mode = null;
-                mode = getDevMode();
+                BezirkDevMode.Mode mode = getDevMode();
                 sendIntent(BezirkActionCommands.CMD_DEV_MODE_STATUS, mode, service);
                 break;
             default:

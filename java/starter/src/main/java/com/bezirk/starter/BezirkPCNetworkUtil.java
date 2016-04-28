@@ -30,10 +30,8 @@ final class BezirkPCNetworkUtil {
     NetworkInterface fetchNetworkInterface(final BezirkConfig bezirkConfig)
             throws SocketException, NullPointerException, Exception {
 
-        NetworkInterface intf = null;
-
         // Resolve the NetworkInterface object for supplied InterfaceName
-        intf = resolveInterface(BezirkCommunications.getINTERFACE_NAME(), bezirkConfig);
+        NetworkInterface intf = resolveInterface(BezirkCommunications.getINTERFACE_NAME(), bezirkConfig);
 
         // If we chose a different Interface than what is written in the
         // config file and the config file is writable (it is not in a jar),

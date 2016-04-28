@@ -19,9 +19,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-/**
- * Created by GUR1PI on 8/9/2014.
- */
 public class BezirkSphereForPC extends BezirkSphere implements BezirkQRCode,
         BezirkSphereListener {
 

@@ -24,9 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by MCA7KOR on 3/19/2015.
- */
 public class DialogServiceListFragment extends DialogFragment {
 
     final BezirkSphereAPI sphereAPI = MainService.getSphereHandle();

@@ -7,9 +7,6 @@ import com.bezirk.pipe.core.PipeRegistry;
 
 import java.io.File;
 
-/**
- * Created by wya1pi on 12/16/14.
- */
 public final class PipeCommsFactory {
 
     private PipeCommsFactory() {

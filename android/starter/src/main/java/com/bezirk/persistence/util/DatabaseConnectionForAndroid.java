@@ -17,9 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-/**
- * Created by hkh5kor on 10/7/2014.
- */
 public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implements DatabaseConnection {
     private static final int DATABASE_VERSION = 1;
     private static final Logger log = LoggerFactory.getLogger(DatabaseConnectionForAndroid.class);

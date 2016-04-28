@@ -15,9 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by vnd2kor on 12/28/2014.
- */
 public class DeviceTypeSelection extends ActionBarActivity {
 
     public static final int RESULT_DEVICE_ITEM_SELECT = 0x100;

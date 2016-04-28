@@ -47,13 +47,13 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
     private static final Logger log = LoggerFactory.getLogger(ProxyforServices.class);
     // TODO: do we need do know who the zirk is???  It looks like this variable is not used!
     private static Service serviceInstance;
-    private final ProxyforServiceHelper proxyforServiceHelper;
+    private final ProxyForServiceHelper proxyForServiceHelper;
     private ISadlRegistry sadlRegistry;
     private BezirkComms comms;
 
     public ProxyforServices(Service service) {
         serviceInstance = service;
-        proxyforServiceHelper = new ProxyforServiceHelper();
+        proxyForServiceHelper = new ProxyForServiceHelper();
     }
 
     public static Service getServiceInstance() {
@@ -239,14 +239,14 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
             final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getBezirkZirkId() + ":" + streamId;
             final Stream stream = new Gson().fromJson(serializedString, Stream.class);
 
-            final StreamRecord streamRecord = proxyforServiceHelper.prepareStreamRecord(receiver, serializedString, file, streamId, senderSEP, stream);
+            final StreamRecord streamRecord = proxyForServiceHelper.prepareStreamRecord(receiver, serializedString, file, streamId, senderSEP, stream);
 
             boolean streamStoreStatus = comms.registerStreamBook(streamRequestKey, streamRecord);
             if (!streamStoreStatus) {
                 log.error("Cannot Register Stream, CtrlMsgId is already present in StreamBook");
                 return (short) -1;
             }
-            proxyforServiceHelper.sendStreamToSpheres(sphereIterator, streamRequestKey, streamRecord, file, comms);
+            proxyForServiceHelper.sendStreamToSpheres(sphereIterator, streamRequestKey, streamRecord, file, comms);
         } catch (Exception e) {
             log.error("Cant get the SEP of the sender", e);
             return (short) -1;
@@ -281,7 +281,7 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
             BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(sender);
             String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getBezirkZirkId() + ":" + streamId;
 
-            String sphereId = proxyforServiceHelper.getSphereId(receiver, sphereIterator);
+            String sphereId = proxyForServiceHelper.getSphereId(receiver, sphereIterator);
             RTCControlMessage request = new RTCControlMessage(senderSEP, receiver, sphereId, streamRequestKey, RTCControlMessage.RTCControlMessageType.RTCSessionId, null);
             signaling.startSignaling(request);
         } catch (Exception e) {

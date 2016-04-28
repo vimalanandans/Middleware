@@ -159,7 +159,10 @@ public class NativeUtils {
             }
         }
     }
-    /** refer http://fahdshariff.blogspot.com/2011/08/changing-java-library-path-at-runtime.html*/
+
+    /**
+     * refer http://fahdshariff.blogspot.com/2011/08/changing-java-library-path-at-runtime.html
+     */
 
     public static void loadLibsVer1() {
         String os = System.getProperty("os.name").toLowerCase();
@@ -185,7 +188,7 @@ public class NativeUtils {
                 log.info("Loading native libs for osx");
                 String[] libs = {"sodium", "zmq", "czmq", "zyre", "zyre-jni"};
                 Zyre.loadSystemLibrary(libs);
-    			/*
+                /*
     			System.load(path + "/libsodium.dylib");
     			System.load(path + "/libzmq.dylib");
     			System.load(path + "/libczmq.dylib");
@@ -299,9 +302,9 @@ public class NativeUtils {
             file = new File(url.toURI());
         } catch (URISyntaxException e) {
             file = new File(url.getPath());
-        } finally {
-            return file;
         }
+
+        return file;
     }
 
     private void setPath() {

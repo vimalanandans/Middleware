@@ -168,7 +168,7 @@ public class ManagePipesActivity extends FragmentActivity implements SphereListO
 
 
     private void updateList(int pipeReqId) {
-        if (filterSetting == "policies") {
+        if ("policies".equals(filterSetting)) {
             //PolicyListFragment has to be replaced to show new DataStructure
             PolicyListFragment policyListFragment = new PolicyListFragment();
             policyListFragment.setFilter(filterSettingPolicies);

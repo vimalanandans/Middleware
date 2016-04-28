@@ -26,9 +26,6 @@ import org.slf4j.LoggerFactory;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-/**
- * Created by AJC6KOR on 1/11/2016.
- */
 class BezirkStartStackHelper {
     private static final Logger logger = LoggerFactory.getLogger(BezirkStartStackHelper.class);
 

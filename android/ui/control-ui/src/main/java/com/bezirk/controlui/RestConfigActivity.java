@@ -19,11 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by pik6kor on 2/8/2016.
- */
 public class RestConfigActivity extends ActionBarActivity implements DialogSphereList.OnSphereSelectCallback, GenericListItemView.ItemToggleListener {
-
     BezirkRestCommsManager restCommsManager = BezirkRestCommsManager.getInstance();
     private ListView restConfigList = null;
 

@@ -15,12 +15,9 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by wya1pi on 12/16/14.
- */
 public class AndroidApp implements BezirkApp {
+    private static final Logger logger = LoggerFactory.getLogger(AndroidApp.class);
 
-    private static final Logger log = LoggerFactory.getLogger(AndroidApp.class);
     private static final String COMPONENT_NAME = "com.bosch.upa.uhu.controlui";
     private final BezirkPipeAPI pipeAPI;
     private Context context;
@@ -32,12 +29,11 @@ public class AndroidApp implements BezirkApp {
 
     @Override
     public void approvePipeRequest(String pipeRequestId) throws PipeApprovalException {
-
         if (pipeAPI == null) {
             throw new PipeApprovalException("Cannot lookup pipe request because pipeAPI is null");
         }
 
-        log.info("  -- Aproving Pipe Request --");
+        logger.info("  -- Approving Pipe Request --");
 
         PipeRequest pipeRequest = pipeAPI.getPipeRequest(pipeRequestId);
 
@@ -50,7 +46,7 @@ public class AndroidApp implements BezirkApp {
         // TODO remove the above and send the below serialized object to UI
         //Only to test
         String data = new Gson().toJson(pipeRequest);
-        log.info("pipe request : toJson > " + data);
+        logger.info("pipe request : toJson > " + data);
 
         context.startActivity(intent);
 

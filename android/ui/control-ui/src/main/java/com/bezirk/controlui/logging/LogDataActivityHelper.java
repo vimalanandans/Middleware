@@ -28,9 +28,6 @@ import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-/**
- * Created by AJC6KOR on 12/29/2015.
- */
 class LogDataActivityHelper {
     /**
      * Logging Util.

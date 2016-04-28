@@ -19,9 +19,6 @@ import java.net.URISyntaxException;
 import static com.bezirk.util.BezirkValidatorUtility.checkForString;
 import static com.bezirk.util.BezirkValidatorUtility.checkBezirkZirkId;
 
-/**
- * Created by wya1pi on 8/21/14.
- */
 public class PipeActionParser {
     private static final Logger logger = LoggerFactory.getLogger(PipeActionParser.class);
 

@@ -100,7 +100,6 @@ public class BezirkLogDetailsGUI extends JFrame {
     /**
      * start the loggingService Processors and init the GUI
      *
-     * @param loggingService loggingService that will be listening at a particular socket
      */
     public BezirkLogDetailsGUI(BezirkComms comms, String[] spheres, JFrame frame,
                                boolean isDeveloperModeEnabled) {
@@ -197,8 +196,8 @@ public class BezirkLogDetailsGUI extends JFrame {
     }
 
     private void sendLoggingServiceMsg(boolean isActivateLogging) {
-        String[] loggingSpheres = null;
-        if (selectedSpheres[0] == Util.ANY_SPHERE) {
+        String[] loggingSpheres;
+        if (Util.ANY_SPHERE.equals(selectedSpheres[0])) {
             loggingSpheres = new String[1];
             loggingSpheres[0] = Util.ANY_SPHERE;
         } else {

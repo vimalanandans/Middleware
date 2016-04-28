@@ -2,9 +2,6 @@ package com.bezirk.sphere.impl;
 
 import java.awt.image.BufferedImage;
 
-/**
- * Created by Rishabh Gulati on 12/5/2014.
- */
 public interface BezirkQRCode {
 
     /**

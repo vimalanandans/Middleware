@@ -298,8 +298,7 @@ public class CommsTestActivity extends ActionBarActivity {
 
                 final DatagramSocket clientSocket = new DatagramSocket();
                 InetAddress ipAddress = InetAddress.getByName(msg.deviceIp);
-                DatagramPacket sendPacket;
-                sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, unicastSendingPort);
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, unicastSendingPort);
                 clientSocket.send(sendPacket);
                 clientSocket.close();
             } else {
@@ -687,12 +686,9 @@ public class CommsTestActivity extends ActionBarActivity {
                 }
                 if (myAddress.getHostAddress().trim().equals(receivePacket.getAddress().getHostAddress().trim())) {
                     Log.d("TAG", "local ping received");
-                    continue;
                 } else {
                     receivePing(receivePacket);
                 }
-
-
             }
         }
 
@@ -700,7 +696,7 @@ public class CommsTestActivity extends ActionBarActivity {
             byte[] recData = new byte[receivePacket.getLength()];
             System.arraycopy(receivePacket.getData(), 0, recData, 0, receivePacket.getLength());
             String yep = new String(recData);
-            Log.e("TAG", "DataREceived" + yep);
+            Log.e("TAG", "DataReceived" + yep);
             if (isRunning) {
                 try {
                     PingMessage msg = new Gson().fromJson(yep, PingMessage.class);

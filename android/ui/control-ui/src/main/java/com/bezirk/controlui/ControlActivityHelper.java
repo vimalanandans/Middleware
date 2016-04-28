@@ -29,9 +29,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by AJC6KOR on 12/21/2015.
- */
 class ControlActivityHelper {
 
     private static final Logger log = LoggerFactory.getLogger(ControlActivity.class);

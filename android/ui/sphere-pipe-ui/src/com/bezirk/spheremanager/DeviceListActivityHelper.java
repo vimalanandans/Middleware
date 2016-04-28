@@ -18,9 +18,6 @@ import com.bezirk.util.BezirkValidatorUtility;
 
 import bezirk.zbarscanner.ScannerActivity;
 
-/**
- * Created by AJC6KOR on 12/21/2015.
- */
 public class DeviceListActivityHelper {
 
     private static final String TAG = DeviceListActivityHelper.class.getSimpleName();
@@ -59,7 +56,7 @@ public class DeviceListActivityHelper {
                 }
             }
         }
-        ;
+
         filterDevices.setOnClickListener(new FilterDeviceClickListener());
 
         class FilterPipeClickListener implements View.OnClickListener {
@@ -81,7 +78,7 @@ public class DeviceListActivityHelper {
                 }
             }
         }
-        ;
+
         filterPipes.setOnClickListener(new FilterPipeClickListener());
     }
 
@@ -96,7 +93,7 @@ public class DeviceListActivityHelper {
                 shareSphere();
             }
         }
-        ;
+
         shareSphereButton.setOnClickListener(new ShareSphereButtonClickListener());
         return shareSphereButton;
     }

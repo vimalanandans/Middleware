@@ -1,8 +1,5 @@
 package com.bezirk.controlui;
 
-/**
- * Created by vnd2kor on 11/13/2014.
- */
 public class DataModel {
     private final Integer imageId;
     private final String titleText;
