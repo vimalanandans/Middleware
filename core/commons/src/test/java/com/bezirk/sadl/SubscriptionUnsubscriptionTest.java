@@ -21,9 +21,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class SubscriptionUnsubscriptionTest {
+    private final static Logger logger = LoggerFactory.getLogger(SubscriptionUnsubscriptionTest.class);
 
-    private final static Logger log = LoggerFactory
-            .getLogger(SubscriptionUnsubscriptionTest.class);
     private static final BezirkZirkId dummyServiceId = new BezirkZirkId("InvalidServiceForTest");
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
     private static final MockProtocols mockProtocol = new MockProtocols();
@@ -44,7 +43,7 @@ public class SubscriptionUnsubscriptionTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up SubscriptionUnsubscriptionTest TestCase *****");
+        logger.info("***** Setting up SubscriptionUnsubscriptionTest TestCase *****");
         mockUtility.setUPTestEnv();
         bezirkSadlManager = mockUtility.bezirkSadlManager;
         setUpMockServices();
@@ -55,7 +54,7 @@ public class SubscriptionUnsubscriptionTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down SubscriptionUnsubscriptionTest Testcase *****");
+        logger.info("***** Shutting down SubscriptionUnsubscriptionTest Testcase *****");
         mockUtility.destroyTestSetUp();
     }
 
@@ -75,13 +74,13 @@ public class SubscriptionUnsubscriptionTest {
     @Test
     public void testSubscriptionUnsubscription() {
 
-        log.info("***** Testing SubscibeService *****");
+        logger.info("***** Testing SubscibeService *****");
         testSubscribeService();
-        log.info("***** Tested SubscibeService successfully*****");
+        logger.info("***** Tested SubscibeService successfully*****");
 
-        log.info("***** Testing UnSubscibeService *****");
+        logger.info("***** Testing UnSubscibeService *****");
         testUnsubscribe();
-        log.info("***** Tested Unsubscribeservice successfully *****");
+        logger.info("***** Tested Unsubscribeservice successfully *****");
 
     }
 

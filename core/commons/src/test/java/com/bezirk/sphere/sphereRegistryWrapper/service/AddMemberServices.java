@@ -29,9 +29,9 @@ import static org.junit.Assert.*;
  * @author rishabh
  */
 public class AddMemberServices {
+    private static final Logger logger = LoggerFactory.getLogger(AddMemberServices.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(AddMemberServices.class);
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
     private static SphereTestUtility sphereTestUtility;
@@ -42,7 +42,7 @@ public class AddMemberServices {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:AddMemberServices TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:AddMemberServices TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -55,7 +55,7 @@ public class AddMemberServices {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:AddMemberServices TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:AddMemberServices TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 

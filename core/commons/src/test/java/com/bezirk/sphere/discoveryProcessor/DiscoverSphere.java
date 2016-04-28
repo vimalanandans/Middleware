@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class DiscoverSphere {
 
-    private static final Logger log = LoggerFactory.getLogger(DiscoverSphere.class);
+    private static final Logger logger = LoggerFactory.getLogger(DiscoverSphere.class);
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
     private static final MockProtocols mockProtocols = new MockProtocols();
     private static DiscoveryProcessor discoveryProcessor;
@@ -30,7 +30,7 @@ public class DiscoverSphere {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up DiscoverSphere TestCase *****");
+        logger.info("***** Setting up DiscoverSphere TestCase *****");
         mockSetUp.setUPTestEnv();
         discoveryProcessor = mockSetUp.discoveryProcessor;
         sphereTestUtility = new SphereTestUtility(mockSetUp.sphereRegistryWrapper, mockSetUp.upaDevice);
@@ -43,7 +43,7 @@ public class DiscoverSphere {
     public static void tearDownAfterClass() throws Exception {
         mockSetUp.destroyTestSetUp();
         sphereTestUtility = null;
-        log.info("***** Shutting down DiscoverSphere TestCase *****");
+        logger.info("***** Shutting down DiscoverSphere TestCase *****");
     }
 
 

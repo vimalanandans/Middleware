@@ -33,9 +33,9 @@ import static org.junit.Assert.*;
  * @author rishabh
  */
 public class UpdateMembership {
+    private static final Logger logger = LoggerFactory.getLogger(UpdateMembership.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(UpdateMembership.class);
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
     private static UPADeviceInterface upaDevice;
@@ -50,7 +50,7 @@ public class UpdateMembership {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:UpdateMembership TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:UpdateMembership TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -68,7 +68,7 @@ public class UpdateMembership {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:UpdateMembership TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:UpdateMembership TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 

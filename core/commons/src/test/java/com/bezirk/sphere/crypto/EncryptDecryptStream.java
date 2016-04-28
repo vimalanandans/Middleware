@@ -24,7 +24,8 @@ import static org.junit.Assert.fail;
  * @author rishabh
  */
 public class EncryptDecryptStream {
-    private static final Logger log = LoggerFactory.getLogger(EncryptDecryptStream.class);
+    private static final Logger logger = LoggerFactory.getLogger(EncryptDecryptStream.class);
+
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
     private static CryptoEngine cryptoEngine;
     private static SphereTestUtility sphereTestUtility;
@@ -34,7 +35,7 @@ public class EncryptDecryptStream {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up EncryptDecryptStream TestCase *****");
+        logger.info("***** Setting up EncryptDecryptStream TestCase *****");
         mockSetUp.setUPTestEnv();
         cryptoEngine = mockSetUp.cryptoEngine;
         sphereTestUtility = new SphereTestUtility(mockSetUp.sphereRegistryWrapper, mockSetUp.upaDevice);
@@ -44,7 +45,7 @@ public class EncryptDecryptStream {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
         mockSetUp.destroyTestSetUp();
-        log.info("***** Shutting down EncryptDecryptStream TestCase *****");
+        logger.info("***** Shutting down EncryptDecryptStream TestCase *****");
 
     }
 

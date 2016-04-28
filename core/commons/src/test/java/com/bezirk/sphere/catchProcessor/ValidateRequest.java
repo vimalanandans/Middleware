@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
 public class ValidateRequest {
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(ProcessCatchCode.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProcessCatchCode.class);
     private static CatchProcessor catchProcessor;
     private static SphereTestUtility sphereTestUtility;
     private static Method method;
@@ -40,7 +40,7 @@ public class ValidateRequest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up CatchProcessor:validateRequest TestCase *****");
+        logger.info("***** Setting up CatchProcessor:validateRequest TestCase *****");
         mockSetUp.setUPTestEnv();
         catchProcessor = mockSetUp.catchProcessor;
         sphereTestUtility = new SphereTestUtility(mockSetUp.sphereRegistryWrapper, mockSetUp.upaDevice);
@@ -56,7 +56,7 @@ public class ValidateRequest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down CatchProcessor:validateRequest TestCase *****");
+        logger.info("***** Shutting down CatchProcessor:validateRequest TestCase *****");
         mockSetUp.destroyTestSetUp();
         sphereTestUtility = null;
     }

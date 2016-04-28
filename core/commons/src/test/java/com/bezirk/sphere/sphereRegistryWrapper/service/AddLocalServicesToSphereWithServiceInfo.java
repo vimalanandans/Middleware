@@ -34,9 +34,9 @@ import static org.junit.Assert.*;
  * @author karthik
  */
 public class AddLocalServicesToSphereWithServiceInfo {
+    private static final Logger logger = LoggerFactory.getLogger(AddLocalServicesToSphereWithServiceInfo.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(AddLocalServicesToSphereWithServiceInfo.class);
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
     private static SphereTestUtility sphereTestUtility;
@@ -47,7 +47,7 @@ public class AddLocalServicesToSphereWithServiceInfo {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:AddLocalServicesToSphereWithServiceInfo TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:AddLocalServicesToSphereWithServiceInfo TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -60,7 +60,7 @@ public class AddLocalServicesToSphereWithServiceInfo {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:AddLocalServicesToSphereWithServiceInfo TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:AddLocalServicesToSphereWithServiceInfo TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 

@@ -25,9 +25,9 @@ import static org.junit.Assert.*;
  * @author karthik
  */
 public class GetDeviceInformation {
+    private static final Logger logger = LoggerFactory.getLogger(GetDeviceInformation.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(GetDeviceInformation.class);
     public static UPADeviceInterface upaDevice;
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
@@ -37,7 +37,7 @@ public class GetDeviceInformation {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:GetDeviceInformation TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:GetDeviceInformation TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -49,7 +49,7 @@ public class GetDeviceInformation {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:GetDeviceInformation TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:GetDeviceInformation TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 

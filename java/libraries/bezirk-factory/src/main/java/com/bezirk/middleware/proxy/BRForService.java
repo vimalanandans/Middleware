@@ -27,7 +27,6 @@ import java.util.LinkedHashMap;
 public class BRForService implements BroadcastReceiver {
     private static final Logger logger = LoggerFactory.getLogger(BRForService.class);
 
-
     private static final int TIME_DURATION = 15000;
     private static final int MAX_MAP_SIZE = 50;
     private static final LinkedHashMap<String, Long> duplicateMsgMap = new LinkedHashMap<String, Long>();

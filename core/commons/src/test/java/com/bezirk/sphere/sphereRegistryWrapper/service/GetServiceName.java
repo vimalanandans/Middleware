@@ -27,9 +27,9 @@ import static org.junit.Assert.*;
  * @author karthik
  */
 public class GetServiceName {
+    private static final Logger logger = LoggerFactory.getLogger(GetServiceName.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(GetServiceName.class);
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
     private static SphereTestUtility sphereTestUtility;
@@ -39,7 +39,7 @@ public class GetServiceName {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:GetServiceName TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:GetServiceName TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -51,7 +51,7 @@ public class GetServiceName {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:GetServiceName TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:GetServiceName TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 

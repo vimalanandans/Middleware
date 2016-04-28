@@ -28,9 +28,9 @@ import static org.junit.Assert.*;
  * @author karthik
  */
 public class PrepareResponse {
+    private static final Logger logger = LoggerFactory.getLogger(PrepareResponse.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(PrepareResponse.class);
     private static ShareProcessor shareProcessor;
     private static SphereTestUtility sphereTestUtility;
     private static Method method;
@@ -44,7 +44,7 @@ public class PrepareResponse {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up ShareProcessor:PrepareResponse TestCase *****");
+        logger.info("***** Setting up ShareProcessor:PrepareResponse TestCase *****");
         mockSetUp.setUPTestEnv();
         shareProcessor = mockSetUp.shareProcessor;
         sphereTestUtility = new SphereTestUtility(mockSetUp.sphereRegistryWrapper, mockSetUp.upaDevice);
@@ -64,7 +64,7 @@ public class PrepareResponse {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down ShareProcessor:prepareResponse TestCase *****");
+        logger.info("***** Shutting down ShareProcessor:prepareResponse TestCase *****");
         mockSetUp.destroyTestSetUp();
         sphereTestUtility = null;
     }

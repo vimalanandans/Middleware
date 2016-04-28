@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 public class ProcessResponse {
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(ProcessResponse.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProcessResponse.class);
     private static CatchProcessor catchProcessor;
     private static SphereTestUtility sphereTestUtility;
 
@@ -31,7 +31,7 @@ public class ProcessResponse {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up CatchProcessor:ProcessResponse TestCase *****");
+        logger.info("***** Setting up CatchProcessor:ProcessResponse TestCase *****");
         mockSetUp.setUPTestEnv();
         catchProcessor = mockSetUp.catchProcessor;
         sphereTestUtility = new SphereTestUtility(mockSetUp.sphereRegistryWrapper, mockSetUp.upaDevice);
@@ -42,7 +42,7 @@ public class ProcessResponse {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down CatchProcessor:ProcessResponse TestCase *****");
+        logger.info("***** Shutting down CatchProcessor:ProcessResponse TestCase *****");
         mockSetUp.destroyTestSetUp();
         sphereTestUtility = null;
     }

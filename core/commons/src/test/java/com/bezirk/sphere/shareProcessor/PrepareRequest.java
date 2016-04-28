@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
 public class PrepareRequest {
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(PrepareRequest.class);
+    private static final Logger logger = LoggerFactory.getLogger(PrepareRequest.class);
     private static ShareProcessor shareProcessor;
     private static SphereTestUtility sphereTestUtility;
     private static Method method;
@@ -42,7 +42,7 @@ public class PrepareRequest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up ShareProcessor:PrepareRequest TestCase *****");
+        logger.info("***** Setting up ShareProcessor:PrepareRequest TestCase *****");
         mockSetUp.setUPTestEnv();
         shareProcessor = mockSetUp.shareProcessor;
         sphereTestUtility = new SphereTestUtility(mockSetUp.sphereRegistryWrapper, mockSetUp.upaDevice);
@@ -59,7 +59,7 @@ public class PrepareRequest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down ShareProcessor:PrepareRequest TestCase *****");
+        logger.info("***** Shutting down ShareProcessor:PrepareRequest TestCase *****");
         mockSetUp.destroyTestSetUp();
         sphereTestUtility = null;
     }

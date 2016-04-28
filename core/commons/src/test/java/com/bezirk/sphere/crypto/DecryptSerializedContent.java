@@ -30,7 +30,8 @@ import static org.junit.Assert.assertTrue;
  * @author Rishabh Gulati
  */
 public class DecryptSerializedContent {
-    private static final Logger log = LoggerFactory.getLogger(DecryptSerializedContent.class);
+    private static final Logger logger = LoggerFactory.getLogger(DecryptSerializedContent.class);
+
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
     private static SphereRegistry registry;
     private static CryptoEngine cryptoEngine;
@@ -46,7 +47,7 @@ public class DecryptSerializedContent {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up DecryptSerializedContent TestCase *****");
+        logger.info("***** Setting up DecryptSerializedContent TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         cryptoEngine = mockSetUp.cryptoEngine;
@@ -57,7 +58,7 @@ public class DecryptSerializedContent {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down DecryptSerializedContent TestCase *****");
+        logger.info("***** Shutting down DecryptSerializedContent TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 
@@ -80,7 +81,7 @@ public class DecryptSerializedContent {
                     pair.getPrivate().getEncoded(), pair.getPublic().getEncoded());
             registry.putSphereKeys(sphereId, sKeys);
         } catch (NoSuchAlgorithmException e) {
-            log.error("Exception while setting up the test case");
+            logger.error("Exception while setting up the test case");
         }
     }
 
@@ -105,7 +106,7 @@ public class DecryptSerializedContent {
             decryptedContent = new String(cryptoEngine.decryptSphereContent(sphereId, encryptedContent));
             assertTrue(content.equals(decryptedContent));
         } catch (Exception e) {
-            log.error("Error while encrypting the content" + e.getMessage());
+            logger.error("Error while encrypting the content" + e.getMessage());
         }
     }
 

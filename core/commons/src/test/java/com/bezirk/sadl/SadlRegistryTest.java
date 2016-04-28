@@ -34,9 +34,7 @@ import static org.junit.Assert.assertTrue;
  *
  */
 public class SadlRegistryTest {
-
-    private final static Logger log = LoggerFactory
-            .getLogger(SadlRegistryTest.class);
+    private final static Logger logger = LoggerFactory.getLogger(SadlRegistryTest.class);
 
     private static SadlRegistry sadlRegistry = null;
 
@@ -44,24 +42,22 @@ public class SadlRegistryTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-
-        log.info("############# Setting up SadlRegistry TestCase ################");
+        logger.info("############# Setting up SadlRegistry TestCase ################");
         sadlRegistry = new SadlRegistry();
 
     }
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-
-        log.info("****** Shutting down SadlRegistry Testcase *****");
+        logger.info("****** Shutting down SadlRegistry Testcase *****");
     }
 
     @Test
     public void testSadlregistry() {
 
-        log.info("***** testing ClearRegistry *****");
+        logger.info("***** testing ClearRegistry *****");
         testClearRegistry();
-        log.info("***** testing equals() and hashcode() *****");
+        logger.info("***** testing equals() and hashcode() *****");
         checkEqualsHashcode();
     }
 

@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 public class ProcessCatchCode {
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(ProcessCatchCode.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProcessCatchCode.class);
     private static CatchProcessor catchProcessor;
     private static SphereTestUtility sphereTestUtility;
 
@@ -32,7 +32,7 @@ public class ProcessCatchCode {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up CatchProcessor:ProcessCatchCode TestCase *****");
+        logger.info("***** Setting up CatchProcessor:ProcessCatchCode TestCase *****");
         mockSetUp.setUPTestEnv();
         catchProcessor = mockSetUp.catchProcessor;
         sphereTestUtility = new SphereTestUtility(mockSetUp.sphereRegistryWrapper, mockSetUp.upaDevice);
@@ -43,7 +43,7 @@ public class ProcessCatchCode {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down CatchProcessor:ProcessCatchCode TestCase *****");
+        logger.info("***** Shutting down CatchProcessor:ProcessCatchCode TestCase *****");
         mockSetUp.destroyTestSetUp();
         sphereTestUtility = null;
     }

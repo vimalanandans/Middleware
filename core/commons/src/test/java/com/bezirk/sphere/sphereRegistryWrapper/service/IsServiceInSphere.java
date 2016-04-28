@@ -27,9 +27,9 @@ import static org.junit.Assert.*;
  * @author karthik
  */
 public class IsServiceInSphere {
+    private static final Logger logger = LoggerFactory.getLogger(IsServiceInSphere.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(IsServiceInSphere.class);
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
 
@@ -38,7 +38,7 @@ public class IsServiceInSphere {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:IsServiceInSphere TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:IsServiceInSphere TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -49,7 +49,7 @@ public class IsServiceInSphere {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:IsServiceInSphere TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:IsServiceInSphere TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 

@@ -30,7 +30,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class ProcessDiscoveredSphereInfo {
 
-    private static final Logger log = LoggerFactory.getLogger(ProcessDiscoveredSphereInfo.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProcessDiscoveredSphereInfo.class);
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
     private static DiscoveryProcessor discoveryProcessor;
     private static SphereRegistry registry;
@@ -42,7 +42,7 @@ public class ProcessDiscoveredSphereInfo {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up ProcessDiscoveredSphereInfo TestCase *****");
+        logger.info("***** Setting up ProcessDiscoveredSphereInfo TestCase *****");
         mockSetUp.setUPTestEnv();
         discoveryProcessor = mockSetUp.discoveryProcessor;
         registry = mockSetUp.registry;
@@ -55,7 +55,7 @@ public class ProcessDiscoveredSphereInfo {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down ProcessDiscoveredSphereInfo TestCase *****");
+        logger.info("***** Shutting down ProcessDiscoveredSphereInfo TestCase *****");
         mockSetUp.destroyTestSetUp();
         sphereTestUtility = null;
     }

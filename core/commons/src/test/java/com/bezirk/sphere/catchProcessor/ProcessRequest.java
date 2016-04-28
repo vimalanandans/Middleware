@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 public class ProcessRequest {
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(ProcessRequest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProcessRequest.class);
     private static CatchProcessor catchProcessor;
     private static SphereTestUtility sphereTestUtility;
 
@@ -30,7 +30,7 @@ public class ProcessRequest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up CatchProcessor:ProcessRequest TestCase *****");
+        logger.info("***** Setting up CatchProcessor:ProcessRequest TestCase *****");
         mockSetUp.setUPTestEnv();
         catchProcessor = mockSetUp.catchProcessor;
         sphereTestUtility = new SphereTestUtility(mockSetUp.sphereRegistryWrapper, mockSetUp.upaDevice);
@@ -41,7 +41,7 @@ public class ProcessRequest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down CatchProcessor:ProcessRequest TestCase *****");
+        logger.info("***** Shutting down CatchProcessor:ProcessRequest TestCase *****");
         mockSetUp.destroyTestSetUp();
         sphereTestUtility = null;
     }

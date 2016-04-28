@@ -35,8 +35,8 @@ import static org.junit.Assert.assertTrue;
  * @author Rishabh Gulati
  */
 public class EncryptSerializedContent {
-    private static final Logger log = LoggerFactory
-            .getLogger(EncryptSerializedContent.class);
+    private static final Logger logger = LoggerFactory.getLogger(EncryptSerializedContent.class);
+
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
     private static SphereRegistry registry;
     private static CryptoEngine cryptoEngine;
@@ -52,7 +52,7 @@ public class EncryptSerializedContent {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up EncryptSerializedContent TestCase *****");
+        logger.info("***** Setting up EncryptSerializedContent TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         cryptoEngine = mockSetUp.cryptoEngine;
@@ -63,7 +63,7 @@ public class EncryptSerializedContent {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down EncryptSerializedContent TestCase *****");
+        logger.info("***** Shutting down EncryptSerializedContent TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 
@@ -112,7 +112,7 @@ public class EncryptSerializedContent {
             //sphereKeyMap.put(sphereId, sKeys);
 
         } catch (NoSuchAlgorithmException e) {
-            log.error("Exception while setting up the test case");
+            logger.error("Exception while setting up the test case");
         }
     }
 
@@ -134,13 +134,13 @@ public class EncryptSerializedContent {
         byte[] wireData = null;
 
         temp = data.getBytes();
-        log.info("Before Compression Msg byte length : " + temp.length);
+        logger.info("Before Compression Msg byte length : " + temp.length);
         long compStartTime = System.currentTimeMillis();
         wireData = TextCompressor.compress(temp);
         long compEndTime = System.currentTimeMillis();
-        log.info("Compression Took " + (compEndTime - compStartTime) + " mili seconds");
+        logger.info("Compression Took " + (compEndTime - compStartTime) + " mili seconds");
         //After Compression Byte Length is
-        log.info("After Compression Msg byte length : " + wireData.length);
+        logger.info("After Compression Msg byte length : " + wireData.length);
         return wireData;
     }
 
@@ -160,7 +160,7 @@ public class EncryptSerializedContent {
                     actualEncryptedContent, sKeys.getSphereKey()).getBytes());
             assertTrue(content.equals(decryptedContent));
         } catch (Exception e) {
-            log.error("Error while encrypting the content" + e.getMessage());
+            logger.error("Error while encrypting the content" + e.getMessage());
         }
 
     }
@@ -173,18 +173,18 @@ public class EncryptSerializedContent {
      */
     //@Test
     public final void testEncryptSphereContentAsBytes() {
-        final Logger log = LoggerFactory.getLogger(EncryptSerializedContent.class);
+        final Logger logger = LoggerFactory.getLogger(EncryptSerializedContent.class);
 
 
         byte[] compressedContent = compressMsg(content);
         String decompressedContent;
 
-        log.info("compressed content >> " + compressedContent);
+        logger.info("compressed content >> " + compressedContent);
 
         byte[] actualEncryptedContent = cryptoEngine.encryptSphereContent(
                 sphereId, new String(compressedContent));
 
-        log.info("Encrypted content >> " + compressedContent);
+        logger.info("Encrypted content >> " + compressedContent);
 
         byte[] decryptedContent;
         try {
@@ -194,12 +194,12 @@ public class EncryptSerializedContent {
 
             decompressedContent = decompress(decryptedContent);
 
-            log.info("Decrypted content >> " + decryptedContent);
-            log.info("DeCompressed content >> " + decompressedContent);
+            logger.info("Decrypted content >> " + decryptedContent);
+            logger.info("DeCompressed content >> " + decompressedContent);
             assertTrue(content.equals(decompressedContent));
             //assertFalse(content.equals(decompressedContent));
         } catch (Exception e) {
-            log.error("Error while encrypting the content" + e.getMessage());
+            logger.error("Error while encrypting the content" + e.getMessage());
         }
 
     }

@@ -31,9 +31,9 @@ import static org.junit.Assert.*;
  * @author karthik
  */
 public class ValidateServices {
+    private static final Logger logger = LoggerFactory.getLogger(ValidateServices.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(ValidateServices.class);
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
     private static UPADeviceInterface upaDevice;
@@ -44,7 +44,7 @@ public class ValidateServices {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:ValidateServices TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:ValidateServices TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -57,7 +57,7 @@ public class ValidateServices {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:ValidateServices TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:ValidateServices TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 

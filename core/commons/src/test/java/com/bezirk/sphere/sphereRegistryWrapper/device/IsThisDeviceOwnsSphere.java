@@ -28,9 +28,9 @@ import static org.junit.Assert.*;
  * @author rishabh
  */
 public class IsThisDeviceOwnsSphere {
+    private static final Logger logger = LoggerFactory.getLogger(IsThisDeviceOwnsSphere.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(IsThisDeviceOwnsSphere.class);
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
     private static SphereTestUtility sphereTestUtility;
@@ -40,7 +40,7 @@ public class IsThisDeviceOwnsSphere {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:IsThisDeviceOwnsSphere TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:IsThisDeviceOwnsSphere TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -52,7 +52,7 @@ public class IsThisDeviceOwnsSphere {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:IsThisDeviceOwnsSphere TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:IsThisDeviceOwnsSphere TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 

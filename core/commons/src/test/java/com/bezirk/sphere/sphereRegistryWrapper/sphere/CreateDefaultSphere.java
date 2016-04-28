@@ -24,9 +24,9 @@ import static org.junit.Assert.assertTrue;
  * @author rishabh
  */
 public class CreateDefaultSphere {
+    private static final Logger logger = LoggerFactory.getLogger(CreateDefaultSphere.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(CreateDefaultSphere.class);
     private static SphereRegistry registry;
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereTestUtility sphereTestUtility;
@@ -38,7 +38,7 @@ public class CreateDefaultSphere {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:CreateDefaultSphere TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:CreateDefaultSphere TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         sphereConfig = mockSetUp.sphereConfig;
@@ -52,7 +52,7 @@ public class CreateDefaultSphere {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:CreateDefaultSphere TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:CreateDefaultSphere TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 
@@ -81,9 +81,9 @@ public class CreateDefaultSphere {
      */
     @Test
     public final void createDefaultSpherePostInitSameName() {
-        log.info("No of spheres before creating second default sphere: " + registry.spheres.size());
+        logger.info("No of spheres before creating second default sphere: " + registry.spheres.size());
         sphereRegistryWrapper.createDefaultSphere(sphereConfig.getDefaultSphereName());
-        log.info("No of spheres after creating second default sphere: " + registry.spheres.size());
+        logger.info("No of spheres after creating second default sphere: " + registry.spheres.size());
 
         assertTrue("Invalid No. of spheres in registry", registry.spheres.size() == spheres);
         assertTrue("sphere Name invalid", registry.spheres.entrySet().iterator().next().getValue().getSphereName()
@@ -102,9 +102,9 @@ public class CreateDefaultSphere {
     @Test
     public final void createDefaultSpherePostInitDifferentName() {
         String newSphereName = sphereTestUtility.OWNER_SPHERE_NAME_2;
-        log.info("No of spheres before creating second default sphere: " + registry.spheres.size());
+        logger.info("No of spheres before creating second default sphere: " + registry.spheres.size());
         sphereRegistryWrapper.createDefaultSphere(newSphereName);
-        log.info("No of spheres after creating second default sphere: " + registry.spheres.size());
+        logger.info("No of spheres after creating second default sphere: " + registry.spheres.size());
 
         assertTrue("Invalid No. of spheres in registry", registry.spheres.size() == spheres);
         assertTrue("sphere Name invalid",

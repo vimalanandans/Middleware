@@ -24,9 +24,9 @@ import static org.junit.Assert.*;
  * @author karthik
  */
 public class IsServiceLocal {
+    private static final Logger logger = LoggerFactory.getLogger(IsServiceLocal.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(IsServiceLocal.class);
     private static SphereRegistryWrapper sphereRegistryWrapper;
 
     /**
@@ -34,7 +34,7 @@ public class IsServiceLocal {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:IsServiceLocal TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:IsServiceLocal TestCase *****");
         mockSetUp.setUPTestEnv();
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
     }
@@ -44,7 +44,7 @@ public class IsServiceLocal {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:IsServiceLocal TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:IsServiceLocal TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 

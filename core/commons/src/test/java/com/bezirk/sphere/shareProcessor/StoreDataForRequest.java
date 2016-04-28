@@ -24,9 +24,9 @@ import static org.junit.Assert.*;
  * @author karthik
  */
 public class StoreDataForRequest {
+    private static final Logger logger = LoggerFactory.getLogger(StoreDataForRequest.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(StoreDataForRequest.class);
     private static ShareProcessor shareProcessor;
     private static SphereTestUtility sphereTestUtility;
     private static Method method;
@@ -39,7 +39,7 @@ public class StoreDataForRequest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up ShareProcessor:StoreData TestCase *****");
+        logger.info("***** Setting up ShareProcessor:StoreData TestCase *****");
         mockSetUp.setUPTestEnv();
         shareProcessor = mockSetUp.shareProcessor;
         sphereTestUtility = new SphereTestUtility(mockSetUp.sphereRegistryWrapper, mockSetUp.upaDevice);
@@ -56,7 +56,7 @@ public class StoreDataForRequest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down ShareProcessor:StoreData TestCase *****");
+        logger.info("***** Shutting down ShareProcessor:StoreData TestCase *****");
         mockSetUp.destroyTestSetUp();
         sphereTestUtility = null;
     }

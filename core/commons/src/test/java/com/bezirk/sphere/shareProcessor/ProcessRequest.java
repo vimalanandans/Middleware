@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 public class ProcessRequest {
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(ProcessRequest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProcessRequest.class);
     private static ShareProcessor shareProcessor;
     private static SphereTestUtility sphereTestUtility;
     private static SphereRegistryWrapper sphereRegistryWrapper; //for setting up shortCode-sphereId mapping in registry
@@ -33,7 +33,7 @@ public class ProcessRequest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up ShareProcessor:ProcessRequest TestCase *****");
+        logger.info("***** Setting up ShareProcessor:ProcessRequest TestCase *****");
         mockSetUp.setUPTestEnv();
         shareProcessor = mockSetUp.shareProcessor;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -45,7 +45,7 @@ public class ProcessRequest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down ShareProcessor:ProcessRequest TestCase *****");
+        logger.info("***** Shutting down ShareProcessor:ProcessRequest TestCase *****");
         mockSetUp.destroyTestSetUp();
         sphereTestUtility = null;
     }

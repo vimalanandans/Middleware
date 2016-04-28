@@ -24,9 +24,9 @@ import static org.junit.Assert.*;
  * @author karthik
  */
 public class ContainsDevice {
+    private static final Logger logger = LoggerFactory.getLogger(ContainsDevice.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(ContainsDevice.class);
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
 
@@ -35,7 +35,7 @@ public class ContainsDevice {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:ContainsDevice TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:ContainsDevice TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -46,7 +46,7 @@ public class ContainsDevice {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:ContainsDevice TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:ContainsDevice TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 
