@@ -18,24 +18,19 @@ import static org.junit.Assert.assertTrue;
  * @author AJC6KOR
  */
 public class OwnerLeaveResponseTest {
-
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(OwnerLeaveResponseTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(OwnerLeaveResponseTest.class);
 
     private static final String sphereId = "TestSphere";
     private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
     private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
     private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceBId);
 
-
     /**
      * @throws java.lang.Exception
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-
-        LOGGER.info("***** Setting up OwnerLeaveResponseTest TestCase *****");
-
+        logger.info("***** Setting up OwnerLeaveResponseTest TestCase *****");
     }
 
     /**
@@ -43,8 +38,7 @@ public class OwnerLeaveResponseTest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-
-        LOGGER.info("***** Shutting down OwnerLeaveResponseTest TestCase *****");
+        logger.info("***** Shutting down OwnerLeaveResponseTest TestCase *****");
     }
 
 

@@ -21,9 +21,9 @@ import static org.junit.Assert.assertTrue;
  * @modified by AJC6KOR
  */
 public class TestCBkForServicePC {
+    private static final Logger logger = LoggerFactory.getLogger(TestCBkForServicePC.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TestCBkForServicePC.class);
-    private final com.bezirk.callback.pc.IBoradcastReceiver BRForService = new BRForServiceMock();
+    private final BroadcastReceiver BRForService = new BRForServiceMock();
     private final CBkForZirkPC cBkForServicePC = new CBkForZirkPC(BRForService);
     private boolean receivedEvent = false;
     private boolean receivedUnicastStream = false;
@@ -32,14 +32,13 @@ public class TestCBkForServicePC {
 
     @BeforeClass
     public static void setUpClass() {
-        LOGGER.info("********** Setting up TestCBkForServicePC Testcase **********");
-
+        logger.info("********** Setting up TestCBkForServicePC Testcase **********");
     }
 
 
     @AfterClass
     public static void tearDownClass() {
-        LOGGER.info("********** Shutting down TestCBkForServicePC Testcase **********");
+        logger.info("********** Shutting down TestCBkForServicePC Testcase **********");
     }
 
     @Test
@@ -98,7 +97,7 @@ public class TestCBkForServicePC {
 
     }
 
-    class BRForServiceMock implements com.bezirk.callback.pc.IBoradcastReceiver {
+    class BRForServiceMock implements BroadcastReceiver {
 
         @Override
         public void onReceive(ServiceIncomingMessage callbackMessage) {

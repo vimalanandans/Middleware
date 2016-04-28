@@ -23,9 +23,7 @@ import static org.junit.Assert.*;
  * @author AJC6KOR
  */
 public class MemberLeaveResponseTest {
-
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(MemberLeaveResponseTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(MemberLeaveResponseTest.class);
 
     private static final String sphereId = "TestSphere";
     private static final String sphereName = "Test";
@@ -43,11 +41,9 @@ public class MemberLeaveResponseTest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-
-        LOGGER.info("***** Setting up MemberLeaveResponseTest TestCase *****");
+        logger.info("***** Setting up MemberLeaveResponseTest TestCase *****");
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
-
     }
 
     /**
@@ -55,8 +51,7 @@ public class MemberLeaveResponseTest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-
-        LOGGER.info("***** Shutting down MemberLeaveResponseTest TestCase *****");
+        logger.info("***** Shutting down MemberLeaveResponseTest TestCase *****");
     }
 
     private static InetAddress getInetAddress() {
@@ -80,10 +75,9 @@ public class MemberLeaveResponseTest {
                 }
             }
         } catch (SocketException e) {
-
-            LOGGER.error("Unable to fetch network interface");
-
+            logger.error("Unable to fetch network interface");
         }
+
         return null;
     }
 

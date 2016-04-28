@@ -33,9 +33,8 @@ import org.slf4j.LoggerFactory;
  *         the stream request and stream responses.
  */
 public class BezirkStreamManager implements Streaming {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkStreamManager.class);
 
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(BezirkStreamManager.class);
     private final StreamCtrlReceiver ctrlReceiver = new StreamCtrlReceiver();
     private IUhuSphereForSadl sphereForSadl = null;
     private MessageQueue streamingMessageQueue = null;
@@ -61,8 +60,7 @@ public class BezirkStreamManager implements Streaming {
             this.sadlReceiver = sadlReceiver;
             bezirkStreamHandler = new BezirkStreamHandler();
         } else {
-
-            LOGGER.error("Unable to initialize BezirkStreamManager. Please ensure ControlSenderQueue, MessageDispatcher and UhuCallback are initialized.");
+            logger.error("Unable to initialize BezirkStreamManager. Please ensure ControlSenderQueue, MessageDispatcher and UhuCallback are initialized.");
         }
 
     }
@@ -135,7 +133,7 @@ public class BezirkStreamManager implements Streaming {
 
             if (msgDispatcher == null) {
 
-                LOGGER.error("Unable to register message receivers as messagedispatcher is not initialized.");
+                logger.error("Unable to register message receivers as messagedispatcher is not initialized.");
                 return false;
 
             } else {
@@ -155,7 +153,7 @@ public class BezirkStreamManager implements Streaming {
 
         } catch (Exception e) {
 
-            LOGGER.error(
+            logger.error(
                     "Exception in initializing the streams in stream manager. ",
                     e);
             return false;
@@ -170,7 +168,7 @@ public class BezirkStreamManager implements Streaming {
         sStreamingThread = new Thread(streamQueueProcessor);
 
         if (sStreamingThread == null) {
-            LOGGER.error("unable to start the streaming thread ");
+            logger.error("unable to start the streaming thread ");
             return false;
 
         } else {
@@ -215,11 +213,11 @@ public class BezirkStreamManager implements Streaming {
                     processStreamResponse(serializedMsg);
                     break;
                 case RTCControlMessage:
-                    LOGGER.debug("Real Time Stream Message Received");
+                    logger.debug("Real Time Stream Message Received");
                     processRTCMessage(serializedMsg);
                     break;
                 default:
-                    LOGGER.error("Unknown Stream message type.");
+                    logger.error("Unknown Stream message type.");
                     break;
             }
 
@@ -227,7 +225,7 @@ public class BezirkStreamManager implements Streaming {
         }
 
         private void processStreamResponse(String serializedMsg) {
-            LOGGER.debug("Stream Response Received");
+            logger.debug("Stream Response Received");
             try {
 
                 final StreamResponse streamResponse = ControlMessage
@@ -236,14 +234,14 @@ public class BezirkStreamManager implements Streaming {
                         streamingMessageQueue, streamStore);
 
             } catch (Exception e) {
-                LOGGER.error(
+                logger.error(
                         "Something Wrong in processing Stream Request, Removing Message from Queue",
                         e);
             }
         }
 
         private void processStreamRequest(String serializedMsg) {
-            LOGGER.debug("Stream Request Received");
+            logger.debug("Stream Request Received");
             try {
 
                 final StreamRequest streamRequest = ControlMessage.deserialize(
@@ -253,7 +251,7 @@ public class BezirkStreamManager implements Streaming {
                         streamStore, sadlReceiver, sphereForSadl);
 
             } catch (Exception e) {
-                LOGGER.error(
+                logger.error(
                         "Something Wrong in processing Stream Request, Removing Message from Queue",
                         e);
             }
@@ -267,7 +265,7 @@ public class BezirkStreamManager implements Streaming {
             }
             if (signaling == null) {
 
-                LOGGER.error("Feature not enabled.");
+                logger.error("Feature not enabled.");
             } else {
                 final RTCControlMessage rtcCtrlMsg = ControlMessage
                         .deserialize(serializedMsg, RTCControlMessage.class);

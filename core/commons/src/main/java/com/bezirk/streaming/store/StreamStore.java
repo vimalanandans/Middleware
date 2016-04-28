@@ -18,9 +18,7 @@ import java.util.Map;
  *
  */
 public class StreamStore {
-
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(StreamStore.class);
+    private static final Logger logger = LoggerFactory.getLogger(StreamStore.class);
 
     // Maps stream_id:StreamRecord
     // Updated during sending controll message
@@ -53,16 +51,16 @@ public class StreamStore {
         synchronized (this) {
 
             if (value <= 0) {
-                LOGGER.error("empty values for either key or value");
+                logger.error("empty values for either key or value");
                 return false;
             }
 
             if (portsMap.containsKey(portMapkey)) {
-                LOGGER.error("port key already exists..");
+                logger.error("port key already exists..");
                 return false;
             }
             getPortsMap().put(portMapkey, value);
-            LOGGER.debug("portsmap updated with key : value:" + "key:" + portMapkey
+            logger.debug("portsmap updated with key : value:" + "key:" + portMapkey
                     + " value:" + value);
             return true;
 
@@ -100,7 +98,7 @@ public class StreamStore {
                 }
             } else {
                 updatedPortMap = false;
-                LOGGER.error("port key tried to remove that doesn't exist");
+                logger.error("port key tried to remove that doesn't exist");
             }
             return updatedPortMap;
         }
@@ -134,22 +132,15 @@ public class StreamStore {
      * the key is duplicate returns false
      */
     public final boolean registerStreamBook(String key, StreamRecord sRecord) {
-
         synchronized (this) {
-
             if (streamBook.containsKey(key)) {
-
-                LOGGER.error("Cannot register stream");
+                logger.error("Cannot register stream");
                 return false;
-
             } else {
-
                 streamBook.put(key, sRecord);
                 return true;
             }
-
         }
-
     }
 
     /*

@@ -25,8 +25,7 @@ import java.util.Set;
  * @see BezirkComms
  */
 public class PortFactory implements IPortFactory {
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(PortFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(PortFactory.class);
 
     private final int startingPort; // Beginning Port of the RANGE, read from properties file
     private final Set<Integer> activePorts; // Set, that keeps the track of no_of_ports that are active and are been used
@@ -41,7 +40,7 @@ public class PortFactory implements IPortFactory {
      * @see BezirkComms
      */
     public PortFactory(int startPort, StreamStore streamStore) {
-        LOGGER.info("-- Inside PortFactory constructor ---- ");
+        logger.info("-- Inside PortFactory constructor ---- ");
         startingPort = startPort;
         activePorts = new HashSet<Integer>();
         lastAssignedPort = startPort;
@@ -61,17 +60,16 @@ public class PortFactory implements IPortFactory {
     @Override
     public int getPort(String portMapKey) {
         synchronized (this) {
-
             int nextPort = -1;
 
             if (activePorts.size() == BezirkComms.getMAX_SUPPORTED_STREAMS()) {
-                LOGGER.debug("MAX STREAMS REACHED");
+                logger.debug("MAX STREAMS REACHED");
                 return nextPort;
             }
 
             do {
                 nextPort = startingPort + lastAssignedPort % startingPort;
-                LOGGER.debug("nextport: " + nextPort);
+                logger.debug("nextport: " + nextPort);
                 if (activePorts.contains(nextPort)) {
 
                     lastAssignedPort++;
@@ -83,14 +81,14 @@ public class PortFactory implements IPortFactory {
                         lastAssignedPort = nextPort;
                         break;
                     } else {
-                        LOGGER.error("port malfunctioning...");
+                        logger.error("port malfunctioning...");
                         return -1;
                     }
 
                 }
             } while (true);
 
-            LOGGER.debug("New Port assigned: " + nextPort);
+            logger.debug("New Port assigned: " + nextPort);
             return nextPort;
         }
     }
@@ -108,17 +106,17 @@ public class PortFactory implements IPortFactory {
         synchronized (this) {
 
             if (activePorts.contains(releasingPort)) {
-                LOGGER.debug("No of active ports before releasing: "
+                logger.debug("No of active ports before releasing: "
                         + activePorts.size());
                 activePorts.remove(releasingPort);
                 if (!streamStore.releasePort(releasingPort)) {
-                    LOGGER.debug("Error updating the ports map to free the ports");
+                    logger.debug("Error updating the ports map to free the ports");
                 }
-                LOGGER.debug("No of active ports after releasing: "
+                logger.debug("No of active ports after releasing: "
                         + activePorts.size());
                 return true;
             } else {
-                LOGGER.error("Port tried to free that doesnt exists..");
+                logger.error("Port tried to free that doesnt exists..");
                 streamStore.releasePort(releasingPort); // Confirmation
                 return false;
             }

@@ -5,7 +5,7 @@ import com.bezirk.messagehandler.ServiceIncomingMessage;
 /**
  * Common BroadcastReceiver Interface that is defined to mimin the android BroadcastReceiver onto PC side.
  */
-public interface IBoradcastReceiver {
+public interface BroadcastReceiver {
     /**
      * Receives the UhuCallbackMessge from the Bezirk-pc and handles accordingly.
      *

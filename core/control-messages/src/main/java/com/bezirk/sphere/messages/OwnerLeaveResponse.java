@@ -14,7 +14,8 @@ import org.slf4j.LoggerFactory;
 //TODO Move to new package, since this is an object used for encapsulating information to be sent as a signed messages. The control message which uses this object is SignedControlMessage.
 
 public class OwnerLeaveResponse {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OwnerLeaveResponse.class);
+    private static final Logger logger = LoggerFactory.getLogger(OwnerLeaveResponse.class);
+
     //private final BezirkZirkEndPoint recipient; //TODO check if redundant field is actually needed for further verification of the signed message
     private final boolean removedSuccessfully;
     private final String sphereID; //TODO check if redundant field is actually needed for further verification of the signed message
@@ -27,12 +28,13 @@ public class OwnerLeaveResponse {
         //this.recipient = recipient;
         this.removedSuccessfully = removedSuccessfully;
         this.time = System.currentTimeMillis();
-        LOGGER.debug("Time when message was created : " + time);
+
+        if (logger.isDebugEnabled()) logger.debug("Time when message was created : {}", time);
     }
 
     /**
      * @param json The Json String that is to be deserialized
-     * @param C    class to fromJson into
+     * @param dC    class to fromJson into
      * @return object of class type C
      */
     public static <C> C deserialize(String json, Class<C> dC) {

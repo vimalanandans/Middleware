@@ -31,16 +31,14 @@ import java.util.Properties;
  * @author ajc6kor
  */
 final class ServiceStarterHelper {
-
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(ServiceStarterHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(ServiceStarterHelper.class);
 
     /**
      * create and initialise the sphere
      *
-     * @param comms
+     * @param uhuDevice
      * @param registryPersistence
-     * @param sphereForPC
+     * @param comms
      */
     IUhuSphereAPI initSphere(final UPADeviceInterface uhuDevice,
                              final RegistryPersistence registryPersistence, final IUhuComms comms) {
@@ -51,7 +49,7 @@ final class ServiceStarterHelper {
         try {
             sphereRegistry = spherePersistence.loadSphereRegistry();
         } catch (Exception e) {
-            LOGGER.error("Error in loading sphere Registry", e);
+            logger.error("Error in loading sphere Registry", e);
         }
 
         final CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
@@ -82,7 +80,7 @@ final class ServiceStarterHelper {
 
         } catch (Exception e) {
 
-            LOGGER.error(
+            logger.error(
                     "Comms should also implement IUhuCommsLegacy to set sphere for sadl.",
                     e);
             sphereForPC = null;
@@ -102,7 +100,7 @@ final class ServiceStarterHelper {
             final String loc = props.getProperty("DeviceLocation", null);
             location = new Location(loc);
         } catch (Exception e) {
-            LOGGER.error("Problem reading or writing properties file: ", e);
+            logger.error("Problem reading or writing properties file: ", e);
             return null;
         }
 
@@ -123,7 +121,7 @@ final class ServiceStarterHelper {
         try {
             deviceIdString = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
-            LOGGER.error("Exception in fetching hostname.", e);
+            logger.error("Exception in fetching hostname.", e);
         }
 
         if (uhuConfig.isDisplayEnabled()) {
@@ -164,7 +162,7 @@ final class ServiceStarterHelper {
      * @param throwable May be null if not relevant
      */
     void fail(final String errorMsg, final Throwable throwable) {
-        LOGGER.error(errorMsg, throwable);
+        logger.error(errorMsg, throwable);
         System.exit(0);
     }
 

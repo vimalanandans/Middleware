@@ -17,9 +17,8 @@ import java.util.Set;
  * Class that handles the Ping test.
  */
 public final class CommsTest {
+    private static final Logger logger = LoggerFactory.getLogger(CommsTest.class);
 
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(CommsTest.class);
     private static final String CTRL_MULTICAST_ADDRESS = "224.5.5.5";
     private final String name = UhuCompManager.getUpaDevice().getDeviceName();
     private final com.bezirk.commstest.ui.IUpdateResponse responseUI;
@@ -36,7 +35,7 @@ public final class CommsTest {
     /**
      * Sends the ping
      *
-     * @param pingData
+     * @param pingCount
      */
     public void sendPing(int pingCount) {
         final PingMessage msg = new PingMessage();
@@ -73,7 +72,7 @@ public final class CommsTest {
             responseUI.updateUIPingSent(msg);
             uiStore.addToWaitingPongList(msg.deviceName + ":" + msg.pingId);
         } catch (Exception e) {
-            LOGGER.error("Exception in sending ping message.", e);
+            logger.error("Exception in sending ping message.", e);
         }
     }
 

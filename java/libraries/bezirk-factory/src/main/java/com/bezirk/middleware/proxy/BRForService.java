@@ -1,6 +1,6 @@
 package com.bezirk.middleware.proxy;
 
-import com.bezirk.callback.pc.IBoradcastReceiver;
+import com.bezirk.callback.pc.BroadcastReceiver;
 import com.bezirk.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.messagehandler.EventIncomingMessage;
 import com.bezirk.messagehandler.ServiceIncomingMessage;
@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-public class BRForService implements IBoradcastReceiver {
+public class BRForService implements BroadcastReceiver {
     private static final Logger logger = LoggerFactory.getLogger(BRForService.class);
 
 

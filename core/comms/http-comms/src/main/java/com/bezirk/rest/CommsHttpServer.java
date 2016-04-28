@@ -13,8 +13,7 @@ import fi.iki.elonen.router.RouterNanoHTTPD;
  * @author PIK6KOR
  */
 public class CommsHttpServer extends RouterNanoHTTPD {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommsHttpServer.class);
+    private static final Logger logger = LoggerFactory.getLogger(CommsHttpServer.class);
 
     private static final int PORT = 8080;
     private static CommsHttpServer httpServer;
@@ -42,13 +41,13 @@ public class CommsHttpServer extends RouterNanoHTTPD {
      */
     public boolean startServer() {
         //ServerRunner.run(CommsHttpServer.class);
-        LOGGER.debug("STARTING Rest Server!!!");
+        logger.debug("STARTING Rest Server!!!");
         try {
             start();
             restCommsManager.setStarted(true);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            LOGGER.error("Exception while starting server.. " + e);
+            logger.error("Exception while starting server.. " + e);
         }
         return true;
     }
@@ -59,7 +58,7 @@ public class CommsHttpServer extends RouterNanoHTTPD {
      * @return
      */
     public boolean stopServer() {
-        LOGGER.debug("Rest server has been stopped!!!");
+        logger.debug("Rest server has been stopped!!!");
         stop();
         restCommsManager.setStarted(false);
 

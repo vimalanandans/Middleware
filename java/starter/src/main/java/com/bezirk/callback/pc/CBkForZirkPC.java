@@ -15,12 +15,12 @@ import org.slf4j.LoggerFactory;
  * PC specific callback implementation that is used to give the callback to the ProxyForServices.
  */
 public final class CBkForZirkPC implements ZirkMessageHandler {
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(CBkForZirkPC.class);
-    private static final String RECEIVERNULLERROR = "Broadcast Receiver For Zirk is null, cannot give callback";
-    private final IBoradcastReceiver brForService;
+    private static final Logger logger = LoggerFactory.getLogger(CBkForZirkPC.class);
 
-    public CBkForZirkPC(IBoradcastReceiver brForService) {
+    private static final String RECEIVER_NULL_ERROR = "Broadcast Receiver For Zirk is null, cannot give callback";
+    private final BroadcastReceiver brForService;
+
+    public CBkForZirkPC(BroadcastReceiver brForService) {
         this.brForService = brForService;
     }
 
@@ -29,8 +29,7 @@ public final class CBkForZirkPC implements ZirkMessageHandler {
         if (BezirkValidatorUtility.isObjectNotNull(brForService)) {
             brForService.onReceive(eventIncomingMessage);
         } else {
-
-            LOGGER.debug(RECEIVERNULLERROR);
+            logger.debug(RECEIVER_NULL_ERROR);
         }
     }
 
@@ -41,7 +40,7 @@ public final class CBkForZirkPC implements ZirkMessageHandler {
             brForService.onReceive(streamIncomingMessage);
         } else {
 
-            LOGGER.debug(RECEIVERNULLERROR);
+            logger.debug(RECEIVER_NULL_ERROR);
         }
     }
 
@@ -68,8 +67,7 @@ public final class CBkForZirkPC implements ZirkMessageHandler {
         if (BezirkValidatorUtility.isObjectNotNull(brForService)) {
             brForService.onReceive(streamStatusMessage);
         } else {
-
-            LOGGER.debug(RECEIVERNULLERROR);
+            logger.debug(RECEIVER_NULL_ERROR);
         }
     }
 
@@ -79,8 +77,7 @@ public final class CBkForZirkPC implements ZirkMessageHandler {
         if (BezirkValidatorUtility.isObjectNotNull(brForService)) {
             brForService.onReceive(discoveryCallback);
         } else {
-
-            LOGGER.debug(RECEIVERNULLERROR);
+            logger.debug(RECEIVER_NULL_ERROR);
         }
 
     }

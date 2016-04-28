@@ -1,7 +1,7 @@
 package com.bezirk.middleware.proxy;
 
 import com.bezirk.callback.pc.CBkForZirkPC;
-import com.bezirk.callback.pc.IBoradcastReceiver;
+import com.bezirk.callback.pc.BroadcastReceiver;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.Address;
@@ -52,7 +52,7 @@ public class Proxy implements Bezirk {
         proxy = new ProxyforServices();
         proxyUtil = new ProxyUtil();
         mainService = new MainService(proxy, null);
-        final IBoradcastReceiver brForService = new BRForService(activeStreams, dListenerMap,
+        final BroadcastReceiver brForService = new BRForService(activeStreams, dListenerMap,
                 eventListenerMap, sidMap, streamListenerMap);
         CBkForZirkPC uhuPcCallback = new CBkForZirkPC(brForService);
         mainService.startStack(uhuPcCallback);

@@ -24,9 +24,7 @@ import java.util.Scanner;
  * @author ajc6kor
  */
 final class UhuPCNetworkUtil {
-
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(UhuPCNetworkUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuPCNetworkUtil.class);
 
     NetworkInterface fetchNetworkInterface(final UhuConfig uhuConfig)
             throws SocketException, NullPointerException, Exception {
@@ -68,7 +66,7 @@ final class UhuPCNetworkUtil {
         // If InterfaceName is cannot be resolved, try to automatically
         // detect exactly one "real" (non-loopback) interface to use
         if (intf == null) {
-            LOGGER.info("Configured interface " + interfaceName
+            logger.info("Configured interface " + interfaceName
                     + " could not be resolved. Trying to detect interface.");
             final List<IntfInetPair> interfaces = UhuNetworkUtilities
                     .getIntfInetPair();
@@ -76,7 +74,7 @@ final class UhuPCNetworkUtil {
 
             // If no "real" interface can be found, use the loopback interface
             if (numInf == 0) {
-                LOGGER.info("Checking for loopback interface");
+                logger.info("Checking for loopback interface");
                 intf = NetworkInterface.getNetworkInterfaces().nextElement();
 
                 if (intf != null && intf.isLoopback()) {
@@ -92,23 +90,23 @@ final class UhuPCNetworkUtil {
             else if (numInf == Integer.valueOf(1)) {
                 final String intfName = interfaces.get(0).getIntf().getName();
                 intf = NetworkInterface.getByName(intfName);
-                LOGGER.info("Detected interface: " + intf.getName());
+                logger.info("Detected interface: " + intf.getName());
             }
             // If we find more than one interface AND UI is enabled,
             // prompt the user to choose from available interfaces
             else {
-                LOGGER.info("Found multiple interfaces, prompting user to choose ...");
+                logger.info("Found multiple interfaces, prompting user to choose ...");
                 final String intfName = promptUserForInterface(uhuConfig);
                 if (BezirkValidatorUtility.checkForString(intfName)) {
                     intf = NetworkInterface.getByName(intfName);
                 } else {
-                    LOGGER.error("Invalid interface name selected! Uhu is shutting down. . .");
+                    logger.error("Invalid interface name selected! Uhu is shutting down. . .");
                     System.exit(0);
                 }
-                LOGGER.info("User chose interface: " + intf.getName());
+                logger.info("User chose interface: " + intf.getName());
             }
         } else {
-            LOGGER.info("Using configured interface: " + intf.getName());
+            logger.info("Using configured interface: " + intf.getName());
         }
 
         return intf;
@@ -138,7 +136,7 @@ final class UhuPCNetworkUtil {
                     .getIntfInetPair().iterator();
             while (displayIterator.hasNext()) {
                 final IntfInetPair pair = displayIterator.next();
-                LOGGER.info("Found interface: " + pair.getIntf().getName()
+                logger.info("Found interface: " + pair.getIntf().getName()
                         + " IP:" + pair.getInet().getHostAddress());
             }
             final Scanner intfScanner = new Scanner(System.in);
@@ -170,7 +168,6 @@ final class UhuPCNetworkUtil {
      * nothing and return false
      *
      * @param intf
-     * @param uhuConfig
      * @return False if the interface was not updated in the properties file
      * @throws Exception
      */
@@ -193,19 +190,16 @@ final class UhuPCNetworkUtil {
                 properties.setProperty("InterfaceName", intf.getName());
                 properties.store(output, null);
 
-                LOGGER.info("Updated chosen interface in config file: " + path);
+                logger.info("Updated chosen interface in config file: " + path);
                 return true;
             }
 
             output.close();
-            LOGGER.debug("Did not update interface in config file: " + path);
+            logger.debug("Did not update interface in config file: " + path);
         } catch (FileNotFoundException e) {
-
-            LOGGER.error("Properties file not found in default path.", e);
-
+            logger.error("Properties file not found in default path.", e);
         } catch (Exception e) {
-
-            LOGGER.error("Exception in storing interface name to properties.",
+            logger.error("Exception in storing interface name to properties.",
                     e);
 
         }

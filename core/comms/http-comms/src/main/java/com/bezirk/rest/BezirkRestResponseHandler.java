@@ -20,8 +20,7 @@ import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
  * @author PIK6KOR
  */
 public class BezirkRestResponseHandler extends DefaultHandler {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(BezirkRestResponseHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkRestResponseHandler.class);
 
     public String getText(Map<String, String> urlParams,
                           IHTTPSession session) {
@@ -61,12 +60,13 @@ public class BezirkRestResponseHandler extends DefaultHandler {
             eventUniqueMsgId = Integer.valueOf(Id);
         }
 
-        LOGGER.debug("Retreiving reponse data for key:" + eventUniqueMsgId);
+        if (logger.isDebugEnabled()) logger.debug("Retrieving response data for key:{}", eventUniqueMsgId);
 
         List<String> clientResponse = BezirkRestCommsManager.getInstance().getResponseMap().get(eventUniqueMsgId);
 
         if (clientResponse == null || clientResponse.size() <= 0) {
-            LOGGER.debug("HTTP Comms: No reponse for key " + eventUniqueMsgId);
+            if (logger.isDebugEnabled())
+                logger.debug("HTTP Comms: No response for key {}", eventUniqueMsgId);
             // send a error code back to client
             return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.NO_CONTENT, getMimeType(), null, 0);
         }
@@ -89,8 +89,6 @@ public class BezirkRestResponseHandler extends DefaultHandler {
 
     @Override
     public String getText() {
-        return "Not Yet Implememented";
+        return "Not Yet Implemented";
     }
-
-
 }

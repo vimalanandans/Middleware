@@ -23,9 +23,7 @@ import static org.junit.Assert.*;
  * @author AJC6KOR
  */
 public class SphereCatchRequestExtTest {
-
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(SphereCatchRequestExtTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(SphereCatchRequestExtTest.class);
 
     private static final BezirkZirkId serviceAId = new BezirkZirkId("ServiceA");
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceAId);
@@ -42,8 +40,7 @@ public class SphereCatchRequestExtTest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-
-        LOGGER.info("***** Setting up SphereCatchRequestExtTest TestCase *****");
+        logger.info("***** Setting up SphereCatchRequestExtTest TestCase *****");
         services.add(serviceAInfo);
         services.add(serviceBInfo);
         bezirkDeviceInfo = new BezirkDeviceInfo("TESTDEVICE", "TEST", "PC", BezirkDeviceRole.UHU_MEMBER, true, services);
@@ -52,16 +49,13 @@ public class SphereCatchRequestExtTest {
     /**
      * @throws java.lang.Exception
      */
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-
-        LOGGER.info("***** Shutting down SphereCatchRequestExtTest TestCase *****");
+    @AfterClass public static void tearDownAfterClass() throws Exception {
+        logger.info("***** Shutting down SphereCatchRequestExtTest TestCase *****");
     }
 
 
     @Test
     public void testSphereCatchRequestExt() {
-
         String qrServiceCatchSphereString = "QRSTRING";
         String catchSphereId = "CATCHSPHEREID";
         String scannedTempSphereId = "TEMPID";
@@ -71,8 +65,5 @@ public class SphereCatchRequestExtTest {
         assertEquals("SphereID not equal to the set value.", catchSphereId, deserializedSphereCatchRequestExt.getCatcherSphereId());
         assertEquals("UhuDeviceinfo not equal to the set value.", bezirkDeviceInfo, deserializedSphereCatchRequestExt.getBezirkDeviceInfo());
         assertEquals("CatchSphereString not equal to the set value.", qrServiceCatchSphereString, deserializedSphereCatchRequestExt.getSphereExchangeData());
-
     }
-
-
 }

@@ -17,9 +17,7 @@ import static org.junit.Assert.assertEquals;
  * @author AJC6KOR
  */
 public class MemberLeaveRequestTest {
-
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(MemberLeaveRequestTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(MemberLeaveRequestTest.class);
 
     private static final String sphereId = "TestSphere";
     private static final String sphereName = "Test";
@@ -31,9 +29,7 @@ public class MemberLeaveRequestTest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-
-        LOGGER.info("***** Setting up MemberLeaveRequestTest TestCase *****");
-
+        logger.info("***** Setting up MemberLeaveRequestTest TestCase *****");
     }
 
     /**
@@ -41,20 +37,16 @@ public class MemberLeaveRequestTest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-
-        LOGGER.info("***** Shutting down MemberLeaveRequestTest TestCase *****");
+        logger.info("***** Shutting down MemberLeaveRequestTest TestCase *****");
     }
 
 
     @Test
     public void testMemberLeaveRequest() {
-
         com.bezirk.sphere.messages.MemberLeaveRequest memberLeaveRequest = new com.bezirk.sphere.messages.MemberLeaveRequest(sphereId, serviceId, sphereName, sender);
         String serializedMessage = memberLeaveRequest.serialize();
         com.bezirk.sphere.messages.MemberLeaveRequest deserializedMemberLeaveRequest = com.bezirk.sphere.messages.MemberLeaveRequest.deserialize(serializedMessage, com.bezirk.sphere.messages.MemberLeaveRequest.class);
         assertEquals("ZirkId not equal to the set value.", serviceId, deserializedMemberLeaveRequest.getServiceId());
-
-
     }
 
 }
