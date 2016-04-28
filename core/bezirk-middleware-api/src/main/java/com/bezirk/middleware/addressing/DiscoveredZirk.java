@@ -51,8 +51,8 @@ public interface DiscoveredZirk {
 
     /**
      * Get the <code>ProtocolRole</code> this Zirk subscribes to that was searched for using the
-     * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener
-     * Disovery API}.
+     * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)
+     * Discovery API}.
      *
      * @return the <code>ProtocolRole</code> this Zirk subscribes to that was searched for to
      * disocover the Zirk
