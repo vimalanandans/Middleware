@@ -60,15 +60,15 @@ test.doLast {
 //    String fix = props.getProperty("fix")
 //    //create a new file for each build
 //    if (fix.contains("0")) // exclude 0 in the release version
-//        new File(verFile).text = "UHU_VERSION=${major}.${minor}"
+//        new File(verFile).text = "BEZIRK_VERSION=${major}.${minor}"
 //    else
-//        new File(verFile).text = "UHU_VERSION=${major}.${minor}.${fix}"
-////	new File(verFileForJava).text = "UHU_VERSION=${major}.${minor}.${fix}"
+//        new File(verFile).text = "BEZIRK_VERSION=${major}.${minor}.${fix}"
+////	new File(verFileForJava).text = "BEZIRK_VERSION=${major}.${minor}.${fix}"
 //}
 
 build.doLast {
     def verFile = "${projectDir}/src/main/resources/version.properties"
-    new File(verFile).text = "UHU_VERSION=${version}"
+    new File(verFile).text = "BEZIRK_VERSION=${version}"
 }
 
 

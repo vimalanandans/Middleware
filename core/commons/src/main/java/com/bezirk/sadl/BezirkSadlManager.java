@@ -1,7 +1,7 @@
 package com.bezirk.sadl;
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
@@ -42,7 +42,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     private final Date currentDate = new Date();
     protected SadlPersistence sadlPersistence = null;
     protected SadlRegistry sadlRegistry = null;
-    protected IUhuComms uhuComms = null;
+    protected BezirkComms uhuComms = null;
 
     public BezirkSadlManager(SadlPersistence sadlPersistence) {
         this.sadlPersistence = sadlPersistence;
@@ -52,7 +52,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     /**
      * initialize the object references for future use
      */
-    public void initSadlManager(IUhuComms uhuComms) {
+    public void initSadlManager(BezirkComms uhuComms) {
         this.uhuComms = uhuComms;
         initServiceDiscovery(uhuComms);
     }
@@ -61,7 +61,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
      * moved the init discovery from comms layer to sphere.
      * because this is out of comms layer
      */
-    public void initServiceDiscovery(IUhuComms uhuComms) {
+    public void initServiceDiscovery(BezirkComms uhuComms) {
         DiscoveryManager discoveryManager = new DiscoveryManager(this, uhuComms);
 
         discoveryManager.initDiscovery();

@@ -7,7 +7,7 @@ import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
 import com.bezirk.sphere.impl.Zirk;
@@ -33,10 +33,10 @@ import static org.junit.Assert.*;
 /**
  * @author karthik
  */
-public class GetUhuServiceInfo {
+public class GetBezirkServiceInfo {
+    private static final Logger logger = LoggerFactory.getLogger(GetBezirkServiceInfo.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(GetUhuServiceInfo.class);
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
     private static UPADeviceInterface upaDevice;
@@ -47,7 +47,7 @@ public class GetUhuServiceInfo {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:GetUhuServiceInfo TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:GetBezirkServiceInfo TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -60,7 +60,7 @@ public class GetUhuServiceInfo {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:GetUhuServiceInfo TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:GetBezirkServiceInfo TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 
@@ -81,7 +81,7 @@ public class GetUhuServiceInfo {
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getUhuServiceInfo(Iterable)}.
+     * Test method for {@link SphereRegistryWrapper#getBezirkServiceInfo(Iterable)}.
      * <p/>
      * <br>When valid ZirkId objects are passed,
      * it should return List of BezirkZirkInfo objects
@@ -92,7 +92,7 @@ public class GetUhuServiceInfo {
         // create owner sphere
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_1;
         String sphereId = sphereName + upaDevice.getDeviceId();
-        Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
+        Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT);
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
@@ -128,7 +128,7 @@ public class GetUhuServiceInfo {
         createdServiceInfo.add(serviceInfo2);
 
         // Get the list of BezirkZirkInfo objects from the registry
-        List<BezirkZirkInfo> retrievedServices = (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(serviceIds);
+        List<BezirkZirkInfo> retrievedServices = (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(serviceIds);
         for (int i = 0; i < retrievedServices.size(); i++) {
             BezirkZirkInfo retrieved = retrievedServices.get(i);
             BezirkZirkInfo created = createdServiceInfo.get(i);
@@ -140,18 +140,18 @@ public class GetUhuServiceInfo {
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getUhuServiceInfo(Iterable)}.
+     * Test method for {@link SphereRegistryWrapper#getBezirkServiceInfo(Iterable)}.
      * <p/>
      * <br>When null is passed, it should return Null
      */
     @Test
     public final void nullServiceIdsReturnsNull() {
         List<BezirkZirkId> serviceIds = null;
-        assertNull(sphereRegistryWrapper.getUhuServiceInfo(serviceIds));
+        assertNull(sphereRegistryWrapper.getBezirkServiceInfo(serviceIds));
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getUhuServiceInfo(Iterable)}.
+     * Test method for {@link SphereRegistryWrapper#getBezirkServiceInfo(Iterable)}.
      * <p/>
      * When services don't exist in the registry
      * it should return Empty list
@@ -162,7 +162,7 @@ public class GetUhuServiceInfo {
         // create owner sphere
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_1;
         String sphereId = sphereName + upaDevice.getDeviceId();
-        Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
+        Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT);
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
@@ -191,13 +191,13 @@ public class GetUhuServiceInfo {
         createdServiceInfo.add(serviceInfo1);
         createdServiceInfo.add(serviceInfo2);
 
-        List<BezirkZirkInfo> retrievedServices = (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(serviceIds);
+        List<BezirkZirkInfo> retrievedServices = (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(serviceIds);
         assertTrue(retrievedServices.isEmpty());
     }
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getUhuServiceInfo(Iterable)}.
+     * Test method for {@link SphereRegistryWrapper#getBezirkServiceInfo(Iterable)}.
      * <p/>
      * <br>When valid zirkId exists but no mapping zirk to that,
      * it should return empty lists
@@ -208,7 +208,7 @@ public class GetUhuServiceInfo {
         // create owner sphere
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_1;
         String sphereId = sphereName + upaDevice.getDeviceId();
-        Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
+        Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT);
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
@@ -239,7 +239,7 @@ public class GetUhuServiceInfo {
         createdServiceInfo.add(serviceInfo1);
         createdServiceInfo.add(serviceInfo2);
 
-        List<BezirkZirkInfo> retrievedServices = (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(serviceIds);
+        List<BezirkZirkInfo> retrievedServices = (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(serviceIds);
         assertTrue(retrievedServices.isEmpty());
     }
 

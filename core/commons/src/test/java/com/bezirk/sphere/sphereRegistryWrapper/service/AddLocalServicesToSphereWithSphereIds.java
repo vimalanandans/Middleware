@@ -6,7 +6,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.Zirk;
@@ -121,7 +121,7 @@ public class AddLocalServicesToSphereWithSphereIds {
         defaultSphere.setDeviceServices(deviceServices);
 
         //add this sphereId to the sphere set of the services
-        String testSphereId = bezirkSphere.createSphere("TESTDEFAULTSPHERE", UhuSphereType.UHU_SPHERE_TYPE_OTHER);
+        String testSphereId = bezirkSphere.createSphere("TESTDEFAULTSPHERE", BezirkSphereType.BEZIRK_SPHERE_TYPE_OTHER);
 
         assertTrue(sphereRegistryWrapper.addLocalServicesToSphere(testSphereId));
     }

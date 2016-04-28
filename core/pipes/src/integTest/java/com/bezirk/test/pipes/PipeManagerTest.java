@@ -54,7 +54,7 @@ public class PipeManagerTest {
     public void beforeEachTest() throws Exception {
         // Set up data members needed by PipeManager
         PipeRegistry pipeRegistry = new PipeRegistry();
-        URI uri = new URI(TestUtils.URL_UHUCLOUD_LOCALHOST);
+        URI uri = new URI(TestUtils.URL_BEZIRKCLOUD_LOCALHOST);
         boschPipe = new CloudPipe("BoschPipe", uri);
         pipeRegistry.registerPipe(boschPipe, null, null);
 

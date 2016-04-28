@@ -2,7 +2,7 @@ package com.bezirk.sadl;
 
 import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.CommsProperties;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.DBConstants;
 import com.bezirk.persistence.DatabaseConnectionForJava;
@@ -48,7 +48,7 @@ public class MockSetUpUtility {
     UPADeviceInterface upaDevice;
     CryptoEngine cryptoEngine;
     SphereRegistry sphereRegistry;
-    IUhuComms uhuComms;
+    BezirkComms uhuComms;
     ISphereConfig sphereConfig;
     private DatabaseConnectionForJava dbConnection;
 
@@ -95,7 +95,7 @@ public class MockSetUpUtility {
         cryptoEngine = new CryptoEngine(sphereRegistry);
         sadlPersistence = (SadlPersistence) regPersistence;
         bezirkSadlManager = new BezirkSadlManager(sadlPersistence);
-        uhuComms = mock(IUhuComms.class);
+        uhuComms = mock(BezirkComms.class);
         CommsProperties commsProperties = new CommsProperties();
         uhuComms.initComms(commsProperties, inetAddr, bezirkSadlManager, null);
         uhuComms.startComms();

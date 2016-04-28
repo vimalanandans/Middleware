@@ -6,7 +6,7 @@ package com.bezirk.sphere.api;
 /**
  * @author Rishabh Gulati, Vimal
  */
-public interface IUhuSphereListener {
+public interface BezirkSphereListener {
 
     /**
      * @param memberLeaveResponse

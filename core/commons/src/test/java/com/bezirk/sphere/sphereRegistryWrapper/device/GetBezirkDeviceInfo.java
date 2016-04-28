@@ -32,10 +32,10 @@ import static org.junit.Assert.*;
 /**
  * @author karthik
  */
-public class GetUhuDeviceInfo {
+public class GetBezirkDeviceInfo {
+    private static final Logger logger = LoggerFactory.getLogger(GetBezirkDeviceInfo.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(GetUhuDeviceInfo.class);
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
     private static UPADeviceInterface upaDevice;
@@ -46,7 +46,7 @@ public class GetUhuDeviceInfo {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:GetUhuDeviceInfo TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:GetBezirkDeviceInfo TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -59,7 +59,7 @@ public class GetUhuDeviceInfo {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:GetUhuDeviceInfo TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:GetBezirkDeviceInfo TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 
@@ -80,7 +80,7 @@ public class GetUhuDeviceInfo {
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getUhuDeviceInfo(java.util.Map, HashSet)}.
+     * Test method for {@link SphereRegistryWrapper#getBezirkDeviceInfo(java.util.Map, HashSet)}.
      * <p/>
      * <br>When valid map of device id and device services is passed, it should return iterable BezirkDeviceInfo objects.
      */
@@ -106,7 +106,7 @@ public class GetUhuDeviceInfo {
         deviceServices.put(upaDevice.getDeviceId(), services);
         defaultSphere.setDeviceServices(deviceServices);
 
-        List<BezirkDeviceInfo> retrievedDevices = (List<BezirkDeviceInfo>) sphereRegistryWrapper.getUhuDeviceInfo(deviceServices, (HashSet<String>) defaultSphere.getOwnerDevices());
+        List<BezirkDeviceInfo> retrievedDevices = (List<BezirkDeviceInfo>) sphereRegistryWrapper.getBezirkDeviceInfo(deviceServices, (HashSet<String>) defaultSphere.getOwnerDevices());
         for (int i = 0; i < retrievedDevices.size(); i++) {
             BezirkDeviceInfo retrieved = retrievedDevices.get(i);
             assertEquals(retrieved.getDeviceId(), upaDevice.getDeviceId());
@@ -117,9 +117,9 @@ public class GetUhuDeviceInfo {
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getUhuDeviceInfo(java.util.Map, HashSet)}.
+     * Test method for {@link SphereRegistryWrapper#getBezirkDeviceInfo(java.util.Map, HashSet)}.
      * <p/>
-     * <br>When owner devices HashSet is invalid, it should return iterable BezirkDeviceInfo objects. And the BezirkDeviceRole will be UHU_MEMBER
+     * <br>When owner devices HashSet is invalid, it should return iterable BezirkDeviceInfo objects. And the BezirkDeviceRole will be BEZIRK_MEMBER
      */
     @Test
     public final void invalidOwnerDevicesReturnsValidList() {
@@ -148,19 +148,19 @@ public class GetUhuDeviceInfo {
         invalidOwnerDevices.add("InvalidDevice2");
 
         // Passing invalid ownerDevices HashSet
-        List<BezirkDeviceInfo> retrievedDevices = (List<BezirkDeviceInfo>) sphereRegistryWrapper.getUhuDeviceInfo(deviceServices, invalidOwnerDevices);
+        List<BezirkDeviceInfo> retrievedDevices = (List<BezirkDeviceInfo>) sphereRegistryWrapper.getBezirkDeviceInfo(deviceServices, invalidOwnerDevices);
         for (int i = 0; i < retrievedDevices.size(); i++) {
             BezirkDeviceInfo retrieved = retrievedDevices.get(i);
             assertEquals(retrieved.getDeviceId(), upaDevice.getDeviceId());
             assertEquals(retrieved.getDeviceName(), upaDevice.getDeviceName());
             assertEquals(retrieved.getDeviceType(), upaDevice.getDeviceType());
-            assertEquals(retrieved.getDeviceRole(), BezirkDeviceInfo.BezirkDeviceRole.UHU_MEMBER);
+            assertEquals(retrieved.getDeviceRole(), BezirkDeviceInfo.BezirkDeviceRole.BEZIRK_MEMBER);
         }
     }
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getUhuDeviceInfo(java.util.Map, HashSet)}.
+     * Test method for {@link SphereRegistryWrapper#getBezirkDeviceInfo(java.util.Map, HashSet)}.
      * <p/>
      * <br>When the device map passed is null, the method should throw an exception.
      */
@@ -183,11 +183,11 @@ public class GetUhuDeviceInfo {
         services.add(serviceId1);
 
         // Passing devices map as null
-        sphereRegistryWrapper.getUhuDeviceInfo(null, (HashSet<String>) defaultSphere.getOwnerDevices());
+        sphereRegistryWrapper.getBezirkDeviceInfo(null, (HashSet<String>) defaultSphere.getOwnerDevices());
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getUhuDeviceInfo(java.util.Map, HashSet)}.
+     * Test method for {@link SphereRegistryWrapper#getBezirkDeviceInfo(java.util.Map, HashSet)}.
      * <p/>
      * <br>When owner devices is passed as null, it should throw an exception
      */
@@ -214,7 +214,7 @@ public class GetUhuDeviceInfo {
         defaultSphere.setDeviceServices(deviceServices);
 
         // Passing ownerDevices HashSet as null
-        sphereRegistryWrapper.getUhuDeviceInfo(deviceServices, null);
+        sphereRegistryWrapper.getBezirkDeviceInfo(deviceServices, null);
     }
 
 }

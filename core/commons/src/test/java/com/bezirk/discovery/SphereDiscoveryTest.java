@@ -6,7 +6,7 @@ import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezrik.network.BezirkNetworkUtilities;
@@ -100,7 +100,7 @@ public class SphereDiscoveryTest {
 
 
         SphereDiscoveryResponse response = new SphereDiscoveryResponse(recipient, sphereId, requestKey, discoveryId);
-        BezirkSphereInfo bezirkSphereInfo = new BezirkSphereInfo(sphereId, "Test", UhuSphereType.UHU_SPHERE_TYPE_HOME, null, null);
+        BezirkSphereInfo bezirkSphereInfo = new BezirkSphereInfo(sphereId, "Test", BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME, null, null);
         response.setBezirkSphereInfo(bezirkSphereInfo);
 
         assertTrue("Unable to add response to SphereDiscovery.", sphereDiscovery.addResponse(response));

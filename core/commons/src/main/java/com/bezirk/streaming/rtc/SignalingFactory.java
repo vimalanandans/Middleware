@@ -1,6 +1,6 @@
 package com.bezirk.streaming.rtc;
 
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public final class SignalingFactory {
      * @param className name of the class
      * @param comms     parameter to be passed to the constructor
      */
-    public static void createSignalingInstance(final String className, final IUhuComms comms) {
+    public static void createSignalingInstance(final String className, final BezirkComms comms) {
         synchronized (SignalingFactory.class) {
             try {
                 if (signaling == null) {
@@ -129,16 +129,16 @@ public final class SignalingFactory {
     }
 
     /**
-     * Get the new object instance of the class of type className with the parameter {@link IUhuComms}
+     * Get the new object instance of the class of type className with the parameter {@link BezirkComms}
      *
      * @param className name of the class need to be instantiated
      * @param comms     parameter accepted by the constructor
      * @return new Object instance of the class {@code className}
      */
-    private static Object getNewInstance(final String className, final IUhuComms comms) {
+    private static Object getNewInstance(final String className, final BezirkComms comms) {
         Object newInstance = null;
         try {
-            Constructor<?> ctor = getClass(className).getConstructor(IUhuComms.class);
+            Constructor<?> ctor = getClass(className).getConstructor(BezirkComms.class);
             newInstance = ctor.newInstance(new Object[]{comms});
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
             log.error("New Instance creation failed. \n", e);

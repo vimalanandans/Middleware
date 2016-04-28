@@ -1,8 +1,8 @@
 package com.bezirk.comms.udp.listeners;
 
 import com.bezirk.comms.BezirkCommsLegacy;
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.udp.validation.MessageValidators;
 import com.bezirk.control.messages.EventLedger;
 import com.bezrik.network.BezirkNetworkUtilities;
@@ -40,16 +40,16 @@ public class EventMulticastListener implements Runnable {
     public EventMulticastListener(MulticastSocket multicastSocket, BezirkCommsLegacy uhuComms, CommsNotification commsNotificationCallback) {
         this.multicastSocket = multicastSocket;
         this.commsErrNotificationError = commsNotificationCallback;
-        executor = Executors.newFixedThreadPool(BezirkComms.getPOOL_SIZE());
+        executor = Executors.newFixedThreadPool(BezirkCommunications.getPOOL_SIZE());
         this.uhuComms = uhuComms;
     }
 
     @Override
     public void run() {
-        byte[] buf = new byte[BezirkComms.getMAX_BUFFER_SIZE()];
+        byte[] buf = new byte[BezirkCommunications.getMAX_BUFFER_SIZE()];
         DatagramPacket receivePacket;
         try {
-            multicastSocket.joinGroup(InetAddress.getByName(BezirkComms.getMULTICAST_ADDRESS()));
+            multicastSocket.joinGroup(InetAddress.getByName(BezirkCommunications.getMULTICAST_ADDRESS()));
             myAddress = BezirkNetworkUtilities.getLocalInet();
             if (myAddress == null) {
                 logger.error("Cannot resolve Ip: About to stop thread");

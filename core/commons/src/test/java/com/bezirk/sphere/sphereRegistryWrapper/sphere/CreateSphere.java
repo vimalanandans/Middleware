@@ -5,9 +5,9 @@ package com.bezirk.sphere.sphereRegistryWrapper.sphere;
 
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
+import com.bezirk.sphere.api.BezirkSphereListener;
+import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.api.ICryptoInternals;
-import com.bezirk.sphere.api.IUhuSphereListener;
-import com.bezirk.sphere.api.UhuSphereType;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.sphere.testUtilities.SphereTestUtility;
@@ -77,7 +77,7 @@ public class CreateSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, IUhuSphereListener)}.
+     * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, BezirkSphereListener)}.
      * <p/>
      * Test method for createSphere
      * Tests if sphere with empty name is added to the registry
@@ -91,7 +91,7 @@ public class CreateSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, IUhuSphereListener)}.
+     * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, BezirkSphereListener)}.
      * <p/>
      * Test method for createSphere.
      * Tests if sphere is added to the registry
@@ -105,7 +105,7 @@ public class CreateSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, IUhuSphereListener)}.
+     * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, BezirkSphereListener)}.
      * <p/>
      * Test method for createSphere
      * Tests if sphere is added to the registry and stays when another request with same name is received
@@ -120,7 +120,7 @@ public class CreateSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, IUhuSphereListener)}.
+     * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, BezirkSphereListener)}.
      * <p/>
      * Test method for createSphere
      * Tests if two spheres with different names are added to the registry
@@ -138,7 +138,7 @@ public class CreateSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, IUhuSphereListener)}.
+     * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, BezirkSphereListener)}.
      * <p/>
      * Test method for createSphere
      * Tests creation of keys for a sphereId already added to crypto engine
@@ -153,13 +153,13 @@ public class CreateSphere {
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, IUhuSphereListener)}.
+     * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, BezirkSphereListener)}.
      * <p/>
      * Test default sphere creation when sphere name is null
      */
     @Test
     public final void testCreateSphereWithNullName() {
-        String sphereId = sphereRegistryWrapper.createSphere(null, UhuSphereType.UHU_SPHERE_TYPE_OTHER, null);
+        String sphereId = sphereRegistryWrapper.createSphere(null, BezirkSphereType.BEZIRK_SPHERE_TYPE_OTHER, null);
         assertNotNull("SphereId null when sphere name is null in createSphere request", sphereId);
     }
 

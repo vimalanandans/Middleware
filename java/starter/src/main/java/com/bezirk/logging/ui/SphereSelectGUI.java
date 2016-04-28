@@ -5,10 +5,10 @@
 package com.bezirk.logging.ui;
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.remotelogging.loginterface.IUhuLogging;
+import com.bezirk.remotelogging.loginterface.BezirkLogging;
 import com.bezirk.remotelogging.manager.BezirkLoggingManager;
 import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
 import com.bezirk.remotelogging.service.BezirkLoggingService;
@@ -52,7 +52,7 @@ import javax.swing.event.ListSelectionListener;
  * Class that displays the GUI to select the spheres and start the logging Zirk.
  * {@link com.bezirk.remotelogging.logininterface.IUhuLogging}
  */
-public final class SphereSelectGUI extends JFrame implements IUhuLogging {
+public final class SphereSelectGUI extends JFrame implements BezirkLogging {
     private static final long serialVersionUID = 1L;
 
     private static final Logger logger = LoggerFactory.getLogger(SphereSelectGUI.class);
@@ -112,7 +112,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
             }
         }
     };
-    transient IUhuComms comms;
+    transient BezirkComms comms;
     private String[] tempArray;
     private int size;
     /**
@@ -228,7 +228,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
      *
      * @param comms
      */
-    public SphereSelectGUI(IUhuComms comms) {
+    public SphereSelectGUI(BezirkComms comms) {
         thisFrame = this;
         this.comms = comms;
         try {
@@ -240,7 +240,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
         try {
             bezirkLoggingManager = new BezirkLoggingManager();
             bezirkLoggingManager.startLoggingService(
-                    BezirkComms.getREMOTE_LOGGING_PORT(), this);
+                    BezirkCommunications.getREMOTE_LOGGING_PORT(), this);
         } catch (Exception e) {
             logger.error("Error in sphere Select GUI init.", e);
         }

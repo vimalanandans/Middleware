@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.impl;
 
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 
@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 public final class CommsUtility {
     private static final Logger logger = LoggerFactory.getLogger(CommsUtility.class);
 
-    private IUhuComms uhuComms;
+    private BezirkComms uhuComms;
 
-    public CommsUtility(IUhuComms uhuComms) {
+    public CommsUtility(BezirkComms uhuComms) {
         this.uhuComms = uhuComms;
     }
 

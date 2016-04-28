@@ -43,15 +43,15 @@ public final class Proxy implements Bezirk {
     static final ConcurrentMap<String, Long> duplicateStreamMap = new ConcurrentHashMap<String, Long>();
     //Pipe Listener Map -- pipeId : listener
     static final ConcurrentMap<String, BezirkListener> pipeListenerMap = new ConcurrentHashMap<String, BezirkListener>();
-    private static final String ACTION_UHU_REGISTER = "REGISTER";
+    private static final String ACTION_BEZIRK_REGISTER = "REGISTER";
     private static final String ACTION_SERVICE_DISCOVER = "DISCOVER";
     private static final String ACTION_SERVICE_SEND_MULTICAST_EVENT = "MULTICAST_EVENT";
     private static final String ACTION_SERVICE_SEND_UNICAST_EVENT = "UNICAST_EVENT";
-    private static final String ACTION_UHU_SUBSCRIBE = "SUBSCRIBE";
-    private static final String ACTION_UHU_UNSUBSCRIBE = "UNSUBSCRIBE";
-    private static final String ACTION_UHU_SETLOCATION = "LOCATION";
-    private static final String ACTION_UHU_PUSH_UNICAST_STREAM = "UNICAST_STREAM";
-    private static final String ACTION_UHU_PUSH_MULTICAST_STREAM = "MULTICAST_STREAM";
+    private static final String ACTION_BEZIRK_SUBSCRIBE = "SUBSCRIBE";
+    private static final String ACTION_BEZIRK_UNSUBSCRIBE = "UNSUBSCRIBE";
+    private static final String ACTION_BEZIRK_SETLOCATION = "LOCATION";
+    private static final String ACTION_BEZIRK_PUSH_UNICAST_STREAM = "UNICAST_STREAM";
+    private static final String ACTION_BEZIRK_PUSH_MULTICAST_STREAM = "MULTICAST_STREAM";
     private static final String COMPONENT_NAME = "com.bosch.upa.uhu.controlui";
     private static final String SERVICE_PKG_NAME = "com.bosch.upa.uhu.starter.MainService";
     private static final ProxyHelper proxyHelper = new ProxyHelper();
@@ -96,7 +96,7 @@ public final class Proxy implements Bezirk {
 
         ComponentName componentName = new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME);
         registerIntent.setComponent(componentName);
-        registerIntent.setAction(ACTION_UHU_REGISTER);
+        registerIntent.setAction(ACTION_BEZIRK_REGISTER);
         registerIntent.putExtra(serviceIdKEY, new Gson().toJson((BezirkZirkId) serviceId));
         registerIntent.putExtra(serviceNameKEY, zirkName);
 
@@ -143,7 +143,7 @@ public final class Proxy implements Bezirk {
         // Send the intent
         Intent subscribeIntent = new Intent();
         subscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
-        subscribeIntent.setAction(ACTION_UHU_SUBSCRIBE);
+        subscribeIntent.setAction(ACTION_BEZIRK_SUBSCRIBE);
         subscribeIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) subscriber));
         SubscribedRole subRole = new SubscribedRole(protocolRole);
         subscribeIntent.putExtra("protocol", subRole.getSubscribedProtocolRole());
@@ -171,7 +171,7 @@ public final class Proxy implements Bezirk {
     public boolean unsubscribe(final ZirkId subscriber, final ProtocolRole protocolRole) {
         Intent unSubscribeIntent = new Intent();
         unSubscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
-        unSubscribeIntent.setAction(ACTION_UHU_UNSUBSCRIBE);
+        unSubscribeIntent.setAction(ACTION_BEZIRK_UNSUBSCRIBE);
         unSubscribeIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) subscriber));
         String pRoleAsString = (null == protocolRole) ? null : (new SubscribedRole(protocolRole).getSubscribedProtocolRole());
         unSubscribeIntent.putExtra("protocol", pRoleAsString);
@@ -238,7 +238,7 @@ public final class Proxy implements Bezirk {
 
         final Intent multicastStreamIntent = new Intent();
         multicastStreamIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
-        multicastStreamIntent.setAction(ACTION_UHU_PUSH_MULTICAST_STREAM);
+        multicastStreamIntent.setAction(ACTION_BEZIRK_PUSH_MULTICAST_STREAM);
         multicastStreamIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) sender));
         multicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
         multicastStreamIntent.putExtra("stream", stream.toJson());
@@ -273,7 +273,7 @@ public final class Proxy implements Bezirk {
 
         final Intent unicastStreamIntent = new Intent();
         unicastStreamIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
-        unicastStreamIntent.setAction(ACTION_UHU_PUSH_UNICAST_STREAM);
+        unicastStreamIntent.setAction(ACTION_BEZIRK_PUSH_UNICAST_STREAM);
         unicastStreamIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) sender));
         unicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
         unicastStreamIntent.putExtra("stream", stream.toJson());
@@ -361,7 +361,7 @@ public final class Proxy implements Bezirk {
         }
         Intent locationIntent = new Intent();
         locationIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
-        locationIntent.setAction(ACTION_UHU_SETLOCATION);
+        locationIntent.setAction(ACTION_BEZIRK_SETLOCATION);
         locationIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) zirk));
         locationIntent.putExtra("locationData", new Gson().toJson(location));
         mContext.startService(locationIntent);

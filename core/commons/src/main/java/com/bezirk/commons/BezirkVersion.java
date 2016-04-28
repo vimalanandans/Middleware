@@ -20,8 +20,8 @@ public class BezirkVersion {
 
     private static final String DEFAULT_BEZIRK_VERSION = "1.1";
 
-    // UHU_VERSION - read from build property file
-    public static final String UHU_VERSION;
+    // BEZIRK_VERSION - read from build property file
+    public static final String BEZIRK_VERSION;
 
     // Wire Message Version. increment it where there is a change in
     // wire message format (which would lead to crash while decoding)
@@ -44,7 +44,7 @@ public class BezirkVersion {
                         DEFAULT_BEZIRK_VERSION);
             } else {
                 uhuProperties.load(is);
-                middlewareVersion = (String) uhuProperties.get("UHU_VERSION");
+                middlewareVersion = (String) uhuProperties.get("BEZIRK_VERSION");
             }
         } catch (NullPointerException e) {
             logger.error("Error fetching resource stream for version.properties", e);
@@ -52,7 +52,7 @@ public class BezirkVersion {
             logger.error("Error reading version.properties", e);
         }
 
-        UHU_VERSION = middlewareVersion.isEmpty() ? DEFAULT_BEZIRK_VERSION : middlewareVersion;
+        BEZIRK_VERSION = middlewareVersion.isEmpty() ? DEFAULT_BEZIRK_VERSION : middlewareVersion;
     }
 
     /**
@@ -75,7 +75,7 @@ public class BezirkVersion {
     static public Map<String, String> getAllVersion() {
         Map<String, String> versions = new HashMap<String, String>();
 
-        versions.put("UHU_VERSION", UHU_VERSION);
+        versions.put("BEZIRK_VERSION", BEZIRK_VERSION);
 
         versions.put("WIRE_MESSAGE_VERSION", WIRE_MESSAGE_VERSION);
 

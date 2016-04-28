@@ -2,7 +2,7 @@ package com.bezirk.starter.helper;
 
 import android.content.Intent;
 
-import com.bezirk.sphere.api.IUhuDevMode;
+import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuActionCommands;
 import com.bezirk.util.BezirkValidatorUtility;
@@ -42,7 +42,7 @@ public final class UhuActionProcessor {
 
             switch (actionType) {
 
-                case UHU_STACK_ACTION:
+                case BEZIRK_STACK_ACTION:
                     processUhuStackAction(service, intent, intentAction, uhuStackHandler);
                     break;
                 case DEVICE_ACTION:
@@ -67,10 +67,10 @@ public final class UhuActionProcessor {
 
     private void processUhuStackAction(MainService service, Intent intent, INTENT_ACTIONS intentAction, UhuStackHandler uhuStackHandler) {
         switch (intentAction) {
-            case ACTION_START_UHU:
+            case ACTION_START_BEZIRK:
                 uhuStackHandler.startStack(service);
                 break;
-            case ACTION_STOP_UHU:
+            case ACTION_STOP_BEZIRK:
                 uhuStackHandler.stopStack(service);
                 break;
             case ACTION_REBOOT:
@@ -105,13 +105,13 @@ public final class UhuActionProcessor {
                 sendIntent(UhuActionCommands.CMD_CHANGE_DEVICE_TYPE_STATUS, true, service);
                 break;
             case ACTION_DEV_MODE_ON:
-                sendIntent(UhuActionCommands.CMD_DEV_MODE_ON_STATUS, UhuStackHandler.getDevMode().switchMode(IUhuDevMode.Mode.ON), service);
+                sendIntent(UhuActionCommands.CMD_DEV_MODE_ON_STATUS, UhuStackHandler.getDevMode().switchMode(BezirkDevMode.Mode.ON), service);
                 break;
             case ACTION_DEV_MODE_OFF:
-                sendIntent(UhuActionCommands.CMD_DEV_MODE_OFF_STATUS, UhuStackHandler.getDevMode().switchMode(IUhuDevMode.Mode.OFF), service);
+                sendIntent(UhuActionCommands.CMD_DEV_MODE_OFF_STATUS, UhuStackHandler.getDevMode().switchMode(BezirkDevMode.Mode.OFF), service);
                 break;
             case ACTION_DEV_MODE_STATUS:
-                IUhuDevMode.Mode mode = null;
+                BezirkDevMode.Mode mode = null;
                 mode = getDevMode();
                 sendIntent(UhuActionCommands.CMD_DEV_MODE_STATUS, mode, service);
                 break;
@@ -122,11 +122,11 @@ public final class UhuActionProcessor {
 
     }
 
-    private IUhuDevMode.Mode getDevMode() {
-        IUhuDevMode.Mode mode;
+    private BezirkDevMode.Mode getDevMode() {
+        BezirkDevMode.Mode mode;
         if (UhuStackHandler.getDevMode() == null) {
             // if user wifi supplicant status is Disconnected and on Init he clicks on DeviceControl, devMode will be null.
-            mode = IUhuDevMode.Mode.OFF;
+            mode = BezirkDevMode.Mode.OFF;
         } else {
             mode = UhuStackHandler.getDevMode().getStatus();
         }
@@ -137,19 +137,19 @@ public final class UhuActionProcessor {
 
         switch (intentAction) {
 
-            case ACTION_UHU_REGISTER:
+            case ACTION_BEZIRK_REGISTER:
                 uhuServiceHelper.registerService(intent);
                 break;
-            case ACTION_UHU_SUBSCRIBE:
+            case ACTION_BEZIRK_SUBSCRIBE:
                 uhuServiceHelper.subscribeService(intent);
                 break;
-            case ACTION_UHU_SETLOCATION:
+            case ACTION_BEZIRK_SETLOCATION:
                 uhuServiceHelper.setLocation(intent);
                 break;
             case ACTION_SERVICE_DISCOVER:
                 uhuServiceHelper.discoverService(intent);
                 break;
-            case ACTION_UHU_UNSUBSCRIBE:
+            case ACTION_BEZIRK_UNSUBSCRIBE:
                 uhuServiceHelper.unsubscribeService(intent);
                 break;
             case ACTION_PIPE_REQUEST:
@@ -170,10 +170,10 @@ public final class UhuActionProcessor {
             case ACTION_SERVICE_SEND_UNICAST_EVENT:
                 uhuServiceHelper.sendUnicastEvent(intent);
                 break;
-            case ACTION_UHU_PUSH_UNICAST_STREAM:
+            case ACTION_BEZIRK_PUSH_UNICAST_STREAM:
                 uhuServiceHelper.sendUnicastStream(intent);
                 break;
-            case ACTION_UHU_PUSH_MULTICAST_STREAM:
+            case ACTION_BEZIRK_PUSH_MULTICAST_STREAM:
                 uhuServiceHelper.sendMulticastStream(intent);
                 break;
             default:
@@ -191,7 +191,7 @@ public final class UhuActionProcessor {
         service.getApplicationContext().sendBroadcast(intent);
     }
 
-    private void sendIntent(String command, IUhuDevMode.Mode mode, MainService service) {
+    private void sendIntent(String command, BezirkDevMode.Mode mode, MainService service) {
         Intent intent = new Intent();
         intent.setAction(CONTROL_UI_NOTIFICATION_ACTION);
         intent.putExtra("Command", command);
@@ -205,31 +205,31 @@ public final class UhuActionProcessor {
         /**
          * STACK Actions
          */
-        ACTION_START_UHU("START_UHU", ACTION_TYPE.UHU_STACK_ACTION),
-        ACTION_STOP_UHU("STOP_UHU", ACTION_TYPE.UHU_STACK_ACTION),
-        ACTION_REBOOT("RESTART", ACTION_TYPE.UHU_STACK_ACTION),
-        ACTION_CLEAR_PERSISTENCE("ACTION_CLEAR_PERSISTENCE", ACTION_TYPE.UHU_STACK_ACTION),
-        ACTION_DIAG_PING("ACTION_DIAG_PING", ACTION_TYPE.UHU_STACK_ACTION),
-        ACTION_START_REST_SERVER("START_REST_SERVER", ACTION_TYPE.UHU_STACK_ACTION),
-        ACTION_STOP_REST_SERVER("STOP_REST_SERVER", ACTION_TYPE.UHU_STACK_ACTION),
+        ACTION_START_BEZIRK("START_BEZIRK", ACTION_TYPE.BEZIRK_STACK_ACTION),
+        ACTION_STOP_BEZIRK("STOP_BEZIRK", ACTION_TYPE.BEZIRK_STACK_ACTION),
+        ACTION_REBOOT("RESTART", ACTION_TYPE.BEZIRK_STACK_ACTION),
+        ACTION_CLEAR_PERSISTENCE("ACTION_CLEAR_PERSISTENCE", ACTION_TYPE.BEZIRK_STACK_ACTION),
+        ACTION_DIAG_PING("ACTION_DIAG_PING", ACTION_TYPE.BEZIRK_STACK_ACTION),
+        ACTION_START_REST_SERVER("START_REST_SERVER", ACTION_TYPE.BEZIRK_STACK_ACTION),
+        ACTION_STOP_REST_SERVER("STOP_REST_SERVER", ACTION_TYPE.BEZIRK_STACK_ACTION),
 
         /**
          * SEND Actions
          */
-        ACTION_UHU_PUSH_MULTICAST_STREAM("MULTICAST_STREAM", ACTION_TYPE.SEND_ACTION),
+        ACTION_BEZIRK_PUSH_MULTICAST_STREAM("MULTICAST_STREAM", ACTION_TYPE.SEND_ACTION),
         ACTION_SERVICE_SEND_MULTICAST_EVENT("MULTICAST_EVENT", ACTION_TYPE.SEND_ACTION),
         ACTION_SERVICE_SEND_UNICAST_EVENT("UNICAST_EVENT", ACTION_TYPE.SEND_ACTION),
-        ACTION_UHU_PUSH_UNICAST_STREAM("UNICAST_STREAM", ACTION_TYPE.SEND_ACTION),
+        ACTION_BEZIRK_PUSH_UNICAST_STREAM("UNICAST_STREAM", ACTION_TYPE.SEND_ACTION),
 
         /**
          * SERVICE Actions
          */
-        ACTION_UHU_REGISTER("REGISTER", ACTION_TYPE.SERVICE_ACTION),
+        ACTION_BEZIRK_REGISTER("REGISTER", ACTION_TYPE.SERVICE_ACTION),
         ACTION_SERVICE_DISCOVER("DISCOVER", ACTION_TYPE.SERVICE_ACTION),
-        ACTION_UHU_UNSUBSCRIBE("UNSUBSCRIBE", ACTION_TYPE.SERVICE_ACTION),
+        ACTION_BEZIRK_UNSUBSCRIBE("UNSUBSCRIBE", ACTION_TYPE.SERVICE_ACTION),
         ACTION_PIPE_REQUEST("PIPE_REQUEST", ACTION_TYPE.SERVICE_ACTION),
-        ACTION_UHU_SUBSCRIBE("SUBSCRIBE", ACTION_TYPE.SERVICE_ACTION),
-        ACTION_UHU_SETLOCATION("LOCATION", ACTION_TYPE.SERVICE_ACTION),
+        ACTION_BEZIRK_SUBSCRIBE("SUBSCRIBE", ACTION_TYPE.SERVICE_ACTION),
+        ACTION_BEZIRK_SETLOCATION("LOCATION", ACTION_TYPE.SERVICE_ACTION),
 
         /**
          * DEVICE Actions
@@ -258,7 +258,7 @@ public final class UhuActionProcessor {
             return null;
         }
 
-        private enum ACTION_TYPE {SERVICE_ACTION, SEND_ACTION, DEVICE_ACTION, UHU_STACK_ACTION}
+        private enum ACTION_TYPE {SERVICE_ACTION, SEND_ACTION, DEVICE_ACTION, BEZIRK_STACK_ACTION}
 
     }
 }

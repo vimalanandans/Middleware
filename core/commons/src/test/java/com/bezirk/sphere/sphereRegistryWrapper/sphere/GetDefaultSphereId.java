@@ -16,7 +16,7 @@
 //import org.slf4j.LoggerFactory;
 //
 //import SphereRegistry;
-//import UhuSphereType;
+//import BezirkSphereType;
 //import OwnerSphere;
 //import SphereRegistryWrapper;
 //import Device;
@@ -107,7 +107,7 @@
 //	@Test
 //	public final void validDefaultSphereIdAnotherDefaultSphere() {
 //		String sphereId = sphereRegistryWrapper.createSphere(sphereTestUtility.OWNER_SPHERE_NAME_2,
-//				UhuSphereType.UHU_SPHERE_TYPE_DEFAULT, null);
+//				BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT, null);
 //		assert(sphereId != null);
 //		// validate that the default sphere is still original default sphere
 //		assertTrue(sphereRegistryWrapper.getDefaultSphereId().equals(createDefaultSphereId()));

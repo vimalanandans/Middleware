@@ -4,9 +4,9 @@ import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
 import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.IUhuComms;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.features.CommsFeature;
 import com.bezirk.messagehandler.AndroidZirkMessageHandler;
@@ -85,13 +85,13 @@ class UhuStartStackHelper {
         }
     }
 
-    IUhuComms initializeComms(InetAddress inetAddress, BezirkSadlManager bezirkSadlManager, ProxyforServices proxy, CommsNotification errNotificationCallback) {
+    BezirkComms initializeComms(InetAddress inetAddress, BezirkSadlManager bezirkSadlManager, ProxyforServices proxy, CommsNotification errNotificationCallback) {
         // Instantiate pipeManager before SenderThread so that it is ready to start sending over pipes
         PipeManager pipeComms = PipeCommsFactory.createPipeComms();
 
         CommsFactory commsFactory = new CommsFactory();
 
-        IUhuComms comms;
+        BezirkComms comms;
 
         // comms zyre jni is injected from platform specific code
         if (commsFactory.getActiveComms() == CommsFeature.COMMS_ZYRE_JNI) {

@@ -6,7 +6,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
 import com.bezirk.sphere.impl.Zirk;
@@ -91,7 +91,7 @@ public class AddLocalServicesToSphereWithServiceIds {
         // create owner sphere
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_1;
         String sphereId = sphereName + upaDevice.getDeviceId();
-        Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
+        Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT);
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.MEMBER_ZIRK_NAME_1;
@@ -134,7 +134,7 @@ public class AddLocalServicesToSphereWithServiceIds {
         // create owner sphere
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_2;
         String sphereId = sphereName + upaDevice.getDeviceId();
-        Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
+        Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT);
 
         //Create zirk 1 but not added to registry
         String serviceName1 = sphereTestUtility.MEMBER_ZIRK_NAME_3;

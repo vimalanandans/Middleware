@@ -3,7 +3,7 @@
  */
 package com.bezirk.comms.udp.threads;
 
-import com.bezirk.comms.IMessageDispatcher;
+import com.bezirk.comms.MessageDispatcher;
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.Ledger;
@@ -24,12 +24,12 @@ public class EventReceiverThread implements Runnable {
 
     private static final Logger log = LoggerFactory.getLogger(EventReceiverThread.class);
 
-    IMessageDispatcher msgDispatcher = null;
+    MessageDispatcher msgDispatcher = null;
 
     MessageQueue msgQueue = null;
     private Boolean running = false;
 
-    public EventReceiverThread(IMessageDispatcher msgDispatcher, MessageQueue msgQueue) {
+    public EventReceiverThread(MessageDispatcher msgDispatcher, MessageQueue msgQueue) {
         this.msgDispatcher = msgDispatcher;
         this.msgQueue = msgQueue;
     }

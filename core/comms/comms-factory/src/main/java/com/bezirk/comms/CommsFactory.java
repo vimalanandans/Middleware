@@ -13,11 +13,11 @@ public class CommsFactory {
 
     private static final Logger log = LoggerFactory.getLogger(CommsFactory.class);
 
-    CommsFeature activeComms = CommsFeature.COMMS_UHU;
+    CommsFeature activeComms = CommsFeature.COMMS_BEZIRK;
 
-    public IUhuComms getComms() {
+    public BezirkComms getComms() {
 
-        IUhuComms uhuComms = null;
+        BezirkComms uhuComms = null;
 
         getActiveComms();
 
@@ -25,7 +25,7 @@ public class CommsFactory {
 
         switch (activeComms) {
             default:
-            case COMMS_UHU:
+            case COMMS_BEZIRK:
                 uhuComms = new BezirkCommsManager();
                 log.debug("udp comms is created. ");
                 break;
@@ -50,8 +50,8 @@ public class CommsFactory {
     public CommsFeature getActiveComms() {
 
         // if multiples are true, then first one is considered for selection
-        if (CommsFeature.COMMS_UHU.isActive()) {
-            activeComms = CommsFeature.COMMS_UHU;
+        if (CommsFeature.COMMS_BEZIRK.isActive()) {
+            activeComms = CommsFeature.COMMS_BEZIRK;
         } else if (CommsFeature.COMMS_ZYRE.isActive()) {
             activeComms = CommsFeature.COMMS_ZYRE;
         } else if (CommsFeature.COMMS_ZYRE_JNI.isActive()) {
@@ -59,7 +59,7 @@ public class CommsFactory {
         } else if (CommsFeature.COMMS_JYRE.isActive()) {
             activeComms = CommsFeature.COMMS_JYRE;
         } else { // default
-            activeComms = CommsFeature.COMMS_UHU;
+            activeComms = CommsFeature.COMMS_BEZIRK;
         }
 
         return activeComms;

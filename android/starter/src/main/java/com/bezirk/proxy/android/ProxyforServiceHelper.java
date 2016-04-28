@@ -1,7 +1,7 @@
 package com.bezirk.proxy.android;
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.middleware.messages.Stream;
@@ -70,7 +70,7 @@ class ProxyforServiceHelper {
         return sphereId;
     }
 
-    void sendStreamToSpheres(Iterator<String> sphereIterator, String streamRequestKey, StreamRecord streamRecord, File tempFile, IUhuComms comms) {
+    void sendStreamToSpheres(Iterator<String> sphereIterator, String streamRequestKey, StreamRecord streamRecord, File tempFile, BezirkComms comms) {
         while (sphereIterator.hasNext()) {
             final ControlLedger tcMessage = prepareMessage(sphereIterator, streamRequestKey, streamRecord, tempFile);
             if (BezirkValidatorUtility.isObjectNotNull(comms)) {

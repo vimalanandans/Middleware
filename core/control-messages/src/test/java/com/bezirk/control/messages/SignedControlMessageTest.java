@@ -97,7 +97,7 @@ public class SignedControlMessageTest {
         com.bezirk.control.messages.SignedControlMessage deserializedCtrlMessage = com.bezirk.control.messages.SignedControlMessage.deserialize(serializedMessage, com.bezirk.control.messages.SignedControlMessage.class);
         assertEquals("Deserialized control message is not equalt to the original object. Discriminator is differing.", ctrlMessage.getDiscriminator(), deserializedCtrlMessage.getDiscriminator());
         assertEquals("Deserialized control message is not equalt to the original object. SphereId is differing.", ctrlMessage.getSphereId(), deserializedCtrlMessage.getSphereId());
-    /*--- TO BE UNCOMMENTED ONCE THE UHUSERVICEENDPOINT IS FIXED-----
+    /*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
 	 * device null condition should be checked separately before device equals in UhuServiceEndpoint equals api.
 	 *
 	assertEquals("Deserialized control message is not equalt to the original object. Recipient is differing.",ctrlMessage.getRecipient(), deserializedCtrlMessage.getRecipient());
@@ -110,7 +110,7 @@ public class SignedControlMessageTest {
         assertEquals("Deserialized control message is not equalt to the original object. Discriminator is differing.", ctrlMessage.getDiscriminator(), deserializedCtrlMessage.getDiscriminator());
         assertEquals("Deserialized control message is not equalt to the original object. SphereId is differing.", ctrlMessage.getSphereId(), deserializedCtrlMessage.getSphereId());
         assertEquals("Deserialized control message is not equalt to the original object. Key is differing.", ctrlMessage.getUniqueKey(), deserializedCtrlMessage.getUniqueKey());
-	/*--- TO BE UNCOMMENTED ONCE THE UHUSERVICEENDPOINT IS FIXED-----
+	/*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
 	 * device null condition should be checked separately before device equals in UhuServiceEndpoint equals api.
 	 *
 	assertEquals("Deserialized control message is not equalt to the original object. Recipient is differing.",ctrlMessage.getRecipient(), deserializedCtrlMessage.getRecipient());

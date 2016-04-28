@@ -51,7 +51,7 @@ public final class BezirkCompManager {
 
     private static BezirkSphereRegistration uhuSphereRegistration;
 
-    //private static IUhuSphereMessages uhuSphereMessages;
+    //private static BezirkSphereMessages uhuSphereMessages;
 
     /**
      * For Real Time Communication
@@ -147,7 +147,7 @@ public final class BezirkCompManager {
     /**
      * @return the uhuSphereMessages
      */
-	/*public static IUhuSphereMessages getUhuSphereMessages() {
+	/*public static BezirkSphereMessages getUhuSphereMessages() {
 		return uhuSphereMessages;
 	}*/
 
@@ -155,7 +155,7 @@ public final class BezirkCompManager {
      * @param uhuSphereMessages the uhuSphereMessages to set
      */
 	/*public static void setUhuSphereMessages(
-			IUhuSphereMessages uhuSphereMessages) {
+			BezirkSphereMessages uhuSphereMessages) {
 		BezirkCompManager.uhuSphereMessages = uhuSphereMessages;
 	}*/
 

@@ -58,7 +58,7 @@ public class SphereCatchResponseTest {
         String catchDeviceId = "TESTDEVICEID2";
         List<BezirkZirkInfo> serviceList = new ArrayList<BezirkZirkInfo>();
         serviceList.add(serviceAInfo);
-        BezirkDeviceInfo services = new BezirkDeviceInfo(catchDeviceId, "TESTDEVICE", "PC", BezirkDeviceInfo.BezirkDeviceRole.UHU_MEMBER, true, serviceList);
+        BezirkDeviceInfo services = new BezirkDeviceInfo(catchDeviceId, "TESTDEVICE", "PC", BezirkDeviceInfo.BezirkDeviceRole.BEZIRK_MEMBER, true, serviceList);
         com.bezirk.sphere.messages.CatchResponse sphereCatchResonse = new com.bezirk.sphere.messages.CatchResponse(sender, catchSphereId, catchDeviceId, services);
         String serializedMessage = sphereCatchResonse.serialize();
         com.bezirk.sphere.messages.CatchResponse deserializedSphereCatchResponse = com.bezirk.sphere.messages.CatchResponse.deserialize(serializedMessage, com.bezirk.sphere.messages.CatchResponse.class);

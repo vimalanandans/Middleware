@@ -9,7 +9,7 @@ import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.Sphere;
@@ -123,7 +123,7 @@ public class SphereTestUtility {
      * 2) [Name: {@link #OWNER_SERVICE_NAME_4} Id: {@link #OWNER_SERVICE_ID_4}
      * Owner: {@link #DEVICE_2}]
      */
-    public final BezirkDeviceInfo getUhuDeviceInfo() {
+    public final BezirkDeviceInfo getBezirkDeviceInfo() {
         // create sharingService1
         BezirkZirkInfo sharingService1 = new BezirkZirkInfo(OWNER_SERVICE_ID_3.getBezirkZirkId(), OWNER_SERVICE_NAME_3,
                 Type.OWNER.toString(), false, false);
@@ -158,7 +158,7 @@ public class SphereTestUtility {
      * Device: {@link #DEVICE_2}
      * SphereId: randomly generated id
      * SphereName: {@link #OWNER_SPHERE_NAME_2}
-     * SphereType: {@link UhuSphereType#UHU_SPHERE_TYPE_HOME_ENTERTAINMENT}
+     * SphereType: {@link BezirkSphereType#BEZIRK_SPHERE_TYPE_HOME_ENTERTAINMENT}
      * SphereKey: randomly generated id
      * SpherePublicKey: randomly generated id
      *
@@ -174,7 +174,7 @@ public class SphereTestUtility {
         // sphere info
         shareData.setSphereID(UUID.randomUUID().toString());
         shareData.setSphereName(OWNER_SPHERE_NAME_2);
-        shareData.setSphereType(UhuSphereType.UHU_SPHERE_TYPE_HOME_ENTERTAINMENT);
+        shareData.setSphereType(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME_ENTERTAINMENT);
 
         shareData.setSphereKey(UUID.randomUUID().toString().getBytes());
         shareData.setOwnerPublicKeyBytes(UUID.randomUUID().toString().getBytes());
@@ -187,7 +187,7 @@ public class SphereTestUtility {
      * BezirkZirkEndPoint object: {@link #DEVICE_2}
      * catcherSphereId: {@link #generateOwnerCombo()}
      * catcherDeviceId: {@link #DEVICE_1}
-     * BezirkDeviceInfo object: {@link #getUhuDeviceInfo()}
+     * BezirkDeviceInfo object: {@link #getBezirkDeviceInfo()}
      *
      * @return - CatchResponse object.
      */
@@ -197,7 +197,7 @@ public class SphereTestUtility {
         /**create the CatchResponse**/
         BezirkZirkEndPoint sender = new BezirkZirkEndPoint(OWNER_SERVICE_ID_3);
         sender.device = DEVICE_2.getDeviceName();
-        CatchResponse catchResponse = new CatchResponse(sender, catcherSphereId, DEVICE_1.getDeviceId(), getUhuDeviceInfo());
+        CatchResponse catchResponse = new CatchResponse(sender, catcherSphereId, DEVICE_1.getDeviceId(), getBezirkDeviceInfo());
         return catchResponse;
     }
 
@@ -206,7 +206,7 @@ public class SphereTestUtility {
      * BezirkZirkEndPoint object: {@link #DEVICE_3}
      * catcherSphereId: {@link #generateOwnerCombo()}
      * inviterShortCode: {@link #sphereUtils.getShareCode(catcherSphereId)}
-     * BezirkDeviceInfo object: {@link #getUhuDeviceInfo()}
+     * BezirkDeviceInfo object: {@link #getBezirkDeviceInfo()}
      * sphereExchangeData: {@link #getExchangeData()}
      *
      * @return - CatchRequest object.
@@ -220,7 +220,7 @@ public class SphereTestUtility {
         /**create the CatchRequest**/
         BezirkZirkEndPoint sender = new BezirkZirkEndPoint(OWNER_SERVICE_ID_3);
         sender.device = DEVICE_2.getDeviceName();
-        CatchRequest catchRequest = new CatchRequest(sender, inviterShortCode, catcherSphereId, getUhuDeviceInfo(), sphereExchangeData);
+        CatchRequest catchRequest = new CatchRequest(sender, inviterShortCode, catcherSphereId, getBezirkDeviceInfo(), sphereExchangeData);
         return catchRequest;
     }
 
@@ -229,7 +229,7 @@ public class SphereTestUtility {
      * BezirkZirkEndPoint object: {@link #DEVICE_3}
      * sharerSphereId: {@link #generateOwnerCombo()}
      * shortCode: {@link #UhuId().getShortIdByHash(sharerSphereId)}
-     * BezirkDeviceInfo object: {@link #getUhuDeviceInfo()}
+     * BezirkDeviceInfo object: {@link #getBezirkDeviceInfo()}
      *
      * @return - ShareRequest object.
      */
@@ -238,7 +238,7 @@ public class SphereTestUtility {
         String shortCode = new BezirkId().getShortIdByHash(sharerSphereId);
         BezirkZirkEndPoint sender = new BezirkZirkEndPoint(OWNER_SERVICE_ID_3);
         /**create the ShareRequest**/
-        ShareRequest shareRequest = new ShareRequest(shortCode, getUhuDeviceInfo(), sender, sharerSphereId);
+        ShareRequest shareRequest = new ShareRequest(shortCode, getBezirkDeviceInfo(), sender, sharerSphereId);
         return shareRequest;
     }
 
@@ -249,7 +249,7 @@ public class SphereTestUtility {
      * uniqueKey: null
      * sharerSphereId: {@link #generateOwnerCombo()}
      * shortCode: {@link #UhuId().getShortIdByHash(sharerSphereId)}
-     * BezirkDeviceInfo object: {@link #getUhuDeviceInfo()}
+     * BezirkDeviceInfo object: {@link #getBezirkDeviceInfo()}
      * sphereExchangeData: {@link #getExchangeData()}
      *
      * @return - ShareRequest object.
@@ -263,7 +263,7 @@ public class SphereTestUtility {
         String sphereExchangeData = getExchangeData();
         /**create the ShareRequest**/
         ShareResponse shareResponse = new ShareResponse(sender, recipient, "abcdefg", shortCode,
-                getUhuDeviceInfo(), sphereExchangeData, sharerSphereId);
+                getBezirkDeviceInfo(), sphereExchangeData, sharerSphereId);
         return shareResponse;
     }
 

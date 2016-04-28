@@ -59,7 +59,7 @@ public class ControlMessageTest {
         assertEquals("Discriminator not equal to the set value.", discriminator, deserializedCtrlMessage.getDiscriminator());
         assertEquals("Retransmit not equal to the set value.", retransmit, deserializedCtrlMessage.getRetransmit());
 
-	/*--- TO BE UNCOMMENTED ONCE THE UHUSERVICEENDPOINT IS FIXED-----
+	/*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
 	 * device null condition should be checked separately before device equals in UhuServiceEndpoint equals api.
 	 * 
 	 assertEquals("Sender not equal to the set value.",sender, deserializedCtrlMessage.getSender());

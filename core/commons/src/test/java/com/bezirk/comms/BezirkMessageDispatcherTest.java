@@ -30,9 +30,9 @@ import static org.junit.Assert.assertTrue;
  *
  * @author ajc6kor
  */
-public class MessageDispatcherTest {
+public class BezirkMessageDispatcherTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(MessageDispatcherTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkMessageDispatcherTest.class);
     private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
     private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceId);
     private static InetAddress inetAddr;
@@ -44,7 +44,7 @@ public class MessageDispatcherTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        logger.info("***** Setting up MessageDispatcherTest TestCase *****");
+        logger.info("***** Setting up BezirkMessageDispatcherTest TestCase *****");
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
     }
@@ -81,35 +81,35 @@ public class MessageDispatcherTest {
     public void test() {
 
         ISadlEventReceiver uhusadlManager = new BezirkSadlManager(null);
-        MessageDispatcher messageDispatcher = new MessageDispatcher(uhusadlManager);
+        BezirkMessageDispatcher bezirkMessageDispatcher = new BezirkMessageDispatcher(uhusadlManager);
 
         CtrlMsgReceiver receiver = new MockReceiver();
-        messageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, receiver);
+        bezirkMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, receiver);
 
         ControlLedger tcMessage = new ControlLedger();
         BezirkZirkEndPoint sender = new BezirkZirkEndPoint("DeviceA", new BezirkZirkId("MockServiceA"));
         ControlMessage discoveryRequest = new DiscoveryRequest(null, sender, null, null, 0, 0, 0);
         tcMessage.setMessage(discoveryRequest);
-        messageDispatcher.dispatchControlMessages(tcMessage);
+        bezirkMessageDispatcher.dispatchControlMessages(tcMessage);
 
         assertTrue("Request is not recieved by mock receiver.", requestReceived);
 
-        messageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryResponse, receiver);
+        bezirkMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryResponse, receiver);
 
         ControlMessage discoveryResponse = new DiscoveryResponse(recipient, null, null, 0);
         tcMessage.setMessage(discoveryResponse);
-        messageDispatcher.dispatchControlMessages(tcMessage);
+        bezirkMessageDispatcher.dispatchControlMessages(tcMessage);
 
         assertTrue("Response is not recieved by mock receiver.", responseReceived);
 
         ControlMessage streamRequest = new StreamRequest(null, recipient, null, null, null, null, null, null, true, true, true, (short) 0);
         tcMessage.setMessage(streamRequest);
-        messageDispatcher.dispatchControlMessages(tcMessage);
+        bezirkMessageDispatcher.dispatchControlMessages(tcMessage);
 
         assertFalse("Unknown Message type is recieved by mock receiver.", unKnownMessageReceived);
 
         CtrlMsgReceiver duplicateReceiver = new MockReceiver();
-        assertFalse("Duplicte receiver is allowed to register for the same message type.", messageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, duplicateReceiver));
+        assertFalse("Duplicte receiver is allowed to register for the same message type.", bezirkMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, duplicateReceiver));
 
 
     }

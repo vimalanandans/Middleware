@@ -1,6 +1,6 @@
 package com.bezirk.comms.udp.listeners;
 
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.udp.validation.MessageValidators;
@@ -30,14 +30,14 @@ public class ControlUnicastListener implements Runnable {
     public ControlUnicastListener(DatagramSocket unicastSocket, BezirkCommsLegacy uhuComms, CommsNotification notification) {
         this.ctrlUcastSocket = unicastSocket;
         this.notification = notification;
-        executor = Executors.newFixedThreadPool(BezirkComms.getPOOL_SIZE());
+        executor = Executors.newFixedThreadPool(BezirkCommunications.getPOOL_SIZE());
         this.uhuComms = uhuComms;
     }
 
     @Override
     public void run() {
         logger.info("Control UnicastListener has Started");
-        byte[] receiveData = new byte[BezirkComms.getMAX_BUFFER_SIZE()];
+        byte[] receiveData = new byte[BezirkCommunications.getMAX_BUFFER_SIZE()];
         DatagramPacket receivePacket;
         running = true;
         InetAddress myAddress = BezirkNetworkUtilities.getLocalInet();

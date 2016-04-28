@@ -32,7 +32,7 @@ public class BezirkCloudPipeClient implements CloudPipeClient {
     public static final String CONTENT_MULTIPART_PATH = "/cloudpipe/content";
     public static final String CERT_FILENAME_DEFAULT = "upa.crt";
     public static final String KEY_CONTENT_TYPE = "Content-Type";
-    public static final String KEY_UHU_HEADER = "Bezirk-Header";
+    public static final String KEY_BEZIRK_HEADER = "Bezirk-Header";
 	
 	/*
 	 * Constants related to expected HTTP header keys/values
@@ -175,7 +175,7 @@ public class BezirkCloudPipeClient implements CloudPipeClient {
         conn.setChunkedStreamingMode(0); // setting this to 0 gives us the system default  request buffer size
         conn.setRequestMethod("POST");
         conn.setRequestProperty(KEY_CONTENT_TYPE, VAL_CONTENT_TYPE_APP_JSON);
-        conn.setRequestProperty(PipeHeader.KEY_UHU_HEADER, pipeHeader.serialize());
+        conn.setRequestProperty(PipeHeader.KEY_BEZIRK_HEADER, pipeHeader.serialize());
 
         // Send the request
         PrintWriter writer = new PrintWriter(conn.getOutputStream());
@@ -241,7 +241,7 @@ public class BezirkCloudPipeClient implements CloudPipeClient {
 
     private PipeHeader extractPipeHeaderFromHttpHeader(Map<String, List<String>> httpHeader) throws Exception {
         // Pull the uhu PipeHeader out of the response header, because t
-        List<String> headerValue = httpHeader.get(KEY_UHU_HEADER);
+        List<String> headerValue = httpHeader.get(KEY_BEZIRK_HEADER);
         if (headerValue == null) {
             throw new Exception("Bezirk header was not returned in http header in the response to sendEvent()");
         }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Use it only with in udp communication
  */
 @Deprecated // this should not be used outside comms
-public interface BezirkCommsLegacy extends IUhuComms {
+public interface BezirkCommsLegacy extends BezirkComms {
 
     /**
      * set the receiver event and control queues (message IN from external world )
@@ -70,7 +70,7 @@ public interface BezirkCommsLegacy extends IUhuComms {
      */
     public boolean sendStreamMessage(Ledger message);
 
-    public IPortFactory getPortFactory();
+    public PortFactory getPortFactory();
 
     enum COMM_QUEUE_TYPE {
         CONTROL_SEND_QUEUE,
@@ -81,6 +81,6 @@ public interface BezirkCommsLegacy extends IUhuComms {
     }
 
     /** set sphere discovery */
-    //public boolean initDiscovery(IUhuSphereDiscovery sphereDiscHandler);
+    //public boolean initDiscovery(BezirkSphereDiscovery sphereDiscHandler);
 
 }

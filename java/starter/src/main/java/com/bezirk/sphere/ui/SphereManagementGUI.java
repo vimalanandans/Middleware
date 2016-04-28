@@ -43,7 +43,7 @@ public class SphereManagementGUI extends JFrame {
     private static SphereManagementGUI staticThis;
     private JLabel warningLbl;
     private JMenuBar menuBar;
-    private transient String misMatchVersion = BezirkVersion.UHU_VERSION;
+    private transient String misMatchVersion = BezirkVersion.BEZIRK_VERSION;
     private transient BezirkSphere sphereManager;
 
     /**

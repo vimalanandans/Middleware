@@ -1,7 +1,7 @@
 package com.bezirk.starter;
 
 import com.bezirk.comms.BezirkCommsLegacy;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.devices.UPADeviceInterface;
@@ -58,7 +58,7 @@ public class ZirkStarterHelperTest {
         com.bezirk.starter.ServiceStarterHelper helper = new com.bezirk.starter.ServiceStarterHelper();
         UPADeviceInterface uhuDevice = mockSetUP.getUpaDevice();
         RegistryPersistence registryPersistence = mockSetUP.getRegistryPersistence();
-        IUhuComms commsLegacy = Mockito.mock(BezirkCommsLegacy.class);
+        BezirkComms commsLegacy = Mockito.mock(BezirkCommsLegacy.class);
         BezirkSphereAPI uhuSphere = helper.initSphere(uhuDevice, registryPersistence, commsLegacy);
 
         assertNotNull("BezirkSphere is not initialized. ", uhuSphere);
@@ -88,7 +88,7 @@ public class ZirkStarterHelperTest {
 
         assertNotNull("BezirkDeviceType is null after configuragtion. ", bezirkDevice.getDeviceType());
 
-        assertEquals("Bezirk Device Type is not configured to PC when display is enabled.", BezirkDeviceType.UHU_DEVICE_TYPE_PC, bezirkDevice.getDeviceType());
+        assertEquals("Bezirk Device Type is not configured to PC when display is enabled.", BezirkDeviceType.BEZIRK_DEVICE_TYPE_PC, bezirkDevice.getDeviceType());
 
         assertNotNull("UhuDeviceLocation is null after configuragtion. ", bezirkDevice.getDeviceLocation());
 
@@ -97,7 +97,7 @@ public class ZirkStarterHelperTest {
 
         bezirkDevice = helper.configureUhuDevice(bezirkConfig);
 
-        assertEquals("Bezirk Device Type is not configured to EMBEDDED KIT when display is disabled.", BezirkDeviceType.UHU_DEVICE_TYPE_EMBEDDED_KIT, bezirkDevice.getDeviceType());
+        assertEquals("Bezirk Device Type is not configured to EMBEDDED KIT when display is disabled.", BezirkDeviceType.BEZIRK_DEVICE_TYPE_EMBEDDED_KIT, bezirkDevice.getDeviceType());
     }
 
 }

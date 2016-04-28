@@ -4,7 +4,7 @@
 package com.bezirk.sphere.sphereRegistryWrapper.sphere;
 
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.OwnerSphere;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
@@ -85,7 +85,7 @@ public class GetSphere {
         Sphere ownerSphere = new OwnerSphere(
                 sphereTestUtility.OWNER_SPHERE_NAME_1,
                 sphereTestUtility.DEVICE_1.getDeviceId(),
-                UhuSphereType.UHU_SPHERE_TYPE_HOME);
+                BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME);
         registry.spheres.put(sphereId, ownerSphere);
 
         Sphere retrievedSphere = sphereRegistryWrapper.getSphere(sphereId);

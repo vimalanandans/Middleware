@@ -90,14 +90,14 @@ public class BezirkValidatorUtilityTest {
 
         testCheckStreamRequest();
 
-        testCheckUhuServiceId();
+        testCheckBezirkServiceId();
 
-        testChekUhuServiceEndPoint();
+        testCheckBezirkServiceEndPoint();
 
 
     }
 
-    private void testChekUhuServiceEndPoint() {
+    private void testCheckBezirkServiceEndPoint() {
 
 		/*-------------- Positive cases --------------*/
         isValid = BezirkValidatorUtility.checkBezirkZirkEndPoint(recipient);
@@ -120,7 +120,7 @@ public class BezirkValidatorUtilityTest {
 
     }
 
-    private void testCheckUhuServiceId() {
+    private void testCheckBezirkServiceId() {
 
 		/*-------------- Positive cases --------------*/
         isValid = BezirkValidatorUtility.checkBezirkZirkId(uhuServiceId);

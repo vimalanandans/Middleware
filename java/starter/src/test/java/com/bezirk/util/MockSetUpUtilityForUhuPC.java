@@ -3,7 +3,7 @@ package com.bezirk.util;
 import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.devices.UPADeviceInterface;
@@ -15,8 +15,8 @@ import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.persistence.BezirkRegistry;
 import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.api.BezirkSphereRegistration;
 import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.impl.SphereProperties;
@@ -55,7 +55,7 @@ public class MockSetUpUtilityForUhuPC {
     BezirkDevice upaDevice;
     CryptoEngine cryptoEngine;
     SphereRegistry sphereRegistry;
-    IUhuComms uhuComms;
+    BezirkComms uhuComms;
     ISphereConfig sphereConfig;
     private DatabaseConnectionForJava dbConnection;
     private RegistryPersistence regPersistence;
@@ -86,7 +86,7 @@ public class MockSetUpUtilityForUhuPC {
 
         setUpUpaDevice();
         BezirkSphere bezirkSphere = new BezirkSphere(cryptoEngine, upaDevice, sphereRegistry);
-        IUhuSphereListener sphereListener = Mockito.mock(IUhuSphereListener.class);
+        BezirkSphereListener sphereListener = Mockito.mock(BezirkSphereListener.class);
         bezirkSphere.initSphere(spherePersistence, uhuComms, sphereListener, sphereConfig);
         BezirkCompManager.setSphereRegistration((BezirkSphereRegistration) bezirkSphere);
         BezirkCompManager.setSphereForSadl(bezirkSphere);
@@ -101,7 +101,7 @@ public class MockSetUpUtilityForUhuPC {
         upaDevice = new BezirkDevice();
         String deviceIdString = InetAddress.getLocalHost().getHostName();
         upaDevice.initDevice(deviceIdString,
-                BezirkDeviceType.UHU_DEVICE_TYPE_PC);
+                BezirkDeviceType.BEZIRK_DEVICE_TYPE_PC);
         BezirkCompManager.setUpaDevice(upaDevice);
     }
 
@@ -155,7 +155,7 @@ public class MockSetUpUtilityForUhuPC {
         return regPersistence;
     }
 
-    public IUhuComms getUhuComms() {
+    public BezirkComms getUhuComms() {
 
         return uhuComms;
     }

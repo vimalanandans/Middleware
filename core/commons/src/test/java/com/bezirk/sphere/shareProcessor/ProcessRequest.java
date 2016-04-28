@@ -77,7 +77,7 @@ public class ProcessRequest {
 
         BezirkZirkEndPoint sender = new BezirkZirkEndPoint(sphereTestUtility.OWNER_SERVICE_ID_3);
         sender.device = sphereTestUtility.DEVICE_2.getDeviceName();
-        ShareRequest shareRequest = new ShareRequest(shortCode, sphereTestUtility.getUhuDeviceInfo(), sender, "");
+        ShareRequest shareRequest = new ShareRequest(shortCode, sphereTestUtility.getBezirkDeviceInfo(), sender, "");
         assertTrue(shareProcessor.processRequest(shareRequest));
     }
 

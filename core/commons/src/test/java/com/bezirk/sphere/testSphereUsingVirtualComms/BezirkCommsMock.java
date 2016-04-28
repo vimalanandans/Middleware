@@ -4,7 +4,7 @@ import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.comms.IPortFactory;
+import com.bezirk.comms.PortFactory;
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage.Discriminator;
@@ -18,7 +18,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 @SuppressWarnings("deprecation")
-public class UhuCommsMock implements BezirkCommsLegacy {
+public class BezirkCommsMock implements BezirkCommsLegacy {
 
     //The message (request/response) that was received/sent by a device.
     public ControlLedger message;
@@ -177,7 +177,7 @@ public class UhuCommsMock implements BezirkCommsLegacy {
     }
 
     @Override
-    public IPortFactory getPortFactory() {
+    public PortFactory getPortFactory() {
         // TODO Auto-generated method stub
         return null;
     }

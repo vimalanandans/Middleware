@@ -99,10 +99,10 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
         Intent intent = new Intent(this, MainService.class);
 
         if (checkStatus) {
-            action = BezirkActions.ACTION_REST_START_UHU;
+            action = BezirkActions.ACTION_REST_START_BEZIRK;
             restCommsManager.setStarted(true);
         } else {
-            action = BezirkActions.ACTION_REST_STOP_UHU;
+            action = BezirkActions.ACTION_REST_STOP_BEZIRK;
             restCommsManager.setStarted(false);
         }
         intent.setAction(action);

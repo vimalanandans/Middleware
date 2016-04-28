@@ -9,7 +9,7 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.MemberZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
 import com.bezirk.sphere.impl.Zirk;
@@ -45,9 +45,8 @@ import static org.junit.Assert.assertTrue;
  * @author AJC6KOR
  */
 public class ProcessEventTest {
+    private static final Logger logger = LoggerFactory.getLogger(ProcessEventTest.class);
 
-    private static final Logger log = LoggerFactory
-            .getLogger(ProcessEventTest.class);
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
     private static BezirkZirkId uhuServiceAId = new BezirkZirkId("ServiceA");
     ;
@@ -62,7 +61,7 @@ public class ProcessEventTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("############# Setting up ProcessEventTest TestCase ################");
+        logger.info("############# Setting up ProcessEventTest TestCase ################");
 
 
     }
@@ -70,7 +69,7 @@ public class ProcessEventTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("############ Shutting down ProcessEventTest Testcase ############");
+        logger.info("############ Shutting down ProcessEventTest Testcase ############");
 
     }
 
@@ -116,7 +115,7 @@ public class ProcessEventTest {
         HashSet<String> sphereSet = new HashSet<>();
         sphereSet.add(sphereId);
         String deviceId = mockUtility.upaDevice.getDeviceId();
-        Sphere sphere = new OwnerSphere(sphereId, deviceId, UhuSphereType.UHU_SPHERE_TYPE_HOME);
+        Sphere sphere = new OwnerSphere(sphereId, deviceId, BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME);
         sphereRegistry.spheres.put(sphereId, sphere);
         Zirk zirk = new MemberZirk("ServiceA", deviceId, sphereSet);
         sphereRegistry.sphereMembership.put(uhuServiceAId.getBezirkZirkId(), zirk);
@@ -126,8 +125,8 @@ public class ProcessEventTest {
         BezirkSphere bezirkSphere = new BezirkSphere(mockUtility.cryptoEngine, mockUtility.upaDevice, sphereRegistry);
         BezirkCompManager.setSphereForSadl(bezirkSphere);
         bezirkSphere.initSphere(mockUtility.spherePersistence, mockUtility.uhuComms, null, mockUtility.sphereConfig);
-        MockBezirkZirk mockUhuservice = new MockBezirkZirk();
-        MockCallBackZirk uhucallback = new MockCallBackZirk(mockUhuservice);
+        MockBezirkZirk mockBezirkZirk = new MockBezirkZirk();
+        MockCallBackZirk uhucallback = new MockCallBackZirk(mockBezirkZirk);
         BezirkCompManager.setplatformSpecificCallback(uhucallback);
 
         BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(uhuServiceAId);
@@ -195,8 +194,8 @@ public class ProcessEventTest {
         BezirkSphere bezirkSphere = new BezirkSphere(mockUtility.cryptoEngine, mockUtility.upaDevice, sphereRegistry);
         bezirkSphere.initSphere(mockUtility.spherePersistence, mockUtility.uhuComms, null, mockUtility.sphereConfig);
         BezirkCompManager.setSphereForSadl(bezirkSphere);
-        MockBezirkZirk mockUhuservice = new MockBezirkZirk();
-        MockCallBackZirk uhucallback = new MockCallBackZirk(mockUhuservice);
+        MockBezirkZirk mockBezirkZirk = new MockBezirkZirk();
+        MockCallBackZirk uhucallback = new MockCallBackZirk(mockBezirkZirk);
         BezirkCompManager.setplatformSpecificCallback(uhucallback);
 
         BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(uhuServiceAId);

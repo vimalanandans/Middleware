@@ -1,7 +1,7 @@
 package com.bezirk.comms.udp.threads;
 
 
-import com.bezirk.comms.IMessageDispatcher;
+import com.bezirk.comms.MessageDispatcher;
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.Ledger;
@@ -24,10 +24,10 @@ public class ControlReceiverThread implements Runnable {
 
     private MessageQueue msgQueue = null;
 
-    private IMessageDispatcher msgDispatcher = null;
+    private MessageDispatcher msgDispatcher = null;
 
 
-    public ControlReceiverThread(IMessageDispatcher msgDispatcher, MessageQueue msgQueue) {
+    public ControlReceiverThread(MessageDispatcher msgDispatcher, MessageQueue msgQueue) {
         this.msgDispatcher = msgDispatcher;
         this.msgQueue = msgQueue;
     }

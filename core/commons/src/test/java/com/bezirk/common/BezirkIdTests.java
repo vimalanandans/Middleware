@@ -45,8 +45,8 @@ public class BezirkIdTests {
         }
         log.info("id is unique with trails of " + count);
 
-        // logger.info(" short Id of 'UHU' > "+new ShortUUID().getShortIdByHash("UHU"));
-        //  logger.info(" short Id of 'UHU' > "+new ShortUUID().getShortIdByHash("UHU"));
+        // logger.info(" short Id of 'BEZIRK' > "+new ShortUUID().getShortIdByHash("BEZIRK"));
+        //  logger.info(" short Id of 'BEZIRK' > "+new ShortUUID().getShortIdByHash("BEZIRK"));
 
     }
 

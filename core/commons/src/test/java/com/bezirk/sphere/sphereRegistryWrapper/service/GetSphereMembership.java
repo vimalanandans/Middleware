@@ -6,7 +6,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.MemberSphere;
 import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
@@ -90,13 +90,13 @@ public class GetSphereMembership {
         // create owner sphere
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_1;
         String sphereId1 = sphereName + upaDevice.getDeviceId();
-        Sphere ownerSphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
+        Sphere ownerSphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT);
         registry.spheres.put(sphereId1, ownerSphere);
 
         // create member sphere
         String sphereId2 = UUID.randomUUID().toString();
         String sphereName2 = sphereTestUtility.MEMBER_SPHERE_NAME_1;
-        String sphereType2 = UhuSphereType.UHU_SPHERE_TYPE_HOME;
+        String sphereType2 = BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME;
         Sphere memberSphere = new MemberSphere(sphereName2, sphereType2,
                 null, null, false);
         registry.spheres.put(sphereId2, memberSphere);
@@ -145,7 +145,7 @@ public class GetSphereMembership {
         // create owner sphere
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_1;
         String sphereId1 = sphereName + upaDevice.getDeviceId();
-        Sphere ownerSphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
+        Sphere ownerSphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT);
         registry.spheres.put(sphereId1, ownerSphere);
 
 

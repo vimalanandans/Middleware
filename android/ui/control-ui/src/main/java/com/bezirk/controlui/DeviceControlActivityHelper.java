@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.bezirk.actions.BezirkActions;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.sphere.api.IUhuDevMode;
+import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuPreferences;
@@ -288,7 +288,7 @@ class DeviceControlActivityHelper {
      *
      * @param mode
      */
-    void updateList(IUhuDevMode.Mode mode, List<DataModel> listData) {
+    void updateList(BezirkDevMode.Mode mode, List<DataModel> listData) {
         log.debug("mode received: " + mode);
         boolean switchState = false;
         switch (mode) {

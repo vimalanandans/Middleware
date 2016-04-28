@@ -15,13 +15,13 @@ import java.util.Enumeration;
 
 public class VirtualCommsManager {
     private static final Logger log = LoggerFactory.getLogger(VirtualCommsManager.class);
-    public UhuCommsMock uhuCommsMock;
+    public BezirkCommsMock bezirkCommsMock;
     public VirtualDevice[] device = null; //array of VirtualDevice objects.
     private InetAddress inetAddr;
 
     /**
      * Creates the number of VirtualDevices required for a testcase.
-     * It also creates an object of the mock comms (UhuCommsMock) being used.
+     * It also creates an object of the mock comms (BezirkCommsMock) being used.
      *
      * @param numOfDevices - number of devices being used in a testcase.
      * @throws IOException
@@ -30,12 +30,12 @@ public class VirtualCommsManager {
      */
     public void setUp(int numOfDevices) throws IOException, SQLException, Exception {
         getInetAddress();
-        uhuCommsMock = new UhuCommsMock();
+        bezirkCommsMock = new BezirkCommsMock();
 
         // Create the VirtualDevice objects
         device = new VirtualDevice[numOfDevices];
         for (int i = 0; i < numOfDevices; i++)
-            device[i] = new VirtualDevice(uhuCommsMock);
+            device[i] = new VirtualDevice(bezirkCommsMock);
     }
 
     /**

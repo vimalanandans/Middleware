@@ -2,7 +2,7 @@ package com.bezirk.starter.helper;
 
 import android.net.wifi.WifiManager;
 
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.BezirkNetworkUtilities;
@@ -58,17 +58,17 @@ public final class UhuAndroidNetworkUtil {
         NetworkInterface networkInterface;
         InetAddress inetAddress = null;
         try {
-            networkInterface = NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME());
+            networkInterface = NetworkInterface.getByName(BezirkCommunications.getINTERFACE_NAME());
             inetAddress = BezirkValidatorUtility.isObjectNotNull(networkInterface) ? BezirkNetworkUtilities.getIpForInterface(networkInterface) : null;
             if (inetAddress == null) {
                 logger.error("Could not resolve ip - Check InterfaceName in preferences.xml");
                 logger.error("Possible interface and ip pairs are:");
                 printInfInetPairs();
-                logger.error("SHUTTING DOWN UHU");
+                logger.error("SHUTTING DOWN BEZIRK");
                 service.onDestroy();
             }
         } catch (SocketException e) {
-            logger.error("Could not find Interface - SHUTTING DOWN UHU", e);
+            logger.error("Could not find Interface - SHUTTING DOWN BEZIRK", e);
             service.onDestroy();
 
         }

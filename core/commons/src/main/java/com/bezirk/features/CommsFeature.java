@@ -9,7 +9,7 @@ public enum CommsFeature {
 
     COMMS_SECURE,
 
-    COMMS_UHU,
+    COMMS_BEZIRK,
 
     COMMS_ZYRE,
 

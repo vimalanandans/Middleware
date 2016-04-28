@@ -3,8 +3,8 @@
  */
 package com.bezirk.logging;
 
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.BezirkComms;
-import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
@@ -26,13 +26,13 @@ public final class LogServiceActivatorDeactivator {
     private LogServiceActivatorDeactivator() {
     }
 
-    public static void sendLoggingServiceMsgToClients(IUhuComms comms, final String[] sphereList, final String[] selectedLogSpheres, final boolean isActivate) {
-        final BezirkZirkId myId = new BezirkZirkId("UHU-REMOTE-LOGGING-SERVICE");
+    public static void sendLoggingServiceMsgToClients(BezirkComms comms, final String[] sphereList, final String[] selectedLogSpheres, final boolean isActivate) {
+        final BezirkZirkId myId = new BezirkZirkId("BEZIRK-REMOTE-LOGGING-SERVICE");
         final BezirkZirkEndPoint sep = BezirkNetworkUtilities.getServiceEndPoint(myId);
 
         for (String sphereId : sphereList) {
             final ControlLedger controlLedger = new ControlLedger();
-            final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep, sphereId, BezirkNetworkUtilities.getDeviceIp(), BezirkComms.getREMOTE_LOGGING_PORT(), selectedLogSpheres, isActivate);
+            final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep, sphereId, BezirkNetworkUtilities.getDeviceIp(), BezirkCommunications.getREMOTE_LOGGING_PORT(), selectedLogSpheres, isActivate);
             controlLedger.setSphereId(sphereId);
             controlLedger.setMessage(loggingServiceActivateRequest);
             controlLedger.setSerializedMessage(controlLedger.getMessage().serialize());

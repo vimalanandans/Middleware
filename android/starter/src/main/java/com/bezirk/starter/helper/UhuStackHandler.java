@@ -7,7 +7,7 @@ import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.UhuCommsAndroid;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.BezirkDevice;
@@ -18,7 +18,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.rest.CommsRestController;
 import com.bezirk.rest.HttpComms;
 import com.bezirk.sadl.BezirkSadlManager;
-import com.bezirk.sphere.api.IUhuDevMode;
+import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.BezirkSphereForAndroid;
 import com.bezirk.starter.IUhuStackHandler;
@@ -48,7 +48,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
     /**
      * communication interface to send and receive the data
      */
-    private static IUhuComms comms;
+    private static BezirkComms comms;
 
     private final UhuSphereHandler sphereProcessorForMainService = new UhuSphereHandler();
 
@@ -77,14 +77,14 @@ public final class UhuStackHandler implements IUhuStackHandler {
         return UhuSphereHandler.sphereForAndroid;
     }
 
-    public static IUhuDevMode getDevMode() {
+    public static BezirkDevMode getDevMode() {
         return UhuSphereHandler.devMode;
     }
 
     /**
      * @return commsManager
      */
-    public static IUhuComms getUhuComms() {
+    public static BezirkComms getUhuComms() {
 
         return comms;
     }
@@ -187,12 +187,12 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     }
 
                     /*************************************************************
-                     * Step 9 : Start BezirkComms after sphere initialization       *
+                     * Step 9 : Start BezirkCommunications after sphere initialization       *
                      *************************************************************/
                     comms.startComms();
 
                     /*************************************************************
-                     * Step 10 : Display "UHU ON" notification                   *
+                     * Step 10 : Display "BEZIRK ON" notification                   *
                      *************************************************************/
                     int FOREGROUND_ID = 1336;
                     service.startForeground(FOREGROUND_ID,

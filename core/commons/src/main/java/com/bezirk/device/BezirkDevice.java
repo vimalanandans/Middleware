@@ -54,8 +54,8 @@ public class BezirkDevice implements UPADeviceInterface {
 
         this.deviceType = deviceType;
 
-        //remove the UHU_ prefix string
-        deviceName = deviceType.replace("UHU_", "");
+        //remove the BEZIRK_ prefix string
+        deviceName = deviceType.replace("BEZIRK_", "");
 
         deviceName = deviceName + "-" + deviceId.substring(deviceId.length() - 5, deviceId.length());
 

@@ -1,11 +1,11 @@
 package com.bezirk.streaming;
 
 import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.comms.IPortFactory;
+import com.bezirk.comms.PortFactory;
 import com.bezirk.comms.Streaming;
-import com.bezirk.comms.IUhuComms;
-import com.bezirk.comms.MessageDispatcher;
+import com.bezirk.comms.BezirkMessageDispatcher;
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
@@ -15,7 +15,6 @@ import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
 import com.bezirk.sadl.ISadlEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
-import com.bezirk.streaming.port.PortFactory;
 import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
 import com.bezirk.streaming.store.StreamStore;
@@ -41,16 +40,16 @@ public class BezirkStreamManager implements Streaming {
     private StreamQueueProcessor streamQueueProcessor = null;
     private Thread sStreamingThread = null;
     private BezirkStreamHandler bezirkStreamHandler = null;
-    private IPortFactory portFactory;
-    private MessageDispatcher msgDispatcher;
-    private IUhuComms comms = null;
+    private PortFactory portFactory;
+    private BezirkMessageDispatcher msgDispatcher;
+    private BezirkComms comms = null;
 
     private StreamStore streamStore = null;
 
     private ISadlEventReceiver sadlReceiver = null;
 
-    public BezirkStreamManager(IUhuComms comms,
-                               MessageDispatcher msgDispatcher, ISadlEventReceiver sadlReceiver) {
+    public BezirkStreamManager(BezirkComms comms,
+                               BezirkMessageDispatcher msgDispatcher, ISadlEventReceiver sadlReceiver) {
 
         if (BezirkValidatorUtility.isObjectNotNull(comms)
                 && BezirkValidatorUtility.isObjectNotNull(msgDispatcher)
@@ -60,7 +59,7 @@ public class BezirkStreamManager implements Streaming {
             this.sadlReceiver = sadlReceiver;
             bezirkStreamHandler = new BezirkStreamHandler();
         } else {
-            logger.error("Unable to initialize BezirkStreamManager. Please ensure ControlSenderQueue, MessageDispatcher and UhuCallback are initialized.");
+            logger.error("Unable to initialize BezirkStreamManager. Please ensure ControlSenderQueue, BezirkMessageDispatcher and UhuCallback are initialized.");
         }
 
     }
@@ -111,7 +110,7 @@ public class BezirkStreamManager implements Streaming {
     }
 
     @Override
-    public IPortFactory getPortFactory() {
+    public PortFactory getPortFactory() {
         return portFactory;
     }
 
@@ -128,8 +127,8 @@ public class BezirkStreamManager implements Streaming {
                     streamingMessageQueue, sadlReceiver);
 
 
-            portFactory = new PortFactory(
-                    BezirkComms.getSTARTING_PORT_FOR_STREAMING(), streamStore);
+            portFactory = new com.bezirk.streaming.port.PortFactory(
+                    BezirkCommunications.getSTARTING_PORT_FOR_STREAMING(), streamStore);
 
             if (msgDispatcher == null) {
 

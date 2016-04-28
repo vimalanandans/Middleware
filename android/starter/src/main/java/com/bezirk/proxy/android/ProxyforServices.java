@@ -10,7 +10,7 @@ package com.bezirk.proxy.android;
 import android.app.Service;
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.GenerateMsgId;
@@ -49,7 +49,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     private static Service serviceInstance;
     private final ProxyforServiceHelper proxyforServiceHelper;
     private ISadlRegistry sadlRegistry;
-    private IUhuComms comms;
+    private BezirkComms comms;
 
     public ProxyforServices(Service service) {
         serviceInstance = service;
@@ -328,7 +328,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
         this.sadlRegistry = sadlRegistry;
     }
 
-    public void setComms(IUhuComms comms) {
+    public void setComms(BezirkComms comms) {
         this.comms = comms;
     }
 

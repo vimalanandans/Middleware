@@ -96,7 +96,7 @@ public class UPADeviceForPC implements com.bezirk.devices.UPADeviceInterface {
         try {
             deviceName = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
-            deviceName = "UHU-PC";
+            deviceName = "BEZIRK-PC";
             logger.error("Exception in fetching hostname.", e);
         }
         return deviceName;

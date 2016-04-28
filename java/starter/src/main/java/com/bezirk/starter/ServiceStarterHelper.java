@@ -1,7 +1,7 @@
 package com.bezirk.starter;
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.devices.UPADeviceForPC;
@@ -42,7 +42,7 @@ final class ServiceStarterHelper {
      * @param comms
      */
     BezirkSphereAPI initSphere(final UPADeviceInterface uhuDevice,
-                               final RegistryPersistence registryPersistence, final IUhuComms comms) {
+                               final RegistryPersistence registryPersistence, final BezirkComms comms) {
 
         // init the actual
         final SpherePersistence spherePersistence = registryPersistence;
@@ -60,7 +60,7 @@ final class ServiceStarterHelper {
         // UhuSphereForAndroid implements the listener, hence set the
         // listener object as same.
         final BezirkSphereForPC uhuSphereForPC = (BezirkSphereForPC) sphereForPC;
-        uhuSphereForPC.setUhuSphereListener(uhuSphereForPC);
+        uhuSphereForPC.setBezirkSphereListener(uhuSphereForPC);
         ISphereConfig sphereConfig = new com.bezirk.sphere.impl.SphereProperties();
         sphereConfig.init();
         uhuSphereForPC.initSphere(registryPersistence, comms, sphereConfig);
@@ -76,8 +76,8 @@ final class ServiceStarterHelper {
 
         try {
 
-            final IUhuComms iUhuComms = (IUhuComms) comms;
-            iUhuComms.setSphereForSadl(sphereForSadl);
+            final BezirkComms bezirkComms = (BezirkComms) comms;
+            bezirkComms.setSphereForSadl(sphereForSadl);
 
         } catch (Exception e) {
 
@@ -127,10 +127,10 @@ final class ServiceStarterHelper {
 
         if (bezirkConfig.isDisplayEnabled()) {
             bezirkDevice.initDevice(deviceIdString,
-                    BezirkDeviceType.UHU_DEVICE_TYPE_PC);
+                    BezirkDeviceType.BEZIRK_DEVICE_TYPE_PC);
         } else {
             bezirkDevice.initDevice(deviceIdString,
-                    BezirkDeviceType.UHU_DEVICE_TYPE_EMBEDDED_KIT);
+                    BezirkDeviceType.BEZIRK_DEVICE_TYPE_EMBEDDED_KIT);
         }
 
         BezirkCompManager.setUpaDevice(bezirkDevice);

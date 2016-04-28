@@ -21,7 +21,7 @@ public final class CommsTestConstants {
     public static final int DEFAULT_UNICAST_RECEIVING_PORT = 1235;
     public static final int DEFAULT_TIMER_VALUE = 10000;
 
-    public static final String SETTINGS_DIALOG_TITLE = "UHU-COMMS-CONFIGURATION";
+    public static final String SETTINGS_DIALOG_TITLE = "BEZIRK-COMMS-CONFIGURATION";
     public static final String HINT_DIALOG_TITLE = "DIAGNOSIS HINTS!!!";
 
     public static final String START_BUTTON_LABEL = "START";

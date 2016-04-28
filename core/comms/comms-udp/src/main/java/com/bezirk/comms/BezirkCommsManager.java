@@ -34,7 +34,7 @@ import java.util.ArrayList;
  * Bezirk Communication manager
  * this handles all the queue, sockets, receiver threads etc etc
  * Note : this code is handling many legacy workaround
- * when implementing new IUhuComms, make sure you clean this. Vimal
+ * when implementing new BezirkComms, make sure you clean this. Vimal
  *
  * @modified Vijet Badigannavar added IUhuVersionMismatchCallback as a member variable
  */
@@ -42,7 +42,7 @@ import java.util.ArrayList;
 public class BezirkCommsManager implements BezirkCommsLegacy {
     private static final Logger logger = LoggerFactory.getLogger(BezirkCommsManager.class);
 
-    MessageDispatcher msgDispatcher = null;
+    BezirkMessageDispatcher msgDispatcher = null;
     CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver();
     BezirkSadlManager bezirkSadlManager = null;
     LogServiceMessageHandler logServiceMsgHandler = null;
@@ -101,7 +101,7 @@ public class BezirkCommsManager implements BezirkCommsLegacy {
 
         this.bezirkSadlManager = bezirkSadlManager;
 
-        msgDispatcher = new MessageDispatcher(bezirkSadlManager);
+        msgDispatcher = new BezirkMessageDispatcher(bezirkSadlManager);
 
         receiverMessageQueue = new MessageQueue();
 
@@ -113,10 +113,10 @@ public class BezirkCommsManager implements BezirkCommsLegacy {
 
         //Start Listener Sockets
         try {
-            eMSocket = new MulticastSocket(BezirkComms.getMULTICAST_PORT());
-            eUSocket = new DatagramSocket(BezirkComms.getUNICAST_PORT(), addr);
-            cMSocket = new MulticastSocket(BezirkComms.getCTRL_MULTICAST_PORT());
-            cUSocket = new DatagramSocket(BezirkComms.getCTRL_UNICAST_PORT(), addr);
+            eMSocket = new MulticastSocket(BezirkCommunications.getMULTICAST_PORT());
+            eUSocket = new DatagramSocket(BezirkCommunications.getUNICAST_PORT(), addr);
+            cMSocket = new MulticastSocket(BezirkCommunications.getCTRL_MULTICAST_PORT());
+            cUSocket = new DatagramSocket(BezirkCommunications.getCTRL_UNICAST_PORT(), addr);
 
             eMSocket.setInterface(addr);
 
@@ -154,7 +154,7 @@ public class BezirkCommsManager implements BezirkCommsLegacy {
 
         cSenderThread = new Thread(new ControlSenderThread(this, controlSenderQueue));
 
-        if (BezirkComms.isStreamingEnabled()) {
+        if (BezirkCommunications.isStreamingEnabled()) {
 
             this.bezirkStreamManager = new BezirkStreamManager(this, msgDispatcher, bezirkSadlManager);
             bezirkStreamManager.initStreams();
@@ -182,7 +182,7 @@ public class BezirkCommsManager implements BezirkCommsLegacy {
         if (cUSocket != null)
             cUSocket.close();
 
-        if (BezirkComms.isStreamingEnabled()) {
+        if (BezirkCommunications.isStreamingEnabled()) {
 
             if (bezirkStreamManager != null) {
                 bezirkStreamManager.endStreams();
@@ -226,7 +226,7 @@ public class BezirkCommsManager implements BezirkCommsLegacy {
       /*  if(sphereDiscThread != null)
             sphereDiscThread.start(); */
 
-        if (BezirkComms.isStreamingEnabled()) {
+        if (BezirkCommunications.isStreamingEnabled()) {
 
             if (bezirkStreamManager != null) {
                 bezirkStreamManager.startStreams();
@@ -265,7 +265,7 @@ public class BezirkCommsManager implements BezirkCommsLegacy {
             cSenderThread.interrupt();
 
 
-        if (BezirkComms.isStreamingEnabled()) {
+        if (BezirkCommunications.isStreamingEnabled()) {
 
             if (bezirkStreamManager != null) {
                 bezirkStreamManager.endStreams();
@@ -496,7 +496,7 @@ public class BezirkCommsManager implements BezirkCommsLegacy {
     }
 
     @Override
-    public IPortFactory getPortFactory() {
+    public PortFactory getPortFactory() {
 
         if (bezirkStreamManager != null) {
 
@@ -538,7 +538,7 @@ public class BezirkCommsManager implements BezirkCommsLegacy {
     }
 
     /* (non-Javadoc)
-     * @see IUhuComms#setSphereForSadl(BezirkSphereForSadl)
+     * @see BezirkComms#setSphereForSadl(BezirkSphereForSadl)
      */
     @Override
     public void setSphereForSadl(BezirkSphereForSadl uhuSphere) {

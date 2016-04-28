@@ -81,7 +81,7 @@ public class ProcessDiscoveredSphereInfo {
 
         HashSet<BezirkSphereInfo> discoveredSphereInfoSet = new HashSet<BezirkSphereInfo>();
         ArrayList<BezirkDeviceInfo> bezirkDeviceInfos = new ArrayList<BezirkDeviceInfo>();
-        bezirkDeviceInfos.add(sphereTestUtility.getUhuDeviceInfo());
+        bezirkDeviceInfos.add(sphereTestUtility.getBezirkDeviceInfo());
         BezirkSphereInfo bezirkSphereInfo = new BezirkSphereInfo(sphereId, sphereTestUtility.OWNER_SPHERE_NAME_1, null,
                 bezirkDeviceInfos, null);
         discoveredSphereInfoSet.add(bezirkSphereInfo);

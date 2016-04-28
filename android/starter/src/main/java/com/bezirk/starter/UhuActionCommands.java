@@ -13,13 +13,13 @@ public final class UhuActionCommands {
     /**
      * generic parameters
      */
-    public final static String UHU_ACTION_COMMANDS = "commands";
+    public final static String BEZIRK_ACTION_COMMANDS = "commands";
 
-    public final static String UHU_ACTION_COMMAND_STATUS = "Status";
+    public final static String BEZIRK_ACTION_COMMAND_STATUS = "Status";
 
-    public final static String UHU_ACTION_COMMAND_SPHERE_ID = "SphereId";
+    public final static String BEZIRK_ACTION_COMMAND_SPHERE_ID = "SphereId";
 
-    public final static String UHU_ACTION_COMMAND_MESSAGE = "Message";
+    public final static String BEZIRK_ACTION_COMMAND_MESSAGE = "Message";
     /* ------------------------
     * Bezirk Control UI Action response Commands to UI
     * ------------------------

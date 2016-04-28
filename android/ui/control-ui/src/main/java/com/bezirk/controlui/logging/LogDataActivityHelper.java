@@ -12,9 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.controlui.R;
-import com.bezirk.remotelogging.loginterface.IUhuLogging;
+import com.bezirk.remotelogging.loginterface.BezirkLogging;
 import com.bezirk.remotelogging.manager.BezirkLoggingManager;
 import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
 import com.bezirk.remotelogging.util.Util;
@@ -69,7 +69,7 @@ class LogDataActivityHelper {
     /**
      * BezirkLogging Implementation to handle the logmessage. It receives the logger message and gives it to the handler to update the UI.
      */
-    private final IUhuLogging loggingHandler = new IUhuLogging() {
+    private final BezirkLogging loggingHandler = new BezirkLogging() {
         @Override
         public void handleLogMessage(BezirkLoggingMessage uhuLogMessage) {
             Message msg = mHandler.obtainMessage();
@@ -163,7 +163,7 @@ class LogDataActivityHelper {
     void startLogService() {
         try {
             logDataActivity.mBezirkLoggingManager = new BezirkLoggingManager();
-            logDataActivity.mBezirkLoggingManager.startLoggingService(BezirkComms.getREMOTE_LOGGING_PORT(), loggingHandler);
+            logDataActivity.mBezirkLoggingManager.startLoggingService(BezirkCommunications.getREMOTE_LOGGING_PORT(), loggingHandler);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

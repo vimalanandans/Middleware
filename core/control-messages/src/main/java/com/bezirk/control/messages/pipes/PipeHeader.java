@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 
 public class PipeHeader {
 
-    public static final String KEY_UHU_HEADER = "Bezirk-Header";
+    public static final String KEY_BEZIRK_HEADER = "Bezirk-Header";
 
     protected BezirkZirkEndPoint senderSEP;
 

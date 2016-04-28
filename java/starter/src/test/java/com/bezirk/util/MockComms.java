@@ -1,9 +1,9 @@
 package com.bezirk.util;
 
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.ControlMessage.Discriminator;
@@ -18,7 +18,7 @@ import com.bezirk.streaming.control.Objects.StreamRecord;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
-public class MockComms implements IUhuComms {
+public class MockComms implements BezirkComms {
 
     private ArrayList<ControlLedger> ctrlList;
 

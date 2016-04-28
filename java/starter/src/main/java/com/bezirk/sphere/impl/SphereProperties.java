@@ -5,7 +5,7 @@ package com.bezirk.sphere.impl;
 
 import com.bezirk.devices.UPADeviceForPC;
 import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.IUhuDevMode.Mode;
+import com.bezirk.sphere.api.BezirkDevMode.Mode;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package com.bezirk.discovery;
 
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.comms.IUhuComms;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
@@ -20,11 +20,11 @@ public class DiscoveryManager implements CtrlMsgReceiver {
 
     private BezirkSadlManager sadlManager;
 
-    private IUhuComms comms;
+    private BezirkComms comms;
 
     private Thread discThread;
 
-    public DiscoveryManager(BezirkSadlManager sadlManager, IUhuComms comms) {
+    public DiscoveryManager(BezirkSadlManager sadlManager, BezirkComms comms) {
         this.sadlManager = sadlManager;
         this.comms = comms;
     }

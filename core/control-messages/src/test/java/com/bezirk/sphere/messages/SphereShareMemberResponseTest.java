@@ -45,7 +45,7 @@
 //		
 //		log.info("***** Setting up SphereShareMemberResponseTest TestCase *****");
 //		services.add(serviceAInfo);
-//		uhuDeviceInfo= new BezirkDeviceInfo("TESTDEVICEID", "TESTDEVICE", "PC", BezirkDeviceRole.UHU_MEMBER, true, services);
+//		uhuDeviceInfo= new BezirkDeviceInfo("TESTDEVICEID", "TESTDEVICE", "PC", BezirkDeviceRole.BEZIRK_MEMBER, true, services);
 //	}
 //
 //	/**

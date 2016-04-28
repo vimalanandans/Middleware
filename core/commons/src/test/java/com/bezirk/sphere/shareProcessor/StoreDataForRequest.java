@@ -83,7 +83,7 @@ public class StoreDataForRequest {
      */
     @Test
     public void validInviterSphereIdAndDeviceInfoReturnsTrue() throws Exception {
-        BezirkDeviceInfo sharerBezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        BezirkDeviceInfo sharerBezirkDeviceInfo = sphereTestUtility.getBezirkDeviceInfo();
         String inviterSphereId = sphereTestUtility.generateOwnerCombo();
         /** invoke the method under test using reflection **/
         boolean isDataStored = (Boolean) method.invoke(shareProcessor, inviterSphereId, sharerBezirkDeviceInfo);
@@ -98,7 +98,7 @@ public class StoreDataForRequest {
      */
     @Test
     public void invalidInviterSphereIdValidDeviceInfoReturnsFalse() throws Exception {
-        BezirkDeviceInfo sharerBezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        BezirkDeviceInfo sharerBezirkDeviceInfo = sphereTestUtility.getBezirkDeviceInfo();
         String inviterSphereId = "abcdefg";
         /** invoke the method under test using reflection **/
         boolean isDataStored = (Boolean) method.invoke(shareProcessor, inviterSphereId, sharerBezirkDeviceInfo);

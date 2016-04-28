@@ -37,50 +37,50 @@ public final class BezirkCommsPC {
         overrideStringProperty("InterfaceName", props, bezirkConfig);
         overrideStringProperty("displayEnable", props, bezirkConfig);
 
-        BezirkComms.setINTERFACE_NAME(props.getProperty("InterfaceName"));
-        BezirkComms.setMULTICAST_ADDRESS(props.getProperty("EMulticastAddress"));
-        BezirkComms.setMULTICAST_PORT(Integer.parseInt(props.getProperty("EMulticastPort")));
-        BezirkComms.setUNICAST_PORT(Integer.parseInt(props
+        BezirkCommunications.setINTERFACE_NAME(props.getProperty("InterfaceName"));
+        BezirkCommunications.setMULTICAST_ADDRESS(props.getProperty("EMulticastAddress"));
+        BezirkCommunications.setMULTICAST_PORT(Integer.parseInt(props.getProperty("EMulticastPort")));
+        BezirkCommunications.setUNICAST_PORT(Integer.parseInt(props
                 .getProperty("EUnicastPort")));
-        BezirkComms.setCTRL_MULTICAST_ADDRESS(props
+        BezirkCommunications.setCTRL_MULTICAST_ADDRESS(props
                 .getProperty("CMulticastAddress"));
-        BezirkComms.setCTRL_MULTICAST_PORT(Integer.valueOf(props
+        BezirkCommunications.setCTRL_MULTICAST_PORT(Integer.valueOf(props
                 .getProperty("CMulticastPort")));
-        BezirkComms.setCTRL_UNICAST_PORT(Integer.valueOf(props
+        BezirkCommunications.setCTRL_UNICAST_PORT(Integer.valueOf(props
                 .getProperty("CUnicastPort")));
-        BezirkComms.setMAX_BUFFER_SIZE(Integer.valueOf(props
+        BezirkCommunications.setMAX_BUFFER_SIZE(Integer.valueOf(props
                 .getProperty("MaxBufferSize")));
 
-        BezirkComms.setPOOL_SIZE(Integer.valueOf(props
+        BezirkCommunications.setPOOL_SIZE(Integer.valueOf(props
                 .getProperty("MessageValidatorPool")));
 
-        BezirkComms.setSTARTING_PORT_FOR_STREAMING(Integer.valueOf(props
+        BezirkCommunications.setSTARTING_PORT_FOR_STREAMING(Integer.valueOf(props
                 .getProperty("StartPort"))); // get the starting Port
-        BezirkComms.setENDING_PORT_FOR_STREAMING(Integer.valueOf(props
+        BezirkCommunications.setENDING_PORT_FOR_STREAMING(Integer.valueOf(props
                 .getProperty("EndPort"))); // get the last port
-        BezirkComms.setMAX_SUPPORTED_STREAMS(Integer.valueOf(props
+        BezirkCommunications.setMAX_SUPPORTED_STREAMS(Integer.valueOf(props
                 .getProperty("NoOfActiveThreads"))); // No of active Threads
-        BezirkComms.setStreamingEnabled(Boolean.valueOf(props
+        BezirkCommunications.setStreamingEnabled(Boolean.valueOf(props
                 .getProperty("StreamingEnabled"))); // flag to check if
         // Streaming Enabled
 
-        BezirkComms.setNO_OF_RETRIES(Integer.valueOf(props
+        BezirkCommunications.setNO_OF_RETRIES(Integer.valueOf(props
                 .getProperty("NoOfRetries")));
 
-        if (BezirkComms.isStreamingEnabled()) {
+        if (BezirkCommunications.isStreamingEnabled()) {
             // port factory is part of comms manager
-            // BezirkComms.portFactory = new
-            // PortFactory(BezirkComms.STARTING_PORT_FOR_STREAMING,
-            // BezirkComms.ENDING_PORT_FOR_STREAMING); // initialize the
+            // BezirkCommunications.portFactory = new
+            // PortFactory(BezirkCommunications.STARTING_PORT_FOR_STREAMING,
+            // BezirkCommunications.ENDING_PORT_FOR_STREAMING); // initialize the
             // PortFactory
             if (bezirkConfig == null) {
-                BezirkComms.setDOWNLOAD_PATH(props.getProperty("FileSharePath"));
+                BezirkCommunications.setDOWNLOAD_PATH(props.getProperty("FileSharePath"));
             } else {
-                BezirkComms.setDOWNLOAD_PATH(bezirkConfig.getDataPath()
+                BezirkCommunications.setDOWNLOAD_PATH(bezirkConfig.getDataPath()
                         + File.separator + "downloads");
             }
             final File createDownloadFolder = new File(
-                    BezirkComms.getDOWNLOAD_PATH());
+                    BezirkCommunications.getDOWNLOAD_PATH());
             if (!createDownloadFolder.exists()) {
                 if (!createDownloadFolder.mkdir()) {
                     logger.error("Failed to create download direction: {}",
@@ -89,11 +89,11 @@ public final class BezirkCommsPC {
             }
         }
 
-        BezirkComms.setDEMO_SPHERE_MODE(Boolean.valueOf(props.getProperty(
+        BezirkCommunications.setDEMO_SPHERE_MODE(Boolean.valueOf(props.getProperty(
                 "DemoSphereMode", "false")));
-        BezirkComms.setREMOTE_LOGGING_PORT(Integer.valueOf(props
+        BezirkCommunications.setREMOTE_LOGGING_PORT(Integer.valueOf(props
                 .getProperty("RemoteLoggingPort")));
-        BezirkComms.setRemoteLoggingServiceEnabled(Boolean.valueOf(props
+        BezirkCommunications.setRemoteLoggingServiceEnabled(Boolean.valueOf(props
                 .getProperty("RemoteLoggingEnabled")));
     }
 

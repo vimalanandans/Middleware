@@ -4,8 +4,8 @@ import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.ICryptoInternals;
-import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.security.SphereKeys;
@@ -166,13 +166,13 @@ public class CatchProcessor {
                     sphere.addService(inviterBezirkDeviceInfo.getDeviceId(), service.getZirkId());
                 }
                 // catch response for the request is success
-                sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, IUhuSphereListener.Status.SUCCESS, "Catch successful");
+                sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, BezirkSphereListener.Status.SUCCESS, "Catch successful");
                 logger.info("Got Catch response. catch process completed");
                 return true;
             }
         }
 
-        sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, IUhuSphereListener.Status.FAILURE, CATCH_FAILURE_MSG);
+        sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, BezirkSphereListener.Status.FAILURE, CATCH_FAILURE_MSG);
         return false;
     }
 
@@ -206,7 +206,7 @@ public class CatchProcessor {
         if (storeData(sphereExchangeData)) {
             logger.info("Catch Request Processing, Step2: storing sphere exchange data complete");
         } else {
-            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, IUhuSphereListener.Status.FAILURE, CATCH_FAILURE_MSG);
+            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, BezirkSphereListener.Status.FAILURE, CATCH_FAILURE_MSG);
             logger.error("Catch Request Processing, Step2: storing sphere exchange data failed");
             return false;
         }
@@ -221,7 +221,7 @@ public class CatchProcessor {
         if (sphereCatchResponse != null) {
             logger.info("Catch Request Processing, Step3: preparing catch response complete");
         } else {
-            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, IUhuSphereListener.Status.FAILURE, CATCH_FAILURE_MSG);
+            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, BezirkSphereListener.Status.FAILURE, CATCH_FAILURE_MSG);
             logger.error("Catch Request Processing, Step3: preparing catch response failed");
             return false;
         }
@@ -233,12 +233,12 @@ public class CatchProcessor {
         if (comms.sendMessage(sphereCatchResponse)) {
             logger.info("Catch Request Processing, Step4: catch response sending complete");
         } else {
-            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, IUhuSphereListener.Status.FAILURE, CATCH_FAILURE_MSG);
+            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, BezirkSphereListener.Status.FAILURE, CATCH_FAILURE_MSG);
             logger.error("Catch Request Processing, Step4: catch response sending failed");
             return false;
         }
 
-        sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, IUhuSphereListener.Status.SUCCESS, "Catch successful");
+        sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.CATCH, BezirkSphereListener.Status.SUCCESS, "Catch successful");
         return true;
     }
 
@@ -362,7 +362,7 @@ public class CatchProcessor {
 
                 BezirkDeviceInfo catcherBezirkDeviceInfo = new BezirkDeviceInfo(upaDeviceInterface.getDeviceId(),
                         deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
-                        (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
+                        (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
 
                 sphereCatchRequest = new CatchRequest(BezirkNetworkUtilities.getServiceEndPoint(null), inviterShortCode,
                         catcherSphereId, catcherBezirkDeviceInfo, sphereExchangeData);
@@ -478,7 +478,7 @@ public class CatchProcessor {
                     // create the device info with only local services
                     BezirkDeviceInfo inviterSphereDeviceInfo = new BezirkDeviceInfo(upaDeviceInterface.getDeviceId(),
                             deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
-                            (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
+                            (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
 
                     // FIXME: send unicast for device
                     CatchResponse response = new CatchResponse(BezirkNetworkUtilities.getServiceEndPoint(null),

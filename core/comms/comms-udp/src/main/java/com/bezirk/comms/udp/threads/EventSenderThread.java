@@ -71,7 +71,7 @@ public class EventSenderThread implements Runnable {
 
                 final Boolean spherePassed;
                 //If message is sent first time go through the stack until sphere
-                //Otherwise, just invoke BezirkComms
+                //Otherwise, just invoke BezirkCommunications
                 if (eLedger.getNumOfSends() == 0) {
                     logger.debug("First time through the stack");
                     // If this is a Multicast message, check to see if we also need to send it to a pipe

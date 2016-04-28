@@ -6,7 +6,7 @@ package com.bezirk.proxy.pc;
 
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.GenerateMsgId;
@@ -42,7 +42,7 @@ import java.util.Iterator;
 public class ProxyforServices implements UhuProxyForServiceAPI {
     private static final Logger logger = LoggerFactory.getLogger(ProxyforServices.class);
     private ISadlRegistry sadlRegistry = null;
-    private IUhuComms comms = null;
+    private BezirkComms comms = null;
 
     @Override
     public void registerService(final BezirkZirkId serviceId, final String serviceName) {
@@ -255,7 +255,7 @@ public class ProxyforServices implements UhuProxyForServiceAPI {
     }
 
 
-    public void setCommsManager(IUhuComms comms) {
+    public void setCommsManager(BezirkComms comms) {
         this.comms = comms;
     }
 

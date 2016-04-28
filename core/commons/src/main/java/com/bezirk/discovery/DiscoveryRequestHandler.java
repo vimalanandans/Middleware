@@ -1,7 +1,7 @@
 package com.bezirk.discovery;
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
@@ -30,13 +30,13 @@ public class DiscoveryRequestHandler {
     private final ISadlControlReceiver sadlCtrl;
     private final DiscoveryResponse response;
     //private final MessageQueue ctrlSenderQueue;
-    private final IUhuComms uhuComms;
+    private final BezirkComms uhuComms;
     private final DiscoveryRequest discReq;
 
     /**
      * @param req incoming DiscoveryRequest
      */
-    public DiscoveryRequestHandler(ISadlControlReceiver sadlCtrl, DiscoveryRequest req, IUhuComms uhuComms) {
+    public DiscoveryRequestHandler(ISadlControlReceiver sadlCtrl, DiscoveryRequest req, BezirkComms uhuComms) {
         this.sadlCtrl = sadlCtrl;
         this.uhuComms = uhuComms;
         this.discReq = req;

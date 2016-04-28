@@ -1,7 +1,7 @@
 package com.bezirk.streaming;
 
-import com.bezirk.comms.IPortFactory;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.PortFactory;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.streaming.StreamRequest;
@@ -32,8 +32,8 @@ final class BezirkStreamHandler {
      * @param streamRequest
      * @return
      */
-    boolean handleStreamRequest(final StreamRequest streamRequest, final IUhuComms comms,
-                                final IPortFactory portFactory, final StreamStore streamStore,
+    boolean handleStreamRequest(final StreamRequest streamRequest, final BezirkComms comms,
+                                final PortFactory portFactory, final StreamStore streamStore,
                                 final ISadlEventReceiver sadlReceiver, final BezirkSphereForSadl sphereForSadl) {
 
         // Check if the request is duplicate

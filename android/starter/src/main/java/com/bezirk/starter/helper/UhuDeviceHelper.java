@@ -90,7 +90,7 @@ public final class UhuDeviceHelper {
         if (deviceType == null) {
             logger.info("device type is not initialized. setting to default");
 
-            deviceType = BezirkDeviceType.UHU_DEVICE_TYPE_SMARTPHONE;
+            deviceType = BezirkDeviceType.BEZIRK_DEVICE_TYPE_SMARTPHONE;
         }
 
 

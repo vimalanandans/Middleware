@@ -56,7 +56,7 @@ public class ShareSphereActivity extends ActionBarActivity {
 
     private String BR_SYSTEM_STATUS_ACTION = "com.bezirk.systemstatus";
     private boolean showWarning = false;
-    private String receivedUhuVersion = BezirkVersion.UHU_VERSION;
+    private String receivedUhuVersion = BezirkVersion.BEZIRK_VERSION;
     private final BroadcastReceiver systemStatusBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -246,11 +246,11 @@ public class ShareSphereActivity extends ActionBarActivity {
 
         builder.setPositiveButton("OK", new CustomClickListener());
 
-        uhuVersion.setText("Expected Bezirk-Version: " + BezirkVersion.UHU_VERSION);
+        uhuVersion.setText("Expected Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
         if (receivedUhuVersion != null) {
             uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + receivedUhuVersion);
         } else {
-            uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + BezirkVersion.UHU_VERSION);
+            uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
         }
 
         if (showWarning) {

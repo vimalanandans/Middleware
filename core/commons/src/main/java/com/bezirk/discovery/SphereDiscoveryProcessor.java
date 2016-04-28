@@ -1,7 +1,7 @@
 package com.bezirk.discovery;
 
-import com.bezirk.comms.IUhuComms;
-import com.bezirk.sphere.api.IUhuSphereDiscovery;
+import com.bezirk.comms.BezirkComms;
+import com.bezirk.sphere.api.BezirkSphereDiscovery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +17,11 @@ public class SphereDiscoveryProcessor implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(SphereDiscoveryProcessor.class);
 
     private static SphereDiscovery discovery;
-    private final IUhuSphereDiscovery sphereDiscoveryHandler;
+    private final BezirkSphereDiscovery sphereDiscoveryHandler;
     private Boolean running = false;
-    // private IUhuComms uhuComms = null;
+    // private BezirkComms uhuComms = null;
 
-    public SphereDiscoveryProcessor(IUhuSphereDiscovery sphereDiscoveryHandler, IUhuComms uhuComms) {
+    public SphereDiscoveryProcessor(BezirkSphereDiscovery sphereDiscoveryHandler, BezirkComms uhuComms) {
         this.sphereDiscoveryHandler = sphereDiscoveryHandler;
         // this.uhuComms = uhuComms;
     }

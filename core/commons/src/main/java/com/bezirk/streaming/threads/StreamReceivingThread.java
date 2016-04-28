@@ -3,14 +3,13 @@
  */
 package com.bezirk.streaming.threads;
 
-import com.bezirk.comms.BezirkComms;
-import com.bezirk.comms.IPortFactory;
+import com.bezirk.comms.BezirkCommunications;
+import com.bezirk.comms.PortFactory;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.sadl.ISadlEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
-import com.bezirk.streaming.port.PortFactory;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -26,16 +25,16 @@ import java.net.Socket;
 import java.net.SocketException;
 
 /**
- * This thread is used by the recipient that is interested in receiving the Stream. This Thread opens socket at port ({@link PortFactory#getPort(String)} and
- * waits for the sender to connect. Once the Sender gets connected, a file will be created at {@link BezirkComms#DOWNLOAD_PATH+this#fileName} and will read
- * data at a time. After the data transfer it will release the port through {@link PortFactory#releasePort(int)}. From the {@link this#streamLabel}, it will query the UhuSadl
+ * This thread is used by the recipient that is interested in receiving the Stream. This Thread opens socket at port ({@link com.bezirk.streaming.port.PortFactory#getPort(String)} and
+ * waits for the sender to connect. Once the Sender gets connected, a file will be created at {@link BezirkCommunications#DOWNLOAD_PATH+this#fileName} and will read
+ * data at a time. After the data transfer it will release the port through {@link com.bezirk.streaming.port.PortFactory#releasePort(int)}. From the {@link this#streamLabel}, it will query the UhuSadl
  * to get all the Zirk Identities via
  * corresponding to the services.
  * If error occurs during the course, it releases the port and closes the socket and Streams
  *
  * @see com.bezirk.proxy
- * @see BezirkComms
- * @see PortFactory
+ * @see BezirkCommunications
+ * @see com.bezirk.streaming.port.PortFactory
  */
 public class StreamReceivingThread implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(StreamReceivingThread.class);
@@ -53,7 +52,7 @@ public class StreamReceivingThread implements Runnable {
     private final BezirkZirkEndPoint sender;
     private final String serialzedMsg;
     private final short streamId;
-    private final IPortFactory portFactory;
+    private final PortFactory portFactory;
     private final ISadlEventReceiver sadlReceiver;
     private final BezirkSphereForSadl sphereForSadl;
 
@@ -66,7 +65,7 @@ public class StreamReceivingThread implements Runnable {
      * @param -             streamLabel - streamLabel that is used to identify the Stream
      */
     public StreamReceivingThread(int port,
-                                 StreamRequest streamRequest, IPortFactory portFactory,
+                                 StreamRequest streamRequest, PortFactory portFactory,
                                  ISadlEventReceiver sadlReceiver, BezirkSphereForSadl sphereForSadl) {
         super();
         this.sphere = streamRequest.getSphereId();
@@ -100,7 +99,7 @@ public class StreamReceivingThread implements Runnable {
             socket.setSoTimeout(CONNECTION_TIMEOUT_TIME);
             receivingSocket = socket.accept();
 
-            tempFile = new File(BezirkComms.getDOWNLOAD_PATH() + fileName);
+            tempFile = new File(BezirkCommunications.getDOWNLOAD_PATH() + fileName);
             fileOutputStream = new FileOutputStream(tempFile);
             inputStream = new DataInputStream(receivingSocket.getInputStream());
 
@@ -120,7 +119,7 @@ public class StreamReceivingThread implements Runnable {
                 }
             }
             logger.debug("--- File Received--- & saved at "
-                    + BezirkComms.getDOWNLOAD_PATH() + fileName);
+                    + BezirkCommunications.getDOWNLOAD_PATH() + fileName);
 
             notifyStreamFile(tempFile, portFactory.releasePort(port));
             streamErrored = false;

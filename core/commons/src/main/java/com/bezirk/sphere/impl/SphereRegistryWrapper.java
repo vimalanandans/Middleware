@@ -11,14 +11,14 @@ import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
+import com.bezirk.sphere.api.BezirkSphereListener;
+import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.api.ICryptoInternals;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.ISphereUtils;
-import com.bezirk.sphere.api.IUhuDevMode.Mode;
-import com.bezirk.sphere.api.IUhuSphereListener;
-import com.bezirk.sphere.api.IUhuSphereListener.SphereCreateStatus;
-import com.bezirk.sphere.api.IUhuSphereListener.Status;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkDevMode.Mode;
+import com.bezirk.sphere.api.BezirkSphereListener.SphereCreateStatus;
+import com.bezirk.sphere.api.BezirkSphereListener.Status;
 import com.bezirk.sphere.security.SphereKeys;
 import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
@@ -52,7 +52,7 @@ public class SphereRegistryWrapper {
     private SphereRegistry registry = null;
     private SpherePersistence spherePersistence = null;
     private UPADeviceInterface upaDevice;
-    private IUhuSphereListener sphereListener;
+    private BezirkSphereListener sphereListener;
     private ISphereConfig sphereConfig;
     private ICryptoInternals crypto;
     private DevelopmentSphere developmentSphere;
@@ -74,7 +74,7 @@ public class SphereRegistryWrapper {
      * @param spherePersistence - SpherePersistence interface object. Should not be null.
      */
     public SphereRegistryWrapper(SphereRegistry registry, SpherePersistence spherePersistence,
-                                 UPADeviceInterface upaDevice, ICryptoInternals crypto, IUhuSphereListener sphereListener,
+                                 UPADeviceInterface upaDevice, ICryptoInternals crypto, BezirkSphereListener sphereListener,
                                  ISphereConfig sphereConfig) {
         if (null == registry || null == spherePersistence || null == upaDevice || null == crypto
                 || null == sphereConfig) {
@@ -190,7 +190,7 @@ public class SphereRegistryWrapper {
             // check if the sphere is a temporary member sphere
             if (!(sphere instanceof MemberSphere && ((MemberSphere) sphere).isTemporarySphere())) {
 
-                Iterable<BezirkDeviceInfo> devicesIterable = getUhuDeviceInfo(sphere.getDeviceServices(),
+                Iterable<BezirkDeviceInfo> devicesIterable = getBezirkDeviceInfo(sphere.getDeviceServices(),
                         (HashSet<String>) sphere.getOwnerDevices());
 
                 ArrayList<BezirkDeviceInfo> devices = (devicesIterable != null)
@@ -372,7 +372,7 @@ public class SphereRegistryWrapper {
     public boolean createDefaultSphere(String defaultSphereName) {
         String defaultSphereId = getDefaultSphereId();
         if (null == defaultSphereId) {
-            createSphere(defaultSphereName, UhuSphereType.UHU_SPHERE_TYPE_DEFAULT, null);
+            createSphere(defaultSphereName, BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT, null);
             return true;
         } else {
             // default sphere id exists. check the name of the sphere and update
@@ -397,9 +397,9 @@ public class SphereRegistryWrapper {
      * @return - SphereId if sphere was created successfully or if the sphereId
      * existed already, null otherwise.
      */
-    public String createSphere(String sphereName, String sphereType, IUhuSphereListener uhuSphereListener) {
+    public String createSphere(String sphereName, String sphereType, BezirkSphereListener uhuSphereListener) {
         String name = (null == sphereName) ? DEFAULT_SPHERE_NAME : sphereName;
-        String type = (null == sphereType) ? UhuSphereType.UHU_SPHERE_TYPE_OTHER : sphereType;
+        String type = (null == sphereType) ? BezirkSphereType.BEZIRK_SPHERE_TYPE_OTHER : sphereType;
         SphereCreateStatus status;
         String sphereId = null;
 
@@ -561,7 +561,7 @@ public class SphereRegistryWrapper {
      * @return - List of BezirkZirkInfo objects.<br>
      * - null, if no services passed.<br>
      */
-    public Iterable<BezirkZirkInfo> getUhuServiceInfo(Iterable<BezirkZirkId> serviceIds) {
+    public Iterable<BezirkZirkInfo> getBezirkServiceInfo(Iterable<BezirkZirkId> serviceIds) {
         if (serviceIds == null) {
             logger.debug("No Services passed");
             return null;
@@ -973,7 +973,7 @@ public class SphereRegistryWrapper {
      * @param discoveredServices
      * @param serviceInfo
      */
-    public void updateUhuServiceInfo(Set<BezirkDiscoveredZirk> discoveredServices, BezirkZirkInfo serviceInfo) {
+    public void updateBezirkServiceInfo(Set<BezirkDiscoveredZirk> discoveredServices, BezirkZirkInfo serviceInfo) {
         for (BezirkDiscoveredZirk discoveredServ : discoveredServices) {
             if (discoveredServ.zirk.getBezirkZirkId().getBezirkZirkId().equals(serviceInfo.getZirkId())) {
                 serviceInfo.setActive(true);
@@ -1074,8 +1074,8 @@ public class SphereRegistryWrapper {
      * <p/>
      * null otherwise
      */
-    public Iterable<BezirkDeviceInfo> getUhuDeviceInfo(Map<String, ArrayList<BezirkZirkId>> devices,
-                                                       HashSet<String> ownerDevices) {
+    public Iterable<BezirkDeviceInfo> getBezirkDeviceInfo(Map<String, ArrayList<BezirkZirkId>> devices,
+                                                          HashSet<String> ownerDevices) {
 
         if (!devices.isEmpty()) {
 
@@ -1089,8 +1089,8 @@ public class SphereRegistryWrapper {
                 if (deviceInformation != null) {
                     BezirkDeviceInfo deviceInfo = new BezirkDeviceInfo(deviceId, deviceInformation.getDeviceName(),
                             deviceInformation.getDeviceType(),
-                            ownerDevices.contains(deviceId) ? BezirkDeviceRole.UHU_CONTROL : BezirkDeviceRole.UHU_MEMBER,
-                            true, (List<BezirkZirkInfo>) getUhuServiceInfo(entry.getValue()));
+                            ownerDevices.contains(deviceId) ? BezirkDeviceRole.BEZIRK_CONTROL : BezirkDeviceRole.BEZIRK_MEMBER,
+                            true, (List<BezirkZirkInfo>) getBezirkServiceInfo(entry.getValue()));
                     deviceInfoList.add(deviceInfo);
                 } else {
                     logger.error("Device information for device : " + deviceId + " is null");

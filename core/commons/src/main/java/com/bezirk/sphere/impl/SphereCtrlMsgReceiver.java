@@ -1,11 +1,11 @@
 package com.bezirk.sphere.impl;
 
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
 import com.bezirk.discovery.SphereDiscoveryProcessor;
-import com.bezirk.sphere.api.IUhuSphereMessages;
+import com.bezirk.sphere.api.BezirkSphereMessages;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.messages.ShareRequest;
@@ -20,9 +20,9 @@ import org.slf4j.LoggerFactory;
 public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(SphereCtrlMsgReceiver.class);
 
-    IUhuSphereMessages uhuSphereMessages = null;
+    BezirkSphereMessages uhuSphereMessages = null;
 
-    SphereCtrlMsgReceiver(IUhuSphereMessages uhuSphereMessages) {
+    SphereCtrlMsgReceiver(BezirkSphereMessages uhuSphereMessages) {
         this.uhuSphereMessages = uhuSphereMessages;
     }
 
@@ -70,7 +70,7 @@ public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
     /**
      * register the control message id with message Dispatcher
      */
-    public boolean initControlMessageListener(IUhuComms comms) {
+    public boolean initControlMessageListener(BezirkComms comms) {
         if (comms != null) {
             /**
              * register all the control messages, in which sphere is interested

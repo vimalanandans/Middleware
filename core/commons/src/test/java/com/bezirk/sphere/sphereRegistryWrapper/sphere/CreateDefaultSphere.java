@@ -5,7 +5,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.sphere;
 
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.IUhuDevMode.Mode;
+import com.bezirk.sphere.api.BezirkDevMode.Mode;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.sphere.testUtilities.SphereTestUtility;

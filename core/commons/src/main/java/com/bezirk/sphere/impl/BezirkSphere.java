@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.impl;
 
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.discovery.SphereDiscovery;
@@ -17,12 +17,12 @@ import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereMessages;
 import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.IUhuDevMode;
+import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereAPI;
-import com.bezirk.sphere.api.IUhuSphereDiscovery;
-import com.bezirk.sphere.api.IUhuSphereListener;
-import com.bezirk.sphere.api.IUhuSphereMessages;
+import com.bezirk.sphere.api.BezirkSphereDiscovery;
+import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.BezirkSphereRegistration;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
@@ -43,13 +43,13 @@ import java.util.Set;
  * @author rishabh
  */
 public class BezirkSphere
-        implements BezirkSphereAPI, BezirkSphereForSadl, BezirkSphereRegistration, IUhuSphereDiscovery, IUhuSphereMessages, IUhuDevMode {
+        implements BezirkSphereAPI, BezirkSphereForSadl, BezirkSphereRegistration, BezirkSphereDiscovery, BezirkSphereMessages, BezirkDevMode {
 
     private static final Logger logger = LoggerFactory.getLogger(BezirkSphere.class);
     private CryptoEngine cryptoEngine = null;
     private UPADeviceInterface upaDevice = null;
     private SphereRegistry registry = null;
-    private IUhuSphereListener uhuSphereListener;
+    private BezirkSphereListener uhuSphereListener;
     private ISphereConfig sphereConfig = null;
     private SphereCtrlMsgReceiver ctrlMsgReceiver = null;
     private ShareProcessor shareProcessor = null;
@@ -71,20 +71,20 @@ public class BezirkSphere
     }
 
     /* Initialize uhu sphere */
-    public boolean initSphere(SpherePersistence spherePersistence, IUhuComms uhuComms,
-                              IUhuSphereListener uhuSphereListener, ISphereConfig sphereConfig) {
+    public boolean initSphere(SpherePersistence spherePersistence, BezirkComms uhuComms,
+                              BezirkSphereListener bezirkSphereListener, ISphereConfig sphereConfig) {
 
         if (spherePersistence == null || uhuComms == null) {
-            logger.error("Null passed to for SpherePersistence or IUhuComms");
+            logger.error("Null passed to for SpherePersistence or BezirkComms");
         }
-        if (uhuSphereListener == null) {
-            logger.warn("IUhuSphereListener passed as null");
+        if (bezirkSphereListener == null) {
+            logger.warn("BezirkSphereListener passed as null");
         }
 
         if (sphereConfig == null) {
             logger.warn("sphere Configuration provided is null");
         }
-        this.uhuSphereListener = uhuSphereListener;
+        this.uhuSphereListener = bezirkSphereListener;
         this.sphereConfig = sphereConfig;
 
         try {
@@ -95,7 +95,7 @@ public class BezirkSphere
             return false;
         }
 
-        this.sphereRegistryWrapper = new SphereRegistryWrapper(this.registry, spherePersistence, upaDevice, cryptoEngine, uhuSphereListener, sphereConfig);
+        this.sphereRegistryWrapper = new SphereRegistryWrapper(this.registry, spherePersistence, upaDevice, cryptoEngine, bezirkSphereListener, sphereConfig);
         this.sphereRegistryWrapper.init();
         CommsUtility comms = new CommsUtility(uhuComms);
         shareProcessor = new ShareProcessor(cryptoEngine, upaDevice, comms,
@@ -117,7 +117,7 @@ public class BezirkSphere
      * moved the init discovery from comms layer to sphere.
      * because this is out of comms layer
      */
-    public void initSphereDiscovery(IUhuComms uhuComms) {
+    public void initSphereDiscovery(BezirkComms uhuComms) {
         // initialize the discovery here
         SphereDiscoveryProcessor.setDiscovery(new SphereDiscovery(this));
 
@@ -357,7 +357,7 @@ public class BezirkSphere
     /**
      * set the listener object
      */
-    public void setUhuSphereListener(IUhuSphereListener sphereListener) {
+    public void setBezirkSphereListener(BezirkSphereListener sphereListener) {
         this.uhuSphereListener = sphereListener;
     }
 

@@ -2,12 +2,12 @@ package com.bezirk.processor;
 
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.comms.IUhuComms;
-import com.bezirk.comms.MessageDispatcher;
+import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkMessageDispatcher;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
@@ -47,7 +47,7 @@ import java.util.concurrent.Executors;
  * new comms implementations shall use this as base class
  */
 
-public abstract class CommsProcessor implements IUhuComms {
+public abstract class CommsProcessor implements BezirkComms {
     private static final Logger logger = LoggerFactory.getLogger(CommsProcessor.class);
 
     // thread pool size
@@ -55,7 +55,7 @@ public abstract class CommsProcessor implements IUhuComms {
     private final UPABlockCipherService cipherService = new UPABlockCipherService();
 
     //private BezirkStreamManager bezirkStreamManager = null;
-    MessageDispatcher msgDispatcher = null;
+    BezirkMessageDispatcher msgDispatcher = null;
 
     //LogServiceMessageHandler logServiceMsgHandler = null;
     BezirkSadlManager bezirkSadlManager = null;
@@ -84,9 +84,9 @@ public abstract class CommsProcessor implements IUhuComms {
 
         this.bezirkSadlManager = sadl;
 
-        msgDispatcher = new MessageDispatcher(bezirkSadlManager);
+        msgDispatcher = new BezirkMessageDispatcher(bezirkSadlManager);
 
-        if (BezirkComms.isStreamingEnabled()) {
+        if (BezirkCommunications.isStreamingEnabled()) {
 
             bezirkStreamManager = new BezirkStreamManager(this, msgDispatcher, sadl);
 
@@ -107,7 +107,7 @@ public abstract class CommsProcessor implements IUhuComms {
         // old ones are cleared with stopComms
         executor = Executors.newFixedThreadPool(THREAD_SIZE);
 
-        if (BezirkComms.isStreamingEnabled()) {
+        if (BezirkCommunications.isStreamingEnabled()) {
 
             if (bezirkStreamManager != null) {
                 bezirkStreamManager.startStreams();
@@ -128,7 +128,7 @@ public abstract class CommsProcessor implements IUhuComms {
             // and then shutdownnow
         }
 
-        if (BezirkComms.isStreamingEnabled()) {
+        if (BezirkCommunications.isStreamingEnabled()) {
 
             if (bezirkStreamManager != null) {
                 bezirkStreamManager.endStreams();

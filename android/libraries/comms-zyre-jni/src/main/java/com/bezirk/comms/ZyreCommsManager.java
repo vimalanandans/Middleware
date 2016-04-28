@@ -62,7 +62,7 @@ public class ZyreCommsManager extends CommsProcessor {
             comms.startZyre();
 
             //set the comms u have selected, this will be a bridge for Commons code and Android.
-            BezirkRestCommsManager.getInstance().setUhuComms(this);
+            BezirkRestCommsManager.getInstance().setBezirkComms(this);
 
             // call the base methods
             return super.startComms();

@@ -39,7 +39,7 @@ class ControlActivityHelper {
     private final String BR_SYSTEM_STATUS_ACTION = "com.bezirk.systemstatus";
     private final ControlActivity controlActivity;
     boolean stackVersionMismatch;
-    private String receivedUhuVersion = BezirkVersion.UHU_VERSION;
+    private String receivedUhuVersion = BezirkVersion.BEZIRK_VERSION;
     /**
      * Broadcast receiver to receive the status from the stack if there is  a version mismatch
      */
@@ -147,11 +147,11 @@ class ControlActivityHelper {
             }
         });
 
-        uhuVersion.setText("Expected Bezirk-Version: " + BezirkVersion.UHU_VERSION);
+        uhuVersion.setText("Expected Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
         if (BezirkValidatorUtility.isObjectNotNull(receivedUhuVersion)) {
             uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + receivedUhuVersion);
         } else {
-            uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + BezirkVersion.UHU_VERSION);
+            uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
         }
 
         if (stackVersionMismatch) {
@@ -175,9 +175,9 @@ class ControlActivityHelper {
         final TextView aboutVersionText = (TextView) dialog.findViewById(R.id.about_version_text);
 
         String appName = controlActivity.getString(R.string.app_name);
-        String aboutText = appName + " v" + BezirkVersion.UHU_VERSION + ", Jan 2016, " + controlActivity.getString(R.string.about_copyright_text);
+        String aboutText = appName + " v" + BezirkVersion.BEZIRK_VERSION + ", Jan 2016, " + controlActivity.getString(R.string.about_copyright_text);
         aboutVersionText.setText(aboutText);
-        //aboutVersionText.setText("UPA v"+ BezirkVersion.UHU_VERSION + ", July 2015, � Bosch");
+        //aboutVersionText.setText("UPA v"+ BezirkVersion.BEZIRK_VERSION + ", July 2015, � Bosch");
 
         // Set dialog title
         dialog.setTitle("About " + appName);
@@ -202,7 +202,7 @@ class ControlActivityHelper {
 
         //Start Bezirk
         Intent serviceIntent = new Intent(activity.getApplicationContext(), MainService.class);
-        serviceIntent.setAction("START_UHU");
+        serviceIntent.setAction("START_BEZIRK");
         activity.startService(serviceIntent);
 
         // register a broadcast receiver

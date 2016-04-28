@@ -6,7 +6,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.OwnerSphere;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
@@ -85,11 +85,11 @@ public class AddMemberServices {
         // Create sphere and add to registry
         String sphereName = sphereTestUtility.OWNER_SPHERE_NAME_1;
         String sphereId = sphereName + upaDevice.getDeviceId();
-        Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_DEFAULT);
+        Sphere sphere = new OwnerSphere(sphereName, upaDevice.getDeviceId(), BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT);
         registry.spheres.put(sphereId, sphere);
 
         // Create BezirkDeviceInfo obj
-        BezirkDeviceInfo bezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        BezirkDeviceInfo bezirkDeviceInfo = sphereTestUtility.getBezirkDeviceInfo();
 
         // Device Id
         String ownerDeviceId = UUID.randomUUID().toString();
@@ -110,7 +110,7 @@ public class AddMemberServices {
         String sphereId = sphereName + upaDevice.getDeviceId();
 
         // Create BezirkDeviceInfo obj
-        BezirkDeviceInfo bezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        BezirkDeviceInfo bezirkDeviceInfo = sphereTestUtility.getBezirkDeviceInfo();
 
         // Device Id
         String ownerDeviceId = UUID.randomUUID().toString();

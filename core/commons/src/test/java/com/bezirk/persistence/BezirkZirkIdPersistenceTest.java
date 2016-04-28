@@ -44,7 +44,7 @@ public class BezirkZirkIdPersistenceTest {
      * @throws Exception
      */
     @Test
-    public void testForUhuServiceIdPersistenceRegistration() throws Exception {
+    public void testForBezirkServiceIdPersistenceRegistration() throws Exception {
         RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
         assertNotNull(regPersistence);
         BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
@@ -83,7 +83,7 @@ public class BezirkZirkIdPersistenceTest {
      * @throws Exception
      */
     @Test
-    public void testForUhuServiceIdPersistenceUnRegistrationWithBezirkStartUp() throws Exception {
+    public void testForBezirkServiceIdPersistenceUnRegistrationWithBezirkStartUp() throws Exception {
         RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
         assertNotNull(regPersistence);
         BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
@@ -141,7 +141,7 @@ public class BezirkZirkIdPersistenceTest {
      * @throws Exception
      */
     @Test
-    public void testForUhuServiceIdPersistenceUnRegistrationWithoutBezirkStartUp() throws Exception {
+    public void testForBezirkServiceIdPersistenceUnRegistrationWithoutBezirkStartUp() throws Exception {
         RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
         assertNotNull(regPersistence);
         BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;

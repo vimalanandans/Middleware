@@ -328,10 +328,10 @@ public class DeviceListActivity extends FragmentActivity implements
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "Received Intent for Device control >" + intent.getAction());
-            String command = intent.getStringExtra(UhuActionCommands.UHU_ACTION_COMMANDS);
+            String command = intent.getStringExtra(UhuActionCommands.BEZIRK_ACTION_COMMANDS);
             Log.i(TAG, "Command > " + command);
             if (command.equals(UhuActionCommands.CMD_SPHERE_DISCOVERY_STATUS)) {
-                boolean Status = intent.getBooleanExtra(UhuActionCommands.UHU_ACTION_COMMAND_STATUS, false);
+                boolean Status = intent.getBooleanExtra(UhuActionCommands.BEZIRK_ACTION_COMMAND_STATUS, false);
                 if (Status) { // when status is true
                     if (deviceListActivityHelper != null) {
                         deviceListActivityHelper.updateContainer(entry);
@@ -342,7 +342,7 @@ public class DeviceListActivity extends FragmentActivity implements
 
             } else if (command.equals(UhuActionCommands.CMD_SPHERE_CATCH_STATUS) ||
                     command.equals(UhuActionCommands.CMD_SPHERE_SHARE_STATUS)) {
-                String message = intent.getStringExtra(UhuActionCommands.UHU_ACTION_COMMAND_MESSAGE);
+                String message = intent.getStringExtra(UhuActionCommands.BEZIRK_ACTION_COMMAND_MESSAGE);
                 Toast.makeText(parent, message, Toast.LENGTH_LONG).show();
             }
         }

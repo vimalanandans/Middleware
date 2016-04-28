@@ -16,7 +16,7 @@ import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.IUhuSphereListener;
+import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class DiscoveryProcessor {
     private UPADeviceInterface upaDeviceInterface;
     private CommsUtility comms;
     private SphereRegistryWrapper sphereRegistryWrapper;
-    private IUhuSphereListener uhuSphereListener;
+    private BezirkSphereListener uhuSphereListener;
 
     // sphere discovery parameters
     private int discoveryId = 0;
@@ -50,7 +50,7 @@ public class DiscoveryProcessor {
      * @param uhuSphereListener
      */
     public DiscoveryProcessor(UPADeviceInterface upaDeviceInterface, CommsUtility comms,
-                              SphereRegistryWrapper sphereRegistryWrapper, IUhuSphereListener uhuSphereListener) {
+                              SphereRegistryWrapper sphereRegistryWrapper, BezirkSphereListener uhuSphereListener) {
         this.upaDeviceInterface = upaDeviceInterface;
         this.comms = comms;
         this.sphereRegistryWrapper = sphereRegistryWrapper;
@@ -103,7 +103,7 @@ public class DiscoveryProcessor {
 
                             for (BezirkZirkInfo serviceInfo : services) {
                                 // update the zirk info
-                                sphereRegistryWrapper.updateUhuServiceInfo(discoveredServices, serviceInfo);
+                                sphereRegistryWrapper.updateBezirkServiceInfo(discoveredServices, serviceInfo);
                             }
                         }
                     }

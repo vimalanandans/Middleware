@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.api;
 
-import com.bezirk.sphere.api.IUhuDevMode.Mode;
+import com.bezirk.sphere.api.BezirkDevMode.Mode;
 
 /**
  * @author rishabh

@@ -14,7 +14,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 
 import com.bezirk.actions.BezirkActions;
-import com.bezirk.sphere.api.IUhuDevMode;
+import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.UhuActionCommands;
 import com.bezirk.starter.UhuPreferences;
@@ -163,7 +163,7 @@ public class DeviceControlActivity extends ActionBarActivity
                 intent = new Intent(context, MainService.class);
                 switch (dataModel.getImageId()) {
                     case R.drawable.upa_control: // Bezirk On/OFF
-                        action = checkStatus ? BezirkActions.ACTION_START_UHU : BezirkActions.ACTION_STOP_UHU;
+                        action = checkStatus ? BezirkActions.ACTION_START_BEZIRK : BezirkActions.ACTION_STOP_BEZIRK;
                         intent.setAction(action);
                         startService(intent);
                         break;
@@ -193,7 +193,7 @@ public class DeviceControlActivity extends ActionBarActivity
             Log.d(TAG, "Command >" + intent.getStringExtra("Command"));
 
             if (intent.getStringExtra("Command").equalsIgnoreCase(UhuActionCommands.CMD_DEV_MODE_STATUS)) {
-                deviceControlActivityHelper.updateList((IUhuDevMode.Mode) intent.getSerializableExtra("Mode"), listData);
+                deviceControlActivityHelper.updateList((BezirkDevMode.Mode) intent.getSerializableExtra("Mode"), listData);
             }
         }
     }

@@ -1,11 +1,11 @@
 package com.bezirk.starter;
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.BezirkDevice;
@@ -59,7 +59,7 @@ public class MainService {
     /**
      * communication interface to send and receive the data
      */
-    private IUhuComms comms;
+    private BezirkComms comms;
     /**
      * Keeps track of no of error messages notified. Each time a notification is
      * received, its value is incremented and after reaching
@@ -156,7 +156,7 @@ public class MainService {
         /*************************************
          * Step3 : Shutdown RemoteLogging    *
          *************************************/
-        if (BezirkComms.isRemoteLoggingServiceEnabled()
+        if (BezirkCommunications.isRemoteLoggingServiceEnabled()
                 && BezirkValidatorUtility.isObjectNotNull(loggingGUI)
                 && loggingGUI.isVisible()) {
 
@@ -195,7 +195,7 @@ public class MainService {
             BezirkCommsPC.init(bezirkConfig);
 
         } catch (Exception e) {
-            serviceStarterHelper.fail("Problem initializing BezirkComms", e);
+            serviceStarterHelper.fail("Problem initializing BezirkCommunications", e);
         }
 
         /**************************************************
@@ -274,7 +274,7 @@ public class MainService {
             frame.setVisible(true);
 
             // Check if the Logging is enabled and start the LoggingGUI
-            if (BezirkComms.isRemoteLoggingServiceEnabled()) {
+            if (BezirkCommunications.isRemoteLoggingServiceEnabled()) {
                 logger.info("*** REMOTE LOGGING SERVICE IS ENABLED");
                 SwingUtilities.invokeLater(new Runnable() {
 
@@ -351,7 +351,7 @@ public class MainService {
         /* comms triggers sadle send this data.
          * try {
 
-            ((IUhuComms) comms).setUhuCallback(uhuPcCallback);
+            ((BezirkComms) comms).setUhuCallback(uhuPcCallback);
 
         } catch (Exception e) {
 

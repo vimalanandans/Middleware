@@ -5,7 +5,7 @@
 package com.bezirk.remotelogging.manager;
 
 import com.bezirk.remotelogging.client.LoggingClient;
-import com.bezirk.remotelogging.loginterface.IUhuLogging;
+import com.bezirk.remotelogging.loginterface.BezirkLogging;
 import com.bezirk.remotelogging.processors.LogReceiverQueueProcessor;
 import com.bezirk.remotelogging.service.BezirkLoggingService;
 
@@ -39,7 +39,7 @@ public final class BezirkLoggingManager {
      * @param platformSpecificHandler handler to give callback once the zirk receives the request
      * @throws Exception if handler is null, or something goes wrong while processing.
      */
-    public void startLoggingService(final int loggingPort, final IUhuLogging platformSpecificHandler) throws Exception {
+    public void startLoggingService(final int loggingPort, final BezirkLogging platformSpecificHandler) throws Exception {
         if (bezirkLoggingService == null && platformSpecificHandler != null) {
             bezirkLoggingService = new BezirkLoggingService(loggingPort);
             receiverQueueProcessor = new LogReceiverQueueProcessor(platformSpecificHandler);

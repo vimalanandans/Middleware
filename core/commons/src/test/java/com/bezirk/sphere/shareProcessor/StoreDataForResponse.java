@@ -87,7 +87,7 @@ public class StoreDataForResponse {
     @Test
     public void validParametersReturnsTrue() throws Exception {
         SphereExchangeData sphereExchangeData = sphereTestUtility.getSphereExchangeDataObj();
-        BezirkDeviceInfo inviterBezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        BezirkDeviceInfo inviterBezirkDeviceInfo = sphereTestUtility.getBezirkDeviceInfo();
         String sharerSphereId = sphereTestUtility.generateOwnerCombo();
         /** invoke the method under test using reflection **/
         boolean isDataStored = (Boolean) method.invoke(shareProcessor, sphereExchangeData, inviterBezirkDeviceInfo, sharerSphereId);
@@ -104,7 +104,7 @@ public class StoreDataForResponse {
     @Test(expected = InvocationTargetException.class)
     public void nullSphereExchangeDataThrowsException() throws Exception {
         SphereExchangeData sphereExchangeData = null;
-        BezirkDeviceInfo inviterBezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        BezirkDeviceInfo inviterBezirkDeviceInfo = sphereTestUtility.getBezirkDeviceInfo();
         String sharerSphereId = sphereTestUtility.generateOwnerCombo();
         /** invoke the method under test using reflection **/
         method.invoke(shareProcessor, sphereExchangeData, inviterBezirkDeviceInfo, sharerSphereId);
@@ -121,7 +121,7 @@ public class StoreDataForResponse {
     @Test(expected = InvocationTargetException.class)
     public void nullSharerSphereIdThrowsException() throws Exception {
         SphereExchangeData sphereExchangeData = sphereTestUtility.getSphereExchangeDataObj();
-        BezirkDeviceInfo inviterBezirkDeviceInfo = sphereTestUtility.getUhuDeviceInfo();
+        BezirkDeviceInfo inviterBezirkDeviceInfo = sphereTestUtility.getBezirkDeviceInfo();
         String sharerSphereId = null;
         /** invoke the method under test using reflection **/
         method.invoke(shareProcessor, sphereExchangeData, inviterBezirkDeviceInfo, sharerSphereId);

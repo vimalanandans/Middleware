@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
+import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.starter.UhuActionCommands;
 import com.bezirk.starter.UhuPreferences;
@@ -19,7 +19,7 @@ import com.google.zxing.common.BitMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BezirkSphereForAndroid extends BezirkSphere implements IUhuSphereListener, IUhuQRCode {
+public class BezirkSphereForAndroid extends BezirkSphere implements BezirkSphereListener, IUhuQRCode {
     private static final Logger logger = LoggerFactory.getLogger(BezirkSphereForAndroid.class);
 
     private final Context applicationContext;
@@ -33,7 +33,7 @@ public class BezirkSphereForAndroid extends BezirkSphere implements IUhuSphereLi
         applicationContext = context;
     }
 
-    public boolean initSphere(SpherePersistence spherePersistence, IUhuComms uhuComms) {
+    public boolean initSphere(SpherePersistence spherePersistence, BezirkComms uhuComms) {
         initializeSphereConfig();
         if (sphereConfig == null) logger.error("SphereConfig is null");
         return super.initSphere(spherePersistence, uhuComms, this, sphereConfig);
@@ -134,9 +134,9 @@ public class BezirkSphereForAndroid extends BezirkSphere implements IUhuSphereLi
         Intent intent = new Intent();
 
         intent.setAction(UhuActionCommands.SPHERE_NOTIFICATION_ACTION);
-        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMANDS, command);
-        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMAND_STATUS, status);
-        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMAND_MESSAGE, message);
+        intent.putExtra(UhuActionCommands.BEZIRK_ACTION_COMMANDS, command);
+        intent.putExtra(UhuActionCommands.BEZIRK_ACTION_COMMAND_STATUS, status);
+        intent.putExtra(UhuActionCommands.BEZIRK_ACTION_COMMAND_MESSAGE, message);
 
         // this sends only to the active activity
         if (applicationContext != null)
@@ -147,9 +147,9 @@ public class BezirkSphereForAndroid extends BezirkSphere implements IUhuSphereLi
         Intent intent = new Intent();
 
         intent.setAction(UhuActionCommands.SPHERE_NOTIFICATION_ACTION);
-        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMANDS, command);
-        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMAND_STATUS, status);
-        intent.putExtra(UhuActionCommands.UHU_ACTION_COMMAND_SPHERE_ID, sphereId);
+        intent.putExtra(UhuActionCommands.BEZIRK_ACTION_COMMANDS, command);
+        intent.putExtra(UhuActionCommands.BEZIRK_ACTION_COMMAND_STATUS, status);
+        intent.putExtra(UhuActionCommands.BEZIRK_ACTION_COMMAND_SPHERE_ID, sphereId);
 
         // this sends only to the active activity
         if (applicationContext != null)

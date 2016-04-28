@@ -1,7 +1,7 @@
 package com.bezirk.sphere.impl;
 
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkSphereType;
 
 import org.junit.Test;
 
@@ -47,11 +47,11 @@ public class SphereTest {
 
         assertTrue("Same Spheres are considered not equal.", sphere.equals(sphereTemp));
 
-        sphere.setSphereType(UhuSphereType.UHU_SPHERE_TYPE_CAR);
+        sphere.setSphereType(BezirkSphereType.BEZIRK_SPHERE_TYPE_CAR);
         assertFalse("Different Spheres are considered equal.", sphere.equals(sphereTemp));
         assertFalse("Different Spheres are considered equal.", sphereTemp.equals(sphere));
 
-        sphereTemp.setSphereType(UhuSphereType.UHU_SPHERE_TYPE_CAR);
+        sphereTemp.setSphereType(BezirkSphereType.BEZIRK_SPHERE_TYPE_CAR);
         sphere.setSphereName(sphereName);
         assertFalse("Different Spheres are considered equal.", sphere.equals(sphereTemp));
         assertFalse("Different Spheres are considered equal.", sphereTemp.equals(sphere));

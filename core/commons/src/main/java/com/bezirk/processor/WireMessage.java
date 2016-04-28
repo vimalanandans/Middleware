@@ -27,7 +27,7 @@ public class WireMessage implements Serializable {
     private static final String MSG_VER_STRING = "\"msgVer\":\"";
     /// if the parser type is json, to check the message version VERSION STRING
     private static final String MSG_VER = MSG_VER_STRING + BezirkVersion.getWireVersion() + "\"";
-    //private String msgVer = BezirkVersion.UHU_VERSION;
+    //private String msgVer = BezirkVersion.BEZIRK_VERSION;
     // increment the wire message version in uhu version. when there is a change in message format
     private String msgVer = BezirkVersion.getWireVersion();
     private String sphereId; // sphere id

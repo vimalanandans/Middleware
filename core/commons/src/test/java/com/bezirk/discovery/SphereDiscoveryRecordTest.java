@@ -3,7 +3,7 @@ package com.bezirk.discovery;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkSphereType;
 
 import org.junit.Test;
 
@@ -32,7 +32,8 @@ public class SphereDiscoveryRecordTest {
 
         BezirkZirkEndPoint bezirkZirkEndPoint = new BezirkZirkEndPoint(new BezirkZirkId("ServiceA"));
         bezirkZirkEndPoint.device = "DeviceA";
-        BezirkSphereInfo bezirkSphereInfo = new BezirkSphereInfo("CarSphere12", "CarSphere", UhuSphereType.UHU_SPHERE_TYPE_CAR, null, null);
+        BezirkSphereInfo bezirkSphereInfo = new BezirkSphereInfo("CarSphere12", "CarSphere",
+                BezirkSphereType.BEZIRK_SPHERE_TYPE_CAR, null, null);
         sphereDiscoveryRecord.updateSet(bezirkSphereInfo, bezirkZirkEndPoint);
 
 

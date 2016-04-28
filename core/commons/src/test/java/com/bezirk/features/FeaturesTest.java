@@ -25,7 +25,7 @@ public class FeaturesTest {
 
         }
 
-        assertTrue("Bezirk comms should be enabled", CommsFeature.COMMS_UHU.isActive());
+        assertTrue("Bezirk comms should be enabled", CommsFeature.COMMS_BEZIRK.isActive());
         assertFalse("Bezirk zyre shouldn't be enabled", CommsFeature.COMMS_ZYRE.isActive());
         assertFalse("Bezirk secure should be null or not defined ", CommsFeature.COMMS_SECURE.isActive());
     }

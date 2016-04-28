@@ -1,6 +1,6 @@
 package com.bezirk.rest;
 
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.EventLedger;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class BezirkRestCommsManager {
 
     private static volatile BezirkRestCommsManager commsManager;
 
-    private IUhuComms uhuComms;
+    private BezirkComms uhuComms;
 
     //A rolling map of limited size of 100
     private Map<Integer, List<String>> responseMap;
@@ -57,11 +57,11 @@ public class BezirkRestCommsManager {
         return commsManager;
     }
 
-    public IUhuComms getBezirkComms() {
+    public BezirkComms getBezirkComms() {
         return uhuComms;
     }
 
-    public void setUhuComms(IUhuComms uhuComms) {
+    public void setBezirkComms(BezirkComms uhuComms) {
         this.uhuComms = uhuComms;
     }
 

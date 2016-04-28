@@ -18,7 +18,7 @@ public class BezirkDeviceTest {
 
         Location loc = new Location("FLOOR1/ROOM1/TABLE");
         String deviceName = "DeviceA";
-        String deviceType = BezirkDeviceType.UHU_DEVICE_TYPE_CAR;
+        String deviceType = BezirkDeviceType.BEZIRK_DEVICE_TYPE_CAR;
         String deviceId = "Device123";
 
         BezirkDevice bezirkDevice = new BezirkDevice();
@@ -31,7 +31,7 @@ public class BezirkDeviceTest {
         assertEquals("Device Name is not equal to the set value.", deviceName, bezirkDevice.getDeviceName());
         assertEquals("Device Type is not equal to the set value.", deviceType, bezirkDevice.getDeviceType());
 
-        deviceType = BezirkDeviceType.UHU_DEVICE_TYPE_COFFEE;
+        deviceType = BezirkDeviceType.BEZIRK_DEVICE_TYPE_COFFEE;
         bezirkDevice.setDeviceType(deviceType);
 
         assertEquals("Device Type is not equal to the set value.", deviceType, bezirkDevice.getDeviceType());

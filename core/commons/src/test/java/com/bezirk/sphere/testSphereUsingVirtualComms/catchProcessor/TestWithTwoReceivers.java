@@ -10,7 +10,7 @@ package com.bezirk.sphere.testSphereUsingVirtualComms.catchProcessor;
 
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
-import com.bezirk.sphere.testSphereUsingVirtualComms.UhuCommsMock;
+import com.bezirk.sphere.testSphereUsingVirtualComms.BezirkCommsMock;
 import com.bezirk.sphere.testSphereUsingVirtualComms.VirtualCommsManager;
 
 import org.junit.After;
@@ -29,10 +29,10 @@ public class TestWithTwoReceivers {
     static int numOfDevices = 3;
     private static final Logger logger = LoggerFactory.getLogger(TestWithTwoReceivers.class);
     private static VirtualCommsManager manager = new VirtualCommsManager();
-    private static UhuCommsMock uhuCommsMock;
+    private static BezirkCommsMock bezirkCommsMock;
 
     /**
-     * Creates the virtual devices required for this test and the UhuCommsMock object.
+     * Creates the virtual devices required for this test and the BezirkCommsMock object.
      *
      * @throws java.lang.Exception
      */
@@ -40,7 +40,7 @@ public class TestWithTwoReceivers {
     public static void setUpBeforeClass() throws Exception {
         logger.info("******** Setting up TestWithTwoReceivers ********");
         manager.setUp(numOfDevices);
-        uhuCommsMock = manager.uhuCommsMock;
+        bezirkCommsMock = manager.bezirkCommsMock;
     }
 
     /**
@@ -93,7 +93,7 @@ public class TestWithTwoReceivers {
         assertTrue(manager.device[0].catchProcessor.processCatchCode(catchCode, sphereId0));
 
         //Get the CatchRequest object received at device1.
-        CatchRequest receivedRequest = (CatchRequest) uhuCommsMock.message.getMessage();
+        CatchRequest receivedRequest = (CatchRequest) bezirkCommsMock.message.getMessage();
         //Process the received request at device1 and send a catch response if processing was successful
         assertTrue(manager.device[1].catchProcessor.processRequest(receivedRequest));
 
@@ -102,7 +102,7 @@ public class TestWithTwoReceivers {
         assertFalse(manager.device[2].catchProcessor.processRequest(receivedRequest));
 
         //Process the response received at device0.
-        CatchResponse receivedResponse = (CatchResponse) uhuCommsMock.message.getMessage();
+        CatchResponse receivedResponse = (CatchResponse) bezirkCommsMock.message.getMessage();
         assertTrue(manager.device[0].catchProcessor.processResponse(receivedResponse));
 
         logger.info("****** Ending the valid catch code test *****");

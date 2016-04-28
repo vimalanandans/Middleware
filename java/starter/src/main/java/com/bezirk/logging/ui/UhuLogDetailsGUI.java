@@ -5,7 +5,7 @@
 package com.bezirk.logging.ui;
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.logging.LogServiceActivatorDeactivator;
 import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
 import com.bezirk.remotelogging.util.Util;
@@ -70,7 +70,7 @@ public class UhuLogDetailsGUI extends JFrame {
      * To print the timestamp of the recieved msg
      */
     private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS", Locale.GERMANY);
-    transient IUhuComms comms;
+    transient BezirkComms comms;
     private final transient WindowAdapter closeButtonListener = new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent arg0) {
@@ -102,7 +102,7 @@ public class UhuLogDetailsGUI extends JFrame {
      *
      * @param loggingService loggingService that will be listening at a particular socket
      */
-    public UhuLogDetailsGUI(IUhuComms comms, String[] spheres, JFrame frame,
+    public UhuLogDetailsGUI(BezirkComms comms, String[] spheres, JFrame frame,
                             boolean isDeveloperModeEnabled) {
         this.sphereSelectFrame = frame;
         selectedSpheres = spheres.clone();

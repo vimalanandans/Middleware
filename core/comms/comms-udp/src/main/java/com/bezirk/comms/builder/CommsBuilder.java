@@ -1,6 +1,6 @@
 package com.bezirk.comms.builder;
 
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.BezirkCommsManager;
 
 /**
@@ -10,8 +10,8 @@ import com.bezirk.comms.BezirkCommsManager;
  */
 public class CommsBuilder {
 
-    static public IUhuComms createComms() {
-        IUhuComms comms;
+    static public BezirkComms createComms() {
+        BezirkComms comms;
 
         // for Bezirk (as of now)
         comms = new BezirkCommsManager();

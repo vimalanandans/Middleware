@@ -41,7 +41,7 @@ public class DiscoveryTest {
     private static BezirkZirkId uhuServiceAId = new BezirkZirkId("ServiceA"), uhuServiceBId = new BezirkZirkId("ServiceB");
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
     private static BezirkSadlManager bezirkSadlManager = null;
-    private Set<BezirkDiscoveredZirk> discoveredServiceSet;
+    private Set<BezirkDiscoveredZirk> discoveredZirkSet;
 
     private Set<BezirkZirkId> uhuServiceIdSet;
 
@@ -70,15 +70,15 @@ public class DiscoveryTest {
     @Test
     public void testDiscoverServices() {
 
-		/*Test1 : SadlManager should return null discoveredServiceSet when protocolRole is null.*/
-        discoveredServiceSet = bezirkSadlManager.discoverZirks(null, reception);
-        assertNull("DiscoveredZirk set is not null when services not available.", discoveredServiceSet);
+		/*Test1 : SadlManager should return null discoveredZirkSet when protocolRole is null.*/
+        discoveredZirkSet = bezirkSadlManager.discoverZirks(null, reception);
+        assertNull("DiscoveredZirk set is not null when services not available.", discoveredZirkSet);
 
 		/*No services are subscribed to streamlessProtocol yet. 
 		 * DiscoveredServiceSet should be null.
 		 * */
-        discoveredServiceSet = bezirkSadlManager.discoverZirks(subscribedStreamlessPRole, reception);
-        assertNull("DiscoveredZirk set is not null when services not available.", discoveredServiceSet);
+        discoveredZirkSet = bezirkSadlManager.discoverZirks(subscribedStreamlessPRole, reception);
+        assertNull("DiscoveredZirk set is not null when services not available.", discoveredZirkSet);
 		
 		
 		/* ServiceA and ServiceB are registered and subscribed to StreamlessProtocolRole.
@@ -100,10 +100,10 @@ public class DiscoveryTest {
     private void testDiscoveryWithSpecificLocation() {
 		
 		/*SadlManager is queried to discover services subscribed to StreamlessProtocolRole 
-		 * near to reception.SadlManager should return null discoveredServiceSet */
-        discoveredServiceSet = bezirkSadlManager.discoverZirks(subscribedStreamlessPRole,
+		 * near to reception.SadlManager should return null discoveredZirkSet */
+        discoveredZirkSet = bezirkSadlManager.discoverZirks(subscribedStreamlessPRole,
                 reception);
-        assertNull("DiscoveredZirk set is not null when services not available.", discoveredServiceSet);
+        assertNull("DiscoveredZirk set is not null when services not available.", discoveredZirkSet);
 		
 		/*ServiceA is set to the location "OFFICE1/BLOCK1/RECEPTION"*/
         bezirkSadlManager.setLocation(uhuServiceAId, reception);
@@ -130,12 +130,12 @@ public class DiscoveryTest {
 
     private Set<BezirkZirkId> discoverServicesUsingProtocolAndLocation(
             ProtocolRole protocolRole, Location loc) {
-        discoveredServiceSet = bezirkSadlManager.discoverZirks(protocolRole, loc);
-        uhuServiceIdSet = getUhuServiceIdSetOfDiscoveredServices(discoveredServiceSet);
+        discoveredZirkSet = bezirkSadlManager.discoverZirks(protocolRole, loc);
+        uhuServiceIdSet = getBezirkZirkIdSetOfDiscoveredZirks(discoveredZirkSet);
         return uhuServiceIdSet;
     }
 
-    private Set<BezirkZirkId> getUhuServiceIdSetOfDiscoveredServices(
+    private Set<BezirkZirkId> getBezirkZirkIdSetOfDiscoveredZirks(
             Set<BezirkDiscoveredZirk> discoveredServiceSet) {
         BezirkZirkEndPoint serviceEndPoint;
         uhuServiceIdSet = null;

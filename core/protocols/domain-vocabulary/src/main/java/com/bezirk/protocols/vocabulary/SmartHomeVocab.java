@@ -180,7 +180,7 @@ public class SmartHomeVocab {
     public static class uom {
         // Bezirk Location
         // see: http://tahiti.si.de.bosch.com:7990/projects/UPA/repos/platform/browse/Java-Common/uhu/uhu-API/src/main/java/com/bosch/upa/uhu/api/addressing/Location.java?at=refs%2Fheads%2Ftopic%2Fplatform-0.5
-        public static final String UHU_LOCATION = "http://upa.bosch.com/vocab/shv#UHU_LOCATION";
+        public static final String BEZIRK_LOCATION = "http://upa.bosch.com/vocab/shv#UHU_LOCATION";
 
         // Location Likelihood Distribution
         // see: https://fe0vmc0345.de.bosch.com/wiki/x/C4DnAQ

@@ -63,7 +63,7 @@ public class MulticastControlMessageTest {
         assertEquals("Discriminator not equal to the set value.", discriminator, deserializedCtrlMessage.getDiscriminator());
         assertEquals("SphereId not equal to the set value.", sphereId, deserializedCtrlMessage.getSphereId());
         assertEquals("Key not equal to the set value.", key, deserializedCtrlMessage.getUniqueKey());
-    /*--- TO BE UNCOMMENTED ONCE THE UHUSERVICEENDPOINT IS FIXED-----
+    /*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
 	 * device null condition should be checked separately before device equals in UhuServiceEndpoint equals api.
 	 * 
 	 assertEquals("Sender not equal to the set value.",sender, deserializedCtrlMessage.getSender());
@@ -75,7 +75,7 @@ public class MulticastControlMessageTest {
         deserializedCtrlMessage = com.bezirk.control.messages.MulticastControlMessage.deserialize(serializedMessage, com.bezirk.control.messages.MulticastControlMessage.class);
         assertEquals("Discriminator not equal to the set value.", discriminator, deserializedCtrlMessage.getDiscriminator());
         assertEquals("SphereId not equal to the set value.", sphereId, deserializedCtrlMessage.getSphereId());
-	/*--- TO BE UNCOMMENTED ONCE THE UHUSERVICEENDPOINT IS FIXED-----
+	/*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
 	 * device null condition should be checked separately before device equals in UhuServiceEndpoint equals api.
 	 * 
 	 assertEquals("Sender not equal to the set value.",sender, deserializedCtrlMessage.getSender());

@@ -1,8 +1,8 @@
 package com.bezirk.comms.udp.listeners;
 
 import com.bezirk.comms.BezirkCommsLegacy;
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.udp.validation.MessageValidators;
 import com.bezirk.control.messages.EventLedger;
 import com.bezrik.network.BezirkNetworkUtilities;
@@ -37,13 +37,13 @@ public class EventUnicastListener implements Runnable {
     public EventUnicastListener(DatagramSocket unicastSocket, BezirkCommsLegacy uhuComms, CommsNotification commsNotificationCallback) {
         this.unicastSocket = unicastSocket;
         this.commsErrNotificationError = commsNotificationCallback;
-        executor = Executors.newFixedThreadPool(BezirkComms.getPOOL_SIZE());
+        executor = Executors.newFixedThreadPool(BezirkCommunications.getPOOL_SIZE());
         this.uhuComms = uhuComms;
     }
 
     @Override
     public void run() {
-        byte[] receiveData = new byte[BezirkComms.getMAX_BUFFER_SIZE()];
+        byte[] receiveData = new byte[BezirkCommunications.getMAX_BUFFER_SIZE()];
         DatagramPacket receivePacket;
         running = true;
         InetAddress myAddress = BezirkNetworkUtilities.getLocalInet();

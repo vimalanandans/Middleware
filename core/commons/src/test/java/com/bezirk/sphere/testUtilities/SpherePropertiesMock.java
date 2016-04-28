@@ -1,7 +1,7 @@
 package com.bezirk.sphere.testUtilities;
 
 import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.IUhuDevMode.Mode;
+import com.bezirk.sphere.api.BezirkDevMode.Mode;
 
 public class SpherePropertiesMock implements ISphereConfig {
 

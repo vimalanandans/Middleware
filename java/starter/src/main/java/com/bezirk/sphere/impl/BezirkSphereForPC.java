@@ -1,11 +1,11 @@
 package com.bezirk.sphere.impl;
 
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
+import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.util.BezirkValidatorUtility;
 import com.google.zxing.common.BitMatrix;
@@ -23,7 +23,7 @@ import javax.imageio.ImageIO;
  * Created by GUR1PI on 8/9/2014.
  */
 public class BezirkSphereForPC extends BezirkSphere implements IUhuQRCode,
-        IUhuSphereListener {
+        BezirkSphereListener {
 
     private static final Logger logger = LoggerFactory.getLogger(BezirkSphereForPC.class);
     private final SphereUI sphereUI;
@@ -141,7 +141,7 @@ public class BezirkSphereForPC extends BezirkSphere implements IUhuQRCode,
 
     }
 
-    public void initSphere(SpherePersistence spherePersistence, IUhuComms uhuComms, ISphereConfig sphereConfig) {
+    public void initSphere(SpherePersistence spherePersistence, BezirkComms uhuComms, ISphereConfig sphereConfig) {
         super.initSphere(spherePersistence, uhuComms, this, sphereConfig);
     }
 

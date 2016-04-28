@@ -5,8 +5,8 @@ import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.ICryptoInternals;
-import com.bezirk.sphere.api.IUhuSphereListener;
 import com.bezirk.sphere.messages.ShareRequest;
 import com.bezirk.sphere.messages.ShareResponse;
 import com.bezirk.sphere.security.SphereKeys;
@@ -158,7 +158,7 @@ public class ShareProcessor {
         if (storeData(inviterSphereId, sharerBezirkDeviceInfo)) {
             logger.info("Share Request Processing, Step2: storing sphere exchange data complete");
         } else {
-            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, IUhuSphereListener.Status.FAILURE, SHARE_FAILURE_MSG);
+            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, BezirkSphereListener.Status.FAILURE, SHARE_FAILURE_MSG);
             logger.error("Share Request Processing, Step2: storing sphere exchange data failed");
             return false;
         }
@@ -172,7 +172,7 @@ public class ShareProcessor {
         if (shareResponse != null) {
             logger.info("Share Request Processing, Step3: preparing share response complete");
         } else {
-            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, IUhuSphereListener.Status.FAILURE, SHARE_FAILURE_MSG);
+            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, BezirkSphereListener.Status.FAILURE, SHARE_FAILURE_MSG);
             logger.error("Share Request Processing, Step3: preparing share response failed");
             return false;
         }
@@ -184,12 +184,12 @@ public class ShareProcessor {
         if (comms.sendMessage(shareResponse)) {
             logger.info("Share Request Processing, Step4: share response sending complete");
         } else {
-            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, IUhuSphereListener.Status.FAILURE, SHARE_FAILURE_MSG);
+            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, BezirkSphereListener.Status.FAILURE, SHARE_FAILURE_MSG);
             logger.error("Share Request Processing, Step4: share response sending failed");
             return false;
         }
 
-        sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, IUhuSphereListener.Status.SUCCESS, "Share successful");
+        sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, BezirkSphereListener.Status.SUCCESS, "Share successful");
         return true;
     }
 
@@ -215,10 +215,10 @@ public class ShareProcessor {
 
         if (storeData(SphereExchangeData.deserialize(shareResponse.getSphereExchangeDataString()),
                 shareResponse.getBezirkDeviceInfo(), shareResponse.getSharerSphereId())) {
-            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, IUhuSphereListener.Status.SUCCESS, "Share successful");
+            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, BezirkSphereListener.Status.SUCCESS, "Share successful");
             return true;
         } else {
-            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, IUhuSphereListener.Status.FAILURE, SHARE_FAILURE_MSG);
+            sphereRegistryWrapper.updateListener(SphereRegistryWrapper.Operation.SHARE, BezirkSphereListener.Status.FAILURE, SHARE_FAILURE_MSG);
             return false;
         }
     }
@@ -376,7 +376,7 @@ public class ShareProcessor {
 
                 BezirkDeviceInfo bezirkDeviceInfo = new BezirkDeviceInfo(upaDeviceInterface.getDeviceId(),
                         deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
-                        (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
+                        (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
 
                 shareRequest = new ShareRequest(inviterShortCode, bezirkDeviceInfo,
                         BezirkNetworkUtilities.getServiceEndPoint(null), sharerSphereId);
@@ -499,7 +499,7 @@ public class ShareProcessor {
 
                 BezirkDeviceInfo bezirkDeviceInfoToSend = new BezirkDeviceInfo(upaDeviceInterface.getDeviceId(),
                         deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
-                        (List<BezirkZirkInfo>) sphereRegistryWrapper.getUhuServiceInfo(services));
+                        (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
                 shareResponse = new ShareResponse(BezirkNetworkUtilities.getServiceEndPoint(null), sharer, uniqueKey,
                         inviterShortCode, bezirkDeviceInfoToSend, sphereExchangeData, sharerSphereId);
                 return shareResponse;

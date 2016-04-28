@@ -6,8 +6,8 @@ public class BezirkActions {
     // Component constants
     //------------------------
 
-    public final static String COMPONENT_UHU_PKG = "UHU_PKG";
-    public final static String COMPONENT_UHU_CLASS = "UHU_CLASS";
+    public final static String COMPONENT_BEZIRK_PKG = "BEZIRK_PKG";
+    public final static String COMPONENT_BEZIRK_CLASS = "BEZIRK_CLASS";
 
     //------------------------
     // Action name constants
@@ -20,13 +20,13 @@ public class BezirkActions {
     //------------------------
     // Bezirk Control Actions
     //------------------------
-    public final static String ACTION_START_UHU = "START_UHU";
+    public final static String ACTION_START_BEZIRK = "START_BEZIRK";
 
-    public final static String ACTION_STOP_UHU = "STOP_UHU";
+    public final static String ACTION_STOP_BEZIRK = "STOP_BEZIRK";
 
-    public final static String ACTION_REST_START_UHU = "START_REST_SERVER";
+    public final static String ACTION_REST_START_BEZIRK = "START_REST_SERVER";
 
-    public final static String ACTION_REST_STOP_UHU = "STOP_REST_SERVER";
+    public final static String ACTION_REST_STOP_BEZIRK = "STOP_REST_SERVER";
 
     public final static String ACTION_CHANGE_DEVICE_TYPE = "ACTION_CHANGE_DEVICE_TYPE";
 
@@ -40,7 +40,7 @@ public class BezirkActions {
 
     public final static String ACTION_CLEAR_PERSISTENCE = "ACTION_CLEAR_PERSISTENCE";
 
-    public final static String ACTION_DIAG_UHU = "ACTION_DIAG_UHU";
+    public final static String ACTION_DIAG_BEZIRK = "ACTION_DIAG_BEZIRK";
 
     public final static String ACTION_DEV_MODE_ON = "ACTION_DEV_MODE_ON";
 

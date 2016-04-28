@@ -29,7 +29,7 @@ public class BezirkDeviceInfoTest {
         String deviceId = "Device123";
         String deviceName = "DeviceA";
         String deviceType = "PC";
-        BezirkDeviceRole deviceRole = BezirkDeviceInfo.BezirkDeviceRole.UHU_MEMBER;
+        BezirkDeviceRole deviceRole = BezirkDeviceInfo.BezirkDeviceRole.BEZIRK_MEMBER;
         boolean deviceActive = true;
         String zirkName = "ZirkA";
         String zirkId = "Zirk123";
@@ -61,7 +61,7 @@ public class BezirkDeviceInfoTest {
         String deviceId = "Device123";
         String deviceName = "DeviceA";
         String deviceType = "PC";
-        BezirkDeviceRole deviceRole = BezirkDeviceInfo.BezirkDeviceRole.UHU_MEMBER;
+        BezirkDeviceRole deviceRole = BezirkDeviceInfo.BezirkDeviceRole.BEZIRK_MEMBER;
         boolean deviceActive = true;
         String zirkName = "ZirkA";
         String zirkId = "Zirk123";

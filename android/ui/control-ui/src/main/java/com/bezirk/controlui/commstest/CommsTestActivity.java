@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.controlui.R;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
@@ -61,7 +61,7 @@ public class CommsTestActivity extends ActionBarActivity {
 
     // till the code is going to be compleltey refactored
     // use the below flag to switch manually
-    private final boolean USE_UHU_UDP = false;
+    private final boolean USE_BEZIRK_UDP = false;
 
     private final UIStore uiStore = new UIStore();
     private int multicastSendingPort = 1234, multicastReceivingPort = 1234,
@@ -177,7 +177,7 @@ public class CommsTestActivity extends ActionBarActivity {
      * Starts the Listeners (Unicast and Multicast)
      */
     private void startComms() {
-        if (USE_UHU_UDP == false)
+        if (USE_BEZIRK_UDP == false)
             return; // in case of zyre or any other comms don't init udps
 
         if (null == mReceiver) {
@@ -195,7 +195,7 @@ public class CommsTestActivity extends ActionBarActivity {
      */
     private void stopComms() {
 
-        if (USE_UHU_UDP == false)
+        if (USE_BEZIRK_UDP == false)
             return; // in case of zyre or any other comms don't init udps
 
         if (mReceiver != null) {
@@ -265,7 +265,7 @@ public class CommsTestActivity extends ActionBarActivity {
         try {
             String data = new Gson().toJson(msg);
 
-            if (!USE_UHU_UDP) {
+            if (!USE_BEZIRK_UDP) {
                 //Ping Bezirk
                 Intent serviceIntent = new Intent(this.getApplicationContext(), MainService.class);
                 serviceIntent.setAction(BR_COMMS_DIAG_ACTION);
@@ -293,7 +293,7 @@ public class CommsTestActivity extends ActionBarActivity {
 
         String sendDataString = new Gson().toJson(pongMessage);
         try {
-            if (USE_UHU_UDP) {
+            if (USE_BEZIRK_UDP) {
                 final byte[] sendData = sendDataString.getBytes();
 
                 final DatagramSocket clientSocket = new DatagramSocket();
@@ -741,7 +741,7 @@ public class CommsTestActivity extends ActionBarActivity {
             NetworkInterface intf;
             InetAddress addr = null;
             try {
-                intf = NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME());
+                intf = NetworkInterface.getByName(BezirkCommunications.getINTERFACE_NAME());
                 addr = BezirkValidatorUtility.isObjectNotNull(intf) ? BezirkNetworkUtilities.getIpForInterface(intf) : null;
                 if (addr == null) {
                     printToast("ERROR IN STARTING UNICAST LISTENER");

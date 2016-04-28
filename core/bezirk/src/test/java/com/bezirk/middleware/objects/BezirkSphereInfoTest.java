@@ -60,7 +60,7 @@ public class BezirkSphereInfoTest {
         String deviceId = "Device123";
         String deviceName = "DeviceA";
         String deviceType = "PC";
-        BezirkDeviceRole deviceRole = BezirkDeviceRole.UHU_MEMBER;
+        BezirkDeviceRole deviceRole = BezirkDeviceRole.BEZIRK_MEMBER;
         boolean deviceActive = true;
         String zirkName = "ZirkA";
         String zirkId = "Zirk123";

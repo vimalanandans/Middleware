@@ -16,7 +16,7 @@
 //import org.slf4j.LoggerFactory;
 //
 //import SphereRegistry;
-//import UhuSphereType;
+//import BezirkSphereType;
 //import MemberSphere;
 //import OwnerSphere;
 //import sphere;
@@ -81,10 +81,10 @@
 //	public final void validSphere() {
 //		String sphereId = UUID.randomUUID().toString();
 //		sphere ownerSphere = new OwnerSphere(sphereTestUtility.OWNER_SPHERE_NAME_1,
-//				sphereTestUtility.DEVICE_1.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_HOME);
+//				sphereTestUtility.DEVICE_1.getDeviceId(), BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME);
 //		registry.spheres.put(sphereId, ownerSphere);
 //
-//		assertEquals(UhuSphereType.UHU_SPHERE_TYPE_HOME, sphereRegistryWrapper.getSphereInfo(sphereId).getSphereType());
+//		assertEquals(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME, sphereRegistryWrapper.getSphereInfo(sphereId).getSphereType());
 //		assertEquals(sphereTestUtility.OWNER_SPHERE_NAME_1, sphereRegistryWrapper.getSphereInfo(sphereId).getSphereName());
 //		assertEquals(sphereId, sphereRegistryWrapper.getSphereInfo(sphereId).getSphereID());
 //		
@@ -110,7 +110,7 @@
 //	@Test
 //	public final void temporarySphereReturnsNull() {
 //		String sphereId = UUID.randomUUID().toString();
-//		sphere tempMemberSphere = new MemberSphere(sphereTestUtility.MEMBER_SPHERE_NAME_1, UhuSphereType.UHU_SPHERE_TYPE_HOME, null, null, true);
+//		sphere tempMemberSphere = new MemberSphere(sphereTestUtility.MEMBER_SPHERE_NAME_1, BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME, null, null, true);
 //		registry.spheres.put(sphereId, tempMemberSphere);
 //
 //		assertNull(sphereRegistryWrapper.getSphereInfo(sphereId));

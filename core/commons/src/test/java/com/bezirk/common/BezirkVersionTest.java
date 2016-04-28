@@ -15,8 +15,8 @@ public class BezirkVersionTest {
     @Test
     public void test() {
 
-        assertNotNull("BezirkVersion cannot be retrieved.", BezirkVersion.UHU_VERSION);
-        assertNotEquals("BezirkVersion cannot be retrieved.", "1.1", BezirkVersion.UHU_VERSION);
+        assertNotNull("BezirkVersion cannot be retrieved.", BezirkVersion.BEZIRK_VERSION);
+        assertNotEquals("BezirkVersion cannot be retrieved.", "1.1", BezirkVersion.BEZIRK_VERSION);
 
 
     }

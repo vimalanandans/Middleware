@@ -43,7 +43,7 @@ public class SphereCatchRequestExtTest {
         logger.info("***** Setting up SphereCatchRequestExtTest TestCase *****");
         services.add(serviceAInfo);
         services.add(serviceBInfo);
-        bezirkDeviceInfo = new BezirkDeviceInfo("TESTDEVICE", "TEST", "PC", BezirkDeviceRole.UHU_MEMBER, true, services);
+        bezirkDeviceInfo = new BezirkDeviceInfo("TESTDEVICE", "TEST", "PC", BezirkDeviceRole.BEZIRK_MEMBER, true, services);
     }
 
     /**

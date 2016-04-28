@@ -12,7 +12,7 @@ import com.bezirk.sphere.messages.ShareResponse;
  * @author Rishabh Gulati
  */
 
-public interface IUhuSphereMessages {
+public interface BezirkSphereMessages {
 
     public boolean processCatchRequestExt(CatchRequest catchRequest);
 

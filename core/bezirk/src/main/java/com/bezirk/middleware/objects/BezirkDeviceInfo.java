@@ -124,8 +124,8 @@ public class BezirkDeviceInfo {
     }
 
     public enum BezirkDeviceRole {
-        UHU_MEMBER, // this device has control role for this sphere
-        UHU_CONTROL // this device has member role for this sphere
+        BEZIRK_MEMBER, // this device has control role for this sphere
+        BEZIRK_CONTROL // this device has member role for this sphere
     }
 
 

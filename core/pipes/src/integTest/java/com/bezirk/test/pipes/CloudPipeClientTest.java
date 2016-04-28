@@ -52,7 +52,7 @@ public class CloudPipeClientTest {
 
     @Before
     public void beforeEachTest() throws Exception {
-        URI uri = new URI(TestUtils.URL_UHUCLOUD_LOCALHOST);
+        URI uri = new URI(TestUtils.URL_BEZIRKCLOUD_LOCALHOST);
         client = new CloudPipeClientImpl(uri.toURL());
 
         // The request event to send

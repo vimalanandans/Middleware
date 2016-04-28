@@ -9,7 +9,7 @@ package com.bezirk.sphere.testSphereUsingVirtualComms.shareProcessor;
 
 import com.bezirk.sphere.messages.ShareRequest;
 import com.bezirk.sphere.messages.ShareResponse;
-import com.bezirk.sphere.testSphereUsingVirtualComms.UhuCommsMock;
+import com.bezirk.sphere.testSphereUsingVirtualComms.BezirkCommsMock;
 import com.bezirk.sphere.testSphereUsingVirtualComms.VirtualCommsManager;
 
 import org.junit.After;
@@ -28,10 +28,10 @@ public class TestWithOneReceiver {
     static int numOfDevices = 2;
     private static final Logger logger = LoggerFactory.getLogger(TestWithOneReceiver.class);
     private static VirtualCommsManager manager = new VirtualCommsManager();
-    private static UhuCommsMock uhuCommsMock;
+    private static BezirkCommsMock bezirkCommsMock;
 
     /**
-     * Creates the virtual devices required for this test and the UhuCommsMock object.
+     * Creates the virtual devices required for this test and the BezirkCommsMock object.
      *
      * @throws java.lang.Exception
      */
@@ -39,7 +39,7 @@ public class TestWithOneReceiver {
     public static void setUpBeforeClass() throws Exception {
         logger.info("******** Setting up TestWithOneReceiver ********");
         manager.setUp(numOfDevices);
-        uhuCommsMock = manager.uhuCommsMock;
+        bezirkCommsMock = manager.bezirkCommsMock;
     }
 
     /**
@@ -91,12 +91,12 @@ public class TestWithOneReceiver {
         assertTrue(manager.device[0].shareProcessor.processShareCode(shareCode, sphereId0));
 
         //Get the ShareRequest object received at device1.
-        ShareRequest receivedRequest = (ShareRequest) uhuCommsMock.message.getMessage();
+        ShareRequest receivedRequest = (ShareRequest) bezirkCommsMock.message.getMessage();
         //Process the received request at device1 and send a share response if processing was successful
         assertTrue(manager.device[1].shareProcessor.processRequest(receivedRequest));
 
         //Process the response received at device0.
-        ShareResponse receivedResponse = (ShareResponse) uhuCommsMock.message.getMessage();
+        ShareResponse receivedResponse = (ShareResponse) bezirkCommsMock.message.getMessage();
         assertTrue(manager.device[0].shareProcessor.processResponse(receivedResponse));
 
         logger.info("****** Ending the valid share code test *****");
@@ -123,7 +123,7 @@ public class TestWithOneReceiver {
         assertTrue(manager.device[0].shareProcessor.processShareCode(shareCode, sphereId0));
 
         //Get the ShareRequest object received at device1.
-        ShareRequest receivedRequest = (ShareRequest) uhuCommsMock.message.getMessage();
+        ShareRequest receivedRequest = (ShareRequest) bezirkCommsMock.message.getMessage();
         //Process the received request at device1 and send a share response if processing was successful
         assertFalse(manager.device[1].shareProcessor.processRequest(receivedRequest));
 

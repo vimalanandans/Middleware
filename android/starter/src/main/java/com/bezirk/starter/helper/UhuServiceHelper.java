@@ -3,7 +3,7 @@ package com.bezirk.starter.helper;
 import android.content.Intent;
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
@@ -172,7 +172,7 @@ public final class UhuServiceHelper {
      */
     void sendUnicastStream(Intent intent) {
         logger.info("------------ Received message to push the Stream ----------------------");
-        boolean isStreamingValid = BezirkComms.isStreamingEnabled();
+        boolean isStreamingValid = BezirkCommunications.isStreamingEnabled();
         if (!isStreamingValid) {
             logger.error(" Streaming is not enabled!");
         }
@@ -222,7 +222,7 @@ public final class UhuServiceHelper {
     void sendMulticastStream(Intent intent) {
         logger.info("------------ Received message to push the Stream ----------------------");
         boolean isStreamingValid = true;
-        if (!BezirkComms.isStreamingEnabled()) {
+        if (!BezirkCommunications.isStreamingEnabled()) {
             logger.error(" Streaming is not enabled!");
             isStreamingValid = false;
         }

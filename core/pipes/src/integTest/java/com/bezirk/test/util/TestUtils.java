@@ -4,7 +4,7 @@ import com.google.gson.*;
 
 public class TestUtils {
 
-    public final static String URL_UHUCLOUD_LOCALHOST = "http://localhost:8080/services/uhu";
+    public final static String URL_BEZIRKCLOUD_LOCALHOST = "http://localhost:8080/services/uhu";
 
     /**
      * Returns a JSON string in a nice human-readable format

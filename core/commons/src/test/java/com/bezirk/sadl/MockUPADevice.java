@@ -48,7 +48,7 @@ public class MockUPADevice implements UPADeviceInterface {
         try {
             deviceName = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
-            deviceName = "UHU-PC";
+            deviceName = "BEZIRK-PC";
             log.error(e.getMessage());
         }
 

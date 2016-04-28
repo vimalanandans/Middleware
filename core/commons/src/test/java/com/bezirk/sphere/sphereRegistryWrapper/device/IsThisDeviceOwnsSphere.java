@@ -5,7 +5,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.device;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.OwnerSphere;
 import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
@@ -80,7 +80,7 @@ public class IsThisDeviceOwnsSphere {
     public final void validSphereInfo() {
         String sphereId = UUID.randomUUID().toString();
         Sphere ownerSphere = new OwnerSphere(sphereTestUtility.OWNER_SPHERE_NAME_1,
-                sphereTestUtility.DEVICE_1.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_HOME);
+                sphereTestUtility.DEVICE_1.getDeviceId(), BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME);
         registry.spheres.put(sphereId, ownerSphere);
         BezirkSphereInfo sphereInfo = new BezirkSphereInfo(sphereId, ownerSphere.getSphereName(), ownerSphere.getSphereType(), null, null);
         assertTrue(sphereRegistryWrapper.isThisDeviceOwnsSphere(sphereInfo));
@@ -96,7 +96,7 @@ public class IsThisDeviceOwnsSphere {
     public final void sphereNotPresentInRegistry() {
         String sphereId = UUID.randomUUID().toString();
         Sphere ownerSphere = new OwnerSphere(sphereTestUtility.OWNER_SPHERE_NAME_1,
-                sphereTestUtility.DEVICE_1.getDeviceId(), UhuSphereType.UHU_SPHERE_TYPE_HOME);
+                sphereTestUtility.DEVICE_1.getDeviceId(), BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME);
         BezirkSphereInfo sphereInfo = new BezirkSphereInfo(sphereId, ownerSphere.getSphereName(), ownerSphere.getSphereType(), null, null);
         assertFalse(sphereRegistryWrapper.isThisDeviceOwnsSphere(sphereInfo));
     }

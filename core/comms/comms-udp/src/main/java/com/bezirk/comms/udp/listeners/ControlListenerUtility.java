@@ -42,8 +42,8 @@ public final class ControlListenerUtility {
                 switch (countSeperator) {
                     case 0:
                         String tempString = new String(Arrays.copyOfRange(received, 0, i));
-                        if (!BezirkVersion.UHU_VERSION.equals(tempString)) {
-                            logger.error("UPGRADE UHU. UHU VERSION MISMATCH. device version > " + BezirkVersion.UHU_VERSION + " Received msg version " + tempString);
+                        if (!BezirkVersion.BEZIRK_VERSION.equals(tempString)) {
+                            logger.error("UPGRADE BEZIRK. BEZIRK VERSION MISMATCH. device version > " + BezirkVersion.BEZIRK_VERSION + " Received msg version " + tempString);
                             if (null != notification) {
                                 notification.versionMismatch(tempString);
                             }

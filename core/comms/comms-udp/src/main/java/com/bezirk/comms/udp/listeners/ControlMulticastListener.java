@@ -1,6 +1,6 @@
 package com.bezirk.comms.udp.listeners;
 
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.udp.validation.MessageValidators;
@@ -33,16 +33,16 @@ public class ControlMulticastListener implements Runnable {
                                     CommsNotification commsNotificationCallback) {
         this.multicastSocket = multicastSocket;
         this.commsErrNotificationError = commsNotificationCallback;
-        executor = Executors.newFixedThreadPool(BezirkComms.getPOOL_SIZE());
+        executor = Executors.newFixedThreadPool(BezirkCommunications.getPOOL_SIZE());
         this.uhuComms = uhuComms;
     }
 
     @Override
     public void run() {
-        byte[] buf = new byte[BezirkComms.getMAX_BUFFER_SIZE()];
+        byte[] buf = new byte[BezirkCommunications.getMAX_BUFFER_SIZE()];
         DatagramPacket receivePacket;
         try {
-            multicastSocket.joinGroup(InetAddress.getByName(BezirkComms.getCTRL_MULTICAST_ADDRESS()));
+            multicastSocket.joinGroup(InetAddress.getByName(BezirkCommunications.getCTRL_MULTICAST_ADDRESS()));
             running = true;
             myAddress = BezirkNetworkUtilities.getLocalInet();
             if (myAddress == null) {

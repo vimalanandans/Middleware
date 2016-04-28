@@ -46,8 +46,8 @@ public final class EventListenerUtility {
                 String headerPart = new String(reconHeader, 0, reconHeader.length);
                 switch (headerCount) {
                     case -1:
-                        if (!headerPart.equals(BezirkVersion.UHU_VERSION)) {
-                            log.error("UPGRADE UHU. UHU VERSION MISMATCH. device version > " + BezirkVersion.UHU_VERSION + " Recieved msg version " + headerPart);
+                        if (!headerPart.equals(BezirkVersion.BEZIRK_VERSION)) {
+                            log.error("UPGRADE BEZIRK. BEZIRK VERSION MISMATCH. device version > " + BezirkVersion.BEZIRK_VERSION + " Recieved msg version " + headerPart);
                             if (null != errCallaback) {
                                 errCallaback.versionMismatch(headerPart);
                             }

@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * @author Rishabh Gulati
  */
-public interface IUhuSphereDiscovery {
+public interface BezirkSphereDiscovery {
 
     public void processDiscoveredSphereInfo(Set<BezirkSphereInfo> discoveredSphereInfoSet, String sphereId);
 }

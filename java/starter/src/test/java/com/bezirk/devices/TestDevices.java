@@ -53,7 +53,7 @@ public class TestDevices {
         Location location = new Location("FirstFloor", "lab", "pantry");
         DeviceDetails deviceDetails = new DeviceDetails();
         deviceDetails.setDeviceLocation(location);
-        deviceDetails.setDeviceName("UHU-PC1");
+        deviceDetails.setDeviceName("BEZIRK-PC1");
         deviceDetails.setDeviceId("TestDevID1234");
         assertNotNull("Device name is null", upaDeviceForPC.getDeviceName());
     }

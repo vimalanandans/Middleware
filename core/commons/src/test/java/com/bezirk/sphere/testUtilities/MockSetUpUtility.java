@@ -18,7 +18,7 @@ import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.persistence.BezirkRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.UhuSphereType;
+import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.CatchProcessor;
 import com.bezirk.sphere.impl.DeviceInformation;
 import com.bezirk.sphere.impl.DiscoveryProcessor;
@@ -140,15 +140,15 @@ public class MockSetUpUtility {
 
     public LinkedHashMap<String, ArrayList<BezirkZirkId>> getDeviceServicesList(SphereRegistry registry,
                                                                                 String sphereId) {
-        DeviceInformation deviceInformation = new DeviceInformation("DEVICE", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER);
+        DeviceInformation deviceInformation = new DeviceInformation("DEVICE", BezirkDeviceType.BEZIRK_DEVICE_TYPE_OTHER);
         registry.devices.put(sphereId, deviceInformation);
-        deviceInformation = new DeviceInformation("DEVICE1", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER);
+        deviceInformation = new DeviceInformation("DEVICE1", BezirkDeviceType.BEZIRK_DEVICE_TYPE_OTHER);
         String deviceId1 = upaDevice.getDeviceId();
         registry.devices.put(deviceId1, deviceInformation);
-        deviceInformation = new DeviceInformation("DEVICE2", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER);
+        deviceInformation = new DeviceInformation("DEVICE2", BezirkDeviceType.BEZIRK_DEVICE_TYPE_OTHER);
         String deviceId2 = "Device2";
         registry.devices.put(deviceId2, deviceInformation);
-        deviceInformation = new DeviceInformation("DEVICE3", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER);
+        deviceInformation = new DeviceInformation("DEVICE3", BezirkDeviceType.BEZIRK_DEVICE_TYPE_OTHER);
         String deviceId3 = "Device3";
         registry.devices.put(deviceId3, deviceInformation);
         LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
@@ -198,12 +198,12 @@ public class MockSetUpUtility {
         services3.add(serviceInfo2);
         services3.add(serviceInfo3);
 
-        BezirkDeviceInfo bezirkDeviceInfo1 = new BezirkDeviceInfo("Device1", "Device1", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER,
-                BezirkDeviceInfo.BezirkDeviceRole.UHU_CONTROL, true, services1);
-        BezirkDeviceInfo bezirkDeviceInfo2 = new BezirkDeviceInfo("Device2", "Device2", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER,
-                BezirkDeviceRole.UHU_MEMBER, true, services2);
-        BezirkDeviceInfo bezirkDeviceInfo3 = new BezirkDeviceInfo("Device3", "Device3", BezirkDeviceType.UHU_DEVICE_TYPE_OTHER,
-                BezirkDeviceRole.UHU_MEMBER, true, services3);
+        BezirkDeviceInfo bezirkDeviceInfo1 = new BezirkDeviceInfo("Device1", "Device1", BezirkDeviceType.BEZIRK_DEVICE_TYPE_OTHER,
+                BezirkDeviceInfo.BezirkDeviceRole.BEZIRK_CONTROL, true, services1);
+        BezirkDeviceInfo bezirkDeviceInfo2 = new BezirkDeviceInfo("Device2", "Device2", BezirkDeviceType.BEZIRK_DEVICE_TYPE_OTHER,
+                BezirkDeviceRole.BEZIRK_MEMBER, true, services2);
+        BezirkDeviceInfo bezirkDeviceInfo3 = new BezirkDeviceInfo("Device3", "Device3", BezirkDeviceType.BEZIRK_DEVICE_TYPE_OTHER,
+                BezirkDeviceRole.BEZIRK_MEMBER, true, services3);
 
         deviceList.add(bezirkDeviceInfo1);
         deviceList.add(bezirkDeviceInfo2);
@@ -221,7 +221,7 @@ public class MockSetUpUtility {
             String sphereId = sphereIterator.next();
 
             if (registry.spheres.get(sphereId).getSphereType()
-                    .equalsIgnoreCase(UhuSphereType.UHU_SPHERE_TYPE_DEFAULT)) {
+                    .equalsIgnoreCase(BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT)) {
                 log.info("sphere id from registry : " + sphereId);
 
                 defaultSphereId = new String(sphereId);

@@ -1,13 +1,13 @@
 package com.bezirk.starter.helper;
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.IUhuComms;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.IUhuDevMode;
+import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.api.BezirkSphereRegistration;
 import com.bezirk.sphere.impl.SphereProperties;
@@ -28,7 +28,7 @@ public final class UhuSphereHandler {
     private static final Logger logger = LoggerFactory.getLogger(UhuSphereHandler.class);
 
     static BezirkSphereAPI sphereForAndroid;
-    static IUhuDevMode devMode;
+    static BezirkDevMode devMode;
 
     /**
      * deinitialize the sphere
@@ -62,7 +62,7 @@ public final class UhuSphereHandler {
 
             BezirkSphereForAndroid uhuSphereForAndroid = (BezirkSphereForAndroid) UhuSphereHandler.sphereForAndroid;
 
-            uhuSphereForAndroid.setUhuSphereListener(uhuSphereForAndroid);
+            uhuSphereForAndroid.setBezirkSphereListener(uhuSphereForAndroid);
 
             ISphereConfig sphereConfig = new SphereProperties(preferences);
             sphereConfig.init();
@@ -72,13 +72,13 @@ public final class UhuSphereHandler {
                 return false;
             }
 
-            devMode = (IUhuDevMode) sphereForAndroid;
+            devMode = (BezirkDevMode) sphereForAndroid;
 
             BezirkCompManager.setSphereUI(sphereForAndroid);
             BezirkCompManager.setSphereRegistration((BezirkSphereRegistration) sphereForAndroid);
 
             BezirkCompManager.setSphereForSadl((BezirkSphereForSadl) sphereForAndroid);
-            IUhuComms uhuComms = UhuStackHandler.getUhuComms();
+            BezirkComms uhuComms = UhuStackHandler.getUhuComms();
             uhuComms.setSphereForSadl((BezirkSphereForSadl) sphereForAndroid);
         }
         return true;

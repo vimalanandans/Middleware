@@ -24,7 +24,7 @@
 //import SphereRegistry;
 //import BezirkZirkId;
 //import ISphereConfig;
-//import UhuSphereType;
+//import BezirkSphereType;
 //import ISphereConfig.Mode;
 //import MemberSphere;
 //import OwnerSphere;
@@ -99,14 +99,14 @@
 //        // Create owner sphere and add it to registry
 //        String sphereId1 = UUID.randomUUID().toString();
 //        String sphereName1 = sphereTestUtility.OWNER_SPHERE_NAME_1;
-//        String sphereType1 = UhuSphereType.UHU_SPHERE_TYPE_HOME;
+//        String sphereType1 = BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME;
 //        sphere ownerSphere = new OwnerSphere(sphereName1, sphereTestUtility.DEVICE_1.getDeviceId(), sphereType1);
 //        registry.spheres.put(sphereId1, ownerSphere);
 //
 //        // Create another sphere - a member sphere, and add it to the registry
 //        String sphereId2 = UUID.randomUUID().toString();
 //        String sphereName2 = sphereTestUtility.MEMBER_SPHERE_NAME_1;
-//        String sphereType2 = UhuSphereType.UHU_SPHERE_TYPE_HOME;
+//        String sphereType2 = BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME;
 //        // Set of devices
 //        HashSet<String> devices = new HashSet<>();
 //        devices.add(sphereTestUtility.DEVICE_2.getDeviceId());

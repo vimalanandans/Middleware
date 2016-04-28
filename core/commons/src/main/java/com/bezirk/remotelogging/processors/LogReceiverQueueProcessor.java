@@ -4,7 +4,7 @@
  */
 package com.bezirk.remotelogging.processors;
 
-import com.bezirk.remotelogging.loginterface.IUhuLogging;
+import com.bezirk.remotelogging.loginterface.BezirkLogging;
 import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
 import com.bezirk.remotelogging.queues.LoggingQueueManager;
 import com.bezirk.remotelogging.util.Util;
@@ -27,7 +27,7 @@ public class LogReceiverQueueProcessor extends Thread {
     /**
      * Platform specific logger
      */
-    private final IUhuLogging platformSpecificLogger;
+    private final BezirkLogging platformSpecificLogger;
     /**
      * Flag used for starting/ Stopping Threads!
      */
@@ -42,7 +42,7 @@ public class LogReceiverQueueProcessor extends Thread {
      *
      * @param logger platform Specific Logger that is used to update the UI.
      */
-    public LogReceiverQueueProcessor(IUhuLogging logger) {
+    public LogReceiverQueueProcessor(BezirkLogging logger) {
         this.platformSpecificLogger = logger;
     }
 
