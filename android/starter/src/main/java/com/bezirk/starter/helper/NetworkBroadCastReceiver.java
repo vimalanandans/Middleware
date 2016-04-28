@@ -17,11 +17,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Broadcast receiver which keeps listening to the wifi events, for any changes when associating to the network
- * Created by pik6kor on 1/7/2016.
  */
 public class NetworkBroadCastReceiver extends BroadcastReceiver {
+    private static final Logger logger = LoggerFactory.getLogger(NetworkBroadCastReceiver.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NetworkBroadCastReceiver.class);
     private final MainService mainService;
     private final IUhuStackHandler stackHandler;
     private UhuWifiManager uhuWifiManager;
@@ -49,7 +48,7 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
                     handleConnectedState(context, wifiInfo);
                     break;
                 case DISCONNECTED:
-                    LOGGER.debug("Wifi is in DISCONNECTED state!!!");
+                    logger.debug("Wifi is in DISCONNECTED state!!!");
                     break;
                 default:
 
@@ -90,7 +89,7 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
                 //call startStack, this could have happened when you have started stack without wifi turned ON.
                 stackHandler.startStack(mainService);
             } catch (InterruptedException e) {
-                LOGGER.debug("Exception in waiting thread for network change.", e);
+                logger.debug("Exception in waiting thread for network change.", e);
             }
 
             return;

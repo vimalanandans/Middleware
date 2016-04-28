@@ -18,13 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 
-/**
- * @author MCA7KOR
- */
 public class CommsTestJFrame extends JFrame implements IUpdateResponse {
-
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(CommsTestJFrame.class);
+    private static final Logger logger = LoggerFactory.getLogger(CommsTestJFrame.class);
 
     // UI Elements
     private static final long serialVersionUID = 1L;
@@ -55,9 +50,8 @@ public class CommsTestJFrame extends JFrame implements IUpdateResponse {
         try {
             jbInit();
         } catch (Exception e) {
-            LOGGER.error("Error initializing commsTest ", e);
+            logger.error("Error initializing commsTest ", e);
         }
-
     }
 
     public static void main(String... args) {

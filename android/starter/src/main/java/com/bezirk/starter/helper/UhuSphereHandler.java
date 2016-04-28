@@ -25,8 +25,8 @@ import org.slf4j.LoggerFactory;
  * Created by AJC6KOR on 9/8/2015.
  */
 public final class UhuSphereHandler {
+    private static final Logger logger = LoggerFactory.getLogger(UhuSphereHandler.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UhuSphereHandler.class);
     static BezirkSphereAPI sphereForAndroid;
     static IUhuDevMode devMode;
 
@@ -54,7 +54,7 @@ public final class UhuSphereHandler {
             try {
                 sphereRegistry = spherePersistence.loadSphereRegistry();
             } catch (Exception e) {
-                LOGGER.error("Error in loading sphere Persistence", e);
+                logger.error("Error in loading sphere Persistence", e);
             }
             CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
 

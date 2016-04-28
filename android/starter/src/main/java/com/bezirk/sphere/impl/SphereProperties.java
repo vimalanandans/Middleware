@@ -9,10 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
-/**
- * Created by rishabh on 10/26/15.
- */
 public class SphereProperties implements ISphereConfig {
+    private static final Logger logger = LoggerFactory.getLogger(SphereProperties.class);
 
     /* Keys used in sphere.properties */
     private static final String SPHERE_NAME = "sphereName";
@@ -20,7 +18,6 @@ public class SphereProperties implements ISphereConfig {
     private static final String SPHERE_KEY = "sphereKey";
     private static final String SPHERE_MODE = "devMode";
     private static final String DEFAULT_SPHERE_NAME = "defaultSphereName";
-    private static final Logger LOGGER = LoggerFactory.getLogger(SphereProperties.class);
     UhuPreferences preferences;
     private IUhuDevMode.Mode mode;
     /* Development sphere variables */
@@ -108,7 +105,7 @@ public class SphereProperties implements ISphereConfig {
         int int24 = 24;
 
         if (preferences.getString(SPHERE_KEY, null).length() == int24) {
-            LOGGER.info("sphere preferences validated");
+            logger.info("sphere preferences validated");
             return true;
         }
         return false;
@@ -126,7 +123,7 @@ public class SphereProperties implements ISphereConfig {
         sphereKey = preferences.getString(SPHERE_KEY, null).getBytes();
         mode = ("true".equalsIgnoreCase(preferences.getString(SPHERE_MODE, null))) ? IUhuDevMode.Mode.ON : IUhuDevMode.Mode.OFF;
         defaultSphereName = preferences.getString(DEFAULT_SPHERE_NAME, null);
-        LOGGER.info("sphere name: " + sphereName + " sphereId: " + sphereId + " sphereKey: " + Arrays.toString(sphereKey)
+        logger.info("sphere name: " + sphereName + " sphereId: " + sphereId + " sphereKey: " + Arrays.toString(sphereKey)
                 + " mode: " + mode + " defaultSphereName: " + defaultSphereName);
     }
 

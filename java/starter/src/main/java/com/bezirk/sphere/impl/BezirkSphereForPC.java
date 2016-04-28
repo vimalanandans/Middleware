@@ -25,8 +25,7 @@ import javax.imageio.ImageIO;
 public class BezirkSphereForPC extends BezirkSphere implements IUhuQRCode,
         IUhuSphereListener {
 
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(BezirkSphereForPC.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkSphereForPC.class);
     private final SphereUI sphereUI;
 
     public BezirkSphereForPC(CryptoEngine cryptoEngine,
@@ -91,10 +90,10 @@ public class BezirkSphereForPC extends BezirkSphere implements IUhuQRCode,
         try {
             ImageIO.write(img, "jpg", qrFile);
         } catch (IOException e) {
-            LOGGER.error("unable to write qr file into " + fileName, e);
+            logger.error("unable to write qr file into " + fileName, e);
             return false;
         }
-        LOGGER.info("qr code created in " + fileName);
+        logger.info("qr code created in " + fileName);
 
         return true;
     }

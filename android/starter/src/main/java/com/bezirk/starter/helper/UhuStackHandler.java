@@ -40,8 +40,7 @@ import java.util.Date;
  * Created by AJC6KOR on 9/8/2015.
  */
 public final class UhuStackHandler implements IUhuStackHandler {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UhuStackHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuStackHandler.class);
 
     private static Boolean startedStack = false;
     private static Boolean stoppedStack;
@@ -115,7 +114,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     //means wifi is enabled..
                     uhuStartStackHelper.acquireWifiLock(wifi);
 
-                    LOGGER.info("Bezirk zirk start triggered \n");
+                    logger.info("Bezirk zirk start triggered \n");
 
                     /*************************************************************
                      * Step 0 : Register to BroadCastListener for Wifi           *
@@ -127,7 +126,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
 
                     //If Wifi is not enabled send a notification to user.
 
-                    LOGGER.debug("UhuWifi getSupplicant State :: " + wifiInfo.getSupplicantState().name());
+                    logger.debug("UhuWifi getSupplicant State :: " + wifiInfo.getSupplicantState().name());
 
                     /*************************************************************
                      * Step 1 : Fetches ipAddress from Wifi connection           *
@@ -165,7 +164,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     InetAddress inetAddress = androidNetworkUtil.fetchInetAddress(service);
                     comms = uhuStartStackHelper.initializeComms(inetAddress, bezirkSadlManager, proxy, errNotificationCallback);
                     if (!BezirkValidatorUtility.isObjectNotNull(comms)) {
-                        LOGGER.error("Unable to initialize comms layer. Shutting down uhu.");
+                        logger.error("Unable to initialize comms layer. Shutting down uhu.");
                         service.stopSelf();
                     }
                     /*************************************************************
@@ -179,10 +178,10 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     if (BezirkValidatorUtility.isObjectNotNull(bezirkDevice) && !sphereProcessorForMainService.initSphere(bezirkDevice, service, registryPersistence, preferences)) {
                         // at the moment the init sphere fails due to persistence. hence delete it
                         // quickfix.delete the database
-                        LOGGER.error("delete DB");
+                        logger.error("delete DB");
                         stopStack(service);
                         service.stopSelf();
-                        LOGGER.error("Shutting down the uhu");
+                        logger.error("Shutting down the uhu");
                         // don't proceed further without initiating the sphere
                         return;
                     }
@@ -201,7 +200,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
                     UhuStackHandler.stoppedStack = false;
                     UhuStackHandler.startedStack = true;
                 } else {
-                    LOGGER.debug("Disconnected from network!!!");
+                    logger.debug("Disconnected from network!!!");
                     Toast.makeText(service.getApplicationContext(), "You have to be connected to a network to start using UhU!!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -216,7 +215,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
     public void stopStack(MainService service) {
 
         if (!stoppedStack) {
-            LOGGER.info("UhuStarter has stopped\n");
+            logger.info("UhuStarter has stopped\n");
 
             if (comms != null) {
                 comms.stopComms();
@@ -239,7 +238,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
             } catch (IllegalArgumentException e) {
 
                 // android does not provide api to find this, hence handling this in a try catch!!
-                LOGGER.error("Receiver was not registered!!!", e);
+                logger.error("Receiver was not registered!!!", e);
             }
 
 
@@ -261,7 +260,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
         startStack(service);
         long endTime = new Date().getTime();
         long totalTime = endTime - startTime;
-        LOGGER.info(">>" + "Reboot-Time:" + totalTime + "<<");
+        logger.info(">>" + "Reboot-Time:" + totalTime + "<<");
     }
 
     /* Send the diagnosis ping to comms */
@@ -291,7 +290,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
             try {
                 registryPersistence.clearPersistence();
             } catch (Exception e) {
-                LOGGER.error(e.getMessage(), e);
+                logger.error(e.getMessage(), e);
             }
         } else {
             Toast.makeText(service.getApplicationContext(), "Clear Data Process failed", Toast.LENGTH_SHORT).show();
@@ -317,11 +316,11 @@ public final class UhuStackHandler implements IUhuStackHandler {
             File dir = context.getCacheDir();
             if (dir != null && dir.isDirectory() && !deleteDir(dir)) {
 
-                LOGGER.error("Error in deleting cache.");
+                logger.error("Error in deleting cache.");
             }
         } catch (Exception e) {
 
-            LOGGER.error("Error in deleting cache.", e);
+            logger.error("Error in deleting cache.", e);
         }
     }
 
@@ -339,7 +338,7 @@ public final class UhuStackHandler implements IUhuStackHandler {
             return dir != null && dir.delete();
         } catch (Exception e) {
 
-            LOGGER.error("Directory is not deleted.", e);
+            logger.error("Directory is not deleted.", e);
             return false;
         }
 
@@ -362,6 +361,6 @@ public final class UhuStackHandler implements IUhuStackHandler {
         }
 
 
-        LOGGER.debug("Started HTTP Server.. ");
+        logger.debug("Started HTTP Server.. ");
     }
 }

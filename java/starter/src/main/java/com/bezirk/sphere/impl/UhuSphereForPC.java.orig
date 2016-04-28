@@ -25,7 +25,7 @@ import com.google.zxing.common.BitMatrix;
 <<<<<<< HEAD
 public class UhuSphereForPC extends UhuSphere implements IUhuQRCode, IUhuSphereListener {
 	
-    private static final Logger LOGGER = LoggerFactory.getLogger(UhuSphereForPC.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuSphereForPC.class);
 	private final SphereUI sphereUI;
 	
 	public UhuSphereForPC(CryptoEngine cryptoEngine, UPADeviceInterface upaDevice, SphereRegistry sphereRegistry) {
@@ -82,10 +82,10 @@ public class UhuSphereForPC extends UhuSphere implements IUhuQRCode, IUhuSphereL
 		try {
 			ImageIO.write(img, "jpg", qrFile);
 		} catch (IOException e) {
-			LOGGER.error("unable to write qr file into " + fileName);
+			logger.error("unable to write qr file into " + fileName);
 			return false;
 		}
-		LOGGER.info("qr code created in " + fileName);
+		logger.info("qr code created in " + fileName);
 
 		return true;
 	}
@@ -142,7 +142,7 @@ public class UhuSphereForPC extends UhuSphere implements IUhuQRCode, IUhuSphereL
 public class UhuSphereForPC extends UhuSphere implements IUhuQRCode,
         IUhuSphereListener {
 
-    private static final Logger LOGGER = LoggerFactory
+    private static final Logger logger = LoggerFactory
             .getLogger(UhuSphereForPC.class);
     private final SphereUI sphereUI;
 
@@ -208,10 +208,10 @@ public class UhuSphereForPC extends UhuSphere implements IUhuQRCode,
         try {
             ImageIO.write(img, "jpg", qrFile);
         } catch (IOException e) {
-            LOGGER.error("unable to write qr file into " + fileName,e);
+            logger.error("unable to write qr file into " + fileName,e);
             return false;
         }
-        LOGGER.info("qr code created in " + fileName);
+        logger.info("qr code created in " + fileName);
 
         return true;
     }

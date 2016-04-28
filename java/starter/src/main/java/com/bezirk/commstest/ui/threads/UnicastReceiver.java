@@ -8,6 +8,7 @@ import com.bezrik.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -21,9 +22,8 @@ import java.util.Set;
  * @author AJC6KOR
  */
 public class UnicastReceiver extends Thread {
+    private static final Logger logger = LoggerFactory.getLogger(UnicastReceiver.class);
 
-    private static final Logger LOGGER = org.slf4j.LoggerFactory
-            .getLogger(UnicastReceiver.class);
     private final UIStore uiStore;
     private final com.bezirk.commstest.ui.IUpdateResponse responseUI;
     boolean isRunning;
@@ -42,10 +42,10 @@ public class UnicastReceiver extends Thread {
             addr = BezirkValidatorUtility.isObjectNotNull(intf) ? null
                     : BezirkNetworkUtilities.getIpForInterface(intf);
             if (addr == null) {
-                LOGGER.error("ERROR IN STARTING UNICAST LINSTNER");
+                logger.error("ERROR IN STARTING UNICAST LINSTNER");
             }
         } catch (SocketException e) {
-            LOGGER.error("ERROR IN STARTING UNICAST LINSTNER", e);
+            logger.error("ERROR IN STARTING UNICAST LINSTNER", e);
         }
         try {
             unicastListenerSocket = new DatagramSocket(null/*unicastReceivingPort, addr*/);
@@ -53,7 +53,7 @@ public class UnicastReceiver extends Thread {
             unicastListenerSocket.bind(new InetSocketAddress(addr,
                     unicastReceivingPort));
         } catch (SocketException e) {
-            LOGGER.error("SOCKET ERROR", e);
+            logger.error("SOCKET ERROR", e);
         }
         isRunning = true;
     }
@@ -69,20 +69,20 @@ public class UnicastReceiver extends Thread {
                 isRunning = false;
                 continue;
             }
-            LOGGER.debug("Started listening Unicst");
+            logger.debug("Started listening Unicst");
             receivePacket = new DatagramPacket(buf, buf.length);
             try {
                 unicastListenerSocket.receive(receivePacket);
             } catch (Exception e) {
                 isRunning = false;
-                LOGGER.error("ERROR IN RECEVING UNICAST", e);
+                logger.error("ERROR IN RECEVING UNICAST", e);
                 continue;
             }
             final byte[] recData = new byte[receivePacket.getLength()];
             System.arraycopy(receivePacket.getData(), 0, recData, 0,
                     receivePacket.getLength());
             final String yep = new String(recData);
-            LOGGER.debug("PING REPLY RECEIVED");
+            logger.debug("PING REPLY RECEIVED");
             if (isRunning) {
                 updatePongMessage(yep);
             }
@@ -99,7 +99,7 @@ public class UnicastReceiver extends Thread {
                 responseUI.updateUIPongReceived(msg, pongs.size());
             }
         } catch (Exception e) {
-            LOGGER.error("Error in parsing JSON", e);
+            logger.error("Error in parsing JSON", e);
         }
     }
 

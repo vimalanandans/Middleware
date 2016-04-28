@@ -14,8 +14,7 @@ import javax.swing.JTextField;
  * @author AJC6KOR
  */
 public class CommsTestActionPerformer {
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(CommsTestActionPerformer.class);
+    private static final Logger logger = LoggerFactory.getLogger(CommsTestActionPerformer.class);
 
     // data member to store ping button click count
     Integer pingCount = 0;
@@ -66,7 +65,7 @@ public class CommsTestActionPerformer {
 
             } else {
                 // show popup
-                LOGGER.error("Error");
+                logger.error("Error");
             }
 
         }

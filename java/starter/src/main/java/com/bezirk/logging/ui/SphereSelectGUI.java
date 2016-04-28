@@ -53,14 +53,9 @@ import javax.swing.event.ListSelectionListener;
  * {@link com.bezirk.remotelogging.logininterface.IUhuLogging}
  */
 public final class SphereSelectGUI extends JFrame implements IUhuLogging {
-
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Common logger for this class
-     */
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(SphereSelectGUI.class);
+    private static final Logger logger = LoggerFactory.getLogger(SphereSelectGUI.class);
 
     /**
      * GUI components
@@ -113,7 +108,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
                             .getSphereID());
                 }
             } catch (Exception ex) {
-                LOGGER.error("Error in sphere list model.", ex);
+                logger.error("Error in sphere list model.", ex);
             }
         }
     };
@@ -232,7 +227,6 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
      * Starts the GUI and the Logging zirk.
      *
      * @param comms
-     * @param remoteLoggingPort port at which the LoggingService should be started
      */
     public SphereSelectGUI(IUhuComms comms) {
         thisFrame = this;
@@ -240,7 +234,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
         try {
             jbInit();
         } catch (Exception e) {
-            LOGGER.error("Error in sphere select GUI init. ", e);
+            logger.error("Error in sphere select GUI init. ", e);
         }
 
         try {
@@ -248,7 +242,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
             bezirkLoggingManager.startLoggingService(
                     BezirkComms.getREMOTE_LOGGING_PORT(), this);
         } catch (Exception e) {
-            LOGGER.error("Error in sphere Select GUI init.", e);
+            logger.error("Error in sphere Select GUI init.", e);
         }
     }
 
@@ -364,7 +358,7 @@ public final class SphereSelectGUI extends JFrame implements IUhuLogging {
             try {
                 bezirkLoggingManager.stopLoggingService();
             } catch (Exception e) {
-                LOGGER.error("Error in stopping logging zirk. ", e);
+                logger.error("Error in stopping logging zirk. ", e);
             }
         }
 

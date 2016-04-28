@@ -20,7 +20,8 @@ import org.slf4j.LoggerFactory;
  * An asysnc task which will restart the comms
  */
 class RestartCommsAsyncTask extends AsyncTask {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestartCommsAsyncTask.class);
+    private static final Logger logger = LoggerFactory.getLogger(RestartCommsAsyncTask.class);
+
     private static AlertDialog dialog;
     private final Context context;
     private final String message;
@@ -61,7 +62,7 @@ class RestartCommsAsyncTask extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object... params) {
-        LOGGER.debug("Comms has be re-started!!!!");
+        logger.debug("Comms has be re-started!!!!");
         stackHandler.restartComms();
         return null;
     }

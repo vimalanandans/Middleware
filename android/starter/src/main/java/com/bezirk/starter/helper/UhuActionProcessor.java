@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
  * Created by AJC6KOR on 9/8/2015.
  */
 public final class UhuActionProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(UhuActionProcessor.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UhuActionProcessor.class);
     private static final String CONTROL_UI_NOTIFICATION_ACTION = "com.bosch.upa.uhu.controluinotfication";
     private static final int START_CODE = 100;
     private static final int STOP_CODE = 101;
@@ -36,8 +36,7 @@ public final class UhuActionProcessor {
         INTENT_ACTIONS intentAction = INTENT_ACTIONS.getActionUsingMessage(intent.getAction());
 
         if (BezirkValidatorUtility.isObjectNotNull(intentAction)) {
-
-            LOGGER.info("Intent Action > " + intentAction.message);
+            logger.info("Intent Action > {}", intentAction.message);
 
             INTENT_ACTIONS.ACTION_TYPE actionType = intentAction.type;
 
@@ -56,12 +55,12 @@ public final class UhuActionProcessor {
                     processServiceActions(intentAction, intent, service, uhuServiceHelper);
                     break;
                 default:
-                    LOGGER.warn("Received unknown intent action: " + intentAction.message);
+                    logger.warn("Received unknown intent action: " + intentAction.message);
                     break;
             }
         } else {
 
-            LOGGER.warn("Received unknown intent action: " + intent.getAction());
+            logger.warn("Received unknown intent action: " + intent.getAction());
         }
 
     }
@@ -90,7 +89,7 @@ public final class UhuActionProcessor {
                 uhuStackHandler.startStopRestServer(STOP_CODE);
                 break;
             default:
-                LOGGER.warn("Received unknown intent action: " + intentAction.message);
+                logger.warn("Received unknown intent action: " + intentAction.message);
                 break;
         }
     }
@@ -117,7 +116,7 @@ public final class UhuActionProcessor {
                 sendIntent(UhuActionCommands.CMD_DEV_MODE_STATUS, mode, service);
                 break;
             default:
-                LOGGER.warn("Received unknown intent action: " + intentAction.message);
+                logger.warn("Received unknown intent action: {}", intentAction.message);
                 break;
         }
 
@@ -157,7 +156,7 @@ public final class UhuActionProcessor {
                 service.processPipeRequest(intent);
                 break;
             default:
-                LOGGER.warn("Received unknown intent action: " + intentAction.message);
+                logger.warn("Received unknown intent action: " + intentAction.message);
                 break;
         }
     }
@@ -178,7 +177,7 @@ public final class UhuActionProcessor {
                 uhuServiceHelper.sendMulticastStream(intent);
                 break;
             default:
-                LOGGER.warn("Received unknown intent action: " + intentAction.message);
+                logger.warn("Received unknown intent action: " + intentAction.message);
                 break;
         }
     }

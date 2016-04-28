@@ -18,12 +18,9 @@ import java.util.UUID;
 
 /**
  * Configures the uhu device by setting the location and preferences.
- * <p/>
- * Created by AJC6KOR on 9/8/2015.
  */
 public final class UhuDeviceHelper {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UhuDeviceHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuDeviceHelper.class);
 
     /**
      * Initialize BezirkDevice with preferences
@@ -44,7 +41,7 @@ public final class UhuDeviceHelper {
             bezirkDevice.setDeviceLocation(deviceLocation);
 
         } else {
-            LOGGER.error(" ### unable to init device");
+            logger.error(" ### unable to init device");
         }
 
         return bezirkDevice;
@@ -79,19 +76,19 @@ public final class UhuDeviceHelper {
                 deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
             }
             deviceId = deviceUuid.toString();
-            LOGGER.info("DEVICE ID not persisted, generating from the android id > " + androidId + " device uuid id > " + deviceId);
+            logger.info("DEVICE ID not persisted, generating from the android id > " + androidId + " device uuid id > " + deviceId);
 
             // save to persistence
             preferences.putString(UhuPreferences.DEVICE_ID_TAG_PREFERENCE, deviceId);
 
         } else {
-            LOGGER.info(" DEVICE ID from storage > " + deviceId);
+            logger.info(" DEVICE ID from storage > " + deviceId);
         }
 
         String deviceType = preferences.getString(UhuPreferences.DEVICE_TYPE_TAG_PREFERENCE, null);
 
         if (deviceType == null) {
-            LOGGER.info("device type is not initialized. setting to default");
+            logger.info("device type is not initialized. setting to default");
 
             deviceType = BezirkDeviceType.UHU_DEVICE_TYPE_SMARTPHONE;
         }
@@ -104,10 +101,10 @@ public final class UhuDeviceHelper {
         String deviceName = preferences.getString(UhuPreferences.DEVICE_NAME_TAG_PREFERENCE, null);
 
         if (BezirkValidatorUtility.checkForString(deviceName)) {
-            LOGGER.info("device type is already initialized to " + deviceName);
+            logger.info("device type is already initialized to " + deviceName);
             bezirkDevice.setDeviceName(deviceName);
         } else {
-            LOGGER.info("device type is not initialized. setting to default, type based name ");
+            logger.info("device type is not initialized. setting to default, type based name ");
         }
 
         return bezirkDevice;

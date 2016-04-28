@@ -17,8 +17,7 @@ import java.util.Properties;
 
 public class UPADeviceForPC implements com.bezirk.devices.UPADeviceInterface {
     public static final String PROPS = "upadevice.properties";
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(UPADeviceForPC.class);
+    private static final Logger logger = LoggerFactory.getLogger(UPADeviceForPC.class);
     private final com.bezirk.devices.DeviceDetails deviceDetails;
 
     /**
@@ -41,7 +40,7 @@ public class UPADeviceForPC implements com.bezirk.devices.UPADeviceInterface {
             deviceDetails.setDeviceLocation(new Location(location));
 
         } catch (Exception e) {
-            LOGGER.error("Failure to load upadevice.properties file", e);
+            logger.error("Failure to load upadevice.properties file", e);
         }
 
     }
@@ -98,7 +97,7 @@ public class UPADeviceForPC implements com.bezirk.devices.UPADeviceInterface {
             deviceName = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
             deviceName = "UHU-PC";
-            LOGGER.error("Exception in fetching hostname.", e);
+            logger.error("Exception in fetching hostname.", e);
         }
         return deviceName;
     }

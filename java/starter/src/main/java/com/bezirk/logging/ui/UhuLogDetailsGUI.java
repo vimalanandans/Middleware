@@ -43,11 +43,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class UhuLogDetailsGUI extends JFrame {
     private static final long serialVersionUID = 1210684068159783241L;
-    /**
-     * Common logger for this class
-     */
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(UhuLogDetailsGUI.class);
+
+    private static final Logger logger = LoggerFactory.getLogger(UhuLogDetailsGUI.class);
     /**
      * Value to be displayed for the Recipient during MULTICAST
      */
@@ -114,7 +111,7 @@ public class UhuLogDetailsGUI extends JFrame {
         try {
             jbInit();
         } catch (Exception e1) {
-            LOGGER.debug("Error in Log Deatails GUI.", e1);
+            logger.debug("Error in Log Deatails GUI.", e1);
         }
 
         sendLoggingServiceMsg(true);
@@ -236,7 +233,7 @@ public class UhuLogDetailsGUI extends JFrame {
                         getDeviceNameFromDeviceId(uhuLogMessage.recipient),
                         uhuLogMessage.topic, 0});
             } catch (Exception e) {
-                LOGGER.error("Error in updating the table", e);
+                logger.error("Error in updating the table", e);
             }
         } else {
             int tempValue = (int) model.getValueAt(
@@ -285,7 +282,7 @@ public class UhuLogDetailsGUI extends JFrame {
             tempSphereName.append(BezirkCompManager.getSphereUI()
                     .getSphere(sphereId).getSphereName());
         } catch (NullPointerException ne) {
-            LOGGER.error("Error in fetching sphereName from sphere UI", ne);
+            logger.error("Error in fetching sphereName from sphere UI", ne);
             tempSphereName.append("Un-defined");
         }
         return tempSphereName.toString();

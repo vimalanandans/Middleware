@@ -25,8 +25,7 @@ import java.nio.ByteOrder;
  * Created by AJC6KOR on 9/8/2015.
  */
 public final class UhuAndroidNetworkUtil {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UhuAndroidNetworkUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(UhuAndroidNetworkUtil.class);
 
     /**
      * Fetch IP address using wifi connection information
@@ -62,14 +61,14 @@ public final class UhuAndroidNetworkUtil {
             networkInterface = NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME());
             inetAddress = BezirkValidatorUtility.isObjectNotNull(networkInterface) ? BezirkNetworkUtilities.getIpForInterface(networkInterface) : null;
             if (inetAddress == null) {
-                LOGGER.error("Could not resolve ip - Check InterfaceName in preferences.xml");
-                LOGGER.error("Possible interface and ip pairs are:");
+                logger.error("Could not resolve ip - Check InterfaceName in preferences.xml");
+                logger.error("Possible interface and ip pairs are:");
                 printInfInetPairs();
-                LOGGER.error("SHUTTING DOWN UHU");
+                logger.error("SHUTTING DOWN UHU");
                 service.onDestroy();
             }
         } catch (SocketException e) {
-            LOGGER.error("Could not find Interface - SHUTTING DOWN UHU", e);
+            logger.error("Could not find Interface - SHUTTING DOWN UHU", e);
             service.onDestroy();
 
         }
@@ -79,7 +78,7 @@ public final class UhuAndroidNetworkUtil {
     private void printInfInetPairs() {
         for (IntfInetPair pair : BezirkNetworkUtilities.getIntfInetPair()) {
 
-            LOGGER.error("Interface: " + pair.getIntf().getName() + " IP:" + pair.getInet().getHostAddress());
+            logger.error("Interface: " + pair.getIntf().getName() + " IP:" + pair.getInet().getHostAddress());
         }
     }
 

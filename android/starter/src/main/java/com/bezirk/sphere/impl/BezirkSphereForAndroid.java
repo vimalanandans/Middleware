@@ -19,12 +19,9 @@ import com.google.zxing.common.BitMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by GUR1PI on 8/9/2014.
- */
 public class BezirkSphereForAndroid extends BezirkSphere implements IUhuSphereListener, IUhuQRCode {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkSphereForAndroid.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BezirkSphereForAndroid.class);
     private final Context applicationContext;
     private final UhuPreferences preferences;
     private ISphereConfig sphereConfig;
@@ -38,13 +35,13 @@ public class BezirkSphereForAndroid extends BezirkSphere implements IUhuSphereLi
 
     public boolean initSphere(SpherePersistence spherePersistence, IUhuComms uhuComms) {
         initializeSphereConfig();
-        if (sphereConfig == null) LOGGER.error("SphereConfig is null");
+        if (sphereConfig == null) logger.error("SphereConfig is null");
         return super.initSphere(spherePersistence, uhuComms, this, sphereConfig);
     }
 
     private void initializeSphereConfig() {
         if (sphereConfig == null) {
-            LOGGER.info("Initializing the SphereConfig");
+            logger.info("Initializing the SphereConfig");
             sphereConfig = new SphereProperties(preferences);
             sphereConfig.init();
         }
@@ -109,13 +106,13 @@ public class BezirkSphereForAndroid extends BezirkSphere implements IUhuSphereLi
 
     @Override
     public void onCatchStatus(Status status, String message) {
-        LOGGER.debug("received info from listener, status: " + status.toString() + " message: " + message);
+        logger.debug("received info from listener, status: " + status.toString() + " message: " + message);
         sendIntent(status.toString(), message, UhuActionCommands.CMD_SPHERE_CATCH_STATUS);
     }
 
     @Override
     public void onShareStatus(Status status, String message) {
-        LOGGER.debug("received info from listener, status: " + status.toString() + " message: " + message);
+        logger.debug("received info from listener, status: " + status.toString() + " message: " + message);
         sendIntent(status.toString(), message, UhuActionCommands.CMD_SPHERE_SHARE_STATUS);
     }
 
@@ -128,7 +125,7 @@ public class BezirkSphereForAndroid extends BezirkSphere implements IUhuSphereLi
     @Override
     public void onSphereDiscovered(final boolean status, final String sphereId) {
         // TODO Auto-generated method stub
-        LOGGER.info("onSphereDiscovered status : " + sphereId);
+        logger.info("onSphereDiscovered status : " + sphereId);
         sendIntent(true, sphereId, UhuActionCommands.CMD_SPHERE_DISCOVERY_STATUS);
 
     }

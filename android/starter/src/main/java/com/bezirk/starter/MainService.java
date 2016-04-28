@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class MainService extends Service implements INotificationCallback {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MainService.class);
+    private static final Logger logger = LoggerFactory.getLogger(MainService.class);
 
     private final UhuActionProcessor uhuActionProcessor = new UhuActionProcessor();
     private final PipeActionParser pipeActionParser = new PipeActionParser();
@@ -83,7 +83,7 @@ public class MainService extends Service implements INotificationCallback {
     public void onCreate() {
         super.onCreate();
         //Acquire the Wifi Lock for Multicast
-        LOGGER.info("Bezirk Services is Created");
+        logger.info("Bezirk Services is Created");
         final ProxyforServices proxy = new ProxyforServices(this);
         uhuServiceHelper = new UhuServiceHelper(proxy);
         //Gain permissions for multicast
@@ -138,7 +138,7 @@ public class MainService extends Service implements INotificationCallback {
      * @param intent Intent Received
      */
     public void processPipeRequest(Intent intent) {
-        LOGGER.info("Received pipe request intent");
+        logger.info("Received pipe request intent");
 
         PipeRequest pipeRequest = pipeActionParser.parsePipeRequest(intent);
         PipeRequester myPipeRequester = new PipeRequester();
@@ -147,14 +147,14 @@ public class MainService extends Service implements INotificationCallback {
         myPipeRequester.setRegistry(PipeRegistryFactory.getPipeRegistry());
 
         if (pipeRequest == null) {
-            LOGGER.error("Could not register pipe");
+            logger.error("Could not register pipe");
         } else {
             //Update PipeRequester Reference
             PipePolicyUtility.pipeRequesterMap.put(pipeRequest.getId(), myPipeRequester);
             try {
                 myPipeRequester.requestPipe(pipeRequest);
             } catch (PipeApprovalException e) {
-                LOGGER.error("Pipe request failed", e);
+                logger.error("Pipe request failed", e);
             }
         }
     }

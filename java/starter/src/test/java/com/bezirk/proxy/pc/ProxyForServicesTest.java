@@ -30,9 +30,9 @@ import static org.junit.Assert.fail;
  * @author AJC6KOR
  */
 public class ProxyForServicesTest {
+    private static final Logger logger = LoggerFactory.getLogger(ProxyForServicesTest.class);
 
     private static final MockSetUpUtilityForUhuPC mockSetUP = new MockSetUpUtilityForUhuPC();
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProxyForServicesTest.class);
     private static BezirkSadlManager sadlManager;
     private final String serviceName = "MockServiceA";
     private final String serviceAId = "MockServiceAId";
@@ -42,8 +42,7 @@ public class ProxyForServicesTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-
-        LOGGER.info("********** Setting up ProxyForServicesTest Testcase **********");
+        logger.info("********** Setting up ProxyForServicesTest Testcase **********");
 
         mockSetUP.setUPTestEnv();
 
@@ -56,11 +55,9 @@ public class ProxyForServicesTest {
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-
-        LOGGER.info("********** Shutting down ProxyForServicesTest Testcase **********");
+        logger.info("********** Shutting down ProxyForServicesTest Testcase **********");
 
         mockSetUP.destroyTestSetUp();
-
     }
 
     @Test

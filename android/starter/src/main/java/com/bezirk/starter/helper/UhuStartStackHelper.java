@@ -30,9 +30,7 @@ import java.net.UnknownHostException;
  * Created by AJC6KOR on 1/11/2016.
  */
 class UhuStartStackHelper {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UhuStartStackHelper.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(UhuStartStackHelper.class);
 
     boolean isWifiEnabled(WifiManager wifi) {
         return wifi != null && wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
@@ -46,7 +44,7 @@ class UhuStartStackHelper {
         try {
             registryPersistence = new RegistryPersistence(dbConnection, DB_VERSION);
         } catch (Exception e1) {
-            LOGGER.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
         }
         return registryPersistence;
     }
@@ -56,7 +54,7 @@ class UhuStartStackHelper {
             WifiManager.MulticastLock lock = wifi.createMulticastLock("Log_Tag");
             lock.acquire();
         } catch (UnsupportedOperationException e) {
-            LOGGER.error("UnsupportedOperationException thrown while acquiring lock", e);
+            logger.error("UnsupportedOperationException thrown while acquiring lock", e);
         }
     }
 
@@ -65,15 +63,15 @@ class UhuStartStackHelper {
         try {
             ipAddress = androidNetworkUtil.getIpAddress(wifi);
         } catch (UnknownHostException e) {
-            LOGGER.error("Unable to get ip address. Is it connected to network", e);
+            logger.error("Unable to get ip address. Is it connected to network", e);
             Toast.makeText(service.getApplicationContext(), "Unable to get ip address. Is it connected to network", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (BezirkValidatorUtility.checkForString(ipAddress)) {
-            LOGGER.info("Wifi Connected to " + wifi.getConnectionInfo().getSSID());
+            logger.info("Wifi Connected to " + wifi.getConnectionInfo().getSSID());
         } else {
-            LOGGER.error("Unable to get ip address. Is it connected to network");
+            logger.error("Unable to get ip address. Is it connected to network");
             Toast.makeText(service.getApplicationContext(), "Unable to get ip address. Is it connected to network", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -98,7 +96,7 @@ class UhuStartStackHelper {
         // comms zyre jni is injected from platform specific code
         if (commsFactory.getActiveComms() == CommsFeature.COMMS_ZYRE_JNI) {
             String arch = System.getProperty("os.arch");
-            LOGGER.info("phone arch " + arch);
+            logger.info("phone arch " + arch);
             comms = new ZyreCommsManager();
         } else {
             //rest of the comms are returned from factory

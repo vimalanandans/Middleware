@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
  * Created by pik6kor on 1/7/2016.
  */
 public class CommsNotification implements com.bezirk.comms.CommsNotification {
+    private static final Logger logger = LoggerFactory.getLogger(CommsNotification.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommsNotification.class);
     private final String BR_SYSTEM_STATUS_ACTION = "com.bezirk.systemstatus";
     private final String BR_COMMS_DIAG_RESPONSE = "com.bezirk.comms.diag";
     private final INotificationCallback callback;
@@ -32,7 +32,7 @@ public class CommsNotification implements com.bezirk.comms.CommsNotification {
 
     @Override
     public void versionMismatch(String misMatchVersionId) {
-        LOGGER.error("Version mismatch Callback received > " + misMatchVersionId);
+        logger.error("Version mismatch Callback received > {}", misMatchVersionId);
         /**
          * Max value for the notification
          */
