@@ -21,13 +21,10 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * This testcase verifies the event and stream topics registered with SadlManager using zirk Ids.
- *
- * @author AJC6KOR
  */
 public class EventStreamTest {
+    private final static Logger logger = LoggerFactory.getLogger(EventStreamTest.class);
 
-    private final static Logger log = LoggerFactory
-            .getLogger(EventStreamTest.class);
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
     private static final BezirkZirkId uhuServiceAId = new BezirkZirkId(
             "ServiceA");
@@ -49,7 +46,7 @@ public class EventStreamTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up EventStream TestCase *****");
+        logger.info("***** Setting up EventStream TestCase *****");
         mockUtility.setUPTestEnv();
         bezirkSadlManager = mockUtility.bezirkSadlManager;
 
@@ -60,7 +57,7 @@ public class EventStreamTest {
     public static void tearDownAfterClass() throws Exception {
 
         mockUtility.destroyTestSetUp();
-        log.info("***** Shutting down EventStream Testcase *****");
+        logger.info("***** Shutting down EventStream Testcase *****");
 
     }
 
@@ -83,11 +80,11 @@ public class EventStreamTest {
         bezirkSadlManager.subscribeService(uhuServiceCId, subscribedEventlessPRole);
 
 
-        log.info("********* testing IsStreamTopicRegistered ********");
+        logger.info("********* testing IsStreamTopicRegistered ********");
         testIsStreamTopicRegistered();
-        log.info("********* testing CheckUnicastEvent ********");
+        logger.info("********* testing CheckUnicastEvent ********");
         testCheckUnicastEvent();
-        log.info("********* testing CheckMulticastEvent ********");
+        logger.info("********* testing CheckMulticastEvent ********");
         testCheckMulticastEvent();
 
     }

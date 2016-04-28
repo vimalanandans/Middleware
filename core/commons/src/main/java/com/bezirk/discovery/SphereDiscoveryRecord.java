@@ -12,8 +12,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 
 public class SphereDiscoveryRecord {
-    private static final Logger log = LoggerFactory
-            .getLogger(SphereDiscoveryRecord.class);
+    private static final Logger logger = LoggerFactory.getLogger(SphereDiscoveryRecord.class);
 
     private final int max;
     private final long timeout;
@@ -79,12 +78,12 @@ public class SphereDiscoveryRecord {
     }
 
     private void printMap() {
-        log.debug("----------------------- Discovered Information Status -----------------------");
+        logger.debug("----------------------- Discovered Information Status -----------------------");
         for (Entry<String, BezirkSphereInfo> entry : sphereInfoMap
                 .entrySet()) {
-            log.debug("Device: " + entry.getKey());
-            log.debug("Information: " + entry.getValue());
-            log.debug("-----------------------");
+            logger.debug("Device: " + entry.getKey());
+            logger.debug("Information: " + entry.getValue());
+            logger.debug("-----------------------");
 
         }
     }

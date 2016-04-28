@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Discovery {
-    private static final Logger log = LoggerFactory.getLogger(Discovery.class);
+    private static final Logger logger = LoggerFactory.getLogger(Discovery.class);
 
     private final Map<DiscoveryLabel, DiscoveryRecord> discoveredMap;
 
@@ -30,7 +30,7 @@ public class Discovery {
                 try {
                     wait();
                 } catch (InterruptedException e) {
-                    log.warn("Discovery Queue Interrupted");
+                    logger.warn("Discovery Queue Interrupted");
                     throw e;
                 }
             }
@@ -76,7 +76,7 @@ public class Discovery {
                     }
                     return true;
                 } else {
-                    log.warn("Nothing to add " + "discovery is not pending");
+                    logger.warn("Nothing to add discovery is not pending");
                     return false;
                 }
 

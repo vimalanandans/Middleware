@@ -20,10 +20,7 @@ import org.slf4j.LoggerFactory;
  * UhuLoggingHandler to update the UI.
  */
 public class LogReceiverQueueProcessor extends Thread {
-    /**
-     * private logger for the class
-     */
-    private static final Logger log = LoggerFactory.getLogger(LogReceiverQueueProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(LogReceiverQueueProcessor.class);
     /**
      * Platform specific logger
      */
@@ -57,15 +54,15 @@ public class LogReceiverQueueProcessor extends Thread {
                     if (Util.LOGGING_VERSION.equals(logMsg.version)) {
                         platformSpecificLogger.handleLogMessage(logMsg);
                     } else {
-                        log.error("LOGGING VERSION MISMATCH!!" + "Received LOG MSG VERSION = " + logMsg.version +
+                        logger.error("LOGGING VERSION MISMATCH!!" + "Received LOG MSG VERSION = " + logMsg.version +
                                 " CURRENT LOGGING VERSION: " + Util.LOGGING_VERSION);
                     }
                 } catch (Exception e) {
-                    log.error("Some error occured in LogReceiverQueueProcessor \n", e);
+                    logger.error("Some error occured in LogReceiverQueueProcessor \n", e);
                 }
             }
         } catch (InterruptedException e) {
-            log.error(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 

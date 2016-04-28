@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DiscoveryProcessor implements Runnable {
-    private static final Logger log = LoggerFactory.getLogger(DiscoveryProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(DiscoveryProcessor.class);
     private static Discovery discovery;
     private Boolean running = false;
 
@@ -26,7 +26,7 @@ public class DiscoveryProcessor implements Runnable {
 
     @Override
     public void run() {
-        log.info("DiscoveryProcessor has started");
+        logger.info("DiscoveryProcessor has started");
         running = true;
         while (running) {
             //Stop by Interrupting Thread
@@ -74,6 +74,6 @@ public class DiscoveryProcessor implements Runnable {
 
     public void stop() {
         running = false;
-        log.info("DiscoveryProcessor has stopped");
+        logger.info("DiscoveryProcessor has stopped");
     }
 }

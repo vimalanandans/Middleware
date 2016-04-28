@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  */
 
 public final class LogServiceActivatorDeactivator {
-    private static final Logger log = LoggerFactory.getLogger(LogServiceActivatorDeactivator.class);
+    private static final Logger logger = LoggerFactory.getLogger(LogServiceActivatorDeactivator.class);
 
     private LogServiceActivatorDeactivator() {
     }

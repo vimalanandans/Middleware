@@ -24,8 +24,9 @@ import java.util.Properties;
  * @author AJC6KOR
  */
 public class MockUPADevice implements UPADeviceInterface {
+    private static final Logger logger = LoggerFactory.getLogger(MockUPADevice.class);
+
     public static final String propertiesFile = "upadevice.properties";
-    private static final Logger log = LoggerFactory.getLogger(MockUPADevice.class);
     private static DeviceDetails deviceDetails = null;
 
     /**
@@ -39,7 +40,7 @@ public class MockUPADevice implements UPADeviceInterface {
             location = props.getProperty("DeviceLocation");
 
         } catch (Exception e1) {
-            log.error("Failure to load upadevice.properties file");
+            logger.error("Failure to load upadevice.properties file");
 
         }
 
@@ -49,7 +50,7 @@ public class MockUPADevice implements UPADeviceInterface {
             deviceName = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
             deviceName = "BEZIRK-PC";
-            log.error(e.getMessage());
+            logger.error(e.getMessage());
         }
 
         deviceDetails.setDeviceId(Hex.encodeToString(BezirkNetworkUtilities.getLocalMACAddress()));
@@ -73,7 +74,7 @@ public class MockUPADevice implements UPADeviceInterface {
         Properties props = new Properties();
 
         // Load properties file from the classpath (this avoids hard-coding the filesystem path)
-        log.info("Loading properties file: " + file);
+        logger.info("Loading properties file: " + file);
         InputStream propsInputStream = UPADeviceInterface.class.getClassLoader().getResourceAsStream(file);
 
         if (propsInputStream == null) {

@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public class DiscoveryRecord {
-    private static final Logger log = LoggerFactory.getLogger(DiscoveryRecord.class);
+    private static final Logger logger = LoggerFactory.getLogger(DiscoveryRecord.class);
 
     private final int max;
     private final long timeout;
@@ -56,7 +56,7 @@ public class DiscoveryRecord {
         while (it.hasNext()) {
             BezirkDiscoveredZirk curServ = it.next();
             if (!this.list.contains(curServ)) { //Check if ZirkEndPoint Exists
-                log.debug("Updating discList w SED-" + curServ.zirk.device + ":" + curServ.zirk.zirkId.getBezirkZirkId());
+                logger.debug("Updating discList w SED-{}:{}", curServ.zirk.device, curServ.zirk.zirkId.getBezirkZirkId());
                 this.list.add(curServ);
             }
 

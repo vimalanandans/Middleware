@@ -23,7 +23,7 @@ import java.util.zip.InflaterInputStream;
  * FIXME: Move this to Java Common
  */
 public class WireMessage implements Serializable {
-    public static final Logger log = LoggerFactory.getLogger(WireMessage.class);
+    public static final Logger logger = LoggerFactory.getLogger(WireMessage.class);
     private static final String MSG_VER_STRING = "\"msgVer\":\"";
     /// if the parser type is json, to check the message version VERSION STRING
     private static final String MSG_VER = MSG_VER_STRING + BezirkVersion.getWireVersion() + "\"";
@@ -80,7 +80,7 @@ public class WireMessage implements Serializable {
                 baos.write(buffer, 0, len);
             return new String(baos.toByteArray(), "UTF-8");
         } catch (IOException e) {
-            log.error(e.getLocalizedMessage());
+            logger.error(e.getLocalizedMessage());
             throw new AssertionError(e);
         }
     }
@@ -95,7 +95,7 @@ public class WireMessage implements Serializable {
         try {
             wireMessage = gson.fromJson(json, WireMessage.class);
         } catch (JsonParseException e) {
-            log.error("Exception in parsing json message from wire message.", e);
+            logger.error("Exception in parsing json message from wire message.", e);
         }
         return wireMessage;
     }
@@ -108,7 +108,7 @@ public class WireMessage implements Serializable {
         try {
             wireMessage = gson.fromJson(json, WireMessage.class);
         } catch (JsonParseException e) {
-            log.error("Exception in parsing json message from wire message.", e);
+            logger.error("Exception in parsing json message from wire message.", e);
         }
 
         return wireMessage;

@@ -35,9 +35,7 @@ import static org.mockito.Mockito.mock;
  * @author AJC6KOR
  */
 public class MockSetUpUtility {
-
-    private final static Logger log = LoggerFactory
-            .getLogger(MockSetUpUtility.class);
+    private final static Logger logger = LoggerFactory.getLogger(MockSetUpUtility.class);
 
     private static final String DBPath = "./";
     private static final String DBVersion = DBConstants.DB_VERSION;
@@ -74,7 +72,7 @@ public class MockSetUpUtility {
             }
         } catch (SocketException e) {
 
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
 
         }
         return null;

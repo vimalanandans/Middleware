@@ -32,9 +32,8 @@ import static org.junit.Assert.assertTrue;
  * @author AJC6KOR
  */
 public class RegistrationUnregistrationTest {
+    private final static Logger logger = LoggerFactory.getLogger(RegistrationUnregistrationTest.class);
 
-    private final static Logger log = LoggerFactory
-            .getLogger(RegistrationUnregistrationTest.class);
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
     private static final BezirkZirkId uhuServiceAId = new BezirkZirkId("ServiceA");
     private static final BezirkZirkId uhuServiceBId = new BezirkZirkId("ServiceB");
@@ -46,8 +45,7 @@ public class RegistrationUnregistrationTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-
-        log.info("***** Setting up RegistrationUnregistrationTest TestCase *****");
+        logger.info("***** Setting up RegistrationUnregistrationTest TestCase *****");
 
         mockUtility.setUPTestEnv();
         bezirkSadlManager = mockUtility.bezirkSadlManager;
@@ -56,31 +54,29 @@ public class RegistrationUnregistrationTest {
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-
-        log.info("***** Shutting down RegistrationUnregistrationTest Testcase *****");
+        logger.info("***** Shutting down RegistrationUnregistrationTest Testcase *****");
         mockUtility.destroyTestSetUp();
     }
 
 
     @Test
     public void testRegistrationUnregistrationServices() {
-
-        log.info("***** Testing RegisterService *****");
+        logger.info("***** Testing RegisterService *****");
         testRegisterService();
-        log.info("***** Tested RegisterService Successfully *****");
+        logger.info("***** Tested RegisterService Successfully *****");
 
 
-        log.info("***** Testing GetRegisteredServices *****");
+        logger.info("***** Testing GetRegisteredServices *****");
         testGetRegisteredServices();
-        log.info("***** GetRegisteredServices tested Successfully *****");
+        logger.info("***** GetRegisteredServices tested Successfully *****");
 
-        log.info("***** Testing UnRegisterService *****");
+        logger.info("***** Testing UnRegisterService *****");
         testUnregisterService();
-        log.info("***** Tested UnRegisterService Successfully *****");
+        logger.info("***** Tested UnRegisterService Successfully *****");
 
-        log.info("****** Testing removeFromMaps Started *********");
+        logger.info("****** Testing removeFromMaps Started *********");
         unregisterfrommaps();
-        log.info("****** Test completed for removeFromMaps *********");
+        logger.info("****** Test completed for removeFromMaps *********");
 
 
     }

@@ -18,8 +18,7 @@ import java.util.Map;
  * Used by a platform to request a pipe on behalf of a zirk
  */
 public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
-
-    private static final Logger log = LoggerFactory.getLogger(PipeRequester.class);
+    private static final Logger logger = LoggerFactory.getLogger(PipeRequester.class);
 
     private final Map<String, PipeRequest> outstandingRequests = new HashMap<String, PipeRequest>();
 
@@ -42,21 +41,21 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
      */
     public void requestPipe(PipeRequest request) throws PipeApprovalException {
 
-        log.info("requestPipeAuthorization() called for: " + request.getPipe());
+        logger.info("requestPipeAuthorization() called for: " + request.getPipe());
 
         Pipe pipe = request.getPipe();
         PipeRecord existingRecord = registry.lookup(pipe);
 
-        log.info("in requestPipeAuthorization(). registry has items: " + registry.allPipes().size());
+        logger.info("in requestPipeAuthorization(). registry has items: " + registry.allPipes().size());
         for (PipeRecord r : registry.allPipes()) {
-            log.info("   pipe item: " + r.getPipe());
+            logger.info("   pipe item: " + r.getPipe());
         }
     	
     	/*
     	 * Case 1: Request for a new pipe
     	 */
         if (existingRecord == null) {
-            log.info("Requesting approval for new pipe: " + pipe);
+            logger.info("Requesting approval for new pipe: " + pipe);
             outstandingRequests.put(request.getId(), request);
             // Ask platform-specific app to approve the request
             app.approvePipeRequest(request.getId());
@@ -72,7 +71,7 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
         boolean outMatches = policiesMatch(existingRecord.getAllowedOut(), request.getAllowedOut());
 
         if (inMatches && outMatches) {
-            log.info("Pipe exists but identical policies are being reqeusted.  No need to prompt user");
+            logger.info("Pipe exists but identical policies are being reqeusted.  No need to prompt user");
             outstandingRequests.put(request.getId(), request);
 
             // We don't need to ask the user to approve since this pipe/policy combination has already been approved
@@ -87,7 +86,7 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
     	 *  TODO: in the future, we should only send the additional ones
     	 */
 
-        log.info("Pipe exists and new policies are being requested");
+        logger.info("Pipe exists and new policies are being requested");
         outstandingRequests.put(request.getId(), request);
         // Ask platform-specific app to approve the request
         app.approvePipeRequest(request.getId());
@@ -108,7 +107,7 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
             try {
                 return policy1.equals(policy2);
             } catch (NullPointerException e) {
-                log.error("Error in evaluating pipe policy " + e);
+                logger.error("Error in evaluating pipe policy " + e);
 
                 return false;
             }
@@ -139,10 +138,10 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
 
         // For now, we are ignoring the approved boolean and using the pipePolicy.isApproved() to indicate approval
         if (registry.isRegistered(pipe)) {
-            log.debug("Updating pipe registration");
+            logger.debug("Updating pipe registration");
             registry.update(pipe, allowedIn, allowedOut, sphereId, pipePassword);
         } else {
-            log.debug("Pipe is not yet registered, so registering it now");
+            logger.debug("Pipe is not yet registered, so registering it now");
             registry.add(pipe, allowedIn, allowedOut, sphereId, pipePassword);
         }
 
@@ -153,7 +152,7 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
         final PipeRequestIncomingMessage pipeMsg = new PipeRequestIncomingMessage(pipe,
                 pipeRequestId, allowedIn, allowedOut, (BezirkZirkId) request.getRequestingService());
         BezirkCompManager.getplatformSpecificCallback().onPipeApprovedMessage(pipeMsg);
-        log.info("pipe approved: " + approved);
+        logger.info("pipe approved: " + approved);
 
         // Clear request
         PipePolicyUtility.removeId(request.getId());

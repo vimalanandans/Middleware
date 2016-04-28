@@ -25,7 +25,7 @@ import java.util.Set;
  */
 
 public class DiscoveryRequestHandler {
-    private final static Logger log = LoggerFactory.getLogger(DiscoveryRequestHandler.class);
+    private final static Logger logger = LoggerFactory.getLogger(DiscoveryRequestHandler.class);
 
     private final ISadlControlReceiver sadlCtrl;
     private final DiscoveryResponse response;
@@ -50,9 +50,9 @@ public class DiscoveryRequestHandler {
 
         if (success) {
             populateReceiverQueue(response);
-            log.debug("DiscoveryResponse created successfully");
+            logger.debug("DiscoveryResponse created successfully");
         } else {
-            log.debug("Nothing could be discovered");
+            logger.debug("Nothing could be discovered");
         }
     }
 

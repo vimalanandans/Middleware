@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Properties;
 
 public enum CommsFeature {
-
     COMMS_SECURE,
 
     COMMS_BEZIRK,
@@ -26,7 +25,7 @@ public enum CommsFeature {
 
     HTTP_BEZIRK_COMMS;
 
-    private static final Logger log = LoggerFactory.getLogger(CommsFeature.class);
+    private static final Logger logger = LoggerFactory.getLogger(CommsFeature.class);
     private static Properties properties;
     private String value;
 
@@ -38,7 +37,7 @@ public enum CommsFeature {
                 ClassLoader loader = Thread.currentThread().getContextClassLoader();
                 properties.load(loader.getResourceAsStream("features.properties"));
             } catch (Exception e) {
-                log.error("Unable to load features.properties file from classpath.", e);
+                logger.error("Unable to load features.properties file from classpath.", e);
             }
         }
         value = (String) properties.get(this.toString());

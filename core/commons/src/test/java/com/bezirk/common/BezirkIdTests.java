@@ -13,11 +13,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by vnd2kor on 2/25/2015.
- */
 public class BezirkIdTests {
-    private static final Logger log = LoggerFactory.getLogger(BezirkIdTests.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkIdTests.class);
 
     @Test
     // test the uniqueness of the short id
@@ -34,7 +31,7 @@ public class BezirkIdTests {
         for (count = 0; count < 100L; count++) {
             String id = new BezirkId().getId();
             if (data.containsKey(id)) {
-                log.error("it is not unique id. Already added in " + data.get(id) + " id > " + id + " at " + count);
+                logger.error("it is not unique id. Already added in " + data.get(id) + " id > " + id + " at " + count);
                 assertTrue(false);
                 return;
             }
@@ -43,7 +40,7 @@ public class BezirkIdTests {
             //logger.info(".");
             //logger.info(" short Id for "+count+" > " +id);
         }
-        log.info("id is unique with trails of " + count);
+        logger.info("id is unique with trails of " + count);
 
         // logger.info(" short Id of 'BEZIRK' > "+new ShortUUID().getShortIdByHash("BEZIRK"));
         //  logger.info(" short Id of 'BEZIRK' > "+new ShortUUID().getShortIdByHash("BEZIRK"));
@@ -62,12 +59,12 @@ public class BezirkIdTests {
         String shortId1 = shortId.getShortIdByHash(uniqueId);
         String shortId2 = shortId.getShortIdByHash(uniqueId);
 
-        log.info("short id for " + uniqueId + " .id1 > " + shortId1 + " id2 > " + shortId2);
+        logger.info("short id for " + uniqueId + " .id1 > " + shortId1 + " id2 > " + shortId2);
 
         String shortId3 = shortId.getShortIdByName(BezirkIdTests.class.getName());
         String shortId4 = shortId.getShortIdByName(BezirkIdTests.class.getName());
 
-        log.info("short id for " + BezirkIdTests.class.getName() + " > id3 > " + shortId3 + " > id4 >" + shortId4);
+        logger.info("short id for " + BezirkIdTests.class.getName() + " > id3 > " + shortId3 + " > id4 >" + shortId4);
 
         assertTrue(shortId1 != shortId2);
         assertTrue(shortId3 != shortId4);

@@ -31,9 +31,8 @@ import static org.junit.Assert.assertTrue;
  * @author AJC6KOR
  */
 public class DiscoveryTest {
+    private final static Logger logger = LoggerFactory.getLogger(DiscoveryTest.class);
 
-    private final static Logger log = LoggerFactory
-            .getLogger(DiscoveryTest.class);
     private static final MockProtocols mockService = new MockProtocols();
     private static final ProtocolRole streamlessPRole = mockService.new StreamlessProtocol();
     private static final SubscribedRole subscribedStreamlessPRole = new SubscribedRole(streamlessPRole);
@@ -51,7 +50,7 @@ public class DiscoveryTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("############# Setting up DiscoveryTest TestCase ################");
+        logger.info("############# Setting up DiscoveryTest TestCase ################");
 
         mockUtility.setUPTestEnv();
         bezirkSadlManager = mockUtility.bezirkSadlManager;
@@ -62,7 +61,7 @@ public class DiscoveryTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("############ Shutting down DiscoveryTest Testcase ############");
+        logger.info("############ Shutting down DiscoveryTest Testcase ############");
         mockUtility.destroyTestSetUp();
 
     }

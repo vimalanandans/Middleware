@@ -17,13 +17,10 @@ import static org.junit.Assert.assertNull;
 
 /**
  * This testcase verifies the setting and retrieval of zirk location.
- *
- * @author AJC6KOR
  */
 public class LocationServicesTest {
+    private final static Logger logger = LoggerFactory.getLogger(LocationServicesTest.class);
 
-    private final static Logger log = LoggerFactory
-            .getLogger(LocationServicesTest.class);
     private static final BezirkZirkId uhuServiceAId = new BezirkZirkId("ServiceA");
     private static final BezirkZirkId uhuServiceCId = new BezirkZirkId("ServiceC");
     private static final BezirkZirkId dummyServiceId = new BezirkZirkId("InvalidServiceForTest");
@@ -34,7 +31,7 @@ public class LocationServicesTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up LocationServicesTest TestCase *****");
+        logger.info("***** Setting up LocationServicesTest TestCase *****");
 
         mockUtility.setUPTestEnv();
 
@@ -46,7 +43,7 @@ public class LocationServicesTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down LocationServicesTest Testcase *****");
+        logger.info("***** Shutting down LocationServicesTest Testcase *****");
         mockUtility.destroyTestSetUp();
 
     }
@@ -55,10 +52,10 @@ public class LocationServicesTest {
     @Test
     public void testLocationServices() {
 
-        log.info("***** testing invalid cases *****");
+        logger.info("***** testing invalid cases *****");
         testNegativeCases();
 
-        log.info("***** testing LocationService *****");
+        logger.info("***** testing LocationService *****");
         testPositiveCases();
 
 
