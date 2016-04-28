@@ -1,8 +1,7 @@
-package com.bezirk.middleware.serialziation;
+package com.bezirk.middleware.serialization;
 
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.Pipe;
 
 import org.junit.Test;
 
