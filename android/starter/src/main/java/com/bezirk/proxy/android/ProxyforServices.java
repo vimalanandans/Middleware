@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Iterator;
 
-public class ProxyforServices implements UhuProxyForServiceAPI {
+public class ProxyforServices implements BezirkProxyForServiceAPI {
     private static final Logger log = LoggerFactory.getLogger(ProxyforServices.class);
     // TODO: do we need do know who the zirk is???  It looks like this variable is not used!
     private static Service serviceInstance;

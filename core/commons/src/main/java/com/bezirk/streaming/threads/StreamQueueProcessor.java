@@ -7,7 +7,7 @@ import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
-import com.bezirk.sadl.ISadlEventReceiver;
+import com.bezirk.sadl.SadlEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.control.Objects.StreamRecord.StreamingStatus;
@@ -34,11 +34,11 @@ public class StreamQueueProcessor implements Runnable {
 
     private final MessageQueue msgQueue;
 
-    private final ISadlEventReceiver sadlReceiver;
+    private final SadlEventReceiver sadlReceiver;
 
     private BezirkSphereForSadl sphereForSadl;
 
-    public StreamQueueProcessor(MessageQueue msgQueue, ISadlEventReceiver sadlReceiver) {
+    public StreamQueueProcessor(MessageQueue msgQueue, SadlEventReceiver sadlReceiver) {
         this.sadlReceiver = sadlReceiver;
         this.msgQueue = msgQueue;
 

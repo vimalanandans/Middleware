@@ -96,8 +96,8 @@ public class DiscoveryTest {
 
         assertEquals("DiscoveredMap size is not equal to the number of requests added", 2, getDiscoveredMapsize(discovery));
 
-        ZirkMessageHandler uhucallback = new MockCallBackZirk(new MockBezirkZirk());
-        BezirkCompManager.setplatformSpecificCallback(uhucallback);
+        ZirkMessageHandler bezirkCallback = new MockCallBackZirk(new MockBezirkZirk());
+        BezirkCompManager.setplatformSpecificCallback(bezirkCallback);
 
 		/*Testing addResponse api in discovery*/
         DiscoveryResponse response = new DiscoveryResponse(recipient, sphereId, requestKey, discoveryId);

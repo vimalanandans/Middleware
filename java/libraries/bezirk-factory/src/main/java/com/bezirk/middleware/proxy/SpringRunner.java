@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Responsible for starting uhu using Spring's xml configuration method
+ * Responsible for starting bezirk using Spring's xml configuration method
  * UhuSpringRunner changed to SpringRunner
  */
 public class SpringRunner {
 
     /**
-     * This default spring configuration file is used to start uhu,
+     * This default spring configuration file is used to start bezirk,
      * unless one is specified explicitly.
      */
     public static final String CONFIG_FILE_DEFAULT = "uhu.xml";
@@ -42,7 +42,7 @@ public class SpringRunner {
     public SpringRunner() {
         /*
 		 * Set the application home directory. If we are running from the
-		 * binary distribution, appHome is set to: /path/to/uhu-version.
+		 * binary distribution, appHome is set to: /path/to/bezirk-version.
 		 * If we are running from the developement envronment, 
 		 * appHome is set to the project root directory.
 		 */
@@ -54,7 +54,7 @@ public class SpringRunner {
     }
 
     /**
-     * Start uhu using the configuration file specified in the configFile data member
+     * Start bezirk using the configuration file specified in the configFile data member
      *
      * @throws Exception
      */
@@ -71,8 +71,8 @@ public class SpringRunner {
         }
 
         logger.info("Starting Bezirk...");
-        String uhuDataPath = bezirkConfig.getDataPath();
-        bezirkConfig.setDataPath(appHome + File.separator + uhuDataPath);
+        String bezirkDataPath = bezirkConfig.getDataPath();
+        bezirkConfig.setDataPath(appHome + File.separator + bezirkDataPath);
         Proxy api = (Proxy) Factory.getInstance(bezirkConfig);
 
         // Get all ServiceRunners specified in the app context
@@ -92,7 +92,7 @@ public class SpringRunner {
         // For each zirk: 1. set the data path, 2. initialize, and 3. start
         for (com.bezirk.middleware.proxy.IServiceRunner service : services.values()) {
             String name = service.getClass().getSimpleName();
-            logger.info("Starting uhu zirk with runner: " + name);
+            logger.info("Starting bezirk zirk with runner: " + name);
 
             // 1. Set data path
             String dataPath = buildDataPath(service);
@@ -108,7 +108,7 @@ public class SpringRunner {
                 // Zirk successfully started
                 startedServices.add(name);
             }
-            // Don't exit uhu if a zirk fails to start
+            // Don't exit bezirk if a zirk fails to start
             catch (Exception e) {
                 failedServices.add(name);
                 System.out.println();
@@ -166,7 +166,7 @@ public class SpringRunner {
     }
 
     /**
-     * XML configuration file used to start uhu.  If this is not set, then
+     * XML configuration file used to start bezirk.  If this is not set, then
      * CONFIG_FILE_DEFAULT is used.
      * <p/>
      * IMPORTANT:  it is assumed that this file is on the classpath

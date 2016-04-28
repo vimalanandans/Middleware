@@ -19,7 +19,7 @@ import com.google.zxing.common.BitMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BezirkSphereForAndroid extends BezirkSphere implements BezirkSphereListener, IUhuQRCode {
+public class BezirkSphereForAndroid extends BezirkSphere implements BezirkSphereListener, BezirkQRCode {
     private static final Logger logger = LoggerFactory.getLogger(BezirkSphereForAndroid.class);
 
     private final Context applicationContext;

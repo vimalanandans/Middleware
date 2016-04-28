@@ -89,17 +89,17 @@ public class StreamLocalTest {
 
     @After
     public void destroySetUp() {
-        Bezirk uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-        uhu.unregisterZirk(mockA.myId);
-        uhu.unregisterZirk(mockB.myId);
+        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+        bezirk.unregisterZirk(mockA.myId);
+        bezirk.unregisterZirk(mockB.myId);
     }
 
     /**
      * The zirk that discovers and streams the file
      */
     private final class StreamLocalMockServiceA implements BezirkListener {
-        private final String serviceName = "StreamLocalMockServiceA";
-        private Bezirk uhu = null;
+        private final String zirkName = "StreamLocalMockServiceA";
+        private Bezirk bezirk = null;
         private ZirkId myId = null;
         private StreamLocalDummyProtocolRole pRole;
 
@@ -107,11 +107,11 @@ public class StreamLocalTest {
          * Setup the zirk
          */
         private final void setupMockService() {
-            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+            myId = bezirk.registerZirk(zirkName);
             logger.info("StreamLocalMockServiceA - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
             pRole = new StreamLocalDummyProtocolRole();
-            uhu.subscribe(myId, pRole, this);
+            bezirk.subscribe(myId, pRole, this);
 
         }
 
@@ -120,7 +120,7 @@ public class StreamLocalTest {
          */
         private final void discoverMockService() {
             StreamLocalMockServiceProtocolRole pRole = new StreamLocalMockServiceProtocolRole();
-            uhu.discover(myId, null, pRole, 10000, 1, this);
+            bezirk.discover(myId, null, pRole, 10000, 1, this);
 
         }
 
@@ -167,7 +167,7 @@ public class StreamLocalTest {
 
             request = new StreamLocalMockRequestStream(Message.Flag.REQUEST, "MockRequestStream", dService.zirk);
 
-            sendStreamId = uhu.sendStream(myId, dService.zirk, request, sendFile);
+            sendStreamId = bezirk.sendStream(myId, dService.zirk, request, sendFile);
         }
 
         @Override
@@ -252,17 +252,17 @@ public class StreamLocalTest {
      */
     private final class StreamLocalMockServiceB implements BezirkListener {
         private final String serviceName = "StreamLocalMockServiceB";
-        private Bezirk uhu = null;
+        private Bezirk bezirk = null;
         private ZirkId myId = null;
 
         /**
          * Setup the zirk
          */
         private final void setupMockService() {
-            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+            myId = bezirk.registerZirk(serviceName);
             logger.info("StreamLocalMockServiceB - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
-            uhu.subscribe(myId, new StreamLocalMockServiceProtocolRole(), this);
+            bezirk.subscribe(myId, new StreamLocalMockServiceProtocolRole(), this);
         }
 
         @Override

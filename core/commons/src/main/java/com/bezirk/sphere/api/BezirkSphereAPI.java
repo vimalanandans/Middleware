@@ -35,7 +35,7 @@ public interface BezirkSphereAPI {
     public boolean deleteSphere(String sphereId);
 
     /**
-     * Get all the spheres visible/authorized to this device uhu This contains
+     * Get all the spheres visible/authorized to this device bezirk This contains
      * the complete data of Spheres and its devices / pipe available
      *
      * @return : Iterator sphere Info
@@ -59,7 +59,7 @@ public interface BezirkSphereAPI {
     public boolean isThisDeviceOwnsSphere(BezirkSphereInfo sphereInfo);
 
     /**
-     * Get all the devices visible/authorized to this device uhu *
+     * Get all the devices visible/authorized to this device bezirk *
      *
      * @return : Iterator device info
      * @deprecated : {@link BezirkDeviceInfo} is available inside
@@ -70,7 +70,7 @@ public interface BezirkSphereAPI {
     public Iterable<BezirkDeviceInfo> getDevicesOnSphere(String sphereId);
 
     /**
-     * Get all the pipes visible/authorized to this device uhu *
+     * Get all the pipes visible/authorized to this device bezirk *
      *
      * @return : Iterable pipe info
      * @deprecated : {@link BezirkPipeInfo} is available inside

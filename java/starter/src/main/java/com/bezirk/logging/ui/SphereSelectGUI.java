@@ -79,7 +79,7 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
     private final JButton listSphereBtn = new JButton(),
             startLoggingBtn = new JButton(), moveRightBtn = new JButton(),
             moveLeftBtn = new JButton();
-    private final JCheckBox uhuDeveloperChck = new JCheckBox();
+    private final JCheckBox bezirkDeveloperChck = new JCheckBox();
     private final JFrame thisFrame;
     private final transient ListSelectionListener leftSphereSelectionListListener = new ListSelectionListener() {
         @Override
@@ -180,7 +180,7 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
      *
      * @see BezirkLoggingService
      */
-    private transient BezirkLogDetailsGUI uhu;
+    private transient BezirkLogDetailsGUI bezirk;
     private transient BezirkLoggingManager bezirkLoggingManager;
     private final transient WindowAdapter closeButtonListener = new WindowAdapter() {
         @Override
@@ -218,7 +218,7 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
                 selectedSpheres = tempArray;
             }
 
-            uhu = new BezirkLogDetailsGUI(comms, selectedSpheres, thisFrame,
+            bezirk = new BezirkLogDetailsGUI(comms, selectedSpheres, thisFrame,
                     isDeveoperModeEnabled);
         }
     };
@@ -291,9 +291,9 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
         selectedSphereLbl.setText(LoggingGUILabels.LABEL_SELECTED_SPHERE);
         selectedSphereLbl.setBounds(new Rectangle(360, 85, 235, 20));
 
-        uhuDeveloperChck.setText(LoggingGUILabels.LABEL_ENABLE_DEVELOPER_MODE);
-        uhuDeveloperChck.setBounds(new Rectangle(25, 60, 325, 25));
-        uhuDeveloperChck.addItemListener(developerModeListener);
+        bezirkDeveloperChck.setText(LoggingGUILabels.LABEL_ENABLE_DEVELOPER_MODE);
+        bezirkDeveloperChck.setBounds(new Rectangle(25, 60, 325, 25));
+        bezirkDeveloperChck.addItemListener(developerModeListener);
 
         menuBar.add(menuSettings);
         menuBar.add(menuAboutUs);
@@ -313,7 +313,7 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
         framePanel.add(moveRightBtn, null);
         framePanel.add(startLoggingBtn, null);
         framePanel.add(listSphereBtn, null);
-        framePanel.add(uhuDeveloperChck, null);
+        framePanel.add(bezirkDeveloperChck, null);
         framePanel.add(selectedSphereLbl, null);
 
         framePanel.add(selectSphereLbl, null);
@@ -366,9 +366,9 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
 
     @Override
     public void handleLogMessage(BezirkLoggingMessage uhuLogMessage) {
-        if (null != uhu) {
+        if (null != bezirk) {
 
-            uhu.updateTable(uhuLogMessage);
+            bezirk.updateTable(uhuLogMessage);
         }
     }
 

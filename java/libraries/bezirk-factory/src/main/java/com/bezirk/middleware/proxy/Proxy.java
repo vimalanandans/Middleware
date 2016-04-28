@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class Proxy implements Bezirk {
-    private static final Logger logger = LoggerFactory.getLogger(Proxy.class);
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(Proxy.class);
     private static int discoveryCount = 0; // keep track of Discovery Id
     protected final HashMap<BezirkZirkId, DiscoveryBookKeeper> dListenerMap = new HashMap<BezirkZirkId, DiscoveryBookKeeper>();
     protected final HashMap<BezirkZirkId, HashSet<BezirkListener>> sidMap = new HashMap<BezirkZirkId, HashSet<BezirkListener>>();
@@ -54,8 +54,8 @@ public class Proxy implements Bezirk {
         mainService = new MainService(proxy, null);
         final BroadcastReceiver brForService = new BRForService(activeStreams, dListenerMap,
                 eventListenerMap, sidMap, streamListenerMap);
-        CBkForZirkPC uhuPcCallback = new CBkForZirkPC(brForService);
-        mainService.startStack(uhuPcCallback);
+        CBkForZirkPC bezirkPcCallback = new CBkForZirkPC(brForService);
+        mainService.startStack(bezirkPcCallback);
         proxyPersistence = mainService.getBezirkProxyPersistence();
         try {
             bezirkProxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
@@ -71,8 +71,8 @@ public class Proxy implements Bezirk {
         mainService = new MainService(proxy, bezirkConfig);
         BRForService brForService = new BRForService(activeStreams, dListenerMap,
                 eventListenerMap, sidMap, streamListenerMap);
-        CBkForZirkPC uhuPcCallback = new CBkForZirkPC(brForService);
-        mainService.startStack(uhuPcCallback);
+        CBkForZirkPC bezirkPcCallback = new CBkForZirkPC(brForService);
+        mainService.startStack(bezirkPcCallback);
         proxyPersistence = mainService.getBezirkProxyPersistence();
         try {
             bezirkProxyRegistry = proxyPersistence.loadBezirkProxyRegistry();

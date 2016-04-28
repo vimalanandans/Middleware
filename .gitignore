@@ -15,11 +15,11 @@ gradle.properties
 local.properties
 
 # staged sample code
-Java-Build/zirks/uhu-main/dist/samples/hueLight/
-Java-Build/zirks/uhu-main/dist/samples/parametricUI/
-Java-Build/zirks/uhu-main/dist/samples/pubSub/
-Java-Build/zirks/uhu-main/dist/samples/helloWorld/
-Java-Build/zirks/uhu-main/dist/samples/Food2Fork/
+Java-Build/zirks/bezirk-main/dist/samples/hueLight/
+Java-Build/zirks/bezirk-main/dist/samples/parametricUI/
+Java-Build/zirks/bezirk-main/dist/samples/pubSub/
+Java-Build/zirks/bezirk-main/dist/samples/helloWorld/
+Java-Build/zirks/bezirk-main/dist/samples/Food2Fork/
 
 # Android-Build gradle wrapper
 Android-Build/gradle/

@@ -27,10 +27,10 @@ public class ControlSenderThread implements Runnable {
     private MessageQueue msgQueue = null;
     private int numOfRetries = 5;
     // Sadl Instance in charge of sending
-    private BezirkCommsLegacy uhuComms;
+    private BezirkCommsLegacy bezirkComms;
 
-    public ControlSenderThread(BezirkCommsLegacy uhuComms, MessageQueue msgQueue) {
-        this.uhuComms = uhuComms;
+    public ControlSenderThread(BezirkCommsLegacy bezirkComms, MessageQueue msgQueue) {
+        this.bezirkComms = bezirkComms;
         this.msgQueue = msgQueue;
     }
 
@@ -114,17 +114,17 @@ public class ControlSenderThread implements Runnable {
 //		MessageQueueManager.getStreamingMessageQueue().addToQueue(tcMessage);
 
         if (ControlMessage.Discriminator.StreamRequest == tcMessage.getMessage().getDiscriminator()) {
-            uhuComms.sendStream(tcMessage.getMessage().getUniqueKey());
+            bezirkComms.sendStream(tcMessage.getMessage().getUniqueKey());
             /*StreamRecord tempStreamRecord = StreamStore.popStreamRecord(tcMessage.getMessage().getUniqueKey());
 			if(null == tempStreamRecord){
 				return;
 			}
 			tempStreamRecord.streamStatus = StreamingStatus.LOCAL;
 			//MessageQueueManager.getStreamingMessageQueue().addToQueue(tempStreamRecord);
-			uhuComms.sendStreamMessage(tempStreamRecord);*/
+			bezirkComms.sendStreamMessage(tempStreamRecord);*/
         } else {
             //MessageQueueManager.getControlReceiverQueue().addToQueue(tcMessage);
-            uhuComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.CONTROL_RECEIVE_QUEUE, tcMessage);
+            bezirkComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.CONTROL_RECEIVE_QUEUE, tcMessage);
         }
     }
 

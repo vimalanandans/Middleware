@@ -3,7 +3,7 @@ package com.bezirk.control.messages.streaming.rtc;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 /**
- * This message is internally used by uhu for RTC handshake.
+ * This message is internally used by bezirk for RTC handshake.
  */
 public class RTCControlMessage extends com.bezirk.control.messages.UnicastControlMessage {
 

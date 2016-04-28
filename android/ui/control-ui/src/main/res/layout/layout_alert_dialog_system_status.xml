@@ -6,7 +6,7 @@
     tools:context="com.bezirk.controlui.ControlActivity">
 
     <TextView
-        android:id="@+id/versionUhu"
+        android:id="@+id/versionBezirk"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"

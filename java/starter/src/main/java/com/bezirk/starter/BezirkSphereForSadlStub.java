@@ -17,7 +17,7 @@ import java.util.Set;
  * opaque or flat without encryption This is the Quick fix. in actual this
  * suppose to be a package altered via build
  */
-public class UhuSphereForSadlStub implements BezirkSphereForSadl {
+public class BezirkSphereForSadlStub implements BezirkSphereForSadl {
     private static final Logger logger = LoggerFactory.getLogger(BezirkSphereForSadl.class);
 
     @Override

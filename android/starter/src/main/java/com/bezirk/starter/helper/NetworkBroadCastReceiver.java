@@ -8,7 +8,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
-import com.bezirk.starter.IUhuStackHandler;
+import com.bezirk.starter.BezirkStackHandler;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkWifiManager;
 
@@ -22,10 +22,10 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
     private static final Logger logger = LoggerFactory.getLogger(NetworkBroadCastReceiver.class);
 
     private final MainService mainService;
-    private final IUhuStackHandler stackHandler;
+    private final BezirkStackHandler stackHandler;
     private BezirkWifiManager bezirkWifiManager;
 
-    public NetworkBroadCastReceiver(MainService mainService, IUhuStackHandler stackHandler) {
+    public NetworkBroadCastReceiver(MainService mainService, BezirkStackHandler stackHandler) {
         this.mainService = mainService;
         this.stackHandler = stackHandler;
     }
@@ -81,7 +81,7 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
     }
 
     private void handleConnectedState(Context context, WifiInfo wifiInfo) {
-        if (BezirkStackHandler.getBezirkComms() == null && mainService != null) {
+        if (com.bezirk.starter.helper.BezirkStackHandler.getBezirkComms() == null && mainService != null) {
                 /*it is observed in few devices that, after receiving completed supplicant state the wifi manager will not retrieve the connection correctly.
                 Hence making this separated thread sleep for 3 sec and then starting the stack.*/
             try {

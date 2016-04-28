@@ -3,7 +3,7 @@ package com.bezirk.streaming.rtc;
 import com.bezirk.control.messages.UnicastControlMessage;
 
 /**
- * API for using uhu as signaling
+ * API for using bezirk as signaling
  */
 public interface Signaling {
 

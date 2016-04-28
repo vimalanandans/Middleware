@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Used to register and retrieve information on all uhu pipes in a uhu instance
+ * Used to register and retrieve information on all bezirk pipes in a bezirk instance
  */
 public class PipeRegistry {
     private static final Logger logger = LoggerFactory.getLogger(PipeRegistry.class);
@@ -23,7 +23,7 @@ public class PipeRegistry {
 	 */
 
     /**
-     * Check if the specified pipe is registered with uhu
+     * Check if the specified pipe is registered with bezirk
      *
      * @param pipe
      * @return True if the pipe is registered

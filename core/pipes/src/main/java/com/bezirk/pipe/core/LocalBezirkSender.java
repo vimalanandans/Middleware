@@ -5,12 +5,12 @@ import com.bezirk.control.messages.pipes.PipeHeader;
 /**
  * This interface represents the connection point from the platform-independent pipes component
  * to each platform.  Specifically, each platform should implement this interface in order to have
- * messages routed from remote systems connected by pipes to a locally running uhu instance
+ * messages routed from remote systems connected by pipes to a locally running bezirk instance
  */
 public interface LocalBezirkSender {
 
     /**
-     * Invoke the appropriate uhu services' receive method for the specified event
+     * Invoke the appropriate bezirk services' receive method for the specified event
      *
      * @param header          Specifies the message type (unicast or multicast) and addressing constraints
      * @param serializedEvent The serialized event to be delivered to interested services
@@ -18,8 +18,8 @@ public interface LocalBezirkSender {
     void invokeReceive(PipeHeader pipeHeader, String serializedEvent);
 
     /**
-     * Invoke the appropriate uhu services' incoming() method so that streams
-     * can be delivered to the local uhu services
+     * Invoke the appropriate bezirk services' incoming() method so that streams
+     * can be delivered to the local bezirk services
      *
      * @param header           Specifies the message type (unicast or multicast) and addressing constraints
      * @param serializedStream Stream descriptor specifying details about the stream content

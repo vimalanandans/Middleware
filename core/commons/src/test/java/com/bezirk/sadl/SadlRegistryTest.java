@@ -96,7 +96,7 @@ public class SadlRegistryTest {
 
 		/* Creating the UhuService Ids */
 
-        BezirkZirkId uhu = null;
+        BezirkZirkId bezirk = null;
         BezirkZirkId uhu1 = null;
         BezirkZirkId uhu2 = null;
 
@@ -106,13 +106,13 @@ public class SadlRegistryTest {
 
         Location loc = null;
 
-        uhu = new BezirkZirkId("ServiceA");
+        bezirk = new BezirkZirkId("ServiceA");
         uhu1 = new BezirkZirkId("ServiceB");
         uhu2 = new BezirkZirkId("ServiceB");
 
         loc = new Location("Kitchen", "Hall", "Room");
 
-        sadleObj1 = creatingSadleObj1(uhu);
+        sadleObj1 = creatingSadleObj1(bezirk);
         sadlobj2 = creatingsadlobj2(uhu1, loc);
         sadlobj3 = creatingsadlobj3(uhu1, uhu2, loc);
 		
@@ -141,7 +141,7 @@ public class SadlRegistryTest {
 
 		/*
 		 * 2. Comparing sadleobj1 with sadlobj3. Since, sadleobj1 registered
-		 * with uhu and sadlobj3 registered with uhu2 the result will be false.
+		 * with bezirk and sadlobj3 registered with uhu2 the result will be false.
 		 */
 
         results = sadleObj1.equals(sadlobj3);
@@ -193,13 +193,13 @@ public class SadlRegistryTest {
         return sadlobj2;
     }
 
-    private SadlRegistry creatingSadleObj1(BezirkZirkId uhu) {
+    private SadlRegistry creatingSadleObj1(BezirkZirkId bezirk) {
         SadlRegistry sadleObj1;
 		/* Creating the SADLEOBJECT1 */
 
         sadleObj1 = new SadlRegistry();
-        sadleObj1.registerService(uhu);
-        sadleObj1.subscribeService(uhu, new NewProtocolRole());
+        sadleObj1.registerService(bezirk);
+        sadleObj1.subscribeService(bezirk, new NewProtocolRole());
         return sadleObj1;
     }
 
@@ -371,7 +371,7 @@ public class SadlRegistryTest {
         assertFalse("sadlobj2 protocolMap is null", results);
 
 		/*
-		 *  13. Registering sadlobj3 with uhu zirkId 2 i.e. uhu2 and making protocolMap as null.
+		 *  13. Registering sadlobj3 with bezirk zirkId 2 i.e. uhu2 and making protocolMap as null.
 		 *      Result: False (Both objects are not equal)
 		 */
 

@@ -29,7 +29,7 @@ import android.widget.Toast;
 import com.bezirk.commons.BezirkVersion;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.sphere.api.BezirkSphereAPI;
-import com.bezirk.sphere.impl.IUhuQRCode;
+import com.bezirk.sphere.impl.BezirkQRCode;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.starter.MainService;
 
@@ -108,7 +108,7 @@ public class ShareSphereActivity extends ActionBarActivity {
             imageHeight = screenWidth;
         }
 
-        qrCodeBitmap = ((IUhuQRCode) api).getQRCode(sphereID, imageWidth, imageHeight);
+        qrCodeBitmap = ((BezirkQRCode) api).getQRCode(sphereID, imageWidth, imageHeight);
 
         mImageViewQRCode.post(new Runnable() {
             @Override
@@ -229,9 +229,9 @@ public class ShareSphereActivity extends ActionBarActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("STACK STATUS");
         View alertView = LayoutInflater.from(this).inflate(R.layout.layout_menu_dialog_status, null);
-        final TextView uhuVersion = (TextView) alertView.findViewById(R.id.versionBezirk);
-        final TextView uhuStatus = (TextView) alertView.findViewById(R.id.versionStatus);
-        final TextView uhuExpectedVersionStatus = (TextView) alertView.findViewById(R.id.receivedVersionBezirk);
+        final TextView bezirkVersion = (TextView) alertView.findViewById(R.id.versionBezirk);
+        final TextView bezirkStatus = (TextView) alertView.findViewById(R.id.versionStatus);
+        final TextView bezirkExpectedVersionStatus = (TextView) alertView.findViewById(R.id.receivedVersionBezirk);
 
         class CustomClickListener implements DialogInterface.OnClickListener {
             @Override
@@ -246,15 +246,15 @@ public class ShareSphereActivity extends ActionBarActivity {
 
         builder.setPositiveButton("OK", new CustomClickListener());
 
-        uhuVersion.setText("Expected Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
+        bezirkVersion.setText("Expected Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
         if (receivedBezirkVersion != null) {
-            uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + receivedBezirkVersion);
+            bezirkExpectedVersionStatus.setText("Received Bezirk-Version: " + receivedBezirkVersion);
         } else {
-            uhuExpectedVersionStatus.setText("Received Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
+            bezirkExpectedVersionStatus.setText("Received Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
         }
 
         if (showWarning) {
-            uhuStatus.setText("Different versions of Bezirk exist in the network, there might be failure in the communication");
+            bezirkStatus.setText("Different versions of Bezirk exist in the network, there might be failure in the communication");
         }
 
         builder.setView(alertView);

@@ -24,14 +24,14 @@ public class ControlUnicastListener implements Runnable {
     private DatagramSocket ctrlUcastSocket;
     private Boolean running = false;
     private ExecutorService executor;
-    private BezirkCommsLegacy uhuComms = null;
+    private BezirkCommsLegacy bezirkComms = null;
     private CommsNotification notification = null;
 
-    public ControlUnicastListener(DatagramSocket unicastSocket, BezirkCommsLegacy uhuComms, CommsNotification notification) {
+    public ControlUnicastListener(DatagramSocket unicastSocket, BezirkCommsLegacy bezirkComms, CommsNotification notification) {
         this.ctrlUcastSocket = unicastSocket;
         this.notification = notification;
         executor = Executors.newFixedThreadPool(BezirkCommunications.getPOOL_SIZE());
-        this.uhuComms = uhuComms;
+        this.bezirkComms = bezirkComms;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class ControlUnicastListener implements Runnable {
                 try {
                     if (ControlListenerUtility.constructMsg(receivedMessage, receivePacket, notification)) {
                         // Validate message
-                        Runnable worker = new MessageValidators(computedSender, receivedMessage, uhuComms);
+                        Runnable worker = new MessageValidators(computedSender, receivedMessage, bezirkComms);
                         executor.execute(worker);
                     } else {
                         logger.debug("duplicate/ msg received");

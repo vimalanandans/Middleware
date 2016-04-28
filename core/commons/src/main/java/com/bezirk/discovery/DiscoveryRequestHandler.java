@@ -30,15 +30,15 @@ public class DiscoveryRequestHandler {
     private final ISadlControlReceiver sadlCtrl;
     private final DiscoveryResponse response;
     //private final MessageQueue ctrlSenderQueue;
-    private final BezirkComms uhuComms;
+    private final BezirkComms bezirkComms;
     private final DiscoveryRequest discReq;
 
     /**
      * @param req incoming DiscoveryRequest
      */
-    public DiscoveryRequestHandler(ISadlControlReceiver sadlCtrl, DiscoveryRequest req, BezirkComms uhuComms) {
+    public DiscoveryRequestHandler(ISadlControlReceiver sadlCtrl, DiscoveryRequest req, BezirkComms bezirkComms) {
         this.sadlCtrl = sadlCtrl;
-        this.uhuComms = uhuComms;
+        this.bezirkComms = bezirkComms;
         this.discReq = req;
         response = new DiscoveryResponse(discReq.getSender(), discReq.getSphereId(), discReq.getUniqueKey(), discReq.getDiscoveryId());
 
@@ -95,7 +95,7 @@ public class DiscoveryRequestHandler {
         responseMsg.setSerializedMessage(responseMsg.getMessage().serialize());
         responseMsg.setSphereId(response.getSphereId());
         //ctrlSenderQueue.addToQueue(responseMsg);
-        uhuComms.sendMessage(responseMsg);
+        bezirkComms.sendMessage(responseMsg);
     }
 
 }

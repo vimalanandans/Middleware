@@ -17,8 +17,8 @@ import java.util.Set;
  * This is the stub code for making sphere opaque or flat without encryption
  * This is the Quick fix. in actual this suppose to be a package altered via build
  */
-public class BezirkSphereForSadlStub implements BezirkSphereForSadl {
-    private static final Logger logger = LoggerFactory.getLogger(BezirkSphereForSadlStub.class);
+public class BezirkAndroidSphereForSadlStub implements BezirkSphereForSadl {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkAndroidSphereForSadlStub.class);
 
     @Override
     public byte[] encryptSphereContent(String sphereId, String serializedContent) {

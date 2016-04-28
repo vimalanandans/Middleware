@@ -1,6 +1,6 @@
 package com.bezirk.test.pipes;
 
-import com.bezirk.cloud.UhuWebServer;
+import com.bezirk.cloud.BezirkWebServer;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
         PipeManagerTest.class,
 })
 public class PipesTestSuite {
-
     private static final Logger logger = LoggerFactory.getLogger(PipesTestSuite.class);
 
     private static Thread webServerThread;
@@ -26,7 +25,7 @@ public class PipesTestSuite {
         logger.info("setting up: " + PipesTestSuite.class.getSimpleName());
 
         // Start web server
-        webServerThread = new Thread(new UhuWebServer());
+        webServerThread = new Thread(new BezirkWebServer());
         webServerThread.start();
         Thread.sleep(2000);
     }

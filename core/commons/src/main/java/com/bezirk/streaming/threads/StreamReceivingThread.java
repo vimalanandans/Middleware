@@ -8,7 +8,7 @@ import com.bezirk.comms.PortFactory;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.sadl.ISadlEventReceiver;
+import com.bezirk.sadl.SadlEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.util.BezirkValidatorUtility;
 
@@ -53,7 +53,7 @@ public class StreamReceivingThread implements Runnable {
     private final String serialzedMsg;
     private final short streamId;
     private final PortFactory portFactory;
-    private final ISadlEventReceiver sadlReceiver;
+    private final SadlEventReceiver sadlReceiver;
     private final BezirkSphereForSadl sphereForSadl;
 
     /**
@@ -66,7 +66,7 @@ public class StreamReceivingThread implements Runnable {
      */
     public StreamReceivingThread(int port,
                                  StreamRequest streamRequest, PortFactory portFactory,
-                                 ISadlEventReceiver sadlReceiver, BezirkSphereForSadl sphereForSadl) {
+                                 SadlEventReceiver sadlReceiver, BezirkSphereForSadl sphereForSadl) {
         super();
         this.sphere = streamRequest.getSphereId();
         this.port = port;

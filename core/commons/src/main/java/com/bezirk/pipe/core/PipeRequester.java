@@ -25,7 +25,7 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
     // Holds information about uhu state
     private PipeRegistry registry = null;
 
-    // Interface to interact with the user-facing uhu app
+    // Interface to interact with the user-facing bezirk app
     private BezirkApp app = null;
 
     public PipeRequester() {
@@ -127,7 +127,7 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
      * @param allowedIn   This PipePolicy contains the collection of Protocols allowed into the local sphere
      * @param allowedOut  This PipePolicy contains the collection of Protocols allowed to pass out of the local sphere
      * @param sphereId    The sphere the pipe has been added to
-     * @param uhuListener The uhu zirk to notify of the status of the pipe request
+     * @param uhuListener The bezirk zirk to notify of the status of the pipe request
      */
     public void pipeApproved(boolean approved, String pipeRequestId, String pipePassword, String sphereId) throws PipeApprovalException {
         PipeRequest request = outstandingRequests.get(pipeRequestId);

@@ -44,7 +44,7 @@ public class StreamStore {
      * 
      * @return status of the updation. true if success, false if fails.
      * 
-     * @see com.bosch.upa.uhu.comms.udp.streaming.PortFactory
+     * @see com.bosch.upa.bezirk.comms.udp.streaming.PortFactory
      */
     public boolean updatePortsMap(String portMapkey, int value) {
 

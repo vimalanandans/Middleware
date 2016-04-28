@@ -56,7 +56,7 @@ public final class BezirkCommsAndroid {
 
         BezirkCommunications.setDOWNLOAD_PATH(Environment.getExternalStorageDirectory().getAbsolutePath() + "/UhuDownloads/");
         if (BezirkCommunications.isStreamingEnabled()) {
-            // port factory is moved to the uhu comms manager
+            // port factory is moved to the bezirk comms manager
             // create a Downloads folder
             File createDownloadFolder = new File(BezirkCommunications.getDOWNLOAD_PATH());
             if (!createDownloadFolder.exists()) {

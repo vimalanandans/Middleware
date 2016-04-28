@@ -3,7 +3,7 @@ package com.bezirk.test.pipes;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Pipe;
-import com.bezirk.pipe.mgr.LocalUhuSender;
+import com.bezirk.pipe.mgr.LocalBezirkSender;
 import com.bezirk.pipe.mgr.PipeManager;
 import com.bezirk.pipe.mgr.PipeManagerImpl;
 import com.bezirk.pipe.mgr.PipeRegistry;
@@ -106,7 +106,7 @@ public class PipeManagerTest {
 
     //------------------------------------------------------
 
-    public class MockLocalSender implements LocalUhuSender {
+    public class MockLocalSender implements BezirkSender {
 
         private Logger log = LoggerFactory.getLogger(MockLocalSender.class);
 

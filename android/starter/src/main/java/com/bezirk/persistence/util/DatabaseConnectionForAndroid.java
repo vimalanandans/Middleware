@@ -25,7 +25,7 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
     private static final Logger log = LoggerFactory.getLogger(DatabaseConnectionForAndroid.class);
     private final Context mContext;
     private ConnectionSource dbConnectionSource;
-    private Dao<BezirkRegistry, Integer> uhuPersistenceDao;
+    private Dao<BezirkRegistry, Integer> bezirkPersistenceDao;
 
     public DatabaseConnectionForAndroid(Context context) {
         super(context, context.getFilesDir().getPath() + File.separator + DBConstants.DB_FILE_NAME, null, DATABASE_VERSION);
@@ -41,11 +41,11 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
 
     @Override
     public Dao<BezirkRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException, Exception {
-        if (null == uhuPersistenceDao) {
-            uhuPersistenceDao = getDao(BezirkRegistry.class);
-            uhuPersistenceDao.setAutoCommit(true);
+        if (null == bezirkPersistenceDao) {
+            bezirkPersistenceDao = getDao(BezirkRegistry.class);
+            bezirkPersistenceDao.setAutoCommit(true);
         }
-        return uhuPersistenceDao;
+        return bezirkPersistenceDao;
     }
 
     @Override

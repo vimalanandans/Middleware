@@ -203,7 +203,7 @@ public class DiscoveryProcessor {
                     if (localDeviceInfo.getDeviceId().equals(upaDeviceInterface.getDeviceId()) || localDeviceInfo
                             .getDeviceId().equalsIgnoreCase(SphereRegistryWrapper.DEVELOPMENT_DEVICE_ID)) {
 
-                        // construct the uhu sphere info with only local device
+                        // construct the bezirk sphere info with only local device
                         // info info
                         ArrayList<BezirkDeviceInfo> localDeviceList = new ArrayList<BezirkDeviceInfo>();
                         localDeviceList.add(localDeviceInfo);

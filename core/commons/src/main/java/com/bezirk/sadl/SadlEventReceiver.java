@@ -8,7 +8,7 @@ import com.bezirk.messagehandler.StreamStatusMessage;
  * Platform independent API's used by the SADL for handling incoming event pub sub Reception.
  * Also get the stream messages. todo rename the class to ISadleCommsMessageReceiver
  */
-public interface ISadlEventReceiver {
+public interface SadlEventReceiver {
 
     /**
      * Comms layer triggers this to process the incoming message

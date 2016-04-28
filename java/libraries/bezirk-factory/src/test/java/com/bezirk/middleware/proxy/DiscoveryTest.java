@@ -106,10 +106,10 @@ public class DiscoveryTest {
     @After
     public void destroyMockservices() {
 
-        Bezirk uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-        uhu.unregisterZirk(mockA.myId);
-        uhu.unregisterZirk(mockB.myId);
-        uhu.unregisterZirk(mockC.myId);
+        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+        bezirk.unregisterZirk(mockA.myId);
+        bezirk.unregisterZirk(mockB.myId);
+        bezirk.unregisterZirk(mockC.myId);
     }
 
     /**
@@ -117,25 +117,25 @@ public class DiscoveryTest {
      */
     private final class DiscoveryMockServiceA implements BezirkListener {
         private final String serviceName = "DiscoveryMockServiceA";
-        private Bezirk uhu = null;
+        private Bezirk bezirk = null;
         private ZirkId myId = null;
         private DiscoveryMockServiceProtocol pRole;
 
         private final void setupMockService() {
-            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+            myId = bezirk.registerZirk(serviceName);
             logger.info("DiscoveryMockServiceA - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
             pRole = new DiscoveryMockServiceProtocol();
-            uhu.subscribe(myId, pRole, this);
+            bezirk.subscribe(myId, pRole, this);
         }
 
         private final void testDiscoverWithNullLocation() {
-            uhu.discover(myId, null, pRole, 10000, 1, this);
+            bezirk.discover(myId, null, pRole, 10000, 1, this);
         }
 
         private final void testDiscoverWithSpecificLocation() {
             Address address = new Address(loc);
-            uhu.discover(myId, address, pRole, 10000, 1, this);
+            bezirk.discover(myId, address, pRole, 10000, 1, this);
         }
 
         @Override
@@ -283,18 +283,18 @@ public class DiscoveryTest {
      */
     private final class DiscoveryMockServiceB implements BezirkListener {
         private final String serviceName = "DiscoveryMockServiceB";
-        private Bezirk uhu = null;
+        private Bezirk bezirk = null;
         private ZirkId myId = null;
 
         public DiscoveryMockServiceB() {
         }
 
         private final void setupMockService() {
-            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+            myId = bezirk.registerZirk(serviceName);
             serviceBId = ((BezirkZirkId) myId).getBezirkZirkId();
             logger.info("DiscoveryMockServiceB - regId : " + serviceBId);
-            uhu.subscribe(myId, new DiscoveryMockServiceProtocol(), this);
+            bezirk.subscribe(myId, new DiscoveryMockServiceProtocol(), this);
         }
 
         @Override
@@ -339,20 +339,20 @@ public class DiscoveryTest {
      */
     private final class DiscoveryMockServiceC implements BezirkListener {
         private final String serviceName = "DiscoveryMockServiceC";
-        private Bezirk uhu = null;
+        private Bezirk bezirk = null;
         private ZirkId myId = null;
 
         private final void setupMockService() {
-            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+            myId = bezirk.registerZirk(serviceName);
             serviceCId = ((BezirkZirkId) myId).getBezirkZirkId();
             logger.info("DiscoveryMockServiceC - regId : " + serviceCId);
 
-            uhu.subscribe(myId, new DiscoveryMockServiceProtocol(), this);
+            bezirk.subscribe(myId, new DiscoveryMockServiceProtocol(), this);
         }
 
         private final void changeLocation() {
-            uhu.setLocation(myId, loc);
+            bezirk.setLocation(myId, loc);
         }
 
         @Override

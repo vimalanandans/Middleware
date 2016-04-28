@@ -156,7 +156,7 @@ public class BezirkCloudPipeClient implements CloudPipeClient {
     }
 
     /**
-     * General helper method to post a json uhu event -- can receive multipart/mixed as well as single part responses
+     * General helper method to post a json bezirk event -- can receive multipart/mixed as well as single part responses
      *
      * @param body
      * @return
@@ -223,12 +223,12 @@ public class BezirkCloudPipeClient implements CloudPipeClient {
             logger.info("Parsing multiparts");
             response = multiPartParser.parse(httpHeader, inStream);
         } else if (contentType.contains(VAL_CONTENT_TYPE_APP_JSON)) {
-            // Single part response containing a regular uhu event
+            // Single part response containing a regular bezirk event
             final String serializedReply = StreamUtils.getStringFromInputStream(inStream);
             response = new CloudResponse();
             response.setSerializedEvent(serializedReply);
             response.setHttpHeader(httpHeader);
-            // For event responses, the uhu header is returned in the httpHeader
+            // For event responses, the bezirk header is returned in the httpHeader
             response.setPipeHeader(extractPipeHeaderFromHttpHeader(httpHeader));
         } else {
             String err = "Unexpected content-type: " + contentType;
@@ -240,7 +240,7 @@ public class BezirkCloudPipeClient implements CloudPipeClient {
     }
 
     private PipeHeader extractPipeHeaderFromHttpHeader(Map<String, List<String>> httpHeader) throws Exception {
-        // Pull the uhu PipeHeader out of the response header, because t
+        // Pull the bezirk PipeHeader out of the response header, because t
         List<String> headerValue = httpHeader.get(KEY_BEZIRK_HEADER);
         if (headerValue == null) {
             throw new Exception("Bezirk header was not returned in http header in the response to sendEvent()");

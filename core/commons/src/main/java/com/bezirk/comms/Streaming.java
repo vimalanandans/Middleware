@@ -51,5 +51,5 @@ public interface Streaming {
     /**
      * Set the sphere for sadl
      */
-    public void setSphereForSadl(final BezirkSphereForSadl uhuSphere);
+    public void setSphereForSadl(final BezirkSphereForSadl bezirkSphere);
 }

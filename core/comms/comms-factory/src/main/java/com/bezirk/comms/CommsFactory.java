@@ -17,7 +17,7 @@ public class CommsFactory {
 
     public BezirkComms getComms() {
 
-        BezirkComms uhuComms = null;
+        BezirkComms bezirkComms = null;
 
         getActiveComms();
 
@@ -26,14 +26,14 @@ public class CommsFactory {
         switch (activeComms) {
             default:
             case COMMS_BEZIRK:
-                uhuComms = new BezirkCommsManager();
+                bezirkComms = new BezirkCommsManager();
                 log.debug("udp comms is created. ");
                 break;
             case COMMS_ZYRE_JNI:
                 log.error("comms are injected by each platform, common won't do anything");
                 break;
             case COMMS_JYRE:
-                //uhuComms =  new JyreCommsProcessor();
+                //bezirkComms =  new JyreCommsProcessor();
                 log.error("Jyre comms is not created. ");
                 break;
             case COMMS_ZYRE:
@@ -41,7 +41,7 @@ public class CommsFactory {
                 break;
         }
 
-        return uhuComms;
+        return bezirkComms;
     }
 
     /**

@@ -3,7 +3,7 @@ package com.bezirk.application;
 import com.bezirk.pipe.core.PipeApprovalException;
 
 /**
- * Platform independent interface offered by a uhu sphere management application to uhu
+ * Platform independent interface offered by a bezirk sphere management application to bezirk
  */
 public interface BezirkApp {
     /**

@@ -27,11 +27,11 @@ public class IncrementalParser implements MultiPartParser {
         String contentType = headerMap.get("Content-Type").get(0);
         String boundary = extractBoundary(contentType);
 
-        // Parse the uhu pipe header part
-        UhuHeaderPart uhuHeaderPart = parseUhuHeader(boundary, inStream);
-        PipeMulticastHeader pipeHeader = PipeMulticastHeader.deserialize(uhuHeaderPart.getUhuHeader(), PipeMulticastHeader.class);
+        // Parse the bezirk pipe header part
+        BezirkHeaderPart bezirkHeaderPart = parseBezirkHeader(boundary, inStream);
+        PipeMulticastHeader pipeHeader = PipeMulticastHeader.deserialize(bezirkHeaderPart.getBezirkHeader(), PipeMulticastHeader.class);
         if (pipeHeader == null) {
-            throw new Exception("Pipe header could not be deserialized" + uhuHeaderPart.getUhuHeader());
+            throw new Exception("Pipe header could not be deserialized" + bezirkHeaderPart.getBezirkHeader());
         }
         response.setPipeHeader(pipeHeader);
 
@@ -94,11 +94,11 @@ public class IncrementalParser implements MultiPartParser {
         return contentPart;
     }
 
-    protected UhuHeaderPart parseUhuHeader(String expectedBoundary, InputStream inStream) throws Exception {
-        Part streamPart = new UhuHeaderPart();
+    protected BezirkHeaderPart parseBezirkHeader(String expectedBoundary, InputStream inStream) throws Exception {
+        Part streamPart = new BezirkHeaderPart();
 
 		/*
-         * Parse the <uhu-header> (uhuHeader) part in 4 steps:
+         * Parse the <bezirk-header> (uhuHeader) part in 4 steps:
 		 */
 
         // 1. Ensure that the boundary is the first line in the part
@@ -108,18 +108,19 @@ public class IncrementalParser implements MultiPartParser {
         Map<String, String> partHeader = parsePartHeader(inStream, streamPart);
 
         // 3. Make sure the header entries are valid for this part
-        validateUhuHeaderHttpHeader(partHeader);
+        validateBezirkHeaderHttpHeader(partHeader);
 
-        // 4. We have reached the end of the HTTP header block. Now read the uhu PipeHeader
+        // 4. We have reached the end of the HTTP header block. Now read the bezirk PipeHeader
         String serializedPipeHdr = readPipeHeader(inStream, streamPart);
 
-        // the header is valid and we have a serialized pipe header.  Now set the appropriate properties on the UhuHeaderPart object
+        // the header is valid and we have a serialized pipe header.  Now set the appropriate
+        // properties on the BezirkHeaderPart object
         streamPart.setContentType(partHeader.get(Part.KEY_CONTENT_TYPE));
         streamPart.setContentId(partHeader.get(Part.KEY_CONTENT_ID));
         streamPart.setContentTransferEncoding(partHeader.get(Part.KEY_CONTENT_ENCODING));
         streamPart.setData(serializedPipeHdr);
 
-        return (UhuHeaderPart) streamPart;
+        return (BezirkHeaderPart) streamPart;
     }
 
 
@@ -190,7 +191,7 @@ public class IncrementalParser implements MultiPartParser {
 
     protected String readPipeHeader(InputStream inStream, Part part) throws IOException {
         final String pipeHeader = streamLineToString(inStream);
-        logger.info("Identified uhu header: {}", pipeHeader);
+        logger.info("Identified bezirk header: {}", pipeHeader);
 
         return pipeHeader;
     }
@@ -284,7 +285,7 @@ public class IncrementalParser implements MultiPartParser {
      * @param httpHeader The header entries to validate
      * @throws Exception if a header value does not match the expected type
      */
-    protected void validateUhuHeaderHttpHeader(Map<String, String> httpHeader) throws Exception {
+    protected void validateBezirkHeaderHttpHeader(Map<String, String> httpHeader) throws Exception {
         // Iterate through each header entry in this part
         for (Map.Entry<String, String> entry : httpHeader.entrySet()) {
             String key = entry.getKey();
@@ -292,27 +293,27 @@ public class IncrementalParser implements MultiPartParser {
             // Check that Content-Type matches the expected value
             if (key.equals(Part.KEY_CONTENT_TYPE)) {
                 String contentType = entry.getValue();
-                if (!contentType.equals(UhuHeaderPart.EXPECTEDVAL_CONTENT_TYPE)) {
-                    throw new Exception("Content type <" + contentType + "> does not match expected value: " + UhuHeaderPart.EXPECTEDVAL_CONTENT_TYPE);
+                if (!contentType.equals(com.bezirk.pipe.cloud.multipart.BezirkHeaderPart.EXPECTEDVAL_CONTENT_TYPE)) {
+                    throw new Exception("Content type <" + contentType + "> does not match expected value: " + com.bezirk.pipe.cloud.multipart.BezirkHeaderPart.EXPECTEDVAL_CONTENT_TYPE);
                 }
             }
             // Check that Content-ID matches the expected value
             else if (key.equals(Part.KEY_CONTENT_ID)) {
                 String contentId = entry.getValue();
-                if (!contentId.contains(UhuHeaderPart.EXPECTEDVAL_CONTENT_ID)) {
-                    throw new Exception("Content ID <" + contentId + "> does not match expected value: " + UhuHeaderPart.EXPECTEDVAL_CONTENT_ID);
+                if (!contentId.contains(com.bezirk.pipe.cloud.multipart.BezirkHeaderPart.EXPECTEDVAL_CONTENT_ID)) {
+                    throw new Exception("Content ID <" + contentId + "> does not match expected value: " + com.bezirk.pipe.cloud.multipart.BezirkHeaderPart.EXPECTEDVAL_CONTENT_ID);
                 }
             } else if (key.equals(Part.KEY_CONTENT_ENCODING)) {
                 String contentEncoding = entry.getValue();
                 // We probably don't care about the encoding value so just warn for now
-                if (!contentEncoding.equals(UhuHeaderPart.EXPECTEDVAL_CONTENT_ENCODING)) {
+                if (!contentEncoding.equals(com.bezirk.pipe.cloud.multipart.BezirkHeaderPart.EXPECTEDVAL_CONTENT_ENCODING)) {
                     logger.warn("Didn't expect to see content encoding value: " + contentEncoding);
                 }
             } else {
                 logger.warn("Didn't expect to receive header key: " + key);
             }
         }
-        logger.info("Validated http header for UhuHeaderPart");
+        logger.info("Validated http header for BezirkHeaderPart");
     }
 
     /**

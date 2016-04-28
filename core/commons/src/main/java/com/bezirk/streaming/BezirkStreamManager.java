@@ -12,7 +12,7 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.control.messages.streaming.StreamResponse;
 import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
-import com.bezirk.sadl.ISadlEventReceiver;
+import com.bezirk.sadl.SadlEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.rtc.Signaling;
@@ -46,10 +46,10 @@ public class BezirkStreamManager implements Streaming {
 
     private StreamStore streamStore = null;
 
-    private ISadlEventReceiver sadlReceiver = null;
+    private SadlEventReceiver sadlReceiver = null;
 
     public BezirkStreamManager(BezirkComms comms,
-                               BezirkMessageDispatcher msgDispatcher, ISadlEventReceiver sadlReceiver) {
+                               BezirkMessageDispatcher msgDispatcher, SadlEventReceiver sadlReceiver) {
 
         if (BezirkValidatorUtility.isObjectNotNull(comms)
                 && BezirkValidatorUtility.isObjectNotNull(msgDispatcher)
@@ -192,9 +192,9 @@ public class BezirkStreamManager implements Streaming {
     }
 
     @Override
-    public void setSphereForSadl(BezirkSphereForSadl uhuSphere) {
+    public void setSphereForSadl(BezirkSphereForSadl bezirkSphere) {
 
-        this.sphereForSadl = uhuSphere;
+        this.sphereForSadl = bezirkSphere;
         this.streamQueueProcessor.setSphereForSadl(sphereForSadl);
     }
 

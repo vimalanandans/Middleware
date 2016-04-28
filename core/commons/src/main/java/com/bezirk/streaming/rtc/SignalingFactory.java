@@ -70,7 +70,7 @@ public final class SignalingFactory {
     }
 
     /**
-     * Getting the UI Chat class instance for the uhu-pc
+     * Getting the UI Chat class instance for the bezirk-pc
      *
      * @param className name of the class
      * @return Object instance of class implementing UI Chat
@@ -86,7 +86,7 @@ public final class SignalingFactory {
     }
 
     /**
-     * Getting the UI Activity class for the uhu-android
+     * Getting the UI Activity class for the bezirk-android
      *
      * @param className name of the class
      * @return Activity class for UI Chat

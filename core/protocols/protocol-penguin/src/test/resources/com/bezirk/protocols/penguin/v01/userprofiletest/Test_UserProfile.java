@@ -11,7 +11,7 @@ import com.bezirk.protocols.penguin.v01.UserProfile;
 public class Test_UserProfile {
 
     public static void main(String[] args) {
-        // create user-profile uhu msg
+        // create user-profile bezirk msg
         //UserProfile bobUserProfile = new UserProfile();
 
         // create user

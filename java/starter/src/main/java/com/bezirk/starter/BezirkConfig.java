@@ -18,7 +18,7 @@ public class BezirkConfig {
     /**
      * Relative data path
      */
-    public static final String DATA_PATH_REL = "data" + File.separator + "uhu";
+    public static final String DATA_PATH_REL = "data" + File.separator + "bezirk";
     private static final Logger logger = LoggerFactory.getLogger(BezirkConfig.class);
     /**
      * This will hold the full data path, which will be relative to APP_HOME or
@@ -37,7 +37,7 @@ public class BezirkConfig {
 
     /**
      * Set the application home directory. If we are running from the binary
-     * distribution, appHome is set to: /path/to/uhu-main-VERS. If we are
+     * distribution, appHome is set to: /path/to/bezirk-main-VERS. If we are
      * running from the developement envronment, appHome is set to the project
      * root directory.
      */

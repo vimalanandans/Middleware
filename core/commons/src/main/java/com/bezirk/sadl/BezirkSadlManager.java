@@ -36,7 +36,7 @@ import java.util.Set;
  * This class implements the ISadlRegistry, ISadlRegistryLookup Interfaces. This class is used by ProxyForServices (by casting ISadlRegistry)
  * EventSender/ EventReceiver/ ControlSender/ ControlReceiver by casting ISadlRegistryLookup.
  */
-public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadlControlReceiver, ISadlEventReceiver {
+public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadlControlReceiver, SadlEventReceiver {
     private static final Logger logger = LoggerFactory.getLogger(BezirkSadlManager.class);
 
     private final Date currentDate = new Date();

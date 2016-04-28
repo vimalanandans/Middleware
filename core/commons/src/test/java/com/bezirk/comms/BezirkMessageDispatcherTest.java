@@ -7,7 +7,7 @@ import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sadl.ISadlEventReceiver;
+import com.bezirk.sadl.SadlEventReceiver;
 import com.bezirk.sadl.BezirkSadlManager;
 import com.bezrik.network.BezirkNetworkUtilities;
 
@@ -70,18 +70,15 @@ public class BezirkMessageDispatcherTest {
                 }
             }
         } catch (SocketException e) {
-
             logger.error("Unable to fetch network interface");
-
         }
         return null;
     }
 
     @Test
     public void test() {
-
-        ISadlEventReceiver uhusadlManager = new BezirkSadlManager(null);
-        BezirkMessageDispatcher bezirkMessageDispatcher = new BezirkMessageDispatcher(uhusadlManager);
+        SadlEventReceiver bezirkSadlManager = new BezirkSadlManager(null);
+        BezirkMessageDispatcher bezirkMessageDispatcher = new BezirkMessageDispatcher(bezirkSadlManager);
 
         CtrlMsgReceiver receiver = new MockReceiver();
         bezirkMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, receiver);

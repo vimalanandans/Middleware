@@ -138,10 +138,10 @@ public class ProxyForServicesTest {
         proxyforServices.setSadlRegistry(sadlManager);
 
         String serviceId = "ServiceB";
-        BezirkZirkId uhuServiceBId = new BezirkZirkId(serviceId);
+        BezirkZirkId bezirkZirkBId = new BezirkZirkId(serviceId);
 
-        proxyforServices.registerService(uhuServiceBId, serviceId);
-        proxyforServices.subscribeService(uhuServiceBId, pRole);
+        proxyforServices.registerService(bezirkZirkBId, serviceId);
+        proxyforServices.subscribeService(bezirkZirkBId, pRole);
 
         proxyforServices.discover(uhuServiceAId, null, pRole, 3, 10000, 1);
         ConcurrentHashMap<DiscoveryLabel, DiscoveryRecord> discoveredMap = new ConcurrentHashMap<>();
@@ -161,7 +161,7 @@ public class ProxyForServicesTest {
                 "DiscoveryId is not matching with the id in the discovery request.",
                 discLabel.getDiscoveryId(), 3);
 
-        proxyforServices.unregister(uhuServiceBId);
+        proxyforServices.unregister(bezirkZirkBId);
     }
 
     private void testSetLocation() {

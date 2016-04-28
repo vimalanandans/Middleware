@@ -541,8 +541,8 @@ public class BezirkCommsManager implements BezirkCommsLegacy {
      * @see BezirkComms#setSphereForSadl(BezirkSphereForSadl)
      */
     @Override
-    public void setSphereForSadl(BezirkSphereForSadl uhuSphere) {
-        bezirkStreamManager.setSphereForSadl(uhuSphere);
+    public void setSphereForSadl(BezirkSphereForSadl bezirkSphere) {
+        bezirkStreamManager.setSphereForSadl(bezirkSphere);
     }
 
     /**

@@ -36,22 +36,22 @@ public class RegistrationUnregistrationTest {
     //@Test
     public void registrationUnregistrationTest() {
         final String serviceName = "MOCK_SERVICE_A";
-        Bezirk uhu = null;
-        BezirkZirkId serviceId = null;
+        Bezirk bezirk = null;
+        BezirkZirkId zirkId = null;
 
-        uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-        serviceId = (BezirkZirkId) uhu.registerZirk(serviceName);
-        String uhuServiceId = serviceId.getBezirkZirkId();
-        assertNotNull("ServiceID is null after registration.", uhuServiceId);
+        bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+        zirkId = (BezirkZirkId) bezirk.registerZirk(serviceName);
+        String bezirkZirkId = zirkId.getBezirkZirkId();
+        assertNotNull("ServiceID is null after registration.", bezirkZirkId);
 
         // Test
 
         // RE-Register the zirk and check if the same id is getting generated
-        String duplicatUuhuServiceId = ((BezirkZirkId) uhu.registerZirk(serviceName)).getBezirkZirkId();
-        assertEquals("Different serviceID generated upon duplicate registration for same zirk.", uhuServiceId, duplicatUuhuServiceId);
+        String duplicateBezirkZirkId = ((BezirkZirkId) bezirk.registerZirk(serviceName)).getBezirkZirkId();
+        assertEquals("Different zirkID generated upon duplicate registration for same zirk.", bezirkZirkId, duplicateBezirkZirkId);
 
         // unRegister
-        uhu.unregisterZirk(serviceId);
+        bezirk.unregisterZirk(zirkId);
 
     }
 

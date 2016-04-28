@@ -40,12 +40,9 @@ public class ZirkStarterHelperTest {
 
     @Test
     public void test() {
-
         testInitSphere();
 
-        testConfigureUhuDevice();
-
-
+        testConfigureBezirkDevice();
     }
 
     /**
@@ -78,7 +75,7 @@ public class ZirkStarterHelperTest {
      * <p/>
      * In this case the uhudevice type should be set as EMBEDDED_KIT upon device configuration.
      */
-    private void testConfigureUhuDevice() {
+    private void testConfigureBezirkDevice() {
         com.bezirk.starter.ServiceStarterHelper helper = new com.bezirk.starter.ServiceStarterHelper();
         BezirkConfig bezirkConfig = new BezirkConfig();
 

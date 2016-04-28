@@ -24,8 +24,8 @@ import org.slf4j.LoggerFactory;
  * <p/>
  * Created by AJC6KOR on 9/8/2015.
  */
-public final class UhuSphereHandler {
-    private static final Logger logger = LoggerFactory.getLogger(UhuSphereHandler.class);
+public final class BezirkSphereHandler {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkSphereHandler.class);
 
     static BezirkSphereAPI sphereForAndroid;
     static BezirkDevMode devMode;
@@ -60,7 +60,7 @@ public final class UhuSphereHandler {
 
             sphereForAndroid = new BezirkSphereForAndroid(cryptoEngine, uhuDevice, sphereRegistry, service.getApplicationContext(), preferences);
 
-            BezirkSphereForAndroid uhuSphereForAndroid = (BezirkSphereForAndroid) UhuSphereHandler.sphereForAndroid;
+            BezirkSphereForAndroid uhuSphereForAndroid = (BezirkSphereForAndroid) BezirkSphereHandler.sphereForAndroid;
 
             uhuSphereForAndroid.setBezirkSphereListener(uhuSphereForAndroid);
 

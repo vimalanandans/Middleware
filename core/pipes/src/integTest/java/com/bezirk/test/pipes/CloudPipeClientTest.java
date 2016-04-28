@@ -8,8 +8,8 @@ import com.bezirk.control.messages.pipes.PipeUnicastHeader;
 import com.bezirk.middleware.messages.Stream;
 import com.bezirk.pipe.cloud.CloudPipeClient;
 import com.bezirk.pipe.cloud.CloudPipeClientImpl;
-import com.bezirk.proxy.api.impl.UhuServiceEndPoint;
-import com.bezirk.proxy.api.impl.UhuServiceId;
+import com.bezirk.proxy.api.impl.BezirkServiceEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.registration.ServiceRegistration;
 import com.bezirk.samples.protocols.EchoReply;
 import com.bezirk.samples.protocols.EchoRequest;
@@ -126,14 +126,14 @@ public class CloudPipeClientTest {
 	 */
 
     /**
-     * Creates a uhu multicast header
+     * Creates a bezirk multicast header
      *
      * @return
      */
     protected PipeMulticastHeader generateTestHeader() {
         // Set header for routing purposes
-        UhuServiceId serviceId = new UhuServiceId(ServiceRegistration.generateUniqueServiceID());
-        UhuServiceEndPoint senderEndpoint = new UhuServiceEndPoint("EchoSenderService", serviceId);
+        BezirkZirkId serviceId = new BezirkZirkId(ServiceRegistration.generateUniqueServiceID());
+        BezirkServiceEndPoint senderEndpoint = new BezirkServiceEndPoint("EchoSenderService", serviceId);
         PipeMulticastHeader pipeMulticastHeader = new PipeMulticastHeader();
         pipeMulticastHeader.setTopic(echoRequest.topic);
         pipeMulticastHeader.setSenderSEP(senderEndpoint);

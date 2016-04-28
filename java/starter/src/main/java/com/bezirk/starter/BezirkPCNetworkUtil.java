@@ -24,8 +24,8 @@ import java.util.Scanner;
  *
  * @author ajc6kor
  */
-final class UhuPCNetworkUtil {
-    private static final Logger logger = LoggerFactory.getLogger(UhuPCNetworkUtil.class);
+final class BezirkPCNetworkUtil {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkPCNetworkUtil.class);
 
     NetworkInterface fetchNetworkInterface(final BezirkConfig bezirkConfig)
             throws SocketException, NullPointerException, Exception {

@@ -128,7 +128,7 @@ public class MockComms implements BezirkComms {
     }
 
     @Override
-    public void setSphereForSadl(BezirkSphereForSadl uhuSphere) {
+    public void setSphereForSadl(BezirkSphereForSadl bezirkSphere) {
         // TODO Auto-generated method stub
 
     }

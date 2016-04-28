@@ -15,7 +15,7 @@ public interface IServiceRunner {
     void init() throws Exception;
 
     /**
-     * Called by uhu in order to run the zirk
+     * Called by bezirk in order to run the zirk
      *
      * @throws Exception if the zirk could not be started
      */

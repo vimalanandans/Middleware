@@ -207,11 +207,11 @@ public class RegistrationUnregistrationTest {
      */
 
     private void unregisterfrommaps() {
-        BezirkZirkId uhu = new BezirkZirkId("ServiceTestA");
-        bezirkSadlManager.registerService(uhu);
+        BezirkZirkId bezirk = new BezirkZirkId("ServiceTestA");
+        bezirkSadlManager.registerService(bezirk);
         SubscribedRole sRole = new SubscribedRole(mockProtocols.new NewProtocolRole());
-        bezirkSadlManager.subscribeService(uhu, sRole);
-        boolean isRemoved = bezirkSadlManager.unregisterService(uhu);
+        bezirkSadlManager.subscribeService(bezirk, sRole);
+        boolean isRemoved = bezirkSadlManager.unregisterService(bezirk);
         assertTrue("Not Removed.", isRemoved);
     }
 

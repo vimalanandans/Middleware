@@ -9,7 +9,7 @@ import com.bezirk.remotelogging.queues.LoggingQueueManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
 import com.bezirk.remotelogging.status.LoggingStatus;
 import com.bezirk.remotelogging.util.Util;
-import com.bezirk.sadl.ISadlEventReceiver;
+import com.bezirk.sadl.SadlEventReceiver;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class BezirkMessageDispatcher implements MessageDispatcher {
     private static final Logger logger = LoggerFactory.getLogger(BezirkMessageDispatcher.class);
-    private final ISadlEventReceiver sadlEventReceiver;
+    private final SadlEventReceiver sadlEventReceiver;
 
     //private ISadlControlReceiver sadlCtrlRxer;
     /*
@@ -43,7 +43,7 @@ public class BezirkMessageDispatcher implements MessageDispatcher {
     Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
             new HashMap<ControlMessage.Discriminator, CtrlMsgReceiver>();
 
-    public BezirkMessageDispatcher(ISadlEventReceiver sadlEventReceiver) {
+    public BezirkMessageDispatcher(SadlEventReceiver sadlEventReceiver) {
         this.sadlEventReceiver = sadlEventReceiver;
     }
 

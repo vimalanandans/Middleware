@@ -32,7 +32,7 @@ public class LocalAndroidSender implements LocalBezirkSender {
 
     @Override
     public void invokeReceive(PipeHeader pipeHeader, String serializedEvent) {
-        log.info("Invoking uhu receive for event:  " + serializedEvent);
+        log.info("Invoking bezirk receive for event:  " + serializedEvent);
 
         // TODO: how to set an actual zirk ID??? We're just using the requesting zirk for now :(
         BezirkZirkId serviceId = pipeHeader.getSenderSEP().getBezirkZirkId();

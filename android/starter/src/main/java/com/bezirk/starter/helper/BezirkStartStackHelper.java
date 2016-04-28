@@ -58,7 +58,7 @@ class BezirkStartStackHelper {
         }
     }
 
-    boolean isIPAddressValid(MainService service, WifiManager wifi, UhuAndroidNetworkUtil androidNetworkUtil) {
+    boolean isIPAddressValid(MainService service, WifiManager wifi, BezirkAndroidNetworkUtil androidNetworkUtil) {
         String ipAddress;
         try {
             ipAddress = androidNetworkUtil.getIpAddress(wifi);

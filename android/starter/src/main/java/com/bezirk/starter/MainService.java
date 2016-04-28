@@ -97,7 +97,7 @@ public class MainService extends Service implements INotificationCallback {
         broadcastReceiver = new NetworkBroadCastReceiver(this, bezirkStackHandler);
         registerToWifiBroadcastReceivers(broadcastReceiver);
 
-        // this is needed when the zirk starts first before uhu stack.
+        // this is needed when the zirk starts first before bezirk stack.
         // (zirk sends registration intent before start stack intent)
         if (!BezirkStackHandler.isStackStarted()) {
             bezirkStackHandler.startStack(this);
@@ -108,7 +108,7 @@ public class MainService extends Service implements INotificationCallback {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         if (intent != null) {
-            bezirkActionProcessor.processUhuAction(intent, this, bezirkServiceHelper, bezirkStackHandler);
+            bezirkActionProcessor.processBezirkAction(intent, this, bezirkServiceHelper, bezirkStackHandler);
         }
 
         return START_STICKY;

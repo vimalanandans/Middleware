@@ -5,7 +5,7 @@ package com.bezirk.streaming.threads;
 
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezirk.sadl.ISadlEventReceiver;
+import com.bezirk.sadl.SadlEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.BezirkValidatorUtility;
@@ -35,12 +35,12 @@ public class StreamSendingThread implements Runnable {
     private final int port;                                           // the port that the recipient is listening
     private final File file;                                    // path to the file that has to be sent
     private final String sphere;
-    private final ISadlEventReceiver sadlReceiver;
+    private final SadlEventReceiver sadlReceiver;
     private final BezirkSphereForSadl sphereForSadl;
     private Socket client;
 
     public StreamSendingThread(StreamRecord streamRecord,
-                               ISadlEventReceiver sadlReceiver, BezirkSphereForSadl sphereForSadl) {
+                               SadlEventReceiver sadlReceiver, BezirkSphereForSadl sphereForSadl) {
         super();
         this.sphere = streamRecord.sphere;
         this.recipientIP = streamRecord.recipientIP;

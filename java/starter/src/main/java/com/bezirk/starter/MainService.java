@@ -31,7 +31,7 @@ import java.util.Date;
 import javax.swing.SwingUtilities;
 
 /**
- * MainService for uhu-pc which controls the uhu stack
+ * MainService for bezirk-pc which controls the bezirk stack
  */
 public class MainService {
     private static final Logger logger = LoggerFactory
@@ -42,7 +42,7 @@ public class MainService {
      */
     private static final int MAX_ERROR_REPEAT_COUNT = 100;
     private final com.bezirk.proxy.pc.ProxyforServices proxyforServices;
-    private final UhuPCNetworkUtil uhuPcNetworkUtil = new UhuPCNetworkUtil();
+    private final BezirkPCNetworkUtil bezirkPcNetworkUtil = new BezirkPCNetworkUtil();
     private final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
     BezirkSphereAPI sphereForPC;
     /**
@@ -76,7 +76,7 @@ public class MainService {
     private final CommsNotification errNotificationCallback = new CommsNotification() {
 
         /**
-         * Display warning if uhu version is mismatching.
+         * Display warning if bezirk version is mismatching.
          */
         @Override
         public void versionMismatch(final String misMatchVersionId) {
@@ -96,7 +96,7 @@ public class MainService {
         public void diagMsg(MessageLedger msg) {
             // TODO:
             // handle ping message and reply pong. check android code
-            logger.info("diag UI and response are not implemented in uhu build");
+            logger.info("diag UI and response are not implemented in bezirk build");
         }
 
         @Override
@@ -121,7 +121,7 @@ public class MainService {
 
         /** get the config */
         if (bezirkConfig == null) {
-            logger.debug("unable to find the uhu config. using default values. check uhu.xml");
+            logger.debug("unable to find the bezirk config. using default values. check bezirk.xml");
             this.bezirkConfig = new BezirkConfig();
         }
 
@@ -204,7 +204,7 @@ public class MainService {
 
         NetworkInterface intf = null;
         try {
-            intf = uhuPcNetworkUtil.fetchNetworkInterface(this.bezirkConfig);
+            intf = bezirkPcNetworkUtil.fetchNetworkInterface(this.bezirkConfig);
         } catch (Exception e) {
             serviceStarterHelper.fail("Error in fetching interface name", e);
         }
@@ -293,7 +293,7 @@ public class MainService {
     }
 
     /**
-     * Restarts uhu stack
+     * Restarts bezirk stack
      */
     public void reboot() {
         // display in long period of time
@@ -355,7 +355,7 @@ public class MainService {
 
         } catch (Exception e) {
 
-            logger.error("Unable to set uhu callback for the comms.", e);
+            logger.error("Unable to set bezirk callback for the comms.", e);
             return false;
         }
         */

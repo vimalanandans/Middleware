@@ -77,19 +77,19 @@ public class BezirkDeviceInfoTest {
 
         BezirkDeviceInfo bezirkDeviceInfoTemp = bezirkDeviceInfo;
 
-        assertTrue("Similar uhudevice info are considered unequal.", bezirkDeviceInfo.equals(bezirkDeviceInfoTemp));
-        assertEquals("Similar uhudevice info have different hashcode.", bezirkDeviceInfo.hashCode(), bezirkDeviceInfoTemp.hashCode());
+        assertTrue("Similar bezirkdevice info are considered unequal.", bezirkDeviceInfo.equals(bezirkDeviceInfoTemp));
+        assertEquals("Similar bezirkdevice info have different hashcode.", bezirkDeviceInfo.hashCode(), bezirkDeviceInfoTemp.hashCode());
 
         bezirkDeviceInfo = new BezirkDeviceInfo(null, deviceName, deviceType, deviceRole, deviceActive, zirks);
-        assertFalse("Different uhudevice info are considered equal.", bezirkDeviceInfoTemp.equals(bezirkDeviceInfo));
-        assertFalse("Different uhudevice info are considered equal.", bezirkDeviceInfo.equals(bezirkDeviceInfoTemp));
+        assertFalse("Different bezirkdevice info are considered equal.", bezirkDeviceInfoTemp.equals(bezirkDeviceInfo));
+        assertFalse("Different bezirkdevice info are considered equal.", bezirkDeviceInfo.equals(bezirkDeviceInfoTemp));
 
-        assertFalse("BezirkZirkInfo is considered equal to uhudeviceinfo.", bezirkDeviceInfo.equals(bezirkZirkInfo));
-        assertNotEquals("Different uhudeviceinfo  have same hashcode.", bezirkDeviceInfo.hashCode(), bezirkDeviceInfoTemp.hashCode());
+        assertFalse("BezirkZirkInfo is considered equal to bezirkdeviceinfo.", bezirkDeviceInfo.equals(bezirkZirkInfo));
+        assertNotEquals("Different bezirkdevice  have same hashcode.", bezirkDeviceInfo.hashCode(), bezirkDeviceInfoTemp.hashCode());
 
         bezirkDeviceInfoTemp = new BezirkDeviceInfo("DeviceB", deviceName, deviceType, deviceRole, deviceActive, zirks);
-        assertFalse("Different uhudevice info are considered equal.", bezirkDeviceInfoTemp.equals(bezirkDeviceInfo));
-        assertFalse("Different uhudevice info are considered equal.", bezirkDeviceInfo.equals(bezirkDeviceInfoTemp));
+        assertFalse("Different bezirkdevice info are considered equal.", bezirkDeviceInfoTemp.equals(bezirkDeviceInfo));
+        assertFalse("Different bezirkdevice info are considered equal.", bezirkDeviceInfo.equals(bezirkDeviceInfoTemp));
 
 
     }

@@ -50,8 +50,8 @@ test.doLast {
 //    println 'Writing the version file'
 //
 //    def verDir = "${rootDir}/../release-tool/config/version.properties"
-//    def verFile = "${rootDir}/core/uhu/commons/src/main/resources/version.properties"
-////	def verFileForJava = "${rootDir}/../Java-Build/uhu-pc/src/main/resources/version.properties"
+//    def verFile = "${rootDir}/core/bezirk/commons/src/main/resources/version.properties"
+////	def verFileForJava = "${rootDir}/../Java-Build/bezirk-pc/src/main/resources/version.properties"
 //
 //    Properties props = new Properties()
 //    props.load(new FileInputStream(verDir))

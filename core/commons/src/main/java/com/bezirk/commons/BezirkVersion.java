@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Bezirk versions holds all the versions of uhu
+ * Bezirk versions holds all the versions of bezirk
  * will be used by all the components to
  * that uses the version to be compatible and process accordingly.
- * the main uhu version is read from build file
+ * the main bezirk version is read from build file
  */
 public class BezirkVersion {
     private transient static final Logger logger = LoggerFactory.getLogger(BezirkVersion.class);
@@ -33,18 +33,18 @@ public class BezirkVersion {
 
     static {
         // Fetch the version of this Bezirk middleware instance from version.properties
-        final Properties uhuProperties = new Properties();
+        final Properties bezirkProperties = new Properties();
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
         String middlewareVersion = "";
 
         try (final InputStream is = loader.getResourceAsStream("version.properties")) {
             if (is == null) {
-                logger.error("Unable to find uhu version file. using default uhu version " +
+                logger.error("Unable to find bezirk version file. using default bezirk version " +
                         DEFAULT_BEZIRK_VERSION);
             } else {
-                uhuProperties.load(is);
-                middlewareVersion = (String) uhuProperties.get("BEZIRK_VERSION");
+                bezirkProperties.load(is);
+                middlewareVersion = (String) bezirkProperties.get("BEZIRK_VERSION");
             }
         } catch (NullPointerException e) {
             logger.error("Error fetching resource stream for version.properties", e);

@@ -15,10 +15,10 @@ dependencies {
         compile "com.bezirk:pipes:${version}"
     } else {
 
-  */      //println " uhu-pc build with remote maven repo "
+  */      //println " bezirk-pc build with remote maven repo "
 
     //direct local dependencies for renaming the packages
-    // uhu deps
+    // bezirk deps
     compile project(':core:bezirk-middleware-api')
     compile project(':core:bezirk')
     compile project(':core:control-messages')
@@ -32,7 +32,7 @@ dependencies {
     compile project(':java:libraries:comms-zyre-jni')
 
     // Enable this to include Bezirk-RTC
-    //	compile project(':uhu-pc-rtc')
+    //	compile project(':bezirk-pc-rtc')
 
     // external deps
     compile 'org.apache.shiro:shiro-core:1.2.4'

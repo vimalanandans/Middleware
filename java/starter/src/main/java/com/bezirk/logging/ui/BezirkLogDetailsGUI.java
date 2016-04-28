@@ -209,29 +209,29 @@ public class BezirkLogDetailsGUI extends JFrame {
                 selectedSpheres, loggingSpheres, isActivateLogging);
     }
 
-    public void updateTable(BezirkLoggingMessage uhuLogMessage) {
+    public void updateTable(BezirkLoggingMessage bezirkLogMessage) {
 
         if (!isDeveloperModeEnabled
-                && uhuLogMessage.typeOfMessage
+                && bezirkLogMessage.typeOfMessage
                 .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE
                         .name())
-                || uhuLogMessage.typeOfMessage
+                || bezirkLogMessage.typeOfMessage
                 .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND
                         .name())) {
             return;
         }
 
         final StringBuilder tempMapKey = new StringBuilder();
-        tempMapKey.append(uhuLogMessage.uniqueMsgId).append(':').append(uhuLogMessage.sphereName);
+        tempMapKey.append(bezirkLogMessage.uniqueMsgId).append(':').append(bezirkLogMessage.sphereName);
 
         if (checkEntry(tempMapKey.toString())) {
             try {
                 model.addRow(new Object[]{
-                        getSphereNameFromSphereId(uhuLogMessage.sphereName),
-                        sdf.format(Long.valueOf(uhuLogMessage.timeStamp)),
-                        uhuLogMessage.sender,
-                        getDeviceNameFromDeviceId(uhuLogMessage.recipient),
-                        uhuLogMessage.topic, 0});
+                        getSphereNameFromSphereId(bezirkLogMessage.sphereName),
+                        sdf.format(Long.valueOf(bezirkLogMessage.timeStamp)),
+                        bezirkLogMessage.sender,
+                        getDeviceNameFromDeviceId(bezirkLogMessage.recipient),
+                        bezirkLogMessage.topic, 0});
             } catch (Exception e) {
                 logger.error("Error in updating the table", e);
             }

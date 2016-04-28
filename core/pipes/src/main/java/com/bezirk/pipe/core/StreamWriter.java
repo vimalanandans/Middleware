@@ -12,7 +12,7 @@ import java.io.InputStream;
 
 /**
  * Class used to write a stream to disk so that it can be passed to a
- * local uhu zirk
+ * local bezirk zirk
  */
 public class StreamWriter implements Runnable {
     private static int numThreads = 0;
@@ -22,7 +22,7 @@ public class StreamWriter implements Runnable {
     private WriteJob writeJob;
 
     // Used to call back to the pipemonitor with the result from run(),
-    // which is the name of the file to pass to the local uhu zirk
+    // which is the name of the file to pass to the local bezirk zirk
     private PipeManagerImpl pipeMonitor;
 
 
@@ -159,11 +159,11 @@ public class StreamWriter implements Runnable {
 
 
     /**
-     * Create a file in the uhu portion of the externalStorageDirectory
+     * Create a file in the bezirk portion of the externalStorageDirectory
      *
      * @param fileName
-     * @param retainFile True if the file shoudl be kept on disk and managed by uhu services.
-     *                   False to instruct uhu to create a temp file which may be deleted by the system
+     * @param retainFile True if the file shoudl be kept on disk and managed by bezirk services.
+     *                   False to instruct bezirk to create a temp file which may be deleted by the system
      * @return
      * @throws IOException
      */

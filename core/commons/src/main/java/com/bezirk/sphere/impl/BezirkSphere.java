@@ -70,7 +70,7 @@ public class BezirkSphere
         this.ctrlMsgReceiver = new SphereCtrlMsgReceiver(this);
     }
 
-    /* Initialize uhu sphere */
+    /* Initialize bezirk sphere */
     public boolean initSphere(SpherePersistence spherePersistence, BezirkComms uhuComms,
                               BezirkSphereListener bezirkSphereListener, ISphereConfig sphereConfig) {
 

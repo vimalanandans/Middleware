@@ -15,12 +15,12 @@ public class CheckSumTest {
 
         byte[] dataToBeComputed = "dataTobeComputed".getBytes();
         byte[] checkSum = BezirkCheckSum.computeCheckSum(dataToBeComputed);
-        assertNotNull("CheckSum returned by uhuchecksum is null. ", checkSum);
-        assertTrue("CheckSum returned by uhuchecksum is empy. ", checkSum.length > 0);
+        assertNotNull("CheckSum returned by bezirkchecksum is null. ", checkSum);
+        assertTrue("CheckSum returned by bezirkchecksum is empy. ", checkSum.length > 0);
 
         byte[] crc = BezirkCheckSum.computeCRC(dataToBeComputed);
-        assertNotNull("CRC returned by uhuchecksum is null. ", crc);
-        assertTrue("CRC returned by uhuchecksum is empy. ", crc.length > 0);
+        assertNotNull("CRC returned by bezirkchecksum is null. ", crc);
+        assertTrue("CRC returned by bezirkchecksum is empy. ", crc.length > 0);
 
     }
 

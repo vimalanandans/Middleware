@@ -11,7 +11,7 @@ import java.net.InetAddress;
 
 /**
  * Added by Vimal
- * This class is created to de-couple from the rest of uhu (spheres / sadl / stream)
+ * This class is created to de-couple from the rest of bezirk (spheres / sadl / stream)
  * <p/>
  * Also this would help to loop back the communication of virtual spheres
  * for junit testing. this is created to replace the 'static' MessageQueueManager
@@ -69,7 +69,7 @@ public interface BezirkComms {
     /**
      * Set the sphere for sadl. for late initialization
      */
-    public void setSphereForSadl(final BezirkSphereForSadl uhuSphere);
+    public void setSphereForSadl(final BezirkSphereForSadl bezirkSphere);
 
 }
 

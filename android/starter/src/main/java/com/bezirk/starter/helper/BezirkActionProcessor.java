@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Takes care of processing intent action based on type.
- * Handles zirk actions, send actions, stack actions and uhu device actions.
+ * Handles zirk actions, send actions, stack actions and bezirk device actions.
  * <p/>
  * Created by AJC6KOR on 9/8/2015.
  */
@@ -31,7 +31,7 @@ public final class BezirkActionProcessor {
      * @param bezirkServiceHelper
      * @param bezirkStackHandler
      */
-    public void processUhuAction(Intent intent, MainService service, BezirkServiceHelper bezirkServiceHelper, BezirkStackHandler bezirkStackHandler) {
+    public void processBezirkAction(Intent intent, MainService service, BezirkServiceHelper bezirkServiceHelper, BezirkStackHandler bezirkStackHandler) {
 
         INTENT_ACTIONS intentAction = INTENT_ACTIONS.getActionUsingMessage(intent.getAction());
 
@@ -43,7 +43,7 @@ public final class BezirkActionProcessor {
             switch (actionType) {
 
                 case BEZIRK_STACK_ACTION:
-                    processUhuStackAction(service, intent, intentAction, bezirkStackHandler);
+                    processBezirkStackAction(service, intent, intentAction, bezirkStackHandler);
                     break;
                 case DEVICE_ACTION:
                     processDeviceActions(intentAction, service);
@@ -65,7 +65,7 @@ public final class BezirkActionProcessor {
 
     }
 
-    private void processUhuStackAction(MainService service, Intent intent, INTENT_ACTIONS intentAction, BezirkStackHandler bezirkStackHandler) {
+    private void processBezirkStackAction(MainService service, Intent intent, INTENT_ACTIONS intentAction, BezirkStackHandler bezirkStackHandler) {
         switch (intentAction) {
             case ACTION_START_BEZIRK:
                 bezirkStackHandler.startStack(service);

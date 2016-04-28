@@ -26,7 +26,7 @@ public class ControlActivity extends ActionBarActivity {
         // initialize UI
         controlActivityHelper.initUI();
 
-        //setup uhu
+        //setup bezirk
         controlActivityHelper.uhuInitialization(this);
 
 

@@ -29,12 +29,12 @@ public class ControlMulticastListener implements Runnable {
     private BezirkCommsLegacy uhuComms = null;
     private CommsNotification commsErrNotificationError = null;
 
-    public ControlMulticastListener(MulticastSocket multicastSocket, BezirkCommsLegacy uhuComms,
+    public ControlMulticastListener(MulticastSocket multicastSocket, BezirkCommsLegacy bezirkComms,
                                     CommsNotification commsNotificationCallback) {
         this.multicastSocket = multicastSocket;
         this.commsErrNotificationError = commsNotificationCallback;
         executor = Executors.newFixedThreadPool(BezirkCommunications.getPOOL_SIZE());
-        this.uhuComms = uhuComms;
+        this.uhuComms = bezirkComms;
     }
 
     @Override

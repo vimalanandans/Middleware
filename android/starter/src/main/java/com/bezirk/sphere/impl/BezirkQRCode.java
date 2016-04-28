@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
  * Modified by Vijet Badigannavar on 6/16/2015
  * Not used since it is project specific implementation
  */
-public interface IUhuQRCode {
+public interface BezirkQRCode {
     public Bitmap getQRCode(String sphereId);
 
     /**

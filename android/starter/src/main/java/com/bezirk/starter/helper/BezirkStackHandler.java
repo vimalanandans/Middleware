@@ -21,7 +21,6 @@ import com.bezirk.sadl.BezirkSadlManager;
 import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.BezirkSphereForAndroid;
-import com.bezirk.starter.IUhuStackHandler;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkPreferences;
 import com.bezirk.starter.BezirkWifiManager;
@@ -35,11 +34,11 @@ import java.net.InetAddress;
 import java.util.Date;
 
 /**
- * Handles all uhu stack control operations requested  by Main Zirk
+ * Handles all bezirk stack control operations requested  by Main Zirk
  * <p/>
  * Created by AJC6KOR on 9/8/2015.
  */
-public final class BezirkStackHandler implements IUhuStackHandler {
+public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackHandler {
     private static final Logger logger = LoggerFactory.getLogger(BezirkStackHandler.class);
 
     private static Boolean startedStack = false;
@@ -50,11 +49,11 @@ public final class BezirkStackHandler implements IUhuStackHandler {
      */
     private static BezirkComms comms;
 
-    private final UhuSphereHandler sphereProcessorForMainService = new UhuSphereHandler();
+    private final BezirkSphereHandler sphereProcessorForMainService = new BezirkSphereHandler();
 
-    private final UhuAndroidNetworkUtil androidNetworkUtil = new UhuAndroidNetworkUtil();
+    private final BezirkAndroidNetworkUtil androidNetworkUtil = new BezirkAndroidNetworkUtil();
 
-    private final UhuDeviceHelper uhuDeviceHelper = new UhuDeviceHelper();
+    private final BezirkDeviceHelper bezirkDeviceHelper = new BezirkDeviceHelper();
 
     private final ProxyforServices proxy;
 
@@ -74,11 +73,11 @@ public final class BezirkStackHandler implements IUhuStackHandler {
      * @return sphereForAndroid
      */
     public static BezirkSphereAPI getSphereForAndroid() {
-        return UhuSphereHandler.sphereForAndroid;
+        return BezirkSphereHandler.sphereForAndroid;
     }
 
     public static BezirkDevMode getDevMode() {
-        return UhuSphereHandler.devMode;
+        return BezirkSphereHandler.devMode;
     }
 
     /**
@@ -107,7 +106,7 @@ public final class BezirkStackHandler implements IUhuStackHandler {
         synchronized (this) {
 
             WifiManager wifi;
-            if (!BezirkStackHandler.isStackStarted()) {
+            if (!com.bezirk.starter.helper.BezirkStackHandler.isStackStarted()) {
                 // Need to acquire wifi zirk as every time u start the stack, pick the new connected wifi access point information.
                 wifi = (WifiManager) service.getSystemService(Context.WIFI_SERVICE);
                 if (bezirkStartStackHelper.isWifiEnabled(wifi)) {
@@ -164,13 +163,13 @@ public final class BezirkStackHandler implements IUhuStackHandler {
                     InetAddress inetAddress = androidNetworkUtil.fetchInetAddress(service);
                     comms = bezirkStartStackHelper.initializeComms(inetAddress, bezirkSadlManager, proxy, errNotificationCallback);
                     if (!BezirkValidatorUtility.isObjectNotNull(comms)) {
-                        logger.error("Unable to initialize comms layer. Shutting down uhu.");
+                        logger.error("Unable to initialize comms layer. Shutting down bezirk.");
                         service.stopSelf();
                     }
                     /*************************************************************
                      * Step 7 : Configure BezirkDevice with preferences             *
                      *************************************************************/
-                    BezirkDevice bezirkDevice = uhuDeviceHelper.setUhuDevice(preferences, service);
+                    BezirkDevice bezirkDevice = bezirkDeviceHelper.setBezirkDevice(preferences, service);
 
                     /*************************************************************
                      * Step 8 : Initialize BezirkSphere                             *
@@ -181,7 +180,7 @@ public final class BezirkStackHandler implements IUhuStackHandler {
                         logger.error("delete DB");
                         stopStack(service);
                         service.stopSelf();
-                        logger.error("Shutting down the uhu");
+                        logger.error("Shutting down the bezirk");
                         // don't proceed further without initiating the sphere
                         return;
                     }
@@ -197,8 +196,8 @@ public final class BezirkStackHandler implements IUhuStackHandler {
                     int FOREGROUND_ID = 1336;
                     service.startForeground(FOREGROUND_ID,
                             service.buildForegroundNotification("Bezirk ON"));
-                    BezirkStackHandler.stoppedStack = false;
-                    BezirkStackHandler.startedStack = true;
+                    com.bezirk.starter.helper.BezirkStackHandler.stoppedStack = false;
+                    com.bezirk.starter.helper.BezirkStackHandler.startedStack = true;
                 } else {
                     logger.debug("Disconnected from network!!!");
                     Toast.makeText(service.getApplicationContext(), "You have to be connected to a network to start using UhU!!", Toast.LENGTH_SHORT).show();
@@ -228,7 +227,7 @@ public final class BezirkStackHandler implements IUhuStackHandler {
 
             //Set status of stack
             this.stoppedStack = true;
-            BezirkStackHandler.startedStack = false;
+            com.bezirk.starter.helper.BezirkStackHandler.startedStack = false;
             // Close the zirk for testing quick fix
             service.stopSelf();
 
@@ -246,7 +245,7 @@ public final class BezirkStackHandler implements IUhuStackHandler {
     }
 
     /**
-     * Restarts uhu zirk by stopping the stack and starting again.
+     * Restarts bezirk zirk by stopping the stack and starting again.
      *
      * @param service MainService
      */
@@ -300,7 +299,7 @@ public final class BezirkStackHandler implements IUhuStackHandler {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ((BezirkSphereForAndroid) UhuSphereHandler.sphereForAndroid).initSphere(registryPersistence, comms);
+                ((BezirkSphereForAndroid) BezirkSphereHandler.sphereForAndroid).initSphere(registryPersistence, comms);
             }
         }).start();
         Toast.makeText(service.getApplicationContext(), "Bezirk Data Cleared", Toast.LENGTH_SHORT).show();

@@ -17,10 +17,10 @@ import org.slf4j.LoggerFactory;
 import java.util.UUID;
 
 /**
- * Configures the uhu device by setting the location and preferences.
+ * Configures the bezirk device by setting the location and preferences.
  */
-public final class UhuDeviceHelper {
-    private static final Logger logger = LoggerFactory.getLogger(UhuDeviceHelper.class);
+public final class BezirkDeviceHelper {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkDeviceHelper.class);
 
     /**
      * Initialize BezirkDevice with preferences
@@ -29,7 +29,7 @@ public final class UhuDeviceHelper {
      * @param service
      * @return
      */
-    BezirkDevice setUhuDevice(final BezirkPreferences preferences, final MainService service) {
+    BezirkDevice setBezirkDevice(final BezirkPreferences preferences, final MainService service) {
         BezirkDevice bezirkDevice = initDevice(preferences, service);
 
         if (BezirkValidatorUtility.isObjectNotNull(bezirkDevice)) {

@@ -9,7 +9,7 @@ import com.bezirk.middleware.addressing.PipePolicy;
 /**
  * <li> processRemoteSend() - Send to remote pipe endpoint
  * <li> processLocalWrite() - If result is a stream, write stream to local device with this method
- * <li> processLocalSend()  - Send reply (event or stream) to local uhu services on this device
+ * <li> processLocalSend()  - Send reply (event or stream) to local bezirk services on this device
  */
 public interface PipeManager {
 
@@ -71,7 +71,7 @@ public interface PipeManager {
      * @param allowedIn   This PipePolicy contains the collection of Protocols allowed into the local sphere
      * @param allowedOut  This PipePolicy contains the collection of Protocols allowed to pass out of the local sphere
      * @param sphereId    The sphere the pipe has been added to
-     * @param uhuListener The uhu zirk to notify of the status of the pipe request
+     * @param uhuListener The bezirk zirk to notify of the status of the pipe request
      */
     void pipeGranted(boolean granted, Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut, String sphereId, BezirkListener uhuListener);
 }

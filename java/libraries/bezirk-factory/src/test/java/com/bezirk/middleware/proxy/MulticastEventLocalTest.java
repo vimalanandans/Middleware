@@ -93,10 +93,10 @@ public class MulticastEventLocalTest {
     @After
     public void destroyMockservices() {
 
-        Bezirk uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-        uhu.unregisterZirk(mockA.myId);
-        uhu.unregisterZirk(mockB.myId);
-        uhu.unregisterZirk(mockC.myId);
+        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+        bezirk.unregisterZirk(mockA.myId);
+        bezirk.unregisterZirk(mockB.myId);
+        bezirk.unregisterZirk(mockC.myId);
     }
 
     /**
@@ -104,7 +104,7 @@ public class MulticastEventLocalTest {
      */
     private final class MulticastMockServiceA implements BezirkListener {
         private final String serviceName = "MulticastMockServiceA";
-        private Bezirk uhu = null;
+        private Bezirk bezirk = null;
         private ZirkId myId = null;
         private MulticastMockServiceProtocolRole pRole;
 
@@ -112,11 +112,11 @@ public class MulticastEventLocalTest {
          * Setup the Zirk
          */
         private final void setupMockService() {
-            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+            myId = bezirk.registerZirk(serviceName);
             logger.info("MulticastMockServiceA - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
             pRole = new MulticastMockServiceProtocolRole();
-            uhu.subscribe(myId, pRole, this);
+            bezirk.subscribe(myId, pRole, this);
         }
 
         /**
@@ -125,7 +125,7 @@ public class MulticastEventLocalTest {
         private final void pingServiceC() {
             MulticastMockRequestEvent req = new MulticastMockRequestEvent(Flag.REQUEST, "MockRequestEvent");
             Address address = new Address(loc);
-            uhu.sendEvent(myId, address, req);
+            bezirk.sendEvent(myId, address, req);
         }
 
         /**
@@ -134,7 +134,7 @@ public class MulticastEventLocalTest {
         private final void pingServices() {
             MulticastMockRequestEvent req = new MulticastMockRequestEvent(Flag.REQUEST, "MockRequestEvent");
             Address address = null;
-            uhu.sendEvent(myId, address, req);
+            bezirk.sendEvent(myId, address, req);
         }
 
         @Override
@@ -215,17 +215,17 @@ public class MulticastEventLocalTest {
      */
     private final class MulticastMockServiceB implements BezirkListener {
         private final String serviceName = "MulticastMockServiceB";
-        private Bezirk uhu = null;
+        private Bezirk bezirk = null;
         private ZirkId myId = null;
 
         /**
          * Setup the zirk
          */
         private final void setupMockService() {
-            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+            myId = bezirk.registerZirk(serviceName);
             logger.info("MulticastMockServiceB - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
-            uhu.subscribe(myId, new MulticastEventLocalTest.MulticastMockServiceProtocolRole(), this);
+            bezirk.subscribe(myId, new MulticastEventLocalTest.MulticastMockServiceProtocolRole(), this);
         }
 
         @Override
@@ -271,24 +271,24 @@ public class MulticastEventLocalTest {
      */
     private final class MulticastMockServiceC implements BezirkListener {
         private final String serviceName = "MulticastMockServiceC";
-        private Bezirk uhu = null;
+        private Bezirk bezirk = null;
         private ZirkId myId = null;
 
         /**
          * Setup the zirk
          */
         private final void setupMockService() {
-            uhu = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = uhu.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+            myId = bezirk.registerZirk(serviceName);
             logger.info("MulticastMockServiceC - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
-            uhu.subscribe(myId, new MulticastMockServiceProtocolRole(), this);
+            bezirk.subscribe(myId, new MulticastMockServiceProtocolRole(), this);
         }
 
         /**
          * Update the location of the zirk
          */
         private final void changeLocation() {
-            uhu.setLocation(myId, loc);
+            bezirk.setLocation(myId, loc);
         }
 
         @Override

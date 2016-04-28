@@ -3,7 +3,7 @@ package com.bezirk.comms;
 import com.bezirk.comms.thread.JyreReceiverThread;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.processor.CommsProcessor;
-import com.bezirk.sadl.UhuSadlManager;
+import com.bezirk.sadl.BezirkSadlManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ public class JyreCommsProcessor extends CommsProcessor {
      */
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             UhuSadlManager sadl, PipeManager pipe) {
+                             BezirkSadlManager sadl, PipeManager pipe) {
         /*init jyre reciever thread  and internals of comms */
         if (comms == null) {
             this.zreGroup = "BEZIRK_GROUP";

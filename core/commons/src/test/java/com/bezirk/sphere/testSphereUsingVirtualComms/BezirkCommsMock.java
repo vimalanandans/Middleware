@@ -85,7 +85,7 @@ public class BezirkCommsMock implements BezirkCommsLegacy {
     }
 
     @Override
-    public void setSphereForSadl(BezirkSphereForSadl uhuSphere) {
+    public void setSphereForSadl(BezirkSphereForSadl bezirkSphere) {
         // TODO Auto-generated method stub
 
     }

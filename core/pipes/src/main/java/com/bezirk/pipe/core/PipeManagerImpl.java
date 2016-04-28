@@ -99,7 +99,7 @@ public class PipeManagerImpl implements PipeManager {
 	 */
 
     /**
-     * Called by the uhu SenderThread to enqueue an event for sending to the remote location
+     * Called by the bezirk SenderThread to enqueue an event for sending to the remote location
      *
      * @param event
      */
@@ -214,7 +214,7 @@ public class PipeManagerImpl implements PipeManager {
         RemoteSender remoteSender = new RemoteSender();
         remoteSender.setPipeRegistry(pipeRegistry);
         remoteSender.setSerializedEvent(serializedEvent);
-        remoteSender.setUhuHeader(uhuMulticastHeader);
+        remoteSender.setBezirkHeader(uhuMulticastHeader);
         remoteSender.setPipeMonitor(this);
         remoteSender.setCertFileName(certFileName);
 
@@ -268,7 +268,7 @@ public class PipeManagerImpl implements PipeManager {
         boolean valid = true;
 
         if (localBezirkSender == null) {
-            log.error("local uhu sender is null.");
+            log.error("local bezirk sender is null.");
             valid = false;
         }
         if (pipeRegistry == null) {

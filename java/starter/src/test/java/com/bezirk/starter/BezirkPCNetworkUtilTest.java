@@ -17,45 +17,40 @@ import static org.junit.Assert.fail;
  *
  * @author AJC6KOR
  */
-public class UhuPCNetworkUtilTest {
-
+public class BezirkPCNetworkUtilTest {
     private static MockSetUpUtilityForBezirkPC mockSetUP = new MockSetUpUtilityForBezirkPC();
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-
         System.setProperty("InterfaceName", mockSetUP.getInterface().getName());
     }
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-
         System.clearProperty("InterfaceName");
-
     }
 
     @Test
     public void test() {
-
         testFetchNetworkInterface();
-
     }
 
     /**
      * Positive Testcase :
-     * <p/>
+     * <p>
      * Network interface is fetched after initializing BezirkCommsPC.
      * Utility should return interface successfully.
+     * </p>
      */
     private void testFetchNetworkInterface() {
 
-        com.bezirk.starter.UhuPCNetworkUtil uhuPCNetworkUtil = new com.bezirk.starter.UhuPCNetworkUtil();
+        BezirkPCNetworkUtil bezirkPCNetworkUtil = new BezirkPCNetworkUtil();
         BezirkConfig bezirkConfig = new BezirkConfig();
 
         BezirkCommsPC.init();
         NetworkInterface intf = null;
         try {
-            intf = uhuPCNetworkUtil.fetchNetworkInterface(bezirkConfig);
+            intf = bezirkPCNetworkUtil.fetchNetworkInterface(bezirkConfig);
         } catch (Exception e) {
             fail("Unable to fetch network interface. " + e.getMessage());
         }

@@ -781,8 +781,8 @@ public abstract class CommsProcessor implements BezirkComms {
     }
 
     @Override
-    public void setSphereForSadl(BezirkSphereForSadl uhuSphere) {
-        bezirkStreamManager.setSphereForSadl(uhuSphere);
+    public void setSphereForSadl(BezirkSphereForSadl bezirkSphere) {
+        bezirkStreamManager.setSphereForSadl(bezirkSphere);
     }
 
     /**

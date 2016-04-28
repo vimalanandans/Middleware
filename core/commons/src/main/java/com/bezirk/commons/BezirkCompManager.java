@@ -45,11 +45,11 @@ public final class BezirkCompManager {
 
     private static ZirkMessageHandler platformSpecificCallback;
 
-    private static BezirkSphereForSadl uhuSphereForSadl;
+    private static BezirkSphereForSadl bezirkSphereForSadl;
 
-    private static BezirkSphereAPI uhuSphereAPI;
+    private static BezirkSphereAPI bezirkSphereAPI;
 
-    private static BezirkSphereRegistration uhuSphereRegistration;
+    private static BezirkSphereRegistration bezirkSphereRegistration;
 
     //private static BezirkSphereMessages uhuSphereMessages;
 
@@ -103,10 +103,10 @@ public final class BezirkCompManager {
 
     /**
      * setplatformSpecificCallback
-     * @param uhucallback
+     * @param bezirkCallback
      */
-    public static void setplatformSpecificCallback(ZirkMessageHandler uhucallback) {
-        BezirkCompManager.platformSpecificCallback = uhucallback;
+    public static void setplatformSpecificCallback(ZirkMessageHandler bezirkCallback) {
+        BezirkCompManager.platformSpecificCallback = bezirkCallback;
     }
 
     public static ZirkMessageHandler getplatformSpecificCallback() {
@@ -115,33 +115,33 @@ public final class BezirkCompManager {
 
     // this is temporary for sadl to use the spheres
     public static BezirkSphereForSadl getSphereForSadl() {
-        return uhuSphereForSadl;
+        return bezirkSphereForSadl;
     }
 
     // this is temporary for setting up spheres for sadl
     public static void setSphereForSadl(BezirkSphereForSadl sphereForSadl) {
-        BezirkCompManager.uhuSphereForSadl = sphereForSadl;
+        BezirkCompManager.bezirkSphereForSadl = sphereForSadl;
     }
 
     // this is temporary for UI to use the spheres
     public static BezirkSphereAPI getSphereUI() {
-        return uhuSphereAPI;
+        return bezirkSphereAPI;
     }
 
     // this is temporary for setting up spheres for UI
-    public static void setSphereUI(BezirkSphereAPI uhuSphereAPI) {
-        BezirkCompManager.uhuSphereAPI = uhuSphereAPI;
+    public static void setSphereUI(BezirkSphereAPI bezirkSphereAPI) {
+        BezirkCompManager.bezirkSphereAPI = bezirkSphereAPI;
     }
 
     // this is temporary for proxyForServices to use registration
     public static BezirkSphereRegistration getSphereRegistration() {
-        return uhuSphereRegistration;
+        return bezirkSphereRegistration;
     }
 
     // this is temporary for setting up zirk registration with spheres for UI
     public static void setSphereRegistration(
             BezirkSphereRegistration sphereRegistration) {
-        BezirkCompManager.uhuSphereRegistration = sphereRegistration;
+        BezirkCompManager.bezirkSphereRegistration = sphereRegistration;
     }
 
     /**

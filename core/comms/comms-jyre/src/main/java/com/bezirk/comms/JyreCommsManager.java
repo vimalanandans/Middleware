@@ -5,8 +5,8 @@ import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.messagehandler.ServiceMessageHandler;
 import com.bezirk.pipe.core.PipeManager;
-import com.bezirk.sadl.UhuSadlManager;
-import com.bezirk.sphere.api.IUhuSphereForSadl;
+import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
 import org.slf4j.Logger;
@@ -14,13 +14,13 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 
-public class JyreCommsManager implements IUhuComms {
+public class JyreCommsManager implements BezirkComms {
 
     //private String group = null;
 
     private static final Logger log = LoggerFactory.getLogger(JyreCommsManager.class);
     MessageDispatcher msgDispatcher = null;
-    UhuSadlManager uhuSadlManager = null;
+    BezirkSadlManager bezirkSadlManager = null;
     //Thread for Event receiver Thread
     private Thread jyreEventReceiverThread = null;
 
@@ -30,10 +30,10 @@ public class JyreCommsManager implements IUhuComms {
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             UhuSadlManager uhuSadlManager, PipeManager pipe) {
+                             BezirkSadlManager bezirkSadlManager, PipeManager pipe) {
 
-        this.uhuSadlManager = uhuSadlManager;
-        msgDispatcher = new MessageDispatcher(uhuSadlManager);
+        this.uhuSadlManager = bezirkSadlManager;
+        msgDispatcher = new MessageDispatcher(bezirkSadlManager);
 
         //Start Receiver Threads
         jyreEventReceiverThread = new Thread(new JyreReceiverThread(null, null));
@@ -105,7 +105,7 @@ public class JyreCommsManager implements IUhuComms {
 
     }
 
-    public void setSphereForSadl(IUhuSphereForSadl bezirkSphere) {
+    public void setSphereForSadl(BezirkSphereForSadl bezirkSphere) {
         // TODO Auto-generated method stub
 
     }

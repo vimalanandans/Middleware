@@ -10,25 +10,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bosch.upa.devices.UPADeviceInterface;
-import com.bosch.upa.uhu.comms.IUhuComms;
+import com.bosch.upa.uhu.comms.BezirkComms;
 import com.bosch.upa.uhu.persistence.ISpherePersistence;
 import com.bosch.upa.uhu.persistence.SphereRegistry;
 import com.bosch.upa.uhu.sphere.api.ISphereConfig;
-import com.bosch.upa.uhu.sphere.api.IUhuSphereListener;
+import com.bosch.upa.uhu.sphere.api.BezirkSphereListener;
 import com.bosch.upa.uhu.sphere.security.CryptoEngine;
-import com.bosch.upa.uhu.util.UhuValidatorUtility;
+import com.bosch.upa.uhu.util.BezirkValidatorUtility;
 import com.google.zxing.common.BitMatrix;
 
 /**
  * Created by GUR1PI on 8/9/2014.
  */
 <<<<<<< HEAD
-public class UhuSphereForPC extends UhuSphere implements IUhuQRCode, IUhuSphereListener {
+public class BezirkSphereForPC extends BezirkSphere implements BezirkQRCode, BezirkSphereListener {
 	
-    private static final Logger logger = LoggerFactory.getLogger(UhuSphereForPC.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkSphereForPC.class);
 	private final SphereUI sphereUI;
 	
-	public UhuSphereForPC(CryptoEngine cryptoEngine, UPADeviceInterface upaDevice, SphereRegistry sphereRegistry) {
+	public BezirkSphereForPC(CryptoEngine cryptoEngine, UPADeviceInterface upaDevice, SphereRegistry sphereRegistry) {
 		super(cryptoEngine, upaDevice, sphereRegistry);
 		sphereUI = new SphereUI();
 	}
@@ -64,7 +64,7 @@ public class UhuSphereForPC extends UhuSphere implements IUhuQRCode, IUhuSphereL
 	public boolean saveQRCode(String filePath, String filePrefix) {
 		String fileName = null;
 
-		if (UhuValidatorUtility.checkForString(filePath)) {
+		if (BezirkValidatorUtility.checkForString(filePath)) {
 			File folder = new File(filePath);
 
 			if (!folder.exists()) {
@@ -135,18 +135,18 @@ public class UhuSphereForPC extends UhuSphere implements IUhuQRCode, IUhuSphereL
 
 	}
 
-	public void initSphere(ISpherePersistence spherePersistence, IUhuComms uhuComms, ISphereConfig sphereConfig) {
-		super.initSphere(spherePersistence, uhuComms, this, sphereConfig);
+	public void initSphere(ISpherePersistence spherePersistence, BezirkComms bezirkComms, ISphereConfig sphereConfig) {
+		super.initSphere(spherePersistence, bezirkComms, this, sphereConfig);
 	}
 =======
-public class UhuSphereForPC extends UhuSphere implements IUhuQRCode,
-        IUhuSphereListener {
+public class BezirkSphereForPC extends BezirkSphere implements BezirkQRCode,
+        BezirkSphereListener {
 
     private static final Logger logger = LoggerFactory
-            .getLogger(UhuSphereForPC.class);
+            .getLogger(BezirkSphereForPC.class);
     private final SphereUI sphereUI;
 
-    public UhuSphereForPC(CryptoEngine cryptoEngine,
+    public BezirkSphereForPC(CryptoEngine cryptoEngine,
             UPADeviceInterface upaDevice, SphereRegistry sphereRegistry) {
         super(cryptoEngine, upaDevice, sphereRegistry);
         sphereUI = new SphereUI();
@@ -190,7 +190,7 @@ public class UhuSphereForPC extends UhuSphere implements IUhuQRCode,
     public boolean saveQRCode(String filePath, String filePrefix) {
         String fileName = null;
 
-        if (UhuValidatorUtility.checkForString(filePath)) {
+        if (BezirkValidatorUtility.checkForString(filePath)) {
             final File folder = new File(filePath);
 
             if (!folder.exists()) {
@@ -260,8 +260,8 @@ public class UhuSphereForPC extends UhuSphere implements IUhuQRCode,
     }
 
     public void initSphere(ISpherePersistence spherePersistence,
-            IUhuComms uhuComms) {
-        super.initSphere(spherePersistence, uhuComms, this);
+            BezirkComms bezirkComms) {
+        super.initSphere(spherePersistence, bezirkComms, this);
     }
 >>>>>>> integration
 

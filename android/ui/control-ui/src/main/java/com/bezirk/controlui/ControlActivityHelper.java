@@ -132,7 +132,7 @@ class ControlActivityHelper {
         AlertDialog.Builder builder = new AlertDialog.Builder(controlActivity);
         builder.setTitle("STACK STATUS");
         View alertView = LayoutInflater.from(controlActivity).inflate(R.layout.layout_alert_dialog_system_status, null);
-        final TextView bezirkVersion = (TextView) alertView.findViewById(R.id.versionUhu);
+        final TextView bezirkVersion = (TextView) alertView.findViewById(R.id.versionBezirk);
         final TextView bezirkStatus = (TextView) alertView.findViewById(R.id.versionStatus);
         final TextView bezirkExpectedVersionStatus = (TextView) alertView.findViewById(R.id.receivedVersionBezirk);
 
