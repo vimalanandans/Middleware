@@ -33,7 +33,7 @@ public class StreamTest {
         boolean secure = true;
 
         com.bezirk.middleware.messages.Stream stream = new MockStream(flag, topic);
-        stream.setAllowDrops(allowDrops);
+        stream.setReliable(allowDrops);
         stream.setIncremental(incremental);
         stream.setEncrypted(secure);
 
@@ -43,7 +43,7 @@ public class StreamTest {
 
         assertEquals("Flag is not equal to the set value.", flag, deserializedStream.flag);
         assertEquals("Topic is not equal to the set value.", topic, deserializedStream.topic);
-        assertFalse("AllowDrops is not equal to the set value.", deserializedStream.isAllowDrops());
+        assertFalse("AllowDrops is not equal to the set value.", deserializedStream.isReliable());
         assertFalse("Incremental is not equal to the set value.", deserializedStream.isIncremental());
         assertTrue("Secure is not equal to the set value.", deserializedStream.isEncrypted());
     }

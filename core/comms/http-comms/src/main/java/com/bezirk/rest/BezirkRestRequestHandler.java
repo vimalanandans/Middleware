@@ -47,7 +47,7 @@ public class BezirkRestRequestHandler extends DefaultHandler {
 
     @Override
     public String getText() {
-        logger.debug("Called GET zirk to BEzirkRestRequestHandler!!!, Feature not supported");
+        logger.debug("Called GET zirk to BezirkRestRequestHandler!!!, Feature not supported");
         return "Not Yet Implemented!!";
     }
 

@@ -188,7 +188,7 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
             final StreamRecord streamRecord = new StreamRecord();
             streamRecord.localStreamId = streamId;
             streamRecord.senderSEP = senderSEP;
-            streamRecord.allowDrops = false;
+            streamRecord.isReliable = false;
             streamRecord.isIncremental = false;
             streamRecord.isEncrypted = stream.isEncrypted();
             streamRecord.sphere = null;
@@ -211,7 +211,7 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
                 final String sphereName = sphereIterator.next();
                 final ControlLedger tcMessage = new ControlLedger();
                 tcMessage.setSphereId(sphereName);
-                final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedString, stream.topic, file.getName(), streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.allowDrops, streamId);
+                final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedString, stream.topic, file.getName(), streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.isReliable, streamId);
                 tcMessage.setSphereId(sphereName);
                 tcMessage.setMessage(request);
                 tcMessage.setSerializedMessage(new Gson().toJson(request));

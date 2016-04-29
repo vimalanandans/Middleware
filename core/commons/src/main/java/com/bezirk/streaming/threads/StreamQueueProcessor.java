@@ -112,7 +112,7 @@ public class StreamQueueProcessor implements Runnable {
 
     private void processStreamReadyMessage(StreamRecord streamRecord) {
         if (streamRecord.isIncremental
-                || streamRecord.allowDrops) {
+                || streamRecord.isReliable) {
 
             logger.debug("Bezirk Supports only RELIABLE-COMPLETE..as of now..");
 

@@ -16,7 +16,7 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
     public short localStreamId;
     public BezirkZirkEndPoint senderSEP;
     public boolean isIncremental;                // used for sending the data, set by the sender
-    public boolean allowDrops;                    // used for sending the data, set by the sender
+    public boolean isReliable;                    // used for sending the data, set by the sender
     public boolean isEncrypted;                    // if the DataSend needs to be encrypted
     public String sphere;                        // used for sending the data , set by the sender
     public StreamingStatus streamStatus;        // changed after receiving the Response

@@ -42,11 +42,11 @@ public class Stream extends Message {
     private boolean incremental;
 
     /**
-     * Subclass sets to <code>true</code> if data elements may be dropped from the stream without
-     * resending to increase performance, or <code>false</code> if the data elements must be
-     * reliably transferred.
+     * Subclass sets to <code>true</code> if the data elements must be reliably transferred, or
+     * <code>false</code> if data elements may be dropped from the stream during transmission
+     * without resending to increase performance.
      */
-    private boolean allowDrops;
+    private boolean reliable;
 
     /**
      * Subclass sets to <code>true</code> if Bezirk must encrypt the stream's data before transmitting. If
@@ -91,14 +91,14 @@ public class Stream extends Message {
     }
 
     /**
-     * Returns <code>true</code> if the stream may be unreliably transmitted. Essentially,
-     * <code>true</code> has the same reliability guarantees as UDP, and <code>false</code> the
-     * same guarantees as TCP.
+     * Returns <code>true</code> if the stream's data must be reliably transmitted. Essentially,
+     * <code>true</code> has the same reliability guarantees as TCP, and <code>false</code> the
+     * same guarantees as UDP.
      *
-     * @return <code>true</code> if the stream may be unreliably transmitted.
+     * @return <code>true</code> if the stream must be reliably transmitted.
      */
-    public boolean isAllowDrops() {
-        return allowDrops;
+    public boolean isReliable() {
+        return reliable;
     }
 
     /**
@@ -106,10 +106,10 @@ public class Stream extends Message {
      * if packets may be dropped. It can be useful to allow packets to be dropped in high
      * performance cases where some loss is acceptable (e.g. streaming video).
      *
-     * @param allowDrops <code>true</code> if the stream may be unreliably transmitted
+     * @param reliable <code>true</code> if the stream must be reliably transmitted
      */
-    protected void setAllowDrops(boolean allowDrops) {
-        this.allowDrops = allowDrops;
+    protected void setReliable(boolean reliable) {
+        this.reliable = reliable;
     }
 
     /**

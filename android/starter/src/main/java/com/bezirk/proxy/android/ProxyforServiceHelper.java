@@ -29,7 +29,7 @@ class ProxyForServiceHelper {
         String streamTopic = streamRecord.streamTopic;
         short streamId = streamRecord.localStreamId;
         final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedStream, streamTopic, tempFile.getName(),
-                streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.allowDrops, streamId);
+                streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.isReliable, streamId);
         tcMessage.setSphereId(sphereName);
         tcMessage.setMessage(request);
         tcMessage.setSerializedMessage(new Gson().toJson(request));
@@ -40,7 +40,7 @@ class ProxyForServiceHelper {
         final StreamRecord streamRecord = new StreamRecord();
         streamRecord.localStreamId = streamId;
         streamRecord.senderSEP = senderSEP;
-        streamRecord.allowDrops = false;
+        streamRecord.isReliable = false;
         streamRecord.isIncremental = false;
         streamRecord.isEncrypted = stream.isEncrypted();
         streamRecord.sphere = null;
