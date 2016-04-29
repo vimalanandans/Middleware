@@ -277,16 +277,16 @@ public class SadlRegistryTest {
 
     }
 
-    private void testStreamMapEquality(BezirkZirkId uhu1, SadlRegistry sadlobj2) {
+    private void testStreamMapEquality(BezirkZirkId bezirk1, SadlRegistry sadlobj2) {
         SadlRegistry sadlobj3;
         boolean results;
 		/*
-		 * 7. Registering sadlobj3 with uhu1 and making streamMap as null.
+		 * 7. Registering sadlobj3 with bezirk1 and making streamMap as null.
 		 * 	  Result: false (Both Objects are not equal) 
 		 *    Remark: streamMap for sadlobj2 is not null.
 		 */
 
-        sadlobj3 = creatingSadleObj1(uhu1);
+        sadlobj3 = creatingSadleObj1(bezirk1);
         sadlobj3.streamMap = null;
         results = sadlobj2.equals(sadlobj3);
         assertFalse("streamMap is null for sadlobj3", results);
@@ -299,7 +299,7 @@ public class SadlRegistryTest {
 		 *     Remark : streamMap is null for sadlobj2 but not for sadlobj3.
 		 */
 
-        sadlobj3 = creatingSadleObj1(uhu1);
+        sadlobj3 = creatingSadleObj1(bezirk1);
         sadlobj2.streamMap = null;
         results = sadlobj2.equals(sadlobj3);
         assertFalse("streamMap is null for sadlobj2", results);
@@ -310,13 +310,13 @@ public class SadlRegistryTest {
 		 *    Remark : streamMap is null for both sadlobj2,sadlobj3.
 		 */
 
-        sadlobj3 = creatingSadleObj1(uhu1);
+        sadlobj3 = creatingSadleObj1(bezirk1);
         sadlobj3.streamMap = null;
         results = sadlobj2.equals(sadlobj3);
         assertTrue("streamMap is null for sadlobj2", results);
     }
 
-    private void testSidEquality(BezirkZirkId uhu2, SadlRegistry sadlobj2, BezirkZirkId uhu1) {
+    private void testSidEquality(BezirkZirkId bezirk2, SadlRegistry sadlobj2, BezirkZirkId bezirk1) {
         SadlRegistry sadlobj3;
         boolean results;
 		/*
@@ -325,17 +325,17 @@ public class SadlRegistryTest {
 		 *     Remark : sid is not null for sadlobj2
 		 */
 
-        sadlobj3 = creatingSadleObj1(uhu2);
+        sadlobj3 = creatingSadleObj1(bezirk2);
         sadlobj2.sid = null;
         results = sadlobj2.equals(sadlobj3);
         assertFalse("SID is null for sadlobj2", results);
 
 		/*
-		 * 11. Registering sadlobj3 with uhu1 and then making sid of sadlobj3 as null. 
+		 * 11. Registering sadlobj3 with bezirk1 and then making sid of sadlobj3 as null.
 		 *     Result: false (Both Objects are not equal)
 		 */
 
-        sadlobj3 = creatingSadleObj1(uhu1);
+        sadlobj3 = creatingSadleObj1(bezirk1);
         sadlobj3.sid = null;
         results = sadlobj2.equals(sadlobj3);
         assertFalse("SID is null for sadlobj3", results);
@@ -351,8 +351,8 @@ public class SadlRegistryTest {
 
     }
 
-    private void testProtocolmap(BezirkZirkId uhu1, SadlRegistry sadlobj2,
-                                 BezirkZirkId uhu2) {
+    private void testProtocolmap(BezirkZirkId bezirk1, SadlRegistry sadlobj2,
+                                 BezirkZirkId bezirk2) {
         SadlRegistry sadlobj3;
         boolean results;
 		/*
@@ -361,17 +361,17 @@ public class SadlRegistryTest {
 		 *     Remark : protocolMap for sadlobj2 is null.
 		 */
 
-        sadlobj3 = creatingSadleObj1(uhu1);
+        sadlobj3 = creatingSadleObj1(bezirk1);
         sadlobj2.protocolMap = null;
         results = sadlobj2.equals(sadlobj3);
         assertFalse("sadlobj2 protocolMap is null", results);
 
 		/*
-		 *  13. Registering sadlobj3 with bezirk zirkId 2 i.e. uhu2 and making protocolMap as null.
+		 *  13. Registering sadlobj3 with bezirk zirkId 2 i.e. bezirk2 and making protocolMap as null.
 		 *      Result: False (Both objects are not equal)
 		 */
 
-        sadlobj3 = creatingSadleObj1(uhu2);
+        sadlobj3 = creatingSadleObj1(bezirk2);
         sadlobj3.protocolMap = null;
         results = sadlobj2.equals(sadlobj3);
         assertFalse("SADLEOBJEC3 protocolMap is null", results);
@@ -390,7 +390,7 @@ public class SadlRegistryTest {
 
     }
 
-    private void testProtocolDecMap(BezirkZirkId uhu1, BezirkZirkId uhu2,
+    private void testProtocolDecMap(BezirkZirkId bezirk1, BezirkZirkId bezirk2,
                                     SadlRegistry sadlobj2) {
         SadlRegistry sadlobj3;
         boolean results;
@@ -401,8 +401,8 @@ public class SadlRegistryTest {
 		 */
 
         sadlobj3 = new SadlRegistry();
-        sadlobj3.registerService(uhu2);
-        sadlobj3.subscribeService(uhu1, new NewProtocolRole());
+        sadlobj3.registerService(bezirk2);
+        sadlobj3.subscribeService(bezirk1, new NewProtocolRole());
         sadlobj2.protocolDescMap = null;
         results = sadlobj2.equals(sadlobj3);
         assertFalse("sadlobj2 protocolDescMap is null", results);
@@ -416,8 +416,8 @@ public class SadlRegistryTest {
 		 */
 
         sadlobj3 = new SadlRegistry();
-        sadlobj3.registerService(uhu2);
-        sadlobj3.subscribeService(uhu1, new NewProtocolRole());
+        sadlobj3.registerService(bezirk2);
+        sadlobj3.subscribeService(bezirk1, new NewProtocolRole());
         sadlobj3.protocolDescMap = null;
         results = sadlobj2.equals(sadlobj3);
         assertFalse("sadlobj3 protocolDescMap is null", results);
@@ -432,7 +432,7 @@ public class SadlRegistryTest {
 
     }
 
-    private void testLocationMapEquality(BezirkZirkId uhu1, BezirkZirkId uhu2,
+    private void testLocationMapEquality(BezirkZirkId bezirk1, BezirkZirkId bezirk2,
                                          SadlRegistry sadlobj2) {
         SadlRegistry sadlobj3;
         boolean results;
@@ -443,12 +443,12 @@ public class SadlRegistryTest {
 		 */
 
         sadlobj3 = new SadlRegistry();
-        sadlobj3.registerService(uhu2);
-        sadlobj3.subscribeService(uhu1, new NewProtocolRole());
+        sadlobj3.registerService(bezirk2);
+        sadlobj3.subscribeService(bezirk1, new NewProtocolRole());
 
         sadlobj2 = new SadlRegistry();
-        sadlobj2.registerService(uhu2);
-        sadlobj2.subscribeService(uhu1, new NewProtocolRole());
+        sadlobj2.registerService(bezirk2);
+        sadlobj2.subscribeService(bezirk1, new NewProtocolRole());
 
         sadlobj2.locationMap = null;
         results = sadlobj2.equals(sadlobj3);

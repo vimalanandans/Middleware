@@ -31,8 +31,8 @@ public class BezirkValidatorUtilityTest {
 
     static BezirkZirkEndPoint sender = new BezirkZirkEndPoint(new BezirkZirkId("MockServiceA"));
     static String serviceId = "MockServiceB";
-    static BezirkZirkId uhuServiceId = new BezirkZirkId(serviceId);
-    static BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(uhuServiceId);
+    static BezirkZirkId bezirkZirkId = new BezirkZirkId(serviceId);
+    static BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(bezirkZirkId);
     private static InetAddress inetAddr;
     String sphereId = "testSphere";
     boolean isValid = false;
@@ -103,18 +103,18 @@ public class BezirkValidatorUtilityTest {
         assertTrue("Non null serviceEndpoint is considered invalid by validator", isValid);
 
 		/*-------------- Negative cases --------------*/
-        BezirkZirkId uhuSid = null;
-        BezirkZirkEndPoint uhuServiceEndPoint = new BezirkZirkEndPoint(uhuSid);
-        isValid = BezirkValidatorUtility.checkBezirkZirkEndPoint(uhuServiceEndPoint);
+        BezirkZirkId bezirkSid = null;
+        BezirkZirkEndPoint bezirkServiceEndPoint = new BezirkZirkEndPoint(bezirkSid);
+        isValid = BezirkValidatorUtility.checkBezirkZirkEndPoint(bezirkServiceEndPoint);
         assertFalse("Null serviceEndpoint is considered valid by validator", isValid);
 
-        uhuSid = new BezirkZirkId(null);
-        uhuServiceEndPoint = new BezirkZirkEndPoint(uhuSid);
-        isValid = BezirkValidatorUtility.checkBezirkZirkEndPoint(uhuServiceEndPoint);
+        bezirkSid = new BezirkZirkId(null);
+        bezirkServiceEndPoint = new BezirkZirkEndPoint(bezirkSid);
+        isValid = BezirkValidatorUtility.checkBezirkZirkEndPoint(bezirkServiceEndPoint);
         assertFalse("Null serviceEndpoint is considered valid by validator", isValid);
 
-        uhuServiceEndPoint = new BezirkZirkEndPoint(uhuServiceId);
-        isValid = BezirkValidatorUtility.checkBezirkZirkEndPoint(uhuServiceEndPoint);
+        bezirkServiceEndPoint = new BezirkZirkEndPoint(bezirkZirkId);
+        isValid = BezirkValidatorUtility.checkBezirkZirkEndPoint(bezirkServiceEndPoint);
         assertFalse("Null serviceEndpoint is considered valid by validator", isValid);
 
     }
@@ -122,7 +122,7 @@ public class BezirkValidatorUtilityTest {
     private void testCheckBezirkServiceId() {
 
 		/*-------------- Positive cases --------------*/
-        isValid = BezirkValidatorUtility.checkBezirkZirkId(uhuServiceId);
+        isValid = BezirkValidatorUtility.checkBezirkZirkId(bezirkZirkId);
         assertTrue("Non null serviceID is considered invalid by validator", isValid);
 
 		/*-------------- Negative cases --------------*/
@@ -182,14 +182,14 @@ public class BezirkValidatorUtilityTest {
     private void testCheckRTCStreamRequest() {
 
 		/*-------------- Positive cases --------------*/
-        isValid = BezirkValidatorUtility.checkRTCStreamRequest(uhuServiceId, recipient);
+        isValid = BezirkValidatorUtility.checkRTCStreamRequest(bezirkZirkId, recipient);
         assertTrue("Valid RTCStreamRequest is considered invalid by validator.", isValid);
 
 		/*-------------- Negative cases --------------*/
         isValid = BezirkValidatorUtility.checkRTCStreamRequest(null, recipient);
         assertFalse("Invalid RTCStreamRequest is considered valid by validator.", isValid);
 
-        isValid = BezirkValidatorUtility.checkRTCStreamRequest(uhuServiceId, null);
+        isValid = BezirkValidatorUtility.checkRTCStreamRequest(bezirkZirkId, null);
         assertFalse("Invalid RTCStreamRequest is considered valid by validator.", isValid);
 
     }
@@ -280,7 +280,7 @@ public class BezirkValidatorUtilityTest {
         isValid = BezirkValidatorUtility.checkDiscoveryRequest(discoveryRequest);
         assertFalse("Invalid discoveryRequest is considered valid by validator.", isValid);
 
-        BezirkZirkEndPoint sep = new BezirkZirkEndPoint(uhuServiceId);
+        BezirkZirkEndPoint sep = new BezirkZirkEndPoint(bezirkZirkId);
         discoveryRequest = new DiscoveryRequest(sphereId, sep, null, null, 2, 60000, 3);
         isValid = BezirkValidatorUtility.checkDiscoveryRequest(discoveryRequest);
         assertFalse("Invalid discoveryRequest is considered valid by validator.", isValid);

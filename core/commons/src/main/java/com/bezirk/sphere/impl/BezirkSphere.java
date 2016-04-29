@@ -49,7 +49,7 @@ public class BezirkSphere
     private CryptoEngine cryptoEngine = null;
     private UPADeviceInterface upaDevice = null;
     private SphereRegistry registry = null;
-    private BezirkSphereListener uhuSphereListener;
+    private BezirkSphereListener bezirkSphereListener;
     private ISphereConfig sphereConfig = null;
     private SphereCtrlMsgReceiver ctrlMsgReceiver = null;
     private ShareProcessor shareProcessor = null;
@@ -71,10 +71,10 @@ public class BezirkSphere
     }
 
     /* Initialize bezirk sphere */
-    public boolean initSphere(SpherePersistence spherePersistence, BezirkComms uhuComms,
+    public boolean initSphere(SpherePersistence spherePersistence, BezirkComms bezirkComms,
                               BezirkSphereListener bezirkSphereListener, ISphereConfig sphereConfig) {
 
-        if (spherePersistence == null || uhuComms == null) {
+        if (spherePersistence == null || bezirkComms == null) {
             logger.error("Null passed to for SpherePersistence or BezirkComms");
         }
         if (bezirkSphereListener == null) {
@@ -84,7 +84,7 @@ public class BezirkSphere
         if (sphereConfig == null) {
             logger.warn("sphere Configuration provided is null");
         }
-        this.uhuSphereListener = bezirkSphereListener;
+        this.bezirkSphereListener = bezirkSphereListener;
         this.sphereConfig = sphereConfig;
 
         try {
@@ -97,19 +97,19 @@ public class BezirkSphere
 
         this.sphereRegistryWrapper = new SphereRegistryWrapper(this.registry, spherePersistence, upaDevice, cryptoEngine, bezirkSphereListener, sphereConfig);
         this.sphereRegistryWrapper.init();
-        CommsUtility comms = new CommsUtility(uhuComms);
+        CommsUtility comms = new CommsUtility(bezirkComms);
         shareProcessor = new ShareProcessor(cryptoEngine, upaDevice, comms,
                 sphereRegistryWrapper);
         catchProcessor = new CatchProcessor(cryptoEngine, upaDevice, comms,
                 sphereRegistryWrapper);
         discoveryProcessor = new DiscoveryProcessor(upaDevice, comms, sphereRegistryWrapper,
-                this.uhuSphereListener);
+                this.bezirkSphereListener);
 
         // init the sphere for receiving sphere discovery message
         //bezirkComms.initDiscovery(this);
-        initSphereDiscovery(uhuComms);
+        initSphereDiscovery(bezirkComms);
 
-        ctrlMsgReceiver.initControlMessageListener(uhuComms);
+        ctrlMsgReceiver.initControlMessageListener(bezirkComms);
         return true;
     }
 
@@ -117,11 +117,11 @@ public class BezirkSphere
      * moved the init discovery from comms layer to sphere.
      * because this is out of comms layer
      */
-    public void initSphereDiscovery(BezirkComms uhuComms) {
+    public void initSphereDiscovery(BezirkComms bezirkComms) {
         // initialize the discovery here
         SphereDiscoveryProcessor.setDiscovery(new SphereDiscovery(this));
 
-        Thread sphereDiscThread = new Thread(new SphereDiscoveryProcessor(this, uhuComms));
+        Thread sphereDiscThread = new Thread(new SphereDiscoveryProcessor(this, bezirkComms));
 
         if (sphereDiscThread != null)
             sphereDiscThread.start();
@@ -188,7 +188,7 @@ public class BezirkSphere
 
     @Override
     public String createSphere(String sphereName, String sphereType) {
-        return sphereRegistryWrapper.createSphere(sphereName, sphereType, uhuSphereListener);
+        return sphereRegistryWrapper.createSphere(sphereName, sphereType, bezirkSphereListener);
     }
 
     @Override
@@ -358,7 +358,7 @@ public class BezirkSphere
      * set the listener object
      */
     public void setBezirkSphereListener(BezirkSphereListener sphereListener) {
-        this.uhuSphereListener = sphereListener;
+        this.bezirkSphereListener = sphereListener;
     }
 
     @Override

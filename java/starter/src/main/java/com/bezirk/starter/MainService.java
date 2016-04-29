@@ -327,7 +327,7 @@ public class MainService {
         }
     }
 
-    private boolean initComms(final ZirkMessageHandler uhuPcCallback,
+    private boolean initComms(final ZirkMessageHandler bezirkPcCallback,
                               final NetworkInterface intf, final BezirkSadlManager bezirkSadlManager) {
 
         CommsFactory commsFactory = new CommsFactory();
@@ -351,7 +351,7 @@ public class MainService {
         /* comms triggers sadle send this data.
          * try {
 
-            ((BezirkComms) comms).setBezirkCallback(uhuPcCallback);
+            ((BezirkComms) comms).setBezirkCallback(bezirkPcCallback);
 
         } catch (Exception e) {
 

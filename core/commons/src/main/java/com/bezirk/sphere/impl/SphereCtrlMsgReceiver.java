@@ -20,10 +20,10 @@ import org.slf4j.LoggerFactory;
 public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(SphereCtrlMsgReceiver.class);
 
-    BezirkSphereMessages uhuSphereMessages = null;
+    BezirkSphereMessages bezirkSphereMessages = null;
 
-    SphereCtrlMsgReceiver(BezirkSphereMessages uhuSphereMessages) {
-        this.uhuSphereMessages = uhuSphereMessages;
+    SphereCtrlMsgReceiver(BezirkSphereMessages bezirkSphereMessages) {
+        this.bezirkSphereMessages = bezirkSphereMessages;
     }
 
     @Override
@@ -42,23 +42,23 @@ public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
             case CatchRequest:
                 final CatchRequest catchRequest = ControlMessage.deserialize(serializedMsg, CatchRequest.class);
                 logger.debug("Catch Request " + catchRequest.getSphereId());
-                uhuSphereMessages.processCatchRequestExt(catchRequest);
+                bezirkSphereMessages.processCatchRequestExt(catchRequest);
                 break;
             case CatchResponse:
                 final CatchResponse catchResponse = ControlMessage.deserialize(serializedMsg, CatchResponse.class);
 
                 logger.debug("Catch Response " + catchResponse.getSphereId());
-                uhuSphereMessages.processCatchResponse(catchResponse);
+                bezirkSphereMessages.processCatchResponse(catchResponse);
                 break;
             case ShareRequest:
                 ShareRequest shareRequest = ControlMessage.deserialize(serializedMsg, ShareRequest.class);
                 logger.debug("Share Request " + shareRequest.getSphereId());
-                uhuSphereMessages.processShareRequest(shareRequest);
+                bezirkSphereMessages.processShareRequest(shareRequest);
                 break;
             case ShareResponse:
                 ShareResponse shareResponse = ControlMessage.deserialize(serializedMsg, ShareResponse.class);
                 logger.debug("Share Response " + shareResponse.getSphereId());
-                uhuSphereMessages.processShareResponse(shareResponse);
+                bezirkSphereMessages.processShareResponse(shareResponse);
                 break;
             default: // unregistered message
                 logger.error("unregistered message. dispatcher map of is corrupted ? ");

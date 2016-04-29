@@ -16,10 +16,10 @@ import org.slf4j.LoggerFactory;
 public final class CommsUtility {
     private static final Logger logger = LoggerFactory.getLogger(CommsUtility.class);
 
-    private BezirkComms uhuComms;
+    private BezirkComms bezirkComms;
 
-    public CommsUtility(BezirkComms uhuComms) {
-        this.uhuComms = uhuComms;
+    public CommsUtility(BezirkComms bezirkComms) {
+        this.bezirkComms = bezirkComms;
     }
 
     public boolean sendMessage(ControlMessage controlMessage) {
@@ -29,9 +29,9 @@ public final class CommsUtility {
         transControlMessage.setSerializedMessage(transControlMessage.getMessage().serialize());
 
         // send the message
-        if (uhuComms != null) {
+        if (bezirkComms != null) {
             logger.debug("Sending message: " + controlMessage.getDiscriminator());
-            return uhuComms.sendMessage(transControlMessage);
+            return bezirkComms.sendMessage(transControlMessage);
         }
         logger.error("Failed to send message: " + controlMessage.getDiscriminator());
         return false;

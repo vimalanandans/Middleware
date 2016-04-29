@@ -30,7 +30,7 @@ public class JyreCommsManager implements BezirkComms {
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
                              BezirkSadlManager bezirkSadlManager, PipeManager pipe) {
 
-        this.uhuSadlManager = bezirkSadlManager;
+        this.bezirkSadlManager = bezirkSadlManager;
         msgDispatcher = new MessageDispatcher(bezirkSadlManager);
 
         //Start Receiver Threads

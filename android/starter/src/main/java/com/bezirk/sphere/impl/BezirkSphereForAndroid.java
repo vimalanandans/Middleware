@@ -33,10 +33,10 @@ public class BezirkSphereForAndroid extends BezirkSphere implements BezirkSphere
         applicationContext = context;
     }
 
-    public boolean initSphere(SpherePersistence spherePersistence, BezirkComms uhuComms) {
+    public boolean initSphere(SpherePersistence spherePersistence, BezirkComms bezirkComms) {
         initializeSphereConfig();
         if (sphereConfig == null) logger.error("SphereConfig is null");
-        return super.initSphere(spherePersistence, uhuComms, this, sphereConfig);
+        return super.initSphere(spherePersistence, bezirkComms, this, sphereConfig);
     }
 
     private void initializeSphereConfig() {

@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public final class DatabaseConnectionForJava implements DatabaseConnection {
 
     private final String dbFilePath;
-    private Dao<BezirkRegistry, Integer> uhuPersistenceDao;
+    private Dao<BezirkRegistry, Integer> bezirkPersistenceDao;
 
     public DatabaseConnectionForJava(String dbFileLocation) {
         dbFilePath = dbFileLocation;
@@ -30,11 +30,11 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
     @Override
     public Dao<BezirkRegistry, Integer> getPersistenceDAO()
             throws NullPointerException, SQLException, IOException, Exception {
-        if (null == uhuPersistenceDao) {
-            uhuPersistenceDao = DaoManager.createDao(getDatabaseConnection(),
+        if (null == bezirkPersistenceDao) {
+            bezirkPersistenceDao = DaoManager.createDao(getDatabaseConnection(),
                     BezirkRegistry.class);
         }
-        return uhuPersistenceDao;
+        return bezirkPersistenceDao;
     }
 
     private void setupDatabase() throws IOException {

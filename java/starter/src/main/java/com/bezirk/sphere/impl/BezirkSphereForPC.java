@@ -140,8 +140,8 @@ public class BezirkSphereForPC extends BezirkSphere implements BezirkQRCode,
 
     }
 
-    public void initSphere(SpherePersistence spherePersistence, BezirkComms uhuComms, ISphereConfig sphereConfig) {
-        super.initSphere(spherePersistence, uhuComms, this, sphereConfig);
+    public void initSphere(SpherePersistence spherePersistence, BezirkComms bezirkComms, ISphereConfig sphereConfig) {
+        super.initSphere(spherePersistence, bezirkComms, this, sphereConfig);
     }
 
 }

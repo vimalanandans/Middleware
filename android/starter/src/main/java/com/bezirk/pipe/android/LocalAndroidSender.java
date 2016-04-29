@@ -22,8 +22,8 @@ public class LocalAndroidSender implements LocalBezirkSender {
     private static final Logger logger = LoggerFactory.getLogger(LocalAndroidSender.class);
 
     // TODO: we need a slightly cleaner way to get an instance of the proxy here (ASW)
-    private final Service uhuService = ProxyForZirks.getServiceInstance();
-    private final ProxyForZirks proxy = new ProxyForZirks(uhuService);
+    private final Service bezirkService = ProxyForZirks.getServiceInstance();
+    private final ProxyForZirks proxy = new ProxyForZirks(bezirkService);
 
     @Override
     public void invokeReceive(PipeHeader pipeHeader, String serializedEvent) {

@@ -83,7 +83,7 @@ class ControlActivityHelper {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long clickId) {
-                uhuStartActivity(position);
+                bezirkStartActivity(position);
 
             }
         });
@@ -92,7 +92,7 @@ class ControlActivityHelper {
     /**
      * Start the sphere Managmenet Activity
      */
-    private void uhuStartActivity(int position) {
+    private void bezirkStartActivity(int position) {
         Intent intent;
         switch (position) {
             case 0: // Device control
@@ -190,7 +190,7 @@ class ControlActivityHelper {
 
     }
 
-    void uhuInitialization(Activity activity) {
+    void bezirkInitialization(Activity activity) {
         //Intialize preferences
         PreferenceManager.setDefaultValues(activity, R.xml.preferences, false);
 
