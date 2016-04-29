@@ -66,7 +66,7 @@ public class TestMainService {
         mainService.startStack(testMock);
 
         assertNotNull("sphere not initialized in startStack.", mainService.sphereForPC);
-        assertTrue("Uhustack is not started after startstack call", mainService.getStartedStack());
+        assertTrue("BezirkStack is not started after startstack call", mainService.getStartedStack());
         assertNotNull("ProxyPersistence is null even after startstack", mainService.getBezirkProxyPersistence());
         mainService.stopStack();
 
@@ -76,8 +76,8 @@ public class TestMainService {
         mainService.startStack(testMock);
 
         assertNotNull("sphere not initialized in startStack.", mainService.sphereForPC);
-        assertTrue("Uhustack is not started after startstack call", mainService.getStartedStack());
-        assertNotNull("ProxyPersistence is null even after startstack", mainService.getBezirkProxyPersistence());
+        assertTrue("BezirkStack is not started after startStack call", mainService.getStartedStack());
+        assertNotNull("ProxyPersistence is null even after startStack", mainService.getBezirkProxyPersistence());
 
         System.clearProperty("displayEnable");
         mainService.stopStack();

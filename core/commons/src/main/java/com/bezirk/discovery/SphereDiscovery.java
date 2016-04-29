@@ -75,7 +75,7 @@ public class SphereDiscovery {
                     /* final long currentTime = new Date().getTime();
 					 
 					 if (discRecord.getDiscoveredSetSize() >= discRecord.getMax() || currentTime - discRecord.getCreationTime() >= discRecord.getTimeout()) {
-					 	logger.debug("Timeout for sphere discovery, Size of UhuSphereInfos discovered : "+discRecord.getSphereZirks().size());
+					 	logger.debug("Timeout for sphere discovery, Size of BezirkSphereInfo discovered : "+discRecord.getSphereZirks().size());
 					 	sphereDiscoveryHandler.processDiscoveredSphereInfo(discRecord.getSphereZirks(), discRecord.getSphereId());
 					     
 					     discoveredMap.remove(dLabel);

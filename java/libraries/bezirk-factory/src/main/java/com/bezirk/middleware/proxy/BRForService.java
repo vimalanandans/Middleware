@@ -96,7 +96,7 @@ public class BRForService implements BroadcastReceiver {
 
     /**
      * Handles the Event Callback Message and gives the callback to the services. It is being invoked from
-     * Platform specific IUhuCallback implementation.
+     * Platform specific BezirkCallback implementation.
      *
      * @param eCallbackMessage
      */
@@ -122,7 +122,7 @@ public class BRForService implements BroadcastReceiver {
     }
 
     /**
-     * Handle the stream Unicast callback.This is called from platform specific IUhuCallback Implementation.
+     * Handle the stream Unicast callback.This is called from platform specific BezirkCallback Implementation.
      *
      * @param strmMsg streamMessage that will be given back to the services.
      */
@@ -142,7 +142,7 @@ public class BRForService implements BroadcastReceiver {
 
     /**
      * Handles the Stream Status callback and gives the callback to the zirk. This is called from
-     * platform specific IUhuCallback Implementation.
+     * platform specific BezirkCallback Implementation.
      *
      * @param streamStatusCallbackMessage StreamStatusCallback that will be invoked for the services.
      */
@@ -163,7 +163,7 @@ public class BRForService implements BroadcastReceiver {
     }
 
     /**
-     * handles the DiscoveryCallback for the Services. This is called from Platform specific IUhuCallback Implementation.
+     * handles the DiscoveryCallback for the Services. This is called from Platform specific BezirkCallback Implementation.
      *
      * @param discObj - callbackObject to the Zirk.
      */

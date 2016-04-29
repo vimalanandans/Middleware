@@ -7,7 +7,8 @@ import java.io.File;
 
 
 /**
- * Sub class of StreamMessageStatus that is used to give the stream status notification to the ProxyForUhu.
+ * Sub class of StreamMessageStatus that is used to give the stream status notification to the
+ * ProxyForBezirk.
  */
 public final class StreamIncomingMessage extends ServiceIncomingMessage {
     /**

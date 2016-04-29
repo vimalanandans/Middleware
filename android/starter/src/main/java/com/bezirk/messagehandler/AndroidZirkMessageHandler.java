@@ -10,13 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class implements IUhuCallback and provides platform specific implementations for android
+ * This class implements BezirkCallback and provides platform specific implementations for android
  */
 public class AndroidZirkMessageHandler implements ZirkMessageHandler {
     private static final Logger logger = LoggerFactory.getLogger(AndroidZirkMessageHandler.class);
 
     /**
-     * This intent action is subscribed by all the ProxyForUhu
+     * This intent action is subscribed by all the ProxyForBezirk
      */
     final String FIRE_INTENT_ACTION = "com.bosch.upa.uhu.broadcast";
     /**

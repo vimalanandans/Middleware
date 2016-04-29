@@ -26,7 +26,7 @@ public class RequestUIinputValues extends Event {
      * @param expiration : how long to offer the request
      */
     public RequestUIinputValues(InputValuesStringTriplet[] values, long expiration) {
-        // set UhuMessage properties: useful for discrimination/deserialization
+        // set Message properties: useful for discrimination/deserialization
         super(Flag.REQUEST, TOPIC);
         // set event payload: useful for the consumer services
         this.values = values == null ? null : values.clone();
@@ -34,7 +34,7 @@ public class RequestUIinputValues extends Event {
     }
 
     /**
-     * Use instead of the generic UhuMessage.fromJson()
+     * Use instead of the generic Message.fromJson()
      *
      * @param json
      * @return

@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * Processes the LogReceiverQueue. It makes a blocking call on the Log Receiver Queue and
  * waits for the queue to be updated. It retrieve the String from the LogReceiverQueue and
  * converts (de-serializes) it into the BezirkLoggingMessage and gives it to the platform specific
- * UhuLoggingHandler to update the UI.
+ * BezirkLoggingHandler to update the UI.
  */
 public class LogReceiverQueueProcessor extends Thread {
     private static final Logger logger = LoggerFactory.getLogger(LogReceiverQueueProcessor.class);

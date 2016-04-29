@@ -24,14 +24,14 @@ public class NoticeUIshowVideo extends Event {
      * @param videoURL
      */
     public NoticeUIshowVideo(String videoURL) {
-        // set UhuMessage properties: useful for discrimination/deserialization
+        // set Message properties: useful for discrimination/deserialization
         super(Flag.NOTICE, TOPIC);
         // set event payload: useful for the consumer services
         this.videoURL = videoURL;
     }
 
     /**
-     * Use instead of the generic UhuMessage.fromJson()
+     * Use instead of the generic Message.fromJson()
      *
      * @param json
      * @return

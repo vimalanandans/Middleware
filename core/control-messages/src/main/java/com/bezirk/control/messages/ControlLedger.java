@@ -4,7 +4,7 @@ package com.bezirk.control.messages;
 /**
  * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
  *         There are two running instances of type ControlQueue.
- *         ControlSenderQueue: is the queue for control messages on the sender side which is populated by services using the UhuProxy and processed by the ControlSenderThread
+ *         ControlSenderQueue: is the queue for control messages on the sender side which is populated by services using the BezirkProxy and processed by the ControlSenderThread
  *         ControlReceiverQueue: is the queue for control messages on the receiver side which is populated by the ControlMulticastListener and ControlUnicastListener. The queue is processed by the ControlReceiverThread
  */
 public class ControlLedger extends Ledger {

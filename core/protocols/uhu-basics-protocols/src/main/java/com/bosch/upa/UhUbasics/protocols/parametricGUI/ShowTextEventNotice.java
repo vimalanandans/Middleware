@@ -34,7 +34,7 @@ public class ShowTextEventNotice extends Event {
     }
 
     /**
-     * Use instead of the generic UhuMessage.deserialize()
+     * Use instead of the generic Message.deserialize()
      *
      * @param json
      * @return

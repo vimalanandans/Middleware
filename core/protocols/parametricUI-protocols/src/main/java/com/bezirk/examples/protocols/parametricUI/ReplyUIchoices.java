@@ -24,14 +24,14 @@ public class ReplyUIchoices extends Event {
      * @param selectedChoices
      */
     public ReplyUIchoices(int[] selectedChoices) {
-        // set UhuMessage properties: useful for discrimination/deserialization
+        // set Message properties: useful for discrimination/deserialization
         super(Flag.REPLY, TOPIC);
         // set event payload: useful for the consumer services
         this.selectedChoices = selectedChoices == null ? null : selectedChoices.clone();
     }
 
     /**
-     * Use instead of the generic UhuMessage.fromJson()
+     * Use instead of the generic Message.fromJson()
      *
      * @param json
      * @return

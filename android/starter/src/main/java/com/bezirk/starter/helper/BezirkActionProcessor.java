@@ -24,7 +24,7 @@ public final class BezirkActionProcessor {
     private static final int STOP_CODE = 101;
 
     /**
-     * Process UhuAction based on action type.
+     * Process BezirkAction based on action type.
      *
      * @param intent
      * @param service

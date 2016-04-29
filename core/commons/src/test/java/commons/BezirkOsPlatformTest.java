@@ -13,7 +13,7 @@ public class BezirkOsPlatformTest {
     public void testUPADevice() {
         if (!BezirkOsPlatform.getCurrentOSPlatform().equals(BezirkOsPlatform.UPA_SERV__RUNTIME_ENV__JAVA)
                 || !BezirkOsPlatform.getCurrentOSPlatform().equals(BezirkOsPlatform.UPA_SERV__RUNTIME_ENV__JAVA)) {
-            fail("UhuOSPlatform is neither java nor android");
+            fail("BezirkOsPlatform is neither java nor android");
         }
         //assertEquals()
     }

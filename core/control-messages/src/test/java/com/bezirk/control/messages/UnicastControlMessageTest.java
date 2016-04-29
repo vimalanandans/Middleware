@@ -100,7 +100,7 @@ public class UnicastControlMessageTest {
         assertEquals("Retransmit not equal to the set value.", retransmit, deserializedCtrlMessage.getRetransmit());
         assertTrue("Local message considered as remote after deserialization", deserializedCtrlMessage.getIsLocal());
     /*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
-	 * device null condition should be checked separately before device equals in UhuServiceEndpoint equals api.
+	 * device null condition should be checked separately before device equals in BezirkServiceEndpoint equals api.
 	 *
 	 assertEquals("Sender not equal to the set value.",sender, deserializedCtrlMessage.getSender());
  	 assertEquals("Sender not equal to the set value.",recipient, deserializedCtrlMessage.getRecipient());
@@ -115,7 +115,7 @@ public class UnicastControlMessageTest {
         assertTrue("Local message considered as remote after deserialization", deserializedCtrlMessage.getIsLocal());
 
 	/*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
-	 * device null condition should be checked separately before device equals in UhuServiceEndpoint equals api.
+	 * device null condition should be checked separately before device equals in BezirkServiceEndpoint equals api.
 	 *
 	 assertEquals("Sender not equal to the set value.",sender, deserializedCtrlMessage.getSender());
 	 assertEquals("Sender not equal to the set value.",recipient, deserializedCtrlMessage.getRecipient());

@@ -59,7 +59,7 @@ public class MulticastHeaderTest {
 
         assertEquals("Address not equal to the set value.", address, multicastHeader.getAddress());
         /*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
-		 * device null condition should be checked separately before device equals in UhuServiceEndpoint equals api.
+		 * device null condition should be checked separately before device equals in BezirkServiceEndpoint equals api.
 		 * 
 		assertEquals("DataOnWire not equal to the set value.",sender, multicastHeader.getSenderSEP());
 		*/

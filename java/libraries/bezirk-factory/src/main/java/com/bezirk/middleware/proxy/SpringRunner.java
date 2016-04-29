@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * Responsible for starting bezirk using Spring's xml configuration method
- * UhuSpringRunner changed to SpringRunner
+ * BezirkSpringRunner changed to SpringRunner
  */
 public class SpringRunner {
 

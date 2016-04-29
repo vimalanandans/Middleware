@@ -59,7 +59,8 @@ public class BezirkStreamManager implements Streaming {
             this.sadlReceiver = sadlReceiver;
             bezirkStreamHandler = new BezirkStreamHandler();
         } else {
-            logger.error("Unable to initialize BezirkStreamManager. Please ensure ControlSenderQueue, BezirkMessageDispatcher and UhuCallback are initialized.");
+            logger.error("Unable to initialize BezirkStreamManager. Please ensure ControlSenderQueue, " +
+                    "BezirkMessageDispatcher and BezirkCallback are initialized.");
         }
 
     }

@@ -36,7 +36,7 @@ import java.util.ArrayList;
  * Note : this code is handling many legacy workaround
  * when implementing new BezirkComms, make sure you clean this. Vimal
  *
- * @modified Vijet Badigannavar added IUhuVersionMismatchCallback as a member variable
+ * @modified Vijet Badigannavar added BezirkVersionMismatchCallback as a member variable
  */
 
 public class BezirkCommsManager implements BezirkCommsLegacy {

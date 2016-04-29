@@ -24,14 +24,14 @@ public class ReplyUIvalues extends Event {
      * @param values
      */
     public ReplyUIvalues(InputValuesStringPair[] values) {
-        // set UhuMessage properties: useful for discrimination/deserialization
+        // set Message properties: useful for discrimination/deserialization
         super(Flag.REPLY, TOPIC);
         // set event payload: useful for the consumer services
         this.values = values == null ? null : values.clone();
     }
 
     /**
-     * Use instead of the generic UhuMessage.fromJson()
+     * Use instead of the generic Message.fromJson()
      *
      * @param json
      * @return

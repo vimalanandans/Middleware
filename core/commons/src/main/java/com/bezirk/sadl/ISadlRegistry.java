@@ -17,7 +17,7 @@ public interface ISadlRegistry {
     public Boolean registerService(final BezirkZirkId serviceId);
 
     /**
-     * Subscribes the UhuService to SADL.
+     * Subscribes the BezirkService to SADL.
      *
      * @param serviceId BezirkZirkId of the subscribing UPAService
      * @param pRole     SubscribedRole of the subscribing Zirk
@@ -46,7 +46,7 @@ public interface ISadlRegistry {
      * Update the location of the UPA Zirk
      *
      * @param serviceId BezirkZirkId of the unregistering zirk
-     * @param location  Location of the UhuService
+     * @param location  Location of the BezirkService
      * @return true if successful, false otherwise
      */
     public Boolean setLocation(final BezirkZirkId serviceId, final Location location);

@@ -7,7 +7,7 @@ import com.bezirk.messagehandler.ServiceIncomingMessage;
  */
 public interface BroadcastReceiver {
     /**
-     * Receives the UhuCallbackMessge from the Bezirk-pc and handles accordingly.
+     * Receives the BezirkCallbackMessge from the Bezirk-pc and handles accordingly.
      *
      * @param incomingMessage
      */

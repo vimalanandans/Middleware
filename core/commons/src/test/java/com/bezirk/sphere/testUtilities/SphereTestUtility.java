@@ -228,7 +228,7 @@ public class SphereTestUtility {
      * Generates a ShareRequest object consisting of:
      * BezirkZirkEndPoint object: {@link #DEVICE_3}
      * sharerSphereId: {@link #generateOwnerCombo()}
-     * shortCode: {@link #UhuId().getShortIdByHash(sharerSphereId)}
+     * shortCode: {@link #BezirkId().getShortIdByHash(sharerSphereId)}
      * BezirkDeviceInfo object: {@link #getBezirkDeviceInfo()}
      *
      * @return - ShareRequest object.
@@ -248,7 +248,7 @@ public class SphereTestUtility {
      * BezirkZirkEndPoint recipient object: {@link #DEVICE_3}
      * uniqueKey: null
      * sharerSphereId: {@link #generateOwnerCombo()}
-     * shortCode: {@link #UhuId().getShortIdByHash(sharerSphereId)}
+     * shortCode: {@link #BezirkId().getShortIdByHash(sharerSphereId)}
      * BezirkDeviceInfo object: {@link #getBezirkDeviceInfo()}
      * sphereExchangeData: {@link #getExchangeData()}
      *

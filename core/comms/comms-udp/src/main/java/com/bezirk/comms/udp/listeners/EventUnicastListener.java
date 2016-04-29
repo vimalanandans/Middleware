@@ -20,9 +20,9 @@ import java.util.concurrent.Executors;
 
 /**
  * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
- *         The UhuCommsUnicastListener is a thread that listens for messages that unicasted on the Bezirk network
- *         On receiving a unicastPacket, the UhuCommsMulticastListener recreates the PackagedMessage and populates the ReceiverMessageQueue
- *         Note: the UhuCommsUnicastListener drops all echo messages(messages sent by the host device)
+ *         The BezirkCommsUnicastListener is a thread that listens for messages that unicasted on the Bezirk network
+ *         On receiving a unicastPacket, the BezirkCommsMulticastListener recreates the PackagedMessage and populates the ReceiverMessageQueue
+ *         Note: the BezirkCommsUnicastListener drops all echo messages(messages sent by the host device)
  */
 public class EventUnicastListener implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(EventUnicastListener.class);
@@ -78,7 +78,7 @@ public class EventUnicastListener implements Runnable {
                     executor.execute(worker);
                 }
             } else {
-                //String retPayload = (String) UhuMessage.fromJson(received.split(",")[2].getBytes());
+                //String retPayload = (String) Message.fromJson(received.split(",")[2].getBytes());
                 logger.info("[DISCARD]Unicast Received: ");//+ " payload " + retPayload);
             }
         }

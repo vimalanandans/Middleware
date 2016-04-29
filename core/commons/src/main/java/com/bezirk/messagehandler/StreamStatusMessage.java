@@ -4,7 +4,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 
 /**
- * Sub class of UhuCallbackMessage that gives back the StreamStatusCallback to proxyForUhu
+ * Sub class of BezirkCallbackMessage that gives back the StreamStatusCallback to proxyForBezirk
  */
 public final class StreamStatusMessage extends ServiceIncomingMessage {
     /**

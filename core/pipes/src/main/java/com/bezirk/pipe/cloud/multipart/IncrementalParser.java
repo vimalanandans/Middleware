@@ -280,7 +280,7 @@ public class IncrementalParser implements MultiPartParser {
 
 
     /**
-     * Validate the http header for the UhuHeader message part
+     * Validate the http header for the BezirkHeader message part
      *
      * @param httpHeader The header entries to validate
      * @throws Exception if a header value does not match the expected type

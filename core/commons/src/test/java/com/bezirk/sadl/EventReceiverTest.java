@@ -24,7 +24,7 @@
 //
 //public class EventReceiverTest {
 //	private static final Logger logger = LoggerFactory.getLogger(EventReceiverTest.class);
-//	private TestingUhuSadlRegistry sadlRegistry = null;
+//	private TestingBezirkSadlRegistry sadlRegistry = null;
 //	 
 //	@BeforeClass
 //	public static void setup(){
@@ -34,7 +34,7 @@
 //	@Before
 //	public void beforeEachTest(){
 //		logger.info("Before each Test");
-//		sadlRegistry = new TestingUhuSadlRegistry();
+//		sadlRegistry = new TestingBezirkSadlRegistry();
 //	}
 //	
 //	@After

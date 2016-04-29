@@ -5,7 +5,8 @@ import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 
 /**
- * Sub class of UhuCallbackMessage that contains the EventCallbackMessage fields, that are required for ProxyForUhu to give the callback.
+ * Sub class of ServiceIncomingMessage that contains the EventCallbackMessage fields, that are
+ * required for ProxyForBezirk to give the callback.
  */
 public final class EventIncomingMessage extends ServiceIncomingMessage {
 
@@ -22,7 +23,8 @@ public final class EventIncomingMessage extends ServiceIncomingMessage {
      */
     public String eventTopic;
     /**
-     * unique msg id for each event. This is useful to avoid duplicates at ProxyForUhu side when a zirk is residing in multiple spheres.
+     * unique msg id for each event. This is useful to avoid duplicates at ProxyForBezirk side when
+     * a zirk is residing in multiple spheres.
      */
     public String msgId;
 

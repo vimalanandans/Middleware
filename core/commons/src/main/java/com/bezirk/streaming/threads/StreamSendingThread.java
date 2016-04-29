@@ -101,7 +101,7 @@ public class StreamSendingThread implements Runnable {
 
         } else {
 
-            logger.error("UhuCallback is not provided. Unable to send stream callback.");
+            logger.error("BezirkCallback is not provided. Unable to send stream callback.");
         }
 
         /*// GIVE THE CALLBACK TO THE SERVICE - available in commit 7694fb63003 */

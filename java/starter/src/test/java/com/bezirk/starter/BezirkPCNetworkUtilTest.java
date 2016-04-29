@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 /**
- * This testcase verifies the working of UhuPCNetwork Utility
+ * This testcase verifies the working of BezirkPCNetwork Utility
  *
  * @author AJC6KOR
  */

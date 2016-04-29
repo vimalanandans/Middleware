@@ -121,7 +121,7 @@ public class StreamStore {
     /*
      * This method registers the {@link StreamRecord} into {@link
      * com.bosch.upa.uhu.comms.udp.streaming.StreamStore}. It will be called by
-     * the {@link com.bosch.upa.uhu.Proxy.android.UhuProxyForServiceAPI} before
+     * the {@link com.bosch.upa.uhu.Proxy.android.BezirkProxyForServiceAPI} before
      * it creates the StreamRequest
      * 
      * @param key

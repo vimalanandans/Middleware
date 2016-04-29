@@ -3,7 +3,8 @@ package com.bezirk.messagehandler;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 /**
- * Pojo class for Discovery notifier containing all the fields that are necessary to give the notification to the ProxyForUhuLibrary.
+ * Pojo class for Discovery notifier containing all the fields that are necessary to give the
+ * notification to the ProxyForBezirkLibrary.
  */
 public final class DiscoveryIncomingMessage extends ServiceIncomingMessage {
     /**

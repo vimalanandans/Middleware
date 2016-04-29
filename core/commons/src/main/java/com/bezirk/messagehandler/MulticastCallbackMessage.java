@@ -1,7 +1,7 @@
 package com.bezirk.messagehandler;
 
 /**
- * Subclass of UhuCallbackMessage that is used to handle MulticastCallback
+ * Subclass of ServiceIncomingMessage that is used to handle MulticastCallback
  */
 public final class MulticastCallbackMessage extends ServiceIncomingMessage {
 

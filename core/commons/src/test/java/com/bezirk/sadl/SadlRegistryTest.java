@@ -90,7 +90,7 @@ public class SadlRegistryTest {
 		 * ###############################################################################################
 		 */
 
-		/* Creating the UhuService Ids */
+		/* Creating the BezirkService Ids */
 
         BezirkZirkId bezirk = null;
         BezirkZirkId uhu1 = null;

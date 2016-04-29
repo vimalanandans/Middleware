@@ -2,7 +2,7 @@
 //
 //import com.bezirk.comms.BezirkComms;
 //import com.bezirk.comms.BezirkCommsPC;
-//import com.bezrik.network.UhuNetworkUtilities;
+//import com.bezrik.network.BezirkNetworkUtilities;
 //
 //import org.junit.After;
 //import org.junit.Before;
@@ -38,7 +38,7 @@
 //		try {
 //			eMSocket = new MulticastSocket(BezirkComms.getMULTICAST_PORT());
 //
-//			InetAddress addr = UhuNetworkUtilities.getIpForInterface(NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME()));
+//			InetAddress addr = BezirkNetworkUtilities.getIpForInterface(NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME()));
 //
 //			assertNotNull("Could not compute Ip for NetworkInterface - Check Interface Name in comms.properties", addr);
 //			eMSocket.setInterface(addr);

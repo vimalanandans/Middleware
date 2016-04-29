@@ -143,21 +143,4 @@ public final class BezirkCompManager {
             BezirkSphereRegistration sphereRegistration) {
         BezirkCompManager.bezirkSphereRegistration = sphereRegistration;
     }
-
-    /**
-     * @return the uhuSphereMessages
-     */
-	/*public static BezirkSphereMessages getUhuSphereMessages() {
-		return uhuSphereMessages;
-	}*/
-
-    /**
-     * @param uhuSphereMessages the uhuSphereMessages to set
-     */
-	/*public static void setUhuSphereMessages(
-			BezirkSphereMessages uhuSphereMessages) {
-		BezirkCompManager.uhuSphereMessages = uhuSphereMessages;
-	}*/
-
-
 }

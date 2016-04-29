@@ -90,7 +90,7 @@ public class ControlMulticastListener implements Runnable {
                     logger.error("Error in decrypting the message", e);
                 }
             } else {
-                //String retPayload = (String) UhuMessage.fromJson(received.split(",")[2].getBytes());
+                //String retPayload = (String) Message.fromJson(received.split(",")[2].getBytes());
                 logger.info("[DISCARD]Control Multicast Received: " + receivePacket.getLength());//+ " payload " + retPayload);
             }
         }

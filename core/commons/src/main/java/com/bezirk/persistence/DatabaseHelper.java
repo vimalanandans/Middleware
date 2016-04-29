@@ -28,7 +28,7 @@ public class DatabaseHelper {
      */
     private SadlRegistry sadlRegistry;
     /**
-     * Bezirk Proxy Registry -  Stores only UhuServiceIds. It will be used only on the PC side
+     * Bezirk Proxy Registry -  Stores only BezirkServiceIds. It will be used only on the PC side
      */
     private BezirkProxyRegistry bezirkProxyRegistry;
 
@@ -67,7 +67,7 @@ public class DatabaseHelper {
                 break;
             case DBConstants.COLUMN_3:
                 if (null == bezirkProxyRegistry) {
-                    throw new NullPointerException("UhuProxy Registry cant be null");
+                    throw new NullPointerException("BezirkProxy Registry cant be null");
                 }
                 updateDb.updateColumnValue(DBConstants.COLUMN_3, bezirkProxyRegistry);
                 break;

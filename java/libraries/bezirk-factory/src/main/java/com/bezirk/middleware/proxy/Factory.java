@@ -7,7 +7,7 @@ public abstract class Factory {
     private static Bezirk instance = null;
 
     /**
-     * @return an object that implements UhuAPI
+     * @return an object that implements Bezirk
      */
     public static Bezirk getInstance() {
         synchronized (Factory.class) {

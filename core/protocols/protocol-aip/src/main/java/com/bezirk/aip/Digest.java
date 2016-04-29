@@ -69,7 +69,7 @@ public class Digest<A> extends Event {
 	/* Getter and setter methods */
 
     /**
-     * Use instead of the generic UhuMessage.fromJson()
+     * Use instead of the generic Message.fromJson()
      * @param json
      * @return Digest
      */

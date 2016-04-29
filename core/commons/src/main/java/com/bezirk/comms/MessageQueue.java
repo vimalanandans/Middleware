@@ -13,13 +13,12 @@ import java.util.ArrayList;
 
 
 /**
- * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
- *         There are two running instances of type MessageQueue.
- *         SendingMessageQueue: is the queue on the sender side which is populated by services using the UhuProxy and processed by the SenderThread
- *         ReceivingMessageQueue: is the queue on the receiver side which is populated by the UhuCommsMulticastListener and UhuCommsUnicastListener. The queue is processed by the ReceiverThread
- * @see UhuProxyForServiceAPI
- * @see EventMulticastListener
- * @see EventUnicastListener
+ * There are two running instances of type MessageQueue.
+ * SendingMessageQueue: is the queue on the sender side which is populated by services using the
+ * BezirkProxy and processed by the SenderThread
+ * ReceivingMessageQueue: is the queue on the receiver side which is populated by the
+ * BeirkCommsMulticastListener and BezirkCommsUnicastListener. The queue is processed by the
+ * ReceiverThread
  */
 public class MessageQueue {
     private static final Logger logger = LoggerFactory.getLogger(MessageQueue.class);

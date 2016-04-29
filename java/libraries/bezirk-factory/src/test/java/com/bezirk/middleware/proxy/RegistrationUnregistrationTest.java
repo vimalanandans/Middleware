@@ -14,7 +14,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * @author vbd4kor
  *         This class tests the Bezirk for Registration and Unregistration Scenario.
- *         Steps: 1. registers the zirk with UhuFactory
+ *         Steps: 1. registers the zirk with BezirkFactory
  *         2. Check the Sid Map if it contains the ZirkId
  *         3. register the same zirk Again and check if the same zirk is generated.
  *         4. unregister the zirk

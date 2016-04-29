@@ -35,7 +35,7 @@ public class ClearData extends Event {
     }
 
     /**
-     * Use instead of the generic UhuMessage.fromJson()
+     * Use instead of the generic Message.fromJson()
      *
      * @param json
      * @return ClearData

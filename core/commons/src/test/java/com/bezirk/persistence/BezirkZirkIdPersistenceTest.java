@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
- * This class test the Persistence of the UhuServiceIdPersistence, to check loading and storing of
+ * This class test the Persistence of the BezirkServiceIdPersistence, to check loading and storing of
  * BezirkZirkId when the zirk/s register/s and Unregister/s.
  */
 public class BezirkZirkIdPersistenceTest {
@@ -75,7 +75,7 @@ public class BezirkZirkIdPersistenceTest {
     }
 
     /**
-     * Check the ServiceIdPersistence. Get the BezirkProxyRegistry and update the UhuProxyRegisty with sample
+     * Check the ServiceIdPersistence. Get the BezirkProxyRegistry and update the BezirkProxyRegisty with sample
      * ServiceIds. Then close the dbConnection that stimulates restarting or shutting of Bezirk. Delete the
      * sample zirk Ids and shut the Bezirk. Check the registry for map that contains no zirkId that
      * validates this test case.
@@ -134,7 +134,7 @@ public class BezirkZirkIdPersistenceTest {
     }
 
     /**
-     * Check the ServiceIdPersistence. Get the BezirkProxyRegistry and update the UhuProxyRegisty with sample
+     * Check the ServiceIdPersistence. Get the BezirkProxyRegistry and update the BezirkProxyRegisty with sample
      * ServiceIds. Then close the dbConnection that stimulates restarting or shutting of Bezirk. Check the
      * same and verify.
      *

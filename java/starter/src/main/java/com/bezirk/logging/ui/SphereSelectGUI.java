@@ -50,7 +50,7 @@ import javax.swing.event.ListSelectionListener;
 
 /**
  * Class that displays the GUI to select the spheres and start the logging Zirk.
- * {@link com.bezirk.remotelogging.logininterface.IUhuLogging}
+ * {@link com.bezirk.remotelogging.logininterface.BezirkLogging}
  */
 public final class SphereSelectGUI extends JFrame implements BezirkLogging {
     private static final long serialVersionUID = 1L;

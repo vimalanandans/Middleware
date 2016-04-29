@@ -48,7 +48,7 @@ public class GetPreference extends Event {
 	/* getters and setters */
 
     /**
-     * Use instead of the generic UhuMessage.fromJson()
+     * Use instead of the generic Message.fromJson()
      * @param json
      * @return GetPreference
      */

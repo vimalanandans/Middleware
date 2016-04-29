@@ -28,7 +28,7 @@ public class RequestUIpickOne extends Event {
      * @param expiration       : how long to offer the request
      */
     public RequestUIpickOne(String intro, String[] availableChoices, long expiration) {
-        // set UhuMessage properties: useful for discrimination/deserialization
+        // set Message properties: useful for discrimination/deserialization
         super(Flag.REQUEST, TOPIC);
         // set event payload: useful for the consumer services
         this.intro = intro;
@@ -37,7 +37,7 @@ public class RequestUIpickOne extends Event {
     }
 
     /**
-     * Use instead of the generic UhuMessage.fromJson()
+     * Use instead of the generic Message.fromJson()
      *
      * @param json
      * @return

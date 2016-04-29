@@ -76,7 +76,7 @@ public class StoreDataForRequest {
     }
 
     /**
-     * Test the behavior of the storeData method when a valid InviterSphereId and sharerUhuDeviceInfo is passed.
+     * Test the behavior of the storeData method when a valid InviterSphereId and sharerBezirkDeviceInfo is passed.
      * <br>The method under test is expected to return True
      *
      * @throws Exception

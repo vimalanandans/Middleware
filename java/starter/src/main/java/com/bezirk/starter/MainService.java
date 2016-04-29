@@ -135,10 +135,10 @@ public class MainService {
     }
 
     /**
-     * Stop UhuStack
+     * Stop BeirkStack
      */
     public void stopStack() {
-        logger.info("UhuStarter has stopped\n");
+        logger.info("BezirkStarter has stopped\n");
 
         /*************************************
          * Step1 : Stop Comms                *
@@ -170,19 +170,19 @@ public class MainService {
     }
 
     /**
-     * Start UhuStack. Initializes sadl, sphere, comms.
+     * Start BezirkStack. Initializes sadl, sphere, comms.
      *
-     * @param uhuPcCallback
+     * @param bezirkPcCallback
      */
-    public void startStack(final ZirkMessageHandler uhuPcCallback) {
-        logger.info("UhuStarter has started \n");
+    public void startStack(final ZirkMessageHandler bezirkPcCallback) {
+        logger.info("BezirkStarter has started");
 
         /**************************************************
          * Step1 : Set Platform specific call back        *
          **************************************************/
         if (null == BezirkCompManager.getplatformSpecificCallback()
-                && uhuPcCallback != null) {
-            BezirkCompManager.setplatformSpecificCallback(uhuPcCallback);
+                && bezirkPcCallback != null) {
+            BezirkCompManager.setplatformSpecificCallback(bezirkPcCallback);
         }
 
         /**************************************************
@@ -226,7 +226,7 @@ public class MainService {
         /**************************************************
          * Step6 :Initialize the comms.                   *
          **************************************************/
-        final boolean isCommsInitialized = initComms(uhuPcCallback, intf,
+        final boolean isCommsInitialized = initComms(bezirkPcCallback, intf,
                 bezirkSadlManager);
         if (!isCommsInitialized) {
             serviceStarterHelper.fail("Problem initializing Comms.", null);
@@ -351,7 +351,7 @@ public class MainService {
         /* comms triggers sadle send this data.
          * try {
 
-            ((BezirkComms) comms).setUhuCallback(uhuPcCallback);
+            ((BezirkComms) comms).setBezirkCallback(uhuPcCallback);
 
         } catch (Exception e) {
 

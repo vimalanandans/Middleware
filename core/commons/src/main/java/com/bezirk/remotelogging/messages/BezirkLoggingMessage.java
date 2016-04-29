@@ -48,7 +48,7 @@ public class BezirkLoggingMessage {
     }
 
     /**
-     * Construct the Logging Message to be sent on the wire. This will be called in UhuCommsSend,
+     * Construct the Logging Message to be sent on the wire. This will be called in BezirkCommsSend,
      * EventListenerUtility,ControlListenerUtility
      *
      * @param sphereName    Name of the sphere

@@ -79,7 +79,7 @@ public class StoreDataForResponse {
     }
 
     /**
-     * Test the behavior of the storeData method when a valid sphereExchangeData, inviterUhuDeviceInfo, sharerSphereId is passed.
+     * Test the behavior of the storeData method when a valid sphereExchangeData, inviterBezirkDeviceInfo, sharerSphereId is passed.
      * <br>The method under test is expected to return True
      *
      * @throws Exception

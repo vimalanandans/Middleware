@@ -65,7 +65,7 @@ public abstract class CommsProcessor implements BezirkComms {
     //Quickfix : using the logging manger from udp comms. fix this.
     LogServiceMessageHandler logServiceMsgHandler = null;
 
-    //private IUhuCallback uhuCallback = null;
+    //private BezirkCallback uhuCallback = null;
     CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver();
     /**
      * Version Callback that will be used to inform the platforms when there is mismatch in versions.

@@ -17,9 +17,9 @@
 //
 ///**
 // * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
-// * The UhuCommsMulticastListener is a thread that listens for messages that multicasted on the Bezirk network
-// * On receiving a multicastPacket, the UhuCommsMulticastListener recreates the PackagedMessage and populates the ReceiverMessageQueue
-// * Note: UhuCommsMulticastListener will drop all echo messages(messages that are sent by the host device).
+// * The BezirkCommsMulticastListener is a thread that listens for messages that multicasted on the Bezirk network
+// * On receiving a multicastPacket, the BezirkCommsMulticastListener recreates the PackagedMessage and populates the ReceiverMessageQueue
+// * Note: BezirkCommsMulticastListener will drop all echo messages(messages that are sent by the host device).
 // */
 //public class MulticastThread implements Runnable {
 //    private static final Logger logger = LoggerFactory

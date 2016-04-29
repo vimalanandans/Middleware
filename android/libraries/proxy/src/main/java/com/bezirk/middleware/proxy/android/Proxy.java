@@ -89,7 +89,7 @@ public final class Proxy implements Bezirk {
 
         final BezirkZirkId serviceId = new BezirkZirkId(serviceIdAsString);
         Log.d(TAG, "BezirkZirkId-> " + serviceIdAsString); // Remove this line
-        // Send the Intent to the UhuStack
+        // Send the Intent to the BezirkStack
         String serviceIdKEY = "zirkId";
         String serviceNameKEY = "serviceName";
         Intent registerIntent = new Intent();
@@ -156,11 +156,11 @@ public final class Proxy implements Bezirk {
 
     private boolean isRequestValid(ZirkId subscriber, ProtocolRole pRole, BezirkListener listener) {
         if (!StringValidatorUtil.areValidStrings(pRole.getProtocolName()) || null == listener || null == subscriber) {
-            Log.e(TAG, "Check for ProtocolRole/ UhuListener/ZirkId for null or empty values");
+            Log.e(TAG, "Check for ProtocolRole/ BezirkListener/ZirkId for null or empty values");
             return false;
         }
         if ((null == pRole.getEventTopics()) && (null == pRole.getStreamTopics())) {
-            Log.e(TAG, "ProtocolRole doesn't have any Events/ Streams to subscribe");
+            Log.e(TAG, "ProtocolRole doesn't have any Events/Streams to subscribe");
             return false;
         }
         return true;
@@ -329,7 +329,7 @@ public final class Proxy implements Bezirk {
     public void discover(ZirkId zirk, Address scope, ProtocolRole protocolRole, long timeout, int maxResults, BezirkListener listener) {
 
         if (null == zirk || null == listener) {
-            Log.e(TAG, "ZirkId/UhuListener is null");
+            Log.e(TAG, "ZirkId/BezirkListener is null");
             return;
         }
 
@@ -346,7 +346,7 @@ public final class Proxy implements Bezirk {
         discoverIntent.putExtra("maxDiscovered", maxResults);
         discoverIntent.putExtra("discoveryId", discoveryCount);
         mContext.startService(discoverIntent);
-        Log.i(TAG, "Discovery Request to UhuStack");
+        Log.i(TAG, "Discovery Request to BezirkStack");
     }
 
     @Override

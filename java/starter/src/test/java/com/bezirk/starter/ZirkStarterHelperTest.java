@@ -64,16 +64,15 @@ public class ZirkStarterHelperTest {
 
     /**
      * Positive Testcase :
-     * <p/>
+     * <p>
      * This covers two scenarios :
-     * <p/>
-     * a) BezirkConfig Display Enabled
-     * <p/>
-     * In this case the uhudevice type should be set as PC upon device configuration.
-     * <p/>
+     * </p> <p>
+     * a) BezirkConfig Display Enabled -- In this case the uhudevice type should be set as PC upon
+     * device configuration.
+     * </p> <p>
      * b) BezirkConfig Display disabled
-     * <p/>
-     * In this case the uhudevice type should be set as EMBEDDED_KIT upon device configuration.
+     * </p>
+     * In this case the BezirkDevice type should be set as EMBEDDED_KIT upon device configuration.
      */
     private void testConfigureBezirkDevice() {
         com.bezirk.starter.ServiceStarterHelper helper = new com.bezirk.starter.ServiceStarterHelper();
@@ -81,13 +80,13 @@ public class ZirkStarterHelperTest {
 
         BezirkDevice bezirkDevice = helper.configureBezirkDevice(bezirkConfig);
 
-        assertNotNull("BezirkDevice is null after configuragtion. ", bezirkDevice);
+        assertNotNull("BezirkDevice is null after configuration. ", bezirkDevice);
 
-        assertNotNull("BezirkDeviceType is null after configuragtion. ", bezirkDevice.getDeviceType());
+        assertNotNull("BezirkDeviceType is null after configuration. ", bezirkDevice.getDeviceType());
 
         assertEquals("Bezirk Device Type is not configured to PC when display is enabled.", BezirkDeviceType.BEZIRK_DEVICE_TYPE_PC, bezirkDevice.getDeviceType());
 
-        assertNotNull("UhuDeviceLocation is null after configuragtion. ", bezirkDevice.getDeviceLocation());
+        assertNotNull("BezirkDeviceLocation is null after configuration. ", bezirkDevice.getDeviceLocation());
 
 
         bezirkConfig.setDisplayEnable("false");

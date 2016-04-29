@@ -24,14 +24,14 @@ public class NoticeUIshowPic extends Event {
      * @param picURL
      */
     public NoticeUIshowPic(String picURL) {
-        // set UhuMessage properties: useful for discrimination/deserialization
+        // set Message properties: useful for discrimination/deserialization
         super(Flag.NOTICE, TOPIC);
         // set event payload: useful for the consumer services
         this.picURL = picURL;
     }
 
     /**
-     * Use instead of the generic UhuMessage.fromJson()
+     * Use instead of the generic Message.fromJson()
      *
      * @param json
      * @return

@@ -207,7 +207,7 @@ public final class BezirkServiceHelper {
                 return false;
             }
         } else {
-            logger.error("Recipient SEP or UhuServiceID is not valid ");
+            logger.error("Recipient SEP or BezirkZirkID is not valid ");
             return false;
 
         }

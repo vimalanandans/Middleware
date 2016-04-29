@@ -35,7 +35,7 @@ public class BezirkPreferences {
     }
 
     /**
-     * return the preference for UhuComm
+     * return the preference for BezirkComm
      */
     public SharedPreferences getSharedPreferences() {
         return preferences;

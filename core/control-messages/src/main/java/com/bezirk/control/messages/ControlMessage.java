@@ -8,7 +8,7 @@ import com.google.gson.Gson;
  *         <p/>
  *         This is the super-class for all control messages.
  *         <p/>
- *         For example: {@link com.bezirk.control.messages.discovery.DiscoveryRequest}, {@link com.bezirk.control.messages.discovery.DiscoveryResponse}, {@link com.bezirk.sphere.UhuSphereMessage} are subclasses of {@link ControlMessage}
+ *         For example: {@link com.bezirk.control.messages.discovery.DiscoveryRequest}, {@link com.bezirk.control.messages.discovery.DiscoveryResponse}, {@link com.bezirk.sphere.BezirkSphereMessage} are subclasses of {@link ControlMessage}
  */
 public class ControlMessage {
     private String sphereId = "";

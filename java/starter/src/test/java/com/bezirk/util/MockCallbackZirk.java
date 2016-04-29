@@ -8,7 +8,7 @@ import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
 
 /**
- * Mock callback zirk implementing IUhuCallback, used for unit testing
+ * Mock callback zirk implementing BezirkCallback, used for unit testing
  *
  * @author AJC6KOR
  */

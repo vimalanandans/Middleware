@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import ControlLedger;
 import DiscoveryRequest;
-import UhuNetworkUtilities;
+import BezirkNetworkUtilities;
 import BezirkZirkEndPoint;
 import BezirkZirkId;
 import BezirkValidatorUtility;*/
@@ -26,7 +26,7 @@ import BezirkValidatorUtility;*/
 	        final String serviceIdStr = "______SPHERESCANNER#2";
 	        final BezirkZirkId zirkId = new BezirkZirkId(serviceIdStr);
 	        final ControlLedger transControlMessage = new ControlLedger();
-	        final BezirkZirkEndPoint sender = UhuNetworkUtilities.getZirkEndPoint(zirkId);
+	        final BezirkZirkEndPoint sender = BezirkNetworkUtilities.getZirkEndPoint(zirkId);
 	        final DiscoveryRequest discoveryRequest = new DiscoveryRequest(sphere,sender,null,null,discoveryId,timeout,maxDiscovered);
 	        transControlMessage.setMessage(discoveryRequest);
 	        transControlMessage.setSphereId(sphere);

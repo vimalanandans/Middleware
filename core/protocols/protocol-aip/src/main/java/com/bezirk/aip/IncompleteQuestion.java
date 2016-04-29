@@ -25,7 +25,7 @@ public class IncompleteQuestion extends Question {
 
 
     /**
-     * Use instead of the generic UhuMessage.fromJson()
+     * Use instead of the generic Message.fromJson()
      * @param json
      * @return IncompleteQuestion
      */

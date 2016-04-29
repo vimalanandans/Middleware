@@ -62,8 +62,8 @@ public class SphereCatchRequestExtTest {
         com.bezirk.sphere.messages.CatchRequest sphereCatchRequestExt = new com.bezirk.sphere.messages.CatchRequest(sender, scannedTempSphereId, catchSphereId, bezirkDeviceInfo, qrServiceCatchSphereString);
         String serializedMessage = sphereCatchRequestExt.serialize();
         com.bezirk.sphere.messages.CatchRequest deserializedSphereCatchRequestExt = com.bezirk.sphere.messages.CatchRequest.deserialize(serializedMessage, com.bezirk.sphere.messages.CatchRequest.class);
-        assertEquals("SphereID not equal to the set value.", catchSphereId, deserializedSphereCatchRequestExt.getCatcherSphereId());
-        assertEquals("UhuDeviceinfo not equal to the set value.", bezirkDeviceInfo, deserializedSphereCatchRequestExt.getBezirkDeviceInfo());
+        assertEquals("SphereId not equal to the set value.", catchSphereId, deserializedSphereCatchRequestExt.getCatcherSphereId());
+        assertEquals("BezirkDeviceInfo not equal to the set value.", bezirkDeviceInfo, deserializedSphereCatchRequestExt.getBezirkDeviceInfo());
         assertEquals("CatchSphereString not equal to the set value.", qrServiceCatchSphereString, deserializedSphereCatchRequestExt.getSphereExchangeData());
     }
 }

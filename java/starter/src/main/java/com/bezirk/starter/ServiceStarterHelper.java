@@ -58,7 +58,7 @@ final class ServiceStarterHelper {
         BezirkSphereAPI sphereForPC = new BezirkSphereForPC(cryptoEngine, uhuDevice,
                 sphereRegistry);
 
-        // UhuSphereForAndroid implements the listener, hence set the
+        // BezirkSphereForAndroid implements the listener, hence set the
         // listener object as same.
         final BezirkSphereForPC uhuSphereForPC = (BezirkSphereForPC) sphereForPC;
         uhuSphereForPC.setBezirkSphereListener(uhuSphereForPC);

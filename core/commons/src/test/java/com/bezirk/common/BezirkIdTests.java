@@ -68,12 +68,6 @@ public class BezirkIdTests {
 
         assertTrue(shortId1 != shortId2);
         assertTrue(shortId3 != shortId4);
-        /*
-        logger.info("short id for "+uniqueId+" > " + new UhuUUIID().getShortIdByHash(uniqueId));
-
-        logger.info("short id for "+uniqueId+" > " + new UhuUUIID().getShortIdByHash(uniqueId));
-        logger.info("short id for "+uniqueId+" > " + new UhuUUIID().getShortIdByHash(uniqueId));*/
-
     }
 
     @Test

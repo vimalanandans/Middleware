@@ -127,7 +127,7 @@ public class Proxy implements Bezirk {
     @Override
     public void subscribe(final ZirkId subscriber, final ProtocolRole protocolRole, final BezirkListener listener) {
         if (null == protocolRole.getProtocolName() || protocolRole.getProtocolName().isEmpty() || null == listener || null == subscriber) {
-            logger.error("Check for ProtocolRole/ UhuListener/ZirkId for null or empty values");
+            logger.error("Check for ProtocolRole/ BezirkListener/ZirkId for null or empty values");
             return;
         }
         if (null == protocolRole.getEventTopics() && null == protocolRole.getStreamTopics()) {

@@ -313,7 +313,7 @@ public class PipeManagerImpl implements PipeManager {
     }
 
 	/*
-	 * Getter and Setter methods - these are set by UhuProxy when the PipeSender is created
+	 * Getter and Setter methods - these are set by BezirkProxy when the PipeSender is created
 	 */
 
     public void setPipeRegistry(PipeRegistry pipeRegistry) {

@@ -104,7 +104,7 @@ public class Observation extends Event implements Comparable<Observation> {
 	/* getters and setters */
 
     /**
-     * Use instead of the generic UhuMessage.fromJson()
+     * Use instead of the generic Message.fromJson()
      *
      * @param json
      * @return Observation
@@ -244,7 +244,7 @@ public class Observation extends Event implements Comparable<Observation> {
             thisDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ")
                     .parse(this.getObservationSamplingTime());
         } catch (ParseException e) {
-            //log.error("Error occured in parsing the Date-Time"+e);
+            //log.error("Error occurred in parsing the Date-Time"+e);
             e.printStackTrace();
         }
 
@@ -254,7 +254,7 @@ public class Observation extends Event implements Comparable<Observation> {
             oDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(o
                     .getObservationSamplingTime());
         } catch (ParseException e) {
-            //log.error("Error occured in parsing the object's Date-Time"+ e);
+            //log.error("Error occurred in parsing the object's Date-Time"+ e);
             e.printStackTrace();
 
         }

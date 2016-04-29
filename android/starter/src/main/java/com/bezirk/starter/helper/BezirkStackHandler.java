@@ -125,7 +125,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
 
                     //If Wifi is not enabled send a notification to user.
 
-                    logger.debug("UhuWifi getSupplicant State :: " + wifiInfo.getSupplicantState().name());
+                    logger.debug(" BezirkWifi getSupplicant State :: " + wifiInfo.getSupplicantState().name());
 
                     /*************************************************************
                      * Step 1 : Fetches ipAddress from Wifi connection           *
@@ -141,7 +141,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                     bezirkStartStackHelper.setAndroicallback(service);
 
                     /*************************************************************
-                     * Step 3 :  Initialize UhuCommsForAndroid with preferences  *
+                     * Step 3 :  Initialize BezirkCommsForAndroid with preferences  *
                      *************************************************************/
                     BezirkPreferences preferences = new BezirkPreferences(service);
                     BezirkCommsAndroid.init(preferences);
@@ -207,14 +207,14 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
     }
 
     /**
-     * Stops UhuStack
+     * Stops BezirkStack
      *
      * @param service MainService
      */
     public void stopStack(MainService service) {
 
         if (!stoppedStack) {
-            logger.info("UhuStarter has stopped\n");
+            logger.info("BezirkStarter has stopped\n");
 
             if (comms != null) {
                 comms.stopComms();

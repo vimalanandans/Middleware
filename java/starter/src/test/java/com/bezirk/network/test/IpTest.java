@@ -3,7 +3,7 @@
 //import com.bezirk.comms.BezirkComms;
 //import com.bezirk.comms.BezirkCommsPC;
 //import com.bezrik.network.IntfInetPair;
-//import com.bezrik.network.UhuNetworkUtilities;
+//import com.bezrik.network.BezirkNetworkUtilities;
 //
 //import org.junit.Test;
 //import org.slf4j.Logger;
@@ -42,11 +42,11 @@
 //		InetAddress addr;
 //		try {
 //			BezirkCommsPC.init();
-//			addr = UhuNetworkUtilities.getIpForInterface(NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME()));
+//			addr = BezirkNetworkUtilities.getIpForInterface(NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME()));
 //			if(addr == null){
 //				logger.error("Failure to resolve ip - Check interface in comms.properties ");
 //				logger.error("Possible interface/ ip pairs are: ");
-//				Iterator<IntfInetPair> itr = UhuNetworkUtilities.getIntfInetPair().iterator();
+//				Iterator<IntfInetPair> itr = BezirkNetworkUtilities.getIntfInetPair().iterator();
 //				while(itr.hasNext()){
 //					IntfInetPair pair = itr.next();
 //					logger.error("Interface: "+pair.getIntf().getName()+" IP:"+pair.getInet().getHostAddress());

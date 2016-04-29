@@ -27,7 +27,7 @@ public class StreamWriter implements Runnable {
 
 
     // TODO: we need to set this somehow when the pipe manager gets created by the platform
-    //File outputDir = new File(Environment.getExternalStorageDirectory() + "/UhuDownloads");
+    //File outputDir = new File(Environment.getExternalStorageDirectory() + "/BezirkDownloads");
     private File outputDir = null;
 
     private PipeHeader pipeHeader;

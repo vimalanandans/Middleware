@@ -60,7 +60,7 @@ public class StreamQueueProcessor implements Runnable {
     public void run() {
         boolean running = true;
         logger.debug("Bezirk Stream Processor has started");
-        boolean uhuCallbackPresent = false;
+        boolean bezirkCallbackPresent = false;
         while (running) {
             if (Thread.currentThread().isInterrupted()) {
                 logger.debug("Stopping Bezirk Stream Processor Thread");
@@ -72,25 +72,25 @@ public class StreamQueueProcessor implements Runnable {
             Iterator<Ledger> it = streamQueue.iterator();
             if (BezirkValidatorUtility.isObjectNotNull(sadlReceiver)) {
 
-                uhuCallbackPresent = true;
+                bezirkCallbackPresent = true;
 
             } else {
 
-                logger.error("UhuCallback is not provided. Unable to send stream callback.");
+                logger.error("BezirkCallback is not provided. Unable to send stream callback.");
             }
 
             while (it.hasNext()) {
                 StreamRecord streamRecord = (StreamRecord) it.next();
 
                 if (StreamingStatus.LOCAL == streamRecord.streamStatus) {
-                    processLocalStreamMessage(uhuCallbackPresent, streamRecord);
+                    processLocalStreamMessage(bezirkCallbackPresent, streamRecord);
 
                 } else if (StreamingStatus.ADDRESSED == streamRecord.streamStatus) {
                     logger.debug("Stream Request is already Addressed.");
                 } else if (streamRecord.streamStatus == StreamingStatus.READY) {
                     processStreamReadyMessage(streamRecord);
                 } else if (streamRecord.streamStatus == StreamingStatus.BUSY) {
-                    processStreamBusyMessage(uhuCallbackPresent, streamRecord);
+                    processStreamBusyMessage(bezirkCallbackPresent, streamRecord);
                 }
                 msgQueue.removeFromQueue(streamRecord);
             }
