@@ -387,7 +387,7 @@ public class ShareProcessor {
     }
 
     /**
-     * Validate the Share request: shortCode, sphereExchangeData, uhuDeviceInfo
+     * Validate the Share request: shortCode, sphereExchangeData, bezirkDeviceInfo
      *
      * @param shareRequest
      * @return

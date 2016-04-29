@@ -42,11 +42,11 @@ public final class BezirkValidatorUtility {
     /**
      * Checks for Validity of BezirkZirkEndPoint
      *
-     * @param uhuServiceEndPoint - BezirkZirkEndPoint that should be validated
+     * @param bezirkServiceEndPoint - BezirkZirkEndPoint that should be validated
      * @return true if valid, false otherwise.
      */
-    public static boolean checkBezirkZirkEndPoint(final BezirkZirkEndPoint uhuServiceEndPoint) {
-        return !(uhuServiceEndPoint == null || !checkBezirkZirkId(uhuServiceEndPoint.zirkId) || !checkForString(uhuServiceEndPoint.device));
+    public static boolean checkBezirkZirkEndPoint(final BezirkZirkEndPoint bezirkServiceEndPoint) {
+        return !(bezirkServiceEndPoint == null || !checkBezirkZirkId(bezirkServiceEndPoint.zirkId) || !checkForString(bezirkServiceEndPoint.device));
     }
 
     /**

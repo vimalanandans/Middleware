@@ -46,7 +46,7 @@ public class MockSetUpUtility {
     UPADeviceInterface upaDevice;
     CryptoEngine cryptoEngine;
     SphereRegistry sphereRegistry;
-    BezirkComms uhuComms;
+    BezirkComms bezirkComms;
     ISphereConfig sphereConfig;
     private DatabaseConnectionForJava dbConnection;
 
@@ -93,11 +93,11 @@ public class MockSetUpUtility {
         cryptoEngine = new CryptoEngine(sphereRegistry);
         sadlPersistence = (SadlPersistence) regPersistence;
         bezirkSadlManager = new BezirkSadlManager(sadlPersistence);
-        uhuComms = mock(BezirkComms.class);
+        bezirkComms = mock(BezirkComms.class);
         CommsProperties commsProperties = new CommsProperties();
-        uhuComms.initComms(commsProperties, inetAddr, bezirkSadlManager, null);
-        uhuComms.startComms();
-        bezirkSadlManager.initSadlManager(uhuComms);
+        bezirkComms.initComms(commsProperties, inetAddr, bezirkSadlManager, null);
+        bezirkComms.startComms();
+        bezirkSadlManager.initSadlManager(bezirkComms);
 
         setupUpaDevice();
 /*		BezirkSphere sphereForSadl = new BezirkSphere(cryptoEngine, upaDevice, sphereRegistry);

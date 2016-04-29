@@ -106,7 +106,7 @@ public class BezirkSphere
                 this.uhuSphereListener);
 
         // init the sphere for receiving sphere discovery message
-        //uhuComms.initDiscovery(this);
+        //bezirkComms.initDiscovery(this);
         initSphereDiscovery(uhuComms);
 
         ctrlMsgReceiver.initControlMessageListener(uhuComms);

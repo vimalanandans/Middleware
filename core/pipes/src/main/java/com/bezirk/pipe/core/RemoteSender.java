@@ -57,7 +57,7 @@ public class RemoteSender implements Runnable {
             valid = false;
         }
         if (uhuHeader == null) {
-            logger.error(err + "uhuHeader is null");
+            logger.error(err + "bezirkHeader is null");
             valid = false;
         }
         if (certFileName == null) {

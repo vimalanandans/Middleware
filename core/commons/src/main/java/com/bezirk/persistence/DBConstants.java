@@ -19,7 +19,7 @@ public final class DBConstants {
     public static final String DB_VERSION = "0.0.4";
 
     /*	DB CONSTANTS USED ONLY ON PC_SIDE FOR STORING BEZIRKSERVICEID	*/
-    //public static final String DB_FILE_NAME_BEZIRK_SID = "uhu_serviceid.sqlite";
+    //public static final String DB_FILE_NAME_BEZIRK_SID = "bezirk_serviceid.sqlite";
     /*	LOCAL DIRECTORY TODO: Change it to config directory*/
     public static final String DB_LOCATION = "./";
 }

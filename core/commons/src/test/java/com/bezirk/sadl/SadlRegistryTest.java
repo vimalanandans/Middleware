@@ -38,7 +38,7 @@ public class SadlRegistryTest {
 
     private static SadlRegistry sadlRegistry = null;
 
-    private BezirkZirkId uhuServiceBId = new BezirkZirkId("ServiceB");
+    private BezirkZirkId bezirkZirkBId = new BezirkZirkId("ServiceB");
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -67,10 +67,10 @@ public class SadlRegistryTest {
      */
     private void testClearRegistry() {
 
-        sadlRegistry.registerService(uhuServiceBId);
+        sadlRegistry.registerService(bezirkZirkBId);
 
         sadlRegistry.clearRegistry();
-        boolean isServiceRegistered = sadlRegistry.isServiceRegistered(uhuServiceBId);
+        boolean isServiceRegistered = sadlRegistry.isServiceRegistered(bezirkZirkBId);
 
         assertNotEquals(true, isServiceRegistered);
 
@@ -93,8 +93,8 @@ public class SadlRegistryTest {
 		/* Creating the BezirkService Ids */
 
         BezirkZirkId bezirk = null;
-        BezirkZirkId uhu1 = null;
-        BezirkZirkId uhu2 = null;
+        BezirkZirkId bezirk1 = null;
+        BezirkZirkId bezirk2 = null;
 
         SadlRegistry sadleObj1 = null;
         SadlRegistry sadlobj2 = null;
@@ -102,15 +102,15 @@ public class SadlRegistryTest {
 
         Location loc = null;
 
-        bezirk = new BezirkZirkId("ServiceA");
-        uhu1 = new BezirkZirkId("ServiceB");
-        uhu2 = new BezirkZirkId("ServiceB");
+        bezirk = new BezirkZirkId("ZirkA");
+        bezirk1 = new BezirkZirkId("ZirkB");
+        bezirk2 = new BezirkZirkId("ZirkB");
 
         loc = new Location("Kitchen", "Hall", "Room");
 
         sadleObj1 = creatingSadleObj1(bezirk);
-        sadlobj2 = creatingsadlobj2(uhu1, loc);
-        sadlobj3 = creatingsadlobj3(uhu1, uhu2, loc);
+        sadlobj2 = creatingsadlobj2(bezirk1, loc);
+        sadlobj3 = creatingsadlobj3(bezirk1, bezirk2, loc);
 		
 
 		/* Testing the EQUALITY of SADLEOBJ1 and sadlobj2 */
@@ -137,7 +137,7 @@ public class SadlRegistryTest {
 
 		/*
 		 * 2. Comparing sadleobj1 with sadlobj3. Since, sadleobj1 registered
-		 * with bezirk and sadlobj3 registered with uhu2 the result will be false.
+		 * with bezirk and sadlobj3 registered with bezirk2 the result will be false.
 		 */
 
         results = sadleObj1.equals(sadlobj3);
@@ -153,39 +153,39 @@ public class SadlRegistryTest {
         results = sadlobj2.equals(sadlobj3);
         assertFalse("sadlobj3 is null", results);
 
-        testeventandLcationEquality(uhu1, sadlobj2);
-        testStreamMapEquality(uhu1, sadlobj2);
-        testSidEquality(uhu2, sadlobj2, uhu1);
-        testProtocolmap(uhu1, sadlobj2, uhu2);
-        testProtocolDecMap(uhu1, uhu2, sadlobj2);
-        testLocationMapEquality(uhu1, uhu2, sadlobj2);
+        testeventandLcationEquality(bezirk1, sadlobj2);
+        testStreamMapEquality(bezirk1, sadlobj2);
+        testSidEquality(bezirk2, sadlobj2, bezirk1);
+        testProtocolmap(bezirk1, sadlobj2, bezirk2);
+        testProtocolDecMap(bezirk1, bezirk2, sadlobj2);
+        testLocationMapEquality(bezirk1, bezirk2, sadlobj2);
 
         sadlobj3 = null;
         sadlobj2 = null;
 
-        sadlobj2 = creatingSadleObj1(uhu1);
-        sadlobj3 = creatingSadleObj1(uhu1);
+        sadlobj2 = creatingSadleObj1(bezirk1);
+        sadlobj3 = creatingSadleObj1(bezirk1);
         testEqualityAndHashCode(sadlobj2, sadlobj3);
 
     }
 
-    private SadlRegistry creatingsadlobj3(BezirkZirkId uhu1,
-                                          BezirkZirkId uhu2, Location loc) {
+    private SadlRegistry creatingsadlobj3(BezirkZirkId bezirk1,
+                                          BezirkZirkId bezirk2, Location loc) {
         SadlRegistry sadlobj3;
 		/* Creating SADLEOBJECT3 */
 
         sadlobj3 = new SadlRegistry();
-        sadlobj3.setLocation(uhu2, loc);
-        sadlobj3.registerService(uhu2);
-        sadlobj3.subscribeService(uhu1, new NewProtocolRole());
+        sadlobj3.setLocation(bezirk2, loc);
+        sadlobj3.registerService(bezirk2);
+        sadlobj3.subscribeService(bezirk1, new NewProtocolRole());
         return sadlobj3;
     }
 
-    private SadlRegistry creatingsadlobj2(BezirkZirkId uhu1, Location loc) {
+    private SadlRegistry creatingsadlobj2(BezirkZirkId bezirk1, Location loc) {
         SadlRegistry sadlobj2;
 		/* Creating SADLEOBJECT2 */
 
-        sadlobj2 = creatingsadlobj3(uhu1, uhu1, loc);
+        sadlobj2 = creatingsadlobj3(bezirk1, bezirk1, loc);
         return sadlobj2;
     }
 
@@ -227,7 +227,7 @@ public class SadlRegistryTest {
         assertFalse("HashCode is equal but the objects are notequal", results);
     }
 
-    private void testeventandLcationEquality(BezirkZirkId uhu1, SadlRegistry sadlobj2) {
+    private void testeventandLcationEquality(BezirkZirkId bezirk1, SadlRegistry sadlobj2) {
 
         SadlRegistry sadlobj3;
         boolean results;
@@ -237,7 +237,7 @@ public class SadlRegistryTest {
 		 * equal to sadlobj2 result will be false.
 		 */
 
-        sadlobj3 = creatingSadleObj1(uhu1);
+        sadlobj3 = creatingSadleObj1(bezirk1);
         sadlobj3.eventMap = null;
         results = sadlobj2.equals(sadlobj3);
         assertFalse("SADLEOBJEC3 eventmap is not null", results);

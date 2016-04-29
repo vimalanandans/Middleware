@@ -281,7 +281,7 @@ public final class CryptoEngine implements ICryptoInternals {
      *                 {@code try {
      *                       InputStream in = ...
      *                       OutputStream out = ...
-     *                       uhuSphere.encryptSphereContent(in, out, sphereId);
+     *                       bezirkSphere.encryptSphereContent(in, out, sphereId);
      *                   } finally {
      *                       if (in != null) {
      *                           try {
@@ -325,7 +325,7 @@ public final class CryptoEngine implements ICryptoInternals {
      *                 {@code try {
      *                       InputStream in = ...
      *                       OutputStream out = ...
-     *                       uhuSphere.decryptSphereContent(in, out, sphereId);
+     *                       bezirkSphere.decryptSphereContent(in, out, sphereId);
      *                   } finally {
      *                       if (in != null) {
      *                           try {

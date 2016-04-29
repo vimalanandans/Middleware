@@ -65,9 +65,9 @@ class LogDataActivityHelper {
      */
     private final BezirkLogging loggingHandler = new BezirkLogging() {
         @Override
-        public void handleLogMessage(BezirkLoggingMessage uhuLogMessage) {
+        public void handleLogMessage(BezirkLoggingMessage bezirkLogMessage) {
             Message msg = mHandler.obtainMessage();
-            msg.obj = uhuLogMessage;
+            msg.obj = bezirkLogMessage;
             mHandler.sendMessage(msg);
         }
     };

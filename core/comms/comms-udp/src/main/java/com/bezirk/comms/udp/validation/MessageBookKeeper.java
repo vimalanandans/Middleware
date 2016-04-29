@@ -78,7 +78,7 @@ public class MessageBookKeeper {
         ControlLedger message = record.message;
         if (message != null) { //this means you received your first response
             //Remove message from queue
-            // commented the below for migrating uhuComms manager
+            // commented the below for migrating bezirkComms manager
             // since no longer this module is used - Vimal
             //MessageQueueManager.getControlSenderQueue().removeFromQueue(message);
             // not used anymore

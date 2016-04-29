@@ -48,9 +48,9 @@ public class ProcessEventTest {
     private static final Logger logger = LoggerFactory.getLogger(ProcessEventTest.class);
 
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
-    private static BezirkZirkId uhuServiceAId = new BezirkZirkId("ServiceA");
+    private static BezirkZirkId bezirkZirkAId = new BezirkZirkId("ServiceA");
     ;
-    private static BezirkZirkId uhuServiceBId = new BezirkZirkId("ServiceB");
+    private static BezirkZirkId bezirkZirkBId = new BezirkZirkId("ServiceB");
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
     private static BezirkSadlManager bezirkSadlManager = null;
     private static SadlRegistry sadlRegistry = null;
@@ -107,9 +107,9 @@ public class ProcessEventTest {
         Location loc = new Location(null);
         Address address = new Address(loc);
         HashSet<BezirkZirkId> serviceSet = new HashSet<>();
-        serviceSet.add(uhuServiceAId);
-        sadlRegistry.sid.add(uhuServiceAId);
-        sadlRegistry.registerService(uhuServiceAId);
+        serviceSet.add(bezirkZirkAId);
+        sadlRegistry.sid.add(bezirkZirkAId);
+        sadlRegistry.registerService(bezirkZirkAId);
         sadlRegistry.eventMap.put("SimpleMessage", serviceSet);
         String sphereId = "Home";
         HashSet<String> sphereSet = new HashSet<>();
@@ -118,18 +118,18 @@ public class ProcessEventTest {
         Sphere sphere = new OwnerSphere(sphereId, deviceId, BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME);
         sphereRegistry.spheres.put(sphereId, sphere);
         Zirk zirk = new MemberZirk("ServiceA", deviceId, sphereSet);
-        sphereRegistry.sphereMembership.put(uhuServiceAId.getBezirkZirkId(), zirk);
-        sadlRegistry.locationMap.put(uhuServiceAId, loc);
+        sphereRegistry.sphereMembership.put(bezirkZirkAId.getBezirkZirkId(), zirk);
+        sadlRegistry.locationMap.put(bezirkZirkAId, loc);
 
 
         BezirkSphere bezirkSphere = new BezirkSphere(mockUtility.cryptoEngine, mockUtility.upaDevice, sphereRegistry);
         BezirkCompManager.setSphereForSadl(bezirkSphere);
-        bezirkSphere.initSphere(mockUtility.spherePersistence, mockUtility.uhuComms, null, mockUtility.sphereConfig);
+        bezirkSphere.initSphere(mockUtility.spherePersistence, mockUtility.bezirkComms, null, mockUtility.sphereConfig);
         MockBezirkZirk mockBezirkZirk = new MockBezirkZirk();
-        MockCallBackZirk uhucallback = new MockCallBackZirk(mockBezirkZirk);
-        BezirkCompManager.setplatformSpecificCallback(uhucallback);
+        MockCallBackZirk bezirkCallback = new MockCallBackZirk(mockBezirkZirk);
+        BezirkCompManager.setplatformSpecificCallback(bezirkCallback);
 
-        BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(uhuServiceAId);
+        BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(bezirkZirkAId);
         header.setSenderSEP(senderSEP);
         header.setSphereName(sphereId);
         header.setAddress(address);
@@ -180,25 +180,25 @@ public class ProcessEventTest {
         isEventProcessed = true;
         eventLedger.setIsMulticast(false);
         eventLedger.setIsLocal(true);
-        BezirkZirkEndPoint recepient = new BezirkZirkEndPoint(uhuServiceBId);
+        BezirkZirkEndPoint recepient = new BezirkZirkEndPoint(bezirkZirkBId);
         HashSet<BezirkZirkId> serviceSet = new HashSet<>();
-        serviceSet.add(uhuServiceAId);
-        serviceSet.add(uhuServiceBId);
-        sadlRegistry.sid.add(uhuServiceAId);
-        sadlRegistry.registerService(uhuServiceAId);
-        sadlRegistry.sid.add(uhuServiceBId);
-        sadlRegistry.registerService(uhuServiceBId);
+        serviceSet.add(bezirkZirkAId);
+        serviceSet.add(bezirkZirkBId);
+        sadlRegistry.sid.add(bezirkZirkAId);
+        sadlRegistry.registerService(bezirkZirkAId);
+        sadlRegistry.sid.add(bezirkZirkBId);
+        sadlRegistry.registerService(bezirkZirkBId);
         sadlRegistry.eventMap.put("SimpleMessage", serviceSet);
-        sadlRegistry.locationMap.put(uhuServiceAId, reception);
+        sadlRegistry.locationMap.put(bezirkZirkAId, reception);
 
         BezirkSphere bezirkSphere = new BezirkSphere(mockUtility.cryptoEngine, mockUtility.upaDevice, sphereRegistry);
-        bezirkSphere.initSphere(mockUtility.spherePersistence, mockUtility.uhuComms, null, mockUtility.sphereConfig);
+        bezirkSphere.initSphere(mockUtility.spherePersistence, mockUtility.bezirkComms, null, mockUtility.sphereConfig);
         BezirkCompManager.setSphereForSadl(bezirkSphere);
         MockBezirkZirk mockBezirkZirk = new MockBezirkZirk();
-        MockCallBackZirk uhucallback = new MockCallBackZirk(mockBezirkZirk);
-        BezirkCompManager.setplatformSpecificCallback(uhucallback);
+        MockCallBackZirk bezirkCallback = new MockCallBackZirk(mockBezirkZirk);
+        BezirkCompManager.setplatformSpecificCallback(bezirkCallback);
 
-        BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(uhuServiceAId);
+        BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(bezirkZirkAId);
         UnicastHeader header = new UnicastHeader();
         header.setRecipient(recepient);
         header.setSenderSEP(senderSEP);

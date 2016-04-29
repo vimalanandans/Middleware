@@ -58,13 +58,13 @@ public class SphereDiscoveryRecord {
     // TODO: change to a single BezirkSphereInfo object instead of returning a list
     // of BezirkSphereInfo
     public HashSet<BezirkSphereInfo> getSphereZirks() {
-        // BezirkSphereInfo uhuSphereInfo = null;
+        // BezirkSphereInfo bezirkSphereInfo = null;
         // if (sphereInfoMap.size() != 0) {
         // copy an existing entry using the copy constructor
-        // uhuSphereInfo = new
+        // bezirkSphereInfo = new
         // BezirkSphereInfo(sphereInfoMap.values().iterator().next());
         // for (BezirkSphereInfo info : sphereInfoMap.values()) {
-        // if(uhuSphereInfo.getDeviceList().)
+        // if(bezirkSphereInfo.getDeviceList().)
         // }
         // }
         return new HashSet<BezirkSphereInfo>(sphereInfoMap.values());

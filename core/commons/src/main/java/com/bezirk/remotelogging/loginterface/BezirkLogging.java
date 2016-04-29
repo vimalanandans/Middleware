@@ -14,7 +14,7 @@ public interface BezirkLogging {
     /**
      * Callback given by the Bezirk-Logging module to the platform specific logging.
      *
-     * @param uhuLogMessage BezirkLoggingMessage containing the Logging information.
+     * @param bezirkLogMessage BezirkLoggingMessage containing the Logging information.
      */
-    public void handleLogMessage(BezirkLoggingMessage uhuLogMessage);
+    public void handleLogMessage(BezirkLoggingMessage bezirkLogMessage);
 }

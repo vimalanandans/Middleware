@@ -14,7 +14,7 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
 
     private final String dbFilePath;
     private ConnectionSource dbConnectionSource = null;
-    private Dao<BezirkRegistry, Integer> uhuPersistenceDao = null;
+    private Dao<BezirkRegistry, Integer> bezirkPersistenceDao = null;
 
     public DatabaseConnectionForJava(String dbFileLocation) throws IOException {
         dbFilePath = dbFileLocation;
@@ -28,11 +28,11 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
     }
 
     public Dao<BezirkRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException {
-        if (null == uhuPersistenceDao) {
-            uhuPersistenceDao = DaoManager.createDao(getDatabaseConnection(), BezirkRegistry.class);
-            uhuPersistenceDao.setAutoCommit(true);
+        if (null == bezirkPersistenceDao) {
+            bezirkPersistenceDao = DaoManager.createDao(getDatabaseConnection(), BezirkRegistry.class);
+            bezirkPersistenceDao.setAutoCommit(true);
         }
-        return uhuPersistenceDao;
+        return bezirkPersistenceDao;
     }
 
     private void setupDatabase() throws IOException {

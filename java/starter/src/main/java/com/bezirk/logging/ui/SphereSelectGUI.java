@@ -365,10 +365,10 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
     }
 
     @Override
-    public void handleLogMessage(BezirkLoggingMessage uhuLogMessage) {
+    public void handleLogMessage(BezirkLoggingMessage bezirkLogMessage) {
         if (null != bezirk) {
 
-            bezirk.updateTable(uhuLogMessage);
+            bezirk.updateTable(bezirkLogMessage);
         }
     }
 

@@ -392,7 +392,7 @@ public class SphereRegistryWrapper {
      *
      * @param sphereName        - Name to be assigned to the new sphere.
      * @param sphereType        - Type of sphere to be created
-     * @param uhuSphereListener
+     * @param bezirkSphereListener
      * @return - SphereId if sphere was created successfully or if the sphereId
      * existed already, null otherwise.
      */

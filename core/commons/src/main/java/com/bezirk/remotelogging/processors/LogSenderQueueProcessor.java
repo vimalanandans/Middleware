@@ -50,10 +50,10 @@ public class LogSenderQueueProcessor extends Thread {
 
             try {
                 StringBuilder logMsgString = LoggingQueueManager.fetchFromLogSenderQueue();
-                Socket uhuClient = null;
+                Socket bezirkClient = null;
                 try {
-                    uhuClient = new Socket(remoteServiceIP, remoteServicePort);
-                    DataOutputStream clientOutputStream = new DataOutputStream(uhuClient.getOutputStream());
+                    bezirkClient = new Socket(remoteServiceIP, remoteServicePort);
+                    DataOutputStream clientOutputStream = new DataOutputStream(bezirkClient.getOutputStream());
                     clientOutputStream.writeBytes(logMsgString.toString());
                     clientOutputStream.flush();
                     clientOutputStream.close();
@@ -61,11 +61,11 @@ public class LogSenderQueueProcessor extends Thread {
                     logger.error("Some Error occurred :", e);
                 } finally {
                     try {
-                        if (uhuClient != null) {
-                            uhuClient.close();
+                        if (bezirkClient != null) {
+                            bezirkClient.close();
                         }
                     } catch (IOException e) {
-                        logger.error("Errors occurred in closing uhuClient \n", e);
+                        logger.error("Errors occurred in closing bezirkClient \n", e);
                     }
                 }
             } catch (InterruptedException e) {

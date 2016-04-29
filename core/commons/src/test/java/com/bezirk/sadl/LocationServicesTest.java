@@ -21,8 +21,8 @@ import static org.junit.Assert.assertNull;
 public class LocationServicesTest {
     private final static Logger logger = LoggerFactory.getLogger(LocationServicesTest.class);
 
-    private static final BezirkZirkId uhuServiceAId = new BezirkZirkId("ServiceA");
-    private static final BezirkZirkId uhuServiceCId = new BezirkZirkId("ServiceC");
+    private static final BezirkZirkId bezirkZirkAId = new BezirkZirkId("ServiceA");
+    private static final BezirkZirkId bezirkZirkCId = new BezirkZirkId("ServiceC");
     private static final BezirkZirkId dummyServiceId = new BezirkZirkId("InvalidServiceForTest");
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
     private static BezirkSadlManager bezirkSadlManager = null;
@@ -109,12 +109,12 @@ public class LocationServicesTest {
 		 * ServiceA and ServiceC are registered and location set to "reception". 
 		 * SadlManager is queried for location of ServiceA and should return "OFFICE1/BLOCk1/RECEPTION."
 		 * */
-        bezirkSadlManager.registerService(uhuServiceAId);
-        bezirkSadlManager.setLocation(uhuServiceAId, reception);
-        bezirkSadlManager.registerService(uhuServiceCId);
-        bezirkSadlManager.setLocation(uhuServiceCId, reception);
+        bezirkSadlManager.registerService(bezirkZirkAId);
+        bezirkSadlManager.setLocation(bezirkZirkAId, reception);
+        bezirkSadlManager.registerService(bezirkZirkCId);
+        bezirkSadlManager.setLocation(bezirkZirkCId, reception);
         Location locationFromRegistry = bezirkSadlManager
-                .getLocationForService(uhuServiceAId);
+                .getLocationForService(bezirkZirkAId);
         assertNotNull("SadlManager dint return correction for ServiceA.", locationFromRegistry);
         assertEquals("Location returned by SadlManager is not equal to the set location", reception, locationFromRegistry);
 

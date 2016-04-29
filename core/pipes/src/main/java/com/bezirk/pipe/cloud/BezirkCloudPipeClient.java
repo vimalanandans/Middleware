@@ -41,7 +41,7 @@ public class BezirkCloudPipeClient implements CloudPipeClient {
     public static final String VAL_CONTENT_TYPE_MULTIPART_MIXED = "multipart/mixed";
     /**
      * The root web server path that hosts the Bezirk cloudpipe zirk , i.e.,
-     * something like: http://some-host:some-port/services/uhu
+     * something like: http://some-host:some-port/services/bezirk
      */
     protected URL baseURL = null;
     protected URL eventURL = null;

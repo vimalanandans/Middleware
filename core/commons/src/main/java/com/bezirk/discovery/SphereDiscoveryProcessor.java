@@ -18,11 +18,11 @@ public class SphereDiscoveryProcessor implements Runnable {
     private static SphereDiscovery discovery;
     private final BezirkSphereDiscovery sphereDiscoveryHandler;
     private Boolean running = false;
-    // private BezirkComms uhuComms = null;
+    // private BezirkComms bezirkComms = null;
 
-    public SphereDiscoveryProcessor(BezirkSphereDiscovery sphereDiscoveryHandler, BezirkComms uhuComms) {
+    public SphereDiscoveryProcessor(BezirkSphereDiscovery sphereDiscoveryHandler, BezirkComms bezirkComms) {
         this.sphereDiscoveryHandler = sphereDiscoveryHandler;
-        // this.uhuComms = uhuComms;
+        // this.bezirkComms = bezirkComms;
     }
 
     public static SphereDiscovery getDiscovery() {

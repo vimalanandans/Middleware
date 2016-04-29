@@ -35,9 +35,9 @@ public class RegistrationUnregistrationTest {
     private final static Logger logger = LoggerFactory.getLogger(RegistrationUnregistrationTest.class);
 
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
-    private static final BezirkZirkId uhuServiceAId = new BezirkZirkId("ServiceA");
-    private static final BezirkZirkId uhuServiceBId = new BezirkZirkId("ServiceB");
-    private static final BezirkZirkId uhuServiceCId = new BezirkZirkId("ServiceC");
+    private static final BezirkZirkId bezirkZirkAId = new BezirkZirkId("ServiceA");
+    private static final BezirkZirkId bezirkZirkBId = new BezirkZirkId("ServiceB");
+    private static final BezirkZirkId bezirkZirkCId = new BezirkZirkId("ServiceC");
     private static final BezirkZirkId dummyServiceId = new BezirkZirkId("InvalidServiceForTest");
     private static final MockProtocols mockProtocols = new MockProtocols();
     private static final Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
@@ -100,23 +100,23 @@ public class RegistrationUnregistrationTest {
         assertFalse("SadlManager has zirk with null serviceID in registered zirk list.", isServiceRegistered);
 
         //ServiceA registered and location is set to reception.
-        bezirkSadlManager.registerService(uhuServiceAId);
-        bezirkSadlManager.setLocation(uhuServiceAId, reception);
+        bezirkSadlManager.registerService(bezirkZirkAId);
+        bezirkSadlManager.setLocation(bezirkZirkAId, reception);
 		
 		/*SadlManager should return false when asked to register duplicate zirk id.*/
         isServiceRegistered = true;
-        isServiceRegistered = bezirkSadlManager.registerService(uhuServiceAId);
+        isServiceRegistered = bezirkSadlManager.registerService(bezirkZirkAId);
         assertFalse("SadlManager allowed registration for duplicate serviceID.", isServiceRegistered);
 
         //ServiceB and ServiceC are registered.
-        bezirkSadlManager.registerService(uhuServiceBId);
-        bezirkSadlManager.registerService(uhuServiceCId);
+        bezirkSadlManager.registerService(bezirkZirkBId);
+        bezirkSadlManager.registerService(bezirkZirkCId);
 		
 	
 
 		/*SadlManager should return true when queried for serviceA registration*/
         isServiceRegistered = bezirkSadlManager
-                .isServiceRegistered(uhuServiceAId);
+                .isServiceRegistered(bezirkZirkAId);
         assertTrue("SadlManager dont have ServiceA id in registered zirk list.", isServiceRegistered);
 		
 		/*SadlManager should return false when queried for unregistered serviceid*/
@@ -143,7 +143,7 @@ public class RegistrationUnregistrationTest {
 		 * SadlManager should return true when asked to unregister valid serviceID which is already is registered.
 		 * ServiceA should not be present in registered zirk list when queried after unregistration.
 		 * */
-        isUnregistered = bezirkSadlManager.unregisterService(uhuServiceAId);
+        isUnregistered = bezirkSadlManager.unregisterService(bezirkZirkAId);
         assertTrue("SadlManager couldn't unregister ServiceA.", isUnregistered);
 
         Set<BezirkZirkId> registeredServices = bezirkSadlManager
@@ -152,7 +152,7 @@ public class RegistrationUnregistrationTest {
         boolean serviceAFound = false;
         for (BezirkZirkId serviceId : registeredServices) {
 
-            if (serviceId.equals(uhuServiceAId)) {
+            if (serviceId.equals(bezirkZirkAId)) {
                 serviceAFound = true;
 
             }
@@ -172,7 +172,7 @@ public class RegistrationUnregistrationTest {
 		/*SadlManager should return false when not able to persist unregistration data to registry.*/
 		/*
 		mockUtility.clearSadlPersistence();
-		isUnregistered = bezirkSadlManager.unregisterZirk(uhuServiceBId);
+		isUnregistered = bezirkSadlManager.unregisterZirk(bezirkZirkBId);
 		assertTrue(isUnregistered);
 		mockUtility.restoreSadlPersistence();
 		bezirkSadlManager= mockUtility.bezirkSadlManager;
@@ -193,9 +193,9 @@ public class RegistrationUnregistrationTest {
 
         assertNotNull("SadlManager couldn't fetch registered zirk list.", registeredServiceSet);
         assertEquals("Registered Zirk list size is not 3.", 3, registeredServiceSet.size());
-        assertTrue("ServiceA was not found in registered zirk list.", registeredServiceSet.contains(uhuServiceAId));
-        assertTrue("ServiceB was not found in registered zirk list.", registeredServiceSet.contains(uhuServiceBId));
-        assertTrue("ServiceC was not found in registered zirk list.", registeredServiceSet.contains(uhuServiceCId));
+        assertTrue("ZirkA was not found in registered zirk list.", registeredServiceSet.contains(bezirkZirkAId));
+        assertTrue("ZirkB was not found in registered zirk list.", registeredServiceSet.contains(bezirkZirkBId));
+        assertTrue("ZirkC was not found in registered zirk list.", registeredServiceSet.contains(bezirkZirkCId));
     }
 
 

@@ -1,14 +1,14 @@
 package com.bezirk.middleware.proxy;
 
 /**
- * Represents a uhu zirk that can be started on the PC platform
+ * Represents a bezirk zirk that can be started on the PC platform
  * ServiceRunner changed to IServiceRunner
  */
 public interface IServiceRunner {
 
     /**
-     * Called by uhu.  Zirk developers should use this to
-     * initialize any data members before starting uhu.
+     * Called by bezirk.  Zirk developers should use this to
+     * initialize any data members before starting bezirk.
      *
      * @throws Exception if there is a problem during initialization
      */

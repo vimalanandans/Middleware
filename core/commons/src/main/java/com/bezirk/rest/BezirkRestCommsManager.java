@@ -22,7 +22,7 @@ public class BezirkRestCommsManager {
 
     private static volatile BezirkRestCommsManager commsManager;
 
-    private BezirkComms uhuComms;
+    private BezirkComms bezirkComms;
 
     //A rolling map of limited size of 100
     private Map<Integer, List<String>> responseMap;
@@ -58,11 +58,11 @@ public class BezirkRestCommsManager {
     }
 
     public BezirkComms getBezirkComms() {
-        return uhuComms;
+        return bezirkComms;
     }
 
-    public void setBezirkComms(BezirkComms uhuComms) {
-        this.uhuComms = uhuComms;
+    public void setBezirkComms(BezirkComms bezirkComms) {
+        this.bezirkComms = bezirkComms;
     }
 
     public Map<Integer, List<String>> getResponseMap() {
@@ -130,7 +130,7 @@ public class BezirkRestCommsManager {
         public void run() {
             while (true) {
                 if (requestQueue.peek() != null) {
-                    uhuComms.sendMessage(requestQueue.poll());
+                    bezirkComms.sendMessage(requestQueue.poll());
                 }
 
             }

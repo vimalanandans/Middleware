@@ -26,11 +26,11 @@ public class EventStreamTest {
     private final static Logger logger = LoggerFactory.getLogger(EventStreamTest.class);
 
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
-    private static final BezirkZirkId uhuServiceAId = new BezirkZirkId(
+    private static final BezirkZirkId bezirkZirkAId = new BezirkZirkId(
             "ServiceA");
-    private static final BezirkZirkId uhuServiceBId = new BezirkZirkId(
+    private static final BezirkZirkId bezirkZirkBId = new BezirkZirkId(
             "ServiceB");
-    private static final BezirkZirkId uhuServiceCId = new BezirkZirkId(
+    private static final BezirkZirkId bezirkServiceCId = new BezirkZirkId(
             "ServiceC");
     private static final MockProtocols mockService = new MockProtocols();
     private static final ProtocolRole streamlessPRole = mockService.new StreamlessProtocol();
@@ -70,14 +70,14 @@ public class EventStreamTest {
 		 * ServiceB is registered and subscribed to StreamlessProtocolRole with defaultlocation.
 		 * ServiceC is registered and subscribed to EventlessProtocolRole with defaultlocation.
 		 * */
-        bezirkSadlManager.registerService(uhuServiceAId);
-        bezirkSadlManager.subscribeService(uhuServiceAId, subscribedStreamlessPRole);
-        bezirkSadlManager.subscribeService(uhuServiceAId, subscribedEventlessPRole);
-        bezirkSadlManager.setLocation(uhuServiceAId, reception);
-        bezirkSadlManager.registerService(uhuServiceBId);
-        bezirkSadlManager.subscribeService(uhuServiceBId, subscribedStreamlessPRole);
-        bezirkSadlManager.registerService(uhuServiceCId);
-        bezirkSadlManager.subscribeService(uhuServiceCId, subscribedEventlessPRole);
+        bezirkSadlManager.registerService(bezirkZirkAId);
+        bezirkSadlManager.subscribeService(bezirkZirkAId, subscribedStreamlessPRole);
+        bezirkSadlManager.subscribeService(bezirkZirkAId, subscribedEventlessPRole);
+        bezirkSadlManager.setLocation(bezirkZirkAId, reception);
+        bezirkSadlManager.registerService(bezirkZirkBId);
+        bezirkSadlManager.subscribeService(bezirkZirkBId, subscribedStreamlessPRole);
+        bezirkSadlManager.registerService(bezirkServiceCId);
+        bezirkSadlManager.subscribeService(bezirkServiceCId, subscribedEventlessPRole);
 
 
         logger.info("********* testing IsStreamTopicRegistered ********");
@@ -99,11 +99,11 @@ public class EventStreamTest {
 
         String streamTopic = "DummyStream1";
         isStreamRegistered = bezirkSadlManager.isStreamTopicRegistered(
-                streamTopic, uhuServiceAId);
+                streamTopic, bezirkZirkAId);
         assertTrue(" DummyStream1 not found in registered topics when queried with ServiceA Id", isStreamRegistered);
 
         isStreamRegistered = bezirkSadlManager.isStreamTopicRegistered(null,
-                uhuServiceAId);
+                bezirkZirkAId);
         assertFalse("ServiceA found when queried with null stream topic", isStreamRegistered);
 
         isStreamRegistered = bezirkSadlManager.isStreamTopicRegistered(
@@ -111,7 +111,7 @@ public class EventStreamTest {
         assertFalse("SadlManager registered stream with no serviceID", isStreamRegistered);
 
         isStreamRegistered = bezirkSadlManager.isStreamTopicRegistered(
-                "InvalidStreamTopic", uhuServiceAId);
+                "InvalidStreamTopic", bezirkZirkAId);
         assertFalse("SadlManager returned true for invalid stream topic when queried with ServiceA id", isStreamRegistered);
 
     }
@@ -127,14 +127,14 @@ public class EventStreamTest {
         isUnicasteventFound = bezirkSadlManager.checkUnicastEvent(topic, null);
         assertFalse("SadlManager returned true when MockEvent1 queried with no zirk Id", isUnicasteventFound);
         isUnicasteventFound = bezirkSadlManager.checkUnicastEvent(null,
-                uhuServiceAId);
+                bezirkZirkAId);
         assertFalse("SadlManager returned true when checked for null event topic", isUnicasteventFound);
-        boolean serviceAEventFound = bezirkSadlManager.checkUnicastEvent(topic,
-                uhuServiceAId);
-        assertTrue("ServiceA not subscribed to MockEvent1", serviceAEventFound);
-        boolean serviceBEventFound = bezirkSadlManager.checkUnicastEvent(topic,
-                uhuServiceBId);
-        assertTrue("ServiceB not subscribed to MockEvent1", serviceBEventFound);
+        boolean zirkAEventFound = bezirkSadlManager.checkUnicastEvent(topic,
+                bezirkZirkAId);
+        assertTrue("ZirkA not subscribed to MockEvent1", zirkAEventFound);
+        boolean zirkBEventFound = bezirkSadlManager.checkUnicastEvent(topic,
+                bezirkZirkBId);
+        assertTrue("ZirkB not subscribed to MockEvent1", zirkBEventFound);
 
     }
 
@@ -159,17 +159,17 @@ public class EventStreamTest {
 
         assertNotNull("SadlManager dint return any zirk id in subscribed servicelist for MockEvent1 with location : OFFICE1/BLOCK1/RECEPTION ", subscribedServiceSet);
         assertEquals("SadlManager dint return two ids in subscribed servicelist for MockEvent1 with location : OFFICE1/BLOCK1/RECEPTION ", 2, subscribedServiceSet.size());
-        assertTrue("SadlManager dint return ServiceA id in subscribed servicelist for MockEvent1 with location : OFFICE1/BLOCK1/RECEPTION ", subscribedServiceSet.contains(uhuServiceAId));
-        assertTrue("SadlManager dint return ServiceB id in subscribed servicelist for MockEvent1 with location : OFFICE1/BLOCK1/RECEPTION ", subscribedServiceSet.contains(uhuServiceBId));
+        assertTrue("SadlManager dint return ServiceA id in subscribed servicelist for MockEvent1 with location : OFFICE1/BLOCK1/RECEPTION ", subscribedServiceSet.contains(bezirkZirkAId));
+        assertTrue("SadlManager dint return ServiceB id in subscribed servicelist for MockEvent1 with location : OFFICE1/BLOCK1/RECEPTION ", subscribedServiceSet.contains(bezirkZirkBId));
 
         subscribedServiceSet = bezirkSadlManager.checkMulticastEvent(topic,
                 reception);
 
         assertNotNull("SadlManager dint return subscribed zirk list for MockEvent1 with location : OFFICE1/BLOCK1/RECEPTION.", subscribedServiceSet);
         assertEquals("SadlManager returned more than 1 subscribed zirk for MockEvent1 with location : OFFICE1/BLOCK1/RECEPTION", 1, subscribedServiceSet.size());
-        assertTrue("SadlManager dint return ServiceAId in subscribed zirk list for MockEvent1 with location : OFFICE1/BLOCK1/RECEPTION.", subscribedServiceSet.contains(uhuServiceAId));
+        assertTrue("SadlManager dint return ServiceAId in subscribed zirk list for MockEvent1 with location : OFFICE1/BLOCK1/RECEPTION.", subscribedServiceSet.contains(bezirkZirkAId));
 
-        bezirkSadlManager.setLocation(uhuServiceAId, new Location(null));
+        bezirkSadlManager.setLocation(bezirkZirkAId, new Location(null));
 
         subscribedServiceSet = bezirkSadlManager.checkMulticastEvent(topic,
                 reception);

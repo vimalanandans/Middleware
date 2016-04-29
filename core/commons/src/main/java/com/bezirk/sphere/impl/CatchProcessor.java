@@ -374,7 +374,7 @@ public class CatchProcessor {
     }
 
     /**
-     * Validate the Catch request: shortCode, sphereExchangeData, uhuDeviceInfo
+     * Validate the Catch request: shortCode, sphereExchangeData, bezirkDeviceInfo
      *
      * @param catchRequest
      * @return

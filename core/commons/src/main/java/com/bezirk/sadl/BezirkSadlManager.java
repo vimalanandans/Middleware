@@ -42,7 +42,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     private final Date currentDate = new Date();
     protected SadlPersistence sadlPersistence = null;
     protected SadlRegistry sadlRegistry = null;
-    protected BezirkComms uhuComms = null;
+    protected BezirkComms bezirkComms = null;
 
     public BezirkSadlManager(SadlPersistence sadlPersistence) {
         this.sadlPersistence = sadlPersistence;
@@ -52,17 +52,17 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     /**
      * initialize the object references for future use
      */
-    public void initSadlManager(BezirkComms uhuComms) {
-        this.uhuComms = uhuComms;
-        initServiceDiscovery(uhuComms);
+    public void initSadlManager(BezirkComms bezirkComms) {
+        this.bezirkComms = bezirkComms;
+        initServiceDiscovery(bezirkComms);
     }
 
     /**
      * moved the init discovery from comms layer to sphere.
      * because this is out of comms layer
      */
-    public void initServiceDiscovery(BezirkComms uhuComms) {
-        DiscoveryManager discoveryManager = new DiscoveryManager(this, uhuComms);
+    public void initServiceDiscovery(BezirkComms bezirkComms) {
+        DiscoveryManager discoveryManager = new DiscoveryManager(this, bezirkComms);
 
         discoveryManager.initDiscovery();
     }

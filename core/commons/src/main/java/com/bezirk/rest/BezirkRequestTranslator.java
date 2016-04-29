@@ -23,8 +23,8 @@ public class BezirkRequestTranslator {
         EventLedger eventLedger = new EventLedger();
 
         //set sender zirk end point.
-        BezirkZirkId uhuServiceId = new BezirkZirkId(requestObject.getEventServiceId(), requestObject.getUniqueEventId());
-        BezirkZirkEndPoint mySEP = BezirkNetworkUtilities.getServiceEndPoint(uhuServiceId);
+        BezirkZirkId bezirkZirkId = new BezirkZirkId(requestObject.getEventServiceId(), requestObject.getUniqueEventId());
+        BezirkZirkEndPoint mySEP = BezirkNetworkUtilities.getServiceEndPoint(bezirkZirkId);
 
 
         //prepare the event based on the type, update the message with Origin and MessageId
