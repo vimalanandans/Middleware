@@ -27,9 +27,7 @@ import static org.junit.Assert.assertEquals;
  * @author AJC6KOR
  */
 public class SignedControlMessageTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(SignedControlMessageTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(SignedControlMessageTest.class);
 
     private static final Discriminator discriminator = Discriminator.DiscoveryRequest;
     private static final String sphereId = "TestSphere";
@@ -47,7 +45,7 @@ public class SignedControlMessageTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up SignedControlMessageTest TestCase *****");
+        logger.info("***** Setting up SignedControlMessageTest TestCase *****");
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
     }
@@ -58,7 +56,7 @@ public class SignedControlMessageTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down SignedControlMessageTest TestCase *****");
+        logger.info("***** Shutting down SignedControlMessageTest TestCase *****");
     }
 
     private static InetAddress getInetAddress() {
@@ -83,7 +81,7 @@ public class SignedControlMessageTest {
             }
         } catch (SocketException e) {
 
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
 
         }
         return null;

@@ -20,9 +20,7 @@ import static org.junit.Assert.assertTrue;
  * @author AJC6KOR
  */
 public class LoggingServiceMessageTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(LoggingServiceMessageTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoggingServiceMessageTest.class);
 
     private static final String sphereId = "TestSphere";
     private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
@@ -36,7 +34,7 @@ public class LoggingServiceMessageTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up LoggingServiceMessageTest TestCase *****");
+        logger.info("***** Setting up LoggingServiceMessageTest TestCase *****");
 
     }
 
@@ -46,7 +44,7 @@ public class LoggingServiceMessageTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down LoggingServiceMessageTest TestCase *****");
+        logger.info("***** Shutting down LoggingServiceMessageTest TestCase *****");
     }
 
     @Test

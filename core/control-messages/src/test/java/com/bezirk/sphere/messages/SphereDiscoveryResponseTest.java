@@ -20,10 +20,7 @@ import static org.junit.Assert.*;
  * @author AJC6KOR
  */
 public class SphereDiscoveryResponseTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(SphereDiscoveryResponseTest.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(SphereDiscoveryResponseTest.class);
 
     private static final BezirkZirkId serviceAId = new BezirkZirkId("ServiceA");
     private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
@@ -36,7 +33,7 @@ public class SphereDiscoveryResponseTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up SphereDiscoveryResponseTest TestCase *****");
+        logger.info("***** Setting up SphereDiscoveryResponseTest TestCase *****");
         services.add(serviceAId);
         services.add(serviceBId);
     }
@@ -47,7 +44,7 @@ public class SphereDiscoveryResponseTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down SphereDiscoveryResponseTest TestCase *****");
+        logger.info("***** Shutting down SphereDiscoveryResponseTest TestCase *****");
     }
 
     @Test

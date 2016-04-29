@@ -22,9 +22,7 @@ import static org.junit.Assert.*;
  */
 
 public class MulticastControlMessageTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(MulticastControlMessageTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(MulticastControlMessageTest.class);
 
     private static final String sphereId = "TestSphere";
     private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
@@ -38,7 +36,7 @@ public class MulticastControlMessageTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up MulticastControlMessageTest TestCase *****");
+        logger.info("***** Setting up MulticastControlMessageTest TestCase *****");
 
     }
 
@@ -48,7 +46,7 @@ public class MulticastControlMessageTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down MulticastControlMessageTest TestCase *****");
+        logger.info("***** Shutting down MulticastControlMessageTest TestCase *****");
     }
 
     /**

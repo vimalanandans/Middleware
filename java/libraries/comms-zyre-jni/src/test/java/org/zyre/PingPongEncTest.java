@@ -16,11 +16,11 @@ import static org.junit.Assert.*;
  * and the responder replies with "pong"
  */
 public class PingPongEncTest {
+    private static final Logger logger = LoggerFactory.getLogger(PingPongEncTest.class);
 
     public static final String PING = "ping";
     public static final String PONG = "pong";
     public static final String GROUP = "global";
-    private static final Logger log = LoggerFactory.getLogger(PingPongEncTest.class);
 
     static {
         NativeUtils.loadLibs();
@@ -80,15 +80,15 @@ public class PingPongEncTest {
 
                 if (event.equals("JOIN")) {
                     if (peer == null) {
-                        log.error("Peer is null");
+                        logger.error("Peer is null");
                         passed = false;
                         return;
                     }
-                    log.info("responder joined: " + peer);
+                    logger.info("responder joined: " + peer);
                     break;
                 }
             }
-            log.info("sending ping");
+            logger.info("sending ping");
 
             // compress and encode
             byte[] encbytes = Compressor.compress(PING);
@@ -102,7 +102,7 @@ public class PingPongEncTest {
                 String event = map.get("event");
 
                 if (event.equals("WHISPER")) {
-                    log.info("requester received response: " + msg);
+                    logger.info("requester received response: " + msg);
 
                     // decode and decompress
                     String text = map.get("message");
@@ -110,10 +110,10 @@ public class PingPongEncTest {
                     text = Compressor.decompress(textbytes);
 
                     if (!text.equals(PONG)) {
-                        log.error("Did not receive PONG.  Message was: " + text);
+                        logger.error("Did not receive PONG.  Message was: " + text);
                         passed = false;
                     }
-                    log.info("received PONG!");
+                    logger.info("received PONG!");
                     break;
                 }
             }
@@ -126,7 +126,7 @@ public class PingPongEncTest {
 
         public void run() {
 
-            log.info("responder running");
+            logger.info("responder running");
             while (!Thread.currentThread().isInterrupted()) {
                 String msg = zyre.recv();
                 HashMap<String, String> map = Utils.parseMsg(msg);
@@ -134,7 +134,7 @@ public class PingPongEncTest {
                 String event = map.get("event");
 
                 if (event.equals("WHISPER")) {
-                    log.info("responder received: " + msg);
+                    logger.info("responder received: " + msg);
                     String text = map.get("message");
 
                     // decode and decompress
@@ -144,11 +144,11 @@ public class PingPongEncTest {
                     String peer = map.get("peer");
 
                     if (!text.equals(PING)) {
-                        log.error("Did not receive PING. Message was: " + text);
+                        logger.error("Did not receive PING. Message was: " + text);
                         passed = false;
                     }
 
-                    log.info("sending pong");
+                    logger.info("sending pong");
 
                     // compress and encode
                     byte[] encbytes = Compressor.compress(PONG);

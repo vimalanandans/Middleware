@@ -19,8 +19,8 @@ import static org.junit.Assert.assertTrue;
  * @author rishabh
  */
 public class SpherePropertiesTest {
+    private static final Logger logger = LoggerFactory.getLogger(SpherePropertiesTest.class);
 
-    private static final Logger log = LoggerFactory.getLogger(SpherePropertiesTest.class);
     SphereProperties sphereProperties;
 
     /**

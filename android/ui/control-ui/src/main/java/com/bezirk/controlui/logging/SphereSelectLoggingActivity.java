@@ -35,10 +35,7 @@ import java.util.List;
  * and also provides an option to start the logging.
  */
 public class SphereSelectLoggingActivity extends ActionBarActivity {
-    /**
-     * Logging Util.
-     */
-    private static final Logger log = LoggerFactory.getLogger(SphereSelectLoggingActivity.class);
+    private static final Logger logger = LoggerFactory.getLogger(SphereSelectLoggingActivity.class);
     /**
      * RESULT code to send intent to LogDataActivity.
      */
@@ -103,7 +100,7 @@ public class SphereSelectLoggingActivity extends ActionBarActivity {
                         }
                         selectedSpheres.remove(checkBoxText);
                     }
-                    log.info(selectedSpheres.toString());
+                    logger.info(selectedSpheres.toString());
                 }
             });
 
@@ -119,7 +116,7 @@ public class SphereSelectLoggingActivity extends ActionBarActivity {
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case FETCH_SUCCESSFUL:
-                    log.debug("Size->" + sphereList.size());
+                    logger.debug("Size->" + sphereList.size());
                     addView();
                     break;
                 case FETCH_ERROR:
@@ -286,7 +283,7 @@ public class SphereSelectLoggingActivity extends ActionBarActivity {
                     sphereList.add(sphereInfoIterator.next().getSphereID());
                 }
             } catch (Exception ex) {
-                log.error(ex.getMessage(), ex);
+                logger.error(ex.getMessage(), ex);
                 return FETCH_ERROR;
             }
             return FETCH_SUCCESSFUL;

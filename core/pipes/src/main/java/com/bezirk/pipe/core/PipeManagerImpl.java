@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
  * <li> send the event to the pipe via Pipe.pipeClient().sendEvent()
  */
 public class PipeManagerImpl implements PipeManager {
+    private static final Logger logger = LoggerFactory.getLogger(PipeManagerImpl.class);
 
 	/*
      * Constants
@@ -46,7 +47,6 @@ public class PipeManagerImpl implements PipeManager {
     /*
      * Private data members
      */
-    private static final Logger log = LoggerFactory.getLogger(PipeManagerImpl.class);
     // Thread pool used to send http requests
     private ThreadPoolExecutor sendingThreadPool = null;
     // Thread pool for writing streams to disk
@@ -75,7 +75,7 @@ public class PipeManagerImpl implements PipeManager {
     }
 
     public void init() {
-        log.info("initializing ... ");
+        logger.info("initializing ... ");
         if (sendingThreadPool == null) {
             // Thread pool used to send http requests
             sendingThreadPool = defaultRemoteSendingPool();
@@ -87,9 +87,9 @@ public class PipeManagerImpl implements PipeManager {
 
         if (validateDataMembers()) {
             initialized = true;
-            log.info("successfully initialized");
+            logger.info("successfully initialized");
         } else {
-            log.error("PipeMonitor not initialized correctly. Pipes disabled.");
+            logger.error("PipeMonitor not initialized correctly. Pipes disabled.");
             initialized = false;
         }
     }
@@ -106,34 +106,34 @@ public class PipeManagerImpl implements PipeManager {
     //public void enqueueForRemoteSending(EventControlMessage eventRecord) {
     public void processRemoteSend(Header uhuHeader, String serializedEvent) {
         if (!initialized) {
-            log.warn("PipeManager not initialized.  Can't execute processRemoteSend.");
+            logger.warn("PipeManager not initialized.  Can't execute processRemoteSend.");
             return;
         }
-        log.info("beginning processRemoteSend() ...");
+        logger.info("beginning processRemoteSend() ...");
 
         if (uhuHeader == null) {
-            log.error("Bezirk Header is null.  Not sending via cloudpipe: " + serializedEvent);
+            logger.error("Bezirk Header is null.  Not sending via cloudpipe: " + serializedEvent);
             return;
         }
         if (uhuHeader instanceof UnicastHeader) {
-            log.error("Can't yet send Unicast messages via a pipe");
+            logger.error("Can't yet send Unicast messages via a pipe");
             return;
         }
 
         // Services shouldn't send multicast with null address, but hey, we're defensive
         Address address = ((MulticastHeader) uhuHeader).getAddress();
         if (address == null) {
-            log.error("Address is null. Not sending via cloudpipe: " + serializedEvent);
+            logger.error("Address is null. Not sending via cloudpipe: " + serializedEvent);
             return;
         }
 
         // Only add to queue if the location refers to a pipe
         if (addressIsPipe(address)) {
             //logger.info("Adding event to PipeSender queue: " + eventRecord.getSerializedMessage());
-            log.info("Address is pipe; adding event to PipeSender queue for pipe: " + address.getPipe());
+            logger.info("Address is pipe; adding event to PipeSender queue for pipe: " + address.getPipe());
             executeRemoteMulticastSend((MulticastHeader) uhuHeader, serializedEvent);
         } else {
-            log.info("address does not contain a pipe: " + address.getPipe());
+            logger.info("address does not contain a pipe: " + address.getPipe());
         }
     }
 
@@ -144,7 +144,7 @@ public class PipeManagerImpl implements PipeManager {
      */
     public void processLocalWrite(WriteJob writeJob) {
         if (!initialized) {
-            log.warn("PipeManager not initialized.  Can't execute processLocalWrite.");
+            logger.warn("PipeManager not initialized.  Can't execute processLocalWrite.");
             return;
         }
         executeWrite(writeJob);
@@ -157,11 +157,11 @@ public class PipeManagerImpl implements PipeManager {
      */
     public void processLocalSend(LocalStreamSendJob job) {
         if (!initialized) {
-            log.warn("PipeManager not initialized.  Can't execute processLocalSend.");
+            logger.warn("PipeManager not initialized.  Can't execute processLocalSend.");
             return;
         }
 
-        log.info("Executing local stream send: " + job);
+        logger.info("Executing local stream send: " + job);
         String serializedStreamDesc = job.getStreamDescriptor();
 
         localBezirkSender.invokeIncoming(job.getPipeHeader(), serializedStreamDesc, job.getFilePath());
@@ -169,10 +169,10 @@ public class PipeManagerImpl implements PipeManager {
 
     public void processLocalSend(PipeHeader pipeHeader, String serializedEvent) {
         if (!initialized) {
-            log.warn("PipeManager not initialized.  Can't execute processLocalSend.");
+            logger.warn("PipeManager not initialized.  Can't execute processLocalSend.");
             return;
         }
-        log.info("Executing local event send: " + serializedEvent);
+        logger.info("Executing local event send: " + serializedEvent);
         localBezirkSender.invokeReceive(pipeHeader, serializedEvent);
     }
 
@@ -183,7 +183,7 @@ public class PipeManagerImpl implements PipeManager {
 
     @Override
     public PipeRecord getPipeRecord(Pipe pipe) {
-        log.warn("getPipeRecord() not implemented yet");
+        logger.warn("getPipeRecord() not implemented yet");
         // TODO return actual pipe record here or PipeInfo object
         return new PipeRecord(pipe);
     }
@@ -209,7 +209,7 @@ public class PipeManagerImpl implements PipeManager {
      */
     private void executeRemoteMulticastSend(MulticastHeader uhuMulticastHeader, String serializedEvent) {
         //String serializedEvent = eventRecord.getSerializedMessage();
-        log.info("Executing remote send: " + serializedEvent);
+        logger.info("Executing remote send: " + serializedEvent);
 
         RemoteSender remoteSender = new RemoteSender();
         remoteSender.setPipeRegistry(pipeRegistry);
@@ -228,7 +228,7 @@ public class PipeManagerImpl implements PipeManager {
      * @param job
      */
     private void executeWrite(WriteJob job) {
-        log.info("Executing write: " + job);
+        logger.info("Executing write: " + job);
         // Create a Runnable StreamWriter that will write to the file in own thread
         StreamWriter writer = new StreamWriter();
         writer.setWriteJob(job);
@@ -268,32 +268,32 @@ public class PipeManagerImpl implements PipeManager {
         boolean valid = true;
 
         if (localBezirkSender == null) {
-            log.error("local bezirk sender is null.");
+            logger.error("local bezirk sender is null.");
             valid = false;
         }
         if (pipeRegistry == null) {
-            log.error("PipeRegistry is null.");
+            logger.error("PipeRegistry is null.");
             valid = false;
         }
         if (sendingThreadPool == null) {
-            log.error("sendingPool is null.");
+            logger.error("sendingPool is null.");
             valid = false;
         }
         if (writingThreadPool == null) {
-            log.error("writingPool is null.");
+            logger.error("writingPool is null.");
             valid = false;
         }
         if (outputDir == null) {
-            log.error("outputDir is null.");
+            logger.error("outputDir is null.");
             valid = false;
         }
         if (certFileName == null) {
-            log.error("certFileName is null.");
+            logger.error("certFileName is null.");
             valid = false;
         } else {
             InputStream certInStream = getClass().getClassLoader().getResourceAsStream(certFileName);
             if (certInStream == null) {
-                log.error("Cert file could not be found on classpath: " + certFileName);
+                logger.error("Cert file could not be found on classpath: " + certFileName);
                 valid = false;
             }
         }

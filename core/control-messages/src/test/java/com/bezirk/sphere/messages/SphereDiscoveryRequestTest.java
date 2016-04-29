@@ -17,10 +17,7 @@ import static org.junit.Assert.assertEquals;
  * @author AJC6KOR
  */
 public class SphereDiscoveryRequestTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(SphereDiscoveryRequestTest.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(SphereDiscoveryRequestTest.class);
 
     /**
      * @throws java.lang.Exception
@@ -28,7 +25,7 @@ public class SphereDiscoveryRequestTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up SphereDiscoveryRequestTest TestCase *****");
+        logger.info("***** Setting up SphereDiscoveryRequestTest TestCase *****");
     }
 
     /**
@@ -37,7 +34,7 @@ public class SphereDiscoveryRequestTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down SphereDiscoveryRequestTest TestCase *****");
+        logger.info("***** Shutting down SphereDiscoveryRequestTest TestCase *****");
     }
 
     @Test

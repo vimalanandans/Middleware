@@ -16,10 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeviceTypeSelection extends ActionBarActivity {
+    private static final Logger logger = LoggerFactory.getLogger(DeviceTypeSelection.class);
 
     public static final int RESULT_DEVICE_ITEM_SELECT = 0x100;
     public static final String DEVICE_ITEM_SELECTED_TEXT = "DEVICE_ITEM_SELECTED_TEXT";
-    private static final Logger log = LoggerFactory.getLogger(DeviceTypeSelection.class);
     // UI Create
     List<DataModel> listData = new ArrayList<DataModel>();
 
@@ -72,7 +72,7 @@ public class DeviceTypeSelection extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long clickId) {
 
-                log.info("list item is pressed at " + listData.get(position).getTitleText());
+                logger.info("list item is pressed at " + listData.get(position).getTitleText());
 
                 Intent intent = new Intent();
 

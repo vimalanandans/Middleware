@@ -22,9 +22,7 @@ import static org.junit.Assert.assertEquals;
  * @author AJC6KOR
  */
 public class MulticastHeaderTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(MulticastControlMessageTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(MulticastControlMessageTest.class);
 
     private static final String sphereName = "TestSphere";
     private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
@@ -41,7 +39,7 @@ public class MulticastHeaderTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up MulticastControlMessageTest TestCase *****");
+        logger.info("***** Setting up MulticastControlMessageTest TestCase *****");
 
     }
 
@@ -51,7 +49,7 @@ public class MulticastHeaderTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down MulticastControlMessageTest TestCase *****");
+        logger.info("***** Shutting down MulticastControlMessageTest TestCase *****");
     }
 
     @Test

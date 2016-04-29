@@ -24,9 +24,7 @@ import static org.junit.Assert.assertEquals;
  * @author AJC6KOR
  */
 public class RTCControlMessageTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(RTCControlMessageTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(RTCControlMessageTest.class);
 
     private static final BezirkZirkId serviceAId = new BezirkZirkId("ServiceA");
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(
@@ -42,7 +40,7 @@ public class RTCControlMessageTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up RTCControlMessageTest TestCase *****");
+        logger.info("***** Setting up RTCControlMessageTest TestCase *****");
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
 
@@ -54,7 +52,7 @@ public class RTCControlMessageTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down RTCControlMessageTest TestCase *****");
+        logger.info("***** Shutting down RTCControlMessageTest TestCase *****");
     }
 
     private static InetAddress getInetAddress() {
@@ -79,7 +77,7 @@ public class RTCControlMessageTest {
             }
         } catch (SocketException e) {
 
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
 
         }
         return null;

@@ -17,10 +17,11 @@ import java.util.List;
 /**
  * Helper class containing functions for networking, e.g. getting local IP and MAC address
  *
- * @author Jan Zibuschka (jan.zibuschka@de.bosch.com) *
+ * @author Jan Zibuschka
  */
 public final class BezirkNetworkUtilities {
-    private static final Logger log = LoggerFactory.getLogger(BezirkNetworkUtilities.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkNetworkUtilities.class);
+
     private static NetworkInterface curInterface = null;
 
     private BezirkNetworkUtilities() {
@@ -41,14 +42,14 @@ public final class BezirkNetworkUtilities {
                 }
             }
         } catch (Exception ex) {
-            log.error("Error occurred while getting IntfInetPair \n", ex);
+            logger.error("Error occurred while getting IntfInetPair \n", ex);
         }
         return list;
     }
 
     public static InetAddress getIpForInterface(NetworkInterface intf) {
         if (intf == null) {
-            log.debug("Input interface is null");
+            logger.debug("Input interface is null");
             return null;
         }
         try {
@@ -59,17 +60,17 @@ public final class BezirkNetworkUtilities {
                     for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                         InetAddress inetAddress = enumIpAddr.nextElement();
                         if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-                            log.debug("IP Address determined: " + inetAddress.getHostAddress());
+                            logger.debug("IP Address determined: " + inetAddress.getHostAddress());
                             curInterface = intf;
                             return inetAddress;
                         }
                     }
                 } else {
-                    log.debug("Interface does not match");
+                    logger.debug("Interface does not match");
                 }
             }
         } catch (Exception ex) {
-            log.error("Error occurred while getting IpForInterface \n", ex);
+            logger.error("Error occurred while getting IpForInterface \n", ex);
         }
         return null;
     }
@@ -77,13 +78,13 @@ public final class BezirkNetworkUtilities {
 
     public static InetAddress getLocalInet() {
         if (curInterface == null) {
-            log.error("Input interface is null");
+            logger.error("Input interface is null");
             return null;
         }
         for (Enumeration<InetAddress> enumIpAddr = curInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
             InetAddress inetAddress = enumIpAddr.nextElement();
             if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-                //log.info("IP Address determined: " + inetAddress.getHostAddress());
+                //logger.info("IP Address determined: " + inetAddress.getHostAddress());
                 return inetAddress;
             }
         }
@@ -110,7 +111,7 @@ public final class BezirkNetworkUtilities {
                 }
             }
         } catch (Exception ex) {
-            log.error("Error occurred while getting LocalMACAddress \n", ex);
+            logger.error("Error occurred while getting LocalMACAddress \n", ex);
         }
         return null;
     }

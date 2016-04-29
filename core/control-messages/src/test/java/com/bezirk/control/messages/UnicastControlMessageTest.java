@@ -24,9 +24,7 @@ import static org.junit.Assert.*;
  * @author AJC6KOR
  */
 public class UnicastControlMessageTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(UnicastControlMessageTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(UnicastControlMessageTest.class);
 
     private static final String sphereId = "TestSphere";
     private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
@@ -46,7 +44,7 @@ public class UnicastControlMessageTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up UnicastControlMessageTest TestCase *****");
+        logger.info("***** Setting up UnicastControlMessageTest TestCase *****");
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
     }
@@ -57,7 +55,7 @@ public class UnicastControlMessageTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down UnicastControlMessageTest TestCase *****");
+        logger.info("***** Shutting down UnicastControlMessageTest TestCase *****");
     }
 
     private static InetAddress getInetAddress() {
@@ -82,7 +80,7 @@ public class UnicastControlMessageTest {
             }
         } catch (SocketException e) {
 
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
 
         }
         return null;

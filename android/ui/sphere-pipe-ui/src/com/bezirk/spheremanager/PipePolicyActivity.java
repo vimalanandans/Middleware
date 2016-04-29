@@ -38,8 +38,9 @@ import static com.bezirk.actions.BezirkActions.KEY_SENDER_ZIRK_ID;
 import static com.bezirk.util.BezirkValidatorUtility.checkBezirkZirkId;
 
 public class PipePolicyActivity extends FragmentActivity implements OnClickListener {
+    private static final Logger logger = LoggerFactory.getLogger(PipePolicyActivity.class);
+
     static final String TAG = PipePolicyActivity.class.getSimpleName();
-    private static final Logger log = LoggerFactory.getLogger(PipePolicyActivity.class);
     private String filterSetting = "inbound";
 
     @Override
@@ -53,7 +54,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
 
         BezirkZirkId serviceId = serviceIdFromString(serviceIdAsString);
         if (serviceId == null) {
-            log.error("Intent not valid because there was a failure validating zirkId");
+            logger.error("Intent not valid because there was a failure validating zirkId");
             return;
         }
 
@@ -104,17 +105,17 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
                 BezirkPipePolicy policyIn = PipePolicyUtility.policyInMap.get(pipeReqId);
                 BezirkPipePolicy policyOut = PipePolicyUtility.policyOutMap.get(pipeReqId);
                 for (String role : policyIn.getReasonMap().keySet()) {
-                    log.info("In Protocol: " + role + " is Authorized?: " + policyIn.isAuthorized(role));
+                    logger.info("In Protocol: " + role + " is Authorized?: " + policyIn.isAuthorized(role));
                 }
                 for (String role : policyOut.getReasonMap().keySet()) {
-                    log.info("Out Protocol: " + role + " is Authorized?: " + policyOut.isAuthorized(role));
+                    logger.info("Out Protocol: " + role + " is Authorized?: " + policyOut.isAuthorized(role));
                 }
                 //FIXME: instead of calling the pipe approved
                 PipeRequester requester = PipePolicyUtility.pipeRequesterMap.get(pipeReqId);
                 try {
                     requester.pipeApproved(true, pipeReqId, null, sphereId);
                 } catch (PipeApprovalException e) {
-                    log.error("Exception in pipe approval.", e);
+                    logger.error("Exception in pipe approval.", e);
                 }
                 startActivity(createBackIntent());
             }
@@ -226,7 +227,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
         Gson gson = new Gson();
         BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
         if (!checkBezirkZirkId(serviceId)) {
-            log.error("zirkId not valid: " + serviceId);
+            logger.error("zirkId not valid: " + serviceId);
             return null;
         }
 

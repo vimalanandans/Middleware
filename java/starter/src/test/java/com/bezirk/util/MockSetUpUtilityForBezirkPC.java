@@ -42,9 +42,7 @@ import java.util.Enumeration;
  * @author AJC6KOR
  */
 public class MockSetUpUtilityForBezirkPC {
-
-    private final static Logger log = LoggerFactory
-            .getLogger(MockSetUpUtilityForBezirkPC.class);
+    private final static Logger logger = LoggerFactory.getLogger(MockSetUpUtilityForBezirkPC.class);
 
     private static final String DBPath = "./";
     private static final String DBVersion = DBConstants.DB_VERSION;
@@ -126,7 +124,7 @@ public class MockSetUpUtilityForBezirkPC {
             }
         } catch (SocketException e) {
 
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
 
         }
         return null;
@@ -144,7 +142,7 @@ public class MockSetUpUtilityForBezirkPC {
 
         } catch (Exception e) {
 
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
 
         }
         return null;

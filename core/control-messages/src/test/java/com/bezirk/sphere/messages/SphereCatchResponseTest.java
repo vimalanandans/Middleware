@@ -22,11 +22,9 @@ import static org.junit.Assert.assertEquals;
  * @author AJC6KOR
  */
 public class SphereCatchResponseTest {
+    private static final Logger logger = LoggerFactory.getLogger(SphereCatchResponseTest.class);
 
     private static final String SERVICE_A = "ServiceA";
-
-    private static final Logger log = LoggerFactory
-            .getLogger(SphereCatchResponseTest.class);
 
     private static final BezirkZirkId serviceAId = new BezirkZirkId(SERVICE_A);
     private static final BezirkZirkInfo serviceAInfo = new BezirkZirkInfo(serviceAId.getBezirkZirkId(), SERVICE_A, "TEST", true, true);
@@ -38,7 +36,7 @@ public class SphereCatchResponseTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up SphereCatchResponseTest TestCase *****");
+        logger.info("***** Setting up SphereCatchResponseTest TestCase *****");
     }
 
     /**
@@ -47,7 +45,7 @@ public class SphereCatchResponseTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down SphereCatchResponseTest TestCase *****");
+        logger.info("***** Shutting down SphereCatchResponseTest TestCase *****");
     }
 
 

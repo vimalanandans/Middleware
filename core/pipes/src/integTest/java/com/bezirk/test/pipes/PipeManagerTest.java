@@ -107,15 +107,14 @@ public class PipeManagerTest {
     //------------------------------------------------------
 
     public class MockLocalSender implements BezirkSender {
-
-        private Logger log = LoggerFactory.getLogger(MockLocalSender.class);
+        private Logger logger = LoggerFactory.getLogger(MockLocalSender.class);
 
         private boolean invokeReceiveCalled = false;
         private boolean invokeIncomingCalled = false;
 
         @Override
         public void invokeReceive(String serializedEvent) {
-            log.info("invokeReceive: " + serializedEvent);
+            logger.info("invokeReceive: " + serializedEvent);
             invokeReceiveCalled = true;
             assertNotNull(serializedEvent);
             EchoReply reply = EchoReply.deserialize(serializedEvent);
@@ -125,7 +124,7 @@ public class PipeManagerTest {
 
         @Override
         public void invokeIncoming(String serializedStream, String path) {
-            log.info("invokeIncoming: " + serializedStream);
+            logger.info("invokeIncoming: " + serializedStream);
             invokeIncomingCalled = true;
             assertNotNull(serializedStream);
             assertNotNull(path);

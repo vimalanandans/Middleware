@@ -20,9 +20,7 @@ import static org.junit.Assert.assertEquals;
  * @author AJC6KOR
  */
 public class DiscoveryRequestTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(DiscoveryRequestTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(DiscoveryRequestTest.class);
 
     private static final String sphereId = "TestSphere";
     private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
@@ -39,7 +37,7 @@ public class DiscoveryRequestTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up DiscoveryRequestTest TestCase *****");
+        logger.info("***** Setting up DiscoveryRequestTest TestCase *****");
 
     }
 
@@ -49,7 +47,7 @@ public class DiscoveryRequestTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down DiscoveryRequestTest TestCase *****");
+        logger.info("***** Shutting down DiscoveryRequestTest TestCase *****");
     }
 
 

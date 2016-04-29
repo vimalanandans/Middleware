@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 
-import com.bezirk.controlui.R;
 import com.bezirk.controlui.commstest.CommsTestActivity;
 import com.bezirk.controlui.logging.SphereSelectLoggingActivity;
 
@@ -21,7 +20,7 @@ import java.util.List;
 public class DiagnosisActivity extends ActionBarActivity
         implements GenericListItemView.ItemToggleListener {
 
-    private static final Logger log = LoggerFactory.getLogger(DiagnosisActivity.class);
+    private static final Logger logger = LoggerFactory.getLogger(DiagnosisActivity.class);
 
     // UI Create
     List<DataModel> listData = new ArrayList<DataModel>();
@@ -73,7 +72,7 @@ public class DiagnosisActivity extends ActionBarActivity
 
                 break;
             default:
-                log.error("Unknown item pressed");
+                logger.error("Unknown item pressed");
                 return;
         }
 

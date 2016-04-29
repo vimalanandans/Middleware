@@ -18,13 +18,13 @@ import static org.junit.Assert.*;
  * replies with a WHISPER to the requester.
  */
 public class ShoutWhisperTest {
+    private static final Logger logger = LoggerFactory.getLogger(ShoutWhisperTest.class);
 
     public static final String PING = "ping";
     public static final String PONG = "pong";
     public static final String GROUP = "global";
     public static final int NUM_RESP = 3;
     public static final int NUM_MSGS = 2;
-    private static final Logger log = LoggerFactory.getLogger(ShoutWhisperTest.class);
     private Requester reqThread;
     private List<Responder> respThreads = new ArrayList<Responder>();
 
@@ -86,15 +86,15 @@ public class ShoutWhisperTest {
 
                 if (event.equals("JOIN")) {
                     if (peer == null) {
-                        log.error("Peer is null");
+                        logger.error("Peer is null");
                         passed = false;
                         return;
                     }
                     joinCt++;
-                    log.info("responder joined: " + peer);
+                    logger.info("responder joined: " + peer);
 
                     if (joinCt == NUM_RESP) {
-                        log.info("All responders joined: " + NUM_RESP);
+                        logger.info("All responders joined: " + NUM_RESP);
                         break;
                     }
                 }
@@ -106,7 +106,7 @@ public class ShoutWhisperTest {
                 e.printStackTrace();
             }
 
-            log.info("sending ping(s) via SHOUT: " + NUM_MSGS);
+            logger.info("sending ping(s) via SHOUT: " + NUM_MSGS);
             for (int i = 0; i < NUM_MSGS; i++) {
                 zyre.shout(GROUP, PING);
             }
@@ -120,22 +120,22 @@ public class ShoutWhisperTest {
                 String event = map.get("event");
 
                 if (event.equals("WHISPER")) {
-                    log.info("requester received response: " + msg);
+                    logger.info("requester received response: " + msg);
 
                     String text = map.get("message");
                     if (!text.equals(PONG)) {
-                        log.error("Did not receive PONG.  Message was: " + text);
+                        logger.error("Did not receive PONG.  Message was: " + text);
                         passed = false;
                     }
                     recvCt++;
                     if (recvCt == expected) {
-                        log.info("received all messages: " + expected);
+                        logger.info("received all messages: " + expected);
                         break;
                     } else {
-                        log.info("received: " + recvCt + " expected: " + expected);
+                        logger.info("received: " + recvCt + " expected: " + expected);
                     }
                 } else {
-                    log.info("ignoring event: " + msg);
+                    logger.info("ignoring event: " + msg);
                 }
             }
         }
@@ -153,16 +153,16 @@ public class ShoutWhisperTest {
                 String event = map.get("event");
 
                 if (event.equals("SHOUT")) {
-                    log.info("responder received shout: " + msg);
+                    logger.info("responder received shout: " + msg);
                     String text = map.get("message");
                     String peer = map.get("peer");
 
                     if (!text.equals(PING)) {
-                        log.error("Did not receive PING. Message was: " + text);
+                        logger.error("Did not receive PING. Message was: " + text);
                         passed = false;
                     }
 
-                    log.info("sending pong");
+                    logger.info("sending pong");
                     zyre.whisper(peer, PONG);
                     sentCt++;
 

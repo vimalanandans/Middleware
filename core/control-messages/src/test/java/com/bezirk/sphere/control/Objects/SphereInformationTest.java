@@ -16,9 +16,7 @@ import static org.junit.Assert.assertTrue;
  * @author AJC6KOR
  */
 public class SphereInformationTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(SphereInformationTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(SphereInformationTest.class);
 
     private static final String creatorDeviceId = "CREATOR_DEVICE_ID";
     private static final boolean owner = true;
@@ -34,7 +32,7 @@ public class SphereInformationTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up SphereInformationTest TestCase *****");
+        logger.info("***** Setting up SphereInformationTest TestCase *****");
 
     }
 
@@ -44,7 +42,7 @@ public class SphereInformationTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down SphereInformationTest TestCase *****");
+        logger.info("***** Shutting down SphereInformationTest TestCase *****");
     }
 
     @Test

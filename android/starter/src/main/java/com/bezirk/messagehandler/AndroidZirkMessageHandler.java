@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
  * This class implements IUhuCallback and provides platform specific implementations for android
  */
 public class AndroidZirkMessageHandler implements ZirkMessageHandler {
+    private static final Logger logger = LoggerFactory.getLogger(AndroidZirkMessageHandler.class);
+
     /**
      * This intent action is subscribed by all the ProxyForUhu
      */
@@ -21,7 +23,6 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
      * Used to convert the object to its string
      */
     final Gson gson = new Gson();
-    private static final Logger log = LoggerFactory.getLogger(AndroidZirkMessageHandler.class);
     /**
      * Context to fire the Intent
      */
@@ -50,7 +51,7 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
             fireIntent.putExtra(discriminatorKEY, eventIncomingMessage.getCallbackType());
             fireIntentToService(fireIntent);
         } catch (Exception e) {
-            log.error("Cant fire the intent to the services as the ppd intent is not valid.", e);
+            logger.error("Cant fire the intent to the services as the ppd intent is not valid.", e);
         }
     }
 
@@ -75,7 +76,7 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
             fireintent.putExtra(senderSEPKEY, gson.toJson(streamIncomingMessage.senderSEP));
             fireIntentToService(fireintent);
         } catch (Exception e) {
-            log.error("Cannot give callback as all the fields are not set", e);
+            logger.error("Cannot give callback as all the fields are not set", e);
         }
     }
 
@@ -95,7 +96,7 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
             fireIntent.putExtra(streamStatusKEY, streamStatusMessage.streamStatus);
             fireIntentToService(fireIntent);
         } catch (Exception e) {
-            log.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
+            logger.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
         }
     }
 
@@ -119,7 +120,7 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
                 fireIntentToService(fireIntent);
             }
         } catch (Exception e) {
-            log.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
+            logger.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
         }
     }
 
@@ -137,7 +138,7 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
 
             fireIntentToService(fireIntent);
         } catch (Exception e) {
-            log.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
+            logger.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
         }
     }
 
@@ -151,7 +152,7 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
             applicationContext.sendBroadcast(fireIntent);
             return;
         }
-        log.error("Application Context is null, cant fire the  broadcast Intent intent!");
+        logger.error("Application Context is null, cant fire the  broadcast Intent intent!");
     }
 
     private void fireIntenttoSphere(Intent fireIntent) {
@@ -161,7 +162,7 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
             applicationContext.sendBroadcast(fireIntent);
             return;
         }
-        log.error("Application Context is null, cant fire the  broadcast Intent intent!");
+        logger.error("Application Context is null, cant fire the  broadcast Intent intent!");
     }
 
 

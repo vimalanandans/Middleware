@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Iterator;
 
-class ProxyForServiceHelper {
-    private static final Logger log = LoggerFactory.getLogger(ProxyForServiceHelper.class);
+class ProxyForZirksHelper {
+    private static final Logger logger = LoggerFactory.getLogger(ProxyForZirksHelper.class);
 
     private ControlLedger prepareMessage(Iterator<String> sphereIterator, String streamRequestKey, StreamRecord streamRecord, File tempFile) {
         final String sphereName = sphereIterator.next();
@@ -60,7 +60,7 @@ class ProxyForServiceHelper {
         while (sphereIterator.hasNext()) {
             sphereId = sphereIterator.next();
             if (BezirkCompManager.getSphereForSadl().isZirkInSphere(receiver.getBezirkZirkId(), sphereId)) {
-                log.debug("Found the sphere:" + sphereId);
+                logger.debug("Found the sphere:" + sphereId);
                 break;
             }
         }
@@ -73,7 +73,7 @@ class ProxyForServiceHelper {
             if (BezirkValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(tcMessage);
             } else {
-                log.error("Comms manager not initialized");
+                logger.error("Comms manager not initialized");
             }
         }
     }

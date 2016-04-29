@@ -7,7 +7,7 @@ import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.proxy.android.ProxyforServices;
+import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
@@ -29,9 +29,9 @@ public final class BezirkServiceHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(BezirkServiceHelper.class);
 
-    private final ProxyforServices proxy;
+    private final ProxyForZirks proxy;
 
-    public BezirkServiceHelper(ProxyforServices proxy) {
+    public BezirkServiceHelper(ProxyForZirks proxy) {
 
         this.proxy = proxy;
     }

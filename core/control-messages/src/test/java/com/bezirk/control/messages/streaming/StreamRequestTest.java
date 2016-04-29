@@ -25,9 +25,7 @@ import static org.junit.Assert.assertEquals;
  * @author AJC6KOR
  */
 public class StreamRequestTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(StreamRequestTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(StreamRequestTest.class);
 
     private static final String sphereName = "Home";
     private static final Location location = new Location("OFFICE1", "BLOCk1", "ROOM1");
@@ -45,7 +43,7 @@ public class StreamRequestTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up StreamRequestTest TestCase *****");
+        logger.info("***** Setting up StreamRequestTest TestCase *****");
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
     }
@@ -56,7 +54,7 @@ public class StreamRequestTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down StreamRequestTest TestCase *****");
+        logger.info("***** Shutting down StreamRequestTest TestCase *****");
     }
 
     private static InetAddress getInetAddress() {
@@ -81,7 +79,7 @@ public class StreamRequestTest {
             }
         } catch (SocketException e) {
 
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
 
         }
         return null;

@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ControlActivityHelper {
+    private static final Logger logger = LoggerFactory.getLogger(ControlActivity.class);
 
-    private static final Logger log = LoggerFactory.getLogger(ControlActivity.class);
     private final List<DataModel> listData = new ArrayList<DataModel>();
     private final String BR_SYSTEM_STATUS_ACTION = "com.bezirk.systemstatus";
     private final ControlActivity controlActivity;
@@ -118,7 +118,7 @@ class ControlActivityHelper {
                 showAboutDialog();
                 break;
             default:
-                log.error("unknown item pressed");
+                logger.error("unknown item pressed");
                 return;
         }
 

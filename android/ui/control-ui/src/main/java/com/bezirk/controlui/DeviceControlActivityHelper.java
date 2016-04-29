@@ -25,8 +25,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 class DeviceControlActivityHelper {
-
-    private static final Logger log = LoggerFactory.getLogger(DeviceControlActivityHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(DeviceControlActivityHelper.class);
 
     // result codes
     private final int RESULT_DEVICE_NAME_CHANGE = 1000;
@@ -78,7 +77,7 @@ class DeviceControlActivityHelper {
                 deviceControlActivity.startActivity(diagonisisActivityIntent);
                 break;
             default:
-                log.error("Unknown item pressed");
+                logger.error("Unknown item pressed");
                 return;
         }
 
@@ -103,7 +102,7 @@ class DeviceControlActivityHelper {
                 clearDataBase();
                 break;
             default:
-                log.error("unknown result from settings prompt");
+                logger.error("unknown result from settings prompt");
                 break;
         }
     }
@@ -123,7 +122,7 @@ class DeviceControlActivityHelper {
      * store the device type and invoke the services
      */
     void setDeviceType(String deviceType) {
-        log.info("device type changed to " + deviceType);
+        logger.info("device type changed to " + deviceType);
         // store the device type
         preferences.putString(preferences.DEVICE_TYPE_TAG_PREFERENCE, deviceType);
 
@@ -139,7 +138,7 @@ class DeviceControlActivityHelper {
         // TODO: Currently this stored local to stack not sent to other devices.
         // needs to fix this in the stack
 
-        log.info("device name changed to " + deviceName);
+        logger.info("device name changed to " + deviceName);
 
         // store the device name
         preferences.putString(preferences.DEVICE_NAME_TAG_PREFERENCE, deviceName);
@@ -156,7 +155,7 @@ class DeviceControlActivityHelper {
         // TODO: Currently this stored local to stack not sent to other devices.
         // needs to fix this in the stack
 
-        log.info("default sphere name changed to " + sphereName);
+        logger.info("default sphere name changed to " + sphereName);
 
         // store the device name
         preferences.putString(preferences.DEFAULT_SPHERE_NAME_TAG_PREFERENCE, sphereName);
@@ -197,7 +196,7 @@ class DeviceControlActivityHelper {
                             public void onClick(DialogInterface dialog, int clickId) {
                                 // get user input and set it to result
                                 String data = userInput.getText().toString();
-                                log.info("device name is set to " + data);
+                                logger.info("device name is set to " + data);
                                 onPromptTextResult(resultId, data);
                             }
                         })
@@ -246,7 +245,7 @@ class DeviceControlActivityHelper {
                             public void onClick(DialogInterface dialog, int clickId) {
                                 // get user input and set it to result
                                 String data = confirmTextView.getText().toString();
-                                log.info("clear database confirmed " + data);
+                                logger.info("clear database confirmed " + data);
                                 onPromptTextResult(resultId, data);
                                 if (BezirkValidatorUtility.isObjectNotNull(bezirkZirkInfos) && !bezirkZirkInfos.isEmpty()) {
                                     for (BezirkZirkInfo info : bezirkZirkInfos) {
@@ -286,7 +285,7 @@ class DeviceControlActivityHelper {
      * @param mode
      */
     void updateList(BezirkDevMode.Mode mode, List<DataModel> listData) {
-        log.debug("mode received: " + mode);
+        logger.debug("mode received: " + mode);
         boolean switchState = false;
         switch (mode) {
             case ON:

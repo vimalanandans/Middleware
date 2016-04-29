@@ -20,9 +20,7 @@ import static org.junit.Assert.*;
  * @author AJC6KOR
  */
 public class GenerateMsgIdTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(GenerateMsgIdTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(GenerateMsgIdTest.class);
 
     /**
      * @throws java.lang.Exception
@@ -30,7 +28,7 @@ public class GenerateMsgIdTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up GenerateMsgIdTest TestCase *****");
+        logger.info("***** Setting up GenerateMsgIdTest TestCase *****");
 
     }
 
@@ -40,7 +38,7 @@ public class GenerateMsgIdTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down GenerateMsgIdTest TestCase *****");
+        logger.info("***** Shutting down GenerateMsgIdTest TestCase *****");
     }
 
 

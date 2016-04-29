@@ -19,7 +19,6 @@ import java.sql.SQLException;
 
 public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implements DatabaseConnection {
     private static final int DATABASE_VERSION = 1;
-    private static final Logger log = LoggerFactory.getLogger(DatabaseConnectionForAndroid.class);
     private final Context mContext;
     private ConnectionSource dbConnectionSource;
     private Dao<BezirkRegistry, Integer> bezirkPersistenceDao;
@@ -54,7 +53,7 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
             try {
                 tempDbFile.createNewFile();
             } catch (IOException e) {
-                log.error(e.getMessage(), e);
+                logger.error(e.getMessage(), e);
             }
         }
     }

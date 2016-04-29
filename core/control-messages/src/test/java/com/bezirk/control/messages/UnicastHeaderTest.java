@@ -17,9 +17,7 @@ import static org.junit.Assert.assertEquals;
  * @author AJC6KOR
  */
 public class UnicastHeaderTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(UnicastHeaderTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(UnicastHeaderTest.class);
 
     private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
     private static final BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(
@@ -36,7 +34,7 @@ public class UnicastHeaderTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up UnicastHeaderTest TestCase *****");
+        logger.info("***** Setting up UnicastHeaderTest TestCase *****");
 
     }
 
@@ -46,7 +44,7 @@ public class UnicastHeaderTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down UnicastHeaderTest TestCase *****");
+        logger.info("***** Shutting down UnicastHeaderTest TestCase *****");
     }
 
     @Test

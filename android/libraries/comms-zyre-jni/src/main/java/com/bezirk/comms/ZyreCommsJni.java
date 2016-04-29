@@ -22,8 +22,8 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class ZyreCommsJni extends Thread {
+    public static final Logger logger = LoggerFactory.getLogger(ZyreCommsJni.class);
 
-    public static final Logger log = LoggerFactory.getLogger(ZyreCommsJni.class);
     public static final String TAG = ZyreCommsJni.class.getSimpleName();
     public static final String BEZIRK_GROUP = "BEZIRK_GROUP";
     private static boolean isZyreReady;
@@ -64,7 +64,7 @@ public class ZyreCommsJni extends Thread {
 
             //init a new zyre context..
             zyre = new Zyre();
-            log.debug("Zyre is initialized but not yet ready..!!!");
+            logger.debug("Zyre is initialized but not yet ready..!!!");
 
             //initialize the executor.
             if (eventExecutor == null || eventExecutor.isShutdown() || eventExecutor.isTerminated()) {
@@ -80,7 +80,7 @@ public class ZyreCommsJni extends Thread {
 
         } catch (UnsatisfiedLinkError e) {
 
-            log.error("Unable to load zyre comms. ", e);
+            logger.error("Unable to load zyre comms. ", e);
             return false;
         }
         // create the zyre
@@ -92,12 +92,12 @@ public class ZyreCommsJni extends Thread {
     private void delayZyreCreation() {
         //adding the sleep as this will take time till new Zyre context is init
         try {
-            log.info("zyre init : waiting for " + delayedInitTime + " before init");
+            logger.info("zyre init : waiting for " + delayedInitTime + " before init");
             Thread.sleep(delayedInitTime + 1000L);
             isZyreReady = true;
-            log.debug("Zyre Initialization is Complete..!!!");
+            logger.debug("Zyre Initialization is Complete..!!!");
         } catch (InterruptedException e) {
-            log.error("Thread Interupted whicle initZyre");
+            logger.error("Thread Interupted whicle initZyre");
         }
     }
 
@@ -130,13 +130,13 @@ public class ZyreCommsJni extends Thread {
                 // start the receiver
                 this.start();
             } catch (Exception e) {
-                log.error("Exception while starting the thread", e);
+                logger.error("Exception while starting the thread", e);
                 return false;
             }
 
 
         } else {
-            log.error("zyre not initialized");
+            logger.error("zyre not initialized");
         }
         return true;
 
@@ -178,13 +178,13 @@ public class ZyreCommsJni extends Thread {
                         if (!isZyreReady) {
                             // if the zyre was re-initialized but is in middle of delayed ms wake up time..
                             Thread.sleep(delayedInitTime + 1000L);
-                            log.debug("Sleeping for few seconds as Zyre is not yet initialized!!!!");
+                            logger.debug("Sleeping for few seconds as Zyre is not yet initialized!!!!");
                         }
                         zyre.shout(getGroup(), data);
-                        log.debug("Shouted message to group : >> " + getGroup());
-                        log.debug("Multi-cast size : >> " + data.length());
+                        logger.debug("Shouted message to group : >> " + getGroup());
+                        logger.debug("Multi-cast size : >> " + data.length());
                     } catch (Exception e) {
-                        log.error(TAG, "An Error has occurred during Zyre Shout!!!", e);
+                        logger.error(TAG, "An Error has occurred during Zyre Shout!!!", e);
                     }
                 }
             });
@@ -194,7 +194,7 @@ public class ZyreCommsJni extends Thread {
             return true;
 
         } else {
-            log.error("zyre not initialized");
+            logger.error("zyre not initialized");
         }
 
         return false;
@@ -216,14 +216,14 @@ public class ZyreCommsJni extends Thread {
                         if (!isZyreReady) {
                             // if the zyre was re-initialized but is in middle of delayed ms wake up time..
                             Thread.sleep(delayedInitTime);
-                            log.debug("Sleeping for few seconds as Zyre is not yet initialized!!!!");
+                            logger.debug("Sleeping for few seconds as Zyre is not yet initialized!!!!");
                         }
                         //send to the specific node
                         zyre.whisper(nodeId, data);
 
-                        log.debug("Unicast size : >> " + data.length() + " data >> " + data);
+                        logger.debug("Unicast size : >> " + data.length() + " data >> " + data);
                     } catch (Exception e) {
-                        log.error(TAG, "An Error has occurred during Zyre Shout!!!", e);
+                        logger.error(TAG, "An Error has occurred during Zyre Shout!!!", e);
                     }
                 }
             });
@@ -231,7 +231,7 @@ public class ZyreCommsJni extends Thread {
                 eventExecutor.execute(eventThread);
             }
         } else {
-            log.error("zyre not initialized");
+            logger.error("zyre not initialized");
         }
         return false;
     }
@@ -239,11 +239,11 @@ public class ZyreCommsJni extends Thread {
     @Override
     public void run() {
         if (group == null) {
-            log.error("group not set");
+            logger.error("group not set");
             return;
         }
         if (zyre == null) {
-            log.error("Zyre not set");
+            logger.error("Zyre not set");
             return;
         }
 

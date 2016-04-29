@@ -45,10 +45,11 @@ import static com.bezirk.util.BezirkValidatorUtility.checkForString;
 import static com.bezirk.util.BezirkValidatorUtility.checkBezirkZirkId;
 
 public class PipeActivity extends Activity {
+    private static final Logger logger = LoggerFactory.getLogger(PipeActivity.class);
+
     public static final String TAG = "PipeActivity";
     public static final String PIPE_CALLING = "pipe_caller";
     static final int BACK_INTENT = 10;
-    private static final Logger log = LoggerFactory.getLogger(PipeActivity.class);
     private RadioButton previousClickedButton = null;
     private SphereListItem entry;
     private String sphereId;
@@ -68,14 +69,14 @@ public class PipeActivity extends Activity {
          */
 
         if (!stringsValid(serviceIdAsString, pipeName)) {
-            log.error("Intent not valid because rxIntent extra strings not set correctly");
+            logger.error("Intent not valid because rxIntent extra strings not set correctly");
             return;
         }
 
 
         BezirkZirkId serviceId = serviceIdFromString(serviceIdAsString);
         if (serviceId == null) {
-            log.error("Intent not valid because there was a failure validating zirkId");
+            logger.error("Intent not valid because there was a failure validating zirkId");
             return;
         }
 
@@ -217,7 +218,7 @@ public class PipeActivity extends Activity {
         Gson gson = new Gson();
         BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
         if (!checkBezirkZirkId(serviceId)) {
-            log.error("zirkId not valid: " + serviceId);
+            logger.error("zirkId not valid: " + serviceId);
             return null;
         }
 
@@ -230,11 +231,11 @@ public class PipeActivity extends Activity {
         String errorSuffix = "String is null or empty";
 
         if (!checkForString(serviceId)) {
-            log.error("zirkId " + errorSuffix);
+            logger.error("zirkId " + errorSuffix);
             stringsValid = false;
         }
         if (!checkForString(pipeName)) {
-            log.error("pipeName " + errorSuffix);
+            logger.error("pipeName " + errorSuffix);
             stringsValid = false;
         }
 

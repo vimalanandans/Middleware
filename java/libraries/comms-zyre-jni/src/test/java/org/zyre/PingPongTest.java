@@ -15,11 +15,11 @@ import static org.junit.Assert.*;
  * and the responder replies with "pong"
  */
 public class PingPongTest {
+    private static final Logger logger = LoggerFactory.getLogger(PingPongTest.class);
 
     public static final String PING = "ping";
     public static final String PONG = "pong";
     public static final String GROUP = "global";
-    private static final Logger log = LoggerFactory.getLogger(PingPongTest.class);
     private Requester reqThread;
     private Responder respThread;
 
@@ -74,15 +74,15 @@ public class PingPongTest {
 
                 if (event.equals("JOIN")) {
                     if (peer == null) {
-                        log.error("Peer is null");
+                        logger.error("Peer is null");
                         passed = false;
                         return;
                     }
-                    log.info("responder joined: " + peer);
+                    logger.info("responder joined: " + peer);
                     break;
                 }
             }
-            log.info("sending ping");
+            logger.info("sending ping");
             zyre.whisper(peer, PING);
 
             while (true) {
@@ -91,10 +91,10 @@ public class PingPongTest {
                 String event = map.get("event");
 
                 if (event.equals("WHISPER")) {
-                    log.info("requester received response: " + msg);
+                    logger.info("requester received response: " + msg);
                     String text = map.get("message");
                     if (!text.equals(PONG)) {
-                        log.error("Did not receive PONG.  Message was: " + text);
+                        logger.error("Did not receive PONG.  Message was: " + text);
                         passed = false;
                     }
                     break;
@@ -109,7 +109,7 @@ public class PingPongTest {
 
         public void run() {
 
-            log.info("responder running");
+            logger.info("responder running");
             while (!Thread.currentThread().isInterrupted()) {
                 String msg = zyre.recv();
                 HashMap<String, String> map = Utils.parseMsg(msg);
@@ -117,16 +117,16 @@ public class PingPongTest {
                 String event = map.get("event");
 
                 if (event.equals("WHISPER")) {
-                    log.info("responder received: " + msg);
+                    logger.info("responder received: " + msg);
                     String text = map.get("message");
                     String peer = map.get("peer");
 
                     if (!text.equals(PING)) {
-                        log.error("Did not receive PING. Message was: " + text);
+                        logger.error("Did not receive PING. Message was: " + text);
                         passed = false;
                     }
 
-                    log.info("sending pong");
+                    logger.info("sending pong");
                     zyre.whisper(peer, PONG);
                     break;
                 }

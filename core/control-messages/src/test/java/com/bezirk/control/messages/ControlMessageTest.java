@@ -18,10 +18,7 @@ import static org.junit.Assert.*;
  * @author AJC6KOR
  */
 public class ControlMessageTest {
-
-
-    private static final Logger log = LoggerFactory
-            .getLogger(ControlMessageTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ControlMessageTest.class);
 
     private static final String key = "TESTKEY";
     private static final Boolean retransmit = true;
@@ -36,7 +33,7 @@ public class ControlMessageTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up ControlMessageTest TestCase *****");
+        logger.info("***** Setting up ControlMessageTest TestCase *****");
 
     }
 
@@ -46,7 +43,7 @@ public class ControlMessageTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down ControlMessageTest TestCase *****");
+        logger.info("***** Shutting down ControlMessageTest TestCase *****");
     }
 
     @Test

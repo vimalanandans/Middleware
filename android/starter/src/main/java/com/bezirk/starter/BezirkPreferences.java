@@ -10,17 +10,15 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 /**
- * Created by vnd2kor on 12/29/2014.
- * <p/>
  * Bezirk Preference storing the setting for keeping all the android way of storing the preferences
  */
 public class BezirkPreferences {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkPreferences.class);
 
     public static final String DEVICE_ID_TAG_PREFERENCE = "DeviceId";
     public static final String DEVICE_TYPE_TAG_PREFERENCE = "DeviceType";
     public static final String DEVICE_NAME_TAG_PREFERENCE = "DeviceName";
     public static final String DEFAULT_SPHERE_NAME_TAG_PREFERENCE = "DefaultSphereName";
-    private static final Logger log = LoggerFactory.getLogger(BezirkPreferences.class);
     private SharedPreferences preferences;
 
     public BezirkPreferences(Context context) {
@@ -29,7 +27,7 @@ public class BezirkPreferences {
             Map<String, ?> keys = preferences.getAll();
 
             for (Map.Entry<String, ?> entry : keys.entrySet()) {
-                log.debug("map values " + entry.getKey() + ": " +
+                logger.debug("map values " + entry.getKey() + ": " +
                         entry.getValue().toString());
             }
         }

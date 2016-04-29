@@ -19,10 +19,7 @@ import static org.junit.Assert.*;
  * @author AJC6KOR
  */
 public class ControlLedgerTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(ControlLedgerTest.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(ControlLedgerTest.class);
 
     private static final byte[] checksum = "DummyCheck".getBytes();
     private static final byte[] dataOnWire = "DummyData".getBytes();
@@ -45,7 +42,7 @@ public class ControlLedgerTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up ControlLedgerTest TestCase *****");
+        logger.info("***** Setting up ControlLedgerTest TestCase *****");
 
     }
 
@@ -55,7 +52,7 @@ public class ControlLedgerTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down ControlLedgerTest TestCase *****");
+        logger.info("***** Shutting down ControlLedgerTest TestCase *****");
     }
 
 

@@ -23,10 +23,7 @@ import org.slf4j.LoggerFactory;
  * Activity that is used to display the logger messages.
  */
 public class LogDataActivity extends Activity {
-    /**
-     * Logging Util.
-     */
-    private static final Logger log = LoggerFactory.getLogger(LogDataActivity.class);
+    private static final Logger logger = LoggerFactory.getLogger(LogDataActivity.class);
 
     /**
      * RESULT CODE to send the data to back activity.
@@ -92,7 +89,7 @@ public class LogDataActivity extends Activity {
                 logDataActivityHelper.mHandler = null;
             } catch (Exception e) {
                 logDataActivityHelper.printToast("ERROR IN STOPPING LOG SERVICE...");
-                log.error("Error in stopping logger zirk.", e);
+                logger.error("Error in stopping logger zirk.", e);
             }
         }
         setResult(RESULT_CODE_FOR_RETURN_ACTIVITY);

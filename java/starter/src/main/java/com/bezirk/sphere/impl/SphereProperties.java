@@ -18,6 +18,7 @@ import java.util.Properties;
  * @author rishabh
  */
 public class SphereProperties implements ISphereConfig {
+    private static final Logger logger = LoggerFactory.getLogger(SphereProperties.class);
 
     private static final String SPHERE_PROPERTIES_FILE = "sphere.properties";
     /* Keys used in sphere.properties */
@@ -26,7 +27,7 @@ public class SphereProperties implements ISphereConfig {
     private static final String SPHERE_KEY = "sphereKey";
     private static final String SPHERE_MODE = "devMode";
     private static final String DEFAULT_SPHERE_NAME = "defaultSphereName";
-    private static final Logger log = LoggerFactory.getLogger(SphereProperties.class);
+
     private Mode mode;
     /* Development sphere variables */
     private String sphereName;
@@ -80,7 +81,7 @@ public class SphereProperties implements ISphereConfig {
             this.defaultSphereName = name;
             return true;
         } catch (Exception e) {
-            log.error("setDefaultSphereName", e);
+            logger.error("setDefaultSphereName", e);
         }
         return false;
     }
@@ -101,7 +102,7 @@ public class SphereProperties implements ISphereConfig {
                 this.mode = mode;
                 return true;
             } catch (Exception e) {
-                log.error("setDefaultSphereName", e);
+                logger.error("setDefaultSphereName", e);
             }
         }
         return false;
@@ -116,9 +117,9 @@ public class SphereProperties implements ISphereConfig {
         Properties sphereProperties = null;
         try {
             sphereProperties = UPADeviceForPC.loadProperties(SPHERE_PROPERTIES_FILE);
-            log.info(sphereProperties.toString());
+            logger.info(sphereProperties.toString());
         } catch (Exception e) {
-            log.error("getProperties", e);
+            logger.error("getProperties", e);
         }
         return sphereProperties;
     }
@@ -133,7 +134,7 @@ public class SphereProperties implements ISphereConfig {
         if (properties.containsKey(SPHERE_NAME) && properties.containsKey(SPHERE_ID)
                 && properties.containsKey(SPHERE_KEY) && properties.getProperty(SPHERE_KEY).length() == 24
                 && properties.containsKey(SPHERE_MODE) && properties.containsKey(DEFAULT_SPHERE_NAME)) {
-            log.info("sphere properties validated");
+            logger.info("sphere properties validated");
             return true;
         }
         return false;
@@ -153,7 +154,7 @@ public class SphereProperties implements ISphereConfig {
         System.out.println("size of byte array: " + sphereKey.length);
         mode = (properties.getProperty(SPHERE_MODE).equalsIgnoreCase("true")) ? Mode.ON : Mode.OFF;
         defaultSphereName = properties.getProperty(DEFAULT_SPHERE_NAME);
-        log.info("sphere name: " + sphereName + " sphereId: " + sphereId + " sphereKey: " + Arrays.toString(sphereKey)
+        logger.info("sphere name: " + sphereName + " sphereId: " + sphereId + " sphereKey: " + Arrays.toString(sphereKey)
                 + " mode: " + mode + " defaultSphereName: " + defaultSphereName);
     }
 

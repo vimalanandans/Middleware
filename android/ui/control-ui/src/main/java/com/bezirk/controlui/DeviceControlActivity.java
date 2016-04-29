@@ -30,7 +30,7 @@ import java.util.List;
 public class DeviceControlActivity extends ActionBarActivity
         implements GenericListItemView.ItemToggleListener {
     final Context context = this;
-    private static final Logger log = LoggerFactory.getLogger(DeviceControlActivity.class);
+    private static final Logger logger = LoggerFactory.getLogger(DeviceControlActivity.class);
     // UI Create
     List<DataModel> listData = new ArrayList<DataModel>();
     BezirkPreferences preferences;
@@ -100,14 +100,14 @@ public class DeviceControlActivity extends ActionBarActivity
         super.onResume();
         deviceIntentReceiver = new DeviceIntentReceiver();
         registerReceiver(deviceIntentReceiver, new IntentFilter("com.bosch.upa.uhu.controluinotfication"));
-        log.debug("Registered DeviceIntentReceiver");
+        logger.debug("Registered DeviceIntentReceiver");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(deviceIntentReceiver);
-        log.debug("Unregistered DeviceIntentReceiver");
+        logger.debug("Unregistered DeviceIntentReceiver");
     }
 
     /**
@@ -124,7 +124,7 @@ public class DeviceControlActivity extends ActionBarActivity
                 deviceControlActivityHelper.setDeviceType(deviceType);
                 break;
             default:
-                log.error("unknown result from settings activity");
+                logger.error("unknown result from settings activity");
                 break;
         }
     }
@@ -153,7 +153,7 @@ public class DeviceControlActivity extends ActionBarActivity
 
     @Override
     public void onItemToggleListener(int position, boolean checkStatus) {
-        log.info("toggle button pressed at: " + String.valueOf(position), " state : " + String.valueOf(checkStatus));
+        logger.info("toggle button pressed at: " + String.valueOf(position), " state : " + String.valueOf(checkStatus));
         Intent intent;
         String action;
         // we selecting based on image id hence list must have image id and it has to be unique
@@ -173,7 +173,7 @@ public class DeviceControlActivity extends ActionBarActivity
                         startService(intent);
                         break;
                     default:
-                        log.error("Unknown toggle button pressed");
+                        logger.error("Unknown toggle button pressed");
                         break;
                 }
             }

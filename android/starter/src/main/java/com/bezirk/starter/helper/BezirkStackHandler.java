@@ -12,7 +12,7 @@ import com.bezirk.comms.BezirkCommsAndroid;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.persistence.RegistryPersistence;
-import com.bezirk.proxy.android.ProxyforServices;
+import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.rest.CommsRestController;
@@ -55,14 +55,14 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
 
     private final BezirkDeviceHelper bezirkDeviceHelper = new BezirkDeviceHelper();
 
-    private final ProxyforServices proxy;
+    private final ProxyForZirks proxy;
 
     private final CommsNotification errNotificationCallback;
     private final BezirkWifiManager bezirkWifiManager;
     private final BezirkStartStackHelper bezirkStartStackHelper;
     private RegistryPersistence registryPersistence;
 
-    public BezirkStackHandler(ProxyforServices proxy, CommsNotification errorNotificationCallback) {
+    public BezirkStackHandler(ProxyForZirks proxy, CommsNotification errorNotificationCallback) {
         this.proxy = proxy;
         this.errNotificationCallback = errorNotificationCallback;
         this.bezirkWifiManager = BezirkWifiManager.getInstance();

@@ -43,8 +43,8 @@ import java.util.StringTokenizer;
  */
 
 public class NativeUtils {
+    public static final Logger logger = LoggerFactory.getLogger(NativeUtils.class);
 
-    public static final Logger log = LoggerFactory.getLogger(NativeUtils.class);
     private static final String DELIMITER = "/";
     private static final String LIB_BIN = "lib-zeromq-bin";
     private static final String JAVA_TMPDIR = System.getProperty("java.io.tmpdir");
@@ -123,11 +123,11 @@ public class NativeUtils {
 
             // if file exist after delete may be used by other process so leave it.
             if (fileOut.exists()) {
-                log.warn("using old libs, might be creating problems with old software ");
+                logger.warn("using old libs, might be creating problems with old software ");
                 System.load(fileOut.toString());
                 return;
             }
-            log.info("Writing lib to: " + fileOut.getAbsolutePath());
+            logger.info("Writing lib to: " + fileOut.getAbsolutePath());
             OutputStream out = FileUtils.openOutputStream(fileOut);
 
             try {
@@ -155,7 +155,7 @@ public class NativeUtils {
                 file.delete();
             } catch (final SecurityException e) {
                 // not likely
-                log.error("unable to delete");
+                logger.error("unable to delete");
             }
         }
     }
@@ -168,24 +168,24 @@ public class NativeUtils {
         String os = System.getProperty("os.name").toLowerCase();
         String arch = System.getProperty("os.arch").toLowerCase();
 
-        log.debug("java.library.path = " + System.getProperty("java.library.path"));
+        logger.debug("java.library.path = " + System.getProperty("java.library.path"));
         String path = System.getProperty("java.library.path");
-        log.debug("LD_PRELOAD: " + System.getenv("LD_PRELOAD"));
+        logger.debug("LD_PRELOAD: " + System.getenv("LD_PRELOAD"));
 
-        log.debug("os.name: " + os);
-        log.debug("os.arch: " + arch);
+        logger.debug("os.name: " + os);
+        logger.debug("os.arch: " + arch);
 
         if (arch.equals("amd64") || arch.equals("x86_64")) {
             if (os.contains("windows")) {
-                log.debug("Loading native libs for x64windows");
+                logger.debug("Loading native libs for x64windows");
                 String[] libs = {"libsodium", "libzmq", "czmq", "zyre", "zyre-jni"};
                 Zyre.loadSystemLibrary(libs);
             } else if (os.contains("linux")) {
-                log.info("Loading native libs for x64linux");
+                logger.info("Loading native libs for x64linux");
                 String[] libs = {"sodium", "zmq", "czmq", "zyre", "zyre-jni"};
                 Zyre.loadSystemLibrary(libs);
             } else if (os.contains("mac")) {
-                log.info("Loading native libs for osx");
+                logger.info("Loading native libs for osx");
                 String[] libs = {"sodium", "zmq", "czmq", "zyre", "zyre-jni"};
                 Zyre.loadSystemLibrary(libs);
                 /*
@@ -227,7 +227,7 @@ public class NativeUtils {
                 loadLib("zyre-jni");
             } catch (IOException e) {
                 String libPathProperty = System.getProperty("java.library.path");
-                log.info("java.library.path > " + libPathProperty);
+                logger.info("java.library.path > " + libPathProperty);
                 e.printStackTrace();
             }
 
@@ -244,7 +244,7 @@ public class NativeUtils {
                 loadLib("zyre-jni");
             } catch (IOException e) {
                 String libPathProperty = System.getProperty("java.library.path");
-                log.info("java.library.path > " + libPathProperty);
+                logger.info("java.library.path > " + libPathProperty);
                 e.printStackTrace();
             }
 
@@ -264,14 +264,14 @@ public class NativeUtils {
         URL url = Zyre.class.getClassLoader().getResource(path);
 
         if (url == null) {
-            log.warn("empty resource folder");
+            logger.warn("empty resource folder");
             return;
         }
         File fileOut = new File(JAVA_TMPDIR + DELIMITER + LIB_BIN + DELIMITER);
 
         if (fileOut.exists()) {
-            log.info("lib files already exits in " + fileOut.getAbsolutePath());
-            log.info("if new software installation, please delete libs at " + fileOut.getAbsolutePath());
+            logger.info("lib files already exits in " + fileOut.getAbsolutePath());
+            logger.info("if new software installation, please delete libs at " + fileOut.getAbsolutePath());
             return;
         }
 
@@ -322,10 +322,10 @@ public class NativeUtils {
         property = System.getProperty("java.library.path");
         StringTokenizer parser = new StringTokenizer(property, ";");
 
-        log.info("path added > " + TEMP_PATH);
+        logger.info("path added > " + TEMP_PATH);
 
         while (parser.hasMoreTokens()) {
-            log.info(parser.nextToken());
+            logger.info(parser.nextToken());
         }
     }
 

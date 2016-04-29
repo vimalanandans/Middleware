@@ -25,9 +25,7 @@ import static org.junit.Assert.assertNotNull;
  * @author AJC6KOR
  */
 public class DiscoveryResponseTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(DiscoveryResponseTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(DiscoveryResponseTest.class);
 
     private static final String sphereId = "TestSphere";
     private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
@@ -42,7 +40,7 @@ public class DiscoveryResponseTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up DiscoveryResponseTest TestCase *****");
+        logger.info("***** Setting up DiscoveryResponseTest TestCase *****");
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
     }
@@ -53,7 +51,7 @@ public class DiscoveryResponseTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down DiscoveryResponseTest TestCase *****");
+        logger.info("***** Shutting down DiscoveryResponseTest TestCase *****");
     }
 
     private static InetAddress getInetAddress() {
@@ -78,7 +76,7 @@ public class DiscoveryResponseTest {
             }
         } catch (SocketException e) {
 
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
 
         }
         return null;

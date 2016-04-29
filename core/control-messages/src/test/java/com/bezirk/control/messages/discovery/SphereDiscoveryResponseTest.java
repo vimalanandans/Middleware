@@ -24,9 +24,7 @@ import static org.junit.Assert.assertEquals;
  * @author AJC6KOR
  */
 public class SphereDiscoveryResponseTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(SphereDiscoveryResponseTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(SphereDiscoveryResponseTest.class);
 
     private static final String sphereId = "TestSphere";
     private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
@@ -41,7 +39,7 @@ public class SphereDiscoveryResponseTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up SphereDiscoveryResponseTest TestCase *****");
+        logger.info("***** Setting up SphereDiscoveryResponseTest TestCase *****");
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
     }
@@ -52,7 +50,7 @@ public class SphereDiscoveryResponseTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down SphereDiscoveryResponseTest TestCase *****");
+        logger.info("***** Shutting down SphereDiscoveryResponseTest TestCase *****");
     }
 
     private static InetAddress getInetAddress() {
@@ -77,7 +75,7 @@ public class SphereDiscoveryResponseTest {
             }
         } catch (SocketException e) {
 
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
 
         }
         return null;

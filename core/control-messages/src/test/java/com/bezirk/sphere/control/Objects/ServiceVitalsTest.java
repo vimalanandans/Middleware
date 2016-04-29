@@ -14,9 +14,7 @@ import static org.junit.Assert.assertEquals;
  * @author AJC6KOR
  */
 public class ServiceVitalsTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(ServiceVitalsTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ServiceVitalsTest.class);
 
     private static final String ownerDeviceID = "TESTDEVICe";
     private static final String serviceName = "ServiceA";
@@ -27,7 +25,7 @@ public class ServiceVitalsTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up ServiceVitalsTest TestCase *****");
+        logger.info("***** Setting up ServiceVitalsTest TestCase *****");
 
     }
 
@@ -37,7 +35,7 @@ public class ServiceVitalsTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down ServiceVitalsTest TestCase *****");
+        logger.info("***** Shutting down ServiceVitalsTest TestCase *****");
     }
 
 

@@ -13,14 +13,13 @@ import javax.net.ssl.SSLSession;
  * Adapted from: http://stackoverflow.com/questions/14619781/java-io-ioexception-hostname-was-not-verified
  */
 public class NullHostNameVerifier implements HostnameVerifier {
-
-    public static final Logger log = LoggerFactory.getLogger(NullHostNameVerifier.class);
+    public static final Logger logger = LoggerFactory.getLogger(NullHostNameVerifier.class);
 
     /**
      * Retursn true for any hostname and SSLSession
      */
     public boolean verify(String hostname, SSLSession session) {
-        log.info("Approving certificate for " + hostname);
+        logger.info("Approving certificate for " + hostname);
         return true;
     }
 }

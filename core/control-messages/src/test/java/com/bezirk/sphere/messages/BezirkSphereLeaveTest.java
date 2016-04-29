@@ -24,10 +24,7 @@ import static org.junit.Assert.assertNotNull;
  * @author AJC6KOR
  */
 public class BezirkSphereLeaveTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(BezirkSphereLeaveTest.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(BezirkSphereLeaveTest.class);
 
     private static final String sphereId = "TestSphere";
     private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
@@ -42,7 +39,7 @@ public class BezirkSphereLeaveTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up BezirkSphereLeaveTest TestCase *****");
+        logger.info("***** Setting up BezirkSphereLeaveTest TestCase *****");
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
 
@@ -54,7 +51,7 @@ public class BezirkSphereLeaveTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down BezirkSphereLeaveTest TestCase *****");
+        logger.info("***** Shutting down BezirkSphereLeaveTest TestCase *****");
     }
 
     private static InetAddress getInetAddress() {
@@ -79,7 +76,7 @@ public class BezirkSphereLeaveTest {
             }
         } catch (SocketException e) {
 
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
 
         }
         return null;

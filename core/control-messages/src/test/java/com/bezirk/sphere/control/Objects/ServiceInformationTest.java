@@ -16,9 +16,7 @@ import static org.junit.Assert.assertEquals;
  * @author AJC6KOR
  */
 public class ServiceInformationTest {
-
-    private static final Logger log = LoggerFactory
-            .getLogger(ServiceInformationTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ServiceInformationTest.class);
 
     private static final String sphereId = "TestSphere";
     private static final com.bezirk.sphere.control.Objects.ServiceVitals serviceVitals = new com.bezirk.sphere.control.Objects.ServiceVitals();
@@ -30,7 +28,7 @@ public class ServiceInformationTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        log.info("***** Setting up ServiceInformationTest TestCase *****");
+        logger.info("***** Setting up ServiceInformationTest TestCase *****");
         sphereSet.add(sphereId);
 
     }
@@ -41,7 +39,7 @@ public class ServiceInformationTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        log.info("***** Shutting down ServiceInformationTest TestCase *****");
+        logger.info("***** Shutting down ServiceInformationTest TestCase *****");
     }
 
 

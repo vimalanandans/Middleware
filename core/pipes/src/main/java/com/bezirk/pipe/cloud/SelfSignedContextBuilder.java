@@ -14,8 +14,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
 public class SelfSignedContextBuilder implements SSLContextBuilder {
-
-    public static final Logger log = LoggerFactory.getLogger(SelfSignedContextBuilder.class);
+    private static final Logger logger = LoggerFactory.getLogger(SelfSignedContextBuilder.class);
 
     protected String certFileName = null;
 
@@ -45,7 +44,7 @@ public class SelfSignedContextBuilder implements SSLContextBuilder {
         Certificate cert;
         try {
             cert = cf.generateCertificate(buffCertInStream);
-            log.debug("cert=" + ((X509Certificate) cert).getSubjectDN());
+            logger.debug("cert=" + ((X509Certificate) cert).getSubjectDN());
         } finally {
             buffCertInStream.close();
         }

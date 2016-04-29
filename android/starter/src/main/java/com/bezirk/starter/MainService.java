@@ -26,7 +26,7 @@ import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.pipe.core.PipeRequest;
 import com.bezirk.pipe.core.PipeRequester;
 import com.bezirk.proxy.android.PipeActionParser;
-import com.bezirk.proxy.android.ProxyforServices;
+import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.starter.helper.NetworkBroadCastReceiver;
 import com.bezirk.starter.helper.BezirkActionProcessor;
@@ -84,7 +84,7 @@ public class MainService extends Service implements INotificationCallback {
         super.onCreate();
         //Acquire the Wifi Lock for Multicast
         logger.info("Bezirk Services is Created");
-        final ProxyforServices proxy = new ProxyforServices(this);
+        final ProxyForZirks proxy = new ProxyForZirks(this);
         bezirkServiceHelper = new BezirkServiceHelper(proxy);
         //Gain permissions for multicast
 

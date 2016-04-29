@@ -29,10 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 class LogDataActivityHelper {
-    /**
-     * Logging Util.
-     */
-    private static final Logger log = LoggerFactory.getLogger(LogDataActivityHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(LogDataActivityHelper.class);
     /**
      * ANY_SPHERE label
      */
@@ -149,7 +146,7 @@ class LogDataActivityHelper {
             int countValue = Integer.parseInt(countTextView.getText().toString()) + 1;
             countTextView.setText(String.valueOf(countValue));
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             printToast("Error in updating table Row");
         }
     }
@@ -162,7 +159,7 @@ class LogDataActivityHelper {
             logDataActivity.mBezirkLoggingManager = new BezirkLoggingManager();
             logDataActivity.mBezirkLoggingManager.startLoggingService(BezirkCommunications.getREMOTE_LOGGING_PORT(), loggingHandler);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -293,7 +290,7 @@ class LogDataActivityHelper {
                     logDataActivity.onDestroy();
                 } catch (Exception e) {
                     printToast("ERROR IN STOPPING LOG SERVICE...");
-                    log.error("Error in stopping logger zirk.", e);
+                    logger.error("Error in stopping logger zirk.", e);
                 }
             }
         });
@@ -319,7 +316,7 @@ class LogDataActivityHelper {
         try {
             tempSphereName.append(BezirkCompManager.getSphereUI().getSphere(sphereId).getSphereName());
         } catch (NullPointerException ne) {
-            log.error("Error in fetching sphereName from sphere UI", ne);
+            logger.error("Error in fetching sphereName from sphere UI", ne);
             tempSphereName.append("Un-defined");
         }
         return tempSphereName.toString();
