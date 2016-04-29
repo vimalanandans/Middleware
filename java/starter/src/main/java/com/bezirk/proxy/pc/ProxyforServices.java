@@ -40,7 +40,7 @@ import java.io.File;
 import java.util.Iterator;
 
 public class ProxyForServices implements BezirkProxyForServiceAPI {
-    private static final Logger logger = LoggerFactory.getLogger(ProxyforServices.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProxyForServices.class);
     private ISadlRegistry sadlRegistry = null;
     private BezirkComms comms = null;
 
@@ -109,7 +109,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
     public void sendUnicastEvent(final BezirkZirkId serviceId, final BezirkZirkEndPoint recipient, final String serializedEventMsg) {
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            logger.error("Zirk Not Registered with the sphere");
+            logger.error("Zirk not registered with the sphere");
             return;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
@@ -143,7 +143,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
     public void discover(final BezirkZirkId serviceId, final Address address, final SubscribedRole pRole, final int discoveryId, final long timeout, final int maxDiscovered) {
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            logger.error("Zirk Not Registered with the sphere");
+            logger.error("Zirk not tegistered with the sphere");
             return;
         }
 

@@ -18,7 +18,7 @@ import com.bezirk.persistence.BezirkProxyRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.pc.ProxyforServices;
+import com.bezirk.proxy.pc.ProxyForServices;
 import com.bezirk.proxy.registration.ServiceRegistration;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkConfig;
@@ -41,7 +41,7 @@ public class Proxy implements Bezirk {
     protected final HashMap<String, HashSet<BezirkListener>> eventListenerMap = new HashMap<String, HashSet<BezirkListener>>();
     protected final HashMap<String, HashSet<BezirkListener>> streamListenerMap = new HashMap<String, HashSet<BezirkListener>>();
     protected final HashMap<String, String> activeStreams = new HashMap<String, String>();
-    private final ProxyforServices proxy;
+    private final ProxyForServices proxy;
     private final ProxyUtil proxyUtil;
     private final BezirkProxyPersistence proxyPersistence;
     private final MainService mainService;
@@ -50,7 +50,7 @@ public class Proxy implements Bezirk {
     private BezirkProxyRegistry bezirkProxyRegistry = null;
 
     public Proxy() {
-        proxy = new ProxyforServices();
+        proxy = new ProxyForServices();
         proxyUtil = new ProxyUtil();
         mainService = new MainService(proxy, null);
         final BroadcastReceiver brForService = new BRForService(activeStreams, dListenerMap,
@@ -67,7 +67,7 @@ public class Proxy implements Bezirk {
     }
 
     public Proxy(BezirkConfig bezirkConfig) {
-        proxy = new ProxyforServices();
+        proxy = new ProxyForServices();
         proxyUtil = new ProxyUtil();
         mainService = new MainService(proxy, bezirkConfig);
         BRForService brForService = new BRForService(activeStreams, dListenerMap,

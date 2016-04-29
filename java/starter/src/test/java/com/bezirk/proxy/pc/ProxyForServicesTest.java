@@ -24,19 +24,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-/**
- * This testcase verfies the methods in ProxyForServices class.
- *
- * @author AJC6KOR
- */
 public class ProxyForServicesTest {
     private static final Logger logger = LoggerFactory.getLogger(ProxyForServicesTest.class);
 
     private static final MockSetUpUtilityForBezirkPC mockSetUP = new MockSetUpUtilityForBezirkPC();
     private static BezirkSadlManager sadlManager;
-    private final String serviceName = "MockServiceA";
-    private final String serviceAId = "MockServiceAId";
-    private final BezirkZirkId bezirkZirkAId = new BezirkZirkId(serviceAId);
+    private final String zirkName = "MockZirkA";
+    private final String zirkAId = "MockZirkAId";
+    private final BezirkZirkId bezirkZirkAId = new BezirkZirkId(zirkAId);
     private final MockProtocolsForBezirkPC.DummyProtocol dummyProtocol = new MockProtocolsForBezirkPC().new DummyProtocol();
     private final SubscribedRole pRole = new SubscribedRole(dummyProtocol);
 
@@ -61,89 +56,77 @@ public class ProxyForServicesTest {
     }
 
     @Test
-    public void test() {
+    public void testRegisterService() {
+        ProxyForServices proxyForServices = new ProxyForServices();
+        proxyForServices.setSadlRegistry(sadlManager);
 
-        testRegisterService();
-
-        testSubscribeService();
-
-        testUnSubscribeService();
-
-        testUnregisterService();
-
-        testDiscover();
-
-        testSetLocation();
-    }
-
-    private void testRegisterService() {
-        com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
-        proxyforServices.setSadlRegistry(sadlManager);
-
-        proxyforServices.registerService(bezirkZirkAId, serviceName);
+        proxyForServices.registerService(bezirkZirkAId, zirkName);
 
         assertTrue("Proxy is unable to register zirk. ",
                 sadlManager.isServiceRegistered(bezirkZirkAId));
 
-        proxyforServices.unregister(bezirkZirkAId);
+        proxyForServices.unregister(bezirkZirkAId);
     }
 
-    private void testSubscribeService() {
-        com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
-        proxyforServices.setSadlRegistry(sadlManager);
+    @Test
+    public void testSubscribeService() {
+        ProxyForServices proxyForServices = new ProxyForServices();
+        proxyForServices.setSadlRegistry(sadlManager);
 
-        proxyforServices.registerService(bezirkZirkAId, serviceName);
-        proxyforServices.subscribeService(bezirkZirkAId, pRole);
+        proxyForServices.registerService(bezirkZirkAId, zirkName);
+        proxyForServices.subscribeService(bezirkZirkAId, pRole);
 
         assertTrue(
                 "Proxy is allowing duplicate subscription. ",
                 sadlManager.isStreamTopicRegistered(
                         dummyProtocol.getStreamTopics()[0], bezirkZirkAId));
 
-        proxyforServices.unregister(bezirkZirkAId);
+        proxyForServices.unregister(bezirkZirkAId);
 
     }
 
-    private void testUnregisterService() {
-        com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
-        proxyforServices.setSadlRegistry(sadlManager);
+    @Test
+    public void testUnregisterService() {
+        ProxyForServices proxyForServices = new ProxyForServices();
+        proxyForServices.setSadlRegistry(sadlManager);
 
-        proxyforServices.registerService(bezirkZirkAId, serviceName);
+        proxyForServices.registerService(bezirkZirkAId, zirkName);
 
-        proxyforServices.unregister(bezirkZirkAId);
+        proxyForServices.unregister(bezirkZirkAId);
 
         assertFalse("Proxy is unable to perform unregistration ",
                 sadlManager.isServiceRegistered(bezirkZirkAId));
     }
 
-    private void testUnSubscribeService() {
-        com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
-        proxyforServices.setSadlRegistry(sadlManager);
+    @Test
+    public void testUnsubscribeService() {
+        ProxyForServices proxyForServices = new ProxyForServices();
+        proxyForServices.setSadlRegistry(sadlManager);
 
-        proxyforServices.registerService(bezirkZirkAId, serviceName);
-        proxyforServices.subscribeService(bezirkZirkAId, pRole);
-        proxyforServices.unsubscribe(bezirkZirkAId, pRole);
+        proxyForServices.registerService(bezirkZirkAId, zirkName);
+        proxyForServices.subscribeService(bezirkZirkAId, pRole);
+        proxyForServices.unsubscribe(bezirkZirkAId, pRole);
         assertFalse(
                 "Proxy is unable to perform unsubscription. ",
                 sadlManager.isStreamTopicRegistered(
                         dummyProtocol.getStreamTopics()[0], bezirkZirkAId));
 
-        proxyforServices.unregister(bezirkZirkAId);
+        proxyForServices.unregister(bezirkZirkAId);
 
     }
 
-    private void testDiscover() {
-
-        com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
-        proxyforServices.setSadlRegistry(sadlManager);
+    @Test
+    public void testDiscover() {
+        ProxyForServices proxyForServices = new ProxyForServices();
+        proxyForServices.setSadlRegistry(sadlManager);
 
         String serviceId = "ServiceB";
         BezirkZirkId bezirkZirkBId = new BezirkZirkId(serviceId);
 
-        proxyforServices.registerService(bezirkZirkBId, serviceId);
-        proxyforServices.subscribeService(bezirkZirkBId, pRole);
+        proxyForServices.registerService(bezirkZirkBId, serviceId);
+        proxyForServices.subscribeService(bezirkZirkBId, pRole);
 
-        proxyforServices.discover(bezirkZirkAId, null, pRole, 3, 10000, 1);
+        proxyForServices.discover(bezirkZirkAId, null, pRole, 3, 10000, 1);
         ConcurrentHashMap<DiscoveryLabel, DiscoveryRecord> discoveredMap = new ConcurrentHashMap<>();
         try {
             discoveredMap = DiscoveryProcessor.getDiscovery()
@@ -161,19 +144,19 @@ public class ProxyForServicesTest {
                 "DiscoveryId is not matching with the id in the discovery request.",
                 discLabel.getDiscoveryId(), 3);
 
-        proxyforServices.unregister(bezirkZirkBId);
+        proxyForServices.unregister(bezirkZirkBId);
     }
 
-    private void testSetLocation() {
-
-        com.bezirk.proxy.pc.ProxyforServices proxyforServices = new com.bezirk.proxy.pc.ProxyforServices();
-        proxyforServices.setSadlRegistry(sadlManager);
-        proxyforServices.registerService(bezirkZirkAId, serviceName);
+    @Test
+    public void testSetLocation() {
+        ProxyForServices proxyForServices = new ProxyForServices();
+        proxyForServices.setSadlRegistry(sadlManager);
+        proxyForServices.registerService(bezirkZirkAId, zirkName);
 
         Location location = new Location("OFFICE1/BLOCK1/FLOOR1");
-        proxyforServices.setLocation(bezirkZirkAId, location);
+        proxyForServices.setLocation(bezirkZirkAId, location);
 
-        Location locInRegistry = ((BezirkSadlManager) proxyforServices
+        Location locInRegistry = ((BezirkSadlManager) proxyForServices
                 .getSadlRegistry()).getLocationForService(bezirkZirkAId);
         assertEquals(
                 "Location for mockservice is not matching the location set via proxy.",

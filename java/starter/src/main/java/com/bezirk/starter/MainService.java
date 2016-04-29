@@ -15,6 +15,7 @@ import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.BezirkProxyPersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.pipe.core.PipeManager;
+import com.bezirk.proxy.pc.ProxyForServices;
 import com.bezirk.sadl.BezirkSadlManager;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.BezirkSphereForPC;
@@ -34,14 +35,13 @@ import javax.swing.SwingUtilities;
  * MainService for bezirk-pc which controls the bezirk stack
  */
 public class MainService {
-    private static final Logger logger = LoggerFactory
-            .getLogger(MainService.class);
+    private static final Logger logger = LoggerFactory.getLogger(MainService.class);
     private static final String DB_VERSION = "0.0.3";
     /**
      * Max value for the notification
      */
     private static final int MAX_ERROR_REPEAT_COUNT = 100;
-    private final com.bezirk.proxy.pc.ProxyforServices proxyForServices;
+    private final ProxyForServices proxyForServices;
     private final BezirkPCNetworkUtil bezirkPcNetworkUtil = new BezirkPCNetworkUtil();
     private final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
     BezirkSphereAPI sphereForPC;
@@ -112,7 +112,7 @@ public class MainService {
      * @param proxyForServices
      * @param bezirkConfigRef
      */
-    public MainService(final com.bezirk.proxy.pc.ProxyforServices proxyForServices,
+    public MainService(final ProxyForServices proxyForServices,
                        final BezirkConfig bezirkConfigRef) {
 
         this.proxyForServices = proxyForServices;
