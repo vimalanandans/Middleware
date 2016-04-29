@@ -44,9 +44,9 @@ public class Discovery {
         }
     }
 
-    public void addRequest(DiscoveryLabel dlabel, DiscoveryRecord disc) {
+    public void addRequest(DiscoveryLabel discoveryLabel, DiscoveryRecord disc) {
         synchronized (this) {
-            discoveredMap.put(dlabel, disc);
+            discoveredMap.put(discoveryLabel, disc);
             notifyAll();
         }
     }

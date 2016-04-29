@@ -40,7 +40,7 @@ public class SphereRegistry implements Serializable {
         if (sphereKeyMap.containsKey(sphereId)) {
             exists = true;
         } else if (sphereHashKeyMap.containsKey(sphereId)) { // else check the
-            // secundry map
+            // secondary map
             exists = true;
         }
         return exists;

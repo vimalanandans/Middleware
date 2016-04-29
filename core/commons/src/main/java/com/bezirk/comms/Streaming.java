@@ -6,7 +6,7 @@ import com.bezirk.streaming.control.Objects.StreamRecord;
 
 
 /**
- * This interface is introduced to separate the streaming functionalities from UhuCommsManager.
+ * This interface is introduced to separate the streaming functionalities from BezirkCommsManager.
  *
  * @author ajc6kor
  */

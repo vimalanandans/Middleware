@@ -110,6 +110,7 @@ public final class BezirkCommsPC {
     private static void overrideStringProperty(String propName,
                                                Properties props, BezirkConfig bezirkConfig) {
         final String value = System.getProperty(propName);
+
         if (BezirkValidatorUtility.checkForString(value)) {
             logger.info("found system property: " + propName + ": " + value);
             props.setProperty(propName, value);
@@ -117,9 +118,6 @@ public final class BezirkCommsPC {
             if ("displayEnable".equals(propName)) {
                 bezirkConfig.setDisplayEnable(value);
             }
-        } else {
-            return;
-
         }
     }
 

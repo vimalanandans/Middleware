@@ -100,7 +100,7 @@ public class StreamQueueProcessor implements Runnable {
     private void processStreamBusyMessage(boolean uhuCallbackPresent,
                                           StreamRecord streamRecord) {
 
-        logger.debug("The Receipient is Busy, Giving Callback to the Zirk");
+        logger.debug("The Recipient is Busy, Giving Callback to the Zirk");
 
         StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
                 streamRecord.senderSEP.zirkId, 0, streamRecord.localStreamId);

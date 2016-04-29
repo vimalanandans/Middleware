@@ -83,7 +83,7 @@ public class ProxyForServicesTest {
         proxyforServices.registerService(uhuServiceAId, serviceName);
 
         assertTrue("Proxy is unable to register zirk. ",
-                sadlManager.isServiceRegisterd(uhuServiceAId));
+                sadlManager.isServiceRegistered(uhuServiceAId));
 
         proxyforServices.unregister(uhuServiceAId);
     }
@@ -113,7 +113,7 @@ public class ProxyForServicesTest {
         proxyforServices.unregister(uhuServiceAId);
 
         assertFalse("Proxy is unable to perform unregistration ",
-                sadlManager.isServiceRegisterd(uhuServiceAId));
+                sadlManager.isServiceRegistered(uhuServiceAId));
     }
 
     private void testUnSubscribeService() {

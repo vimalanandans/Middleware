@@ -14,7 +14,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -193,18 +192,18 @@ public class SadlRegistry implements Serializable {
         }
         // Updating Event Map
         if (null == eventsTopics) {
-            logger.info("Protocol doesnot contain any Events to subscribe");
+            logger.info("Protocol does not contain any Events to subscribe");
         } else {
             for (String eventTopic : eventsTopics) {
-                final HashSet<BezirkZirkId> evntsResServices;
+                final HashSet<BezirkZirkId> eventsResServices;
                 if (eventMap.containsKey(eventTopic)) {
-                    evntsResServices = (HashSet<BezirkZirkId>) eventMap.get(eventTopic);
+                    eventsResServices = (HashSet<BezirkZirkId>) eventMap.get(eventTopic);
                 } else {
-                    evntsResServices = new HashSet<BezirkZirkId>();
+                    eventsResServices = new HashSet<BezirkZirkId>();
                 }
 
-                evntsResServices.add(serviceId);
-                eventMap.put(eventTopic, evntsResServices);
+                eventsResServices.add(serviceId);
+                eventMap.put(eventTopic, eventsResServices);
             }
         }
         // Updating Stream Map
@@ -231,15 +230,15 @@ public class SadlRegistry implements Serializable {
     /**
      * Un subscribes the zirk for the protocolRole
      *
-     * @param serviceId UhuserviceId of the zirk being unsubscribed
+     * @param zirkId BezirkZirkId of the zirk being unsubscribed
      * @param role      protocolRole of the zirk being unsubscribed
      * @return true if unsubscribed, false otherwise
      */
-    public Boolean unsubscribe(final BezirkZirkId serviceId, final ProtocolRole role) {
+    public Boolean unsubscribe(final BezirkZirkId zirkId, final ProtocolRole role) {
         if (protocolMap.containsKey(role.getProtocolName())) {
             final Set<BezirkZirkId> serviceIdSet = protocolMap.get(role.getProtocolName());
 
-            if (!serviceIdSet.remove(serviceId)) {
+            if (!serviceIdSet.remove(zirkId)) {
                 logger.info("Zirk is Trying to unsubscribe that it has not subscribed to");
                 return false;
             }
@@ -256,19 +255,19 @@ public class SadlRegistry implements Serializable {
             if (null != role.getEventTopics()) {
                 final String[] eventTopics = role.getEventTopics();
                 for (String topic : eventTopics) {
-                    removeTopicFromMap(topic, serviceId, eventMap);
+                    removeTopicFromMap(topic, zirkId, eventMap);
                 }
             }
             // Remove all  Streams
             if (null != role.getStreamTopics()) {
                 String[] streamTopics = role.getStreamTopics();
                 for (String streamTopic : streamTopics) {
-                    removeTopicFromMap(streamTopic, serviceId, streamMap);
+                    removeTopicFromMap(streamTopic, zirkId, streamMap);
                 }
             }
             return true;
         }
-        logger.info(serviceId + "Zirk tried to Unsubscribe  " + role.getProtocolName() + " without Registration/ Zirk might be already unsubscribed");
+        logger.info(zirkId + "Zirk tried to Unsubscribe  " + role.getProtocolName() + " without Registration/ Zirk might be already unsubscribed");
         return false;
     }
 
@@ -280,7 +279,7 @@ public class SadlRegistry implements Serializable {
      * @return
      */
     public Boolean unregisterService(final BezirkZirkId serviceId) {
-        if (isServiceRegisterd(serviceId)) {
+        if (isServiceRegistered(serviceId)) {
             // Remove the events from event Map
             removeSidFromMaps(serviceId, eventMap, false);
             // remove the steams from stream map
@@ -293,7 +292,7 @@ public class SadlRegistry implements Serializable {
             sid.remove(serviceId);
             return true;
         }
-        logger.info("Zirk tried to Unregister that doesnt exist");
+        logger.info("Zirk tried to Unregister that does not exist");
         return false;
     }
 
@@ -305,7 +304,7 @@ public class SadlRegistry implements Serializable {
      * @return true if updated, false otherwise
      */
     public Boolean setLocation(final BezirkZirkId serviceId, final Location location) {
-        if (isServiceRegisterd(serviceId)) {
+        if (isServiceRegistered(serviceId)) {
             locationMap.put(serviceId, location);
             return true;
         }
@@ -314,13 +313,13 @@ public class SadlRegistry implements Serializable {
     }
 
     /**
-     * Checks if ZirkId is registed
+     * Checks if ZirkId is registered
      *
-     * @param serviceId of the Zirk
+     * @param zirkId of the Zirk
      * @return true if sid contains ZirkId, false otherwise
      */
-    public Boolean isServiceRegisterd(BezirkZirkId serviceId) {
-        return sid.contains(serviceId);
+    public Boolean isServiceRegistered(BezirkZirkId zirkId) {
+        return sid.contains(zirkId);
     }
 
     /**
@@ -330,7 +329,7 @@ public class SadlRegistry implements Serializable {
      * @return Location of the zirk
      */
     public Location getLocationForService(BezirkZirkId serviceId) {
-        if (isServiceRegisterd(serviceId)) {
+        if (isServiceRegistered(serviceId)) {
             try {
                 return (defaultLocation.equals(locationMap.get(serviceId)) ? BezirkCompManager.getUpaDevice().getDeviceLocation() : locationMap.get(serviceId));
             } catch (Exception e) {
@@ -372,9 +371,7 @@ public class SadlRegistry implements Serializable {
      * @param isProtocol
      */
     private void removeSidFromMaps(final BezirkZirkId serviceId, final Map<String, Set<BezirkZirkId>> eventMap2, final boolean isProtocol) {
-        Iterator<Entry<String, Set<BezirkZirkId>>> iterator = eventMap2.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, Set<BezirkZirkId>> entry = iterator.next();
+        for (Entry<String, Set<BezirkZirkId>> entry : eventMap2.entrySet()) {
             if (entry.getValue().contains(serviceId)) {
                 entry.getValue().remove(serviceId);
                 if (entry.getValue().isEmpty()) {
@@ -395,7 +392,7 @@ public class SadlRegistry implements Serializable {
      * @return
      */
     public Boolean isStreamTopicRegistered(String streamTopic, BezirkZirkId serviceId) {
-        return isServiceRegisterd(serviceId) && streamMap.containsKey(streamTopic) && streamMap.get(streamTopic).contains(serviceId);
+        return isServiceRegistered(serviceId) && streamMap.containsKey(streamTopic) && streamMap.get(streamTopic).contains(serviceId);
     }
 
     /**
@@ -433,14 +430,14 @@ public class SadlRegistry implements Serializable {
 
 
     /**
-     * Checks the topic is registed by the recipient
+     * Checks the topic is registered by the recipient
      *
      * @param topic     topic needs to be checked
      * @param recipient recipient
      * @return true if registered, false otherwise
      */
     public boolean checkUnicastEvent(String topic, BezirkZirkId recipient) {
-        return isServiceRegisterd(recipient) && eventMap.containsKey(topic) && eventMap.get(topic).contains(recipient);
+        return isServiceRegistered(recipient) && eventMap.containsKey(topic) && eventMap.get(topic).contains(recipient);
     }
 
     /**
@@ -448,7 +445,7 @@ public class SadlRegistry implements Serializable {
      *
      * @param topic    topic of the Event
      * @param location of the Zirk
-     * @return Set<BezirkZirkId> if the servives are present, null otherwise
+     * @return Set<BezirkZirkId> if the zirks are present, <code>null</code> otherwise
      */
     public Set<BezirkZirkId> checkMulticastEvent(String topic, Location location) {
         HashSet<BezirkZirkId> services = null;

@@ -28,7 +28,7 @@ public interface ISadlRegistry {
     /**
      * Unsubscribes the Zirk from the SADL.
      *
-     * @param serviceId BezirkZirkId of the Unsubscribing Zirk
+     * @param serviceId BezirkZirkId of the unsubscribing Zirk
      * @param role      SubscribedRole of the Zirk
      * @return true if successful, false otherwise
      */

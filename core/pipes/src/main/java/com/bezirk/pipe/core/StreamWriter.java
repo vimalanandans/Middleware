@@ -109,8 +109,7 @@ public class StreamWriter implements Runnable {
         String serializedStreamDesc = writeJob.getStreamDescriptor();
 
         int counter = 0;
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
             try {
                 final byte[] buffer = new byte[1024];
                 int read;
@@ -144,8 +143,6 @@ public class StreamWriter implements Runnable {
                 fileOutputStream.flush();
             } catch (Exception t) {
                 logger.error("(thread: " + id + ") Problem writing file: \n", t);
-            } finally {
-                fileOutputStream.close();
             }
         } finally {
             logger.info("(thread: " + id + ") streaming file written completely: " + outputFile);
@@ -159,12 +156,9 @@ public class StreamWriter implements Runnable {
 
 
     /**
-     * Create a file in the bezirk portion of the externalStorageDirectory
-     *
-     * @param fileName
-     * @param retainFile True if the file shoudl be kept on disk and managed by bezirk services.
-     *                   False to instruct bezirk to create a temp file which may be deleted by the system
-     * @return
+     * Create a file in the Bezirk portion of the externalStorageDirectory
+
+     * @return a reference to the created file
      * @throws IOException
      */
     protected File createFile() throws IOException {

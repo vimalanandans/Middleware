@@ -14,7 +14,7 @@ import java.util.concurrent.SynchronousQueue;
  * Log messages (BezirkLoggingMessage). The Processors defined in the {@link com.bezirk.remotelogging.processors}
  * will process these queues accordingly.
  */
-@SuppressWarnings("PMD")// inorder to avoid the synchonized 
+@SuppressWarnings("PMD")// inorder to avoid the synchronized
 public final class LoggingQueueManager {
     /**
      * Blocking Queue that is used to queue logger messages at the logging client.
@@ -47,7 +47,7 @@ public final class LoggingQueueManager {
     }
 
     /**
-     * Waits on the logSenderQueue to retrive the logger Message
+     * Waits on the logSenderQueue to retrieve the logger Message
      *
      * @return String representation of the BezirkLoggingMessage
      * @throws InterruptedException if multiple threads try to access the queue.

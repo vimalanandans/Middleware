@@ -50,7 +50,7 @@ public class DummyContent {
     public static final List<AbstractPolicyListItem> policyListOutbound = new ArrayList<AbstractPolicyListItem>();
 
     /**
-     * An array of sample (dummy) informations.
+     * An array of sample (dummy) information.
      */
     public static final List<AbstractInformationListItem> informationListInbound = new ArrayList<AbstractInformationListItem>();
     public static final List<AbstractInformationListItem> informationListOutbound = new ArrayList<AbstractInformationListItem>();
@@ -129,7 +129,7 @@ public class DummyContent {
         addItem(new SphereListItem(new DummySphere(UUID.randomUUID(), "Car - Driving Assistance", true, false, deviceList)));
         addItem(new SphereListItem(new DummySphere(UUID.randomUUID(), "Paul's Party", false, false, deviceList)));
         addItem(new SphereListItem(new DummySphere(UUID.randomUUID(), "Frank's Festivity", false, false, deviceList)));
-        // Add samlpe services.
+        // Add sample services.
         serviceList.add(new DeviceServiceItem("Dummy Data Video",  true));
         serviceList.add(new DeviceServiceItem("Stream Music",  true));
         serviceList.add(new DeviceServiceItem("Data Mining",  true));
@@ -139,19 +139,19 @@ public class DummyContent {
         serviceList.add(new DeviceServiceItem("Banking",  false));
         serviceList.add(new DeviceServiceItem("Briefing",  false));
         serviceList.add(new DeviceServiceItem("Record Video",  false));
-        serviceList.add(new DeviceServiceItem("Adverstisement",  false));
+        serviceList.add(new DeviceServiceItem("Advertisement",  false));
     	 */
-        // Add samlpe policies.
+        // Add sample policies.
         policyListOutbound.add(new ProtocolItem("Location Outbound", "Finding heating near you", true, false));
         policyListOutbound.add(new ProtocolItem("Temperature Outbound", "Room temperature", true, false));
-        policyListOutbound.add(new ProtocolItem("Heart Rate Outbound", "Your heartrate while watching horror movies", true, true));
+        policyListOutbound.add(new ProtocolItem("Heart Rate Outbound", "Your heart rate while watching horror movies", true, true));
         policyListOutbound.add(new ProtocolItem("Picture Streaming Outbound", "Your pictures to facebook", true, true));
         policyListOutbound.add(new ProtocolItem("Video Streaming Outbound", "Your security camera to security server", true, true));
         policyListOutbound.add(new ProtocolItem("Audio Streaming Outbound", "Your security camera audio to security server", true, true));
 
         policyListInbound.add(new ProtocolItem("Location Inbound", "Finding heating near you", true, false));
         policyListInbound.add(new ProtocolItem("Temperature Inbound", "Room temperature", true, false));
-        policyListInbound.add(new ProtocolItem("Heart Rate Inbound", "Your heartrate while watching horror movies", true, true));
+        policyListInbound.add(new ProtocolItem("Heart Rate Inbound", "Your heart rate while watching horror movies", true, true));
 
 //Set up devices
 

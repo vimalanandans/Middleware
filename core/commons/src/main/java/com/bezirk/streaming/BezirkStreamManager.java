@@ -132,7 +132,7 @@ public class BezirkStreamManager implements Streaming {
 
             if (msgDispatcher == null) {
 
-                logger.error("Unable to register message receivers as messagedispatcher is not initialized.");
+                logger.error("Unable to register message receivers as MessageDispatcher is not initialized.");
                 return false;
 
             } else {

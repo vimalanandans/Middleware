@@ -168,7 +168,7 @@ public interface BezirkSphereAPI {
     /**
      * Adds device information received from operations like invite-join
      *
-     * @param deviceInformations
+     * @param deviceInformation
      */
 
     /**

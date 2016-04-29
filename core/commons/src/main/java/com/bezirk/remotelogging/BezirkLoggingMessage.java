@@ -54,9 +54,9 @@ public class BezirkLoggingMessage {
      * @param sphereName    Name of the sphere
      * @param uniqueKey     MsgId of the Message
      * @param sender        Sender IP
-     * @param recipient     Recipient Ip, null incase of multicast
+     * @param recipient     Recipient Ip, null in case of multicast
      * @param uniqueMsgId   MsgId of the message that is sent or received
-     * @param topic         topic of the Message, discriminator incase of Control Message
+     * @param topic         topic of the Message, discriminator in case of Control Message
      * @param typeOfMessage one of (EVENT-SEND, EVENT-RECEIVE, CONTROL-MESSAGE-SEND, CONTROL-MESSAGE-RECEIVE)
      * @param version       Version of the Logging Message
      */

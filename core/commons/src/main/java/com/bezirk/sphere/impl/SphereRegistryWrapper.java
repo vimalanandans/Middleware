@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -546,10 +545,7 @@ public class SphereRegistryWrapper {
      * TODO: Has to be moved to Zirk.java
      */
     public boolean isServiceLocal(String deviceId) {
-        if (deviceId != null && deviceId.equals(upaDevice.getDeviceId())) {
-            return true;
-        }
-        return false;
+        return deviceId != null && deviceId.equals(upaDevice.getDeviceId());
     }
 
     /**
@@ -779,14 +775,10 @@ public class SphereRegistryWrapper {
             return info;
         }
 
-        Iterator<BezirkDeviceInfo> deviceIterator = deviceInfoList.iterator();
-
-        while (deviceIterator.hasNext()) {
-            BezirkDeviceInfo uhuInfo = deviceIterator.next();
-
-            if (uhuInfo.getDeviceId().equals(upaDevice.getDeviceId())) {
+        for (BezirkDeviceInfo bezirkInfo : deviceInfoList) {
+            if (bezirkInfo.getDeviceId().equals(upaDevice.getDeviceId())) {
                 // got the device info for
-                info = uhuInfo.getZirkList();
+                info = bezirkInfo.getZirkList();
             }
         }
         return info;
@@ -808,14 +800,14 @@ public class SphereRegistryWrapper {
             return false;
         }
 
-        List<BezirkZirkInfo> bezirkZirkInfos = bezirkDeviceInfo.getZirkList();
+        List<BezirkZirkInfo> bezirkZirkInfo = bezirkDeviceInfo.getZirkList();
 
-        if (bezirkZirkInfos == null || (bezirkZirkInfos.isEmpty())) {
+        if (bezirkZirkInfo == null || (bezirkZirkInfo.isEmpty())) {
             logger.error("No services available for this device.");
             return false;
         }
 
-        for (BezirkZirkInfo serviceInfo : bezirkZirkInfos) {
+        for (BezirkZirkInfo serviceInfo : bezirkZirkInfo) {
             HashSet<String> spheres = new HashSet<String>();
             spheres.add(sphereId);
             MemberZirk memberService = new MemberZirk(serviceInfo.getZirkName(), ownerDeviceId, spheres);
@@ -837,11 +829,11 @@ public class SphereRegistryWrapper {
      * from the list of BezirkZirkInfo objects.
      *
      * @param sphereId     of the sphere to be added in the sphere set of the services
-     * @param serviceInfos - List of BezirkZirkInfo objects from which BezirkZirkId list
+     * @param zirkInfo - List of BezirkZirkInfo objects from which BezirkZirkId list
      *                     is retrieved. It has to be non-null
      * @return - True if the zirk was added. False otherwise.
      */
-    public boolean addLocalServicesToSphere(String sphereId, Iterable<BezirkZirkInfo> serviceInfos) {
+    public boolean addLocalServicesToSphere(String sphereId, Iterable<BezirkZirkInfo> zirkInfo) {
         if (!containsSphere(sphereId)) {
             logger.error("sphere with sphere ID " + sphereId + " not in the registry.");
             return false;
@@ -849,7 +841,7 @@ public class SphereRegistryWrapper {
         List<BezirkZirkId> serviceIds = new ArrayList<BezirkZirkId>();
 
         // Aggregate the list of zirk IDs.
-        for (BezirkZirkInfo serviceInfo : serviceInfos) {
+        for (BezirkZirkInfo serviceInfo : zirkInfo) {
             serviceIds.add(serviceInfo.getBezirkZirkId());
         }
         return addLocalServicesToSphere(serviceIds, sphereId);
@@ -913,18 +905,14 @@ public class SphereRegistryWrapper {
             return status;
         }
 
-        Iterator<BezirkDeviceInfo> deviceIterator = deviceInfoList.iterator();
-
-        while (deviceIterator.hasNext()) {
-            BezirkDeviceInfo bezirkDeviceInfo = deviceIterator.next();
-
+        for (BezirkDeviceInfo bezirkDeviceInfo : deviceInfoList) {
             if (bezirkDeviceInfo.getDeviceId().equals(upaDevice.getDeviceId())) {
                 // got the device info for
                 List<BezirkZirkInfo> serviceInfoList = bezirkDeviceInfo.getZirkList();
 
                 // add the list of services to the sphere.
                 if (addLocalServicesToSphere(sphereId, serviceInfoList)) {
-                    logger.info("services added defalt sphere > " + sphereId);
+                    logger.info("services added default sphere > " + sphereId);
                     status = true;
                 }
                 break;
@@ -1043,7 +1031,7 @@ public class SphereRegistryWrapper {
      * from other devices in operation like invite/join/catch is stored in the
      * sphere registry.
      * <p/>
-     * These two information management storages can be combined using just the
+     * These two information management storage types can be combined using just the
      * devices map. By extending the basic deviceInformation we can store both
      * current as well as external device information using just one map
      *
@@ -1057,7 +1045,7 @@ public class SphereRegistryWrapper {
         } else if (containsDevice(deviceId)) {
             deviceInfo = getDevice(deviceId);
         } else {
-            logger.error("Unkown device id : " + deviceId);
+            logger.error("Unknown device id : " + deviceId);
         }
         return deviceInfo;
     }

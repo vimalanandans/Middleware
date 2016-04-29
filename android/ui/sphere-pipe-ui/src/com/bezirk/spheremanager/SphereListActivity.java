@@ -41,11 +41,11 @@ import java.util.UUID;
  * {@link DeviceListActivity} representing item details. On tablets, the
  * activity presents the list of items and item details side-by-side using two
  * vertical panes.
- * <p/>
+ * <p>
  * The activity makes heavy use of fragments. The list of items is a
  * {@link SphereListFragment} and the item details (if present) is a
  * {@link DeviceListFragment}.
- * <p/>
+ * </p>
  * This activity also implements the required
  * {@link SphereListFragment.Callbacks} interface to listen for item selections.
  */

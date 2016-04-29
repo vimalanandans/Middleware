@@ -51,22 +51,22 @@ public class LogSenderQueueProcessor extends Thread {
 
             try {
                 StringBuilder logMsgString = LoggingQueueManager.fetchFromLogSenderQueue();
-                Socket uhuClient = null;
+                Socket bezirkClient = null;
                 try {
-                    uhuClient = new Socket(remoteServiceIP, remoteServicePort);
-                    DataOutputStream clientOutputStream = new DataOutputStream(uhuClient.getOutputStream());
+                    bezirkClient = new Socket(remoteServiceIP, remoteServicePort);
+                    DataOutputStream clientOutputStream = new DataOutputStream(bezirkClient.getOutputStream());
                     clientOutputStream.writeBytes(logMsgString.toString());
                     clientOutputStream.flush();
                     clientOutputStream.close();
-                } catch (IOException ioExcpetion) {
-                    logger.error("Some Error occured :", ioExcpetion);
+                } catch (IOException e) {
+                    logger.error("Some Error occurred :", e);
                 } finally {
                     try {
-                        if (uhuClient != null) {
-                            uhuClient.close();
+                        if (bezirkClient != null) {
+                            bezirkClient.close();
                         }
                     } catch (IOException e) {
-                        logger.error("Errors occured in closing uhuClient \n", e);
+                        logger.error("Errors occurred in closing bezirkClient \n", e);
                     }
                 }
             } catch (InterruptedException e) {
@@ -80,7 +80,7 @@ public class LogSenderQueueProcessor extends Thread {
      *
      * @throws Exception if Logging Zirk is down and unable to connect
      */
-    public void startProcesing() throws Exception {
+    public void startProcessing() throws Exception {
         isRunning = true;
         this.start();
     }
@@ -88,7 +88,7 @@ public class LogSenderQueueProcessor extends Thread {
     /**
      * Stops processing the Log Sender Queue
      *
-     * @throws Exception intruppted Exception if something goes down while stopping the thread.
+     * @throws Exception interrupted Exception if something goes down while stopping the thread.
      */
     public void stopProcessing() throws Exception {
         isRunning = false;

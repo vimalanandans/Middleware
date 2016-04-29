@@ -40,13 +40,11 @@ public class SelfSignedContextBuilder implements SSLContextBuilder {
         if (certInStream == null) {
             throw new Exception("Cert file could not be found: " + certFileName);
         }
-        InputStream buffCertInStream = new BufferedInputStream(certInStream);
+
         Certificate cert;
-        try {
+        try (InputStream buffCertInStream = new BufferedInputStream(certInStream)) {
             cert = cf.generateCertificate(buffCertInStream);
             logger.debug("cert=" + ((X509Certificate) cert).getSubjectDN());
-        } finally {
-            buffCertInStream.close();
         }
 
         // Create a KeyStore containing our trusted CAs

@@ -52,7 +52,7 @@ public final class BezirkValidatorUtility {
     /**
      * Checks for the Validity of ProtocolRole.
      *
-     * @param role prototoclRole that should be validated
+     * @param role protocolRole that should be validated
      * @return true if valid, false otherwise
      */
     public static boolean checkProtocolRole(final SubscribedRole role) {
@@ -122,15 +122,7 @@ public final class BezirkValidatorUtility {
     }
 
     private static boolean checkSphereListIsEmpty(String[] sphereList) {
-
-        if (sphereList == null || sphereList.length == 0) {
-
-            return false;
-        }
-
-
-        return true;
-
+        return !(sphereList == null || sphereList.length == 0);
     }
 
     public static boolean checkRTCStreamRequest(final BezirkZirkId serviceId, final BezirkZirkEndPoint sep) {

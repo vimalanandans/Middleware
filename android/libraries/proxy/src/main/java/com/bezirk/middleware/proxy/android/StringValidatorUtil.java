@@ -1,8 +1,5 @@
 package com.bezirk.middleware.proxy.android;
 
-/**
- * Created by AJC6KOR on 11/19/2015.
- */
 public final class StringValidatorUtil {
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/

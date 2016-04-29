@@ -16,7 +16,7 @@ public final class EventIncomingMessage extends ServiceIncomingMessage {
     /**
      * Serialized Topic
      */
-    public String serialzedEvent;
+    public String serializedEvent;
     /**
      * Name of the Event topic
      */
@@ -30,12 +30,12 @@ public final class EventIncomingMessage extends ServiceIncomingMessage {
         callbackDiscriminator = "EVENT";
     }
 
-    public EventIncomingMessage(BezirkZirkId recipientId, BezirkZirkEndPoint senderSEP, String serialzedEvent, String eventTopic, String msgId) {
+    public EventIncomingMessage(BezirkZirkId recipientId, BezirkZirkEndPoint senderSEP, String serializedEvent, String eventTopic, String msgId) {
         super();
         callbackDiscriminator = "EVENT";
         recipient = recipientId;
         this.senderSEP = senderSEP;
-        this.serialzedEvent = serialzedEvent;
+        this.serializedEvent = serializedEvent;
         this.eventTopic = eventTopic;
         this.msgId = msgId;
     }

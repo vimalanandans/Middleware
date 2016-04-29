@@ -10,14 +10,14 @@ import java.sql.SQLException;
 
 /**
  * This common Registry class for the Bezirk platform. It implements all the interfaces for different modules
- * of the Bezirk that needs to be persisted. The different layers will get the corrosponding interfaces through
+ * of the Bezirk that needs to be persisted. The different layers will get the corresponding interfaces through
  * which they can load/ save the data to the persistence
  */
 public class RegistryPersistence extends DatabaseHelper implements SadlPersistence, SpherePersistence, BezirkProxyPersistence {
 
-    public RegistryPersistence(DatabaseConnection dbConnection, String DBVesion) throws NullPointerException, SQLException, IOException, Exception {
+    public RegistryPersistence(DatabaseConnection dbConnection, String DBVersion) throws NullPointerException, SQLException, IOException, Exception {
         super(dbConnection);
-        checkDatabase(DBVesion);
+        checkDatabase(DBVersion);
     }
 
     @Override

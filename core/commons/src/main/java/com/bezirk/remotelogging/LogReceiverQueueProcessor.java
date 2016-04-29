@@ -57,7 +57,7 @@ public class LogReceiverQueueProcessor extends Thread {
                                 " CURRENT LOGGING VERSION: " + Util.LOGGING_VERSION);
                     }
                 } catch (Exception e) {
-                    logger.error("Some error occured in LogReceiverQueueProcessor \n", e);
+                    logger.error("Some error occurred in LogReceiverQueueProcessor \n", e);
                 }
             }
         } catch (InterruptedException e) {
@@ -70,9 +70,9 @@ public class LogReceiverQueueProcessor extends Thread {
      *
      * @throws Exception if platform specific logger is not set
      */
-    public void startProcesing() throws Exception {
+    public void startProcessing() throws Exception {
         if (null == platformSpecificLogger) {
-            throw new Exception("IUhuLogger is not set");
+            throw new Exception("BezirkLogger is not set");
         }
         gson = new Gson();
         isRunning = true;
@@ -82,7 +82,7 @@ public class LogReceiverQueueProcessor extends Thread {
     /**
      * Stop processing the LogReceiverQueue.
      *
-     * @throws Exception intruppted Exception if something goes down while stopping the thread.
+     * @throws Exception interrupted Exception if something goes down while stopping the thread.
      */
     public void stopProcessing() throws Exception {
         isRunning = false;

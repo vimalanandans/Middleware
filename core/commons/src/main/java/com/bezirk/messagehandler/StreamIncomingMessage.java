@@ -17,7 +17,7 @@ public final class StreamIncomingMessage extends ServiceIncomingMessage {
     /**
      * Serialized Stream request.
      */
-    public String serialzedStream;
+    public String serializedStream;
     /**
      * Path to downloaded file.
      */
@@ -35,13 +35,13 @@ public final class StreamIncomingMessage extends ServiceIncomingMessage {
         callbackDiscriminator = "STREAM_UNICAST";
     }
 
-    public StreamIncomingMessage(BezirkZirkId recipientId, String streamTopic, String serialzedStream,
+    public StreamIncomingMessage(BezirkZirkId recipientId, String streamTopic, String serializedStream,
                                  File file, short localStreamId, BezirkZirkEndPoint senderSEP) {
         super();
         callbackDiscriminator = "STREAM_UNICAST";
         recipient = recipientId;
         this.streamTopic = streamTopic;
-        this.serialzedStream = serialzedStream;
+        this.serializedStream = serializedStream;
         this.file = file;
         this.localStreamId = localStreamId;
         this.senderSEP = senderSEP;

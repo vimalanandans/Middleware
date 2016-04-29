@@ -68,7 +68,7 @@ public abstract class CommsProcessor implements BezirkComms {
     //private IUhuCallback uhuCallback = null;
     CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver();
     /**
-     * Version Callback that will be used to inform the platfroms when there is mismatch in versions.
+     * Version Callback that will be used to inform the platforms when there is mismatch in versions.
      * This parameter will be injected in all the components that will be checking for versions to
      * be compatible before they are processed.
      */
@@ -124,8 +124,8 @@ public abstract class CommsProcessor implements BezirkComms {
         if (executor != null) {
             executor.shutdown();
             // will shutdown eventually
-            // if any poroblem persists wait for some time (less then 200ms) using awaitTermination
-            // and then shutdownnow
+            // if any problem persists wait for some time (less then 200ms) using awaitTermination
+            // and then shutdownNow
         }
 
         if (BezirkCommunications.isStreamingEnabled()) {
@@ -175,7 +175,7 @@ public abstract class CommsProcessor implements BezirkComms {
         if (data != null) {
             if (message.getMessage() instanceof MulticastControlMessage) {
 
-                WireMessage wireMessage = prepareWireMessgae(message.getMessage().getSphereId(), data);
+                WireMessage wireMessage = prepareWireMessage(message.getMessage().getSphereId(), data);
 
                 wireMessage.setMsgType(WireMessage.WireMsgType.MSG_MULTICAST_CTRL);
                 try {
@@ -202,7 +202,7 @@ public abstract class CommsProcessor implements BezirkComms {
 				}
 				else */
                 {
-                    WireMessage wireMessage = prepareWireMessgae(message.getMessage().getSphereId(), data);
+                    WireMessage wireMessage = prepareWireMessage(message.getMessage().getSphereId(), data);
 
                     wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_CTRL);
 
@@ -234,7 +234,7 @@ public abstract class CommsProcessor implements BezirkComms {
      * @param data
      * @return
      */
-    private WireMessage prepareWireMessgae(String sphereId, String data) {
+    private WireMessage prepareWireMessage(String sphereId, String data) {
         WireMessage wireMessage = new WireMessage();
         wireMessage.setSphereId(sphereId);
         byte[] wireData = null;
@@ -336,7 +336,7 @@ public abstract class CommsProcessor implements BezirkComms {
 
     /**
      * Encrypts the String msg
-     * if not enabled, puts the incomming message to outgoing
+     * if not enabled, puts the incoming message to outgoing
      * return null means, encryption failed
      *
      * @param - data
@@ -379,7 +379,7 @@ public abstract class CommsProcessor implements BezirkComms {
 
                 //TODO: for event message decrypt the header here
                 // if the intended zirk is available in sadl message is decrypted
-                WireMessage wireMessage = prepareWireMessgae(ledger.getHeader().getSphereName(), data);
+                WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereName(), data);
 
                 // encrypt the header
 
@@ -417,7 +417,7 @@ public abstract class CommsProcessor implements BezirkComms {
 
                     //TODO: for event message decrypt the header here
                     // if the intended zirk is available in sadl message is decrypted
-                    WireMessage wireMessage = prepareWireMessgae(ledger.getHeader().getSphereName(), data);
+                    WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereName(), data);
 
                     // encrypt the header
 
@@ -600,7 +600,7 @@ public abstract class CommsProcessor implements BezirkComms {
         byte[] message = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getMsg());
 
         if (message == null) {
-            // encrption failed return null
+            // encryption failed return null
             return message;
         }
         /**
@@ -698,7 +698,7 @@ public abstract class CommsProcessor implements BezirkComms {
         // decrypt the header
         byte[] data = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getHeaderMsg());
 
-        if (data == null) // header decrpt failed. unknown sphere id
+        if (data == null) // header decrypt failed. unknown sphere id
             return false;
 
         String header = new String(data);

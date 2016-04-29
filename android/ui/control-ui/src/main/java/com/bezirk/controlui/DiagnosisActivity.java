@@ -73,9 +73,7 @@ public class DiagnosisActivity extends ActionBarActivity
                 break;
             default:
                 logger.error("Unknown item pressed");
-                return;
         }
-
     }
 
     public void loggingFeatureClick(View view) {

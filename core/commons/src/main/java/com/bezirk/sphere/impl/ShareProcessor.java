@@ -404,7 +404,7 @@ public class ShareProcessor {
         String sharerSphereId = shareRequest.getSharerSphereId();
 
         if (sharerBezirkDeviceInfo == null) {
-            logger.error("Catched device/sphere Exchange data is not valid");
+            logger.error("Caught device/sphere Exchange data is not valid");
             return false;
         }
 

@@ -21,7 +21,7 @@ public class StreamStore {
     private static final Logger logger = LoggerFactory.getLogger(StreamStore.class);
 
     // Maps stream_id:StreamRecord
-    // Updated during sending controll message
+    // Updated during sending control message
     // Read after receiving a StreamResponse message
     private final Map<String, StreamRecord> streamBook = new HashMap<String, StreamRecord>();
 
@@ -36,17 +36,17 @@ public class StreamStore {
      * this#portsMap} when a {@link StreamRequest} is received and the ports are
      * available.
      * 
-     * @param portMapkey - [ MsgId:ZirkEndPoint:DeviceID ] that uniquely
+     * @param portMapKey - [ MsgId:ZirkEndPoint:DeviceID ] that uniquely
      * identifies the port that is mapped to the StreamRequest. It is used to
      * avoid duplication of the requests.
      * 
      * @param value - Port value
      * 
-     * @return status of the updation. true if success, false if fails.
+     * @return status of the update. <code>true</code> if successful
      * 
      * @see com.bosch.upa.bezirk.comms.udp.streaming.PortFactory
      */
-    public boolean updatePortsMap(String portMapkey, int value) {
+    public boolean updatePortsMap(String portMapKey, int value) {
 
         synchronized (this) {
 
@@ -55,12 +55,12 @@ public class StreamStore {
                 return false;
             }
 
-            if (portsMap.containsKey(portMapkey)) {
+            if (portsMap.containsKey(portMapKey)) {
                 logger.error("port key already exists..");
                 return false;
             }
-            getPortsMap().put(portMapkey, value);
-            logger.debug("portsmap updated with key : value:" + "key:" + portMapkey
+            getPortsMap().put(portMapKey, value);
+            logger.debug("portsmap updated with key : value:" + "key:" + portMapKey
                     + " value:" + value);
             return true;
 
@@ -68,14 +68,14 @@ public class StreamStore {
 
     }
 
-    /*
+    /**
      * This method called by the {@link
      * com.bosch.upa.uhu.comms.udp.streaming.StreamReceivingThread} to release
-     * the port after data is transfered.
+     * the port after data is transferred.
      * 
      * @param port - Port to be released
      * 
-     * @return status of the updation. true if success, false if fails.
+     * @return status of the update. <code>true>/code> if success
      */
     public boolean releasePort(int port) {
         synchronized (this) {

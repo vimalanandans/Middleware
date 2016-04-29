@@ -121,7 +121,7 @@ final class BezirkPCNetworkUtil {
      */
     private String promptUserForInterface(final BezirkConfig bezirkConfig)
             throws SocketException {
-        String interfaceName = null;
+        String interfaceName;
         if (bezirkConfig.isDisplayEnabled()) {
             final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
                     .getIntfInetPair().iterator();

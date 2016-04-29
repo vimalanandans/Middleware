@@ -27,7 +27,7 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.PipedOutputStream;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,8 +36,8 @@ import java.util.concurrent.ConcurrentMap;
 public final class Proxy implements Bezirk {
     static final int TIME_DURATION = 15000;
     static final int MAX_MAP_SIZE = 50;
-    static final ConcurrentMap<String, ArrayList<BezirkListener>> eventListenerMap = new ConcurrentHashMap<String, ArrayList<BezirkListener>>();
-    static final ConcurrentMap<String, ArrayList<BezirkListener>> streamListenerMap = new ConcurrentHashMap<String, ArrayList<BezirkListener>>();
+    static final ConcurrentMap<String, List<BezirkListener>> eventListenerMap = new ConcurrentHashMap<String, List<BezirkListener>>();
+    static final ConcurrentMap<String, List<BezirkListener>> streamListenerMap = new ConcurrentHashMap<String, List<BezirkListener>>();
     static final ConcurrentMap<Short, String> activeStreams = new ConcurrentHashMap<Short, String>();
     static final ConcurrentMap<String, Long> duplicateMsgMap = new ConcurrentHashMap<String, Long>();
     static final ConcurrentMap<String, Long> duplicateStreamMap = new ConcurrentHashMap<String, Long>();
@@ -151,7 +151,6 @@ public final class Proxy implements Bezirk {
 
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
-            return;
         }
     }
 
@@ -205,7 +204,6 @@ public final class Proxy implements Bezirk {
 
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
-            return;
         }
     }
 
@@ -226,7 +224,6 @@ public final class Proxy implements Bezirk {
         ComponentName retName = mContext.startService(unicastEventIntent);
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
-            return;
         }
     }
 
@@ -319,7 +316,6 @@ public final class Proxy implements Bezirk {
         ComponentName retName = mContext.startService(addPipe);
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
-            return;
         }
     }
 

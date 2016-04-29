@@ -39,10 +39,10 @@ public final class BezirkLoggingManager {
             bezirkLoggingService = new BezirkLoggingService(loggingPort);
             receiverQueueProcessor = new LogReceiverQueueProcessor(platformSpecificHandler);
             bezirkLoggingService.startLoggingService();
-            receiverQueueProcessor.startProcesing();
+            receiverQueueProcessor.startProcessing();
             return;
         }
-        throw new Exception("Tried to start LoggingService again,thats already started or Handler is null");
+        throw new Exception("Tried to start LoggingService again, that is already started or Handler is null");
     }
 
     /**

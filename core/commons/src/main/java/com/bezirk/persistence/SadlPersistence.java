@@ -21,7 +21,7 @@ public interface SadlPersistence {
      * Loads the Sadl Registry
      *
      * @return Sadl Registry
-     * @throws Exception if loading is not posible
+     * @throws Exception if loading is not possible
      */
     public SadlRegistry loadSadlRegistry() throws Exception;
 }

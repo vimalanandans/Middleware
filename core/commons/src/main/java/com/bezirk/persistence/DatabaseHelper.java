@@ -93,8 +93,8 @@ public class DatabaseHelper {
     }
 
     /**
-     * Checks the database version, if there is mismatch drop the table. If the table doesnt exists create a table and updates
-     * the row.
+     * Checks the database version, if there is mismatch drop the table. If the table doesn't exists
+     * create a table and updates the row.
      *
      * @param DB_VERSION Version of the database
      * @return true if version is matched and table is created, false otherwise
@@ -154,7 +154,7 @@ public class DatabaseHelper {
     }
 
     /**
-     * Returns UhuProxyRegisty associated with the Proxy
+     * Returns BezirkProxyRegistry associated with the Proxy
      *
      * @return BezirkProxyRegistry
      */

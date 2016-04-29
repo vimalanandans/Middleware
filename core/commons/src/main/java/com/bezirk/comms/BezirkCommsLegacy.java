@@ -5,10 +5,10 @@ import com.bezirk.control.messages.Ledger;
 import java.util.ArrayList;
 
 /**
- * Added by Vimal
- * This class is created to support old legcy implementation access to queues inside comms
- * <p/>
+ * This class is created to support old legcay implementation access to queues inside comms
+ * <p>
  * Use it only with in udp communication
+ * </p>
  */
 @Deprecated // this should not be used outside comms
 public interface BezirkCommsLegacy extends BezirkComms {

@@ -72,9 +72,7 @@ public class SphereExchangeData {
     }
 
     public boolean isKeysExist() {
-        if ((sphereKey != null) && spherePublicKey != null)
-            return true;
-        return false;
+        return (sphereKey != null) && spherePublicKey != null;
     }
 
     public byte[] getSphereKey() {

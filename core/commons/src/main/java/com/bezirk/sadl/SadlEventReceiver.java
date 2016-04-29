@@ -39,7 +39,7 @@ public interface SadlEventReceiver {
     /**
      * notify the stream status
      */
-    public boolean processStreamStatus(StreamStatusMessage streamStatusNotifciation);
+    public boolean processStreamStatus(StreamStatusMessage streamStatusNotification);
 
     /**
      * notify the stream data

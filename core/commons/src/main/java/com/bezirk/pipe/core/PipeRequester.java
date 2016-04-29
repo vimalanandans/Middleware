@@ -71,7 +71,7 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
         boolean outMatches = policiesMatch(existingRecord.getAllowedOut(), request.getAllowedOut());
 
         if (inMatches && outMatches) {
-            logger.info("Pipe exists but identical policies are being reqeusted.  No need to prompt user");
+            logger.info("Pipe exists but identical policies are being requested.  No need to prompt user");
             outstandingRequests.put(request.getId(), request);
 
             // We don't need to ask the user to approve since this pipe/policy combination has already been approved

@@ -28,7 +28,7 @@ public class BezirkVersion {
     private static final String WIRE_MESSAGE_VERSION = "0.1";
 
     // DB Version for storing database
-    // sphere / sadl regisry changes.
+    // sphere / sadl registry changes.
     private static final String PERSISTENCE_VERSION = "0.1";
 
     static {

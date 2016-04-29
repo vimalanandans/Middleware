@@ -8,7 +8,7 @@ import com.google.gson.Gson;
  */
 public class Header {
     // Open Fields
-    private String sphereName = null; //Dont touch
+    private String sphereName = null; //Don't touch
     private BezirkZirkEndPoint senderSEP = null; // Change to ZirkEndPoint sender
     private String uniqueMsgId = null;
     private String topic = null; //Get topic(=label) from Event
@@ -59,7 +59,8 @@ public class Header {
     }
 
     /**
-     * @param senderSEP the senderId of the message. Usually there is a function that retieves the hostId and this is used to set the senderId
+     * @param senderSEP the senderId of the message. Usually there is a function that retrieves
+     *                  the hostId and this is used to set the senderId
      */
     public void setSenderSEP(BezirkZirkEndPoint senderSEP) {
         this.senderSEP = senderSEP;

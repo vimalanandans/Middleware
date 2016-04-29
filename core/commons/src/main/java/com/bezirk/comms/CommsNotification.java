@@ -11,7 +11,7 @@ public interface CommsNotification {
     /**
      * Will be invoked if there is mismatch in the versions.
      *
-     * @param - details Message regarding the version mistach
+     * @param - details Message regarding the version mismatch
      */
     public void versionMismatch(String mismatchedVersionId);
 

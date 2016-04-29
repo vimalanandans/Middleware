@@ -67,13 +67,15 @@ public class BezirkSphereForPC extends BezirkSphere implements BezirkQRCode,
     }
 
     public boolean saveQRCode(String filePath, String filePrefix) {
-        String fileName = null;
+        final String fileName;
 
         if (BezirkValidatorUtility.checkForString(filePath)) {
             final File folder = new File(filePath);
 
             if (!folder.exists()) {
-                folder.mkdir();
+                if (!folder.mkdir()) {
+                    logger.error("Failed to save QR code: {}", folder.getAbsolutePath());
+                }
             }
 
             fileName = filePath + File.separator + filePrefix + "_scan_qr.jpg";

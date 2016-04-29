@@ -119,10 +119,7 @@ class ControlActivityHelper {
                 break;
             default:
                 logger.error("unknown item pressed");
-                return;
         }
-
-
     }
 
     void showAlertDialogToShowSystemStatus() {

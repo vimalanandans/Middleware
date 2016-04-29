@@ -87,8 +87,6 @@ public class ScanDeviceSelectSphereFragment extends Fragment {
 
         //SphereListAdapter sla = new SphereListAdapter(getActivity()
         //		.getApplicationContext(), DummyContent.ITEMS);
-        SphereListAdapter sla = null;
-
         BezirkSphereAPI api = MainService.getSphereHandle();
 
         List<AbstractSphereListItem> sphereItemList = new ArrayList<AbstractSphereListItem>();
@@ -103,6 +101,7 @@ public class ScanDeviceSelectSphereFragment extends Fragment {
             Log.e(TAG, "MainService is not available");
         }
 
+        final SphereListAdapter sla;
         if (sphereItemList != null) {
             sla = new SphereListAdapter(
                     getActivity().getApplicationContext(), sphereItemList);

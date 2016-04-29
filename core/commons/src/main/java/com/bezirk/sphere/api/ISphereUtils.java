@@ -38,7 +38,7 @@ public interface ISphereUtils {
 
     public boolean addMemberServices(BezirkDeviceInfo bezirkDeviceInfo, String sphereId, String ownerDeviceId);
 
-    public boolean addLocalServicesToSphere(String sphereId, Iterable<BezirkZirkInfo> serviceInfos);
+    public boolean addLocalServicesToSphere(String sphereId, Iterable<BezirkZirkInfo> serviceInfo);
 
     public boolean addLocalServicesToSphere(Iterable<BezirkZirkId> serviceIds, String sphereId);
 

@@ -13,7 +13,6 @@ import com.bezirk.sadl.ISadlControlReceiver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Iterator;
 import java.util.Set;
 
 
@@ -65,27 +64,23 @@ public class DiscoveryRequestHandler {
     }
 
     private Boolean handleZirkDiscovery(DiscoveryRequest req) {
-        Set<BezirkDiscoveredZirk> dZirkList = this.sadlCtrl.discoverZirks(req.getProtocol(), req.getLocation());
-        if (null == dZirkList || dZirkList.isEmpty()) {
+        Set<BezirkDiscoveredZirk> discoveredZirks = this.sadlCtrl.discoverZirks(req.getProtocol(), req.getLocation());
+        if (null == discoveredZirks || discoveredZirks.isEmpty()) {
             return false;
         }
-        Iterator<BezirkDiscoveredZirk> dZirks = dZirkList.iterator();
-        while (dZirks.hasNext()) {
-            BezirkDiscoveredZirk dZirk = dZirks.next();
-            BezirkZirkId sid = ((BezirkZirkEndPoint) dZirk.getZirkEndPoint()).getBezirkZirkId();
+
+        for (BezirkDiscoveredZirk zirk : discoveredZirks) {
+            BezirkZirkId sid = ((BezirkZirkEndPoint) zirk.getZirkEndPoint()).getBezirkZirkId();
 
             if (BezirkCompManager.getSphereForSadl().isZirkInSphere(sid, req.getSphereId())) {
                 //Set the Zirk Name
-                dZirk.name = BezirkCompManager.getSphereForSadl().getZirkName(sid);
+                zirk.name = BezirkCompManager.getSphereForSadl().getZirkName(sid);
                 //Populate response zirk list
-                response.getZirkList().add(dZirk);
+                response.getZirkList().add(zirk);
             }
         }
-        if (null == response.getZirkList() || response.getZirkList().isEmpty()) {
-            return false;
-        }
 
-        return true;
+        return !(null == response.getZirkList() || response.getZirkList().isEmpty());
     }
 
 
@@ -97,5 +92,4 @@ public class DiscoveryRequestHandler {
         //ctrlSenderQueue.addToQueue(responseMsg);
         bezirkComms.sendMessage(responseMsg);
     }
-
 }

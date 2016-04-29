@@ -115,7 +115,7 @@ public class PortFactory implements com.bezirk.comms.PortFactory {
                         + activePorts.size());
                 return true;
             } else {
-                logger.error("Port tried to free that doesnt exists..");
+                logger.error("Port tried to free that doesn't exists..");
                 streamStore.releasePort(releasingPort); // Confirmation
                 return false;
             }

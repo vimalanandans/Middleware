@@ -50,7 +50,7 @@ public class StreamReceivingThread implements Runnable {
     private final boolean isEncrypted;
     private final BezirkZirkEndPoint recipient;
     private final BezirkZirkEndPoint sender;
-    private final String serialzedMsg;
+    private final String serializedMsg;
     private final short streamId;
     private final PortFactory portFactory;
     private final SadlEventReceiver sadlReceiver;
@@ -75,7 +75,7 @@ public class StreamReceivingThread implements Runnable {
         this.isEncrypted = streamRequest.isEncrypted;
         this.recipient = streamRequest.getRecipient();
         this.sender = streamRequest.getSender();
-        this.serialzedMsg = streamRequest.serialzedString;
+        this.serializedMsg = streamRequest.serialzedString;
         this.streamId = streamRequest.localStreamId;
         this.portFactory = portFactory;
         this.sadlReceiver = sadlReceiver;
@@ -134,7 +134,7 @@ public class StreamReceivingThread implements Runnable {
                 logger.error("Failed to delete temporary stream file: {}", tempFile);
             }
         } catch (IOException e) {
-            logger.error("Exception occured while receiving stream.", e);
+            logger.error("Exception occurred while receiving stream.", e);
             if (tempFile != null && tempFile.exists() && !tempFile.delete()) {
                 logger.error("Failed to delete temporary stream file: {}", tempFile);
             }
@@ -172,10 +172,10 @@ public class StreamReceivingThread implements Runnable {
         }
     }
 
-    private void notifyStreamFile(File tempFile, boolean portRealeased) {
-        if (portRealeased) {
+    private void notifyStreamFile(File tempFile, boolean portReleased) {
+        if (portReleased) {
             StreamIncomingMessage uStreamCallbackMsg = new StreamIncomingMessage(
-                    recipient.zirkId, streamLabel, serialzedMsg,
+                    recipient.zirkId, streamLabel, serializedMsg,
                     tempFile, streamId, sender);
             if (BezirkValidatorUtility.isObjectNotNull(sadlReceiver)) {
 

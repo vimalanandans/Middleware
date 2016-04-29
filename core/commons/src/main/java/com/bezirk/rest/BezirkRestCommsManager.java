@@ -121,7 +121,7 @@ public class BezirkRestCommsManager {
     }
 
     /**
-     * sender thread, picks from the pool and sends the data accross comms
+     * sender thread, picks from the pool and sends the data across comms
      *
      * @author PIK6KOR
      */

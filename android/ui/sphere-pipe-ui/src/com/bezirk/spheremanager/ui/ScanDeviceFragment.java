@@ -146,9 +146,9 @@ public class ScanDeviceFragment extends Fragment {
                     .findViewById(R.id.sphere_list_for_adding);
 
            /*SelectSphereListAdapter sla = new SelectSphereListAdapter(
-					getActivity().getApplicationContext(), DummyContent.ITEMS);*/
+                    getActivity().getApplicationContext(), DummyContent.ITEMS);*/
 
-            SelectSphereListAdapter sla = null;
+            final SelectSphereListAdapter sla;
 
             if (sphereItemList != null) {
                 sla = new SelectSphereListAdapter(

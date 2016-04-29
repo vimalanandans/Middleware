@@ -15,7 +15,7 @@ public interface ISadlRegistryLookup {
      * @param serviceId BezirkZirkId of the Zirk that has to be checked
      * @return true if successful, false otherwise
      */
-    public Boolean isServiceRegisterd(final BezirkZirkId serviceId);
+    public Boolean isServiceRegistered(final BezirkZirkId serviceId);
 
     /**
      * Returns the Set of Registered Services.

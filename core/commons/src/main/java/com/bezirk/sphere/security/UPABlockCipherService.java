@@ -11,7 +11,7 @@ import java.security.Security;
 
 /**
  * Class for thread-safe crypto functions, specifically providing a block cipher
- * that offers authenticated encrpytion (protects confidentiality and
+ * that offers authenticated encryption (protects confidentiality and
  * integrity).
  */
 public class UPABlockCipherService extends DefaultBlockCipherService {

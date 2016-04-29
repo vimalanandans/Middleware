@@ -167,7 +167,7 @@ class LogDataActivityHelper {
      * Send the LogServiceMsg across all the spheres.
      */
     void sendLogServiceMsg(final String[] selectedSphereList, boolean isAnySphereSelectedFlag) {
-        String[] tempLoggingSphereList = null;
+        final String[] tempLoggingSphereList;
         if (isAnySphereSelectedFlag) {
             tempLoggingSphereList = ANY_SPHERE_VALUE;
         } else {
@@ -274,8 +274,6 @@ class LogDataActivityHelper {
      * Pop the Confirm Dialog before closing the actitity.
      */
     void showConfirmDialogToStopLogging() {
-        AlertDialog dialog = null;
-
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(logDataActivity);
         alertDialogBuilder.setMessage(R.string.alert_dialog_message);
         alertDialogBuilder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
@@ -301,7 +299,7 @@ class LogDataActivityHelper {
             }
         });
 
-        dialog = alertDialogBuilder.create();
+        AlertDialog dialog = alertDialogBuilder.create();
         dialog.show();
     }
 

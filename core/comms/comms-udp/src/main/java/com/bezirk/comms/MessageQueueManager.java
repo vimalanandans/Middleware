@@ -34,7 +34,8 @@ public class MessageQueueManager {
     }
 
     /**
-     * This method is invoked as soon as instance of messagequeue for the sender side of the stack is created. This is part of the stack init() method
+     * This method is invoked as soon as instance of <code>MessageQueue</code> for the sender side
+     * of the stack is created. This is part of the stack init() method
      *
      * @param sendingMsgQueue the instance of type MessageQueue which is used on the sender side
      * @see MessageQueue
@@ -53,7 +54,8 @@ public class MessageQueueManager {
     }
 
     /**
-     * This method is invoked as soon as instance of messagequeue for the receiver side of the stack is created. This is part of the stack init() method
+     * This method is invoked as soon as instance of <code>MessageQueue</code> for the receiver side
+     * of the stack is created. This is part of the stack init() method
      *
      * @param receiverMessageQueue the instance of type MessageQueue which is used on the sender side
      * @see MessageQueue

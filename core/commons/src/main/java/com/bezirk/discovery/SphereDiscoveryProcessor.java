@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -45,22 +44,19 @@ public class SphereDiscoveryProcessor implements Runnable {
                 continue;
             }
 //			//Copy a list of pending discoveries
-            CopyOnWriteArrayList<DiscoveryLabel> dlabelList;
+            CopyOnWriteArrayList<DiscoveryLabel> discoveryLabels;
 
             try {
-                dlabelList = new CopyOnWriteArrayList<DiscoveryLabel>(SphereDiscoveryProcessor.discovery.getDiscoveredMap().keySet());
+                discoveryLabels = new CopyOnWriteArrayList<DiscoveryLabel>(SphereDiscoveryProcessor.discovery.getDiscoveredMap().keySet());
             } catch (InterruptedException e) {
                 this.stop();
                 continue;
             }
 
-            Iterator<DiscoveryLabel> it = dlabelList.iterator();
-
-            while (it.hasNext()) {
-                DiscoveryLabel dlbl = it.next();
+            for (DiscoveryLabel discoveryLabel : discoveryLabels) {
                 SphereDiscoveryRecord discRecord;
                 try {
-                    discRecord = discovery.getDiscoveredMap().get(dlbl);
+                    discRecord = discovery.getDiscoveredMap().get(discoveryLabel);
                 } catch (InterruptedException e) {
                     this.stop();
                     return;
@@ -70,27 +66,27 @@ public class SphereDiscoveryProcessor implements Runnable {
                 if (discRecord == null) {
                     continue;
                 }
-                checkRequestTimeOutAndInvokeRequestor(dlbl,
+                checkRequestTimeOutAndInvokeRequestor(discoveryLabel,
                         discRecord);
             }
         }
 
     }
 
-    private void checkRequestTimeOutAndInvokeRequestor(DiscoveryLabel dlbl,
+    private void checkRequestTimeOutAndInvokeRequestor(DiscoveryLabel discoveryLabel,
                                                        SphereDiscoveryRecord discRecord) {
         long curTime = new Date().getTime();
         //If discovery request has timed out
         //	Invoke the requester with the discovered and drop the request
         if (curTime - discRecord.getCreationTime() >= discRecord.getTimeout()) {
-            logger.debug("Timeout for sphere discovery, Size of UhuSphereInfos discovered : " + discRecord.getSphereZirks().size());
+            logger.debug("Timeout for sphere discovery, Size of BezirkSphereInfo discovered : " + discRecord.getSphereZirks().size());
             if (sphereDiscoveryHandler != null) {
 
                 sphereDiscoveryHandler.processDiscoveredSphereInfo(discRecord.getSphereZirks(), discRecord.getSphereId());
             }
 
-            SphereDiscoveryProcessor.discovery.remove(dlbl);
-            logger.info("Discovery response added > " + dlbl.getRequester().device);
+            SphereDiscoveryProcessor.discovery.remove(discoveryLabel);
+            logger.info("Discovery response added > " + discoveryLabel.getRequester().device);
         } else { // time not exceeded wait for some time before trying so that thread over run
             try {
                 Thread.sleep(10);

@@ -1,9 +1,5 @@
 package com.bezirk.starter.helper;
 
-/**
- * Created by AJC6KOR on 1/8/2016.
- */
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;

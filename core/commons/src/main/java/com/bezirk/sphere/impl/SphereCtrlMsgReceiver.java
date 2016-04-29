@@ -61,7 +61,7 @@ public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
                 uhuSphereMessages.processShareResponse(shareResponse);
                 break;
             default: // unregistered message
-                logger.error("unregistrered message. dispatcher map of is corrupted ? ");
+                logger.error("unregistered message. dispatcher map of is corrupted ? ");
                 return false;
         }
         return true;

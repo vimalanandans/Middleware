@@ -41,7 +41,7 @@ public final class LogServiceMessageHandler {
                 try {
                     loggingManager.startLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(), loggingServiceMsg.getRemoteLoggingServicePort());
                 } catch (Exception e) {
-                    logger.error("Error occured while logging client", e);
+                    logger.error("Error occurred while logging client", e);
                 }
                 FilterLogMessages.setLoggingSphereList(Arrays.asList(loggingServiceMsg.getSphereList()));
                 LoggingStatus.setLoggingEnabled(loggingServiceMsg.isLoggingStatus());
@@ -52,7 +52,7 @@ public final class LogServiceMessageHandler {
                         loggingManager = null;
                         LoggingStatus.setLoggingEnabled(loggingServiceMsg.isLoggingStatus());
                     } catch (Exception e) {
-                        logger.error("Error occured while stopping client", e);
+                        logger.error("Error occurred while stopping client", e);
                     }
 
                 } else {

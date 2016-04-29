@@ -8,7 +8,7 @@ public final class ServiceRegistration {
         //To hide public constructor
     }
 
-    public static final String generateUniqueServiceID() {
+    public static String generateUniqueServiceID() {
         Random random = new Random();
         String serviceIdAsString = Base62Random(random);
         return serviceIdAsString;

@@ -112,7 +112,7 @@ public class BRForService implements BroadcastReceiver {
                 while (listenerIterator.hasNext()) {
                     BezirkListener invokingListener = listenerIterator.next();
                     if (tempListenersTopicsMap.contains(invokingListener)) {
-                        invokingListener.receiveEvent(eCallbackMessage.eventTopic, eCallbackMessage.serialzedEvent, (ZirkEndPoint) eCallbackMessage.senderSEP);
+                        invokingListener.receiveEvent(eCallbackMessage.eventTopic, eCallbackMessage.serializedEvent, (ZirkEndPoint) eCallbackMessage.senderSEP);
                     }
                 }
             }
@@ -130,7 +130,7 @@ public class BRForService implements BroadcastReceiver {
         if (checkDuplicateStream(strmMsg.senderSEP.zirkId.getBezirkZirkId(), strmMsg.localStreamId)) {
             if (streamListenerMap.containsKey(strmMsg.streamTopic)) {
                 for (BezirkListener listener : streamListenerMap.get(strmMsg.streamTopic)) {
-                    listener.receiveStream(strmMsg.streamTopic, strmMsg.serialzedStream, strmMsg.localStreamId, strmMsg.file, strmMsg.senderSEP);
+                    listener.receiveStream(strmMsg.streamTopic, strmMsg.serializedStream, strmMsg.localStreamId, strmMsg.file, strmMsg.senderSEP);
                 }
                 return;
             }

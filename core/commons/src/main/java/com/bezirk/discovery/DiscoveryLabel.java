@@ -4,20 +4,20 @@ package com.bezirk.discovery;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 public class DiscoveryLabel {
-    private final BezirkZirkEndPoint requestor;
+    private final BezirkZirkEndPoint requester;
     private final int discoveryId;
     private final boolean isSphereDiscovery;
 
 
     public DiscoveryLabel(BezirkZirkEndPoint req, int discoveryId) {
-        this.requestor = req;
+        this.requester = req;
         this.discoveryId = discoveryId;
         this.isSphereDiscovery = false;
 
     }
 
     public DiscoveryLabel(BezirkZirkEndPoint req, int discoveryId, boolean isSphereDiscovery) {
-        this.requestor = req;
+        this.requester = req;
         this.discoveryId = discoveryId;
         this.isSphereDiscovery = isSphereDiscovery;
     }
@@ -27,7 +27,7 @@ public class DiscoveryLabel {
     }
 
     public BezirkZirkEndPoint getRequester() {
-        return requestor;
+        return requester;
     }
 
     public int getDiscoveryId() {
@@ -40,7 +40,7 @@ public class DiscoveryLabel {
 
             DiscoveryLabel curLbl = (DiscoveryLabel) obj;
 
-            return this.requestor.equals(curLbl.requestor) && this.discoveryId == curLbl.discoveryId;
+            return this.requester.equals(curLbl.requester) && this.discoveryId == curLbl.discoveryId;
 
         }
 

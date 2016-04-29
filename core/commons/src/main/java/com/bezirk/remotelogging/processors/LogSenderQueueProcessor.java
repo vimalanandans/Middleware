@@ -57,15 +57,15 @@ public class LogSenderQueueProcessor extends Thread {
                     clientOutputStream.writeBytes(logMsgString.toString());
                     clientOutputStream.flush();
                     clientOutputStream.close();
-                } catch (IOException ioExcpetion) {
-                    logger.error("Some Error occured :", ioExcpetion);
+                } catch (IOException e) {
+                    logger.error("Some Error occurred :", e);
                 } finally {
                     try {
                         if (uhuClient != null) {
                             uhuClient.close();
                         }
                     } catch (IOException e) {
-                        logger.error("Errors occured in closing uhuClient \n", e);
+                        logger.error("Errors occurred in closing uhuClient \n", e);
                     }
                 }
             } catch (InterruptedException e) {
@@ -79,7 +79,7 @@ public class LogSenderQueueProcessor extends Thread {
      *
      * @throws Exception if Logging Zirk is down and unable to connect
      */
-    public void startProcesing() throws Exception {
+    public void startProcessing() throws Exception {
         isRunning = true;
         this.start();
     }
@@ -87,7 +87,7 @@ public class LogSenderQueueProcessor extends Thread {
     /**
      * Stops processing the Log Sender Queue
      *
-     * @throws Exception intruppted Exception if something goes down while stopping the thread.
+     * @throws Exception interrupted Exception if something goes down while stopping the thread.
      */
     public void stopProcessing() throws Exception {
         isRunning = false;

@@ -12,7 +12,7 @@ public final class Factory {
         //To hide public constructor
     }
 
-    public static final Bezirk getInstance(Context context) {
+    public static Bezirk getInstance(Context context) {
         synchronized (Factory.class) {
             if (instance == null) {
                 instance = new Proxy(context);

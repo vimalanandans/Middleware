@@ -22,7 +22,7 @@ public final class EventListenerUtility {
     private final static byte SEPERATOR = (byte)',';
 
     private EventListenerUtility() {
-        //This is a utitlity class
+        //This is a utility class
     }
 
     public static Boolean constructMsg(EventLedger receivedMessage, DatagramPacket receivePacket, CommsNotification errCallaback) {

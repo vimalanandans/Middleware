@@ -85,7 +85,7 @@ public class DeviceListAdapter extends ArrayAdapter<BezirkDeviceInfo> {
         TextView device_active = (TextView) view
                 .findViewById(R.id.device_active);
 
-        String activeString = "";
+        final String activeString;
 
         if (item.isDeviceActive()) {
             activeString = "Active";
@@ -93,6 +93,7 @@ public class DeviceListAdapter extends ArrayAdapter<BezirkDeviceInfo> {
         } else {
             activeString = "Inactive";
         }
+
         device_active.setText(activeString);
         return view;
     }

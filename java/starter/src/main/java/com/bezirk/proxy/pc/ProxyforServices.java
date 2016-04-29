@@ -55,13 +55,11 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
         }
         boolean isSpherePassed = BezirkCompManager.getSphereRegistration().registerService(serviceId, serviceName);
         if (isSpherePassed) {
-            logger.info("Zirk Registration Complete for: " + serviceName + ", " + serviceId);
-            return;
+            logger.info("Zirk Registration Complete for: {}, {}", serviceName, serviceId);
         } else {
             // unregister the sadl due to failure in sphere
             logger.error("sphere Registration Failed. unregistring SADL");
             sadlRegistry.unregisterService(serviceId);
-
         }
     }
 

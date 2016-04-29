@@ -40,7 +40,7 @@ public class LoggingClient {
         this.serviceIP = remoteIP;
         this.servicePort = port;
         logSenderQueueProcessor = new LogSenderQueueProcessor(this.serviceIP, this.servicePort);
-        logSenderQueueProcessor.startProcesing();
+        logSenderQueueProcessor.startProcessing();
     }
 
     /**

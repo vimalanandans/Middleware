@@ -57,7 +57,7 @@ public class BezirkLoggingService extends Thread {
                 LoggingQueueManager.loadLogReceiverQueue(serializedLoggerMessage);
             }
         } catch (IOException e) {
-            logger.error("Some exception occured \n", e);
+            logger.error("Some exception occurred \n", e);
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
         } finally {
@@ -65,7 +65,7 @@ public class BezirkLoggingService extends Thread {
                 try {
                     serverSocket.close();
                 } catch (IOException e) {
-                    logger.error("Exception occured while closing hte serverSocket \n", e);
+                    logger.error("Exception occurred while closing hte serverSocket \n", e);
                 }
             }
         }

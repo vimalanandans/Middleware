@@ -152,7 +152,9 @@ public class NativeUtils {
         for (final File file : files) {
             // attempt to delete
             try {
-                file.delete();
+                if (!file.delete()) {
+                    logger.error("Failed to delete file: {}", file.getAbsolutePath());
+                }
             } catch (final SecurityException e) {
                 // not likely
                 logger.error("unable to delete");
@@ -296,8 +298,8 @@ public class NativeUtils {
     }
 
     private File getFileFromURL(String path) {
-        URL url = Zyre.class.getClassLoader().getResource(path);
-        File file = null;
+        final URL url = Zyre.class.getClassLoader().getResource(path);
+        File file;
         try {
             file = new File(url.toURI());
         } catch (URISyntaxException e) {

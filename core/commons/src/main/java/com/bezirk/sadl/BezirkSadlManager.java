@@ -76,7 +76,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
             logger.error("Invalid BezirkZirkId");
             return false;
         }
-        if (isServiceRegisterd(serviceId)) {
+        if (isServiceRegistered(serviceId)) {
             logger.info(serviceId + " Zirk is already registered");
             return false;
         }
@@ -96,7 +96,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
             logger.error("Invalid Subscription, Validation failed");
             return false;
         }
-        if (!isServiceRegisterd(serviceId)) {
+        if (!isServiceRegistered(serviceId)) {
             logger.info("Zirk tried to subscribe without Registration");
             return false;
         }
@@ -145,9 +145,9 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     }
 
     @Override
-    public Boolean isServiceRegisterd(BezirkZirkId serviceId) {
+    public Boolean isServiceRegistered(BezirkZirkId serviceId) {
         if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
-            return sadlRegistry.isServiceRegisterd(serviceId);
+            return sadlRegistry.isServiceRegistered(serviceId);
         }
         return false;
     }
@@ -303,8 +303,8 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     }
 
     @Override
-    public boolean processStreamStatus(StreamStatusMessage streamStatusNotifciation) {
-        BezirkCompManager.getplatformSpecificCallback().onStreamStatus(streamStatusNotifciation);
+    public boolean processStreamStatus(StreamStatusMessage streamStatusNotification) {
+        BezirkCompManager.getplatformSpecificCallback().onStreamStatus(streamStatusNotification);
         return true;
     }
 

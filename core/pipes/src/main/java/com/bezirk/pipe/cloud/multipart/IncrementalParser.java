@@ -141,18 +141,18 @@ public class IncrementalParser implements MultiPartParser {
 
         // 1. Ensure that boundary is the first line in the part
         validateBoundary(expectedBoundary, inStream, streamPart);
-        logger.info("Boundary for <stream> validated.  bytesRead: " + bytesRead);
+        logger.info("Boundary for <stream> validated.  bytesRead: {}", bytesRead);
 
         // 2. Collect headers
         Map<String, String> partHeader = parsePartHeader(inStream, streamPart);
-        logger.info("Header for <stream> parsed. bytesread: " + bytesRead);
+        logger.info("Header for <stream> parsed. bytesRead: {}", bytesRead);
 
         // 3. Make sure header entries are valid for this part
         validateStreamDescriptorHeader(partHeader);
 
         // 4. We have reached the end of the header block.  Now read the stream descriptor
         String streamDesc = readStreamDescriptor(inStream, streamPart);
-        logger.info("Descriptor for <stream> parsed. bytesread: " + bytesRead);
+        logger.info("Descriptor for <stream> parsed. bytesRead: {}", bytesRead);
 
         // The header is valid and we have a stream descriptor, now set the appropriate properties on the StreamPart object
         streamPart.setContentType(partHeader.get(Part.KEY_CONTENT_TYPE));

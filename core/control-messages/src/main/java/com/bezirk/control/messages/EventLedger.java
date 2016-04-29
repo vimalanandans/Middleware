@@ -56,7 +56,7 @@ public class EventLedger extends Ledger {
     }
 
     /**
-     * @return the encryptedheader
+     * @return the encryptedHeader
      */
     public byte[] getEncryptedHeader() {
         return encryptedHeader == null ? null : encryptedHeader.clone();

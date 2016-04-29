@@ -26,7 +26,9 @@ public interface ISadlControlReceiver {
      *
      * @param pRole    - Protocol Role of the Services
      * @param location - Location where the services should reside
-     * @return if location is null, all the services subscibed to the protocolRole are returned, null is returned if no services subscribe to the role or subscribe to the role and not in the same location.
+     * @return if location is null, all the services subscribed to the protocolRole are returned,
+     * <code>null</code> is returned if no services subscribe to the role or subscribe to the role
+     * and not in the same location.
      */
     public Set<BezirkDiscoveredZirk> discoverZirks(final ProtocolRole pRole, final Location location);
 

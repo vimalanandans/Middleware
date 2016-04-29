@@ -98,9 +98,7 @@ public final class CryptoEngine implements ICryptoInternals {
             // create key based on code
             SecretKey encKey = new SecretKeySpec(key.getEncoded(), "AES");
             return encKey.getEncoded();
-        } catch (NoSuchAlgorithmException e) {
-            logger.error("Error generating key", e);
-        } catch (InvalidKeySpecException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             logger.error("Error generating key", e);
         }
         return null;
@@ -158,7 +156,7 @@ public final class CryptoEngine implements ICryptoInternals {
                 // store it against hash Id so that we can check it when we
                 // receive the message
                 registry.putSphereKey(hashId, sphereKey, sphereId);
-            } else { // or create randam
+            } else { // or create random
                 sphereKey = new UPABlockCipherService().generateNewKey(128).getEncoded();
             }
             KeyPair pair = getKeyPair();
@@ -258,7 +256,7 @@ public final class CryptoEngine implements ICryptoInternals {
                     logger.error("Error while decrypting the content", e);
                 }
             } else if (validateHashKey(sphereId) && serializedContent != null) {
-                logger.info("hash id. processing decrept for " + sphereId);
+                logger.info("hash id. processing decrypt for " + sphereId);
                 try {
                     decryptedString = new String(sphereCipherService
                             .decrypt(serializedContent, registry.getSphereHashKeys(sphereId).getHashKey()).getBytes());

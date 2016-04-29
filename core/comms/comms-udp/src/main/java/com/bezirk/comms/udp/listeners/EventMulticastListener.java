@@ -59,8 +59,6 @@ public class EventMulticastListener implements Runnable {
             logger.info("Event MulicastListener has Started\n");
         } catch (SocketException e1) {
             logger.warn("Error setting up Evt MulticastListener", e1);
-        } catch (UnknownHostException e) {
-            logger.warn("Error setting up Evt MulticastListener", e);
         } catch (IOException e) {
             logger.warn("Error setting up Evt MulticastListener", e);
         }

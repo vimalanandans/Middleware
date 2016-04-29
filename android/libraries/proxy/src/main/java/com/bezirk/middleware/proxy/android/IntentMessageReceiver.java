@@ -19,7 +19,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -123,11 +122,10 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             return;
         }
         Log.e(TAG, "Event Topic Malfunctioning");
-        return;
     }
 
     private boolean receiveEventOrStream(String topic, String message, BezirkZirkEndPoint sourceSEP, short streamId,
-                                         String filePath, String type, Map<String, ArrayList<BezirkListener>> listenerMap) {
+                                         String filePath, String type, Map<String, List<BezirkListener>> listenerMap) {
 
         if (listenerMap.containsKey(topic)) {
             final List<BezirkListener> tempEventListners = listenerMap.get(topic);

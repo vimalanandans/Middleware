@@ -217,7 +217,7 @@ public class Hashids {
      * Decrypt string to numbers
      *
      * @param hash the encrypt string
-     * @return decryped numbers
+     * @return decrypted numbers
      */
     public String decodeHex(String hash) {
         final StringBuilder result = new StringBuilder();

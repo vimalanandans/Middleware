@@ -182,9 +182,7 @@ public class DeviceListActivity extends FragmentActivity implements
         if (BezirkValidatorUtility.isObjectNotNull(entry)) {
             // disable the menu items for member sphere
             if (!entry.getmSphere().isThisDeviceOwnsSphere()) {
-                MenuItem item = null;
-
-                item = menu.findItem(R.id.action_scan_qr_service_share);
+                MenuItem item = menu.findItem(R.id.action_scan_qr_service_share);
                 item.setVisible(false);
 
                 item = menu.findItem(R.id.action_scan_qr_service_catch);

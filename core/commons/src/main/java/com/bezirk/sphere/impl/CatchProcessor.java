@@ -398,7 +398,7 @@ public class CatchProcessor {
         BezirkDeviceInfo catcherBezirkDeviceInfo = catchRequest.getBezirkDeviceInfo();
 
         if (catcherBezirkDeviceInfo == null || sphereExchangeData == null) {
-            logger.error("Catched device/sphere Exchange data is not valid");
+            logger.error("Caught device/sphere Exchange data is not valid");
             return false;
         }
 
@@ -457,10 +457,10 @@ public class CatchProcessor {
                         + catcherSphereId);
 
                 // add remote device services also to new catchSphereId
-                // add the catched zirk name and zirk id to
+                // add the caught zirk name and zirk id to
                 // spheremembership map
                 if (sphereRegistryWrapper.addMemberServices(catcherBezirkDeviceInfo, catcherSphereId, catcherDeviceId)) {
-                    // get all the device info of catched zirk
+                    // get all the device info of caught zirk
                     for (BezirkZirkInfo serviceInfoList : catcherBezirkDeviceInfo.getZirkList()) {
 
                         // TODO: Check this implementation, addMemberServices
@@ -493,7 +493,7 @@ public class CatchProcessor {
                 logger.error("Response creation failed at add services to sphere");
             }
         }
-        logger.error("Response creation failed. clear data base manuallys ");
+        logger.error("Response creation failed. clear data base manuall ");
         return null;
     }
 

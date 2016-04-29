@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -196,9 +195,7 @@ public class DiscoveryProcessor {
             BezirkSphereInfo bezirkSphereInfo = sphereRegistryWrapper.getSphereInfo(discoveryRequest.getSphereId());
             if (bezirkSphereInfo != null && bezirkSphereInfo.getDeviceList() != null) {
                 // send only the services belongs to this device
-                Iterator<BezirkDeviceInfo> deviceIterator = bezirkSphereInfo.getDeviceList().iterator();
-                while (deviceIterator.hasNext()) {
-                    BezirkDeviceInfo localDeviceInfo = deviceIterator.next();
+                for (BezirkDeviceInfo localDeviceInfo : bezirkSphereInfo.getDeviceList()) {
                     // get the local device or development device id
                     if (localDeviceInfo.getDeviceId().equals(upaDeviceInterface.getDeviceId()) || localDeviceInfo
                             .getDeviceId().equalsIgnoreCase(SphereRegistryWrapper.DEVELOPMENT_DEVICE_ID)) {
@@ -234,12 +231,12 @@ public class DiscoveryProcessor {
 
     private boolean validateRequest(DiscoveryRequest discoveryRequest) {
         if (discoveryRequest.getSender().device.equals(BezirkNetworkUtilities.getDeviceIp())) {
-            logger.debug("Msg from same device, ignoring dicovery request");
+            logger.debug("Msg from same device, ignoring discovery request");
             return false;
         }
 
         if (!sphereRegistryWrapper.containsSphere(discoveryRequest.getSphereId())) {
-            logger.error("Request with invalid sphereId reeived at DiscoveryProcessor");
+            logger.error("Request with invalid sphereId received at DiscoveryProcessor");
         }
         return true;
     }

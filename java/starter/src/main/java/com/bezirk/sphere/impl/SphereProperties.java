@@ -70,9 +70,8 @@ public class SphereProperties implements ISphereConfig {
 
     @Override
     public boolean setDefaultSphereName(String name) {
-        Properties sphereProperties = null;
         try {
-            sphereProperties = UPADeviceForPC.loadProperties(SPHERE_PROPERTIES_FILE);
+            Properties sphereProperties = UPADeviceForPC.loadProperties(SPHERE_PROPERTIES_FILE);
             sphereProperties.setProperty(DEFAULT_SPHERE_NAME, name);
             URL propsURL = SphereProperties.class.getClassLoader().getResource(SPHERE_PROPERTIES_FILE);
             UPADeviceForPC.storeProperties(sphereProperties, propsURL);
@@ -90,9 +89,8 @@ public class SphereProperties implements ISphereConfig {
     public boolean setMode(Mode mode) {
         // set mode if different from current mode
         if (!this.mode.equals(mode)) {
-            Properties sphereProperties = null;
             try {
-                sphereProperties = UPADeviceForPC.loadProperties(SPHERE_PROPERTIES_FILE);
+                Properties sphereProperties = UPADeviceForPC.loadProperties(SPHERE_PROPERTIES_FILE);
                 String modeToSet = (mode.equals(Mode.ON)) ? "true" : "false";
                 sphereProperties.setProperty(SPHERE_MODE, modeToSet);
                 URL propsURL = SphereProperties.class.getClassLoader().getResource(SPHERE_PROPERTIES_FILE);

@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -51,13 +50,11 @@ public class DiscoveryRecord {
         return list;
     }
 
-    public void updateList(List<BezirkDiscoveredZirk> list) {
-        Iterator<BezirkDiscoveredZirk> it = list.iterator();
-        while (it.hasNext()) {
-            BezirkDiscoveredZirk curServ = it.next();
-            if (!this.list.contains(curServ)) { //Check if ZirkEndPoint Exists
-                logger.debug("Updating discList w SED-{}:{}", curServ.zirk.device, curServ.zirk.zirkId.getBezirkZirkId());
-                this.list.add(curServ);
+    public void updateList(List<BezirkDiscoveredZirk> discoveredZirks) {
+        for (BezirkDiscoveredZirk zirk : discoveredZirks) {
+            if (!this.list.contains(zirk)) { //Check if ZirkEndPoint Exists
+                logger.debug("Updating discList w SED-{}:{}", zirk.zirk.device, zirk.zirk.zirkId.getBezirkZirkId());
+                this.list.add(zirk);
             }
 
         }

@@ -70,7 +70,7 @@ public class SadlRegistryTest {
         sadlRegistry.registerService(uhuServiceBId);
 
         sadlRegistry.clearRegistry();
-        boolean isServiceRegistered = sadlRegistry.isServiceRegisterd(uhuServiceBId);
+        boolean isServiceRegistered = sadlRegistry.isServiceRegistered(uhuServiceBId);
 
         assertNotEquals(true, isServiceRegistered);
 

@@ -45,7 +45,7 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
             Intent fireIntent = new Intent();
             fireIntent.putExtra(serviceIdKEY, gson.toJson(eventIncomingMessage.getRecipient()));
             fireIntent.putExtra(eventSenderKEY, gson.toJson(eventIncomingMessage.senderSEP));
-            fireIntent.putExtra(eventMsgKEY, eventIncomingMessage.serialzedEvent);
+            fireIntent.putExtra(eventMsgKEY, eventIncomingMessage.serializedEvent);
             fireIntent.putExtra(eventTopicKEY, eventIncomingMessage.eventTopic);
             fireIntent.putExtra(msgIdKEY, eventIncomingMessage.msgId);
             fireIntent.putExtra(discriminatorKEY, eventIncomingMessage.getCallbackType());
@@ -70,7 +70,7 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
             fireintent.putExtra(serviceIdKEY, gson.toJson(streamIncomingMessage.getRecipient()));
             fireintent.putExtra(discriminatorKEY, streamIncomingMessage.getCallbackType());
             fireintent.putExtra(streamTopicKEY, streamIncomingMessage.streamTopic);
-            fireintent.putExtra(streamMsgKEY, streamIncomingMessage.serialzedStream);
+            fireintent.putExtra(streamMsgKEY, streamIncomingMessage.serializedStream);
             fireintent.putExtra(filePathKEY, streamIncomingMessage.file.getAbsolutePath());
             fireintent.putExtra(streamIdKEY, streamIncomingMessage.localStreamId); //
             fireintent.putExtra(senderSEPKEY, gson.toJson(streamIncomingMessage.senderSEP));

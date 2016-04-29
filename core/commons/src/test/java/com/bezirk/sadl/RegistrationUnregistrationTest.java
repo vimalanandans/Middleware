@@ -96,7 +96,7 @@ public class RegistrationUnregistrationTest {
 		
 		/*SadlManager should return false when checked whether null zirk id is registered*/
         isServiceRegistered = true;
-        isServiceRegistered = bezirkSadlManager.isServiceRegisterd(null);
+        isServiceRegistered = bezirkSadlManager.isServiceRegistered(null);
         assertFalse("SadlManager has zirk with null serviceID in registered zirk list.", isServiceRegistered);
 
         //ServiceA registered and location is set to reception.
@@ -116,12 +116,12 @@ public class RegistrationUnregistrationTest {
 
 		/*SadlManager should return true when queried for serviceA registration*/
         isServiceRegistered = bezirkSadlManager
-                .isServiceRegisterd(uhuServiceAId);
+                .isServiceRegistered(uhuServiceAId);
         assertTrue("SadlManager dont have ServiceA id in registered zirk list.", isServiceRegistered);
 		
 		/*SadlManager should return false when queried for unregistered serviceid*/
         BezirkZirkId invalidService = new BezirkZirkId("TestRegister");
-        isServiceRegistered = bezirkSadlManager.isServiceRegisterd(invalidService);
+        isServiceRegistered = bezirkSadlManager.isServiceRegistered(invalidService);
         assertFalse("Zirk is registered", isServiceRegistered);
 
 

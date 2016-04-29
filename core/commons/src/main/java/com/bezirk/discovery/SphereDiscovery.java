@@ -42,10 +42,10 @@ public class SphereDiscovery {
         }
     }
 
-    public void remove(DiscoveryLabel dlabel) {
+    public void remove(DiscoveryLabel discoveryLabel) {
         synchronized (this) {
-            discoveredMap.remove(dlabel);
-            logger.info("Discovery removed > " + dlabel.getRequester().device);
+            discoveredMap.remove(discoveryLabel);
+            logger.info("Discovery removed > " + discoveryLabel.getRequester().device);
         }
     }
 

@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DiscoveryProcessor implements Runnable {
@@ -35,20 +34,18 @@ public class DiscoveryProcessor implements Runnable {
                 continue;
             }
 //			//Copy a list of pending discoveries
-            CopyOnWriteArrayList<DiscoveryLabel> dlabelList;
+            CopyOnWriteArrayList<DiscoveryLabel> discoveryLabels;
             try {
-                dlabelList = new CopyOnWriteArrayList<DiscoveryLabel>(DiscoveryProcessor.discovery.getDiscoveredMap().keySet());
+                discoveryLabels = new CopyOnWriteArrayList<DiscoveryLabel>(DiscoveryProcessor.discovery.getDiscoveredMap().keySet());
             } catch (InterruptedException e) {
                 this.stop();
                 continue;
             }
 
-            Iterator<DiscoveryLabel> it = dlabelList.iterator();
-            while (it.hasNext()) {
-                DiscoveryLabel dlbl = it.next();
+            for (DiscoveryLabel discoveryLabel : discoveryLabels) {
                 DiscoveryRecord discRecord;
                 try {
-                    discRecord = discovery.getDiscoveredMap().get(dlbl);
+                    discRecord = discovery.getDiscoveredMap().get(discoveryLabel);
                 } catch (InterruptedException e) {
                     this.stop();
                     return;
@@ -60,12 +57,12 @@ public class DiscoveryProcessor implements Runnable {
                 }
                 long curTime = new Date().getTime();
                 //If discovery request has timed out
-                //	Invoke the requestor with the discovered and drop the request
+                //	Invoke the requester with the discovered and drop the request
                 if (curTime - discRecord.getCreationTime() >= discRecord.getTimeout()) {
                     final Gson gson = new Gson();
-                    DiscoveryIncomingMessage callbackMessage = new DiscoveryIncomingMessage(dlbl.getRequester().zirkId, gson.toJson(discRecord.getList()), dlbl.getDiscoveryId(), dlbl.isSphereDiscovery());
+                    DiscoveryIncomingMessage callbackMessage = new DiscoveryIncomingMessage(discoveryLabel.getRequester().zirkId, gson.toJson(discRecord.getList()), discoveryLabel.getDiscoveryId(), discoveryLabel.isSphereDiscovery());
                     BezirkCompManager.getplatformSpecificCallback().onDiscoveryIncomingMessage(callbackMessage);
-                    DiscoveryProcessor.discovery.remove(dlbl);
+                    DiscoveryProcessor.discovery.remove(discoveryLabel);
                 }
             }
         }

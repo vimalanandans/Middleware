@@ -25,7 +25,7 @@ public interface DatabaseConnection {
     public ConnectionSource getDatabaseConnection() throws NullPointerException, SQLException, IOException, Exception;
 
     /**
-     * Returns the DAO class associted with the entity
+     * Returns the DAO class associated with the entity
      *
      * @return DAO associated with the Entity
      * @throws NullPointerException if connection is null
