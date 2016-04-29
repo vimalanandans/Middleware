@@ -130,7 +130,7 @@ public class CommsTestJFrame extends JFrame implements IUpdateResponse {
     }
 
     @Override
-    public void updatePingResposne(String response) {
+    public void updatePingResponse(String response) {
         // Nothing to be done. Status display available in commit ID :commit
         // 6d759437d8bf7bf1c9d94d152946b45a1bfb4e84
     }

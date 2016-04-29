@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Iterator;
 
-public class ProxyforServices implements BezirkProxyForServiceAPI {
+public class ProxyForServices implements BezirkProxyForServiceAPI {
     private static final Logger logger = LoggerFactory.getLogger(ProxyforServices.class);
     private ISadlRegistry sadlRegistry = null;
     private BezirkComms comms = null;
@@ -58,7 +58,7 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
             logger.info("Zirk Registration Complete for: {}, {}", serviceName, serviceId);
         } else {
             // unregister the sadl due to failure in sphere
-            logger.error("sphere Registration Failed. unregistring SADL");
+            logger.error("Sphere Registration Failed: unregistering SADL");
             sadlRegistry.unregisterService(serviceId);
         }
     }

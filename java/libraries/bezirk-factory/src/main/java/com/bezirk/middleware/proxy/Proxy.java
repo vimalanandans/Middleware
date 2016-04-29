@@ -25,6 +25,7 @@ import com.bezirk.starter.BezirkConfig;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.PipedOutputStream;
@@ -32,7 +33,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class Proxy implements Bezirk {
-    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(Proxy.class);
+    private static final Logger logger = LoggerFactory.getLogger(Proxy.class);
+
     private static int discoveryCount = 0; // keep track of Discovery Id
     protected final HashMap<BezirkZirkId, DiscoveryBookKeeper> dListenerMap = new HashMap<BezirkZirkId, DiscoveryBookKeeper>();
     protected final HashMap<BezirkZirkId, HashSet<BezirkListener>> sidMap = new HashMap<BezirkZirkId, HashSet<BezirkListener>>();
@@ -59,7 +61,7 @@ public class Proxy implements Bezirk {
         try {
             bezirkProxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         } catch (Exception e) {
-            logger.error("Error in Loding BezirkProxyRegistry", e);
+            logger.error("Error loading BezirkProxyRegistry", e);
             System.exit(0);
         }
     }
@@ -76,7 +78,7 @@ public class Proxy implements Bezirk {
         try {
             bezirkProxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         } catch (Exception e) {
-            logger.error("Error in Loding BezirkProxyRegistry", e);
+            logger.error("Error loading BezirkProxyRegistry", e);
             System.exit(0);
         }
     }
@@ -110,7 +112,7 @@ public class Proxy implements Bezirk {
     @Override
     public void unregisterZirk(ZirkId zirkId) {
         if (null == zirkId) {
-            logger.error("Trying to UnRegister with null ID");
+            logger.error("Trying to unregister with null ID");
             return;
         }
         // Clear the Persistence by removing the BezirkZirkId of the unregistering Zirk
@@ -218,15 +220,13 @@ public class Proxy implements Bezirk {
     @Override
     public void requestPipeAuthorization(ZirkId requester, Pipe pipe, PipePolicy allowedIn,
                                          PipePolicy allowedOut, BezirkListener listener) {
-        // TODO Auto-generated method stub
-
+        // TODO: Design and implement pipes API
     }
 
     @Override
     public void getPipePolicy(Pipe pipe,
                               BezirkListener listener) {
-        // TODO Auto-generated method stub
-
+        // TODO: Design and implement pipes API
     }
 
     @Override
@@ -237,17 +237,15 @@ public class Proxy implements Bezirk {
         discoveryCount = (++discoveryCount) % Integer.MAX_VALUE;
         dListenerMap.put((BezirkZirkId) zirk, new DiscoveryBookKeeper(discoveryCount, listener));
         proxy.discover((BezirkZirkId) zirk, scope, new SubscribedRole(protocolRole), discoveryCount, timeout, maxResults);
-
     }
 
     @Override
     public void setLocation(ZirkId zirk, Location location) {
-        if (null == location) {
-            logger.error("Location is null or Empty, Services cannot set the location as Null");
-            return;
+        if (location == null) {
+            logger.error("Location is null or Empty, Services cannot set the location as null");
+        } else {
+            proxy.setLocation((BezirkZirkId) zirk, location);
         }
-        //Set
-        proxy.setLocation((BezirkZirkId) zirk, location);
     }
 
     //Create object for listener, discoveryId pair

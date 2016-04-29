@@ -1,8 +1,5 @@
 /*
- * @author: Joao Sousa (CR/RTC3-NA)
- * 
  * @description: This is the core interface for Bezirk Proxy - sending side.
- * 
  */
 package com.bezirk.proxy.pc;
 

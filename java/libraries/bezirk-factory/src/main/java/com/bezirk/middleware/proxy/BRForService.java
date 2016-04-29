@@ -8,7 +8,6 @@ import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
-import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.google.gson.Gson;
@@ -21,7 +20,6 @@ import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 public class BRForService implements BroadcastReceiver {
@@ -103,16 +101,15 @@ public class BRForService implements BroadcastReceiver {
     private void handleEventCallback(EventIncomingMessage eCallbackMessage) {
         logger.debug("About to callback sid:" + eCallbackMessage.getRecipient().getBezirkZirkId() + " for id:" + eCallbackMessage.msgId);
         //Make a combined sid for sender and recipient
-        String combinedSid = eCallbackMessage.senderSEP.zirkId.getBezirkZirkId() + ":" + eCallbackMessage.getRecipient().getBezirkZirkId();
+        String combinedSid = eCallbackMessage.senderEndPoint.zirkId.getBezirkZirkId() + ":" + eCallbackMessage.getRecipient().getBezirkZirkId();
         if (checkDuplicateMsg(combinedSid, eCallbackMessage.msgId)) {
             HashSet<BezirkListener> tempListenersSidMap = sidMap.get(eCallbackMessage.getRecipient());
             HashSet<BezirkListener> tempListenersTopicsMap = eventListenerMap.get(eCallbackMessage.eventTopic);
             if (null != tempListenersSidMap && null != tempListenersTopicsMap) {
-                Iterator<BezirkListener> listenerIterator = tempListenersSidMap.iterator();
-                while (listenerIterator.hasNext()) {
-                    BezirkListener invokingListener = listenerIterator.next();
+                for (BezirkListener invokingListener : tempListenersSidMap) {
                     if (tempListenersTopicsMap.contains(invokingListener)) {
-                        invokingListener.receiveEvent(eCallbackMessage.eventTopic, eCallbackMessage.serializedEvent, (ZirkEndPoint) eCallbackMessage.senderSEP);
+                        invokingListener.receiveEvent(eCallbackMessage.eventTopic,
+                                eCallbackMessage.serializedEvent, eCallbackMessage.senderEndPoint);
                     }
                 }
             }
@@ -132,12 +129,12 @@ public class BRForService implements BroadcastReceiver {
                 for (BezirkListener listener : streamListenerMap.get(strmMsg.streamTopic)) {
                     listener.receiveStream(strmMsg.streamTopic, strmMsg.serializedStream, strmMsg.localStreamId, strmMsg.file, strmMsg.senderSEP);
                 }
-                return;
+            } else {
+                logger.error("StreamListenerMap does not have a mapped Stream");
             }
-            logger.error(" StreamListenerMap does not have a mapped Stream");
-            return;
+        } else {
+            logger.error("Duplicate Stream Request Received");
         }
-        logger.error("Duplicate Stream Request Received");
     }
 
     /**
@@ -147,9 +144,9 @@ public class BRForService implements BroadcastReceiver {
      * @param streamStatusCallbackMessage StreamStatusCallback that will be invoked for the services.
      */
     private void handleStreamStatusCallback(StreamStatusMessage streamStatusCallbackMessage) {
-        String activeStreamkey = streamStatusCallbackMessage.getRecipient().getBezirkZirkId() + streamStatusCallbackMessage.streamId;
-        if (activeStreams.containsKey(activeStreamkey)) {
-            HashSet<BezirkListener> tempHashSet = streamListenerMap.get(activeStreams.get(activeStreamkey));
+        String activeStreamKey = streamStatusCallbackMessage.getRecipient().getBezirkZirkId() + streamStatusCallbackMessage.streamId;
+        if (activeStreams.containsKey(activeStreamKey)) {
+            HashSet<BezirkListener> tempHashSet = streamListenerMap.get(activeStreams.get(activeStreamKey));
             if (tempHashSet != null && !tempHashSet.isEmpty()) {
                 for (BezirkListener listener : tempHashSet) {
                     listener.streamStatus(
@@ -158,7 +155,7 @@ public class BRForService implements BroadcastReceiver {
                                     : BezirkListener.StreamStates.LOST_CONNECTION));
                 }
             }
-            activeStreams.remove(activeStreamkey);
+            activeStreams.remove(activeStreamKey);
         }
     }
 
@@ -171,7 +168,7 @@ public class BRForService implements BroadcastReceiver {
         if (dListenerMap.containsKey(discObj.getRecipient()) && dListenerMap.get(discObj.getRecipient()).getDiscoveryId() == discObj.discoveryId) {
             final Gson gson = new Gson();
             final String discoveredListAsString = discObj.discoveredList;
-            //Deserialiaze
+            // Deserialize
             Type discoveredListType = new TypeToken<HashSet<BezirkDiscoveredZirk>>() {
             }.getType();
 
@@ -193,7 +190,6 @@ public class BRForService implements BroadcastReceiver {
         final String key = sid + ":" + streamId;
         final Long currentTime = new Date().getTime();
         if (duplicateStreamMap.containsKey(key)) {
-
             if (currentTime - duplicateStreamMap.get(key) > TIME_DURATION) {
                 duplicateStreamMap.remove(key);
                 duplicateStreamMap.put(key, currentTime);
@@ -203,7 +199,6 @@ public class BRForService implements BroadcastReceiver {
                 return false;
             }
         } else {
-
             if (duplicateStreamMap.size() < MAX_MAP_SIZE) {
                 duplicateStreamMap.put(key, currentTime);
                 return true;
@@ -222,19 +217,14 @@ public class BRForService implements BroadcastReceiver {
         final String key = sid + ":" + messageId;
         final Long currentTime = new Date().getTime();
         if (duplicateMsgMap.containsKey(key)) {
-
             if (currentTime - duplicateMsgMap.get(key) > TIME_DURATION) {
                 duplicateMsgMap.remove(key);
                 duplicateMsgMap.put(key, currentTime);
                 return true;
             } else {
-
                 return false;
             }
-
-
         } else {
-
             if (duplicateMsgMap.size() < MAX_MAP_SIZE) {
                 duplicateMsgMap.put(key, currentTime);
                 return true;
@@ -243,9 +233,6 @@ public class BRForService implements BroadcastReceiver {
                 duplicateMsgMap.put(key, currentTime);
                 return true;
             }
-
         }
     }
-
-
 }

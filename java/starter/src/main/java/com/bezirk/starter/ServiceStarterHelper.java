@@ -95,18 +95,16 @@ final class ServiceStarterHelper {
      * Loads the default location for UPA device from the properties.
      */
     private Location loadLocation() {
-        Location location = null;
         try {
             final Properties props = UPADeviceForPC.loadProperties();
 
             final String loc = props.getProperty("DeviceLocation", null);
-            location = new Location(loc);
+            return new Location(loc);
         } catch (Exception e) {
             logger.error("Problem reading or writing properties file: ", e);
-            return null;
         }
 
-        return location;
+        return null;
     }
 
     /**

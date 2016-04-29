@@ -41,7 +41,7 @@ public class MainService {
      * Max value for the notification
      */
     private static final int MAX_ERROR_REPEAT_COUNT = 100;
-    private final com.bezirk.proxy.pc.ProxyforServices proxyforServices;
+    private final com.bezirk.proxy.pc.ProxyforServices proxyForServices;
     private final BezirkPCNetworkUtil bezirkPcNetworkUtil = new BezirkPCNetworkUtil();
     private final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
     BezirkSphereAPI sphereForPC;
@@ -107,15 +107,15 @@ public class MainService {
     };
 
     /**
-     * Configure proxy and uhuconfig for main zirk
+     * Configure proxy and <code>bezirkConfig</code> for main zirk
      *
-     * @param proxyforServices
+     * @param proxyForServices
      * @param bezirkConfigRef
      */
-    public MainService(final com.bezirk.proxy.pc.ProxyforServices proxyforServices,
+    public MainService(final com.bezirk.proxy.pc.ProxyforServices proxyForServices,
                        final BezirkConfig bezirkConfigRef) {
 
-        this.proxyforServices = proxyforServices;
+        this.proxyForServices = proxyForServices;
 
         bezirkConfig = bezirkConfigRef;
 
@@ -221,7 +221,7 @@ public class MainService {
                 registryPersistence);
 
         // Inject to proxyForServices
-        proxyforServices.setSadlRegistry(bezirkSadlManager);
+        proxyForServices.setSadlRegistry(bezirkSadlManager);
 
         /**************************************************
          * Step6 :Initialize the comms.                   *
@@ -372,7 +372,7 @@ public class MainService {
         comms.startComms();
 
         // the comms manager for the proxy
-        proxyforServices.setCommsManager(comms);
+        proxyForServices.setCommsManager(comms);
 
         // Set RTC Signalling for streaming
 
