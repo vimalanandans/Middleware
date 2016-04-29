@@ -15,11 +15,10 @@ import java.util.Arrays;
  * This class contains static methods used by the Event listeners
  *
  * @author Mansimar Aneja
- * @modifed Vijet Badigannavar Added a parameter to the constructMsg() and modified to give the callback
- * if version mismatch occures
  */
 public final class EventListenerUtility {
-    private static final Logger log = LoggerFactory.getLogger(EventListenerUtility.class);
+    private static final Logger logger = LoggerFactory.getLogger(EventListenerUtility.class);
+
     private final static byte SEPERATOR = (byte)',';
 
     private EventListenerUtility() {
@@ -47,7 +46,7 @@ public final class EventListenerUtility {
                 switch (headerCount) {
                     case -1:
                         if (!headerPart.equals(BezirkVersion.BEZIRK_VERSION)) {
-                            log.error("UPGRADE BEZIRK. BEZIRK VERSION MISMATCH. device version > " + BezirkVersion.BEZIRK_VERSION + " Recieved msg version " + headerPart);
+                            logger.error("UPGRADE BEZIRK. BEZIRK VERSION MISMATCH. device version > " + BezirkVersion.BEZIRK_VERSION + " Recieved msg version " + headerPart);
                             if (null != errCallaback) {
                                 errCallaback.versionMismatch(headerPart);
                             }
@@ -77,7 +76,7 @@ public final class EventListenerUtility {
                 }
             }
         }
-        log.info(" Failed: Failed to sep Header ");
+        logger.info(" Failed: Failed to sep Header ");
         return false;
     }
 

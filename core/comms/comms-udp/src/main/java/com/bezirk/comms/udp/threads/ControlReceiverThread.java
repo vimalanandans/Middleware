@@ -12,15 +12,12 @@ import org.slf4j.LoggerFactory;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
 /**
- * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
- *         <p/>
- *         This class is a thread that is used to process Control messages that are within the Control Receiver Queue
- *         The thread interacts within the Bezirk Internal Components in order to process the Control message and invoke services (if necessary)
+ * This class is a thread that is used to process Control messages that are within the Control Receiver Queue
+ * The thread interacts within the Bezirk Internal Components in order to process the Control message and invoke services (if necessary)
  */
 public class ControlReceiverThread implements Runnable {
-    private static final Logger log = LoggerFactory.getLogger(ControlReceiverThread.class);
+    private static final Logger logger = LoggerFactory.getLogger(ControlReceiverThread.class);
 
     private MessageQueue msgQueue = null;
 
@@ -36,11 +33,11 @@ public class ControlReceiverThread implements Runnable {
     @Override
     public void run() {
         Boolean running = true;
-        log.info("Control Receiver Thread has started");
+        logger.info("Control Receiver Thread has started");
 
         while (running) {
             if (Thread.currentThread().isInterrupted()) {
-                log.info("Control Receiver Thread has Stopped");
+                logger.info("Control Receiver Thread has Stopped");
                 running = false;
                 continue;
             }

@@ -14,7 +14,8 @@ import java.util.Enumeration;
 
 
 public class VirtualCommsManager {
-    private static final Logger log = LoggerFactory.getLogger(VirtualCommsManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(VirtualCommsManager.class);
+
     public BezirkCommsMock bezirkCommsMock;
     public VirtualDevice[] device = null; //array of VirtualDevice objects.
     private InetAddress inetAddr;
@@ -65,7 +66,7 @@ public class VirtualCommsManager {
                 }
             }
         } catch (SocketException e) {
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
         }
         return null;
     }
@@ -76,8 +77,8 @@ public class VirtualCommsManager {
      * @param device - device whose registry contents are to be displayed.
      */
     public void displayRegistryMapsForDevice(VirtualDevice device) {
-        log.info("Spheres map: " + device.sphereRegistry.spheres.toString() + "\n");
-        log.info("sphere membership map: " + device.sphereRegistry.sphereMembership.toString() + "\n");
+        logger.info("Spheres map: " + device.sphereRegistry.spheres.toString() + "\n");
+        logger.info("sphere membership map: " + device.sphereRegistry.sphereMembership.toString() + "\n");
     }
 
 }

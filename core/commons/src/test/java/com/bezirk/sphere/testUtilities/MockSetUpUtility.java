@@ -48,8 +48,8 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 public class MockSetUpUtility {
+    private static final Logger logger = LoggerFactory.getLogger(MockSetUpUtility.class);
 
-    private static final Logger log = LoggerFactory.getLogger(MockSetUpUtility.class);
     private static final String DBPath = "./";
     private static final String DBVersion = DBConstants.DB_VERSION;
     public BezirkSphere bezirkSphere = null;
@@ -132,7 +132,7 @@ public class MockSetUpUtility {
             }
         } catch (SocketException e) {
 
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
 
         }
         return null;
@@ -222,13 +222,13 @@ public class MockSetUpUtility {
 
             if (registry.spheres.get(sphereId).getSphereType()
                     .equalsIgnoreCase(BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT)) {
-                log.info("sphere id from registry : " + sphereId);
+                logger.info("sphere id from registry : " + sphereId);
 
                 defaultSphereId = new String(sphereId);
             }
 
         }
-        log.debug("Default sphereId : " + defaultSphereId);
+        logger.debug("Default sphereId : " + defaultSphereId);
         return defaultSphereId;
 
     }

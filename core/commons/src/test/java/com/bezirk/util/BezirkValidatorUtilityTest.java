@@ -27,8 +27,7 @@ import static org.junit.Assert.assertTrue;
  * @author ajc6kor
  */
 public class BezirkValidatorUtilityTest {
-
-    private static final Logger log = LoggerFactory.getLogger(BezirkValidatorUtilityTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkValidatorUtilityTest.class);
 
     static BezirkZirkEndPoint sender = new BezirkZirkEndPoint(new BezirkZirkId("MockServiceA"));
     static String serviceId = "MockServiceB";
@@ -69,7 +68,7 @@ public class BezirkValidatorUtilityTest {
             }
         } catch (SocketException e) {
 
-            log.error("Unable to fetch network interface");
+            logger.error("Unable to fetch network interface");
 
         }
         return null;

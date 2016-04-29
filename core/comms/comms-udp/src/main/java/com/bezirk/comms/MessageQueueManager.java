@@ -17,8 +17,7 @@ import org.slf4j.LoggerFactory;
 @Deprecated
 // No Global Queue manager. functionalities  are moved to BezirkCommsManager// Delete this file later
 public class MessageQueueManager {
-    //private final static String TAG = MessageQueueManager.class.getCanonicalName();
-    private static final Logger log = LoggerFactory.getLogger(MessageQueueManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageQueueManager.class);
 
     private static MessageQueue sendingMessageQueue;
     private static MessageQueue receiverMessageQueue;
@@ -41,7 +40,7 @@ public class MessageQueueManager {
      * @see MessageQueue
      */
     private void setSendingMessageQueue(MessageQueue sendingMsgQueue) {
-        log.info("Bezirk Sending Message Queue has been initialized\n");
+        logger.info("Bezirk Sending Message Queue has been initialized\n");
         MessageQueueManager.sendingMessageQueue = sendingMsgQueue;
     }
 
@@ -60,7 +59,7 @@ public class MessageQueueManager {
      * @see MessageQueue
      */
     private void setReceiverMessageQueue(MessageQueue receiverMessageQueue) {
-        log.info("Bezirk Receiver Message Queue has been initialized\n");
+        logger.info("Bezirk Receiver Message Queue has been initialized\n");
         MessageQueueManager.receiverMessageQueue = receiverMessageQueue;
     }
 
@@ -79,7 +78,7 @@ public class MessageQueueManager {
      * @param controlSenderQueue {@link MessageQueue}
      */
     private void setControlSenderQueue(MessageQueue controlSenderQueue) {
-        log.info("Control Sender Queue has been initialized");
+        logger.info("Control Sender Queue has been initialized");
         MessageQueueManager.controlSenderQueue = controlSenderQueue;
     }
 
@@ -98,7 +97,7 @@ public class MessageQueueManager {
      * @param controlReceiverQueue
      */
     private void setControlReceiverQueue(MessageQueue controlReceiverQueue) {
-        log.info("Control Receiver Queue has been initialized");
+        logger.info("Control Receiver Queue has been initialized");
         MessageQueueManager.controlReceiverQueue = controlReceiverQueue;
     }
 
@@ -117,7 +116,7 @@ public class MessageQueueManager {
      * @param streamingMessageQueue
      */
     private void setStreamingMessageQueue(MessageQueue streamingMessageQueue) {
-        log.info("Streaming Message Queue has been initialized");
+        logger.info("Streaming Message Queue has been initialized");
         MessageQueueManager.streamingMessageQueue = streamingMessageQueue;
     }
 }

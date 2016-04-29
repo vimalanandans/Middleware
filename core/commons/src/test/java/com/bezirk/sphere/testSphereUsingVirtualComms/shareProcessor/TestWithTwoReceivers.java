@@ -25,8 +25,8 @@ import static org.junit.Assert.*;
 
 
 public class TestWithTwoReceivers {
+    private static final Logger logger = LoggerFactory.getLogger(TestWithTwoReceivers.class);
 
-    private static final Logger log = LoggerFactory.getLogger(TestWithTwoReceivers.class);
     private static final VirtualCommsManager manager = new VirtualCommsManager();
     static int numOfDevices = 3;
     private static BezirkCommsMock bezirkCommsMock;
@@ -38,7 +38,7 @@ public class TestWithTwoReceivers {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("******** Setting up TestWithTwoReceiver ********");
+        logger.info("******** Setting up TestWithTwoReceiver ********");
         manager.setUp(numOfDevices);
         bezirkCommsMock = manager.bezirkCommsMock;
     }
@@ -50,7 +50,7 @@ public class TestWithTwoReceivers {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("******** Shutting down TestWithTwoReceiver ********");
+        logger.info("******** Shutting down TestWithTwoReceiver ********");
         manager.destroy(numOfDevices);
     }
 
@@ -80,7 +80,7 @@ public class TestWithTwoReceivers {
      */
     @Test
     public final void twoReceivers() throws Exception {
-        log.info("****** Starting the test with two receivers *****");
+        logger.info("****** Starting the test with two receivers *****");
 
         //Get the sphere ID of device0
         String sphereId0 = manager.device[0].sphereId;
@@ -105,7 +105,7 @@ public class TestWithTwoReceivers {
         ShareResponse receivedResponse = (ShareResponse) bezirkCommsMock.message.getMessage();
         assertTrue(manager.device[0].shareProcessor.processResponse(receivedResponse));
 
-        log.info("****** Ending the test with two receivers *****");
+        logger.info("****** Ending the test with two receivers *****");
     }
 
 }

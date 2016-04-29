@@ -8,8 +8,8 @@ import org.zeromq.ZMsg;
 import org.zyre.ZreInterface;
 
 public class JyreReceiverThread extends Thread {
+    public static final Logger logger = LoggerFactory.getLogger(JyreReceiverThread.class);
 
-    public static final Logger log = LoggerFactory.getLogger(JyreReceiverThread.class);
     private Boolean running = true;
     private ZreInterface zreInterface = null;
     private String zreGroup;
@@ -24,11 +24,11 @@ public class JyreReceiverThread extends Thread {
     @Override
     public void run() {
         if (zreGroup == null) {
-            log.error("group not set");
+            logger.error("group not set");
             return;
         }
         if (zreInterface == null) {
-            log.error("Zyre not set");
+            logger.error("Zyre not set");
             return;
         }
 
@@ -36,16 +36,16 @@ public class JyreReceiverThread extends Thread {
         zreInterface.join(zreGroup);
 
         while (running) {
-            log.info("Jyre Receiver Thread has started \n");
+            logger.info("Jyre Receiver Thread has started \n");
             ZMsg incoming = null;
             try {
                 incoming = zreInterface.recv();
             } catch (Exception e) {
-                log.error("*********** Exception during receive ********", e);
+                logger.error("*********** Exception during receive ********", e);
             }
 
             if (incoming == null) {// Interrupted
-                log.error("Interrupted during recv()");
+                logger.error("Interrupted during recv()");
                 break;
             }
 
@@ -55,7 +55,7 @@ public class JyreReceiverThread extends Thread {
             String payLoad = "Test";
 
             if (Thread.currentThread().isInterrupted()) {
-                log.info("Jyre Receiver Thread has Stopped");
+                logger.info("Jyre Receiver Thread has Stopped");
                 running = false;
                 continue;
             }
@@ -68,13 +68,13 @@ public class JyreReceiverThread extends Thread {
             else if (eventType.equals("SHOUT")) {
                 handleShout(peer, payLoad);
             } else {
-                log.info("unkown event received: ");
+                logger.info("unkown event received: ");
             }
         }
 
         // when false, destroy the ZRE context.
         zreInterface.destroy();
-        log.debug("Jyre Interface has been destroyed!!! \n");
+        logger.debug("Jyre Interface has been destroyed!!! \n");
     }
 
     /**
@@ -83,7 +83,7 @@ public class JyreReceiverThread extends Thread {
      * @param -incoming
      */
     private void handleWhisper(String zyreDeviceId, String payload) {
-        log.info("Received a incoming whisper");
+        logger.info("Received a incoming whisper");
         commsProcessor.processWireMessage(zyreDeviceId, payload);
     }
 
@@ -93,7 +93,7 @@ public class JyreReceiverThread extends Thread {
      * @param -incoming
      */
     private void handleShout(String zyreDeviceId, String payload) {
-        log.info("received a Shout!!!!!");
+        logger.info("received a Shout!!!!!");
         commsProcessor.processWireMessage(zyreDeviceId, payload);
     }
 
@@ -101,7 +101,7 @@ public class JyreReceiverThread extends Thread {
      * initialize the Jyre
      */
     public boolean initJyre() {
-        log.debug("Constructing ZreInterface!!");
+        logger.debug("Constructing ZreInterface!!");
         zreInterface = new ZreInterface();
         return true;
     }
@@ -112,7 +112,7 @@ public class JyreReceiverThread extends Thread {
      * @return
      */
     public boolean closeComms() {
-        log.debug("closing comms!!");
+        logger.debug("closing comms!!");
         if (zreInterface != null) {
             // when false, destroy the ZRE context.
             zreInterface.destroy();
@@ -127,12 +127,12 @@ public class JyreReceiverThread extends Thread {
      */
     public boolean startJyre() {
         if (zreInterface != null) {
-            log.debug("ZreInterface has jjoined group : " + getGroup());
+            logger.debug("ZreInterface has jjoined group : " + getGroup());
             // join the group
             zreInterface.join(getGroup());
 
             // start the receiver
-            log.debug("Zre receiver thread has been started : ");
+            logger.debug("Zre receiver thread has been started : ");
             start();
 
             return true;
@@ -147,7 +147,7 @@ public class JyreReceiverThread extends Thread {
 
         //stop the receiver thread
         interrupt();
-        log.debug("Zre receiver thread has been interupted!!");
+        logger.debug("Zre receiver thread has been interupted!!");
         return true;
     }
 

@@ -12,11 +12,7 @@ import java.lang.reflect.InvocationTargetException;
  * Factory class for Signaling
  */
 public final class SignalingFactory {
-
-    /**
-     * Priavte logger for the class
-     */
-    private static final Logger log = LoggerFactory.getLogger(SignalingFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(SignalingFactory.class);
 
     /**
      * Singleton Object holding the implementation of {@link Signaling}
@@ -50,7 +46,7 @@ public final class SignalingFactory {
                     signaling = getNewInstance(className, comms);
                 }
             } catch (Exception ex) {
-                log.error("Signalling Instance creation failed:", ex);
+                logger.error("Signalling Instance creation failed:", ex);
             }
         }
     }
@@ -107,7 +103,7 @@ public final class SignalingFactory {
         try {
             cTmp = Class.forName(className);
         } catch (ClassNotFoundException e) {
-            log.error("Invalid class name \n", e);
+            logger.error("Invalid class name \n", e);
         }
         return cTmp;
     }
@@ -123,7 +119,7 @@ public final class SignalingFactory {
         try {
             newInstance = getClass(className).newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            log.error("New Instance creation failed. \n", e);
+            logger.error("New Instance creation failed. \n", e);
         }
         return newInstance;
     }
@@ -141,7 +137,7 @@ public final class SignalingFactory {
             Constructor<?> ctor = getClass(className).getConstructor(BezirkComms.class);
             newInstance = ctor.newInstance(new Object[]{comms});
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
-            log.error("New Instance creation failed. \n", e);
+            logger.error("New Instance creation failed. \n", e);
         }
         return newInstance;
     }

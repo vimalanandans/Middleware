@@ -29,9 +29,9 @@ import static org.junit.Assert.assertTrue;
  * @author rishabh
  */
 public class CreateSphere {
+    private static final Logger logger = LoggerFactory.getLogger(CreateSphere.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(CreateSphere.class);
     private static UPADeviceInterface upaDevice;
     private static SphereRegistry registry;
     private static ICryptoInternals crypto;
@@ -43,7 +43,7 @@ public class CreateSphere {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereUtils:CreateSphere TestCase *****");
+        logger.info("***** Setting up SphereUtils:CreateSphere TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         upaDevice = mockSetUp.upaDevice;
@@ -58,7 +58,7 @@ public class CreateSphere {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereUtils:CreateSphere TestCase *****");
+        logger.info("***** Shutting down SphereUtils:CreateSphere TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 

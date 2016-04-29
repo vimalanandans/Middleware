@@ -11,14 +11,14 @@ import org.slf4j.LoggerFactory;
 import java.net.InetAddress;
 
 public class JyreCommsProcessor extends CommsProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(JyreCommsProcessor.class);
 
-    private static final Logger log = LoggerFactory.getLogger(JyreCommsProcessor.class);
     private JyreReceiverThread comms = null;
     private JyreCommsSend commsSender = null;
     private String zreGroup = null;
 
     public JyreCommsProcessor() {
-        log.info("***** construct JyreCommsProcessor *****");
+        logger.info("***** construct JyreCommsProcessor *****");
     }
 
     /**

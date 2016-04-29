@@ -33,7 +33,8 @@ import static org.mockito.Mockito.when;
 
 @SuppressWarnings("deprecation")
 public class VirtualDevice {
-    private static final Logger log = LoggerFactory.getLogger(VirtualCommsManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(VirtualCommsManager.class);
+
     // to keep track of the number of devices being created and also use it in sphere, device and zirk names.
     static int virtualDeviceNumber = 0;
     public SphereRegistryWrapper sphereRegistryWrapper;
@@ -67,7 +68,7 @@ public class VirtualDevice {
 
         // Prepare the sphere in the given device and also add services to it.
         sphereId = prepareSphereAndReturnSphereId(sphereRegistryWrapper, upaDevice, Integer.toString(virtualDeviceNumber));
-        log.info("Created sphere with sphere ID " + sphereId + "\n");
+        logger.info("Created sphere with sphere ID " + sphereId + "\n");
 
         Field spField = bezirkSphere.getClass().getDeclaredField("shareProcessor");
         spField.setAccessible(true);

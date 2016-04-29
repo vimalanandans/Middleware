@@ -6,7 +6,8 @@ import org.zeromq.ZMsg;
 import org.zyre.ZreInterface;
 
 public class JyreCommsSend {
-    private static final Logger log = LoggerFactory.getLogger(JyreCommsSend.class);
+    private static final Logger logger = LoggerFactory.getLogger(JyreCommsSend.class);
+
     private ZreInterface zre = null;
     private String zreGroup = null;
 
@@ -23,7 +24,7 @@ public class JyreCommsSend {
         //outgoing.add(ctrlLedger.getSerializedMessage());
         outgoing.addString("Hello");
 
-        //log.debug("Sending shout: " + ctrlLedger.getSerializedMessage());
+        //logger.debug("Sending shout: " + ctrlLedger.getSerializedMessage());
         zre.shout(outgoing);
 
 
@@ -32,7 +33,7 @@ public class JyreCommsSend {
         outgoing.addString(unicastMsg.getRecipient().device);
 		outgoing.addString(ctrlLedger.getSerializedMessage());
 
-		log.debug("Sending whisper: " + ctrlLedger.getSerializedMessage());
+		logger.debug("Sending whisper: " + ctrlLedger.getSerializedMessage());
 		zre.whisper(outgoing);*/
         return true;
     }

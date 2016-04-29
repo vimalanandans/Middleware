@@ -6,12 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by vnd2kor on 8/18/2015.
  * The factory creates and returns the comms based on features
  */
 public class CommsFactory {
-
-    private static final Logger log = LoggerFactory.getLogger(CommsFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(CommsFactory.class);
 
     CommsFeature activeComms = CommsFeature.COMMS_BEZIRK;
 
@@ -21,20 +19,20 @@ public class CommsFactory {
 
         getActiveComms();
 
-        log.info("selected comms -> " + activeComms.name());
+        logger.info("selected comms -> " + activeComms.name());
 
         switch (activeComms) {
             default:
             case COMMS_BEZIRK:
                 bezirkComms = new BezirkCommsManager();
-                log.debug("udp comms is created. ");
+                logger.debug("udp comms is created. ");
                 break;
             case COMMS_ZYRE_JNI:
-                log.error("comms are injected by each platform, common won't do anything");
+                logger.error("comms are injected by each platform, common won't do anything");
                 break;
             case COMMS_JYRE:
                 //bezirkComms =  new JyreCommsProcessor();
-                log.error("Jyre comms is not created. ");
+                logger.error("Jyre comms is not created. ");
                 break;
             case COMMS_ZYRE:
                 // todo

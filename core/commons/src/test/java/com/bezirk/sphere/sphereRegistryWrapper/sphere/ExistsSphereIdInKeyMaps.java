@@ -24,9 +24,9 @@ import static org.junit.Assert.*;
  * @author rishabh
  */
 public class ExistsSphereIdInKeyMaps {
+    private static final Logger logger = LoggerFactory.getLogger(ExistsSphereIdInKeyMaps.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static final Logger log = LoggerFactory.getLogger(ExistsSphereIdInKeyMaps.class);
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
 
@@ -35,7 +35,7 @@ public class ExistsSphereIdInKeyMaps {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        log.info("***** Setting up SphereRegistryWrapper:ExistsSphereIdInKeyMaps TestCase *****");
+        logger.info("***** Setting up SphereRegistryWrapper:ExistsSphereIdInKeyMaps TestCase *****");
         mockSetUp.setUPTestEnv();
         registry = mockSetUp.registry;
         sphereRegistryWrapper = mockSetUp.sphereRegistryWrapper;
@@ -46,7 +46,7 @@ public class ExistsSphereIdInKeyMaps {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        log.info("***** Shutting down SphereRegistryWrapper:ExistsSphereIdInKeyMaps TestCase *****");
+        logger.info("***** Shutting down SphereRegistryWrapper:ExistsSphereIdInKeyMaps TestCase *****");
         mockSetUp.destroyTestSetUp();
     }
 

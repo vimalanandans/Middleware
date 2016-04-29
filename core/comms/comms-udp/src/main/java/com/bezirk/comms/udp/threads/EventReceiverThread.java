@@ -15,14 +15,11 @@ import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
- *         <p/>
- *         This class is a thread that is used to process events that are within the Event Receiver Queue
- *         This thread interacts within the Bezirk Internal Components to determine the zirk(s) that are to be invoked (if any)
+ * This class is a thread that is used to process events that are within the Event Receiver Queue
+ * This thread interacts within the Bezirk Internal Components to determine the zirk(s) that are to be invoked (if any)
  */
 public class EventReceiverThread implements Runnable {
-
-    private static final Logger log = LoggerFactory.getLogger(EventReceiverThread.class);
+    private static final Logger logger = LoggerFactory.getLogger(EventReceiverThread.class);
 
     MessageDispatcher msgDispatcher = null;
 
@@ -40,11 +37,11 @@ public class EventReceiverThread implements Runnable {
 
         while (running) {
             running = true;
-            log.info("Bezirk Receiver Thread has started \n");
+            logger.info("Bezirk Receiver Thread has started \n");
 
             while (running) {
                 if (Thread.currentThread().isInterrupted()) {
-                    log.info("Bezirk ReceiverThread has Stopped");
+                    logger.info("Bezirk ReceiverThread has Stopped");
                     running = false;
                     continue;
                 }

@@ -15,10 +15,8 @@ import org.slf4j.LoggerFactory;
 import java.net.InetAddress;
 
 public class JyreCommsManager implements BezirkComms {
+    private static final Logger logger = LoggerFactory.getLogger(JyreCommsManager.class);
 
-    //private String group = null;
-
-    private static final Logger log = LoggerFactory.getLogger(JyreCommsManager.class);
     MessageDispatcher msgDispatcher = null;
     BezirkSadlManager bezirkSadlManager = null;
     //Thread for Event receiver Thread

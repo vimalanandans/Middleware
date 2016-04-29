@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
  */
 public class MessageValidators implements Runnable {
-    private static final Logger log = LoggerFactory.getLogger(MessageValidators.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageValidators.class);
 
     private Ledger ledger;
     private String computedDevId;
@@ -46,7 +46,7 @@ public class MessageValidators implements Runnable {
     private void processEvent(EventLedger eLedger) {
         //Check Encrypted Header and SphereId
         if (null == eLedger.getEncryptedHeader() || !BezirkValidatorUtility.checkForString(eLedger.getHeader().getSphereName())) {
-            log.error(" Null Header received, Removed the msg");
+            logger.error(" Null Header received, Removed the msg");
             return;
         }
 
@@ -54,28 +54,28 @@ public class MessageValidators implements Runnable {
         BezirkSphereForSadl sphereIf = BezirkCompManager.getSphereForSadl();
 
         if (sphereIf == null) {
-            log.error("sphere object for the sadl is invalid. msg not decrypted");
+            logger.error("sphere object for the sadl is invalid. msg not decrypted");
             return;
         }
 
 
         final String encryptedSerialzedHeader = sphereIf.decryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getEncryptedHeader());
         if (!BezirkValidatorUtility.checkForString(encryptedSerialzedHeader)) {
-            log.error(" Serialized Decrypted Header is null");
+            logger.error(" Serialized Decrypted Header is null");
             return;
         }
         eLedger.setSerializedHeader(encryptedSerialzedHeader);
 
         //Set Header
         if (!setHeader(eLedger, encryptedSerialzedHeader)) {
-            log.error("Dropping Msg setHeader failed");
+            logger.error("Dropping Msg setHeader failed");
             return;
         }
 
         // Check Integrity
         boolean success = this.computedDevId.equals(eLedger.getHeader().getSenderSEP().device);
         if (!success) {
-            log.error("Dropping Msg Integerity failed");
+            logger.error("Dropping Msg Integerity failed");
             return;
         }
 
@@ -89,7 +89,7 @@ public class MessageValidators implements Runnable {
         if (eLedger.getIsMulticast()) {
             MulticastHeader mHeader = new Gson().fromJson(encryptedSerialzedHeader, MulticastHeader.class);
             if (!BezirkValidatorUtility.checkHeader(mHeader) || null == eLedger.getEncryptedMessage()) {
-                log.error(" Serialized Decrypted Header (Multicast) is not having all the feilds defined");
+                logger.error(" Serialized Decrypted Header (Multicast) is not having all the feilds defined");
                 //MessageQueueManager.getReceiverMessageQueue().removeFromQueue(eLedger);
                 uhuComms.removeFromQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
                 return false;
@@ -98,7 +98,7 @@ public class MessageValidators implements Runnable {
         } else {
             UnicastHeader uHeader = new Gson().fromJson(encryptedSerialzedHeader, UnicastHeader.class);
             if (!BezirkValidatorUtility.checkHeader(uHeader)) {
-                log.error(" Serialized Decrypted Header ( Unicast ) is not having all the feilds defined");
+                logger.error(" Serialized Decrypted Header ( Unicast ) is not having all the feilds defined");
                 //MessageQueueManager.getReceiverMessageQueue().removeFromQueue(eLedger);
                 uhuComms.removeFromQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
                 return false;
@@ -114,7 +114,7 @@ public class MessageValidators implements Runnable {
             ControlMessage cMsg = ControlMessage.deserialize(cLedger.getSerializedMessage(), ControlMessage.class);
             cLedger.setMessage(cMsg);
         } else {
-            log.debug("Decryption failed");
+            logger.debug("Decryption failed");
             return;
         }
 
@@ -122,7 +122,7 @@ public class MessageValidators implements Runnable {
         // Check Integrity
         final Boolean success = this.computedDevId.equals(cLedger.getMessage().getSender().device);
         if (!success) {
-            log.debug("Dropping Msg Integerity failed");
+            logger.debug("Dropping Msg Integerity failed");
             return;
         }
 
@@ -149,19 +149,19 @@ public class MessageValidators implements Runnable {
         final byte[] encMsg = cLedger.getEncryptedMessage();
 
         if (!BezirkValidatorUtility.checkForString(sphereid) || encMsg == null) {
-            log.error("sphere or encrypted message is null");
+            logger.error("sphere or encrypted message is null");
             return false;
         } else {
             BezirkSphereForSadl sphereIf = BezirkCompManager.getSphereForSadl();
 
             if (sphereIf == null) {
-                log.error("sphere object for the sadl is invalid. msg not decrypted");
+                logger.error("sphere object for the sadl is invalid. msg not decrypted");
                 return false;
             }
 
             final String decryptMsg = sphereIf.decryptSphereContent(sphereid, encMsg);
             if (BezirkValidatorUtility.checkForString(decryptMsg)) {
-                log.debug("Ctrl Msg decrypted: " + decryptMsg);
+                logger.debug("Ctrl Msg decrypted: " + decryptMsg);
                 cLedger.setSerializedMessage(decryptMsg);
                 return true;
             } else {
