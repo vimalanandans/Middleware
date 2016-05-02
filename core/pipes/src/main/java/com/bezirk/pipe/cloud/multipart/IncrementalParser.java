@@ -98,7 +98,7 @@ public class IncrementalParser implements MultiPartParser {
         Part streamPart = new BezirkHeaderPart();
 
 		/*
-         * Parse the <bezirk-header> (uhuHeader) part in 4 steps:
+         * Parse the <bezirk-header> (bezirkHeader) part in 4 steps:
 		 */
 
         // 1. Ensure that the boundary is the first line in the part

@@ -9,8 +9,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.bezirk.controlui.R;
-
 
 public class ControlActivity extends ActionBarActivity {
 
@@ -27,9 +25,7 @@ public class ControlActivity extends ActionBarActivity {
         controlActivityHelper.initUI();
 
         //setup bezirk
-        controlActivityHelper.uhuInitialization(this);
-
-
+        controlActivityHelper.bezirkInitialization(this);
     }
 
     @Override

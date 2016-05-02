@@ -53,10 +53,10 @@ public class ZirkStarterHelperTest {
     private void testInitSphere() {
 
         com.bezirk.starter.ServiceStarterHelper helper = new com.bezirk.starter.ServiceStarterHelper();
-        UPADeviceInterface uhuDevice = mockSetUP.getUpaDevice();
+        UPADeviceInterface bezirkDevice = mockSetUP.getUpaDevice();
         RegistryPersistence registryPersistence = mockSetUP.getRegistryPersistence();
         BezirkComms commsLegacy = Mockito.mock(BezirkCommsLegacy.class);
-        BezirkSphereAPI uhuSphere = helper.initSphere(uhuDevice, registryPersistence, commsLegacy);
+        BezirkSphereAPI uhuSphere = helper.initSphere(bezirkDevice, registryPersistence, commsLegacy);
 
         assertNotNull("BezirkSphere is not initialized. ", uhuSphere);
 

@@ -16,7 +16,6 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,15 +32,15 @@ public class EventMulticastListener implements Runnable {
     private final ExecutorService executor;
     private Boolean running = false;
     private InetAddress myAddress;
-    private BezirkCommsLegacy uhuComms = null;
+    private BezirkCommsLegacy bezirkComms = null;
     private CommsNotification commsErrNotificationError = null;
 
 
-    public EventMulticastListener(MulticastSocket multicastSocket, BezirkCommsLegacy uhuComms, CommsNotification commsNotificationCallback) {
+    public EventMulticastListener(MulticastSocket multicastSocket, BezirkCommsLegacy bezirkComms, CommsNotification commsNotificationCallback) {
         this.multicastSocket = multicastSocket;
         this.commsErrNotificationError = commsNotificationCallback;
         executor = Executors.newFixedThreadPool(BezirkCommunications.getPOOL_SIZE());
-        this.uhuComms = uhuComms;
+        this.bezirkComms = bezirkComms;
     }
 
     @Override
@@ -87,7 +86,7 @@ public class EventMulticastListener implements Runnable {
                 logger.info("RECEIVED ON Multicast ");
                 if (EventListenerUtility.constructMsg(receivedMessage, receivePacket, commsErrNotificationError)) {
                     //Validate the message
-                    Runnable worker = new MessageValidators(computedSender, receivedMessage, uhuComms);
+                    Runnable worker = new MessageValidators(computedSender, receivedMessage, bezirkComms);
                     executor.execute(worker);
                 }
             } else {

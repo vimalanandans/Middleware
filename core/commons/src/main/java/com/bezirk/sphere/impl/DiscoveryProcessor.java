@@ -35,7 +35,7 @@ public class DiscoveryProcessor {
     private UPADeviceInterface upaDeviceInterface;
     private CommsUtility comms;
     private SphereRegistryWrapper sphereRegistryWrapper;
-    private BezirkSphereListener uhuSphereListener;
+    private BezirkSphereListener bezirkSphereListener;
 
     // sphere discovery parameters
     private int discoveryId = 0;
@@ -46,14 +46,14 @@ public class DiscoveryProcessor {
      * @param upaDeviceInterface
      * @param comms
      * @param sphereRegistryWrapper
-     * @param uhuSphereListener
+     * @param bezirkSphereListener
      */
     public DiscoveryProcessor(UPADeviceInterface upaDeviceInterface, CommsUtility comms,
-                              SphereRegistryWrapper sphereRegistryWrapper, BezirkSphereListener uhuSphereListener) {
+                              SphereRegistryWrapper sphereRegistryWrapper, BezirkSphereListener bezirkSphereListener) {
         this.upaDeviceInterface = upaDeviceInterface;
         this.comms = comms;
         this.sphereRegistryWrapper = sphereRegistryWrapper;
-        this.uhuSphereListener = uhuSphereListener;
+        this.bezirkSphereListener = bezirkSphereListener;
     }
 
     /**
@@ -146,8 +146,8 @@ public class DiscoveryProcessor {
                 }
             }
         }
-        if ((uhuSphereListener != null)) {
-            uhuSphereListener.onSphereDiscovered(status, sphereId);
+        if ((bezirkSphereListener != null)) {
+            bezirkSphereListener.onSphereDiscovered(status, sphereId);
         }
     }
 

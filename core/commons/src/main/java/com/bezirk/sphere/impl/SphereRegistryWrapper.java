@@ -396,7 +396,7 @@ public class SphereRegistryWrapper {
      * @return - SphereId if sphere was created successfully or if the sphereId
      * existed already, null otherwise.
      */
-    public String createSphere(String sphereName, String sphereType, BezirkSphereListener uhuSphereListener) {
+    public String createSphere(String sphereName, String sphereType, BezirkSphereListener bezirkSphereListener) {
         String name = (null == sphereName) ? DEFAULT_SPHERE_NAME : sphereName;
         String type = (null == sphereType) ? BezirkSphereType.BEZIRK_SPHERE_TYPE_OTHER : sphereType;
         SphereCreateStatus status;
@@ -427,9 +427,9 @@ public class SphereRegistryWrapper {
             status = SphereCreateStatus.SPHERE_NAME_OR_CALLBACK_ERROR;
         }
 
-        logger.info("Create sphere, sphereId : " + sphereId + ", status : " + status);
-        if (uhuSphereListener != null) {
-            uhuSphereListener.onSphereCreateStatus(sphereId, status);
+        logger.info("Create sphere, sphereId : {}, status : {}", sphereId, status);
+        if (bezirkSphereListener != null) {
+            bezirkSphereListener.onSphereCreateStatus(sphereId, status);
         } else {
             logger.debug("Create sphere, no listener registered");
         }

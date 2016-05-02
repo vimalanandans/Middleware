@@ -17,7 +17,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 /**
- * Thread class that listens to a multicast port and updates the UI when a ping is reeived.
+ * Thread class that listens to a multicast port and updates the UI when a ping is received.
  *
  * @author AJC6KOR
  */
@@ -56,7 +56,6 @@ public class MulticastReceiver extends Thread {
     public void run() {
         super.run();
         final byte[] buf = new byte[1024];
-        byte[] recData = new byte[1024];
         String yep;
         DatagramPacket receivePacket = new DatagramPacket(buf, buf.length);
 
@@ -65,7 +64,7 @@ public class MulticastReceiver extends Thread {
                 isRunning = false;
                 continue;
             }
-            logger.debug("Started listening multcst");
+            logger.debug("Started listening multicast");
 
             receivePacket.setData(buf);
             receivePacket.setLength(buf.length);
@@ -85,7 +84,7 @@ public class MulticastReceiver extends Thread {
                             .trim())) {
                 logger.debug("local ping received");
             } else {
-                recData = new byte[receivePacket.getLength()];
+                byte[] recData = new byte[receivePacket.getLength()];
                 System.arraycopy(receivePacket.getData(), 0, recData, 0,
                         receivePacket.getLength());
                 yep = new String(recData);

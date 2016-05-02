@@ -26,7 +26,7 @@ public class RemoteSender implements Runnable {
 
     protected String serializedEvent = null;
 
-    protected Header uhuHeader = null;
+    protected Header bezirkHeader = null;
     // Used for callback to return result of remote send back to the pipe monitor
     // so that it can be returned to local services
     protected PipeManagerImpl pipeMonitor = null;
@@ -56,7 +56,7 @@ public class RemoteSender implements Runnable {
             logger.error(err + "pipeRegistry is null");
             valid = false;
         }
-        if (uhuHeader == null) {
+        if (bezirkHeader == null) {
             logger.error(err + "bezirkHeader is null");
             valid = false;
         }
@@ -74,17 +74,17 @@ public class RemoteSender implements Runnable {
             return;
         }
 
-        if (uhuHeader instanceof UnicastHeader) {
+        if (bezirkHeader instanceof UnicastHeader) {
             logger.error("Unicast send to a pipe not yet supported. Can't execute RemoteSender.run()");
             return;
         }
 
-        Address address = ((MulticastHeader) uhuHeader).getAddress();
+        Address address = ((MulticastHeader) bezirkHeader).getAddress();
 
         PipeMulticastHeader pipeMulticastHdr = new PipeMulticastHeader();
-        pipeMulticastHdr.setSenderSEP(uhuHeader.getSenderSEP());
+        pipeMulticastHdr.setSenderSEP(bezirkHeader.getSenderSEP());
         pipeMulticastHdr.setAddress(address);
-        pipeMulticastHdr.setTopic(uhuHeader.getTopic());
+        pipeMulticastHdr.setTopic(bezirkHeader.getTopic());
         pipeHeader = pipeMulticastHdr;
 
         // Check if the event's location represents a registered pipe
@@ -137,7 +137,7 @@ public class RemoteSender implements Runnable {
     }
 
     public void setBezirkHeader(Header uhuHeader) {
-        this.uhuHeader = uhuHeader;
+        this.bezirkHeader = uhuHeader;
     }
 
     public String getCertFileName() {

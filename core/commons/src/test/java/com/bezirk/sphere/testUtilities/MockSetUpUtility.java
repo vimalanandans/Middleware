@@ -86,12 +86,12 @@ public class MockSetUpUtility {
 
         SphereDiscovery discovery = new SphereDiscovery(bezirkSphere);
         SphereDiscoveryProcessor.setDiscovery(discovery);
-        BezirkCommsLegacy uhuComms = mock(BezirkCommsLegacy.class);
-        when(uhuComms.sendMessage(any(ControlLedger.class))).thenReturn(true);
+        BezirkCommsLegacy bezirkComms = mock(BezirkCommsLegacy.class);
+        when(bezirkComms.sendMessage(any(ControlLedger.class))).thenReturn(true);
         CommsProperties commsProperties = new CommsProperties();
-        uhuComms.initComms(commsProperties, inetAddr, null, null);
-        uhuComms.startComms();
-        bezirkSphere.initSphere(spherePersistence, uhuComms, null, sphereConfig);
+        bezirkComms.initComms(commsProperties, inetAddr, null, null);
+        bezirkComms.startComms();
+        bezirkSphere.initSphere(spherePersistence, bezirkComms, null, sphereConfig);
 
         Field spField = bezirkSphere.getClass().getDeclaredField("shareProcessor");
         spField.setAccessible(true);

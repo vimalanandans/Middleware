@@ -77,8 +77,8 @@ class BezirkStartStackHelper {
 
     void setAndroicallback(MainService service) {
         if (BezirkCompManager.getplatformSpecificCallback() == null) {
-            AndroidZirkMessageHandler uhuAndroidCallback = new AndroidZirkMessageHandler(service.getApplicationContext());
-            BezirkCompManager.setplatformSpecificCallback(uhuAndroidCallback);
+            AndroidZirkMessageHandler bezirkAndroidCallback = new AndroidZirkMessageHandler(service.getApplicationContext());
+            BezirkCompManager.setplatformSpecificCallback(bezirkAndroidCallback);
         }
     }
 

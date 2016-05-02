@@ -78,7 +78,7 @@ public class TestCommsTest {
     class IUpdateResponseMock implements IUpdateResponse {
 
         @Override
-        public void updatePingResposne(String response) {
+        public void updatePingResponse(String response) {
             //Nothing to be done
 
         }

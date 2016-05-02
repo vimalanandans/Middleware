@@ -31,14 +31,15 @@ final class BezirkPCNetworkUtil {
             throws SocketException, NullPointerException, Exception {
 
         // Resolve the NetworkInterface object for supplied InterfaceName
-        NetworkInterface intf = resolveInterface(BezirkCommunications.getINTERFACE_NAME(), bezirkConfig);
+        NetworkInterface networkInterface =
+                resolveInterface(BezirkCommunications.getINTERFACE_NAME(), bezirkConfig);
 
         // If we chose a different Interface than what is written in the
         // config file and the config file is writable (it is not in a jar),
         // then write the new interface name to the config file
-        updateInterfaceInPropsFile(intf);
+        updateInterfaceInPropsFile(networkInterface);
 
-        return intf;
+        return networkInterface;
     }
 
     /**
@@ -60,13 +61,13 @@ final class BezirkPCNetworkUtil {
             NullPointerException {
         final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
         // Try to resolve interface for supplied interfaceName
-        NetworkInterface intf = NetworkInterface.getByName(interfaceName);
+        NetworkInterface networkInterface = NetworkInterface.getByName(interfaceName);
 
         // If InterfaceName is cannot be resolved, try to automatically
         // detect exactly one "real" (non-loopback) interface to use
-        if (intf == null) {
-            logger.info("Configured interface " + interfaceName
-                    + " could not be resolved. Trying to detect interface.");
+        if (networkInterface == null) {
+            logger.info("Configured interface {} could not be resolved. " +
+                    "Trying to detect interface.", interfaceName);
             final List<IntfInetPair> interfaces = BezirkNetworkUtilities
                     .getIntfInetPair();
             final int numInf = interfaces.size();
@@ -74,9 +75,9 @@ final class BezirkPCNetworkUtil {
             // If no "real" interface can be found, use the loopback interface
             if (numInf == 0) {
                 logger.info("Checking for loopback interface");
-                intf = NetworkInterface.getNetworkInterfaces().nextElement();
+                networkInterface = NetworkInterface.getNetworkInterfaces().nextElement();
 
-                if (intf != null && intf.isLoopback()) {
+                if (networkInterface != null && networkInterface.isLoopback()) {
                     serviceStarterHelper
                             .fail("Found loopback interface only. UhU requires a non-loopback interface for multicast. Exiting now.",
                                     null);
@@ -86,10 +87,10 @@ final class BezirkPCNetworkUtil {
                 }
             }
             // If exactly one real interface can be found, use it
-            else if (numInf == Integer.valueOf(1)) {
-                final String intfName = interfaces.get(0).getIntf().getName();
-                intf = NetworkInterface.getByName(intfName);
-                logger.info("Detected interface: " + intf.getName());
+            else if (numInf == 1) {
+                final String name = interfaces.get(0).getIntf().getName();
+                networkInterface = NetworkInterface.getByName(name);
+                logger.info("Detected interface: " + networkInterface.getName());
             }
             // If we find more than one interface AND UI is enabled,
             // prompt the user to choose from available interfaces
@@ -97,18 +98,18 @@ final class BezirkPCNetworkUtil {
                 logger.info("Found multiple interfaces, prompting user to choose ...");
                 final String intfName = promptUserForInterface(bezirkConfig);
                 if (BezirkValidatorUtility.checkForString(intfName)) {
-                    intf = NetworkInterface.getByName(intfName);
+                    networkInterface = NetworkInterface.getByName(intfName);
                 } else {
                     logger.error("Invalid interface name selected! Bezirk is shutting down. . .");
                     System.exit(0);
                 }
-                logger.info("User chose interface: " + intf.getName());
+                logger.info("User chose interface: " + networkInterface.getName());
             }
         } else {
-            logger.info("Using configured interface: " + intf.getName());
+            logger.info("Using configured interface: " + networkInterface.getName());
         }
 
-        return intf;
+        return networkInterface;
     }
 
     /**
@@ -166,11 +167,11 @@ final class BezirkPCNetworkUtil {
      * This is not possible if comms.properties is in a jar, in which case we do
      * nothing and return false
      *
-     * @param intf
+     * @param networkInterface
      * @return False if the interface was not updated in the properties file
      * @throws Exception
      */
-    private boolean updateInterfaceInPropsFile(final NetworkInterface intf) {
+    private boolean updateInterfaceInPropsFile(final NetworkInterface networkInterface) {
         try {
             final Properties properties = BezirkCommsPC.loadProperties();
 
@@ -184,9 +185,9 @@ final class BezirkPCNetworkUtil {
              * Interface was chosen and the config file was not loaded from a
              * jar (as signified by a "!" being in the path)
              */
-            if (!intf.getName().equals(BezirkCommsPC.PROPS_FILE)
+            if (!networkInterface.getName().equals(BezirkCommsPC.PROPS_FILE)
                     && !path.contains("!")) {
-                properties.setProperty("InterfaceName", intf.getName());
+                properties.setProperty("InterfaceName", networkInterface.getName());
                 properties.store(output, null);
 
                 logger.info("Updated chosen interface in config file: " + path);
@@ -198,9 +199,7 @@ final class BezirkPCNetworkUtil {
         } catch (FileNotFoundException e) {
             logger.error("Properties file not found in default path.", e);
         } catch (Exception e) {
-            logger.error("Exception in storing interface name to properties.",
-                    e);
-
+            logger.error("Exception in storing interface name to properties.", e);
         }
         return false;
     }

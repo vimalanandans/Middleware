@@ -53,7 +53,7 @@ public class MockSetUpUtilityForBezirkPC {
     BezirkDevice upaDevice;
     CryptoEngine cryptoEngine;
     SphereRegistry sphereRegistry;
-    BezirkComms uhuComms;
+    BezirkComms bezirkComms;
     ISphereConfig sphereConfig;
     private DatabaseConnectionForJava dbConnection;
     private RegistryPersistence regPersistence;
@@ -76,16 +76,16 @@ public class MockSetUpUtilityForBezirkPC {
         sphereConfig = new SphereProperties();
         sphereConfig.init();
 
-        uhuComms = new MockComms();
-        uhuComms.initComms(null, inetAddr, bezirkSadlManager, null);
-        bezirkSadlManager.initSadlManager(uhuComms);
-        uhuComms.registerNotification(Mockito.mock(CommsNotification.class));
-        uhuComms.startComms();
+        bezirkComms = new MockComms();
+        bezirkComms.initComms(null, inetAddr, bezirkSadlManager, null);
+        bezirkSadlManager.initSadlManager(bezirkComms);
+        bezirkComms.registerNotification(Mockito.mock(CommsNotification.class));
+        bezirkComms.startComms();
 
         setUpUpaDevice();
         BezirkSphere bezirkSphere = new BezirkSphere(cryptoEngine, upaDevice, sphereRegistry);
         BezirkSphereListener sphereListener = Mockito.mock(BezirkSphereListener.class);
-        bezirkSphere.initSphere(spherePersistence, uhuComms, sphereListener, sphereConfig);
+        bezirkSphere.initSphere(spherePersistence, bezirkComms, sphereListener, sphereConfig);
         BezirkCompManager.setSphereRegistration((BezirkSphereRegistration) bezirkSphere);
         BezirkCompManager.setSphereForSadl(bezirkSphere);
         BezirkCompManager.setplatformSpecificCallback(new MockCallbackZirk());
@@ -155,7 +155,7 @@ public class MockSetUpUtilityForBezirkPC {
 
     public BezirkComms getBezirkComms() {
 
-        return uhuComms;
+        return bezirkComms;
     }
 
     public BezirkSadlManager getBezirkSadlManager() throws UnknownHostException {
@@ -170,8 +170,8 @@ public class MockSetUpUtilityForBezirkPC {
 
     public void destroyTestSetUp() throws SQLException,
             IOException, Exception {
-        uhuComms.stopComms();
-        uhuComms.closeComms();
+        bezirkComms.stopComms();
+        bezirkComms.closeComms();
         regPersistence.clearPersistence();
 
         BezirkCompManager.setSphereRegistration(null);

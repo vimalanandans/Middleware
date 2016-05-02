@@ -54,6 +54,6 @@ public interface ISphereUtils {
 
     public BitMatrix getQRCodeMatrix(String sphereId, int width, int height);
 
-    public String createSphere(String sphereName, String sphereType, BezirkSphereListener uhuSphereListener);
+    public String createSphere(String sphereName, String sphereType, BezirkSphereListener bezirkSphereListener);
 
 }

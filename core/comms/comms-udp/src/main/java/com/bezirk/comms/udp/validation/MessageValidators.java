@@ -26,12 +26,12 @@ public class MessageValidators implements Runnable {
 
     private Ledger ledger;
     private String computedDevId;
-    private BezirkCommsLegacy uhuComms = null;
+    private BezirkCommsLegacy bezirkComms = null;
 
-    public MessageValidators(String devId, Ledger l, BezirkCommsLegacy uhuComms) {
+    public MessageValidators(String devId, Ledger l, BezirkCommsLegacy bezirkComms) {
         this.ledger = l;
         this.computedDevId = devId;
-        this.uhuComms = uhuComms;
+        this.bezirkComms = bezirkComms;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class MessageValidators implements Runnable {
 
         //Clarify Add received message to receiverMessagerQueue
         //MessageQueueManager.getReceiverMessageQueue().addToQueue(eLedger);
-        uhuComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
+        bezirkComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
 
     }
 
@@ -91,7 +91,7 @@ public class MessageValidators implements Runnable {
             if (!BezirkValidatorUtility.checkHeader(mHeader) || null == eLedger.getEncryptedMessage()) {
                 logger.error(" Serialized Decrypted Header (Multicast) is not having all the feilds defined");
                 //MessageQueueManager.getReceiverMessageQueue().removeFromQueue(eLedger);
-                uhuComms.removeFromQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
+                bezirkComms.removeFromQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
                 return false;
             }
             eLedger.setHeader(mHeader);
@@ -100,7 +100,7 @@ public class MessageValidators implements Runnable {
             if (!BezirkValidatorUtility.checkHeader(uHeader)) {
                 logger.error(" Serialized Decrypted Header ( Unicast ) is not having all the feilds defined");
                 //MessageQueueManager.getReceiverMessageQueue().removeFromQueue(eLedger);
-                uhuComms.removeFromQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
+                bezirkComms.removeFromQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
                 return false;
             }
             eLedger.setHeader(uHeader);
@@ -140,7 +140,7 @@ public class MessageValidators implements Runnable {
 
         //populate Receiver Queue
         //MessageQueueManager.getControlReceiverQueue().addToQueue(cLedger);
-        uhuComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.CONTROL_RECEIVE_QUEUE, cLedger);
+        bezirkComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.CONTROL_RECEIVE_QUEUE, cLedger);
     }
 
     // Clarify and change the Message

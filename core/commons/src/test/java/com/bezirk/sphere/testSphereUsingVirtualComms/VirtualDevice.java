@@ -47,7 +47,7 @@ public class VirtualDevice {
     public CatchProcessor catchProcessor;
     public String sphereId = null;
 
-    public VirtualDevice(BezirkCommsLegacy uhuComms) throws Exception {
+    public VirtualDevice(BezirkCommsLegacy bezirkComms) throws Exception {
         sphereConfig = new SpherePropertiesMock();
 
         upaDevice = new Device(virtualDeviceNumber);
@@ -64,7 +64,7 @@ public class VirtualDevice {
         sphereRegistryWrapper = new SphereRegistryWrapper(sphereRegistry, spherePersistence, upaDevice, cryptoEngine, null, sphereConfig);
         sphereRegistryWrapper.init();
 
-        bezirkSphere.initSphere(spherePersistence, uhuComms, null, sphereConfig);
+        bezirkSphere.initSphere(spherePersistence, bezirkComms, null, sphereConfig);
 
         // Prepare the sphere in the given device and also add services to it.
         sphereId = prepareSphereAndReturnSphereId(sphereRegistryWrapper, upaDevice, Integer.toString(virtualDeviceNumber));

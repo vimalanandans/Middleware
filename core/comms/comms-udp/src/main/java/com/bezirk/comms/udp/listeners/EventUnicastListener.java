@@ -30,15 +30,15 @@ public class EventUnicastListener implements Runnable {
     private final DatagramSocket unicastSocket;
     private final ExecutorService executor;
     private Boolean running = false;
-    private BezirkCommsLegacy uhuComms = null;
+    private BezirkCommsLegacy bezirkComms = null;
     private CommsNotification commsErrNotificationError = null;
 
 
-    public EventUnicastListener(DatagramSocket unicastSocket, BezirkCommsLegacy uhuComms, CommsNotification commsNotificationCallback) {
+    public EventUnicastListener(DatagramSocket unicastSocket, BezirkCommsLegacy bezirkComms, CommsNotification commsNotificationCallback) {
         this.unicastSocket = unicastSocket;
         this.commsErrNotificationError = commsNotificationCallback;
         executor = Executors.newFixedThreadPool(BezirkCommunications.getPOOL_SIZE());
-        this.uhuComms = uhuComms;
+        this.bezirkComms = bezirkComms;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class EventUnicastListener implements Runnable {
                 logger.info("RECEIVED ON Event Unicast: ");
                 if (EventListenerUtility.constructMsg(receivedMessage, receivePacket, commsErrNotificationError)) {
                     //Validate the message
-                    Runnable worker = new MessageValidators(computedSender, receivedMessage, uhuComms);
+                    Runnable worker = new MessageValidators(computedSender, receivedMessage, bezirkComms);
                     executor.execute(worker);
                 }
             } else {

@@ -6,7 +6,7 @@ package com.bezirk.commstest.ui;
  * @author VBD4KOR
  */
 public interface IUpdateResponse {
-    void updatePingResposne(String response);
+    void updatePingResponse(String response);
 
     void updateUIPingSent(PingMessage msg);
 

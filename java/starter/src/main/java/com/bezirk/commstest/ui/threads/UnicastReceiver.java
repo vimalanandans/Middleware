@@ -42,10 +42,10 @@ public class UnicastReceiver extends Thread {
             addr = BezirkValidatorUtility.isObjectNotNull(intf) ? null
                     : BezirkNetworkUtilities.getIpForInterface(intf);
             if (addr == null) {
-                logger.error("ERROR IN STARTING UNICAST LINSTNER");
+                logger.error("ERROR IN STARTING UNICAST LISTENER");
             }
         } catch (SocketException e) {
-            logger.error("ERROR IN STARTING UNICAST LINSTNER", e);
+            logger.error("ERROR IN STARTING UNICAST LISTENER", e);
         }
         try {
             unicastListenerSocket = new DatagramSocket(null/*unicastReceivingPort, addr*/);

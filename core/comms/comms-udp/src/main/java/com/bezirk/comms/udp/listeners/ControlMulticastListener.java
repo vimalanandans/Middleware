@@ -26,7 +26,7 @@ public class ControlMulticastListener implements Runnable {
     private final ExecutorService executor;
     private Boolean running = false;
     private InetAddress myAddress;
-    private BezirkCommsLegacy uhuComms = null;
+    private BezirkCommsLegacy bezirkComms = null;
     private CommsNotification commsErrNotificationError = null;
 
     public ControlMulticastListener(MulticastSocket multicastSocket, BezirkCommsLegacy bezirkComms,
@@ -34,7 +34,7 @@ public class ControlMulticastListener implements Runnable {
         this.multicastSocket = multicastSocket;
         this.commsErrNotificationError = commsNotificationCallback;
         executor = Executors.newFixedThreadPool(BezirkCommunications.getPOOL_SIZE());
-        this.uhuComms = bezirkComms;
+        this.bezirkComms = bezirkComms;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ControlMulticastListener implements Runnable {
                 receivedMessage.setIsMessageFromHost(false);
                 try {
                     if (ControlListenerUtility.constructMsg(receivedMessage, receivePacket, commsErrNotificationError)) {
-                        Runnable worker = new MessageValidators(computedSender, receivedMessage, uhuComms);
+                        Runnable worker = new MessageValidators(computedSender, receivedMessage, bezirkComms);
                         executor.execute(worker);
                     } else {
                         logger.debug("Duplicate msg");

@@ -15,6 +15,7 @@ import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.BezirkProxyPersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.pipe.core.PipeManager;
+import com.bezirk.proxy.pc.ProxyForServices;
 import com.bezirk.sadl.BezirkSadlManager;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.BezirkSphereForPC;
@@ -34,14 +35,13 @@ import javax.swing.SwingUtilities;
  * MainService for bezirk-pc which controls the bezirk stack
  */
 public class MainService {
-    private static final Logger logger = LoggerFactory
-            .getLogger(MainService.class);
+    private static final Logger logger = LoggerFactory.getLogger(MainService.class);
     private static final String DB_VERSION = "0.0.3";
     /**
      * Max value for the notification
      */
     private static final int MAX_ERROR_REPEAT_COUNT = 100;
-    private final com.bezirk.proxy.pc.ProxyforServices proxyforServices;
+    private final ProxyForServices proxyForServices;
     private final BezirkPCNetworkUtil bezirkPcNetworkUtil = new BezirkPCNetworkUtil();
     private final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
     BezirkSphereAPI sphereForPC;
@@ -107,15 +107,15 @@ public class MainService {
     };
 
     /**
-     * Configure proxy and uhuconfig for main zirk
+     * Configure proxy and <code>bezirkConfig</code> for main zirk
      *
-     * @param proxyforServices
+     * @param proxyForServices
      * @param bezirkConfigRef
      */
-    public MainService(final com.bezirk.proxy.pc.ProxyforServices proxyforServices,
+    public MainService(final ProxyForServices proxyForServices,
                        final BezirkConfig bezirkConfigRef) {
 
-        this.proxyforServices = proxyforServices;
+        this.proxyForServices = proxyForServices;
 
         bezirkConfig = bezirkConfigRef;
 
@@ -221,7 +221,7 @@ public class MainService {
                 registryPersistence);
 
         // Inject to proxyForServices
-        proxyforServices.setSadlRegistry(bezirkSadlManager);
+        proxyForServices.setSadlRegistry(bezirkSadlManager);
 
         /**************************************************
          * Step6 :Initialize the comms.                   *
@@ -327,7 +327,7 @@ public class MainService {
         }
     }
 
-    private boolean initComms(final ZirkMessageHandler uhuPcCallback,
+    private boolean initComms(final ZirkMessageHandler bezirkPcCallback,
                               final NetworkInterface intf, final BezirkSadlManager bezirkSadlManager) {
 
         CommsFactory commsFactory = new CommsFactory();
@@ -351,7 +351,7 @@ public class MainService {
         /* comms triggers sadle send this data.
          * try {
 
-            ((BezirkComms) comms).setBezirkCallback(uhuPcCallback);
+            ((BezirkComms) comms).setBezirkCallback(bezirkPcCallback);
 
         } catch (Exception e) {
 
@@ -372,7 +372,7 @@ public class MainService {
         comms.startComms();
 
         // the comms manager for the proxy
-        proxyforServices.setCommsManager(comms);
+        proxyForServices.setCommsManager(comms);
 
         // Set RTC Signalling for streaming
 

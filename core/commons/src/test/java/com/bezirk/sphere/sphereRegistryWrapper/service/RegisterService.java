@@ -75,9 +75,9 @@ public class RegisterService {
     @Test
     public final void validServiceIdAndNewServiceNameReturnsTrue() {
         String serviceId = UUID.randomUUID().toString();
-        BezirkZirkId uhuServiceId = new BezirkZirkId(serviceId);
+        BezirkZirkId bezirkZirkId = new BezirkZirkId(serviceId);
         String serviceName = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        assertTrue(sphereRegistryWrapper.registerService(uhuServiceId, serviceName));
+        assertTrue(sphereRegistryWrapper.registerService(bezirkZirkId, serviceName));
     }
 
     /**
@@ -89,12 +89,12 @@ public class RegisterService {
     @Test
     public final void newServiceNameForExistingServiceReturnsTrue() {
         String serviceId = UUID.randomUUID().toString();
-        BezirkZirkId uhuServiceId = new BezirkZirkId(serviceId);
+        BezirkZirkId bezirkZirkId = new BezirkZirkId(serviceId);
         String serviceName = sphereTestUtility.OWNER_ZIRK_NAME_2;
-        sphereRegistryWrapper.addMembership(uhuServiceId, sphereRegistryWrapper.getDefaultSphereId(), Device.DEVICE_ID, serviceName);
+        sphereRegistryWrapper.addMembership(bezirkZirkId, sphereRegistryWrapper.getDefaultSphereId(), Device.DEVICE_ID, serviceName);
 
         // When a new zirk name "newName" is passed for the same zirk Id, registerZirk method must return true.
-        assertTrue(sphereRegistryWrapper.registerService(uhuServiceId, "newName"));
+        assertTrue(sphereRegistryWrapper.registerService(bezirkZirkId, "newName"));
     }
 
 }

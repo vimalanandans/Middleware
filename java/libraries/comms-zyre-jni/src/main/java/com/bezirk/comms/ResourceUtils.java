@@ -32,8 +32,8 @@ public class ResourceUtils {
         return false;
     }
 
-    private static boolean copyFilesRecusively(final File toCopy,
-                                               final File destDir) {
+    private static boolean copyFilesRecursively(final File toCopy,
+                                                final File destDir) {
         assert destDir.isDirectory();
 
         if (!toCopy.isDirectory()) {
@@ -44,7 +44,7 @@ public class ResourceUtils {
                 return false;
             }
             for (final File child : toCopy.listFiles()) {
-                if (!ResourceUtils.copyFilesRecusively(child, newDestDir)) {
+                if (!ResourceUtils.copyFilesRecursively(child, newDestDir)) {
                     return false;
                 }
             }
@@ -89,7 +89,7 @@ public class ResourceUtils {
                 return ResourceUtils.copyJarResourcesRecursively(destination,
                         (JarURLConnection) urlConnection);
             } else {
-                return ResourceUtils.copyFilesRecusively(new File(originUrl.getPath()),
+                return ResourceUtils.copyFilesRecursively(new File(originUrl.getPath()),
                         destination);
             }
         } catch (final IOException e) {

@@ -104,24 +104,24 @@ public class PipeManagerImpl implements PipeManager {
      * @param event
      */
     //public void enqueueForRemoteSending(EventControlMessage eventRecord) {
-    public void processRemoteSend(Header uhuHeader, String serializedEvent) {
+    public void processRemoteSend(Header bezirkHeader, String serializedEvent) {
         if (!initialized) {
             logger.warn("PipeManager not initialized.  Can't execute processRemoteSend.");
             return;
         }
         logger.info("beginning processRemoteSend() ...");
 
-        if (uhuHeader == null) {
+        if (bezirkHeader == null) {
             logger.error("Bezirk Header is null.  Not sending via cloudpipe: " + serializedEvent);
             return;
         }
-        if (uhuHeader instanceof UnicastHeader) {
+        if (bezirkHeader instanceof UnicastHeader) {
             logger.error("Can't yet send Unicast messages via a pipe");
             return;
         }
 
         // Services shouldn't send multicast with null address, but hey, we're defensive
-        Address address = ((MulticastHeader) uhuHeader).getAddress();
+        Address address = ((MulticastHeader) bezirkHeader).getAddress();
         if (address == null) {
             logger.error("Address is null. Not sending via cloudpipe: " + serializedEvent);
             return;
@@ -131,7 +131,7 @@ public class PipeManagerImpl implements PipeManager {
         if (addressIsPipe(address)) {
             //logger.info("Adding event to PipeSender queue: " + eventRecord.getSerializedMessage());
             logger.info("Address is pipe; adding event to PipeSender queue for pipe: " + address.getPipe());
-            executeRemoteMulticastSend((MulticastHeader) uhuHeader, serializedEvent);
+            executeRemoteMulticastSend((MulticastHeader) bezirkHeader, serializedEvent);
         } else {
             logger.info("address does not contain a pipe: " + address.getPipe());
         }
@@ -207,14 +207,14 @@ public class PipeManagerImpl implements PipeManager {
      *
      * @param eventRecord
      */
-    private void executeRemoteMulticastSend(MulticastHeader uhuMulticastHeader, String serializedEvent) {
+    private void executeRemoteMulticastSend(MulticastHeader bezirkMulticastHeader, String serializedEvent) {
         //String serializedEvent = eventRecord.getSerializedMessage();
         logger.info("Executing remote send: " + serializedEvent);
 
         RemoteSender remoteSender = new RemoteSender();
         remoteSender.setPipeRegistry(pipeRegistry);
         remoteSender.setSerializedEvent(serializedEvent);
-        remoteSender.setBezirkHeader(uhuMulticastHeader);
+        remoteSender.setBezirkHeader(bezirkMulticastHeader);
         remoteSender.setPipeMonitor(this);
         remoteSender.setCertFileName(certFileName);
 

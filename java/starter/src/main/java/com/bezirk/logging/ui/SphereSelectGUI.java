@@ -189,15 +189,15 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
             super.windowClosing(arg0);
         }
     };
-    private boolean isDeveoperModeEnabled;
+    private boolean isDeveloperModeEnabled;
     private final transient ItemListener developerModeListener = new ItemListener() {
 
         @Override
         public void itemStateChanged(ItemEvent itemEvent) {
             if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
-                isDeveoperModeEnabled = true;
+                isDeveloperModeEnabled = true;
             } else if (itemEvent.getStateChange() == ItemEvent.DESELECTED) {
-                isDeveoperModeEnabled = false;
+                isDeveloperModeEnabled = false;
             }
         }
     };
@@ -219,7 +219,7 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
             }
 
             bezirk = new BezirkLogDetailsGUI(comms, selectedSpheres, thisFrame,
-                    isDeveoperModeEnabled);
+                    isDeveloperModeEnabled);
         }
     };
 

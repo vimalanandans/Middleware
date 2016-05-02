@@ -10,7 +10,7 @@ apply plugin: 'maven'
 publishing  {
     publications {
         // We want to publish maven-ized artifacts
-        uhuPublication(MavenPublication) {
+        bezirkPublication(MavenPublication) {
             from components.java
 
             // In addition to class jar, publish source and javadoc jars by

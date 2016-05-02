@@ -38,11 +38,11 @@ final class ServiceStarterHelper {
     /**
      * create and initialise the sphere
      *
-     * @param uhuDevice
+     * @param bezirkDevice
      * @param registryPersistence
      * @param comms
      */
-    BezirkSphereAPI initSphere(final UPADeviceInterface uhuDevice,
+    BezirkSphereAPI initSphere(final UPADeviceInterface bezirkDevice,
                                final RegistryPersistence registryPersistence, final BezirkComms comms) {
 
         // init the actual
@@ -55,16 +55,16 @@ final class ServiceStarterHelper {
         }
 
         final CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
-        BezirkSphereAPI sphereForPC = new BezirkSphereForPC(cryptoEngine, uhuDevice,
+        BezirkSphereAPI sphereForPC = new BezirkSphereForPC(cryptoEngine, bezirkDevice,
                 sphereRegistry);
 
         // BezirkSphereForAndroid implements the listener, hence set the
         // listener object as same.
-        final BezirkSphereForPC uhuSphereForPC = (BezirkSphereForPC) sphereForPC;
-        uhuSphereForPC.setBezirkSphereListener(uhuSphereForPC);
+        final BezirkSphereForPC bezirkSphereForPC = (BezirkSphereForPC) sphereForPC;
+        bezirkSphereForPC.setBezirkSphereListener(bezirkSphereForPC);
         ISphereConfig sphereConfig = new com.bezirk.sphere.impl.SphereProperties();
         sphereConfig.init();
-        uhuSphereForPC.initSphere(registryPersistence, comms, sphereConfig);
+        bezirkSphereForPC.initSphere(registryPersistence, comms, sphereConfig);
 
         BezirkCompManager.setSphereUI(sphereForPC);
         BezirkCompManager
@@ -95,18 +95,16 @@ final class ServiceStarterHelper {
      * Loads the default location for UPA device from the properties.
      */
     private Location loadLocation() {
-        Location location = null;
         try {
             final Properties props = UPADeviceForPC.loadProperties();
 
             final String loc = props.getProperty("DeviceLocation", null);
-            location = new Location(loc);
+            return new Location(loc);
         } catch (Exception e) {
             logger.error("Problem reading or writing properties file: ", e);
-            return null;
         }
 
-        return location;
+        return null;
     }
 
     /**

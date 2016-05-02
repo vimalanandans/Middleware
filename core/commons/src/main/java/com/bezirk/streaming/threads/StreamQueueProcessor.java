@@ -97,7 +97,7 @@ public class StreamQueueProcessor implements Runnable {
         }
     }
 
-    private void processStreamBusyMessage(boolean uhuCallbackPresent,
+    private void processStreamBusyMessage(boolean bezirkCallbackPresent,
                                           StreamRecord streamRecord) {
 
         logger.debug("The Recipient is Busy, Giving Callback to the Zirk");
@@ -105,7 +105,7 @@ public class StreamQueueProcessor implements Runnable {
         StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
                 streamRecord.senderSEP.zirkId, 0, streamRecord.localStreamId);
 
-        if (uhuCallbackPresent) {
+        if (bezirkCallbackPresent) {
             sadlReceiver.processStreamStatus(streamStatusMessage);
         }
     }
@@ -128,12 +128,12 @@ public class StreamQueueProcessor implements Runnable {
         }
     }
 
-    private void processLocalStreamMessage(boolean uhuCallbackPresent,
+    private void processLocalStreamMessage(boolean bezirkCallbackPresent,
                                            StreamRecord streamRecord) {
         // GIVE THE CALLBACK AS SUCCESS FOR THE SENDER
         StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
                 streamRecord.senderSEP.zirkId, 1, streamRecord.localStreamId);
-        if (uhuCallbackPresent) {
+        if (bezirkCallbackPresent) {
 
             sadlReceiver.processStreamStatus(streamStatusMessage);
 
@@ -144,7 +144,7 @@ public class StreamQueueProcessor implements Runnable {
                 streamRecord.serializedStream, streamRecord.file,
                 streamRecord.localStreamId, streamRecord.senderSEP);
 
-        if (uhuCallbackPresent) {
+        if (bezirkCallbackPresent) {
             sadlReceiver.processNewStream(uStreamCallbackMsg);
         }
     }

@@ -35,9 +35,9 @@ public class SubscriptionUnsubscriptionTest {
     private static final SubscribedRole subscribedEventlessPRole = new SubscribedRole(eventlessPRole);
     private static final SubscribedRole subscribedDummyPRole = new SubscribedRole(dummyPRole);
     private static BezirkSadlManager bezirkSadlManager = null;
-    private static BezirkZirkId uhuServiceAId = new BezirkZirkId("ServiceA");
-    private static BezirkZirkId uhuServiceBId = new BezirkZirkId("ServiceB");
-    private static BezirkZirkId uhuServiceCId = new BezirkZirkId("ServiceC");
+    private static BezirkZirkId bezirkZirkAId = new BezirkZirkId("ServiceA");
+    private static BezirkZirkId bezirkZirkBId = new BezirkZirkId("ServiceB");
+    private static BezirkZirkId bezirkZirkCId = new BezirkZirkId("ServiceC");
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
 
     @BeforeClass
@@ -59,16 +59,16 @@ public class SubscriptionUnsubscriptionTest {
     }
 
     private static void setUpMockServices() {
-        bezirkSadlManager.registerService(uhuServiceAId);
-        bezirkSadlManager.setLocation(uhuServiceAId, reception);
-        bezirkSadlManager.subscribeService(uhuServiceAId, subscribedStreamlessPRole);
-        bezirkSadlManager.subscribeService(uhuServiceAId, subscribedEventlessPRole);
-        bezirkSadlManager.subscribeService(uhuServiceAId, subscribedDummyPRole);
-        bezirkSadlManager.registerService(uhuServiceBId);
-        bezirkSadlManager.subscribeService(uhuServiceBId, subscribedStreamlessPRole);
-        bezirkSadlManager.registerService(uhuServiceCId);
-        bezirkSadlManager.setLocation(uhuServiceCId, reception);
-        bezirkSadlManager.subscribeService(uhuServiceCId, subscribedEventlessPRole);
+        bezirkSadlManager.registerService(bezirkZirkAId);
+        bezirkSadlManager.setLocation(bezirkZirkAId, reception);
+        bezirkSadlManager.subscribeService(bezirkZirkAId, subscribedStreamlessPRole);
+        bezirkSadlManager.subscribeService(bezirkZirkAId, subscribedEventlessPRole);
+        bezirkSadlManager.subscribeService(bezirkZirkAId, subscribedDummyPRole);
+        bezirkSadlManager.registerService(bezirkZirkBId);
+        bezirkSadlManager.subscribeService(bezirkZirkBId, subscribedStreamlessPRole);
+        bezirkSadlManager.registerService(bezirkZirkCId);
+        bezirkSadlManager.setLocation(bezirkZirkCId, reception);
+        bezirkSadlManager.subscribeService(bezirkZirkCId, subscribedEventlessPRole);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class SubscriptionUnsubscriptionTest {
 		/*
 		 * SadlManager should return false when asked to subscribe to null protcolrole.
 		 * */
-        isSubscribed = bezirkSadlManager.subscribeService(uhuServiceAId, null);
+        isSubscribed = bezirkSadlManager.subscribeService(bezirkZirkAId, null);
         assertFalse("SadlManager allowed subscribe for null protocolRole", isSubscribed);
 
         isSubscribed = true;
@@ -115,8 +115,8 @@ public class SubscriptionUnsubscriptionTest {
                 .get(streamlessPRole.getProtocolName());
 
         assertNotNull("ServiceIdSet is null", serviceIdSet);
-        assertTrue("ServiceA  is not present in protocolMap", serviceIdSet.contains(uhuServiceAId));
-        assertFalse("ServiceC Id present", serviceIdSet.contains(uhuServiceCId));
+        assertTrue("ServiceA  is not present in protocolMap", serviceIdSet.contains(bezirkZirkAId));
+        assertFalse("ServiceC Id present", serviceIdSet.contains(bezirkZirkCId));
 
 		/*
 		 * SadlManager protocolDescMap should have the description for StreamlessProtocol as serviceA
@@ -131,8 +131,8 @@ public class SubscriptionUnsubscriptionTest {
         for (String topic : streamlessPRole.getEventTopics()) {
 
             serviceIdSet = bezirkSadlManager.sadlRegistry.eventMap.get(topic);
-            assertTrue("ServiceA is not found in eventMap", serviceIdSet.contains(uhuServiceAId));
-            assertFalse("ServiceC Id is present ine eventMap for StreamlessProtocol events", serviceIdSet.contains(uhuServiceCId));
+            assertTrue("ServiceA is not found in eventMap", serviceIdSet.contains(bezirkZirkAId));
+            assertFalse("ServiceC Id is present ine eventMap for StreamlessProtocol events", serviceIdSet.contains(bezirkZirkCId));
 
         }
 
@@ -143,8 +143,8 @@ public class SubscriptionUnsubscriptionTest {
         for (String topic : eventlessPRole.getStreamTopics()) {
 
             serviceIdSet = bezirkSadlManager.sadlRegistry.streamMap.get(topic);
-            assertTrue("ServiceC is not found in eventMap", serviceIdSet.contains(uhuServiceCId));
-            assertNotEquals("ServiceB Id is present ine eventMap for MockProtcolRole events", true, serviceIdSet.contains(uhuServiceBId));
+            assertTrue("ServiceC is not found in eventMap", serviceIdSet.contains(bezirkZirkCId));
+            assertNotEquals("ServiceB Id is present ine eventMap for MockProtcolRole events", true, serviceIdSet.contains(bezirkZirkBId));
 
         }
 		/* ------ TO BE UNCOMMENTED ONCE FIX IS DONE : COMMENTED TO AVOID BUILD FAILURE -------------*/
@@ -153,7 +153,7 @@ public class SubscriptionUnsubscriptionTest {
 		/*SadlManager should return false when not able to persist unsubscribe data to registry.*/
 		/*
 		mockUtility.clearSadlPersistence();
-		isSubscribed= bezirkSadlManager.subscribeService(uhuServiceBId, subscribedEventlessPRole);
+		isSubscribed= bezirkSadlManager.subscribeService(bezirkZirkBId, subscribedEventlessPRole);
 		assertFalse(isSubscribed);
 		mockUtility.restoreSadlPersistence();
 		bezirkSadlManager= mockUtility.bezirkSadlManager;
@@ -175,14 +175,14 @@ public class SubscriptionUnsubscriptionTest {
 		/*
 		 * SadlManager should return false when protocolrole is null in unsubscription request
 		 * */
-        isUnscubscribed = bezirkSadlManager.unsubscribe(uhuServiceAId, null);
+        isUnscubscribed = bezirkSadlManager.unsubscribe(bezirkZirkAId, null);
         assertFalse(isUnscubscribed);
 		
 
 		/*
 		 * SadlManager should return true when asked to unsubscribe ServiceA from streamless ProtocolRole
 		 * */
-        isUnscubscribed = bezirkSadlManager.unsubscribe(uhuServiceAId, subscribedStreamlessPRole);
+        isUnscubscribed = bezirkSadlManager.unsubscribe(bezirkZirkAId, subscribedStreamlessPRole);
         assertTrue(isUnscubscribed);
 		
 		/*
@@ -193,9 +193,9 @@ public class SubscriptionUnsubscriptionTest {
         for (String topic : streamlessPRole.getEventTopics()) {
 
             serviceIdSet = bezirkSadlManager.sadlRegistry.eventMap.get(topic);
-            assertTrue("ServiceB not found in the eventMap for streamlessProtocol event(" + topic + ").", serviceIdSet.contains(uhuServiceBId));
-            assertFalse("ServiceA is found in eventMap for StreamlessProtocol event(" + topic + ") even after unsubscription.", serviceIdSet.contains(uhuServiceAId));
-            assertFalse("ServiceC is present ine eventMap for StreamlessProtocol event(" + topic + ").", serviceIdSet.contains(uhuServiceCId));
+            assertTrue("ServiceB not found in the eventMap for streamlessProtocol event(" + topic + ").", serviceIdSet.contains(bezirkZirkBId));
+            assertFalse("ServiceA is found in eventMap for StreamlessProtocol event(" + topic + ") even after unsubscription.", serviceIdSet.contains(bezirkZirkAId));
+            assertFalse("ServiceC is present ine eventMap for StreamlessProtocol event(" + topic + ").", serviceIdSet.contains(bezirkZirkCId));
 
         }
 		
@@ -207,32 +207,32 @@ public class SubscriptionUnsubscriptionTest {
         for (String topic : dummyPRole.getEventTopics()) {
 
             serviceIdSet = bezirkSadlManager.sadlRegistry.eventMap.get(topic);
-            //assertFalse("ServiceB  found in the eventMap for dummyPRole event("+topic+").",serviceIdSet.contains(uhuServiceBId));
-            //assertTrue("ServiceA is not found in eventMap for dummyPRole event("+topic+") even after unsubscription.",serviceIdSet.contains(uhuServiceAId));
-            assertFalse("ServiceC is present ine eventMap for dummyPRole event(" + topic + ").", serviceIdSet.contains(uhuServiceCId));
+            //assertFalse("ServiceB  found in the eventMap for dummyPRole event("+topic+").",serviceIdSet.contains(bezirkZirkBId));
+            //assertTrue("ServiceA is not found in eventMap for dummyPRole event("+topic+") even after unsubscription.",serviceIdSet.contains(bezirkZirkAId));
+            assertFalse("ServiceC is present ine eventMap for dummyPRole event(" + topic + ").", serviceIdSet.contains(bezirkZirkCId));
 
         }
 
         for (String topic : eventlessPRole.getStreamTopics()) {
 
             serviceIdSet = bezirkSadlManager.sadlRegistry.streamMap.get(topic);
-            assertTrue("ServiceA is not found in streamMap for EventlessProtocol stream(" + topic + ").", serviceIdSet.contains(uhuServiceAId));
-            assertTrue("ServiceC is not found in streamMap for EventlessProtocol stream(" + topic + ").", serviceIdSet.contains(uhuServiceCId));
-            assertFalse("ServiceB is present in streamMap for EventlessProtocol stream(" + topic + ").", serviceIdSet.contains(uhuServiceBId));
+            assertTrue("ServiceA is not found in streamMap for EventlessProtocol stream(" + topic + ").", serviceIdSet.contains(bezirkZirkAId));
+            assertTrue("ServiceC is not found in streamMap for EventlessProtocol stream(" + topic + ").", serviceIdSet.contains(bezirkZirkCId));
+            assertFalse("ServiceB is present in streamMap for EventlessProtocol stream(" + topic + ").", serviceIdSet.contains(bezirkZirkBId));
 
         }
 		
 		/*
 		 * SadlManager should remove the protocol entry when no services are subscribed to it.
 		 * */
-        bezirkSadlManager.unsubscribe(uhuServiceBId, subscribedStreamlessPRole);
+        bezirkSadlManager.unsubscribe(bezirkZirkBId, subscribedStreamlessPRole);
         assertNull("Services still present in protocolmap for streamless protocol", bezirkSadlManager.sadlRegistry.protocolMap.get(streamlessPRole.getProtocolName()));
 		
 		
 		/*
 		 * SadlManager should return false when duplicate unsubscribe request received.
 		 * */
-        boolean falseUnsubscribe = bezirkSadlManager.unsubscribe(uhuServiceAId, subscribedStreamlessPRole);
+        boolean falseUnsubscribe = bezirkSadlManager.unsubscribe(bezirkZirkAId, subscribedStreamlessPRole);
         assertFalse("SadlManager returned true for duplicate unsubscribe request.", falseUnsubscribe);
 		
 		/*
@@ -240,9 +240,9 @@ public class SubscriptionUnsubscriptionTest {
 		 * */
         BezirkZirkId invalidId = new BezirkZirkId("Invalid");
         assertFalse("SadlManager allowed unregistered serviceID to unsubscribe.", bezirkSadlManager.unsubscribe(invalidId, subscribedEventlessPRole));
-        assertFalse("SadlManager returned true for invalid unsubscribe request.", bezirkSadlManager.unsubscribe(uhuServiceBId, subscribedEventlessPRole));
+        assertFalse("SadlManager returned true for invalid unsubscribe request.", bezirkSadlManager.unsubscribe(bezirkZirkBId, subscribedEventlessPRole));
 
-        boolean isUnsubscribed = bezirkSadlManager.unsubscribe(uhuServiceAId, subscribedEventlessPRole);
+        boolean isUnsubscribed = bezirkSadlManager.unsubscribe(bezirkZirkAId, subscribedEventlessPRole);
         assertTrue("SadlManager couldn't unsubscribe valid serviceA.", isUnsubscribed);
 
 /* ------ TO BE UNCOMMENTED ONCE FIX IS DONE : COMMENTED TO AVOID BUILD FAILURE -------------*/		
@@ -250,7 +250,7 @@ public class SubscriptionUnsubscriptionTest {
 	/*	SadlManager should return false when not able to persist unsubscribe data to registry.*/
 			
 /*		mockUtility.clearSadlPersistence();
-		isUnsubscribed= bezirkSadlManager.unregisterZirk(uhuServiceBId);
+		isUnsubscribed= bezirkSadlManager.unregisterZirk(bezirkZirkBId);
 		assertFalse(isUnsubscribed);
 		mockUtility.restoreSadlPersistence();
 		bezirkSadlManager= mockUtility.bezirkSadlManager;

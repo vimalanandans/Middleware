@@ -12,7 +12,7 @@ public abstract class Factory {
     public static Bezirk getInstance() {
         synchronized (Factory.class) {
             if (instance == null) {
-                instance = (Bezirk) new Proxy();
+                instance = new Proxy();
             }
             return instance;
         }
@@ -24,7 +24,7 @@ public abstract class Factory {
     public static Bezirk getInstance(BezirkConfig bezirkConfig) {
         synchronized (Factory.class) {
             if (instance == null) {
-                instance = (Bezirk) new Proxy(bezirkConfig);
+                instance = new Proxy(bezirkConfig);
             }
             return instance;
         }

@@ -30,12 +30,12 @@ public class EventSenderThread implements Runnable {
     private final static int timeBetweenRetransmits = 100; // time in milliseconds
     private final static int numOfRetries = 10;
     private final PipeManager pipeManager;
-    private final BezirkCommsLegacy uhuComms;
+    private final BezirkCommsLegacy bezirkComms;
     MessageQueue msgQueue = null;
     private Boolean running = false;
 
-    public EventSenderThread(BezirkCommsLegacy uhuComms, MessageQueue msgQueue, PipeManager pipeManager) {
-        this.uhuComms = uhuComms;
+    public EventSenderThread(BezirkCommsLegacy bezirkComms, MessageQueue msgQueue, PipeManager pipeManager) {
+        this.bezirkComms = bezirkComms;
         this.msgQueue = msgQueue;
         this.pipeManager = pipeManager;
     }
@@ -118,7 +118,7 @@ public class EventSenderThread implements Runnable {
         if (eMessage.getIsMulticast() && eMessage.getNumOfSends() == 0) {
             //add to the receiver queue
             //MessageQueueManager.getReceiverMessageQueue().addToQueue(eMessage);
-            uhuComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eMessage);
+            bezirkComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eMessage);
             return true;
         }
         //the message is a local unicast
@@ -126,10 +126,10 @@ public class EventSenderThread implements Runnable {
         else if (eMessage.getIsLocal()) {
             //add to the receiver queue
             //MessageQueueManager.getReceiverMessageQueue().addToQueue(eMessage);
-            uhuComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eMessage);
+            bezirkComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eMessage);
             //must remove from Sending messageQueue
             //MessageQueueManager.getSendingMessageQueue().removeFromQueue(eMessage);
-            uhuComms.removeFromQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_SEND_QUEUE, eMessage);
+            bezirkComms.removeFromQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_SEND_QUEUE, eMessage);
             return false;
         }
         //must go through uHu as message is a unicast and not local

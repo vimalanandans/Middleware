@@ -39,8 +39,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Iterator;
 
-public class ProxyforServices implements BezirkProxyForServiceAPI {
-    private static final Logger logger = LoggerFactory.getLogger(ProxyforServices.class);
+public class ProxyForServices implements BezirkProxyForServiceAPI {
+    private static final Logger logger = LoggerFactory.getLogger(ProxyForServices.class);
     private ISadlRegistry sadlRegistry = null;
     private BezirkComms comms = null;
 
@@ -58,7 +58,7 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
             logger.info("Zirk Registration Complete for: {}, {}", serviceName, serviceId);
         } else {
             // unregister the sadl due to failure in sphere
-            logger.error("sphere Registration Failed. unregistring SADL");
+            logger.error("Sphere Registration Failed: unregistering SADL");
             sadlRegistry.unregisterService(serviceId);
         }
     }
@@ -109,7 +109,7 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
     public void sendUnicastEvent(final BezirkZirkId serviceId, final BezirkZirkEndPoint recipient, final String serializedEventMsg) {
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            logger.error("Zirk Not Registered with the sphere");
+            logger.error("Zirk not registered with the sphere");
             return;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
@@ -143,7 +143,7 @@ public class ProxyforServices implements BezirkProxyForServiceAPI {
     public void discover(final BezirkZirkId serviceId, final Address address, final SubscribedRole pRole, final int discoveryId, final long timeout, final int maxDiscovered) {
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            logger.error("Zirk Not Registered with the sphere");
+            logger.error("Zirk not tegistered with the sphere");
             return;
         }
 

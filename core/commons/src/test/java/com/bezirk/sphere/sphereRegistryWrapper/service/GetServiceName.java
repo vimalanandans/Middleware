@@ -83,12 +83,12 @@ public class GetServiceName {
         sphereSet.add(sphereId);
 
         String serviceId = UUID.randomUUID().toString();
-        BezirkZirkId uhuServiceId = new BezirkZirkId(serviceId);
+        BezirkZirkId bezirkZirkId = new BezirkZirkId(serviceId);
         String serviceName = sphereTestUtility.OWNER_ZIRK_NAME_1;
         OwnerZirk ownerService = new OwnerZirk(serviceName, "ownerDeviceId", sphereSet);
         registry.sphereMembership.put(serviceId, ownerService);
 
-        String retrievedService = sphereRegistryWrapper.getServiceName(uhuServiceId);
+        String retrievedService = sphereRegistryWrapper.getServiceName(bezirkZirkId);
         assertEquals(serviceName, retrievedService);
     }
 
@@ -107,9 +107,9 @@ public class GetServiceName {
 
         //Zirk is created but not added in registry.
         String serviceId = UUID.randomUUID().toString();
-        BezirkZirkId uhuServiceId = new BezirkZirkId(serviceId);
+        BezirkZirkId bezirkZirkId = new BezirkZirkId(serviceId);
 
-        String retrievedService = sphereRegistryWrapper.getServiceName(uhuServiceId);
+        String retrievedService = sphereRegistryWrapper.getServiceName(bezirkZirkId);
         assertNull(retrievedService);
     }
 

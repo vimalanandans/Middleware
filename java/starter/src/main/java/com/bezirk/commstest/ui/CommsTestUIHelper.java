@@ -150,8 +150,8 @@ public class CommsTestUIHelper {
         testStatusLbl.setBounds(new Rectangle(10, 540, 695, 15));
         testStatusLbl.setFont(new Font(TAHOMA_FONT, 0, 10));
         testStatusLbl
-                .setText("Press Test and look for the response. If you dont see the response from other device, check"
-                        + "\nthe hints and redo the test!");
+                .setText("Press Test and look for the response. If you do not see the response from " +
+                        "other device, check\nthe hints and redo the test!");
     }
 
     void addComponentsToComponentPanel() {

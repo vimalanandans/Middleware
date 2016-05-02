@@ -43,7 +43,7 @@ public class SpringRunner {
         /*
 		 * Set the application home directory. If we are running from the
 		 * binary distribution, appHome is set to: /path/to/bezirk-version.
-		 * If we are running from the developement envronment, 
+		 * If we are running from the development environment,
 		 * appHome is set to the project root directory.
 		 */
         appHome = System.getenv().get("APP_HOME");
@@ -73,7 +73,6 @@ public class SpringRunner {
         logger.info("Starting Bezirk...");
         String bezirkDataPath = bezirkConfig.getDataPath();
         bezirkConfig.setDataPath(appHome + File.separator + bezirkDataPath);
-        Proxy api = (Proxy) Factory.getInstance(bezirkConfig);
 
         // Get all ServiceRunners specified in the app context
         Map<String, com.bezirk.middleware.proxy.IServiceRunner> services = springContext.getBeansOfType(com.bezirk.middleware.proxy.IServiceRunner.class);

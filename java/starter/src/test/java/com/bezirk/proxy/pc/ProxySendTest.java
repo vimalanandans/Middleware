@@ -42,7 +42,7 @@ public class ProxySendTest {
     private final BezirkZirkId receiverId = new BezirkZirkId(serviceBId);
     private final BezirkZirkEndPoint receiver = new BezirkZirkEndPoint(receiverId);
     private final File sendFile =
-            new File(com.bezirk.proxy.pc.ProxyforServices.class.getClassLoader().getResource("streamingTest.txt").getPath());
+            new File(ProxyForServices.class.getClassLoader().getResource("streamingTest.txt").getPath());
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -69,18 +69,8 @@ public class ProxySendTest {
     }
 
     @Test
-    public void test() {
-
-        testSendStream();
-
-        testSendUnicastEvent();
-
-        testSendMulticastEvent();
-
-    }
-
-    private void testSendStream() {
-        com.bezirk.proxy.pc.ProxyforServices proxyForServices = new com.bezirk.proxy.pc.ProxyforServices();
+    public void testSendStream() {
+        ProxyForServices proxyForServices = new ProxyForServices();
         proxyForServices.setSadlRegistry(sadlManager);
         MockComms mockComms = (MockComms) mockSetUP.getBezirkComms();
         proxyForServices.setCommsManager(mockComms);
@@ -96,12 +86,14 @@ public class ProxySendTest {
         mockComms.clearQueues();
     }
 
-    private void testSendUnicastEvent() {
+    @Test
+    public void testSendUnicastEvent() {
         try {
-            com.bezirk.proxy.pc.ProxyforServices proxyForServices = new com.bezirk.proxy.pc.ProxyforServices();
+            ProxyForServices proxyForServices = new ProxyForServices();
             proxyForServices.setSadlRegistry(sadlManager);
             MockComms mockComms = (MockComms) mockSetUP.getBezirkComms();
             proxyForServices.setCommsManager(mockComms);
+            proxyForServices.registerService(senderId, serviceName);
 
             String serializedEventMsg = new MockProtocolsForBezirkPC().new MockEvent1(Flag.REQUEST, "MockEvent").toJson();
             receiver.device = "DeviceB";
@@ -111,18 +103,18 @@ public class ProxySendTest {
 
             mockComms.clearQueues();
         } catch (Exception e) {
-
             fail("Proxy is unable to send unicast events.");
-
         }
     }
 
-    private void testSendMulticastEvent() {
+    @Test
+    public void testSendMulticastEvent() {
         try {
-            com.bezirk.proxy.pc.ProxyforServices proxyForServices = new com.bezirk.proxy.pc.ProxyforServices();
+            ProxyForServices proxyForServices = new ProxyForServices();
             proxyForServices.setSadlRegistry(sadlManager);
             MockComms mockComms = (MockComms) mockSetUP.getBezirkComms();
             proxyForServices.setCommsManager(mockComms);
+            proxyForServices.registerService(senderId, serviceName);
 
             String serializedEventMsg = new MockProtocolsForBezirkPC().new MockEvent1(Flag.REQUEST, "MockEvent").toJson();
             Address address = new Address(new Location("FLOOR1/BLOCk1/ROOM1"));
@@ -147,8 +139,5 @@ public class ProxySendTest {
                                  ZirkEndPoint recipient) {
             super(flag, topic, recipient);
         }
-
-
     }
-
 }

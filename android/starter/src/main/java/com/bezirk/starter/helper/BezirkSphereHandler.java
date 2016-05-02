@@ -45,7 +45,7 @@ public final class BezirkSphereHandler {
     /**
      * create and initialise the sphere
      */
-    boolean initSphere(UPADeviceInterface uhuDevice, MainService service, SpherePersistence spherePersistence, BezirkPreferences preferences) {
+    boolean initSphere(UPADeviceInterface bezirkDevice, MainService service, SpherePersistence spherePersistence, BezirkPreferences preferences) {
 
         /** start the sphere related init*/
         if (sphereForAndroid == null) {
@@ -58,16 +58,16 @@ public final class BezirkSphereHandler {
             }
             CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
 
-            sphereForAndroid = new BezirkSphereForAndroid(cryptoEngine, uhuDevice, sphereRegistry, service.getApplicationContext(), preferences);
+            sphereForAndroid = new BezirkSphereForAndroid(cryptoEngine, bezirkDevice, sphereRegistry, service.getApplicationContext(), preferences);
 
-            BezirkSphereForAndroid uhuSphereForAndroid = (BezirkSphereForAndroid) BezirkSphereHandler.sphereForAndroid;
+            BezirkSphereForAndroid bezirkSphereForAndroid = (BezirkSphereForAndroid) BezirkSphereHandler.sphereForAndroid;
 
-            uhuSphereForAndroid.setBezirkSphereListener(uhuSphereForAndroid);
+            bezirkSphereForAndroid.setBezirkSphereListener(bezirkSphereForAndroid);
 
             ISphereConfig sphereConfig = new SphereProperties(preferences);
             sphereConfig.init();
 
-            if (!(uhuSphereForAndroid.initSphere(spherePersistence, BezirkStackHandler.getBezirkComms()))) {
+            if (!(bezirkSphereForAndroid.initSphere(spherePersistence, BezirkStackHandler.getBezirkComms()))) {
                 // at the moment the init sphere fails due to persistence
                 return false;
             }
