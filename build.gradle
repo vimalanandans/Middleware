@@ -27,7 +27,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "2.0.6"
+    version = "3.0.0-alpha"
 
     ext {
         //artifactRepoBase_old = "http://cr-scm01.de.bosch.com:8081/nexus/content/repositories"
