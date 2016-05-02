@@ -70,9 +70,10 @@ public class GetDeviceInformation {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getDeviceInformation(String)}.
-     * <p/>
-     * <br>Test the behavior of getDeviceInfomation when valid deviceId is passed.
+     * <p>
+     * Test the behavior of getDeviceInfomation when valid deviceId is passed.
      * It should return a DeviceInformation object associated with the deviceId
+     * </p>
      */
     @Test
     public final void deviceInfoStoredInUpaDevice() {
@@ -86,9 +87,10 @@ public class GetDeviceInformation {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getDeviceInformation(String)}.
-     * <p/>
-     * <br>Test the behavior of getDeviceInformation when new device information is added to the registry.
+     * <p>
+     * Test the behavior of getDeviceInformation when new device information is added to the registry.
      * It should return a DeviceInformation object associated with this new deviceId
+     * </p>
      */
     @Test
     public final void deviceInfoStoredInRegistry() {
@@ -101,9 +103,10 @@ public class GetDeviceInformation {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getDeviceInformation(String)}.
-     * <p/>
-     * <br>Test the behavior of getDeviceInformation method when wrong device id is passed.
-     * getDeviceInformation method is expected to return null.
+     * <p>
+     * Test the behavior of getDeviceInformation method when wrong device id is passed.
+     * getDeviceInformation method is expected to return <code>null</code>.
+     * </p>
      */
     @Test
     public final void wrongDeviceIdShouldRetunNull() {

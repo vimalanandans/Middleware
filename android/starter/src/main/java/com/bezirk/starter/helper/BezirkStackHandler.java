@@ -35,8 +35,6 @@ import java.util.Date;
 
 /**
  * Handles all bezirk stack control operations requested  by Main Zirk
- * <p/>
- * Created by AJC6KOR on 9/8/2015.
  */
 public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackHandler {
     private static final Logger logger = LoggerFactory.getLogger(BezirkStackHandler.class);

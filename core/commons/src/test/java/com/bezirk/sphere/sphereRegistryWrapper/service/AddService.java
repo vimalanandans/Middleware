@@ -69,9 +69,10 @@ public class AddService {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addService(String, Zirk)}.
-     * <p/>
-     * <br>When valid ZirkId and Zirk object is passed to addService, the zirk is added to the registry and the method
-     * should return True
+     * <p>
+     * When valid ZirkId and Zirk object is passed to addService, the zirk is added to the registry and the method
+     * should return <code>true</code>
+     * </p>
      */
     @Test
     public final void validServiceIdAndServiceReturnsTrue() {
@@ -90,9 +91,10 @@ public class AddService {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addService(String, Zirk)}.
-     * <p/>
-     * <br>Test behavior of addService when zirkId is passed as null.
-     * addService is expected to return false.
+     * <p>
+     * Test behavior of addService when zirkId is passed as null.
+     * addService is expected to return <code>false</code>.
+     * </p>
      */
     @Test
     public final void nullServiceIdShouldReturnFalse() {
@@ -106,9 +108,10 @@ public class AddService {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addService(String, Zirk)}.
-     * <p/>
-     * <br>Test behavior of addService when Zirk object is passed as null.
-     * addService is expected to return false.
+     * <p>
+     * Test behavior of addService when Zirk object is passed as null.
+     * addService is expected to return <code>false</code>.
+     * </p>
      */
     @Test
     public final void nullServiceObjectShouldReturnFalse() {
@@ -119,9 +122,10 @@ public class AddService {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addService(String, Zirk)}.
-     * <p/>
-     * <br>Test behavior of addService when Zirk object and zirkId are passed as null.
-     * addService is expected to return false.
+     * <p>
+     * Test behavior of addService when Zirk object and zirkId are passed as null.
+     * addService is expected to return <code>false</code>.
+     * </p>
      */
     @Test
     public final void nullServiceObjectAndNullServiceIdShouldReturnFalse() {

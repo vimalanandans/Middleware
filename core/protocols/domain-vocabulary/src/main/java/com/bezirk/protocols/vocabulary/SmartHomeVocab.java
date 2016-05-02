@@ -76,10 +76,11 @@ public class SmartHomeVocab {
 
     /**
      * property [http://purl.oclc.org/NET/ssnx/ssn#Property]
-     * <p/>
+     * <p>
      * An observable Quality of an Event or Object. That is, not a quality of an abstract entity as is also
      * allowed by DUL's Quality, but rather an aspect of an entity that is intrinsic to and cannot exist
      * without the entity and is observable by a sensor.
+     * </p>
      */
     public static class property {
 

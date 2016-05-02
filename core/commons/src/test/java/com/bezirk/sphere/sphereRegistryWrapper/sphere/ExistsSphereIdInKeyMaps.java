@@ -67,8 +67,9 @@ public class ExistsSphereIdInKeyMaps {
 
     /**
      * Test method for {@link SphereRegistryWrapper#existsSphereIdInKeyMaps(String)}.
-     * <p/>
-     * <br>Test existence of the sphereId in sphereKeyMap
+     * <p>
+     * Test existence of the sphereId in sphereKeyMap
+     * </p>
      */
     @Test
     public final void existsSphereIdInKeyMap() {
@@ -81,8 +82,9 @@ public class ExistsSphereIdInKeyMaps {
 
     /**
      * Test method for {@link SphereRegistryWrapper#existsSphereIdInKeyMaps(String)}.
-     * <p/>
-     * <br>Test existence of the sphereId in sphereHashKeyMap
+     * <p>
+     * Test existence of the sphereId in sphereHashKeyMap
+     * </p>
      */
     @Test
     public final void existsSphereIdInHashKeyMap() {
@@ -95,8 +97,9 @@ public class ExistsSphereIdInKeyMaps {
 
     /**
      * Test method for {@link SphereRegistryWrapper#existsSphereIdInKeyMaps(String)}.
-     * <p/>
-     * <br>Test existence of the sphereId in both sphereHashKeyMap and sphereKeyMap
+     * <p>
+     * Test existence of the sphereId in both sphereHashKeyMap and sphereKeyMap
+     * </p>
      */
     @Test
     public final void existsSphereIdInMaps() {
@@ -110,9 +113,10 @@ public class ExistsSphereIdInKeyMaps {
 
     /**
      * Test method for {@link SphereRegistryWrapper#existsSphereIdInKeyMaps(String)}.
-     * <p/>
-     * <br>Test behavior of existsSphereIdInKeyMaps when SphereId string is passed as null.
-     * existsSphereIdInKeyMaps method is expected to return False.
+     * <p>
+     * Test behavior of existsSphereIdInKeyMaps when SphereId string is passed as null.
+     * existsSphereIdInKeyMaps method is expected to return <code>false</code>.
+     * </p>
      */
     @Test
     public final void nullSphereIdShouldReturnFalse() {

@@ -20,9 +20,10 @@ public class ShareRequest extends MulticastControlMessage {
      * and S4[in other devices], when we get S to this function, we currently
      * ensure that only S1 and S2 are added since this device only owns these 2
      * services
-     * <p/>
+     * <p>
      * Due to this currently only one BezirkDeviceInfo is required. If we need to
      * extend the concept, we could move towards a List of BezirkDeviceInfo's
+     * </p>
      */
     private final BezirkDeviceInfo bezirkDeviceInfo;
     private final String sharerSphereId;

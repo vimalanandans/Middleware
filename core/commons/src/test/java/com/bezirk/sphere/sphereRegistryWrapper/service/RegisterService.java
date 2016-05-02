@@ -68,9 +68,10 @@ public class RegisterService {
 
     /**
      * Test method for {@link SphereRegistryWrapper#registerService(BezirkZirkId, String)}.
-     * <p/>
-     * <br>When valid ServiceId and a new Zirk name is passed to registerZirk,
-     * it should add the zirk membership to the registry and return True.
+     * <p>
+     * When valid ServiceId and a new Zirk name is passed to registerZirk,
+     * it should add the zirk membership to the registry and return <code>true</code>.
+     * </p>
      */
     @Test
     public final void validServiceIdAndNewServiceNameReturnsTrue() {
@@ -82,9 +83,10 @@ public class RegisterService {
 
     /**
      * Test method for {@link SphereRegistryWrapper#registerService(BezirkZirkId, String)}.
-     * <p/>
-     * <br>When valid ServiceId and a new Zirk name is passed to registerZirk,
-     * it should update the existing zirk with the name passed and return True.
+     * <p>
+     * When valid ServiceId and a new Zirk name is passed to registerZirk,
+     * it should update the existing zirk with the name passed and return <code>true</code>.
+     * </p>
      */
     @Test
     public final void newServiceNameForExistingServiceReturnsTrue() {

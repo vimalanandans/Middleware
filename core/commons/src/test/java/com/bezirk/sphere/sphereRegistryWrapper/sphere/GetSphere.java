@@ -74,10 +74,10 @@ public class GetSphere {
     /**
      * Test method for
      * {@link SphereRegistryWrapper#getSphere(String)}
-     * <p/>
-     * <br>
+     * <p>
      * Test if the getSphere method returns the sphere object for the given
      * sphereId
+     * </p>
      */
     @Test
     public final void validSphereId() {
@@ -95,10 +95,10 @@ public class GetSphere {
     /**
      * Test method for
      * {@link SphereRegistryWrapper#getSphere(String)}
-     * <p/>
-     * <br>
+     * <p>
      * Test the behavior of getSphere method when null string is passed to it.
-     * getSphere method is expected to return null.
+     * getSphere method is expected to return <code>null</code>.
+     * </p>
      */
     @Test
     public final void nullSphereIdShouldRetunNull() {
@@ -110,10 +110,10 @@ public class GetSphere {
     /**
      * Test method for
      * {@link SphereRegistryWrapper#getSphere(String)}
-     * <p/>
-     * <br>
+     * <p>
      * The getSphere method should return null when there is no mapping sphere
      * object for the passed sphereId.
+     * </p>
      */
     @Test
     public final void sphereNotInRegistryReturnsNull() {

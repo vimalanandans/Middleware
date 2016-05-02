@@ -73,8 +73,9 @@ public class IsThisDeviceOwnsSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#isThisDeviceOwnsSphere(BezirkSphereInfo)}.
-     * <p/>
-     * <br>Test if the device owns sphere.
+     * <p>
+     * Test if the device owns sphere.
+     * </p>
      */
     @Test
     public final void validSphereInfo() {
@@ -88,9 +89,10 @@ public class IsThisDeviceOwnsSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#isThisDeviceOwnsSphere(BezirkSphereInfo)}.
-     * <p/>
-     * <br>Test if the device owns sphere, but the sphere is not added to registry.
-     * Returns false.
+     * <p>
+     * Test if the device owns sphere, but the sphere is not added to registry.
+     * Returns <code>false</code>.
+     * </p>
      */
     @Test
     public final void sphereNotPresentInRegistry() {

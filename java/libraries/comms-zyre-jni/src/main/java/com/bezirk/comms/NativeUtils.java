@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
  * * <p>
  * Native libraries should be packaged into a single jar file, with the
  * following directory & file structure:
- * <p/>
+ * <p>
  * <pre>
  * META_INF
  *   lib
@@ -39,7 +39,7 @@ import java.util.StringTokenizer;
  *     windows_64
  *       xxx[-vvv].dll
  * </pre>
- * <p/>
+ * </p>
  */
 
 public class NativeUtils {

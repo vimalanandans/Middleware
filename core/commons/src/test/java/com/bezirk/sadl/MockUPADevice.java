@@ -122,13 +122,11 @@ public class MockUPADevice implements UPADeviceInterface {
     }
 
     /**
-     * Used for setting the device location
+     * Used for setting the device location. The device location is currently not persisted into
+     * the shared preferences.
      *
-     * @param loc The location of the device to be set
-     * @return true: if the location was set successfully
-     * false: otherwise
-     * <p/>
-     * Note : the device location is currently not persisted into the shared preferences
+     * @param loc the location of the device to be set
+     * @return <code>true</code> if the location was set successfully
      */
     @Override
     public boolean setDeviceLocation(Location loc) {

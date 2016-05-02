@@ -13,15 +13,13 @@ public interface BezirkSphereRegistration {
     /**
      * Registers the zirk with BezirkSphere's. In case the zirk is already
      * registered, call to this method updates the name of the zirk to
-     * serviceName passed
+     * zirkName passed
      *
-     * @param serviceId   BezirkZirkId to be registered
-     * @param serviceName Name to be associated with the zirk
-     * @return true if zirk was added successfully
-     * <p/>
-     * false otherwise
+     * @param zirkId   BezirkZirkId to be registered
+     * @param zirkName Name to be associated with the zirk
+     * @return <code>true</code> if zirk was added successfully
      */
-    public boolean registerService(BezirkZirkId serviceId, String serviceName);
+    public boolean registerService(BezirkZirkId zirkId, String zirkName);
 
     /**
      * Unregisters zirk

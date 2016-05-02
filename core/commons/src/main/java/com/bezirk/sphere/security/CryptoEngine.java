@@ -3,7 +3,7 @@ package com.bezirk.sphere.security;
 import com.bezirk.commons.BezirkId;
 import com.bezirk.middleware.objects.SphereVitals;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.api.ICryptoInternals;
+import com.bezirk.sphere.api.CryptoInternals;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ import javax.crypto.interfaces.PBEKey;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public final class CryptoEngine implements ICryptoInternals {
+public final class CryptoEngine implements CryptoInternals {
     private static final Logger logger = LoggerFactory.getLogger(CryptoEngine.class);
 
     private static final String KEY_FACTORY_ALGORITHM = "DSA";
@@ -44,13 +44,11 @@ public final class CryptoEngine implements ICryptoInternals {
     }
 
     /**
-     * This method generates the keys for a sphere if the passed sphereId is not
-     * already present
+     * This method generates the keys for a sphere if the passed sphereId does not already have
+     * assigned keys.
      *
      * @param sphereId sphereId for which keys need to be generated
-     * @return true: if the keys were generated and stored successfully
-     * <p/>
-     * false otherwise
+     * @return <code>true</code> if the keys were generated and stored successfully
      */
     public final boolean generateKeys(String sphereId) {
 
@@ -125,15 +123,11 @@ public final class CryptoEngine implements ICryptoInternals {
     }
 
     /**
-     * This method generates the keys for a sphere if the passed sphereId is not
-     * already present
-     * <p/>
-     * for the symmetric key the code is generated form short id of sphere id
+     * This method generates the keys for a sphere if the passed sphereId does not already have
+     * keys assigned. For the symmetric key the code is generated from short id of sphere id
      *
      * @param sphereId sphereId for which keys need to be generated
-     * @return true: if the keys were generated and stored successfully
-     * <p/>
-     * false otherwise
+     * @return <code>true</code> if the keys were generated and stored successfully
      */
     public final boolean generateKeys(String sphereId, boolean fromSphereId) {
 
@@ -189,10 +183,9 @@ public final class CryptoEngine implements ICryptoInternals {
      * @param sphereId          sphereId of the sphere for which serializedContent needs to be
      *                          encrypted
      * @param serializedContent content to be encrypted
-     * @return encrypted byte array if 1. sphereId is not null & has a sphereKey
-     * associated with it 2. serializedContent is not null
-     * <p/>
-     * null otherwise
+     * @return encrypted byte array if 1. <code>sphereId</code> is not <code>null</code> and has a
+     * sphereKey associated with it and 2. <ccde>serializedContent</code> is not <code>null</code>,
+     * returns <code>null</code> otherwise
      */
     public final byte[] encryptSphereContent(String sphereId, String serializedContent) {
 
@@ -232,11 +225,9 @@ public final class CryptoEngine implements ICryptoInternals {
      * @param sphereId          sphereId of the sphere for which serializedContent needs to be
      *                          decrypted
      * @param serializedContent content to be decrypted
-     * @return Decrypted serialized content String if 1. sphereId is not null &
-     * has a sphereKey associated with it 2. serializedContent is not
-     * null
-     * <p/>
-     * null otherwise
+     * @return decrypted serialized content String if 1. <code>sphereId</code> is not
+     * <code>null</code> and has a sphereKey associated with it and 2.
+     * <code>serializedContent</code> is not <code>null</code>, <code>null</code> otherwise
      */
     public final String decryptSphereContent(String sphereId, byte[] serializedContent) {
 
@@ -269,32 +260,33 @@ public final class CryptoEngine implements ICryptoInternals {
     }
 
     /**
-     * Encrypts a stream into another stream
+     * Encrypts a stream into another stream. This method does NOT flush or close either stream
+     * prior to returning - the caller must do so when they are finished with the streams.
+     * For example:
+     * <br>
+     * <pre>
+     *     {@code try {
+     *         InputStream in = ...
+     *         OutputStream out = ...
+     *         bezirkSphere.encryptSphereContent(in, out, sphereId);
+     *     } finally {
+     *         if (in != null) {
+     *             try {
+     *                 in.close();
+     *             } catch (IOException ioe1) { ... logger, trigger event, etc }
+     *         }
+     *         if (out != null) {
+     *             try {
+     *                 out.close();
+     *             } catch (IOException ioe2) { ... logger, trigger event, etc }
+     *         }
+     *     }}
+     * </pre>
      *
      * @param in       Input stream for incoming un-encrypted information
      * @param out      Output stream for outgoing encrypted information
      * @param sphereId sphereId of the sphere for which input stream needs to be
      *                 encrypted
-     *                 <p/>
-     *                 <pre>
-     *                 NOTE: This method does NOT flush or close either stream prior to returning - the caller must do so when they are finished with the streams. For example:
-     *                 {@code try {
-     *                       InputStream in = ...
-     *                       OutputStream out = ...
-     *                       bezirkSphere.encryptSphereContent(in, out, sphereId);
-     *                   } finally {
-     *                       if (in != null) {
-     *                           try {
-     *                               in.close();
-     *                           } catch (IOException ioe1) { ... logger, trigger event, etc }
-     *                       }
-     *                       if (out != null) {
-     *                           try {
-     *                               out.close();
-     *                           } catch (IOException ioe2) { ... logger, trigger event, etc }
-     *                       }
-     *                   }}
-     *                            </pre>
      */
     public void encryptSphereContent(InputStream in, OutputStream out, String sphereId) {
 
@@ -313,32 +305,33 @@ public final class CryptoEngine implements ICryptoInternals {
     }
 
     /**
-     * Decrypts a stream into another stream
+     * Decrypts a stream into another stream.  This method does NOT flush or close either stream
+     * prior to returning - the caller must do so when they are finished with the streams.
+     * For example:
+     * <br>
+     * <pre>
+     *     {@code try {
+     *         InputStream in = ...
+     *         OutputStream out = ...
+     *         bezirkSphere.decryptSphereContent(in, out, sphereId);
+     *     } finally {
+     *         if (in != null) {
+     *             try {
+     *                 in.close();
+     *             } catch (IOException ioe1) { ... logger, trigger event, etc }
+     *         }
+     *         if (out != null) {
+     *             try {
+     *                 out.close();
+     *             } catch (IOException ioe2) { ... logger, trigger event, etc }
+     *         }
+     *     }}
+     * </pre>
      *
      * @param in       Input stream for incoming encrypted information
      * @param out      Output stream for outgoing decrypted information
      * @param sphereId sphereId of the sphere for which input stream needs to be
      *                 decrypted
-     *                 <p/>
-     *                 <pre>
-     *                 NOTE: This method does NOT flush or close either stream prior to returning - the caller must do so when they are finished with the streams. For example:
-     *                 {@code try {
-     *                       InputStream in = ...
-     *                       OutputStream out = ...
-     *                       bezirkSphere.decryptSphereContent(in, out, sphereId);
-     *                   } finally {
-     *                       if (in != null) {
-     *                           try {
-     *                               in.close();
-     *                           } catch (IOException ioe1) { ... logger, trigger event, etc }
-     *                       }
-     *                       if (out != null) {
-     *                           try {
-     *                               out.close();
-     *                           } catch (IOException ioe2) { ... logger, trigger event, etc }
-     *                       }
-     *                   }}
-     *                            </pre>
      */
     public void decryptSphereContent(InputStream in, OutputStream out, String sphereId) {
         if (registry == null) {

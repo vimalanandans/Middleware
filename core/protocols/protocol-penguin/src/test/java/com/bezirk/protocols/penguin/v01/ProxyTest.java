@@ -9,7 +9,6 @@ import static org.junit.Assert.assertNull;
 
 /**
  * This testcase includes the following tests :
- * <p/>
  * 1) Verifies the QueryUserProxyRole by checking the event and stream topics.
  * 2) Verifies the InitUserProxyUI by setting the properties and retrieving them after deserialization.
  *

@@ -82,9 +82,9 @@ public class GetBezirkServiceInfo {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getBezirkServiceInfo(Iterable)}.
-     * <p/>
-     * <br>When valid ZirkId objects are passed,
-     * it should return List of BezirkZirkInfo objects
+     * <p>
+     * When valid ZirkId objects are passed, it should return List of BezirkZirkInfo objects
+     * </p>
      */
     @Test
     public final void validServiceIdsReturnsTrue() {
@@ -141,8 +141,9 @@ public class GetBezirkServiceInfo {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getBezirkServiceInfo(Iterable)}.
-     * <p/>
-     * <br>When null is passed, it should return Null
+     * <p>
+     * When <code>null</code> is passed, it should return <code>null</code>
+     * </p>
      */
     @Test
     public final void nullServiceIdsReturnsNull() {
@@ -152,9 +153,9 @@ public class GetBezirkServiceInfo {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getBezirkServiceInfo(Iterable)}.
-     * <p/>
-     * When services don't exist in the registry
-     * it should return Empty list
+     * <p>
+     * When services don't exist in the registry it should return Empty list
+     * </p>
      */
     @Test
     public final void serviceNotAddedToRegistry() {
@@ -198,9 +199,9 @@ public class GetBezirkServiceInfo {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getBezirkServiceInfo(Iterable)}.
-     * <p/>
-     * <br>When valid zirkId exists but no mapping zirk to that,
+     * <p>When valid zirkId exists but no mapping zirk to that,
      * it should return empty lists
+     * </p>
      */
     @Test
     public final void serviceDoesNotExist() {

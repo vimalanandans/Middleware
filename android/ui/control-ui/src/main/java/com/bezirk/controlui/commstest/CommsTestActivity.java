@@ -43,13 +43,6 @@ import java.util.Set;
  * Activity that tests if the device is able to send and receive the multicast.
  * The configuration about the port that is used for sending and receiving can be configured from
  * the alert dialog.
- *
- * @author Vijet Badigannavar
- *         <p/>
- *         <p/>
- *         <p/>
- *         Note this class needs to be refactored further. as of now it sends message to comms for zyre
- *         10-Dec-2015: Vimal
  */
 public class CommsTestActivity extends ActionBarActivity {
 

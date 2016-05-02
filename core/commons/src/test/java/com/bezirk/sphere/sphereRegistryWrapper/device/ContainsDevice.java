@@ -67,9 +67,10 @@ public class ContainsDevice {
 
     /**
      * Test method for {@link SphereRegistryWrapper#containsDevice(String)}.
-     * <p/>
-     * <br>Test the behavior of containsDevice when valid deviceId is passed.
-     * containsDevice should return True
+     * <p>
+     * Test the behavior of containsDevice when valid deviceId is passed.
+     * containsDevice should return <code>true</code>
+     * </p>
      */
     @Test
     public final void validDeviceIdShouldReturnTrue() {
@@ -80,9 +81,10 @@ public class ContainsDevice {
 
     /**
      * Test method for {@link SphereRegistryWrapper#containsDevice(String)}.
-     * <p/>
-     * <br>Test the behavior of containsDevice when null is passed.
-     * containsDevice should return False
+     * <p>
+     * Test the behavior of <code>containsDevice</code> when null is passed.
+     * containsDevice should return <code>false</code>
+     * </p>
      */
     @Test
     public final void nullDeviceIdShouldReturnFalse() {
@@ -92,9 +94,10 @@ public class ContainsDevice {
 
     /**
      * Test method for {@link SphereRegistryWrapper#containsDevice(String)}.
-     * <p/>
-     * <br>Test the behavior of containsDevice when wrong device id is passed.
+     * <p>
+     * Test the behavior of containsDevice when wrong device id is passed.
      * containsDevice should return False
+     * </p>
      */
     @Test
     public final void wrongDeviceIdShouldReturnFalse() {

@@ -78,8 +78,9 @@ public class ValidateServices {
 
     /**
      * Test method for {@link SphereRegistryWrapper#validateServices(Iterable)}.
-     * <p/>
-     * When valid zirk Ids are passed, it should return True
+     * <p>
+     * When valid zirk Ids are passed, it should return <code>true</code>
+     * </p>
      */
     @Test
     public final void validDeviceIdReturnsTrue() {
@@ -114,8 +115,9 @@ public class ValidateServices {
 
     /**
      * Test method for {@link SphereRegistryWrapper#validateServices(Iterable)}.
-     * <p/>
-     * <br>When services are not registered, it should return False.
+     * <p>
+     * When services are not registered, it should return <code>false</code>.
+     * </p>
      */
     @Test
     public final void servicesNotRegisteredReturnsFalse() {

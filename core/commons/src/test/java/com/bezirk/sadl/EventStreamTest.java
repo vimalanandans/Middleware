@@ -141,10 +141,11 @@ public class EventStreamTest {
     /**
      * ServiceA is already registered and subscribed to EventlessProtocol and StreamlessProtocolRole. SadlManager is queried for event topic "MockEvent1"
      * with location as null. It should return both ServiceAId and ServiceBId.
-     * <p/>
+     * <p>
      * SadlRegistry is queried for event topic "MockEvent1" with location "OFFICE1/BLOCK1/FLOOR1". It should return only ServiceA Id.
-     * <p/>
+     * </p><p>
      * SadlRegistry is queried for event topic "InvalidEvent" with location NULL. It should not return any zirkId.
+     * </p>
      */
     private void testCheckMulticastEvent() {
 

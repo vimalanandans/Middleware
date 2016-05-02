@@ -11,9 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by Vimal on 11/16/2015.
- * <p/>
- * this delegates the zirk / sadl discovery related classes
+ * Delegates to the Zirk / sadl discovery related classes
  */
 public class DiscoveryManager implements CtrlMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(DiscoveryManager.class);

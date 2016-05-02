@@ -67,9 +67,10 @@ public class AddDevice {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addDevice(String deviceId, DeviceInformation deviceInformation)}.
-     * <p/>
-     * <br>When valid DeviceId and DeviceInformation object is passed to addDevice,
-     * it should return True
+     * <p>W
+     * hen valid DeviceId and DeviceInformation object is passed to addDevice,
+     * it should return <code>true</code>
+     * </p>
      */
     @Test
     public final void validDeviceIdAndDeviceInformationReturnsTrue() {
@@ -84,9 +85,10 @@ public class AddDevice {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addDevice(String deviceId, DeviceInformation deviceInformation)}.
-     * <p/>
-     * <br>Test behavior of addDevice when deviceId is null.
-     * addDevice is expected to return false.
+     * <p>
+     * Test behavior of addDevice when deviceId is null. addDevice is expected to return
+     * <code>false</code>.
+     * </p>
      */
     @Test
     public final void nullDeviceIdShouldReturnFalse() {
@@ -98,9 +100,10 @@ public class AddDevice {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addDevice(String deviceId, DeviceInformation deviceInformation)}.
-     * <p/>
-     * <br>Test behavior of addDevice when DeviceInformation object is null.
-     * addDevice is expected to return false.
+     * <p>
+     * Test behavior of addDevice when DeviceInformation object is <code>null</code>.
+     * addDevice is expected to return <code>false</code>.
+     * </p>
      */
     @Test
     public final void nullDeviceInformationObjectShouldReturnFalse() {
@@ -111,9 +114,11 @@ public class AddDevice {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addDevice(String deviceId, DeviceInformation deviceInformation)}.
-     * <p/>
-     * <br>Test behavior of addDevice when DeviceInformation object and deviceId are passed as null.
-     * addDevice is expected to return false.
+     * <p>
+     * Test behavior of <code>addDevice</code> when <code>DeviceInformation</code> object and
+     * <code>deviceId</code> are passed as <code>null</code>. <code>addDevice</code> is expected to
+     * return <code>false</code>.
+     * </p>
      */
     @Test
     public final void nullDeviceInformationObjectAndNullDeviceIdShouldReturnFalse() {

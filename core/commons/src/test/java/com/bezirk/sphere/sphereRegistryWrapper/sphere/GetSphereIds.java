@@ -72,8 +72,9 @@ public class GetSphereIds {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getSphereIds()}.
-     * <p/>
-     * <br>When no other sphere is present, this method should return the sphere Id of default sphere.
+     * <p>
+     * When no other sphere is present, this method should return the sphere Id of default sphere.
+     * </p>
      */
     @Test
     public final void validDefaultSphere() {
@@ -83,8 +84,9 @@ public class GetSphereIds {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getSphereIds()}.
-     * <p/>
-     * <br>When another sphere is added to the registry, the method should return 2 sphere Ids - one each for
+     * <p>
+     * When another sphere is added to the registry, the method should return 2 sphere Ids - one each for
+     * </p>
      */
     @Test
     public final void validSpheres() {

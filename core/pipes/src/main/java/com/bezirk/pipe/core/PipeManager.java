@@ -7,9 +7,11 @@ import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 
 /**
- * <li> processRemoteSend() - Send to remote pipe endpoint
- * <li> processLocalWrite() - If result is a stream, write stream to local device with this method
- * <li> processLocalSend()  - Send reply (event or stream) to local bezirk services on this device
+ * <ol>
+ * <li>processRemoteSend() - Send to remote pipe endpoint</li>
+ * <li>processLocalWrite() - If result is a stream, write stream to local device with this method</li>
+ * <li>processLocalSend()  - Send reply (event or stream) to local bezirk services on this device</li>
+ * </ol>
  */
 public interface PipeManager {
 
@@ -17,10 +19,10 @@ public interface PipeManager {
      * Send event on a pipe, if one is specified in the header.  The PipeManager will
      * check to make sure that the header refers to a known pipe before sending
      *
-     * @param uhuHeader
+     * @param bezirkHeader
      * @param serializedEvent
      */
-    void processRemoteSend(Header uhuHeader, String serializedEvent);
+    void processRemoteSend(Header bezirkHeader, String serializedEvent);
 
     /**
      * If a stream is requested from the remote site, this method is called to write the
@@ -73,5 +75,6 @@ public interface PipeManager {
      * @param sphereId    The sphere the pipe has been added to
      * @param uhuListener The bezirk zirk to notify of the status of the pipe request
      */
-    void pipeGranted(boolean granted, Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut, String sphereId, BezirkListener uhuListener);
+    void pipeGranted(boolean granted, Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut,
+                     String sphereId, BezirkListener uhuListener);
 }

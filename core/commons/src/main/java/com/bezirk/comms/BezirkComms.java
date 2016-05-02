@@ -10,12 +10,12 @@ import com.bezirk.streaming.control.Objects.StreamRecord;
 import java.net.InetAddress;
 
 /**
- * Added by Vimal
  * This class is created to de-couple from the rest of bezirk (spheres / sadl / stream)
- * <p/>
+ * <p>
  * Also this would help to loop back the communication of virtual spheres
  * for junit testing. this is created to replace the 'static' MessageQueueManager
  * Re-factor, extend and rename the below based on future need
+ * </p>
  */
 public interface BezirkComms {
 

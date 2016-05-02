@@ -89,8 +89,9 @@ public class UpdateMembership {
 
     /**
      * Test method for {@link SphereRegistryWrapper#updateMembership(BezirkZirkId zirkId, String sphereId)}.
-     * <p/>
+     * <p>
      * Test if a new sphere is added successfully to the zirk's sphere set.
+     * </p>
      *
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
@@ -124,8 +125,9 @@ public class UpdateMembership {
 
     /**
      * Test method for {@link SphereRegistryWrapper#updateMembership(BezirkZirkId zirkId, String sphereId)}.
-     * <p/>
-     * If existing sphere Id is passed, it returns true.
+     * <p>
+     * If existing sphere Id is passed, it returns <code>true</code>.
+     * </p>
      *
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
@@ -157,8 +159,9 @@ public class UpdateMembership {
 
     /**
      * Test method for {@link SphereRegistryWrapper#updateMembership(BezirkZirkId zirkId, String sphereId)}.
-     * <p/>
-     * If an invalid zirk ID is passed, the method should return False.
+     * <p>
+     * If an invalid zirk ID is passed, the method should return <code>false</code>.
+     * </p>
      *
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
@@ -183,8 +186,9 @@ public class UpdateMembership {
 
     /**
      * Test method for {@link SphereRegistryWrapper#updateMembership(BezirkZirkId zirkId, String sphereId)}.
-     * <p/>
-     * If an invalid sphere ID is passed, the method should return False.
+     * <p>
+     * If an invalid sphere ID is passed, the method should return <code>false</code>.
+     * </p>
      *
      * @throws InvocationTargetException
      * @throws IllegalArgumentException

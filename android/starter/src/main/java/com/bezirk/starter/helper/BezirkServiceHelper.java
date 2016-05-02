@@ -21,9 +21,6 @@ import java.io.File;
 
 /**
  * This is a helper class to pass the intent to proxy for zirk actions.
- * <p/>
- * <p/>
- * Created by AJC6KOR on 9/2/2015.
  */
 public final class BezirkServiceHelper {
 

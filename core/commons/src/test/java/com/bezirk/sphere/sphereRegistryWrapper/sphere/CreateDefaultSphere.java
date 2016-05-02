@@ -75,9 +75,10 @@ public class CreateDefaultSphere {
      * Test method for
      * {@link SphereRegistryWrapper#createDefaultSphere(String)}
      * .
-     * <p/>
+     * <p>
      * Test default sphere changes after creating the default sphere again with
      * the same name
+     * </p>
      */
     @Test
     public final void createDefaultSpherePostInitSameName() {
@@ -95,9 +96,10 @@ public class CreateDefaultSphere {
      * Test method for
      * {@link SphereRegistryWrapper#createDefaultSphere(String)}
      * .
-     * <p/>
+     * <p>
      * Test default sphere changes after creating the default sphere again with
      * a different name
+     * </p>
      */
     @Test
     public final void createDefaultSpherePostInitDifferentName() {

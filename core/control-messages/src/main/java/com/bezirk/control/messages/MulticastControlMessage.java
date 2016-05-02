@@ -17,7 +17,7 @@ public class MulticastControlMessage extends ControlMessage {
      * This constructor may not be used currently: leaving it here for later
      *
      * @param sender        the sender-end-point
-     * @param sphereName    This is the sphereId
+     * @param sphereId      This is the sphereId
      * @param discriminator the message discriminator Eg: DiscoveryRequest, StreamResponse
      * @param key           UniqueKey that is used to match responses to corresponding requests
      */
@@ -32,7 +32,7 @@ public class MulticastControlMessage extends ControlMessage {
      * Generally only used with requests
      *
      * @param sender        the sender-end-point
-     * @param sphereName    This is the sphereId
+     * @param sphereId      This is the sphereId
      * @param discriminator the message discriminator Eg: DiscoveryRequest, StreamResponse
      */
     public MulticastControlMessage(BezirkZirkEndPoint sender, String sphereId,

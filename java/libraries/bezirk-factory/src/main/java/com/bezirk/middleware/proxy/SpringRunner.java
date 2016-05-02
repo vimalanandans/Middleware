@@ -165,12 +165,14 @@ public class SpringRunner {
     }
 
     /**
-     * XML configuration file used to start bezirk.  If this is not set, then
-     * CONFIG_FILE_DEFAULT is used.
-     * <p/>
-     * IMPORTANT:  it is assumed that this file is on the classpath
+     * Set the <code>configFile</code> used to configure Bezirk when it is started.  If this is not
+     * set, then CONFIG_FILE_DEFAULT is used.
+     * <p>
+     * IMPORTANT: It is assumed that <code>configFile</code> is on the classpath
+     * </p>
      *
-     * @param configFile
+     * @param configFile the path to the XML config file used to configure the new instance of
+     *                   Bezirk
      */
     public void setConfigFile(String configFile) {
         this.configFile = configFile;

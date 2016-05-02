@@ -68,8 +68,9 @@ public class AddSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addSphere(String, Sphere)}.
-     * <p/>
-     * <br>Test if a sphere is added to the registry.
+     * <p>
+     * Test if a sphere is added to the registry.
+     * </p>
      */
     @Test
     public final void addSphere() {
@@ -83,9 +84,10 @@ public class AddSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addSphere(String, Sphere)}.
-     * <p/>
-     * <br>Test behavior of addSphere when sphereId is passed as null.
-     * addSphere is expected to return false.
+     * <p>
+     * Test behavior of addSphere when sphereId is passed as null.
+     * addSphere is expected to return <code>false</code>.
+     * </p>
      */
     @Test
     public final void nullSphereIdShouldReturnFalse() {
@@ -96,9 +98,10 @@ public class AddSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addSphere(String, Sphere)}.
-     * <p/>
-     * <br>Test behavior of addSphere when sphere object is passed as null.
-     * addSphere is expected to return false.
+     * <p>
+     * Test behavior of addSphere when sphere object is passed as null.
+     * addSphere is expected to return <code>false</code>.
+     * </p>
      */
     @Test
     public final void nullSphereObjectShouldReturnFalse() {
@@ -109,9 +112,10 @@ public class AddSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addSphere(String, Sphere)}.
-     * <p/>
-     * <br>Test behavior of addSphere when sphere object and sphereId are passed as null.
-     * addSphere is expected to return false.
+     * <p>
+     * Test behavior of addSphere when sphere object and sphereId are passed as null.
+     * addSphere is expected to return <code>false</code>.
+     * </p>
      */
     @Test
     public final void nullSphereObjectAndNullSphereIdShouldReturnFalse() {

@@ -23,10 +23,9 @@ import static org.junit.Assert.assertTrue;
 /**
  * This Testcase consists of 3 tests to verify the behavior of discovery zirk in the
  * following scenarios.
- * <p/>
- * a) 	Discovery with no protocolRole
- * b)  Discovery with specific protocolRole and location
- * c)  Discovery with no specific location.
+ * a) Discovery with no protocolRole
+ * b) Discovery with specific protocolRole and location
+ * c) Discovery with no specific location.
  *
  * @author AJC6KOR
  */

@@ -195,8 +195,10 @@ public class BezirkRestRequestHandler extends DefaultHandler {
 
     /**
      * Handles all the GET request!!
-     * <p/>
-     * In the request handler we are supporting only POST, All the GET operation to return the response is supported in {@link BezirkRestResponseHandler}
+     * <p>
+     * In the request handler we are supporting only POST, All the GET operation to return the
+     * response is supported in {@link BezirkRestResponseHandler}
+     * </p>
      */
     @Override
     public NanoHTTPD.Response get(UriResource uriResource, Map<String, String> urlParams, NanoHTTPD.IHTTPSession session) {

@@ -67,8 +67,9 @@ public class ContainsSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#containsSphere(String)}.
-     * <p/>
-     * <br>Test if the sphere id exists in the registry.
+     * <p>
+     * Test if the sphere id exists in the registry.
+     * </p>
      */
     @Test
     public final void validSphere() {
@@ -79,9 +80,10 @@ public class ContainsSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#containsSphere(String)}.
-     * <p/>
-     * <br>Test behavior of containsSphere method when null String(SphereId) is passed to it.
-     * containsSphere method is expected to return False.
+     * <p>
+     * Test behavior of containsSphere method when null String(SphereId) is passed to it.
+     * containsSphere method is expected to return <code>false</code>.
+     * </p>
      */
     @Test
     public final void nullSphereIdShouldReturnFalse() {
@@ -91,9 +93,10 @@ public class ContainsSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#containsSphere(String)}.
-     * <p/>
-     * <br>Test behavior of containsSphere method when the sphere does not exist in registry.
-     * containsSphere method is expected to return False.
+     * <p>
+     * Test behavior of containsSphere method when the sphere does not exist in registry.
+     * containsSphere method is expected to return <code>false</code>.
+     * </p>
      */
     @Test
     public final void sphereNotInRegistryReturnsFalse() {

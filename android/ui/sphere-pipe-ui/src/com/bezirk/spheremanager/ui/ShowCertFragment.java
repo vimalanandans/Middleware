@@ -15,9 +15,10 @@ import com.bezirk.spheremanager.R;
  * tablet devices by allowing list items to be given an 'activated' state upon
  * selection. This helps indicate which item is currently being viewed in a
  * {@link DeviceListFragment}.
- * <p/>
+ * <p>
  * Activities containing this fragment MUST implement the {@link SphereListFragment.Callbacks}
  * interface.
+ * </p>
  */
 public class ShowCertFragment extends Fragment {
     public static final String TAG = "UpdateUserCredentialsFragment";

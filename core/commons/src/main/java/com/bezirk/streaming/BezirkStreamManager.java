@@ -25,11 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author ajc6kor
- *         <p/>
- *         BezirkStreamManager manages all queues,sockets and threads related to
- *         streaming. It also includes the StreamControlReceiver which process
- *         the stream request and stream responses.
+ * BezirkStreamManager manages all queues,sockets and threads related to streaming. It also
+ * includes the StreamControlReceiver which process the stream request and stream responses.
  */
 public class BezirkStreamManager implements Streaming {
     private static final Logger logger = LoggerFactory.getLogger(BezirkStreamManager.class);

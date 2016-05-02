@@ -69,9 +69,10 @@ public class GetService {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getService(String)}.
-     * <p/>
-     * <br> Test the behavior of getService when valid zirkId is passed.
+     * <p>
+     * Test the behavior of getService when valid zirkId is passed.
      * It should return a Zirk object associated with the zirkId
+     * </p>
      */
     @Test
     public final void validServiceId() {
@@ -90,9 +91,10 @@ public class GetService {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getService(String)}.
-     * <p/>
-     * <br>Test the behavior of getService method when null string is passed to it.
-     * getService method is expected to return null.
+     * <p>
+     * Test the behavior of getService method when null string is passed to it.
+     * getService method is expected to return <code>null</code>.
+     * </p>
      */
     @Test
     public final void nullServiceIdShouldRetunNull() {
@@ -103,9 +105,10 @@ public class GetService {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getService(String)}.
-     * <p/>
-     * <br>When zirk is not in the registry,
-     * getService method is expected to return null.
+     * <p>
+     * When zirk is not in the registry, getService method is expected to return
+     * <code>null</code>.
+     * </p>
      */
     @Test
     public final void serviceNotInRegistryRetunsNull() {

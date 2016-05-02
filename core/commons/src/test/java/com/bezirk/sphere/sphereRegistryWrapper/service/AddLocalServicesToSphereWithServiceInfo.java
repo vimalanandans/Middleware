@@ -82,9 +82,9 @@ public class AddLocalServicesToSphereWithServiceInfo {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addLocalServicesToSphere(String, Iterable)}.
-     * <p/>
-     * <br>When valid SphereId and ServiceInfos objects is passed,
-     * it should return True
+     * <p>
+     * When valid SphereId and ServiceInfos objects is passed, it should return <code>true</code>
+     * </p>
      */
     @Test
     public final void validSphereIdAndServiceInfoReturnsTrue() {
@@ -127,9 +127,9 @@ public class AddLocalServicesToSphereWithServiceInfo {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addLocalServicesToSphere(String, Iterable)}.
-     * <p/>
-     * <br>When services are not added to registry,
-     * it should return False
+     * <p>
+     * When services are not added to registry, it should return <code>false</code>
+     * </p>
      */
     @Test
     public final void zirksNotAddedToRegistryReturnsFalse() {
@@ -161,9 +161,9 @@ public class AddLocalServicesToSphereWithServiceInfo {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addLocalServicesToSphere(String, Iterable)}.
-     * <p/>
-     * <br>When sphere does not exist in the registry,
-     * it should return False
+     * <p>
+     * When sphere does not exist in the registry, it should return <code>false</code>.
+     * </p>
      */
     @Test
     public final void sphereNotInRegistryReturnsFalse() {

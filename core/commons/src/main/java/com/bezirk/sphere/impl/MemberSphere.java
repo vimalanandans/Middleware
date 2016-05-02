@@ -18,19 +18,21 @@ public final class MemberSphere extends Sphere implements Serializable {
     /**
      * Used to identify if the sphere was a sharable sphere of another device
      * sphere used for exploring services in that device[catch]
-     * <p/>
+     * <p>
      * Can be used for future explorations or can also be used for deleting
      * sphere information after the temporary transaction is complete
+     * </p>
      */
     private final boolean temporarySphere;
 
     /**
      * @param temporarySphere Set to true if the sphere is used temporarily in case of
-     *                        catching the services other wise set to false
-     *                        <p/>
+     *                        catching the services otherwise set to false
+     *                        <p>
      *                        Makes sure a sphere with this field as true is not exposed to
      *                        the UI and can also be used to evaporate the sphere once its
      *                        use is completed
+     *                        </p>
      */
     public MemberSphere(String sphereName, String sphereType, Set<String> ownerDevices,
                         LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices, boolean temporarySphere) {

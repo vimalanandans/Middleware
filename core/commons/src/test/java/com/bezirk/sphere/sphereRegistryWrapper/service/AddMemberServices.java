@@ -76,9 +76,10 @@ public class AddMemberServices {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addMemberServices(BezirkDeviceInfo, String, String)}.
-     * <p/>
-     * <br>Test if services are added successfully to the registry and sphere.
-     * The test should return True.
+     * <p>
+     * Test if services are added successfully to the registry and sphere.
+     * The test should return <code>true</code>.
+     * </p>
      */
     @Test
     public final void validServiceSphereDeviceReturnsTrue() {
@@ -100,8 +101,10 @@ public class AddMemberServices {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addMemberServices(BezirkDeviceInfo, String, String)}.
-     * <p/>
-     * <br>Services are not added if there is no sphere in the registry. Hence this test should return False.
+     * <p>
+     * Services are not added if there is no sphere in the registry. Hence this test should
+     * return <code>false</code>.
+     * </p>
      */
     @Test
     public final void noSphereInRegistryReturnsFalse() {
@@ -121,8 +124,9 @@ public class AddMemberServices {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addMemberServices(BezirkDeviceInfo, String, String)}.
-     * <p/>
-     * <br>Create BezirkDeviceInfo object without services. The test should return False.
+     * <p>
+     * Create BezirkDeviceInfo object without services. The test should return <code>false</code>.
+     * </p>
      */
     @Test
     public final void noServicesRegisteredReturnsFalse() {

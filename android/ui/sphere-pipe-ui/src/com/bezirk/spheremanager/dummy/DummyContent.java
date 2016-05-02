@@ -20,8 +20,9 @@ import java.util.UUID;
 /**
  * Helper class for providing sample content for user interfaces created by
  * Android template wizards.
- * <p/>
+ * <p>
  * TODO: Replace all uses of this class before publishing your app.
+ * </p>
  */
 public class DummyContent {
 

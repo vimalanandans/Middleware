@@ -21,17 +21,11 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * This test case is used to test sadlRegistry.
- * <p/>
+ * <p>
  * SET UP : MockServiceA is subscribed to MockProtocolRole and to DummyProtocolRole.
  * MockserviceB is subscribed to MockProtocolRole
  * MockserviceC is subscribed to DummyProtocolRole.
- *
- * @author AJC6KOR
- */
-
-/**
- * @author RHR8KOR
- *
+ * </p>
  */
 public class SadlRegistryTest {
     private final static Logger logger = LoggerFactory.getLogger(SadlRegistryTest.class);

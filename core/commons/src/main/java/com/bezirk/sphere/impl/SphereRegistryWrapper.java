@@ -13,7 +13,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.BezirkSphereType;
-import com.bezirk.sphere.api.ICryptoInternals;
+import com.bezirk.sphere.api.CryptoInternals;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.ISphereUtils;
 import com.bezirk.sphere.api.BezirkDevMode.Mode;
@@ -53,7 +53,7 @@ public class SphereRegistryWrapper {
     private UPADeviceInterface upaDevice;
     private BezirkSphereListener sphereListener;
     private ISphereConfig sphereConfig;
-    private ICryptoInternals crypto;
+    private CryptoInternals crypto;
     private DevelopmentSphere developmentSphere;
 
     /*
@@ -73,7 +73,7 @@ public class SphereRegistryWrapper {
      * @param spherePersistence - SpherePersistence interface object. Should not be null.
      */
     public SphereRegistryWrapper(SphereRegistry registry, SpherePersistence spherePersistence,
-                                 UPADeviceInterface upaDevice, ICryptoInternals crypto, BezirkSphereListener sphereListener,
+                                 UPADeviceInterface upaDevice, CryptoInternals crypto, BezirkSphereListener sphereListener,
                                  ISphereConfig sphereConfig) {
         if (null == registry || null == spherePersistence || null == upaDevice || null == crypto
                 || null == sphereConfig) {
@@ -326,11 +326,11 @@ public class SphereRegistryWrapper {
 
     /**
      * Get the 'default sphere id'
-     * <p/>
-     * <br>
+     * <p>
      * NOTE: Current implementation assumes use of LinkedHashMap for 'spheres'
      * map. The default sphere is the first entry in this map. It is required
      * that this entry is never deleted.
+     * </p>
      *
      * @return sphereId of the default-sphere null otherwise
      */
@@ -531,18 +531,16 @@ public class SphereRegistryWrapper {
 
     /**
      * Checks if the zirk is a local zirk
-     * <p/>
+     * <p>
      * NOTE: Another way of checking if the zirk is local is by checking what
      * instance of Zirk is stored in the sphereMembership i.e. OwnerZirk
      * or MemberZirk
+     * </p>
+     * TODO: Has to be moved to Zirk.java
      *
      * @param deviceId : zirk owner deviceId
-     * @return: True if the zirk is local for this device. <br>
-     * False otherwise or if deviceId is passed as null.
-     * <p/>
-     * <br>
-     * <br>
-     * TODO: Has to be moved to Zirk.java
+     * @return: <code>true</code> if the zirk is local for this device, <code>false</code> otherwise
+     * or if deviceId is passed as <code>null</code>
      */
     public boolean isServiceLocal(String deviceId) {
         return deviceId != null && deviceId.equals(upaDevice.getDeviceId());
@@ -610,9 +608,7 @@ public class SphereRegistryWrapper {
      *
      * @param serviceId   BezirkZirkId to be registered - has to be non-null
      * @param serviceName Name to be associated with the zirk - has to be non-null
-     * @return true if zirk was added successfully
-     * <p/>
-     * false otherwise
+     * @return <code>true</code> if zirk was added successfully
      */
     public boolean registerService(BezirkZirkId serviceId, String serviceName) {
         List<String> spheresForRegistration = new ArrayList<>();
@@ -983,12 +979,13 @@ public class SphereRegistryWrapper {
 
     /**
      * Get a device from registry
-     * <p/>
+     * <p>
      * NOTE: The current device information is not stored in the sphere
      * registry. For retrieving device information, use
      * {@link ISphereUtils#getDeviceInformation(String)}
      * which wraps around this method along with retrieving current device's
      * information from {@link UPADeviceInterface}
+     * </p>
      *
      * @param deviceId whose DeviceInformation object has to be retrieved.
      * @return DeviceInformation if the deviceId is present in the devices map
@@ -1025,15 +1022,16 @@ public class SphereRegistryWrapper {
     /**
      * Gets the deviceInformation for the passed deviceId. This method abstracts
      * out the current implementation of storing device information
-     * <p/>
+     * <p>
      * Currently the information about the current device is maintained using
      * UPADeviceInterface implementation. Also the information which is received
      * from other devices in operation like invite/join/catch is stored in the
      * sphere registry.
-     * <p/>
+     * </p><p>
      * These two information management storage types can be combined using just the
      * devices map. By extending the basic deviceInformation we can store both
      * current as well as external device information using just one map
+     * </p>
      *
      * @param deviceId whose DeviceInformation object has to be retrieved.
      * @return
@@ -1057,10 +1055,8 @@ public class SphereRegistryWrapper {
      * @param devices      - services mapped to the device Id. It has to be non-null
      * @param ownerDevices - HashSet of list of devices of the sphere. It has to be
      *                     non-null
-     * @return Iterable BezirkDeviceInfo if devices is not null and has size
-     * greater than 0.
-     * <p/>
-     * null otherwise
+     * @return iterable <code>BezirkDeviceInfo</code> if devices is not <code>null</code> and has size
+     * greater than 0, <code>null</code> otherwise
      */
     public Iterable<BezirkDeviceInfo> getBezirkDeviceInfo(Map<String, ArrayList<BezirkZirkId>> devices,
                                                           HashSet<String> ownerDevices) {

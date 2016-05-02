@@ -6,7 +6,7 @@ import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.BezirkSphereListener;
-import com.bezirk.sphere.api.ICryptoInternals;
+import com.bezirk.sphere.api.CryptoInternals;
 import com.bezirk.sphere.messages.ShareRequest;
 import com.bezirk.sphere.messages.ShareResponse;
 import com.bezirk.sphere.security.SphereKeys;
@@ -27,7 +27,7 @@ import java.util.Map;
 public class ShareProcessor {
     private static final Logger logger = LoggerFactory.getLogger(ShareProcessor.class);
     private static final String SHARE_FAILURE_MSG = "Share Failed";
-    private ICryptoInternals crypto;
+    private CryptoInternals crypto;
     private UPADeviceInterface upaDeviceInterface;
     private CommsUtility comms;
     private SphereRegistryWrapper sphereRegistryWrapper;
@@ -38,7 +38,7 @@ public class ShareProcessor {
      * @param comms
      * @param sphereRegistryWrapper
      */
-    public ShareProcessor(ICryptoInternals crypto, UPADeviceInterface upaDeviceInterface, CommsUtility comms,
+    public ShareProcessor(CryptoInternals crypto, UPADeviceInterface upaDeviceInterface, CommsUtility comms,
                           SphereRegistryWrapper sphereRegistryWrapper) {
         this.crypto = crypto;
         this.upaDeviceInterface = upaDeviceInterface;

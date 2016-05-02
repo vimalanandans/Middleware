@@ -43,7 +43,7 @@ public class BezirkAndroidSphereForSadlStub implements BezirkSphereForSadl {
     }
 
     @Override
-    public Iterable<String> getSphereMembership(BezirkZirkId serviceId) {
+    public Iterable<String> getSphereMembership(BezirkZirkId zirkId) {
         Set<String> spheres = new HashSet<String>();
         spheres.add("default sphere");
         return spheres;

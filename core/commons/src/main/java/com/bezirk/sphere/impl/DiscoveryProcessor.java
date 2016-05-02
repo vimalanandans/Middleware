@@ -59,19 +59,20 @@ public class DiscoveryProcessor {
     /**
      * Process the discovered services for a sphere to incorporate more details
      * about the services.
-     * <p/>
+     * <p>
      * The current implementation is limited to changing the BezirkSphereInfo
      * object received by the {@link #getSphereInfo(String)} method. This
      * implies :
-     * <p/>
+     * </p><p>
      * 1) When the getSphere is operated on a owner sphere, we get the complete
      * info with the status of active/in-active for all services
-     * <p/>
+     * </p><p>
      * 2) When the getSphere is operated on a member sphere, we get only the
      * info with the status of active/in-active for a local services, i.e. for
      * services on that device. For latest information to be added for a Zirk
      * we would require this information coming as a part of the discovered
      * services
+     * </p>
      *
      * @param discoveredServices
      * @param sphereId

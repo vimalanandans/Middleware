@@ -21,8 +21,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Handles the sphere initialization for MainService
- * <p/>
- * Created by AJC6KOR on 9/8/2015.
  */
 public final class BezirkSphereHandler {
     private static final Logger logger = LoggerFactory.getLogger(BezirkSphereHandler.class);

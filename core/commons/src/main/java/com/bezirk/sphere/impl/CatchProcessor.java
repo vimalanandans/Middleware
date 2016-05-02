@@ -5,7 +5,7 @@ import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.BezirkSphereListener;
-import com.bezirk.sphere.api.ICryptoInternals;
+import com.bezirk.sphere.api.CryptoInternals;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.security.SphereKeys;
@@ -28,11 +28,11 @@ public class CatchProcessor {
 
     private static final String CATCH_FAILURE_MSG = "Catch Failed";
     private SphereRegistryWrapper sphereRegistryWrapper;
-    private ICryptoInternals crypto;
+    private CryptoInternals crypto;
     private UPADeviceInterface upaDeviceInterface;
     private CommsUtility comms;
 
-    public CatchProcessor(ICryptoInternals crypto, UPADeviceInterface upaDeviceInterface,
+    public CatchProcessor(CryptoInternals crypto, UPADeviceInterface upaDeviceInterface,
                           CommsUtility comms, SphereRegistryWrapper sphereRegistryWrapper) {
         this.crypto = crypto;
         this.upaDeviceInterface = upaDeviceInterface;

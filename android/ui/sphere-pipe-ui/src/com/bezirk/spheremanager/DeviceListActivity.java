@@ -43,9 +43,10 @@ import bezirk.zbarscanner.ScannerActivity;
  * An activity representing a single sphere detail screen. This activity is only
  * used on handset devices. On tablet-size devices, item details are presented
  * side-by-side with a list of items in a {@link SphereListActivity}.
- * <p/>
+ * <p>
  * This activity is mostly just a 'shell' activity containing nothing more than
  * a {@link DeviceListFragment}.
+ * </p>
  */
 public class DeviceListActivity extends FragmentActivity implements
         DeviceListFragmentCallbacks, ShowPipesCallbacks, DialogServiceListFragment.DialogServiceListFragmentCallback {

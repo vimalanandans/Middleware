@@ -71,9 +71,10 @@ public class GetDeviceName {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getDeviceName(String)}.
-     * <p/>
-     * <br>Test the behavior of getDeviceName when valid deviceId is passed.
+     * <p>
+     * Test the behavior of getDeviceName when valid deviceId is passed.
      * It should return a Device Name associated with the deviceId
+     * </p>
      */
     @Test
     public final void validDeviceIdReturnsDeviceName() {
@@ -86,9 +87,10 @@ public class GetDeviceName {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getDeviceName(String)}.
-     * <p/>
-     * <br>Test the behavior of getDeviceName method when wrong device id is passed.
-     * getDeviceName method is expected to return null.
+     * <p>
+     * Test the behavior of getDeviceName method when wrong device id is passed.
+     * getDeviceName method is expected to return <code>null</code>.
+     * </p>
      */
     @Test
     public final void wrongDeviceIdShouldRetunNull() {

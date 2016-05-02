@@ -25,9 +25,10 @@ import java.util.Iterator;
  * tablet devices by allowing list items to be given an 'activated' state upon
  * selection. This helps indicate which item is currently being viewed in a
  * {@link DeviceListFragment}.
- * <p/>
+ * <p>
  * Activities containing this fragment MUST implement the { Callbacks}
  * interface.
+ * </p>
  */
 public class PipeListFragment extends ListFragment {
     public static final String TAG = "ShowPipesFragment";

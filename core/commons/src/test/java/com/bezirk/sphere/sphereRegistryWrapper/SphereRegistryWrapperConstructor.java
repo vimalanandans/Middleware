@@ -6,7 +6,7 @@ package com.bezirk.sphere.sphereRegistryWrapper;
 import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.api.ICryptoInternals;
+import com.bezirk.sphere.api.CryptoInternals;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class SphereRegistryWrapperConstructor {
     private static SpherePersistence spherePersistence = null;
     private static SphereRegistry registry = null;
     private static UPADeviceInterface upaDevice = null;
-    private ICryptoInternals crypto = null;
+    private CryptoInternals crypto = null;
 
     /**
      * Test the behavior of the SphereRegistryWrapper constructor when null objects are passed.

@@ -24,8 +24,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * This Thread is a blocking and will be iterating on the message queue } to process the {@link StreamRecord}. It checks the {@link StreamingStatus} of the
  * {@link StreamRecord} and if it is {@link StreamingStatus#READY} it will process further else just remove from the queue.  If the {@link StreamingStatus} of the {@link StreamRecord} is
  * {@link StreamingStatus#READY} it spawns a {@link StreamSendingThread} and removes the {@link StreamRecord} from the  queue}
- * <p/>
+ * <p>
  * TODO : onError has to be discussed!
+ * </p>
  *
  * @see StreamRecord
  */

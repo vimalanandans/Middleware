@@ -4,11 +4,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.google.gson.Gson;
 
 /**
- * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
- *         <p/>
- *         This is the super-class for all control messages.
- *         <p/>
- *         For example: {@link com.bezirk.control.messages.discovery.DiscoveryRequest}, {@link com.bezirk.control.messages.discovery.DiscoveryResponse}, {@link com.bezirk.sphere.BezirkSphereMessage} are subclasses of {@link ControlMessage}
+ * This is the super-class for all control messages.
  */
 public class ControlMessage {
     private String sphereId = "";
@@ -25,9 +21,9 @@ public class ControlMessage {
      * This constructor is used if you want to explicitly parse the UniqueKey
      *
      * @param sender        the sender-end-point
-     * @param sphereName    the sphere-id
+     * @param sphereId    the sphere-id
      * @param discriminator the message discriminator Eg: DiscoveryRequest, StreamResponse
-     * @param retransmit    {@value true} if the message is to be re-transmitted
+     * @param retransmit    <code>true</code> if the message is to be re-transmitted
      * @param key           UniqueKey that is used to match responses to corresponding requests
      */
     protected ControlMessage(BezirkZirkEndPoint sender, String sphereId,
@@ -44,9 +40,9 @@ public class ControlMessage {
      * This constructor is used when you want to auto-generate the uniqueKey
      *
      * @param sender        the sender-end-point
-     * @param sphereName    the sphere-id
+     * @param sphereId    the sphere-id
      * @param discriminator the message discriminator Eg: DiscoveryRequest, StreamResponse
-     * @param retransmit    {@value true} if the message is to be re-transmitted
+     * @param retransmit    <code>true</code> if the message is to be re-transmitted
      */
     protected ControlMessage(BezirkZirkEndPoint sender, String sphereId,
                              Discriminator discriminator, Boolean retransmit) {

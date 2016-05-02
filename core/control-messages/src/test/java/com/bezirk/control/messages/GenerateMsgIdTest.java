@@ -13,11 +13,8 @@ import static org.junit.Assert.*;
 
 /**
  * This testCase verifies the GenerateMessageId by verifying generated id in the following scenarios.
- * <p/>
  * a) EventId generated for different devices should be different.
  * b) CtrlId generated each time should be different from the previous one.
- *
- * @author AJC6KOR
  */
 public class GenerateMsgIdTest {
     private static final Logger logger = LoggerFactory.getLogger(GenerateMsgIdTest.class);

@@ -65,9 +65,9 @@ public class IsServiceLocal {
 
     /**
      * Test method for {@link SphereRegistryWrapper#isServiceLocal(String)}.
-     * <p/>
-     * <br>When valid deviceId is passed to isServiceLocal,
-     * it should return True
+     * <p>
+     * When valid deviceId is passed to isServiceLocal, it should return <code>true</code>
+     * </p>
      */
     @Test
     public final void validDeviceIdReturnsTrue() {
@@ -82,9 +82,9 @@ public class IsServiceLocal {
 
     /**
      * Test method for {@link SphereRegistryWrapper#isServiceLocal(String)}.
-     * <p/>
-     * <br>When invalid deviceId is passed to isServiceLocal,
-     * it should return False
+     * <p>
+     * When invalid deviceId is passed to isServiceLocal, it should return <code>false</code>
+     * </p>
      */
     @Test
     public final void invalidDeviceIdReturnsFalse() {

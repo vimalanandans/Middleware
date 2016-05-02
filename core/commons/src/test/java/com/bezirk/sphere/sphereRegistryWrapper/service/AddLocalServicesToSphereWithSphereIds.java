@@ -84,9 +84,9 @@ public class AddLocalServicesToSphereWithSphereIds {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addLocalServicesToSphere(String)}.
-     * <p/>
-     * <br>When valid SphereId is passed,
-     * it should return True
+     * <p>
+     * When valid SphereId is passed, it should return <code>true</code>
+     * </p>
      */
     @Test
     public final void validSphereIdReturnsTrue() {

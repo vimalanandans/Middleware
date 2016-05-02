@@ -244,9 +244,7 @@ public class SphereManagementGUI extends JFrame {
     }
 
     /**
-     * @author Jan Zibuschka
-     *         <p/>
-     *         TimerListener; regularly refreshes list of known Spheres
+     * TimerListener; regularly refreshes list of known Spheres
      */
     private static class TimerListener implements ActionListener {
 

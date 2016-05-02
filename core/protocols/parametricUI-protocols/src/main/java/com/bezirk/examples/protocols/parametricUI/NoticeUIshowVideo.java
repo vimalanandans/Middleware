@@ -6,7 +6,7 @@ package com.bezirk.examples.protocols.parametricUI;
 import com.bezirk.middleware.messages.Event;
 
 /**
- * @see com.bezirk.API.messages.Event
+ * @see com.bezirk.middleware.messages.Event
  */
 public class NoticeUIshowVideo extends Event {
 

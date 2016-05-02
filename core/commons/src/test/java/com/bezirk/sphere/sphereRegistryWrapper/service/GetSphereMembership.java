@@ -80,9 +80,9 @@ public class GetSphereMembership {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getSphereMembership(BezirkZirkId)}.
-     * <p/>
-     * <br>When valid zirkId is passed,
-     * it should return the sphere set for that zirk.
+     * <p>
+     * When valid zirkId is passed, it should return the sphere set for that zirk.
+     * </p>
      */
     @Test
     public final void validServiceIdReturnsTrue() {
@@ -116,9 +116,9 @@ public class GetSphereMembership {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getSphereMembership(BezirkZirkId)}.
-     * <p/>
-     * <br>When sphere set for the given zirk id is empty
-     * it should throw exception
+     * <p>
+     * When sphere set for the given zirk id is empty it should throw exception
+     * </p>
      */
     @Test(expected = NullPointerException.class)
     public final void sphereSetEmptyShouldThrowException() {
@@ -135,9 +135,10 @@ public class GetSphereMembership {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getSphereMembership(BezirkZirkId)}.
-     * <p/>
-     * <br>When invalid zirkId(zirk id does not exist in registry) is passed,
-     * it should return null.
+     * <p>
+     * When invalid zirkId(zirk id does not exist in registry) is passed,
+     * it should return <code>null</code>.
+     * </p>
      */
     @Test
     public final void invalidServiceIdReturnsTrue() {

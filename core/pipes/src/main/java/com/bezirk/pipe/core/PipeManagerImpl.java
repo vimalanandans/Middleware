@@ -20,8 +20,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Component that runs as a thread to process outgoing events in a loop:
- * <li> check to see if an event should be sent to a pipe
- * <li> send the event to the pipe via Pipe.pipeClient().sendEvent()
+ * <ul>
+ * <li>check to see if an event should be sent to a pipe</li>
+ * <li>send the event to the pipe via Pipe.pipeClient().sendEvent()</li>
+ * </ul>
  */
 public class PipeManagerImpl implements PipeManager {
     private static final Logger logger = LoggerFactory.getLogger(PipeManagerImpl.class);

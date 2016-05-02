@@ -72,9 +72,10 @@ public class GetServiceName {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getServiceName(BezirkZirkId)}.
-     * <p/>
-     * <br>Test the behavior of getZirkName when valid zirkId is passed.
+     * <p>
+     * Test the behavior of getZirkName when valid zirkId is passed.
      * It should return name associated with the zirk Id
+     * </p>
      */
     @Test
     public final void validServiceIdReturnsTheServiceName() {
@@ -95,9 +96,10 @@ public class GetServiceName {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getServiceName(BezirkZirkId)}.
-     * <p/>
-     * <br>Test the behavior of getZirkName when zirkId passed is not present in the registry.
-     * It should return null.
+     * <p>
+     * Test the behavior of getZirkName when zirkId passed is not present in the registry.
+     * It should return <code>null</code>.
+     * </p>
      */
     @Test
     public final void serviceNotPresentInRegistryReturnsNull() {

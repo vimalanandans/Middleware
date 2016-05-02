@@ -81,9 +81,9 @@ public class AddLocalServicesToSphereWithServiceIds {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addLocalServicesToSphere(Iterable, String)}.
-     * <p/>
-     * <br>When valid SphereId and ServiceIds objects is passed,
-     * it should return True
+     * <p>
+     * When valid SphereId and ServiceIds objects is passed, it should return <code>true</code>
+     * </p>
      */
     @Test
     public final void validSphereIdAndServiceIdsReturnsTrue() {
@@ -124,9 +124,9 @@ public class AddLocalServicesToSphereWithServiceIds {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addLocalServicesToSphere(Iterable, String)}.
-     * <p/>
-     * <br>When services are not added to registry,
-     * it should return True
+     * <p>
+     * When services are not added to registry, it should return <code>true</code>.
+     * </p>
      */
     @Test
     public final void servicesNotAddedToRegistryReturnsFalse() {

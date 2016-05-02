@@ -33,7 +33,7 @@ public class mockBezirkSphereForSadl implements BezirkSphereForSadl {
     }
 
     @Override
-    public Iterable<String> getSphereMembership(BezirkZirkId serviceId) {
+    public Iterable<String> getSphereMembership(BezirkZirkId zirkId) {
         List<String> sphereIdList = new ArrayList<String>();
 
         sphereIdList.add(0, UUID.randomUUID().toString());

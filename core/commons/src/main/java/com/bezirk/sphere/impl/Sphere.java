@@ -158,15 +158,16 @@ public class Sphere implements Serializable {
 
     /**
      * Removes a zirk from the sphere
-     * <p/>
+     * <p>
      * //TODO : What happens if this zirk is a part of a sphere owned by
      * another device. If we remove the zirk we need to inform the owner
      * about the change. What if the owner is not available?
+     * </p>
      *
-     * @param service
+     * @param zirkId
      * @return
      */
-    public final boolean removeService(BezirkZirkId service) {
+    public final boolean removeService(BezirkZirkId zirkId) {
         return false;
     }
 

@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Takes care of processing intent action based on type.
  * Handles zirk actions, send actions, stack actions and bezirk device actions.
- * <p/>
- * Created by AJC6KOR on 9/8/2015.
  */
 public final class BezirkActionProcessor {
     private static final Logger logger = LoggerFactory.getLogger(BezirkActionProcessor.class);

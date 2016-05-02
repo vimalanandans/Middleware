@@ -3,8 +3,6 @@ package com.bezirk.control.messages;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 /**
- * Created by Vimal on 12/9/2015.
- * <p/>
  * This is generic ledger which works only between comms without encryption.
  * this is meant for comms layer diagnostic tests / performance tests etc.
  */

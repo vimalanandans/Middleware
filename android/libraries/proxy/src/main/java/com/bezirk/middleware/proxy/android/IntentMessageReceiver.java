@@ -305,9 +305,11 @@ public class IntentMessageReceiver extends BroadcastReceiver {
      * @param serviceId
      * @return
      * @author Rishabh
-     * <p/>
-     * This methods checks if the passed zirkId belongs to the current application.<br>
+     * <p>
+     * This methods checks if the passed zirkId belongs to the current application.
+     * </p><p>
      * Note: An application can have multiple serviceIds
+     * </p>
      */
     private boolean isRequestForCurrentApp(final String serviceId) {
         SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(Proxy.mContext);

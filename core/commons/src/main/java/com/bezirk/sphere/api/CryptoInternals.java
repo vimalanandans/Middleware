@@ -6,16 +6,14 @@ import com.bezirk.sphere.security.SphereKeys;
 /**
  * @author Rishabh Gulati
  */
-public interface ICryptoInternals {
+public interface CryptoInternals {
 
     /**
      * This method generates the keys for a sphere if the passed sphereId is not
      * already present
      *
      * @param sphereId sphereId for which keys need to be generated
-     * @return true: if the keys were generated and stored successfully
-     * <p/>
-     * false otherwise
+     * @return <code>true</code> if the keys were generated and stored successfully
      */
     public boolean generateKeys(String sphereId);
 
@@ -32,15 +30,11 @@ public interface ICryptoInternals {
      */
 
     /**
-     * This method generates the keys for a sphere if the passed sphereId is not
-     * already present
-     * <p/>
-     * for the symmetric key the code is generated form short id of sphere id
+     * This method generates the keys for a sphere if the passed <code>sphereId</code> is not
+     * already present. For the symmetric key the code is generated form short id of sphere id
      *
      * @param sphereId sphereId for which keys need to be generated
-     * @return true: if the keys were generated and stored successfully
-     * <p/>
-     * false otherwise
+     * @return <code>true</code> if the keys were generated and stored successfully
      */
     public boolean generateKeys(String sphereId, boolean fromSphereId);
 

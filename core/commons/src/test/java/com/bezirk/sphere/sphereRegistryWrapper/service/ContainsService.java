@@ -68,9 +68,10 @@ public class ContainsService {
 
     /**
      * Test method for {@link SphereRegistryWrapper#containsService(String)}.
-     * <p/>
-     * <br>Check if the zirk exists in the registry.
+     * <p>
+     * Check if the zirk exists in the registry.
      * containsService should return True when valid zirk id is passed.
+     * </p>
      */
     @Test
     public final void validServiceIdShouldReturnTrue() {
@@ -84,9 +85,10 @@ public class ContainsService {
 
     /**
      * Test method for {@link SphereRegistryWrapper#containsService(String)}.
-     * <p/>
-     * <br>Check if the zirk exists in the registry.
+     * <p>
+     * Check if the zirk exists in the registry.
      * containsService should return False when invalid zirk id is passed.
+     * </p>
      */
     @Test
     public final void invalidServiceIdShouldReturnFalse() {
@@ -97,9 +99,10 @@ public class ContainsService {
 
     /**
      * Test method for {@link SphereRegistryWrapper#containsService(String)}.
-     * <p/>
-     * <br>Test the behavior of containsService when null is passed.
-     * containsService should return False
+     * <p>
+     * Test the behavior of containsService when <code>null</code> is passed.
+     * containsService should return <code>false</code>
+     * </p>
      */
     @Test
     public final void nullServiceIdShouldReturnFalse() {

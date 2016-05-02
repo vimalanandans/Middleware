@@ -8,9 +8,6 @@ import com.bezirk.sphere.api.BezirkSphereRegistration;
 import com.bezirk.streaming.rtc.Signaling;
 
 /**
- * @author hkh5kor
- * @Date: 11-09-2014
- * <p/>
  * This is a Util Class for injecting the instance of
  * SQLConnectionForJava or SQLConnectionForAndroid in Bezirk-PC or
  * Bezirk-Android respectively. The injected instance will be later used in

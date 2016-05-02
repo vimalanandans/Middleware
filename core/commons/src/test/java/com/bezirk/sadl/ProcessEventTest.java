@@ -33,14 +33,13 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * This Testcase consists of 3 tests to verifies the processing of events in following scenarios
- * <p/>
  * a) 	MulticastEvent processing when no zirk in sphere
  * b)	MulticastEvent processing with valid zirk in sphere.
  * c)	NonLocal multicast event with sphereId null.
  * d) 	NonLocal multicast event with valid sphereId.
  * e)	UnicastEvent processing with valid zirk in sphere.
  * f) 	NonLocal unicast event processing with sphereId null.
- * g) 	NonLocal unicast event processign with valid sphereId.
+ * g) 	NonLocal unicast event processing with valid sphereId.
  *
  * @author AJC6KOR
  */

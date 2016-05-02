@@ -12,7 +12,7 @@ public interface LocalBezirkSender {
     /**
      * Invoke the appropriate bezirk services' receive method for the specified event
      *
-     * @param header          Specifies the message type (unicast or multicast) and addressing constraints
+     * @param pipeHeader      Specifies the message type (unicast or multicast) and addressing constraints
      * @param serializedEvent The serialized event to be delivered to interested services
      */
     void invokeReceive(PipeHeader pipeHeader, String serializedEvent);
@@ -21,7 +21,7 @@ public interface LocalBezirkSender {
      * Invoke the appropriate bezirk services' incoming() method so that streams
      * can be delivered to the local bezirk services
      *
-     * @param header           Specifies the message type (unicast or multicast) and addressing constraints
+     * @param pipeHeader       Specifies the message type (unicast or multicast) and addressing constraints
      * @param serializedStream Stream descriptor specifying details about the stream content
      * @param path             Local path where the streamed content can be retrieved
      */

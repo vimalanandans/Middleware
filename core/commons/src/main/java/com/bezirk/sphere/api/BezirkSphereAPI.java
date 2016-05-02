@@ -191,11 +191,12 @@ public interface BezirkSphereAPI {
     public BitMatrix getQRCodeMatrix(String sphereId, int width, int height);
 
     /**
-     * This implementation along with BarCodeUtilities needs further refinement.
+     * This implementation along with <code>BarCodeUtilities</code> needs further refinement.
      * Currently using the implementation from version 0.4
-     * <p/>
+     * <p>
      * Processing and parsing of sphere keys needs to be discussed as they come
      * in through the barcode string
+     * </p>
      *
      * @param qrcodeString
      * @param sphereId     : sphere which was shared

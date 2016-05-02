@@ -46,8 +46,6 @@ public class ZirkStarterHelperTest {
     }
 
     /**
-     * Positive Testcase :
-     * <p/>
      * BezirkSphere should be non null after successful invocation of initSphere in MainService.
      */
     private void testInitSphere() {

@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Callback to handle version mismatch. When it receives the Callback it will broadcast an intent
  * to display warning on the Control UI
- * <p/>
- * Created by pik6kor on 1/7/2016.
  */
 public class CommsNotification implements com.bezirk.comms.CommsNotification {
     private static final Logger logger = LoggerFactory.getLogger(CommsNotification.class);

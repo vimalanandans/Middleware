@@ -1,10 +1,6 @@
 /**
- * TrackableEvent
- * <p/>
  * Adds a request ID to an event, with affordances for creating them automatically.
  * Responses should be given the same requestID as the message they're responding to.
- *
- * @author dadamson
  */
 package com.bezirk.protocols.callback;
 

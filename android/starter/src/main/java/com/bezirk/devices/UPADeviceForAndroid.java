@@ -3,14 +3,13 @@ package com.bezirk.devices;
 import android.content.SharedPreferences;
 
 /**
- * @author Jan Zibuschka (jan.zibuschka@de.bosch.com)
- *         <p/>
- *         Class containing device abstraction functions
- *         <p/>
- *         TODO: Check relationship to com.bosch.upa.services.deviceWrapper / possibly merge
- *         <p/>
- *         TODO: Check package, communications probably is not right,
- *         TestDevices is not possible, as concrete TestDevices need communications
+ * Class containing device abstraction functions
+ * <p>
+ * TODO: Check relationship to com.bosch.upa.services.deviceWrapper / possibly merge
+ * </p><p>
+ * TODO: Check package, communications probably is not right,
+ * TestDevices is not possible, as concrete TestDevices need communications
+ * </p>
  */
 public final class UPADeviceForAndroid {
 

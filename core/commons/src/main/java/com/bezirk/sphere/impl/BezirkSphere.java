@@ -131,8 +131,8 @@ public class BezirkSphere
     }
 
     @Override
-    public boolean registerService(BezirkZirkId serviceId, String serviceName) {
-        return sphereRegistryWrapper.registerService(serviceId, serviceName);
+    public boolean registerService(BezirkZirkId zirkId, String zirkName) {
+        return sphereRegistryWrapper.registerService(zirkId, zirkName);
     }
 
     @Override
@@ -162,8 +162,8 @@ public class BezirkSphere
     }
 
     @Override
-    public Iterable<String> getSphereMembership(BezirkZirkId serviceId) {
-        return sphereRegistryWrapper.getSphereMembership(serviceId);
+    public Iterable<String> getSphereMembership(BezirkZirkId zirkId) {
+        return sphereRegistryWrapper.getSphereMembership(zirkId);
     }
 
     @Override

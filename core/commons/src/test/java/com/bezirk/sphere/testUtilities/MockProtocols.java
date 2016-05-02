@@ -5,12 +5,9 @@ import com.bezirk.middleware.messages.ProtocolRole;
 
 /**
  * This class provides different protocols which are used in the testcases.
- * <p/>
  * a) EventlessProtocol  - ProtocolRole with empty event topics.
  * b) StreamlessProtocol - ProtocolRole with empty stream topics.
  * c) DummyProtocol      - ProtocolRole with non empty event and stream topics.
- *
- * @author AJC6KOR
  */
 public class MockProtocols {
 

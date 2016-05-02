@@ -10,14 +10,15 @@ import java.util.LinkedHashMap;
 
 
 /**
- * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
- *         <p/>
- *         The BezirkCommunications class serves a dual purpose
- *         1. It is used to intilialize several static variables such as portNumbers, addresses, queueSizes that are necessary for comms. This is done in {@link BezirkCommunications#init()} method
- *         <p/>
- *         2. The class also deals with the reception of duplicate messages
- *         If a duplicate message is received Sadl uses this class to detect duplicacy of the message.
- *         Subsequently, Sadl acks the duplicate message and drops it (since the message has already been processed)
+ * The BezirkCommunications class serves a dual purpose:
+ * <ul>
+ *   <li>Initialize several static variables such as portNumbers, addresses, queueSizes that are
+ *   necessary for comms. This is done in {@link BezirkCommunications#init()} method</li>
+ *   <li>Deals with the reception of duplicate messages</li>
+ * </ul>
+ * If a duplicate message is received Sadl uses this class to detect duplicacy of the message.
+ * Subsequently, Sadl acks the duplicate message and drops it (since the message has already been
+ * processed)
  */
 public final class BezirkCommunications {
     private static final Logger logger = LoggerFactory.getLogger(BezirkCommunications.class);

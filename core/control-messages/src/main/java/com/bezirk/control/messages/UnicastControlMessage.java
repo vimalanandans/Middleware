@@ -21,9 +21,9 @@ public class UnicastControlMessage extends ControlMessage {
      *
      * @param sender        the sender-end-point
      * @param recipient     the recipient-end-point
-     * @param sphereName    the sphere-id
+     * @param sphereId      the sphere-id
      * @param discriminator the message discriminator Eg: DiscoveryRequest, StreamResponse
-     * @param retransmit    {@value true} if the message is to be re-transmitted
+     * @param retransmit    <code>true</code> if the message is to be re-transmitted
      * @param key           UniqueKey that is used to match responses to corresponding requests
      */
     public UnicastControlMessage(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereId,
@@ -44,9 +44,9 @@ public class UnicastControlMessage extends ControlMessage {
      *
      * @param sender        the sender-end-point
      * @param recipient     the recipient-end-point
-     * @param sphereName    the sphere-id
+     * @param sphereId      the sphere-id
      * @param discriminator the message discriminator Eg: DiscoveryRequest, StreamResponse
-     * @param retransmit    {@value true} if the message is to be re-transmitted
+     * @param retransmit    <code>true</code> if the message is to be re-transmitted
      */
     public UnicastControlMessage(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereId,
                                  Discriminator discriminator, Boolean retransmit) {

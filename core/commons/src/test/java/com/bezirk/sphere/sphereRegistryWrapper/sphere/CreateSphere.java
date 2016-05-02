@@ -7,7 +7,7 @@ import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.BezirkSphereType;
-import com.bezirk.sphere.api.ICryptoInternals;
+import com.bezirk.sphere.api.CryptoInternals;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.sphere.testUtilities.SphereTestUtility;
@@ -34,7 +34,7 @@ public class CreateSphere {
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
     private static UPADeviceInterface upaDevice;
     private static SphereRegistry registry;
-    private static ICryptoInternals crypto;
+    private static CryptoInternals crypto;
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereTestUtility sphereTestUtility;
 
@@ -78,9 +78,10 @@ public class CreateSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, BezirkSphereListener)}.
-     * <p/>
+     * <p>
      * Test method for createSphere
      * Tests if sphere with empty name is added to the registry
+     * </p>
      */
     @Test
     public final void testRegistrySphereNameEmptyTypeNull() {
@@ -92,9 +93,10 @@ public class CreateSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, BezirkSphereListener)}.
-     * <p/>
+     * <p>
      * Test method for createSphere.
      * Tests if sphere is added to the registry
+     * </p>
      */
     @Test
     public final void testRegistrySphereNameValidTypeNull() {
@@ -106,9 +108,10 @@ public class CreateSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, BezirkSphereListener)}.
-     * <p/>
+     * <p>
      * Test method for createSphere
      * Tests if sphere is added to the registry and stays when another request with same name is received
+     * </p>
      */
     @Test
     public final void testRegistryTwoCreatesSameName() {
@@ -121,9 +124,10 @@ public class CreateSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, BezirkSphereListener)}.
-     * <p/>
+     * <p>
      * Test method for createSphere
      * Tests if two spheres with different names are added to the registry
+     * </p>
      */
     @Test
     public final void testRegistryTwoCreatesDifferentName() {
@@ -139,9 +143,10 @@ public class CreateSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, BezirkSphereListener)}.
-     * <p/>
+     * <p>
      * Test method for createSphere
      * Tests creation of keys for a sphereId already added to crypto engine
+     * </p>
      */
     @Test
     public final void testCryptoEngine() {
@@ -154,8 +159,9 @@ public class CreateSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#createSphere(java.lang.String, java.lang.String, BezirkSphereListener)}.
-     * <p/>
-     * Test default sphere creation when sphere name is null
+     * <p>
+     * Test default sphere creation when sphere name is </code>null</code>.
+     * </p>
      */
     @Test
     public final void testCreateSphereWithNullName() {

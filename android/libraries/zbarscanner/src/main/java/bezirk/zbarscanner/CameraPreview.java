@@ -2,9 +2,10 @@
  * Created by Rishabh Gulati on 12/9/15.
  * Robert Bosch LLC
  * rishabh.gulati@us.bosch.com
- * <p/>
+ * <p>
  * Reference:
  * https://github.com/ZBar/ZBar/tree/master/android/examples/CameraTest/src/net/sourceforge/zbar/android/CameraTest
+ * </p>
  */
 
 package bezirk.zbarscanner;

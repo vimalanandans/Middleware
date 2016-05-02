@@ -80,9 +80,9 @@ public class GetServiceInfo {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getServiceInfo()}.
-     * <p/>
-     * <br>Test the behavior of getServiceInfo.
-     * It should return list of BezirkZirkInfo objects
+     * <p>
+     * Test the behavior of getServiceInfo. It should return list of BezirkZirkInfo objects
+     * </p>
      */
     @Test
     public final void validServices() {
@@ -141,9 +141,10 @@ public class GetServiceInfo {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getServiceInfo()}.
-     * <p/>
-     * <br>Test the behavior of getServiceInfo when no devices are registered.
-     * It should return null
+     * <p>
+     * Test the behavior of getServiceInfo when no devices are registered.
+     * It should return <code>null</code>
+     * </p>
      */
     @Test
     public final void noDevicesRegisteredWillReturnNull() {

@@ -70,9 +70,10 @@ public class IsServiceInSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#isServiceInSphere(BezirkZirkId, String)}.
-     * <p/>
-     * <br>Test the behavior of isZirkInSphere when valid zirk and sphereId is passed.
+     * <p>
+     * Test the behavior of isZirkInSphere when valid zirk and sphereId is passed.
      * isZirkInSphere should return True if the sphere id is in the sphere set of the zirk.
+     * </p>
      */
     @Test
     public final void validServiceAndSphereIdShouldReturnTrue() {
@@ -94,10 +95,11 @@ public class IsServiceInSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#isServiceInSphere(BezirkZirkId, String)}.
-     * <p/>
-     * <br>Test the behavior of isZirkInSphere when valid zirk and sphereId is passed.
+     * <p>
+     * Test the behavior of isZirkInSphere when valid zirk and sphereId is passed.
      * But the sphereId is not part of the sphere set.
-     * isZirkInSphere should return False
+     * isZirkInSphere should return <code>false</code>
+     * </p>
      */
     @Test
     public final void wrongSphereIdShouldReturnFalse() {
@@ -121,9 +123,10 @@ public class IsServiceInSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#isServiceInSphere(BezirkZirkId, String)}.
-     * <p/>
-     * <br>Test the behavior of isZirkInSphere when wrong zirk id is passed.
-     * isZirkInSphere should return False
+     * <p>
+     * Test the behavior of isZirkInSphere when wrong zirk id is passed.
+     * isZirkInSphere should return <code>false</code>
+     * </p>
      */
     @Test
     public final void wrongServiceIdShouldReturnFalse() {
@@ -139,9 +142,10 @@ public class IsServiceInSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#isServiceInSphere(BezirkZirkId, String)}.
-     * <p/>
-     * <br>Test the behavior of isZirkInSphere when zirk id is passed as null.
+     * <p>
+     * Test the behavior of isZirkInSphere when zirk id is passed as null.
      * isZirkInSphere should throw an exception
+     * </p>
      */
     @Test(expected = NullPointerException.class)
     public final void nullServiceIdThrowsException() {
@@ -155,9 +159,10 @@ public class IsServiceInSphere {
 
     /**
      * Test method for {@link SphereRegistryWrapper#isServiceInSphere(BezirkZirkId, String)}.
-     * <p/>
-     * <br>Test the behavior of isZirkInSphere when null sphereId is passed.
-     * isZirkInSphere should return False.
+     * <p>
+     * Test the behavior of isZirkInSphere when null sphereId is passed.
+     * isZirkInSphere should return <code>false</code>.
+     * </p>
      */
     @Test
     public final void nullSphereIdReturnsFalse() {

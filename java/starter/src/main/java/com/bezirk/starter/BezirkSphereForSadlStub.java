@@ -49,7 +49,7 @@ public class BezirkSphereForSadlStub implements BezirkSphereForSadl {
     }
 
     @Override
-    public Iterable<String> getSphereMembership(final BezirkZirkId serviceId) {
+    public Iterable<String> getSphereMembership(final BezirkZirkId zirkId) {
         final Set<String> spheres = new HashSet<String>();
         spheres.add("default sphere");
         return spheres;

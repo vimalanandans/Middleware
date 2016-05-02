@@ -21,10 +21,9 @@ public interface BezirkSphereForSadl {
      * @param sphereId          sphereId of the sphere for which serializedContent needs to be
      *                          encrypted
      * @param serializedContent content to be encrypted
-     * @return encrypted byte array if 1. sphereId is not null & has a sphereKey
-     * associated with it 2. serializedContent is not null
-     * <p/>
-     * null otherwise
+     * @return encrypted byte array if 1. <code>sphereId</code> is not <code>null</code> and has a
+     * sphereKey associated with it 2. <code>serializedContent</code> is not <code>null</code>,
+     * <code>null</code> otherwise
      */
     public byte[] encryptSphereContent(String sphereId, String serializedContent);
 
@@ -35,41 +34,38 @@ public interface BezirkSphereForSadl {
      * @param sphereId          sphereId of the sphere for which serializedContent needs to be
      *                          decrypted
      * @param serializedContent content to be decrypted
-     * @return Decrypted serialized content String if 1. sphereId is not null &
-     * has a sphereKey associated with it 2. serializedContent is not
-     * null
-     * <p/>
-     * null otherwise
+     * @return Decrypted serialized content String if 1. <code>sphereId</code> is not
+     * <code>null</code> and has a sphereKey associated with it 2. <code>serializedContent</code>
+     * is not <code>null</code>, <code>null</code> otherwise
      */
     public String decryptSphereContent(String sphereId, byte[] serializedContent);
 
     /**
-     * Encrypts a stream into another stream
+     * Encrypts a stream into another stream. This method does NOT flush or close either stream
+     * prior to returning - the caller must do so when they are finished with the streams. For example:
+     * <pre>
+     *     {@code try {
+     *         InputStream in = ...
+     *         OutputStream out = ...
+     *         bezirkSphere.encryptSphereContent(in, out, sphereId);
+     *     } finally {
+     *         if (in != null) {
+     *             try {
+     *                 in.close();
+     *             } catch (IOException ioe1) { ... logger, trigger event, etc }
+     *         }
+     *         if (out != null) {
+     *             try {
+     *                 out.close();
+     *             } catch (IOException ioe2) { ... logger, trigger event, etc }
+     *         }
+     *    }}
+     * </pre>
      *
      * @param in       Input stream for incoming un-encrypted information
      * @param out      Output stream for outgoing encrypted information
      * @param sphereId sphereId of the sphere for which input stream needs to be
      *                 encrypted
-     *                 <p/>
-     *                 <pre>
-     *                 NOTE: This method does NOT flush or close either stream prior to returning - the caller must do so when they are finished with the streams. For example:
-     *                 {@code try {
-     *                       InputStream in = ...
-     *                       OutputStream out = ...
-     *                       bezirkSphere.encryptSphereContent(in, out, sphereId);
-     *                   } finally {
-     *                       if (in != null) {
-     *                           try {
-     *                               in.close();
-     *                           } catch (IOException ioe1) { ... logger, trigger event, etc }
-     *                       }
-     *                       if (out != null) {
-     *                           try {
-     *                               out.close();
-     *                           } catch (IOException ioe2) { ... logger, trigger event, etc }
-     *                       }
-     *                   }}
-     *                            </pre>
      */
     public void encryptSphereContent(InputStream in, OutputStream out, String sphereId);
 
@@ -80,7 +76,6 @@ public interface BezirkSphereForSadl {
      * @param out      Output stream for outgoing decrypted information
      * @param sphereId sphereId of the sphere for which input stream needs to be
      *                 decrypted
-     *                 <p/>
      *                 <pre>
      *                 NOTE: This method does NOT flush or close either stream prior to returning - the caller must do so when they are finished with the streams. For example:
      *                 {@code try {
@@ -107,12 +102,11 @@ public interface BezirkSphereForSadl {
      * Provides iterable collection of sphereIds associated with passed
      * BezirkZirkId
      *
-     * @param serviceId BezirkZirkId for retrieving stored membership information
-     * @return Iterable Collection of sphereIds for the passed ZirkId
-     * <p/>
-     * null in case the zirkId passed is null or not registered
+     * @param zirkId BezirkZirkId for retrieving stored membership information
+     * @return iterable Collection of sphereIds for the passed ZirkId, <code>null</code> in case
+     * the <code>zirkId</code> passed is <code>null</code> or not registered
      */
-    public Iterable<String> getSphereMembership(BezirkZirkId serviceId);
+    public Iterable<String> getSphereMembership(BezirkZirkId zirkId);
 
     // TODO add to wiki : found while refactoring to the new API
 

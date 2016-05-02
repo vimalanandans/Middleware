@@ -24,8 +24,7 @@ import javax.swing.border.CompoundBorder;
  *         This class is used to show the current Device Location which is represented as the fields within {@link IndoorLocation}
  */
 public class DeviceWindow extends JFrame {
-    private static final Logger logger = LoggerFactory
-            .getLogger(DeviceWindow.class);
+    private static final Logger logger = LoggerFactory.getLogger(DeviceWindow.class);
     private static final long serialVersionUID = 1L;
     private static final String TAHOMA_FONT = "Tahoma";
     private final JTextField textFieldRegionName;
@@ -122,8 +121,7 @@ public class DeviceWindow extends JFrame {
 
             logger.debug("Current device location: {}", upaDevice.getDeviceLocation().toString());
         } catch (Exception e) {
-            logger.error("Problem reading or writing properties file: "
-                    , e);
+            logger.error("Problem reading or writing properties file: ", e);
         }
     }
 }

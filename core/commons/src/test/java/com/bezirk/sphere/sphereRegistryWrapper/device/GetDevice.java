@@ -67,9 +67,10 @@ public class GetDevice {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getDevice(String)}.
-     * <p/>
-     * <br>Test the behavior of getDevice when valid deviceId is passed.
+     * <p>
+     * Test the behavior of getDevice when valid deviceId is passed.
      * It should return a Device object associated with the deviceId
+     * </p>
      */
     @Test
     public final void validDeviceId() {
@@ -81,9 +82,10 @@ public class GetDevice {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getDevice(String)}.
-     * <p/>
-     * <br>Test the behavior of getDevice method when null string is passed to it.
-     * getDevice method is expected to return null.
+     * <p>
+     * Test the behavior of getDevice method when <code>null</code> string is passed to it.
+     * getDevice method is expected to return <code>null</code>.
+     * </p>
      */
     @Test
     public final void nullDeviceIdShouldRetunNull() {
@@ -93,9 +95,10 @@ public class GetDevice {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getDevice(String)}.
-     * <p/>
-     * <br>Test the behavior of getDevice when invalid deviceId is passed.
-     * It should return null.
+     * <p>
+     * Test the behavior of getDevice when invalid deviceId is passed. It should return
+     * <code>null</code>.
+     * </p>
      */
     @Test
     public final void invalidDeviceIdReturnsNull() {

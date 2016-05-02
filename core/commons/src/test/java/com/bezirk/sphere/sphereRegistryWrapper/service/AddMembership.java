@@ -78,9 +78,10 @@ public class AddMembership {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addMembership(BezirkZirkId, String, String, String)}.
-     * <p/>
-     * <br>Test if a new zirk is added successfully to the registry.
-     * The method should return True.
+     * <p>
+     * Test if a new zirk is added successfully to the registry.
+     * The method should return <code>True</code>.
+     * </p>
      */
     @Test
     public final void newServiceIdReturnsTrue() {
@@ -104,9 +105,10 @@ public class AddMembership {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addMembership(BezirkZirkId, String, String, String)}.
-     * <p/>
-     * <br>If an existing zirk is being added to the registry, then just the zirk name is updated.
-     * The method should return True.
+     * <p>
+     * If an existing zirk is being added to the registry, then just the zirk name is updated.
+     * The method should return <code>true</code>.
+     * </p>
      */
     @Test
     public final void existingServiceIdReturnsTrue() {
@@ -132,8 +134,9 @@ public class AddMembership {
 
     /**
      * Test method for {@link SphereRegistryWrapper#addMembership(BezirkZirkId, String, String, String)}.
-     * <p/>
-     * <br>When sphere does not exist, the method will return False
+     * <p>
+     * When sphere does not exist, the method will return <code>false</code>
+     * </p>
      */
     @Test
     public final void sphereDoesNotExistReturnsFalse() {

@@ -81,8 +81,9 @@ public class GetBezirkDeviceInfo {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getBezirkDeviceInfo(java.util.Map, HashSet)}.
-     * <p/>
-     * <br>When valid map of device id and device services is passed, it should return iterable BezirkDeviceInfo objects.
+     * <p>When valid map of device id and device services is passed, it should return iterable
+     * <code>BezirkDeviceInfo</code> objects.
+     * </p>
      */
     @Test
     public final void validServiceIdsReturnsValidList() {
@@ -118,8 +119,10 @@ public class GetBezirkDeviceInfo {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getBezirkDeviceInfo(java.util.Map, HashSet)}.
-     * <p/>
-     * <br>When owner devices HashSet is invalid, it should return iterable BezirkDeviceInfo objects. And the BezirkDeviceRole will be BEZIRK_MEMBER
+     * <p>
+     * When owner devices HashSet is invalid, it should return iterable BezirkDeviceInfo objects.
+     * And the BezirkDeviceRole will be BEZIRK_MEMBER
+     * </p>
      */
     @Test
     public final void invalidOwnerDevicesReturnsValidList() {
@@ -161,8 +164,9 @@ public class GetBezirkDeviceInfo {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getBezirkDeviceInfo(java.util.Map, HashSet)}.
-     * <p/>
-     * <br>When the device map passed is null, the method should throw an exception.
+     * <p>
+     * When the device map passed is null, the method should throw an exception.
+     * </p>
      */
     @Test(expected = NullPointerException.class)
     public final void nullDeviceMapThrowsException() {
@@ -188,8 +192,9 @@ public class GetBezirkDeviceInfo {
 
     /**
      * Test method for {@link SphereRegistryWrapper#getBezirkDeviceInfo(java.util.Map, HashSet)}.
-     * <p/>
-     * <br>When owner devices is passed as null, it should throw an exception
+     * <p>
+     * When owner devices is passed as null, it should throw an exception
+     * </p>
      */
     @Test(expected = NullPointerException.class)
     public final void nullOwnerDevicesThrowsException() {

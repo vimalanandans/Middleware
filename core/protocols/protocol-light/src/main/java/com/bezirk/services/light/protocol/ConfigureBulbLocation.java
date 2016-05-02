@@ -4,9 +4,7 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.Event;
 
 /**
- * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
- *         <p/>
- *         This Event is used to configure Location of a given Bulb id
+ * This Event is used to configure Location of a given Bulb id
  */
 public class ConfigureBulbLocation extends Event {
     public static final String TOPIC = ConfigureBulbLocation.class.getSimpleName();

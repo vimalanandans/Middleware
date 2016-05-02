@@ -1,11 +1,8 @@
 /**
- * Context
- * <p/>
  * Context specifies information related to the circumstances
  * in which the question was asked.
  *
  * @author Cory Henson
- * @modified 06/09/2014
  * @specification https://fe0vmc0345.de.bosch.com/wiki/pages/viewpage.action?pageId=24117500#AiPQ&ASpecification-Context
  */
 package com.bezirk.aip;

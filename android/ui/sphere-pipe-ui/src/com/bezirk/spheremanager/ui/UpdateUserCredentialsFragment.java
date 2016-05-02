@@ -26,9 +26,10 @@ import java.util.ArrayList;
  * tablet devices by allowing list items to be given an 'activated' state upon
  * selection. This helps indicate which item is currently being viewed in a
  * {@link DeviceListFragment}.
- * <p/>
+ * <p>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
+ * </p>
  */
 public class UpdateUserCredentialsFragment extends Fragment {
     public static final String TAG = "UpdateUserCredentialsFragment";

@@ -32,10 +32,11 @@ public final class FilterLogMessages {
     }
 
     /**
-     * updates the loggingSphereList with spheres selected by the logging zirk.
-     * <p/>
-     * This method checks if the list contains only ANY_SPHERE mode and if set sets the anySphereEnabled
-     * Flag to true.
+     * Updates the <code>loggingSphereList</code> with spheres selected by the logging Zirk.
+     * <p>
+     * This method checks if the list contains only <code>ANY_SPHERE</code> mode and if so sets the
+     * <code>anySphereEnabled</code> flag to <code>>true.</code
+     * </p>
      *
      * @param list list of spheres for which Logging Zirk is activated.
      */
