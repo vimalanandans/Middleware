@@ -4,8 +4,10 @@ import java.io.InputStream;
 
 /**
  * Requirements:
- * <li> Represent multi and uni-cast messages
- * <li> Represent stream and regular response messages
+ * <ul>
+ * <li>Represent multi and uni-cast messages</li>
+ * <li>Represent stream and regular response messages</li>
+ * </ul>
  */
 public class CloudStreamResponse extends CloudResponse {
 

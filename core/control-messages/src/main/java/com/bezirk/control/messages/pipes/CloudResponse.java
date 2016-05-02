@@ -5,8 +5,10 @@ import java.util.Map;
 
 /**
  * Requirements:
- * <li> Represent multi and uni-cast messages
- * <li> Represent stream and regular response messages
+ * <ul>
+ * <li>Represent multi and uni-cast messages</li>
+ * <li>Represent stream and regular response messages</li>
+ * </ul>
  */
 public class CloudResponse {
 

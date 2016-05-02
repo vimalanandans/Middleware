@@ -61,7 +61,7 @@ public class BezirkSphereInfo {
     }
 
     /**
-     * @return the spheretype
+     * @return the <code>sphereType</code>
      */
     public final String getSphereType() {
         return sphereType;
@@ -74,9 +74,6 @@ public class BezirkSphereInfo {
         return isThisDeviceOwnsSphere;
     }
 
-    /**
-     * @return the sphere owned by this device
-     */
     public void setThisDeviceOwnsSphere(boolean status) {
         isThisDeviceOwnsSphere = status;
     }

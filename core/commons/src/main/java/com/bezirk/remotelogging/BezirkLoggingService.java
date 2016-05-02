@@ -1,7 +1,3 @@
-/**
- * @author Vijet Badigannavar (bvijet@in.bosch.com)
- * @modified 2/17/2015
- */
 package com.bezirk.remotelogging;
 
 import org.slf4j.Logger;

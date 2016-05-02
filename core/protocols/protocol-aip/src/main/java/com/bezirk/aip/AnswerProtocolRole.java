@@ -1,8 +1,5 @@
 /**
- * Answer ProtocolRole
- *
  * @author Cory Henson
- * @modified 06/11/2014
  */
 package com.bezirk.aip;
 

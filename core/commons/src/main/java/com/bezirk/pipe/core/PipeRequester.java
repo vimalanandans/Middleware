@@ -123,11 +123,7 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
      * which policies are allowed to pass in and out of the pipe.
      *
      * @param approved     True if the pipe was granted
-     * @param pipe        The Pipe originally requested by the zirk
-     * @param allowedIn   This PipePolicy contains the collection of Protocols allowed into the local sphere
-     * @param allowedOut  This PipePolicy contains the collection of Protocols allowed to pass out of the local sphere
      * @param sphereId    The sphere the pipe has been added to
-     * @param bezirkListener The bezirk zirk to notify of the status of the pipe request
      */
     public void pipeApproved(boolean approved, String pipeRequestId, String pipePassword, String sphereId) throws PipeApprovalException {
         PipeRequest request = outstandingRequests.get(pipeRequestId);

@@ -1,9 +1,5 @@
 /**
- * OpenQuestion UhU Event
- *
  * @author Cory Henson
- * @modified 06/09/2014
- * @specification https://fe0vmc0345.de.bosch.com/wiki/pages/viewpage.action?pageId=24117500#AiPQ&ASpecification-OpenQuestion
  */
 package com.bezirk.aip;
 

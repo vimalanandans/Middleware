@@ -15,11 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * This testcase verifies the working of Callback zirk for PC.
- *
- * @modified by AJC6KOR
- */
 public class TestCBkForServicePC {
     private static final Logger logger = LoggerFactory.getLogger(TestCBkForServicePC.class);
 

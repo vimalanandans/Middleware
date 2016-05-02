@@ -1,7 +1,3 @@
-/**
- * @author Manjunatha Kuruvatti (ManjunathaKuravatti.Chandrashekar@in.bosch.com)
- * @modified 12/2/2015
- */
 package com.bezirk.logging.ui;
 
 /**

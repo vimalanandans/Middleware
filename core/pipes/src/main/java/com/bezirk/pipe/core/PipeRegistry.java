@@ -36,7 +36,7 @@ public class PipeRegistry {
      * Return the PipeRecord for the specified pipe.
      *
      * @param pipe
-     * @returns Null if the pipe is not registered
+     * @return Null if the pipe is not registered
      */
     public PipeRecord lookup(Pipe pipe) {
         return pipeMap.get(pipe);

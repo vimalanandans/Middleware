@@ -21,7 +21,7 @@ public final class StringValidatorUtil {
      * Checks for Validity of String for Not null and not empty
      *
      * @param stringValues - strings to be validated
-     * @return true if valid(not null & non empty), false otherwise
+     * @return true if valid(not null and non empty), false otherwise
      */
     public static boolean areValidStrings(final String... stringValues) {
 

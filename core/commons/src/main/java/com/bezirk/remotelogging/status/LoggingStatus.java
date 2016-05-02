@@ -1,7 +1,3 @@
-/**
- * @author Vijet Badigannavar (bvijet@in.bosch.com)
- * @modified 2/17/2015
- */
 package com.bezirk.remotelogging.status;
 
 import com.bezirk.remotelogging.messages.BezirkLoggingMessage;

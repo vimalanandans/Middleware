@@ -1,9 +1,4 @@
-/**
- * @author Vijet Badigannavar (bvijet@in.bosch.com)
- * @modified 3/30/2015
- */
 package com.bezirk.remotelogging;
-
 
 /**
  * Logging Manager class that starts/stops LoggingServices and LoggingClient.

@@ -1,8 +1,5 @@
 /**
- * Observation
- *
  * @author Cory Henson
- * @modified 09/16/2014
  */
 package com.bezirk.protocols.dragonfly;
 

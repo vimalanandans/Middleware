@@ -2,8 +2,8 @@ package com.bezirk.sphere.messages;
 
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.MulticastControlMessage;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import java.util.List;
 
@@ -19,9 +19,8 @@ public class SphereDiscoveryResponse extends MulticastControlMessage {
     /**
      * Constructor
      *
-     * @param sphereID          sphere to be created at the recipient device
-     * @param sphereInformation Information about the sphere to be joined
-     * @param services          Services that need to join the target sphere
+     * @param scannedSphereId sphere to be created at the recipient device
+     * @param services        Services that need to join the target sphere
      */
 
     public SphereDiscoveryResponse(String scannedSphereId,

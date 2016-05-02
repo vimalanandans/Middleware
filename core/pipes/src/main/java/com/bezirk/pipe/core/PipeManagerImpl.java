@@ -102,10 +102,7 @@ public class PipeManagerImpl implements PipeManager {
 
     /**
      * Called by the bezirk SenderThread to enqueue an event for sending to the remote location
-     *
-     * @param event
      */
-    //public void enqueueForRemoteSending(EventControlMessage eventRecord) {
     public void processRemoteSend(Header bezirkHeader, String serializedEvent) {
         if (!initialized) {
             logger.warn("PipeManager not initialized.  Can't execute processRemoteSend.");
@@ -141,8 +138,6 @@ public class PipeManagerImpl implements PipeManager {
 
     /**
      * Called by the remote sending thread when it has received content to be written
-     *
-     * @param job
      */
     public void processLocalWrite(WriteJob writeJob) {
         if (!initialized) {
@@ -192,22 +187,15 @@ public class PipeManagerImpl implements PipeManager {
 
     @Override
     public void pipeGranted(boolean granted, Pipe pipe, PipePolicy allowedIn,
-                            PipePolicy allowedOut, String sphereId, BezirkListener uhuListener) {
+                            PipePolicy allowedOut, String sphereId, BezirkListener bezirkListener) {
 
-        // TODO call uhuListener directly or via a proxy?  is this done differently on each platform?
-        // uhuListener.pipeGranted(...)
+        // TODO call bezirkListener directly or via a proxy?  is this done differently on each platform?
     }
-	
-	/*
-	 * Helper methods
-	 */
 
     /**
      * Submit a remote sending task by creating an instance of RemoteSender and passing
      * it to the sendingPool's execute method.  The thread pool calls RemoteSender.run
      * when it has a thread available.
-     *
-     * @param eventRecord
      */
     private void executeRemoteMulticastSend(MulticastHeader bezirkMulticastHeader, String serializedEvent) {
         //String serializedEvent = eventRecord.getSerializedMessage();

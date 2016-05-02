@@ -51,10 +51,6 @@ public interface BezirkComms {
 
     public boolean registerStreamBook(String key, StreamRecord sRecord);
 
-    // refactor this to registerCommsErrorNotification // can be error warning etc
-    //@Deprecated // use register Notification
-    //public boolean initErrorNotificationCallback(ICommsErrorNotification errNotificationCallback);
-
     public boolean registerNotification(CommsNotification notification);
 
     /**

@@ -13,15 +13,6 @@ public class CatchResponse extends com.bezirk.control.messages.MulticastControlM
     private String catcherSphereId;
     private String catcherDeviceId;
 
-    /**
-     * Constructor
-     *
-     * @param sphereID          - Has to be non-null.
-     *                          Join sphere where the scanned services to be added
-     * @param sphereInformation Information about the sphere to be joined. Has to be non-null.
-     * @param services          Services that need to join the target sphere. Has to be non-null.
-     */
-
     public CatchResponse(BezirkZirkEndPoint sender, String catcherSphereId, String catcherDeviceId, BezirkDeviceInfo inviterSphereDeviceInfo) {
         super(sender, catcherSphereId, discriminator);
         // null checks for sender and catcherSphereId added here because call to the
@@ -49,5 +40,4 @@ public class CatchResponse extends com.bezirk.control.messages.MulticastControlM
     public String getCatcherDeviceId() {
         return catcherDeviceId;
     }
-
 }

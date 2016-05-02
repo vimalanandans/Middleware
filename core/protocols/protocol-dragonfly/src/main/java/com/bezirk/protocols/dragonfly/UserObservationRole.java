@@ -1,8 +1,5 @@
 /**
- * UserObservationRole
- *
  * @author Cory Henson
- * @modified 10/27/2014
  */
 package com.bezirk.protocols.dragonfly;
 

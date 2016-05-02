@@ -6,7 +6,6 @@ import java.security.SignedObject;
 
 
 public class SignedControlMessage extends UnicastControlMessage {
-
     private final SignedObject signedObject;
 
     /**

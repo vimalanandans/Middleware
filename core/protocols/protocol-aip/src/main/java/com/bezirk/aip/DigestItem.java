@@ -2,7 +2,6 @@
  * DigestItem: member of summary list, contained in Digest message
  *
  * @author Cory Henson
- * @modified 06/11/2014
  */
 package com.bezirk.aip;
 

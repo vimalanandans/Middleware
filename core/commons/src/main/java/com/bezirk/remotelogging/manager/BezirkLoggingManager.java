@@ -1,7 +1,3 @@
-/**
- * @author Vijet Badigannavar (bvijet@in.bosch.com)
- * @modified 3/30/2015
- */
 package com.bezirk.remotelogging.manager;
 
 import com.bezirk.remotelogging.client.LoggingClient;

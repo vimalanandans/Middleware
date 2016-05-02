@@ -1,8 +1,5 @@
 /**
- * UserProxyRole
- *
  * @author Cory Henson
- * @modified 10/28/2014
  */
 package com.bezirk.protocols.penguin.v01;
 

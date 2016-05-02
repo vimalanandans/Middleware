@@ -116,7 +116,6 @@ public class RegistryPersistenceTest {
      * 5. close the connection
      * 6. open a connection
      * 7. load the sadl registry and check if its restored to the previous one
-     * <SUCCESS>
      *
      * @throws Exception
      * @throws IOException
