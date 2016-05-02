@@ -38,7 +38,7 @@ import java.io.PipedOutputStream;
  * <br>
  * <pre>
  * import com.bezirk.api.Bezirk;
- * import com.bezirk.proxy.Factory;
+ * import com.bezirk.middleware.proxy.Factory;
  *
  * // ...
  *
