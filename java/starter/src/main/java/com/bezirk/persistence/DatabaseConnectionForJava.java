@@ -29,7 +29,7 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
 
     @Override
     public Dao<BezirkRegistry, Integer> getPersistenceDAO()
-            throws NullPointerException, SQLException, IOException, Exception {
+            throws NullPointerException, SQLException, IOException {
         if (null == bezirkPersistenceDao) {
             bezirkPersistenceDao = DaoManager.createDao(getDatabaseConnection(),
                     BezirkRegistry.class);

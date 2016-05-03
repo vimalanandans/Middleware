@@ -48,7 +48,6 @@ public class ProcessEventTest {
 
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
     private static BezirkZirkId bezirkZirkAId = new BezirkZirkId("ServiceA");
-    ;
     private static BezirkZirkId bezirkZirkBId = new BezirkZirkId("ServiceB");
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
     private static BezirkSadlManager bezirkSadlManager = null;

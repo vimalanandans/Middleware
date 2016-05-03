@@ -22,13 +22,6 @@ import java.util.UUID;
 public final class BezirkDeviceHelper {
     private static final Logger logger = LoggerFactory.getLogger(BezirkDeviceHelper.class);
 
-    /**
-     * Initialize BezirkDevice with preferences
-     *
-     * @param preferences
-     * @param service
-     * @return
-     */
     BezirkDevice setBezirkDevice(final BezirkPreferences preferences, final MainService service) {
         BezirkDevice bezirkDevice = initDevice(preferences, service);
 

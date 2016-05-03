@@ -19,8 +19,8 @@ public class BezirkZirkIdTest {
         BezirkZirkId sid1 = new BezirkZirkId("Ys1NcReyox:AreYouHotonAndroid");
         BezirkZirkId sid2 = new BezirkZirkId("Ys1NcReyox:AreYouHotonAndroid");
         assertEquals(sid1, sid2);
-        BezirkZirkEndPoint sed1 = new BezirkZirkEndPoint(new String("192.168.160.65"), sid1);
-        BezirkZirkEndPoint sed2 = new BezirkZirkEndPoint(new String("192.168.160.65"), sid2);
+        BezirkZirkEndPoint sed1 = new BezirkZirkEndPoint("192.168.160.65", sid1);
+        BezirkZirkEndPoint sed2 = new BezirkZirkEndPoint("192.168.160.65", sid2);
         assertEquals(sed1, sed2);
 
         //testing sidList

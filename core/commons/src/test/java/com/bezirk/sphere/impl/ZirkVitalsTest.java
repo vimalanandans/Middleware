@@ -44,7 +44,7 @@ public class ZirkVitalsTest {
         serviceVitalsTemp = new ServiceVitals(serviceName, "DeviceB");
         assertFalse("Different serviceVitals are considered as  equal.", serviceVitals.equals(serviceVitalsTemp));
 
-        assertFalse("ServiceVitals is considered equal to null.", serviceVitals.equals(null));
+        assertNotEquals("ServiceVitals is considered equal to null.", null, serviceVitals);
 
         serviceVitals = new ServiceVitals(serviceName, null);
         serviceVitalsTemp = new ServiceVitals(serviceName, null);

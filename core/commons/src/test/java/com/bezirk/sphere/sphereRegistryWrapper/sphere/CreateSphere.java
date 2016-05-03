@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.sphereRegistryWrapper.sphere;
 
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.BezirkSphereType;
@@ -32,7 +32,7 @@ public class CreateSphere {
     private static final Logger logger = LoggerFactory.getLogger(CreateSphere.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    private static UPADeviceInterface upaDevice;
+    private static BezirkDeviceInterface upaDevice;
     private static SphereRegistry registry;
     private static CryptoInternals crypto;
     private static SphereRegistryWrapper sphereRegistryWrapper;

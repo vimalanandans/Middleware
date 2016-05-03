@@ -26,9 +26,6 @@ public class Test {
         myId = bezirk.registerZirk(Test.class.getSimpleName());
     }
 
-    /**
-     * @param args
-     */
     public static void main(String[] args) {
         Test test = new Test();
         test.sayHello();

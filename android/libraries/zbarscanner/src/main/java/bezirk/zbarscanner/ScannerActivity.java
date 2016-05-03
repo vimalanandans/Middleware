@@ -132,11 +132,6 @@ public class ScannerActivity extends Activity {
         super.onDestroy();
     }
 
-    /**
-     * Get camera object
-     *
-     * @return
-     */
     private Camera getCameraInstance() {
         Camera cameraInstance = null;
         try {

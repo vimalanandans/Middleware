@@ -58,32 +58,16 @@ public class PipeRegistry {
      * @return false if the pipe doesn't exist
      */
     public boolean remove(Pipe pipe) {
-
         PipeRecord removed = pipeMap.remove(pipe);
 
         // Pipe does not exist if map.remove() returns null
-        if (removed == null) {
-            return false;
-        }
-
-        return true;
+        return removed != null;
     }
 	
 	/*
 	 * Creation and modification functionality
 	 */
 
-    /**
-     * Add a new pipe
-     *
-     * @param pipe
-     * @param allowedIn
-     * @param allowedOut
-     * @param sphereId
-     * @param password
-     * @return
-     * @throws PipeApprovalException
-     */
     public PipeRecord add(Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut, String sphereId, String password) throws PipeApprovalException {
         validatePipe(pipe);
 
@@ -106,21 +90,11 @@ public class PipeRegistry {
         return add(pipe, allowedIn, allowedOut, "", "");
     }
 
-    /**
-     * @param pipe
-     * @param allowedIn
-     * @param allowedOut
-     * @return
-     * @throws PipeApprovalException
-     */
     public PipeRecord update(Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut) throws PipeApprovalException {
         return update(pipe, allowedIn, allowedOut, "", "");
     }
 
     /**
-     * @param pipe
-     * @param allowedIn
-     * @param allowedOut
      * @throws PipeApprovalException If pipe is invalid or pipe not registered
      */
     public PipeRecord update(Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut, String sphereId, String password) throws PipeApprovalException {

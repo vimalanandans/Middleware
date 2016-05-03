@@ -91,7 +91,7 @@ public class DeviceListActivity extends FragmentActivity implements
         LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View view = (View) layoutInflater.inflate(
+        View view = layoutInflater.inflate(
                 R.layout.activity_devicelist_smartphone, null);
 
         deviceListActivityHelper.configureFilterDevicesAndPipes(view, entry);

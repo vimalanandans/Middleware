@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -44,7 +45,7 @@ public class LightDetailsTest {
         assertTrue("LightDetails with same HubIP and HubMac are considered not equal", lightDetails.equals(lightDetailsTemp));
 
         assertTrue("LightDetails with same properties are not considered equal", lightDetails.equals(lightDetails));
-        assertFalse("Null is considered equal to LightDetails.", lightDetails.equals(null));
+        assertNotEquals("Null is considered equal to LightDetails.", null, lightDetails);
         assertFalse("TestString is considered equal to LightDetails.", lightDetails.equals("TEST"));
 
         lightDetailsTemp.setHubIp("127.1.1.1");

@@ -19,13 +19,7 @@ public interface BezirkSphereRegistration {
      * @param zirkName Name to be associated with the zirk
      * @return <code>true</code> if zirk was added successfully
      */
-    public boolean registerService(BezirkZirkId zirkId, String zirkName);
+    public boolean registerZirk(BezirkZirkId zirkId, String zirkName);
 
-    /**
-     * Unregisters zirk
-     *
-     * @param serviceId
-     * @return
-     */
-    public boolean unregisterService(BezirkZirkId serviceId);
+    public boolean unregisterZirk(BezirkZirkId serviceId);
 }

@@ -115,7 +115,7 @@ public class HashidsTest {
     @Test
     public void test_issue10() {
         String expected = "3kK3nNOe", res;
-        long num_to_hash = 75527867232l;
+        long num_to_hash = 75527867232L;
         long[] res2;
         Hashids a = new Hashids("this is my salt");
         res = a.encode(num_to_hash);

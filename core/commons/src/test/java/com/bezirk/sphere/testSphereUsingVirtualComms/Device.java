@@ -1,15 +1,15 @@
 /**
- * This class creates a UPADeviceInterface object for a virtual device.
+ * This class creates a BezirkDeviceInterface object for a virtual device.
  */
 package com.bezirk.sphere.testSphereUsingVirtualComms;
 
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.addressing.Location;
 
 /**
  * @author Karthik
  */
-public final class Device implements UPADeviceInterface {
+public final class Device implements BezirkDeviceInterface {
 
     public static final String DEVICE_ID = "TestDeviceId_";
     public static final String DEVICE_NAME = "TestDeviceName_";
@@ -30,7 +30,7 @@ public final class Device implements UPADeviceInterface {
      * (non-Javadoc)
      *
      * @see
-     * UPADeviceInterface#setDeviceName(java.lang.String)
+     * BezirkDeviceInterface#setDeviceName(java.lang.String)
      */
     @Override
     public boolean setDeviceName(String deviceName) {
@@ -41,7 +41,7 @@ public final class Device implements UPADeviceInterface {
     /*
      * (non-Javadoc)
      *
-     * @see UPADeviceInterface#getDeviceName()
+     * @see BezirkDeviceInterface#getDeviceName()
      */
     @Override
     public String getDeviceName() {
@@ -53,7 +53,7 @@ public final class Device implements UPADeviceInterface {
      * (non-Javadoc)
      *
      * @see
-     * UPADeviceInterface#setDeviceLocation(com.bosch.upa.
+     * BezirkDeviceInterface#setDeviceLocation(com.bosch.upa.
      * uhu.api.addressing.Location)
      */
     @Override
@@ -65,7 +65,7 @@ public final class Device implements UPADeviceInterface {
     /*
      * (non-Javadoc)
      *
-     * @see UPADeviceInterface#getDeviceLocation()
+     * @see BezirkDeviceInterface#getDeviceLocation()
      */
     @Override
     public Location getDeviceLocation() {
@@ -76,7 +76,7 @@ public final class Device implements UPADeviceInterface {
     /*
      * (non-Javadoc)
      *
-     * @see UPADeviceInterface#getDeviceId()
+     * @see BezirkDeviceInterface#getDeviceId()
      */
     @Override
     public String getDeviceId() {

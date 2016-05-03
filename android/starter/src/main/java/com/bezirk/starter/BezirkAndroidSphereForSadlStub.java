@@ -28,8 +28,7 @@ public class BezirkAndroidSphereForSadlStub implements BezirkSphereForSadl {
 
     @Override
     public String decryptSphereContent(String sphereId, byte[] serializedContent) {
-        String data = new String(serializedContent);
-        return data;
+        return new String(serializedContent);
     }
 
     @Override

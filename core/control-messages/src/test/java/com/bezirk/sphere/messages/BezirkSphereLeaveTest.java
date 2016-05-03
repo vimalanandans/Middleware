@@ -33,24 +33,15 @@ public class BezirkSphereLeaveTest {
     private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceBId);
     private static InetAddress inetAddr;
 
-    /**
-     * @throws java.lang.Exception
-     */
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-
+    public static void setUpBeforeClass() {
         logger.info("***** Setting up BezirkSphereLeaveTest TestCase *****");
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
-
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
     @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-
+    public static void tearDownAfterClass() {
         logger.info("***** Shutting down BezirkSphereLeaveTest TestCase *****");
     }
 

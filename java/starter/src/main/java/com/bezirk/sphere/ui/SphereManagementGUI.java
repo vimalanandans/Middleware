@@ -2,7 +2,7 @@ package com.bezirk.sphere.ui;
 
 import com.bezirk.commons.BezirkVersion;
 import com.bezirk.commstest.ui.CommsTestJFrame;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezrik.network.BezirkNetworkUtilities;
@@ -190,7 +190,7 @@ public class SphereManagementGUI extends JFrame {
                 "Choose Interface Name", "Bezirk Ethernet Configuration",
                 JOptionPane.QUESTION_MESSAGE, null, interfaceName, null);
         try {
-            final String classpath = UPADeviceInterface.class.getClassLoader()
+            final String classpath = BezirkDeviceInterface.class.getClassLoader()
                     .getResource("comms.properties").getPath();
             final Properties properties = new Properties();
             final FileInputStream configStream = new FileInputStream(classpath);

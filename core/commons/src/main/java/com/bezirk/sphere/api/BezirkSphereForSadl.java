@@ -138,8 +138,6 @@ public interface BezirkSphereForSadl {
     /**
      * @param deviceId the deviceId whose Device Name needs to be known
      * @return Device Name if exists, null otherwise
-     * @author vijet
-     * @date 25-2-2015 Returns the Device Name associated with the DeviceId
      */
     public String getDeviceNameFromSphere(String deviceId);
 

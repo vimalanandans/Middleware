@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.sphereRegistryWrapper;
 
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.CryptoInternals;
@@ -16,7 +16,7 @@ public class SphereRegistryWrapperConstructor {
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SpherePersistence spherePersistence = null;
     private static SphereRegistry registry = null;
-    private static UPADeviceInterface upaDevice = null;
+    private static BezirkDeviceInterface upaDevice = null;
     private CryptoInternals crypto = null;
 
     /**

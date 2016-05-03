@@ -63,7 +63,7 @@ public class SphereKeysTest {
 
 
         assertFalse("SphereKeys is considered equal to ownerPrivateKeys", sphereKeys.equals(ownerPrivateKeyBytes));
-        assertFalse("SphereKeys is considered equal to null", sphereKeys.equals(null));
+        assertNotEquals("SphereKeys is considered equal to null", null, sphereKeys);
 
         ownerPrivateKeyBytes = "DiffPrivateKey".getBytes();
         testSphereKeys = new SphereKeys(sphereKey, ownerPrivateKeyBytes, ownerPublicKeyBytes);

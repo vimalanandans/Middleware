@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.sphereRegistryWrapper.device;
 
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
@@ -38,7 +38,7 @@ public class GetBezirkDeviceInfo {
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
-    private static UPADeviceInterface upaDevice;
+    private static BezirkDeviceInterface upaDevice;
     private static SphereTestUtility sphereTestUtility;
 
     /**

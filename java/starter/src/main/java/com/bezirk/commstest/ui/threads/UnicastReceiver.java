@@ -121,10 +121,6 @@ public class UnicastReceiver extends Thread {
         this.start();
     }
 
-    /**
-     * @param uReceivingPort
-     * @param uSendingPort
-     */
     public void updateConfiguration(int uReceivingPort) {
 
         this.unicastReceivingPort = uReceivingPort;

@@ -165,10 +165,7 @@ public class EventSenderThread implements Runnable {
             return false;
         }
         //Check number of times message has been sent
-        if (eventLedger.getNumOfSends() == numOfRetries) {
-            return false;
-        }
-        return true;
+        return eventLedger.getNumOfSends() != numOfRetries;
     }
 
     private void processPipes(EventLedger eLedger) {

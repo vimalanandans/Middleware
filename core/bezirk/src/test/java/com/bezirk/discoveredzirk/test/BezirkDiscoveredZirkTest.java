@@ -29,16 +29,16 @@ public class BezirkDiscoveredZirkTest {
     public void beforeTest() {
         sid1 = new BezirkZirkId("Ys1NcReyox:AreYouHotonAndroid");
         sid2 = new BezirkZirkId("Ys1NcReyox:AreYouHotonAndroid");
-        sed1 = new BezirkZirkEndPoint(new String("192.168.160.65"), sid1);
-        sed2 = new BezirkZirkEndPoint(new String("192.168.160.65"), sid2);
+        sed1 = new BezirkZirkEndPoint("192.168.160.65", sid1);
+        sed2 = new BezirkZirkEndPoint("192.168.160.65", sid2);
 
     }
 
     @Test
     public void test() {
-        BezirkDiscoveredZirk ds1 = new BezirkDiscoveredZirk(sed1, new String("AreYouHotonAndroid"),
+        BezirkDiscoveredZirk ds1 = new BezirkDiscoveredZirk(sed1, "AreYouHotonAndroid",
                 new MockProtocolRole(), new Location(null));
-        BezirkDiscoveredZirk ds2 = new BezirkDiscoveredZirk(sed2, new String("AreYouHotonAndroid"),
+        BezirkDiscoveredZirk ds2 = new BezirkDiscoveredZirk(sed2, "AreYouHotonAndroid",
                 new MockProtocolRole(), new Location(null));
         assertEquals(ds1, ds2);
         if (!list.contains(ds1)) {

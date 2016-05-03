@@ -15,20 +15,20 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Properties;
 
-public class UPADeviceForPC implements com.bezirk.devices.UPADeviceInterface {
+public class BezirkDeviceForPC implements BezirkDeviceInterface {
     public static final String PROPS = "upadevice.properties";
-    private static final Logger logger = LoggerFactory.getLogger(UPADeviceForPC.class);
+    private static final Logger logger = LoggerFactory.getLogger(BezirkDeviceForPC.class);
     private final com.bezirk.devices.DeviceDetails deviceDetails;
 
     /**
      * The constructor is used for setting up the device information like deviceId and deviceName which can be used other modules like sphere
      */
-    public UPADeviceForPC() {
+    public BezirkDeviceForPC() {
 
         deviceDetails = new DeviceDetails();
 
         try {
-            final Properties props = UPADeviceForPC.loadProperties();
+            final Properties props = BezirkDeviceForPC.loadProperties();
             final String location = props.getProperty("DeviceLocation");
             String deviceName;
 
@@ -59,7 +59,7 @@ public class UPADeviceForPC implements com.bezirk.devices.UPADeviceInterface {
 
         // Load properties file from the classpath (this avoids hard-coding the
         // filesystem path)
-        final InputStream propsInputStream = com.bezirk.devices.UPADeviceInterface.class
+        final InputStream propsInputStream = BezirkDeviceInterface.class
                 .getClassLoader().getResourceAsStream(file);
 
         if (propsInputStream == null) {
@@ -80,7 +80,7 @@ public class UPADeviceForPC implements com.bezirk.devices.UPADeviceInterface {
     }
 
     public static void storeProperties(Properties props) throws IOException {
-        final URL propsURL = com.bezirk.devices.UPADeviceInterface.class.getResource(PROPS);
+        final URL propsURL = BezirkDeviceInterface.class.getResource(PROPS);
         final FileOutputStream fos = new FileOutputStream(propsURL.getFile());
         props.store(fos, null);
     }

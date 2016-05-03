@@ -202,8 +202,6 @@ public class RegistrationUnregistrationTest {
     /**
      * This is to remove the entries from the maps of SadlRegistry.java
      * class.
-     *
-     * @RHR8KOR
      */
 
     private void unregisterfrommaps() {

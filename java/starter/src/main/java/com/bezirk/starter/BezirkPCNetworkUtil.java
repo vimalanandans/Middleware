@@ -2,7 +2,7 @@ package com.bezirk.starter;
 
 import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.BezirkCommsPC;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.BezirkNetworkUtilities;
 import com.bezrik.network.IntfInetPair;
@@ -28,7 +28,7 @@ final class BezirkPCNetworkUtil {
     private static final Logger logger = LoggerFactory.getLogger(BezirkPCNetworkUtil.class);
 
     NetworkInterface fetchNetworkInterface(final BezirkConfig bezirkConfig)
-            throws SocketException, NullPointerException, Exception {
+            throws SocketException, NullPointerException {
 
         // Resolve the NetworkInterface object for supplied InterfaceName
         NetworkInterface networkInterface =
@@ -120,8 +120,7 @@ final class BezirkPCNetworkUtil {
      * @return
      * @throws SocketException
      */
-    private String promptUserForInterface(final BezirkConfig bezirkConfig)
-            throws SocketException {
+    private String promptUserForInterface(final BezirkConfig bezirkConfig) {
         String interfaceName;
         if (bezirkConfig.isDisplayEnabled()) {
             final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
@@ -132,10 +131,7 @@ final class BezirkPCNetworkUtil {
         }
         // If UI is not enabled, prompt user to enter interface via console
         else {
-            final Iterator<IntfInetPair> displayIterator = BezirkNetworkUtilities
-                    .getIntfInetPair().iterator();
-            while (displayIterator.hasNext()) {
-                final IntfInetPair pair = displayIterator.next();
+            for (IntfInetPair pair : BezirkNetworkUtilities.getIntfInetPair()) {
                 logger.info("Found interface: " + pair.getIntf().getName()
                         + " IP:" + pair.getInet().getHostAddress());
             }
@@ -165,18 +161,17 @@ final class BezirkPCNetworkUtil {
     /**
      * Update the comms.properties file with the chosen interface if possible.
      * This is not possible if comms.properties is in a jar, in which case we do
-     * nothing and return false
+     * nothing and return <code>false</code>
      *
      * @param networkInterface
-     * @return False if the interface was not updated in the properties file
-     * @throws Exception
+     * @return <code>false</code> if the interface was not updated in the properties file
      */
     private boolean updateInterfaceInPropsFile(final NetworkInterface networkInterface) {
         try {
             final Properties properties = BezirkCommsPC.loadProperties();
 
             // Get the path to the properties file
-            final String path = UPADeviceInterface.class.getClassLoader()
+            final String path = BezirkDeviceInterface.class.getClassLoader()
                     .getResource(BezirkCommsPC.PROPS_FILE).getPath();
             final FileOutputStream output = new FileOutputStream(path);
 

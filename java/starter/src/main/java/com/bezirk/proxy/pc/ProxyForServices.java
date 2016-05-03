@@ -53,7 +53,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
         } else {
             logger.debug("Don't need to register Zirk: Zirk ID is already registered");
         }
-        boolean isSpherePassed = BezirkCompManager.getSphereRegistration().registerService(serviceId, serviceName);
+        boolean isSpherePassed = BezirkCompManager.getSphereRegistration().registerZirk(serviceId, serviceName);
         if (isSpherePassed) {
             logger.info("Zirk Registration Complete for: {}, {}", serviceName, serviceId);
         } else {

@@ -205,7 +205,7 @@ public class WireMessage implements Serializable {
     }
 
     // wire format is serialized
-    public byte[] serialize() throws IOException {
+    public byte[] serialize() {
         Gson gson = new Gson();
         return gson.toJson(this).getBytes();
         // send the compressed string

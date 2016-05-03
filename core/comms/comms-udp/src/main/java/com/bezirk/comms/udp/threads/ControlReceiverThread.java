@@ -9,7 +9,6 @@ import com.bezirk.control.messages.Ledger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -45,18 +44,13 @@ public class ControlReceiverThread implements Runnable {
                     new CopyOnWriteArrayList<Ledger>(msgQueue.getQueue());
 
             //When Receiver Queue is not empty wakeup
-            Iterator<Ledger> it = receiverQueue.iterator();
-            while (it.hasNext()) {
-                ControlLedger tcMessage = (ControlLedger) it.next();
+            for (Ledger aReceiverQueue : receiverQueue) {
+                ControlLedger tcMessage = (ControlLedger) aReceiverQueue;
 
                 msgDispatcher.dispatchControlMessages(tcMessage);
 
                 msgQueue.removeFromQueue(tcMessage);
-
             }
-
         }
     }
-
-
 }

@@ -303,11 +303,6 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
         Toast.makeText(service.getApplicationContext(), "Bezirk Data Cleared", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * Deletes context cache
-     *
-     * @param context
-     */
     void deleteCache(Context context) {
         try {
             File dir = context.getCacheDir();

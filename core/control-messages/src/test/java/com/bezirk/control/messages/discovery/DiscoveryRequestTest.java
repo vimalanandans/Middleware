@@ -31,21 +31,15 @@ public class DiscoveryRequestTest {
     private Location location = new Location("OFFICE1", "BLOCK1", "ROOM1");
     private SubscribedRole protocol = new SubscribedRole();
 
-    /**
-     * @throws java.lang.Exception
-     */
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
+    public static void setUpBeforeClass() {
 
         logger.info("***** Setting up DiscoveryRequestTest TestCase *****");
 
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
     @AfterClass
-    public static void tearDownAfterClass() throws Exception {
+    public static void tearDownAfterClass() {
 
         logger.info("***** Shutting down DiscoveryRequestTest TestCase *****");
     }

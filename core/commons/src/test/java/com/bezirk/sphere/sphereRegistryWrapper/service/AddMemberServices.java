@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.BezirkSphereType;
@@ -35,7 +35,7 @@ public class AddMemberServices {
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
     private static SphereTestUtility sphereTestUtility;
-    private static UPADeviceInterface upaDevice;
+    private static BezirkDeviceInterface upaDevice;
 
     /**
      * @throws java.lang.Exception

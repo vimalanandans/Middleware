@@ -20,7 +20,6 @@ public class TextCompressor {
      *
      * @param str
      * @return
-     * @throws Exception
      */
     public static byte[] compress(byte[] str) {
         ByteArrayOutputStream obj = new ByteArrayOutputStream();
@@ -43,7 +42,6 @@ public class TextCompressor {
      *
      * @param str
      * @return
-     * @throws Exception
      */
     public static String decompress(byte[] str) {
         if (str == null || str.length == 0) {

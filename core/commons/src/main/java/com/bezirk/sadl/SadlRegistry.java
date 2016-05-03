@@ -271,25 +271,18 @@ public class SadlRegistry implements Serializable {
         return false;
     }
 
-
-    /**
-     * Unregisters the Zirk
-     *
-     * @param serviceId
-     * @return
-     */
-    public Boolean unregisterService(final BezirkZirkId serviceId) {
-        if (isServiceRegistered(serviceId)) {
+    public Boolean unregisterZirk(final BezirkZirkId zirkId) {
+        if (isServiceRegistered(zirkId)) {
             // Remove the events from event Map
-            removeSidFromMaps(serviceId, eventMap, false);
+            removeSidFromMaps(zirkId, eventMap, false);
             // remove the steams from stream map
-            removeSidFromMaps(serviceId, streamMap, false);
+            removeSidFromMaps(zirkId, streamMap, false);
             // remove the protocol from protocol Map
-            removeSidFromMaps(serviceId, protocolMap, true);
+            removeSidFromMaps(zirkId, protocolMap, true);
             // Remove the Location
-            locationMap.remove(serviceId);
+            locationMap.remove(zirkId);
             //remove Sid
-            sid.remove(serviceId);
+            sid.remove(zirkId);
             return true;
         }
         logger.info("Zirk tried to Unregister that does not exist");

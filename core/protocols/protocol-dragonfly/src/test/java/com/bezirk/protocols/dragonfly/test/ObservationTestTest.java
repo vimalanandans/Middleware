@@ -13,13 +13,10 @@ public class ObservationTestTest {
 
     @Test
     public void test() {
-
         Integer observationsNumberInThisBatch = 5;
 
         ObservationTest observationTest = new ObservationTest();
         observationTest.setObservationsNumberInThisBatch(observationsNumberInThisBatch);
-        ;
-
 
         String serializedObservationTest = observationTest.toJson();
 

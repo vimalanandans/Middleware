@@ -37,7 +37,7 @@ public class LocationTest {
         assertTrue("Similar locations are considered unequal.", tempLoc.equals(testLoc));
 
         assertFalse("Location is considered equal to test string.", tempLoc.equals("Region"));
-        assertFalse("Location is considered equal to null.", tempLoc.equals(null));
+        assertNotEquals("Location is considered equal to null.", null, tempLoc);
 
         testLoc = new Location("OFFICE1", null, "FLOOR");
         assertFalse("Differet locations are considered equal.", tempLoc.equals(testLoc));

@@ -21,10 +21,8 @@ public interface BezirkSphereAPI {
     /**
      * Creates a sphere
      *
-     * @param: sphereName
-     * name of the sphere to be created
-     * @param: sphereType
-     * type of the sphere to be created
+     * @param sphereName name of the sphere to be created
+     * @param sphereType type of the sphere to be created
      */
     public String createSphere(String sphereName, String sphereType);
 
@@ -38,23 +36,23 @@ public interface BezirkSphereAPI {
      * Get all the spheres visible/authorized to this device bezirk This contains
      * the complete data of Spheres and its devices / pipe available
      *
-     * @return : Iterator sphere Info
+     * @return Iterator sphere Info
      */
     public Iterable<BezirkSphereInfo> getSpheres();
 
     /**
      * Get the sphere Info by sphere Id
      *
-     * @param : String sphereId
-     * @return : sphere Info if found else null
+     * @param sphereId String sphereId
+     * @return sphere Info if found else null
      */
     public BezirkSphereInfo getSphere(String sphereId);
 
     /**
      * Get the sphere Info by sphere Id
      *
-     * @param : BezirkSphereInfo
-     * @return : true if this device owns this sphere or not
+     * @param sphereInfo
+     * @return true if this device owns this sphere or not
      */
     public boolean isThisDeviceOwnsSphere(BezirkSphereInfo sphereInfo);
 
@@ -93,13 +91,11 @@ public interface BezirkSphereAPI {
      * Add services to sphere (Add the local services to a sphere owned by the
      * device)
      *
-     * @param: serviceIds
-     * of Services to be added
-     * @param: sphereId
-     * of sphere to which the services need to be added
-     * @return: true if request is accepted to process. Task completion via
+     * @param serviceIds of Services to be added
+     * @param sphereId   of sphere to which the services need to be added
+     * @return true if request is accepted to process. Task completion via
      * Listener
-     * @deprecated: use {@link #addLocalServicesToSphere(String, Iterable)}
+     * @deprecated use {@link #addLocalServicesToSphere(String, Iterable)}
      */
     @Deprecated // UI has BezirkZirkInfo not BezirkZirkId
     public boolean addLocalServicesToSphere(Iterable<BezirkZirkId> serviceIds, String sphereId);
@@ -108,11 +104,9 @@ public interface BezirkSphereAPI {
      * Add services to sphere (Add the local services to a sphere owned by the
      * device)
      *
-     * @param: serviceInfo
-     * of Services to be added
-     * @param: sphereId
-     * of sphere to which the services need to be added
-     * @return: true if request is accepted to process. Task completion via
+     * @param serviceInfo of Services to be added
+     * @param sphereId    of sphere to which the services need to be added
+     * @return true if request is accepted to process. Task completion via
      * Listener
      */
     public boolean addLocalServicesToSphere(String sphereId, Iterable<BezirkZirkInfo> serviceInfo);
@@ -125,11 +119,8 @@ public interface BezirkSphereAPI {
     /**
      * request the zirk to leave the sphere
      *
-     * @param: zirkId
-     * of Zirk
-     * @param: sphereId
-     * of sphere
-     * @return: true if request is accepted to process. Task completion via
+     * @param sphereId of sphere
+     * @return true if request is accepted to process. Task completion via
      * Listener
      */
     public boolean serviceLeaveRequest(String serviceId, String sphereId);
@@ -137,25 +128,21 @@ public interface BezirkSphereAPI {
     /**
      * Expel zirk from sphere
      *
-     * @param: zirkId
-     * of Zirk
-     * @param: sphereId
-     * of sphere
-     * @return: true if request is accepted to process. Task completion via
+     * @param zirkId   of Zirk
+     * @param sphereId of sphere
+     * @return true if request is accepted to process. Task completion via
      * Listener
      * @deprecated use {@link #expelDeviceFromSphere(String, String)}
      */
     @Deprecated // concept is always expel the device from zirk
-    public boolean expelServiceFromSphere(String serviceId, String sphereId);
+    public boolean expelServiceFromSphere(String zirkId, String sphereId);
 
     /**
      * Expel zirk from sphere
      *
-     * @param: zirkId
-     * of Zirk
-     * @param: sphereId
-     * of sphere
-     * @return: true if request is accepted to process. Task completion via
+     * @param deviceId of Zirk
+     * @param sphereId of sphere
+     * @return true if request is accepted to process. Task completion via
      * Listener
      */
     public boolean expelDeviceFromSphere(String deviceId, String sphereId);

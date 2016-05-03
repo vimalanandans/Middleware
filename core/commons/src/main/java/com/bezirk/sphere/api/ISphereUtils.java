@@ -30,10 +30,6 @@ public interface ISphereUtils {
      */
     public boolean validateServices(Iterable<BezirkZirkId> serviceIds);
 
-    /**
-     * Add the member services
-     */
-
     public DeviceInformation getDeviceInformation(String deviceId);
 
     public boolean addMemberServices(BezirkDeviceInfo bezirkDeviceInfo, String sphereId, String ownerDeviceId);

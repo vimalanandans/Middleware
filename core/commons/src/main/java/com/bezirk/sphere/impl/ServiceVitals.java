@@ -10,10 +10,6 @@ public class ServiceVitals implements Serializable {
     private final String serviceName;
     private final String ownerDeviceID;
 
-    /**
-     * @param serviceName
-     * @param ownerDeviceID
-     */
     public ServiceVitals(String serviceName, String ownerDeviceID) {
         super();
         this.serviceName = serviceName;

@@ -63,7 +63,7 @@ public class RegistryPersistenceTest {
             DatabaseConnection dbConnection = new DatabaseConnectionForJava(DBPath);
             RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBVersion);
 
-            SadlPersistence sadlPersistence = (SadlPersistence) regPersistence;
+            SadlPersistence sadlPersistence = regPersistence;
 
             SadlRegistry sadlRegistry = sadlPersistence.loadSadlRegistry();
 
@@ -127,7 +127,7 @@ public class RegistryPersistenceTest {
         String DBVersion = DBConstants.DB_VERSION;
         RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBVersion);
         //give it to sadl
-        SadlPersistence sadlPersistence = (SadlPersistence) regPersistence;
+        SadlPersistence sadlPersistence = regPersistence;
         // load the sadl registry
         SadlRegistry aboutToPersist = sadlPersistence.loadSadlRegistry();
         //update
@@ -139,7 +139,7 @@ public class RegistryPersistenceTest {
         //Assume the application is closed and is restarted
         DatabaseConnection tempDBConnection = new DatabaseConnectionForJava(DBPath);
         RegistryPersistence tempRegPersistence = new RegistryPersistence(tempDBConnection, DBVersion);
-        SadlPersistence tempSadlPersistence = (SadlPersistence) tempRegPersistence;
+        SadlPersistence tempSadlPersistence = tempRegPersistence;
         //load the registry
         SadlRegistry retrievedRegistry = tempSadlPersistence.loadSadlRegistry();
         SadlRegistry storedRegistry = new SadlRegistry();

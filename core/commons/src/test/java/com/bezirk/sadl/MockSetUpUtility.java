@@ -3,7 +3,7 @@ package com.bezirk.sadl;
 import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.BezirkComms;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.DBConstants;
 import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.persistence.SadlPersistence;
@@ -43,7 +43,7 @@ public class MockSetUpUtility {
     BezirkSadlManager bezirkSadlManager = null;
     SadlPersistence sadlPersistence;
     SpherePersistence spherePersistence;
-    UPADeviceInterface upaDevice;
+    BezirkDeviceInterface upaDevice;
     CryptoEngine cryptoEngine;
     SphereRegistry sphereRegistry;
     BezirkComms bezirkComms;
@@ -105,7 +105,7 @@ public class MockSetUpUtility {
     }
 
     void setupUpaDevice() {
-        upaDevice = new MockUPADevice();
+        upaDevice = new MockBezirkDevice();
         BezirkCompManager.setUpaDevice(upaDevice);
     }
 

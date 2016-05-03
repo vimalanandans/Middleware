@@ -1,6 +1,6 @@
 package com.bezirk.comms;
 
-import com.bezirk.devices.UPADeviceForPC;
+import com.bezirk.devices.BezirkDeviceForPC;
 import com.bezirk.starter.BezirkConfig;
 import com.bezirk.util.BezirkValidatorUtility;
 
@@ -105,7 +105,6 @@ public final class BezirkCommsPC {
      * The system property can be set, e.g., via a -D option on the command line.
      *
      * @param propName
-     * @return
      */
     private static void overrideStringProperty(String propName,
                                                Properties props, BezirkConfig bezirkConfig) {
@@ -122,6 +121,6 @@ public final class BezirkCommsPC {
     }
 
     public static Properties loadProperties() throws Exception {
-        return UPADeviceForPC.loadProperties(PROPS_FILE);
+        return BezirkDeviceForPC.loadProperties(PROPS_FILE);
     }
 }

@@ -2,7 +2,7 @@ package com.bezirk.starter.helper;
 
 import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
@@ -43,7 +43,7 @@ public final class BezirkSphereHandler {
     /**
      * create and initialise the sphere
      */
-    boolean initSphere(UPADeviceInterface bezirkDevice, MainService service, SpherePersistence spherePersistence, BezirkPreferences preferences) {
+    boolean initSphere(BezirkDeviceInterface bezirkDevice, MainService service, SpherePersistence spherePersistence, BezirkPreferences preferences) {
 
         /** start the sphere related init*/
         if (sphereForAndroid == null) {

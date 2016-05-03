@@ -8,7 +8,6 @@ import com.bezirk.protocols.dragonfly.UserObservation;
  * test flow
  *
  * @author Himadri Sikhar Khargharia
- * @created 27/10/2014
  */
 public class ObservationTest extends UserObservation {
     /**

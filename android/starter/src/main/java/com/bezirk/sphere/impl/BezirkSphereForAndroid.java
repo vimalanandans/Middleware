@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 
 import com.bezirk.comms.BezirkComms;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.BezirkSphereListener;
@@ -26,7 +26,7 @@ public class BezirkSphereForAndroid extends BezirkSphere implements BezirkSphere
     private final BezirkPreferences preferences;
     private ISphereConfig sphereConfig;
 
-    public BezirkSphereForAndroid(CryptoEngine cryptoEngine, UPADeviceInterface upaDevice,
+    public BezirkSphereForAndroid(CryptoEngine cryptoEngine, BezirkDeviceInterface upaDevice,
                                   SphereRegistry sphereRegistry, Context context, BezirkPreferences preferences) {
         super(cryptoEngine, upaDevice, sphereRegistry);
         this.preferences = preferences;

@@ -4,7 +4,7 @@ import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.device.BezirkDeviceType;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.discovery.SphereDiscovery;
 import com.bezirk.discovery.SphereDiscoveryProcessor;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
@@ -54,7 +54,7 @@ public class MockSetUpUtility {
     private static final String DBVersion = DBConstants.DB_VERSION;
     public BezirkSphere bezirkSphere = null;
     public CryptoEngine cryptoEngine;
-    public UPADeviceInterface upaDevice;
+    public BezirkDeviceInterface upaDevice;
     public SphereRegistry registry;
     public SpherePersistence spherePersistence;
     public SphereRegistryWrapper sphereRegistryWrapper;
@@ -224,7 +224,7 @@ public class MockSetUpUtility {
                     .equalsIgnoreCase(BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT)) {
                 logger.info("sphere id from registry : " + sphereId);
 
-                defaultSphereId = new String(sphereId);
+                defaultSphereId = sphereId;
             }
 
         }

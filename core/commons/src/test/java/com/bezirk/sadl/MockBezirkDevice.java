@@ -1,7 +1,7 @@
 package com.bezirk.sadl;
 
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.devices.DeviceDetails;
-import com.bezirk.devices.UPADeviceInterface;
 import com.bezirk.middleware.addressing.Location;
 import com.bezrik.network.BezirkNetworkUtilities;
 
@@ -23,8 +23,8 @@ import java.util.Properties;
  *
  * @author AJC6KOR
  */
-public class MockUPADevice implements UPADeviceInterface {
-    private static final Logger logger = LoggerFactory.getLogger(MockUPADevice.class);
+public class MockBezirkDevice implements BezirkDeviceInterface {
+    private static final Logger logger = LoggerFactory.getLogger(MockBezirkDevice.class);
 
     public static final String propertiesFile = "upadevice.properties";
     private static DeviceDetails deviceDetails = null;
@@ -32,11 +32,11 @@ public class MockUPADevice implements UPADeviceInterface {
     /**
      * The constructor is used for setting up the device information like deviceId and deviceName which can be used other modules like sphere
      */
-    public MockUPADevice() {
+    public MockBezirkDevice() {
         String location = "Office/lobby/null";
         String deviceName;
         try {
-            Properties props = MockUPADevice.loadProperties();
+            Properties props = MockBezirkDevice.loadProperties();
             location = props.getProperty("DeviceLocation");
 
         } catch (Exception e1) {
@@ -75,7 +75,7 @@ public class MockUPADevice implements UPADeviceInterface {
 
         // Load properties file from the classpath (this avoids hard-coding the filesystem path)
         logger.info("Loading properties file: " + file);
-        InputStream propsInputStream = UPADeviceInterface.class.getClassLoader().getResourceAsStream(file);
+        InputStream propsInputStream = BezirkDeviceInterface.class.getClassLoader().getResourceAsStream(file);
 
         if (propsInputStream == null) {
             throw new Exception("Problem loading properties file. Input stream is null for file: " + file);
@@ -90,7 +90,7 @@ public class MockUPADevice implements UPADeviceInterface {
     }
 
     public static void storeProperties(Properties props) throws IOException {
-        URL propsURL = UPADeviceInterface.class.getResource(propertiesFile);
+        URL propsURL = BezirkDeviceInterface.class.getResource(propertiesFile);
         FileOutputStream fos = new FileOutputStream(propsURL.getFile());
         props.store(fos, null);
     }

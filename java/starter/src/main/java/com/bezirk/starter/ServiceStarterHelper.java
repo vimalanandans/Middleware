@@ -4,8 +4,8 @@ import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.device.BezirkDeviceType;
-import com.bezirk.devices.UPADeviceForPC;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceForPC;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
@@ -42,7 +42,7 @@ final class ServiceStarterHelper {
      * @param registryPersistence
      * @param comms
      */
-    BezirkSphereAPI initSphere(final UPADeviceInterface bezirkDevice,
+    BezirkSphereAPI initSphere(final BezirkDeviceInterface bezirkDevice,
                                final RegistryPersistence registryPersistence, final BezirkComms comms) {
 
         // init the actual
@@ -96,7 +96,7 @@ final class ServiceStarterHelper {
      */
     private Location loadLocation() {
         try {
-            final Properties props = UPADeviceForPC.loadProperties();
+            final Properties props = BezirkDeviceForPC.loadProperties();
 
             final String loc = props.getProperty("DeviceLocation", null);
             return new Location(loc);

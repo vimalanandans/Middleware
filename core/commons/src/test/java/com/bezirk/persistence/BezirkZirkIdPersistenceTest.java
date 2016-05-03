@@ -30,7 +30,7 @@ public class BezirkZirkIdPersistenceTest {
     }
 
     @After
-    public void tearDown() throws NullPointerException, SQLException, Exception {
+    public void tearDown() throws NullPointerException, SQLException, IOException {
         // Deleting the uhu_database.sqlite is not happening so after each test, I am dropping the table
         TableUtils.dropTable(dbConnection.getDatabaseConnection(), BezirkRegistry.class, true);
     }
@@ -47,7 +47,7 @@ public class BezirkZirkIdPersistenceTest {
     public void testForBezirkServiceIdPersistenceRegistration() throws Exception {
         RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
         assertNotNull(regPersistence);
-        BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
+        BezirkProxyPersistence proxyPersistence = regPersistence;
 
         BezirkProxyRegistry proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         assertNotNull(proxyRegistry);
@@ -60,12 +60,9 @@ public class BezirkZirkIdPersistenceTest {
 
         //close the db == Bezirk is stopped or Restart the Bezirk
         dbConnection.getDatabaseConnection().close();
-        proxyPersistence = null;
-        proxyRegistry = null;
-        regPersistence = null;
         //Check if the data is persisted
         regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
-        proxyPersistence = (BezirkProxyPersistence) regPersistence;
+        proxyPersistence = regPersistence;
         proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 
         assertEquals(proxyRegistry.getBezirkServiceId("zirk-A"), "sid-1");
@@ -86,7 +83,7 @@ public class BezirkZirkIdPersistenceTest {
     public void testForBezirkServiceIdPersistenceUnRegistrationWithBezirkStartUp() throws Exception {
         RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
         assertNotNull(regPersistence);
-        BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
+        BezirkProxyPersistence proxyPersistence = regPersistence;
 
         BezirkProxyRegistry proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         assertNotNull(proxyRegistry);
@@ -102,12 +99,9 @@ public class BezirkZirkIdPersistenceTest {
 
         //close the db == Bezirk is stopped or Restart the Bezirk
         dbConnection.getDatabaseConnection().close();
-        proxyPersistence = null;
-        proxyRegistry = null;
-        regPersistence = null;
         //Check if the data is persisted
         regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
-        proxyPersistence = (BezirkProxyPersistence) regPersistence;
+        proxyPersistence = regPersistence;
         proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 
         assertNull(proxyRegistry.getBezirkServiceId("zirk-A")); // should fail
@@ -119,18 +113,14 @@ public class BezirkZirkIdPersistenceTest {
 
         //close the db == Bezirk is stopped or Restart the Bezirk
         dbConnection.getDatabaseConnection().close();
-        proxyPersistence = null;
-        proxyRegistry = null;
-        regPersistence = null;
 
         regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
-        proxyPersistence = (BezirkProxyPersistence) regPersistence;
+        proxyPersistence = regPersistence;
         proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 
         assertNull(proxyRegistry.getBezirkServiceId("zirk-A")); // should fail
         assertNull(proxyRegistry.getBezirkServiceId("zirk-B")); // should fail
         assertNull(proxyRegistry.getBezirkServiceId("zirk-X")); // should fail
-
     }
 
     /**
@@ -144,7 +134,7 @@ public class BezirkZirkIdPersistenceTest {
     public void testForBezirkServiceIdPersistenceUnRegistrationWithoutBezirkStartUp() throws Exception {
         RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
         assertNotNull(regPersistence);
-        BezirkProxyPersistence proxyPersistence = (BezirkProxyPersistence) regPersistence;
+        BezirkProxyPersistence proxyPersistence = regPersistence;
 
         BezirkProxyRegistry proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         assertNotNull(proxyRegistry);

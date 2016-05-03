@@ -14,16 +14,6 @@ public class DiscoveryRequest extends MulticastControlMessage {
     private Location location;
     private SubscribedRole protocol;
 
-    /**
-     * @param sphereId
-     * @param sender
-     * @param location
-     * @param protocol
-     * @param discoveryId   This id maps to the original request that then gets
-     *                      split into different control messages, one per sphere
-     * @param timeout
-     * @param maxDiscovered
-     */
     public DiscoveryRequest(String sphereId, BezirkZirkEndPoint sender, Location location, SubscribedRole protocol, int discoveryId, long timeout, int maxDiscovered) {
         super(sender, sphereId, discriminator);
         this.location = location;

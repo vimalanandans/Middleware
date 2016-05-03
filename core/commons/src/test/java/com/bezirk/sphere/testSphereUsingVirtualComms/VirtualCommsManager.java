@@ -43,11 +43,8 @@ public class VirtualCommsManager {
      * Clear the registry of all the devices created.
      *
      * @param numOfDevices -  the number of devices that were created for a testcase.
-     * @throws SQLException
-     * @throws IOException
-     * @throws Exception
      */
-    public void destroy(int numOfDevices) throws SQLException, IOException, Exception {
+    public void destroy(int numOfDevices) {
         for (int i = 0; i < numOfDevices; i++)
             device[i].sphereRegistry.clearRegistry();
     }

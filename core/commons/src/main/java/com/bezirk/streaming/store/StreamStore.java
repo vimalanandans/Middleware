@@ -70,7 +70,7 @@ public class StreamStore {
 
     /**
      * This method called by the {@link
-     * com.bosch.upa.bezirk.comms.udp.streaming.StreamReceivingThread} to release
+     * com.bezirk.streaming.threads.StreamReceivingThread} to release
      * the port after data is transferred.
      * 
      * @param port - Port to be released

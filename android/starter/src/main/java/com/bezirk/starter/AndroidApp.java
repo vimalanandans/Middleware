@@ -9,7 +9,6 @@ import com.bezirk.application.BezirkApp;
 import com.bezirk.pipe.core.BezirkPipeAPI;
 import com.bezirk.pipe.core.PipeApprovalException;
 import com.bezirk.pipe.core.PipeRequest;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -39,9 +38,9 @@ public class AndroidApp implements BezirkApp {
 
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setComponent(new ComponentName(COMPONENT_NAME, "com.bosch.upa.spheremanager.PipeActivity"));
+        intent.setComponent(new ComponentName(COMPONENT_NAME, "com.bezirk.spheremanager.PipeActivity"));
         intent.putExtra(BezirkActions.KEY_PIPE_REQ_ID, pipeRequestId);
-        intent.putExtra(BezirkActions.KEY_SENDER_ZIRK_ID, new Gson().toJson((BezirkZirkId) pipeRequest.getRequestingService()));
+        intent.putExtra(BezirkActions.KEY_SENDER_ZIRK_ID, new Gson().toJson(pipeRequest.getRequestingService()));
 
         // TODO remove the above and send the below serialized object to UI
         //Only to test

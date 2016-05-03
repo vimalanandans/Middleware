@@ -34,11 +34,6 @@ public class CommsHttpServer extends RouterNanoHTTPD {
         return httpServer;
     }
 
-    /**
-     * starts the NanoHTTPD server!!
-     *
-     * @return
-     */
     public boolean startServer() {
         //ServerRunner.run(CommsHttpServer.class);
         logger.debug("STARTING Rest Server!!!");
@@ -52,11 +47,6 @@ public class CommsHttpServer extends RouterNanoHTTPD {
         return true;
     }
 
-    /**
-     * Stops the nanoHTTPD server!!
-     *
-     * @return
-     */
     public boolean stopServer() {
         logger.debug("Rest server has been stopped!!!");
         stop();

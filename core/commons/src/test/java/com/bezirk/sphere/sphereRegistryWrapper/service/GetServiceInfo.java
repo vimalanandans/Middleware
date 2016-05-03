@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
@@ -38,7 +38,7 @@ public class GetServiceInfo {
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
-    private static UPADeviceInterface upaDevice;
+    private static BezirkDeviceInterface upaDevice;
     private static SphereTestUtility sphereTestUtility;
 
     /**
@@ -128,7 +128,7 @@ public class GetServiceInfo {
         createdServiceInfo.add(serviceInfo1);
         createdServiceInfo.add(serviceInfo2);
 
-        List<BezirkZirkInfo> retrievedServices = (List<BezirkZirkInfo>) sphereRegistryWrapper.getServiceInfo();
+        List<BezirkZirkInfo> retrievedServices = sphereRegistryWrapper.getServiceInfo();
         for (int i = 0; i < retrievedServices.size(); i++) {
             BezirkZirkInfo retrieved = retrievedServices.get(i);
             BezirkZirkInfo created = createdServiceInfo.get(i);

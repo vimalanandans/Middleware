@@ -74,7 +74,7 @@ public class CommsTestJFrame extends JFrame implements IUpdateResponse {
     /**
      * Initializing UI
      */
-    private void jbInit() throws Exception {
+    private void jbInit() {
         this.getContentPane().setLayout(mainFrameLayout);
         this.setSize(new Dimension(730, 604));
         this.setTitle("Communication Test");

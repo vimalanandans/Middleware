@@ -77,7 +77,7 @@ public class Sphere implements Serializable {
      * @param deviceId
      * @param service
      * @return
-     * @Deprecated use {@link #addService(String, String)}
+     * @deprecated use {@link #addService(String, String)}
      */
     @Deprecated
     public final boolean addService(String deviceId, BezirkZirkId service) {
@@ -129,13 +129,6 @@ public class Sphere implements Serializable {
         return success;
     }
 
-    /**
-     * Adds services to the deviceId passed
-     *
-     * @param deviceId
-     * @param services
-     * @return
-     */
     public final boolean addServices(String deviceId, Iterable<BezirkZirkId> services) {
         boolean success = false;
         if (deviceId != null && services != null && deviceServices != null) {

@@ -44,7 +44,7 @@ public class ZirkTest {
         assertTrue("Similar services are considered unequal.", zirk.equals(testZirk));
         assertTrue("Zirk is not considered equal to itself.", zirk.equals(zirk));
 
-        assertFalse("Zirk is considered equal to null.", zirk.equals(null));
+        assertNotEquals("Zirk is considered equal to null.", null, zirk);
         assertFalse("Zirk is considered equal to serviceName.", zirk.equals(serviceName));
 
         testZirk.setOwnerDeviceId(null);

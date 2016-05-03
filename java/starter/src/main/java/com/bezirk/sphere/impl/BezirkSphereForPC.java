@@ -1,7 +1,7 @@
 package com.bezirk.sphere.impl;
 
 import com.bezirk.comms.BezirkComms;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.BezirkSphereListener;
@@ -26,7 +26,7 @@ public class BezirkSphereForPC extends BezirkSphere implements BezirkQRCode,
     private final SphereUI sphereUI;
 
     public BezirkSphereForPC(CryptoEngine cryptoEngine,
-                             UPADeviceInterface upaDevice, SphereRegistry sphereRegistry) {
+                             BezirkDeviceInterface upaDevice, SphereRegistry sphereRegistry) {
         super(cryptoEngine, upaDevice, sphereRegistry);
         sphereUI = new SphereUI();
     }

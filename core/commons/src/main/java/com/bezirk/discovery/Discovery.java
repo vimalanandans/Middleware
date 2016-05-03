@@ -10,13 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Discovery {
     private static final Logger logger = LoggerFactory.getLogger(Discovery.class);
 
-    private final Map<DiscoveryLabel, DiscoveryRecord> discoveredMap;
+    private final ConcurrentMap<DiscoveryLabel, DiscoveryRecord> discoveredMap;
 
     private final Gson gson = new Gson();
 

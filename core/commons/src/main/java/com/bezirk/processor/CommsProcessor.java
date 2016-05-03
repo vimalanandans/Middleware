@@ -2,12 +2,12 @@ package com.bezirk.processor;
 
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.BezirkCommunications;
-import com.bezirk.comms.CommsProperties;
-import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.BezirkMessageDispatcher;
+import com.bezirk.comms.CommsNotification;
+import com.bezirk.comms.CommsProperties;
+import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
@@ -34,7 +34,6 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
@@ -178,15 +177,8 @@ public abstract class CommsProcessor implements BezirkComms {
                 WireMessage wireMessage = prepareWireMessage(message.getMessage().getSphereId(), data);
 
                 wireMessage.setMsgType(WireMessage.WireMsgType.MSG_MULTICAST_CTRL);
-                try {
-                    byte[] wireByteMessage = wireMessage.serialize();
-                    ret = sendToAll(wireByteMessage, false);
-
-                    //logger.info("wireData size after "+wireData.length );
-                } catch (IOException e) {
-                    logger.error("unable to toJson the wire msg " + e);
-                    return ret;
-                }
+                byte[] wireByteMessage = wireMessage.serialize();
+                ret = sendToAll(wireByteMessage, false);
 
                 // bridge local
                 bridgeControlMessage(getDeviceId(), message);
@@ -206,17 +198,8 @@ public abstract class CommsProcessor implements BezirkComms {
 
                     wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_CTRL);
 
-                    try {
-                        byte[] wireByteMessage = wireMessage.serialize();
-
-                        //ret = sendToOne(wireByteMessage, recipient, false);
-                        // quick fix . since we are not able to extract the device from incoming message
-                        // unicast reply fails, so send everything as multicast
-                        ret = sendToAll(wireByteMessage, false);
-                    } catch (IOException e) {
-                        logger.error("unable to toJson the wire msg " + e);
-                        return false;
-                    }
+                    byte[] wireByteMessage = wireMessage.serialize();
+                    ret = sendToAll(wireByteMessage, false);
                 }
 
             } else {
@@ -389,14 +372,9 @@ public abstract class CommsProcessor implements BezirkComms {
 
                 wireMessage.setMsgType(WireMessage.WireMsgType.MSG_MULTICAST_EVENT);
 
+                byte[] wireByteMessage = wireMessage.serialize();
+                ret = sendToAll(wireByteMessage, false);
 
-                try {
-                    byte[] wireByteMessage = wireMessage.serialize();
-                    ret = sendToAll(wireByteMessage, false);
-                } catch (IOException e) {
-                    logger.error("unable to toJson the wire msg " + e);
-                    return ret;
-                }
 
                 // also send it locally
                 processWireMessage(getDeviceId(), ledger);
@@ -434,13 +412,8 @@ public abstract class CommsProcessor implements BezirkComms {
                         return ret;
                     }
 
-                    try {
-                        byte[] wireByteMessage = wireMessage.serialize();
-                        ret = sendToOne(wireByteMessage, recipient, false);
-                    } catch (IOException e) {
-                        logger.error("unable to toJson the wire msg " + e);
-                        return false;
-                    }
+                    byte[] wireByteMessage = wireMessage.serialize();
+                    ret = sendToOne(wireByteMessage, recipient, false);
 
                     // FIXME : since we don't know the zyre-jni device id. we are sending now.
                     processWireMessage(recipient, ledger);
@@ -480,14 +453,7 @@ public abstract class CommsProcessor implements BezirkComms {
 
         wireMessage.setWireMsgStatus(WireMessage.WireMsgStatus.MSG_RAW);
 
-        byte[] data;
-
-        try {
-            data = wireMessage.serialize();
-        } catch (IOException e) {
-            logger.error("Ledger wire message serialization error " + e);
-            return false;
-        }
+        byte[] data = wireMessage.serialize();
 
         if (message.isMulticast()) {
             sendToAll(data, false);
@@ -825,8 +791,8 @@ public abstract class CommsProcessor implements BezirkComms {
 
             if (!WireMessage.checkVersion(msg)) {
                 String mismatchedVersion = WireMessage.getVersion(msg);
-				/*logger.error("Unknown message received. Bezirk version > "+ BezirkVersion.getWireVersion() +
-						" . Incoming msg version > " + mismatchedVersion);*/
+                /*logger.error("Unknown message received. Bezirk version > "+ BezirkVersion.getWireVersion() +
+                        " . Incoming msg version > " + mismatchedVersion);*/
                 notification.versionMismatch(mismatchedVersion);
                 return;
             }

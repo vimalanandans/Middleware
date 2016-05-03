@@ -59,15 +59,15 @@ public class MessageValidators implements Runnable {
         }
 
 
-        final String encryptedSerialzedHeader = sphereIf.decryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getEncryptedHeader());
-        if (!BezirkValidatorUtility.checkForString(encryptedSerialzedHeader)) {
+        final String encryptedSerializedHeader = sphereIf.decryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getEncryptedHeader());
+        if (!BezirkValidatorUtility.checkForString(encryptedSerializedHeader)) {
             logger.error(" Serialized Decrypted Header is null");
             return;
         }
-        eLedger.setSerializedHeader(encryptedSerialzedHeader);
+        eLedger.setSerializedHeader(encryptedSerializedHeader);
 
         //Set Header
-        if (!setHeader(eLedger, encryptedSerialzedHeader)) {
+        if (!setHeader(eLedger, encryptedSerializedHeader)) {
             logger.error("Dropping Msg setHeader failed");
             return;
         }
@@ -75,30 +75,30 @@ public class MessageValidators implements Runnable {
         // Check Integrity
         boolean success = this.computedDevId.equals(eLedger.getHeader().getSenderSEP().device);
         if (!success) {
-            logger.error("Dropping Msg Integerity failed");
+            logger.error("Dropping Msg Integrity failed");
             return;
         }
 
-        //Clarify Add received message to receiverMessagerQueue
+        //Clarify Add received message to receiverMessengerQueue
         //MessageQueueManager.getReceiverMessageQueue().addToQueue(eLedger);
         bezirkComms.addToQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
 
     }
 
-    private Boolean setHeader(EventLedger eLedger, String encryptedSerialzedHeader) {
+    private Boolean setHeader(EventLedger eLedger, String encryptedSerializedHeader) {
         if (eLedger.getIsMulticast()) {
-            MulticastHeader mHeader = new Gson().fromJson(encryptedSerialzedHeader, MulticastHeader.class);
+            MulticastHeader mHeader = new Gson().fromJson(encryptedSerializedHeader, MulticastHeader.class);
             if (!BezirkValidatorUtility.checkHeader(mHeader) || null == eLedger.getEncryptedMessage()) {
-                logger.error(" Serialized Decrypted Header (Multicast) is not having all the feilds defined");
+                logger.error(" Serialized Decrypted Header (Multicast) is not having all the fields defined");
                 //MessageQueueManager.getReceiverMessageQueue().removeFromQueue(eLedger);
                 bezirkComms.removeFromQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
                 return false;
             }
             eLedger.setHeader(mHeader);
         } else {
-            UnicastHeader uHeader = new Gson().fromJson(encryptedSerialzedHeader, UnicastHeader.class);
+            UnicastHeader uHeader = new Gson().fromJson(encryptedSerializedHeader, UnicastHeader.class);
             if (!BezirkValidatorUtility.checkHeader(uHeader)) {
-                logger.error(" Serialized Decrypted Header ( Unicast ) is not having all the feilds defined");
+                logger.error(" Serialized Decrypted Header ( Unicast ) is not having all the fields defined");
                 //MessageQueueManager.getReceiverMessageQueue().removeFromQueue(eLedger);
                 bezirkComms.removeFromQueue(BezirkCommsLegacy.COMM_QUEUE_TYPE.EVENT_RECEIVE_QUEUE, eLedger);
                 return false;
@@ -122,7 +122,7 @@ public class MessageValidators implements Runnable {
         // Check Integrity
         final Boolean success = this.computedDevId.equals(cLedger.getMessage().getSender().device);
         if (!success) {
-            logger.debug("Dropping Msg Integerity failed");
+            logger.debug("Dropping Msg Integrity failed");
             return;
         }
 

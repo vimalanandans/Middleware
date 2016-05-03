@@ -51,11 +51,6 @@ public class BezirkRestRequestHandler extends DefaultHandler {
         return "Not Yet Implemented!!";
     }
 
-    /**
-     * @param urlParams
-     * @param session
-     * @return
-     */
     private String callService(Map<String, String> urlParams, NanoHTTPD.IHTTPSession session) {
 
         //sphere which will be used for all the communication.... will retrieved from UI and saved in the BezirkCommsManager object.
@@ -136,7 +131,7 @@ public class BezirkRestRequestHandler extends DefaultHandler {
     }
 
     /**
-     * Retreive the HTTP Body form  the http post request
+     * Retrieve the HTTP Body form  the http post request
      *
      * @param session
      * @return

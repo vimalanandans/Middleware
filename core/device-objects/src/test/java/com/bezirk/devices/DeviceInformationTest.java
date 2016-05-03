@@ -19,7 +19,7 @@ public class DeviceInformationTest {
         assertEquals("DeviceID not equal to the set value.", deviceId, deviceInformation.getDeviceId());
         assertEquals("Device name not equal to the set value.", deviceName, deviceInformation.getDeviceName());
         assertTrue("DeviceInfo is not considered equal to itself.", deviceInformation.equals(deviceInformation));
-        assertFalse("DeviceInfo is considered equal to null.", deviceInformation.equals(null));
+        assertNotEquals("DeviceInfo is considered equal to null.", null, deviceInformation);
 
 
         deviceName = "DeviceB";

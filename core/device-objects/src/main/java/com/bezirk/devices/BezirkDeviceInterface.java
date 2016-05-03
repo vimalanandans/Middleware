@@ -8,7 +8,7 @@ import com.bezirk.middleware.addressing.Location;
 /**
  * @author GUR1PI
  */
-public interface UPADeviceInterface {
+public interface BezirkDeviceInterface {
 
     /**
      * Used for changing the device name
@@ -46,17 +46,9 @@ public interface UPADeviceInterface {
      */
     public Location getDeviceLocation();
 
-    /**
-     * @param deviceType
-     * @return
-     */
     public boolean setDeviceType(String deviceType);
 
-    /**
-     * @return
-     */
     public String getDeviceType();
-
 
     /**
      * Provides the unique ID of the device

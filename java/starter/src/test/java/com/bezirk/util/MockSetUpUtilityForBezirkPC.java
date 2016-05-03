@@ -6,7 +6,7 @@ import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.device.BezirkDeviceType;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.DBConstants;
 import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.persistence.SadlPersistence;
@@ -162,7 +162,7 @@ public class MockSetUpUtilityForBezirkPC {
         return bezirkSadlManager;
     }
 
-    public UPADeviceInterface getUpaDevice() {
+    public BezirkDeviceInterface getUpaDevice() {
 
         return upaDevice;
     }

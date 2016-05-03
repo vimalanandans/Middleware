@@ -171,11 +171,11 @@ public class SphereRegistryPersistenceTest {
 
 		/*STORING SPHERE KEYS*/
 
-        byte[] sphereKey1 = new String("sphere-key-1").getBytes();
-        byte[] sphereKey2 = new String("sphere-key-2").getBytes();
+        byte[] sphereKey1 = "sphere-key-1".getBytes();
+        byte[] sphereKey2 = "sphere-key-2".getBytes();
 
-        byte[] sphereKeyValue1 = new String("SOME DUMMY VALUE").getBytes();
-        byte[] sphereKeyValue2 = new String("Some DIFFERENT DUMMY VALUE").getBytes();
+        byte[] sphereKeyValue1 = "SOME DUMMY VALUE".getBytes();
+        byte[] sphereKeyValue2 = "Some DIFFERENT DUMMY VALUE".getBytes();
 
         sphereRegistry.sphereKeyMap.put("sphere-key-1", new SphereKeys(sphereKey1, sphereKeyValue1));
         sphereRegistry.sphereKeyMap.put("sphere-key-2", new SphereKeys(sphereKey2, sphereKeyValue2));

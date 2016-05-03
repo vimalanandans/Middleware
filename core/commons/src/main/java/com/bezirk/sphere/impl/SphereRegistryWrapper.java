@@ -1,7 +1,7 @@
 package com.bezirk.sphere.impl;
 
 import com.bezirk.commons.BezirkId;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
@@ -50,7 +50,7 @@ public class SphereRegistryWrapper {
 
     private SphereRegistry registry = null;
     private SpherePersistence spherePersistence = null;
-    private UPADeviceInterface upaDevice;
+    private BezirkDeviceInterface upaDevice;
     private BezirkSphereListener sphereListener;
     private ISphereConfig sphereConfig;
     private CryptoInternals crypto;
@@ -73,7 +73,7 @@ public class SphereRegistryWrapper {
      * @param spherePersistence - SpherePersistence interface object. Should not be null.
      */
     public SphereRegistryWrapper(SphereRegistry registry, SpherePersistence spherePersistence,
-                                 UPADeviceInterface upaDevice, CryptoInternals crypto, BezirkSphereListener sphereListener,
+                                 BezirkDeviceInterface upaDevice, CryptoInternals crypto, BezirkSphereListener sphereListener,
                                  ISphereConfig sphereConfig) {
         if (null == registry || null == spherePersistence || null == upaDevice || null == crypto
                 || null == sphereConfig) {
@@ -458,7 +458,7 @@ public class SphereRegistryWrapper {
     }
 
     /**
-     * Generate sphere name using information from {@link UPADeviceInterface}
+     * Generate sphere name using information from {@link BezirkDeviceInterface}
      *
      * @return - generated sphere name.
      */
@@ -539,7 +539,7 @@ public class SphereRegistryWrapper {
      * TODO: Has to be moved to Zirk.java
      *
      * @param deviceId : zirk owner deviceId
-     * @return: <code>true</code> if the zirk is local for this device, <code>false</code> otherwise
+     * @return <code>true</code> if the zirk is local for this device, <code>false</code> otherwise
      * or if deviceId is passed as <code>null</code>
      */
     public boolean isServiceLocal(String deviceId) {
@@ -984,7 +984,7 @@ public class SphereRegistryWrapper {
      * registry. For retrieving device information, use
      * {@link ISphereUtils#getDeviceInformation(String)}
      * which wraps around this method along with retrieving current device's
-     * information from {@link UPADeviceInterface}
+     * information from {@link BezirkDeviceInterface}
      * </p>
      *
      * @param deviceId whose DeviceInformation object has to be retrieved.
@@ -1024,7 +1024,7 @@ public class SphereRegistryWrapper {
      * out the current implementation of storing device information
      * <p>
      * Currently the information about the current device is maintained using
-     * UPADeviceInterface implementation. Also the information which is received
+     * BezirkDeviceInterface implementation. Also the information which is received
      * from other devices in operation like invite/join/catch is stored in the
      * sphere registry.
      * </p><p>
@@ -1093,7 +1093,6 @@ public class SphereRegistryWrapper {
      *
      * @param deviceId Id of the device (IP)
      * @return Device Name if exists, null otherwise
-     * @author Vijet
      */
     public String getDeviceName(final String deviceId) {
         if (containsDevice(deviceId))

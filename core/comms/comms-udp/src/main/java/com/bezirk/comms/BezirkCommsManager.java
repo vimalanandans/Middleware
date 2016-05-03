@@ -70,7 +70,7 @@ public class BezirkCommsManager implements BezirkCommsLegacy {
     //private Thread discThread;
 
     // sphere Discovery thread.
-    //this is Moved to uhusphere
+    // this is Moved to BezirkSphere
     // private Thread sphereDiscThread;
     private Thread eSenderThread = null;
     private Thread cReceiverThread = null;
@@ -79,8 +79,6 @@ public class BezirkCommsManager implements BezirkCommsLegacy {
      * Version Callback that will be used to inform the platfroms when there is mismatch in versions.
      * This parameter will be injected in all the components that will be checking for versions to
      * be compatible before they are processed.
-     *
-     * @author Vijet Badigannavar
      */
     private CommsNotification notification = null;
 

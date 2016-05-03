@@ -9,7 +9,6 @@ import com.bezirk.protocols.penguin.v01.GetPreference;
  * and is used in the testing flow
  *
  * @author Himadri Sikhar Khargharia
- * @created 27/10/2014
  */
 public class GetPreferenceTest extends GetPreference {
     /**

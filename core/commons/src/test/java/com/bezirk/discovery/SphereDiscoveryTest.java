@@ -1,7 +1,7 @@
 package com.bezirk.discovery;
 
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
@@ -84,7 +84,7 @@ public class SphereDiscoveryTest {
         int max = 1;
         SphereDiscoveryRecord disc = new SphereDiscoveryRecord(sphereId, timeout, max);
 
-        UPADeviceInterface upaDevice = null;
+        BezirkDeviceInterface upaDevice = null;
         SphereRegistry sphereRegistry = new SphereRegistry();
         CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
         BezirkSphere bezirkSphere = new BezirkSphere(cryptoEngine, upaDevice, sphereRegistry);

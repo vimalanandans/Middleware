@@ -27,22 +27,15 @@ public class LoggingServiceMessageTest {
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(
             serviceId);
 
-
-    /**
-     * @throws java.lang.Exception
-     */
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
+    public static void setUpBeforeClass() {
 
         logger.info("***** Setting up LoggingServiceMessageTest TestCase *****");
 
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
     @AfterClass
-    public static void tearDownAfterClass() throws Exception {
+    public static void tearDownAfterClass() {
 
         logger.info("***** Shutting down LoggingServiceMessageTest TestCase *****");
     }

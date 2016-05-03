@@ -14,41 +14,24 @@ public class BezirkPipeInfo {
 
     private final String pipeURL;
 
-    /**
-     * @param pipeId
-     * @param pipeName
-     * @param pipeURL
-     */
     public BezirkPipeInfo(final String pipeId, final String pipeName, final String pipeURL) {
         this.pipeId = pipeId;
         this.pipeName = pipeName;
         this.pipeURL = pipeURL;
     }
 
-    /**
-     * @return the pipeId
-     */
     public final String getPipeId() {
         return pipeId;
     }
 
-    /**
-     * @return the pipeName
-     */
     public final String getPipeName() {
         return pipeName;
     }
 
-    /**
-     * @return the pipeURL
-     */
     public final String getPipeURL() {
         return pipeURL;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return "BezirkPipeInfo [pipeId=" + pipeId + ",\npipeName=" + pipeName

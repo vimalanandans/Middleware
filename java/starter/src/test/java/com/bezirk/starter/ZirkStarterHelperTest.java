@@ -4,7 +4,7 @@ import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.device.BezirkDeviceType;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
@@ -51,7 +51,7 @@ public class ZirkStarterHelperTest {
     private void testInitSphere() {
 
         com.bezirk.starter.ServiceStarterHelper helper = new com.bezirk.starter.ServiceStarterHelper();
-        UPADeviceInterface bezirkDevice = mockSetUP.getUpaDevice();
+        BezirkDeviceInterface bezirkDevice = mockSetUP.getUpaDevice();
         RegistryPersistence registryPersistence = mockSetUP.getRegistryPersistence();
         BezirkComms commsLegacy = Mockito.mock(BezirkCommsLegacy.class);
         BezirkSphereAPI uhuSphere = helper.initSphere(bezirkDevice, registryPersistence, commsLegacy);

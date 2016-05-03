@@ -15,10 +15,6 @@ public final class StreamUtils {
         // private constructor to prevent instantiation of this utility class
     }
 
-    /**
-     * @param is
-     * @return
-     */
     public static String getStringFromInputStream(InputStream is) {
         final StringBuilder sb = new StringBuilder();
 

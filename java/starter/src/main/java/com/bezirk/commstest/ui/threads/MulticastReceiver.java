@@ -154,9 +154,6 @@ public class MulticastReceiver extends Thread {
         return true;
     }
 
-    /**
-     * @param uSendingPort
-     */
     public void updateConfiguration(int multicastReceivingPort, int uSendingPort) {
 
         this.multicastReceivingPort = multicastReceivingPort;

@@ -8,7 +8,7 @@ import com.google.gson.Gson;
  */
 public class ControlMessage {
     private String sphereId = "";
-    private Integer messageId = new Integer(-1); //message Id check if used
+    private Integer messageId = -1; //message Id check if used
     private Discriminator discriminator;
     private String uniqueKey = "";
     private Boolean retransmit = true;

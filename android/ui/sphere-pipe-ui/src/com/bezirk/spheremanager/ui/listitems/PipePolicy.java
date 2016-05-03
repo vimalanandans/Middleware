@@ -15,19 +15,19 @@ public class PipePolicy {
     }
 
     /**
-     * @param pRole
+     * @param protocolItem
      * @param reason describes the benefit for the user for allowing this protocol
      */
-    public void addProtocol(ProtocolItem pRole, String reason) {
-        reasonMap.put(pRole, reason);
+    public void addProtocol(ProtocolItem protocolItem, String reason) {
+        reasonMap.put(protocolItem, reason);
     }
 
     /**
-     * @param pRole
+     * @param protocolItem
      * @return the stated reason for allowing this protocol, or NULL if the protocol is not defined in the policy
      */
-    public String getReason(ProtocolItem pRole) {
-        return reasonMap.get(pRole);
+    public String getReason(ProtocolItem protocolItem) {
+        return reasonMap.get(protocolItem);
     }
 
     /**

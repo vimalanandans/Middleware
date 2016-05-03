@@ -13,10 +13,10 @@ import java.util.Set;
  */
 public class ActuateBulb extends Event {
     public final static String TOPIC = ActuateBulb.class.getSimpleName();
-    private HueVocab.Commands command;
+    private final HueVocab.Commands command;
     private HueVocab.Color color = HueVocab.Color.DEFAULT;
     private Set<Integer> lightNumber;
-    private Location location;
+    private final Location location;
     private String hubIP;
     private String hubMac;
     private Boolean isVoiceInitiated = false;

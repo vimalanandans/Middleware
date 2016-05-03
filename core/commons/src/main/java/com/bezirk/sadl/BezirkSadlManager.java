@@ -127,7 +127,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
             logger.error("Invalid UnRegistration, Validation failed");
             return false;
         }
-        if (sadlRegistry.unregisterService(serviceId)) {
+        if (sadlRegistry.unregisterZirk(serviceId)) {
             persistSadlRegistry();
             return true;
         }

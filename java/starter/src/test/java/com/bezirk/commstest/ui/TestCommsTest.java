@@ -2,8 +2,8 @@ package com.bezirk.commstest.ui;
 
 import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.BezirkCommunications;
-import com.bezirk.devices.UPADeviceForPC;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceForPC;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.Before;
@@ -23,8 +23,8 @@ public class TestCommsTest {
     int pingCount = 5;
 
     com.bezirk.commstest.ui.CommsTest commsTest;
-    UPADeviceInterface upaDeviceInterface;
-    UPADeviceForPC upaDevice = Mockito.mock(UPADeviceForPC.class);
+    BezirkDeviceInterface bezirkDeviceInterface;
+    BezirkDeviceForPC upaDevice = Mockito.mock(BezirkDeviceForPC.class);
     private boolean recievedPing = false;
 
     @Before

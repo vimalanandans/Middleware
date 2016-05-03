@@ -21,12 +21,12 @@ public class BezirkPCNetworkUtilTest {
     private static MockSetUpUtilityForBezirkPC mockSetUP = new MockSetUpUtilityForBezirkPC();
 
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
+    public static void setUpBeforeClass() {
         System.setProperty("InterfaceName", mockSetUP.getInterface().getName());
     }
 
     @AfterClass
-    public static void tearDownAfterClass() throws Exception {
+    public static void tearDownAfterClass() {
         System.clearProperty("InterfaceName");
     }
 

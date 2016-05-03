@@ -19,13 +19,7 @@ public class IncompleteQuestion extends Question {
         super(topic);
     }
 
-
-    /**
-     * Use instead of the generic Message.fromJson()
-     * @param json
-     * @return IncompleteQuestion
-     */
-    public static IncompleteQuestion deserialize(String json) {
+    public static IncompleteQuestion fromJson(String json) {
         return Event.fromJson(json, IncompleteQuestion.class);
     }
 }

@@ -29,7 +29,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @author vbd4kor
- * @Date 24-09-2014
  * This class tests the local MulticastEvent communication. Three MockServices register and subscribe with common ProtocolRole.
  * Sub-test- 1 :MockServiceA sends the multicastEvent on the wire. MockServiceB and MockServiceC should receive the Events.
  * Sub-test- 2 : MockServiceC changes to New Location. MockServiceA pings a multicast event by setting the address to new location

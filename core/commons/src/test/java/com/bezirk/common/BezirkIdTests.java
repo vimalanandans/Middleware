@@ -25,7 +25,7 @@ public class BezirkIdTests {
 
         // create a list of hash ids and push the data
         // while pushing check if it already exist. if yes then it is not unique
-        int count = 0;
+        int count;
 
         // tested for count 10000000L. for faster build reduced to 100
         for (count = 0; count < 100L; count++) {
@@ -66,8 +66,8 @@ public class BezirkIdTests {
 
         logger.info("short id for " + BezirkIdTests.class.getName() + " > id3 > " + shortId3 + " > id4 >" + shortId4);
 
-        assertTrue(shortId1 != shortId2);
-        assertTrue(shortId3 != shortId4);
+        assertEquals(shortId1, shortId2);
+        assertEquals(shortId3, shortId4);
     }
 
     @Test

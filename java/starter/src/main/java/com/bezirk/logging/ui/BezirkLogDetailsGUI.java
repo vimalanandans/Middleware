@@ -119,7 +119,7 @@ public class BezirkLogDetailsGUI extends JFrame {
      *
      * @throws Exception
      */
-    private void jbInit() throws Exception {
+    private void jbInit() {
 
         this.setVisible(true);
         this.getContentPane().setLayout(gridBagDialogLayout);

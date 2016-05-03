@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.impl;
 
-import com.bezirk.devices.UPADeviceForPC;
+import com.bezirk.devices.BezirkDeviceForPC;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.BezirkDevMode.Mode;
 
@@ -71,10 +71,10 @@ public class SphereProperties implements ISphereConfig {
     @Override
     public boolean setDefaultSphereName(String name) {
         try {
-            Properties sphereProperties = UPADeviceForPC.loadProperties(SPHERE_PROPERTIES_FILE);
+            Properties sphereProperties = BezirkDeviceForPC.loadProperties(SPHERE_PROPERTIES_FILE);
             sphereProperties.setProperty(DEFAULT_SPHERE_NAME, name);
             URL propsURL = SphereProperties.class.getClassLoader().getResource(SPHERE_PROPERTIES_FILE);
-            UPADeviceForPC.storeProperties(sphereProperties, propsURL);
+            BezirkDeviceForPC.storeProperties(sphereProperties, propsURL);
             // once properties are stored successfully, update the
             // defaultSphereName
             this.defaultSphereName = name;
@@ -90,11 +90,11 @@ public class SphereProperties implements ISphereConfig {
         // set mode if different from current mode
         if (!this.mode.equals(mode)) {
             try {
-                Properties sphereProperties = UPADeviceForPC.loadProperties(SPHERE_PROPERTIES_FILE);
+                Properties sphereProperties = BezirkDeviceForPC.loadProperties(SPHERE_PROPERTIES_FILE);
                 String modeToSet = (mode.equals(Mode.ON)) ? "true" : "false";
                 sphereProperties.setProperty(SPHERE_MODE, modeToSet);
                 URL propsURL = SphereProperties.class.getClassLoader().getResource(SPHERE_PROPERTIES_FILE);
-                UPADeviceForPC.storeProperties(sphereProperties, propsURL);
+                BezirkDeviceForPC.storeProperties(sphereProperties, propsURL);
                 // once properties are stored successfully, update the
                 // mode value
                 this.mode = mode;
@@ -114,7 +114,7 @@ public class SphereProperties implements ISphereConfig {
     private Properties getProperties() {
         Properties sphereProperties = null;
         try {
-            sphereProperties = UPADeviceForPC.loadProperties(SPHERE_PROPERTIES_FILE);
+            sphereProperties = BezirkDeviceForPC.loadProperties(SPHERE_PROPERTIES_FILE);
             logger.info(sphereProperties.toString());
         } catch (Exception e) {
             logger.error("getProperties", e);
@@ -143,7 +143,6 @@ public class SphereProperties implements ISphereConfig {
      * {@link #validateProperties(Properties)}
      *
      * @param properties
-     * @return
      */
     private void populateObjectMembers(Properties properties) {
         sphereName = properties.getProperty(SPHERE_NAME);

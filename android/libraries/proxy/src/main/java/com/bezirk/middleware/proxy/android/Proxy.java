@@ -97,7 +97,7 @@ public final class Proxy implements Bezirk {
         ComponentName componentName = new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME);
         registerIntent.setComponent(componentName);
         registerIntent.setAction(ACTION_BEZIRK_REGISTER);
-        registerIntent.putExtra(serviceIdKEY, new Gson().toJson((BezirkZirkId) serviceId));
+        registerIntent.putExtra(serviceIdKEY, new Gson().toJson(serviceId));
         registerIntent.putExtra(serviceNameKEY, zirkName);
 
         ComponentName retName = mContext.startService(registerIntent);
@@ -144,7 +144,7 @@ public final class Proxy implements Bezirk {
         Intent subscribeIntent = new Intent();
         subscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         subscribeIntent.setAction(ACTION_BEZIRK_SUBSCRIBE);
-        subscribeIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) subscriber));
+        subscribeIntent.putExtra("zirkId", new Gson().toJson(subscriber));
         SubscribedRole subRole = new SubscribedRole(protocolRole);
         subscribeIntent.putExtra("protocol", subRole.getSubscribedProtocolRole());
         ComponentName retName = mContext.startService(subscribeIntent);
@@ -171,7 +171,7 @@ public final class Proxy implements Bezirk {
         Intent unSubscribeIntent = new Intent();
         unSubscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         unSubscribeIntent.setAction(ACTION_BEZIRK_UNSUBSCRIBE);
-        unSubscribeIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) subscriber));
+        unSubscribeIntent.putExtra("zirkId", new Gson().toJson(subscriber));
         String pRoleAsString = (null == protocolRole) ? null : (new SubscribedRole(protocolRole).getSubscribedProtocolRole());
         unSubscribeIntent.putExtra("protocol", pRoleAsString);
 
@@ -195,7 +195,7 @@ public final class Proxy implements Bezirk {
         Intent multicastEventIntent = new Intent();
         multicastEventIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         multicastEventIntent.setAction(ACTION_SERVICE_SEND_MULTICAST_EVENT);
-        multicastEventIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) sender));
+        multicastEventIntent.putExtra("zirkId", new Gson().toJson(sender));
 
         multicastEventIntent.putExtra("address", receiver.toJson());
         multicastEventIntent.putExtra("multicastEvent", event.toJson());
@@ -218,8 +218,8 @@ public final class Proxy implements Bezirk {
         Intent unicastEventIntent = new Intent();
         unicastEventIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         unicastEventIntent.setAction(ACTION_SERVICE_SEND_UNICAST_EVENT);
-        unicastEventIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) sender));
-        unicastEventIntent.putExtra("receiverSep", new Gson().toJson((BezirkZirkEndPoint) receiver));
+        unicastEventIntent.putExtra("zirkId", new Gson().toJson(sender));
+        unicastEventIntent.putExtra("receiverSep", new Gson().toJson(receiver));
         unicastEventIntent.putExtra("eventMsg", event.toJson());
         ComponentName retName = mContext.startService(unicastEventIntent);
         if (retName == null) {
@@ -236,7 +236,7 @@ public final class Proxy implements Bezirk {
         final Intent multicastStreamIntent = new Intent();
         multicastStreamIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         multicastStreamIntent.setAction(ACTION_BEZIRK_PUSH_MULTICAST_STREAM);
-        multicastStreamIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) sender));
+        multicastStreamIntent.putExtra("zirkId", new Gson().toJson(sender));
         multicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
         multicastStreamIntent.putExtra("stream", stream.toJson());
         multicastStreamIntent.putExtra("localStreamId", streamId);
@@ -271,7 +271,7 @@ public final class Proxy implements Bezirk {
         final Intent unicastStreamIntent = new Intent();
         unicastStreamIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         unicastStreamIntent.setAction(ACTION_BEZIRK_PUSH_UNICAST_STREAM);
-        unicastStreamIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) sender));
+        unicastStreamIntent.putExtra("zirkId", new Gson().toJson(sender));
         unicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
         unicastStreamIntent.putExtra("stream", stream.toJson());
         unicastStreamIntent.putExtra("filePath", file);
@@ -301,7 +301,7 @@ public final class Proxy implements Bezirk {
         addPipe.setAction(BezirkActions.ACTION_PIPE_REQUEST);
         addPipe.putExtra(BezirkActions.KEY_PIPE_NAME, pipe.getName());
         addPipe.putExtra(BezirkActions.KEY_PIPE_REQ_ID, pipeId);
-        addPipe.putExtra(BezirkActions.KEY_SENDER_ZIRK_ID, new Gson().toJson((BezirkZirkId) requester));
+        addPipe.putExtra(BezirkActions.KEY_SENDER_ZIRK_ID, new Gson().toJson(requester));
 
         addPipe.putExtra(BezirkActions.KEY_PIPE_CLASS, pipe.getClass().getCanonicalName());
 
@@ -339,7 +339,7 @@ public final class Proxy implements Bezirk {
         Intent discoverIntent = new Intent();
         discoverIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         discoverIntent.setAction(ACTION_SERVICE_DISCOVER);
-        discoverIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) zirk));
+        discoverIntent.putExtra("zirkId", new Gson().toJson(zirk));
         discoverIntent.putExtra("address", new Gson().toJson(scope));
         discoverIntent.putExtra("protocolRole", new SubscribedRole(protocolRole).getSubscribedProtocolRole());
         discoverIntent.putExtra("timeout", timeout);
@@ -358,7 +358,7 @@ public final class Proxy implements Bezirk {
         Intent locationIntent = new Intent();
         locationIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         locationIntent.setAction(ACTION_BEZIRK_SETLOCATION);
-        locationIntent.putExtra("zirkId", new Gson().toJson((BezirkZirkId) zirk));
+        locationIntent.putExtra("zirkId", new Gson().toJson(zirk));
         locationIntent.putExtra("locationData", new Gson().toJson(location));
         mContext.startService(locationIntent);
     }

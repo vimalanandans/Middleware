@@ -9,8 +9,6 @@ import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 /**
- * @author Vijet Badigannavar(bvijet@in.bosch.com)
- * @Date 4-11-2014
  * Utility class that is used to Validate different Data Structures used in Bezirk.
  * BezirkDevelopers are advised to create corresponding functions here and validate the data structure.
  */

@@ -13,7 +13,8 @@ import java.util.LinkedHashMap;
  * The BezirkCommunications class serves a dual purpose:
  * <ul>
  *   <li>Initialize several static variables such as portNumbers, addresses, queueSizes that are
- *   necessary for comms. This is done in {@link BezirkCommunications#init()} method</li>
+ *   necessary for comms. These values are set by <code>com.bezirk.comms.BezirkCommsPC.init()</code>
+ *   and <code>com.bezirk.comms.BezirkCommsAndroid.init()</code></li>
  *   <li>Deals with the reception of duplicate messages</li>
  * </ul>
  * If a duplicate message is received Sadl uses this class to detect duplicacy of the message.
@@ -59,7 +60,6 @@ public final class BezirkCommunications {
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
     private BezirkCommunications() {
     }
-
 
     public static String getINTERFACE_NAME() {
         return INTERFACE_NAME;

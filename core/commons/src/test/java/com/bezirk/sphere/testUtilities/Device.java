@@ -3,13 +3,13 @@
  */
 package com.bezirk.sphere.testUtilities;
 
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.addressing.Location;
 
 /**
  * @author Rishabh Gulati
  */
-public final class Device implements UPADeviceInterface {
+public final class Device implements BezirkDeviceInterface {
 
     public static final int DEVICE_NO = 0;
     public static final String DEVICE_ID = "TestDeviceId";
@@ -34,7 +34,7 @@ public final class Device implements UPADeviceInterface {
      * (non-Javadoc)
      *
      * @see
-     * UPADeviceInterface#setDeviceName(java.lang.String)
+     * BezirkDeviceInterface#setDeviceName(java.lang.String)
      */
     @Override
     public boolean setDeviceName(String deviceName) {
@@ -45,7 +45,7 @@ public final class Device implements UPADeviceInterface {
     /*
      * (non-Javadoc)
      *
-     * @see UPADeviceInterface#getDeviceName()
+     * @see BezirkDeviceInterface#getDeviceName()
      */
     @Override
     public String getDeviceName() {
@@ -57,7 +57,7 @@ public final class Device implements UPADeviceInterface {
      * (non-Javadoc)
      *
      * @see
-     * UPADeviceInterface#setDeviceLocation(com.bosch.upa.
+     * BezirkDeviceInterface#setDeviceLocation(com.bosch.upa.
      * uhu.api.addressing.Location)
      */
     @Override
@@ -69,7 +69,7 @@ public final class Device implements UPADeviceInterface {
     /*
      * (non-Javadoc)
      *
-     * @see UPADeviceInterface#getDeviceLocation()
+     * @see BezirkDeviceInterface#getDeviceLocation()
      */
     @Override
     public Location getDeviceLocation() {
@@ -80,7 +80,7 @@ public final class Device implements UPADeviceInterface {
     /*
      * (non-Javadoc)
      *
-     * @see UPADeviceInterface#getDeviceId()
+     * @see BezirkDeviceInterface#getDeviceId()
      */
     @Override
     public String getDeviceId() {

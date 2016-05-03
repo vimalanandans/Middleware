@@ -77,7 +77,7 @@ public class SphereTest {
 
         assertTrue("Same sphere is not considered equal to itself.", sphere.equals(sphere));
 
-        assertFalse("sphere is considered equal to null.", sphere.equals(null));
+        assertNotEquals("sphere is considered equal to null.", null, sphere);
 
         assertFalse("sphere is considered equal to serviceID.", sphere.equals(serviceId));
 

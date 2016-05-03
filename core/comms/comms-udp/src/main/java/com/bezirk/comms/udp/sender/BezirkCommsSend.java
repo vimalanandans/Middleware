@@ -40,12 +40,12 @@ public class BezirkCommsSend {
 
     /**
      * The SenderThread invokes this method after the sphere Layer returns true.
-     * Note: The BezirkCommsSend sends a unicast if the recipient address has been set and multicast if the recipient address is not set
+     * Note: The BezirkCommsSend sends a unicast if the recipient address has been set and multicast
+     * if the recipient address is not set
      *
      * @param tcMessage the Message to be sent
      * @return true if the message is sent successfully
-     * @see com.bezirk.control.messages.EventControlMessage
-     * @see com.bezirk.comms.udp.threads.ReceiverThread
+     * @see com.bezirk.comms.udp.threads.EventReceiverThread
      */
     public static Boolean send(EventLedger tcMessage) {
         //Update the packaged message

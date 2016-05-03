@@ -32,11 +32,6 @@ public final class CommsTest {
         this.responseUI = response;
     }
 
-    /**
-     * Sends the ping
-     *
-     * @param pingCount
-     */
     public void sendPing(int pingCount) {
         final PingMessage msg = new PingMessage();
         msg.pingId = pingCount;
@@ -54,11 +49,6 @@ public final class CommsTest {
 
     }
 
-    /**
-     * sends a ping
-     *
-     * @param msg <DeviceName-PingId>
-     */
     private void sendPingMsg(final PingMessage msg) {
         DatagramPacket sendPacket;
         try {

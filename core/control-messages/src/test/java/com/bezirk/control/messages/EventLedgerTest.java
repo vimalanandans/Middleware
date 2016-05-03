@@ -38,22 +38,13 @@ public class EventLedgerTest {
     private static final Boolean isMulticast = true;
     private static final byte[] encryptedHeader = header.toString().getBytes();
 
-    /**
-     * @throws java.lang.Exception
-     */
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-
+    public static void setUpBeforeClass() {
         logger.info("***** Setting up EventLedgerTest TestCase *****");
-
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
     @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-
+    public static void tearDownAfterClass() {
         logger.info("***** Shutting down EventLedgerTest TestCase *****");
     }
 

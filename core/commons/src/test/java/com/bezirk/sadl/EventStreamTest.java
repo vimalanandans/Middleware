@@ -66,7 +66,7 @@ public class EventStreamTest {
 
 		
 		/*
-		 * ServiceA is registered and subscribed to EventlessProtocolRole and StreamlessProtocolRole. ServiceA is located at reception.
+         * ServiceA is registered and subscribed to EventlessProtocolRole and StreamlessProtocolRole. ServiceA is located at reception.
 		 * ServiceB is registered and subscribed to StreamlessProtocolRole with defaultlocation.
 		 * ServiceC is registered and subscribed to EventlessProtocolRole with defaultlocation.
 		 * */
@@ -94,11 +94,8 @@ public class EventStreamTest {
      * It should return true. SadlManager is queried with an invalid stream topic and it should return false.
      */
     private void testIsStreamTopicRegistered() {
-
-        boolean isStreamRegistered = false;
-
         String streamTopic = "DummyStream1";
-        isStreamRegistered = bezirkSadlManager.isStreamTopicRegistered(
+        boolean isStreamRegistered = bezirkSadlManager.isStreamTopicRegistered(
                 streamTopic, bezirkZirkAId);
         assertTrue(" DummyStream1 not found in registered topics when queried with ServiceA Id", isStreamRegistered);
 
@@ -121,10 +118,8 @@ public class EventStreamTest {
      * SadlManager is queried for event topic "MockEvent1" with ServiceA Id and ServiceB Id. Both should return true.
      */
     private void testCheckUnicastEvent() {
-
         String topic = "MockEvent1";
-        boolean isUnicasteventFound = true;
-        isUnicasteventFound = bezirkSadlManager.checkUnicastEvent(topic, null);
+        boolean isUnicasteventFound = bezirkSadlManager.checkUnicastEvent(topic, null);
         assertFalse("SadlManager returned true when MockEvent1 queried with no zirk Id", isUnicasteventFound);
         isUnicasteventFound = bezirkSadlManager.checkUnicastEvent(null,
                 bezirkZirkAId);

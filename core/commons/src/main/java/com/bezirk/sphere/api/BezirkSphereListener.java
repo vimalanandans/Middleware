@@ -8,24 +8,14 @@ package com.bezirk.sphere.api;
  */
 public interface BezirkSphereListener {
 
-    /**
-     * @param memberLeaveResponse
-     */
     void onLeaveResponseReceived(final String memberLeaveResponse);
 
-    /**
-     * @param leaveRequest
-     */
     void onLeaveRequestReceived(final String leaveRequest);
 
     void onCatchStatus(final Status status, final String message);
 
     void onShareStatus(final Status status, final String message);
 
-    /**
-     * @param sphereId
-     * @param status
-     */
     public void onSphereCreateStatus(String sphereId, SphereCreateStatus status);
 
     public void onSphereDiscovered(final boolean status, String sphereId);
@@ -37,5 +27,4 @@ public interface BezirkSphereListener {
     public enum Status {
         SCAN_SUCCESS, REQUEST_CREATED, REQUEST_SENT, REQUEST_RECEIVED, RESPONSE_CREATED, RESPONSE_SENT, RESPONSE_RECEIVED, FAILURE, SUCCESS
     }
-
 }

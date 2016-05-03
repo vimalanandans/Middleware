@@ -19,7 +19,7 @@
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 //
-//import UPADeviceInterface;
+//import BezirkDeviceInterface;
 //import BezirkSphereInfo;
 //import SphereRegistry;
 //import BezirkZirkId;
@@ -43,7 +43,7 @@
 //    private static SphereRegistry registry;
 //    private static SphereTestUtility sphereTestUtility;
 //    private static ISphereConfig sphereConfig;
-//    private static UPADeviceInterface upaDevice;
+//    private static BezirkDeviceInterface upaDevice;
 //    private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
 //    private static final Logger logger = LoggerFactory.getLogger(GetSpheres.class);
 //

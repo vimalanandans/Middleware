@@ -25,13 +25,8 @@ public class ClearData extends Event {
      */
     private String user;
 
-    /**
-     * @param stripe
-     * @param topic
-     */
     public ClearData() {
         super(Flag.NOTICE, topic);
-
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.bezirk.commons;
 
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.sphere.api.BezirkSphereAPI;
@@ -37,7 +37,7 @@ public final class BezirkCompManager {
      * or UPADeviceForAndroid
      *
      */
-    private static UPADeviceInterface upaDevice;
+    private static BezirkDeviceInterface upaDevice;
 
 
     private static ZirkMessageHandler platformSpecificCallback;
@@ -73,7 +73,7 @@ public final class BezirkCompManager {
     /**
      * @return the upaDevice
      */
-    public static UPADeviceInterface getUpaDevice() {
+    public static BezirkDeviceInterface getUpaDevice() {
         return upaDevice;
     }
 
@@ -81,27 +81,10 @@ public final class BezirkCompManager {
      * @param upaDevice
      *            the upaDevice to set
      */
-    public static void setUpaDevice(UPADeviceInterface upaDevice) {
+    public static void setUpaDevice(BezirkDeviceInterface upaDevice) {
         BezirkCompManager.upaDevice = upaDevice;
     }
 
-
-    /**
-     * This is the messageKeeper which bookKeeps requests for responses
-     * @param mK
-     */
-    /*public static void setMsgBookKeeper(MessageBookKeeper mK){
-		BezirkCompManager.msgKeeper = mK;
-	}
-	
-	public static MessageBookKeeper getMsgBookKeeper(){
-		return BezirkCompManager.msgKeeper;
-	}*/
-
-    /**
-     * setplatformSpecificCallback
-     * @param bezirkCallback
-     */
     public static void setplatformSpecificCallback(ZirkMessageHandler bezirkCallback) {
         BezirkCompManager.platformSpecificCallback = bezirkCallback;
     }

@@ -4,7 +4,7 @@
 package com.bezirk.sphere.testUtilities;
 
 import com.bezirk.commons.BezirkId;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
@@ -31,7 +31,6 @@ import java.util.UUID;
  * @author rishabh
  */
 public class SphereTestUtility {
-
     /* owner sphere names and ids */
     public final String OWNER_SPHERE_NAME_1 = "OWNER_SPHERE_NAME_1";
     public final String OWNER_SPHERE_NAME_2 = "OWNER_SPHERE_NAME_2";
@@ -61,12 +60,11 @@ public class SphereTestUtility {
     public final String MEMBER_ZIRK_NAME_4 = "MEMBER_ZIRK_NAME_4";
     public final BezirkZirkId MEMBER_SERVICE_ID_4 = new BezirkZirkId(MEMBER_ZIRK_NAME_4);
     /* devices */
-    public final UPADeviceInterface DEVICE_1;
-    public final UPADeviceInterface DEVICE_2;
+    public final BezirkDeviceInterface DEVICE_1;
+    public final BezirkDeviceInterface DEVICE_2;
 
-    ;
     private SphereRegistryWrapper sphereRegistryWrapper;
-    public SphereTestUtility(SphereRegistryWrapper sphereRegistryWrapper, UPADeviceInterface localDevice) {
+    public SphereTestUtility(SphereRegistryWrapper sphereRegistryWrapper, BezirkDeviceInterface localDevice) {
         this.sphereRegistryWrapper = sphereRegistryWrapper;
         this.DEVICE_1 = localDevice;
         this.DEVICE_2 = new Device();
@@ -74,7 +72,7 @@ public class SphereTestUtility {
 
     /**
      * Generates the following<br>
-     * sphere [Name: {@link #OWNER_SPHERE_NAME_1} Id: {@link #OWNER_SPHERE_ID_1}
+     * sphere [Name: {@link #OWNER_SPHERE_NAME_1} Id: {@link #OWNER_SPHERE_NAME_1}
      * Owner: {@link #DEVICE_1}]<br>
      * Contained Services:<br>
      * 1) [Name: {@link #OWNER_ZIRK_NAME_1} Id: {@link #OWNER_SERVICE_ID_1}
@@ -203,9 +201,8 @@ public class SphereTestUtility {
 
     /**
      * Generates a CatchRequest object consisting of:
-     * BezirkZirkEndPoint object: {@link #DEVICE_3}
+     * BezirkZirkEndPoint object: {@link #DEVICE_2}
      * catcherSphereId: {@link #generateOwnerCombo()}
-     * inviterShortCode: {@link #sphereUtils.getShareCode(catcherSphereId)}
      * BezirkDeviceInfo object: {@link #getBezirkDeviceInfo()}
      * sphereExchangeData: {@link #getExchangeData()}
      *
@@ -226,9 +223,7 @@ public class SphereTestUtility {
 
     /**
      * Generates a ShareRequest object consisting of:
-     * BezirkZirkEndPoint object: {@link #DEVICE_3}
      * sharerSphereId: {@link #generateOwnerCombo()}
-     * shortCode: {@link #BezirkId().getShortIdByHash(sharerSphereId)}
      * BezirkDeviceInfo object: {@link #getBezirkDeviceInfo()}
      *
      * @return - ShareRequest object.
@@ -244,11 +239,8 @@ public class SphereTestUtility {
 
     /**
      * Generates a ShareResponse object consisting of:
-     * BezirkZirkEndPoint sender object: {@link BezirkNetworkUtilities.getServiceEndPoint(null)}
-     * BezirkZirkEndPoint recipient object: {@link #DEVICE_3}
      * uniqueKey: null
      * sharerSphereId: {@link #generateOwnerCombo()}
-     * shortCode: {@link #BezirkId().getShortIdByHash(sharerSphereId)}
      * BezirkDeviceInfo object: {@link #getBezirkDeviceInfo()}
      * sphereExchangeData: {@link #getExchangeData()}
      *

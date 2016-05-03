@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.sphereRegistryWrapper.device;
 
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.impl.DeviceInformation;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
@@ -28,7 +28,7 @@ public class GetDeviceName {
     private static final Logger logger = LoggerFactory.getLogger(GetDeviceName.class);
 
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
-    public static UPADeviceInterface upaDevice;
+    public static BezirkDeviceInterface upaDevice;
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
 

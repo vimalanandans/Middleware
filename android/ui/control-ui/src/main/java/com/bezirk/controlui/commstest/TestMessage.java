@@ -3,8 +3,6 @@ package com.bezirk.controlui.commstest;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
-import java.io.IOException;
-
 /**
  * Created by vnd2kor on 12/10/2015.
  * TODO : Move this common
@@ -33,7 +31,7 @@ public class TestMessage {
     /**
      * @return Json representation of the message as a String.
      */
-    public String serialize() throws IOException {
+    public String serialize() {
         Gson gson = new Gson();
         return gson.toJson(this);
     }

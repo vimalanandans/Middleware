@@ -15,12 +15,6 @@ public class BezirkZirkInfo {
     private final boolean visible; // true if zirk is visible
     private boolean active;
 
-    /**
-     * @param zirkId
-     * @param zirkType
-     * @param active
-     * @param visible
-     */
     @Deprecated
     public BezirkZirkInfo(BezirkZirkId zirkId, String zirkName, String zirkType, boolean active,
                           boolean visible) {

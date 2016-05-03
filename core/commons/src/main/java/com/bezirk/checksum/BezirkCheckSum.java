@@ -38,16 +38,16 @@ public final class BezirkCheckSum {
 
 
     /**
-     * This algorithm is used to compute the Checksum
+     * Computer CRC for <code>data</code>.
      *
-     * @param dataToBeComputed
-     * @return
+     * @param data data checksum will be generated for
+     * @return the CRC for <code>data</code>
      */
-    public static byte[] computeCRC(final byte[] dataToBeComputed) {
+    public static byte[] computeCRC(final byte[] data) {
         byte[] computedCheckSum = null;
         try {
             CRC32 crc32 = new CRC32();
-            crc32.update(dataToBeComputed);
+            crc32.update(data);
             Long crcValue = crc32.getValue();
             computedCheckSum = String.valueOf(crcValue).getBytes();
         } catch (Exception e) {

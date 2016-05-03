@@ -20,8 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 
 /**
- * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
- *         This class is used to show the current Device Location which is represented as the fields within {@link IndoorLocation}
+ * This class is used to show the current Device Location which is represented as the fields within {@link Location}
  */
 public class DeviceWindow extends JFrame {
     private static final Logger logger = LoggerFactory.getLogger(DeviceWindow.class);
@@ -35,7 +34,7 @@ public class DeviceWindow extends JFrame {
      * Create the frame.
      */
     public DeviceWindow() {
-        final com.bezirk.devices.UPADeviceInterface upaDevice = BezirkCompManager.getUpaDevice();
+        final BezirkDeviceInterface upaDevice = BezirkCompManager.getUpaDevice();
 
         setTitle("Device Location Window");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -111,13 +110,13 @@ public class DeviceWindow extends JFrame {
     }
 
     public static void saveParamChanges() {
-        final com.bezirk.devices.UPADeviceInterface upaDevice = BezirkCompManager.getUpaDevice();
+        final BezirkDeviceInterface upaDevice = BezirkCompManager.getUpaDevice();
         try {
-            final Properties props = UPADeviceForPC.loadProperties();
+            final Properties props = BezirkDeviceForPC.loadProperties();
 
             props.setProperty("DeviceLocation", upaDevice.getDeviceLocation()
                     .toString());
-            UPADeviceForPC.storeProperties(props);
+            BezirkDeviceForPC.storeProperties(props);
 
             logger.debug("Current device location: {}", upaDevice.getDeviceLocation().toString());
         } catch (Exception e) {

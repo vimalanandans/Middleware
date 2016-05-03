@@ -17,18 +17,18 @@ import static org.junit.Assert.fail;
 public class TestDevices {
 
     private final static Logger LOG = LoggerFactory.getLogger(TestDevices.class);
-    UPADeviceForPC upaDeviceForPC;
+    BezirkDeviceForPC upaDeviceForPC;
 
     @Before
     public void setUp() throws Exception {
-        upaDeviceForPC = new UPADeviceForPC();
+        upaDeviceForPC = new BezirkDeviceForPC();
 
     }
 
     @Test
     public void testLoadProperties() {
         try {
-            Properties props = UPADeviceForPC.loadProperties();
+            Properties props = BezirkDeviceForPC.loadProperties();
             LOG.info("printing properties...");
             for (Object key : props.keySet()) {
                 LOG.info("key: " + key + " prop: " + props.getProperty((String) key));
@@ -40,12 +40,12 @@ public class TestDevices {
 
     @Test(expected = Exception.class)
     public void testLoadPropertiesWhenPropNull() throws Exception {
-        UPADeviceForPC.loadProperties("upadevice_empty.properties");
+        BezirkDeviceForPC.loadProperties("upadevice_empty.properties");
     }
 
     @Test(expected = Exception.class)
     public void testLoadPropertiesWhenPropFileEmpty() throws Exception {
-        UPADeviceForPC.loadProperties("upadevice_noProps.properties");
+        BezirkDeviceForPC.loadProperties("upadevice_noProps.properties");
     }
 
     @Test
@@ -83,7 +83,7 @@ public class TestDevices {
 /*	@Test(expected = Exception.class)  
 	public void testStoreProperties() throws IOException{
 		Properties props = new Properties();
-		UPADeviceForPC.storeProperties(props);
+		BezirkDeviceForPC.storeProperties(props);
 	}
 	*/
 

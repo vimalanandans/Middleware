@@ -35,13 +35,6 @@ public class BRForService implements BroadcastReceiver {
     private final HashMap<BezirkZirkId, HashSet<BezirkListener>> sidMap;
     private final HashMap<String, HashSet<BezirkListener>> streamListenerMap;
 
-    /**
-     * @param activeStreams
-     * @param dListenerMap
-     * @param eventListenerMap
-     * @param sidMap
-     * @param streamListenerMap
-     */
     public BRForService(HashMap<String, String> activeStreams,
                         HashMap<BezirkZirkId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap,
                         HashMap<String, HashSet<BezirkListener>> eventListenerMap,

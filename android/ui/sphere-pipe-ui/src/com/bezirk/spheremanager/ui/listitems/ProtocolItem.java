@@ -30,15 +30,9 @@ public class ProtocolItem implements AbstractPolicyListItem {
         return policyReason;
     }
 
-    /**
-     * @param p
-     * @return whether p has the same label as this
-     */
     @Override
     public boolean equals(Object p) {
-
         if (p instanceof ProtocolItem) {
-
             return this.getProtocolName().equals(((ProtocolItem) p).getProtocolName());
         }
         return false;

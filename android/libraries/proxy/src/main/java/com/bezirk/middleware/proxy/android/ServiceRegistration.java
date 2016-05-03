@@ -10,8 +10,7 @@ public final class ServiceRegistration {
 
     public static String generateUniqueServiceID() {
         Random random = new Random();
-        String serviceIdAsString = Base62Random(random);
-        return serviceIdAsString;
+        return Base62Random(random);
     }
 
     private static String Base62Random(Random random) {

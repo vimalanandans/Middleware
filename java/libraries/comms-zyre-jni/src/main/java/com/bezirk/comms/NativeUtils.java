@@ -100,7 +100,7 @@ public class NativeUtils {
         usrPathsField.set(null, newPaths);
     }
 
-    private static void loadLib(String name) throws IOException {
+    private static void loadLib(String name) {
         //name = NativeLibraryUtil.getPlatformLibraryName(name);
         System.loadLibrary(name);
     }
@@ -227,7 +227,7 @@ public class NativeUtils {
                 loadLib("czmq");
                 loadLib("zyre");
                 loadLib("zyre-jni");
-            } catch (IOException e) {
+            } catch (Exception e) {
                 String libPathProperty = System.getProperty("java.library.path");
                 logger.info("java.library.path > " + libPathProperty);
                 e.printStackTrace();
@@ -244,7 +244,7 @@ public class NativeUtils {
                 loadLib("czmq");
                 loadLib("zyre");
                 loadLib("zyre-jni");
-            } catch (IOException e) {
+            } catch (Exception e) {
                 String libPathProperty = System.getProperty("java.library.path");
                 logger.info("java.library.path > " + libPathProperty);
                 e.printStackTrace();

@@ -25,7 +25,7 @@ public final class SignalingFactory {
     }
 
     /**
-     * Getting the singleton instance of class implementing {@link ISignalling}
+     * Getting the singleton instance of class implementing {@link BezirkComms}
      *
      * @return Object holding signaling instance
      */
@@ -34,7 +34,7 @@ public final class SignalingFactory {
     }
 
     /**
-     * Creates a instance of the  class implementing {@link ISignalling}
+     * Creates a instance of the  class implementing {@link BezirkComms}
      *
      * @param className name of the class
      * @param comms     parameter to be passed to the constructor

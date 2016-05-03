@@ -4,7 +4,7 @@
 package com.bezirk.sphere.testSphereUsingVirtualComms;
 
 import com.bezirk.comms.BezirkCommsLegacy;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
@@ -39,7 +39,7 @@ public class VirtualDevice {
     static int virtualDeviceNumber = 0;
     public SphereRegistryWrapper sphereRegistryWrapper;
     public SphereRegistry sphereRegistry;
-    public UPADeviceInterface upaDevice;
+    public BezirkDeviceInterface upaDevice;
     public ISphereConfig sphereConfig;
     public CryptoEngine cryptoEngine;
     public BezirkSphere bezirkSphere;
@@ -81,7 +81,7 @@ public class VirtualDevice {
         virtualDeviceNumber++;
     }
 
-    public final String prepareSphereAndReturnSphereId(SphereRegistryWrapper sphereRegistryWrapper, UPADeviceInterface upaDevice, String virtualDeviceNumber) throws Exception {
+    public final String prepareSphereAndReturnSphereId(SphereRegistryWrapper sphereRegistryWrapper, BezirkDeviceInterface upaDevice, String virtualDeviceNumber) {
         String OWNER_SERVICE_NAME_1 = "OWNER_SERVICE_NAME_" + virtualDeviceNumber + "1";
         String OWNER_SERVICE_NAME_2 = "OWNER_SERVICE_NAME_" + virtualDeviceNumber + "2";
         String OWNER_SPHERE_NAME = "OWNER_SPHERE_NAME_" + virtualDeviceNumber;

@@ -144,12 +144,7 @@ public class ControlSenderThread implements Runnable {
             return false;
         }
 
-        if (new Date().getTime() - cMessage.getLastSent() < timeBetweenRetransmits) {
-            //to soon to re-send this message, wait until diff is 1 min
-            return false;
-        }
-        return true;
-
+        return new Date().getTime() - cMessage.getLastSent() >= timeBetweenRetransmits;
     }
 
     private void removeMessage(ControlLedger tcMessage) {

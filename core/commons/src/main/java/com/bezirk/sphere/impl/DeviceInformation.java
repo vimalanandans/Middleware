@@ -23,10 +23,6 @@ public class DeviceInformation implements Serializable {
         // For Gson
     }
 
-    /**
-     * @param deviceName
-     * @param deviceType
-     */
     public DeviceInformation(String deviceName, String deviceType) {
         super();
         this.deviceName = deviceName;

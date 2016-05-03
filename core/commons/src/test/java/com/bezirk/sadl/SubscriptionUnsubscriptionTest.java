@@ -26,7 +26,6 @@ public class SubscriptionUnsubscriptionTest {
     private static final BezirkZirkId dummyServiceId = new BezirkZirkId("InvalidServiceForTest");
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
     private static final MockProtocols mockProtocol = new MockProtocols();
-    ;
     private static final ProtocolRole streamlessPRole = mockProtocol.new StreamlessProtocol();
     private static final ProtocolRole eventlessPRole = mockProtocol.new EventlessProtocol();
     private static final ProtocolRole dummyPRole = mockProtocol.new DummyProtocol();

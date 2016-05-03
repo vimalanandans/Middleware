@@ -3,9 +3,7 @@ package com.bezirk.middleware.addressing;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * This testcase verifies the Address by setting the properties and retrieving them.

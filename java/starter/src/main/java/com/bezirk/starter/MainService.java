@@ -70,8 +70,6 @@ public class MainService {
      * Callback interface to display the Version mismatch UI if stack receives a
      * message version that is not compatible. This will be shown only once when
      * it receives for the first time.
-     *
-     * @author Vijet Badigannavar
      */
     private final CommsNotification errNotificationCallback = new CommsNotification() {
 

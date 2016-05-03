@@ -39,7 +39,7 @@ public class BezirkValidatorUtilityTest {
 
 
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
+    public static void setUpBeforeClass() {
 
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();

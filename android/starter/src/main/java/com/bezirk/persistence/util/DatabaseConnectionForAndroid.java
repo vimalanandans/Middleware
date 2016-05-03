@@ -26,14 +26,14 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
     }
 
     @Override
-    public ConnectionSource getDatabaseConnection() throws NullPointerException, SQLException, IOException, Exception {
+    public ConnectionSource getDatabaseConnection() throws NullPointerException, SQLException, IOException {
         if (null == dbConnectionSource)
             dbConnectionSource = getPersistenceDAO().getConnectionSource();
         return dbConnectionSource;
     }
 
     @Override
-    public Dao<BezirkRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException, Exception {
+    public Dao<BezirkRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException {
         if (null == bezirkPersistenceDao) {
             bezirkPersistenceDao = getDao(BezirkRegistry.class);
             bezirkPersistenceDao.setAutoCommit(true);

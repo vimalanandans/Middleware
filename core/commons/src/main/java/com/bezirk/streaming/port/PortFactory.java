@@ -98,7 +98,7 @@ public class PortFactory implements com.bezirk.comms.PortFactory {
      *
      * @param releasingPort : The Port that has to be released.
      * @return : true - if the port is released successfully. false - if tried to free the port that doesn't exists. ( Port Malfunctioning )
-     * @see com.bezirk.streaming.StreamResponse
+     * @see com.bezirk.control.messages.streaming.StreamResponse
      */
     @Override
     public boolean releasePort(int releasingPort) {

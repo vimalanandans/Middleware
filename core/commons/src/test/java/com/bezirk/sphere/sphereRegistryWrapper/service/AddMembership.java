@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
 import com.bezirk.sphere.api.BezirkSphereType;
@@ -36,7 +36,7 @@ public class AddMembership {
     private static final MockSetUpUtility mockSetUp = new MockSetUpUtility();
     private static SphereRegistryWrapper sphereRegistryWrapper;
     private static SphereRegistry registry;
-    private static UPADeviceInterface upaDevice;
+    private static BezirkDeviceInterface upaDevice;
     private static SphereTestUtility sphereTestUtility;
 
     /**

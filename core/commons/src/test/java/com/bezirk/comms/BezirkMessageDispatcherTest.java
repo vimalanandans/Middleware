@@ -42,7 +42,7 @@ public class BezirkMessageDispatcherTest {
     boolean unKnownMessageReceived = false;
 
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
+    public static void setUpBeforeClass() {
 
         logger.info("***** Setting up BezirkMessageDispatcherTest TestCase *****");
         inetAddr = getInetAddress();

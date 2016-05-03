@@ -61,11 +61,8 @@ public class ConfigurePolicyTest {
         assertEquals("ActuateBulb", ActuateBulb.TOPIC);
         assertEquals(2, actuateBulb.getLightNumber().size());
 
-        actuateBulb = null;
-
-
         actuateBulb = new ActuateBulb(loc, HueVocab.Commands.TOGGLE);
-        assertEquals("Office", actuateBulb.getLocation().getWideScope().toString());
+        assertEquals("Office", actuateBulb.getLocation().getWideScope());
         assertEquals("TOGGLE", actuateBulb.getCommand().toString());
         assertFalse("ActuateBulb (Location location, HueVocab.Commands command) not called", actuateBulb.getById());
         assertNull("Light number is not null", actuateBulb.getLightNumber());

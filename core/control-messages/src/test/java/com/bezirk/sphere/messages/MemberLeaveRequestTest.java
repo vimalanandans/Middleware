@@ -24,19 +24,13 @@ public class MemberLeaveRequestTest {
     private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceId);
 
-    /**
-     * @throws java.lang.Exception
-     */
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
+    public static void setUpBeforeClass() {
         logger.info("***** Setting up MemberLeaveRequestTest TestCase *****");
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
     @AfterClass
-    public static void tearDownAfterClass() throws Exception {
+    public static void tearDownAfterClass() {
         logger.info("***** Shutting down MemberLeaveRequestTest TestCase *****");
     }
 

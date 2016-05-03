@@ -19,10 +19,8 @@ public interface DatabaseConnection {
      * @return Connection Source of the Database Connection.
      * @throws NullPointerException if connection is null
      * @throws SQLException         if connection is null
-     * @throws IOException          if problem in connecting to the database.
-     * @throws Exception
      */
-    public ConnectionSource getDatabaseConnection() throws NullPointerException, SQLException, IOException, Exception;
+    public ConnectionSource getDatabaseConnection() throws NullPointerException, SQLException, IOException;
 
     /**
      * Returns the DAO class associated with the entity
@@ -31,7 +29,6 @@ public interface DatabaseConnection {
      * @throws NullPointerException if connection is null
      * @throws SQLException         if connection is not possible or some thing happens while getting the DAO
      * @throws IOException          if the database file is not present
-     * @throws Exception
      */
-    public Dao<BezirkRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException, Exception;
+    public Dao<BezirkRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException;
 }

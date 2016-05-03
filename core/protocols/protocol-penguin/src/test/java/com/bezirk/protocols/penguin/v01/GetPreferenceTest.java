@@ -63,11 +63,7 @@ public class GetPreferenceTest {
         assertEquals("TSB-ID", getPrefTestN.getTestSampleBatchID());
         assertEquals("TS-ID", getPrefTestN.getTestSampleID());
 
-
-        getPrefTestN = null;
-
         getPrefTestN = new com.bezirk.protocols.penguin.v01.test.GetPreferenceTest();
-
 
         getPrefTestN.setContext(context);
         assertEquals("2001-07-04 12:08:56.235-0700", getPrefTestN.getContext().getDateTime());
@@ -97,8 +93,6 @@ public class GetPreferenceTest {
         assertEquals("UPA USER", getPrefTestN.getUser());
 
         String jsonSerr = getPrefTestN.toJson();
-        getPrefTestN = null;
-        getPrefTestN = new com.bezirk.protocols.penguin.v01.test.GetPreferenceTest();
         getPrefTestN = com.bezirk.protocols.penguin.v01.test.GetPreferenceTest.deserialize(jsonSerr);
         assertEquals("Private", getPrefTestN.getType());
 

@@ -15,7 +15,6 @@ import java.util.Arrays;
  * This class is used a utility function for common methods used by the Control Listeners
  *
  * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)
- * @modifed Vijet Badigannavar Added a parameter to the constructMsg() and modified to give the callback
  * if version mismatch occures
  */
 public final class ControlListenerUtility {
@@ -27,7 +26,7 @@ public final class ControlListenerUtility {
         // This a utility class
     }
 
-    public static boolean constructMsg(ControlLedger receivedMessage, DatagramPacket receivePacket, CommsNotification notification) throws Exception {
+    public static boolean constructMsg(ControlLedger receivedMessage, DatagramPacket receivePacket, CommsNotification notification) {
         //Reconstruct the message SphereName, EncryptedBytes
         boolean isMsgDuplicate = false;
         final byte[] received = new byte[receivePacket.getLength()];

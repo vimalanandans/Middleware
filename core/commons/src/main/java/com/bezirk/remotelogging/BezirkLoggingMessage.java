@@ -48,7 +48,7 @@ public class BezirkLoggingMessage {
      * EventListenerUtility,ControlListenerUtility
      *
      * @param sphereName    Name of the sphere
-     * @param uniqueKey     MsgId of the Message
+     * @param timeStamp     timeStamp of the Message
      * @param sender        Sender IP
      * @param recipient     Recipient Ip, null in case of multicast
      * @param uniqueMsgId   MsgId of the message that is sent or received

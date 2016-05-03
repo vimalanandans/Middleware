@@ -7,14 +7,9 @@ package com.bezirk.middleware.objects;
  * @author Rishabh Gulati
  */
 public final class SphereVitals {
-
     private final byte[] sphereKey;
     private final byte[] publicKey;
 
-    /**
-     * @param sphereKey
-     * @param publicKey
-     */
     public SphereVitals(byte[] sphereKey, byte[] publicKey) {
         super();
         this.sphereKey = sphereKey == null ? null : sphereKey.clone();

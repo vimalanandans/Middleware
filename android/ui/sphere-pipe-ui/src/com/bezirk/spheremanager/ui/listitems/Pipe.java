@@ -5,8 +5,6 @@ import java.net.URI;
 
 /**
  * Represents a pipe with a name.
- *
- * @see CloudPipe
  */
 public class Pipe {
     protected String type = getClass().getCanonicalName();
@@ -37,21 +35,6 @@ public class Pipe {
         return type;
     }
 
-    /**
-     * Comparison realized by each subclass of Pipe.
-     *
-     * @param thatPipe Another pipe to compare to this one
-     * @return whether thatPipe refers to the same end point as this, regardless of what the user-approved policy for the pipe currently is.
-     */
-//	public boolean equals(Pipe thatPipe) {
-//		if (thatPipe instanceof CloudPipe) {
-//			URI thatUri = ((CloudPipe) thatPipe).getURI();
-//			return this.uri.equals(thatUri);
-//		} 
-//		else  {
-//			return false;
-//		}
-//	}
     public URI getURI() {
         return uri;
     }

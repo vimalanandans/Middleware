@@ -87,9 +87,7 @@ public class TestCBkForServicePC {
     }
 
     private enum CallBackDiscriminator {
-
-        EVENT, STREAM_UNICAST, STREAM_STATUS, DISCOVERY;
-
+        EVENT, STREAM_UNICAST, STREAM_STATUS, DISCOVERY
     }
 
     class BRForServiceMock implements BroadcastReceiver {

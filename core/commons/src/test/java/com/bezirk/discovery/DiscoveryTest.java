@@ -135,8 +135,7 @@ public class DiscoveryTest {
     private BezirkDiscoveredZirk getZirk() {
         String zirkName = "ZirkB";
         BezirkZirkEndPoint sep = new BezirkZirkEndPoint(new BezirkZirkId("ZirkB123"));
-        BezirkDiscoveredZirk zirk = new BezirkDiscoveredZirk(sep, zirkName, null, new Location(null));
-        return zirk;
+        return new BezirkDiscoveredZirk(sep, zirkName, null, new Location(null));
     }
 
     private int getDiscoveredMapsize(Discovery discovery) {

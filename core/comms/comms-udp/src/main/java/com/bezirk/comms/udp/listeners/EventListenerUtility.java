@@ -85,8 +85,6 @@ public final class EventListenerUtility {
         receivedMessage.setEncryptedHeader(header);
         byte[] payload = Arrays.copyOfRange(packetData, headerStartIndex + headerLength, packetData.length);
         receivedMessage.setEncryptedMessage(payload);
-        if (receivedMessage.getEncryptedHeader().length == 0)
-            return false;
-        return true;
+        return receivedMessage.getEncryptedHeader().length != 0;
     }
 }

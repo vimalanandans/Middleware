@@ -28,7 +28,7 @@ public class SpherePropertiesMock implements ISphereConfig {
 
     @Override
     public byte[] getSphereKey() {
-        return new String("eCUSEA+QRRJnuj9yAe8QAQ==").getBytes();
+        return "eCUSEA+QRRJnuj9yAe8QAQ==".getBytes();
     }
 
     @Override

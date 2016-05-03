@@ -2,8 +2,8 @@ package com.bezirk.middleware.proxy;
 
 
 import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.devices.UPADeviceForPC;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceForPC;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.Address;
@@ -42,10 +42,8 @@ import static org.junit.Assert.fail;
  * Sub-test - 2 :
  * Zirk C updates it location to new location. Mock Zirk A discover based on the protocol Role specifying the location to new Location, and it should discover 1 services (MockServiceC).
  * The success of both sub-test validates this testcase.
- * More info can be found on Wiki - <Page>
  *
  * @author vbd4kor
- * @Date - 23/09/2014
  */
 public class DiscoveryTest {
     private static final Logger logger = LoggerFactory.getLogger(DiscoveryTest.class);
@@ -174,24 +172,23 @@ public class DiscoveryTest {
 
             if (isTestWithNullLocPassed == false && zirkSet.size() == 3) {
 
-                Iterator<DiscoveredZirk> iterator = zirkSet.iterator();
-                while (iterator.hasNext()) {
-                    //Himadri: Accepting Rishab's Changes on top of Vijet's
-
-                    UPADeviceForPC upaDeviceForPC = new UPADeviceForPC();
+                for (DiscoveredZirk aZirkSet : zirkSet) {
+                    BezirkDeviceForPC bezirkDeviceForPC = new BezirkDeviceForPC();
                     Properties props;
+
                     try {
-                        props = UPADeviceForPC.loadProperties();
+                        props = BezirkDeviceForPC.loadProperties();
                         String location = props.getProperty("DeviceLocation");
-                        upaDeviceForPC.setDeviceLocation(new Location(location));
-                        BezirkCompManager.setUpaDevice(upaDeviceForPC);
+                        bezirkDeviceForPC.setDeviceLocation(new Location(location));
+                        BezirkCompManager.setUpaDevice(bezirkDeviceForPC);
                     } catch (Exception e) {
 
                         fail("Exception in setting device location. " + e.getMessage());
 
                     }
-                    UPADeviceInterface upaDevice = BezirkCompManager.getUpaDevice();
-                    BezirkDiscoveredZirk tempDisService = (BezirkDiscoveredZirk) iterator.next();
+
+                    BezirkDeviceInterface bezirkDevice = BezirkCompManager.getUpaDevice();
+                    BezirkDiscoveredZirk tempDisService = (BezirkDiscoveredZirk) aZirkSet;
                     assertNotNull("Discovered Zirk is null. ", tempDisService);
                     switch (tempDisService.name) {
 
@@ -235,7 +232,6 @@ public class DiscoveryTest {
 
                 isTestWithLocPassed = true;
                 logger.info("**** DISCOVERY SUB-TEST WITH SPECIFIC LOCATION PASSES SUCCESSFULLY ****");
-                return;
             }
         }
 

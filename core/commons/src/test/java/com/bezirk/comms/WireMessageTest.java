@@ -4,10 +4,10 @@ import com.bezirk.processor.WireMessage;
 
 import org.junit.Test;
 
-import java.io.IOException;
-
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 public class WireMessageTest {
 
@@ -19,20 +19,13 @@ public class WireMessageTest {
         WireMessage msg2 = new WireMessage();
 
         String data, data1;
-        try {
 
-            data = new String(msg.serialize());
+        data = new String(msg.serialize());
 
-            // change the version to initial value
-            msg2.setMsgVer("1.2.4");
+        // change the version to initial value
+        msg2.setMsgVer("1.2.4");
 
-            data1 = new String(msg2.serialize());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            assertFalse(false);
-            return;
-        }
+        data1 = new String(msg2.serialize());
 
         assertEquals(msg.getMsgVer(), WireMessage.getVersion(data));
 

@@ -25,6 +25,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 
@@ -72,11 +73,10 @@ public class EncryptSerializedContent {
      *
      * @param str
      * @return
-     * @throws Exception
      */
     public static String decompress(byte[] str) {
         if (str == null || str.length == 0) {
-            return str.toString();
+            return "";
         }
         String outStr = "";
         try {
@@ -130,13 +130,10 @@ public class EncryptSerializedContent {
      * @return
      */
     private byte[] compressMsg(final String data) {
-        byte[] temp = null;
-        byte[] wireData = null;
-
-        temp = data.getBytes();
+        byte[] temp = data.getBytes();
         logger.info("Before Compression Msg byte length : " + temp.length);
         long compStartTime = System.currentTimeMillis();
-        wireData = TextCompressor.compress(temp);
+        byte[] wireData = TextCompressor.compress(temp);
         long compEndTime = System.currentTimeMillis();
         logger.info("Compression Took " + (compEndTime - compStartTime) + " mili seconds");
         //After Compression Byte Length is
@@ -179,12 +176,12 @@ public class EncryptSerializedContent {
         byte[] compressedContent = compressMsg(content);
         String decompressedContent;
 
-        logger.info("compressed content >> " + compressedContent);
+        logger.info("compressed content >> " + Arrays.toString(compressedContent));
 
         byte[] actualEncryptedContent = cryptoEngine.encryptSphereContent(
                 sphereId, new String(compressedContent));
 
-        logger.info("Encrypted content >> " + compressedContent);
+        logger.info("Encrypted content >> " + Arrays.toString(compressedContent));
 
         byte[] decryptedContent;
         try {

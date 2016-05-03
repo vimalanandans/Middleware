@@ -15,12 +15,6 @@ public class BezirkSphereInfo {
     // This is used only in local device. hence tostring doesn't have
     private boolean isThisDeviceOwnsSphere;
 
-    /**
-     * @param sphereID
-     * @param sphereName
-     * @param deviceList
-     * @param pipeList
-     */
     public BezirkSphereInfo(final String sphereID, final String sphereName,
                             final String sphereType,
                             final ArrayList<BezirkDeviceInfo> deviceList,

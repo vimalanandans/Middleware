@@ -5,7 +5,7 @@ package com.bezirk.sphere.impl;
 
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.discovery.SphereDiscovery;
 import com.bezirk.discovery.SphereDiscoveryProcessor;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
@@ -47,7 +47,7 @@ public class BezirkSphere
 
     private static final Logger logger = LoggerFactory.getLogger(BezirkSphere.class);
     private CryptoEngine cryptoEngine = null;
-    private UPADeviceInterface upaDevice = null;
+    private BezirkDeviceInterface upaDevice = null;
     private SphereRegistry registry = null;
     private BezirkSphereListener bezirkSphereListener;
     private ISphereConfig sphereConfig = null;
@@ -57,7 +57,7 @@ public class BezirkSphere
     private DiscoveryProcessor discoveryProcessor = null;
     private SphereRegistryWrapper sphereRegistryWrapper = null;
 
-    public BezirkSphere(CryptoEngine cryptoEngine, UPADeviceInterface upaDevice, SphereRegistry sphereRegistry) {
+    public BezirkSphere(CryptoEngine cryptoEngine, BezirkDeviceInterface upaDevice, SphereRegistry sphereRegistry) {
 
         if (cryptoEngine == null || upaDevice == null || sphereRegistry == null) {
             logger.error("Exiting BezirkSphere setup. A parameter to the constructor is null");
@@ -131,12 +131,12 @@ public class BezirkSphere
     }
 
     @Override
-    public boolean registerService(BezirkZirkId zirkId, String zirkName) {
+    public boolean registerZirk(BezirkZirkId zirkId, String zirkName) {
         return sphereRegistryWrapper.registerService(zirkId, zirkName);
     }
 
     @Override
-    public boolean unregisterService(BezirkZirkId serviceId) {
+    public boolean unregisterZirk(BezirkZirkId serviceId) {
         // TODO Implement
         return false;
     }
@@ -253,7 +253,7 @@ public class BezirkSphere
     }
 
     @Override
-    public boolean expelServiceFromSphere(String serviceId, String sphereId) {
+    public boolean expelServiceFromSphere(String zirkId, String sphereId) {
         // TODO implement
         return false;
     }

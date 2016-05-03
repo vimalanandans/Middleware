@@ -36,25 +36,15 @@ public class ControlLedgerTest {
     private static final byte[] sendData = "DataToBeSent".getBytes();
     private static final String serializedMessage = message.serialize();
 
-    /**
-     * @throws java.lang.Exception
-     */
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-
+    public static void setUpBeforeClass() {
         logger.info("***** Setting up ControlLedgerTest TestCase *****");
-
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
     @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-
+    public static void tearDownAfterClass() {
         logger.info("***** Shutting down ControlLedgerTest TestCase *****");
     }
-
 
     @Test
     public void testControlLedger() {

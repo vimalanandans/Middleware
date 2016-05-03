@@ -5,7 +5,6 @@ package com.bezirk.starter;
  * Created by PIK6KOR on 12/14/2015.
  */
 public final class BezirkWifiManager {
-
     private static BezirkWifiManager context;
     private String connectedWifiSSID;
 
@@ -13,11 +12,6 @@ public final class BezirkWifiManager {
         //private constructor
     }
 
-    /**
-     * get instance
-     *
-     * @return
-     */
     public static BezirkWifiManager getInstance() {
         synchronized (BezirkWifiManager.class) {
             if (context == null) {

@@ -16,16 +16,6 @@ public class BezirkDeviceInfo {
     private final boolean deviceActive;
     private final List<BezirkZirkInfo> zirks;
 
-    /**
-     * // We need Zirk Info not zirk id. this zirks will be deprecated
-     *
-     * @param deviceId
-     * @param deviceName
-     * @param deviceType
-     * @param deviceRole
-     * @param deviceActive
-     * @param zirks
-     */
     // We need Zerk Info not zirk id. this zirks will be deprecated
     public BezirkDeviceInfo(final String deviceId, final String deviceName,
                             final String deviceType, final BezirkDeviceRole deviceRole,

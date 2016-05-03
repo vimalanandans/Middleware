@@ -5,9 +5,6 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 public class MockZirkEndpoint implements ZirkEndPoint {
     private String zirkId = null;
 
-    /**
-     * @param zirkId
-     */
     public MockZirkEndpoint(String zirkId) {
         super();
         this.zirkId = zirkId;

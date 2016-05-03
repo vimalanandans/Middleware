@@ -67,7 +67,7 @@ public class CommsTestActivity extends ActionBarActivity {
     private final View.OnClickListener textViewListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            String key = (String) ((TextView) view).getTag();
+            String key = (String) view.getTag();
             Set<PongMessage> pongList = uiStore.getPongMap(key);
             showAlertDialog(pongList);
         }
@@ -351,7 +351,6 @@ public class CommsTestActivity extends ActionBarActivity {
      * Prepares a List item to be shown on the device
      *
      * @param msg
-     * @return
      */
     private void updatePingSent(final PingMessage msg) {
         mTextViewSent.setBackgroundColor(getResources().getColor(R.color.bg_ping_sent));
@@ -423,11 +422,6 @@ public class CommsTestActivity extends ActionBarActivity {
         mAlertDilaog.show();
     }
 
-    /**
-     * Adds the ListItem to the list
-     *
-     * @param msg
-     */
     private void updateListToAddPingReceived(final PingMessage msg) {
         mLinearLayoutList.post(new Runnable() {
             @Override
@@ -437,11 +431,6 @@ public class CommsTestActivity extends ActionBarActivity {
         });
     }
 
-    /**
-     * Updates the list item for ping sent
-     *
-     * @param msg
-     */
     private void updateListToAddPingSent(final PingMessage msg) {
         //changes
         mDeviceStatusLayout.post(new Runnable() {

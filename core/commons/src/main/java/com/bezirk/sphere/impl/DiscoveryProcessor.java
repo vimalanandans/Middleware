@@ -6,7 +6,7 @@ package com.bezirk.sphere.impl;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.discovery.DiscoveryLabel;
 import com.bezirk.discovery.SphereDiscoveryProcessor;
 import com.bezirk.discovery.SphereDiscoveryRecord;
@@ -32,7 +32,7 @@ import java.util.Set;
 public class DiscoveryProcessor {
     private static final Logger logger = LoggerFactory.getLogger(DiscoveryProcessor.class);
 
-    private UPADeviceInterface upaDeviceInterface;
+    private BezirkDeviceInterface bezirkDeviceInterface;
     private CommsUtility comms;
     private SphereRegistryWrapper sphereRegistryWrapper;
     private BezirkSphereListener bezirkSphereListener;
@@ -42,15 +42,9 @@ public class DiscoveryProcessor {
     private int maxDiscovered = 20;
     private int timeout = 5000; /* ms */
 
-    /**
-     * @param upaDeviceInterface
-     * @param comms
-     * @param sphereRegistryWrapper
-     * @param bezirkSphereListener
-     */
-    public DiscoveryProcessor(UPADeviceInterface upaDeviceInterface, CommsUtility comms,
+    public DiscoveryProcessor(BezirkDeviceInterface bezirkDeviceInterface, CommsUtility comms,
                               SphereRegistryWrapper sphereRegistryWrapper, BezirkSphereListener bezirkSphereListener) {
-        this.upaDeviceInterface = upaDeviceInterface;
+        this.bezirkDeviceInterface = bezirkDeviceInterface;
         this.comms = comms;
         this.sphereRegistryWrapper = sphereRegistryWrapper;
         this.bezirkSphereListener = bezirkSphereListener;
@@ -61,7 +55,7 @@ public class DiscoveryProcessor {
      * about the services.
      * <p>
      * The current implementation is limited to changing the BezirkSphereInfo
-     * object received by the {@link #getSphereInfo(String)} method. This
+     * object received by the {@link SphereRegistryWrapper#getSphereInfo(String)} method. This
      * implies :
      * </p><p>
      * 1) When the getSphere is operated on a owner sphere, we get the complete
@@ -152,12 +146,6 @@ public class DiscoveryProcessor {
         }
     }
 
-    /**
-     * @param discoveredSphereInfoSet
-     * @param sphereId
-     * @return
-     */
-
     public boolean discoverSphere(String sphereId) {
         if (!sphereRegistryWrapper.containsSphere(sphereId)) {
             return false;
@@ -198,7 +186,7 @@ public class DiscoveryProcessor {
                 // send only the services belongs to this device
                 for (BezirkDeviceInfo localDeviceInfo : bezirkSphereInfo.getDeviceList()) {
                     // get the local device or development device id
-                    if (localDeviceInfo.getDeviceId().equals(upaDeviceInterface.getDeviceId()) || localDeviceInfo
+                    if (localDeviceInfo.getDeviceId().equals(bezirkDeviceInterface.getDeviceId()) || localDeviceInfo
                             .getDeviceId().equalsIgnoreCase(SphereRegistryWrapper.DEVELOPMENT_DEVICE_ID)) {
 
                         // construct the bezirk sphere info with only local device

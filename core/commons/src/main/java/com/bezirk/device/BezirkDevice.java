@@ -3,7 +3,7 @@
  */
 package com.bezirk.device;
 
-import com.bezirk.devices.UPADeviceInterface;
+import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.addressing.Location;
 
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * @author Rishabh Gulati
  */
-public class BezirkDevice implements UPADeviceInterface {
+public class BezirkDevice implements BezirkDeviceInterface {
     private static final Logger logger = LoggerFactory.getLogger(BezirkDevice.class);
 
     private String deviceId;

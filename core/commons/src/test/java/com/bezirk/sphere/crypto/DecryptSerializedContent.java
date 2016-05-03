@@ -103,7 +103,7 @@ public class DecryptSerializedContent {
         byte[] encryptedContent = cipherService.encrypt(content.getBytes(), sKeys.getSphereKey()).getBytes();
         String decryptedContent;
         try {
-            decryptedContent = new String(cryptoEngine.decryptSphereContent(sphereId, encryptedContent));
+            decryptedContent = cryptoEngine.decryptSphereContent(sphereId, encryptedContent);
             assertTrue(content.equals(decryptedContent));
         } catch (Exception e) {
             logger.error("Error while encrypting the content" + e.getMessage());

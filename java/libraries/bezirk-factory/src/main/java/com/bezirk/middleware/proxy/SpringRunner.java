@@ -55,8 +55,6 @@ public class SpringRunner {
 
     /**
      * Start bezirk using the configuration file specified in the configFile data member
-     *
-     * @throws Exception
      */
     public void run() {
         // Read in spring configuration file
