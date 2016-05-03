@@ -1,9 +1,5 @@
 ﻿# Bezirk 
 
-################################ DELETE THIS LATER ######################
-remove and organize the platform build releated references
-#########################################################################
-
 ## System Enivornment
 ### OSX
 Setup enivornment variable DYLD_LIBRARY_PATH
@@ -78,73 +74,6 @@ Since artifacts are currently not published to maven/nexus, use the following co
     ```
     *Note: publishToMavenLocal in step 4 is only required if artifacts from java/android are to be used in other projects like examples/zirks.*
 
-## Proposed directory structure *(experimental)*
-Bezirk *(root/parent directory of all projects)*
-* middleware *(only platform related projects)*
-    * core *(previously named as Java-Common)*
-        * build.gradle -> core specific build configurations
-    * java *(previously named as Java-Build)*
-        * build.gradle -> java specific build configurations
-    * android *(previously names as Android-Build)*
-        * build.gradle -> android specific build configurations
-    * settings.gradle -> contains list of all modules to be include from core, java and android
-    * build.gradle -> common configurations across modules/group of modules 
-* core zirks
-    * wipin
-        * core
-        * java
-        * android
-    * uProxy
-        * core
-        * java
-        * android
-    * settings.gradle -> contains list of all modules to be include from wipin, uproxy. *(IMPORTANT: This can be changed going forward such that wipin and uproxy have their own settings.gradle and build configurations)*
-    * build.gradle -> common configurations across modules/group of modules 
-* examples
-    * xlight
-        * core
-        * java
-        * android
-    * party
-        * core
-        * java
-        * android
-    * ...
-    * ...
-    * settings.gradle -> contains list of all modules to be include from xlight, party, other examples. *(IMPORTANT: This can be changed going forward such that each major show-case application/example has its own settings.gradle and build configurations)*
-    * build.gradle -> common configurations across modules/group of modules 
-* bezirk helper files/configurations. For instance, licensing, gradle helper files required across middleware, core-zirks and examples.
-
-## Approach
-* Migrate files from existing projects to respective directories to ensure git tracking for future references.
-* Adding gradle tasks for building, publishing artifacts, pmd, static analysis, other coverage criterias.
-* Re-evaluating android buildtool versions, gradle versions, supported android-platforms.
-* Once folder restructuring is completed, package renaming to be performed.
-* Source code changes to rename existing modules/variables.
-* Removing unnecssary modules.
-* Improving dependency management, using stable artifacts from repositories for both internal and external dependencies.
-For instance, Define compile time and runtime jars
-
-    * *core-api.jar* : Compile time dependency 
-    * *core-com.bezirk.impl.jar* : Runtime dependency
-    
-    OR
-    
-    Define just one jar *core.jar* and support with documentation only for the API classes. [Approach used by Sun]
-## Tracking files for their commit history
-
-```
-git log --follow filePath
-```
-*NOTE: File history might not be visible in stash/repository directly*
-
 ## For core-zirks & show-case application developers
 * To continue to use your existing projects, point to artifacts of version '2.0.1' instead of projects from Java-Common, Java-Build & Android-Build.
 * Migrate projects to the new structure.
-
-# Contact
-In case of issues/improvements/suggestions regarding the proposed structure, please contact:
-
-**Rishabh Gulati** *[rishabh.gulati@us.bosch.com]*
-
-**Vimal** *[Vimalanandan.S@in.bosch.com]*
