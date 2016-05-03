@@ -48,7 +48,7 @@ public class ProtocolsTest {
 
         assertNull("Protocol Role Description is not null.", pDRole.getDescription());
 
-        assertEquals("PresenceDetectorRole", pDRole.getProtocolName());
+        assertEquals("PresenceDetectorRole", pDRole.getRoleName());
 
         assertNotNull("Protocol Event Topics is null", pDRole.getEventTopics());
 
@@ -64,7 +64,7 @@ public class ProtocolsTest {
 
         assertNull("SmartServiceRole protocol Description is not null", sProle.getDescription());
 
-        assertEquals("SmartServiceRole", sProle.getProtocolName());
+        assertEquals("SmartServiceRole", sProle.getRoleName());
 
         assertNotNull("SmartServiceRole protocol Events Topics is null", sProle.getEventTopics());
 
@@ -81,7 +81,7 @@ public class ProtocolsTest {
 
         assertNull("UserProxyRole protocol Description is null", usrPRole.getDescription());
 
-        assertEquals("UserProxyRole", usrPRole.getProtocolName());
+        assertEquals("UserProxyRole", usrPRole.getRoleName());
 
         assertNotNull("UserProxyRole protocol Event Topics is null", usrPRole.getEventTopics());
 

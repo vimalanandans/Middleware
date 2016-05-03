@@ -38,7 +38,7 @@ public class ProtocolRoleTest {
         }
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return protocolName;
         }
 
@@ -74,7 +74,7 @@ public class ProtocolRoleTest {
         }
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return protocolName;
         }
 
@@ -110,7 +110,7 @@ public class ProtocolRoleTest {
         }
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return protocolName;
         }
 

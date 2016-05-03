@@ -55,7 +55,7 @@ public class MockProtocols {
         }
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return protocolName;
         }
 
@@ -91,7 +91,7 @@ public class MockProtocols {
         }
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return protocolName;
         }
 
@@ -127,7 +127,7 @@ public class MockProtocols {
         }
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return protocolName;
         }
 
@@ -159,7 +159,7 @@ public class MockProtocols {
         String events[] = {"NewProtocolRole"};
         String stream[] = {"NewProtocolRoleStream"};
 
-        public String getProtocolName() {
+        public String getRoleName() {
             return "NewProtocolRole";
         }
 

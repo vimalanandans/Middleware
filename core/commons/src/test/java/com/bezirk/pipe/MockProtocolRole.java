@@ -7,7 +7,7 @@ public class MockProtocolRole extends ProtocolRole {
     private String name = getClass().getSimpleName();
 
     @Override
-    public String getProtocolName() {
+    public String getRoleName() {
         return name;
     }
 

@@ -253,7 +253,7 @@ public class DiscoveryTest {
         private final String[] streams = {"MockRequestStream"};
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return DiscoveryMockServiceProtocol.class.getSimpleName();
         }
 

@@ -155,7 +155,7 @@ public final class Proxy implements Bezirk {
     }
 
     private boolean isRequestValid(ZirkId subscriber, ProtocolRole pRole, BezirkListener listener) {
-        if (!StringValidatorUtil.areValidStrings(pRole.getProtocolName()) || null == listener || null == subscriber) {
+        if (!StringValidatorUtil.areValidStrings(pRole.getRoleName()) || null == listener || null == subscriber) {
             Log.e(TAG, "Check for ProtocolRole/ BezirkListener/ZirkId for null or empty values");
             return false;
         }

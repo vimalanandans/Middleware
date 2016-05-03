@@ -24,7 +24,7 @@ public class SubscribedRoleTest {
         com.bezirk.proxy.api.impl.SubscribedRole subscribedRole = new com.bezirk.proxy.api.impl.SubscribedRole(pRole);
 
         assertEquals("Description is not same as the mockprotocol description.", pRole.getDescription(), subscribedRole.getDescription());
-        assertEquals("SubscribedRole name is not same as the mockprotocol name.", pRole.getProtocolName(), subscribedRole.getProtocolName());
+        assertEquals("SubscribedRole name is not same as the mockprotocol name.", pRole.getRoleName(), subscribedRole.getRoleName());
         assertTrue("EventTopics is not same as the mockprotocol events.", Arrays.equals(pRole.getEventTopics(), subscribedRole.getEventTopics()));
         assertTrue("StreamTopics is not same as the mockprotocol streams.", Arrays.equals(pRole.getStreamTopics(), subscribedRole.getStreamTopics()));
 

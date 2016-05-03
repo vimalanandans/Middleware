@@ -19,7 +19,7 @@ public class RoleParametricUI extends ProtocolRole {
                     RequestUIpickOne.TOPIC};
 
     @Override
-    public String getProtocolName() {
+    public String getRoleName() {
         return RoleParametricUI.class.getSimpleName();
     }
 

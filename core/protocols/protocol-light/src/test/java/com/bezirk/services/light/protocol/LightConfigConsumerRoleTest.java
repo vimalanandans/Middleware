@@ -23,7 +23,7 @@ public class LightConfigConsumerRoleTest {
 
         assertEquals("Protocol description is different for the LightConfigConsumerRole.", LightConfigConsumerRole.description, lightCfgConsumerRole.getDescription());
 
-        assertEquals("Protocol Name is different for the LightConfigConsumerRole.", LightConfigConsumerRole.class.getSimpleName(), lightCfgConsumerRole.getProtocolName());
+        assertEquals("Protocol Name is different for the LightConfigConsumerRole.", LightConfigConsumerRole.class.getSimpleName(), lightCfgConsumerRole.getRoleName());
 
     }
 

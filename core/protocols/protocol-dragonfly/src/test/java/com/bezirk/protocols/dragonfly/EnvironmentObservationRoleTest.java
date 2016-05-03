@@ -21,7 +21,7 @@ public class EnvironmentObservationRoleTest {
     public void test() {
 
         EnvironmentObservationRole envObsrvRole = new EnvironmentObservationRole();
-        assertEquals("Protocol Name is not equal to EnvironmentObservationRole.", EnvironmentObservationRole.class.getSimpleName(), envObsrvRole.getProtocolName());
+        assertEquals("Protocol Name is not equal to EnvironmentObservationRole.", EnvironmentObservationRole.class.getSimpleName(), envObsrvRole.getRoleName());
 
         assertNull("Description is present for EnvironmnetObservationRole.", envObsrvRole.getDescription());
         assertNull("StreamTopics are present in EnvironmnetObservationRole.", envObsrvRole.getStreamTopics());

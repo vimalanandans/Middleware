@@ -7,10 +7,10 @@ class MockProtocolRole extends ProtocolRole {
     private String protocolName = getClass().getSimpleName();
 
     /* (non-Javadoc)
-     * @see ProtocolRole#getProtocolName()
+     * @see ProtocolRole#getRoleName()
      */
     @Override
-    public String getProtocolName() {
+    public String getRoleName() {
         // TODO Auto-generated method stub
         return protocolName;
     }

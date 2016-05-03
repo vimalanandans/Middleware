@@ -178,7 +178,7 @@ public class UnicastEventLocalTest {
         private final String[] events = {"MockRequestEvent"};
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return MockServiceAProtocolRole.class.getSimpleName();
         }
 
@@ -207,7 +207,7 @@ public class UnicastEventLocalTest {
         private final String[] events = {"MockReplyEvent"};
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return MockServiceBProtocolRole.class.getSimpleName();
         }
 

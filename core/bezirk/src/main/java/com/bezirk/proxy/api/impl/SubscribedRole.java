@@ -17,7 +17,7 @@ public class SubscribedRole extends ProtocolRole {
     }
 
     public SubscribedRole(ProtocolRole pRole) {
-        protocolName = pRole.getProtocolName();
+        protocolName = pRole.getRoleName();
         protocolDesc = pRole.getDescription();
         eventTopics = pRole.getEventTopics();
         streamTopics = pRole.getStreamTopics();
@@ -34,7 +34,7 @@ public class SubscribedRole extends ProtocolRole {
     }
 
     @Override
-    public String getProtocolName() {
+    public String getRoleName() {
         return protocolName;
     }
 

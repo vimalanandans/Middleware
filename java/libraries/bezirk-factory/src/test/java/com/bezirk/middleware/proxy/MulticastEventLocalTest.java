@@ -176,7 +176,7 @@ public class MulticastEventLocalTest {
         private final String[] events = {"MockRequestEvent"};
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return MulticastMockServiceProtocolRole.class.getSimpleName();
         }
 

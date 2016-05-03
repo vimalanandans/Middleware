@@ -29,7 +29,7 @@ public class LightConfigCtrlRole extends ProtocolRole {
                     TestLocationAndLightSetUpResponse.TOPIC};
 
     @Override
-    public String getProtocolName() {
+    public String getRoleName() {
         return this.getClass().getSimpleName();
     }
 

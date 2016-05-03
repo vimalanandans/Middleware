@@ -25,7 +25,7 @@ public class ProxyTest {
                 queryUserProxy.getDescription());
         assertNotNull("QueryProxy Role getEventTopics is null",
                 queryUserProxy.getEventTopics());
-        assertEquals("QueryUserProxyRole", queryUserProxy.getProtocolName());
+        assertEquals("QueryUserProxyRole", queryUserProxy.getRoleName());
         assertNull("QueryUserProxy Role getStreamTopic is not null",
                 queryUserProxy.getStreamTopics());
 

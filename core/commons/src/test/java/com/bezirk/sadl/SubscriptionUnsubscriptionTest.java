@@ -111,7 +111,7 @@ public class SubscriptionUnsubscriptionTest {
 		 * ServiceCId should not be present in this list.
 		 * */
         Set<BezirkZirkId> serviceIdSet = bezirkSadlManager.sadlRegistry.protocolMap
-                .get(streamlessPRole.getProtocolName());
+                .get(streamlessPRole.getRoleName());
 
         assertNotNull("ServiceIdSet is null", serviceIdSet);
         assertTrue("ServiceA  is not present in protocolMap", serviceIdSet.contains(bezirkZirkAId));
@@ -121,7 +121,7 @@ public class SubscriptionUnsubscriptionTest {
 		 * SadlManager protocolDescMap should have the description for StreamlessProtocol as serviceA
 		 * had subscribed to it.
 		 * */
-        String protocolDesc = bezirkSadlManager.sadlRegistry.protocolDescMap.get(streamlessPRole.getProtocolName());
+        String protocolDesc = bezirkSadlManager.sadlRegistry.protocolDescMap.get(streamlessPRole.getRoleName());
         assertEquals("StreamlessProtocol description not present in protocolDescMap", streamlessPRole.getDescription(), protocolDesc);
 
 		/*
@@ -225,7 +225,7 @@ public class SubscriptionUnsubscriptionTest {
 		 * SadlManager should remove the protocol entry when no services are subscribed to it.
 		 * */
         bezirkSadlManager.unsubscribe(bezirkZirkBId, subscribedStreamlessPRole);
-        assertNull("Services still present in protocolmap for streamless protocol", bezirkSadlManager.sadlRegistry.protocolMap.get(streamlessPRole.getProtocolName()));
+        assertNull("Services still present in protocolmap for streamless protocol", bezirkSadlManager.sadlRegistry.protocolMap.get(streamlessPRole.getRoleName()));
 		
 		
 		/*

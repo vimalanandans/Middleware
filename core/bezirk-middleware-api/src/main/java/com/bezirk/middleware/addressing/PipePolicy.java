@@ -76,7 +76,7 @@ public abstract class PipePolicy {
      * @param reason       describes the benefit for the user for allowing this role
      */
     public void addAllowedProtocol(ProtocolRole protocolRole, String reason) {
-        reasonMap.put(protocolRole.getProtocolName(), reason);
+        reasonMap.put(protocolRole.getRoleName(), reason);
     }
 
     /**

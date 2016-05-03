@@ -14,7 +14,7 @@ public class RoleConsumeUI extends ProtocolRole {
                     ReplyUIvalues.TOPIC};
 
     @Override
-    public String getProtocolName() {
+    public String getRoleName() {
         return RoleConsumeUI.class.getSimpleName();
     }
 

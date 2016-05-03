@@ -55,7 +55,7 @@ public class MockProtocolsForBezirkPC {
         }
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return protocolName;
         }
 
@@ -91,7 +91,7 @@ public class MockProtocolsForBezirkPC {
         }
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return protocolName;
         }
 
@@ -127,7 +127,7 @@ public class MockProtocolsForBezirkPC {
         }
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return protocolName;
         }
 

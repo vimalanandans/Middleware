@@ -31,7 +31,7 @@ public class ProtocolRoleTest {
         assertFalse("Answer topic is present in QuestionProtocol event topic list.", eventTopicList.contains(Answer.topic));
         assertNull("StreamTopic is not null for question protocol role.", questionProtocolRole.getStreamTopics());
         assertEquals("Description is not matching the default description.", defaultDescription, questionProtocolRole.getDescription());
-        assertEquals("ProtocolRoleName is not set to QuestionProtocolRole.", QuestionProtocolRole.class.getSimpleName(), questionProtocolRole.getProtocolName());
+        assertEquals("ProtocolRoleName is not set to QuestionProtocolRole.", QuestionProtocolRole.class.getSimpleName(), questionProtocolRole.getRoleName());
 
         AnswerProtocolRole answerProtocolRole = new AnswerProtocolRole();
         defaultDescription = "Protocol role for answer-type messages";
@@ -45,7 +45,7 @@ public class ProtocolRoleTest {
         assertFalse("OpenQuestion topic is present in AnswerProtocolRole event topic list.", eventTopicList.contains(OpenQuestion.topic));
         assertNull("StreamTopic is not null for question protocol role.", answerProtocolRole.getStreamTopics());
         assertEquals("Description is not matching the default description.", defaultDescription, answerProtocolRole.getDescription());
-        assertEquals("ProtocolRoleName is not set to AnswerProtocolole.", AnswerProtocolRole.class.getSimpleName(), answerProtocolRole.getProtocolName());
+        assertEquals("ProtocolRoleName is not set to AnswerProtocolole.", AnswerProtocolRole.class.getSimpleName(), answerProtocolRole.getRoleName());
     }
 
 }

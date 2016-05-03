@@ -26,7 +26,7 @@ public class LightConfigCtrlRoleTest {
 
         assertEquals(description, lightCtrlR.getDescription());
         //assertEquals(17, lightCtrlR.getEventTopics().length);
-        assertEquals("LightConfigCtrlRole", lightCtrlR.getProtocolName());
+        assertEquals("LightConfigCtrlRole", lightCtrlR.getRoleName());
         assertNull("LightConfigCtrlRole stream topic is not null", lightCtrlR.getStreamTopics());
 
         /**
@@ -39,7 +39,7 @@ public class LightConfigCtrlRoleTest {
         description = "This the protocol role that the light ui must subscribe to";
 
         assertEquals(description, loghtCtrlCR.getDescription());
-        assertEquals("LightConfigConsumerRole", loghtCtrlCR.getProtocolName());
+        assertEquals("LightConfigConsumerRole", loghtCtrlCR.getRoleName());
         assertEquals(5, loghtCtrlCR.getEventTopics().length);
         assertNull("LightConfigConsumerRole stream topic is not null", loghtCtrlCR.getStreamTopics());
 

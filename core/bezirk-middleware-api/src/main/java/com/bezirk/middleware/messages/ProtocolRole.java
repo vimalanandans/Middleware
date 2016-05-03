@@ -30,7 +30,7 @@ package com.bezirk.middleware.messages;
  */
 public abstract class ProtocolRole {
     /**
-     * Returns the unique name of this protocol, used by the middleware to manage subscriptions
+     * Returns the unique name of this role, used by the middleware to manage subscriptions
      * and discover Zirks subscribed to the role.
      * <p>
      * The implementation of this method should return the simple name of the implementing class,
@@ -39,15 +39,15 @@ public abstract class ProtocolRole {
      * <pre>
      * public class PartyProtocolRole implements ProtocolRole {
      *    {@literal @}Override
-     *     public String getProtocolName() {
+     *     public String getRoleName() {
      *         return PartyProtocolRole.class.getSimpleName();
      *     }
      * }
      * </pre>
      *
-     * @return the name of the protocol role for managing subscriptions and discovery
+     * @return the name of the protocol role, for managing subscriptions and discovery
      */
-    public abstract String getProtocolName();
+    public abstract String getRoleName();
 
     /**
      * Returns a human-readable description of this protocol. This description should be succinctly
@@ -80,14 +80,14 @@ public abstract class ProtocolRole {
     @Override
     public boolean equals(Object p) {
         return p instanceof ProtocolRole &&
-                this.getProtocolName().equals(((ProtocolRole) p).getProtocolName());
+                this.getRoleName().equals(((ProtocolRole) p).getRoleName());
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.getProtocolName() != null) ? this.getProtocolName().hashCode() : 0);
+        result = prime * result + ((this.getRoleName() != null) ? this.getRoleName().hashCode() : 0);
         return result;
     }
 }

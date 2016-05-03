@@ -470,7 +470,7 @@ public class SadlRegistryTest {
         String events[] = {"NewProtocolRole"};
         String stream[] = {"NewProtocolRoleStream"};
 
-        public String getProtocolName() {
+        public String getRoleName() {
             return "NewProtocolRole";
         }
 
@@ -499,7 +499,7 @@ public class SadlRegistryTest {
 
         String otherStream[] = {"NewProtocolRoleOtherStream"};
 
-        public String getProtocolName() {
+        public String getRoleName() {
             return "NewProtocolRoleOther";
         }
 

@@ -32,7 +32,7 @@ public class RoleUITest {
 
         String[] expectedEvents = new String[]{ReplyUIchoices.TOPIC, ReplyUIvalues.TOPIC};
         assertTrue("ConsumeRoleUI is missing expected event topics in eventTopicList.", Arrays.equals(expectedEvents, consumerRole.getEventTopics()));
-        assertEquals("ProtocolName is not equal to RoleConsumeUI.", RoleConsumeUI.class.getSimpleName(), consumerRole.getProtocolName());
+        assertEquals("ProtocolName is not equal to RoleConsumeUI.", RoleConsumeUI.class.getSimpleName(), consumerRole.getRoleName());
         assertNotNull("Description is null for RoleConsumeUI", consumerRole.getDescription());
         assertNull("StreamTopics is not null for RoleConsumeUI", consumerRole.getStreamTopics());
     }
@@ -48,7 +48,7 @@ public class RoleUITest {
                 RequestUImultipleChoice.TOPIC,
                 RequestUIpickOne.TOPIC};
         assertTrue("ParametricRole is missing expected event topics in eventTopicList.", Arrays.equals(expectedEvents, parametricRole.getEventTopics()));
-        assertEquals("ProtocolName is not equal to RoleParametricUI.", RoleParametricUI.class.getSimpleName(), parametricRole.getProtocolName());
+        assertEquals("ProtocolName is not equal to RoleParametricUI.", RoleParametricUI.class.getSimpleName(), parametricRole.getRoleName());
         assertNotNull("Description is null for RoleConsumeUI", parametricRole.getDescription());
         assertNull("StreamTopics is not null for RoleConsumeUI", parametricRole.getStreamTopics());
 

@@ -16,7 +16,7 @@ public class SmartServiceRole extends ProtocolRole {
     private String role = this.getClass().getSimpleName();
 
     @Override
-    public String getProtocolName() {
+    public String getRoleName() {
         return role;
     }
 

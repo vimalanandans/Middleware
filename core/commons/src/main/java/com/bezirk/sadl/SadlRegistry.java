@@ -169,7 +169,7 @@ public class SadlRegistry implements Serializable {
      * @return true if subscribed, false otherwise
      */
     public Boolean subscribeService(final BezirkZirkId serviceId, final ProtocolRole pRole) {
-        final String protocolName = pRole.getProtocolName();
+        final String protocolName = pRole.getRoleName();
         final String protocolDescription = pRole.getDescription();
         final String[] eventsTopics = pRole.getEventTopics();
         final String[] streamTopics = pRole.getStreamTopics();
@@ -235,8 +235,8 @@ public class SadlRegistry implements Serializable {
      * @return true if unsubscribed, false otherwise
      */
     public Boolean unsubscribe(final BezirkZirkId zirkId, final ProtocolRole role) {
-        if (protocolMap.containsKey(role.getProtocolName())) {
-            final Set<BezirkZirkId> serviceIdSet = protocolMap.get(role.getProtocolName());
+        if (protocolMap.containsKey(role.getRoleName())) {
+            final Set<BezirkZirkId> serviceIdSet = protocolMap.get(role.getRoleName());
 
             if (!serviceIdSet.remove(zirkId)) {
                 logger.info("Zirk is Trying to unsubscribe that it has not subscribed to");
@@ -244,11 +244,11 @@ public class SadlRegistry implements Serializable {
             }
             // Remove from Protocol map
             if (serviceIdSet.isEmpty()) {
-                protocolMap.remove(role.getProtocolName());
+                protocolMap.remove(role.getRoleName());
                 // Remove the Description
-                protocolDescMap.remove(role.getProtocolName());
+                protocolDescMap.remove(role.getRoleName());
             } else {
-                protocolMap.put(role.getProtocolName(), serviceIdSet);
+                protocolMap.put(role.getRoleName(), serviceIdSet);
             }
 
             // Remove all events
@@ -267,7 +267,7 @@ public class SadlRegistry implements Serializable {
             }
             return true;
         }
-        logger.info(zirkId + "Zirk tried to Unsubscribe  " + role.getProtocolName() + " without Registration/ Zirk might be already unsubscribed");
+        logger.info(zirkId + "Zirk tried to Unsubscribe  " + role.getRoleName() + " without Registration/ Zirk might be already unsubscribed");
         return false;
     }
 
@@ -396,13 +396,13 @@ public class SadlRegistry implements Serializable {
      * @return
      */
     public Set<BezirkDiscoveredZirk> discoverServices(ProtocolRole protocolRole, Location location) {
-        if (!protocolMap.containsKey(protocolRole.getProtocolName())) {
+        if (!protocolMap.containsKey(protocolRole.getRoleName())) {
             logger.debug("No services are subscribed for this protocol Role");
             return null;
         }
         final HashSet<BezirkDiscoveredZirk> discoveredServices = new HashSet<BezirkDiscoveredZirk>();
         // Get all the services associated with the protocols
-        final Set<BezirkZirkId> services = protocolMap.get(protocolRole.getProtocolName());
+        final Set<BezirkZirkId> services = protocolMap.get(protocolRole.getRoleName());
         for (BezirkZirkId serviceId : services) {
             Location serviceLocation = getLocationForService(serviceId);
 
@@ -415,7 +415,7 @@ public class SadlRegistry implements Serializable {
         }
         if (discoveredServices.isEmpty()) {
             logger.debug("No services are present in the location: {} subscribed to Protocol Role: {}",
-                    location.toString(), protocolRole.getProtocolName());
+                    location.toString(), protocolRole.getRoleName());
             return null;
         }
         return discoveredServices;

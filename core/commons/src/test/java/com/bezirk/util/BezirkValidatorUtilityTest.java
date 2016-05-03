@@ -292,7 +292,7 @@ public class BezirkValidatorUtilityTest {
         String protocolName = this.getClass().getSimpleName();
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return protocolName;
         }
 

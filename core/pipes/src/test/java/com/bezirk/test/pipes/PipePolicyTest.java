@@ -26,8 +26,8 @@ public class PipePolicyTest {
         String sPolicy = policy.toJson();
         System.out.println("Policy try out: " + sPolicy);
         PipePolicy deserializedPolicy = PipePolicy.fromJson(sPolicy, MockPipePolicy.class);
-        assertTrue(deserializedPolicy.getReason(pRole1.getProtocolName()).equals(reason1));
-        assertTrue(deserializedPolicy.getReason(pRole2.getProtocolName()).equals(reason2));
+        assertTrue(deserializedPolicy.getReason(pRole1.getRoleName()).equals(reason1));
+        assertTrue(deserializedPolicy.getReason(pRole2.getRoleName()).equals(reason2));
     }
 
     private class MockPipePolicy extends PipePolicy {

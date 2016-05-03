@@ -17,7 +17,7 @@ public class AnswerProtocolRole extends ProtocolRole {
     private String name = this.getClass().getSimpleName();
 
     @Override
-    public String getProtocolName() {
+    public String getRoleName() {
         return name;
     }
 

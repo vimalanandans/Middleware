@@ -13,7 +13,7 @@ public class LightConfigConsumerRole extends ProtocolRole {
                     ResponsePolicy.TOPIC};
 
     @Override
-    public String getProtocolName() {
+    public String getRoleName() {
         return this.getClass().getSimpleName();
     }
 

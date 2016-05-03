@@ -54,7 +54,7 @@ public final class BezirkValidatorUtility {
      * @return true if valid, false otherwise
      */
     public static boolean checkProtocolRole(final SubscribedRole role) {
-        return !(null == role || !checkForString(role.getProtocolName()));
+        return !(null == role || !checkForString(role.getRoleName()));
     }
 
     /**

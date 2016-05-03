@@ -185,7 +185,7 @@ public class StreamLocalTest {
         private final String[] streams = {"DummyStream"};
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return StreamLocalDummyProtocolRole.class.getSimpleName();
         }
 
@@ -213,7 +213,7 @@ public class StreamLocalTest {
         private final String[] streams = {"MockRequestStream"};
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return StreamLocalMockServiceProtocolRole.class.getSimpleName();
         }
 

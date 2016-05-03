@@ -190,7 +190,7 @@ public class LocationUpdateTest {
         private final String[] events = {"MockRequestEvent"};
 
         @Override
-        public String getProtocolName() {
+        public String getRoleName() {
             return LocationUpdateMockServiceProtocolRole.class.getSimpleName();
         }
 

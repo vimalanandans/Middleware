@@ -20,7 +20,7 @@ public class UserObservationRoleTest {
     public void test() {
 
         UserObservationRole usrObsrvRole = new UserObservationRole();
-        assertEquals("Protocol Name is not equal to UserObservationRole.", UserObservationRole.class.getSimpleName(), usrObsrvRole.getProtocolName());
+        assertEquals("Protocol Name is not equal to UserObservationRole.", UserObservationRole.class.getSimpleName(), usrObsrvRole.getRoleName());
 
         assertNull("Description is present for UserObservationRole.", usrObsrvRole.getDescription());
         assertNull("StreamTopics are present in UserObservationRole.", usrObsrvRole.getStreamTopics());
