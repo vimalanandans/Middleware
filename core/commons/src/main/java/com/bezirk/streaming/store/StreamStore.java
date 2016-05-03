@@ -75,7 +75,7 @@ public class StreamStore {
      * 
      * @param port - Port to be released
      * 
-     * @return status of the update. <code>true>/code> if success
+     * @return status of the update. <code>true</code> if success
      */
     public boolean releasePort(int port) {
         synchronized (this) {

@@ -4,7 +4,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
 /**
- * Manager Class that manages <b>singleton<b> queues used by the stack to send and receive the
+ * Manager Class that manages <b>singleton</b> queues used by the stack to send and receive the
  * Log messages (BezirkLoggingMessage). The Processors defined in the {@link com.bezirk.remotelogging.processors}
  * will process these queues accordingly.
  */

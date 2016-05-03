@@ -1049,7 +1049,7 @@ public class SphereRegistryWrapper {
     }
 
     /**
-     * Provides BezirkDeviceInfo iterable for the passed map of deviceId -> device
+     * Provides BezirkDeviceInfo iterable for the passed map of deviceId -&gt; device
      * services
      *
      * @param devices      - services mapped to the device Id. It has to be non-null

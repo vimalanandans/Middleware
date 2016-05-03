@@ -26,8 +26,9 @@ import java.net.SocketException;
 
 /**
  * This thread is used by the recipient that is interested in receiving the Stream. This Thread opens socket at port ({@link com.bezirk.streaming.port.PortFactory#getPort(String)} and
- * waits for the sender to connect. Once the Sender gets connected, a file will be created at {@link BezirkCommunications#DOWNLOAD_PATH+this#fileName} and will read
- * data at a time. After the data transfer it will release the port through {@link com.bezirk.streaming.port.PortFactory#releasePort(int)}. From the {@link this#streamLabel}, it will query the BezirkSadl
+ * waits for the sender to connect. Once the Sender gets connected, a file will be created at {@link BezirkCommunications#DOWNLOAD_PATH} and will read
+ * data at a time. After the data transfer it will release the port through
+ * {@link com.bezirk.streaming.port.PortFactory#releasePort(int)}. From the {@link #streamLabel}, it will query the BezirkSadl
  * to get all the Zirk Identities via
  * corresponding to the services.
  * If error occurs during the course, it releases the port and closes the socket and Streams
@@ -59,10 +60,7 @@ public class StreamReceivingThread implements Runnable {
     /**
      * Constructor that is called during starting the thread
      *
-     * @param sphereForSadl
-     * @param -             sphere - used to decrypt the data
-     * @param -             port   - port that this thread is listening to receive the data. { This port is got from PortFactory }
-     * @param -             streamLabel - streamLabel that is used to identify the Stream
+     * @param  port   - port that this thread is listening to receive the data. { This port is got from PortFactory }
      */
     public StreamReceivingThread(int port,
                                  StreamRequest streamRequest, PortFactory portFactory,

@@ -8,7 +8,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkId;
  */
 public final class StreamStatusMessage extends ServiceIncomingMessage {
     /**
-     * StreamStatus id. 0 -> UnSuccessful | 1 -> Successful.
+     * StreamStatus id. 0 -&gt; UnSuccessful | 1 -&gt; Successful.
      */
     public int streamStatus = 0;
 

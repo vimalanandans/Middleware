@@ -61,7 +61,7 @@ public final class BezirkValidatorUtility {
      * Checks for Validity of String for Not null and not empty
      *
      * @param stringValues - string to be validated
-     * @return true if valid(not null & non empty), false otherwise
+     * @return true if valid(not null and non empty), false otherwise
      */
     public static boolean checkForString(final String... stringValues) {
         if (stringValues == null || stringValues.length == 0) {

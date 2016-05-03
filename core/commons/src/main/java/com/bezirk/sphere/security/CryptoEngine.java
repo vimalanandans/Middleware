@@ -184,7 +184,7 @@ public final class CryptoEngine implements CryptoInternals {
      *                          encrypted
      * @param serializedContent content to be encrypted
      * @return encrypted byte array if 1. <code>sphereId</code> is not <code>null</code> and has a
-     * sphereKey associated with it and 2. <ccde>serializedContent</code> is not <code>null</code>,
+     * sphereKey associated with it and 2. <code>serializedContent</code> is not <code>null</code>,
      * returns <code>null</code> otherwise
      */
     public final byte[] encryptSphereContent(String sphereId, String serializedContent) {

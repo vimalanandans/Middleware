@@ -36,27 +36,27 @@ public class SadlRegistry implements Serializable {
     protected HashSet<BezirkZirkId> sid = null;
     /**
      * Stores the list of Services associated with the Protocol. Typically used in Discovery.
-     * [Key -> Value] = [ProtocolName -> [Set of ServiceIds]]
+     * [Key -&gt; Value] = [ProtocolName -&gt; [Set of ServiceIds]]
      */
     protected ConcurrentMap<String, Set<BezirkZirkId>> protocolMap = null;
     /**
      * Stores the Protocol Description associated with the ProtocolRole. Typically used in Discovery.
-     * [Key -> Value] = [ProtocolName -> Protocol description]
+     * [Key -&gt; Value] = [ProtocolName -&gt; Protocol description]
      */
     protected ConcurrentHashMap<String, String> protocolDescMap = null;
     /**
      * Stores the serviceIds mapped to the event topics. Typically used in Sending/ Receiving Event.
-     * [Key -> Value] = [eventTopic -> [Set of ServiceIds]]
+     * [Key -&gt; Value] = [eventTopic -&gt; [Set of ServiceIds]]
      */
     protected ConcurrentMap<String, Set<BezirkZirkId>> eventMap = null;
     /**
      * Stores the ServiceIds mapped to the stream topics. Typically used in Streaming.
-     * [Key -> Value] = [streamTopic -> [Set of ServiceIds]]
+     * [Key -&gt; Value] = [streamTopic -&gt; [Set of ServiceIds]]
      */
     protected ConcurrentMap<String, Set<BezirkZirkId>> streamMap = null;
     /**
      * Stores the location of the Services.
-     * [Key -> Value] = [BezirkZirkId -> Location]
+     * [Key -&gt; Value] = [BezirkZirkId -&gt; Location]
      */
     protected ConcurrentHashMap<BezirkZirkId, Location> locationMap = null;
 
@@ -434,11 +434,11 @@ public class SadlRegistry implements Serializable {
     }
 
     /**
-     * Returns the Set<BezirkZirkId> associated with the Topic and Location
+     * Returns the Set&lt;BezirkZirkId&gt; associated with the Topic and Location
      *
      * @param topic    topic of the Event
      * @param location of the Zirk
-     * @return Set<BezirkZirkId> if the zirks are present, <code>null</code> otherwise
+     * @return Set&lt;BezirkZirkId&gt; if the zirks are present, <code>null</code> otherwise
      */
     public Set<BezirkZirkId> checkMulticastEvent(String topic, Location location) {
         HashSet<BezirkZirkId> services = null;

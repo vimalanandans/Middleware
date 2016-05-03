@@ -53,7 +53,7 @@ public class PortFactory implements com.bezirk.comms.PortFactory {
      * arrived for the first time ) then it updates the activePorts Map with the port and portsMap in StreamStore with portMapKey and port.
      *
      * @param portMapKey key in form [MsgId:ServiceName:DeviceId] that used to keep track of active Stream
-     * @return positive integer: indicating the port that is assigned for this request. ( Port >= startingPort and  Port<= endingPort-startingPort )
+     * @return positive integer: indicating the port that is assigned for this request. ( Port &gt;= startingPort and  Port&lt;= endingPort-startingPort )
      * -1 : if all the ports are busy.
      */
     @Override

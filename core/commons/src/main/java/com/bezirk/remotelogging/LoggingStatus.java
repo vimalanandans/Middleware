@@ -1,9 +1,9 @@
 package com.bezirk.remotelogging;
 
 /**
- * Class that gives the status of the logging. {@link false} by default. The Event Sender/Receivers Threads and
- * Control Sender/Receivers Threads check the status of the logging and if true, will send the
- * {@link BezirkLoggingMessage} on the wire.
+ * Class that gives the status of the logging. <code>false</code> by default. The Event
+ * Sender/Receivers Threads and Control Sender/Receivers Threads check the status of the logging
+ * and if true, will send the {@link BezirkLoggingMessage} on the wire.
  */
 public final class LoggingStatus {
     /**
