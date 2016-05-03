@@ -54,9 +54,9 @@ task javaBuildDist(type: Zip) {
     baseName = 'bezirk-java-dist'
     version = project.version
     into 'jars'
-    from { project(':core:bezirk-api').configurations.runtime }
+    from { project(':core:bezirk-middleware-api').configurations.runtime }
     from { project(':java:libraries:bezirk-factory').configurations.runtime }
-    from { project(':core:bezirk-api').jar }
+    from { project(':core:bezirk-middleware-api').jar }
     from { project(':java:libraries:bezirk-factory').jar }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
