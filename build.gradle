@@ -4,8 +4,8 @@ buildscript {
         jcenter() //used for jfrog
     }
     ext {
-        androidGradleToolsVersion = "1.2.3"
-        androidBuildToolsVersion = "21.1.2" //upgrade requires upgrade in jenkins
+        androidGradleToolsVersion = "2.1.0"
+        androidBuildToolsVersion = "23.0.1"
         androidSupportLibraryVersion = "19.+"
         androidCompileSdkVersion = "19"
         androidMinSdkVersion = "16"

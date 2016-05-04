@@ -52,9 +52,9 @@ dependencies {
     compile project(':core:actions')
     compile project(':core:pipes')
     //}
-    compile project(':android:starter')
+    compile project(':android:android-starter')
     compile project(':android:ui:sphere-pipe-ui')
-    compile project(':android:libraries:comms-zyre-jni')
+    compile project(':android:android-libraries:android-comms-zyre-jni')
 
     compile 'org.bouncycastle:bcprov-jdk15on:1.49'
     compile 'org.apache.shiro:shiro-core:1.2.4'

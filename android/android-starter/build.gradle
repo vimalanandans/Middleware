@@ -1,4 +1,4 @@
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 repositories {
     flatDir {
@@ -58,7 +58,7 @@ dependencies {
     compile project(':core:pipes')
     // }
 
-    compile project(':android:libraries:comms-zyre-jni')
+    compile project(':android:android-libraries:android-comms-zyre-jni')
 
     compile 'org.bouncycastle:bcprov-jdk15on:1.49' //Check if this works
     compile 'org.apache.shiro:shiro-core:1.2.4'

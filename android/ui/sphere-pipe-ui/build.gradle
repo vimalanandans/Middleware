@@ -55,8 +55,8 @@ dependencies {
     compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
     //compile "com.android.support:support-v4:${project.androidSupportLibraryVersion}"
 
-    compile project(':android:starter')
-    compile project(':android:libraries:zbarscanner')
+    compile project(':android:android-starter')
+    compile project(':android:android-libraries:zbarscanner')
 
 /*    if (project.local == "false") {
         compile "com.bezirk:commons:${version}"
