@@ -3,11 +3,14 @@
 The Bezirk Middleware project forms the heart of the Bezirk platform. This repository contains the following middleware modules:
 
 - **android** - Android-specific middleware code
- - **android-libraries** - 
+ - **android-libraries** -
+   - **android-comms-zyre-jni** -
+    - **proxy** -
+    - **zbarscanner** -
  - **android-starter** -
- - **ui** -
-  - **control-ui** -
-  - **sphere-pipe-ui** -
+ - **ui** - Android GUI's for Bezirk configuration and user-interaction
+   - **control-ui** - basic GUI for the Bezirk Android app
+    - **sphere-pipe-ui** - library containing configuration layouts for Bezirk Android app
 - **core** - platform-independent middleware code
  - **actions** -
  - **bezirk** -
@@ -21,8 +24,8 @@ The Bezirk Middleware project forms the heart of the Bezirk platform. This repos
  - **protocols** - implementations of Bezirk-standard protocols (e.g. those for personalization)
 - **java** - Standard Java-specific middleware code
  - **libraries** -
-  - **bezirk-factory** -
-  - **comms-zyre-jni** -
+   - **bezirk-factory** -
+    - **comms-zyre-jni** -
  - **starter** -
  - **testapp** - a basic "Hello World" Zirk for quickly testing middleware changes
 
