@@ -3,7 +3,7 @@
 The Bezirk Middleware project forms the heart of the Bezirk platform. This repository contains the following middleware modules:
 
 - **android** - Android-specific middleware code
- - **android-libraries** - code to fetch the Bezirk API and implement platform-specific feature code (e.g. barcode scanning)
+ - **android-libraries** - code to fetch the Bezirk API and implement platform-specific features (e.g. barcode scanning)
    - **android-comms-zyre-jni** - Android-specific adapter for the [ZeroMQ Zyre](https://github.com/zeromq/zyre) framework
     - **proxy** - Android-specific code for fetching the Bezirk API
     - **zbarscanner** - Bezirk wrapper app for [ZbarScanner](https://sourceforge.net/projects/zbar/?source=navbar)
@@ -12,18 +12,18 @@ The Bezirk Middleware project forms the heart of the Bezirk platform. This repos
    - **control-ui** - basic GUI for the Bezirk Android app
     - **sphere-pipe-ui** - library containing configuration layouts for Bezirk Android app
 - **core** - platform-independent middleware code
- - **actions** - specification of actions that can be sent via Android intents
- - **bezirk** -
+ - **actions** - specification of operations (e.g. send or receive an event) that can be requested of the middleware
+ - **bezirk** - internal-facing concrete implementations of Bezirk API interfaces and classes
  - **bezirk-middleware-api** - interfaces and classes defining the Bezirk API and its JavaDocs
- - **commons** -
- - **comms** -
- - **control-messages** -
+ - **commons** - primary location for internal implementation of middleware features
+ - **comms** - implementations of various communication protocols for Bezirk
+ - **control-messages** - platform-independent classes to implement Bezirk-internal messages (e.g. middleware instance-to-middleware instance communication)
  - **device-objects** - API for collecting information about a device that is joining a sphere
  - **network-util** - code for getting local networking information (e.g. IP address, MAC address, etc.)
  - **pipes** - code implementing Bezirk's pipe feature
  - **protocols** - implementations of Bezirk-standard protocols (e.g. those for personalization)
 - **java** - Java SE-specific middleware code
- - **libraries** - code to fetch the Bezirk API and implement platform-specific feature code (e.g. barcode scanning)
+ - **libraries** - code to fetch the Bezirk API and implement platform-specific feature code
    - **bezirk-factory** - Java SE-specific code for fetching the Bezirk API
     - **comms-zyre-jni** - Java SE-specific adapter for the [ZeroMQ Zyre](https://github.com/zeromq/zyre) framework
  - **starter** - code to implement Java SE-specific subset of the Bezirk API (e.g. for PC's running full JRE)
