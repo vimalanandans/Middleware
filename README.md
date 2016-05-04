@@ -3,30 +3,30 @@
 The Bezirk Middleware project forms the heart of the Bezirk platform. This repository contains the following middleware modules:
 
 - **android** - Android-specific middleware code
- - **android-libraries** -
-   - **android-comms-zyre-jni** -
-    - **proxy** -
-    - **zbarscanner** -
- - **android-starter** -
+ - **android-libraries** - code to fetch the Bezirk API and implement platform-specific feature code (e.g. barcode scanning)
+   - **android-comms-zyre-jni** - Android-specific adapter for the [ZeroMQ Zyre](https://github.com/zeromq/zyre) framework
+    - **proxy** - Android-specific code for fetching the Bezirk API
+    - **zbarscanner** - Bezirk wrapper app for [ZbarScanner](https://sourceforge.net/projects/zbar/?source=navbar)
+ - **android-starter** - code to implement Android-specific subset of the Bezirk API
  - **ui** - Android GUI's for Bezirk configuration and user-interaction
    - **control-ui** - basic GUI for the Bezirk Android app
     - **sphere-pipe-ui** - library containing configuration layouts for Bezirk Android app
 - **core** - platform-independent middleware code
  - **actions** -
  - **bezirk** -
- - **bezirk-middleware-api** - interfaces and classes definining the Bezirk API and its JavaDocs
+ - **bezirk-middleware-api** - interfaces and classes defining the Bezirk API and its JavaDocs
  - **commons** -
  - **comms** -
  - **control-messages** -
  - **device-objects** -
  - **network-util** -
- - **pipes** -
+ - **pipes** - code implementing Bezirk's pipe feature
  - **protocols** - implementations of Bezirk-standard protocols (e.g. those for personalization)
-- **java** - Standard Java-specific middleware code
- - **libraries** -
+- **java** - Java SE-specific middleware code
+ - **libraries** - code to fetch the Bezirk API and implement platform-specific feature code (e.g. barcode scanning)
    - **bezirk-factory** -
-    - **comms-zyre-jni** -
- - **starter** -
+    - **comms-zyre-jni** - Java SE-specific adapter for the [ZeroMQ Zyre](https://github.com/zeromq/zyre) framework
+ - **starter** - code to implement Java SE-specific subset of the Bezirk API (e.g. for PC's running full JRE)
  - **testapp** - a basic "Hello World" Zirk for quickly testing middleware changes
 
 ## Build Dependencies
@@ -36,9 +36,9 @@ The Bezirk Middleware project forms the heart of the Bezirk platform. This repos
 
 To build and test the middleware run: `./gradlew check`
 
-## System Enivornment
+## System Environment
 ### OSX
-Set the environnment variable DYLD_LIBRARY_PATH
+Set the environment variable DYLD_LIBRARY_PATH
 
 1. Go to home directory
     ```
