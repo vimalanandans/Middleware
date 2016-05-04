@@ -12,19 +12,19 @@ The Bezirk Middleware project forms the heart of the Bezirk platform. This repos
    - **control-ui** - basic GUI for the Bezirk Android app
     - **sphere-pipe-ui** - library containing configuration layouts for Bezirk Android app
 - **core** - platform-independent middleware code
- - **actions** -
+ - **actions** - specification of actions that can be sent via Android intents
  - **bezirk** -
  - **bezirk-middleware-api** - interfaces and classes defining the Bezirk API and its JavaDocs
  - **commons** -
  - **comms** -
  - **control-messages** -
- - **device-objects** -
- - **network-util** -
+ - **device-objects** - API for collecting information about a device that is joining a sphere
+ - **network-util** - code for getting local networking information (e.g. IP address, MAC address, etc.)
  - **pipes** - code implementing Bezirk's pipe feature
  - **protocols** - implementations of Bezirk-standard protocols (e.g. those for personalization)
 - **java** - Java SE-specific middleware code
  - **libraries** - code to fetch the Bezirk API and implement platform-specific feature code (e.g. barcode scanning)
-   - **bezirk-factory** -
+   - **bezirk-factory** - Java SE-specific code for fetching the Bezirk API
     - **comms-zyre-jni** - Java SE-specific adapter for the [ZeroMQ Zyre](https://github.com/zeromq/zyre) framework
  - **starter** - code to implement Java SE-specific subset of the Bezirk API (e.g. for PC's running full JRE)
  - **testapp** - a basic "Hello World" Zirk for quickly testing middleware changes
