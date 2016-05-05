@@ -22,8 +22,8 @@ publishing  {
     repositories {
         // This publishes our jars to the Bosch nexus repository manager
         maven {
-            // Deploy to upa-snapshots if this is a SNAPSHOT release, else deploy to upa-releases
-            url "${artifactRepoBase}/${project.version.endsWith('-SNAPSHOT') ? 'upa-snapshots' : 'upa-releases' }"
+            // Deploy to bezirk-snapshots if this is a SNAPSHOT release, else deploy to bezirk-releases
+            url "${artifactRepoBase}/${project.version.endsWith('-SNAPSHOT') ? 'bezirk-snapshots' : 'bezirk-releases' }"
             credentials {
                 username nexus_user
                 password nexus_password

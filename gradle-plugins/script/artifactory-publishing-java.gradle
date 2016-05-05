@@ -1,8 +1,9 @@
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.artifactory'
+
 /*
-* Command to publish: gradlew artifactoryPublish
-*/
+ * Command to publish: gradlew artifactoryPublish
+ */
 publishing {
     publications {
         bezirkPublication(MavenPublication) {
@@ -10,7 +11,7 @@ publishing {
 
             artifact javadocJar
 
-            /*unccomment to publish sources jar*/
+            /*uncomment to publish sources jar*/
             //artifact sourceJar
         }
     }
