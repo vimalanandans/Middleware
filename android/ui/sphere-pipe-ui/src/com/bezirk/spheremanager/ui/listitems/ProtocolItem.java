@@ -22,7 +22,7 @@ public class ProtocolItem implements AbstractPolicyListItem {
     }
 
     /**
-     * Human readable name for the protocol. E.g. UhU may refer to it to explain pipe policy.
+     * Human readable name for the protocol. E.g. Bezirk may refer to it to explain pipe policy.
      *
      * @return The Protocol role description
      */

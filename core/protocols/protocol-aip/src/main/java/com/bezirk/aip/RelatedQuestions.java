@@ -10,7 +10,7 @@ import java.util.List;
 public class RelatedQuestions extends Event {
 
     /**
-     * UhU topic: related-questions
+     * Bezirk topic: related-questions
      */
     public static final String topic = "related-questions";
 

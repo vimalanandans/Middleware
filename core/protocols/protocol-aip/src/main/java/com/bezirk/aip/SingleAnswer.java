@@ -10,7 +10,7 @@ import java.util.List;
 public class SingleAnswer extends Event {
 
     /**
-     * UhU topic: single-answer
+     * Bezirk topic: single-answer
      */
     public static final String topic = "single-answer";
 

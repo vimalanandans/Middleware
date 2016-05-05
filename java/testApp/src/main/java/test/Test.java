@@ -42,7 +42,7 @@ public class Test {
         // Note: the usual way to say "hello world" in Java
         System.out.println("Hello World");
 
-        // Steps to publish an even over UhU:
+        // Steps to publish an even over Bezirk:
         // 1. set the targeted address
         Address target = new Address(new Location(null));        // local only (no pipes) with no constraints on location: will reach all services in the spheres test.Test is a member of
 

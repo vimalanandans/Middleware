@@ -1,9 +1,9 @@
-# UhU-UI Android
+# Bezirk-UI Android
 
-## UhU Control UI
+## Bezirk Control UI
 bezirk-control-ui is the main ui which uses below libraries
 
 * bezirk-sphere-pipe-ui : bezirk sphere-pipe management ui library
 * bezirk-android : bezirk-android zirk library
 
-Note: till bezirk-ui become stable bezirk-android shall be switched back to old ui 
+Note: until bezirk-ui becomes stable bezirk-android shall be switched back to old ui

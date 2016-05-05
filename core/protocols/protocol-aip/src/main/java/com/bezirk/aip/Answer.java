@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Answer<A> extends Event {
     /**
-     * UhU topic: answer
+     * Bezirk topic: answer
      */
     public static final String topic = "answer";
 

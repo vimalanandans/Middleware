@@ -1,7 +1,7 @@
 /*
  * @author mcataldo
  * @description the goal of this class is to have all the constants and methods required for figuring out what
- *              OS platform UhU and services are running on.
+ *              OS platform Bezirk and services are running on.
  */
 package com.bezirk.devices;
 

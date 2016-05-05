@@ -136,8 +136,8 @@ public class RemoteSender implements Runnable {
         this.pipeMonitor = pipeMonitor;
     }
 
-    public void setBezirkHeader(Header uhuHeader) {
-        this.bezirkHeader = uhuHeader;
+    public void setBezirkHeader(Header bezirkHeader) {
+        this.bezirkHeader = bezirkHeader;
     }
 
     public String getCertFileName() {

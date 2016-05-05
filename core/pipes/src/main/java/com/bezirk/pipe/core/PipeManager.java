@@ -68,13 +68,13 @@ public interface PipeManager {
      * Called to notify the PipeManager whether the user has granted access to the pipe and
      * which policies are allowed to pass in and out of the pipe.
      *
-     * @param granted     True if the pipe was granted
-     * @param pipe        The Pipe originally requested by the zirk
-     * @param allowedIn   This PipePolicy contains the collection of Protocols allowed into the local sphere
-     * @param allowedOut  This PipePolicy contains the collection of Protocols allowed to pass out of the local sphere
-     * @param sphereId    The sphere the pipe has been added to
-     * @param uhuListener The bezirk zirk to notify of the status of the pipe request
+     * @param granted        True if the pipe was granted
+     * @param pipe           The Pipe originally requested by the zirk
+     * @param allowedIn      This PipePolicy contains the collection of Protocols allowed into the local sphere
+     * @param allowedOut     This PipePolicy contains the collection of Protocols allowed to pass out of the local sphere
+     * @param sphereId       The sphere the pipe has been added to
+     * @param bezirkListener The bezirk zirk to notify of the status of the pipe request
      */
     void pipeGranted(boolean granted, Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut,
-                     String sphereId, BezirkListener uhuListener);
+                     String sphereId, BezirkListener bezirkListener);
 }

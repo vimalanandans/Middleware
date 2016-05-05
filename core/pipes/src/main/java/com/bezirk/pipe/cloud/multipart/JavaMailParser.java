@@ -31,7 +31,7 @@ public class JavaMailParser implements MultiPartParser {
 		 * 
 		 * Implementation Note: There is a PERFORMANCE implication of using JavaMail's MimeMultipart
 		 * object to parse the server response.  It is causing the inputstream to be read entirely 
-		 * before passing it on to the receiving UhU zirk. This is true even if we use the
+		 * before passing it on to the receiving Bezirk zirk. This is true even if we use the
 		 * IncrementalDataSource implementation that does not read the inputstream into a
 		 * buffer immediately.  Both DataSources have the same performance for a given content
 		 * file.

@@ -10,7 +10,7 @@ import com.google.zxing.common.BitMatrix;
 import java.util.List;
 
 /**
- * BezirkSphereAPI - Platform-independent API offered by UhU to sphere management
+ * BezirkSphereAPI - Platform-independent API offered by Bezirk to sphere management
  * application
  *
  * @author Rishabh Gulati, Vimal

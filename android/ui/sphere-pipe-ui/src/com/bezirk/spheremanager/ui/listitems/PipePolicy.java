@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 /**
  * Defines the reasons to allow each protocol.
- * UhU internally defines a subclass for managing protocol authorization.
+ * Bezirk internally defines a subclass for managing protocol authorization.
  */
 public class PipePolicy {
     private final HashMap<ProtocolItem, String> reasonMap = new HashMap<ProtocolItem, String>();
@@ -31,7 +31,7 @@ public class PipePolicy {
     }
 
     /**
-     * UhU internally defines a subclass for managing policies, which overrides this method.
+     * Bezirk internally defines a subclass for managing policies, which overrides this method.
      *
      * @return false
      */

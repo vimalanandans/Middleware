@@ -142,8 +142,8 @@ public class MainService extends Service implements INotificationCallback {
 
         PipeRequest pipeRequest = pipeActionParser.parsePipeRequest(intent);
         PipeRequester myPipeRequester = new PipeRequester();
-        BezirkApp uhuApp = new AndroidApp(this, myPipeRequester);
-        myPipeRequester.setApp(uhuApp);
+        BezirkApp bezirkApp = new AndroidApp(this, myPipeRequester);
+        myPipeRequester.setApp(bezirkApp);
         myPipeRequester.setRegistry(PipeRegistryFactory.getPipeRegistry());
 
         if (pipeRequest == null) {

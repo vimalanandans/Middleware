@@ -1,5 +1,5 @@
 /**
- * DisambiguationQuestions UhU Event
+ * DisambiguationQuestions Bezirk Event
  *
  * @author Cory Henson
  */
@@ -12,7 +12,7 @@ import java.util.List;
 public class DisambiguationQuestions extends Event {
 
     /**
-     * UhU topic: disambiguation-questions
+     * Bezirk topic: disambiguation-questions
      */
     public static final String topic = "disambiguation-questions";
 

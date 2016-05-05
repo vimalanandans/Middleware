@@ -198,7 +198,9 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                     com.bezirk.starter.helper.BezirkStackHandler.startedStack = true;
                 } else {
                     logger.debug("Disconnected from network!!!");
-                    Toast.makeText(service.getApplicationContext(), "You have to be connected to a network to start using UhU!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(service.getApplicationContext(),
+                            "You have to be connected to a network to start using Bezirk!!",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         }

@@ -79,7 +79,7 @@ final class BezirkPCNetworkUtil {
 
                 if (networkInterface != null && networkInterface.isLoopback()) {
                     serviceStarterHelper
-                            .fail("Found loopback interface only. UhU requires a non-loopback interface for multicast. Exiting now.",
+                            .fail("Found loopback interface only. Bezirk requires a non-loopback interface for multicast. Exiting now.",
                                     null);
                 } else {
                     serviceStarterHelper.fail(

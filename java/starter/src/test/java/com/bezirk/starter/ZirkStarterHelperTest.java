@@ -54,9 +54,9 @@ public class ZirkStarterHelperTest {
         BezirkDeviceInterface bezirkDevice = mockSetUP.getUpaDevice();
         RegistryPersistence registryPersistence = mockSetUP.getRegistryPersistence();
         BezirkComms commsLegacy = Mockito.mock(BezirkCommsLegacy.class);
-        BezirkSphereAPI uhuSphere = helper.initSphere(bezirkDevice, registryPersistence, commsLegacy);
+        BezirkSphereAPI bezirkSphere = helper.initSphere(bezirkDevice, registryPersistence, commsLegacy);
 
-        assertNotNull("BezirkSphere is not initialized. ", uhuSphere);
+        assertNotNull("BezirkSphere is not initialized. ", bezirkSphere);
 
     }
 
