@@ -49,7 +49,7 @@ public interface DiscoveredZirk {
     public String getZirkName();
 
     /**
-     * Get the <code>ProtocolRole</code>that was searched for using the
+     * Get the <code>ProtocolRole</code> that was searched for using the
      * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)
      * Discovery API} to discover this Zirk.
      *
