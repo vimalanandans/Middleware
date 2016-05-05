@@ -32,19 +32,19 @@ public abstract class MulticastStream extends Stream {
     private final Address address;
 
     /**
-     * Create a <code>Stream</code> with more than one recipient, where the set of recipients is
-     * potentially more narrow or broader than simply every component subscribed to a
-     * <code>topic</code> in a sphere. If <code>address</code> does not specify a
+     * Create a <code>Stream</code> with more than one recipient, where the set of recipients can
+     * be different from the set of Zirks subscribed to this <code>topic</code> in the sender's
+     * sphere(s). If <code>address</code> does not specify a
      * {@link com.bezirk.middleware.addressing.Location semantic address} that narrows the
-     * recipient set, this stream is broadcast to every component subscribed to <code>topic</code>
-     * in the sender's sphere(s). Otherwise, the stream is broadcast to those components in the
-     * set described in the previous sentence that are specified by <code>address</code>. If the
-     * <code>address</code> specifies a {@link com.bezirk.middleware.addressing.Pipe}, the stream
-     * will also be sent outside of a sphere.
+     * recipient set, this stream is broadcast to every Zirk subscribed to the <code>topic</code>
+     * in the sender's sphere(s). Otherwise, the stream is broadcast to the set of Zirks specified
+     * by the semantic address. If the <code>address</code> specifies a
+     * {@link com.bezirk.middleware.addressing.Pipe}, the stream will also be sent outside of a
+     * sphere.
      *
      * @param flag    flag to mark the intent of this stream
      * @param topic   the pub-sub topic for this stream
-     * @param address a specification of the components subscribed to <code>topic</code> that
+     * @param address a specification of the Zirks subscribed to <code>topic</code> that
      *                should receive this stream
      */
     public MulticastStream(Flag flag, String topic, Address address) {
@@ -54,7 +54,7 @@ public abstract class MulticastStream extends Stream {
 
     /**
      * Returns the <code>address</code> associated with this stream. This address specifies which
-     * components in the sender's spheres, subscribed to the <code>topic</code> specified in the
+     * Zirks in the sender's spheres, subscribed to the <code>topic</code> specified in the
      * constructor, should receive this stream. The address may also specify a pipe to send the
      * stream outside of a sphere.
      *

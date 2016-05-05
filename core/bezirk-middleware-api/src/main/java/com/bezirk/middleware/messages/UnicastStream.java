@@ -36,7 +36,7 @@ public abstract class UnicastStream extends Stream {
      *
      * @param flag      flag to mark the intent of this stream
      * @param topic     the pub-sub topic for this stream
-     * @param recipient the specific component that should receive this stream
+     * @param recipient the specific Zirk that should receive this stream
      */
     public UnicastStream(Flag flag, String topic, ZirkEndPoint recipient) {
         super(flag, topic);

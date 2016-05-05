@@ -52,10 +52,10 @@ import java.io.PipedOutputStream;
  */
 public interface Bezirk {
     /**
-     * Register a Zirk with the Bezirk middleware. This makes the Zirk available the user,
-     * thus allowing her to place it in a sphere to interact with other Zirks. This method must
-     * be called before any other API method can be called because it returns the ID required by
-     * most other API methods.
+     * Register a Zirk with the Bezirk middleware. This makes the Zirk available to the user in
+     * Bezirk configuration interfaces, thus allowing her to place it in a sphere to interact with
+     * other Zirks. This method must be called before any other API method can be called because it
+     * returns the ID required by most other API methods.
      *
      * @param zirkName the name of the Zirk being registered, as defined by the Zirk
      *                 developer/vendor

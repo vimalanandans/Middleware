@@ -59,7 +59,7 @@ public class Address {
     }
 
     /**
-     * Address for narrowing a message's recipient set within a Zirk's sphere(s). Use
+     * Address for specifying a message's recipient set within a Zirk's sphere(s). Use
      * {@link #Address(Location, Pipe)} if you'd like to also specify a pipe.
      *
      * @param location the semantic address used to narrow a message's set of recipients farther
@@ -71,7 +71,7 @@ public class Address {
     }
 
     /**
-     * Address for broadening a message's set of recipients to Zirks or endpoints outside of
+     * Address for extending a message's set of recipients to include Zirks or endpoints outside of
      * a Zirk's sphere(s) using a pipe.  Use
      * {@link #Address(Location, Pipe)} if you'd like to also specify a semantic address.
      *
@@ -84,8 +84,8 @@ public class Address {
     }
 
     /**
-     * Address for narrowing a message's set of recipients to some degree using semantic address and
-     * broadening the set of recipients to Zirks or endpoints outside of a Zirk's sphere(s) using a
+     * Address for specifying a message's set of recipients using a semantic address and extending
+     * the set of recipients to include Zirks or endpoints outside of a Zirk's sphere(s) using a
      * pipe.
      *
      * @param location the semantic address used to narrow a message's set of recipients farther than

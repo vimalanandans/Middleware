@@ -35,8 +35,7 @@ public interface DiscoveredZirk {
 
     /**
      * An endpoint that can be used to unicast to a Zirk discovered by
-     * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)}
-     * as subscribing to a particular role.
+     * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)}.
      *
      * @return the endpoint of the subscribing Zirk
      */
@@ -50,12 +49,11 @@ public interface DiscoveredZirk {
     public String getZirkName();
 
     /**
-     * Get the <code>ProtocolRole</code> this Zirk subscribes to that was searched for using the
+     * Get the <code>ProtocolRole</code>that was searched for using the
      * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)
-     * Discovery API}.
+     * Discovery API} to discover this Zirk.
      *
-     * @return the <code>ProtocolRole</code> this Zirk subscribes to that was searched for to
-     * discover the Zirk
+     * @return the <code>ProtocolRole</code> that was searched for to discover the Zirk
      */
     public ProtocolRole getProtocolRole();
 
