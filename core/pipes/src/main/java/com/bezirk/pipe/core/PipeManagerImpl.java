@@ -44,7 +44,7 @@ public class PipeManagerImpl implements PipeManager {
     // timeout before extra threads are destroyed
     public static final long DEFAULT_THREAD_KEEP_ALIVE_SECS = 5;
 
-    public static final String DEFAULT_CERT_FILENAME = "upa.crt";
+    public static final String DEFAULT_CERT_FILENAME = "bezirk.crt";
 
     /*
      * Private data members
