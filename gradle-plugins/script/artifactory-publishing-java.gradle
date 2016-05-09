@@ -1,5 +1,5 @@
-apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'maven-publish'
 
 /*
  * Command to publish: gradlew artifactoryPublish

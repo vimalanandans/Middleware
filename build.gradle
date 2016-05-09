@@ -5,7 +5,7 @@ buildscript {
     }
     ext {
         androidGradleToolsVersion = "2.1.0"
-        androidBuildToolsVersion = "23.0.1"
+        androidBuildToolsVersion = "23.0.3"
         androidSupportLibraryVersion = "19.+"
         androidCompileSdkVersion = "19"
         androidMinSdkVersion = "16"
