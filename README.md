@@ -1,4 +1,4 @@
-﻿# Bezirk 
+# Bezirk 
 
 The Bezirk Middleware project forms the heart of the Bezirk platform. This repository contains the following middleware modules:
 
@@ -36,59 +36,26 @@ The Bezirk Middleware project forms the heart of the Bezirk platform. This repos
 
 To build and test the middleware run: `./gradlew check`
 
-## System Environment
-### OSX
-Set the environment variable DYLD_LIBRARY_PATH
+To build the Bezirk API JavaDocs: `./gradlew :core:bezirk-middleware-api:javadoc`
 
-1. Go to home directory
-    ```
-    cd ~
-    ```
-2. If file ‘.bash_profile’ does not exist create it 
-    ```
-    touch .bash_profile
-    ```
-3. Open file to edit
-    ```
-    vim .bash_profile
-    ```
-4. Add path to the osx native libraries will be extracted at /[tmpdir]/lib-zeromq-bin/. Example:  /tmp/lib-zeromq-bin/
-        or edit run configuration of each application /tests and add -Djava.libarary.path="/tmp/lib-zeromq-bin/" (BELOW STEP IS NOT NEEDED. verify and remove)
-    ```
-    export DYLD_LIBRARY_PATH="/Users/<username>/Documents/platform/Middleware/java/libraries/comms-zyre-jni/dist/native/osx”
-    ```
-    [Note : not needed for command line build / run. since the path is fixed by gradle script. needed only to run java build test code from android studio]
-5. save the file and restart the terminal. Run command:
-    ```
-    export
-    ```
-    ensure the variable DYLD_LIBRARY_PATH is set to the right path
-6. If Android Studio is already running, restart in order to load the variable
+To build and run the Java SE test app (convenient for quick sanity checks): `./gradlew :java:testApp:run`
 
-### Linux
-Same as OSX except step4: use variable LD_LIBRARY_PATH instead of DYLD_LIBRARY_PATH
+## Running Without Gradle
 
-### Windows 7. 64 bit
-1. Add the absolute path C:\Users\<username>\AppData\Local\Temp\lib-zeromq-bin to the system Path variable
-    or
-    edit run configuration of each java applications /tests [Middleware->java->testApp] and add -Djava.libarary.path="C:\Users\<username>\AppData\Local\Temp\lib-zeromq-bin"
-    as a VM options
-    ```
-    C:\Users\<username>\AppData\Local\Temp\lib-zeromq-bin
-    ```
-    [Note : not needed for command line build / run. since the path is fixed by gradle script. needed only to run java build test code from android studio]
-2. If using cmd, run command:
-    ```
-    set
-    ```
-    ensure the variable PATH contains the added path
+If you'd like to run a Java SE build of the Bezirk middleware or an application that uses it without the supplied Gradle build scripts (e.g. to unit test within an IDE), you must configure your operating system's environment variable that the JVM uses to set the `java.library.path` system property to include the directory where Bezirk's [ZeroMQ](zeromq.org) dependencies are located. The Bezirk middleware contains copies of these dependencies and automatically copies their correct versions onto the system during the first run.
 
-    NOTE: restart cmd if already open
-3. If using git-bash, run command:
-    ```
-    export
-    ```
-    ensure the variable PATH contains the added path
-    
-    NOTE: restart git-bash if already open
-4. If Android Studio is already running, restart in order to load the variable
+- Linux: Set `LD_LIBRARY_PATH` using the following commands:
+```bash
+echo 'export LD_LIBRARY_PATH=$TMPDIR/lib-zeromq-bin/' >> ~/.bash_profile
+echo 'export PATH=$PATH:$LD_LIBRARY_PATH' >> ~/.bash_profile
+```
+- Mac OS X: Set `DYLD_LIBRARY_PATH` using the following commands:
+```bash
+echo 'export DYLD_LIBRARY_PATH=$TMPDIR/lib-zeromq-bin/' >> ~/.bash_profile
+echo 'export PATH=$PATH:$DYLD_LIBRARY_PATH' >> ~/.bash_profile
+```
+- Windows: Add the absolute path C:\Users\\**\<username\>**\AppData\Local\Temp\lib-zeromq-bin to the system's `PATH` variable.
+
+You must restart any application (e.g. Android Studio) that requires this environment variable before the configuration will take effect.
+
+Alternatively, if you can set VM switches when running the JVM for an instance of Bezirk (or a Zirk), use `-Djava.library.path=<temp_zeromq_path>`.
