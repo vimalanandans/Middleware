@@ -1,44 +1,18 @@
 apply plugin: 'application'
+
 mainClassName = "test.Test"
 
 dependencies {
-
-/*    if (project.local == "false") {
-
-        compile "com.bezirk:bezirk-api:${version}"
-        compile "com.bezirk:bezirk:${version}"
-        compile "com.bezirk:commons:${version}"
-
-    } else {
-*/
     compile project(':core:bezirk-middleware-api')
     compile project(':core:bezirk')
     compile project(':core:commons')
-    //}
-
     compile project(':java:libraries:bezirk-factory')
+
     testCompile 'junit:junit:4.11'
 }
 
-/*
- * Platform labels
- */
-def final String LIB_BIN_FOLDER = "lib-zeromq-bin"
-def nativeLibPath
-
-/*
- *  Configure native properties for tests to be able to run
- *  on each platform
- */
-
-run {
-    /*  systemProperties = System.getProperties()
-      systemProperties['java.library.path'] = new File("${projectDir}/dist/native/${platform}").getAbsolutePath()
-      println "PATH: " + systemProperties['java.library.path']
-      */
-    systemProperties = System.getProperties()
-    nativeLibPath = System.getProperty("java.io.tmpdir") + "${LIB_BIN_FOLDER}" + File.pathSeparator + systemProperties['java.library.path'];
-    systemProperties['java.library.path'] = nativeLibPath;
-    println "PATH: " + systemProperties['java.library.path']
-
-}
+// Automatically add the temporary directory where Bezirk dumps the ZeroMQ dependencies
+// to java.library.path
+applicationDefaultJvmArgs = ["-Djava.library.path=" + System.getProperty("java.library.path") +
+                                     File.pathSeparator + System.getProperty("java.io.tmpdir") +
+                                     "lib-zeromq-bin" + File.separator]
