@@ -57,15 +57,7 @@ dependencies {
 
     compile project(':android:android-starter')
     compile project(':android:android-libraries:zbarscanner')
-
-/*    if (project.local == "false") {
-        compile "com.bezirk:commons:${version}"
-        compile "com.bezirk:actions:${version}"
-        compile("com.bezirk:pipes:${version}")
-    } else {
-  */ compile project(':core:commons')
+    compile project(':core:commons')
     compile project(':core:actions')
     compile project(':core:pipes')
-//    }
-
 }

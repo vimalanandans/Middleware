@@ -178,10 +178,11 @@ public class BezirkCloudPipeClient implements CloudPipeClient {
         conn.setRequestProperty(PipeHeader.KEY_BEZIRK_HEADER, pipeHeader.serialize());
 
         // Send the request
-        PrintWriter writer = new PrintWriter(conn.getOutputStream());
-        logger.info("sending event: " + body);
-        writer.print(body);
-        writer.flush();
+        try (PrintWriter writer = new PrintWriter(conn.getOutputStream())) {
+            logger.info("sending event: " + body);
+            writer.print(body);
+            writer.flush();
+        }
 
         // Get the response
         int responseCode = conn.getResponseCode();

@@ -53,18 +53,34 @@ public class BRForService implements BroadcastReceiver {
         if (sidMap.containsKey(incomingMessage.getRecipient())) {
             switch (incomingMessage.getCallbackType()) {
                 case "EVENT":
+                    if (!(incomingMessage instanceof EventIncomingMessage)) {
+                        throw new AssertionError("incomingMessage is not an instance of EventIncomingMessage");
+                    }
+
                     EventIncomingMessage eventCallbackMessage = (EventIncomingMessage) incomingMessage;
                     handleEventCallback(eventCallbackMessage);
                     break;
                 case "STREAM_UNICAST":
+                    if (!(incomingMessage instanceof StreamIncomingMessage)) {
+                        throw new AssertionError("incomingMessage is not an instance of StreamIncomingMessage");
+                    }
+
                     StreamIncomingMessage strmMsg = (StreamIncomingMessage) incomingMessage;
                     handlerStreamUnicastCallback(strmMsg);
                     break;
                 case "STREAM_STATUS":
+                    if (!(incomingMessage instanceof StreamStatusMessage)) {
+                        throw new AssertionError("incomingMessage is not an instance of StreamStatusMessage");
+                    }
+
                     StreamStatusMessage streamStatusCallbackMessage = (StreamStatusMessage) incomingMessage;
                     handleStreamStatusCallback(streamStatusCallbackMessage);
                     break;
                 case "DISCOVERY":
+                    if (!(incomingMessage instanceof DiscoveryIncomingMessage)) {
+                        throw new AssertionError("incomingMessage is not an instance of DiscoveryIncomingMessage");
+                    }
+
                     DiscoveryIncomingMessage discObj = (DiscoveryIncomingMessage) incomingMessage;
                     handleDiscoveryCallback(discObj);
                     break;
