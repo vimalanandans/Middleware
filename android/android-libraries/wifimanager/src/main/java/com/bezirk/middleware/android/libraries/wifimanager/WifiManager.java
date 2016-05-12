@@ -56,12 +56,27 @@ public interface WifiManager {
      * @param networkName  ssid of the network to be connected
      * @param password     password of the network to be connected
      * @param securityType security type of the network to be connected
+     * @param saveNetwork  if true the network will be saved with bezirk
      * @param callback     for indicating success or failure trying to connect to the network
-     * @see {@link com.bezirk.middleware.android.libraries.wifimanager.WifiManager.ConnectCallback}
+     * @see com.bezirk.middleware.android.libraries.wifimanager.WifiManager.ConnectCallback
      */
-    public void connect(String networkName, String password, SecurityType securityType, ConnectCallback callback);
+    public void connect(String networkName, String password, SecurityType securityType, boolean saveNetwork, ConnectCallback callback);
 
-    public Iterable<Network> getNetworks();
+    /**
+     * Get wifi networks on the device
+     *
+     * @param callback <b>must be non null</b>
+     * @see com.bezirk.middleware.android.libraries.wifimanager.WifiManager.NetworkScanCallback
+     */
+    public void getNetworks(NetworkScanCallback callback);
+
+    /**
+     * Get saved network configuration stored by the {@link WifiManager}
+     *
+     * @param networkName network name with quotes, i.e. if network name is home, provide network name as "home"
+     * @return {@link SavedNetwork} if configuration available with bezirk
+     */
+    public SavedNetwork getSavedNetwork(String networkName);
 
     /**
      * Destroy the wifi manager
@@ -70,15 +85,40 @@ public interface WifiManager {
     public void destroy();
 
 
+    /**
+     * Callback used to indicate success/failure of connection attempt.
+     *
+     * @see #connect(String, String, SecurityType, boolean, ConnectCallback)
+     */
     interface ConnectCallback {
         enum Status {
-            SUCCESS, INVALID_NETWORK_NAME, ADDING_NETWORK_FAILURE, FAILURE
+            SUCCESS, INVALID_NETWORK_NAME, ADDING_NETWORK_FAILURE, NETWORK_DELETE_FAILURE, FAILURE
         }
 
+        /**
+         * @param status
+         * @param networkName networkName/ssid passed in {@link #connect(String, String, SecurityType, boolean, ConnectCallback)}
+         */
         void onComplete(Status status, String networkName);
     }
 
+    /**
+     * Supported wifi network security types
+     *
+     * @see #getSecurityType()
+     * @see #connect(String, String, SecurityType, boolean, ConnectCallback)
+     */
     enum SecurityType {
         WEP, WPA, WPA2, NONE
+    }
+
+    /**
+     * Callback used to provide list of networks previously saved by the user (i.e. password of network available with bezirk) and/or currently visible networks
+     */
+    interface NetworkScanCallback {
+        /**
+         * @param networks Iterable of type {@link Network} and/or subtype {@link SavedNetwork}
+         */
+        void onComplete(Iterable<Network> networks);
     }
 }

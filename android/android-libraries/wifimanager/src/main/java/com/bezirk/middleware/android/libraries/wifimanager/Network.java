@@ -1,28 +1,33 @@
 package com.bezirk.middleware.android.libraries.wifimanager;
 
+import com.bezirk.middleware.android.libraries.wifimanager.WifiManager.SecurityType;
+
 /**
- * Created by Rishabh Gulati on 5/5/16.
- * Robert Bosch LLC
- * rishabh.gulati@us.bosch.com
- * //TODO Move interface to core
+ * @author Rishabh Gulati
  */
+
 public class Network {
-    private String name;
-    private int authType;
+    private String name; //networkName/ssid of the network, without quotes
+    private SecurityType securityType;
+
+    public Network(String name, SecurityType securityType) {
+        this.name = name;
+        this.securityType = securityType;
+    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public SecurityType getSecurityType() {
+        return securityType;
     }
 
-    public int getAuthType() {
-        return authType;
-    }
-
-    public void setAuthType(int authType) {
-        this.authType = authType;
+    @Override
+    public String toString() {
+        return "Network{" +
+                "name='" + name + '\'' +
+                ", securityType=" + securityType +
+                '}';
     }
 }
