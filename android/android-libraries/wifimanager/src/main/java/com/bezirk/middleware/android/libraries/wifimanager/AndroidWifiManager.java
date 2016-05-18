@@ -178,7 +178,7 @@ public class AndroidWifiManager implements WifiManager {
      */
     private List<Network> mergeNetworks() {
         List<Network> networks = new ArrayList<Network>();
-
+        //TODO implement merge
         return networks;
     }
 
@@ -393,7 +393,7 @@ public class AndroidWifiManager implements WifiManager {
     }
 
     //used only for testing, can be removed if using java reflection in testing
-    public DataManager getDataManager(){
+    public DataManager getDataManager() {
         return this.dataManager;
     }
 }
