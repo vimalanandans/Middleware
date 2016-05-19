@@ -1,3 +1,9 @@
+/**
+ * Global project version change history
+ * Currently the project alpha version is incremented every time there is a change in any of the middleware artifacts to maintain consistency.
+ * 3.0.0-alpha+001 development mode enabled for CMU Iot group (Rishabh)
+ * 3.0.0-alpha+002 added policy classes for protocols-penguin (Rishabh)
+ */
 buildscript {
     repositories {
         mavenCentral()
@@ -27,7 +33,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha"
+    version = "3.0.0-alpha+002"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
