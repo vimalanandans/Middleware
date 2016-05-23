@@ -10,5 +10,6 @@ dependencies {
     compile project(':core:bezirk')
     compile project(':core:network-util')
     compile project(':core:device-objects')
+    testCompile 'junit:junit:4.12'
 }
 

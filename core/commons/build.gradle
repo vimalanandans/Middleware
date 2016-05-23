@@ -19,7 +19,7 @@ dependencies {
     compile 'org.apache.shiro:shiro-core:1.2.4'
     compile 'org.bouncycastle:bcprov-jdk15on:1.49'
 
-
+    testCompile 'junit:junit:4.12'
     testCompile 'org.xerial:sqlite-jdbc:3.7.2'
     testCompile 'org.mockito:mockito-all:1.10.19'
     testCompile project(':core:bezirk-middleware-api')
