@@ -2,6 +2,7 @@ package com.bezirk.sphere.impl;
 
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.BezirkDevMode;
+import com.bezirk.sphere.api.SpherePrefs;
 import com.bezirk.starter.BezirkPreferences;
 
 import org.slf4j.Logger;
@@ -9,15 +10,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
-public class SphereProperties implements ISphereConfig {
+public class SphereProperties extends SpherePrefs {
     private static final Logger logger = LoggerFactory.getLogger(SphereProperties.class);
-
     /* Keys used in sphere.properties */
-    private static final String SPHERE_NAME = "sphereName";
-    private static final String SPHERE_ID = "sphereId";
-    private static final String SPHERE_KEY = "sphereKey";
-    private static final String SPHERE_MODE = "devMode";
-    private static final String DEFAULT_SPHERE_NAME = "defaultSphereName";
+//    private static final String SPHERE_NAME = "sphereName";
+//    private static final String SPHERE_ID = "sphereId";
+//    private static final String SPHERE_KEY = "sphereKey";
+//    private static final String SPHERE_MODE = "devMode";
+//    private static final String DEFAULT_SPHERE_NAME = "defaultSphereName";
     BezirkPreferences preferences;
     private BezirkDevMode.Mode mode;
     /* Development sphere variables */
@@ -68,7 +68,7 @@ public class SphereProperties implements ISphereConfig {
 
     @Override
     public boolean setDefaultSphereName(String name) {
-        if (preferences.putString(DEFAULT_SPHERE_NAME, name)) {
+        if (preferences.putString(DEFAULT_SPHERE_NAME_KEY, name)) {
             this.defaultSphereName = name;
             return true;
         }
@@ -79,7 +79,7 @@ public class SphereProperties implements ISphereConfig {
     public boolean setMode(BezirkDevMode.Mode mode) {
         if (!this.mode.equals(mode)) {
             String modeToSet = (mode.equals(BezirkDevMode.Mode.ON)) ? "true" : "false";
-            if (preferences.putString(SPHERE_MODE, modeToSet)) {
+            if (preferences.putString(DEVELOPMENT_SPHERE_MODE_KEY, modeToSet)) {
                 this.mode = mode;
                 return true;
             }
@@ -94,7 +94,7 @@ public class SphereProperties implements ISphereConfig {
      */
     private boolean validatePreferences() {
 
-        String[] spherePreferences = new String[]{SPHERE_NAME, SPHERE_ID, SPHERE_KEY, SPHERE_MODE, DEFAULT_SPHERE_NAME};
+        String[] spherePreferences = new String[]{DEVELOPMENT_SPHERE_NAME_KEY, DEVELOPMENT_SPHERE_ID_KEY, DEVELOPMENT_SPHEREKEY_KEY, DEVELOPMENT_SPHERE_MODE_KEY, DEFAULT_SPHERE_NAME_KEY};
         for (String spherePreference : spherePreferences) {
 
             if (!preferences.contains(spherePreference)) {
@@ -104,7 +104,7 @@ public class SphereProperties implements ISphereConfig {
         }
         int int24 = 24;
 
-        if (preferences.getString(SPHERE_KEY, null).length() == int24) {
+        if (preferences.getString(DEVELOPMENT_SPHEREKEY_KEY, null).length() == int24) {
             logger.info("sphere preferences validated");
             return true;
         }
@@ -118,11 +118,11 @@ public class SphereProperties implements ISphereConfig {
      * @return
      */
     private void populateObjectMembers() {
-        sphereName = preferences.getString(SPHERE_NAME, null);
-        sphereId = preferences.getString(SPHERE_ID, null);
-        sphereKey = preferences.getString(SPHERE_KEY, null).getBytes();
-        mode = ("true".equalsIgnoreCase(preferences.getString(SPHERE_MODE, null))) ? BezirkDevMode.Mode.ON : BezirkDevMode.Mode.OFF;
-        defaultSphereName = preferences.getString(DEFAULT_SPHERE_NAME, null);
+        sphereName = preferences.getString(DEVELOPMENT_SPHERE_NAME_KEY, null);
+        sphereId = preferences.getString(DEVELOPMENT_SPHERE_ID_KEY, null);
+        sphereKey = preferences.getString(DEVELOPMENT_SPHEREKEY_KEY, null).getBytes();
+        mode = ("true".equalsIgnoreCase(preferences.getString(DEVELOPMENT_SPHERE_MODE_KEY, null))) ? BezirkDevMode.Mode.ON : BezirkDevMode.Mode.OFF;
+        defaultSphereName = preferences.getString(DEFAULT_SPHERE_NAME_KEY, null);
         logger.info("sphere name: " + sphereName + " sphereId: " + sphereId + " sphereKey: " + Arrays.toString(sphereKey)
                 + " mode: " + mode + " defaultSphereName: " + defaultSphereName);
     }
