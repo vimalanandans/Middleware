@@ -18,4 +18,5 @@ public abstract class SpherePrefs implements ISphereConfig {
     public static final String DEFAULT_SPHERE_NAME_DEFAULT_VALUE = "";
 
     public static final String DEVELOPMENT_SPHERE_MODE_KEY = "DEVELOPMENT_SPHERE_MODE_KEY";
+    public static final boolean DEVELOPMENT_SPHERE_MODE_DEFAULT_VALUE = false;
 }

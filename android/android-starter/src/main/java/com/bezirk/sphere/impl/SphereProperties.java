@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-
+//TODO synchronise implementation with JavaPrefs api.
 public class SphereProperties extends SpherePrefs {
     private static final Logger logger = LoggerFactory.getLogger(SphereProperties.class);
     /* Keys used in sphere.properties */

@@ -1,25 +1,25 @@
 package com.bezirk.util;
 
 import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.BezirkComms;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.devices.BezirkDeviceInterface;
+import com.bezirk.persistence.BezirkRegistry;
 import com.bezirk.persistence.DBConstants;
 import com.bezirk.persistence.DatabaseConnectionForJava;
+import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SadlPersistence;
 import com.bezirk.persistence.SpherePersistence;
-import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.persistence.BezirkRegistry;
 import com.bezirk.sadl.BezirkSadlManager;
 import com.bezirk.sphere.api.BezirkSphereListener;
-import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.BezirkSphereRegistration;
+import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.impl.BezirkSphere;
-import com.bezirk.sphere.impl.SphereProperties;
+import com.bezirk.sphere.impl.JavaPrefs;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezrik.network.BezirkNetworkUtilities;
 import com.j256.ormlite.table.TableUtils;
@@ -73,8 +73,10 @@ public class MockSetUpUtilityForBezirkPC {
         cryptoEngine = new CryptoEngine(sphereRegistry);
         sadlPersistence = (SadlPersistence) regPersistence;
         bezirkSadlManager = new BezirkSadlManager(sadlPersistence);
-        sphereConfig = new SphereProperties();
-        sphereConfig.init();
+        //sphereConfig = new SphereProperties();
+        sphereConfig = new JavaPrefs();
+        //sphereConfig.init();
+
 
         bezirkComms = new MockComms();
         bezirkComms.initComms(null, inetAddr, bezirkSadlManager, null);

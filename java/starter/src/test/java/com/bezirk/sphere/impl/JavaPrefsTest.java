@@ -36,6 +36,7 @@ public class JavaPrefsTest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
+
     }
 
     /**
@@ -52,22 +53,30 @@ public class JavaPrefsTest {
      */
     @After
     public void tearDown() throws Exception {
+        //revert to default mode value
+        boolean modeReset = (SpherePrefs.DEVELOPMENT_SPHERE_MODE_DEFAULT_VALUE) ? javaPrefs.setMode(BezirkDevMode.Mode.ON) : javaPrefs.setMode(BezirkDevMode.Mode.OFF);
+
+        //revert to default sphere name value
+        boolean defNameReset = javaPrefs.setDefaultSphereName(SpherePrefs.DEFAULT_SPHERE_NAME_DEFAULT_VALUE);
+
+        if (modeReset && defNameReset) {
+            logger.debug("tear down successful");
+        }
     }
 
     @Test
     public final void testSetGetDevMode() {
         boolean setMode = javaPrefs.setMode(BezirkDevMode.Mode.ON);
-        System.out.println("Set " + SpherePrefs.DEVELOPMENT_SPHERE_MODE_KEY + " --> " + setMode);
+        logger.debug("Set " + SpherePrefs.DEVELOPMENT_SPHERE_MODE_KEY + " --> " + setMode);
 
         BezirkDevMode.Mode getMode = javaPrefs.getMode();
-        System.out.println("Get " + SpherePrefs.DEVELOPMENT_SPHERE_MODE_KEY + " --> " + getMode);
+        logger.debug("Get " + SpherePrefs.DEVELOPMENT_SPHERE_MODE_KEY + " --> " + getMode);
 
         assertTrue(setMode);
         assertEquals(BezirkDevMode.Mode.ON, getMode);
 
-
         try {
-            System.out.println("Get " + SpherePrefs.DEVELOPMENT_SPHEREKEY_KEY + " --> " + new String(javaPrefs.getSphereKey(), "UTF-8"));
+            logger.debug("Get " + SpherePrefs.DEVELOPMENT_SPHEREKEY_KEY + " --> " + new String(javaPrefs.getSphereKey(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
 
         }
@@ -75,14 +84,14 @@ public class JavaPrefsTest {
 
     @Test
     public final void testSetGetDefaultSphereName() {
-        System.out.println("Set " + SpherePrefs.DEFAULT_SPHERE_NAME_KEY + " --> " + javaPrefs.setDefaultSphereName("Test name"));
-        System.out.println("Get " + SpherePrefs.DEVELOPMENT_SPHERE_NAME_KEY + " --> " + javaPrefs.getSphereName());
+        logger.debug("Set " + SpherePrefs.DEFAULT_SPHERE_NAME_KEY + " --> " + javaPrefs.setDefaultSphereName("Test name"));
+        logger.debug("Get " + SpherePrefs.DEVELOPMENT_SPHERE_NAME_KEY + " --> " + javaPrefs.getSphereName());
     }
 
     @Test
     public final void testGetDevSphereId() {
         String devSphereId = javaPrefs.getSphereId();
-        System.out.println("Get " + SpherePrefs.DEVELOPMENT_SPHERE_ID_KEY + " --> " + devSphereId);
+        logger.debug("Get " + SpherePrefs.DEVELOPMENT_SPHERE_ID_KEY + " --> " + devSphereId);
         assertEquals(SpherePrefs.DEVELOPMENT_SPHERE_ID_DEFAULT_VALUE, devSphereId);
     }
 

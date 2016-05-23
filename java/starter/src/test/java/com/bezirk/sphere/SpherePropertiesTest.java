@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author rishabh
  */
+@Deprecated
 public class SpherePropertiesTest {
     private static final Logger logger = LoggerFactory.getLogger(SpherePropertiesTest.class);
 

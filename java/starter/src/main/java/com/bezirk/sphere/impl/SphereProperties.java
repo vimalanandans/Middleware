@@ -16,7 +16,9 @@ import java.util.Properties;
 
 /**
  * @author rishabh
+ * @deprecated As of release 3.0.0-alpha+003, replaced be {@link JavaPrefs}
  */
+@Deprecated
 public class SphereProperties implements ISphereConfig {
     private static final Logger logger = LoggerFactory.getLogger(SphereProperties.class);
 
