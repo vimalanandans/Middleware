@@ -28,8 +28,9 @@ public class BezirkDeviceForPC implements BezirkDeviceInterface {
         deviceDetails = new DeviceDetails();
 
         try {
-            final Properties props = BezirkDeviceForPC.loadProperties();
-            final String location = props.getProperty("DeviceLocation");
+            //final Properties props = BezirkDeviceForPC.loadProperties();
+            //final String location = props.getProperty("DeviceLocation");
+            final String location = "Floor1/null/null";
             String deviceName;
 
             deviceName = fetchDeviceName();

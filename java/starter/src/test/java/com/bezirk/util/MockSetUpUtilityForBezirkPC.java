@@ -15,6 +15,7 @@ import com.bezirk.persistence.SadlPersistence;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.BezirkSphereRegistration;
 import com.bezirk.sphere.api.ISphereConfig;
@@ -75,7 +76,7 @@ public class MockSetUpUtilityForBezirkPC {
         bezirkSadlManager = new BezirkSadlManager(sadlPersistence);
         //sphereConfig = new SphereProperties();
         sphereConfig = new JavaPrefs();
-        //sphereConfig.init();
+        sphereConfig.init();
 
 
         bezirkComms = new MockComms();
@@ -183,5 +184,14 @@ public class MockSetUpUtilityForBezirkPC {
 
         TableUtils.dropTable(dbConnection.getDatabaseConnection(),
                 BezirkRegistry.class, true);
+    }
+
+    /**
+     * If dev mode is on the device has 2 associated spheres. This is required for testing events to be sent on the wire as it depends on the number of spheres in the device
+     *
+     * @return 2 if development sphere is on, 1 otherwise.
+     */
+    public int getTotalSpheres() {
+        return (sphereConfig.getMode().equals(BezirkDevMode.Mode.ON)) ? 2 : 1;
     }
 }

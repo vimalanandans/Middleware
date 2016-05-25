@@ -8,7 +8,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class TestBezirkCommsPC {
-    @Test
+    /**
+     * Commenting out as we are not using property files anymore. Eventually Test class should be removed once preferences feature is finalised.
+     */
+    //@Test
     public void testLoadProperties() {
         try {
             assertNotNull("Properties is null", BezirkCommsPC.loadProperties());

@@ -41,8 +41,8 @@ public class ProxySendTest {
     private final String serviceBId = "MockServiceBId";
     private final BezirkZirkId receiverId = new BezirkZirkId(serviceBId);
     private final BezirkZirkEndPoint receiver = new BezirkZirkEndPoint(receiverId);
-    private final File sendFile =
-            new File(ProxyForServices.class.getClassLoader().getResource("streamingTest.txt").getPath());
+    private File sendFile;
+
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -70,6 +70,11 @@ public class ProxySendTest {
 
     @Test
     public void testSendStream() {
+        try {
+            sendFile = new File(getClass().getClassLoader().getResource("streamingTest.txt").getPath());
+        } catch (NullPointerException e) {
+            logger.error("Unable to find file");
+        }
         ProxyForServices proxyForServices = new ProxyForServices();
         proxyForServices.setSadlRegistry(sadlManager);
         MockComms mockComms = (MockComms) mockSetUP.getBezirkComms();
@@ -82,7 +87,7 @@ public class ProxySendTest {
         // checking the stream id is not enough
         assertEquals("Proxy is unable to send stream. ", 1, streamId);
 
-        assertEquals("Proxy is unable to add stream request to the comms queue.", 1, mockComms.getStreamList().size());
+        assertEquals("Proxy is unable to add stream request to the comms queue.", mockSetUP.getTotalSpheres(), mockComms.getStreamList().size());
         mockComms.clearQueues();
     }
 
@@ -99,7 +104,7 @@ public class ProxySendTest {
             receiver.device = "DeviceB";
             proxyForServices.sendUnicastEvent(senderId, receiver, serializedEventMsg);
 
-            assertEquals("Proxy is unable to add unicast event message to the comms queue.", 1, mockComms.getEventList().size());
+            assertEquals("Proxy is unable to add unicast event message to the comms queue.", mockSetUP.getTotalSpheres(), mockComms.getEventList().size());
 
             mockComms.clearQueues();
         } catch (Exception e) {
@@ -119,10 +124,10 @@ public class ProxySendTest {
             String serializedEventMsg = new MockProtocolsForBezirkPC().new MockEvent1(Flag.REQUEST, "MockEvent").toJson();
             Address address = new Address(new Location("FLOOR1/BLOCk1/ROOM1"));
             proxyForServices.sendMulticastEvent(senderId, address, serializedEventMsg);
-            assertEquals("Proxy is unable to add multicast event message to the comms queue.", 1, mockComms.getEventList().size());
+            assertEquals("Proxy is unable to add multicast event message to the comms queue.", mockSetUP.getTotalSpheres(), mockComms.getEventList().size());
 
             proxyForServices.sendMulticastEvent(senderId, null, serializedEventMsg);
-            assertEquals("Proxy is unable to add multicast event message to the comms queue.", 2, mockComms.getEventList().size());
+            assertEquals("Proxy is unable to add multicast event message to the comms queue.", mockSetUP.getTotalSpheres() * 2, mockComms.getEventList().size());
             mockComms.clearQueues();
         } catch (Exception e) {
             fail("Proxy is unable to send unicast events.");

@@ -54,8 +54,10 @@ public class SpherePropertiesTest {
     public void tearDown() throws Exception {
     }
 
-
-    @Test
+    /**
+     * Commenting out as we are not using property files anymore. Eventually Test class should be removed once preferences feature is finalised.
+     */
+    //@Test
     public final void testSetDefaultSphereName() {
         String temp = "DefaultSphere";
         assertTrue(sphereProperties.setDefaultSphereName(temp));
