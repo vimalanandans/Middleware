@@ -16,3 +16,15 @@ dependencies {
 applicationDefaultJvmArgs = ["-Djava.library.path=" + System.getProperty("java.library.path") +
                                      File.pathSeparator + System.getProperty("java.io.tmpdir") +
                                      "lib-zeromq-bin" + File.separator]
+
+
+run {
+    /**
+     * Pass all the system properties to the JVM process spawned for running this application
+     * @see <a href="https://docs.gradle.org/current/userguide/application_plugin.html#N15E7">gradle application plugin</a>
+     *
+     * Required for passing configurations like "displayEnabled" to bezirk while running the application.
+     * Ex. gradlew -DdisplayEnabled=true run
+     */
+    systemProperties System.getProperties()
+}
