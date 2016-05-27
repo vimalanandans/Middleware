@@ -5,6 +5,7 @@
  * 3.0.0-alpha+002 added policy classes for protocols-penguin (Rishabh)
  * 3.0.0-alpha+003 PreferencesAPI implementation for using sphere configuration (Rishabh)
  * 3.0.0-alpha+004 Removing use of comms.properties & upadevice.properties
+ * 3.0.0-alpha+005 Changing sphere key lengths to prevent adding Unlimited Strength Jurisdiction Policy
  */
 buildscript {
     repositories {
@@ -35,7 +36,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha+004"
+    version = "3.0.0-alpha+005"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"

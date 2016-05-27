@@ -7,7 +7,8 @@ import static org.junit.Assert.*;
 public class TestBezirkConfig {
     BezirkConfig bezirkConfig = new BezirkConfig();
 
-    @Test
+    //Commenting all as setting display enabled functionality is deprecated
+    //@Test
     public void testIsDispalyEnabled() {
         bezirkConfig.setDisplayEnable("TRUE");
         assertTrue("DisplayEnable is not equal to the set value.", bezirkConfig.isDisplayEnabled());
@@ -19,7 +20,8 @@ public class TestBezirkConfig {
         assertFalse("DisplayEnable is not equal to the set value.", bezirkConfig.isDisplayEnabled());
     }
 
-    @Test
+    //Commenting all as setting display enabled functionality is deprecated
+    //@Test
     public void testGetDisplayEnable() {
         String displayEnable = Boolean.FALSE.toString();
         bezirkConfig.setDisplayEnable(displayEnable);
