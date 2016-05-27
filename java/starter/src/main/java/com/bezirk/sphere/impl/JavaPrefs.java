@@ -46,7 +46,12 @@ public class JavaPrefs extends SpherePrefs {
 
     @Override
     public byte[] getSphereKey() {
-        return preferences.get(SpherePrefs.DEVELOPMENT_SPHEREKEY_KEY, SpherePrefs.DEVELOPMENT_SPHEREKEY_DEFAULT_VALUE).getBytes();
+        try {
+            return preferences.get(SpherePrefs.DEVELOPMENT_SPHEREKEY_KEY, SpherePrefs.DEVELOPMENT_SPHEREKEY_DEFAULT_VALUE).getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getMessage());
+        }
+        return null;
     }
 
     @Override
@@ -91,7 +96,7 @@ public class JavaPrefs extends SpherePrefs {
         try {
             logger.debug(SpherePrefs.DEVELOPMENT_SPHEREKEY_KEY + " --> " + new String(getSphereKey(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-
+            logger.error(e.getMessage());
         }
     }
 }

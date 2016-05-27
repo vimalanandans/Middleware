@@ -75,7 +75,7 @@
             android:key="DeviceId" />
         <!-- TODO: Remove this entry(DefaultSphereKeys) if not being used-->
         <EditTextPreference
-            android:defaultValue="eCUSEA+QRRJnuj9yAe8QAQ=="
+            android:defaultValue="0123456789abcdef"
             android:key="DefaultSphereKeys" />
         <EditTextPreference
             android:defaultValue=""

@@ -102,9 +102,9 @@ public class SphereProperties extends SpherePrefs {
             }
 
         }
-        int int24 = 24;
+        int int16 = 16;
 
-        if (preferences.getString(DEVELOPMENT_SPHEREKEY_KEY, null).length() == int24) {
+        if (preferences.getString(DEVELOPMENT_SPHEREKEY_KEY, null).length() == int16) {
             logger.info("sphere preferences validated");
             return true;
         }
