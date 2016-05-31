@@ -161,9 +161,9 @@ public final class BezirkCommsPC {
             logger.info("found system property: " + propName + ": " + value);
             props.setProperty(propName, value);
 
-            if ("displayEnable".equals(propName)) {
-                bezirkConfig.setDisplayEnable(value);
-            }
+//            if ("displayEnable".equals(propName)) {
+//                bezirkConfig.setDisplayEnable(value);
+//            }
         }
     }
 
