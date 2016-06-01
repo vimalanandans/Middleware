@@ -66,23 +66,6 @@ public class Proxy implements Bezirk {
         }
     }
 
-    public Proxy(BezirkConfig bezirkConfig) {
-        proxy = new ProxyForServices();
-        proxyUtil = new ProxyUtil();
-        mainService = new MainService(proxy, bezirkConfig);
-        BRForService brForService = new BRForService(activeStreams, dListenerMap,
-                eventListenerMap, sidMap, streamListenerMap);
-        CBkForZirkPC bezirkPcCallback = new CBkForZirkPC(brForService);
-        mainService.startStack(bezirkPcCallback);
-        proxyPersistence = mainService.getBezirkProxyPersistence();
-        try {
-            bezirkProxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
-        } catch (Exception e) {
-            logger.error("Error loading BezirkProxyRegistry", e);
-            System.exit(0);
-        }
-    }
-
     @Override
     public ZirkId registerZirk(String zirkName) {
         logger.trace("inside RegisterService");
