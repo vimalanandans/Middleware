@@ -767,7 +767,6 @@ public class SphereRegistryWrapper {
         List<BezirkDeviceInfo> deviceInfoList = sphereInfo.getDeviceList();
 
         if (deviceInfoList == null) {
-            logger.error("Device name not exist in the default sphere");
             return info;
         }
 
@@ -897,7 +896,6 @@ public class SphereRegistryWrapper {
         List<BezirkDeviceInfo> deviceInfoList = sphereInfo.getDeviceList();
 
         if (deviceInfoList == null) {
-            logger.error("Device name not exist in the default sphere");
             return status;
         }
 
