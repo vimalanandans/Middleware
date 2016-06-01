@@ -88,7 +88,7 @@ public class ZirkStarterHelperTest {
         assertNotNull("BezirkDeviceLocation is null after configuration. ", bezirkDevice.getDeviceLocation());
 
 
-        bezirkConfig.setDisplayEnable("false");
+        //bezirkConfig.setDisplayEnable("false");
 
         bezirkDevice = helper.configureBezirkDevice(bezirkConfig);
 

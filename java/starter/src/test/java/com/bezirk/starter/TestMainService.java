@@ -49,7 +49,7 @@ public class TestMainService {
     public void testStartStack() {
         ProxyForServices proxyforServices = new ProxyForServices();
         BezirkConfig bezirkConfigRef = new BezirkConfig();
-        bezirkConfigRef.setDisplayEnable("false");
+        //bezirkConfigRef.setDisplayEnable("false");
         /** DisplayEnable - true  */
         //System.setProperty("displayEnable", "true");
         com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyforServices, bezirkConfigRef);
@@ -81,7 +81,7 @@ public class TestMainService {
     public void testStopStack() {
         ProxyForServices proxyForServices = new ProxyForServices();
         BezirkConfig bezirkConfigRef = new BezirkConfig();
-        bezirkConfigRef.setDisplayEnable("false");
+        //bezirkConfigRef.setDisplayEnable("false");
         com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyForServices, bezirkConfigRef);
         ZirkMessageHandler testMock = Mockito.mock(ZirkMessageHandler.class);
         mainService.startStack(testMock);
@@ -98,7 +98,7 @@ public class TestMainService {
     public void testReboot() {
         ProxyForServices proxyForServices = new ProxyForServices();
         BezirkConfig bezirkConfigRef = new BezirkConfig();
-        bezirkConfigRef.setDisplayEnable("false");
+        //bezirkConfigRef.setDisplayEnable("false");
         com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyForServices, bezirkConfigRef);
         mainService.startStack(Mockito.mock(ZirkMessageHandler.class));
 
