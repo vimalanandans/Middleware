@@ -4,8 +4,9 @@
  * 3.0.0-alpha+001 development mode enabled for CMU Iot group (Rishabh)
  * 3.0.0-alpha+002 added policy classes for protocols-penguin (Rishabh)
  * 3.0.0-alpha+003 PreferencesAPI implementation for using sphere configuration (Rishabh)
- * 3.0.0-alpha+004 Removing use of comms.properties & upadevice.properties
- * 3.0.0-alpha+005 Changing sphere key lengths to prevent adding Unlimited Strength Jurisdiction Policy
+ * 3.0.0-alpha+004 Removing use of comms.properties & upadevice.properties (Rishabh)
+ * 3.0.0-alpha+005 Changing sphere key lengths to prevent adding Unlimited Strength Jurisdiction Policy (Rishabh)
+ * 3.0.0-alpha+006 Logging enable/disable using jvm/system property, removing Factory.getInstance(BezirkConfig)
  */
 buildscript {
     repositories {
@@ -36,7 +37,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha+005"
+    version = "3.0.0-alpha+006"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
