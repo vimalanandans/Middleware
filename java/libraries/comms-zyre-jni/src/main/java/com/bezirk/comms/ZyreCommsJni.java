@@ -44,7 +44,7 @@ public class ZyreCommsJni extends Thread {
 
         zyre = new Zyre();
         /*try{
-			zyre = new Zyre();
+            zyre = new Zyre();
 		}
 		catch (UnsatisfiedLinkError e) {
 
@@ -181,7 +181,7 @@ public class ZyreCommsJni extends Thread {
                 handleExit(peer);
                 logKnownDevices();
             } else {
-                System.out.println("unknown event: " + eventType);
+                logger.debug("unknown event: " + eventType);
             }
         }
     }

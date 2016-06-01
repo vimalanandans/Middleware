@@ -6,7 +6,8 @@
  * 3.0.0-alpha+003 PreferencesAPI implementation for using sphere configuration (Rishabh)
  * 3.0.0-alpha+004 Removing use of comms.properties & upadevice.properties (Rishabh)
  * 3.0.0-alpha+005 Changing sphere key lengths to prevent adding Unlimited Strength Jurisdiction Policy (Rishabh)
- * 3.0.0-alpha+006 Logging enable/disable using jvm/system property, removing Factory.getInstance(BezirkConfig)
+ * 3.0.0-alpha+006 Logging enable/disable using jvm/system property, removing Factory.getInstance(BezirkConfig) (Rishabh)
+ * 3.0.0-alpha+007 Enabling development sphere by default and removing system.out.println for evasive events in zyre (Rishabh)
  */
 buildscript {
     repositories {
@@ -37,7 +38,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha+006"
+    version = "3.0.0-alpha+007"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
