@@ -55,15 +55,14 @@ public final class Proxy implements Bezirk {
     private static final String COMPONENT_NAME = "com.bosch.upa.uhu.controlui";
     private static final String SERVICE_PKG_NAME = "com.bosch.upa.uhu.starter.MainService";
     private static final ProxyHelper proxyHelper = new ProxyHelper();
-    static Context mContext;
+    static Context context;
     static BezirkListener DiscoveryListener;
     static int discoveryCount; // keep track of Discovery Id
     private final String TAG = Proxy.class.getSimpleName();
     private short streamFactory;
 
     public Proxy(Context context) {
-        mContext = context;
-
+        Proxy.context = context;
     }
 
     @Override
@@ -76,7 +75,7 @@ public final class Proxy implements Bezirk {
 
         // TODO: if the zirk id is uninstalled then owner device shows cached and new one.
 
-        final SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(mContext);
+        final SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(context);
         String serviceIdAsString = shrdPref.getString(zirkName, null);
         if (null == serviceIdAsString) {
             // UUID for zirk id
@@ -100,7 +99,7 @@ public final class Proxy implements Bezirk {
         registerIntent.putExtra(serviceIdKEY, new Gson().toJson(serviceId));
         registerIntent.putExtra(serviceNameKEY, zirkName);
 
-        ComponentName retName = mContext.startService(registerIntent);
+        ComponentName retName = context.startService(registerIntent);
 
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk installed?");
@@ -118,7 +117,7 @@ public final class Proxy implements Bezirk {
     public void unregisterZirk(final ZirkId zirkId) {
         Log.i(TAG, "Unregister request for serviceID: " + ((BezirkZirkId) zirkId).getBezirkZirkId());
 
-        SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(mContext);
+        SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(context);
         Map<String, ?> keys = shrdPref.getAll();
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
             //find and delete the entry corresponding to this zirkId
@@ -147,7 +146,7 @@ public final class Proxy implements Bezirk {
         subscribeIntent.putExtra("zirkId", new Gson().toJson(subscriber));
         SubscribedRole subRole = new SubscribedRole(protocolRole);
         subscribeIntent.putExtra("protocol", subRole.getSubscribedProtocolRole());
-        ComponentName retName = mContext.startService(subscribeIntent);
+        ComponentName retName = context.startService(subscribeIntent);
 
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
@@ -175,7 +174,7 @@ public final class Proxy implements Bezirk {
         String pRoleAsString = (null == protocolRole) ? null : (new SubscribedRole(protocolRole).getSubscribedProtocolRole());
         unSubscribeIntent.putExtra("protocol", pRoleAsString);
 
-        ComponentName retName = mContext.startService(unSubscribeIntent);
+        ComponentName retName = context.startService(unSubscribeIntent);
 
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
@@ -205,7 +204,7 @@ public final class Proxy implements Bezirk {
         multicastEventIntent.putExtra("address", recipient.toJson());
         multicastEventIntent.putExtra("multicastEvent", event.toJson());
 
-        ComponentName retName = mContext.startService(multicastEventIntent);
+        ComponentName retName = context.startService(multicastEventIntent);
 
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
@@ -226,7 +225,7 @@ public final class Proxy implements Bezirk {
         unicastEventIntent.putExtra("zirkId", new Gson().toJson(sender));
         unicastEventIntent.putExtra("receiverSep", new Gson().toJson(recipient));
         unicastEventIntent.putExtra("eventMsg", event.toJson());
-        ComponentName retName = mContext.startService(unicastEventIntent);
+        ComponentName retName = context.startService(unicastEventIntent);
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
         }
@@ -245,7 +244,7 @@ public final class Proxy implements Bezirk {
         multicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
         multicastStreamIntent.putExtra("stream", stream.toJson());
         multicastStreamIntent.putExtra("localStreamId", streamId);
-        ComponentName retName = mContext.startService(multicastStreamIntent);
+        ComponentName retName = context.startService(multicastStreamIntent);
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
             return 0;
@@ -281,7 +280,7 @@ public final class Proxy implements Bezirk {
         unicastStreamIntent.putExtra("stream", stream.toJson());
         unicastStreamIntent.putExtra("filePath", file);
         unicastStreamIntent.putExtra("localStreamId", streamId);
-        ComponentName retName = mContext.startService(unicastStreamIntent);
+        ComponentName retName = context.startService(unicastStreamIntent);
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
             return 0;
@@ -318,7 +317,7 @@ public final class Proxy implements Bezirk {
 
         Log.d(TAG, "addCloudPipe() Sending intent: " + addPipe.getAction());
 
-        ComponentName retName = mContext.startService(addPipe);
+        ComponentName retName = context.startService(addPipe);
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
         }
@@ -350,7 +349,7 @@ public final class Proxy implements Bezirk {
         discoverIntent.putExtra("timeout", timeout);
         discoverIntent.putExtra("maxDiscovered", maxResults);
         discoverIntent.putExtra("discoveryId", discoveryCount);
-        mContext.startService(discoverIntent);
+        context.startService(discoverIntent);
         Log.i(TAG, "Discovery Request to BezirkStack");
     }
 
@@ -365,7 +364,7 @@ public final class Proxy implements Bezirk {
         locationIntent.setAction(ACTION_BEZIRK_SETLOCATION);
         locationIntent.putExtra("zirkId", new Gson().toJson(zirk));
         locationIntent.putExtra("locationData", new Gson().toJson(location));
-        mContext.startService(locationIntent);
+        context.startService(locationIntent);
     }
 
 

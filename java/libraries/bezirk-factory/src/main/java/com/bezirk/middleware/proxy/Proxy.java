@@ -252,7 +252,5 @@ public class Proxy implements Bezirk {
         public BezirkListener getListener() {
             return listener;
         }
-
     }
-
 }
