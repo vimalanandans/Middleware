@@ -98,7 +98,7 @@ public class DeviceWindow extends JFrame {
                         .getText(), textFieldIn.getText(), textFieldNear
                         .getText());
                 upaDevice.setDeviceLocation(inLocation);
-                DeviceWindow.saveParamChanges();
+                //DeviceWindow.saveParamChanges();
             }
         });
         btnSave.setBounds(80, 214, 89, 23);
@@ -109,18 +109,18 @@ public class DeviceWindow extends JFrame {
         contentPane.add(btnReset);
     }
 
-    public static void saveParamChanges() {
-        final BezirkDeviceInterface upaDevice = BezirkCompManager.getUpaDevice();
-        try {
-            final Properties props = BezirkDeviceForPC.loadProperties();
-
-            props.setProperty("DeviceLocation", upaDevice.getDeviceLocation()
-                    .toString());
-            BezirkDeviceForPC.storeProperties(props);
-
-            logger.debug("Current device location: {}", upaDevice.getDeviceLocation().toString());
-        } catch (Exception e) {
-            logger.error("Problem reading or writing properties file: ", e);
-        }
-    }
+//    public static void saveParamChanges() {
+//        final BezirkDeviceInterface upaDevice = BezirkCompManager.getUpaDevice();
+//        try {
+//            final Properties props = BezirkDeviceForPC.loadProperties();
+//
+//            props.setProperty("DeviceLocation", upaDevice.getDeviceLocation()
+//                    .toString());
+//            BezirkDeviceForPC.storeProperties(props);
+//
+//            logger.debug("Current device location: {}", upaDevice.getDeviceLocation().toString());
+//        } catch (Exception e) {
+//            logger.error("Problem reading or writing properties file: ", e);
+//        }
+//    }
 }

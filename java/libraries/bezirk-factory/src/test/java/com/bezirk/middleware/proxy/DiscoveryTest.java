@@ -174,18 +174,22 @@ public class DiscoveryTest {
 
                 for (DiscoveredZirk aZirkSet : zirkSet) {
                     BezirkDeviceForPC bezirkDeviceForPC = new BezirkDeviceForPC();
-                    Properties props;
+//                    Properties props;
+//
+//                    try {
+//                        props = BezirkDeviceForPC.loadProperties();
+//                        String location = props.getProperty("DeviceLocation");
+//                        bezirkDeviceForPC.setDeviceLocation(new Location(location));
+//                        BezirkCompManager.setUpaDevice(bezirkDeviceForPC);
+//                    } catch (Exception e) {
+//
+//                        fail("Exception in setting device location. " + e.getMessage());
+//
+//                    }
 
-                    try {
-                        props = BezirkDeviceForPC.loadProperties();
-                        String location = props.getProperty("DeviceLocation");
-                        bezirkDeviceForPC.setDeviceLocation(new Location(location));
-                        BezirkCompManager.setUpaDevice(bezirkDeviceForPC);
-                    } catch (Exception e) {
-
-                        fail("Exception in setting device location. " + e.getMessage());
-
-                    }
+                    String location = "Floor1/null/null";
+                    bezirkDeviceForPC.setDeviceLocation(new Location(location));
+                    BezirkCompManager.setUpaDevice(bezirkDeviceForPC);
 
                     BezirkDeviceInterface bezirkDevice = BezirkCompManager.getUpaDevice();
                     BezirkDiscoveredZirk tempDisService = (BezirkDiscoveredZirk) aZirkSet;

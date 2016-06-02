@@ -52,6 +52,7 @@ public class SphereManagementGUI extends JFrame {
     public SphereManagementGUI() {
         initSphereManagement();
     }
+
     public SphereManagementGUI(BezirkSphereAPI sphereForPC) {
         this.sphereManager = (BezirkSphere) sphereForPC;
         initSphereManagement();
@@ -189,21 +190,24 @@ public class SphereManagementGUI extends JFrame {
         final String result = (String) JOptionPane.showInputDialog(null,
                 "Choose Interface Name", "Bezirk Ethernet Configuration",
                 JOptionPane.QUESTION_MESSAGE, null, interfaceName, null);
-        try {
-            final String classpath = BezirkDeviceInterface.class.getClassLoader()
-                    .getResource("comms.properties").getPath();
-            final Properties properties = new Properties();
-            final FileInputStream configStream = new FileInputStream(classpath);
-            properties.load(configStream);
-            configStream.close();
+        // add Preferences API implementation for updating interface details
 
-            properties.setProperty("InterfaceName", result);
-            final FileOutputStream output = new FileOutputStream(classpath);
-            properties.store(output, null);
-            output.close();
-        } catch (Exception e) {
-            logger.error("Could not read comms properties file", e);
-        }
+        // commenting previous implementation of using comms.properties
+//        try {
+//            final String classpath = BezirkDeviceInterface.class.getClassLoader()
+//                    .getResource("comms.properties").getPath();
+//            final Properties properties = new Properties();
+//            final FileInputStream configStream = new FileInputStream(classpath);
+//            properties.load(configStream);
+//            configStream.close();
+//
+//            properties.setProperty("InterfaceName", result);
+//            final FileOutputStream output = new FileOutputStream(classpath);
+//            properties.store(output, null);
+//            output.close();
+//        } catch (Exception e) {
+//            logger.error("Could not read comms properties file", e);
+//        }
 
     }
 

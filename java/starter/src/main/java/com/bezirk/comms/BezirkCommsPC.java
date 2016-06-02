@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.Properties;
 
 public final class BezirkCommsPC {
-    public static final String PROPS_FILE = "comms.properties";
+    //public static final String PROPS_FILE = "comms.properties";
     // Comms properties
     private static final Logger logger = LoggerFactory.getLogger(BezirkCommsPC.class);
 
@@ -167,7 +167,7 @@ public final class BezirkCommsPC {
         }
     }
 
-    public static Properties loadProperties() throws Exception {
-        return BezirkDeviceForPC.loadProperties(PROPS_FILE);
-    }
+//    public static Properties loadProperties() throws Exception {
+//        return BezirkDeviceForPC.loadProperties(PROPS_FILE);
+//    }
 }
