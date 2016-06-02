@@ -226,7 +226,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
         Set<BezirkZirkId> invokeList = null;
         if (eLedger.getIsMulticast()) {
             MulticastHeader mHeader = (MulticastHeader) eLedger.getHeader();
-            Location targetLocation = mHeader.getAddress() == null ? null : mHeader.getAddress().getLocation();
+            Location targetLocation = mHeader.getRecipientSelector() == null ? null : mHeader.getRecipientSelector().getLocation();
             invokeList = this.checkMulticastEvent(mHeader.getTopic(), targetLocation);
         } else {
             UnicastHeader uHeader = (UnicastHeader) eLedger.getHeader();

@@ -2,7 +2,7 @@ package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
@@ -137,8 +137,8 @@ public class LocationUpdateTest {
          */
         private final void pingServices(Location location) {
             MockRequestEvent req = new MockRequestEvent(Flag.REQUEST, "MockRequestEvent");
-            Address address = new Address(location);
-            bezirk.sendEvent(myId, address, req);
+            RecipientSelector recipientSelector = new RecipientSelector(location);
+            bezirk.sendEvent(myId, recipientSelector, req);
         }
 
         /**

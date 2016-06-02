@@ -82,7 +82,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         }
         Log.d(TAG, "receivedServiceId" + receivedServiceId);
 
-        if (null == Proxy.mContext) {
+        if (null == Proxy.context) {
             // TODO - Check with Joao if the application has to be launched!
             Log.e(TAG, "Application is not started");
             return false;
@@ -311,7 +311,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
      * @return
      */
     private boolean isRequestForCurrentApp(final String serviceId) {
-        SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(Proxy.mContext);
+        SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(Proxy.context);
         Map<String, ?> keys = shrdPref.getAll();
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
             //find and delete the entry corresponding to this zirkId

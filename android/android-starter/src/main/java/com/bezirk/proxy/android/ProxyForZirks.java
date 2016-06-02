@@ -21,7 +21,7 @@ import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
 import com.bezirk.discovery.DiscoveryLabel;
 import com.bezirk.discovery.DiscoveryProcessor;
 import com.bezirk.discovery.DiscoveryRecord;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Stream;
@@ -104,7 +104,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
     }
 
     @Override
-    public void sendMulticastEvent(final BezirkZirkId serviceId, final Address address, final String serializedEventMsg) {
+    public void sendMulticastEvent(final BezirkZirkId serviceId, final RecipientSelector recipientSelector, final String serializedEventMsg) {
         //if Stack was not started correctly, return without any further actions.
         if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
@@ -127,7 +127,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             ecMessage.setSerializedMessage(serializedEventMsg);
             ecMessage.setIsLocal(true);
             final MulticastHeader mHeader = new MulticastHeader();
-            mHeader.setAddress(address);
+            mHeader.setRecipientSelector(recipientSelector);
             mHeader.setSenderSEP(senderSEP);
             mHeader.setUniqueMsgId(uniqueMsgId.toString());
             mHeader.setTopic(eventTopic.toString());
@@ -184,7 +184,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
     }
 
     @Override
-    public void discover(final BezirkZirkId serviceId, final Address address, final SubscribedRole pRole, final int discoveryId, final long timeout, final int maxDiscovered) {
+    public void discover(final BezirkZirkId serviceId, final RecipientSelector recipientSelector, final SubscribedRole pRole, final int discoveryId, final long timeout, final int maxDiscovered) {
         //if Stack was not started correctly, return without any further actions.
         if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
@@ -199,7 +199,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
 
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         final BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(serviceId);
-        final Location loc = (address == null) ? null : address.getLocation();
+        final Location loc = (recipientSelector == null) ? null : recipientSelector.getLocation();
 
         while (sphereIterator.hasNext()) {
             final ControlLedger ControlLedger = new ControlLedger();

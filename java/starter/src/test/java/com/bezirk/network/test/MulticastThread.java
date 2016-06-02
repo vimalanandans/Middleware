@@ -58,7 +58,7 @@
 //                logger.error("Unable to receive data through multicast socket . ",e);
 //            }
 //
-//            if (!receivePacket.getAddress().getHostAddress()
+//            if (!receivePacket.getRecipientSelector().getHostAddress()
 //                    .equals(myAddress.getHostAddress())) {
 //                logger.info("Echo Received: SUCCESS");
 //                EchoTest.success = true;
@@ -67,7 +67,7 @@
 //
 //            } else {
 //                logger.error("RECEIVED ON Multicast: "
-//                        + "Problem Computing my Address");
+//                        + "Problem Computing my RecipientSelector");
 //
 //            }
 //

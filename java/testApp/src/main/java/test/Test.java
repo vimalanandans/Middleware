@@ -4,7 +4,7 @@
 package test;
 
 import com.bezirk.middleware.Bezirk;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
@@ -29,28 +29,18 @@ public class Test {
     public static void main(String[] args) {
         Test test = new Test();
         test.sayHello();
-
-  /*      ZyreDemo zyreDemo = new ZyreDemo();
-        zyreDemo.init();
-        zyreDemo.onStart();*/
     }
 
-    /**
-     *
-     */
     public void sayHello() {
         // Note: the usual way to say "hello world" in Java
         System.out.println("Hello World");
 
         // Steps to publish an even over Bezirk:
-        // 1. set the targeted address
-        Address target = new Address(new Location(null));        // local only (no pipes) with no constraints on location: will reach all services in the spheres test.Test is a member of
-
-        // 2. set the event to be published
+        // 1. set the event to be published
         Event hello = new Event(Flag.NOTICE, "Hello World");
 
-        // 3. publish "hello world" to all in the target address
-        bezirk.sendEvent(myId, target, hello);
+        // 2. publish "hello world" to all in the target address
+        bezirk.sendEvent(myId, hello);
 
         // sanity check: display the event that was just published
         System.out.println("Published: " + hello.toJson());

@@ -2,7 +2,7 @@ package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
@@ -123,8 +123,8 @@ public class MulticastEventLocalTest {
          */
         private final void pingServiceC() {
             MulticastMockRequestEvent req = new MulticastMockRequestEvent(Flag.REQUEST, "MockRequestEvent");
-            Address address = new Address(loc);
-            bezirk.sendEvent(myId, address, req);
+            RecipientSelector recipientSelector = new RecipientSelector(loc);
+            bezirk.sendEvent(myId, recipientSelector, req);
         }
 
         /**
@@ -132,8 +132,8 @@ public class MulticastEventLocalTest {
          */
         private final void pingServices() {
             MulticastMockRequestEvent req = new MulticastMockRequestEvent(Flag.REQUEST, "MockRequestEvent");
-            Address address = null;
-            bezirk.sendEvent(myId, address, req);
+            RecipientSelector recipientSelector = null;
+            bezirk.sendEvent(myId, recipientSelector, req);
         }
 
         @Override

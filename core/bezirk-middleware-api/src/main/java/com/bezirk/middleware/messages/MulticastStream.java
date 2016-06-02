@@ -17,7 +17,7 @@
  */
 package com.bezirk.middleware.messages;
 
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 
 /**
  * Base class for streams with multiple recipients. Extend {@link UnicastStream} for streams that
@@ -25,42 +25,42 @@ import com.bezirk.middleware.addressing.Address;
  *
  * @see Stream
  * @see UnicastStream
- * @see com.bezirk.middleware.addressing.Address
+ * @see RecipientSelector
  * @see com.bezirk.middleware.addressing.Location
  */
 public abstract class MulticastStream extends Stream {
-    private final Address address;
+    private final RecipientSelector recipientSelector;
 
     /**
      * Create a <code>Stream</code> with more than one recipient, where the set of recipients can
      * be different from the set of Zirks subscribed to this <code>topic</code> in the sender's
-     * sphere(s). If <code>address</code> does not specify a
-     * {@link com.bezirk.middleware.addressing.Location semantic address} that narrows the
+     * sphere(s). If <code>recipientSelector</code> does not specify a
+     * {@link com.bezirk.middleware.addressing.Location semantic recipientSelector} that narrows the
      * recipient set, this stream is broadcast to every Zirk subscribed to the <code>topic</code>
      * in the sender's sphere(s). Otherwise, the stream is broadcast to the set of Zirks specified
-     * by the semantic address. If the <code>address</code> specifies a
+     * by the semantic recipientSelector. If the <code>recipientSelector</code> specifies a
      * {@link com.bezirk.middleware.addressing.Pipe}, the stream will also be sent outside of a
      * sphere.
      *
-     * @param flag    flag to mark the intent of this stream
-     * @param topic   the pub-sub topic for this stream
-     * @param address a specification of the Zirks subscribed to <code>topic</code> that
-     *                should receive this stream
+     * @param flag              flag to mark the intent of this stream
+     * @param topic             the pub-sub topic for this stream
+     * @param recipientSelector a specification of the Zirks subscribed to <code>topic</code> that
+     *                          should receive this stream
      */
-    public MulticastStream(Flag flag, String topic, Address address) {
+    public MulticastStream(Flag flag, String topic, RecipientSelector recipientSelector) {
         super(flag, topic);
-        this.address = address;
+        this.recipientSelector = recipientSelector;
     }
 
     /**
-     * Returns the <code>address</code> associated with this stream. This address specifies which
+     * Returns the <code>recipientSelector</code> associated with this stream. This recipientSelector specifies which
      * Zirks in the sender's spheres, subscribed to the <code>topic</code> specified in the
-     * constructor, should receive this stream. The address may also specify a pipe to send the
+     * constructor, should receive this stream. The recipientSelector may also specify a pipe to send the
      * stream outside of a sphere.
      *
-     * @return the <code>address</code> associated with this stream
+     * @return the <code>recipientSelector</code> associated with this stream
      */
-    public Address getAddress() {
-        return address;
+    public RecipientSelector getRecipientSelector() {
+        return recipientSelector;
     }
 }

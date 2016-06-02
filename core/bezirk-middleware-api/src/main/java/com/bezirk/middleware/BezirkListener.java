@@ -17,10 +17,10 @@
  */
 package com.bezirk.middleware;
 
-import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.ProtocolRole;
@@ -128,11 +128,11 @@ public interface BezirkListener {
 
     /**
      * Called by the Bezirk middleware when a discovery request issued using
-     * {@link Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)}
+     * {@link Bezirk#discover(ZirkId, RecipientSelector, ProtocolRole, long, int, BezirkListener)}
      * completes.
      *
      * @param zirkSet a set of Zirks discovered as subscribing to a particular
-     *                   {@link com.bezirk.middleware.messages.ProtocolRole}.
+     *                {@link com.bezirk.middleware.messages.ProtocolRole}.
      */
     public void discovered(Set<DiscoveredZirk> zirkSet);
 

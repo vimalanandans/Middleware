@@ -17,11 +17,11 @@
  */
 package com.bezirk.middleware;
 
-import com.bezirk.middleware.addressing.Address;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
@@ -105,27 +105,36 @@ public interface Bezirk {
 
     /**
      * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event's topic.
-     * The set of recipients can be narrowed using <code>receiver</code> if a semantic address is
-     * specified, or broadened if a pipe is specified.
      *
-     * @param sender   id of Zirk sending the event, as returned by {@link #registerZirk(String)}
-     * @param receiver the {@link Address} of the sent event's recipients
-     * @param event    the <code>Event</code> being sent
+     * @param sender    id of Zirk sending the event, as returned by {@link #registerZirk(String)}
+     * @param event     the <code>Event</code> being sent
      * @see BezirkListener#receiveEvent(String, String, ZirkEndPoint)
      */
-    public void sendEvent(ZirkId sender, Address receiver, Event event);
+    public void sendEvent(ZirkId sender, Event event);
+
+    /**
+     * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event's topic.
+     * The set of recipients can be narrowed using <code>recipient</code> if a semantic address is
+     * specified, or broadened if a pipe is specified.
+     *
+     * @param sender    id of Zirk sending the event, as returned by {@link #registerZirk(String)}
+     * @param recipient the {@link RecipientSelector} specifying the sent event's recipients
+     * @param event     the <code>Event</code> being sent
+     * @see BezirkListener#receiveEvent(String, String, ZirkEndPoint)
+     */
+    public void sendEvent(ZirkId sender, RecipientSelector recipient, Event event);
 
     /**
      * Publish an event with one specific recipient.
      *
-     * @param sender   id of Zirk sending the event, returned by {@link #registerZirk(String)}
-     * @param receiver intended recipient, as extracted from a received message, or as discovered
-     *                 by calling
-     *                 {@link #discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)}
-     * @param event    the <code>Event</code> being sent
+     * @param sender    id of Zirk sending the event, returned by {@link #registerZirk(String)}
+     * @param recipient intended recipient, as extracted from a received message, or as discovered
+     *                  by calling
+     *                  {@link #discover(ZirkId, RecipientSelector, ProtocolRole, long, int, BezirkListener)}
+     * @param event     the <code>Event</code> being sent
      * @see BezirkListener#receiveEvent(String, String, ZirkEndPoint)
      */
-    public void sendEvent(ZirkId sender, ZirkEndPoint receiver, Event event);
+    public void sendEvent(ZirkId sender, ZirkEndPoint recipient, Event event);
 
     /**
      * Publish a {@link com.bezirk.middleware.messages.Stream} with one specific recipient. The
@@ -135,9 +144,9 @@ public interface Bezirk {
      * method are assumed to be incremental (see {@link Stream#isIncremental()}).
      *
      * @param sender     id of Zirk sending the stream, as returned by {@link #registerZirk(String)}
-     * @param receiver   intended recipient, as extracted from a received message, or as discovered
+     * @param recipient  intended recipient, as extracted from a received message, or as discovered
      *                   by calling
-     *                   {@link #discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)}
+     *                   {@link #discover(ZirkId, RecipientSelector, ProtocolRole, long, int, BezirkListener)}
      * @param stream     communication channel's descriptor
      * @param dataStream io stream where the outgoing data will be written into by this method's
      *                   caller. Internally, the Bezirk middleware will read data from the
@@ -148,7 +157,7 @@ public interface Bezirk {
      * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ZirkEndPoint)
      * @see BezirkListener#receiveStream(String, String, short, File, ZirkEndPoint)
      */
-    public short sendStream(ZirkId sender, ZirkEndPoint receiver, Stream stream,
+    public short sendStream(ZirkId sender, ZirkEndPoint recipient, Stream stream,
                             PipedOutputStream dataStream);
 
     /**
@@ -157,18 +166,18 @@ public interface Bezirk {
      * version is intended to send a specific file instead of general data. Streams sent using this
      * method are assumed to be non-incremental (see {@link Stream#isIncremental()}).
      *
-     * @param sender   id of Zirk sending the stream, as returned by {@link #registerZirk(String)}
-     * @param receiver intended recipient, as extracted from a received message, or as discovered
-     *                 by calling
-     *                 {@link #discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)}
-     * @param stream   communication channel's descriptor
-     * @param file     the file whose contents will be sent using the <code>stream</code>
+     * @param sender    id of Zirk sending the stream, as returned by {@link #registerZirk(String)}
+     * @param recipient intended recipient, as extracted from a received message, or as discovered
+     *                  by calling
+     *                  {@link #discover(ZirkId, RecipientSelector, ProtocolRole, long, int, BezirkListener)}
+     * @param stream    communication channel's descriptor
+     * @param file      the file whose contents will be sent using the <code>stream</code>
      * @return Bezirk middleware-generated id for the stream, which will be referred to in
      * {@link BezirkListener#streamStatus(short, BezirkListener.StreamStates)}
      * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ZirkEndPoint)
      * @see BezirkListener#receiveStream(String, String, short, File, ZirkEndPoint)
      */
-    public short sendStream(ZirkId sender, ZirkEndPoint receiver, Stream stream, File file);
+    public short sendStream(ZirkId sender, ZirkEndPoint recipient, Stream stream, File file);
 
     /**
      * Request the use of a {@link com.bezirk.middleware.addressing.Pipe} to send data outside of the
@@ -236,14 +245,14 @@ public interface Bezirk {
      * @see DiscoveredZirk
      * @see #setLocation(ZirkId, Location)
      */
-    public void discover(ZirkId zirk, Address scope, ProtocolRole protocolRole, long timeout,
+    public void discover(ZirkId zirk, RecipientSelector scope, ProtocolRole protocolRole, long timeout,
                          int maxResults, BezirkListener listener);
 
     /**
      * Inform the Bezirk middleware of the Zirk's {@link com.bezirk.middleware.addressing.Location}.
      * This method is useful when the Zirk controls a device that is in a location distinct from
      * the device that is executing the Zirk. The location is used whenever an
-     * {@link com.bezirk.middleware.addressing.Address} is used (e.g. when sending an event,
+     * {@link RecipientSelector} is used (e.g. when sending an event,
      * discovering Zirks subscribed to a role, etc.).
      *
      * @param zirk     id of Zirk whose location is being set, as returned by {@link #registerZirk(String)}

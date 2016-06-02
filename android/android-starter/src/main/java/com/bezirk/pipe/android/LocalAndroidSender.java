@@ -42,7 +42,7 @@ public class LocalAndroidSender implements LocalBezirkSender {
             PipeMulticastHeader pipeMulticastHeader = (PipeMulticastHeader) pipeHeader;
 
             // This sends to services on this device and local nework
-            proxy.sendMulticastEvent(serviceId, pipeMulticastHeader.getAddress(), serializedEvent);
+            proxy.sendMulticastEvent(serviceId, pipeMulticastHeader.getRecipientSelector(), serializedEvent);
         } else {
             logger.error("unknown header type: " + pipeHeader.getClass().getSimpleName());
         }
