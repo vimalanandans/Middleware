@@ -60,7 +60,7 @@ public final class BezirkNetworkUtilities {
                     for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                         InetAddress inetAddress = enumIpAddr.nextElement();
                         if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-                            logger.debug("IP RecipientSelector determined: " + inetAddress.getHostAddress());
+                            logger.debug("IP address determined: " + inetAddress.getHostAddress());
                             curInterface = intf;
                             return inetAddress;
                         }
@@ -84,7 +84,7 @@ public final class BezirkNetworkUtilities {
         for (Enumeration<InetAddress> enumIpAddr = curInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
             InetAddress inetAddress = enumIpAddr.nextElement();
             if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-                //logger.info("IP RecipientSelector determined: " + inetAddress.getHostAddress());
+                //logger.info("IP address determined: " + inetAddress.getHostAddress());
                 return inetAddress;
             }
         }
@@ -104,7 +104,7 @@ public final class BezirkNetworkUtilities {
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-                        //                        Log.i(TAG,"MAC RecipientSelector determined: " + Hex.encodeToString(intf.getHardwareAddress()));
+                        //                        Log.i(TAG,"MAC address determined: " + Hex.encodeToString(intf.getHardwareAddress()));
                         return intf.getHardwareAddress();
                     }
 

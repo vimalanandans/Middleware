@@ -1,4 +1,4 @@
-# Bezirk 
+# Bezirk
 
 The Bezirk Middleware project forms the heart of the Bezirk platform. This repository contains the following middleware modules:
 
@@ -19,7 +19,7 @@ The Bezirk Middleware project forms the heart of the Bezirk platform. This repos
  - **comms** - implementations of various communication protocols for Bezirk
  - **control-messages** - platform-independent classes to implement Bezirk-internal messages (e.g. middleware instance-to-middleware instance communication)
  - **device-objects** - API for collecting information about a device that is joining a sphere
- - **network-util** - code for getting local networking information (e.g. IP recipientSelector, MAC recipientSelector, etc.)
+ - **network-util** - code for getting local networking information (e.g. IP address, MAC addresss, etc.)
  - **pipes** - code implementing Bezirk's pipe feature
  - **protocols** - implementations of Bezirk-standard protocols (e.g. those for personalization)
 - **java** - Java SE-specific middleware code
