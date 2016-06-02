@@ -70,8 +70,7 @@ public final class Proxy implements Bezirk {
     public static ZirkId registerZirk(final String zirkName) {
         Log.i(TAG, "RegisteringService: " + zirkName);
         if (zirkName == null) {
-            Log.e(TAG, "Service name Cannot be null during Registration");
-            return null;
+            throw new IllegalArgumentException("Cannot register a Zirk with a null name");
         }
 
         // TODO: if the zirk id is uninstalled then owner device shows cached and new one.
@@ -135,9 +134,7 @@ public final class Proxy implements Bezirk {
 
     @Override
     public void subscribe(final ProtocolRole protocolRole, final BezirkListener listener) {
-        if (!isRequestValid(zirkId, protocolRole, listener)) {
-            return;
-        }
+        isRequestValid(zirkId, protocolRole, listener);
 
         proxyHelper.addTopicsToMap(protocolRole.getEventTopics(), eventListenerMap, listener, "Event");
         proxyHelper.addTopicsToMap(protocolRole.getStreamTopics(), streamListenerMap, listener, "Stream");
@@ -155,16 +152,14 @@ public final class Proxy implements Bezirk {
         }
     }
 
-    private boolean isRequestValid(ZirkId subscriber, ProtocolRole pRole, BezirkListener listener) {
+    private void isRequestValid(ZirkId subscriber, ProtocolRole pRole, BezirkListener listener) {
         if (!StringValidatorUtil.areValidStrings(pRole.getRoleName()) || null == listener || null == subscriber) {
-            Log.e(TAG, "Check for ProtocolRole/ BezirkListener/ZirkId for null or empty values");
-            return false;
+            throw new IllegalArgumentException("Check for ProtocolRole/ BezirkListener/ZirkId for null or empty values");
         }
+
         if ((null == pRole.getEventTopics()) && (null == pRole.getStreamTopics())) {
-            Log.e(TAG, "ProtocolRole doesn't have any Events/Streams to subscribe");
-            return false;
+            throw new IllegalArgumentException("ProtocolRole doesn't have any Events/Streams to subscribe");
         }
-        return true;
     }
 
     @Override
@@ -193,11 +188,15 @@ public final class Proxy implements Bezirk {
 
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
-        // Check for sending the target!
-        if (null == event || null == zirkId) {
-            Log.e(TAG, "Check for null in target or Event or sender");
-            return;
+        if (recipient == null) {
+            throw new IllegalArgumentException("Cannot send an event to a null recipient. You " +
+                    "probably want to use sendEvent(Event)");
         }
+
+        if (event == null) {
+            throw new IllegalArgumentException("Cannot send a null event");
+        }
+
         Intent multicastEventIntent = new Intent();
         multicastEventIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         multicastEventIntent.setAction(ACTION_SERVICE_SEND_MULTICAST_EVENT);
@@ -215,10 +214,13 @@ public final class Proxy implements Bezirk {
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
+        if (recipient == null) {
+            throw new IllegalArgumentException("Cannot send an event to a null recipient. You " +
+                    "probably want to use sendEvent(Event)");
+        }
 
-        if (null == recipient || null == event || null == zirkId) {
-            Log.e(TAG, "Check for null in receiver or Event or sender");
-            return;
+        if (event == null) {
+            throw new IllegalArgumentException("Cannot send a null event");
         }
 
         Intent unicastEventIntent = new Intent();
@@ -258,10 +260,16 @@ public final class Proxy implements Bezirk {
 
     @Override
     public short sendStream(ZirkEndPoint recipient, Stream stream, File file) {
+        if (recipient == null) {
+            throw new IllegalArgumentException("Cannot send a stream to a null recipient");
+        }
 
-        if (null == recipient || null == stream || !StringValidatorUtil.areValidStrings(stream.topic)) {
-            Log.e(TAG, "Check for null values in sendStream()/ Topic might be Empty.");
-            return (short) -1;
+        if (stream == null || stream.topic.isEmpty()) {
+            throw new IllegalArgumentException("Null or empty stream specified when sending " +
+                    "a file");
+        }
+        if (file == null) {
+            throw new IllegalArgumentException("Cannot send a null file");
         }
 
         if (!file.exists()) {
@@ -311,7 +319,6 @@ public final class Proxy implements Bezirk {
 
         addPipe.putExtra(BezirkActions.KEY_PIPE_CLASS, pipe.getClass().getCanonicalName());
 
-        // Add Pipe Policys
         addPipe.putExtra(BezirkActions.KEY_PIPE_POLICY_IN, allowedIn == null ? null : new BezirkPipePolicy(allowedIn).toJson());
         addPipe.putExtra(BezirkActions.KEY_PIPE_POLICY_OUT, allowedOut == null ? null : new BezirkPipePolicy(allowedOut).toJson());
 
@@ -333,10 +340,8 @@ public final class Proxy implements Bezirk {
 
     @Override
     public void discover(RecipientSelector scope, ProtocolRole protocolRole, long timeout, int maxResults, BezirkListener listener) {
-
-        if (null == zirkId || null == listener) {
-            Log.e(TAG, "ZirkId/BezirkListener is null");
-            return;
+        if (listener == null) {
+            throw new IllegalArgumentException("Cannot discover Zirks with a null listener");
         }
 
         DiscoveryListener = listener;
@@ -357,10 +362,10 @@ public final class Proxy implements Bezirk {
 
     @Override
     public void setLocation(Location location) {
-        if (null == location) {
-            Log.e(TAG, "Location is null or Empty, Services cannot set the location as Null");
-            return;
+        if (location == null) {
+            throw new IllegalArgumentException("Cannot set a null location");
         }
+
         Intent locationIntent = new Intent();
         locationIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         locationIntent.setAction(ACTION_BEZIRK_SETLOCATION);
@@ -368,6 +373,4 @@ public final class Proxy implements Bezirk {
         locationIntent.putExtra("locationData", new Gson().toJson(location));
         context.startService(locationIntent);
     }
-
-
 }
