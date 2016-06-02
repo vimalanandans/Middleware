@@ -5,7 +5,7 @@ import android.content.Intent;
 import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.messagehandler.StreamStatusMessage;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
@@ -142,14 +142,14 @@ public final class BezirkServiceHelper {
         if (BezirkValidatorUtility.checkForString(serviceIdAsString) && BezirkValidatorUtility.checkForString(addressAsString) && BezirkValidatorUtility.checkForString(pRoleMsg)) {
             final Gson gson = new Gson();
             final BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
-            final Address address = gson.fromJson(addressAsString, Address.class);
+            final RecipientSelector recipientSelector = gson.fromJson(addressAsString, RecipientSelector.class);
             final SubscribedRole pRole = gson.fromJson(pRoleMsg, SubscribedRole.class);
             final long timeout = intent.getLongExtra(timeoutKEY, 1000);
             final int maxDiscovered = intent.getIntExtra(maxDiscoveredKEY, 1);
             final int discoveryId = intent.getIntExtra(discoveryIdKEY, 1);
 
             if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
-                proxy.discover(serviceId, address, pRole, discoveryId, timeout, maxDiscovered);
+                proxy.discover(serviceId, recipientSelector, pRole, discoveryId, timeout, maxDiscovered);
                 logger.info("Discovery Request pass to Proxy");
 
             } else {
@@ -275,9 +275,9 @@ public final class BezirkServiceHelper {
             final Gson gson = new Gson();
             final BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
             if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
-                final Address address = Address.fromJson(addressAsString);
+                final RecipientSelector recipientSelector = RecipientSelector.fromJson(addressAsString);
                 logger.debug("Sending multicast event from zirk: " + serviceIdAsString);
-                proxy.sendMulticastEvent(serviceId, address, mEventMsg);
+                proxy.sendMulticastEvent(serviceId, recipientSelector, mEventMsg);
             } else {
                 logger.error("trying to send multicast message with Null zirkId");
 

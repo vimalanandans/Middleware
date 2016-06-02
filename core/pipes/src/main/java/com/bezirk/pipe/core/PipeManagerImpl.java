@@ -5,7 +5,7 @@ import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.control.messages.pipes.PipeHeader;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 
@@ -119,20 +119,20 @@ public class PipeManagerImpl implements PipeManager {
             return;
         }
 
-        // Services shouldn't send multicast with null address, but hey, we're defensive
-        Address address = ((MulticastHeader) bezirkHeader).getAddress();
-        if (address == null) {
-            logger.error("Address is null. Not sending via cloudpipe: " + serializedEvent);
+        // Services shouldn't send multicast with null recipientSelector, but hey, we're defensive
+        RecipientSelector recipientSelector = ((MulticastHeader) bezirkHeader).getRecipientSelector();
+        if (recipientSelector == null) {
+            logger.error("RecipientSelector is null. Not sending via cloudpipe: " + serializedEvent);
             return;
         }
 
         // Only add to queue if the location refers to a pipe
-        if (addressIsPipe(address)) {
+        if (addressIsPipe(recipientSelector)) {
             //logger.info("Adding event to PipeSender queue: " + eventRecord.getSerializedMessage());
-            logger.info("Address is pipe; adding event to PipeSender queue for pipe: " + address.getPipe());
+            logger.info("RecipientSelector is pipe; adding event to PipeSender queue for pipe: " + recipientSelector.getPipe());
             executeRemoteMulticastSend((MulticastHeader) bezirkHeader, serializedEvent);
         } else {
-            logger.info("address does not contain a pipe: " + address.getPipe());
+            logger.info("recipientSelector does not contain a pipe: " + recipientSelector.getPipe());
         }
     }
 
@@ -293,13 +293,13 @@ public class PipeManagerImpl implements PipeManager {
 
 
     /**
-     * Check if this address represents a registered pipe
+     * Check if this recipientSelector represents a registered pipe
      *
-     * @param address
+     * @param recipientSelector
      * @return
      */
-    private boolean addressIsPipe(Address address) {
-        return pipeRegistry.isRegistered(address.getPipe());
+    private boolean addressIsPipe(RecipientSelector recipientSelector) {
+        return pipeRegistry.isRegistered(recipientSelector.getPipe());
     }
 
 	/*

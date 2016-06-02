@@ -4,7 +4,7 @@ import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
@@ -103,7 +103,7 @@ public class ProcessEventTest {
 
 		/*MulticastEvent with zirk existing in sphere. SadlManager processEvent should return true. */
         Location loc = new Location(null);
-        Address address = new Address(loc);
+        RecipientSelector recipientSelector = new RecipientSelector(loc);
         HashSet<BezirkZirkId> serviceSet = new HashSet<>();
         serviceSet.add(bezirkZirkAId);
         sadlRegistry.sid.add(bezirkZirkAId);
@@ -130,7 +130,7 @@ public class ProcessEventTest {
         BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(bezirkZirkAId);
         header.setSenderSEP(senderSEP);
         header.setSphereName(sphereId);
-        header.setAddress(address);
+        header.setRecipientSelector(recipientSelector);
         eventLedger.setHeader(header);
         isEventProcessed = bezirkSadlManager.processEvent(eventLedger);
         assertTrue("SadlManager returned false for processEvent with MulticastMessage having zirk within the sphere.", isEventProcessed);

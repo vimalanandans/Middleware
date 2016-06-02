@@ -35,7 +35,7 @@ public class BezirkRequestTranslator {
         // construct multicast header
         MulticastHeader multicastHeader = new MulticastHeader();
 
-        // TODO ?? multicastHeader.setAddress(address);
+        // TODO ?? multicastHeader.setRecipientSelector(address);
         multicastHeader.setSenderSEP(mySEP);
         multicastHeader.setSphereName(requestObject.getEventSphere());
         multicastHeader.setTopic(requestObject.getEventTopic());

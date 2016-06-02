@@ -101,7 +101,7 @@ import java.io.Serializable;
  * override the initial values for any scope.
  * <p>
  * Assuming a Zirk already
- * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener) discovered}
+ * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, RecipientSelector, ProtocolRole, long, int, BezirkListener) discovered}
  * the location service and lights were already configured, the Zirk would turn on all lights in
  * the user's current location using code similar to the following:
  * </p>
@@ -128,7 +128,7 @@ import java.io.Serializable;
  *
  *                  // Send an event to all Things at the semantic address subscribed to the
  *                  // light protocol telling the Things to turn on
- *                  bezirk.sendEvent(lightId, new Address(lightLocation),
+ *                  bezirk.sendEvent(lightId, new RecipientSelector(lightLocation),
  *                                   new ActuateLightEvent(LightOperations.ON);
  *              }
  *         }
@@ -136,8 +136,6 @@ import java.io.Serializable;
  *         // ...
  *     }
  * </pre>
- *
- *
  */
 public class Location implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -225,7 +223,7 @@ public class Location implements Serializable {
     }
 
     /**
-     *  Return the middle scope that helps resolve this <code>Location</code>'s set of Things.
+     * Return the middle scope that helps resolve this <code>Location</code>'s set of Things.
      *
      * @return the middle scope that helps resolve this <code>Location</code>'s set of Things
      */
@@ -234,7 +232,7 @@ public class Location implements Serializable {
     }
 
     /**
-     *  Return the narrowest scope that helps resolve this <code>Location</code>'s set of Things.
+     * Return the narrowest scope that helps resolve this <code>Location</code>'s set of Things.
      *
      * @return the narrowest scope that helps resolve this <code>Location</code>'s set of Things
      */

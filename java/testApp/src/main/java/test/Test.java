@@ -4,7 +4,7 @@
 package test;
 
 import com.bezirk.middleware.Bezirk;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
@@ -44,7 +44,7 @@ public class Test {
 
         // Steps to publish an even over Bezirk:
         // 1. set the targeted address
-        Address target = new Address(new Location(null));        // local only (no pipes) with no constraints on location: will reach all services in the spheres test.Test is a member of
+        RecipientSelector target = new RecipientSelector(new Location(null));        // local only (no pipes) with no constraints on location: will reach all services in the spheres test.Test is a member of
 
         // 2. set the event to be published
         Event hello = new Event(Flag.NOTICE, "Hello World");

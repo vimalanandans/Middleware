@@ -75,15 +75,6 @@ public abstract class Message {
     }
 
     /**
-     * Serialize the message to a JSON string.
-     *
-     * @return JSON representation of the message
-     */
-    public String toJson() {
-        return gson.toJson(this);
-    }
-
-    /**
      * Deserialize the <code>json</code> string to create an object of type <code>objectType</code>.
      * This method can be used to toJson a message as follows:
      * <p>
@@ -98,6 +89,15 @@ public abstract class Message {
      */
     public static <C> C fromJson(String json, Class<C> objectType) {
         return gson.fromJson(json, objectType);
+    }
+
+    /**
+     * Serialize the message to a JSON string.
+     *
+     * @return JSON representation of the message
+     */
+    public String toJson() {
+        return gson.toJson(this);
     }
 
     /**

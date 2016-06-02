@@ -13,7 +13,7 @@ final class LoggingGUILabels {
 
     static final String LABEL_START_LOGGING = "Start Logging";
 
-    static final String LABEL_IP_ADDRESS = "IP Address:";
+    static final String LABEL_IP_ADDRESS = "IP RecipientSelector:";
 
     static final String LABEL_REMOTE_LOGGING_PORT = "Port";
 

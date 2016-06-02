@@ -39,21 +39,11 @@ import java.util.Set;
  * {@link com.bezirk.middleware.Bezirk#requestPipeAuthorization(ZirkId, Pipe, PipePolicy, PipePolicy, BezirkListener)}.
  */
 public abstract class PipePolicy {
+    private static final Gson gson = new Gson();
     /**
      * Map of protocol names to reasons
      */
     private Map<String, String> reasonMap = new HashMap<String, String>();
-
-    private static final Gson gson = new Gson();
-
-    /**
-     * Serialize the policy to a JSON string.
-     *
-     * @return JSON representation of the policy
-     */
-    public String toJson() {
-        return gson.toJson(this);
-    }
 
     /**
      * Deserialize the <code>json</code> string to create an object of type <code>objectType</code>.
@@ -66,6 +56,15 @@ public abstract class PipePolicy {
      */
     public static <C> C fromJson(String json, Class objectType) {
         return (C) gson.fromJson(json, objectType);
+    }
+
+    /**
+     * Serialize the policy to a JSON string.
+     *
+     * @return JSON representation of the policy
+     */
+    public String toJson() {
+        return gson.toJson(this);
     }
 
     /**

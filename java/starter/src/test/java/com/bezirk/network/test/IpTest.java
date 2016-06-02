@@ -53,7 +53,7 @@
 //				}
 //				fail("Cannot resolve Ip");
 //			}
-//			logger.info("Address Obtained: "+ addr.getHostAddress());
+//			logger.info("RecipientSelector Obtained: "+ addr.getHostAddress());
 //		} catch (SocketException e) {
 //			e.printStackTrace();
 //		}

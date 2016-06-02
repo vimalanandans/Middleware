@@ -3,7 +3,7 @@
  */
 package com.bezirk.proxy.pc;
 
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkZirkId;
@@ -19,9 +19,9 @@ public interface BezirkProxyForServiceAPI {
 
     void sendUnicastEvent(BezirkZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg);
 
-    void sendMulticastEvent(BezirkZirkId serviceId, Address address, String serializedEventMsg);
+    void sendMulticastEvent(BezirkZirkId serviceId, RecipientSelector recipientSelector, String serializedEventMsg);
 
-    void discover(BezirkZirkId service, Address scope, SubscribedRole pRole, int discoveryId, long timeout, int maxDiscovered);
+    void discover(BezirkZirkId service, RecipientSelector scope, SubscribedRole pRole, int discoveryId, long timeout, int maxDiscovered);
 
     short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId);
 

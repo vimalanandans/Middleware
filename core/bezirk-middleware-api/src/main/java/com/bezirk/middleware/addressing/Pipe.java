@@ -34,10 +34,9 @@ import com.google.gson.Gson;
  * will be thrown.
  */
 public class Pipe {
+    private static final Gson gson = new Gson();
     protected String type = getClass().getSimpleName();
     private String name;
-
-    private static final Gson gson = new Gson();
 
     public Pipe() {
         //Empty ctor for gson.fromJson
@@ -54,15 +53,6 @@ public class Pipe {
     }
 
     /**
-     * Serialize the policy to a JSON string.
-     *
-     * @return JSON representation of the policy
-     */
-    public String toJson() {
-        return gson.toJson(this);
-    }
-
-    /**
      * Deserialize the <code>json</code> string to create an object of type <code>objectType</code>.
      *
      * @param <C>        the type of the object represented by <code>json</code>, set by
@@ -73,6 +63,15 @@ public class Pipe {
      */
     public static <C> C fromJson(String json, Class objectType) {
         return (C) gson.fromJson(json, objectType);
+    }
+
+    /**
+     * Serialize the policy to a JSON string.
+     *
+     * @return JSON representation of the policy
+     */
+    public String toJson() {
+        return gson.toJson(this);
     }
 
     /**

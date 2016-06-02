@@ -10,7 +10,7 @@ import android.util.Log;
 import com.bezirk.actions.BezirkActions;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
@@ -186,7 +186,7 @@ public final class Proxy implements Bezirk {
     }
 
     @Override
-    public void sendEvent(ZirkId sender, Address receiver, Event event) {
+    public void sendEvent(ZirkId sender, RecipientSelector recipient, Event event) {
         // Check for sending the target!
         if (null == event || null == sender) {
             Log.e(TAG, "Check for null in target or Event or sender");
@@ -197,7 +197,7 @@ public final class Proxy implements Bezirk {
         multicastEventIntent.setAction(ACTION_SERVICE_SEND_MULTICAST_EVENT);
         multicastEventIntent.putExtra("zirkId", new Gson().toJson(sender));
 
-        multicastEventIntent.putExtra("address", receiver.toJson());
+        multicastEventIntent.putExtra("address", recipient.toJson());
         multicastEventIntent.putExtra("multicastEvent", event.toJson());
 
         ComponentName retName = mContext.startService(multicastEventIntent);
@@ -208,9 +208,9 @@ public final class Proxy implements Bezirk {
     }
 
     @Override
-    public void sendEvent(ZirkId sender, ZirkEndPoint receiver, Event event) {
+    public void sendEvent(ZirkId sender, ZirkEndPoint recipient, Event event) {
 
-        if (null == receiver || null == event || null == sender) {
+        if (null == recipient || null == event || null == sender) {
             Log.e(TAG, "Check for null in receiver or Event or sender");
             return;
         }
@@ -219,7 +219,7 @@ public final class Proxy implements Bezirk {
         unicastEventIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
         unicastEventIntent.setAction(ACTION_SERVICE_SEND_UNICAST_EVENT);
         unicastEventIntent.putExtra("zirkId", new Gson().toJson(sender));
-        unicastEventIntent.putExtra("receiverSep", new Gson().toJson(receiver));
+        unicastEventIntent.putExtra("receiverSep", new Gson().toJson(recipient));
         unicastEventIntent.putExtra("eventMsg", event.toJson());
         ComponentName retName = mContext.startService(unicastEventIntent);
         if (retName == null) {
@@ -228,10 +228,10 @@ public final class Proxy implements Bezirk {
     }
 
     @Override
-    public short sendStream(ZirkId sender, ZirkEndPoint receiver, Stream stream, PipedOutputStream dataStream) {
+    public short sendStream(ZirkId sender, ZirkEndPoint recipient, Stream stream, PipedOutputStream dataStream) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
         activeStreams.put(streamId, stream.topic);
-        BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) receiver;
+        BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) recipient;
 
         final Intent multicastStreamIntent = new Intent();
         multicastStreamIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
@@ -251,9 +251,9 @@ public final class Proxy implements Bezirk {
     }
 
     @Override
-    public short sendStream(ZirkId sender, ZirkEndPoint receiver, Stream stream, File file) {
+    public short sendStream(ZirkId sender, ZirkEndPoint recipient, Stream stream, File file) {
 
-        if (null == receiver || null == stream || !StringValidatorUtil.areValidStrings(stream.topic)) {
+        if (null == recipient || null == stream || !StringValidatorUtil.areValidStrings(stream.topic)) {
             Log.e(TAG, "Check for null values in sendStream()/ Topic might be Empty.");
             return (short) -1;
         }
@@ -266,7 +266,7 @@ public final class Proxy implements Bezirk {
 
         activeStreams.put(streamId, stream.topic);
 
-        BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) receiver;
+        BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) recipient;
 
         final Intent unicastStreamIntent = new Intent();
         unicastStreamIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
@@ -326,7 +326,7 @@ public final class Proxy implements Bezirk {
     }
 
     @Override
-    public void discover(ZirkId zirk, Address scope, ProtocolRole protocolRole, long timeout, int maxResults, BezirkListener listener) {
+    public void discover(ZirkId zirk, RecipientSelector scope, ProtocolRole protocolRole, long timeout, int maxResults, BezirkListener listener) {
 
         if (null == zirk || null == listener) {
             Log.e(TAG, "ZirkId/BezirkListener is null");

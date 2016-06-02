@@ -6,7 +6,7 @@ import com.bezirk.devices.BezirkDeviceForPC;
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
@@ -132,8 +132,8 @@ public class DiscoveryTest {
         }
 
         private final void testDiscoverWithSpecificLocation() {
-            Address address = new Address(loc);
-            bezirk.discover(myId, address, pRole, 10000, 1, this);
+            RecipientSelector recipientSelector = new RecipientSelector(loc);
+            bezirk.discover(myId, recipientSelector, pRole, 10000, 1, this);
         }
 
         @Override

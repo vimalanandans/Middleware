@@ -4,7 +4,7 @@ import com.bezirk.callback.pc.CBkForZirkPC;
 import com.bezirk.callback.pc.BroadcastReceiver;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
@@ -21,7 +21,6 @@ import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.pc.ProxyForServices;
 import com.bezirk.proxy.registration.ServiceRegistration;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.BezirkConfig;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -151,41 +150,41 @@ public class Proxy implements Bezirk {
     }
 
     @Override
-    public void sendEvent(ZirkId sender, Address receiver,
+    public void sendEvent(ZirkId sender, RecipientSelector recipient,
                           Event event) {
         // Check for sending the target!
         if (null == event || null == sender) {
             logger.error("Check for null in target or Event or sender");
             return;
         }
-        proxy.sendMulticastEvent((BezirkZirkId) sender, receiver, event.toJson());
+        proxy.sendMulticastEvent((BezirkZirkId) sender, recipient, event.toJson());
     }
 
     @Override
     public void sendEvent(ZirkId sender,
-                          ZirkEndPoint receiver,
+                          ZirkEndPoint recipient,
                           Event event) {
-        if (null == receiver || null == event || null == sender) {
+        if (null == recipient || null == event || null == sender) {
             logger.error("Check for null in receiver or Event or sender");
             return;
         }
-        proxy.sendUnicastEvent((BezirkZirkId) sender, (BezirkZirkEndPoint) receiver, event.toJson());
+        proxy.sendUnicastEvent((BezirkZirkId) sender, (BezirkZirkEndPoint) recipient, event.toJson());
     }
 
     @Override
     public short sendStream(ZirkId sender,
-                            ZirkEndPoint receiver,
+                            ZirkEndPoint recipient,
                             Stream stream, PipedOutputStream dataStream) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
         activeStreams.put(((BezirkZirkId) sender).getBezirkZirkId() + streamId, stream.topic);
-        BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) receiver;
+        BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) recipient;
         proxy.sendStream((BezirkZirkId) sender, recipientSEP, stream.toJson(), streamId);
         return streamId;
     }
 
     @Override
-    public short sendStream(ZirkId sender, ZirkEndPoint receiver, Stream stream, File file) {
-        if (null == receiver || null == stream || null == file || file == null || stream.topic.isEmpty()) {
+    public short sendStream(ZirkId sender, ZirkEndPoint recipient, Stream stream, File file) {
+        if (null == recipient || null == stream || null == file || file == null || stream.topic.isEmpty()) {
             logger.error("Check for null values in sendStream()/ Topic might be Empty");
             return (short) -1;
         }
@@ -196,7 +195,7 @@ public class Proxy implements Bezirk {
 
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
         activeStreams.put(((BezirkZirkId) sender).getBezirkZirkId() + streamId, stream.topic);
-        proxy.sendStream((BezirkZirkId) sender, (BezirkZirkEndPoint) receiver, stream.toJson(), file, streamId);
+        proxy.sendStream((BezirkZirkId) sender, (BezirkZirkEndPoint) recipient, stream.toJson(), file, streamId);
         return streamId;
     }
 
@@ -213,7 +212,7 @@ public class Proxy implements Bezirk {
     }
 
     @Override
-    public void discover(ZirkId zirk, Address scope,
+    public void discover(ZirkId zirk, RecipientSelector scope,
                          ProtocolRole protocolRole, long timeout,
                          int maxResults, BezirkListener listener) {
         // update discovery map

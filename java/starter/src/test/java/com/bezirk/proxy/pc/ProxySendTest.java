@@ -1,6 +1,6 @@
 package com.bezirk.proxy.pc;
 
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Message;
@@ -122,8 +122,8 @@ public class ProxySendTest {
             proxyForServices.registerService(senderId, serviceName);
 
             String serializedEventMsg = new MockProtocolsForBezirkPC().new MockEvent1(Flag.REQUEST, "MockEvent").toJson();
-            Address address = new Address(new Location("FLOOR1/BLOCk1/ROOM1"));
-            proxyForServices.sendMulticastEvent(senderId, address, serializedEventMsg);
+            RecipientSelector recipientSelector = new RecipientSelector(new Location("FLOOR1/BLOCk1/ROOM1"));
+            proxyForServices.sendMulticastEvent(senderId, recipientSelector, serializedEventMsg);
             assertEquals("Proxy is unable to add multicast event message to the comms queue.", mockSetUP.getTotalSpheres(), mockComms.getEventList().size());
 
             proxyForServices.sendMulticastEvent(senderId, null, serializedEventMsg);
