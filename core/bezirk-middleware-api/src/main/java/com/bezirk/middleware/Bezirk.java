@@ -105,6 +105,15 @@ public interface Bezirk {
 
     /**
      * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event's topic.
+     *
+     * @param sender    id of Zirk sending the event, as returned by {@link #registerZirk(String)}
+     * @param event     the <code>Event</code> being sent
+     * @see BezirkListener#receiveEvent(String, String, ZirkEndPoint)
+     */
+    public void sendEvent(ZirkId sender, Event event);
+
+    /**
+     * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event's topic.
      * The set of recipients can be narrowed using <code>recipient</code> if a semantic address is
      * specified, or broadened if a pipe is specified.
      *

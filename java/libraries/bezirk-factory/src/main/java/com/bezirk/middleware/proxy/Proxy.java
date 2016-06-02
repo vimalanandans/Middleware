@@ -150,6 +150,11 @@ public class Proxy implements Bezirk {
     }
 
     @Override
+    public void sendEvent(ZirkId sender, Event event) {
+        sendEvent(sender, new RecipientSelector(new Location(null)), event);
+    }
+
+    @Override
     public void sendEvent(ZirkId sender, RecipientSelector recipient,
                           Event event) {
         // Check for sending the target!
