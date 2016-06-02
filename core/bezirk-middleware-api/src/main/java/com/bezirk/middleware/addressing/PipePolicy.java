@@ -36,7 +36,7 @@ import java.util.Set;
  * Polices are directional, meaning typically a policy will be created to specify what roles are
  * allowed to send data out of a sphere using a pipe and another policy will define the roles for
  * sending data into a sphere using the pipe. The authorization process is initiated by calling
- * {@link com.bezirk.middleware.Bezirk#requestPipeAuthorization(ZirkId, Pipe, PipePolicy, PipePolicy, BezirkListener)}.
+ * {@link com.bezirk.middleware.Bezirk#requestPipeAuthorization(Pipe, PipePolicy, PipePolicy, BezirkListener)}.
  */
 public abstract class PipePolicy {
     private static final Gson gson = new Gson();

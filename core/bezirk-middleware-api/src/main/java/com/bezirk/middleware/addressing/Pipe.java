@@ -29,7 +29,7 @@ import com.google.gson.Gson;
  * sphere (i.e. pipes allow Zirks that do not share spheres to communicate). Pipes have security
  * policies associated with them, where the policies are instantiations of
  * {@link PipePolicy}. To initiate the authorization process, a Zirk must call
- * {@link com.bezirk.middleware.Bezirk#requestPipeAuthorization(ZirkId, Pipe, PipePolicy, PipePolicy, BezirkListener)}.
+ * {@link com.bezirk.middleware.Bezirk#requestPipeAuthorization(Pipe, PipePolicy, PipePolicy, BezirkListener)}.
  * If you attempt to use a pipe that has not been authorized, a <code>java.lang.SecurityException</code>
  * will be thrown.
  */

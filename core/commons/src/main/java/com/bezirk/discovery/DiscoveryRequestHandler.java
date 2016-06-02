@@ -7,7 +7,7 @@ import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sadl.ISadlControlReceiver;
 
 import org.slf4j.Logger;
@@ -70,7 +70,7 @@ public class DiscoveryRequestHandler {
         }
 
         for (BezirkDiscoveredZirk zirk : discoveredZirks) {
-            BezirkZirkId sid = ((BezirkZirkEndPoint) zirk.getZirkEndPoint()).getBezirkZirkId();
+            ZirkId sid = ((BezirkZirkEndPoint) zirk.getZirkEndPoint()).getBezirkZirkId();
 
             if (BezirkCompManager.getSphereForSadl().isZirkInSphere(sid, req.getSphereId())) {
                 //Set the Zirk Name

@@ -3,7 +3,7 @@ package com.bezirk.sphere.impl;
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.CryptoInternals;
 import com.bezirk.sphere.messages.CatchRequest;
@@ -252,7 +252,7 @@ public class CatchProcessor {
         ownerDevices.add(sphereExchangeData.getDeviceID());
 
         Sphere sphere = new MemberSphere(sphereExchangeData.getSphereName(), sphereExchangeData.getSphereType(),
-                ownerDevices, new LinkedHashMap<String, ArrayList<BezirkZirkId>>(), false);
+                ownerDevices, new LinkedHashMap<String, ArrayList<ZirkId>>(), false);
 
         sphereRegistryWrapper.addSphere(sphereExchangeData.getSphereID(), sphere);
 
@@ -341,13 +341,13 @@ public class CatchProcessor {
         // get the catch sphere services
         // sphere sphere = registry.spheres.get(catchSphereId);
         Sphere sphere = sphereRegistryWrapper.getSphere(catcherSphereId);
-        Map<String, ArrayList<BezirkZirkId>> deviceServices = sphere.deviceServices;
+        Map<String, ArrayList<ZirkId>> deviceServices = sphere.deviceServices;
 
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(bezirkDeviceInterface.getDeviceId())) {
 
             // get device services of sphere
-            ArrayList<BezirkZirkId> services = deviceServices.get(bezirkDeviceInterface.getDeviceId());
+            ArrayList<ZirkId> services = deviceServices.get(bezirkDeviceInterface.getDeviceId());
 
             if (services != null && !services.isEmpty()) {
                 DeviceInformation deviceInformation = sphereRegistryWrapper
@@ -432,12 +432,12 @@ public class CatchProcessor {
          */
 
         // retrieve the services from the catchCodeGeneratorSphere
-        Map<String, ArrayList<BezirkZirkId>> deviceServices = catchCodeGeneratorSphere.deviceServices;
+        Map<String, ArrayList<ZirkId>> deviceServices = catchCodeGeneratorSphere.deviceServices;
 
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(bezirkDeviceInterface.getDeviceId())) {
 
-            ArrayList<BezirkZirkId> services = deviceServices.get(bezirkDeviceInterface.getDeviceId());
+            ArrayList<ZirkId> services = deviceServices.get(bezirkDeviceInterface.getDeviceId());
 
             if (services == null || services.isEmpty()) {
                 logger.error("No services are at the device, nothing to catch");

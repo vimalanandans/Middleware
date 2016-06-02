@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -19,10 +19,10 @@ public class OwnerLeaveResponse {
     //private final BezirkZirkEndPoint recipient; //TODO check if redundant field is actually needed for further verification of the signed message
     private final boolean removedSuccessfully;
     private final String sphereID; //TODO check if redundant field is actually needed for further verification of the signed message
-    private final BezirkZirkId serviceId;
+    private final ZirkId serviceId;
     private final long time;
 
-    public OwnerLeaveResponse(String sphereID, BezirkZirkId serviceId, BezirkZirkEndPoint recipient, boolean removedSuccessfully) {
+    public OwnerLeaveResponse(String sphereID, ZirkId serviceId, BezirkZirkEndPoint recipient, boolean removedSuccessfully) {
         this.sphereID = sphereID;
         this.serviceId = serviceId;
         //this.recipient = recipient;
@@ -46,7 +46,7 @@ public class OwnerLeaveResponse {
         return sphereID;
     }
 
-    public BezirkZirkId getServiceId() {
+    public ZirkId getServiceId() {
         return serviceId;
     }
 

@@ -6,12 +6,11 @@ import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -78,8 +77,8 @@ public class UnicastEventLocalTest {
     public void destroyMockservices() {
 
         Bezirk bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-        bezirk.unregisterZirk(mockA.myId);
-        bezirk.unregisterZirk(mockB.myId);
+        bezirk.unregisterZirk();
+        bezirk.unregisterZirk();
     }
 
     /**
@@ -88,7 +87,6 @@ public class UnicastEventLocalTest {
     private final class UnicastMockServiceA implements BezirkListener {
         private final String serviceName = "UnicastMockServiceA";
         private Bezirk bezirk = null;
-        private ZirkId myId = null;
         private MockServiceBProtocolRole pRole;
 
         /**
@@ -96,10 +94,9 @@ public class UnicastEventLocalTest {
          */
         private final void setupMockService() {
             bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = bezirk.registerZirk(serviceName);
-            logger.info("MOCK_SERVICE_A - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
+            bezirk.registerZirk(serviceName);
             pRole = new MockServiceBProtocolRole();
-            bezirk.subscribe(myId, pRole, this);
+            bezirk.subscribe(pRole, this);
         }
 
         /**
@@ -107,7 +104,7 @@ public class UnicastEventLocalTest {
          */
         private final void discoverMockService() {
             MockServiceAProtocolRole pRole = new MockServiceAProtocolRole();
-            bezirk.discover(myId, null, pRole, 10000, 1, this);
+            bezirk.discover(null, pRole, 10000, 1, this);
         }
 
         @Override
@@ -159,7 +156,7 @@ public class UnicastEventLocalTest {
                     "Discovered SEP" + dService.zirk + "\n");
 
             MockRequestEvent request = new MockRequestEvent(Message.Flag.REQUEST, "MockRequestEvent");
-            bezirk.sendEvent(myId, dService.zirk, request);
+            bezirk.sendEvent(dService.zirk, request);
         }
 
 
@@ -257,16 +254,14 @@ public class UnicastEventLocalTest {
     private final class UnicastMockServiceB implements BezirkListener {
         private final String serviceName = "UnicastMockServiceB";
         private Bezirk bezirk = null;
-        private ZirkId myId = null;
 
         /**
          * Setup the zirk
          */
         private final void setupMockService() {
             bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = bezirk.registerZirk(serviceName);
-            logger.info("UnicastMockServiceB - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
-            bezirk.subscribe(myId, new MockServiceAProtocolRole(), this);
+            bezirk.registerZirk(serviceName);
+            bezirk.subscribe(new MockServiceAProtocolRole(), this);
         }
 
         @Override
@@ -278,7 +273,7 @@ public class UnicastEventLocalTest {
             // send the reply
             MockReplyEvent replyEvent = new MockReplyEvent(Message.Flag.REPLY, "MockReplyEvent");
             replyEvent.answer = "I am Fine! Thank you";
-            bezirk.sendEvent(myId, sender, replyEvent);
+            bezirk.sendEvent(sender, replyEvent);
             logger.info("********* MOCK_SERVICE B responded to the Event **************");
         }
 

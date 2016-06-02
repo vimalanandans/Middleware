@@ -53,7 +53,7 @@ public class DiscoveryRecord {
     public void updateList(List<BezirkDiscoveredZirk> discoveredZirks) {
         for (BezirkDiscoveredZirk zirk : discoveredZirks) {
             if (!this.list.contains(zirk)) { //Check if ZirkEndPoint Exists
-                logger.debug("Updating discList w SED-{}:{}", zirk.zirk.device, zirk.zirk.zirkId.getBezirkZirkId());
+                logger.debug("Updating discList w SED-{}:{}", zirk.zirk.device, zirk.zirk.zirkId.getZirkId());
                 this.list.add(zirk);
             }
 

@@ -22,7 +22,6 @@ import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.Stream;
 
@@ -39,7 +38,7 @@ import java.util.Set;
  * {@link com.bezirk.middleware.messages.Stream Streams} are received by Zirks subscribed to
  * specific topics. Zirks subscribe to topics by subscribing to a
  * {@link com.bezirk.middleware.messages.ProtocolRole} using
- * {@link Bezirk#subscribe(ZirkId, ProtocolRole, BezirkListener)}. It may make sense to
+ * {@link Bezirk#subscribe(ProtocolRole, BezirkListener)}. It may make sense to
  * structure your code by implementing a <code>BezirkListener</code> for each role your
  * Zirk subscribes to.
  * </p>
@@ -98,7 +97,7 @@ public interface BezirkListener {
      * Called by the Bezirk middleware if something unexpected happens to the stream referred to
      * by <code>streamId</code>, or when an incremental stream closes.
      *
-     * @param streamId as returned by {@link Bezirk#sendStream(ZirkId, ZirkEndPoint, Stream, java.io.PipedOutputStream)}
+     * @param streamId as returned by {@link Bezirk#sendStream(ZirkEndPoint, Stream, java.io.PipedOutputStream)}
      *                 or received in {@link #receiveStream(String, String, short, InputStream, ZirkEndPoint)}
      * @param status   the status of the stream referenced by <code>streamId</code>
      */
@@ -107,7 +106,7 @@ public interface BezirkListener {
     /**
      * Called by the Bezirk middleware when a user grants or denies a Zirk authorization to use a pipe.
      * Pipe authorization is requested using
-     * {@link Bezirk#requestPipeAuthorization(ZirkId, Pipe, PipePolicy, PipePolicy, BezirkListener)}.
+     * {@link Bezirk#requestPipeAuthorization(Pipe, PipePolicy, PipePolicy, BezirkListener)}.
      *
      * @param pipe       the pipe the user authorized the Zirk implementing this interface
      *                   to use, or <code>null</code> if authorization was denied
@@ -128,7 +127,7 @@ public interface BezirkListener {
 
     /**
      * Called by the Bezirk middleware when a discovery request issued using
-     * {@link Bezirk#discover(ZirkId, RecipientSelector, ProtocolRole, long, int, BezirkListener)}
+     * {@link Bezirk#discover(RecipientSelector, ProtocolRole, long, int, BezirkListener)}
      * completes.
      *
      * @param zirkSet a set of Zirks discovered as subscribing to a particular

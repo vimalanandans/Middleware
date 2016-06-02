@@ -11,7 +11,7 @@ import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.pipe.core.LocalBezirkSender;
 import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class LocalAndroidSender implements LocalBezirkSender {
         logger.info("Invoking bezirk receive for event:  " + serializedEvent);
 
         // TODO: how to set an actual zirk ID??? We're just using the requesting zirk for now :(
-        BezirkZirkId serviceId = pipeHeader.getSenderSEP().getBezirkZirkId();
+        ZirkId serviceId = pipeHeader.getSenderSEP().getBezirkZirkId();
 
         if (pipeHeader instanceof PipeUnicastHeader) {
             logger.error("Unicast receive not implemented yet");
@@ -62,7 +62,7 @@ public class LocalAndroidSender implements LocalBezirkSender {
             logger.error("SenderSEP is null. Can't invoke incoming");
             return;
         }
-        BezirkZirkId serviceId = senderSEP.getBezirkZirkId();
+        ZirkId serviceId = senderSEP.getBezirkZirkId();
         // TODO: how to create a stream id??
         short streamid = Short.MAX_VALUE;
 

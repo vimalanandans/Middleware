@@ -7,7 +7,7 @@ import com.bezirk.control.messages.pipes.PipeUnicastHeader;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.Test;
 
@@ -41,7 +41,7 @@ public class PipeHeaderConversionTest {
         Location location = new Location("BobsHouse");
         RecipientSelector recipientSelector = new RecipientSelector(location);
         pipeMulticastHeader.setRecipientSelector(recipientSelector);
-        BezirkZirkId id = new BezirkZirkId("test-id-string");
+        ZirkId id = new ZirkId("test-id-string");
         BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(id);
         pipeMulticastHeader.setSenderSEP(senderSEP);
         pipeMulticastHeader.setTopic("test-topic");
@@ -51,10 +51,10 @@ public class PipeHeaderConversionTest {
 
     private PipeUnicastHeader createPipeUnicastHeader() {
         PipeUnicastHeader pipeUnicastHeader = new PipeUnicastHeader();
-        BezirkZirkId recipientId = new BezirkZirkId("test-id-recipient");
+        ZirkId recipientId = new ZirkId("test-id-recipient");
         BezirkZirkEndPoint recipientSEP = new BezirkZirkEndPoint(recipientId);
         pipeUnicastHeader.setRecipient(recipientSEP);
-        BezirkZirkId senderId = new BezirkZirkId("test-id-sender");
+        ZirkId senderId = new ZirkId("test-id-sender");
         BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(senderId);
         pipeUnicastHeader.setSenderSEP(senderSEP);
         pipeUnicastHeader.setTopic("test-topic");

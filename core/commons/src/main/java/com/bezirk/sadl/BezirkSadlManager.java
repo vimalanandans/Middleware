@@ -12,7 +12,7 @@ import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.persistence.SadlPersistence;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
@@ -68,12 +68,12 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     }
 
     /* (non-Javadoc)
-     * @see com.bezirk.api.sadl.ISadlRegistry#registerZirk(com.bezirk.api.addressing.BezirkZirkId)
+     * @see com.bezirk.api.sadl.ISadlRegistry#registerZirk(com.bezirk.api.addressing.ZirkId)
      */
     @Override
-    public Boolean registerService(final BezirkZirkId serviceId) {
+    public Boolean registerService(final ZirkId serviceId) {
         if (!BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
-            logger.error("Invalid BezirkZirkId");
+            logger.error("Invalid ZirkId");
             return false;
         }
         if (isServiceRegistered(serviceId)) {
@@ -88,10 +88,10 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     }
 
     /* (non-Javadoc)
-     * @see ISadlRegistry#subscribeService(com.bezirk.api.addressing.BezirkZirkId, ProtocolRole)
+     * @see ISadlRegistry#subscribeService(com.bezirk.api.addressing.ZirkId, ProtocolRole)
      */
     @Override
-    public Boolean subscribeService(final BezirkZirkId serviceId, final ProtocolRole pRole) {
+    public Boolean subscribeService(final ZirkId serviceId, final ProtocolRole pRole) {
         if (!BezirkValidatorUtility.checkBezirkZirkId(serviceId) || !BezirkValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
             logger.error("Invalid Subscription, Validation failed");
             return false;
@@ -109,7 +109,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     }
 
     @Override
-    public Boolean unsubscribe(final BezirkZirkId serviceId, final ProtocolRole role) {
+    public Boolean unsubscribe(final ZirkId serviceId, final ProtocolRole role) {
         if (!BezirkValidatorUtility.checkBezirkZirkId(serviceId) || !BezirkValidatorUtility.checkProtocolRole((SubscribedRole) role)) {
             logger.error("Invalid UnSubscription, Validation failed");
             return false;
@@ -122,7 +122,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     }
 
     @Override
-    public Boolean unregisterService(final BezirkZirkId serviceId) {
+    public Boolean unregisterService(final ZirkId serviceId) {
         if (!BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
             logger.error("Invalid UnRegistration, Validation failed");
             return false;
@@ -136,7 +136,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
 
 
     @Override
-    public Boolean setLocation(final BezirkZirkId serviceId, final Location location) {
+    public Boolean setLocation(final ZirkId serviceId, final Location location) {
         if (sadlRegistry.setLocation(serviceId, location)) {
             persistSadlRegistry();
             return true;
@@ -145,7 +145,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     }
 
     @Override
-    public Boolean isServiceRegistered(BezirkZirkId serviceId) {
+    public Boolean isServiceRegistered(ZirkId serviceId) {
         if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
             return sadlRegistry.isServiceRegistered(serviceId);
         }
@@ -153,13 +153,13 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     }
 
     @Override
-    public Location getLocationForService(BezirkZirkId serviceId) {
+    public Location getLocationForService(ZirkId serviceId) {
         return sadlRegistry.getLocationForService(serviceId);
     }
 
 
     @Override
-    public Boolean isStreamTopicRegistered(String streamTopic, BezirkZirkId serviceId) {
+    public Boolean isStreamTopicRegistered(String streamTopic, ZirkId serviceId) {
         if (!BezirkValidatorUtility.checkForString(streamTopic) || !BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
             logger.error("Stream Topic or zirk Id is invalid");
             return false;
@@ -181,7 +181,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     @Override
     public boolean processEvent(final EventLedger eLedger) {
 
-        Set<BezirkZirkId> invokeList = fetchInvokeList(eLedger);
+        Set<ZirkId> invokeList = fetchInvokeList(eLedger);
 
         if (null == invokeList || invokeList.isEmpty()) {
             logger.debug("No services are present to respond to the request");
@@ -203,10 +203,10 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     }
 
     private void giveCallback(final EventLedger eLedger,
-                              Set<BezirkZirkId> invokeList) {
+                              Set<ZirkId> invokeList) {
         // check if the zirk exists in that sphere then give callback
-        for (BezirkZirkId serviceId : invokeList) {
-            if (invokeList.contains(new BezirkZirkId("SPOOFED")) &&
+        for (ZirkId serviceId : invokeList) {
+            if (invokeList.contains(new ZirkId("SPOOFED")) &&
                     eLedger.getHeader().getSphereName().equals(BezirkRestCommsManager.getInstance().getSelectedSphereName())) {
                 //send the response to HTTPComms also..
                 BezirkRestCallBack callBack = new BezirkRestCallBackImpl();
@@ -222,8 +222,8 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
         }
     }
 
-    private Set<BezirkZirkId> fetchInvokeList(final EventLedger eLedger) {
-        Set<BezirkZirkId> invokeList = null;
+    private Set<ZirkId> fetchInvokeList(final EventLedger eLedger) {
+        Set<ZirkId> invokeList = null;
         if (eLedger.getIsMulticast()) {
             MulticastHeader mHeader = (MulticastHeader) eLedger.getHeader();
             Location targetLocation = mHeader.getRecipientSelector() == null ? null : mHeader.getRecipientSelector().getLocation();
@@ -232,11 +232,11 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
             UnicastHeader uHeader = (UnicastHeader) eLedger.getHeader();
 
             //here i can check for the spoofed event and bypass the sadl validation
-            if (uHeader != null && uHeader.getRecipient().zirkId.getBezirkEventId() != null && uHeader.getRecipient().zirkId.getBezirkZirkId().equals("THIS-SERVICE-ID-IS-HTTP-SPOOFED")) {
-                invokeList = new HashSet<BezirkZirkId>();
-                invokeList.add(new BezirkZirkId("SPOOFED"));
+            if (uHeader != null && uHeader.getRecipient().zirkId.getBezirkEventId() != null && uHeader.getRecipient().zirkId.getZirkId().equals("THIS-SERVICE-ID-IS-HTTP-SPOOFED")) {
+                invokeList = new HashSet<ZirkId>();
+                invokeList.add(new ZirkId("SPOOFED"));
             } else if (this.checkUnicastEvent(uHeader.getTopic(), uHeader.getRecipient().zirkId)) {
-                invokeList = new HashSet<BezirkZirkId>();
+                invokeList = new HashSet<ZirkId>();
                 invokeList.add(uHeader.getRecipient().zirkId);
             }
         }
@@ -271,7 +271,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
         }
     }
 
-    public boolean checkUnicastEvent(String topic, BezirkZirkId recipient) {
+    public boolean checkUnicastEvent(String topic, ZirkId recipient) {
         if (!BezirkValidatorUtility.checkForString(topic) || !BezirkValidatorUtility.checkBezirkZirkId(recipient)) {
             logger.error("Unicast Event Check failed -> topic or Recipient is not valid");
             return false;
@@ -279,9 +279,9 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
         return sadlRegistry.checkUnicastEvent(topic, recipient);
     }
 
-    // Return a HashSet<BezirkZirkId> by creating a new one otherwise the receiving components can modify it!
+    // Return a HashSet<ZirkId> by creating a new one otherwise the receiving components can modify it!
 
-    public Set<BezirkZirkId> checkMulticastEvent(String topic, Location location) {
+    public Set<ZirkId> checkMulticastEvent(String topic, Location location) {
         if (!BezirkValidatorUtility.checkForString(topic)) {
             logger.error("Event Topic or Recipient is valid");
             return null;
@@ -290,7 +290,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     }
 
     @Override
-    public Set<BezirkZirkId> getRegisteredServices() {
+    public Set<ZirkId> getRegisteredServices() {
         return sadlRegistry.getRegisteredServices();
     }
 

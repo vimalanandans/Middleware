@@ -4,7 +4,7 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 
 import org.junit.AfterClass;
@@ -36,14 +36,14 @@ public class DiscoveryTest {
     private static final ProtocolRole streamlessPRole = mockService.new StreamlessProtocol();
     private static final SubscribedRole subscribedStreamlessPRole = new SubscribedRole(streamlessPRole);
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
-    private static BezirkZirkId bezirkZirkAId = new BezirkZirkId("ServiceA"), bezirkZirkBId = new BezirkZirkId("ServiceB");
+    private static ZirkId bezirkZirkAId = new ZirkId("ServiceA"), bezirkZirkBId = new ZirkId("ServiceB");
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
     private static BezirkSadlManager bezirkSadlManager = null;
     private Set<BezirkDiscoveredZirk> discoveredZirkSet;
 
-    private Set<BezirkZirkId> bezirkZirkIdSet;
+    private Set<ZirkId> zirkIdSet;
 
-    private BezirkZirkId dServiceId;
+    private ZirkId dServiceId;
 
 
     @BeforeClass
@@ -107,10 +107,10 @@ public class DiscoveryTest {
         bezirkSadlManager.setLocation(bezirkZirkAId, reception);
 		
 		/*	SadlManager should return serviceA for the discovery now. */
-        bezirkZirkIdSet = discoverServicesUsingProtocolAndLocation(subscribedStreamlessPRole,
+        zirkIdSet = discoverServicesUsingProtocolAndLocation(subscribedStreamlessPRole,
                 reception);
-        assertNotNull("No services found in discovery.", bezirkZirkIdSet);
-        assertTrue("ServiceA was not discovered when queried for reception as location.", bezirkZirkIdSet.contains(bezirkZirkAId));
+        assertNotNull("No services found in discovery.", zirkIdSet);
+        assertTrue("ServiceA was not discovered when queried for reception as location.", zirkIdSet.contains(bezirkZirkAId));
     }
 
     /*Test3 : SadlManager is queried to discover the services subscribed to StreamlessProtocolRole.
@@ -119,37 +119,37 @@ public class DiscoveryTest {
      */
     private void testDiscoveryWithNullLocation() {
 
-        bezirkZirkIdSet = discoverServicesUsingProtocolAndLocation(subscribedStreamlessPRole,
+        zirkIdSet = discoverServicesUsingProtocolAndLocation(subscribedStreamlessPRole,
                 null);
-        assertNotNull("No services found in discovery.", bezirkZirkIdSet);
-        assertTrue("ServiceA was not discovered when no location in request.", bezirkZirkIdSet.contains(bezirkZirkAId));
-        assertTrue("ServiceB was not discovered when no location in request.", bezirkZirkIdSet.contains(bezirkZirkBId));
+        assertNotNull("No services found in discovery.", zirkIdSet);
+        assertTrue("ServiceA was not discovered when no location in request.", zirkIdSet.contains(bezirkZirkAId));
+        assertTrue("ServiceB was not discovered when no location in request.", zirkIdSet.contains(bezirkZirkBId));
     }
 
-    private Set<BezirkZirkId> discoverServicesUsingProtocolAndLocation(
+    private Set<ZirkId> discoverServicesUsingProtocolAndLocation(
             ProtocolRole protocolRole, Location loc) {
         discoveredZirkSet = bezirkSadlManager.discoverZirks(protocolRole, loc);
-        bezirkZirkIdSet = getBezirkZirkIdSetOfDiscoveredZirks(discoveredZirkSet);
-        return bezirkZirkIdSet;
+        zirkIdSet = getBezirkZirkIdSetOfDiscoveredZirks(discoveredZirkSet);
+        return zirkIdSet;
     }
 
-    private Set<BezirkZirkId> getBezirkZirkIdSetOfDiscoveredZirks(
+    private Set<ZirkId> getBezirkZirkIdSetOfDiscoveredZirks(
             Set<BezirkDiscoveredZirk> discoveredServiceSet) {
         BezirkZirkEndPoint serviceEndPoint;
-        bezirkZirkIdSet = null;
+        zirkIdSet = null;
 
         if (discoveredServiceSet != null) {
-            bezirkZirkIdSet = new HashSet<>();
+            zirkIdSet = new HashSet<>();
 
             for (BezirkDiscoveredZirk discoveredService : discoveredServiceSet) {
                 serviceEndPoint = (BezirkZirkEndPoint) (discoveredService
                         .getZirkEndPoint());
                 dServiceId = serviceEndPoint.getBezirkZirkId();
-                bezirkZirkIdSet.add(dServiceId);
+                zirkIdSet.add(dServiceId);
 
             }
         }
-        return bezirkZirkIdSet;
+        return zirkIdSet;
     }
 
 

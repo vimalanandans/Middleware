@@ -6,7 +6,7 @@ package com.bezirk.control.messages;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -25,7 +25,7 @@ public class MulticastHeaderTest {
     private static final Logger logger = LoggerFactory.getLogger(MulticastControlMessageTest.class);
 
     private static final String sphereName = "TestSphere";
-    private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+    private static final ZirkId serviceId = new ZirkId("ServiceA");
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceId);
     private static final Location loc = new Location("OFFICE1", "BLOCk1", "ROOM1");
     private static final RecipientSelector RECIPIENT_SELECTOR = new RecipientSelector(loc);

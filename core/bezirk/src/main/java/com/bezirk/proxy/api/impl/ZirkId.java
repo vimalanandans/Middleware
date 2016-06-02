@@ -1,24 +1,22 @@
 package com.bezirk.proxy.api.impl;
 
-import com.bezirk.middleware.addressing.ZirkId;
-
 import java.io.Serializable;
 
-public final class BezirkZirkId implements ZirkId, Serializable {
-    private final String bezirkZirkId;
+public final class ZirkId implements Serializable {
+    private final String xirkId;
     private String bezirkEventId;
 
-    public BezirkZirkId(String zirkId) {
-        this.bezirkZirkId = zirkId;
+    public ZirkId(String zirkId) {
+        this.xirkId = zirkId;
     }
 
-    public BezirkZirkId(String zirkId, String bezirkEventId) {
-        this.bezirkZirkId = zirkId;
+    public ZirkId(String zirkId, String bezirkEventId) {
+        this.xirkId = zirkId;
         this.bezirkEventId = bezirkEventId;
     }
 
-    public String getBezirkZirkId() {
-        return bezirkZirkId;
+    public String getZirkId() {
+        return xirkId;
     }
 
     public String getBezirkEventId() {
@@ -27,8 +25,8 @@ public final class BezirkZirkId implements ZirkId, Serializable {
 
     @Override
     public String toString() {
-        return "BezirkZirkId{" +
-                "bezirkZirkId='" + bezirkZirkId + '\'' +
+        return "ZirkId{" +
+                "xirkId='" + xirkId + '\'' +
                 "bezirkEventId='" + bezirkEventId + '\'' +
                 '}';
     }
@@ -40,7 +38,7 @@ public final class BezirkZirkId implements ZirkId, Serializable {
         result = prime * result
                 + ((bezirkEventId == null) ? 0 : bezirkEventId.hashCode());
         result = prime * result
-                + ((bezirkZirkId == null) ? 0 : bezirkZirkId.hashCode());
+                + ((xirkId == null) ? 0 : xirkId.hashCode());
         return result;
     }
 
@@ -52,16 +50,16 @@ public final class BezirkZirkId implements ZirkId, Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        BezirkZirkId other = (BezirkZirkId) obj;
+        ZirkId other = (ZirkId) obj;
         if (bezirkEventId == null) {
             if (other.bezirkEventId != null)
                 return false;
         } else if (!bezirkEventId.equals(other.bezirkEventId))
             return false;
-        if (bezirkZirkId == null) {
-            if (other.bezirkZirkId != null)
+        if (xirkId == null) {
+            if (other.xirkId != null)
                 return false;
-        } else if (!bezirkZirkId.equals(other.bezirkZirkId))
+        } else if (!xirkId.equals(other.xirkId))
             return false;
         return true;
     }

@@ -29,7 +29,7 @@ import java.util.Set;
  * <li>Wait to receive a message from the Zirk, in which case the <code>ZirkEndPoint</code>
  * will be received by the appropriate callback in {@link com.bezirk.middleware.BezirkListener}
  * (e.g. {@link com.bezirk.middleware.BezirkListener#receiveEvent(String, String, ZirkEndPoint)}).</li>
- * <li>Use {@link com.bezirk.middleware.Bezirk#discover(ZirkId, RecipientSelector, ProtocolRole, long, int, BezirkListener)}
+ * <li>Use {@link com.bezirk.middleware.Bezirk#discover(RecipientSelector, ProtocolRole, long, int, BezirkListener)}
  * to discover all Zirks that subscribe to a particular {@link ProtocolRole}. The results set
  * retrieved from {@link BezirkListener#discovered(Set)} contains metadata for each discovered
  * Zirk, including each <code>ZirkEndPoint</code></li>

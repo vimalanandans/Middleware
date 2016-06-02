@@ -4,7 +4,7 @@ import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkPipeInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.zxing.common.BitMatrix;
 
 import java.util.List;
@@ -97,8 +97,8 @@ public interface BezirkSphereAPI {
      * Listener
      * @deprecated use {@link #addLocalServicesToSphere(String, Iterable)}
      */
-    @Deprecated // UI has BezirkZirkInfo not BezirkZirkId
-    public boolean addLocalServicesToSphere(Iterable<BezirkZirkId> serviceIds, String sphereId);
+    @Deprecated // UI has BezirkZirkInfo not ZirkId
+    public boolean addLocalServicesToSphere(Iterable<ZirkId> serviceIds, String sphereId);
 
     /**
      * Add services to sphere (Add the local services to a sphere owned by the

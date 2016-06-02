@@ -12,10 +12,9 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -105,9 +104,9 @@ public class DiscoveryTest {
     public void destroyMockservices() {
 
         Bezirk bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-        bezirk.unregisterZirk(mockA.myId);
-        bezirk.unregisterZirk(mockB.myId);
-        bezirk.unregisterZirk(mockC.myId);
+        bezirk.unregisterZirk();
+        bezirk.unregisterZirk();
+        bezirk.unregisterZirk();
     }
 
     /**
@@ -121,19 +120,18 @@ public class DiscoveryTest {
 
         private final void setupMockService() {
             bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = bezirk.registerZirk(serviceName);
-            logger.info("DiscoveryMockServiceA - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
+            bezirk.registerZirk(serviceName);
             pRole = new DiscoveryMockServiceProtocol();
-            bezirk.subscribe(myId, pRole, this);
+            bezirk.subscribe(pRole, this);
         }
 
         private final void testDiscoverWithNullLocation() {
-            bezirk.discover(myId, null, pRole, 10000, 1, this);
+            bezirk.discover(null, pRole, 10000, 1, this);
         }
 
         private final void testDiscoverWithSpecificLocation() {
             RecipientSelector recipientSelector = new RecipientSelector(loc);
-            bezirk.discover(myId, recipientSelector, pRole, 10000, 1, this);
+            bezirk.discover(recipientSelector, pRole, 10000, 1, this);
         }
 
         @Override
@@ -196,19 +194,19 @@ public class DiscoveryTest {
                             assertEquals("DiscoveryMockServiceA", tempDisService.name);
                             assertEquals("DiscoveryMockServiceProtocol", tempDisService.protocolRole);
                             assertNotNull("Device is not set for DiscoveryMockServiceA.", tempDisService.zirk.device);
-                            assertEquals("ServiceID is different for DiscoveryMockServiceA.", ((BezirkZirkId) myId).getBezirkZirkId(), tempDisService.zirk.zirkId.getBezirkZirkId());
+                            assertEquals("ServiceID is different for DiscoveryMockServiceA.", myId.getZirkId(), tempDisService.zirk.zirkId.getZirkId());
                             break;
                         case "DiscoveryMockServiceB":
                             assertEquals("DiscoveryMockServiceB", tempDisService.name);
                             assertEquals("DiscoveryMockServiceProtocol", tempDisService.protocolRole);
                             assertNotNull("Device is not set for DiscoveryMockServiceB.", tempDisService.zirk.device);
-                            assertEquals("ServiceID is different for DiscoveryMockServiceB.", serviceBId, tempDisService.zirk.zirkId.getBezirkZirkId());
+                            assertEquals("ServiceID is different for DiscoveryMockServiceB.", serviceBId, tempDisService.zirk.zirkId.getZirkId());
                             break;
                         case "DiscoveryMockServiceC":
                             assertEquals("DiscoveryMockServiceC", tempDisService.name);
                             assertEquals("DiscoveryMockServiceProtocol", tempDisService.protocolRole);
                             assertNotNull("Device is not set for DiscoveryMockServiceC.", tempDisService.zirk.device);
-                            assertEquals("ServiceID is different for DiscoveryMockServiceC.", serviceCId, tempDisService.zirk.zirkId.getBezirkZirkId());
+                            assertEquals("ServiceID is different for DiscoveryMockServiceC.", serviceCId, tempDisService.zirk.zirkId.getZirkId());
                             break;
                     }
                 }
@@ -228,7 +226,7 @@ public class DiscoveryTest {
                 assertEquals("DiscoveryMockServiceProtocol", tempDisService.protocolRole);
                 assertEquals(loc.toString(), tempDisService.location.toString());
                 assertNotNull(tempDisService.zirk.device);
-                assertEquals(serviceCId, tempDisService.zirk.zirkId.getBezirkZirkId());
+                assertEquals(serviceCId, tempDisService.zirk.zirkId.getZirkId());
 
                 isTestWithLocPassed = true;
                 logger.info("**** DISCOVERY SUB-TEST WITH SPECIFIC LOCATION PASSES SUCCESSFULLY ****");
@@ -280,17 +278,14 @@ public class DiscoveryTest {
     private final class DiscoveryMockServiceB implements BezirkListener {
         private final String serviceName = "DiscoveryMockServiceB";
         private Bezirk bezirk = null;
-        private ZirkId myId = null;
 
         public DiscoveryMockServiceB() {
         }
 
         private final void setupMockService() {
             bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = bezirk.registerZirk(serviceName);
-            serviceBId = ((BezirkZirkId) myId).getBezirkZirkId();
-            logger.info("DiscoveryMockServiceB - regId : " + serviceBId);
-            bezirk.subscribe(myId, new DiscoveryMockServiceProtocol(), this);
+            bezirk.registerZirk(serviceName);
+            bezirk.subscribe(new DiscoveryMockServiceProtocol(), this);
         }
 
         @Override
@@ -336,19 +331,16 @@ public class DiscoveryTest {
     private final class DiscoveryMockServiceC implements BezirkListener {
         private final String serviceName = "DiscoveryMockServiceC";
         private Bezirk bezirk = null;
-        private ZirkId myId = null;
 
         private final void setupMockService() {
             bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = bezirk.registerZirk(serviceName);
-            serviceCId = ((BezirkZirkId) myId).getBezirkZirkId();
-            logger.info("DiscoveryMockServiceC - regId : " + serviceCId);
+            bezirk.registerZirk(serviceName);
 
-            bezirk.subscribe(myId, new DiscoveryMockServiceProtocol(), this);
+            bezirk.subscribe(new DiscoveryMockServiceProtocol(), this);
         }
 
         private final void changeLocation() {
-            bezirk.setLocation(myId, loc);
+            bezirk.setLocation(loc);
         }
 
         @Override

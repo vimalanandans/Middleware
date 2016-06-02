@@ -2,7 +2,7 @@ package com.bezirk.control.messages.streaming.rtc;
 
 import com.bezirk.control.messages.streaming.rtc.RTCControlMessage.RTCControlMessageType;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.AfterClass;
@@ -26,10 +26,10 @@ import static org.junit.Assert.assertEquals;
 public class RTCControlMessageTest {
     private static final Logger logger = LoggerFactory.getLogger(RTCControlMessageTest.class);
 
-    private static final BezirkZirkId serviceAId = new BezirkZirkId("ServiceA");
+    private static final ZirkId serviceAId = new ZirkId("ServiceA");
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(
             serviceAId);
-    private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
+    private static final ZirkId serviceBId = new ZirkId("ServiceB");
     private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(
             serviceBId);
     private static InetAddress inetAddr;

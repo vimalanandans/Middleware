@@ -3,7 +3,7 @@ package com.bezirk.sphere.messages;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.MulticastControlMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class SphereDiscoveryResponse extends MulticastControlMessage {
     private final static Discriminator discriminator = ControlMessage.Discriminator.SphereDiscoveryResponse;
-    private List<BezirkZirkId> services;
+    private List<ZirkId> services;
 
     /**
      * Constructor
@@ -24,7 +24,7 @@ public class SphereDiscoveryResponse extends MulticastControlMessage {
      */
 
     public SphereDiscoveryResponse(String scannedSphereId,
-                                   List<BezirkZirkId> services, BezirkZirkEndPoint sender) {
+                                   List<ZirkId> services, BezirkZirkEndPoint sender) {
         super(sender, scannedSphereId, discriminator);
         this.services = services;
 
@@ -33,7 +33,7 @@ public class SphereDiscoveryResponse extends MulticastControlMessage {
     /**
      * @return the services
      */
-    public final List<BezirkZirkId> getServices() {
+    public final List<ZirkId> getServices() {
         return services;
     }
 

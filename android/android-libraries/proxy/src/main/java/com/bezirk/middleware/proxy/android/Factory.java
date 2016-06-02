@@ -4,20 +4,10 @@ import android.content.Context;
 
 import com.bezirk.middleware.Bezirk;
 
-
-public final class Factory {
-    private static Proxy instance;
-
-    private Factory() {
-        //To hide public constructor
-    }
-
+public abstract class Factory {
     public static Bezirk getInstance(Context context) {
         synchronized (Factory.class) {
-            if (instance == null) {
-                instance = new Proxy(context);
-            }
-            return instance;
+            return new Proxy(context);
         }
     }
 }

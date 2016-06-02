@@ -19,7 +19,7 @@ import com.bezirk.pipe.core.PipeApprovalException;
 import com.bezirk.pipe.core.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRequester;
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.PolicyListFragment;
@@ -52,7 +52,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
         final String pipeReqId = rxIntent.getStringExtra(KEY_PIPE_REQ_ID);
         final String sphereId = rxIntent.getStringExtra(KEY_PIPE_SPHEREID);
 
-        BezirkZirkId serviceId = serviceIdFromString(serviceIdAsString);
+        ZirkId serviceId = serviceIdFromString(serviceIdAsString);
         if (serviceId == null) {
             logger.error("Intent not valid because there was a failure validating zirkId");
             return;
@@ -223,9 +223,9 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    private BezirkZirkId serviceIdFromString(String serviceIdAsString) {
+    private ZirkId serviceIdFromString(String serviceIdAsString) {
         Gson gson = new Gson();
-        BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
+        ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
         if (!checkBezirkZirkId(serviceId)) {
             logger.error("zirkId not valid: " + serviceId);
             return null;

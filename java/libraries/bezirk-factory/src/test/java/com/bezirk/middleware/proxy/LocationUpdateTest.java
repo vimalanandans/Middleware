@@ -8,11 +8,10 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -108,8 +107,8 @@ public class LocationUpdateTest {
     public void destroyMockservices() {
 
         Bezirk bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-        bezirk.unregisterZirk(mockA.myId);
-        bezirk.unregisterZirk(mockB.myId);
+        bezirk.unregisterZirk();
+        bezirk.unregisterZirk();
     }
 
     /**
@@ -118,7 +117,6 @@ public class LocationUpdateTest {
     private final class LocationUpdateMockServiceA implements BezirkListener {
         private final String serviceName = "LocationUpdateMockServiceA";
         private Bezirk bezirk = null;
-        private ZirkId myId = null;
         private LocationUpdateMockServiceProtocolRole pRole;
 
         /**
@@ -126,10 +124,9 @@ public class LocationUpdateTest {
          */
         private final void setupMockService() {
             bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = bezirk.registerZirk(serviceName);
-            logger.info("LocationUpdateMockServiceA - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
+            bezirk.registerZirk(serviceName);
             pRole = new LocationUpdateMockServiceProtocolRole();
-            bezirk.subscribe(myId, pRole, this);
+            bezirk.subscribe(pRole, this);
         }
 
         /**
@@ -138,14 +135,14 @@ public class LocationUpdateTest {
         private final void pingServices(Location location) {
             MockRequestEvent req = new MockRequestEvent(Flag.REQUEST, "MockRequestEvent");
             RecipientSelector recipientSelector = new RecipientSelector(location);
-            bezirk.sendEvent(myId, recipientSelector, req);
+            bezirk.sendEvent(recipientSelector, req);
         }
 
         /**
          * Update the Location to L1
          */
         private final void updateLocationToL1() {
-            bezirk.setLocation(myId, l1);
+            bezirk.setLocation(l1);
         }
 
         @Override
@@ -229,30 +226,28 @@ public class LocationUpdateTest {
     private final class LocationUpdateMockServiceB implements BezirkListener {
         private final String zirkName = "LocationUpdateMockServiceB";
         private Bezirk bezirk = null;
-        private ZirkId myId = null;
 
         /**
          * Setup the zirk
          */
         private final void setupMockService() {
             bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = bezirk.registerZirk(zirkName);
-            logger.info("LocationUpdateMockServiceB - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
-            bezirk.subscribe(myId, new LocationUpdateMockServiceProtocolRole(), this);
+            bezirk.registerZirk(zirkName);
+            bezirk.subscribe(new LocationUpdateMockServiceProtocolRole(), this);
         }
 
         /**
          * Update the Location to L1
          */
         private final void updateLocationToL1() {
-            bezirk.setLocation(myId, l1);
+            bezirk.setLocation(l1);
         }
 
         /**
          * Update the location to L2
          */
         private final void updateLocationToL2() {
-            bezirk.setLocation(myId, l2);
+            bezirk.setLocation(l2);
         }
 
         @Override

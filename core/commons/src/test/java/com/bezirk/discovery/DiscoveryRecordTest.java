@@ -2,7 +2,7 @@ package com.bezirk.discovery;
 
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ public class DiscoveryRecordTest {
 
         List<BezirkDiscoveredZirk> list = new ArrayList<BezirkDiscoveredZirk>();
         BezirkDiscoveredZirk discoveredZirk = new BezirkDiscoveredZirk();
-        discoveredZirk.zirk = new BezirkZirkEndPoint(new BezirkZirkId("ServiceA"));
+        discoveredZirk.zirk = new BezirkZirkEndPoint(new ZirkId("ServiceA"));
         list.add(discoveredZirk);
         discoveryRecord.updateList(list);
 

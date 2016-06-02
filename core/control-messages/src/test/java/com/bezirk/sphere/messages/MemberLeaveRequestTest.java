@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -21,7 +21,7 @@ public class MemberLeaveRequestTest {
 
     private static final String sphereId = "TestSphere";
     private static final String sphereName = "Test";
-    private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+    private static final ZirkId serviceId = new ZirkId("ServiceA");
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceId);
 
     @BeforeClass

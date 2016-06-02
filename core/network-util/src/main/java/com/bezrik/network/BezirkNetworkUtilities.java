@@ -2,7 +2,7 @@ package com.bezrik.network;
 
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,7 +116,7 @@ public final class BezirkNetworkUtilities {
         return null;
     }
 
-    public static BezirkZirkEndPoint getServiceEndPoint(BezirkZirkId zirkId) {
+    public static BezirkZirkEndPoint getServiceEndPoint(ZirkId zirkId) {
         BezirkZirkEndPoint sep = new BezirkZirkEndPoint(zirkId);
         sep.device = getLocalInet().getHostAddress();
         return sep;

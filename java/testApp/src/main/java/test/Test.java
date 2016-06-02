@@ -4,9 +4,6 @@
 package test;
 
 import com.bezirk.middleware.Bezirk;
-import com.bezirk.middleware.addressing.RecipientSelector;
-import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.proxy.Factory;
@@ -16,14 +13,12 @@ import com.bezirk.middleware.proxy.Factory;
  * Written for the bezirk basics training
  */
 public class Test {
-
     private Bezirk bezirk;
-    private ZirkId myId;
 
     public Test() {
         // set up sending messages over bezirk
         bezirk = Factory.getInstance();
-        myId = bezirk.registerZirk(Test.class.getSimpleName());
+        bezirk.registerZirk(Test.class.getSimpleName());
     }
 
     public static void main(String[] args) {
@@ -40,7 +35,7 @@ public class Test {
         Event hello = new Event(Flag.NOTICE, "Hello World");
 
         // 2. publish "hello world" to all in the target address
-        bezirk.sendEvent(myId, hello);
+        bezirk.sendEvent(hello);
 
         // sanity check: display the event that was just published
         System.out.println("Published: " + hello.toJson());

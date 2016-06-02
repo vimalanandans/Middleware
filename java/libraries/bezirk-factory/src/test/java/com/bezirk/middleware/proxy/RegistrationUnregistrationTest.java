@@ -1,13 +1,15 @@
 package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -37,21 +39,13 @@ public class RegistrationUnregistrationTest {
     public void registrationUnregistrationTest() {
         final String serviceName = "MOCK_SERVICE_A";
         Bezirk bezirk = null;
-        BezirkZirkId zirkId = null;
 
         bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-        zirkId = (BezirkZirkId) bezirk.registerZirk(serviceName);
-        String bezirkZirkId = zirkId.getBezirkZirkId();
-        assertNotNull("ServiceID is null after registration.", bezirkZirkId);
-
-        // Test
-
-        // RE-Register the zirk and check if the same id is getting generated
-        String duplicateBezirkZirkId = ((BezirkZirkId) bezirk.registerZirk(serviceName)).getBezirkZirkId();
-        assertEquals("Different zirkID generated upon duplicate registration for same zirk.", bezirkZirkId, duplicateBezirkZirkId);
+        assertTrue("Failed to register Zirk", bezirk.registerZirk(serviceName));
+        assertFalse("Was able to register Zirk name twice.", bezirk.registerZirk(serviceName));
 
         // unRegister
-        bezirk.unregisterZirk(zirkId);
+        bezirk.unregisterZirk();
 
     }
 

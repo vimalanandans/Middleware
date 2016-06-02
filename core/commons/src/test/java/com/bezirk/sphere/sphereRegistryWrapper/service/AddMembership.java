@@ -5,7 +5,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
@@ -77,7 +77,7 @@ public class AddMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#addMembership(BezirkZirkId, String, String, String)}.
+     * Test method for {@link SphereRegistryWrapper#addMembership(ZirkId, String, String, String)}.
      * <p>
      * Test if a new zirk is added successfully to the registry.
      * The method should return <code>True</code>.
@@ -92,7 +92,7 @@ public class AddMembership {
 
         //Create zirk 1 but dont add it to registry
         String serviceName1 = sphereTestUtility.MEMBER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         String ownerDeviceId = upaDevice.getDeviceId();
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
@@ -104,7 +104,7 @@ public class AddMembership {
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#addMembership(BezirkZirkId, String, String, String)}.
+     * Test method for {@link SphereRegistryWrapper#addMembership(ZirkId, String, String, String)}.
      * <p>
      * If an existing zirk is being added to the registry, then just the zirk name is updated.
      * The method should return <code>true</code>.
@@ -119,13 +119,13 @@ public class AddMembership {
 
         //Create zirk 1 and add it to registry
         String serviceName1 = sphereTestUtility.MEMBER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         String ownerDeviceId = upaDevice.getDeviceId();
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
         Zirk zirk1 = new OwnerZirk(serviceName1,
                 ownerDeviceId, sphereSet1);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
+        registry.sphereMembership.put(serviceId1.getZirkId(), zirk1);
 
         registry.spheres.put(sphereId1, sphere);
 
@@ -133,7 +133,7 @@ public class AddMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#addMembership(BezirkZirkId, String, String, String)}.
+     * Test method for {@link SphereRegistryWrapper#addMembership(ZirkId, String, String, String)}.
      * <p>
      * When sphere does not exist, the method will return <code>false</code>
      * </p>
@@ -146,13 +146,13 @@ public class AddMembership {
 
         //Create zirk 1 and add it to registry
         String serviceName1 = sphereTestUtility.MEMBER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         String ownerDeviceId = upaDevice.getDeviceId();
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
         Zirk zirk1 = new OwnerZirk(serviceName1,
                 ownerDeviceId, sphereSet1);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
+        registry.sphereMembership.put(serviceId1.getZirkId(), zirk1);
 
         assertFalse(sphereRegistryWrapper.addMembership(serviceId1, sphereId1, ownerDeviceId, serviceName1));
     }

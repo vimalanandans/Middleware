@@ -5,7 +5,7 @@ import com.bezirk.discovery.DiscoveryProcessor;
 import com.bezirk.discovery.DiscoveryRecord;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sadl.BezirkSadlManager;
 import com.bezirk.util.MockProtocolsForBezirkPC;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
@@ -31,7 +31,7 @@ public class ProxyForServicesTest {
     private static BezirkSadlManager sadlManager;
     private final String zirkName = "MockZirkA";
     private final String zirkAId = "MockZirkAId";
-    private final BezirkZirkId bezirkZirkAId = new BezirkZirkId(zirkAId);
+    private final ZirkId bezirkZirkAId = new ZirkId(zirkAId);
     private final MockProtocolsForBezirkPC.DummyProtocol dummyProtocol = new MockProtocolsForBezirkPC().new DummyProtocol();
     private final SubscribedRole pRole = new SubscribedRole(dummyProtocol);
 
@@ -121,7 +121,7 @@ public class ProxyForServicesTest {
         proxyForServices.setSadlRegistry(sadlManager);
 
         String serviceId = "ServiceB";
-        BezirkZirkId bezirkZirkBId = new BezirkZirkId(serviceId);
+        ZirkId bezirkZirkBId = new ZirkId(serviceId);
 
         proxyForServices.registerService(bezirkZirkBId, serviceId);
         proxyForServices.subscribeService(bezirkZirkBId, pRole);

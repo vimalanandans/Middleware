@@ -23,7 +23,6 @@ import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.Stream;
@@ -55,24 +54,21 @@ public interface Bezirk {
      * Register a Zirk with the Bezirk middleware. This makes the Zirk available to the user in
      * Bezirk configuration interfaces, thus allowing her to place it in a sphere to interact with
      * other Zirks. This method must be called before any other API method can be called because it
-     * returns the ID required by most other API methods.
+     * initializes internal state required by most other API methods.
      *
      * @param zirkName the name of the Zirk being registered, as defined by the Zirk
      *                 developer/vendor
-     * @return a middleware-defined ID for the registered Zirk, or <code>null</code> if a Zirk with
-     * the name specified by <code>zirkName</code> is already registered. The returned ID is
-     * required to use most other API methods
+     * @return <code>false</code> if a Zirk with the name specified by <code>zirkName</code> is
+     * already registered
      */
-    public ZirkId registerZirk(String zirkName);
+    public boolean registerZirk(String zirkName);
 
     /**
      * Undo the effects of {@link #registerZirk(String)} and removes all subscriptions as if
-     * {@link #unsubscribe(ZirkId, ProtocolRole)} were called with <code>null</code> as the
+     * {@link #unsubscribe(ProtocolRole)} were called with <code>null</code> as the
      * <code>ProtocolRole</code>.
-     *
-     * @param zirkId id for the registered Zirk, returned by {@link #registerZirk(String)}
      */
-    public void unregisterZirk(ZirkId zirkId);
+    public void unregisterZirk();
 
     /**
      * Register a Zirk <code>listener</code> to receive all events and streams whose topics are
@@ -80,73 +76,66 @@ public interface Bezirk {
      * that the registered Zirk will fill the role defined by <code>protocolRole</code>. Translating
      * the concept to the pub-sub model, this method is how Zirks subscribe to topics.
      *
-     * @param subscriber   id for subscribing Zirk, returned by {@link #registerZirk(String)}
      * @param protocolRole a declaration of the role the registered Zirk will play, meaning the
      *                     Zirk should receive all messages whose topic is defined in this role
      * @param listener     recipient of notifications issued from the Bezirk middleware when events
-     *                     and streams associated with this protocol role are received
      */
-    public void subscribe(ZirkId subscriber, ProtocolRole protocolRole, BezirkListener listener);
+    public void subscribe(ProtocolRole protocolRole, BezirkListener listener);
 
     /**
      * Unsubscribe a Zirk from a particular role. This method undoes the effects of
-     * {@link #subscribe(ZirkId, ProtocolRole, BezirkListener)}. After this method finishes, the
+     * {@link #subscribe(ProtocolRole, BezirkListener)}. After this method finishes, the
      * Zirk will no longer receive messages for topics defined in <code>protocolRole</code>. This
      * method does nothing if the defined <code>subscriber</code> was not subscribed to the role.
      * Specifying <code>null</code> for the role unsubscribes the Zirk from all roles it is
      * subscribed to.
      *
-     * @param subscriber   id for registered Zirk, as returned by {@link #registerZirk(String)}
      * @param protocolRole role to unsubscribe from, or <code>null</code> to remove all subscriptions
      * @return <code>true</code> if <code>subscriber</code> was unsubscribed from at least one
      * role as a result of this method call
      */
-    public boolean unsubscribe(ZirkId subscriber, ProtocolRole protocolRole);
+    public boolean unsubscribe(ProtocolRole protocolRole);
 
     /**
      * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event's topic.
      *
-     * @param sender    id of Zirk sending the event, as returned by {@link #registerZirk(String)}
-     * @param event     the <code>Event</code> being sent
+     * @param event the <code>Event</code> being sent
      * @see BezirkListener#receiveEvent(String, String, ZirkEndPoint)
      */
-    public void sendEvent(ZirkId sender, Event event);
+    public void sendEvent(Event event);
 
     /**
      * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event's topic.
      * The set of recipients can be narrowed using <code>recipient</code> if a semantic address is
      * specified, or broadened if a pipe is specified.
      *
-     * @param sender    id of Zirk sending the event, as returned by {@link #registerZirk(String)}
      * @param recipient the {@link RecipientSelector} specifying the sent event's recipients
      * @param event     the <code>Event</code> being sent
      * @see BezirkListener#receiveEvent(String, String, ZirkEndPoint)
      */
-    public void sendEvent(ZirkId sender, RecipientSelector recipient, Event event);
+    public void sendEvent(RecipientSelector recipient, Event event);
 
     /**
      * Publish an event with one specific recipient.
      *
-     * @param sender    id of Zirk sending the event, returned by {@link #registerZirk(String)}
      * @param recipient intended recipient, as extracted from a received message, or as discovered
      *                  by calling
-     *                  {@link #discover(ZirkId, RecipientSelector, ProtocolRole, long, int, BezirkListener)}
+     *                  {@link #discover(RecipientSelector, ProtocolRole, long, int, BezirkListener)}
      * @param event     the <code>Event</code> being sent
      * @see BezirkListener#receiveEvent(String, String, ZirkEndPoint)
      */
-    public void sendEvent(ZirkId sender, ZirkEndPoint recipient, Event event);
+    public void sendEvent(ZirkEndPoint recipient, Event event);
 
     /**
      * Publish a {@link com.bezirk.middleware.messages.Stream} with one specific recipient. The
      * channel's properties are described by <code>stream</code>. The transmitted data is supplied by
      * writes to <code>dataStream</code>. To send a file use
-     * {@link #sendStream(ZirkId, ZirkEndPoint, Stream, File)}. Streams sent using this
+     * {@link #sendStream(ZirkEndPoint, Stream, File)}. Streams sent using this
      * method are assumed to be incremental (see {@link Stream#isIncremental()}).
      *
-     * @param sender     id of Zirk sending the stream, as returned by {@link #registerZirk(String)}
      * @param recipient  intended recipient, as extracted from a received message, or as discovered
      *                   by calling
-     *                   {@link #discover(ZirkId, RecipientSelector, ProtocolRole, long, int, BezirkListener)}
+     *                   {@link #discover(RecipientSelector, ProtocolRole, long, int, BezirkListener)}
      * @param stream     communication channel's descriptor
      * @param dataStream io stream where the outgoing data will be written into by this method's
      *                   caller. Internally, the Bezirk middleware will read data from the
@@ -157,19 +146,18 @@ public interface Bezirk {
      * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ZirkEndPoint)
      * @see BezirkListener#receiveStream(String, String, short, File, ZirkEndPoint)
      */
-    public short sendStream(ZirkId sender, ZirkEndPoint recipient, Stream stream,
+    public short sendStream(ZirkEndPoint recipient, Stream stream,
                             PipedOutputStream dataStream);
 
     /**
      * Publish a file with one specific recipient. This method is identical to
-     * {@link Bezirk#sendStream(ZirkId, ZirkEndPoint, Stream, PipedOutputStream)}, except this
+     * {@link Bezirk#sendStream(ZirkEndPoint, Stream, PipedOutputStream)}, except this
      * version is intended to send a specific file instead of general data. Streams sent using this
      * method are assumed to be non-incremental (see {@link Stream#isIncremental()}).
      *
-     * @param sender    id of Zirk sending the stream, as returned by {@link #registerZirk(String)}
      * @param recipient intended recipient, as extracted from a received message, or as discovered
      *                  by calling
-     *                  {@link #discover(ZirkId, RecipientSelector, ProtocolRole, long, int, BezirkListener)}
+     *                  {@link #discover(RecipientSelector, ProtocolRole, long, int, BezirkListener)}
      * @param stream    communication channel's descriptor
      * @param file      the file whose contents will be sent using the <code>stream</code>
      * @return Bezirk middleware-generated id for the stream, which will be referred to in
@@ -177,7 +165,7 @@ public interface Bezirk {
      * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ZirkEndPoint)
      * @see BezirkListener#receiveStream(String, String, short, File, ZirkEndPoint)
      */
-    public short sendStream(ZirkId sender, ZirkEndPoint recipient, Stream stream, File file);
+    public short sendStream(ZirkEndPoint recipient, Stream stream, File file);
 
     /**
      * Request the use of a {@link com.bezirk.middleware.addressing.Pipe} to send data outside of the
@@ -188,7 +176,6 @@ public interface Bezirk {
      * into and out of the sphere via the pipe to just those messages belonging to explicitly listed
      * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles's}.
      *
-     * @param requester  id of Zirk requesting the pipe, as returned by {@link #registerZirk(String)}
      * @param pipe       the pipe the Zirk wants permission to use
      * @param allowedIn  specification of message roles allowed to flow into the requester's sphere(s)
      *                   via the pipe. If <code>null</code>, no security policy is imposed
@@ -198,13 +185,13 @@ public interface Bezirk {
      *                   authorizes the creation of a pipe
      * @see BezirkListener#pipeGranted(Pipe, PipePolicy, PipePolicy)
      */
-    public void requestPipeAuthorization(ZirkId requester, Pipe pipe, PipePolicy allowedIn,
+    public void requestPipeAuthorization(Pipe pipe, PipePolicy allowedIn,
                                          PipePolicy allowedOut, BezirkListener listener);
 
     /**
      * Fetch the security policies governing an authorized <code>pipe</code>. If the pipe is not
      * authorized, this method does nothing. Use
-     * {@link #requestPipeAuthorization(ZirkId, Pipe, PipePolicy, PipePolicy, BezirkListener)} to request
+     * {@link #requestPipeAuthorization(Pipe, PipePolicy, PipePolicy, BezirkListener)} to request
      * the authority to use a pipe.
      *
      * @param pipe     the authorized pipe whose policy we want to retrieve
@@ -229,8 +216,6 @@ public interface Bezirk {
      * were received as soon as the currently executing request finishes.
      * </p>
      *
-     * @param zirk         id of Zirk discovering Zirks subscribed to <code>protocolRole</code>, as
-     *                     returned by {@link #registerZirk(String)}
      * @param scope        semantic address to further constrain the discovery of Zirks fulfilling
      *                     <code>protocolRole</code>
      * @param protocolRole the role that Zirks we want to discover are subscribed to, or
@@ -243,9 +228,9 @@ public interface Bezirk {
      *                     of discovered Zirks is complete
      * @see BezirkListener#discovered(java.util.Set)
      * @see DiscoveredZirk
-     * @see #setLocation(ZirkId, Location)
+     * @see #setLocation(Location)
      */
-    public void discover(ZirkId zirk, RecipientSelector scope, ProtocolRole protocolRole, long timeout,
+    public void discover(RecipientSelector scope, ProtocolRole protocolRole, long timeout,
                          int maxResults, BezirkListener listener);
 
     /**
@@ -255,8 +240,7 @@ public interface Bezirk {
      * {@link RecipientSelector} is used (e.g. when sending an event,
      * discovering Zirks subscribed to a role, etc.).
      *
-     * @param zirk     id of Zirk whose location is being set, as returned by {@link #registerZirk(String)}
      * @param location the physical location of the Thing <code>Zirk</code> controls
      */
-    public void setLocation(ZirkId zirk, Location location);
+    public void setLocation(Location location);
 }

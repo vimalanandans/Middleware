@@ -4,7 +4,7 @@
 package com.bezirk.sphere.api;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -100,33 +100,33 @@ public interface BezirkSphereForSadl {
 
     /**
      * Provides iterable collection of sphereIds associated with passed
-     * BezirkZirkId
+     * ZirkId
      *
-     * @param zirkId BezirkZirkId for retrieving stored membership information
+     * @param zirkId ZirkId for retrieving stored membership information
      * @return iterable Collection of sphereIds for the passed ZirkId, <code>null</code> in case
      * the <code>zirkId</code> passed is <code>null</code> or not registered
      */
-    public Iterable<String> getSphereMembership(BezirkZirkId zirkId);
+    public Iterable<String> getSphereMembership(ZirkId zirkId);
 
     // TODO add to wiki : found while refactoring to the new API
 
     /**
      * Checks if the zirk is a part of the sphere
      *
-     * @param service  BezirkZirkId for finding existence in a sphere
+     * @param service  ZirkId for finding existence in a sphere
      * @param sphereId sphere to be tested
      * @return true if the zirk exist in the sphere false otherwise
      */
-    public boolean isZirkInSphere(BezirkZirkId service, String sphereId);
+    public boolean isZirkInSphere(ZirkId service, String sphereId);
 
     /**
-     * Gets the zirk name of the passed BezirkZirkId
+     * Gets the zirk name of the passed ZirkId
      *
-     * @param serviceId BezirkZirkId for retrieving the zirk name
+     * @param serviceId ZirkId for retrieving the zirk name
      * @return Zirk name if the zirk id is valid and not null null
      * otherwise
      */
-    public String getZirkName(BezirkZirkId serviceId);
+    public String getZirkName(ZirkId serviceId);
 
     /**
      * This method handles processing the sphere related discovery request

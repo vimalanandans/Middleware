@@ -5,7 +5,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.MemberSphere;
 import com.bezirk.sphere.impl.OwnerZirk;
@@ -79,7 +79,7 @@ public class GetSphereMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getSphereMembership(BezirkZirkId)}.
+     * Test method for {@link SphereRegistryWrapper#getSphereMembership(ZirkId)}.
      * <p>
      * When valid zirkId is passed, it should return the sphere set for that zirk.
      * </p>
@@ -103,19 +103,19 @@ public class GetSphereMembership {
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
         sphereSet1.add(sphereId2);
         OwnerZirk ownerService = new OwnerZirk(serviceName1, "ownerDeviceId", sphereSet1);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), ownerService);
+        registry.sphereMembership.put(serviceId1.getZirkId(), ownerService);
 
         Set<String> retrievedSphereSet = (Set<String>) sphereRegistryWrapper.getSphereMembership(serviceId1);
         assertEquals(sphereSet1, retrievedSphereSet);
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getSphereMembership(BezirkZirkId)}.
+     * Test method for {@link SphereRegistryWrapper#getSphereMembership(ZirkId)}.
      * <p>
      * When sphere set for the given zirk id is empty it should throw exception
      * </p>
@@ -125,16 +125,16 @@ public class GetSphereMembership {
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         HashSet<String> sphereSet1 = null;
         OwnerZirk ownerService = new OwnerZirk(serviceName1, "ownerDeviceId", sphereSet1);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), ownerService);
+        registry.sphereMembership.put(serviceId1.getZirkId(), ownerService);
 
         sphereRegistryWrapper.getSphereMembership(serviceId1);
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#getSphereMembership(BezirkZirkId)}.
+     * Test method for {@link SphereRegistryWrapper#getSphereMembership(ZirkId)}.
      * <p>
      * When invalid zirkId(zirk id does not exist in registry) is passed,
      * it should return <code>null</code>.
@@ -152,15 +152,15 @@ public class GetSphereMembership {
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
         OwnerZirk ownerService = new OwnerZirk(serviceName1, "ownerDeviceId", sphereSet1);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), ownerService);
+        registry.sphereMembership.put(serviceId1.getZirkId(), ownerService);
 
         //Create zirk 2 but not added to registry
         String serviceName2 = sphereTestUtility.OWNER_ZIRK_NAME_2;
-        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
+        ZirkId serviceId2 = new ZirkId(serviceName2);
 
         // Pass serviceId2 which is not in registry.
         assertNull(sphereRegistryWrapper.getSphereMembership(serviceId2));

@@ -1,7 +1,7 @@
 package com.bezirk.sid.test;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.Test;
 
@@ -10,14 +10,14 @@ import java.util.HashSet;
 import static org.junit.Assert.*;
 
 
-public class BezirkZirkIdTest {
-    HashSet<BezirkZirkId> sidList = new HashSet<BezirkZirkId>();
+public class ZirkIdTest {
+    HashSet<ZirkId> sidList = new HashSet<ZirkId>();
     HashSet<BezirkZirkEndPoint> sedList = new HashSet<BezirkZirkEndPoint>();
 
     @Test
     public void test() {
-        BezirkZirkId sid1 = new BezirkZirkId("Ys1NcReyox:AreYouHotonAndroid");
-        BezirkZirkId sid2 = new BezirkZirkId("Ys1NcReyox:AreYouHotonAndroid");
+        ZirkId sid1 = new ZirkId("Ys1NcReyox:AreYouHotonAndroid");
+        ZirkId sid2 = new ZirkId("Ys1NcReyox:AreYouHotonAndroid");
         assertEquals(sid1, sid2);
         BezirkZirkEndPoint sed1 = new BezirkZirkEndPoint("192.168.160.65", sid1);
         BezirkZirkEndPoint sed2 = new BezirkZirkEndPoint("192.168.160.65", sid2);

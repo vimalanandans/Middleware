@@ -23,7 +23,7 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.sadl.ISadlRegistry;
 import com.bezirk.streaming.control.Objects.StreamRecord;
@@ -45,7 +45,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
     private BezirkComms comms = null;
 
     @Override
-    public void registerService(final BezirkZirkId serviceId, final String serviceName) {
+    public void registerService(final ZirkId serviceId, final String serviceName) {
         // Step 1: Register with SADL
         boolean isSADLPassed = sadlRegistry.registerService(serviceId);
         if (isSADLPassed) {
@@ -64,12 +64,12 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
     }
 
     @Override
-    public void subscribeService(final BezirkZirkId serviceId, final SubscribedRole pRole) {
+    public void subscribeService(final ZirkId serviceId, final SubscribedRole pRole) {
         sadlRegistry.subscribeService(serviceId, pRole);
     }
 
     @Override
-    public void sendMulticastEvent(final BezirkZirkId serviceId, final RecipientSelector recipientSelector, final String serializedEventMsg) {
+    public void sendMulticastEvent(final ZirkId serviceId, final RecipientSelector recipientSelector, final String serializedEventMsg) {
 
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
@@ -106,7 +106,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
     }
 
     @Override
-    public void sendUnicastEvent(final BezirkZirkId serviceId, final BezirkZirkEndPoint recipient, final String serializedEventMsg) {
+    public void sendUnicastEvent(final ZirkId serviceId, final BezirkZirkEndPoint recipient, final String serializedEventMsg) {
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
             logger.error("Zirk not registered with the sphere");
@@ -140,7 +140,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
     }
 
     @Override
-    public void discover(final BezirkZirkId serviceId, final RecipientSelector recipientSelector, final SubscribedRole pRole, final int discoveryId, final long timeout, final int maxDiscovered) {
+    public void discover(final ZirkId serviceId, final RecipientSelector recipientSelector, final SubscribedRole pRole, final int discoveryId, final long timeout, final int maxDiscovered) {
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
             logger.error("Zirk not tegistered with the sphere");
@@ -171,7 +171,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
     }
 
     @Override
-    public short sendStream(BezirkZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId) {
+    public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId) {
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(senderId);
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with any sphere: " + senderId);
@@ -180,7 +180,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         try {
             final BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(senderId);
-            final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getBezirkZirkId() + ":" + streamId;
+            final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":" + streamId;
             final Stream stream = new Gson().fromJson(serializedString, Stream.class);
 
             final StreamRecord streamRecord = new StreamRecord();
@@ -228,17 +228,17 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
     }
 
     @Override
-    public void setLocation(final BezirkZirkId serviceId, final Location location) {
+    public void setLocation(final ZirkId serviceId, final Location location) {
         sadlRegistry.setLocation(serviceId, location);
     }
 
     @Override
-    public boolean unsubscribe(final BezirkZirkId serviceId, final SubscribedRole role) {
+    public boolean unsubscribe(final ZirkId serviceId, final SubscribedRole role) {
         return sadlRegistry.unsubscribe(serviceId, role);
     }
 
     @Override
-    public void unregister(BezirkZirkId serviceId) {
+    public void unregister(ZirkId serviceId) {
         sadlRegistry.unregisterService(serviceId);
     }
 
@@ -259,7 +259,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
 
 
     @Override
-    public short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver,
+    public short sendStream(ZirkId sender, BezirkZirkEndPoint receiver,
                             String serializedString, short streamId) {
 
         Signaling signalling = null;
@@ -279,7 +279,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         try {
             BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(sender);
-            String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getBezirkZirkId() + ":" + streamId;
+            String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":" + streamId;
 
             String sphereId = null;
             while (sphereIterator.hasNext()) {

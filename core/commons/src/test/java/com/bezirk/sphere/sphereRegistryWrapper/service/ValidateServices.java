@@ -5,7 +5,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.OwnerSphere;
 import com.bezirk.sphere.impl.Sphere;
@@ -92,21 +92,21 @@ public class ValidateServices {
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), null);
+        registry.sphereMembership.put(serviceId1.getZirkId(), null);
 
         //Create zirk 2
         String serviceName2 = sphereTestUtility.OWNER_ZIRK_NAME_2;
-        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
+        ZirkId serviceId2 = new ZirkId(serviceName2);
         HashSet<String> sphereSet2 = new HashSet<>();
         sphereSet2.add(sphereId);
-        registry.sphereMembership.put(serviceId2.getBezirkZirkId(), null);
+        registry.sphereMembership.put(serviceId2.getZirkId(), null);
 
         registry.spheres.put(sphereId, sphere);
 
-        List<BezirkZirkId> serviceIds = new ArrayList<>();
+        List<ZirkId> serviceIds = new ArrayList<>();
         serviceIds.add(serviceId1);
         serviceIds.add(serviceId2);
 
@@ -129,19 +129,19 @@ public class ValidateServices {
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
 
         //Create zirk 2
         String serviceName2 = sphereTestUtility.OWNER_ZIRK_NAME_2;
-        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
+        ZirkId serviceId2 = new ZirkId(serviceName2);
         HashSet<String> sphereSet2 = new HashSet<>();
         sphereSet2.add(sphereId);
 
         registry.spheres.put(sphereId, sphere);
 
-        List<BezirkZirkId> serviceIds = new ArrayList<>();
+        List<ZirkId> serviceIds = new ArrayList<>();
         serviceIds.add(serviceId1);
         serviceIds.add(serviceId2);
 

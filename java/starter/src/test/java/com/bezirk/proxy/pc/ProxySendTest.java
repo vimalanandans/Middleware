@@ -7,7 +7,7 @@ import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.UnicastStream;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sadl.BezirkSadlManager;
 import com.bezirk.util.MockComms;
 import com.bezirk.util.MockProtocolsForBezirkPC;
@@ -37,9 +37,9 @@ public class ProxySendTest {
     private static BezirkSadlManager sadlManager;
     private final String serviceName = "MockServiceA";
     private final String serviceAId = "MockServiceAId";
-    private final BezirkZirkId senderId = new BezirkZirkId(serviceAId);
+    private final ZirkId senderId = new ZirkId(serviceAId);
     private final String serviceBId = "MockServiceBId";
-    private final BezirkZirkId receiverId = new BezirkZirkId(serviceBId);
+    private final ZirkId receiverId = new ZirkId(serviceBId);
     private final BezirkZirkEndPoint receiver = new BezirkZirkEndPoint(receiverId);
     private File sendFile;
 

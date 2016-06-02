@@ -1,7 +1,7 @@
 package com.bezirk.messagehandler;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 
 /**
@@ -32,7 +32,7 @@ public final class EventIncomingMessage extends ServiceIncomingMessage {
         callbackDiscriminator = "EVENT";
     }
 
-    public EventIncomingMessage(BezirkZirkId recipientId, BezirkZirkEndPoint senderEndPoint, String serializedEvent, String eventTopic, String msgId) {
+    public EventIncomingMessage(ZirkId recipientId, BezirkZirkEndPoint senderEndPoint, String serializedEvent, String eventTopic, String msgId) {
         super();
         callbackDiscriminator = "EVENT";
         recipient = recipientId;

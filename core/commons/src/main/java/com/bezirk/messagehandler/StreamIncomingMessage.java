@@ -1,7 +1,7 @@
 package com.bezirk.messagehandler;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import java.io.File;
 
@@ -36,7 +36,7 @@ public final class StreamIncomingMessage extends ServiceIncomingMessage {
         callbackDiscriminator = "STREAM_UNICAST";
     }
 
-    public StreamIncomingMessage(BezirkZirkId recipientId, String streamTopic, String serializedStream,
+    public StreamIncomingMessage(ZirkId recipientId, String streamTopic, String serializedStream,
                                  File file, short localStreamId, BezirkZirkEndPoint senderSEP) {
         super();
         callbackDiscriminator = "STREAM_UNICAST";

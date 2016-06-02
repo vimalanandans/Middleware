@@ -13,7 +13,7 @@ import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -88,9 +88,9 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             return false;
         }
 
-        BezirkZirkId serviceId = new Gson().fromJson(receivedServiceId, BezirkZirkId.class);
+        ZirkId serviceId = new Gson().fromJson(receivedServiceId, ZirkId.class);
 
-        if (!isRequestForCurrentApp(serviceId.getBezirkZirkId())) {
+        if (!isRequestForCurrentApp(serviceId.getZirkId())) {
             Log.e(TAG, "Intent is not for this Service");
             return false;
         }
@@ -112,7 +112,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         final String messageId = intent.getStringExtra("msgId");
         BezirkZirkEndPoint sourceOfEventSEP = new Gson().fromJson(eventSender, BezirkZirkEndPoint.class);
         //Check for duplicate message
-        if (checkDuplicateMsg(sourceOfEventSEP.zirkId.getBezirkZirkId(), messageId)) {
+        if (checkDuplicateMsg(sourceOfEventSEP.zirkId.getZirkId(), messageId)) {
             boolean isEventReceived = receiveEventOrStream(eventTopic, eventMessage, sourceOfEventSEP, (short) 0, null, "EVENT", Proxy.eventListenerMap);
             if (isEventReceived) {
                 return;
@@ -175,8 +175,8 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         final short streamId = intent.getShortExtra("streamId", (short) -1);
 
         BezirkZirkEndPoint sourceOfStreamSEP = new Gson().fromJson(senderSep, BezirkZirkEndPoint.class);
-        Log.e(TAG, sourceOfStreamSEP.zirkId.getBezirkZirkId() + ":" + streamId);
-        if (checkDuplicateStream(sourceOfStreamSEP.zirkId.getBezirkZirkId(), streamId)) {
+        Log.e(TAG, sourceOfStreamSEP.zirkId.getZirkId() + ":" + streamId);
+        if (checkDuplicateStream(sourceOfStreamSEP.zirkId.getZirkId(), streamId)) {
 
             boolean isStreamReceived = receiveEventOrStream(streamTopic, streamMsg, sourceOfStreamSEP, streamId, filePath, "STREAM_UNICAST",
                     Proxy.streamListenerMap);

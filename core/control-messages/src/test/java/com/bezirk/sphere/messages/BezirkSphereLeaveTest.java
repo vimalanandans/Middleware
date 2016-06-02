@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.AfterClass;
@@ -27,9 +27,9 @@ public class BezirkSphereLeaveTest {
     private static final Logger logger = LoggerFactory.getLogger(BezirkSphereLeaveTest.class);
 
     private static final String sphereId = "TestSphere";
-    private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+    private static final ZirkId serviceId = new ZirkId("ServiceA");
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceId);
-    private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
+    private static final ZirkId serviceBId = new ZirkId("ServiceB");
     private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceBId);
     private static InetAddress inetAddr;
 

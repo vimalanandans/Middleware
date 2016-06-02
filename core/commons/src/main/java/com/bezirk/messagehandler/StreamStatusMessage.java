@@ -1,6 +1,6 @@
 package com.bezirk.messagehandler;
 
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 
 /**
@@ -21,7 +21,7 @@ public final class StreamStatusMessage extends ServiceIncomingMessage {
         callbackDiscriminator = "STREAM_STATUS";
     }
 
-    public StreamStatusMessage(BezirkZirkId recipientId, int streamStatus, short streamId) {
+    public StreamStatusMessage(ZirkId recipientId, int streamStatus, short streamId) {
         callbackDiscriminator = "STREAM_STATUS";
         recipient = recipientId;
         this.streamStatus = streamStatus;
