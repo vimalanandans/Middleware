@@ -62,15 +62,14 @@ public class Proxy implements Bezirk {
             bezirkProxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         } catch (Exception e) {
             logger.error("Error loading BezirkProxyRegistry", e);
-            System.exit(0);
+            System.exit(-1);
         }
     }
 
-    @Override
     public boolean registerZirk(String zirkName) {
         logger.trace("inside RegisterService");
         if (zirkName == null) {
-            logger.error("Zirk name Cannot be null during Registration");
+            logger.error("Zirk name cannot be null during registration");
             return false;
         }
 

@@ -1,17 +1,14 @@
 package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
-import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author vbd4kor
@@ -37,12 +34,11 @@ public class RegistrationUnregistrationTest {
 
     //@Test
     public void registrationUnregistrationTest() {
-        final String serviceName = "MOCK_SERVICE_A";
+        final String zirkName = "MOCK_ZIRK_A";
         Bezirk bezirk = null;
 
-        bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-        assertTrue("Failed to register Zirk", bezirk.registerZirk(serviceName));
-        assertFalse("Was able to register Zirk name twice.", bezirk.registerZirk(serviceName));
+        assertNotNull("Failed to register Zirk", com.bezirk.middleware.proxy.Factory.registerZirk(zirkName));
+        assertNull("Was able to register Zirk name twice.",com.bezirk.middleware.proxy.Factory.registerZirk(zirkName));
 
         // unRegister
         bezirk.unregisterZirk();

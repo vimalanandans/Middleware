@@ -11,7 +11,6 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -106,7 +105,7 @@ public class LocationUpdateTest {
     @After
     public void destroyMockservices() {
 
-        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.registerZirk("XXX");
         bezirk.unregisterZirk();
         bezirk.unregisterZirk();
     }
@@ -115,7 +114,7 @@ public class LocationUpdateTest {
      * MockServiceA that is simulating as Zirk that initiates the Multicast Communication
      */
     private final class LocationUpdateMockServiceA implements BezirkListener {
-        private final String serviceName = "LocationUpdateMockServiceA";
+        private final String zirkName = "LocationUpdateMockServiceA";
         private Bezirk bezirk = null;
         private LocationUpdateMockServiceProtocolRole pRole;
 
@@ -123,8 +122,7 @@ public class LocationUpdateTest {
          * Setup the Zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            bezirk.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
             pRole = new LocationUpdateMockServiceProtocolRole();
             bezirk.subscribe(pRole, this);
         }
@@ -231,8 +229,7 @@ public class LocationUpdateTest {
          * Setup the zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            bezirk.registerZirk(zirkName);
+            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
             bezirk.subscribe(new LocationUpdateMockServiceProtocolRole(), this);
         }
 

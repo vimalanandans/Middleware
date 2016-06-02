@@ -22,30 +22,6 @@ public class TestDevices {
     @Before
     public void setUp() throws Exception {
         upaDeviceForPC = new BezirkDeviceForPC();
-
-    }
-
-    @Test
-    public void testLoadProperties() {
-        try {
-            Properties props = BezirkDeviceForPC.loadProperties();
-            LOG.info("printing properties...");
-            for (Object key : props.keySet()) {
-                LOG.info("key: " + key + " prop: " + props.getProperty((String) key));
-            }
-        } catch (Exception e) {
-            fail("Exception in fetching upadeviceforPC properties. " + e.getMessage());
-        }
-    }
-
-    @Test(expected = Exception.class)
-    public void testLoadPropertiesWhenPropNull() throws Exception {
-        BezirkDeviceForPC.loadProperties("upadevice_empty.properties");
-    }
-
-    @Test(expected = Exception.class)
-    public void testLoadPropertiesWhenPropFileEmpty() throws Exception {
-        BezirkDeviceForPC.loadProperties("upadevice_noProps.properties");
     }
 
     @Test

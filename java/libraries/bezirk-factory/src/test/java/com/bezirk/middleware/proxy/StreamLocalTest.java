@@ -10,7 +10,6 @@ import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.UnicastStream;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -88,7 +87,7 @@ public class StreamLocalTest {
 
     @After
     public void destroySetUp() {
-        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.registerZirk("XXX");
         bezirk.unregisterZirk();
         bezirk.unregisterZirk();
     }
@@ -97,7 +96,7 @@ public class StreamLocalTest {
      * The zirk that discovers and streams the file
      */
     private final class StreamLocalMockServiceA implements BezirkListener {
-        private final String zirkName = "StreamLocalMockServiceA";
+        private final String zirkName = "StreamLocalMockZirkA";
         private Bezirk bezirk = null;
         private StreamLocalDummyProtocolRole pRole;
 
@@ -105,8 +104,7 @@ public class StreamLocalTest {
          * Setup the zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            bezirk.registerZirk(zirkName);
+            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
             pRole = new StreamLocalDummyProtocolRole();
             bezirk.subscribe(pRole, this);
 
@@ -248,15 +246,14 @@ public class StreamLocalTest {
      * Zirk that is consumer of Stream
      */
     private final class StreamLocalMockServiceB implements BezirkListener {
-        private final String serviceName = "StreamLocalMockServiceB";
+        private final String zirkName = "StreamLocalMockServiceB";
         private Bezirk bezirk = null;
 
         /**
          * Setup the zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            bezirk.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
             bezirk.subscribe(new StreamLocalMockServiceProtocolRole(), this);
         }
 

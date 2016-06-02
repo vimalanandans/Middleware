@@ -10,7 +10,6 @@ import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -76,7 +75,7 @@ public class UnicastEventLocalTest {
     @After
     public void destroyMockservices() {
 
-        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.registerZirk("MOCK_ZIRK");
         bezirk.unregisterZirk();
         bezirk.unregisterZirk();
     }
@@ -85,7 +84,7 @@ public class UnicastEventLocalTest {
      * The zirk discovers the MockServiceB and communicate unicastly.
      */
     private final class UnicastMockServiceA implements BezirkListener {
-        private final String serviceName = "UnicastMockServiceA";
+        private final String zirkName = "UnicastMockZirkA";
         private Bezirk bezirk = null;
         private MockServiceBProtocolRole pRole;
 
@@ -93,8 +92,7 @@ public class UnicastEventLocalTest {
          * Setup the Zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            bezirk.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
             pRole = new MockServiceBProtocolRole();
             bezirk.subscribe(pRole, this);
         }
@@ -252,15 +250,14 @@ public class UnicastEventLocalTest {
      * The zirk discovers the MockServiceA and communicate unicastly.
      */
     private final class UnicastMockServiceB implements BezirkListener {
-        private final String serviceName = "UnicastMockServiceB";
+        private final String zirkName = "UnicastMockZirkB";
         private Bezirk bezirk = null;
 
         /**
          * Setup the zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            bezirk.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
             bezirk.subscribe(new MockServiceAProtocolRole(), this);
         }
 

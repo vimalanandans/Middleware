@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Iterator;
-import java.util.Properties;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -103,7 +102,7 @@ public class DiscoveryTest {
     @After
     public void destroyMockservices() {
 
-        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
+        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.registerZirk("XXX");
         bezirk.unregisterZirk();
         bezirk.unregisterZirk();
         bezirk.unregisterZirk();
@@ -113,14 +112,13 @@ public class DiscoveryTest {
      * MockServiceA that is simulating as Zirk that initiates the Discovery
      */
     private final class DiscoveryMockServiceA implements BezirkListener {
-        private final String serviceName = "DiscoveryMockServiceA";
+        private final String zirkName = "DiscoveryMockServiceA";
         private Bezirk bezirk = null;
         private ZirkId myId = null;
         private DiscoveryMockServiceProtocol pRole;
 
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            bezirk.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
             pRole = new DiscoveryMockServiceProtocol();
             bezirk.subscribe(pRole, this);
         }
@@ -287,8 +285,7 @@ public class DiscoveryTest {
         }
 
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            bezirk.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(serviceName);
             bezirk.subscribe(new DiscoveryMockServiceProtocol(), this);
         }
 
@@ -337,8 +334,7 @@ public class DiscoveryTest {
         private Bezirk bezirk = null;
 
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            bezirk.registerZirk(serviceName);
+            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(serviceName);
 
             bezirk.subscribe(new DiscoveryMockServiceProtocol(), this);
         }

@@ -42,7 +42,7 @@ public final class Proxy implements Bezirk {
     static final ConcurrentMap<String, Long> duplicateStreamMap = new ConcurrentHashMap<String, Long>();
     //Pipe Listener Map -- pipeId : listener
     static final ConcurrentMap<String, BezirkListener> pipeListenerMap = new ConcurrentHashMap<String, BezirkListener>();
-    private static final String ACTION_BEZIRK_REGISTER = "REGISTER";
+    public static final String ACTION_BEZIRK_REGISTER = "REGISTER";
     private static final String ACTION_SERVICE_DISCOVER = "DISCOVER";
     private static final String ACTION_SERVICE_SEND_MULTICAST_EVENT = "MULTICAST_EVENT";
     private static final String ACTION_SERVICE_SEND_UNICAST_EVENT = "UNICAST_EVENT";
@@ -57,21 +57,21 @@ public final class Proxy implements Bezirk {
     static Context context;
     static BezirkListener DiscoveryListener;
     static int discoveryCount; // keep track of Discovery Id
-    private final String TAG = Proxy.class.getSimpleName();
+    private static final String TAG = Proxy.class.getSimpleName();
     private short streamFactory;
 
     private ZirkId zirkId;
 
-    public Proxy(Context context) {
+    public Proxy(Context context, ZirkId zirkId) {
         Proxy.context = context;
+        this.zirkId = zirkId;
     }
 
-    @Override
-    public boolean registerZirk(final String zirkName) {
+    public static ZirkId registerZirk(final String zirkName) {
         Log.i(TAG, "RegisteringService: " + zirkName);
         if (zirkName == null) {
             Log.e(TAG, "Service name Cannot be null during Registration");
-            return false;
+            return null;
         }
 
         // TODO: if the zirk id is uninstalled then owner device shows cached and new one.
@@ -87,7 +87,7 @@ public final class Proxy implements Bezirk {
             editor.commit();
         }
 
-        zirkId = new ZirkId(serviceIdAsString);
+        ZirkId zirkId = new ZirkId(serviceIdAsString);
         Log.d(TAG, "ZirkId-> " + serviceIdAsString); // Remove this line
         // Send the Intent to the BezirkStack
         String serviceIdKEY = "zirkId";
@@ -104,12 +104,12 @@ public final class Proxy implements Bezirk {
 
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk installed?");
-            return false;
+            return null;
         } else {
             Log.i(TAG, "Registration request is triggered to Bezirk for Service :" + zirkName);
         }
 
-        return true;
+        return zirkId;
     }
 
 /* Old unregisterZirk method available in commit ID : 53012cbff5b00847b765ac59efc0c5b9cfb5cd33 */

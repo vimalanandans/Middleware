@@ -41,7 +41,7 @@ import java.io.PipedOutputStream;
  *
  * // ...
  *
- *          Bezirk bezirk = Factory.getInstance();
+ *          Bezirk bezirk = Factory.registerZirk("Zirk Name Here");
  *
  * // ...
  *
@@ -51,22 +51,9 @@ import java.io.PipedOutputStream;
  */
 public interface Bezirk {
     /**
-     * Register a Zirk with the Bezirk middleware. This makes the Zirk available to the user in
-     * Bezirk configuration interfaces, thus allowing her to place it in a sphere to interact with
-     * other Zirks. This method must be called before any other API method can be called because it
-     * initializes internal state required by most other API methods.
-     *
-     * @param zirkName the name of the Zirk being registered, as defined by the Zirk
-     *                 developer/vendor
-     * @return <code>false</code> if a Zirk with the name specified by <code>zirkName</code> is
-     * already registered
-     */
-    public boolean registerZirk(String zirkName);
-
-    /**
-     * Undo the effects of {@link #registerZirk(String)} and removes all subscriptions as if
-     * {@link #unsubscribe(ProtocolRole)} were called with <code>null</code> as the
-     * <code>ProtocolRole</code>.
+     * Undo the effects of registering the Zirk using a <code>Factory</code> and removes all
+     * subscriptions as if {@link #unsubscribe(ProtocolRole)} were called with <code>null</code> as
+     * the <code>ProtocolRole</code>.
      */
     public void unregisterZirk();
 

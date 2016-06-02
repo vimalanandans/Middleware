@@ -17,8 +17,7 @@ public class Test {
 
     public Test() {
         // set up sending messages over bezirk
-        bezirk = Factory.getInstance();
-        bezirk.registerZirk(Test.class.getSimpleName());
+        bezirk = Factory.registerZirk(Test.class.getSimpleName());
     }
 
     public static void main(String[] args) {
