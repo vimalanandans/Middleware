@@ -7,89 +7,25 @@ import org.apache.shiro.codec.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetAddress;
-import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.Properties;
 
 public class BezirkDeviceForPC implements BezirkDeviceInterface {
-    public static final String PROPS = "upadevice.properties";
     private static final Logger logger = LoggerFactory.getLogger(BezirkDeviceForPC.class);
     private final com.bezirk.devices.DeviceDetails deviceDetails;
+    public static final Location deviceLocation = new Location("Floor1/null/null");
 
     /**
      * The constructor is used for setting up the device information like deviceId and deviceName which can be used other modules like sphere
      */
     public BezirkDeviceForPC() {
-
         deviceDetails = new DeviceDetails();
-
-        try {
-            //final Properties props = BezirkDeviceForPC.loadProperties();
-            //final String location = props.getProperty("DeviceLocation");
-            final String location = "Floor1/null/null";
-            String deviceName;
-
-            deviceName = fetchDeviceName();
-
-            deviceDetails.setDeviceId(Hex.encodeToString(BezirkNetworkUtilities
-                    .getLocalMACAddress()));
-            deviceDetails.setDeviceName(deviceName);
-            deviceDetails.setDeviceLocation(new Location(location));
-
-        } catch (Exception e) {
-            logger.error("Failure to load upadevice.properties file", e);
-        }
-
-    }
-
-    /**
-     * Load UPADevice properties from one place.  All
-     *
-     * @return A Properties object loaded with properties from file
-     * @throws Exception if there is a problem loading properties from the classpath
-     */
-    public static Properties loadProperties() throws Exception {
-        return loadProperties(PROPS);
-    }
-
-    public static Properties loadProperties(String file) throws Exception {
-
-        // Load properties file from the classpath (this avoids hard-coding the
-        // filesystem path)
-        final InputStream propsInputStream = BezirkDeviceInterface.class
-                .getClassLoader().getResourceAsStream(file);
-
-        if (propsInputStream == null) {
-            throw new Exception(
-                    "Problem loading properties file. Input stream is null for file: "
-                            + file);
-        }
-
-        final Properties props = new Properties();
-
-        props.load(propsInputStream);
-        if (props.isEmpty()) {
-            throw new Exception("Properties loaded from file are empty: "
-                    + file);
-        }
-
-        return props;
-    }
-
-    public static void storeProperties(Properties props) throws IOException {
-        final URL propsURL = BezirkDeviceInterface.class.getResource(PROPS);
-        final FileOutputStream fos = new FileOutputStream(propsURL.getFile());
-        props.store(fos, null);
-    }
-
-    public static void storeProperties(Properties props, URL url) throws IOException {
-        FileOutputStream fos = new FileOutputStream(url.getFile());
-        props.store(fos, null);
-        fos.close();
+        String deviceName;
+        deviceName = fetchDeviceName();
+        deviceDetails.setDeviceId(Hex.encodeToString(BezirkNetworkUtilities
+                .getLocalMACAddress()));
+        deviceDetails.setDeviceName(deviceName);
+        deviceDetails.setDeviceLocation(deviceLocation);
     }
 
     private String fetchDeviceName() {
