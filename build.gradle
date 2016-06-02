@@ -8,6 +8,7 @@
  * 3.0.0-alpha+005 Changing sphere key lengths to prevent adding Unlimited Strength Jurisdiction Policy (Rishabh)
  * 3.0.0-alpha+006 Logging enable/disable using jvm/system property, removing Factory.getInstance(BezirkConfig) (Rishabh)
  * 3.0.0-alpha+007 Enabling development sphere by default and removing system.out.println for evasive events in zyre (Rishabh)
+ * 3.0.0-alpha+008 Displaying ethernet configuration for multiple interfaces, issue #77 (Rishabh)
  */
 buildscript {
     repositories {
@@ -38,7 +39,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha+007"
+    version = "3.0.0-alpha+008"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"

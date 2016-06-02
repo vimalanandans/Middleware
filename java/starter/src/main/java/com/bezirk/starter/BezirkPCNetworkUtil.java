@@ -122,38 +122,38 @@ final class BezirkPCNetworkUtil {
      */
     private String promptUserForInterface(final BezirkConfig bezirkConfig) {
         String interfaceName;
-        if (bezirkConfig.isDisplayEnabled()) {
-            final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
-                    .getIntfInetPair().iterator();
-            final com.bezirk.ethernetconfigui.EthernetConfigurationDialog ethConfigDialog = new com.bezirk.ethernetconfigui.EthernetConfigurationDialog(
-                    itr);
-            interfaceName = ethConfigDialog.showDialog();
-        }
+        //if (bezirkConfig.isDisplayEnabled()) {
+        final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
+                .getIntfInetPair().iterator();
+        final com.bezirk.ethernetconfigui.EthernetConfigurationDialog ethConfigDialog = new com.bezirk.ethernetconfigui.EthernetConfigurationDialog(
+                itr);
+        interfaceName = ethConfigDialog.showDialog();
+        //}
         // If UI is not enabled, prompt user to enter interface via console
-        else {
-            for (IntfInetPair pair : BezirkNetworkUtilities.getIntfInetPair()) {
-                logger.info("Found interface: " + pair.getIntf().getName()
-                        + " IP:" + pair.getInet().getHostAddress());
-            }
-            final Scanner intfScanner = new Scanner(System.in);
-            final StringBuilder tempInterfaceName = new StringBuilder(
-                    intfScanner.next());
-            interfaceName = tempInterfaceName.toString();
-
-            final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
-                    .getIntfInetPair().iterator();
-            while (itr.hasNext()) {
-                final IntfInetPair pair = itr.next();
-                if (tempInterfaceName.toString() != null
-                        && !tempInterfaceName.toString().isEmpty()
-                        && tempInterfaceName.toString().equals(
-                        pair.getIntf().getName())) {
-                    interfaceName = tempInterfaceName.toString();
-                    break;
-                }
-            }
-            intfScanner.close();
-        }
+//        else {
+//            for (IntfInetPair pair : BezirkNetworkUtilities.getIntfInetPair()) {
+//                logger.info("Found interface: " + pair.getIntf().getName()
+//                        + " IP:" + pair.getInet().getHostAddress());
+//            }
+//            final Scanner intfScanner = new Scanner(System.in);
+//            final StringBuilder tempInterfaceName = new StringBuilder(
+//                    intfScanner.next());
+//            interfaceName = tempInterfaceName.toString();
+//
+//            final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
+//                    .getIntfInetPair().iterator();
+//            while (itr.hasNext()) {
+//                final IntfInetPair pair = itr.next();
+//                if (tempInterfaceName.toString() != null
+//                        && !tempInterfaceName.toString().isEmpty()
+//                        && tempInterfaceName.toString().equals(
+//                        pair.getIntf().getName())) {
+//                    interfaceName = tempInterfaceName.toString();
+//                    break;
+//                }
+//            }
+//            intfScanner.close();
+//        }
 
         return interfaceName;
     }
