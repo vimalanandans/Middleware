@@ -36,7 +36,7 @@ public abstract class Message {
      * @see #topic
      * @see Message.Flag
      */
-    public Flag flag;
+    public final Flag flag;
 
     /**
      * The pub-sub topic for this message. Topics are defined by
@@ -55,7 +55,7 @@ public abstract class Message {
      * }
      * </pre>
      */
-    public String topic;
+    public final String topic;
 
     /**
      * Intended to help Zirks match messages with {@link #flag flags} set to {@link Message.Flag#REQUEST}
@@ -69,6 +69,11 @@ public abstract class Message {
      */
     public String msgId;
 
+    public Message(Flag flag, String topic) {
+        this.flag = flag;
+        this.topic = topic;
+    }
+
     /**
      * Serialize the message to a JSON string.
      *
@@ -77,7 +82,6 @@ public abstract class Message {
     public String toJson() {
         return gson.toJson(this);
     }
-
 
     /**
      * Deserialize the <code>json</code> string to create an object of type <code>objectType</code>.

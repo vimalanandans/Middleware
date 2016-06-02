@@ -64,8 +64,7 @@ public class Stream extends Message {
      * @param topic the pub-sub topic for this stream
      */
     public Stream(Flag flag, String topic) {
-        this.flag = flag;
-        this.topic = topic;
+        super(flag, topic);
     }
 
     /**
