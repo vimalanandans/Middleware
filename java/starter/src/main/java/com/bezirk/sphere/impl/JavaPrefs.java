@@ -23,14 +23,9 @@ public class JavaPrefs extends SpherePrefs {
             preferences = Preferences.userNodeForPackage(JavaPrefs.class);
             logger.debug("Sphere preferences initialized successfully");
             printPreferences();
-        } catch (SecurityException e) {
-            logger.error("SecurityException: " + e.getLocalizedMessage());
-            logger.error("SecurityException: " + e.getMessage());
         } catch (Exception e) {
-            logger.error(e.getLocalizedMessage());
             logger.error(e.getMessage());
         }
-
     }
 
     @Override
