@@ -104,7 +104,7 @@ public class LocationUpdateTest {
     }
 
     @After
-    public void destroyMockservices() {
+    public void destroyMockZirk() {
 
         Bezirk bezirk = com.bezirk.middleware.proxy.Factory.registerZirk("XXX");
         bezirk.unregisterZirk();
@@ -115,7 +115,7 @@ public class LocationUpdateTest {
      * MockServiceA that is simulating as Zirk that initiates the Multicast Communication
      */
     private final class LocationUpdateMockServiceA implements BezirkListener {
-        private final String zirkName = "LocationUpdateMockServiceA";
+        private final String zirkName = "LocationUpdateMockZirkA";
         private Bezirk bezirk = null;
         private LocationUpdateMockServiceProtocolRole pRole;
 

@@ -49,13 +49,13 @@ public class BezirkAndroidSphereForSadlStub implements BezirkSphereForSadl {
     }
 
     @Override
-    public boolean isZirkInSphere(ZirkId service, String sphereId) {
+    public boolean isZirkInSphere(ZirkId zirk, String sphereId) {
 
         return true;
     }
 
     @Override
-    public String getZirkName(ZirkId serviceId) {
+    public String getZirkName(ZirkId zirkId) {
         // I see, used during sadl discovery
         logger.error("Interface not implemented > getZirkName.");
         return null;

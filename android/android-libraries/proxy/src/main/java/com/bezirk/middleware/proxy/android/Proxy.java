@@ -76,18 +76,18 @@ public final class Proxy implements Bezirk {
         // TODO: if the zirk id is uninstalled then owner device shows cached and new one.
 
         final SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(context);
-        String serviceIdAsString = shrdPref.getString(zirkName, null);
-        if (null == serviceIdAsString) {
+        String zirkIdAsString = shrdPref.getString(zirkName, null);
+        if (null == zirkIdAsString) {
             // UUID for zirk id
-            serviceIdAsString = UUID.randomUUID().toString();
+            zirkIdAsString = UUID.randomUUID().toString();
 
             SharedPreferences.Editor editor = shrdPref.edit();
-            editor.putString(zirkName, serviceIdAsString);
+            editor.putString(zirkName, zirkIdAsString);
             editor.commit();
         }
 
-        ZirkId zirkId = new ZirkId(serviceIdAsString);
-        Log.d(TAG, "ZirkId-> " + serviceIdAsString); // Remove this line
+        ZirkId zirkId = new ZirkId(zirkIdAsString);
+        Log.d(TAG, "ZirkId-> " + zirkIdAsString); // Remove this line
         // Send the Intent to the BezirkStack
         String serviceIdKEY = "zirkId";
         String serviceNameKEY = "serviceName";

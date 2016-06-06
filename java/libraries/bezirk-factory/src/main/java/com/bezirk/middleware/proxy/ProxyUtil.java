@@ -28,11 +28,11 @@ class ProxyUtil {
             }
             //Update Event/Stream Map
             if (listenerMap.containsKey(topic)) {
-                HashSet<BezirkListener> serviceList = listenerMap.get(topic);
-                if (serviceList.contains(listener)) {
+                HashSet<BezirkListener> zirkList = listenerMap.get(topic);
+                if (zirkList.contains(listener)) {
                     logger.warn(topicType + " already registered with the Label " + topic);
                 } else {
-                    serviceList.add(listener);
+                    zirkList.add(listener);
                 }
             } else {
                 HashSet<BezirkListener> regServiceList = new HashSet<BezirkListener>();
