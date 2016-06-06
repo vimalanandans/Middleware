@@ -3,7 +3,7 @@
  */
 package com.bezirk.middleware.objects;
 
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 /**
  * @author Rishabh Gulati
@@ -16,9 +16,9 @@ public class BezirkZirkInfo {
     private boolean active;
 
     @Deprecated
-    public BezirkZirkInfo(BezirkZirkId zirkId, String zirkName, String zirkType, boolean active,
+    public BezirkZirkInfo(ZirkId zirkId, String zirkName, String zirkType, boolean active,
                           boolean visible) {
-        this.zirkId = zirkId.getBezirkZirkId();
+        this.zirkId = zirkId.getZirkId();
         this.zirkType = zirkType;
         this.active = active;
         this.visible = visible;
@@ -38,8 +38,8 @@ public class BezirkZirkInfo {
      * @return the zirkId
      */
     @Deprecated
-    public final BezirkZirkId getBezirkZirkId() {
-        return new BezirkZirkId(zirkId);
+    public final ZirkId getBezirkZirkId() {
+        return new ZirkId(zirkId);
     }
 
     public String getZirkId() {

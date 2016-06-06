@@ -14,9 +14,9 @@ public class BezirkZirkEndPointTest {
     @Test
     public void test() {
 
-        BezirkZirkId zirkId = new BezirkZirkId("Zirk25");
+        ZirkId zirkId = new ZirkId("Zirk25");
         BezirkZirkEndPoint bezirkZirkEndPoint = new BezirkZirkEndPoint(zirkId);
-        assertEquals("BezirkZirkId is not matching with the set value.", zirkId, bezirkZirkEndPoint.getBezirkZirkId());
+        assertEquals("ZirkId is not matching with the set value.", zirkId, bezirkZirkEndPoint.getBezirkZirkId());
 
     }
 

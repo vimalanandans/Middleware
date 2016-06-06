@@ -14,7 +14,7 @@ import com.bezirk.device.BezirkDevice;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.rest.CommsRestController;
 import com.bezirk.rest.HttpComms;
 import com.bezirk.sadl.BezirkSadlManager;
@@ -276,7 +276,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
         } else {
             String deviceId = intent.getStringExtra("ADDRESS");
 
-            msgLedger.setRecipient(new BezirkZirkEndPoint(deviceId, new BezirkZirkId("DIAG")));
+            msgLedger.setRecipient(new BezirkZirkEndPoint(deviceId, new ZirkId("DIAG")));
 
         }
         comms.sendMessage(msgLedger);

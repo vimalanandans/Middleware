@@ -35,9 +35,9 @@ import com.google.gson.GsonBuilder;
  * Zirks or endpoints outside of your Zirk's sphere(s).
  * <p>
  * This class is used when sending
- * {@link com.bezirk.middleware.Bezirk#sendEvent(ZirkId, Address, Event) events} or
- * {@link com.bezirk.middleware.Bezirk#sendStream(ZirkId, ZirkEndPoint, Stream, java.io.File) streams}, when
- * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener) discovering}
+ * {@link com.bezirk.middleware.Bezirk#sendEvent(RecipientSelector, Event) events} or
+ * {@link com.bezirk.middleware.Bezirk#sendStream(ZirkEndPoint, Stream, java.io.File) streams}, when
+ * {@link com.bezirk.middleware.Bezirk#discover(RecipientSelector, ProtocolRole, long, int, BezirkListener) discovering}
  * Zirks, and in any other context where it is useful to narrow a message's set of recipients
  * beyond what can be achieved with simply a {@link ProtocolRole}.
  * </p>
@@ -47,9 +47,7 @@ import com.google.gson.GsonBuilder;
  * @see Location
  * @see ProtocolRole
  */
-public class Address {
-    private final Location location;
-    private final Pipe pipe;
+public class RecipientSelector {
     private static final Gson gson;
 
     static {
@@ -58,33 +56,36 @@ public class Address {
         gson = builder.create();
     }
 
+    private final Location location;
+    private final Pipe pipe;
+
     /**
-     * Address for specifying a message's recipient set within a Zirk's sphere(s). Use
-     * {@link #Address(Location, Pipe)} if you'd like to also specify a pipe.
+     * RecipientSelector for specifying a message's recipient set within a Zirk's sphere(s). Use
+     * {@link #RecipientSelector(Location, Pipe)} if you'd like to also specify a pipe.
      *
      * @param location the semantic address used to narrow a message's set of recipients farther
      *                 than a topic does
      */
-    public Address(Location location) {
+    public RecipientSelector(Location location) {
         this.location = location;
         pipe = null;
     }
 
     /**
-     * Address for extending a message's set of recipients to include Zirks or endpoints outside of
+     * RecipientSelector for extending a message's set of recipients to include Zirks or endpoints outside of
      * a Zirk's sphere(s) using a pipe.  Use
-     * {@link #Address(Location, Pipe)} if you'd like to also specify a semantic address.
+     * {@link #RecipientSelector(Location, Pipe)} if you'd like to also specify a semantic address.
      *
      * @param pipe the specific pipe the message should also be sent on, or <code>null</code>
      *             for all authorized pipes in the Zirk's sphere(s)
      */
-    public Address(Pipe pipe) {
+    public RecipientSelector(Pipe pipe) {
         location = null;
         this.pipe = pipe;
     }
 
     /**
-     * Address for specifying a message's set of recipients using a semantic address and extending
+     * RecipientSelector for specifying a message's set of recipients using a semantic address and extending
      * the set of recipients to include Zirks or endpoints outside of a Zirk's sphere(s) using a
      * pipe.
      *
@@ -93,9 +94,19 @@ public class Address {
      * @param pipe     the specific pipe the message should also be sent on, or <code>null</code>
      *                 for all authorized pipes in the Zirk's sphere(s)
      */
-    public Address(Location location, Pipe pipe) {
+    public RecipientSelector(Location location, Pipe pipe) {
         this.location = location;
         this.pipe = pipe;
+    }
+
+    /**
+     * Deserialize a JSON string representing an address to create an <code>RecipientSelector</code> object.
+     *
+     * @param serializedAddress the JSON String that is to be deserialized
+     * @return an <code>RecipientSelector</code> object deserialized from <code>json</code>
+     */
+    public static RecipientSelector fromJson(String serializedAddress) {
+        return gson.fromJson(serializedAddress, RecipientSelector.class);
     }
 
     /**
@@ -125,15 +136,5 @@ public class Address {
      */
     public String toJson() {
         return gson.toJson(this);
-    }
-
-    /**
-     * Deserialize a JSON string representing an address to create an <code>Address</code> object.
-     *
-     * @param serializedAddress the JSON String that is to be deserialized
-     * @return an <code>Address</code> object deserialized from <code>json</code>
-     */
-    public static Address fromJson(String serializedAddress) {
-        return gson.fromJson(serializedAddress, Address.class);
     }
 }

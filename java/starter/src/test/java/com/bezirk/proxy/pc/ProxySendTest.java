@@ -1,13 +1,14 @@
 package com.bezirk.proxy.pc;
 
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.UnicastStream;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sadl.BezirkSadlManager;
 import com.bezirk.util.MockComms;
 import com.bezirk.util.MockProtocolsForBezirkPC;
@@ -37,9 +38,9 @@ public class ProxySendTest {
     private static BezirkSadlManager sadlManager;
     private final String serviceName = "MockServiceA";
     private final String serviceAId = "MockServiceAId";
-    private final BezirkZirkId senderId = new BezirkZirkId(serviceAId);
+    private final ZirkId senderId = new ZirkId(serviceAId);
     private final String serviceBId = "MockServiceBId";
-    private final BezirkZirkId receiverId = new BezirkZirkId(serviceBId);
+    private final ZirkId receiverId = new ZirkId(serviceBId);
     private final BezirkZirkEndPoint receiver = new BezirkZirkEndPoint(receiverId);
     private File sendFile;
 
@@ -122,8 +123,8 @@ public class ProxySendTest {
             proxyForServices.registerService(senderId, serviceName);
 
             String serializedEventMsg = new MockProtocolsForBezirkPC().new MockEvent1(Flag.REQUEST, "MockEvent").toJson();
-            Address address = new Address(new Location("FLOOR1/BLOCk1/ROOM1"));
-            proxyForServices.sendMulticastEvent(senderId, address, serializedEventMsg);
+            RecipientSelector recipientSelector = new RecipientSelector(new Location("FLOOR1/BLOCk1/ROOM1"));
+            proxyForServices.sendMulticastEvent(senderId, recipientSelector, serializedEventMsg);
             assertEquals("Proxy is unable to add multicast event message to the comms queue.", mockSetUP.getTotalSpheres(), mockComms.getEventList().size());
 
             proxyForServices.sendMulticastEvent(senderId, null, serializedEventMsg);

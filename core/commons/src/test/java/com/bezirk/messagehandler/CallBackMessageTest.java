@@ -1,7 +1,7 @@
 package com.bezirk.messagehandler;
 
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 import org.junit.Test;
@@ -72,8 +72,8 @@ public class CallBackMessageTest {
         EventIncomingMessage deserializedcallbackMessage = EventIncomingMessage.deserialize(serializedCallback, EventIncomingMessage.class);
         assertEquals("Callbackdiscriminator is not set to EVENT for eventCallbackMessage.", "EVENT", deserializedcallbackMessage.getCallbackType());
 
-        BezirkZirkId recipientId = new BezirkZirkId("TestService");
-        BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(new BezirkZirkId("SenderServiceID"));
+        ZirkId recipientId = new ZirkId("TestService");
+        BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(new ZirkId("SenderServiceID"));
         String serialzedEvent = "TestEvent";
         String eventTopic = "TestTopic";
         String msgId = "1234";

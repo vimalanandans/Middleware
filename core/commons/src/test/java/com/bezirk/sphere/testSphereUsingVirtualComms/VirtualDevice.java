@@ -7,7 +7,7 @@ import com.bezirk.comms.BezirkCommsLegacy;
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.impl.CatchProcessor;
 import com.bezirk.sphere.impl.OwnerZirk;
@@ -94,20 +94,20 @@ public class VirtualDevice {
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
         Zirk zirk1 = new OwnerZirk(OWNER_SERVICE_NAME_1, upaDevice.getDeviceId(), sphereSet1);
-        BezirkZirkId OWNER_SERVICE_ID_1 = new BezirkZirkId(OWNER_SERVICE_NAME_1);
-        sphereRegistryWrapper.addService(OWNER_SERVICE_ID_1.getBezirkZirkId(), zirk1);
+        ZirkId OWNER_SERVICE_ID_1 = new ZirkId(OWNER_SERVICE_NAME_1);
+        sphereRegistryWrapper.addService(OWNER_SERVICE_ID_1.getZirkId(), zirk1);
 
         // create zirk2
         HashSet<String> sphereSet2 = new HashSet<>();
         sphereSet2.add(sphereId);
         Zirk zirk2 = new OwnerZirk(OWNER_SERVICE_NAME_2, upaDevice.getDeviceId(), sphereSet2);
-        BezirkZirkId OWNER_SERVICE_ID_2 = new BezirkZirkId(OWNER_SERVICE_NAME_2);
-        sphereRegistryWrapper.addService(OWNER_SERVICE_ID_2.getBezirkZirkId(), zirk2);
+        ZirkId OWNER_SERVICE_ID_2 = new ZirkId(OWNER_SERVICE_NAME_2);
+        sphereRegistryWrapper.addService(OWNER_SERVICE_ID_2.getZirkId(), zirk2);
 
-        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<ZirkId>> deviceServices = new LinkedHashMap<>();
 
         // create list of services for the sphere
-        ArrayList<BezirkZirkId> services = new ArrayList<>();
+        ArrayList<ZirkId> services = new ArrayList<>();
         services.add(OWNER_SERVICE_ID_1);
         services.add(OWNER_SERVICE_ID_2);
 

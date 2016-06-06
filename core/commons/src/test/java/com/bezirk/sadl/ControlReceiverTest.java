@@ -20,7 +20,7 @@
 //import Location;
 //import SubscribedRole;
 //import BezirkDiscoveredZirk;
-//import BezirkZirkId;
+//import ZirkId;
 //
 //public class ControlReceiverTest {
 //	private static final Logger logger = LoggerFactory.getLogger(ControlReceiverTest.class);
@@ -55,10 +55,10 @@
 //	@Test
 //	@Ignore
 //	public void testForStreamRegistration(){
-//		BezirkZirkId testService1 = new BezirkZirkId("test-zirk-id-1");
-//		BezirkZirkId testService2 = new BezirkZirkId("test-zirk-id-2");
-//		BezirkZirkId testService3 = new BezirkZirkId("test-zirk-id-3");
-//		BezirkZirkId testService4 = new BezirkZirkId("test-zirk-id-4");
+//		ZirkId testService1 = new ZirkId("test-zirk-id-1");
+//		ZirkId testService2 = new ZirkId("test-zirk-id-2");
+//		ZirkId testService3 = new ZirkId("test-zirk-id-3");
+//		ZirkId testService4 = new ZirkId("test-zirk-id-4");
 //		
 //		TestProtocolRoleA protocolRoleA = new TestProtocolRoleA();
 //		SubscribedRole subscribedRoleA = new SubscribedRole(protocolRoleA);
@@ -95,10 +95,10 @@
 //		Location newLocation = new Location("Room", "Room", "Room");
 //		UPADevice.setDeviceLocation(newLocation);
 //		
-//		BezirkZirkId testService1 = new BezirkZirkId("test-zirk-id-1");
-//		BezirkZirkId testService2 = new BezirkZirkId("test-zirk-id-2");
-//		BezirkZirkId testService3 = new BezirkZirkId("test-zirk-id-3");
-//		BezirkZirkId testService4 = new BezirkZirkId("test-zirk-id-4");
+//		ZirkId testService1 = new ZirkId("test-zirk-id-1");
+//		ZirkId testService2 = new ZirkId("test-zirk-id-2");
+//		ZirkId testService3 = new ZirkId("test-zirk-id-3");
+//		ZirkId testService4 = new ZirkId("test-zirk-id-4");
 //		
 //		TestProtocolRoleA protocolRoleA = new TestProtocolRoleA();
 //		SubscribedRole subscribedRoleA = new SubscribedRole(protocolRoleA);

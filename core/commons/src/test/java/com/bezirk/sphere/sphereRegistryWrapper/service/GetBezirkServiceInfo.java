@@ -6,7 +6,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
@@ -96,33 +96,33 @@ public class GetBezirkServiceInfo {
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         String serviceType1 = "Owner";
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
         Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), sphereSet1);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
+        registry.sphereMembership.put(serviceId1.getZirkId(), zirk1);
 
         //Create zirk 2
         String serviceName2 = sphereTestUtility.OWNER_ZIRK_NAME_2;
-        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
+        ZirkId serviceId2 = new ZirkId(serviceName2);
         HashSet<String> sphereSet2 = new HashSet<>();
         String serviceType2 = "Owner";
         sphereSet2.add(sphereId);
         Zirk zirk2 = new OwnerZirk(serviceName2,
                 upaDevice.getDeviceId(), sphereSet2);
-        registry.sphereMembership.put(serviceId2.getBezirkZirkId(), zirk2);
+        registry.sphereMembership.put(serviceId2.getZirkId(), zirk2);
 
         registry.spheres.put(sphereId, sphere);
 
-        List<BezirkZirkId> serviceIds = new ArrayList<>();
+        List<ZirkId> serviceIds = new ArrayList<>();
         serviceIds.add(serviceId1);
         serviceIds.add(serviceId2);
 
         // Create List of BezirkZirkInfo objects to compare.
-        BezirkZirkInfo serviceInfo1 = new BezirkZirkInfo(serviceId1.getBezirkZirkId(), serviceName1, serviceType1, true, true);
-        BezirkZirkInfo serviceInfo2 = new BezirkZirkInfo(serviceId2.getBezirkZirkId(), serviceName2, serviceType2, true, true);
+        BezirkZirkInfo serviceInfo1 = new BezirkZirkInfo(serviceId1.getZirkId(), serviceName1, serviceType1, true, true);
+        BezirkZirkInfo serviceInfo2 = new BezirkZirkInfo(serviceId2.getZirkId(), serviceName2, serviceType2, true, true);
         List<BezirkZirkInfo> createdServiceInfo = new ArrayList<>();
         createdServiceInfo.add(serviceInfo1);
         createdServiceInfo.add(serviceInfo2);
@@ -147,7 +147,7 @@ public class GetBezirkServiceInfo {
      */
     @Test
     public final void nullServiceIdsReturnsNull() {
-        List<BezirkZirkId> serviceIds = null;
+        List<ZirkId> serviceIds = null;
         assertNull(sphereRegistryWrapper.getBezirkServiceInfo(serviceIds));
     }
 
@@ -167,27 +167,27 @@ public class GetBezirkServiceInfo {
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         String serviceType1 = "Owner";
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
 
         //Create zirk 2
         String serviceName2 = sphereTestUtility.OWNER_ZIRK_NAME_2;
-        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
+        ZirkId serviceId2 = new ZirkId(serviceName2);
         HashSet<String> sphereSet2 = new HashSet<>();
         String serviceType2 = "Owner";
         sphereSet2.add(sphereId);
 
         registry.spheres.put(sphereId, sphere);
 
-        List<BezirkZirkId> serviceIds = new ArrayList<>();
+        List<ZirkId> serviceIds = new ArrayList<>();
         serviceIds.add(serviceId1);
         serviceIds.add(serviceId2);
 
         // Create List of BezirkZirkInfo objects to compare.
-        BezirkZirkInfo serviceInfo1 = new BezirkZirkInfo(serviceId1.getBezirkZirkId(), serviceName1, serviceType1, true, true);
-        BezirkZirkInfo serviceInfo2 = new BezirkZirkInfo(serviceId2.getBezirkZirkId(), serviceName2, serviceType2, true, true);
+        BezirkZirkInfo serviceInfo1 = new BezirkZirkInfo(serviceId1.getZirkId(), serviceName1, serviceType1, true, true);
+        BezirkZirkInfo serviceInfo2 = new BezirkZirkInfo(serviceId2.getZirkId(), serviceName2, serviceType2, true, true);
         List<BezirkZirkInfo> createdServiceInfo = new ArrayList<>();
         createdServiceInfo.add(serviceInfo1);
         createdServiceInfo.add(serviceInfo2);
@@ -213,29 +213,29 @@ public class GetBezirkServiceInfo {
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         String serviceType1 = "Owner";
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), null);
+        registry.sphereMembership.put(serviceId1.getZirkId(), null);
 
         //Create zirk 2
         String serviceName2 = sphereTestUtility.OWNER_ZIRK_NAME_2;
-        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
+        ZirkId serviceId2 = new ZirkId(serviceName2);
         HashSet<String> sphereSet2 = new HashSet<>();
         String serviceType2 = "Owner";
         sphereSet2.add(sphereId);
-        registry.sphereMembership.put(serviceId2.getBezirkZirkId(), null);
+        registry.sphereMembership.put(serviceId2.getZirkId(), null);
 
         registry.spheres.put(sphereId, sphere);
 
-        List<BezirkZirkId> serviceIds = new ArrayList<>();
+        List<ZirkId> serviceIds = new ArrayList<>();
         serviceIds.add(serviceId1);
         serviceIds.add(serviceId2);
 
         // Create List of BezirkZirkInfo objects to compare.
-        BezirkZirkInfo serviceInfo1 = new BezirkZirkInfo(serviceId1.getBezirkZirkId(), serviceName1, serviceType1, true, true);
-        BezirkZirkInfo serviceInfo2 = new BezirkZirkInfo(serviceId2.getBezirkZirkId(), serviceName2, serviceType2, true, true);
+        BezirkZirkInfo serviceInfo1 = new BezirkZirkInfo(serviceId1.getZirkId(), serviceName1, serviceType1, true, true);
+        BezirkZirkInfo serviceInfo2 = new BezirkZirkInfo(serviceId2.getZirkId(), serviceName2, serviceType2, true, true);
         List<BezirkZirkInfo> createdServiceInfo = new ArrayList<>();
         createdServiceInfo.add(serviceInfo1);
         createdServiceInfo.add(serviceInfo2);

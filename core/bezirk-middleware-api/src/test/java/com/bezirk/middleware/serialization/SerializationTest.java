@@ -1,6 +1,6 @@
 package com.bezirk.middleware.serialization;
 
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 
 import org.junit.Test;
@@ -15,14 +15,14 @@ public class SerializationTest {
     public void testAddressSerializer() throws Exception {
         Location location = new Location("home", "garage", "garagedoor");
         URI uri = new URI("http://foo/bar");
-        Address address = new Address(location);
+        RecipientSelector recipientSelector = new RecipientSelector(location);
 
-        String serializedAddress = address.toJson();
-        System.out.println("serialized address    : " + serializedAddress);
+        String serializedAddress = recipientSelector.toJson();
+        System.out.println("serialized recipientSelector    : " + serializedAddress);
 
-        Address newAddress = Address.fromJson(serializedAddress);
-        String serializedNewAddress = newAddress.toJson();
-        System.out.println("serialized new address: " + serializedNewAddress);
+        RecipientSelector newRecipientSelector = RecipientSelector.fromJson(serializedAddress);
+        String serializedNewAddress = newRecipientSelector.toJson();
+        System.out.println("serialized new recipientSelector: " + serializedNewAddress);
 
         assertTrue(serializedAddress.equals(serializedNewAddress));
     }

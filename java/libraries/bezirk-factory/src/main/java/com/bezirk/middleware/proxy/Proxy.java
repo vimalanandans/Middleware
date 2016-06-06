@@ -4,24 +4,22 @@ import com.bezirk.callback.pc.CBkForZirkPC;
 import com.bezirk.callback.pc.BroadcastReceiver;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.Stream;
 import com.bezirk.persistence.BezirkProxyPersistence;
 import com.bezirk.persistence.BezirkProxyRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.pc.ProxyForServices;
 import com.bezirk.proxy.registration.ServiceRegistration;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.BezirkConfig;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -36,8 +34,8 @@ public class Proxy implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(Proxy.class);
 
     private static int discoveryCount = 0; // keep track of Discovery Id
-    protected final HashMap<BezirkZirkId, DiscoveryBookKeeper> dListenerMap = new HashMap<BezirkZirkId, DiscoveryBookKeeper>();
-    protected final HashMap<BezirkZirkId, HashSet<BezirkListener>> sidMap = new HashMap<BezirkZirkId, HashSet<BezirkListener>>();
+    protected final HashMap<ZirkId, DiscoveryBookKeeper> dListenerMap = new HashMap<ZirkId, DiscoveryBookKeeper>();
+    protected final HashMap<ZirkId, HashSet<BezirkListener>> sidMap = new HashMap<ZirkId, HashSet<BezirkListener>>();
     protected final HashMap<String, HashSet<BezirkListener>> eventListenerMap = new HashMap<String, HashSet<BezirkListener>>();
     protected final HashMap<String, HashSet<BezirkListener>> streamListenerMap = new HashMap<String, HashSet<BezirkListener>>();
     protected final HashMap<String, String> activeStreams = new HashMap<String, String>();
@@ -48,6 +46,8 @@ public class Proxy implements Bezirk {
     // Stream
     private short streamFactory = 0;
     private BezirkProxyRegistry bezirkProxyRegistry = null;
+
+    private ZirkId zirkId;
 
     public Proxy() {
         proxy = new ProxyForServices();
@@ -62,16 +62,14 @@ public class Proxy implements Bezirk {
             bezirkProxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         } catch (Exception e) {
             logger.error("Error loading BezirkProxyRegistry", e);
-            System.exit(0);
+            System.exit(-1);
         }
     }
 
-    @Override
-    public ZirkId registerZirk(String zirkName) {
+    public boolean registerZirk(String zirkName) {
         logger.trace("inside RegisterService");
         if (zirkName == null) {
-            logger.error("Zirk name Cannot be null during Registration");
-            return null;
+            throw new IllegalArgumentException("Cannot register a Zirk with a null name");
         }
 
         String zirkIdAsString = bezirkProxyRegistry.getBezirkServiceId(zirkName);
@@ -85,49 +83,52 @@ public class Proxy implements Bezirk {
                 logger.error("Error in persisting the information", e);
             }
         }
-        logger.info("Zirk-Id-> " + zirkIdAsString);
-        final BezirkZirkId serviceId = new BezirkZirkId(zirkIdAsString);
+
+        if (logger.isDebugEnabled()) logger.debug("Zirk-Id: {}", zirkIdAsString);
+
+        zirkId = new ZirkId(zirkIdAsString);
         // Register with Bezirk
-        proxy.registerService(serviceId, zirkName);
-        return serviceId;
+        proxy.registerService(zirkId, zirkName);
+        return true;
     }
 
     @Override
-    public void unregisterZirk(ZirkId zirkId) {
-        if (null == zirkId) {
-            logger.error("Trying to unregister with null ID");
-            return;
-        }
-        // Clear the Persistence by removing the BezirkZirkId of the unregistering Zirk
-        BezirkZirkId sId = (BezirkZirkId) zirkId;
-        bezirkProxyRegistry.deleteBezirkZirkId(sId.getBezirkZirkId());
+    public void unregisterZirk() {
+        // Clear the Persistence by removing the ZirkId of the unregistering Zirk
+        ZirkId sId = (ZirkId) zirkId;
+        bezirkProxyRegistry.deleteBezirkZirkId(sId.getZirkId());
         try {
             proxyPersistence.persistBezirkProxyRegistry();
         } catch (Exception e) {
             logger.error("Error in persisting the information", e);
         }
-        proxy.unregister((BezirkZirkId) zirkId);
+        proxy.unregister((ZirkId) zirkId);
     }
 
     @Override
-    public void subscribe(final ZirkId subscriber, final ProtocolRole protocolRole, final BezirkListener listener) {
-        if (null == protocolRole.getRoleName() || protocolRole.getRoleName().isEmpty() || null == listener || null == subscriber) {
-            logger.error("Check for ProtocolRole/ BezirkListener/ZirkId for null or empty values");
-            return;
+    public void subscribe(final ProtocolRole protocolRole, final BezirkListener listener) {
+        if (protocolRole.getRoleName() == null || protocolRole.getRoleName().isEmpty()) {
+            throw new IllegalArgumentException("Cannot subscribe to an empty role");
         }
-        if (null == protocolRole.getEventTopics() && null == protocolRole.getStreamTopics()) {
-            logger.error("ProtocolRole doesn't have any Events/ Streams to subscribe");
-            return;
+
+        if (protocolRole.getEventTopics() == null && protocolRole.getStreamTopics() == null) {
+            throw new IllegalArgumentException("Passed protocolRole does not specify any events or " +
+                    "streams to subscribe to");
         }
+
+        if (listener == null) {
+            throw new IllegalArgumentException("No listener specified when subscribing to role");
+        }
+
         if (BezirkValidatorUtility.isObjectNotNull(protocolRole.getEventTopics())) {
-            proxyUtil.addTopicsToMaps(subscriber, protocolRole.getEventTopics(),
+            proxyUtil.addTopicsToMaps(zirkId, protocolRole.getEventTopics(),
                     listener, sidMap, eventListenerMap, "Event");
         } else {
             logger.info("No Events to Subscribe");
         }
         if (BezirkValidatorUtility.isObjectNotNull(protocolRole.getStreamTopics())) {
 
-            proxyUtil.addTopicsToMaps(subscriber, protocolRole.getStreamTopics(),
+            proxyUtil.addTopicsToMaps(zirkId, protocolRole.getStreamTopics(),
                     listener, sidMap, streamListenerMap, "Stream");
 
         } else {
@@ -137,71 +138,90 @@ public class Proxy implements Bezirk {
         SubscribedRole subRole = new SubscribedRole(protocolRole);
 
         //Subscribe to protocol
-        proxy.subscribeService((BezirkZirkId) subscriber, subRole);
+        proxy.subscribeService(zirkId, subRole);
     }
 
     @Override
-    public boolean unsubscribe(ZirkId subscriber, ProtocolRole protocolRole) {
-        if (null == subscriber || null == protocolRole) {
-            logger.error("Null Values for unsubscribe method");
-            return false;
+    public boolean unsubscribe(ProtocolRole protocolRole) {
+        if (protocolRole == null) {
+            throw new IllegalArgumentException("Cannot unsubscribe from a null role");
         }
 
-        return proxy.unsubscribe((BezirkZirkId) subscriber, new SubscribedRole(protocolRole));
+        return proxy.unsubscribe(zirkId, new SubscribedRole(protocolRole));
     }
 
     @Override
-    public void sendEvent(ZirkId sender, Address receiver,
+    public void sendEvent(Event event) {
+        sendEvent(new RecipientSelector(new Location(null)), event);
+    }
+
+    @Override
+    public void sendEvent(RecipientSelector recipient, Event event) {
+        if (recipient == null) {
+            throw new IllegalArgumentException("Cannot send an event to a null recipient. You " +
+                    "probably want to use sendEvent(Event)");
+        }
+
+        if (event == null) {
+            throw new IllegalArgumentException("Cannot send a null event");
+        }
+
+        proxy.sendMulticastEvent(zirkId, recipient, event.toJson());
+    }
+
+    @Override
+    public void sendEvent(ZirkEndPoint recipient,
                           Event event) {
-        // Check for sending the target!
-        if (null == event || null == sender) {
-            logger.error("Check for null in target or Event or sender");
-            return;
+        if (recipient == null) {
+            throw new IllegalArgumentException("Cannot send an event to a null recipient. You " +
+                    "probably want to use sendEvent(Event)");
         }
-        proxy.sendMulticastEvent((BezirkZirkId) sender, receiver, event.toJson());
+
+        if (event == null) {
+            throw new IllegalArgumentException("Cannot send a null event");
+        }
+
+        proxy.sendUnicastEvent(zirkId, (BezirkZirkEndPoint) recipient, event.toJson());
     }
 
     @Override
-    public void sendEvent(ZirkId sender,
-                          ZirkEndPoint receiver,
-                          Event event) {
-        if (null == receiver || null == event || null == sender) {
-            logger.error("Check for null in receiver or Event or sender");
-            return;
-        }
-        proxy.sendUnicastEvent((BezirkZirkId) sender, (BezirkZirkEndPoint) receiver, event.toJson());
-    }
-
-    @Override
-    public short sendStream(ZirkId sender,
-                            ZirkEndPoint receiver,
+    public short sendStream(ZirkEndPoint recipient,
                             Stream stream, PipedOutputStream dataStream) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
-        activeStreams.put(((BezirkZirkId) sender).getBezirkZirkId() + streamId, stream.topic);
-        BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) receiver;
-        proxy.sendStream((BezirkZirkId) sender, recipientSEP, stream.toJson(), streamId);
+        activeStreams.put(zirkId.getZirkId() + streamId, stream.topic);
+        BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) recipient;
+        proxy.sendStream(zirkId, recipientSEP, stream.toJson(), streamId);
         return streamId;
     }
 
     @Override
-    public short sendStream(ZirkId sender, ZirkEndPoint receiver, Stream stream, File file) {
-        if (null == receiver || null == stream || null == file || file == null || stream.topic.isEmpty()) {
-            logger.error("Check for null values in sendStream()/ Topic might be Empty");
-            return (short) -1;
+    public short sendStream(ZirkEndPoint recipient, Stream stream, File file) {
+        if (recipient == null) {
+            throw new IllegalArgumentException("Cannot send a stream to a null recipient");
         }
+
+        if (stream == null || stream.topic.isEmpty()) {
+            throw new IllegalArgumentException("Null or empty stream specified when sending " +
+                    "a file");
+        }
+
+        if (file == null) {
+            throw new IllegalArgumentException("Cannot send a null file");
+        }
+
         if (!file.exists()) {
-            logger.error("Cannot send file stream. File not found: " + file);
-            return (short) -1;
+            throw new IllegalArgumentException("Cannot send file stream because {} is not found: " +
+                    file.getName());
         }
 
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
-        activeStreams.put(((BezirkZirkId) sender).getBezirkZirkId() + streamId, stream.topic);
-        proxy.sendStream((BezirkZirkId) sender, (BezirkZirkEndPoint) receiver, stream.toJson(), file, streamId);
+        activeStreams.put(zirkId.getZirkId() + streamId, stream.topic);
+        proxy.sendStream(zirkId, (BezirkZirkEndPoint) recipient, stream.toJson(), file, streamId);
         return streamId;
     }
 
     @Override
-    public void requestPipeAuthorization(ZirkId requester, Pipe pipe, PipePolicy allowedIn,
+    public void requestPipeAuthorization(Pipe pipe, PipePolicy allowedIn,
                                          PipePolicy allowedOut, BezirkListener listener) {
         // TODO: Design and implement pipes API
     }
@@ -213,21 +233,20 @@ public class Proxy implements Bezirk {
     }
 
     @Override
-    public void discover(ZirkId zirk, Address scope,
+    public void discover(RecipientSelector scope,
                          ProtocolRole protocolRole, long timeout,
                          int maxResults, BezirkListener listener) {
-        // update discovery map
         discoveryCount = (++discoveryCount) % Integer.MAX_VALUE;
-        dListenerMap.put((BezirkZirkId) zirk, new DiscoveryBookKeeper(discoveryCount, listener));
-        proxy.discover((BezirkZirkId) zirk, scope, new SubscribedRole(protocolRole), discoveryCount, timeout, maxResults);
+        dListenerMap.put(zirkId, new DiscoveryBookKeeper(discoveryCount, listener));
+        proxy.discover(zirkId, scope, new SubscribedRole(protocolRole), discoveryCount, timeout, maxResults);
     }
 
     @Override
-    public void setLocation(ZirkId zirk, Location location) {
+    public void setLocation(Location location) {
         if (location == null) {
-            logger.error("Location is null or Empty, Services cannot set the location as null");
+            throw new IllegalArgumentException("Cannot set a null location");
         } else {
-            proxy.setLocation((BezirkZirkId) zirk, location);
+            proxy.setLocation(zirkId, location);
         }
     }
 
@@ -248,7 +267,5 @@ public class Proxy implements Bezirk {
         public BezirkListener getListener() {
             return listener;
         }
-
     }
-
 }

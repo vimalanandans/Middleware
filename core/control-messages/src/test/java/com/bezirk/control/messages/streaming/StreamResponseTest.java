@@ -2,7 +2,7 @@ package com.bezirk.control.messages.streaming;
 
 import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.streaming.control.Objects.StreamRecord.StreamingStatus;
 import com.bezrik.network.BezirkNetworkUtilities;
 
@@ -28,8 +28,8 @@ public class StreamResponseTest {
     private static final Logger logger = LoggerFactory.getLogger(StreamResponseTest.class);
 
     private static final String sphereName = "Home";
-    private static final BezirkZirkId serviceAId = new BezirkZirkId("ServiceA");
-    private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
+    private static final ZirkId serviceAId = new ZirkId("ServiceA");
+    private static final ZirkId serviceBId = new ZirkId("ServiceB");
     private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceAId);
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceBId);
     private static InetAddress inetAddr;

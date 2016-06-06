@@ -2,7 +2,7 @@ package com.bezrik.network;
 
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +60,7 @@ public final class BezirkNetworkUtilities {
                     for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                         InetAddress inetAddress = enumIpAddr.nextElement();
                         if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-                            logger.debug("IP Address determined: " + inetAddress.getHostAddress());
+                            logger.debug("IP address determined: " + inetAddress.getHostAddress());
                             curInterface = intf;
                             return inetAddress;
                         }
@@ -84,7 +84,7 @@ public final class BezirkNetworkUtilities {
         for (Enumeration<InetAddress> enumIpAddr = curInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
             InetAddress inetAddress = enumIpAddr.nextElement();
             if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-                //logger.info("IP Address determined: " + inetAddress.getHostAddress());
+                //logger.info("IP address determined: " + inetAddress.getHostAddress());
                 return inetAddress;
             }
         }
@@ -104,7 +104,7 @@ public final class BezirkNetworkUtilities {
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-                        //                        Log.i(TAG,"MAC Address determined: " + Hex.encodeToString(intf.getHardwareAddress()));
+                        //                        Log.i(TAG,"MAC address determined: " + Hex.encodeToString(intf.getHardwareAddress()));
                         return intf.getHardwareAddress();
                     }
 
@@ -116,7 +116,7 @@ public final class BezirkNetworkUtilities {
         return null;
     }
 
-    public static BezirkZirkEndPoint getServiceEndPoint(BezirkZirkId zirkId) {
+    public static BezirkZirkEndPoint getServiceEndPoint(ZirkId zirkId) {
         BezirkZirkEndPoint sep = new BezirkZirkEndPoint(zirkId);
         sep.device = getLocalInet().getHostAddress();
         return sep;

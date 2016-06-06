@@ -2,7 +2,7 @@ package com.bezirk.sadl;
 
 import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -21,9 +21,9 @@ import static org.junit.Assert.assertNull;
 public class LocationServicesTest {
     private final static Logger logger = LoggerFactory.getLogger(LocationServicesTest.class);
 
-    private static final BezirkZirkId bezirkZirkAId = new BezirkZirkId("ServiceA");
-    private static final BezirkZirkId bezirkZirkCId = new BezirkZirkId("ServiceC");
-    private static final BezirkZirkId dummyServiceId = new BezirkZirkId("InvalidServiceForTest");
+    private static final ZirkId bezirkZirkAId = new ZirkId("ServiceA");
+    private static final ZirkId bezirkZirkCId = new ZirkId("ServiceC");
+    private static final ZirkId dummyServiceId = new ZirkId("InvalidServiceForTest");
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
     private static BezirkSadlManager bezirkSadlManager = null;
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");

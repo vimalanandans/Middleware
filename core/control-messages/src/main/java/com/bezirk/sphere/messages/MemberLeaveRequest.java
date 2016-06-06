@@ -3,7 +3,7 @@ package com.bezirk.sphere.messages;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.MulticastControlMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 /**
  * This message is used to initiate 'leave' from a member of the sphere owning a zirk it shared
@@ -14,7 +14,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkId;
 public class MemberLeaveRequest extends MulticastControlMessage {
     //private final String sphere_Name;
     private final static Discriminator discriminator = ControlMessage.Discriminator.MemberLeaveRequest;
-    private final BezirkZirkId serviceId;
+    private final ZirkId serviceId;
 
     /**
      * Used with for multicasting the leave request by the member of a sphere
@@ -24,13 +24,13 @@ public class MemberLeaveRequest extends MulticastControlMessage {
      * @param sphere_Name
      * @param sender
      */
-    public MemberLeaveRequest(String sphereID, BezirkZirkId serviceId, String sphere_Name, BezirkZirkEndPoint sender) {
+    public MemberLeaveRequest(String sphereID, ZirkId serviceId, String sphere_Name, BezirkZirkEndPoint sender) {
         super(sender, sphereID, discriminator);
         this.serviceId = serviceId;
         //this.sphere_Name = sphere_Name;        
     }
 
-    public BezirkZirkId getServiceId() {
+    public ZirkId getServiceId() {
         return serviceId;
     }
 

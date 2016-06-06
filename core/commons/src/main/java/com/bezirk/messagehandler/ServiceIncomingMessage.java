@@ -1,6 +1,6 @@
 package com.bezirk.messagehandler;
 
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
 
 /**
@@ -15,7 +15,7 @@ public class ServiceIncomingMessage {
     /**
      * Recipient of this msg
      */
-    protected BezirkZirkId recipient;
+    protected ZirkId recipient;
 
     /**
      * @param json The Json String that is to be deserialized
@@ -39,7 +39,7 @@ public class ServiceIncomingMessage {
         return callbackDiscriminator;
     }
 
-    public BezirkZirkId getRecipient() {
+    public ZirkId getRecipient() {
         return recipient;
     }
 }

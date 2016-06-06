@@ -8,8 +8,11 @@ import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.Message;
+import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -30,15 +33,15 @@ public class BRForService implements BroadcastReceiver {
     private static final LinkedHashMap<String, Long> duplicateMsgMap = new LinkedHashMap<String, Long>();
     private static final LinkedHashMap<String, Long> duplicateStreamMap = new LinkedHashMap<String, Long>();
     private final HashMap<String, String> activeStreams;
-    private final HashMap<BezirkZirkId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap;
+    private final HashMap<ZirkId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap;
     private final HashMap<String, HashSet<BezirkListener>> eventListenerMap;
-    private final HashMap<BezirkZirkId, HashSet<BezirkListener>> sidMap;
+    private final HashMap<ZirkId, HashSet<BezirkListener>> sidMap;
     private final HashMap<String, HashSet<BezirkListener>> streamListenerMap;
 
     public BRForService(HashMap<String, String> activeStreams,
-                        HashMap<BezirkZirkId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap,
+                        HashMap<ZirkId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap,
                         HashMap<String, HashSet<BezirkListener>> eventListenerMap,
-                        HashMap<BezirkZirkId, HashSet<BezirkListener>> sidMap,
+                        HashMap<ZirkId, HashSet<BezirkListener>> sidMap,
                         HashMap<String, HashSet<BezirkListener>> streamListenerMap) {
         super();
         this.activeStreams = activeStreams;
@@ -108,17 +111,18 @@ public class BRForService implements BroadcastReceiver {
      * @param eCallbackMessage
      */
     private void handleEventCallback(EventIncomingMessage eCallbackMessage) {
-        logger.debug("About to callback sid:" + eCallbackMessage.getRecipient().getBezirkZirkId() + " for id:" + eCallbackMessage.msgId);
+        logger.debug("About to callback sid:" + eCallbackMessage.getRecipient().getZirkId() + " for id:" + eCallbackMessage.msgId);
         //Make a combined sid for sender and recipient
-        String combinedSid = eCallbackMessage.senderEndPoint.zirkId.getBezirkZirkId() + ":" + eCallbackMessage.getRecipient().getBezirkZirkId();
+        String combinedSid = eCallbackMessage.senderEndPoint.zirkId.getZirkId() + ":" + eCallbackMessage.getRecipient().getZirkId();
         if (checkDuplicateMsg(combinedSid, eCallbackMessage.msgId)) {
             HashSet<BezirkListener> tempListenersSidMap = sidMap.get(eCallbackMessage.getRecipient());
             HashSet<BezirkListener> tempListenersTopicsMap = eventListenerMap.get(eCallbackMessage.eventTopic);
             if (null != tempListenersSidMap && null != tempListenersTopicsMap) {
                 for (BezirkListener invokingListener : tempListenersSidMap) {
                     if (tempListenersTopicsMap.contains(invokingListener)) {
+                        Event event = Message.fromJson(eCallbackMessage.serializedEvent, Event.class);
                         invokingListener.receiveEvent(eCallbackMessage.eventTopic,
-                                eCallbackMessage.serializedEvent, eCallbackMessage.senderEndPoint);
+                                event, eCallbackMessage.senderEndPoint);
                     }
                 }
             }
@@ -133,10 +137,12 @@ public class BRForService implements BroadcastReceiver {
      * @param strmMsg streamMessage that will be given back to the services.
      */
     private void handlerStreamUnicastCallback(StreamIncomingMessage strmMsg) {
-        if (checkDuplicateStream(strmMsg.senderSEP.zirkId.getBezirkZirkId(), strmMsg.localStreamId)) {
+        if (checkDuplicateStream(strmMsg.senderSEP.zirkId.getZirkId(), strmMsg.localStreamId)) {
             if (streamListenerMap.containsKey(strmMsg.streamTopic)) {
                 for (BezirkListener listener : streamListenerMap.get(strmMsg.streamTopic)) {
-                    listener.receiveStream(strmMsg.streamTopic, strmMsg.serializedStream, strmMsg.localStreamId, strmMsg.file, strmMsg.senderSEP);
+                    Stream stream = Message.fromJson(strmMsg.serializedStream, Stream.class);
+                    listener.receiveStream(strmMsg.streamTopic, stream, strmMsg.localStreamId,
+                            strmMsg.file, strmMsg.senderSEP);
                 }
             } else {
                 logger.error("StreamListenerMap does not have a mapped Stream");
@@ -153,7 +159,7 @@ public class BRForService implements BroadcastReceiver {
      * @param streamStatusCallbackMessage StreamStatusCallback that will be invoked for the services.
      */
     private void handleStreamStatusCallback(StreamStatusMessage streamStatusCallbackMessage) {
-        String activeStreamKey = streamStatusCallbackMessage.getRecipient().getBezirkZirkId() + streamStatusCallbackMessage.streamId;
+        String activeStreamKey = streamStatusCallbackMessage.getRecipient().getZirkId() + streamStatusCallbackMessage.streamId;
         if (activeStreams.containsKey(activeStreamKey)) {
             HashSet<BezirkListener> tempHashSet = streamListenerMap.get(activeStreams.get(activeStreamKey));
             if (tempHashSet != null && !tempHashSet.isEmpty()) {

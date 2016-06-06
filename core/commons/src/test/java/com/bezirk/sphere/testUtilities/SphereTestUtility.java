@@ -8,7 +8,7 @@ import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.Zirk;
@@ -43,22 +43,22 @@ public class SphereTestUtility {
     /* owner services names and ids */
     public final String OWNER_ZIRK_NAME_1 = "OWNER_ZIRK_NAME_1";
     // public final String MEMBER_SPHERE_ID_2 = UUID.randomUUID().toString();
-    public final BezirkZirkId OWNER_SERVICE_ID_1 = new BezirkZirkId(OWNER_ZIRK_NAME_1);
+    public final ZirkId OWNER_SERVICE_ID_1 = new ZirkId(OWNER_ZIRK_NAME_1);
     public final String OWNER_ZIRK_NAME_2 = "OWNER_ZIRK_NAME_2";
-    public final BezirkZirkId OWNER_SERVICE_ID_2 = new BezirkZirkId(OWNER_ZIRK_NAME_2);
+    public final ZirkId OWNER_SERVICE_ID_2 = new ZirkId(OWNER_ZIRK_NAME_2);
     public final String OWNER_SERVICE_NAME_3 = "OWNER_SERVICE_NAME_3";
-    public final BezirkZirkId OWNER_SERVICE_ID_3 = new BezirkZirkId(OWNER_SERVICE_NAME_3);
+    public final ZirkId OWNER_SERVICE_ID_3 = new ZirkId(OWNER_SERVICE_NAME_3);
     public final String OWNER_SERVICE_NAME_4 = "OWNER_SERVICE_NAME_4";
-    public final BezirkZirkId OWNER_SERVICE_ID_4 = new BezirkZirkId(OWNER_SERVICE_NAME_4);
+    public final ZirkId OWNER_SERVICE_ID_4 = new ZirkId(OWNER_SERVICE_NAME_4);
     /* member services names and ids */
     public final String MEMBER_ZIRK_NAME_1 = "MEMBER_ZIRK_NAME_1";
-    public final BezirkZirkId MEMBER_SERVICE_ID_1 = new BezirkZirkId(MEMBER_ZIRK_NAME_1);
+    public final ZirkId MEMBER_SERVICE_ID_1 = new ZirkId(MEMBER_ZIRK_NAME_1);
     public final String MEMBER_ZIRK_NAME_2 = "MEMBER_ZIRK_NAME_2";
-    public final BezirkZirkId MEMBER_SERVICE_ID_2 = new BezirkZirkId(MEMBER_ZIRK_NAME_2);
+    public final ZirkId MEMBER_SERVICE_ID_2 = new ZirkId(MEMBER_ZIRK_NAME_2);
     public final String MEMBER_ZIRK_NAME_3 = "MEMBER_ZIRK_NAME_3";
-    public final BezirkZirkId MEMBER_SERVICE_ID_3 = new BezirkZirkId(MEMBER_ZIRK_NAME_3);
+    public final ZirkId MEMBER_SERVICE_ID_3 = new ZirkId(MEMBER_ZIRK_NAME_3);
     public final String MEMBER_ZIRK_NAME_4 = "MEMBER_ZIRK_NAME_4";
-    public final BezirkZirkId MEMBER_SERVICE_ID_4 = new BezirkZirkId(MEMBER_ZIRK_NAME_4);
+    public final ZirkId MEMBER_SERVICE_ID_4 = new ZirkId(MEMBER_ZIRK_NAME_4);
     /* devices */
     public final BezirkDeviceInterface DEVICE_1;
     public final BezirkDeviceInterface DEVICE_2;
@@ -90,18 +90,18 @@ public class SphereTestUtility {
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId);
         Zirk zirk1 = new OwnerZirk(OWNER_ZIRK_NAME_1, DEVICE_1.getDeviceId(), sphereSet1);
-        sphereRegistryWrapper.addService(OWNER_SERVICE_ID_1.getBezirkZirkId(), zirk1);
+        sphereRegistryWrapper.addService(OWNER_SERVICE_ID_1.getZirkId(), zirk1);
 
         // create zirk2
         HashSet<String> sphereSet2 = new HashSet<>();
         sphereSet2.add(sphereId);
         Zirk zirk2 = new OwnerZirk(OWNER_ZIRK_NAME_2, DEVICE_1.getDeviceId(), sphereSet2);
-        sphereRegistryWrapper.addService(OWNER_SERVICE_ID_2.getBezirkZirkId(), zirk2);
+        sphereRegistryWrapper.addService(OWNER_SERVICE_ID_2.getZirkId(), zirk2);
 
-        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<ZirkId>> deviceServices = new LinkedHashMap<>();
 
         // create list of services for the sphere
-        ArrayList<BezirkZirkId> services = new ArrayList<>();
+        ArrayList<ZirkId> services = new ArrayList<>();
         services.add(OWNER_SERVICE_ID_1);
         services.add(OWNER_SERVICE_ID_2);
 
@@ -123,11 +123,11 @@ public class SphereTestUtility {
      */
     public final BezirkDeviceInfo getBezirkDeviceInfo() {
         // create sharingService1
-        BezirkZirkInfo sharingService1 = new BezirkZirkInfo(OWNER_SERVICE_ID_3.getBezirkZirkId(), OWNER_SERVICE_NAME_3,
+        BezirkZirkInfo sharingService1 = new BezirkZirkInfo(OWNER_SERVICE_ID_3.getZirkId(), OWNER_SERVICE_NAME_3,
                 Type.OWNER.toString(), false, false);
 
         // create sharingService2
-        BezirkZirkInfo sharingService2 = new BezirkZirkInfo(OWNER_SERVICE_ID_4.getBezirkZirkId(), OWNER_SERVICE_NAME_4,
+        BezirkZirkInfo sharingService2 = new BezirkZirkInfo(OWNER_SERVICE_ID_4.getZirkId(), OWNER_SERVICE_NAME_4,
                 Type.OWNER.toString(), false, false);
 
         // add services to list

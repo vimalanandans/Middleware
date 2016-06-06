@@ -4,14 +4,14 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 
 public class BezirkZirkEndPoint implements ZirkEndPoint {
     public String device;
-    public final BezirkZirkId zirkId;
+    public final ZirkId zirkId;
 
-    public BezirkZirkEndPoint(String device, BezirkZirkId zirkId) {
+    public BezirkZirkEndPoint(String device, ZirkId zirkId) {
         this.device = device;
         this.zirkId = zirkId;
     }
 
-    public BezirkZirkEndPoint(BezirkZirkId zirkId) {
+    public BezirkZirkEndPoint(ZirkId zirkId) {
         device = null;
         this.zirkId = zirkId;
     }
@@ -37,7 +37,7 @@ public class BezirkZirkEndPoint implements ZirkEndPoint {
         return false;
     }
 
-    public BezirkZirkId getBezirkZirkId() {
+    public ZirkId getBezirkZirkId() {
         return zirkId;
     }
 }

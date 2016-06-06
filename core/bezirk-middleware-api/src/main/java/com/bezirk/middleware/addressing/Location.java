@@ -54,7 +54,7 @@ import java.io.Serializable;
  * For example, a user that connects a light Zirk to a new light may be prompted to enter the
  * location of the light as a string. If the user is using a Zirk that provides location awareness
  * as a service, the names may instead be set by the location Zirk. The location of a Zirk
- * operating a Thing is set using {@link com.bezirk.middleware.Bezirk#setLocation(ZirkId, Location)}.
+ * operating a Thing is set using {@link com.bezirk.middleware.Bezirk#setLocation(Location)}.
  * </p>
  * <h1>Representing Semantic Addresses as Strings</h1>
  * Semantic addresses are represented as strings by listing each scope in descending order
@@ -101,7 +101,7 @@ import java.io.Serializable;
  * override the initial values for any scope.
  * <p>
  * Assuming a Zirk already
- * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener) discovered}
+ * {@link com.bezirk.middleware.Bezirk#discover(RecipientSelector, ProtocolRole, long, int, BezirkListener) discovered}
  * the location service and lights were already configured, the Zirk would turn on all lights in
  * the user's current location using code similar to the following:
  * </p>
@@ -128,7 +128,7 @@ import java.io.Serializable;
  *
  *                  // Send an event to all Things at the semantic address subscribed to the
  *                  // light protocol telling the Things to turn on
- *                  bezirk.sendEvent(lightId, new Address(lightLocation),
+ *                  bezirk.sendEvent(lightId, new RecipientSelector(lightLocation),
  *                                   new ActuateLightEvent(LightOperations.ON);
  *              }
  *         }
@@ -136,8 +136,6 @@ import java.io.Serializable;
  *         // ...
  *     }
  * </pre>
- *
- *
  */
 public class Location implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -225,7 +223,7 @@ public class Location implements Serializable {
     }
 
     /**
-     *  Return the middle scope that helps resolve this <code>Location</code>'s set of Things.
+     * Return the middle scope that helps resolve this <code>Location</code>'s set of Things.
      *
      * @return the middle scope that helps resolve this <code>Location</code>'s set of Things
      */
@@ -234,7 +232,7 @@ public class Location implements Serializable {
     }
 
     /**
-     *  Return the narrowest scope that helps resolve this <code>Location</code>'s set of Things.
+     * Return the narrowest scope that helps resolve this <code>Location</code>'s set of Things.
      *
      * @return the narrowest scope that helps resolve this <code>Location</code>'s set of Things
      */

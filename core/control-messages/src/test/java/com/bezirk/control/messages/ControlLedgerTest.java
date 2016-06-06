@@ -2,7 +2,7 @@ package com.bezirk.control.messages;
 
 import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -30,7 +30,7 @@ public class ControlLedgerTest {
     private static final Boolean retransmit = true;
     private static final Discriminator discriminator = Discriminator.DiscoveryRequest;
     private static final String sphereId = "TestSphere";
-    private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+    private static final ZirkId serviceId = new ZirkId("ServiceA");
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceId);
     private static final com.bezirk.control.messages.ControlMessage message = new ControlMessage(sender, sphereId, discriminator, retransmit);
     private static final byte[] sendData = "DataToBeSent".getBytes();

@@ -1,4 +1,4 @@
-# Bezirk 
+# Bezirk
 
 The Bezirk Middleware project forms the heart of the Bezirk platform. This repository contains the following middleware modules:
 

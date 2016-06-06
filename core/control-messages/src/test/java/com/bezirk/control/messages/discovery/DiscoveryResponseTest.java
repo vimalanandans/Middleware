@@ -2,7 +2,7 @@ package com.bezirk.control.messages.discovery;
 
 import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.AfterClass;
@@ -28,7 +28,7 @@ public class DiscoveryResponseTest {
     private static final Logger logger = LoggerFactory.getLogger(DiscoveryResponseTest.class);
 
     private static final String sphereId = "TestSphere";
-    private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+    private static final ZirkId serviceId = new ZirkId("ServiceA");
     private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceId);
     private static final String requestKey = "REQUEST_KEY";
     private static InetAddress inetAddr;

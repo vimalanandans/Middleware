@@ -39,7 +39,6 @@ public class Event extends Message {
      * @param topic the pub-sub topic for this event
      */
     public Event(Flag flag, String topic) {
-        this.flag = flag;
-        this.topic = topic;
+        super(flag, topic);
     }
 }

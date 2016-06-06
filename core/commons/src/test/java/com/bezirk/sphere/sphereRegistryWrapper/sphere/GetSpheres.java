@@ -22,7 +22,7 @@
 //import BezirkDeviceInterface;
 //import BezirkSphereInfo;
 //import SphereRegistry;
-//import BezirkZirkId;
+//import ZirkId;
 //import ISphereConfig;
 //import BezirkSphereType;
 //import ISphereConfig.Mode;
@@ -111,8 +111,8 @@
 //        HashSet<String> devices = new HashSet<>();
 //        devices.add(sphereTestUtility.DEVICE_2.getDeviceId());
 //        // Map of device id and zirk ids
-//        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
-//        ArrayList<BezirkZirkId> services = new ArrayList<>();
+//        LinkedHashMap<String, ArrayList<ZirkId>> deviceServices = new LinkedHashMap<>();
+//        ArrayList<ZirkId> services = new ArrayList<>();
 //		services.add(sphereTestUtility.MEMBER_SERVICE_ID_1);
 //		deviceServices.put(upaDevice.getDeviceId(), services);
 //		

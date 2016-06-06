@@ -18,9 +18,9 @@ import static org.junit.Assert.assertNull;
 
 /**
  * This class test the Persistence of the BezirkServiceIdPersistence, to check loading and storing of
- * BezirkZirkId when the zirk/s register/s and Unregister/s.
+ * ZirkId when the zirk/s register/s and Unregister/s.
  */
-public class BezirkZirkIdPersistenceTest {
+public class ZirkIdPersistenceTest {
     String DBPath = "./";
     DatabaseConnection dbConnection = null;
 

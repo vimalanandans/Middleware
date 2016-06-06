@@ -6,7 +6,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.device;
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.Zirk;
 import com.bezirk.sphere.impl.Sphere;
@@ -95,15 +95,15 @@ public class GetBezirkDeviceInfo {
         spheres.add(defaultSphereId);
 
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), spheres);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
+        registry.sphereMembership.put(serviceId1.getZirkId(), zirk1);
 
-        ArrayList<BezirkZirkId> services = new ArrayList<>();
+        ArrayList<ZirkId> services = new ArrayList<>();
         services.add(serviceId1);
 
-        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<ZirkId>> deviceServices = new LinkedHashMap<>();
         deviceServices.put(upaDevice.getDeviceId(), services);
         defaultSphere.setDeviceServices(deviceServices);
 
@@ -134,15 +134,15 @@ public class GetBezirkDeviceInfo {
         spheres.add(defaultSphereId);
 
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), spheres);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
+        registry.sphereMembership.put(serviceId1.getZirkId(), zirk1);
 
-        ArrayList<BezirkZirkId> services = new ArrayList<>();
+        ArrayList<ZirkId> services = new ArrayList<>();
         services.add(serviceId1);
 
-        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<ZirkId>> deviceServices = new LinkedHashMap<>();
         deviceServices.put(upaDevice.getDeviceId(), services);
         defaultSphere.setDeviceServices(deviceServices);
 
@@ -178,12 +178,12 @@ public class GetBezirkDeviceInfo {
         spheres.add(defaultSphereId);
 
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), spheres);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
+        registry.sphereMembership.put(serviceId1.getZirkId(), zirk1);
 
-        ArrayList<BezirkZirkId> services = new ArrayList<>();
+        ArrayList<ZirkId> services = new ArrayList<>();
         services.add(serviceId1);
 
         // Passing devices map as null
@@ -206,15 +206,15 @@ public class GetBezirkDeviceInfo {
         spheres.add(defaultSphereId);
 
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), spheres);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
+        registry.sphereMembership.put(serviceId1.getZirkId(), zirk1);
 
-        ArrayList<BezirkZirkId> services = new ArrayList<>();
+        ArrayList<ZirkId> services = new ArrayList<>();
         services.add(serviceId1);
 
-        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<ZirkId>> deviceServices = new LinkedHashMap<>();
         deviceServices.put(upaDevice.getDeviceId(), services);
         defaultSphere.setDeviceServices(deviceServices);
 

@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
 
 /**
@@ -11,7 +11,7 @@ import com.google.gson.Gson;
  */
 public class BezirkSphereLeave extends com.bezirk.control.messages.UnicastControlMessage {
     private final static Discriminator discriminator = com.bezirk.control.messages.ControlMessage.Discriminator.BezirkSphereLeave;
-    private final BezirkZirkId serviceId;
+    private final ZirkId serviceId;
     private final long time;
 
     /**
@@ -21,7 +21,7 @@ public class BezirkSphereLeave extends com.bezirk.control.messages.UnicastContro
      * @param serviceId
      * @param recipient
      */
-    public BezirkSphereLeave(String sphereID, BezirkZirkId serviceId, BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient) {
+    public BezirkSphereLeave(String sphereID, ZirkId serviceId, BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient) {
         super(sender, recipient, sphereID, discriminator, true);
         //public UnicastControlMessage(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereName,
         //String discriminator, Boolean retransmit, String key){
@@ -39,7 +39,7 @@ public class BezirkSphereLeave extends com.bezirk.control.messages.UnicastContro
         return gson.fromJson(json, dC);
     }
 
-    public BezirkZirkId getServiceId() {
+    public ZirkId getServiceId() {
         return serviceId;
     }
 

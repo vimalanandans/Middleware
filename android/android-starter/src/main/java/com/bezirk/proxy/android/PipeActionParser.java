@@ -7,7 +7,7 @@ import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.pipe.core.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRequest;
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -60,7 +60,7 @@ public class PipeActionParser {
             return null;
         }
 
-        BezirkZirkId serviceId = serviceIdFromString(serviceIdAsString);
+        ZirkId serviceId = serviceIdFromString(serviceIdAsString);
         if (serviceId == null) {
             logger.error("Intent not valid because there was a failure validating zirkId");
             return null;
@@ -90,9 +90,9 @@ public class PipeActionParser {
         return pipeRequest;
     }
 
-    private BezirkZirkId serviceIdFromString(String serviceIdAsString) {
+    private ZirkId serviceIdFromString(String serviceIdAsString) {
         Gson gson = new Gson();
-        BezirkZirkId serviceId = gson.fromJson(serviceIdAsString, BezirkZirkId.class);
+        ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
         if (!checkBezirkZirkId(serviceId)) {
             logger.error("zirkId not valid: " + serviceId);
             return null;

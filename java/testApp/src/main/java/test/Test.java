@@ -4,55 +4,116 @@
 package test;
 
 import com.bezirk.middleware.Bezirk;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.ZirkId;
+import com.bezirk.middleware.addressing.Pipe;
+import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.RecipientSelector;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.Message.Flag;
+import com.bezirk.middleware.messages.MulticastStream;
+import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.Stream;
 import com.bezirk.middleware.proxy.Factory;
 
+import java.io.File;
+import java.io.InputStream;
+import java.util.Set;
 
-/**
- * Written for the bezirk basics training
- */
 public class Test {
-
-    private Bezirk bezirk;
-    private ZirkId myId;
+    private final Bezirk senderBezirk;
+    private final Bezirk receiverBezirk;
 
     public Test() {
-        // set up sending messages over bezirk
-        bezirk = Factory.getInstance();
-        myId = bezirk.registerZirk(Test.class.getSimpleName());
+        senderBezirk = Factory.registerZirk("sender");
+        receiverBezirk = Factory.registerZirk("receiver");
+
+        receiverBezirk.subscribe(new TestRole(), new ReceiverListener());
+        receiverBezirk.setLocation(new Location("test/location"));
     }
 
     public static void main(String[] args) {
         Test test = new Test();
-        test.sayHello();
-
-  /*      ZyreDemo zyreDemo = new ZyreDemo();
-        zyreDemo.init();
-        zyreDemo.onStart();*/
+        test.send();
     }
 
-    /**
-     *
-     */
-    public void sayHello() {
-        // Note: the usual way to say "hello world" in Java
-        System.out.println("Hello World");
+    public void send() {
+        Event helloEvent = new TestEvent();
+        senderBezirk.sendEvent(helloEvent);
+        System.out.println("Sender Published: " + helloEvent.toJson());
 
-        // Steps to publish an even over Bezirk:
-        // 1. set the targeted address
-        Address target = new Address(new Location(null));        // local only (no pipes) with no constraints on location: will reach all services in the spheres test.Test is a member of
+        Stream helloStream = new TestStream();
+        // TODO: create data stream and send it
 
-        // 2. set the event to be published
-        Event hello = new Event(Flag.NOTICE, "Hello World");
+        // TODO: send file stream
+    }
 
-        // 3. publish "hello world" to all in the target address
-        bezirk.sendEvent(myId, target, hello);
+    private static class TestEvent extends Event {
+        private static final String TOPIC = "Hello World";
 
-        // sanity check: display the event that was just published
-        System.out.println("Published: " + hello.toJson());
+        public TestEvent() {
+            super(Flag.NOTICE, TOPIC);
+        }
+    }
+
+    private static class TestRole extends ProtocolRole {
+        public String getRoleName() {
+            return TestRole.class.getSimpleName();
+        }
+
+        public String getDescription() {
+            return "This role is simply used for testing";
+        }
+
+        public String[] getEventTopics() {
+            String[] topics = {TestEvent.TOPIC};
+            return topics;
+        }
+
+        public String[] getStreamTopics() {
+            return null;
+        }
+    }
+
+    private static class TestStream extends MulticastStream {
+        public TestStream() {
+            super(Flag.NOTICE, "Hello Stream", new RecipientSelector(new Location("test/location")));
+        }
+    }
+
+    private static class ReceiverListener implements BezirkListener {
+        @Override
+        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
+            System.out.println("Received Event with topic: " + event.topic);
+        }
+
+        @Override
+        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+            // TODO: Receive data stream
+        }
+
+        @Override
+        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
+            // TODO: Receive file stream
+        }
+
+        @Override
+        public void streamStatus(short streamId, StreamStates status) {
+        }
+
+        @Override
+        public void pipeStatus(Pipe pipe, PipeStates status) {
+        }
+
+        @Override
+        public void discovered(Set<DiscoveredZirk> zirkSet) {
+        }
+
+        @Override
+        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
+                                PipePolicy allowedOut) {
+
+        }
     }
 }

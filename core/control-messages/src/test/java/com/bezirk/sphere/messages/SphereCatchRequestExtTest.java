@@ -3,7 +3,7 @@ package com.bezirk.sphere.messages;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.BezirkDeviceInfo.BezirkDeviceRole;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 import org.junit.AfterClass;
@@ -25,12 +25,12 @@ import static org.junit.Assert.*;
 public class SphereCatchRequestExtTest {
     private static final Logger logger = LoggerFactory.getLogger(SphereCatchRequestExtTest.class);
 
-    private static final BezirkZirkId serviceAId = new BezirkZirkId("ServiceA");
+    private static final ZirkId serviceAId = new ZirkId("ServiceA");
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceAId);
-    private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
+    private static final ZirkId serviceBId = new ZirkId("ServiceB");
 
-    private static final BezirkZirkInfo serviceAInfo = new BezirkZirkInfo(serviceAId.getBezirkZirkId(), "ServiceA", "TESTA", true, true);
-    private static final BezirkZirkInfo serviceBInfo = new BezirkZirkInfo(serviceBId.getBezirkZirkId(), "ServiceB", "TESTB", true, true);
+    private static final BezirkZirkInfo serviceAInfo = new BezirkZirkInfo(serviceAId.getZirkId(), "ServiceA", "TESTA", true, true);
+    private static final BezirkZirkInfo serviceBInfo = new BezirkZirkInfo(serviceBId.getZirkId(), "ServiceB", "TESTB", true, true);
     private static List<BezirkZirkInfo> services = new ArrayList<>();
     private static BezirkDeviceInfo bezirkDeviceInfo = null;
 

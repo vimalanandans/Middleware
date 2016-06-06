@@ -1,6 +1,6 @@
 package com.bezirk.messagehandler;
 
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 /**
  * Pojo class for Discovery notifier containing all the fields that are necessary to give the
@@ -22,7 +22,7 @@ public final class DiscoveryIncomingMessage extends ServiceIncomingMessage {
         callbackDiscriminator = "DISCOVERY";
     }
 
-    public DiscoveryIncomingMessage(BezirkZirkId serviceId, String discoveredList, int discoveryId, Boolean isSphereDiscovery) {
+    public DiscoveryIncomingMessage(ZirkId serviceId, String discoveredList, int discoveryId, Boolean isSphereDiscovery) {
         super();
         callbackDiscriminator = "DISCOVERY";
         recipient = serviceId;

@@ -1,7 +1,7 @@
 package com.bezirk.sphere.messages;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -41,7 +41,7 @@ public class SphereDiscoveryRequestTest {
     public void testSphereDiscoveryRequest() {
 
         String scanSphereId = "SCANNEDID";
-        BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+        ZirkId serviceId = new ZirkId("ServiceA");
         BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceId);
         com.bezirk.sphere.messages.SphereDiscoveryRequest sphereDiscoveryRequest = new com.bezirk.sphere.messages.SphereDiscoveryRequest(scanSphereId, sender);
         String serializedMessage = sphereDiscoveryRequest.serialize();

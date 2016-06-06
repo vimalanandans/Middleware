@@ -29,11 +29,11 @@ public class ProxyHelper {
     }
 
     private void addListener(Map<String, List<BezirkListener>> listenerMap, BezirkListener listener, String type, String topic) {
-        List<BezirkListener> serviceList = listenerMap.get(topic);
-        if (serviceList.contains(listener)) {
+        List<BezirkListener> zirkList = listenerMap.get(topic);
+        if (zirkList.contains(listener)) {
             Log.w(TAG, type + " already registered with the " + type + "Label " + topic);
         } else {
-            serviceList.add(listener);
+            zirkList.add(listener);
         }
     }
 }

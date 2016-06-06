@@ -15,7 +15,7 @@ import com.bezirk.middleware.objects.BezirkPipeInfo;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.sphere.api.BezirkSphereMessages;
 import com.bezirk.sphere.api.ISphereConfig;
@@ -131,12 +131,12 @@ public class BezirkSphere
     }
 
     @Override
-    public boolean registerZirk(BezirkZirkId zirkId, String zirkName) {
+    public boolean registerZirk(ZirkId zirkId, String zirkName) {
         return sphereRegistryWrapper.registerService(zirkId, zirkName);
     }
 
     @Override
-    public boolean unregisterZirk(BezirkZirkId serviceId) {
+    public boolean unregisterZirk(ZirkId serviceId) {
         // TODO Implement
         return false;
     }
@@ -162,17 +162,17 @@ public class BezirkSphere
     }
 
     @Override
-    public Iterable<String> getSphereMembership(BezirkZirkId zirkId) {
+    public Iterable<String> getSphereMembership(ZirkId zirkId) {
         return sphereRegistryWrapper.getSphereMembership(zirkId);
     }
 
     @Override
-    public boolean isZirkInSphere(BezirkZirkId service, String sphereId) {
+    public boolean isZirkInSphere(ZirkId service, String sphereId) {
         return sphereRegistryWrapper.isServiceInSphere(service, sphereId);
     }
 
     @Override
-    public String getZirkName(BezirkZirkId serviceId) {
+    public String getZirkName(ZirkId serviceId) {
         return sphereRegistryWrapper.getServiceName(serviceId);
     }
 
@@ -232,7 +232,7 @@ public class BezirkSphere
     }
 
     @Override
-    public boolean addLocalServicesToSphere(Iterable<BezirkZirkId> serviceIds, String sphereId) {
+    public boolean addLocalServicesToSphere(Iterable<ZirkId> serviceIds, String sphereId) {
         return sphereRegistryWrapper.addLocalServicesToSphere(serviceIds, sphereId);
     }
 

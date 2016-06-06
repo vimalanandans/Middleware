@@ -3,7 +3,7 @@ package com.bezirk.sphere.messages;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -26,8 +26,8 @@ public class SphereCatchResponseTest {
 
     private static final String SERVICE_A = "ServiceA";
 
-    private static final BezirkZirkId serviceAId = new BezirkZirkId(SERVICE_A);
-    private static final BezirkZirkInfo serviceAInfo = new BezirkZirkInfo(serviceAId.getBezirkZirkId(), SERVICE_A, "TEST", true, true);
+    private static final ZirkId serviceAId = new ZirkId(SERVICE_A);
+    private static final BezirkZirkInfo serviceAInfo = new BezirkZirkInfo(serviceAId.getZirkId(), SERVICE_A, "TEST", true, true);
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceAId);
 
     /**

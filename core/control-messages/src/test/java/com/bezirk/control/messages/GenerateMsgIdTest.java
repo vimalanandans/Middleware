@@ -1,7 +1,7 @@
 package com.bezirk.control.messages;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -42,7 +42,7 @@ public class GenerateMsgIdTest {
     @Test
     public void testGenerateEvtId() {
 
-        BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+        ZirkId serviceId = new ZirkId("ServiceA");
         BezirkZirkEndPoint sep = new BezirkZirkEndPoint("DeviceA", serviceId);
         String eventId = com.bezirk.control.messages.GenerateMsgId.generateEvtId(sep);
         sep.device = "DeviceB";

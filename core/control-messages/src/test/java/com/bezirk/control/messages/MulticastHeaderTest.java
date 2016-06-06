@@ -3,10 +3,10 @@
  */
 package com.bezirk.control.messages;
 
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -25,10 +25,10 @@ public class MulticastHeaderTest {
     private static final Logger logger = LoggerFactory.getLogger(MulticastControlMessageTest.class);
 
     private static final String sphereName = "TestSphere";
-    private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+    private static final ZirkId serviceId = new ZirkId("ServiceA");
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceId);
     private static final Location loc = new Location("OFFICE1", "BLOCk1", "ROOM1");
-    private static final Address address = new Address(loc);
+    private static final RecipientSelector RECIPIENT_SELECTOR = new RecipientSelector(loc);
     private static final String messageId = "TestID";
     private static final String topic = "Message";
 
@@ -57,7 +57,7 @@ public class MulticastHeaderTest {
 
         com.bezirk.control.messages.MulticastHeader multicastHeader = prepareMulticastHeader();
 
-        assertEquals("Address not equal to the set value.", address, multicastHeader.getAddress());
+        assertEquals("RecipientSelector not equal to the set value.", RECIPIENT_SELECTOR, multicastHeader.getRecipientSelector());
         /*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
 		 * device null condition should be checked separately before device equals in BezirkServiceEndpoint equals api.
 		 * 
@@ -72,7 +72,7 @@ public class MulticastHeaderTest {
 
     private com.bezirk.control.messages.MulticastHeader prepareMulticastHeader() {
         com.bezirk.control.messages.MulticastHeader multicastHeader = new com.bezirk.control.messages.MulticastHeader();
-        multicastHeader.setAddress(address);
+        multicastHeader.setRecipientSelector(RECIPIENT_SELECTOR);
         multicastHeader.setSenderSEP(sender);
         multicastHeader.setSphereName(sphereName);
         multicastHeader.setTopic(topic);
