@@ -26,7 +26,6 @@ public class JavaPrefs extends SpherePrefs {
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
-
     }
 
     @Override
