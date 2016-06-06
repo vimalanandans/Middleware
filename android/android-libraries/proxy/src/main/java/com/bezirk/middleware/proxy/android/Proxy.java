@@ -51,8 +51,8 @@ public final class Proxy implements Bezirk {
     private static final String ACTION_BEZIRK_SETLOCATION = "LOCATION";
     private static final String ACTION_BEZIRK_PUSH_UNICAST_STREAM = "UNICAST_STREAM";
     private static final String ACTION_BEZIRK_PUSH_MULTICAST_STREAM = "MULTICAST_STREAM";
-    private static final String COMPONENT_NAME = "com.bosch.upa.uhu.controlui";
-    private static final String SERVICE_PKG_NAME = "com.bosch.upa.uhu.starter.MainService";
+    private static final String COMPONENT_NAME = "com.bezirk.controlui";
+    private static final String SERVICE_PKG_NAME = "com.bezirk.starter.MainService";
     private static final ProxyHelper proxyHelper = new ProxyHelper();
     static Context context;
     static BezirkListener DiscoveryListener;
