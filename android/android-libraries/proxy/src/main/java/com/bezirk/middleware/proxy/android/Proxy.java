@@ -67,7 +67,7 @@ public final class Proxy implements Bezirk {
         this.zirkId = zirkId;
     }
 
-    public static ZirkId registerZirk(final String zirkName) {
+    public static ZirkId registerZirk(Context context, final String zirkName) {
         Log.i(TAG, "RegisteringService: " + zirkName);
         if (zirkName == null) {
             throw new IllegalArgumentException("Cannot register a Zirk with a null name");
