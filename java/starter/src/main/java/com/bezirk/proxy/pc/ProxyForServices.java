@@ -74,7 +74,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
 
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            logger.error("Zirk Not Registered with any sphere");
+            logger.error("Zirk not registered with any sphere");
             return;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
@@ -144,7 +144,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
     public void discover(final ZirkId serviceId, final RecipientSelector recipientSelector, final SubscribedRole pRole, final int discoveryId, final long timeout, final int maxDiscovered) {
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(serviceId);
         if (null == listOfSphere) {
-            logger.error("Zirk not tegistered with the sphere");
+            logger.error("Zirk not registered with the sphere");
             return;
         }
 
