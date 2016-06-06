@@ -22,6 +22,7 @@ import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.Stream;
 
@@ -52,10 +53,11 @@ public interface BezirkListener {
      *
      * @param topic  the event's topic. Topics are defined by
      *               {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles}
-     * @param event  the received event serialized as a JSON string
+     * @param event  the received event. Use <code>topic</code> to determine the more specific type
+     *               of the event if you need to cast it to access custom class members.
      * @param sender the Zirk that sent the event
      */
-    public void receiveEvent(String topic, String event, ZirkEndPoint sender);
+    public void receiveEvent(String topic, Event event, ZirkEndPoint sender);
 
     /**
      * Called by the Bezirk middleware when a <code>stream</code> arrives whose topic the Zirk
@@ -66,13 +68,15 @@ public interface BezirkListener {
      *
      * @param topic       the event's topic. Topics are defined by
      *                    {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles}
-     * @param stream      the received stream's descriptor serialized as JSON string
+     * @param stream      the received stream descriptor. Use <code>topic</code> to determine the
+     *                    more specific type of the descriptor if you need to cast it to access
+     *                    custom class members.
      * @param streamId    Bezirk middleware-generated id for the stream, used to refer to the stream in
      *                    {@link #streamStatus(short, StreamStates)}
      * @param inputStream input stream containing the received data
      * @param sender      the Zirk that sent the stream
      */
-    public void receiveStream(String topic, String stream, short streamId, InputStream inputStream,
+    public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream,
                               ZirkEndPoint sender);
 
     /**
@@ -84,13 +88,15 @@ public interface BezirkListener {
      *
      * @param topic    the event's topic. Topics are defined by
      *                 {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles}
-     * @param stream   the received stream's descriptor serialized as JSON string
+     * @param stream   the received stream descriptor. Use <code>topic</code> to determine the
+     *                 more specific type of the descriptor if you need to cast it to access
+     *                 custom class members.
      * @param streamId Bezirk middleware-generated id for the stream, used to refer to the stream in
      *                 {@link #streamStatus(short, StreamStates)}
      * @param file     the received file
      * @param sender   the Zirk that sent the stream
      */
-    public void receiveStream(String topic, String stream, short streamId, File file,
+    public void receiveStream(String topic, Stream stream, short streamId, File file,
                               ZirkEndPoint sender);
 
     /**
@@ -98,7 +104,7 @@ public interface BezirkListener {
      * by <code>streamId</code>, or when an incremental stream closes.
      *
      * @param streamId as returned by {@link Bezirk#sendStream(ZirkEndPoint, Stream, java.io.PipedOutputStream)}
-     *                 or received in {@link #receiveStream(String, String, short, InputStream, ZirkEndPoint)}
+     *                 or received in {@link #receiveStream(String, Stream, short, InputStream, ZirkEndPoint)}
      * @param status   the status of the stream referenced by <code>streamId</code>
      */
     public void streamStatus(short streamId, StreamStates status);

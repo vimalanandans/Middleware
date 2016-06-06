@@ -10,6 +10,9 @@ import android.util.Log;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.Message;
+import com.bezirk.middleware.messages.Stream;
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
@@ -131,9 +134,11 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             final List<BezirkListener> tempEventListners = listenerMap.get(topic);
             for (BezirkListener listener : tempEventListners) {
                 if ("EVENT".equalsIgnoreCase(type)) {
-                    listener.receiveEvent(topic, message, sourceSEP);
+                    Event event = Message.fromJson(message, Event.class);
+                    listener.receiveEvent(topic, event, sourceSEP);
                 } else if ("STREAM_UNICAST".equalsIgnoreCase(type)) {
-                    listener.receiveStream(topic, message, streamId, new File(filePath), sourceSEP);
+                    Stream stream = Message.fromJson(message, Stream.class);
+                    listener.receiveStream(topic, stream, streamId, new File(filePath), sourceSEP);
                 }
             }
             return true;

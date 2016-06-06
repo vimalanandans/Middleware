@@ -6,8 +6,10 @@ import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.Stream;
 import com.bezirk.middleware.messages.UnicastStream;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 
@@ -120,15 +122,15 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
+        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -258,17 +260,17 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
+        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
 
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
 
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
             logger.info("****** RECEIVED STREAM REQUEST ******");
             assertNotNull(topic);
             assertNotNull(stream);

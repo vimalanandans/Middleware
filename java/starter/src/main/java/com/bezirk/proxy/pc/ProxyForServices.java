@@ -21,6 +21,7 @@ import com.bezirk.discovery.DiscoveryRecord;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
@@ -181,7 +182,8 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
         try {
             final BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(senderId);
             final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":" + streamId;
-            final Stream stream = new Gson().fromJson(serializedString, Stream.class);
+            System.out.println(serializedString);
+            final Stream stream = Message.fromJson(serializedString, Stream.class);
 
             final StreamRecord streamRecord = new StreamRecord();
             streamRecord.localStreamId = streamId;

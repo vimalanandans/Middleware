@@ -11,6 +11,7 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.Stream;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -132,15 +133,15 @@ public class MulticastEventLocalTest {
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
+        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -220,22 +221,22 @@ public class MulticastEventLocalTest {
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
+        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
             logger.info(" **** Received Event *****");
 
             assertEquals("MockRequestEvent", topic);
-            MulticastMockRequestEvent receivedEvent = Event.fromJson(event, MulticastMockRequestEvent.class);
+            MulticastMockRequestEvent receivedEvent = (MulticastMockRequestEvent) event;
             assertEquals("Ping to Mock Services", receivedEvent.question);
             didMockBreceive = true;
             logger.info("********* MOCK_SERVICE B received the Event successfully **************");
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -280,12 +281,12 @@ public class MulticastEventLocalTest {
         }
 
         @Override
-        public void receiveEvent(String topic, String event,
+        public void receiveEvent(String topic, Event event,
                                  ZirkEndPoint sender) {
             logger.info(" **** Received Event *****");
 
             assertEquals("MockRequestEvent", topic);
-            MulticastMockRequestEvent receivedEvent = Event.fromJson(event, MulticastMockRequestEvent.class);
+            MulticastMockRequestEvent receivedEvent = (MulticastMockRequestEvent) event;
             assertEquals("Ping to Mock Services", receivedEvent.question);
             if (!didMockCreceive) {
                 didMockCreceive = true;
@@ -298,11 +299,11 @@ public class MulticastEventLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override

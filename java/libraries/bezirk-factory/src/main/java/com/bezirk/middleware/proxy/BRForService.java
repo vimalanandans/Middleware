@@ -8,6 +8,9 @@ import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.Message;
+import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
@@ -117,8 +120,9 @@ public class BRForService implements BroadcastReceiver {
             if (null != tempListenersSidMap && null != tempListenersTopicsMap) {
                 for (BezirkListener invokingListener : tempListenersSidMap) {
                     if (tempListenersTopicsMap.contains(invokingListener)) {
+                        Event event = Message.fromJson(eCallbackMessage.serializedEvent, Event.class);
                         invokingListener.receiveEvent(eCallbackMessage.eventTopic,
-                                eCallbackMessage.serializedEvent, eCallbackMessage.senderEndPoint);
+                                event, eCallbackMessage.senderEndPoint);
                     }
                 }
             }
@@ -136,7 +140,9 @@ public class BRForService implements BroadcastReceiver {
         if (checkDuplicateStream(strmMsg.senderSEP.zirkId.getZirkId(), strmMsg.localStreamId)) {
             if (streamListenerMap.containsKey(strmMsg.streamTopic)) {
                 for (BezirkListener listener : streamListenerMap.get(strmMsg.streamTopic)) {
-                    listener.receiveStream(strmMsg.streamTopic, strmMsg.serializedStream, strmMsg.localStreamId, strmMsg.file, strmMsg.senderSEP);
+                    Stream stream = Message.fromJson(strmMsg.serializedStream, Stream.class);
+                    listener.receiveStream(strmMsg.streamTopic, stream, strmMsg.localStreamId,
+                            strmMsg.file, strmMsg.senderSEP);
                 }
             } else {
                 logger.error("StreamListenerMap does not have a mapped Stream");

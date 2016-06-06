@@ -5,6 +5,8 @@ import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.registration.ServiceRegistration;
 
@@ -24,20 +26,20 @@ public class MockBezirkZirk implements BezirkListener {
     }
 
     @Override
-    public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
+    public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void receiveStream(String topic, String stream, short streamId,
+    public void receiveStream(String topic, Stream stream, short streamId,
                               InputStream inputStream, ZirkEndPoint sender) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void receiveStream(String topic, String stream, short streamId,
+    public void receiveStream(String topic, Stream stream, short streamId,
                               File file, ZirkEndPoint sender) {
         // TODO Auto-generated method stub
 

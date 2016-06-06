@@ -18,7 +18,20 @@
 package com.bezirk.middleware.messages;
 
 import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.serialization.InterfaceAdapter;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+
+import java.lang.reflect.Type;
 
 /**
  * Base class for all message types Zirks may exchange using the Bezirk middleware. This class
@@ -26,7 +39,7 @@ import com.google.gson.Gson;
  * transfer/reception.
  */
 public abstract class Message {
-    private static final Gson gson = new Gson();
+    private static final Gson gson;
 
     /**
      * Hint about how the sender expects the recipient(s) to handle the message. This is typically
@@ -68,6 +81,12 @@ public abstract class Message {
      */
     public String msgId;
 
+    static {
+        final GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeHierarchyAdapter(Message.class, new MessageAdapter());
+        gson = gsonBuilder.create();
+    }
+
     public Message(Flag flag, String topic) {
         this.flag = flag;
         this.topic = topic;
@@ -75,10 +94,8 @@ public abstract class Message {
 
     /**
      * Deserialize the <code>json</code> string to create an object of type <code>objectType</code>.
-     * This method can be used to toJson a message as follows:
-     * <p>
-     * <code>TemperatureReadEvent tempReadEvent = Event.fromJson(event, TemperatureReadEvent.class);</code>.
-     * </p>
+     * This method is used by the Middleware to prepare a message for the appropriate
+     * <code>BezirkListener</code> callback when a message is received.
      *
      * @param <C>        the type of the object represented by <code>json</code>, set by
      *                   <code>objectType</code>
@@ -91,7 +108,8 @@ public abstract class Message {
     }
 
     /**
-     * Serialize the message to a JSON string.
+     * Serialize the message to a JSON string. This method is used by the Middleware to prepare a
+     * message to be sent.
      *
      * @return JSON representation of the message
      */
@@ -116,5 +134,37 @@ public abstract class Message {
          * Indicate to the recipient(s) that the message is a reply to a <code>REQUEST</code>.
          */
         REPLY
+    }
+
+    private static class MessageAdapter implements JsonSerializer<Message>, JsonDeserializer<Message> {
+        private static final Gson gson;
+
+        static {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeHierarchyAdapter(ZirkEndPoint.class, new InterfaceAdapter<ZirkEndPoint>());
+            gson = gsonBuilder.create();
+        }
+
+        @Override
+        public JsonElement serialize(Message src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject result = new JsonObject();
+            result.add("type", new JsonPrimitive(src.getClass().getName()));
+            result.add("properties", gson.toJsonTree(src, src.getClass()));
+            return result;
+        }
+
+        @Override
+        public Message deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            JsonObject jsonObject = json.getAsJsonObject();
+            String type = jsonObject.get("type").getAsString();
+            JsonElement element = jsonObject.get("properties");
+
+            try {
+                return (Message)gson.fromJson(element, Class.forName(type));
+            } catch (ClassNotFoundException cnfe) {
+                throw new JsonParseException("Unknown element type: " + type, cnfe);
+            }
+        }
     }
 }

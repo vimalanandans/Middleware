@@ -87,7 +87,7 @@ public interface Bezirk {
      * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event's topic.
      *
      * @param event the <code>Event</code> being sent
-     * @see BezirkListener#receiveEvent(String, String, ZirkEndPoint)
+     * @see BezirkListener#receiveEvent(String, Event, ZirkEndPoint)
      */
     public void sendEvent(Event event);
 
@@ -98,7 +98,7 @@ public interface Bezirk {
      *
      * @param recipient the {@link RecipientSelector} specifying the sent event's recipients
      * @param event     the <code>Event</code> being sent
-     * @see BezirkListener#receiveEvent(String, String, ZirkEndPoint)
+     * @see BezirkListener#receiveEvent(String, Event, ZirkEndPoint)
      */
     public void sendEvent(RecipientSelector recipient, Event event);
 
@@ -109,7 +109,7 @@ public interface Bezirk {
      *                  by calling
      *                  {@link #discover(RecipientSelector, ProtocolRole, long, int, BezirkListener)}
      * @param event     the <code>Event</code> being sent
-     * @see BezirkListener#receiveEvent(String, String, ZirkEndPoint)
+     * @see BezirkListener#receiveEvent(String, Event, ZirkEndPoint)
      */
     public void sendEvent(ZirkEndPoint recipient, Event event);
 
@@ -130,8 +130,8 @@ public interface Bezirk {
      *                   <code>PipedInputStream</code> linked to <code>dataStream</code>
      * @return Bezirk middleware-generated id for the stream, which will be referred to in
      * {@link BezirkListener#streamStatus(short, BezirkListener.StreamStates)}
-     * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ZirkEndPoint)
-     * @see BezirkListener#receiveStream(String, String, short, File, ZirkEndPoint)
+     * @see BezirkListener#receiveStream(String, Stream, short, java.io.InputStream, ZirkEndPoint)
+     * @see BezirkListener#receiveStream(String, Stream, short, File, ZirkEndPoint)
      */
     public short sendStream(ZirkEndPoint recipient, Stream stream,
                             PipedOutputStream dataStream);
@@ -149,8 +149,8 @@ public interface Bezirk {
      * @param file      the file whose contents will be sent using the <code>stream</code>
      * @return Bezirk middleware-generated id for the stream, which will be referred to in
      * {@link BezirkListener#streamStatus(short, BezirkListener.StreamStates)}
-     * @see BezirkListener#receiveStream(String, String, short, java.io.InputStream, ZirkEndPoint)
-     * @see BezirkListener#receiveStream(String, String, short, File, ZirkEndPoint)
+     * @see BezirkListener#receiveStream(String, Stream, short, java.io.InputStream, ZirkEndPoint)
+     * @see BezirkListener#receiveStream(String, Stream, short, File, ZirkEndPoint)
      */
     public short sendStream(ZirkEndPoint recipient, Stream stream, File file);
 

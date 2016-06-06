@@ -9,6 +9,7 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 
 import org.junit.After;
@@ -106,9 +107,9 @@ public class UnicastEventLocalTest {
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
+        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
             assertEquals("MockReplyEvent", topic);
-            MockReplyEvent reply = Event.fromJson(event, MockReplyEvent.class);
+            MockReplyEvent reply = (MockReplyEvent) event;
             assertNotNull(reply);
             logger.info("**** REPLY FROM MOCK SERVICE **** " + reply.answer);
             assertNotNull(reply.answer);
@@ -117,11 +118,11 @@ public class UnicastEventLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -262,10 +263,10 @@ public class UnicastEventLocalTest {
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
+        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
             logger.info(" **** Received Event *****");
             assertEquals("MockRequestEvent", topic);
-            MockRequestEvent receivedEvent = Event.fromJson(event, MockRequestEvent.class);
+            MockRequestEvent receivedEvent = (MockRequestEvent) event;
             assertEquals("Who am I?", receivedEvent.question);
             // send the reply
             MockReplyEvent replyEvent = new MockReplyEvent(Message.Flag.REPLY, "MockReplyEvent");
@@ -275,11 +276,11 @@ public class UnicastEventLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
