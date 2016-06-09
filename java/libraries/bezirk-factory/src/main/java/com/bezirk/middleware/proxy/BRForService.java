@@ -228,7 +228,7 @@ public class BRForService implements BroadcastReceiver {
     /**
      * This method is used to check if the Event is a duplicate
      */
-    private boolean checkDuplicateMsg(final String sid, final String messageId) {
+    private synchronized boolean checkDuplicateMsg(final String sid, final String messageId) {
         final String key = sid + ":" + messageId;
         final Long currentTime = new Date().getTime();
         if (duplicateMsgMap.containsKey(key)) {
