@@ -1,12 +1,13 @@
 apply plugin: 'application'
 
-mainClassName = "test.Test"
+mainClassName = "test.SimpleTest"
 
 dependencies {
     compile project(':core:bezirk-middleware-api')
     compile project(':core:bezirk')
     compile project(':core:commons')
     compile project(':java:libraries:bezirk-factory')
+    compile project(':core:protocols:parametricUI-protocols')
 
     testCompile 'junit:junit:4.12'
 }
