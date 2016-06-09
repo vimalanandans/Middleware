@@ -11,6 +11,7 @@
  * 3.0.0-alpha+008 Displaying ethernet configuration for multiple interfaces, issue #77 (Rishabh)
  * 3.0.0-alpha+009 Freezing major api changes & Nits before Mexico Hackathon. (Michael/Rishabh)
  * 3.0.0-alpha+010 Bug with android proxy and unwanted swing thread in java. (Michael/Rishabh)
+ * 3.0.0-alpha+011 Fixes issue #91 (first event duplication)(Rishabh)
  */
 buildscript {
     repositories {
@@ -41,7 +42,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha+010"
+    version = "3.0.0-alpha+011"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
