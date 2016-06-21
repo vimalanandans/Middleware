@@ -5,7 +5,7 @@ import com.bezirk.control.messages.GenerateMsgId;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 /**
  * this class will translate all the request to Bezirk EventLedger

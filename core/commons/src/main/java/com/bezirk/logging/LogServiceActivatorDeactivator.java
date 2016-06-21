@@ -9,7 +9,7 @@ import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

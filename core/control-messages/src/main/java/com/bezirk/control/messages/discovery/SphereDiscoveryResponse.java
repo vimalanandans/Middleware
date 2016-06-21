@@ -5,7 +5,7 @@ package com.bezirk.control.messages.discovery;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 /**
  * @author Rishabh Gulati

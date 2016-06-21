@@ -1,6 +1,6 @@
 apply plugin: 'application'
 
-mainClassName = "test.SimpleTest"
+mainClassName = "test.Pub"
 
 dependencies {
     compile project(':core:bezirk-middleware-api')

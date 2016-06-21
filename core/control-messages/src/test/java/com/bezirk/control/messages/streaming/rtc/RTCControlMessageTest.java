@@ -3,7 +3,7 @@ package com.bezirk.control.messages.streaming.rtc;
 import com.bezirk.control.messages.streaming.rtc.RTCControlMessage.RTCControlMessageType;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

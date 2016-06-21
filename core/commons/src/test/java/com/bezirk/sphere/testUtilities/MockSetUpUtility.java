@@ -27,7 +27,7 @@ import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.security.CryptoEngine;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 import com.j256.ormlite.table.TableUtils;
 
 import org.slf4j.Logger;

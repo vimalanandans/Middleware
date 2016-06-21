@@ -34,7 +34,7 @@ import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
 import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;

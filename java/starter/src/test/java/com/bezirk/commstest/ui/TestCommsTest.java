@@ -4,7 +4,7 @@ import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.devices.BezirkDeviceForPC;
 import com.bezirk.devices.BezirkDeviceInterface;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.junit.Before;
 import org.junit.Test;

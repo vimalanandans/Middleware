@@ -8,7 +8,7 @@ import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -2,11 +2,10 @@ package com.bezirk.sphere.ui;
 
 import com.bezirk.commons.BezirkVersion;
 import com.bezirk.commstest.ui.CommsTestJFrame;
-import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.BezirkSphere;
-import com.bezrik.network.BezirkNetworkUtilities;
-import com.bezrik.network.IntfInetPair;
+import com.bezirk.network.BezirkNetworkUtilities;
+import com.bezirk.network.IntfInetPair;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +14,9 @@ import java.awt.EventQueue;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;

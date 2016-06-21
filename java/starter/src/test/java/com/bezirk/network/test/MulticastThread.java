@@ -13,7 +13,7 @@
 //import org.slf4j.LoggerFactory;
 //
 //import com.bezirk.comms.BezirkCommunications;
-//import com.bezrik.network.BezirkNetworkUtilities;
+//import com.bezirk.network.BezirkNetworkUtilities;
 //
 ///**
 // * @author Mansimar Aneja (mansimar.aneja@us.bosch.com)

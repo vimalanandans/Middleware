@@ -4,7 +4,7 @@ import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import java.util.ArrayList;
 import java.util.List;

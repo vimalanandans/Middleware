@@ -9,7 +9,7 @@ import com.bezirk.sphere.api.CryptoInternals;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.security.SphereKeys;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

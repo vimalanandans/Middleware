@@ -1,7 +1,7 @@
 package com.bezirk.devices;
 
 import com.bezirk.middleware.addressing.Location;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.apache.shiro.codec.Hex;
 import org.slf4j.Logger;

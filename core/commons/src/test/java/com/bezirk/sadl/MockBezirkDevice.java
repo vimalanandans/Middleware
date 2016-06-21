@@ -3,17 +3,14 @@ package com.bezirk.sadl;
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.devices.DeviceDetails;
 import com.bezirk.middleware.addressing.Location;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.apache.shiro.codec.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Properties;
 

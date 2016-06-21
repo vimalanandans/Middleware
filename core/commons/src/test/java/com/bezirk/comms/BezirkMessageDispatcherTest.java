@@ -9,7 +9,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sadl.SadlEventReceiver;
 import com.bezirk.sadl.BezirkSadlManager;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

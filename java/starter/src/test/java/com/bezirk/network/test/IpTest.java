@@ -2,8 +2,8 @@
 //
 //import com.bezirk.comms.BezirkComms;
 //import com.bezirk.comms.BezirkCommsPC;
-//import com.bezrik.network.IntfInetPair;
-//import com.bezrik.network.BezirkNetworkUtilities;
+//import com.bezirk.network.IntfInetPair;
+//import com.bezirk.network.BezirkNetworkUtilities;
 //
 //import org.junit.Test;
 //import org.slf4j.Logger;

@@ -1,5 +1,6 @@
 package test;
 
+import com.bezirk.examples.protocols.parametricUI.NoticeUIshowText;
 import com.bezirk.examples.protocols.parametricUI.RoleParametricUI;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
@@ -7,6 +8,7 @@ import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Stream;
@@ -18,21 +20,26 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Temporary test till the 2 zirk registration problem is resolved. Used for subscribing to RoleParametricUI & receiving events on that role using gradle pub service from{@see https://github.com/Bezirk-Bosch/Tester}
- *
  * @author Rishabh Gulati
  */
-
-public class SimpleTest {
-
+public class Pub {
     public static void main(String[] args) {
-        Bezirk bezirk = Factory.registerZirk("Subscription zirk");
+        Bezirk bezirk = Factory.registerZirk("Publisher zirk");
 
         bezirk.setLocation(new Location("null/null/kitchen"));
         /* subscribe to a protocol role */
         bezirk.subscribe(new RoleParametricUI(), new ReceiverListener());
         //display id of current service
-        System.out.println("MY ID: " + UUID.randomUUID().toString().substring(0, 6));
+        System.out.println("Publisher");
+
+        /* set the targeted address */
+        RecipientSelector target = new RecipientSelector(new Location("null/null/kitchen"));
+
+        /* create the event to be published */
+        NoticeUIshowText noticeUIshowText = new NoticeUIshowText("Hello", NoticeUIshowText.TextType.INFORMATION, 30000);
+
+        /* publish the request to all in the target address */
+        bezirk.sendEvent(target, noticeUIshowText);
     }
 
     private static class ReceiverListener implements BezirkListener {

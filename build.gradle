@@ -12,6 +12,8 @@
  * 3.0.0-alpha+009 Freezing major api changes & Nits before Mexico Hackathon. (Michael/Rishabh)
  * 3.0.0-alpha+010 Bug with android proxy and unwanted swing thread in java. (Michael/Rishabh)
  * 3.0.0-alpha+011 Fixes issue #91 (first event duplication)(Rishabh)
+ * 3.0.0-alpha+012 Changing text display for issue #59 (bezirk ethernet configuration), testApp Pub/Sub testing through different applications until 2-zirk registration issue is resolved (Rishabh)
+ * 3.0.0-alpha+013 bezrik -> bezirk for network-util package fix (Rishabh)
  */
 buildscript {
     repositories {
@@ -42,7 +44,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha+011"
+    version = "3.0.0-alpha+013"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"

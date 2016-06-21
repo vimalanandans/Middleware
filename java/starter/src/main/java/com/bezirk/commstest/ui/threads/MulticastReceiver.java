@@ -4,7 +4,7 @@ import com.bezirk.commstest.ui.CommsTestConstants;
 import com.bezirk.commstest.ui.IUpdateResponse;
 import com.bezirk.commstest.ui.PingMessage;
 import com.bezirk.commstest.ui.PongMessage;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;

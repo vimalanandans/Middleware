@@ -1,7 +1,7 @@
 package com.bezirk.control.messages;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 public class UnicastControlMessage extends ControlMessage {
 

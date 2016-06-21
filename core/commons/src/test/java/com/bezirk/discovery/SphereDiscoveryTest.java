@@ -9,7 +9,7 @@ import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.security.CryptoEngine;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

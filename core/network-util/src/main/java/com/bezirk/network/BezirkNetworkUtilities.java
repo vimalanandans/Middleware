@@ -1,4 +1,4 @@
-package com.bezrik.network;
+package com.bezirk.network;
 
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;

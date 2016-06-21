@@ -10,7 +10,7 @@ import com.bezirk.sphere.api.CryptoInternals;
 import com.bezirk.sphere.messages.ShareRequest;
 import com.bezirk.sphere.messages.ShareResponse;
 import com.bezirk.sphere.security.SphereKeys;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

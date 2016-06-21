@@ -19,7 +19,7 @@ import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.messages.ShareRequest;
 import com.bezirk.sphere.messages.ShareResponse;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import java.util.ArrayList;
 import java.util.HashSet;

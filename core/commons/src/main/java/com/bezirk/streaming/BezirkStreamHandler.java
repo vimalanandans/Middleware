@@ -12,7 +12,7 @@ import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.store.StreamStore;
 import com.bezirk.streaming.threads.StreamReceivingThread;
 import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

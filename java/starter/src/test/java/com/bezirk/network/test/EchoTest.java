@@ -2,7 +2,7 @@
 //
 //import com.bezirk.comms.BezirkComms;
 //import com.bezirk.comms.BezirkCommsPC;
-//import com.bezrik.network.BezirkNetworkUtilities;
+//import com.bezirk.network.BezirkNetworkUtilities;
 //
 //import org.junit.After;
 //import org.junit.Before;

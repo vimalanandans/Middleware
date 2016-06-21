@@ -28,7 +28,7 @@ import com.bezirk.sphere.security.UPABlockCipherService;
 import com.bezirk.streaming.BezirkStreamManager;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.TextCompressor;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;

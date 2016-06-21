@@ -4,7 +4,7 @@ import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.streaming.control.Objects.StreamRecord.StreamingStatus;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

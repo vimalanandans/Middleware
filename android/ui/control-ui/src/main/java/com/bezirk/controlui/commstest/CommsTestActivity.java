@@ -26,7 +26,7 @@ import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.controlui.R;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
 import java.io.IOException;

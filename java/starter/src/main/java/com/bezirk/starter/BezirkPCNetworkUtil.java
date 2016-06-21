@@ -1,23 +1,17 @@
 package com.bezirk.starter;
 
 import com.bezirk.comms.BezirkCommunications;
-import com.bezirk.comms.BezirkCommsPC;
-import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
-import com.bezrik.network.IntfInetPair;
+import com.bezirk.network.BezirkNetworkUtilities;
+import com.bezirk.network.IntfInetPair;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
-import java.util.Scanner;
 
 /**
  * Helper class for main zirk to fetch the network interface details.
