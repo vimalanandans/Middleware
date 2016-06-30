@@ -443,7 +443,8 @@ public class SphereRegistryWrapper {
     private void initDefaultSphere() {
         String defaultSphereName;
         // check if defaultSphereName is not defined
-        if (sphereConfig.getDefaultSphereName().equalsIgnoreCase("")) {
+        if ((sphereConfig.getDefaultSphereName()!= null ) &&
+        sphereConfig.getDefaultSphereName().equalsIgnoreCase("")) {
             defaultSphereName = generateSphereName();
             // set the value in the properties file
             sphereConfig.setDefaultSphereName(defaultSphereName);
