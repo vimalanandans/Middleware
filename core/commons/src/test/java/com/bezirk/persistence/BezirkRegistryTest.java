@@ -1,6 +1,6 @@
 package com.bezirk.persistence;
 
-import com.bezirk.sadl.SadlRegistry;
+import com.bezirk.pubsubbroker.SadlRegistry;
 
 import org.junit.Test;
 

@@ -14,7 +14,7 @@ import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SadlPersistence;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.pubsubbroker.BezirkSadlManager;
 import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.BezirkSphereRegistration;

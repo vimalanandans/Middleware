@@ -16,7 +16,7 @@ import com.bezirk.persistence.util.DatabaseConnectionForAndroid;
 import com.bezirk.pipe.android.PipeCommsFactory;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.proxy.android.ProxyForZirks;
-import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.pubsubbroker.BezirkSadlManager;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
 

@@ -26,7 +26,7 @@ import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.sadl.ISadlRegistry;
+import com.bezirk.pubsubbroker.ISadlRegistry;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;

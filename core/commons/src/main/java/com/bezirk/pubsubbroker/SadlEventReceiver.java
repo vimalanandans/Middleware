@@ -1,4 +1,4 @@
-package com.bezirk.sadl;
+package com.bezirk.pubsubbroker;
 
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.messagehandler.StreamIncomingMessage;

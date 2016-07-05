@@ -17,7 +17,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.rest.CommsRestController;
 import com.bezirk.rest.HttpComms;
-import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.pubsubbroker.BezirkSadlManager;
 import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.BezirkSphereForAndroid;

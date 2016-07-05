@@ -8,7 +8,7 @@ import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.sadl.ISadlControlReceiver;
+import com.bezirk.pubsubbroker.ISadlControlReceiver;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -22,7 +22,7 @@ public class UIChoiceEventReply extends Event {
      * @param at        physical location
      * @param requestor
      * @param sphere
-     * @see com.bezirk.sadl.IndoorLocation
+     * @see com.bezirk.pubsubbroker.IndoorLocation
      */
     public UIChoiceEventReply(IndoorLocation at, ServiceEndPoint requestor, String sphere, ServiceEndPoint sender) {
         super(MsgLabel, at, requestor, sphere, sender);

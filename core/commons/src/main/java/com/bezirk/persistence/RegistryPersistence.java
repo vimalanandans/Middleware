@@ -3,7 +3,7 @@
  */
 package com.bezirk.persistence;
 
-import com.bezirk.sadl.SadlRegistry;
+import com.bezirk.pubsubbroker.SadlRegistry;
 
 import java.io.IOException;
 import java.sql.SQLException;

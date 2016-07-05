@@ -1,4 +1,4 @@
-package com.bezirk.sadl;
+package com.bezirk.pubsubbroker;
 
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.ZirkId;

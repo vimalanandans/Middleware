@@ -22,7 +22,7 @@ public class UIMultipleChoiceEventRequest extends Event {
      *
      * @param at     physical location
      * @param sphere
-     * @see com.bezirk.sadl.IndoorLocation
+     * @see com.bezirk.pubsubbroker.IndoorLocation
      */
     public UIMultipleChoiceEventRequest(IndoorLocation at, String sphere, ServiceEndPoint sender) {
         super(MsgLabel, at, sphere, sender);

@@ -5,7 +5,7 @@ package com.bezirk.streaming.threads;
 
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.sadl.SadlEventReceiver;
+import com.bezirk.pubsubbroker.SadlEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.BezirkValidatorUtility;

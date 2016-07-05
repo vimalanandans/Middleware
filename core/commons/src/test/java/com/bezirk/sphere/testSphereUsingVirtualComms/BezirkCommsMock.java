@@ -10,7 +10,7 @@ import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.pipe.core.PipeManager;
-import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.pubsubbroker.BezirkSadlManager;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 

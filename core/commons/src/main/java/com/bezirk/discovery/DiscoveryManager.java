@@ -5,7 +5,7 @@ import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
-import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.pubsubbroker.BezirkSadlManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

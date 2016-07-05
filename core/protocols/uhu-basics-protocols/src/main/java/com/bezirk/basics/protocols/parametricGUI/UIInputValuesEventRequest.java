@@ -22,7 +22,7 @@ public class UIInputValuesEventRequest extends Event {
      *
      * @param at     physical location
      * @param sphere
-     * @see com.bezirk.sadl.IndoorLocation
+     * @see com.bezirk.pubsubbroker.IndoorLocation
      */
     public UIInputValuesEventRequest(IndoorLocation at, String sphere, ServiceEndPoint sender) {
         super(MsgLabel, at, sphere, sender);

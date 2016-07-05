@@ -23,7 +23,7 @@ public class UIValuesEventReply extends Event {
      * @param at        physical location
      * @param requestor
      * @param sphere
-     * @see com.bezirk.sadl.IndoorLocation
+     * @see com.bezirk.pubsubbroker.IndoorLocation
      */
     public UIValuesEventReply(IndoorLocation at, ServiceEndPoint requestor, String sphere, ServiceEndPoint sender) {
         super(MsgLabel, at, requestor, sphere, sender);

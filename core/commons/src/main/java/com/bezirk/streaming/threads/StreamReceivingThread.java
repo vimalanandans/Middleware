@@ -8,7 +8,7 @@ import com.bezirk.comms.PortFactory;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.sadl.SadlEventReceiver;
+import com.bezirk.pubsubbroker.SadlEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.util.BezirkValidatorUtility;
 

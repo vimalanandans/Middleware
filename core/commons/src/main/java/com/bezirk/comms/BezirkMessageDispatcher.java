@@ -9,7 +9,7 @@ import com.bezirk.remotelogging.queues.LoggingQueueManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
 import com.bezirk.remotelogging.status.LoggingStatus;
 import com.bezirk.remotelogging.util.Util;
-import com.bezirk.sadl.SadlEventReceiver;
+import com.bezirk.pubsubbroker.SadlEventReceiver;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;

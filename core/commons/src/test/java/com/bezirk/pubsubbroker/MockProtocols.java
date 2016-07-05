@@ -1,4 +1,4 @@
-package com.bezirk.sadl;
+package com.bezirk.pubsubbroker;
 
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;

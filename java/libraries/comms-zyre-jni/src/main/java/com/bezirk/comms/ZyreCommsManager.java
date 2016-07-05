@@ -3,7 +3,7 @@ package com.bezirk.comms;
 
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.processor.CommsProcessor;
-import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.pubsubbroker.BezirkSadlManager;
 
 import java.net.InetAddress;
 

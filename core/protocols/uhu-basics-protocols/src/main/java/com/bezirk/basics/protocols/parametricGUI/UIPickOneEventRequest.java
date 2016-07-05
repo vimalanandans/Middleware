@@ -23,7 +23,7 @@ public class UIPickOneEventRequest extends Event {
      *
      * @param at     physical location
      * @param sphere
-     * @see com.bezirk.sadl.IndoorLocation
+     * @see com.bezirk.pubsubbroker.IndoorLocation
      */
     public UIPickOneEventRequest(IndoorLocation at, String sphere, ServiceEndPoint sender) {
         super(TOPIC, at, sphere, sender);

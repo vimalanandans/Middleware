@@ -12,7 +12,7 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.control.messages.streaming.StreamResponse;
 import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
-import com.bezirk.sadl.SadlEventReceiver;
+import com.bezirk.pubsubbroker.SadlEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.rtc.Signaling;

@@ -1,4 +1,4 @@
-package com.bezirk.sadl;
+package com.bezirk.pubsubbroker;
 
 import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.comms.CommsProperties;
