@@ -24,8 +24,8 @@ public class CommsFactory {
         switch (activeComms) {
             default:
             case COMMS_BEZIRK:
-                bezirkComms = new BezirkCommsManager();
-                logger.debug("udp comms is created. ");
+                //bezirkComms = new BezirkCommsManager();
+                logger.debug("udp comms is not supported. ");
                 break;
             case COMMS_ZYRE_JNI:
                 logger.error("comms are injected by each platform, common won't do anything");
