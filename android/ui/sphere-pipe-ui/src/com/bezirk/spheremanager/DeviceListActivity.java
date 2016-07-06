@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.pipe.core.PipeRecord;
 import com.bezirk.pipe.core.PipeRegistry;

@@ -1,6 +1,6 @@
 package com.bezirk.util;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsNotification;
@@ -11,7 +11,7 @@ import com.bezirk.persistence.BezirkRegistry;
 import com.bezirk.persistence.DBConstants;
 import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.persistence.RegistryPersistence;
-import com.bezirk.persistence.SadlPersistence;
+import com.bezirk.persistence.PubSubBrokerPersistence;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.pubsubbroker.PubSubBroker;
@@ -22,6 +22,8 @@ import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.impl.JavaPrefs;
 import com.bezirk.sphere.security.CryptoEngine;
+import com.bezirk.streaming.StreamManager;
+import com.bezirk.streaming.Streaming;
 import com.bezrik.network.BezirkNetworkUtilities;
 import com.j256.ormlite.table.TableUtils;
 
@@ -49,7 +51,7 @@ public class MockSetUpUtilityForBezirkPC {
     private static final String DBVersion = DBConstants.DB_VERSION;
     private static InetAddress inetAddr;
     PubSubBroker pubSubBroker = null;
-    SadlPersistence sadlPersistence;
+    PubSubBrokerPersistence pubSubBrokerPersistence;
     SpherePersistence spherePersistence;
     BezirkDevice upaDevice;
     CryptoEngine cryptoEngine;
@@ -72,15 +74,16 @@ public class MockSetUpUtilityForBezirkPC {
         spherePersistence = (SpherePersistence) regPersistence;
         sphereRegistry = new SphereRegistry();
         cryptoEngine = new CryptoEngine(sphereRegistry);
-        sadlPersistence = (SadlPersistence) regPersistence;
-        pubSubBroker = new PubSubBroker(sadlPersistence);
+        pubSubBrokerPersistence = (PubSubBrokerPersistence) regPersistence;
+        pubSubBroker = new PubSubBroker(pubSubBrokerPersistence);
         //sphereConfig = new SphereProperties();
         sphereConfig = new JavaPrefs();
         sphereConfig.init();
 
 
         bezirkComms = new MockComms();
-        bezirkComms.initComms(null, inetAddr, pubSubBroker, null);
+        Streaming streamManager = new StreamManager(bezirkComms,pubSubBroker);
+        bezirkComms.initComms(null, inetAddr, pubSubBroker, null,streamManager);
         pubSubBroker.initSadlManager(bezirkComms);
         bezirkComms.registerNotification(Mockito.mock(CommsNotification.class));
         bezirkComms.startComms();

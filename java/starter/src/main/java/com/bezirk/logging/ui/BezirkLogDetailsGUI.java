@@ -1,6 +1,6 @@
 package com.bezirk.logging.ui;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.logging.LogServiceActivatorDeactivator;
 import com.bezirk.remotelogging.messages.BezirkLoggingMessage;

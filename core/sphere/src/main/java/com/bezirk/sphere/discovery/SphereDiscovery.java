@@ -1,6 +1,7 @@
-package com.bezirk.discovery;
+package com.bezirk.sphere.discovery;
 
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
+import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
 import com.bezirk.sphere.api.BezirkSphereDiscovery;
 import com.bezirk.util.BezirkValidatorUtility;
 

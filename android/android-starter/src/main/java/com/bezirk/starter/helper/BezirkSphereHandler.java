@@ -1,6 +1,6 @@
 package com.bezirk.starter.helper;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SpherePersistence;

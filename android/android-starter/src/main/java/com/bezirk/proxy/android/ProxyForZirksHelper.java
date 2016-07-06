@@ -1,6 +1,6 @@
 package com.bezirk.proxy.android;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.streaming.StreamRequest;

@@ -1,4 +1,4 @@
-package com.bezirk.commons;
+package com.bezirk;
 
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.messagehandler.ZirkMessageHandler;

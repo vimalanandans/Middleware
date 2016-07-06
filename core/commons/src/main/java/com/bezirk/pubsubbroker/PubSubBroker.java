@@ -1,17 +1,17 @@
 package com.bezirk.pubsubbroker;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
-import com.bezirk.discovery.DiscoveryManager;
+import com.bezirk.pubsubbroker.discovery.DiscoveryManager;
 import com.bezirk.messagehandler.EventIncomingMessage;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.persistence.SadlPersistence;
+import com.bezirk.persistence.PubSubBrokerPersistence;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
@@ -20,9 +20,6 @@ import com.bezirk.remotelogging.queues.LoggingQueueManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
 import com.bezirk.remotelogging.status.LoggingStatus;
 import com.bezirk.remotelogging.util.Util;
-import com.bezirk.rest.BezirkRestCallBack;
-import com.bezirk.rest.BezirkRestCallBackImpl;
-import com.bezirk.rest.BezirkRestCommsManager;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -40,12 +37,12 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
     private static final Logger logger = LoggerFactory.getLogger(PubSubBroker.class);
 
     private final Date currentDate = new Date();
-    protected SadlPersistence sadlPersistence = null;
+    protected PubSubBrokerPersistence pubSubBrokerPersistence = null;
     protected PubSubBrokerRegistry pubSubBrokerRegistry = null;
     protected BezirkComms bezirkComms = null;
 
-    public PubSubBroker(SadlPersistence sadlPersistence) {
-        this.sadlPersistence = sadlPersistence;
+    public PubSubBroker(PubSubBrokerPersistence pubSubBrokerPersistence) {
+        this.pubSubBrokerPersistence = pubSubBrokerPersistence;
         loadSadlRegistry();
     }
 
@@ -206,13 +203,15 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
                               Set<ZirkId> invokeList) {
         // check if the zirk exists in that sphere then give callback
         for (ZirkId serviceId : invokeList) {
+            /* rest comms disabled
             if (invokeList.contains(new ZirkId("SPOOFED")) &&
                     eLedger.getHeader().getSphereName().equals(BezirkRestCommsManager.getInstance().getSelectedSphereName())) {
                 //send the response to HTTPComms also..
                 BezirkRestCallBack callBack = new BezirkRestCallBackImpl();
                 callBack.callBackForResponse(eLedger);
 
-            } else if (BezirkCompManager.getSphereForPubSubBroker().isZirkInSphere(serviceId, eLedger.getHeader().getSphereName())) {
+            } else */
+            if (BezirkCompManager.getSphereForPubSubBroker().isZirkInSphere(serviceId, eLedger.getHeader().getSphereName())) {
                 EventIncomingMessage eCallbackMessage = new EventIncomingMessage(serviceId, eLedger.getHeader().getSenderSEP(),
                         eLedger.getSerializedMessage(), eLedger.getHeader().getTopic(), eLedger.getHeader().getUniqueMsgId());
                 BezirkCompManager.getplatformSpecificCallback().onIncomingEvent(eCallbackMessage);
@@ -296,7 +295,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
 
     private void loadSadlRegistry() {
         try {
-            pubSubBrokerRegistry = sadlPersistence.loadSadlRegistry();
+            pubSubBrokerRegistry = pubSubBrokerPersistence.loadPubSubBrokerRegistry();
         } catch (Exception e) {
             logger.error("Error in loading sadl registry from persistence \n", e);
         }
@@ -316,7 +315,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
 
     private void persistSadlRegistry() {
         try {
-            sadlPersistence.persistSadlRegistry();
+            pubSubBrokerPersistence.persistPubSubBrokerRegistry();
         } catch (Exception e) {
             logger.error("Error in storing data \n", e);
         }

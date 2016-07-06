@@ -1,6 +1,6 @@
-package com.bezirk.processor;
+package com.bezirk.comms.processor;
 
-import com.bezirk.commons.BezirkVersion;
+import com.bezirk.application.BezirkVersion;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 

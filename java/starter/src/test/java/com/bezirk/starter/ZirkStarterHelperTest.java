@@ -1,6 +1,6 @@
 package com.bezirk.starter;
 
-import com.bezirk.comms.BezirkCommsLegacy;
+
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.device.BezirkDeviceType;
@@ -53,7 +53,7 @@ public class ZirkStarterHelperTest {
         com.bezirk.starter.ServiceStarterHelper helper = new com.bezirk.starter.ServiceStarterHelper();
         BezirkDeviceInterface bezirkDevice = mockSetUP.getUpaDevice();
         RegistryPersistence registryPersistence = mockSetUP.getRegistryPersistence();
-        BezirkComms commsLegacy = Mockito.mock(BezirkCommsLegacy.class);
+        BezirkComms commsLegacy = Mockito.mock(BezirkComms.class);
         BezirkSphereAPI bezirkSphere = helper.initSphere(bezirkDevice, registryPersistence, commsLegacy);
 
         assertNotNull("BezirkSphere is not initialized. ", bezirkSphere);

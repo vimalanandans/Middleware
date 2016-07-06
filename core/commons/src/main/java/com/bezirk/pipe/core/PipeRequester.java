@@ -1,7 +1,7 @@
 package com.bezirk.pipe.core;
 
 import com.bezirk.application.BezirkApp;
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.messagehandler.PipeRequestIncomingMessage;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;

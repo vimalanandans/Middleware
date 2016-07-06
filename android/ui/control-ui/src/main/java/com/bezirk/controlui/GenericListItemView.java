@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.bezirk.rest.BezirkRestCommsManager;
+//import com.bezirk.rest.BezirkRestCommsManager;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import java.util.List;
@@ -60,7 +60,8 @@ public class GenericListItemView extends ArrayAdapter<DataModel> {
             final ToggleButton toggle = (ToggleButton) rowView.findViewById(R.id.listToggleButton);
             if (BezirkValidatorUtility.isObjectNotNull(toggle)) {
                 toggle.setVisibility(View.VISIBLE);
-                data.get(position).setToggleButtonState(BezirkRestCommsManager.getInstance().isStarted());
+               // data.get(position).setToggleButtonState(BezirkRestCommsManager.getInstance().isStarted());
+                data.get(position).setToggleButtonState(false);
                 toggle.setChecked(data.get(position).isToggleButtonState());
                 toggle.setOnClickListener(new View.OnClickListener() {
                     @Override

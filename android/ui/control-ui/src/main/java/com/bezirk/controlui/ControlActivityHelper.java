@@ -17,8 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.commons.BezirkVersion;
-import com.bezirk.features.CommsFeature;
+import com.bezirk.application.BezirkVersion;
+import com.bezirk.comms.CommsFeature;
 import com.bezirk.spheremanager.SphereListActivity;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
@@ -65,7 +65,7 @@ class ControlActivityHelper {
 
         listData.add(new DataModel(R.drawable.ic_action_pipes, "Pipe Management", "Control and configure Pipes", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_cloud, "Rest Pipe", "Control and configure Rest Server", false, false, false));
+        //listData.add(new DataModel(R.drawable.ic_cloud, "Rest Pipe", "Control and configure Rest Server", false, false, false));
 
         String appName = controlActivity.getString(R.string.app_name);
 

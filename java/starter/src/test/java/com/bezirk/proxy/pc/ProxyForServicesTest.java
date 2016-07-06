@@ -4,6 +4,9 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
+import com.bezirk.pubsubbroker.discovery.DiscoveryProcessor;
+import com.bezirk.pubsubbroker.discovery.DiscoveryRecord;
 import com.bezirk.util.MockProtocolsForBezirkPC;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 

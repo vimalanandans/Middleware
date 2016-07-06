@@ -1,4 +1,4 @@
-package com.bezirk.discovery;
+package com.bezirk.sphere.discovery;
 
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.sphere.api.BezirkSphereDiscovery;
@@ -44,16 +44,16 @@ public class SphereDiscoveryProcessor implements Runnable {
                 continue;
             }
 //			//Copy a list of pending discoveries
-            CopyOnWriteArrayList<DiscoveryLabel> discoveryLabels;
+            CopyOnWriteArrayList<com.bezirk.pubsubbroker.discovery.DiscoveryLabel> discoveryLabels;
 
             try {
-                discoveryLabels = new CopyOnWriteArrayList<DiscoveryLabel>(SphereDiscoveryProcessor.discovery.getDiscoveredMap().keySet());
+                discoveryLabels = new CopyOnWriteArrayList<com.bezirk.pubsubbroker.discovery.DiscoveryLabel>(SphereDiscoveryProcessor.discovery.getDiscoveredMap().keySet());
             } catch (InterruptedException e) {
                 this.stop();
                 continue;
             }
 
-            for (DiscoveryLabel discoveryLabel : discoveryLabels) {
+            for (com.bezirk.pubsubbroker.discovery.DiscoveryLabel discoveryLabel : discoveryLabels) {
                 SphereDiscoveryRecord discRecord;
                 try {
                     discRecord = discovery.getDiscoveredMap().get(discoveryLabel);
@@ -73,7 +73,7 @@ public class SphereDiscoveryProcessor implements Runnable {
 
     }
 
-    private void checkRequestTimeOutAndInvokeRequestor(DiscoveryLabel discoveryLabel,
+    private void checkRequestTimeOutAndInvokeRequestor(com.bezirk.pubsubbroker.discovery.DiscoveryLabel discoveryLabel,
                                                        SphereDiscoveryRecord discRecord) {
         long curTime = new Date().getTime();
         //If discovery request has timed out

@@ -1,6 +1,6 @@
 package com.bezirk.starter;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsFactory;
@@ -9,7 +9,7 @@ import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.BezirkDevice;
-import com.bezirk.features.CommsFeature;
+import com.bezirk.comms.CommsFeature;
 import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.BezirkProxyPersistence;
@@ -18,6 +18,8 @@ import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.proxy.pc.ProxyForServices;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.streaming.StreamManager;
+import com.bezirk.streaming.Streaming;
 import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.BezirkNetworkUtilities;
 
@@ -368,7 +370,8 @@ public class MainService {
          * CommsProperties is not used by comms manager. Properties are handled
          * by BezirkCommsPC
          */
-        comms.initComms(null, addr, pubSubBroker, pipeManager);
+        Streaming streamManager = new StreamManager(comms,pubSubBroker);
+        comms.initComms(null, addr, pubSubBroker, pipeManager, streamManager);
         comms.startComms();
 
         // the comms manager for the proxy

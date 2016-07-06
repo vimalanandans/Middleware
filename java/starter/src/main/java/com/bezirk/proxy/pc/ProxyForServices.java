@@ -5,7 +5,7 @@
 package com.bezirk.proxy.pc;
 
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.EventLedger;
@@ -24,6 +24,9 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.pubsubbroker.IPubSubBrokerRegistry;
+import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
+import com.bezirk.pubsubbroker.discovery.DiscoveryProcessor;
+import com.bezirk.pubsubbroker.discovery.DiscoveryRecord;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;

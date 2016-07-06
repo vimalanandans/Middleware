@@ -1,6 +1,6 @@
 package com.bezirk.statckstatus.ui;
 
-import com.bezirk.commons.BezirkVersion;
+import com.bezirk.application.BezirkVersion;
 
 import javax.swing.JOptionPane;
 

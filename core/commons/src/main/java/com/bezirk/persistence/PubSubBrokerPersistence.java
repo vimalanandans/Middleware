@@ -7,21 +7,21 @@ import com.bezirk.pubsubbroker.PubSubBrokerRegistry;
 
 
 /**
- * Interface for the SADL to load and persist the registry
+ * Interface for the PubSubBroker to load and persist the registry
  */
-public interface SadlPersistence {
+public interface PubSubBrokerPersistence {
     /**
      * Persist the PubSubBrokerRegistry
      *
      * @throws Exception if persisting is not possible
      */
-    public void persistSadlRegistry() throws Exception;
+    public void persistPubSubBrokerRegistry() throws Exception;
 
     /**
-     * Loads the Sadl Registry
+     * Loads the PubSubBroker Registry
      *
-     * @return Sadl Registry
+     * @return PubSubBroker Registry
      * @throws Exception if loading is not possible
      */
-    public PubSubBrokerRegistry loadSadlRegistry() throws Exception;
+    public PubSubBrokerRegistry loadPubSubBrokerRegistry() throws Exception;
 }

@@ -24,11 +24,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * BezirkStreamManager manages all queues,sockets and threads related to streaming. It also
+ * StreamManager manages all queues,sockets and threads related to streaming. It also
  * includes the StreamControlReceiver which process the stream request and stream responses.
  */
-public class BezirkStreamManager implements Streaming {
-    private static final Logger logger = LoggerFactory.getLogger(BezirkStreamManager.class);
+public class StreamManager implements Streaming {
+    private static final Logger logger = LoggerFactory.getLogger(StreamManager.class);
 
     private final StreamCtrlReceiver ctrlReceiver = new StreamCtrlReceiver();
     private BezirkSphereForPubSub sphereForSadl = null;
@@ -44,7 +44,7 @@ public class BezirkStreamManager implements Streaming {
 
     private PubSubEventReceiver sadlReceiver = null;
 
-    public BezirkStreamManager(BezirkComms comms, PubSubEventReceiver sadlReceiver) {
+    public StreamManager(BezirkComms comms, PubSubEventReceiver sadlReceiver) {
 
         if (BezirkValidatorUtility.isObjectNotNull(comms)
                 && BezirkValidatorUtility.isObjectNotNull(msgDispatcher)
@@ -53,7 +53,7 @@ public class BezirkStreamManager implements Streaming {
             this.sadlReceiver = sadlReceiver;
             bezirkStreamHandler = new BezirkStreamHandler();
         } else {
-            logger.error("Unable to initialize BezirkStreamManager. Please ensure ControlSenderQueue, " +
+            logger.error("Unable to initialize StreamManager. Please ensure ControlSenderQueue, " +
                     "BezirkMessageDispatcher and BezirkCallback are initialized.");
         }
 

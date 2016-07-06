@@ -3,12 +3,12 @@ package com.bezirk.starter.helper;
 import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.ZyreCommsManager;
-import com.bezirk.features.CommsFeature;
+import com.bezirk.comms.CommsFeature;
 import com.bezirk.messagehandler.AndroidZirkMessageHandler;
 import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.RegistryPersistence;
@@ -18,7 +18,7 @@ import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.starter.MainService;
-import com.bezirk.streaming.BezirkStreamManager;
+import com.bezirk.streaming.StreamManager;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -110,7 +110,7 @@ class BezirkStartStackHelper {
         comms.registerNotification(errNotificationCallback);
 
         /** initialize the streaming */
-        BezirkStreamManager streaming = new BezirkStreamManager(comms, pubSubBroker);
+        StreamManager streaming = new StreamManager(comms, pubSubBroker);
         /** initialize the communications */
         comms.initComms(null, inetAddress, pubSubBroker, pipeComms,streaming);
 

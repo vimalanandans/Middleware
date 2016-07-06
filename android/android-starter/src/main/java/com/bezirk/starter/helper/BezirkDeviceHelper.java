@@ -3,7 +3,7 @@ package com.bezirk.starter.helper;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.middleware.addressing.Location;

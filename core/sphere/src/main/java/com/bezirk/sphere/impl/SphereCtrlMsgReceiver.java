@@ -4,7 +4,7 @@ import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
-import com.bezirk.discovery.SphereDiscoveryProcessor;
+import com.bezirk.sphere.discovery.SphereDiscoveryProcessor;
 import com.bezirk.sphere.api.BezirkSphereMessages;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;

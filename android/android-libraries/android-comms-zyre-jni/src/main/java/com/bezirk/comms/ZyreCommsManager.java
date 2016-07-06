@@ -1,9 +1,9 @@
 package com.bezirk.comms;
 
 import com.bezirk.pipe.core.PipeManager;
-import com.bezirk.processor.CommsProcessor;
+import com.bezirk.comms.processor.CommsProcessor;
 import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.rest.BezirkRestCommsManager;
+//import com.bezirk.rest.BezirkRestCommsManager;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import java.net.InetAddress;
@@ -61,8 +61,9 @@ public class ZyreCommsManager extends CommsProcessor {
             //Start the Zyre comms thread
             comms.startZyre();
 
-            //set the comms u have selected, this will be a bridge for Commons code and Android.
-            BezirkRestCommsManager.getInstance().setBezirkComms(this);
+            // removed the architectured refactoring code
+            // set the comms u have selected, this will be a bridge for Commons code and Android.
+           // BezirkRestCommsManager.getInstance().setBezirkComms(this);
 
             // call the base methods
             return super.startComms();

@@ -21,12 +21,12 @@ public class DiscoveryLabelTest {
         ZirkId zirkId = new ZirkId("ZirkA");
         BezirkZirkEndPoint requester = new BezirkZirkEndPoint(zirkId);
         requester.device = "DeviceA";
-        DiscoveryLabel discoveryLabel = new DiscoveryLabel(requester, discoveryId);
+        com.bezirk.pubsubbroker.discovery.DiscoveryLabel discoveryLabel = new com.bezirk.pubsubbroker.discovery.DiscoveryLabel(requester, discoveryId);
 
         assertEquals("DiscoveryId is not equal to the set value.", discoveryId, discoveryLabel.getDiscoveryId());
         assertEquals("Requester is not equal to the set value.", requester, discoveryLabel.getRequester());
 
-        DiscoveryLabel discoveryLabelTemp = new DiscoveryLabel(requester, discoveryId, true);
+        com.bezirk.pubsubbroker.discovery.DiscoveryLabel discoveryLabelTemp = new com.bezirk.pubsubbroker.discovery.DiscoveryLabel(requester, discoveryId, true);
         assertTrue("SphereDiscovery is not equal to the set value.", discoveryLabelTemp.isSphereDiscovery());
 
         assertTrue("DiscoveryLabels with same requester and id are not considered equal", discoveryLabelTemp.equals(discoveryLabel));
@@ -34,13 +34,13 @@ public class DiscoveryLabelTest {
 
         requester = new BezirkZirkEndPoint(new ZirkId("ServiceB"));
         requester.device = "DeviceB";
-        discoveryLabelTemp = new DiscoveryLabel(requester, discoveryId, true);
+        discoveryLabelTemp = new com.bezirk.pubsubbroker.discovery.DiscoveryLabel(requester, discoveryId, true);
         assertFalse("DiscoveryLabels with different requester are considered equal", discoveryLabelTemp.equals(discoveryLabel));
 
         requester = new BezirkZirkEndPoint(zirkId);
         requester.device = "DeviceA";
         discoveryId = 34;
-        discoveryLabelTemp = new DiscoveryLabel(requester, discoveryId, true);
+        discoveryLabelTemp = new com.bezirk.pubsubbroker.discovery.DiscoveryLabel(requester, discoveryId, true);
         assertFalse("DiscoveryLabels with different id are considered equal", discoveryLabelTemp.equals(discoveryLabel));
 
     }

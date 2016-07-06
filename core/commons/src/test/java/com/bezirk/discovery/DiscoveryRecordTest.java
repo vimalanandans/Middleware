@@ -22,7 +22,7 @@ public class DiscoveryRecordTest {
 
         long timeout = 60000;
         int max = 5;
-        DiscoveryRecord discoveryRecord = new DiscoveryRecord(timeout, max);
+        com.bezirk.pubsubbroker.discovery.DiscoveryRecord discoveryRecord = new com.bezirk.pubsubbroker.discovery.DiscoveryRecord(timeout, max);
 
         assertEquals("Timeout is not equal to the set value.", timeout, discoveryRecord.getTimeout());
         assertEquals("Max is not equal to the set value.", max, discoveryRecord.getMax());

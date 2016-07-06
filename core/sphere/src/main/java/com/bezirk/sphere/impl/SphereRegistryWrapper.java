@@ -1,6 +1,5 @@
 package com.bezirk.sphere.impl;
 
-import com.bezirk.commons.BezirkId;
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;

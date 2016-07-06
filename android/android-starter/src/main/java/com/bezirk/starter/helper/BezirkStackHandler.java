@@ -16,8 +16,8 @@ import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.rest.CommsRestController;
-import com.bezirk.rest.HttpComms;
+//import com.bezirk.rest.CommsRestController;
+//import com.bezirk.rest.HttpComms;
 import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.BezirkSphereForAndroid;
@@ -346,7 +346,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
     @Override
     public void startStopRestServer(int startStopStatus) {
         //if http feature is enabled, start the httpServer.//http server instance.
-        HttpComms httpServer = new CommsRestController();
+    /*    HttpComms httpServer = new CommsRestController();
 
         if (startStopStatus == 100) {
             httpServer.startHttpComms();
@@ -356,5 +356,6 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
 
 
         logger.debug("Started HTTP Server.. ");
+        */
     }
 }

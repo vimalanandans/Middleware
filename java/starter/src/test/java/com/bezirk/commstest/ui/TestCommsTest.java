@@ -1,6 +1,6 @@
 package com.bezirk.commstest.ui;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.devices.BezirkDeviceForPC;
 import com.bezirk.devices.BezirkDeviceInterface;

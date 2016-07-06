@@ -1,6 +1,6 @@
 package com.bezirk.util;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.statckstatus.ui.StackStatusUI;
 
 import java.awt.event.MouseEvent;

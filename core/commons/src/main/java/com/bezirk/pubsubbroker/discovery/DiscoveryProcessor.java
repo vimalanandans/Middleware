@@ -1,6 +1,6 @@
-package com.bezirk.discovery;
+package com.bezirk.pubsubbroker.discovery;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.messagehandler.DiscoveryIncomingMessage;
 import com.google.gson.Gson;
 
@@ -43,7 +43,7 @@ public class DiscoveryProcessor implements Runnable {
             }
 
             for (DiscoveryLabel discoveryLabel : discoveryLabels) {
-                DiscoveryRecord discRecord;
+                com.bezirk.pubsubbroker.discovery.DiscoveryRecord discRecord;
                 try {
                     discRecord = discovery.getDiscoveredMap().get(discoveryLabel);
                 } catch (InterruptedException e) {

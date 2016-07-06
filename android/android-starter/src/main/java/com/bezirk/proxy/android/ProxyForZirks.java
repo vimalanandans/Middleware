@@ -9,7 +9,7 @@ package com.bezirk.proxy.android;
 
 import android.app.Service;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.EventLedger;
@@ -18,9 +18,9 @@ import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
-import com.bezirk.discovery.DiscoveryLabel;
-import com.bezirk.discovery.DiscoveryProcessor;
-import com.bezirk.discovery.DiscoveryRecord;
+import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
+import com.bezirk.pubsubbroker.discovery.DiscoveryProcessor;
+import com.bezirk.pubsubbroker.discovery.DiscoveryRecord;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.Event;

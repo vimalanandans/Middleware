@@ -1,4 +1,4 @@
-package com.bezirk.discovery;
+package com.bezirk.sphere.discovery;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;

@@ -1,6 +1,6 @@
-package com.bezirk.discovery;
+package com.bezirk.pubsubbroker.discovery;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.util.BezirkValidatorUtility;
@@ -16,15 +16,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Discovery {
     private static final Logger logger = LoggerFactory.getLogger(Discovery.class);
 
-    private final ConcurrentMap<DiscoveryLabel, DiscoveryRecord> discoveredMap;
+    private final ConcurrentMap<DiscoveryLabel, com.bezirk.pubsubbroker.discovery.DiscoveryRecord> discoveredMap;
 
     private final Gson gson = new Gson();
 
     public Discovery() {
-        discoveredMap = new ConcurrentHashMap<DiscoveryLabel, DiscoveryRecord>();
+        discoveredMap = new ConcurrentHashMap<DiscoveryLabel, com.bezirk.pubsubbroker.discovery.DiscoveryRecord>();
     }
 
-    public ConcurrentHashMap<DiscoveryLabel, DiscoveryRecord> getDiscoveredMap() throws InterruptedException {
+    public ConcurrentHashMap<DiscoveryLabel, com.bezirk.pubsubbroker.discovery.DiscoveryRecord> getDiscoveredMap() throws InterruptedException {
         synchronized (this) {
             while (discoveredMap.keySet().size() == 0) {
                 try {
@@ -44,7 +44,7 @@ public class Discovery {
         }
     }
 
-    public void addRequest(DiscoveryLabel discoveryLabel, DiscoveryRecord disc) {
+    public void addRequest(DiscoveryLabel discoveryLabel, com.bezirk.pubsubbroker.discovery.DiscoveryRecord disc) {
         synchronized (this) {
             discoveredMap.put(discoveryLabel, disc);
             notifyAll();
@@ -57,7 +57,7 @@ public class Discovery {
                     .getRecipient())) {
                 final DiscoveryLabel dLabel = new DiscoveryLabel(
                         response.getRecipient(), response.getReqDiscoveryId());
-                final DiscoveryRecord discRecord = discoveredMap.get(dLabel);
+                final com.bezirk.pubsubbroker.discovery.DiscoveryRecord discRecord = discoveredMap.get(dLabel);
                 if (BezirkValidatorUtility.isObjectNotNull(discRecord)) {
                     //update discovered services list
                     discRecord.updateList(response.getZirkList());

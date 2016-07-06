@@ -19,14 +19,14 @@ public class FeaturesTest {
          COMMS_ZYRE=false
          TODO : use TogglzRule from http://www.togglz.org/documentation/testing.html
          * */
-        for (CommsFeature feature : CommsFeature.values()) {
+        for (com.bezirk.comms.CommsFeature feature : com.bezirk.comms.CommsFeature.values()) {
 
             System.out.println("Feature '%s' is active %s " + feature + " is " + feature.getValue() + " active : " + feature.isActive());
 
         }
 
-        assertTrue("Bezirk comms should be enabled", CommsFeature.COMMS_BEZIRK.isActive());
-        assertFalse("Bezirk zyre shouldn't be enabled", CommsFeature.COMMS_ZYRE.isActive());
-        assertFalse("Bezirk secure should be null or not defined ", CommsFeature.COMMS_SECURE.isActive());
+        assertTrue("Bezirk comms should be enabled", com.bezirk.comms.CommsFeature.COMMS_BEZIRK.isActive());
+        assertFalse("Bezirk zyre shouldn't be enabled", com.bezirk.comms.CommsFeature.COMMS_ZYRE.isActive());
+        assertFalse("Bezirk secure should be null or not defined ", com.bezirk.comms.CommsFeature.COMMS_SECURE.isActive());
     }
 }

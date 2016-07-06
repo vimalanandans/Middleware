@@ -13,7 +13,7 @@ import java.sql.SQLException;
  * of the Bezirk that needs to be persisted. The different layers will get the corresponding interfaces through
  * which they can load/ save the data to the persistence
  */
-public class RegistryPersistence extends DatabaseHelper implements SadlPersistence, SpherePersistence, BezirkProxyPersistence {
+public class RegistryPersistence extends DatabaseHelper implements PubSubBrokerPersistence, SpherePersistence, BezirkProxyPersistence {
 
     public RegistryPersistence(DatabaseConnection dbConnection, String DBVersion) throws NullPointerException, SQLException, IOException, Exception {
         super(dbConnection);
@@ -34,12 +34,12 @@ public class RegistryPersistence extends DatabaseHelper implements SadlPersisten
     }
 
     @Override
-    public void persistSadlRegistry() throws Exception {
+    public void persistPubSubBrokerRegistry() throws Exception {
         updateRegistry(DBConstants.COLUMN_1);
     }
 
     @Override
-    public PubSubBrokerRegistry loadSadlRegistry() throws Exception {
+    public PubSubBrokerRegistry loadPubSubBrokerRegistry() throws Exception {
         if (null == getPubSubBrokerRegistry()) {
             loadRegistry();
         }

@@ -8,9 +8,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.bezirk.actions.BezirkActions;
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.rest.BezirkRestCommsManager;
+//import com.bezirk.rest.BezirkRestCommsManager;
 import com.bezirk.starter.MainService;
 
 import java.util.ArrayList;
@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 public class RestConfigActivity extends ActionBarActivity implements DialogSphereList.OnSphereSelectCallback, GenericListItemView.ItemToggleListener {
-    BezirkRestCommsManager restCommsManager = BezirkRestCommsManager.getInstance();
+   // comms-Rest is not used.
+    // BezirkRestCommsManager restCommsManager = BezirkRestCommsManager.getInstance();
     private ListView restConfigList = null;
 
     @Override
@@ -64,8 +65,8 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
         int i = 0;
         for (Map.Entry<String, String> entry : sphereList.entrySet()) {
             if (position == i) {
-                restCommsManager.setSelectedSphere(entry.getKey());
-                restCommsManager.setSelectedSphereName(entry.getKey());
+//                restCommsManager.setSelectedSphere(entry.getKey());
+//                restCommsManager.setSelectedSphereName(entry.getKey());
             }
             i++;
         }
@@ -96,10 +97,10 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
 
         if (checkStatus) {
             action = BezirkActions.ACTION_REST_START_BEZIRK;
-            restCommsManager.setStarted(true);
+//            restCommsManager.setStarted(true);
         } else {
             action = BezirkActions.ACTION_REST_STOP_BEZIRK;
-            restCommsManager.setStarted(false);
+//            restCommsManager.setStarted(false);
         }
         intent.setAction(action);
         startService(intent);

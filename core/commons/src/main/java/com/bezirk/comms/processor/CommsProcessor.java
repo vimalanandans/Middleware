@@ -1,7 +1,7 @@
-package com.bezirk.processor;
+package com.bezirk.comms.processor;
 
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.BezirkMessageDispatcher;
@@ -19,7 +19,7 @@ import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
-import com.bezirk.features.CommsFeature;
+import com.bezirk.comms.CommsFeature;
 import com.bezirk.logging.LogServiceMessageHandler;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;

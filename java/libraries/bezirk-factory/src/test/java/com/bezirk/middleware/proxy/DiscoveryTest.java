@@ -1,7 +1,7 @@
 package com.bezirk.middleware.proxy;
 
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.devices.BezirkDeviceForPC;
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.Bezirk;

@@ -1,4 +1,4 @@
-package com.bezirk.commons;
+package com.bezirk.application;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,7 +2,7 @@ package com.bezirk.comms;
 
 import android.util.Log;
 
-import com.bezirk.processor.CommsProcessor;
+import com.bezirk.comms.processor.CommsProcessor;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;

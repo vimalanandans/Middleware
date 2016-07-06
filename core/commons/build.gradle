@@ -8,7 +8,7 @@ jar {
 dependencies {
     compile project(':core:control-messages')
     compile project(':core:pipes')
-    compile project (':core:remote-logging')
+    compile project (':core:remote-logging') // TODO: FIXME: inverse the dependency of remote-logging to commons
 
     // orm db files
     compile 'com.j256.ormlite:ormlite-core:4.48'

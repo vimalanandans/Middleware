@@ -1,6 +1,6 @@
 package com.bezirk.devices;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.middleware.addressing.Location;
 
 import org.slf4j.Logger;
@@ -10,7 +10,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;

@@ -1,6 +1,6 @@
 package com.bezirk.common;
 
-import com.bezirk.commons.BezirkVersion;
+import com.bezirk.application.BezirkVersion;
 
 import org.junit.Test;
 

@@ -2,7 +2,7 @@ package com.bezirk.starter.helper;
 
 import android.content.Intent;
 
-import com.bezirk.commons.BezirkCompManager;
+import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.RecipientSelector;

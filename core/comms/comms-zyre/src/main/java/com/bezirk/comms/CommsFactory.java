@@ -1,7 +1,5 @@
 package com.bezirk.comms;
 
-import com.bezirk.features.CommsFeature;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

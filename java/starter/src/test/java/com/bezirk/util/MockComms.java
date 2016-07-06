@@ -13,6 +13,7 @@ import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;
+import com.bezirk.streaming.Streaming;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
 import java.net.InetAddress;
@@ -115,10 +116,10 @@ public class MockComms implements BezirkComms {
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             PubSubBroker sadl, PipeManager pipe) {
-        // TODO Auto-generated method stub
-        return true;
+                             PubSubBroker sadl, PipeManager pipe, Streaming streaming) {
+        return false;
     }
+
 
     @Override
     public boolean registerControlMessageReceiver(Discriminator id,
