@@ -2,11 +2,10 @@ package com.bezirk.sphere.ui;
 
 import com.bezirk.commons.BezirkVersion;
 import com.bezirk.commstest.ui.CommsTestJFrame;
-import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.BezirkSphere;
-import com.bezrik.network.BezirkNetworkUtilities;
-import com.bezrik.network.IntfInetPair;
+import com.bezirk.network.BezirkNetworkUtilities;
+import com.bezirk.network.IntfInetPair;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +14,9 @@ import java.awt.EventQueue;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -52,6 +48,7 @@ public class SphereManagementGUI extends JFrame {
     public SphereManagementGUI() {
         initSphereManagement();
     }
+
     public SphereManagementGUI(BezirkSphereAPI sphereForPC) {
         this.sphereManager = (BezirkSphere) sphereForPC;
         initSphereManagement();
@@ -189,21 +186,24 @@ public class SphereManagementGUI extends JFrame {
         final String result = (String) JOptionPane.showInputDialog(null,
                 "Choose Interface Name", "Bezirk Ethernet Configuration",
                 JOptionPane.QUESTION_MESSAGE, null, interfaceName, null);
-        try {
-            final String classpath = BezirkDeviceInterface.class.getClassLoader()
-                    .getResource("comms.properties").getPath();
-            final Properties properties = new Properties();
-            final FileInputStream configStream = new FileInputStream(classpath);
-            properties.load(configStream);
-            configStream.close();
+        // add Preferences API implementation for updating interface details
 
-            properties.setProperty("InterfaceName", result);
-            final FileOutputStream output = new FileOutputStream(classpath);
-            properties.store(output, null);
-            output.close();
-        } catch (Exception e) {
-            logger.error("Could not read comms properties file", e);
-        }
+        // commenting previous implementation of using comms.properties
+//        try {
+//            final String classpath = BezirkDeviceInterface.class.getClassLoader()
+//                    .getResource("comms.properties").getPath();
+//            final Properties properties = new Properties();
+//            final FileInputStream configStream = new FileInputStream(classpath);
+//            properties.load(configStream);
+//            configStream.close();
+//
+//            properties.setProperty("InterfaceName", result);
+//            final FileOutputStream output = new FileOutputStream(classpath);
+//            properties.store(output, null);
+//            output.close();
+//        } catch (Exception e) {
+//            logger.error("Could not read comms properties file", e);
+//        }
 
     }
 

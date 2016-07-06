@@ -3,7 +3,7 @@ package com.bezirk.sadl;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import java.util.Set;
 
@@ -16,10 +16,10 @@ public interface ISadlControlReceiver {
      * Checks if the Stream is registered by the Zirk zirkId to streamTopic.
      *
      * @param streamTopic - Stream Topic of the stream Descriptor
-     * @param serviceId   - BezirkZirkId of the Zirk
+     * @param serviceId   - ZirkId of the Zirk
      * @return true if registered, false otherwise.
      */
-    public Boolean isStreamTopicRegistered(final String streamTopic, final BezirkZirkId serviceId);
+    public Boolean isStreamTopicRegistered(final String streamTopic, final ZirkId serviceId);
 
     /**
      * Returns all {@link BezirkDiscoveredZirk} that are subscribed to protocolRole.
@@ -35,9 +35,9 @@ public interface ISadlControlReceiver {
     /**
      * Returns the Location of the Zirk.
      *
-     * @param serviceId BezirkZirkId of the Zirk whose location needs to be known
+     * @param serviceId ZirkId of the Zirk whose location needs to be known
      * @return Location if exists, null if the zirk is not registered
      */
-    public Location getLocationForService(final BezirkZirkId serviceId);
+    public Location getLocationForService(final ZirkId serviceId);
 
 }

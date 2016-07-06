@@ -36,22 +36,22 @@ public final class BezirkCommsAndroid {
         logger.info("UnicastPort " + BezirkCommunications.getUNICAST_PORT());
         BezirkCommunications.setCTRL_MULTICAST_ADDRESS(pref.getString("CMulticastAddress", null));
         logger.info("Ctrl MulticastAddress " + BezirkCommunications.getCTRL_MULTICAST_ADDRESS());
-        BezirkCommunications.setCTRL_MULTICAST_PORT(Integer.valueOf(pref.getString("CMulticastPort", "0")));
+        BezirkCommunications.setCTRL_MULTICAST_PORT(Integer.parseInt(pref.getString("CMulticastPort", "0")));
         logger.info("Ctrl MulticastPort " + BezirkCommunications.getCTRL_MULTICAST_PORT());
-        BezirkCommunications.setCTRL_UNICAST_PORT(Integer.valueOf(pref.getString("CUnicastPort", "0")));
+        BezirkCommunications.setCTRL_UNICAST_PORT(Integer.parseInt(pref.getString("CUnicastPort", "0")));
         logger.info("Ctrl UnicastPort " + BezirkCommunications.getCTRL_UNICAST_PORT());
-        BezirkCommunications.setMAX_BUFFER_SIZE(Integer.valueOf(pref.getString("MaxBufferSize", "0")));
+        BezirkCommunications.setMAX_BUFFER_SIZE(Integer.parseInt(pref.getString("MaxBufferSize", "0")));
         //Intialize POOL Size
         logger.info("Max Buffer Size " + BezirkCommunications.getMAX_BUFFER_SIZE());
-        BezirkCommunications.setPOOL_SIZE(Integer.valueOf(pref.getString("MessageValidatorPool", "0")));
+        BezirkCommunications.setPOOL_SIZE(Integer.parseInt(pref.getString("MessageValidatorPool", "0")));
 
-        BezirkCommunications.setSTARTING_PORT_FOR_STREAMING(Integer.valueOf(pref.getString("StartPort", "0")));
+        BezirkCommunications.setSTARTING_PORT_FOR_STREAMING(Integer.parseInt(pref.getString("StartPort", "0")));
         logger.info("Starting Port for Streaming: " + BezirkCommunications.getSTARTING_PORT_FOR_STREAMING());
-        BezirkCommunications.setENDING_PORT_FOR_STREAMING(Integer.valueOf(pref.getString("EndPort", "0")));
+        BezirkCommunications.setENDING_PORT_FOR_STREAMING(Integer.parseInt(pref.getString("EndPort", "0")));
         logger.info("Ending port for Streaming " + BezirkCommunications.getENDING_PORT_FOR_STREAMING());
-        BezirkCommunications.setMAX_SUPPORTED_STREAMS(Integer.valueOf(pref.getString("NoOfActiveThreads", "0")));
+        BezirkCommunications.setMAX_SUPPORTED_STREAMS(Integer.parseInt(pref.getString("NoOfActiveThreads", "0")));
         logger.info("No of active threads supported " + BezirkCommunications.getMAX_SUPPORTED_STREAMS());
-        BezirkCommunications.setStreamingEnabled(Boolean.valueOf(pref.getString("StreamingEnabled", "false")));
+        BezirkCommunications.setStreamingEnabled(Boolean.parseBoolean(pref.getString("StreamingEnabled", "false")));
         logger.info("Is streaming Enabled" + BezirkCommunications.isStreamingEnabled());
 
         BezirkCommunications.setDOWNLOAD_PATH(Environment.getExternalStorageDirectory().getAbsolutePath() + "/UhuDownloads/");
@@ -69,7 +69,7 @@ public final class BezirkCommsAndroid {
 
         BezirkCommunications.setDEMO_SPHERE_MODE(Boolean.valueOf(pref.getString("DemoSphereMode", "false")));
         //Logging
-        BezirkCommunications.setREMOTE_LOGGING_PORT(Integer.valueOf(pref.getString("RemoteLoggingPort", "7777")));
+        BezirkCommunications.setREMOTE_LOGGING_PORT(Integer.parseInt(pref.getString("RemoteLoggingPort", "7777")));
         BezirkCommunications.setRemoteLoggingServiceEnabled(Boolean.valueOf(pref.getString("RemoteLoggingEnabled", "false")));
     }
 }

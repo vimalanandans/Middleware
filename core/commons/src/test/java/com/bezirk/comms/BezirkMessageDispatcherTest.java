@@ -6,10 +6,10 @@ import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sadl.SadlEventReceiver;
 import com.bezirk.sadl.BezirkSadlManager;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,7 +33,7 @@ import static org.junit.Assert.assertTrue;
 public class BezirkMessageDispatcherTest {
 
     private static final Logger logger = LoggerFactory.getLogger(BezirkMessageDispatcherTest.class);
-    private static final BezirkZirkId serviceId = new BezirkZirkId("ServiceA");
+    private static final ZirkId serviceId = new ZirkId("ServiceA");
     private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceId);
     private static InetAddress inetAddr;
 
@@ -84,7 +84,7 @@ public class BezirkMessageDispatcherTest {
         bezirkMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, receiver);
 
         ControlLedger tcMessage = new ControlLedger();
-        BezirkZirkEndPoint sender = new BezirkZirkEndPoint("DeviceA", new BezirkZirkId("MockServiceA"));
+        BezirkZirkEndPoint sender = new BezirkZirkEndPoint("DeviceA", new ZirkId("MockServiceA"));
         ControlMessage discoveryRequest = new DiscoveryRequest(null, sender, null, null, 0, 0, 0);
         tcMessage.setMessage(discoveryRequest);
         bezirkMessageDispatcher.dispatchControlMessages(tcMessage);

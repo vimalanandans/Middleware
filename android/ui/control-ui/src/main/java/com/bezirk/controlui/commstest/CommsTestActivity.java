@@ -26,7 +26,7 @@ import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.controlui.R;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -579,10 +579,10 @@ public class CommsTestActivity extends ActionBarActivity {
 
     private void configurePorts(EditText mSendingPort, EditText mReceivingPort, EditText uSendingPort, EditText uReceivingPort, EditText timeInterval) {
         multicastSendingPort = Integer.parseInt(mSendingPort.getText().toString().trim());
-        multicastReceivingPort = Integer.valueOf(mReceivingPort.getText().toString().trim());
-        unicastSendingPort = Integer.valueOf(uSendingPort.getText().toString().trim());
-        unicastReceivingPort = Integer.valueOf(uReceivingPort.getText().toString().trim());
-        time_interval = Integer.valueOf(timeInterval.getText().toString().trim());
+        multicastReceivingPort = Integer.parseInt(mReceivingPort.getText().toString().trim());
+        unicastSendingPort = Integer.parseInt(uSendingPort.getText().toString().trim());
+        unicastReceivingPort = Integer.parseInt(uReceivingPort.getText().toString().trim());
+        time_interval = Integer.parseInt(timeInterval.getText().toString().trim());
     }
 
     private void updatePortsUI() {

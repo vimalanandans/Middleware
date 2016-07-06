@@ -4,93 +4,124 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.Locale;
+
 
 /**
- * Hold the Bezirk Config
- * <p>
- * At the moment it holds the data about Bezirk PC TODO: Move this file to
- * java-common so that all the configurations are inside this module.
- * </p>
+ * Maintain configurations like QR display, Logging, data-path for storing bezirk database, for pure-java/PC version of Bezirk
  */
 public class BezirkConfig {
 
-    /**
-     * Relative data path
-     */
-    public static final String DATA_PATH_REL = "data" + File.separator + "bezirk";
     private static final Logger logger = LoggerFactory.getLogger(BezirkConfig.class);
-    /**
-     * This will hold the full data path, which will be relative to APP_HOME or
-     */
-    private String dataPath;
+    private static final String DATA = "data"; // name of data folder
+    private static final String BEZIRK = "bezirk"; // name of folder for holding bezirk related data/database(s)
+    private static final String DATA_PATH_REL = DATA + File.separator + BEZIRK; // relative data path for bezirk folder
 
-    /**
-     * display enable or disable
-     */
-    private String displayEnable = "true";
+    private final static String DISPLAY_ENV_VARIABLE = "displayEnabled"; // variable set in gradle/environment to enable/disable sphere-mgmt display
+    private final static boolean DISPLAY_DEFAULT_VALUE = false; // default value of bezirk sphere-mgmt display
+
+    private final static String LOGGING_ENV_VARIABLE = "loggingEnabled"; // variable set in gradle/environment to enable/disable bezirk logs
+    private final static boolean LOGGING_DEFAULT_VALUE = false; // default value of bezirk logging
+
+    private String dataPath; // holds the absolute path of the bezirk folder
 
     public BezirkConfig() {
-        // load the resources
-        initDataPath();
+        init();
+    }
+
+    private void init() {
+        // gradle sets this when invoked
+        String appHome = System.getenv().get("APP_HOME");
+        if (appHome == null || appHome.isEmpty()) {
+            appHome = System.getProperty("user.dir");
+        }
+
+        // set data path
+        dataPath = appHome + File.separator + DATA_PATH_REL;
+
+        // create the data directory if it doesn't exist
+        final File dataDir = new File(dataPath);
+        if (dataDir.exists()) {
+            logger.debug("Using existing data directory --> " + dataDir);
+        } else {
+            logger.debug("Creating data directory --> " + dataDir);
+            if (!dataDir.mkdirs()) {
+                logger.error("Failed to create data directory");
+            }
+        }
+
+        // change bezirk logging level if enabled
+        if (isLoggingEnabled()) {
+            ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+            root.setLevel(ch.qos.logback.classic.Level.INFO);
+        }
     }
 
     /**
-     * Set the application home directory. If we are running from the binary
-     * distribution, appHome is set to: /path/to/bezirk-main-VERS. If we are
-     * running from the development environment, appHome is set to the project
-     * root directory.
+     * Get absolute data path of the bezirk folder
+     *
+     * @return absolute path of the bezirk folder
      */
-    private void initDataPath() {
-        // The launcher script sets this system variable
-        String appHome = System.getenv().get("APP_HOME");
-        if (appHome == null || appHome.isEmpty()) {
-            //appHome = "."; // current working dir means zirk root
-            // take from temp or user folder because . doesn't work in unix
-            //appHome =  System.getProperty("java.io.tmpdir");
-            appHome = System.getProperty("user.dir");
-
-        }
-
-        // set the datapath relative to APP_HOME or "." if APP_HOME not set
-        dataPath = appHome + File.separator + DATA_PATH_REL;
-
-        // create the data dir if it doesn't exist
-        final File dataDir = new File(dataPath);
-        if (dataDir.exists()) {
-
-            logger.info("Using existing dataDir:" + dataDir);
-
-        } else {
-
-            logger.info("Creating dataDir: {}", dataDir);
-            if (!dataDir.mkdirs()) {
-                logger.error("Failed to create dataDir");
-            }
-        }
-    }
-
     public String getDataPath() {
-
         return dataPath;
-
     }
 
-    public void setDataPath(final String path) {
-        dataPath = path;
-    }
-
-    public String getDisplayEnable() {
-        return displayEnable;
-    }
-
-    public void setDisplayEnable(final String enable) {
-        displayEnable = enable;
-    }
-
+    /**
+     * Check if display is enabled
+     *
+     * @return true if display is enabled by setting JVM property(displayEnabled=true) or System Environment variable(displayEnabled=true) or if default configuration{@link #DISPLAY_DEFAULT_VALUE} in Bezirk is set to true<br>
+     * false otherwise
+     */
     public boolean isDisplayEnabled() {
-
-        return displayEnable.toLowerCase(Locale.US).contentEquals("true");
+        boolean isDisplayEnabled = isEnabledInJVM(DISPLAY_ENV_VARIABLE) || isEnabledInSystem(DISPLAY_ENV_VARIABLE) || DISPLAY_DEFAULT_VALUE;
+        logger.debug("Display enabled --> " + isDisplayEnabled);
+        return isDisplayEnabled;
     }
 
+    public boolean isLoggingEnabled() {
+        boolean isLoggingEnabled = isEnabledInJVM(LOGGING_ENV_VARIABLE) || isEnabledInSystem(LOGGING_ENV_VARIABLE) || LOGGING_DEFAULT_VALUE;
+        logger.debug("Logging enabled --> " + isLoggingEnabled);
+        return isLoggingEnabled;
+    }
+
+    /**
+     * Check if a property is enabled to true in JVM.
+     *
+     * @param propKey property set in the JVM
+     * @return true if the property is set to true <br> false otherwise
+     */
+    private boolean isEnabledInJVM(String propKey) {
+        String propValue = null;
+        boolean boolPropValue = false;
+        try {
+            propValue = System.getProperty(propKey);
+        } catch (SecurityException e) {
+            logger.error("Unable to access jvm variable " + propKey + " " + e.getMessage());
+        }
+        if (null != propValue) {
+            boolPropValue = Boolean.parseBoolean(propValue);
+            logger.debug("JVM property " + propKey + " --> " + boolPropValue);
+        }
+        return boolPropValue;
+    }
+
+    /**
+     * Check if a property is enabled to true as system variable.
+     *
+     * @param propKey property set as the system environment variable
+     * @return true if the property is set to true <br> false otherwise
+     */
+    private boolean isEnabledInSystem(String propKey) {
+        String propValue = null;
+        boolean boolPropValue = false;
+        try {
+            propValue = System.getenv(propKey);
+        } catch (SecurityException e) {
+            logger.error("Unable to access system variable " + propKey + " " + e.getMessage());
+        }
+        if (null != propValue) {
+            boolPropValue = Boolean.parseBoolean(propValue);
+            logger.debug("System property " + propKey + " --> " + boolPropValue);
+        }
+        return boolPropValue;
+    }
 }

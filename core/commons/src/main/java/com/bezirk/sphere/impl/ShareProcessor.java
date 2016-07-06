@@ -4,13 +4,13 @@ import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.CryptoInternals;
 import com.bezirk.sphere.messages.ShareRequest;
 import com.bezirk.sphere.messages.ShareResponse;
 import com.bezirk.sphere.security.SphereKeys;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -263,7 +263,7 @@ public class ShareProcessor {
         ownerDevices.add(sphereExchangeData.getDeviceID());
 
         Sphere sphere = new MemberSphere(sphereExchangeData.getSphereName(), sphereExchangeData.getSphereType(),
-                ownerDevices, new LinkedHashMap<String, ArrayList<BezirkZirkId>>(), false);
+                ownerDevices, new LinkedHashMap<String, ArrayList<ZirkId>>(), false);
 
         sphereRegistryWrapper.addSphere(sphereExchangeData.getSphereID(), sphere);
 
@@ -273,11 +273,11 @@ public class ShareProcessor {
 
         // add services from the sharer sphere
         Sphere shareSphere = sphereRegistryWrapper.getSphere(sharerSphereId);
-        Map<String, ArrayList<BezirkZirkId>> deviceServices = shareSphere.deviceServices;
+        Map<String, ArrayList<ZirkId>> deviceServices = shareSphere.deviceServices;
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(bezirkDeviceInterface.getDeviceId())) {
 
-            ArrayList<BezirkZirkId> services = deviceServices.get(bezirkDeviceInterface.getDeviceId());
+            ArrayList<ZirkId> services = deviceServices.get(bezirkDeviceInterface.getDeviceId());
             sphereRegistryWrapper.addLocalServicesToSphere(services, sphereExchangeData.getSphereID());
         }
 
@@ -356,13 +356,13 @@ public class ShareProcessor {
         ShareRequest shareRequest = null;
 
         Sphere sphere = sphereRegistryWrapper.getSphere(sharerSphereId);
-        Map<String, ArrayList<BezirkZirkId>> deviceServices = sphere.deviceServices;
+        Map<String, ArrayList<ZirkId>> deviceServices = sphere.deviceServices;
 
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(bezirkDeviceInterface.getDeviceId())) {
 
             // get device services of sphere
-            ArrayList<BezirkZirkId> services = deviceServices.get(bezirkDeviceInterface.getDeviceId());
+            ArrayList<ZirkId> services = deviceServices.get(bezirkDeviceInterface.getDeviceId());
 
             if (services != null && !services.isEmpty()) {
                 DeviceInformation deviceInformation = sphereRegistryWrapper
@@ -470,12 +470,12 @@ public class ShareProcessor {
         }
 
         Sphere sphere = sphereRegistryWrapper.getSphere(inviterSphereId);
-        Map<String, ArrayList<BezirkZirkId>> deviceServices = sphere.deviceServices;
+        Map<String, ArrayList<ZirkId>> deviceServices = sphere.deviceServices;
         if (deviceServices != null && !deviceServices.isEmpty()
                 && deviceServices.containsKey(bezirkDeviceInterface.getDeviceId())) {
 
             // get device services of sphere
-            ArrayList<BezirkZirkId> services = deviceServices.get(bezirkDeviceInterface.getDeviceId());
+            ArrayList<ZirkId> services = deviceServices.get(bezirkDeviceInterface.getDeviceId());
 
             if (services != null && !services.isEmpty()) {
                 DeviceInformation deviceInformation = sphereRegistryWrapper

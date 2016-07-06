@@ -14,7 +14,7 @@ import com.bezirk.device.BezirkDevice;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.rest.CommsRestController;
 import com.bezirk.rest.HttpComms;
 import com.bezirk.sadl.BezirkSadlManager;
@@ -198,7 +198,9 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                     com.bezirk.starter.helper.BezirkStackHandler.startedStack = true;
                 } else {
                     logger.debug("Disconnected from network!!!");
-                    Toast.makeText(service.getApplicationContext(), "You have to be connected to a network to start using UhU!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(service.getApplicationContext(),
+                            "You have to be connected to a network to start using Bezirk!!",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -274,7 +276,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
         } else {
             String deviceId = intent.getStringExtra("ADDRESS");
 
-            msgLedger.setRecipient(new BezirkZirkEndPoint(deviceId, new BezirkZirkId("DIAG")));
+            msgLedger.setRecipient(new BezirkZirkEndPoint(deviceId, new ZirkId("DIAG")));
 
         }
         comms.sendMessage(msgLedger);

@@ -6,12 +6,11 @@ import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -77,29 +76,26 @@ public class UnicastEventLocalTest {
     @After
     public void destroyMockservices() {
 
-        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-        bezirk.unregisterZirk(mockA.myId);
-        bezirk.unregisterZirk(mockB.myId);
+        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.registerZirk("MOCK_ZIRK");
+        bezirk.unregisterZirk();
+        bezirk.unregisterZirk();
     }
 
     /**
      * The zirk discovers the MockServiceB and communicate unicastly.
      */
     private final class UnicastMockServiceA implements BezirkListener {
-        private final String serviceName = "UnicastMockServiceA";
+        private final String zirkName = "UnicastMockZirkA";
         private Bezirk bezirk = null;
-        private ZirkId myId = null;
         private MockServiceBProtocolRole pRole;
 
         /**
          * Setup the Zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = bezirk.registerZirk(serviceName);
-            logger.info("MOCK_SERVICE_A - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
+            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
             pRole = new MockServiceBProtocolRole();
-            bezirk.subscribe(myId, pRole, this);
+            bezirk.subscribe(pRole, this);
         }
 
         /**
@@ -107,13 +103,13 @@ public class UnicastEventLocalTest {
          */
         private final void discoverMockService() {
             MockServiceAProtocolRole pRole = new MockServiceAProtocolRole();
-            bezirk.discover(myId, null, pRole, 10000, 1, this);
+            bezirk.discover(null, pRole, 10000, 1, this);
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
+        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
             assertEquals("MockReplyEvent", topic);
-            MockReplyEvent reply = Event.fromJson(event, MockReplyEvent.class);
+            MockReplyEvent reply = (MockReplyEvent) event;
             assertNotNull(reply);
             logger.info("**** REPLY FROM MOCK SERVICE **** " + reply.answer);
             assertNotNull(reply.answer);
@@ -122,11 +118,11 @@ public class UnicastEventLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -159,7 +155,7 @@ public class UnicastEventLocalTest {
                     "Discovered SEP" + dService.zirk + "\n");
 
             MockRequestEvent request = new MockRequestEvent(Message.Flag.REQUEST, "MockRequestEvent");
-            bezirk.sendEvent(myId, dService.zirk, request);
+            bezirk.sendEvent(dService.zirk, request);
         }
 
 
@@ -255,39 +251,36 @@ public class UnicastEventLocalTest {
      * The zirk discovers the MockServiceA and communicate unicastly.
      */
     private final class UnicastMockServiceB implements BezirkListener {
-        private final String serviceName = "UnicastMockServiceB";
+        private final String zirkName = "UnicastMockZirkB";
         private Bezirk bezirk = null;
-        private ZirkId myId = null;
 
         /**
          * Setup the zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = bezirk.registerZirk(serviceName);
-            logger.info("UnicastMockServiceB - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
-            bezirk.subscribe(myId, new MockServiceAProtocolRole(), this);
+            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
+            bezirk.subscribe(new MockServiceAProtocolRole(), this);
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
+        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
             logger.info(" **** Received Event *****");
             assertEquals("MockRequestEvent", topic);
-            MockRequestEvent receivedEvent = Event.fromJson(event, MockRequestEvent.class);
+            MockRequestEvent receivedEvent = (MockRequestEvent) event;
             assertEquals("Who am I?", receivedEvent.question);
             // send the reply
             MockReplyEvent replyEvent = new MockReplyEvent(Message.Flag.REPLY, "MockReplyEvent");
             replyEvent.answer = "I am Fine! Thank you";
-            bezirk.sendEvent(myId, sender, replyEvent);
+            bezirk.sendEvent(sender, replyEvent);
             logger.info("********* MOCK_SERVICE B responded to the Event **************");
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override

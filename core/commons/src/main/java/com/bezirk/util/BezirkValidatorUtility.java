@@ -6,7 +6,7 @@ import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 /**
  * Utility class that is used to Validate different Data Structures used in Bezirk.
@@ -20,13 +20,13 @@ public final class BezirkValidatorUtility {
     }
 
     /**
-     * Checks for Validity of BezirkZirkId.
+     * Checks for Validity of ZirkId.
      *
-     * @param serviceId BezirkZirkId that will check for ZirkId
-     * @return true if BezirkZirkId is valid, false otherwise
+     * @param serviceId ZirkId that will check for ZirkId
+     * @return true if ZirkId is valid, false otherwise
      */
-    public static boolean checkBezirkZirkId(final BezirkZirkId serviceId) {
-        return !(serviceId == null || !checkForString(serviceId.getBezirkZirkId()));
+    public static boolean checkBezirkZirkId(final ZirkId serviceId) {
+        return !(serviceId == null || !checkForString(serviceId.getZirkId()));
     }
 
     /**
@@ -123,7 +123,7 @@ public final class BezirkValidatorUtility {
         return !(sphereList == null || sphereList.length == 0);
     }
 
-    public static boolean checkRTCStreamRequest(final BezirkZirkId serviceId, final BezirkZirkEndPoint sep) {
+    public static boolean checkRTCStreamRequest(final ZirkId serviceId, final BezirkZirkEndPoint sep) {
         return checkBezirkZirkId(serviceId) && checkBezirkZirkEndPoint(sep);
     }
 }

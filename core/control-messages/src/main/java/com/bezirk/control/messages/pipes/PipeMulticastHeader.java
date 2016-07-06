@@ -1,13 +1,13 @@
 package com.bezirk.control.messages.pipes;
 
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.serialization.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class PipeMulticastHeader extends PipeHeader {
-    private Address address;
+    private RecipientSelector recipientSelector;
 
     public static <C> C deserialize(String json, Class<C> clazz) {
         final GsonBuilder builder = new GsonBuilder();
@@ -18,7 +18,7 @@ public class PipeMulticastHeader extends PipeHeader {
 
     public com.bezirk.control.messages.MulticastHeader toMulticastHeader() {
         com.bezirk.control.messages.MulticastHeader multicastHeader = new com.bezirk.control.messages.MulticastHeader();
-        multicastHeader.setAddress(this.getAddress());
+        multicastHeader.setRecipientSelector(this.getRecipientSelector());
         multicastHeader.setSenderSEP(this.getSenderSEP());
         multicastHeader.setTopic(this.getTopic());
 
@@ -29,12 +29,12 @@ public class PipeMulticastHeader extends PipeHeader {
         return multicastHeader;
     }
 
-    public Address getAddress() {
-        return address;
+    public RecipientSelector getRecipientSelector() {
+        return recipientSelector;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setRecipientSelector(RecipientSelector recipientSelector) {
+        this.recipientSelector = recipientSelector;
     }
 
     public String serialize() {

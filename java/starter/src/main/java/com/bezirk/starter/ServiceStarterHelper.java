@@ -17,6 +17,7 @@ import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.sphere.api.BezirkSphereRegistration;
 import com.bezirk.sphere.impl.BezirkQRCode;
 import com.bezirk.sphere.impl.BezirkSphereForPC;
+import com.bezirk.sphere.impl.JavaPrefs;
 import com.bezirk.sphere.security.CryptoEngine;
 
 import org.slf4j.Logger;
@@ -62,7 +63,9 @@ final class ServiceStarterHelper {
         // listener object as same.
         final BezirkSphereForPC bezirkSphereForPC = (BezirkSphereForPC) sphereForPC;
         bezirkSphereForPC.setBezirkSphereListener(bezirkSphereForPC);
-        ISphereConfig sphereConfig = new com.bezirk.sphere.impl.SphereProperties();
+        //ISphereConfig sphereConfig = new com.bezirk.sphere.impl.SphereProperties();
+        //sphereConfig.init();
+        ISphereConfig sphereConfig = new JavaPrefs();
         sphereConfig.init();
         bezirkSphereForPC.initSphere(registryPersistence, comms, sphereConfig);
 
@@ -95,16 +98,7 @@ final class ServiceStarterHelper {
      * Loads the default location for UPA device from the properties.
      */
     private Location loadLocation() {
-        try {
-            final Properties props = BezirkDeviceForPC.loadProperties();
-
-            final String loc = props.getProperty("DeviceLocation", null);
-            return new Location(loc);
-        } catch (Exception e) {
-            logger.error("Problem reading or writing properties file: ", e);
-        }
-
-        return null;
+        return BezirkDeviceForPC.deviceLocation;
     }
 
     /**

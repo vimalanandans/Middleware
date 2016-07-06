@@ -8,7 +8,7 @@ import com.bezirk.middleware.messages.Event;
 public class IncompleteQuestion extends Question {
 
     /**
-     * UhU topic: question
+     * Bezirk topic: question
      */
     public static final String topic = "incomplete-question";
 

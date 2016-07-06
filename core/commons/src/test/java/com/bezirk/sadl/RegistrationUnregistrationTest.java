@@ -1,7 +1,7 @@
 package com.bezirk.sadl;
 
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 
 import org.junit.AfterClass;
@@ -35,10 +35,10 @@ public class RegistrationUnregistrationTest {
     private final static Logger logger = LoggerFactory.getLogger(RegistrationUnregistrationTest.class);
 
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
-    private static final BezirkZirkId bezirkZirkAId = new BezirkZirkId("ServiceA");
-    private static final BezirkZirkId bezirkZirkBId = new BezirkZirkId("ServiceB");
-    private static final BezirkZirkId bezirkZirkCId = new BezirkZirkId("ServiceC");
-    private static final BezirkZirkId dummyServiceId = new BezirkZirkId("InvalidServiceForTest");
+    private static final ZirkId bezirkZirkAId = new ZirkId("ServiceA");
+    private static final ZirkId bezirkZirkBId = new ZirkId("ServiceB");
+    private static final ZirkId bezirkZirkCId = new ZirkId("ServiceC");
+    private static final ZirkId dummyServiceId = new ZirkId("InvalidServiceForTest");
     private static final MockProtocols mockProtocols = new MockProtocols();
     private static final Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
     private static BezirkSadlManager bezirkSadlManager = null;
@@ -120,7 +120,7 @@ public class RegistrationUnregistrationTest {
         assertTrue("SadlManager dont have ServiceA id in registered zirk list.", isServiceRegistered);
 		
 		/*SadlManager should return false when queried for unregistered serviceid*/
-        BezirkZirkId invalidService = new BezirkZirkId("TestRegister");
+        ZirkId invalidService = new ZirkId("TestRegister");
         isServiceRegistered = bezirkSadlManager.isServiceRegistered(invalidService);
         assertFalse("Zirk is registered", isServiceRegistered);
 
@@ -146,11 +146,11 @@ public class RegistrationUnregistrationTest {
         isUnregistered = bezirkSadlManager.unregisterService(bezirkZirkAId);
         assertTrue("SadlManager couldn't unregister ServiceA.", isUnregistered);
 
-        Set<BezirkZirkId> registeredServices = bezirkSadlManager
+        Set<ZirkId> registeredServices = bezirkSadlManager
                 .getRegisteredServices();
 
         boolean serviceAFound = false;
-        for (BezirkZirkId serviceId : registeredServices) {
+        for (ZirkId serviceId : registeredServices) {
 
             if (serviceId.equals(bezirkZirkAId)) {
                 serviceAFound = true;
@@ -188,7 +188,7 @@ public class RegistrationUnregistrationTest {
      */
     private void testGetRegisteredServices() {
 
-        Set<BezirkZirkId> registeredServiceSet = bezirkSadlManager
+        Set<ZirkId> registeredServiceSet = bezirkSadlManager
                 .getRegisteredServices();
 
         assertNotNull("SadlManager couldn't fetch registered zirk list.", registeredServiceSet);
@@ -205,7 +205,7 @@ public class RegistrationUnregistrationTest {
      */
 
     private void unregisterfrommaps() {
-        BezirkZirkId bezirk = new BezirkZirkId("ServiceTestA");
+        ZirkId bezirk = new ZirkId("ServiceTestA");
         bezirkSadlManager.registerService(bezirk);
         SubscribedRole sRole = new SubscribedRole(mockProtocols.new NewProtocolRole());
         bezirkSadlManager.subscribeService(bezirk, sRole);

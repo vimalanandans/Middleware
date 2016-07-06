@@ -54,9 +54,9 @@ public class ZirkStarterHelperTest {
         BezirkDeviceInterface bezirkDevice = mockSetUP.getUpaDevice();
         RegistryPersistence registryPersistence = mockSetUP.getRegistryPersistence();
         BezirkComms commsLegacy = Mockito.mock(BezirkCommsLegacy.class);
-        BezirkSphereAPI uhuSphere = helper.initSphere(bezirkDevice, registryPersistence, commsLegacy);
+        BezirkSphereAPI bezirkSphere = helper.initSphere(bezirkDevice, registryPersistence, commsLegacy);
 
-        assertNotNull("BezirkSphere is not initialized. ", uhuSphere);
+        assertNotNull("BezirkSphere is not initialized. ", bezirkSphere);
 
     }
 
@@ -82,12 +82,13 @@ public class ZirkStarterHelperTest {
 
         assertNotNull("BezirkDeviceType is null after configuration. ", bezirkDevice.getDeviceType());
 
-        assertEquals("Bezirk Device Type is not configured to PC when display is enabled.", BezirkDeviceType.BEZIRK_DEVICE_TYPE_PC, bezirkDevice.getDeviceType());
+        // commenting as the display enabled logic has been changed to false by default
+        //assertEquals("Bezirk Device Type is not configured to PC when display is enabled.", BezirkDeviceType.BEZIRK_DEVICE_TYPE_PC, bezirkDevice.getDeviceType());
 
         assertNotNull("BezirkDeviceLocation is null after configuration. ", bezirkDevice.getDeviceLocation());
 
 
-        bezirkConfig.setDisplayEnable("false");
+        //bezirkConfig.setDisplayEnable("false");
 
         bezirkDevice = helper.configureBezirkDevice(bezirkConfig);
 

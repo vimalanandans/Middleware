@@ -16,7 +16,7 @@ import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.persistence.BezirkRegistry;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.CatchProcessor;
@@ -27,7 +27,7 @@ import com.bezirk.sphere.impl.Sphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.security.CryptoEngine;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 import com.j256.ormlite.table.TableUtils;
 
 import org.slf4j.Logger;
@@ -138,8 +138,8 @@ public class MockSetUpUtility {
         return null;
     }
 
-    public LinkedHashMap<String, ArrayList<BezirkZirkId>> getDeviceServicesList(SphereRegistry registry,
-                                                                                String sphereId) {
+    public LinkedHashMap<String, ArrayList<ZirkId>> getDeviceServicesList(SphereRegistry registry,
+                                                                          String sphereId) {
         DeviceInformation deviceInformation = new DeviceInformation("DEVICE", BezirkDeviceType.BEZIRK_DEVICE_TYPE_OTHER);
         registry.devices.put(sphereId, deviceInformation);
         deviceInformation = new DeviceInformation("DEVICE1", BezirkDeviceType.BEZIRK_DEVICE_TYPE_OTHER);
@@ -151,21 +151,21 @@ public class MockSetUpUtility {
         deviceInformation = new DeviceInformation("DEVICE3", BezirkDeviceType.BEZIRK_DEVICE_TYPE_OTHER);
         String deviceId3 = "Device3";
         registry.devices.put(deviceId3, deviceInformation);
-        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
-        ArrayList<BezirkZirkId> device1ServiceSet = new ArrayList<BezirkZirkId>();
-        device1ServiceSet.add(new BezirkZirkId("Service11"));
-        device1ServiceSet.add(new BezirkZirkId("Service12"));
-        device1ServiceSet.add(new BezirkZirkId("Service13"));
+        LinkedHashMap<String, ArrayList<ZirkId>> deviceServices = new LinkedHashMap<>();
+        ArrayList<ZirkId> device1ServiceSet = new ArrayList<ZirkId>();
+        device1ServiceSet.add(new ZirkId("Service11"));
+        device1ServiceSet.add(new ZirkId("Service12"));
+        device1ServiceSet.add(new ZirkId("Service13"));
         deviceServices.put(deviceId1, device1ServiceSet);
-        ArrayList<BezirkZirkId> device2ServiceSet = new ArrayList<BezirkZirkId>();
-        device2ServiceSet.add(new BezirkZirkId("Service21"));
-        device2ServiceSet.add(new BezirkZirkId("Service22"));
-        device2ServiceSet.add(new BezirkZirkId("Service23"));
+        ArrayList<ZirkId> device2ServiceSet = new ArrayList<ZirkId>();
+        device2ServiceSet.add(new ZirkId("Service21"));
+        device2ServiceSet.add(new ZirkId("Service22"));
+        device2ServiceSet.add(new ZirkId("Service23"));
         deviceServices.put(deviceId2, device2ServiceSet);
-        ArrayList<BezirkZirkId> device3ServiceSet = new ArrayList<BezirkZirkId>();
-        device3ServiceSet.add(new BezirkZirkId("Service31"));
-        device3ServiceSet.add(new BezirkZirkId("Service32"));
-        device3ServiceSet.add(new BezirkZirkId("Service33"));
+        ArrayList<ZirkId> device3ServiceSet = new ArrayList<ZirkId>();
+        device3ServiceSet.add(new ZirkId("Service31"));
+        device3ServiceSet.add(new ZirkId("Service32"));
+        device3ServiceSet.add(new ZirkId("Service33"));
         deviceServices.put(deviceId3, device3ServiceSet);
 
         return deviceServices;

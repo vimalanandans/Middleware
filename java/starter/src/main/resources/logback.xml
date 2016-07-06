@@ -1,9 +1,9 @@
 <configuration>
     <!-- Write to console -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
-        </filter>
+        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+            <!--<level>ERROR</level>-->
+        <!--</filter>-->
         <encoder>
             <pattern>%-5level %logger - %msg%n</pattern>
         </encoder>
@@ -23,7 +23,7 @@
             <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger - %msg%n</pattern>
         </encoder>
     </appender>
-    <root level="DEBUG">
+    <root level="ERROR">
         <appender-ref ref="STDOUT" />
         <!--  Don't logger to file by default
         <appender-ref ref="FILE" />

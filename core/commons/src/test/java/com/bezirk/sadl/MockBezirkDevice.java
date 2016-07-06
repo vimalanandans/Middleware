@@ -3,17 +3,14 @@ package com.bezirk.sadl;
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.devices.DeviceDetails;
 import com.bezirk.middleware.addressing.Location;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.apache.shiro.codec.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Properties;
 
@@ -26,7 +23,7 @@ import java.util.Properties;
 public class MockBezirkDevice implements BezirkDeviceInterface {
     private static final Logger logger = LoggerFactory.getLogger(MockBezirkDevice.class);
 
-    public static final String propertiesFile = "upadevice.properties";
+    //public static final String propertiesFile = "upadevice.properties";
     private static DeviceDetails deviceDetails = null;
 
     /**
@@ -35,14 +32,14 @@ public class MockBezirkDevice implements BezirkDeviceInterface {
     public MockBezirkDevice() {
         String location = "Office/lobby/null";
         String deviceName;
-        try {
-            Properties props = MockBezirkDevice.loadProperties();
-            location = props.getProperty("DeviceLocation");
-
-        } catch (Exception e1) {
-            logger.error("Failure to load upadevice.properties file");
-
-        }
+//        try {
+//            Properties props = MockBezirkDevice.loadProperties();
+//            location = props.getProperty("DeviceLocation");
+//
+//        } catch (Exception e1) {
+//            logger.error("Failure to load upadevice.properties file");
+//
+//        }
 
         deviceDetails = new DeviceDetails();
 
@@ -66,9 +63,9 @@ public class MockBezirkDevice implements BezirkDeviceInterface {
      * @return A Properties object loaded with properties from file
      * @throws Exception if there is a problem loading properties from the classpath
      */
-    public static Properties loadProperties() throws Exception {
-        return loadProperties(propertiesFile);
-    }
+//    public static Properties loadProperties() throws Exception {
+//        return loadProperties(propertiesFile);
+//    }
 
     public static Properties loadProperties(String file) throws Exception {
         Properties props = new Properties();
@@ -89,11 +86,11 @@ public class MockBezirkDevice implements BezirkDeviceInterface {
         return props;
     }
 
-    public static void storeProperties(Properties props) throws IOException {
-        URL propsURL = BezirkDeviceInterface.class.getResource(propertiesFile);
-        FileOutputStream fos = new FileOutputStream(propsURL.getFile());
-        props.store(fos, null);
-    }
+//    public static void storeProperties(Properties props) throws IOException {
+//        URL propsURL = BezirkDeviceInterface.class.getResource(propertiesFile);
+//        FileOutputStream fos = new FileOutputStream(propsURL.getFile());
+//        props.store(fos, null);
+//    }
 
     /**
      * Used for changing the device name

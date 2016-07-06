@@ -2,7 +2,7 @@ package com.bezirk.messagehandler;
 
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 public class PipeRequestIncomingMessage extends ServiceIncomingMessage {
 
@@ -15,7 +15,7 @@ public class PipeRequestIncomingMessage extends ServiceIncomingMessage {
         this.callbackDiscriminator = "PIPE-APPROVED";
     }
 
-    public PipeRequestIncomingMessage(Pipe pipe, String pipeReqId, BezirkPipePolicy allowedIn, BezirkPipePolicy allowedOut, BezirkZirkId recipient) {
+    public PipeRequestIncomingMessage(Pipe pipe, String pipeReqId, BezirkPipePolicy allowedIn, BezirkPipePolicy allowedOut, ZirkId recipient) {
         this.callbackDiscriminator = "PIPE-APPROVED";
         this.pipe = pipe;
         this.pipeReqId = pipeReqId;

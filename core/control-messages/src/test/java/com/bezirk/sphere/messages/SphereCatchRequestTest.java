@@ -13,7 +13,7 @@
 //
 //import SphereVitals;
 //import BezirkZirkEndPoint;
-//import BezirkZirkId;
+//import ZirkId;
 //
 ///**
 // * This testCase verifies the SphereCatchRequest by retrieving the field values after deserialization.
@@ -26,11 +26,11 @@
 //	private static final Logger logger = LoggerFactory
 //			.getLogger(SphereCatchRequestTest.class);
 //
-//	private static final BezirkZirkId serviceAId = new BezirkZirkId("ServiceA");
+//	private static final ZirkId serviceAId = new ZirkId("ServiceA");
 //	private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceAId);
-//	private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
+//	private static final ZirkId serviceBId = new ZirkId("ServiceB");
 //
-//	private static List<BezirkZirkId> services = new ArrayList<>();
+//	private static List<ZirkId> services = new ArrayList<>();
 //
 //
 //

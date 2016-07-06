@@ -6,34 +6,34 @@
  */
 package com.bezirk.proxy.android;
 
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 
 import java.io.File;
 
 
 public interface BezirkProxyForServiceAPI {
-    public void registerService(BezirkZirkId serviceId, String serviceName);
+    public void registerService(ZirkId serviceId, String serviceName);
 
-    public void subscribeService(BezirkZirkId serviceId, SubscribedRole pRole);
+    public void subscribeService(ZirkId serviceId, SubscribedRole pRole);
 
-    public void sendUnicastEvent(BezirkZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg);
+    public void sendUnicastEvent(ZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg);
 
-    public void sendMulticastEvent(BezirkZirkId serviceId, Address address, String serializedEventMsg);
+    public void sendMulticastEvent(ZirkId serviceId, RecipientSelector recipientSelector, String serializedEventMsg);
 
-    public void discover(BezirkZirkId service, Address scope, SubscribedRole pRole, int discoveryId, long timeout, int maxDiscovered);
+    public void discover(ZirkId service, RecipientSelector scope, SubscribedRole pRole, int discoveryId, long timeout, int maxDiscovered);
 
-    public short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId);
+    public short sendStream(ZirkId sender, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId);
 
-    public short sendStream(BezirkZirkId sender, BezirkZirkEndPoint receiver, String serializedString, short streamId);
+    public short sendStream(ZirkId sender, BezirkZirkEndPoint receiver, String serializedString, short streamId);
 
-    public void setLocation(BezirkZirkId serviceId, Location location);
+    public void setLocation(ZirkId serviceId, Location location);
 
-    public void unsubscribe(BezirkZirkId serviceId, SubscribedRole role);
+    public void unsubscribe(ZirkId serviceId, SubscribedRole role);
 
-    public void unregister(BezirkZirkId serviceId);
+    public void unregister(ZirkId serviceId);
 
 }

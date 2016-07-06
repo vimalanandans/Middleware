@@ -24,10 +24,6 @@ public class MockProtocols {
             return topic;
         }
 
-        public void setTopic(String topic) {
-            this.topic = topic;
-        }
-
         public String getReply() {
             return reply;
         }

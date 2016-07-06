@@ -1,23 +1,17 @@
 package com.bezirk.starter;
 
 import com.bezirk.comms.BezirkCommunications;
-import com.bezirk.comms.BezirkCommsPC;
-import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
-import com.bezrik.network.IntfInetPair;
+import com.bezirk.network.BezirkNetworkUtilities;
+import com.bezirk.network.IntfInetPair;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
-import java.util.Scanner;
 
 /**
  * Helper class for main zirk to fetch the network interface details.
@@ -79,7 +73,7 @@ final class BezirkPCNetworkUtil {
 
                 if (networkInterface != null && networkInterface.isLoopback()) {
                     serviceStarterHelper
-                            .fail("Found loopback interface only. UhU requires a non-loopback interface for multicast. Exiting now.",
+                            .fail("Found loopback interface only. Bezirk requires a non-loopback interface for multicast. Exiting now.",
                                     null);
                 } else {
                     serviceStarterHelper.fail(
@@ -122,38 +116,38 @@ final class BezirkPCNetworkUtil {
      */
     private String promptUserForInterface(final BezirkConfig bezirkConfig) {
         String interfaceName;
-        if (bezirkConfig.isDisplayEnabled()) {
-            final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
-                    .getIntfInetPair().iterator();
-            final com.bezirk.ethernetconfigui.EthernetConfigurationDialog ethConfigDialog = new com.bezirk.ethernetconfigui.EthernetConfigurationDialog(
-                    itr);
-            interfaceName = ethConfigDialog.showDialog();
-        }
+        //if (bezirkConfig.isDisplayEnabled()) {
+        final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
+                .getIntfInetPair().iterator();
+        final com.bezirk.ethernetconfigui.EthernetConfigurationDialog ethConfigDialog = new com.bezirk.ethernetconfigui.EthernetConfigurationDialog(
+                itr);
+        interfaceName = ethConfigDialog.showDialog();
+        //}
         // If UI is not enabled, prompt user to enter interface via console
-        else {
-            for (IntfInetPair pair : BezirkNetworkUtilities.getIntfInetPair()) {
-                logger.info("Found interface: " + pair.getIntf().getName()
-                        + " IP:" + pair.getInet().getHostAddress());
-            }
-            final Scanner intfScanner = new Scanner(System.in);
-            final StringBuilder tempInterfaceName = new StringBuilder(
-                    intfScanner.next());
-            interfaceName = tempInterfaceName.toString();
-
-            final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
-                    .getIntfInetPair().iterator();
-            while (itr.hasNext()) {
-                final IntfInetPair pair = itr.next();
-                if (tempInterfaceName.toString() != null
-                        && !tempInterfaceName.toString().isEmpty()
-                        && tempInterfaceName.toString().equals(
-                        pair.getIntf().getName())) {
-                    interfaceName = tempInterfaceName.toString();
-                    break;
-                }
-            }
-            intfScanner.close();
-        }
+//        else {
+//            for (IntfInetPair pair : BezirkNetworkUtilities.getIntfInetPair()) {
+//                logger.info("Found interface: " + pair.getIntf().getName()
+//                        + " IP:" + pair.getInet().getHostAddress());
+//            }
+//            final Scanner intfScanner = new Scanner(System.in);
+//            final StringBuilder tempInterfaceName = new StringBuilder(
+//                    intfScanner.next());
+//            interfaceName = tempInterfaceName.toString();
+//
+//            final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
+//                    .getIntfInetPair().iterator();
+//            while (itr.hasNext()) {
+//                final IntfInetPair pair = itr.next();
+//                if (tempInterfaceName.toString() != null
+//                        && !tempInterfaceName.toString().isEmpty()
+//                        && tempInterfaceName.toString().equals(
+//                        pair.getIntf().getName())) {
+//                    interfaceName = tempInterfaceName.toString();
+//                    break;
+//                }
+//            }
+//            intfScanner.close();
+//        }
 
         return interfaceName;
     }
@@ -166,36 +160,37 @@ final class BezirkPCNetworkUtil {
      * @param networkInterface
      * @return <code>false</code> if the interface was not updated in the properties file
      */
+    //todo: implement using preferences api
     private boolean updateInterfaceInPropsFile(final NetworkInterface networkInterface) {
-        try {
-            final Properties properties = BezirkCommsPC.loadProperties();
-
-            // Get the path to the properties file
-            final String path = BezirkDeviceInterface.class.getClassLoader()
-                    .getResource(BezirkCommsPC.PROPS_FILE).getPath();
-            final FileOutputStream output = new FileOutputStream(path);
-
-            /*
-             * Write the interface name to comms.properties if a different
-             * Interface was chosen and the config file was not loaded from a
-             * jar (as signified by a "!" being in the path)
-             */
-            if (!networkInterface.getName().equals(BezirkCommsPC.PROPS_FILE)
-                    && !path.contains("!")) {
-                properties.setProperty("InterfaceName", networkInterface.getName());
-                properties.store(output, null);
-
-                logger.info("Updated chosen interface in config file: " + path);
-                return true;
-            }
-
-            output.close();
-            logger.debug("Did not update interface in config file: " + path);
-        } catch (FileNotFoundException e) {
-            logger.error("Properties file not found in default path.", e);
-        } catch (Exception e) {
-            logger.error("Exception in storing interface name to properties.", e);
-        }
+//        try {
+//            final Properties properties = BezirkCommsPC.loadProperties();
+//
+//            // Get the path to the properties file
+//            final String path = BezirkDeviceInterface.class.getClassLoader()
+//                    .getResource(BezirkCommsPC.PROPS_FILE).getPath();
+//            final FileOutputStream output = new FileOutputStream(path);
+//
+//            /*
+//             * Write the interface name to comms.properties if a different
+//             * Interface was chosen and the config file was not loaded from a
+//             * jar (as signified by a "!" being in the path)
+//             */
+//            if (!networkInterface.getName().equals(BezirkCommsPC.PROPS_FILE)
+//                    && !path.contains("!")) {
+//                properties.setProperty("InterfaceName", networkInterface.getName());
+//                properties.store(output, null);
+//
+//                logger.info("Updated chosen interface in config file: " + path);
+//                return true;
+//            }
+//
+//            output.close();
+//            logger.debug("Did not update interface in config file: " + path);
+//        } catch (FileNotFoundException e) {
+//            logger.error("Properties file not found in default path.", e);
+//        } catch (Exception e) {
+//            logger.error("Exception in storing interface name to properties.", e);
+//        }
         return false;
     }
 

@@ -1,5 +1,5 @@
 /**
- * InspireMe UhU Event
+ * InspireMe Bezirk Event
  *
  * @author Cory Henson
  */
@@ -10,7 +10,7 @@ import com.bezirk.middleware.messages.Event;
 public class InspireMe extends Event {
 
     /**
-     * UhU topic: inspire-me
+     * Bezirk topic: inspire-me
      */
     public static final String topic = "inspire-me";
 

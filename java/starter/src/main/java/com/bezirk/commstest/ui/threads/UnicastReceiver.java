@@ -4,7 +4,7 @@ import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.commstest.ui.PongMessage;
 import com.bezirk.commstest.ui.UIStore;
 import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;

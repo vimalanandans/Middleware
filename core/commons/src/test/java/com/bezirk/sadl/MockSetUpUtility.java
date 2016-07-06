@@ -14,7 +14,7 @@ import com.bezirk.persistence.BezirkRegistry;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.sphere.testUtilities.SpherePropertiesMock;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 import com.j256.ormlite.table.TableUtils;
 
 import org.slf4j.Logger;

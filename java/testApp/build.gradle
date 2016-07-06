@@ -1,44 +1,31 @@
 apply plugin: 'application'
-mainClassName = "test.Test"
+
+mainClassName = "test.Pub"
 
 dependencies {
-
-/*    if (project.local == "false") {
-
-        compile "com.bezirk:bezirk-api:${version}"
-        compile "com.bezirk:bezirk:${version}"
-        compile "com.bezirk:commons:${version}"
-
-    } else {
-*/
     compile project(':core:bezirk-middleware-api')
     compile project(':core:bezirk')
     compile project(':core:commons')
-    //}
-
     compile project(':java:libraries:bezirk-factory')
-    testCompile 'junit:junit:4.11'
+    compile project(':core:protocols:parametricUI-protocols')
+
+    testCompile 'junit:junit:4.12'
 }
 
-/*
- * Platform labels
- */
-def final String LIB_BIN_FOLDER = "lib-zeromq-bin"
-def nativeLibPath
+// Automatically add the temporary directory where Bezirk dumps the ZeroMQ dependencies
+// to java.library.path
+applicationDefaultJvmArgs = ["-Djava.library.path=" + System.getProperty("java.library.path") +
+                                     File.pathSeparator + System.getProperty("java.io.tmpdir") +
+                                     "lib-zeromq-bin" + File.separator]
 
-/*
- *  Configure native properties for tests to be able to run
- *  on each platform
- */
 
 run {
-    /*  systemProperties = System.getProperties()
-      systemProperties['java.library.path'] = new File("${projectDir}/dist/native/${platform}").getAbsolutePath()
-      println "PATH: " + systemProperties['java.library.path']
-      */
-    systemProperties = System.getProperties()
-    nativeLibPath = System.getProperty("java.io.tmpdir") + "${LIB_BIN_FOLDER}" + File.pathSeparator + systemProperties['java.library.path'];
-    systemProperties['java.library.path'] = nativeLibPath;
-    println "PATH: " + systemProperties['java.library.path']
-
+    /**
+     * Pass all the system properties to the JVM process spawned for running this application
+     * @see <a href="https://docs.gradle.org/current/userguide/application_plugin.html#N15E7">gradle application plugin</a>
+     *
+     * Required for passing configurations like "displayEnabled" to bezirk while running the application.
+     * Ex. gradlew -DdisplayEnabled=true run
+     */
+    systemProperties System.getProperties()
 }

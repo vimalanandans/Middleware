@@ -2,7 +2,7 @@ package com.bezirk.sadl;
 
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -32,7 +32,7 @@ public class SadlRegistryTest {
 
     private static SadlRegistry sadlRegistry = null;
 
-    private BezirkZirkId bezirkZirkBId = new BezirkZirkId("ServiceB");
+    private ZirkId bezirkZirkBId = new ZirkId("ServiceB");
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -86,9 +86,9 @@ public class SadlRegistryTest {
 
 		/* Creating the BezirkService Ids */
 
-        BezirkZirkId bezirk = null;
-        BezirkZirkId bezirk1 = null;
-        BezirkZirkId bezirk2 = null;
+        ZirkId bezirk = null;
+        ZirkId bezirk1 = null;
+        ZirkId bezirk2 = null;
 
         SadlRegistry sadleObj1 = null;
         SadlRegistry sadlobj2 = null;
@@ -96,9 +96,9 @@ public class SadlRegistryTest {
 
         Location loc = null;
 
-        bezirk = new BezirkZirkId("ZirkA");
-        bezirk1 = new BezirkZirkId("ZirkB");
-        bezirk2 = new BezirkZirkId("ZirkB");
+        bezirk = new ZirkId("ZirkA");
+        bezirk1 = new ZirkId("ZirkB");
+        bezirk2 = new ZirkId("ZirkB");
 
         loc = new Location("Kitchen", "Hall", "Room");
 
@@ -163,8 +163,8 @@ public class SadlRegistryTest {
 
     }
 
-    private SadlRegistry creatingsadlobj3(BezirkZirkId bezirk1,
-                                          BezirkZirkId bezirk2, Location loc) {
+    private SadlRegistry creatingsadlobj3(ZirkId bezirk1,
+                                          ZirkId bezirk2, Location loc) {
         SadlRegistry sadlobj3;
 		/* Creating SADLEOBJECT3 */
 
@@ -175,7 +175,7 @@ public class SadlRegistryTest {
         return sadlobj3;
     }
 
-    private SadlRegistry creatingsadlobj2(BezirkZirkId bezirk1, Location loc) {
+    private SadlRegistry creatingsadlobj2(ZirkId bezirk1, Location loc) {
         SadlRegistry sadlobj2;
 		/* Creating SADLEOBJECT2 */
 
@@ -183,7 +183,7 @@ public class SadlRegistryTest {
         return sadlobj2;
     }
 
-    private SadlRegistry creatingSadleObj1(BezirkZirkId bezirk) {
+    private SadlRegistry creatingSadleObj1(ZirkId bezirk) {
         SadlRegistry sadleObj1;
 		/* Creating the SADLEOBJECT1 */
 
@@ -221,7 +221,7 @@ public class SadlRegistryTest {
         assertFalse("HashCode is equal but the objects are notequal", results);
     }
 
-    private void testeventandLcationEquality(BezirkZirkId bezirk1, SadlRegistry sadlobj2) {
+    private void testeventandLcationEquality(ZirkId bezirk1, SadlRegistry sadlobj2) {
 
         SadlRegistry sadlobj3;
         boolean results;
@@ -240,7 +240,7 @@ public class SadlRegistryTest {
         assertFalse("SADLEOBJEC2 eventmap is null", results);
 
         sadlobj3.eventMap = null;
-        ConcurrentMap<String, Set<BezirkZirkId>> sadle2EventMap = sadlobj2.eventMap;
+        ConcurrentMap<String, Set<ZirkId>> sadle2EventMap = sadlobj2.eventMap;
         sadlobj2.eventMap = null;
         results = sadlobj3.equals(sadlobj2);
         assertTrue("sadl registries with null eventmaps are not considered equal", results);
@@ -252,8 +252,8 @@ public class SadlRegistryTest {
 		 * comparing with sadlobj2. Since, maps are empty it should not be
 		 * equal to sadlobj2 and the result will be false.
 		 */
-        sadlobj3.eventMap = new ConcurrentHashMap<String, Set<BezirkZirkId>>();
-        sadlobj3.locationMap = new ConcurrentHashMap<BezirkZirkId, Location>();
+        sadlobj3.eventMap = new ConcurrentHashMap<String, Set<ZirkId>>();
+        sadlobj3.locationMap = new ConcurrentHashMap<ZirkId, Location>();
         results = sadlobj2.equals(sadlobj3);
         assertFalse("SADLEOBJEC3 eventMap and location map is empty", results);
 
@@ -263,15 +263,15 @@ public class SadlRegistryTest {
 		 * Result: False Guess Yourself Why ? :)
 		 */
 
-        sadlobj3.eventMap = new ConcurrentHashMap<String, Set<BezirkZirkId>>();
-        sadlobj3.locationMap = new ConcurrentHashMap<BezirkZirkId, Location>();
+        sadlobj3.eventMap = new ConcurrentHashMap<String, Set<ZirkId>>();
+        sadlobj3.locationMap = new ConcurrentHashMap<ZirkId, Location>();
         sadlobj3.protocolDescMap = null;
         results = sadlobj2.equals(sadlobj3);
         assertFalse("SADLEOBJEC3 protocolDescMap is null and eventMap,locationMap isEmpty", results);
 
     }
 
-    private void testStreamMapEquality(BezirkZirkId bezirk1, SadlRegistry sadlobj2) {
+    private void testStreamMapEquality(ZirkId bezirk1, SadlRegistry sadlobj2) {
         SadlRegistry sadlobj3;
         boolean results;
 		/*
@@ -310,7 +310,7 @@ public class SadlRegistryTest {
         assertTrue("streamMap is null for sadlobj2", results);
     }
 
-    private void testSidEquality(BezirkZirkId bezirk2, SadlRegistry sadlobj2, BezirkZirkId bezirk1) {
+    private void testSidEquality(ZirkId bezirk2, SadlRegistry sadlobj2, ZirkId bezirk1) {
         SadlRegistry sadlobj3;
         boolean results;
 		/*
@@ -336,17 +336,17 @@ public class SadlRegistryTest {
 		
 		/* Sid not equal for sadlobj3 and sadlobj2*/
         sadlobj2.sid = new HashSet<>();
-        sadlobj2.sid.add(new BezirkZirkId("ServiceA"));
-        sadlobj3.sid = new HashSet<BezirkZirkId>();
-        sadlobj3.sid.add(new BezirkZirkId("ServiceB"));
+        sadlobj2.sid.add(new ZirkId("ServiceA"));
+        sadlobj3.sid = new HashSet<ZirkId>();
+        sadlobj3.sid.add(new ZirkId("ServiceB"));
         results = sadlobj2.equals(sadlobj3);
         assertFalse("sadl registries with different sid maps are considered equal.", results);
 
 
     }
 
-    private void testProtocolmap(BezirkZirkId bezirk1, SadlRegistry sadlobj2,
-                                 BezirkZirkId bezirk2) {
+    private void testProtocolmap(ZirkId bezirk1, SadlRegistry sadlobj2,
+                                 ZirkId bezirk2) {
         SadlRegistry sadlobj3;
         boolean results;
 		/*
@@ -373,18 +373,18 @@ public class SadlRegistryTest {
 		/* ProtocolMap not equal for sadlobj3 and sadlobj2*/
         sadlobj2.protocolMap = new ConcurrentHashMap<>();
         sadlobj2.sid = new HashSet<>();
-        sadlobj2.sid.add(new BezirkZirkId("ServiceA"));
+        sadlobj2.sid.add(new ZirkId("ServiceA"));
         sadlobj2.protocolMap.put("Protocol2", sadlobj2.sid);
         sadlobj3.protocolMap = new ConcurrentHashMap<>();
-        sadlobj3.sid = new HashSet<BezirkZirkId>();
-        sadlobj3.sid.add(new BezirkZirkId("ServiceB"));
+        sadlobj3.sid = new HashSet<ZirkId>();
+        sadlobj3.sid.add(new ZirkId("ServiceB"));
         sadlobj3.protocolMap.put("Protocol3", sadlobj3.sid);
         results = sadlobj2.equals(sadlobj3);
         assertFalse("sadl registries with different protocol maps are considered equal.", results);
 
     }
 
-    private void testProtocolDecMap(BezirkZirkId bezirk1, BezirkZirkId bezirk2,
+    private void testProtocolDecMap(ZirkId bezirk1, ZirkId bezirk2,
                                     SadlRegistry sadlobj2) {
         SadlRegistry sadlobj3;
         boolean results;
@@ -426,7 +426,7 @@ public class SadlRegistryTest {
 
     }
 
-    private void testLocationMapEquality(BezirkZirkId bezirk1, BezirkZirkId bezirk2,
+    private void testLocationMapEquality(ZirkId bezirk1, ZirkId bezirk2,
                                          SadlRegistry sadlobj2) {
         SadlRegistry sadlobj3;
         boolean results;
@@ -450,9 +450,9 @@ public class SadlRegistryTest {
 		
 		/* LocationMap not equal for sadlobj3 and sadlobj2*/
         sadlobj2.locationMap = new ConcurrentHashMap<>();
-        sadlobj2.locationMap.put(new BezirkZirkId("Service2"), new Location("OFFICE1/FLOOR1/ROOM1"));
+        sadlobj2.locationMap.put(new ZirkId("Service2"), new Location("OFFICE1/FLOOR1/ROOM1"));
         sadlobj3.locationMap = new ConcurrentHashMap<>();
-        sadlobj3.locationMap.put(new BezirkZirkId("Service3"), new Location("OFFICE3/FLOOR3/ROOM3"));
+        sadlobj3.locationMap.put(new ZirkId("Service3"), new Location("OFFICE3/FLOOR3/ROOM3"));
         results = sadlobj2.equals(sadlobj3);
         assertFalse("sadl registries with different location maps are considered equal.", results);
 		

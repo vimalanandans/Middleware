@@ -15,9 +15,9 @@ import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereListener;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -152,7 +152,7 @@ public class DiscoveryProcessor {
         }
         // TODO discuss, for now hardcoded for test
         final String serviceIdStr = "______SPHERESCANNER#1";
-        final BezirkZirkId serviceId = new BezirkZirkId(serviceIdStr);
+        final ZirkId serviceId = new ZirkId(serviceIdStr);
         final BezirkZirkEndPoint sender = BezirkNetworkUtilities.getServiceEndPoint(serviceId);
         logger.debug("Discovery initiator device : " + sender.device);
 

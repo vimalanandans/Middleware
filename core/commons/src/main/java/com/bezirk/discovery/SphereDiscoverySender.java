@@ -7,7 +7,7 @@ import ControlLedger;
 import DiscoveryRequest;
 import BezirkNetworkUtilities;
 import BezirkZirkEndPoint;
-import BezirkZirkId;
+import ZirkId;
 import BezirkValidatorUtility;*/
 
 /**
@@ -24,7 +24,7 @@ import BezirkValidatorUtility;*/
 	            throw new IllegalArgumentException("sphere name is null, Dropping discovery request from User");
 	        }
 	        final String serviceIdStr = "______SPHERESCANNER#2";
-	        final BezirkZirkId zirkId = new BezirkZirkId(serviceIdStr);
+	        final ZirkId zirkId = new ZirkId(serviceIdStr);
 	        final ControlLedger transControlMessage = new ControlLedger();
 	        final BezirkZirkEndPoint sender = BezirkNetworkUtilities.getZirkEndPoint(zirkId);
 	        final DiscoveryRequest discoveryRequest = new DiscoveryRequest(sphere,sender,null,null,discoveryId,timeout,maxDiscovered);

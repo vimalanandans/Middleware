@@ -2,17 +2,16 @@ package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.addressing.ZirkId;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.middleware.messages.Stream;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -105,31 +104,28 @@ public class LocationUpdateTest {
     }
 
     @After
-    public void destroyMockservices() {
+    public void destroyMockZirk() {
 
-        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-        bezirk.unregisterZirk(mockA.myId);
-        bezirk.unregisterZirk(mockB.myId);
+        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.registerZirk("XXX");
+        bezirk.unregisterZirk();
+        bezirk.unregisterZirk();
     }
 
     /**
      * MockServiceA that is simulating as Zirk that initiates the Multicast Communication
      */
     private final class LocationUpdateMockServiceA implements BezirkListener {
-        private final String serviceName = "LocationUpdateMockServiceA";
+        private final String zirkName = "LocationUpdateMockZirkA";
         private Bezirk bezirk = null;
-        private ZirkId myId = null;
         private LocationUpdateMockServiceProtocolRole pRole;
 
         /**
          * Setup the Zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = bezirk.registerZirk(serviceName);
-            logger.info("LocationUpdateMockServiceA - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
+            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
             pRole = new LocationUpdateMockServiceProtocolRole();
-            bezirk.subscribe(myId, pRole, this);
+            bezirk.subscribe(pRole, this);
         }
 
         /**
@@ -137,27 +133,27 @@ public class LocationUpdateTest {
          */
         private final void pingServices(Location location) {
             MockRequestEvent req = new MockRequestEvent(Flag.REQUEST, "MockRequestEvent");
-            Address address = new Address(location);
-            bezirk.sendEvent(myId, address, req);
+            RecipientSelector recipientSelector = new RecipientSelector(location);
+            bezirk.sendEvent(recipientSelector, req);
         }
 
         /**
          * Update the Location to L1
          */
         private final void updateLocationToL1() {
-            bezirk.setLocation(myId, l1);
+            bezirk.setLocation(l1);
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
+        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
@@ -229,40 +225,37 @@ public class LocationUpdateTest {
     private final class LocationUpdateMockServiceB implements BezirkListener {
         private final String zirkName = "LocationUpdateMockServiceB";
         private Bezirk bezirk = null;
-        private ZirkId myId = null;
 
         /**
          * Setup the zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.getInstance();
-            myId = bezirk.registerZirk(zirkName);
-            logger.info("LocationUpdateMockServiceB - regId : " + ((BezirkZirkId) myId).getBezirkZirkId());
-            bezirk.subscribe(myId, new LocationUpdateMockServiceProtocolRole(), this);
+            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
+            bezirk.subscribe(new LocationUpdateMockServiceProtocolRole(), this);
         }
 
         /**
          * Update the Location to L1
          */
         private final void updateLocationToL1() {
-            bezirk.setLocation(myId, l1);
+            bezirk.setLocation(l1);
         }
 
         /**
          * Update the location to L2
          */
         private final void updateLocationToL2() {
-            bezirk.setLocation(myId, l2);
+            bezirk.setLocation(l2);
         }
 
         @Override
-        public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
+        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
             logger.info(" **** Received Event *****");
 
             ++countPingServiceB;
 
             assertEquals("MockRequestEvent", topic);
-            MockRequestEvent receivedEvent = Event.fromJson(event, MockRequestEvent.class);
+            MockRequestEvent receivedEvent = (MockRequestEvent) event;
             assertEquals("Ping to Mock Services", receivedEvent.question);
             if (countPingServiceB == 1) {
                 isL1passed = true;
@@ -276,11 +269,11 @@ public class LocationUpdateTest {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, String stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override

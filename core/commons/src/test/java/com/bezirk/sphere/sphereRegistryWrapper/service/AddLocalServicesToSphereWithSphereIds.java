@@ -5,7 +5,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.impl.OwnerZirk;
@@ -100,23 +100,23 @@ public class AddLocalServicesToSphereWithSphereIds {
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.MEMBER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), spheres);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
+        registry.sphereMembership.put(serviceId1.getZirkId(), zirk1);
 
         //Create zirk 2
         String serviceName2 = sphereTestUtility.MEMBER_ZIRK_NAME_2;
-        BezirkZirkId serviceId2 = new BezirkZirkId(serviceName2);
+        ZirkId serviceId2 = new ZirkId(serviceName2);
         Zirk zirk2 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), spheres);
-        registry.sphereMembership.put(serviceId2.getBezirkZirkId(), zirk2);
+        registry.sphereMembership.put(serviceId2.getZirkId(), zirk2);
 
-        ArrayList<BezirkZirkId> services = new ArrayList<>();
+        ArrayList<ZirkId> services = new ArrayList<>();
         services.add(serviceId1);
         services.add(serviceId2);
 
-        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<>();
+        LinkedHashMap<String, ArrayList<ZirkId>> deviceServices = new LinkedHashMap<>();
         deviceServices.put(upaDevice.getDeviceId(), services);
         defaultSphere.setDeviceServices(deviceServices);
 

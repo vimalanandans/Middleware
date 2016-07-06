@@ -9,7 +9,7 @@ import com.bezirk.middleware.objects.SphereVitals;
 import com.bezirk.middleware.objects.BezirkDeviceInfo.BezirkDeviceRole;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.BezirkSphereType;
@@ -157,7 +157,7 @@ public class SphereRegistryWrapper {
     // MemberSphere sphere = new MemberSphere(sphereConfig.getSphereName(),
     // "Development",
     // new HashSet<String>(Arrays.asList(DEVELOPMENT_DEVICE_ID)),
-    // new LinkedHashMap<String, ArrayList<BezirkZirkId>>(), false);
+    // new LinkedHashMap<String, ArrayList<ZirkId>>(), false);
     // addSphere(sphereConfig.getSphereId(), sphere);
     // // persist();
     // }
@@ -443,7 +443,8 @@ public class SphereRegistryWrapper {
     private void initDefaultSphere() {
         String defaultSphereName;
         // check if defaultSphereName is not defined
-        if (sphereConfig.getDefaultSphereName().equalsIgnoreCase("")) {
+        if ((sphereConfig.getDefaultSphereName()!= null ) &&
+        sphereConfig.getDefaultSphereName().equalsIgnoreCase("")) {
             defaultSphereName = generateSphereName();
             // set the value in the properties file
             sphereConfig.setDefaultSphereName(defaultSphereName);
@@ -555,21 +556,21 @@ public class SphereRegistryWrapper {
      * @return - List of BezirkZirkInfo objects.<br>
      * - null, if no services passed.<br>
      */
-    public Iterable<BezirkZirkInfo> getBezirkServiceInfo(Iterable<BezirkZirkId> serviceIds) {
+    public Iterable<BezirkZirkInfo> getBezirkServiceInfo(Iterable<ZirkId> serviceIds) {
         if (serviceIds == null) {
             logger.debug("No Services passed");
             return null;
         }
 
         List<BezirkZirkInfo> serviceInfoList = new ArrayList<BezirkZirkInfo>();
-        for (BezirkZirkId servId : serviceIds) {
+        for (ZirkId servId : serviceIds) {
 
-            if (containsService(servId.getBezirkZirkId())) {
+            if (containsService(servId.getZirkId())) {
 
-                Zirk zirk = getService(servId.getBezirkZirkId());
+                Zirk zirk = getService(servId.getZirkId());
 
                 if (zirk != null) {
-                    BezirkZirkInfo serviceInfo = new BezirkZirkInfo(servId.getBezirkZirkId(), zirk.getZirkName(),
+                    BezirkZirkInfo serviceInfo = new BezirkZirkInfo(servId.getZirkId(), zirk.getZirkName(),
                             isServiceLocal(zirk.getOwnerDeviceId()) ? "Owner" : "Member", true, true);
                     serviceInfoList.add(serviceInfo);
                 } else {
@@ -590,12 +591,12 @@ public class SphereRegistryWrapper {
      * @return - Set of sphereIds<br>
      * - Null if zirk does not exist<br>
      */
-    public Iterable<String> getSphereMembership(BezirkZirkId serviceId) {
+    public Iterable<String> getSphereMembership(ZirkId serviceId) {
 
         Set<String> spheres = null;
 
-        if (containsService(serviceId.getBezirkZirkId())) {
-            spheres = new HashSet<String>(getService(serviceId.getBezirkZirkId()).getSphereSet());
+        if (containsService(serviceId.getZirkId())) {
+            spheres = new HashSet<String>(getService(serviceId.getZirkId()).getSphereSet());
         }
 
         return spheres;
@@ -606,11 +607,11 @@ public class SphereRegistryWrapper {
      * registered, call to this method updates the name of the zirk to
      * serviceName passed
      *
-     * @param serviceId   BezirkZirkId to be registered - has to be non-null
+     * @param serviceId   ZirkId to be registered - has to be non-null
      * @param serviceName Name to be associated with the zirk - has to be non-null
      * @return <code>true</code> if zirk was added successfully
      */
-    public boolean registerService(BezirkZirkId serviceId, String serviceName) {
+    public boolean registerService(ZirkId serviceId, String serviceName) {
         List<String> spheresForRegistration = new ArrayList<>();
         // these deviceIds correspond to the respective spheresForRegistration
         // for dev sphere, deviceId is a globally used deviceId
@@ -627,13 +628,13 @@ public class SphereRegistryWrapper {
         return registerService(serviceId, serviceName, spheresForRegistration, deviceIdsForRegistration);
     }
 
-    private boolean registerService(BezirkZirkId serviceId, String serviceName, List<String> sphereIds,
+    private boolean registerService(ZirkId serviceId, String serviceName, List<String> sphereIds,
                                     List<String> deviceIds) {
         int count = 0;
         for (String sphereId : sphereIds) {
             // add the zirk to the sphere with default device
             if (getSphere(sphereId).addService(deviceIds.get(sphereIds.indexOf(sphereId)),
-                    serviceId.getBezirkZirkId())) {
+                    serviceId.getZirkId())) {
                 // if the zirk was added successfully to the sphere
                 // add this information to sphereMembership map
                 if (addMembership(serviceId, sphereId, upaDevice.getDeviceId(), serviceName)) {
@@ -666,18 +667,18 @@ public class SphereRegistryWrapper {
      * @return - True if zirk membership was added successfully, False
      * otherwise.
      */
-    public boolean addMembership(BezirkZirkId serviceId, String sphereId, String ownerDeviceId, String serviceName) {
+    public boolean addMembership(ZirkId serviceId, String sphereId, String ownerDeviceId, String serviceName) {
         if (containsSphere(sphereId)) {
             Zirk zirk;
-            if (!containsService(serviceId.getBezirkZirkId())) {
+            if (!containsService(serviceId.getZirkId())) {
                 HashSet<String> sphereSet = new HashSet<String>();
                 sphereSet.add(sphereId);
                 zirk = new OwnerZirk(serviceName, ownerDeviceId, sphereSet);
-                addService(serviceId.getBezirkZirkId(), zirk);
+                addService(serviceId.getZirkId(), zirk);
                 logger.info("Zirk membership added for zirkId " + serviceId + " sphereId " + sphereId
                         + " zirk name " + serviceName + " owner deviceId " + ownerDeviceId);
             } else {
-                zirk = getService(serviceId.getBezirkZirkId());
+                zirk = getService(serviceId.getZirkId());
                 // update the name
                 zirk.setZirkName(serviceName);
                 // add the sphereId passed to the set of spheres
@@ -700,11 +701,11 @@ public class SphereRegistryWrapper {
      *                   non null
      * @return - True, if all the services are validated. False otherwise.
      */
-    public boolean validateServices(Iterable<BezirkZirkId> serviceIds) {
+    public boolean validateServices(Iterable<ZirkId> serviceIds) {
         boolean valid = false;
         if (serviceIds != null) {
-            for (BezirkZirkId service : serviceIds) {
-                if (!containsService(service.getBezirkZirkId())) {
+            for (ZirkId service : serviceIds) {
+                if (!containsService(service.getZirkId())) {
                     return valid;
                 }
             }
@@ -716,17 +717,17 @@ public class SphereRegistryWrapper {
     /**
      * Check if the sphere is part of the zirk's sphere set.
      *
-     * @param service  - BezirkZirkId object of the zirk. It has to be non-null
+     * @param service  - ZirkId object of the zirk. It has to be non-null
      * @param sphereId whose existence is the sphere set has to be checked.
      * @return - true if the zirk is part of the sphere. <br>
      * false otherwise.
      */
-    public boolean isServiceInSphere(BezirkZirkId service, String sphereId) {
+    public boolean isServiceInSphere(ZirkId service, String sphereId) {
 
         boolean serviceInSphere = false;
-        if (containsService(service.getBezirkZirkId()) && containsSphere(sphereId)) {
+        if (containsService(service.getZirkId()) && containsSphere(sphereId)) {
 
-            HashSet<String> spheres = (HashSet<String>) getService(service.getBezirkZirkId()).getSphereSet();
+            HashSet<String> spheres = (HashSet<String>) getService(service.getZirkId()).getSphereSet();
 
             if (spheres != null && spheres.contains(sphereId)) {
                 serviceInSphere = true;
@@ -741,11 +742,11 @@ public class SphereRegistryWrapper {
      * @param serviceId of the Zirk whose name is required. It has to be non-null
      * @return - zirk name if the zirk exists. Else return null.
      */
-    public String getServiceName(BezirkZirkId serviceId) {
+    public String getServiceName(ZirkId serviceId) {
         String serviceName = null;
 
-        if (containsService(serviceId.getBezirkZirkId())) {
-            serviceName = getService(serviceId.getBezirkZirkId()).getZirkName();
+        if (containsService(serviceId.getZirkId())) {
+            serviceName = getService(serviceId.getZirkId()).getZirkName();
         }
 
         return serviceName;
@@ -767,7 +768,6 @@ public class SphereRegistryWrapper {
         List<BezirkDeviceInfo> deviceInfoList = sphereInfo.getDeviceList();
 
         if (deviceInfoList == null) {
-            logger.error("Device name not exist in the default sphere");
             return info;
         }
 
@@ -825,7 +825,7 @@ public class SphereRegistryWrapper {
      * from the list of BezirkZirkInfo objects.
      *
      * @param sphereId     of the sphere to be added in the sphere set of the services
-     * @param zirkInfo - List of BezirkZirkInfo objects from which BezirkZirkId list
+     * @param zirkInfo - List of BezirkZirkInfo objects from which ZirkId list
      *                     is retrieved. It has to be non-null
      * @return - True if the zirk was added. False otherwise.
      */
@@ -834,7 +834,7 @@ public class SphereRegistryWrapper {
             logger.error("sphere with sphere ID " + sphereId + " not in the registry.");
             return false;
         }
-        List<BezirkZirkId> serviceIds = new ArrayList<BezirkZirkId>();
+        List<ZirkId> serviceIds = new ArrayList<ZirkId>();
 
         // Aggregate the list of zirk IDs.
         for (BezirkZirkInfo serviceInfo : zirkInfo) {
@@ -854,7 +854,7 @@ public class SphereRegistryWrapper {
      * sphere Id was updated in sphere set of all services. - False
      * otherwise.
      */
-    public boolean addLocalServicesToSphere(Iterable<BezirkZirkId> serviceIds, String sphereId) {
+    public boolean addLocalServicesToSphere(Iterable<ZirkId> serviceIds, String sphereId) {
         boolean success = false;
         int services = 0;
         if (serviceIds instanceof Collection<?>) {
@@ -868,7 +868,7 @@ public class SphereRegistryWrapper {
             int successfulUpdates = 0;
 
             // Add all the services to the registry. If they are already present
-            for (BezirkZirkId serviceId : serviceIds) {
+            for (ZirkId serviceId : serviceIds) {
                 if (updateMembership(serviceId, sphereId)) {
                     successfulUpdates++;
                 }
@@ -897,7 +897,6 @@ public class SphereRegistryWrapper {
         List<BezirkDeviceInfo> deviceInfoList = sphereInfo.getDeviceList();
 
         if (deviceInfoList == null) {
-            logger.error("Device name not exist in the default sphere");
             return status;
         }
 
@@ -931,12 +930,12 @@ public class SphereRegistryWrapper {
      * present. <br>
      * - False otherwise.
      */
-    private boolean updateMembership(BezirkZirkId serviceId, String sphereId) {
+    private boolean updateMembership(ZirkId serviceId, String sphereId) {
 
         // Check if the zirk id and sphere id are present in the registry.
         // If yes, then update the sphere set of the zirk id.
-        if (containsService(serviceId.getBezirkZirkId()) && containsSphere(sphereId)) {
-            Zirk zirk = getService(serviceId.getBezirkZirkId());
+        if (containsService(serviceId.getZirkId()) && containsSphere(sphereId)) {
+            Zirk zirk = getService(serviceId.getZirkId());
             if (zirk.getSphereSet().add(sphereId)) {
                 logger.info("Zirk Membership updated, sphereId " + sphereId + " added to zirk " + serviceId);
             } else {
@@ -959,7 +958,7 @@ public class SphereRegistryWrapper {
      */
     public void updateBezirkServiceInfo(Set<BezirkDiscoveredZirk> discoveredServices, BezirkZirkInfo serviceInfo) {
         for (BezirkDiscoveredZirk discoveredServ : discoveredServices) {
-            if (discoveredServ.zirk.getBezirkZirkId().getBezirkZirkId().equals(serviceInfo.getZirkId())) {
+            if (discoveredServ.zirk.getBezirkZirkId().getZirkId().equals(serviceInfo.getZirkId())) {
                 serviceInfo.setActive(true);
             }
         }
@@ -1058,14 +1057,14 @@ public class SphereRegistryWrapper {
      * @return iterable <code>BezirkDeviceInfo</code> if devices is not <code>null</code> and has size
      * greater than 0, <code>null</code> otherwise
      */
-    public Iterable<BezirkDeviceInfo> getBezirkDeviceInfo(Map<String, ArrayList<BezirkZirkId>> devices,
+    public Iterable<BezirkDeviceInfo> getBezirkDeviceInfo(Map<String, ArrayList<ZirkId>> devices,
                                                           HashSet<String> ownerDevices) {
 
         if (!devices.isEmpty()) {
 
             List<BezirkDeviceInfo> deviceInfoList = new ArrayList<>();
 
-            for (Map.Entry<String, ArrayList<BezirkZirkId>> entry : devices.entrySet()) {
+            for (Map.Entry<String, ArrayList<ZirkId>> entry : devices.entrySet()) {
                 String deviceId = entry.getKey();
 
                 DeviceInformation deviceInformation = getDeviceInformation(deviceId);
@@ -1316,7 +1315,7 @@ public class SphereRegistryWrapper {
                 // create the sphere
                 MemberSphere sphere = new MemberSphere(sphereConfig.getSphereName(), "Development",
                         Collections.singleton(DEVELOPMENT_DEVICE_ID),
-                        new LinkedHashMap<String, ArrayList<BezirkZirkId>>(), false);
+                        new LinkedHashMap<String, ArrayList<ZirkId>>(), false);
                 addSphere(sphereConfig.getSphereId(), sphere);
                 persist();
             }
@@ -1349,7 +1348,7 @@ public class SphereRegistryWrapper {
         // MemberSphere sphere = new MemberSphere(sphereConfig.getSphereName(),
         // "Development",
         // new HashSet<String>(Arrays.asList(DEVELOPMENT_DEVICE_ID)),
-        // new LinkedHashMap<String, ArrayList<BezirkZirkId>>(), false);
+        // new LinkedHashMap<String, ArrayList<ZirkId>>(), false);
         // addSphere(sphereConfig.getSphereId(), sphere);
         // // persist();
         // }

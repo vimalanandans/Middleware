@@ -1,3 +1,20 @@
+/**
+ * Global project version change history
+ * Currently the project alpha version is incremented every time there is a change in any of the middleware artifacts to maintain consistency.
+ * 3.0.0-alpha+001 development mode enabled for CMU Iot group (Rishabh)
+ * 3.0.0-alpha+002 added policy classes for protocols-penguin (Rishabh)
+ * 3.0.0-alpha+003 PreferencesAPI implementation for using sphere configuration (Rishabh)
+ * 3.0.0-alpha+004 Removing use of comms.properties & upadevice.properties (Rishabh)
+ * 3.0.0-alpha+005 Changing sphere key lengths to prevent adding Unlimited Strength Jurisdiction Policy (Rishabh)
+ * 3.0.0-alpha+006 Logging enable/disable using jvm/system property, removing Factory.getInstance(BezirkConfig) (Rishabh)
+ * 3.0.0-alpha+007 Enabling development sphere by default and removing system.out.println for evasive events in zyre (Rishabh)
+ * 3.0.0-alpha+008 Displaying ethernet configuration for multiple interfaces, issue #77 (Rishabh)
+ * 3.0.0-alpha+009 Freezing major api changes & Nits before Mexico Hackathon. (Michael/Rishabh)
+ * 3.0.0-alpha+010 Bug with android proxy and unwanted swing thread in java. (Michael/Rishabh)
+ * 3.0.0-alpha+011 Fixes issue #91 (first event duplication)(Rishabh)
+ * 3.0.0-alpha+012 Changing text display for issue #59 (bezirk ethernet configuration), testApp Pub/Sub testing through different applications until 2-zirk registration issue is resolved (Rishabh)
+ * 3.0.0-alpha+013 bezrik -> bezirk for network-util package fix (Rishabh)
+ */
 buildscript {
     repositories {
         mavenCentral()
@@ -5,7 +22,7 @@ buildscript {
     }
     ext {
         androidGradleToolsVersion = "2.1.0"
-        androidBuildToolsVersion = "23.0.1"
+        androidBuildToolsVersion = "23.0.3"
         androidSupportLibraryVersion = "19.+"
         androidCompileSdkVersion = "19"
         androidMinSdkVersion = "16"
@@ -15,7 +32,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:${project.androidGradleToolsVersion}"
-        classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '4.0.0')
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.1+"
     }
     ext {
         local = true //change to false for compiling project artifacts from remote maven
@@ -27,7 +44,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha"
+    version = "3.0.0-alpha+013"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"

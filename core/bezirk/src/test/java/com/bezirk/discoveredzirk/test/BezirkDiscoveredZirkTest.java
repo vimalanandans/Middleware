@@ -3,7 +3,7 @@ package com.bezirk.discoveredzirk.test;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.util.MockProtocolRole;
 
@@ -18,8 +18,8 @@ import static org.junit.Assert.*;
  * This testcase verifies the BezirkDiscoveredZirk by setting the properties and retrieving them after deserialization.
  */
 public class BezirkDiscoveredZirkTest {
-    private BezirkZirkId sid1;
-    private BezirkZirkId sid2;
+    private ZirkId sid1;
+    private ZirkId sid2;
     private BezirkZirkEndPoint sed1;
     private BezirkZirkEndPoint sed2;
     private HashSet<BezirkDiscoveredZirk> list = new HashSet<BezirkDiscoveredZirk>();
@@ -27,8 +27,8 @@ public class BezirkDiscoveredZirkTest {
 
     @Before
     public void beforeTest() {
-        sid1 = new BezirkZirkId("Ys1NcReyox:AreYouHotonAndroid");
-        sid2 = new BezirkZirkId("Ys1NcReyox:AreYouHotonAndroid");
+        sid1 = new ZirkId("Ys1NcReyox:AreYouHotonAndroid");
+        sid2 = new ZirkId("Ys1NcReyox:AreYouHotonAndroid");
         sed1 = new BezirkZirkEndPoint("192.168.160.65", sid1);
         sed2 = new BezirkZirkEndPoint("192.168.160.65", sid2);
 
@@ -46,7 +46,7 @@ public class BezirkDiscoveredZirkTest {
         }
         assertTrue(list.contains(ds2)); //Since ds1 and ds2 are equal
 
-        BezirkZirkId zirkId = new BezirkZirkId("Zirk25");
+        ZirkId zirkId = new ZirkId("Zirk25");
         BezirkZirkEndPoint zirkEndPoint = new BezirkZirkEndPoint(zirkId);
         zirkEndPoint.device = "DeviceA";
         String zirkName = "ZirkA";
@@ -67,7 +67,7 @@ public class BezirkDiscoveredZirkTest {
 
         bezirkDiscoveredZirkTemp = new BezirkDiscoveredZirk(zirkEndPoint, zirkName, mockRole, location);
         assertTrue("Similar BezirkDiscoveredZirks are not considered equal.", bezirkDiscoveredZirk.equals(bezirkDiscoveredZirkTemp));
-        zirkId = new BezirkZirkId("ZirkB");
+        zirkId = new ZirkId("ZirkB");
         bezirkDiscoveredZirkTemp.zirk = new BezirkZirkEndPoint(zirkId);
         bezirkDiscoveredZirkTemp.zirk.device = "DeviceA";
         assertFalse("Different BezirkDiscoveredZirks are considered equal.", bezirkDiscoveredZirk.equals(bezirkDiscoveredZirkTemp));

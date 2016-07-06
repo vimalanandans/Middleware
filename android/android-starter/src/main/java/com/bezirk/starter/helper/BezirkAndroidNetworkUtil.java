@@ -5,8 +5,8 @@ import android.net.wifi.WifiManager;
 import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
-import com.bezrik.network.IntfInetPair;
+import com.bezirk.network.BezirkNetworkUtilities;
+import com.bezirk.network.IntfInetPair;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

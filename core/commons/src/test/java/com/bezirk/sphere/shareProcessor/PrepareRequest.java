@@ -8,7 +8,7 @@ import com.bezirk.sphere.impl.ShareProcessor;
 import com.bezirk.sphere.messages.ShareRequest;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.sphere.testUtilities.SphereTestUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.junit.After;
 import org.junit.AfterClass;

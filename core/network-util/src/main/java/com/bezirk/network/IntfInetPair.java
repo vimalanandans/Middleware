@@ -1,4 +1,4 @@
-package com.bezrik.network;
+package com.bezirk.network;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;

@@ -25,7 +25,7 @@ import java.util.Set;
 /**
  * Metadata for a Zirk subscribed to a particular
  * {@link com.bezirk.middleware.messages.ProtocolRole}. A Zirk may use
- * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)}
+ * {@link com.bezirk.middleware.Bezirk#discover(RecipientSelector, ProtocolRole, long, int, BezirkListener)}
  * to request the set of Zirks in its sphere(s) subscribed to a particular role. Implementations of
  * this interface are delivered to {@link com.bezirk.middleware.BezirkListener#discovered(Set)} in
  * reply the discovery request.
@@ -35,8 +35,7 @@ public interface DiscoveredZirk {
 
     /**
      * An endpoint that can be used to unicast to a Zirk discovered by
-     * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)}
-     * as subscribing to a particular role.
+     * {@link com.bezirk.middleware.Bezirk#discover(RecipientSelector, ProtocolRole, long, int, BezirkListener)}.
      *
      * @return the endpoint of the subscribing Zirk
      */
@@ -50,12 +49,11 @@ public interface DiscoveredZirk {
     public String getZirkName();
 
     /**
-     * Get the <code>ProtocolRole</code> this Zirk subscribes to that was searched for using the
-     * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener)
-     * Discovery API}.
+     * Get the <code>ProtocolRole</code> that was searched for using the
+     * {@link com.bezirk.middleware.Bezirk#discover(RecipientSelector, ProtocolRole, long, int, BezirkListener)
+     * Discovery API} to discover this Zirk.
      *
-     * @return the <code>ProtocolRole</code> this Zirk subscribes to that was searched for to
-     * discover the Zirk
+     * @return the <code>ProtocolRole</code> that was searched for to discover the Zirk
      */
     public ProtocolRole getProtocolRole();
 

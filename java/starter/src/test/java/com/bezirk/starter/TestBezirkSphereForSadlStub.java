@@ -1,6 +1,6 @@
 package com.bezirk.starter;
 
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 public class TestBezirkSphereForSadlStub {
     BezirkSphereForSadlStub bezirkSphereForSadlStub = new BezirkSphereForSadlStub();
     String testStr = "TestString";
-    BezirkZirkId bezirkZirkId = new BezirkZirkId("123");
+    ZirkId zirkId = new ZirkId("123");
 
     @Test
     public void testEncryptSphereContent() {
@@ -33,7 +33,7 @@ public class TestBezirkSphereForSadlStub {
     @Test
     public void testGetSphereMembership() {
 
-        Iterable<String> spheres = bezirkSphereForSadlStub.getSphereMembership(bezirkZirkId);
+        Iterable<String> spheres = bezirkSphereForSadlStub.getSphereMembership(zirkId);
         assertEquals("sphere name is not equal to default sphere.", "default sphere", spheres.iterator().next());
     }
 
@@ -43,14 +43,14 @@ public class TestBezirkSphereForSadlStub {
         bezirkSphereForSadlStub.encryptSphereContent(null, null, null);
         bezirkSphereForSadlStub.decryptSphereContent(null, null, null);
         bezirkSphereForSadlStub.processSphereDiscoveryRequest(null);
-        assertNull("ServiceName is non null.", bezirkSphereForSadlStub.getZirkName(bezirkZirkId));
+        assertNull("ServiceName is non null.", bezirkSphereForSadlStub.getZirkName(zirkId));
         assertNull("Device name is non null.", bezirkSphereForSadlStub.getDeviceNameFromSphere("testDevId"));
 
     }
 
     @Test
     public void testIsServiceInSphere() {
-        assertTrue("Zirk is not identified as a member zirk in sphere.", bezirkSphereForSadlStub.isZirkInSphere(bezirkZirkId, "123"));
+        assertTrue("Zirk is not identified as a member zirk in sphere.", bezirkSphereForSadlStub.isZirkInSphere(zirkId, "123"));
     }
 
 }

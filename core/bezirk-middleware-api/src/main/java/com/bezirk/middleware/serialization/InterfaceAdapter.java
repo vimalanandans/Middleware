@@ -17,6 +17,7 @@
  */
 package com.bezirk.middleware.serialization;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -32,7 +33,7 @@ public class InterfaceAdapter<T> implements JsonSerializer<T>, JsonDeserializer<
     public JsonElement serialize(T object, Type interfaceType, JsonSerializationContext context) {
         final JsonObject wrapper = new JsonObject();
         wrapper.addProperty("type", object.getClass().getName());
-        wrapper.add("data", context.serialize(object));
+        wrapper.add("data", new Gson().toJsonTree(object));
         return wrapper;
     }
 
@@ -42,7 +43,7 @@ public class InterfaceAdapter<T> implements JsonSerializer<T>, JsonDeserializer<
         final JsonElement typeName = get(wrapper, "type");
         final JsonElement data = get(wrapper, "data");
         final Type actualType = typeForName(typeName);
-        return context.deserialize(data, actualType);
+        return new Gson().fromJson(data, actualType);
     }
 
     private Type typeForName(final JsonElement typeElem) {

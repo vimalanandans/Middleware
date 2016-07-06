@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.Properties;
 
 public final class BezirkCommsPC {
-    public static final String PROPS_FILE = "comms.properties";
+    //public static final String PROPS_FILE = "comms.properties";
     // Comms properties
     private static final Logger logger = LoggerFactory.getLogger(BezirkCommsPC.class);
 
@@ -23,49 +23,99 @@ public final class BezirkCommsPC {
         init(null);
     }
 
+//    public static void init(BezirkConfig bezirkConfig) {
+//        Properties props = new Properties();
+//        // First try loading from the current directory
+//        try {
+//            props = loadProperties();
+//        } catch (Exception e) {
+//            logger.error("Could not read comms properties file", e);
+//        }
+//
+//        // overrides the value for these properties if it is set as a system
+//        // property
+//        overrideStringProperty("InterfaceName", props, bezirkConfig);
+//        overrideStringProperty("displayEnable", props, bezirkConfig);
+//
+//        BezirkCommunications.setINTERFACE_NAME(props.getProperty("InterfaceName"));
+//        BezirkCommunications.setMULTICAST_ADDRESS(props.getProperty("EMulticastAddress"));
+//        BezirkCommunications.setMULTICAST_PORT(Integer.parseInt(props.getProperty("EMulticastPort")));
+//        BezirkCommunications.setUNICAST_PORT(Integer.parseInt(props
+//                .getProperty("EUnicastPort")));
+//        BezirkCommunications.setCTRL_MULTICAST_ADDRESS(props
+//                .getProperty("CMulticastAddress"));
+//        BezirkCommunications.setCTRL_MULTICAST_PORT(Integer.valueOf(props
+//                .getProperty("CMulticastPort")));
+//        BezirkCommunications.setCTRL_UNICAST_PORT(Integer.valueOf(props
+//                .getProperty("CUnicastPort")));
+//        BezirkCommunications.setMAX_BUFFER_SIZE(Integer.valueOf(props
+//                .getProperty("MaxBufferSize")));
+//
+//        BezirkCommunications.setPOOL_SIZE(Integer.valueOf(props
+//                .getProperty("MessageValidatorPool")));
+//
+//        BezirkCommunications.setSTARTING_PORT_FOR_STREAMING(Integer.valueOf(props
+//                .getProperty("StartPort"))); // get the starting Port
+//        BezirkCommunications.setENDING_PORT_FOR_STREAMING(Integer.valueOf(props
+//                .getProperty("EndPort"))); // get the last port
+//        BezirkCommunications.setMAX_SUPPORTED_STREAMS(Integer.valueOf(props
+//                .getProperty("NoOfActiveThreads"))); // No of active Threads
+//        BezirkCommunications.setStreamingEnabled(Boolean.valueOf(props
+//                .getProperty("StreamingEnabled"))); // flag to check if
+//        // Streaming Enabled
+//
+//        BezirkCommunications.setNO_OF_RETRIES(Integer.valueOf(props
+//                .getProperty("NoOfRetries")));
+//
+//        if (BezirkCommunications.isStreamingEnabled()) {
+//            // port factory is part of comms manager
+//            // BezirkCommunications.portFactory = new
+//            // PortFactory(BezirkCommunications.STARTING_PORT_FOR_STREAMING,
+//            // BezirkCommunications.ENDING_PORT_FOR_STREAMING); // initialize the
+//            // PortFactory
+//            if (bezirkConfig == null) {
+//                BezirkCommunications.setDOWNLOAD_PATH(props.getProperty("FileSharePath"));
+//            } else {
+//                BezirkCommunications.setDOWNLOAD_PATH(bezirkConfig.getDataPath()
+//                        + File.separator + "downloads");
+//            }
+//            final File createDownloadFolder = new File(
+//                    BezirkCommunications.getDOWNLOAD_PATH());
+//            if (!createDownloadFolder.exists()) {
+//                if (!createDownloadFolder.mkdir()) {
+//                    logger.error("Failed to create download direction: {}",
+//                            createDownloadFolder.getAbsolutePath());
+//                }
+//            }
+//        }
+//
+//        BezirkCommunications.setDEMO_SPHERE_MODE(Boolean.valueOf(props.getProperty(
+//                "DemoSphereMode", "false")));
+//        BezirkCommunications.setREMOTE_LOGGING_PORT(Integer.valueOf(props
+//                .getProperty("RemoteLoggingPort")));
+//        BezirkCommunications.setRemoteLoggingServiceEnabled(Boolean.valueOf(props
+//                .getProperty("RemoteLoggingEnabled")));
+//    }
+
+
     public static void init(BezirkConfig bezirkConfig) {
-        Properties props = new Properties();
-        // First try loading from the current directory
-        try {
-            props = loadProperties();
-        } catch (Exception e) {
-            logger.error("Could not read comms properties file", e);
-        }
+        //overrideStringProperty("InterfaceName", props, bezirkConfig);
+        //overrideStringProperty("displayEnable", props, bezirkConfig);
 
-        // overrides the value for these properties if it is set as a system
-        // property
-        overrideStringProperty("InterfaceName", props, bezirkConfig);
-        overrideStringProperty("displayEnable", props, bezirkConfig);
-
-        BezirkCommunications.setINTERFACE_NAME(props.getProperty("InterfaceName"));
-        BezirkCommunications.setMULTICAST_ADDRESS(props.getProperty("EMulticastAddress"));
-        BezirkCommunications.setMULTICAST_PORT(Integer.parseInt(props.getProperty("EMulticastPort")));
-        BezirkCommunications.setUNICAST_PORT(Integer.parseInt(props
-                .getProperty("EUnicastPort")));
-        BezirkCommunications.setCTRL_MULTICAST_ADDRESS(props
-                .getProperty("CMulticastAddress"));
-        BezirkCommunications.setCTRL_MULTICAST_PORT(Integer.valueOf(props
-                .getProperty("CMulticastPort")));
-        BezirkCommunications.setCTRL_UNICAST_PORT(Integer.valueOf(props
-                .getProperty("CUnicastPort")));
-        BezirkCommunications.setMAX_BUFFER_SIZE(Integer.valueOf(props
-                .getProperty("MaxBufferSize")));
-
-        BezirkCommunications.setPOOL_SIZE(Integer.valueOf(props
-                .getProperty("MessageValidatorPool")));
-
-        BezirkCommunications.setSTARTING_PORT_FOR_STREAMING(Integer.valueOf(props
-                .getProperty("StartPort"))); // get the starting Port
-        BezirkCommunications.setENDING_PORT_FOR_STREAMING(Integer.valueOf(props
-                .getProperty("EndPort"))); // get the last port
-        BezirkCommunications.setMAX_SUPPORTED_STREAMS(Integer.valueOf(props
-                .getProperty("NoOfActiveThreads"))); // No of active Threads
-        BezirkCommunications.setStreamingEnabled(Boolean.valueOf(props
-                .getProperty("StreamingEnabled"))); // flag to check if
-        // Streaming Enabled
-
-        BezirkCommunications.setNO_OF_RETRIES(Integer.valueOf(props
-                .getProperty("NoOfRetries")));
+        BezirkCommunications.setINTERFACE_NAME("en0");
+        BezirkCommunications.setMULTICAST_ADDRESS("224.5.6.7");
+        BezirkCommunications.setMULTICAST_PORT(9999);
+        BezirkCommunications.setUNICAST_PORT(8888);
+        BezirkCommunications.setCTRL_MULTICAST_ADDRESS("224.5.6.7");
+        BezirkCommunications.setCTRL_MULTICAST_PORT(9997);
+        BezirkCommunications.setCTRL_UNICAST_PORT(8887);
+        BezirkCommunications.setMAX_BUFFER_SIZE(10240);
+        BezirkCommunications.setPOOL_SIZE(5);
+        BezirkCommunications.setSTARTING_PORT_FOR_STREAMING(6321);
+        BezirkCommunications.setENDING_PORT_FOR_STREAMING(6330);
+        BezirkCommunications.setMAX_SUPPORTED_STREAMS(5);
+        BezirkCommunications.setStreamingEnabled(true);
+        BezirkCommunications.setNO_OF_RETRIES(5);
 
         if (BezirkCommunications.isStreamingEnabled()) {
             // port factory is part of comms manager
@@ -74,7 +124,7 @@ public final class BezirkCommsPC {
             // BezirkCommunications.ENDING_PORT_FOR_STREAMING); // initialize the
             // PortFactory
             if (bezirkConfig == null) {
-                BezirkCommunications.setDOWNLOAD_PATH(props.getProperty("FileSharePath"));
+                BezirkCommunications.setDOWNLOAD_PATH("D:\\Uhu_Downloads\\");
             } else {
                 BezirkCommunications.setDOWNLOAD_PATH(bezirkConfig.getDataPath()
                         + File.separator + "downloads");
@@ -89,12 +139,9 @@ public final class BezirkCommsPC {
             }
         }
 
-        BezirkCommunications.setDEMO_SPHERE_MODE(Boolean.valueOf(props.getProperty(
-                "DemoSphereMode", "false")));
-        BezirkCommunications.setREMOTE_LOGGING_PORT(Integer.valueOf(props
-                .getProperty("RemoteLoggingPort")));
-        BezirkCommunications.setRemoteLoggingServiceEnabled(Boolean.valueOf(props
-                .getProperty("RemoteLoggingEnabled")));
+        BezirkCommunications.setDEMO_SPHERE_MODE(true);
+        BezirkCommunications.setREMOTE_LOGGING_PORT(7777);
+        BezirkCommunications.setRemoteLoggingServiceEnabled(false);
     }
 
     /**
@@ -114,13 +161,13 @@ public final class BezirkCommsPC {
             logger.info("found system property: " + propName + ": " + value);
             props.setProperty(propName, value);
 
-            if ("displayEnable".equals(propName)) {
-                bezirkConfig.setDisplayEnable(value);
-            }
+//            if ("displayEnable".equals(propName)) {
+//                bezirkConfig.setDisplayEnable(value);
+//            }
         }
     }
 
-    public static Properties loadProperties() throws Exception {
-        return BezirkDeviceForPC.loadProperties(PROPS_FILE);
-    }
+//    public static Properties loadProperties() throws Exception {
+//        return BezirkDeviceForPC.loadProperties(PROPS_FILE);
+//    }
 }

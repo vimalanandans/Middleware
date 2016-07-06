@@ -5,7 +5,7 @@ package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
@@ -57,7 +57,7 @@ public class UpdateMembership {
         upaDevice = mockSetUp.upaDevice;
         sphereTestUtility = new SphereTestUtility(mockSetUp.sphereRegistryWrapper, mockSetUp.upaDevice);
         parameterTypes = new Class[2];
-        parameterTypes[0] = BezirkZirkId.class;
+        parameterTypes[0] = ZirkId.class;
         parameterTypes[1] = java.lang.String.class;
         method = SphereRegistryWrapper.class.getDeclaredMethod("updateMembership", parameterTypes);
         method.setAccessible(true);
@@ -88,7 +88,7 @@ public class UpdateMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#updateMembership(BezirkZirkId zirkId, String sphereId)}.
+     * Test method for {@link SphereRegistryWrapper#updateMembership(ZirkId zirkId, String sphereId)}.
      * <p>
      * Test if a new sphere is added successfully to the zirk's sphere set.
      * </p>
@@ -106,12 +106,12 @@ public class UpdateMembership {
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
         Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), sphereSet1);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
+        registry.sphereMembership.put(serviceId1.getZirkId(), zirk1);
 
         registry.spheres.put(sphereId1, sphere);
 
@@ -124,7 +124,7 @@ public class UpdateMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#updateMembership(BezirkZirkId zirkId, String sphereId)}.
+     * Test method for {@link SphereRegistryWrapper#updateMembership(ZirkId zirkId, String sphereId)}.
      * <p>
      * If existing sphere Id is passed, it returns <code>true</code>.
      * </p>
@@ -142,12 +142,12 @@ public class UpdateMembership {
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
         Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), sphereSet1);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
+        registry.sphereMembership.put(serviceId1.getZirkId(), zirk1);
 
         registry.spheres.put(sphereId1, sphere);
 
@@ -158,7 +158,7 @@ public class UpdateMembership {
 
 
     /**
-     * Test method for {@link SphereRegistryWrapper#updateMembership(BezirkZirkId zirkId, String sphereId)}.
+     * Test method for {@link SphereRegistryWrapper#updateMembership(ZirkId zirkId, String sphereId)}.
      * <p>
      * If an invalid zirk ID is passed, the method should return <code>false</code>.
      * </p>
@@ -176,7 +176,7 @@ public class UpdateMembership {
 
         //Create zirk 1, but not added to the registry
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_2;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
 
         registry.spheres.put(sphereId1, sphere);
 
@@ -185,7 +185,7 @@ public class UpdateMembership {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#updateMembership(BezirkZirkId zirkId, String sphereId)}.
+     * Test method for {@link SphereRegistryWrapper#updateMembership(ZirkId zirkId, String sphereId)}.
      * <p>
      * If an invalid sphere ID is passed, the method should return <code>false</code>.
      * </p>
@@ -202,12 +202,12 @@ public class UpdateMembership {
 
         //Create zirk 1
         String serviceName1 = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        BezirkZirkId serviceId1 = new BezirkZirkId(serviceName1);
+        ZirkId serviceId1 = new ZirkId(serviceName1);
         HashSet<String> sphereSet1 = new HashSet<>();
         sphereSet1.add(sphereId1);
         Zirk zirk1 = new OwnerZirk(serviceName1,
                 upaDevice.getDeviceId(), sphereSet1);
-        registry.sphereMembership.put(serviceId1.getBezirkZirkId(), zirk1);
+        registry.sphereMembership.put(serviceId1.getZirkId(), zirk1);
 
         boolean isServiceUpdate = (Boolean) method.invoke(sphereRegistryWrapper, serviceId1, sphereId1);
         assertFalse(isServiceUpdate);

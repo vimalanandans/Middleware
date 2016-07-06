@@ -4,7 +4,7 @@
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.impl.OwnerZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
@@ -69,7 +69,7 @@ public class IsServiceInSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(BezirkZirkId, String)}.
+     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(ZirkId, String)}.
      * <p>
      * Test the behavior of isZirkInSphere when valid zirk and sphereId is passed.
      * isZirkInSphere should return True if the sphere id is in the sphere set of the zirk.
@@ -80,7 +80,7 @@ public class IsServiceInSphere {
 
         //Create zirk and sphere set
         String serviceId = UUID.randomUUID().toString();
-        BezirkZirkId service = new BezirkZirkId(serviceId);
+        ZirkId service = new ZirkId(serviceId);
         HashSet<String> sphereSet = new HashSet<String>();
         String sphereId = UUID.randomUUID().toString();
         sphereSet.add(sphereId);
@@ -94,7 +94,7 @@ public class IsServiceInSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(BezirkZirkId, String)}.
+     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(ZirkId, String)}.
      * <p>
      * Test the behavior of isZirkInSphere when valid zirk and sphereId is passed.
      * But the sphereId is not part of the sphere set.
@@ -106,7 +106,7 @@ public class IsServiceInSphere {
 
         // create a zirk and zirk set
         String serviceId = UUID.randomUUID().toString();
-        BezirkZirkId service = new BezirkZirkId(serviceId);
+        ZirkId service = new ZirkId(serviceId);
         HashSet<String> sphereSet = new HashSet<String>();
         String sphereId = UUID.randomUUID().toString();
 
@@ -122,7 +122,7 @@ public class IsServiceInSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(BezirkZirkId, String)}.
+     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(ZirkId, String)}.
      * <p>
      * Test the behavior of isZirkInSphere when wrong zirk id is passed.
      * isZirkInSphere should return <code>false</code>
@@ -133,7 +133,7 @@ public class IsServiceInSphere {
 
         // create a zirk and zirk set but not added to registry
         String serviceId = UUID.randomUUID().toString();
-        BezirkZirkId service = new BezirkZirkId(serviceId);
+        ZirkId service = new ZirkId(serviceId);
         String sphereId = UUID.randomUUID().toString();
 
         // It should return false because the zirk id is not added to registry
@@ -141,7 +141,7 @@ public class IsServiceInSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(BezirkZirkId, String)}.
+     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(ZirkId, String)}.
      * <p>
      * Test the behavior of isZirkInSphere when zirk id is passed as null.
      * isZirkInSphere should throw an exception
@@ -158,7 +158,7 @@ public class IsServiceInSphere {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(BezirkZirkId, String)}.
+     * Test method for {@link SphereRegistryWrapper#isServiceInSphere(ZirkId, String)}.
      * <p>
      * Test the behavior of isZirkInSphere when null sphereId is passed.
      * isZirkInSphere should return <code>false</code>.
@@ -169,7 +169,7 @@ public class IsServiceInSphere {
 
         //Create zirk and sphere set
         String serviceId = UUID.randomUUID().toString();
-        BezirkZirkId service = new BezirkZirkId(serviceId);
+        ZirkId service = new ZirkId(serviceId);
         HashSet<String> sphereSet = new HashSet<String>();
         String sphereId = UUID.randomUUID().toString();
         sphereSet.add(sphereId);

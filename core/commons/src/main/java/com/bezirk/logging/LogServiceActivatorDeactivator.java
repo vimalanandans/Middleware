@@ -7,9 +7,9 @@ import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ public final class LogServiceActivatorDeactivator {
     }
 
     public static void sendLoggingServiceMsgToClients(BezirkComms comms, final String[] sphereList, final String[] selectedLogSpheres, final boolean isActivate) {
-        final BezirkZirkId myId = new BezirkZirkId("BEZIRK-REMOTE-LOGGING-SERVICE");
+        final ZirkId myId = new ZirkId("BEZIRK-REMOTE-LOGGING-SERVICE");
         final BezirkZirkEndPoint sep = BezirkNetworkUtilities.getServiceEndPoint(myId);
 
         for (String sphereId : sphereList) {

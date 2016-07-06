@@ -1,6 +1,6 @@
 package com.bezirk.sphere.impl;
 
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereType;
 
 import org.junit.Test;
@@ -31,12 +31,12 @@ public class SphereTest {
         String deviceID = "DeviceA";
         String sphereName = "HomeSphere";
 
-        ArrayList<BezirkZirkId> serviceIDList = new ArrayList<>();
-        serviceIDList.add(new BezirkZirkId("ServiceA"));
-        serviceIDList.add(new BezirkZirkId("ServiceB"));
-        serviceIDList.add(new BezirkZirkId("ServiceC"));
+        ArrayList<ZirkId> serviceIDList = new ArrayList<>();
+        serviceIDList.add(new ZirkId("ServiceA"));
+        serviceIDList.add(new ZirkId("ServiceB"));
+        serviceIDList.add(new ZirkId("ServiceC"));
 
-        LinkedHashMap<String, ArrayList<BezirkZirkId>> deviceServices = new LinkedHashMap<String, ArrayList<BezirkZirkId>>();
+        LinkedHashMap<String, ArrayList<ZirkId>> deviceServices = new LinkedHashMap<String, ArrayList<ZirkId>>();
         deviceServices.put(deviceID, serviceIDList);
 
 
@@ -72,7 +72,7 @@ public class SphereTest {
         assertTrue("Similar Spheres are considered not equal.", sphere.equals(sphereTemp));
         assertEquals("Same Spheres have different hashcode.", sphere.hashCode(), sphereTemp.hashCode());
 
-        BezirkZirkId serviceId = new BezirkZirkId("TestService");
+        ZirkId serviceId = new ZirkId("TestService");
         assertFalse("Remove zirk is processed.", sphere.removeService(serviceId));
 
         assertTrue("Same sphere is not considered equal to itself.", sphere.equals(sphere));

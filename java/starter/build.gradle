@@ -1,24 +1,5 @@
-// Allow private data members to be linked in javadocs
-//javadoc.options.addStringOption("private")
 apply plugin: 'java'
 dependencies {
-
-/*    if (project.local == "false") {
-
-        compile "com.bezirk:bezirk-api:${version}"
-        compile "com.bezirk:bezirk:${version}"
-        compile "com.bezirk:control-messages:${version}"
-        compile "com.bezirk:commons:${version}"
-        compile "com.bezirk:comms-udp:${version}"
-        compile "com.bezirk:comms-jyre:${version}"
-        compile "com.bezirk:comms-factory:${version}"
-        compile "com.bezirk:pipes:${version}"
-    } else {
-
-  */      //println " bezirk-pc build with remote maven repo "
-
-    //direct local dependencies for renaming the packages
-    // bezirk deps
     compile project(':core:bezirk-middleware-api')
     compile project(':core:bezirk')
     compile project(':core:control-messages')
@@ -27,29 +8,31 @@ dependencies {
     //compile project(':core:comms:comms-jyre')
     compile project(':core:comms:comms-factory')
     compile project(':core:pipes')
-    //}
-
     compile project(':java:libraries:comms-zyre-jni')
 
     // Enable this to include Bezirk-RTC
     //	compile project(':bezirk-pc-rtc')
 
-    // external deps
     compile 'org.apache.shiro:shiro-core:1.2.4'
-    compile 'ch.qos.logback:logback-classic:1.1.2'
-    compile 'ch.qos.logback:logback-core:1.1.2'
+    compile 'ch.qos.logback:logback-classic:1.1.3'
+    compile 'ch.qos.logback:logback-core:1.1.3'
     compile 'com.google.zxing:core:2.3.0'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.xerial:sqlite-jdbc:3.7.2'
     compile 'org.springframework:spring-context:4.1.4.RELEASE'
 
-    // test deps
-    testCompile 'junit:junit:4.11'
+    testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:1.10.19'
 }
 
 test {
-    exclude 'com/bosch/upa/uhu/network/test/**'
+    exclude 'com/bezirk/network/test/**'
+
+    // Automatically add the temporary directory where Bezirk dumps the ZeroMQ dependencies
+    // to java.library.path
+    def final String zeromqDir = System.getProperty("java.library.path") + File.pathSeparator +
+            System.getProperty("java.io.tmpdir") + "lib-zeromq-bin" + File.separator
+    systemProperty "java.library.path", zeromqDir
 }
 
 task deleteDb(type: Delete) {
@@ -60,9 +43,8 @@ task deleteDb(type: Delete) {
 clean.dependsOn deleteDb
 //test.dependsOn deleteDb
 
-/*
-jar  {
-	// Don't include logging config in the jar
-	exclude('logback.xml')
+task copyTestResources(type: Copy) {
+    from "${projectDir}/src/test/resources"
+    into "${buildDir}/classes/test"
 }
-*/
+processTestResources.dependsOn copyTestResources

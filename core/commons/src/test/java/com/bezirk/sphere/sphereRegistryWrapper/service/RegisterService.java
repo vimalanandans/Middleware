@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.sphereRegistryWrapper.service;
 
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.testUtilities.Device;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
@@ -67,7 +67,7 @@ public class RegisterService {
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#registerService(BezirkZirkId, String)}.
+     * Test method for {@link SphereRegistryWrapper#registerService(ZirkId, String)}.
      * <p>
      * When valid ServiceId and a new Zirk name is passed to registerZirk,
      * it should add the zirk membership to the registry and return <code>true</code>.
@@ -76,13 +76,13 @@ public class RegisterService {
     @Test
     public final void validServiceIdAndNewServiceNameReturnsTrue() {
         String serviceId = UUID.randomUUID().toString();
-        BezirkZirkId bezirkZirkId = new BezirkZirkId(serviceId);
+        ZirkId zirkId = new ZirkId(serviceId);
         String serviceName = sphereTestUtility.OWNER_ZIRK_NAME_1;
-        assertTrue(sphereRegistryWrapper.registerService(bezirkZirkId, serviceName));
+        assertTrue(sphereRegistryWrapper.registerService(zirkId, serviceName));
     }
 
     /**
-     * Test method for {@link SphereRegistryWrapper#registerService(BezirkZirkId, String)}.
+     * Test method for {@link SphereRegistryWrapper#registerService(ZirkId, String)}.
      * <p>
      * When valid ServiceId and a new Zirk name is passed to registerZirk,
      * it should update the existing zirk with the name passed and return <code>true</code>.
@@ -91,12 +91,12 @@ public class RegisterService {
     @Test
     public final void newServiceNameForExistingServiceReturnsTrue() {
         String serviceId = UUID.randomUUID().toString();
-        BezirkZirkId bezirkZirkId = new BezirkZirkId(serviceId);
+        ZirkId zirkId = new ZirkId(serviceId);
         String serviceName = sphereTestUtility.OWNER_ZIRK_NAME_2;
-        sphereRegistryWrapper.addMembership(bezirkZirkId, sphereRegistryWrapper.getDefaultSphereId(), Device.DEVICE_ID, serviceName);
+        sphereRegistryWrapper.addMembership(zirkId, sphereRegistryWrapper.getDefaultSphereId(), Device.DEVICE_ID, serviceName);
 
         // When a new zirk name "newName" is passed for the same zirk Id, registerZirk method must return true.
-        assertTrue(sphereRegistryWrapper.registerService(bezirkZirkId, "newName"));
+        assertTrue(sphereRegistryWrapper.registerService(zirkId, "newName"));
     }
 
 }

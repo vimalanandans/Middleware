@@ -4,11 +4,11 @@ import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.MemberZirk;
 import com.bezirk.sphere.impl.OwnerSphere;
@@ -47,8 +47,8 @@ public class ProcessEventTest {
     private static final Logger logger = LoggerFactory.getLogger(ProcessEventTest.class);
 
     private static final MockSetUpUtility mockUtility = new MockSetUpUtility();
-    private static BezirkZirkId bezirkZirkAId = new BezirkZirkId("ServiceA");
-    private static BezirkZirkId bezirkZirkBId = new BezirkZirkId("ServiceB");
+    private static ZirkId bezirkZirkAId = new ZirkId("ServiceA");
+    private static ZirkId bezirkZirkBId = new ZirkId("ServiceB");
     private static Location reception = new Location("OFFICE1", "BLOCK1", "RECEPTION");
     private static BezirkSadlManager bezirkSadlManager = null;
     private static SadlRegistry sadlRegistry = null;
@@ -103,8 +103,8 @@ public class ProcessEventTest {
 
 		/*MulticastEvent with zirk existing in sphere. SadlManager processEvent should return true. */
         Location loc = new Location(null);
-        Address address = new Address(loc);
-        HashSet<BezirkZirkId> serviceSet = new HashSet<>();
+        RecipientSelector recipientSelector = new RecipientSelector(loc);
+        HashSet<ZirkId> serviceSet = new HashSet<>();
         serviceSet.add(bezirkZirkAId);
         sadlRegistry.sid.add(bezirkZirkAId);
         sadlRegistry.registerService(bezirkZirkAId);
@@ -116,7 +116,7 @@ public class ProcessEventTest {
         Sphere sphere = new OwnerSphere(sphereId, deviceId, BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME);
         sphereRegistry.spheres.put(sphereId, sphere);
         Zirk zirk = new MemberZirk("ServiceA", deviceId, sphereSet);
-        sphereRegistry.sphereMembership.put(bezirkZirkAId.getBezirkZirkId(), zirk);
+        sphereRegistry.sphereMembership.put(bezirkZirkAId.getZirkId(), zirk);
         sadlRegistry.locationMap.put(bezirkZirkAId, loc);
 
 
@@ -130,7 +130,7 @@ public class ProcessEventTest {
         BezirkZirkEndPoint senderSEP = new BezirkZirkEndPoint(bezirkZirkAId);
         header.setSenderSEP(senderSEP);
         header.setSphereName(sphereId);
-        header.setAddress(address);
+        header.setRecipientSelector(recipientSelector);
         eventLedger.setHeader(header);
         isEventProcessed = bezirkSadlManager.processEvent(eventLedger);
         assertTrue("SadlManager returned false for processEvent with MulticastMessage having zirk within the sphere.", isEventProcessed);
@@ -179,7 +179,7 @@ public class ProcessEventTest {
         eventLedger.setIsMulticast(false);
         eventLedger.setIsLocal(true);
         BezirkZirkEndPoint recepient = new BezirkZirkEndPoint(bezirkZirkBId);
-        HashSet<BezirkZirkId> serviceSet = new HashSet<>();
+        HashSet<ZirkId> serviceSet = new HashSet<>();
         serviceSet.add(bezirkZirkAId);
         serviceSet.add(bezirkZirkBId);
         sadlRegistry.sid.add(bezirkZirkAId);
@@ -225,7 +225,7 @@ public class ProcessEventTest {
         assertTrue("SadlManager returned false for processEvent with UnicastMessage when sphereId is valid.", isEventProcessed);
 
 		/* Non Local UnicastEvent message with invalid recipient serviceID. SadlManager processEvent should return false. */
-        header.setRecipient(new BezirkZirkEndPoint(new BezirkZirkId(null)));
+        header.setRecipient(new BezirkZirkEndPoint(new ZirkId(null)));
         eventLedger.setHeader(header);
         isEventProcessed = bezirkSadlManager.processEvent(eventLedger);
         assertFalse("SadlManager returned true for processEvent with UnicastMessage when recipient zirk id is invalid.", isEventProcessed);

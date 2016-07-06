@@ -1,6 +1,6 @@
 package com.bezirk.ethernetconfigui;
 
-import com.bezrik.network.IntfInetPair;
+import com.bezirk.network.IntfInetPair;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,7 +25,7 @@ public class EthernetConfigurationDialog {
         }
         final String[] interfaceNames = temp.toArray(new String[temp.size()]);
         return (String) JOptionPane.showInputDialog(null,
-                "Choose Interface Name", "Bezirk Ethernet Configuration",
+                "Please select your active network for Bezirk to send and receive messages", "Bezirk Network Selection",
                 JOptionPane.QUESTION_MESSAGE, null, interfaceNames, null);
 
     }

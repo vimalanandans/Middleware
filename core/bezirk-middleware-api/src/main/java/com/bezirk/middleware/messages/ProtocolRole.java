@@ -19,11 +19,10 @@ package com.bezirk.middleware.messages;
 
 /**
  * Base class for protocol role definitions. Bezirk uses topic-based pub-sub for distributed
- * communication, and roles are the unit of subscription. Protocols specify {@link Event Events} and
- * {@link Stream Streams} that will be sent to recipients subscribed to particular topics. A
- * <code>ProtocolRole</code> specifies those topics for a particular protocol and provides
- * metadata to (1) uniquely identify the protocol to the middleware and (2) describe the purpose of
- * the protocol to users.
+ * communication, and roles are the unit of subscription. Roles are conceptually a set of topics,
+ * and a Zirk subscribes to roles rather than individual topics because the latter can be numerous
+ * and too cumbersome to manage individually. A <code>ProtocolRole</code> implements the role
+ * concept; it includes a set of topics and a human readable description of the role.
  *
  * @see Event
  * @see Stream
@@ -45,16 +44,16 @@ public abstract class ProtocolRole {
      * }
      * </pre>
      *
-     * @return the name of the protocol role, for managing subscriptions and discovery
+     * @return the name of the role, for managing subscriptions and discovery
      */
     public abstract String getRoleName();
 
     /**
-     * Returns a human-readable description of this protocol. This description should be succinctly
+     * Returns a human-readable description of this role. This description should be succinctly
      * written because the middleware may display it to the user in some contexts (e.g. when
      * asking the user to authorize a communication channel).
      *
-     * @return a human-readable and user-friendly description of this protocol
+     * @return a human-readable and user-friendly description of this role
      */
     public abstract String getDescription();
 

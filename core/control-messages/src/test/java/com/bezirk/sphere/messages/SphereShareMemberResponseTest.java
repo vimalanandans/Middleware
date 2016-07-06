@@ -15,7 +15,7 @@
 //import BezirkDeviceInfo.BezirkDeviceRole;
 //import BezirkZirkInfo;
 //import BezirkZirkEndPoint;
-//import BezirkZirkId;
+//import ZirkId;
 //
 ///**
 // * This testCase verifies the SphereShareMemberResponse by retrieving the field values after deserialization.
@@ -30,8 +30,8 @@
 //
 //	private static final String sphereId = "TestSphere";
 //	private static final String serviceAName = "ServiceA";
-//	private static final BezirkZirkId serviceAId = new BezirkZirkId(serviceAName);
-//	private static final BezirkZirkInfo serviceAInfo = new BezirkZirkInfo(serviceAId.getBezirkZirkId(), serviceAName, "MEMBER",true, true);
+//	private static final ZirkId serviceAId = new ZirkId(serviceAName);
+//	private static final BezirkZirkInfo serviceAInfo = new BezirkZirkInfo(serviceAId.getZirkId(), serviceAName, "MEMBER",true, true);
 //	private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceAId );
 //	private static List<BezirkZirkInfo> services = new ArrayList<>();
 //	

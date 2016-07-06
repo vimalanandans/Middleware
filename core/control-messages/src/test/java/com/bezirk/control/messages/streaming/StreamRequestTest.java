@@ -3,8 +3,8 @@ package com.bezirk.control.messages.streaming;
 import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.proxy.api.impl.ZirkId;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -30,8 +30,8 @@ public class StreamRequestTest {
     private static final String sphereName = "Home";
     private static final Location location = new Location("OFFICE1", "BLOCk1", "ROOM1");
     private static final String key = "TESTKEY";
-    private static final BezirkZirkId serviceAId = new BezirkZirkId("ServiceA");
-    private static final BezirkZirkId serviceBId = new BezirkZirkId("ServiceB");
+    private static final ZirkId serviceAId = new ZirkId("ServiceA");
+    private static final ZirkId serviceBId = new ZirkId("ServiceB");
     private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceAId);
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceBId);
     private static final short localStreamId = 10;

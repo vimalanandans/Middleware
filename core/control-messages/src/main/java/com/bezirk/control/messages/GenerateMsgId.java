@@ -26,7 +26,7 @@ public final class GenerateMsgId {
         if (1024 == evtId) {
             evtId = 0;
         }
-        return (++evtId + KEY_SEPERATOR + sep.device + KEY_SEPERATOR + sep.zirkId.getBezirkZirkId());
+        return (++evtId + KEY_SEPERATOR + sep.device + KEY_SEPERATOR + sep.zirkId.getZirkId());
     }
 
     /**

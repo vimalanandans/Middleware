@@ -5,11 +5,11 @@ import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereType;
 import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.security.CryptoEngine;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,9 +31,9 @@ public class SphereDiscoveryTest {
 
 
     private static final String sphereId = "TestSphere";
-    private static final BezirkZirkId zirkId = new BezirkZirkId("ZirkB");
+    private static final ZirkId zirkId = new ZirkId("ZirkB");
     private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(zirkId);
-    private static final BezirkZirkEndPoint zirkBEndPoint = new BezirkZirkEndPoint(new BezirkZirkId("Zirk123B"));
+    private static final BezirkZirkEndPoint zirkBEndPoint = new BezirkZirkEndPoint(new ZirkId("Zirk123B"));
 
     private static final String requestKey = "REQUEST_KEY";
     private static InetAddress inetAddr;

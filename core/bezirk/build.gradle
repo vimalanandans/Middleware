@@ -7,6 +7,7 @@ jar {
 
 dependencies {
     compile project(':core:bezirk-middleware-api')
+    testCompile 'junit:junit:4.12'
 }
 
 

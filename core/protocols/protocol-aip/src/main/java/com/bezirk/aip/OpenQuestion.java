@@ -8,7 +8,7 @@ import com.bezirk.middleware.messages.Event;
 public class OpenQuestion extends Question {
 
     /**
-     * UhU topic: open-question
+     * Bezirk topic: open-question
      */
     public static final String topic = "open-question";
 

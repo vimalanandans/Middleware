@@ -3,7 +3,7 @@ package com.bezirk.sphere.messages;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 /**
  * This message is used to respond to a SignedControlMessage(discriminator : BezirkSphereLeave)
@@ -16,7 +16,7 @@ public class MemberLeaveResponse extends UnicastControlMessage {
     //private final BezirkZirkEndPoint recipient; //initiator (owner of the sphere)
     private final boolean signatureVerified;
     private final boolean removedSuccessfully;
-    private final BezirkZirkId serviceId;
+    private final ZirkId serviceId;
     private final String sphere_Name;
 
     /**
@@ -30,7 +30,7 @@ public class MemberLeaveResponse extends UnicastControlMessage {
      * @param serviceId
      * @param sphere_Name
      */
-    public MemberLeaveResponse(String sphereID, int requestId, boolean signatureVerified, boolean removedSuccessfully, BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, BezirkZirkId serviceId, String sphere_Name, String key) {
+    public MemberLeaveResponse(String sphereID, int requestId, boolean signatureVerified, boolean removedSuccessfully, BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, ZirkId serviceId, String sphere_Name, String key) {
 
         super(sender, recipient, sphereID, discriminator, false, key);
         //public UnicastControlMessage(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereName,
@@ -46,7 +46,7 @@ public class MemberLeaveResponse extends UnicastControlMessage {
         return removedSuccessfully;
     }
 
-    public BezirkZirkId getServiceId() {
+    public ZirkId getServiceId() {
         return serviceId;
     }
 

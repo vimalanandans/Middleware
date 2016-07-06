@@ -2,7 +2,7 @@ package com.bezirk.discovery;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkZirkId;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereType;
 
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class SphereDiscoveryRecordTest {
 
         assertNotNull("SphereServices is null.", sphereDiscoveryRecord.getSphereZirks());
 
-        BezirkZirkEndPoint bezirkZirkEndPoint = new BezirkZirkEndPoint(new BezirkZirkId("ServiceA"));
+        BezirkZirkEndPoint bezirkZirkEndPoint = new BezirkZirkEndPoint(new ZirkId("ServiceA"));
         bezirkZirkEndPoint.device = "DeviceA";
         BezirkSphereInfo bezirkSphereInfo = new BezirkSphereInfo("CarSphere12", "CarSphere",
                 BezirkSphereType.BEZIRK_SPHERE_TYPE_CAR, null, null);

@@ -11,7 +11,7 @@ import com.bezirk.sphere.impl.SphereRegistryWrapper;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.testUtilities.MockSetUpUtility;
 import com.bezirk.sphere.testUtilities.SphereTestUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.junit.After;
 import org.junit.AfterClass;

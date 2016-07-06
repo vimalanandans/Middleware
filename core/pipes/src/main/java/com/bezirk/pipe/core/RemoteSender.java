@@ -6,7 +6,7 @@ import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.control.messages.pipes.PipeHeader;
 import com.bezirk.control.messages.pipes.PipeMulticastHeader;
-import com.bezirk.middleware.addressing.Address;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.messages.Event;
 
@@ -79,16 +79,16 @@ public class RemoteSender implements Runnable {
             return;
         }
 
-        Address address = ((MulticastHeader) bezirkHeader).getAddress();
+        RecipientSelector recipientSelector = ((MulticastHeader) bezirkHeader).getRecipientSelector();
 
         PipeMulticastHeader pipeMulticastHdr = new PipeMulticastHeader();
         pipeMulticastHdr.setSenderSEP(bezirkHeader.getSenderSEP());
-        pipeMulticastHdr.setAddress(address);
+        pipeMulticastHdr.setRecipientSelector(recipientSelector);
         pipeMulticastHdr.setTopic(bezirkHeader.getTopic());
         pipeHeader = pipeMulticastHdr;
 
         // Check if the event's location represents a registered pipe
-        Pipe pipe = address.getPipe();
+        Pipe pipe = recipientSelector.getPipe();
         if (!pipeRegistry.isRegistered(pipe)) {
             logger.error("Pipe is not registered: " + pipe);
             return;
@@ -136,8 +136,8 @@ public class RemoteSender implements Runnable {
         this.pipeMonitor = pipeMonitor;
     }
 
-    public void setBezirkHeader(Header uhuHeader) {
-        this.bezirkHeader = uhuHeader;
+    public void setBezirkHeader(Header bezirkHeader) {
+        this.bezirkHeader = bezirkHeader;
     }
 
     public String getCertFileName() {

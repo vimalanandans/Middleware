@@ -25,15 +25,15 @@ public interface SadlEventReceiver {
      * @return true if topic is subscribed, false otherwise.
      */
     // Not used anymore
-    /*public boolean checkUnicastEvent(final String topic, final BezirkZirkId recipient);
+    /*public boolean checkUnicastEvent(final String topic, final ZirkId recipient);
 	/**
 	 * Checks if Event has any subscribers and returns the list. If location is null, default location is considered and matched.
 	 * @param topic - Topic of the incoming Event
 	 * @param location - Location of the intended Zirk
-	 * @return set of BezirkZirkId that the event has subscribed, null otherwise.
+	 * @return set of ZirkId that the event has subscribed, null otherwise.
 	 */
     // Not used anymore
-	/*public Set<BezirkZirkId> checkMulticastEvent(final String topic, final Location location);*/
+	/*public Set<ZirkId> checkMulticastEvent(final String topic, final Location location);*/
 
 
     /**

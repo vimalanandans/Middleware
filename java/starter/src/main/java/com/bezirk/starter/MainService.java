@@ -18,9 +18,8 @@ import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.proxy.pc.ProxyForServices;
 import com.bezirk.sadl.BezirkSadlManager;
 import com.bezirk.sphere.api.BezirkSphereAPI;
-import com.bezirk.sphere.impl.BezirkSphereForPC;
 import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -283,10 +282,13 @@ public class MainService {
                 });
             }
         } else {
+            /**
+             * Rishabh: Commenting out saving of QR as it is not used.
+             */
             // save the qr code
             // if display is not stored then save the QR code
-            ((BezirkSphereForPC) sphereForPC).saveQRCode(bezirkConfig.getDataPath(),
-                    bezirkDevice.getDeviceName());
+            //((BezirkSphereForPC) sphereForPC).saveQRCode(bezirkConfig.getDataPath(),
+            //        bezirkDevice.getDeviceName());
         }
     }
 

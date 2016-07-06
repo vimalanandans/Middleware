@@ -31,26 +31,30 @@ import java.io.Serializable;
  * message recipients after topic-based filtering occurs.
  * <h1>Scopes</h1>
  * <p>
- * To identify a Thing or set of Things, a semantic address contains three scopes of
- * increasing specificity that resolve to place a specific Thing or Things in scope:
+ * To spatially select a Thing or set of Things, a semantic address contains three levels of
+ * spatial specificity:
  * </p>
  * <ul>
- * <li>A <em>wide scope</em> specifies a potentially large set of Things. For example,
- * the floor of a building (e.g. &quot;floor 1&quot;) represents a wide scope.</li>
- * <li>An <em>intermediate scope</em> refines a wide scope to further target Things of
- * interest. Building on the previous example, specifying a room on floor 1 (e.g.
- * &quot;kitchen&quot;) represents an intermediate scope.</li>
- * <li>A <em>narrow scope</em> further refines the set of Things to just the specific
- * Thing or Things that will be the message recipients. Again building on the previous
- * example, specifying a specific light (e.g. &quot;ceiling light&quot;) or area of the kitchen
- * (e.g. &quot;window&quot;) completes the semantic address.</li>
+ * <li>A <em>wide scope</em> denotes a large spatial area. For example,
+ * the floor of a building (e.g. &quot;floor 1&quot;) represents a wide scope, which can
+ * contain many things.</li>
+ * <li>An <em>intermediate scope</em> denotes a smaller spatial area. Building on the previous
+ * example, specifying a room on floor 1 (e.g. &quot;kitchen&quot;) represents an intermediate
+ * scope. There are usually fewer things in an intermediate scope than in a wide scope. However,
+ * you can specify an intermediate scope without a wide scope; for example, specifying
+ * &quot;kitchen&quot; without &quot;floor 1&quot; would select all the kitchens in a Zirk's
+ * sphere(s), which may include several floors. In this case, you could potentially be selecting
+ * more things.</li>
+ * <li>A <em>narrow scope</em> denotes the smallest spatial area. Again building on the previous
+ * example, specifying a specific part of the kitchen (e.g. &quot;window&quot; or &quot;light&quot;)
+ * completes the semantic address.</li>
  * </ul>
  * <p>
- * The actual names of scopes are typically specified by the user. For example, a user that connects
- * a light Zirk to a new light may be prompted to enter the location of the light as a string. If
- * the user is using a Zirk that provides location awareness as a service, the names may also be
- * set by the location Zirk. The location of a Zirk operating a Thing is set using
- * {@link com.bezirk.middleware.Bezirk#setLocation(ZirkId, Location)}.
+ * The actual names of scopes can be specified manually by the user or automatically by a service.
+ * For example, a user that connects a light Zirk to a new light may be prompted to enter the
+ * location of the light as a string. If the user is using a Zirk that provides location awareness
+ * as a service, the names may instead be set by the location Zirk. The location of a Zirk
+ * operating a Thing is set using {@link com.bezirk.middleware.Bezirk#setLocation(Location)}.
  * </p>
  * <h1>Representing Semantic Addresses as Strings</h1>
  * Semantic addresses are represented as strings by listing each scope in descending order
@@ -59,10 +63,10 @@ import java.io.Serializable;
  * addresses are represented by the following strings:
  * <code>"floor 1/kitchen/ceiling light"</code> and <code>"floor 1/kitchen/window"</code>.
  * <h1>Specifying Scopes</h1>
- * The relative size of each scope is dependent on the specific context the semantic address
- * exists withing. The previous examples were within the context of Things in a building, however
- * in a context where Things are traffic controls for municipalities the wide scope may be a
- * city, the intermediate scope a street, and the narrow scope a pedestrian walk sign or set
+ * The relative size of each scope is dependent on the specific spatial context surrounding the
+ * semantic address. The previous examples were within the context of Things in a building; however
+ * in a context where Things are traffic controls for municipalities, for example, the wide scope
+ * may be a city, the intermediate scope a street, and the narrow scope a pedestrian walk sign or set
  * of traffic lights.
  * <p>
  * Each scope is optional. If you do not specify any scope you are referring to all Things in
@@ -79,24 +83,25 @@ import java.io.Serializable;
  * <li><code>"floor 1//light"</code> refers to all Things named &quot;light&quot; on
  * floor 1.</li>
  * <li><code>"/kitchen/light"</code> refers to all Things named &quot;light&quot; in
- * rooms named &quot;kitchen&quot; in the building</li>
+ * rooms named &quot;kitchen&quot; in the sending Zirk's sphere(s), which might include the
+ * whole building</li>
  * <li><code>"//light"</code> refers to all things named &quot;light&quot; in the
- * building.</li>
+ * sending Zirk's sphere(s).</li>
  * </ul>
  * <h1>Practical Example</h1>
  * Setting a Things physical location during initial configuration is a typical reason to use
- * a semantic address. The exact contents of this address can come from user-input when a Zirk makes
- * an initial connection to the Thing, or from a Zirk providing location awareness services. In
- * practice, a user will typically train a location awareness Zirk to teach the service the names
- * of each scope in some location (e.g. the names of floors and rooms on those floors), which will
- * later act as material to construct a <code>Location</code>. In this scenario, a Zirk first
- * connecting to a device will query the location service asking for the user's current location
- * and will use the reply to set a starter wide scope and intermediate scope. The Zirk will then
- * assign the narrow scope a default name for the Thing, and the user can choose to override the
- * initial values for any scope.
+ * a semantic address. The exact contents of this address can come from user-input during a Zirk's
+ * initial connection to the Thing, or from a Zirk providing location awareness services. In
+ * practice, such a location-awareness Zirk will typically be trained beforehand to know the names
+ * of each scope in some location (e.g. the names of floors and rooms on those floors). These names
+ * can later be used to provide parameters for a <code>Location</code>. In this scenario, a Zirk first
+ * connecting to a Thing will query the location service Zirk asking for the current location
+ * and will use the reply to set a starter wide scope and intermediate scope. The querying Zirk
+ * will then assign the narrow scope a default name for the Thing. Finally, the user can choose to
+ * override the initial values for any scope.
  * <p>
  * Assuming a Zirk already
- * {@link com.bezirk.middleware.Bezirk#discover(ZirkId, Address, ProtocolRole, long, int, BezirkListener) discovered}
+ * {@link com.bezirk.middleware.Bezirk#discover(RecipientSelector, ProtocolRole, long, int, BezirkListener) discovered}
  * the location service and lights were already configured, the Zirk would turn on all lights in
  * the user's current location using code similar to the following:
  * </p>
@@ -123,7 +128,7 @@ import java.io.Serializable;
  *
  *                  // Send an event to all Things at the semantic address subscribed to the
  *                  // light protocol telling the Things to turn on
- *                  bezirk.sendEvent(lightId, new Address(lightLocation),
+ *                  bezirk.sendEvent(lightId, new RecipientSelector(lightLocation),
  *                                   new ActuateLightEvent(LightOperations.ON);
  *              }
  *         }
@@ -131,8 +136,6 @@ import java.io.Serializable;
  *         // ...
  *     }
  * </pre>
- *
- *
  */
 public class Location implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -220,7 +223,7 @@ public class Location implements Serializable {
     }
 
     /**
-     *  Return the middle scope that helps resolve this <code>Location</code>'s set of Things.
+     * Return the middle scope that helps resolve this <code>Location</code>'s set of Things.
      *
      * @return the middle scope that helps resolve this <code>Location</code>'s set of Things
      */
@@ -229,7 +232,7 @@ public class Location implements Serializable {
     }
 
     /**
-     *  Return the narrowest scope that helps resolve this <code>Location</code>'s set of Things.
+     * Return the narrowest scope that helps resolve this <code>Location</code>'s set of Things.
      *
      * @return the narrowest scope that helps resolve this <code>Location</code>'s set of Things
      */

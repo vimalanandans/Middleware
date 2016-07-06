@@ -75,7 +75,7 @@
             android:key="DeviceId" />
         <!-- TODO: Remove this entry(DefaultSphereKeys) if not being used-->
         <EditTextPreference
-            android:defaultValue="eCUSEA+QRRJnuj9yAe8QAQ=="
+            android:defaultValue="0123456789abcdef"
             android:key="DefaultSphereKeys" />
         <EditTextPreference
             android:defaultValue=""
@@ -83,21 +83,21 @@
 
         <!-- Added by Rishabh: Development sphere Implementation-->
 
-        <!-- Development mode. True by default. Change to false for turning off development mode-->
+        <!-- Development mode. false by default. Change to true for turning on development mode-->
         <EditTextPreference
             android:defaultValue="false"
-            android:key="devMode" />
+            android:key="DEVELOPMENT_SPHERE_MODE_KEY" />
 
         <!-- Development sphere information-->
         <EditTextPreference
-            android:defaultValue="DevSphere"
-            android:key="sphereName" />
+            android:defaultValue="Dev Sphere"
+            android:key="DEVELOPMENT_SPHERE_NAME_KEY" />
         <EditTextPreference
-            android:defaultValue="DevSphereId"
-            android:key="sphereId" />
+            android:defaultValue="DEVELOPMENT_SPHERE_ID_DEFAULT_VALUE"
+            android:key="DEVELOPMENT_SPHERE_ID_KEY" />
         <EditTextPreference
             android:defaultValue="eCUSEA+QRRJnuj9yAe8QAQ=="
-            android:key="sphereKey" />
+            android:key="DEVELOPMENT_SPHEREKEY_KEY" />
         <!-- Development sphere information-->
 
         <!-- #Creating your development sphere:
@@ -112,7 +112,7 @@
         After defining the value, it is stored here(*) to avoid re-computing it again.-->
         <EditTextPreference
             android:defaultValue=""
-            android:key="defaultSphereName" />
+            android:key="DEFAULT_SPHERE_NAME_KEY" />
 
         <!-- Added by Rishabh: Development sphere Implementation-->
     </PreferenceCategory>
