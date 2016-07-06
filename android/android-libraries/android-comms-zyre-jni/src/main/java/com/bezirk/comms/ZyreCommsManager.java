@@ -31,10 +31,10 @@ public class ZyreCommsManager extends CommsProcessor {
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             PubSubBroker broker, PipeManager pipe) {
+                             PubSubBroker broker, PipeManager pipe, com.bezirk.streaming.Streaming streaming) {
         /*init zyre and internals of comms */
         if (comms == null) {
-            return super.initComms(commsProperties, addr, broker, pipe);
+            return super.initComms(commsProperties, addr, broker, pipe, streaming);
         }
 
         return false;

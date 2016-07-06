@@ -23,7 +23,7 @@ import java.util.Set;
  *
  * @see BezirkCommunications
  */
-public class PortFactory implements com.bezirk.comms.PortFactory {
+public class PortFactory implements com.bezirk.streaming.PortFactory {
     private static final Logger logger = LoggerFactory.getLogger(PortFactory.class);
 
     private final int startingPort; // Beginning Port of the RANGE, read from properties file

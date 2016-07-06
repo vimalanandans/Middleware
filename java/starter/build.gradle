@@ -6,6 +6,7 @@ dependencies {
     compile project(':core:commons')
     compile project(':core:sphere')
     compile project(':core:data-storage')
+    compile project(':core:streaming')
 //    compile project(':core:comms:comms-udp')
     //compile project(':core:comms:comms-jyre')
     compile project(':core:comms:comms-factory')

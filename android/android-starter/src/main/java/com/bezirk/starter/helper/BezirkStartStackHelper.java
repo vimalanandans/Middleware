@@ -18,6 +18,7 @@ import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.starter.MainService;
+import com.bezirk.streaming.BezirkStreamManager;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -108,8 +109,10 @@ class BezirkStartStackHelper {
         //init the error notification
         comms.registerNotification(errNotificationCallback);
 
+        /** initialize the streaming */
+        BezirkStreamManager streaming = new BezirkStreamManager(comms, pubSubBroker);
         /** initialize the communications */
-        comms.initComms(null, inetAddress, pubSubBroker, pipeComms);
+        comms.initComms(null, inetAddress, pubSubBroker, pipeComms,streaming);
 
         // init the comms manager for sadl
         pubSubBroker.initSadlManager(comms);

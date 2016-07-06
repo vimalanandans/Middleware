@@ -4,7 +4,7 @@
 package com.bezirk.streaming.threads;
 
 import com.bezirk.comms.BezirkCommunications;
-import com.bezirk.comms.PortFactory;
+import com.bezirk.streaming.PortFactory;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;

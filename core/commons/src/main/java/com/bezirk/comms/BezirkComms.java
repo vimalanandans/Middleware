@@ -58,7 +58,7 @@ public interface BezirkComms {
      * creates queues, threads, sockets
      **/
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             PubSubBroker sadl, PipeManager pipe);
+                             PubSubBroker sadl, PipeManager pipe, com.bezirk.streaming.Streaming streaming);
 
     public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
 

@@ -3,8 +3,7 @@ package com.bezirk.streaming;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.comms.PortFactory;
-import com.bezirk.comms.Streaming;
+import com.bezirk.comms.MessageDispatcher;
 import com.bezirk.comms.BezirkMessageDispatcher;
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.ControlMessage;
@@ -45,14 +44,12 @@ public class BezirkStreamManager implements Streaming {
 
     private PubSubEventReceiver sadlReceiver = null;
 
-    public BezirkStreamManager(BezirkComms comms,
-                               BezirkMessageDispatcher msgDispatcher, PubSubEventReceiver sadlReceiver) {
+    public BezirkStreamManager(BezirkComms comms, PubSubEventReceiver sadlReceiver) {
 
         if (BezirkValidatorUtility.isObjectNotNull(comms)
                 && BezirkValidatorUtility.isObjectNotNull(msgDispatcher)
                 && BezirkValidatorUtility.isObjectNotNull(sadlReceiver)) {
             this.comms = comms;
-            this.msgDispatcher = msgDispatcher;
             this.sadlReceiver = sadlReceiver;
             bezirkStreamHandler = new BezirkStreamHandler();
         } else {
@@ -113,7 +110,9 @@ public class BezirkStreamManager implements Streaming {
     }
 
     @Override
-    public boolean initStreams() {
+    public boolean initStreams(MessageDispatcher msgDispatcher) {
+
+        msgDispatcher = msgDispatcher;
 
         try {
 

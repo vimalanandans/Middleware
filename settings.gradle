@@ -13,6 +13,7 @@ include ':core:commons'
 include  ':core:remote-logging'
 include  ':core:sphere'
 include  ':core:data-storage'
+include  ':core:streaming'
 
 //include ':core:comms:comms-udp'
 include ':core:comms:comms-factory'

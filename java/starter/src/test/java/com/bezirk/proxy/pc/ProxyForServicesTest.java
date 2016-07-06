@@ -1,8 +1,5 @@
 package com.bezirk.proxy.pc;
 
-import com.bezirk.discovery.DiscoveryLabel;
-import com.bezirk.discovery.DiscoveryProcessor;
-import com.bezirk.discovery.DiscoveryRecord;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.ZirkId;

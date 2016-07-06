@@ -1,6 +1,5 @@
 package com.bezirk.streaming;
 
-import com.bezirk.comms.PortFactory;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.ControlLedger;

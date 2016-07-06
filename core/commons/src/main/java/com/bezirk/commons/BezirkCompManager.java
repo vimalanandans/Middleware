@@ -5,7 +5,7 @@ import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.api.BezirkSphereRegistration;
-import com.bezirk.streaming.rtc.Signaling;
+//import com.bezirk.streaming.rtc.Signaling;
 
 /**
  * This is a Util Class for injecting the instance of
@@ -50,11 +50,7 @@ public final class BezirkCompManager {
 
     //private static BezirkSphereMessages uhuSphereMessages;
 
-    /**
-     * For Real Time Communication
-     */
 
-    private static Signaling signaling;
 
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
@@ -62,14 +58,20 @@ public final class BezirkCompManager {
 
     }
 
-    public static Signaling getSignaling() {
+  /*
+    /**
+     * For Real Time Communication
+     */
+
+   /* private static Signaling signaling;
+   public static Signaling getSignaling() {
         return signaling;
     }
 
     public static void setSignaling(Signaling signaling) {
         BezirkCompManager.signaling = signaling;
     }
-
+*/
     /**
      * @return the upaDevice
      */

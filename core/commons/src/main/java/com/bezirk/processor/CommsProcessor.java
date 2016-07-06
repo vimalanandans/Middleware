@@ -8,6 +8,7 @@ import com.bezirk.comms.BezirkMessageDispatcher;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CtrlMsgReceiver;
+import com.bezirk.streaming.Streaming;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
@@ -25,7 +26,6 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;
 //import com.bezirk.sphere.security.UPABlockCipherService;
-import com.bezirk.streaming.BezirkStreamManager;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.TextCompressor;
 import com.bezrik.network.BezirkNetworkUtilities;
@@ -75,11 +75,11 @@ public abstract class CommsProcessor implements BezirkComms {
 
     //private final byte[] testKey = {'B','E','Z','I','R','K','_','G','R','O','U','P','N','E','W','1'};
     private ExecutorService executor;
-    private BezirkStreamManager bezirkStreamManager = null;
+    private Streaming bezirkStreamManager = null;
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             PubSubBroker sadl, PipeManager pipe) {
+                             PubSubBroker sadl, PipeManager pipe, Streaming streaming) {
 
         this.pubSubBroker = sadl;
 
@@ -87,9 +87,10 @@ public abstract class CommsProcessor implements BezirkComms {
 
         if (BezirkCommunications.isStreamingEnabled()) {
 
-            bezirkStreamManager = new BezirkStreamManager(this, msgDispatcher, sadl);
+            //bezirkStreamManager = new BezirkStreamManager(this, msgDispatcher, sadl);
+            bezirkStreamManager = streaming;
 
-            bezirkStreamManager.initStreams();
+            bezirkStreamManager.initStreams(msgDispatcher);
 
         }
 

@@ -1,4 +1,4 @@
-package com.bezirk.comms;
+package com.bezirk.streaming;
 
 /**
  * @author Vimal
