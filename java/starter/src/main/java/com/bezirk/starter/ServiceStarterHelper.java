@@ -13,7 +13,7 @@ import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.BezirkSphereAPI;
-import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.sphere.api.BezirkSphereRegistration;
 import com.bezirk.sphere.impl.BezirkQRCode;
 import com.bezirk.sphere.impl.BezirkSphereForPC;
@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Properties;
 
 /**
  * This is a helper class for zirk startup which handles the sphere
@@ -75,8 +74,8 @@ final class ServiceStarterHelper {
 
         com.bezirk.sphere.SphereManager.setBezirkQRCode((BezirkQRCode) sphereForPC);
 
-        final BezirkSphereForSadl sphereForSadl = (BezirkSphereForSadl) sphereForPC;
-        BezirkCompManager.setSphereForSadl(sphereForSadl);
+        final BezirkSphereForPubSub sphereForSadl = (BezirkSphereForPubSub) sphereForPC;
+        BezirkCompManager.setSphereForPubSub(sphereForSadl);
 
         try {
 

@@ -8,7 +8,7 @@ import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.UnicastStream;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.pubsubbroker.BezirkSadlManager;
+import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.util.MockComms;
 import com.bezirk.util.MockProtocolsForBezirkPC;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
@@ -34,7 +34,7 @@ public class ProxySendTest {
 
     private static final MockSetUpUtilityForBezirkPC mockSetUP = new MockSetUpUtilityForBezirkPC();
     private static final Logger logger = LoggerFactory.getLogger(ProxySendTest.class);
-    private static BezirkSadlManager sadlManager;
+    private static PubSubBroker sadlManager;
     private final String serviceName = "MockServiceA";
     private final String serviceAId = "MockServiceAId";
     private final ZirkId senderId = new ZirkId(serviceAId);
@@ -53,7 +53,7 @@ public class ProxySendTest {
         mockSetUP.setUPTestEnv();
 
         try {
-            sadlManager = mockSetUP.getBezirkSadlManager();
+            sadlManager = mockSetUP.getPubSubBroker();
         } catch (UnknownHostException e) {
             fail("Unable to set up test environment.");
         }

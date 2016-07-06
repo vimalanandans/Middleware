@@ -12,8 +12,8 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.control.messages.streaming.StreamResponse;
 import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
-import com.bezirk.pubsubbroker.SadlEventReceiver;
-import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.pubsubbroker.PubSubEventReceiver;
+import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
@@ -32,7 +32,7 @@ public class BezirkStreamManager implements Streaming {
     private static final Logger logger = LoggerFactory.getLogger(BezirkStreamManager.class);
 
     private final StreamCtrlReceiver ctrlReceiver = new StreamCtrlReceiver();
-    private BezirkSphereForSadl sphereForSadl = null;
+    private BezirkSphereForPubSub sphereForSadl = null;
     private MessageQueue streamingMessageQueue = null;
     private StreamQueueProcessor streamQueueProcessor = null;
     private Thread sStreamingThread = null;
@@ -43,10 +43,10 @@ public class BezirkStreamManager implements Streaming {
 
     private StreamStore streamStore = null;
 
-    private SadlEventReceiver sadlReceiver = null;
+    private PubSubEventReceiver sadlReceiver = null;
 
     public BezirkStreamManager(BezirkComms comms,
-                               BezirkMessageDispatcher msgDispatcher, SadlEventReceiver sadlReceiver) {
+                               BezirkMessageDispatcher msgDispatcher, PubSubEventReceiver sadlReceiver) {
 
         if (BezirkValidatorUtility.isObjectNotNull(comms)
                 && BezirkValidatorUtility.isObjectNotNull(msgDispatcher)
@@ -190,7 +190,7 @@ public class BezirkStreamManager implements Streaming {
     }
 
     @Override
-    public void setSphereForSadl(BezirkSphereForSadl bezirkSphere) {
+    public void setSphereForSadl(BezirkSphereForPubSub bezirkSphere) {
 
         this.sphereForSadl = bezirkSphere;
         this.streamQueueProcessor.setSphereForSadl(sphereForSadl);

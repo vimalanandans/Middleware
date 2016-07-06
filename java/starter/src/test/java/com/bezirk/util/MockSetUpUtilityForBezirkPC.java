@@ -14,7 +14,7 @@ import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SadlPersistence;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.pubsubbroker.BezirkSadlManager;
+import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.BezirkSphereRegistration;
@@ -48,7 +48,7 @@ public class MockSetUpUtilityForBezirkPC {
     private static final String DBPath = "./";
     private static final String DBVersion = DBConstants.DB_VERSION;
     private static InetAddress inetAddr;
-    BezirkSadlManager bezirkSadlManager = null;
+    PubSubBroker pubSubBroker = null;
     SadlPersistence sadlPersistence;
     SpherePersistence spherePersistence;
     BezirkDevice upaDevice;
@@ -73,15 +73,15 @@ public class MockSetUpUtilityForBezirkPC {
         sphereRegistry = new SphereRegistry();
         cryptoEngine = new CryptoEngine(sphereRegistry);
         sadlPersistence = (SadlPersistence) regPersistence;
-        bezirkSadlManager = new BezirkSadlManager(sadlPersistence);
+        pubSubBroker = new PubSubBroker(sadlPersistence);
         //sphereConfig = new SphereProperties();
         sphereConfig = new JavaPrefs();
         sphereConfig.init();
 
 
         bezirkComms = new MockComms();
-        bezirkComms.initComms(null, inetAddr, bezirkSadlManager, null);
-        bezirkSadlManager.initSadlManager(bezirkComms);
+        bezirkComms.initComms(null, inetAddr, pubSubBroker, null);
+        pubSubBroker.initSadlManager(bezirkComms);
         bezirkComms.registerNotification(Mockito.mock(CommsNotification.class));
         bezirkComms.startComms();
 
@@ -90,7 +90,7 @@ public class MockSetUpUtilityForBezirkPC {
         BezirkSphereListener sphereListener = Mockito.mock(BezirkSphereListener.class);
         bezirkSphere.initSphere(spherePersistence, bezirkComms, sphereListener, sphereConfig);
         BezirkCompManager.setSphereRegistration((BezirkSphereRegistration) bezirkSphere);
-        BezirkCompManager.setSphereForSadl(bezirkSphere);
+        BezirkCompManager.setSphereForPubSub(bezirkSphere);
         BezirkCompManager.setplatformSpecificCallback(new MockCallbackZirk());
     }
 
@@ -161,8 +161,8 @@ public class MockSetUpUtilityForBezirkPC {
         return bezirkComms;
     }
 
-    public BezirkSadlManager getBezirkSadlManager() throws UnknownHostException {
-        return bezirkSadlManager;
+    public PubSubBroker getPubSubBroker() throws UnknownHostException {
+        return pubSubBroker;
     }
 
     public BezirkDeviceInterface getUpaDevice() {
@@ -178,7 +178,7 @@ public class MockSetUpUtilityForBezirkPC {
         regPersistence.clearPersistence();
 
         BezirkCompManager.setSphereRegistration(null);
-        BezirkCompManager.setSphereForSadl(null);
+        BezirkCompManager.setSphereForPubSub(null);
         BezirkCompManager.setplatformSpecificCallback(null);
         BezirkCompManager.setUpaDevice(null);
 

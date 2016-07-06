@@ -11,8 +11,8 @@ import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.pipe.core.PipeManager;
-import com.bezirk.pubsubbroker.BezirkSadlManager;
-import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
 import java.net.InetAddress;
@@ -115,7 +115,7 @@ public class MockComms implements BezirkComms {
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             BezirkSadlManager sadl, PipeManager pipe) {
+                             PubSubBroker sadl, PipeManager pipe) {
         // TODO Auto-generated method stub
         return true;
     }
@@ -128,7 +128,7 @@ public class MockComms implements BezirkComms {
     }
 
     @Override
-    public void setSphereForSadl(BezirkSphereForSadl bezirkSphere) {
+    public void setSphereForSadl(BezirkSphereForPubSub bezirkSphere) {
         // TODO Auto-generated method stub
 
     }

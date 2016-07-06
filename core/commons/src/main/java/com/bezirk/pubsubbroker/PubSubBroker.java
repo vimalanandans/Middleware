@@ -33,15 +33,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This class implements the IPubSubBrokerRegistry, ISadlRegistryLookup Interfaces. This class is used by ProxyForServices (by casting IPubSubBrokerRegistry)
- * EventSender/ EventReceiver/ ControlSender/ ControlReceiver by casting ISadlRegistryLookup.
+ * This class implements the IPubSubBrokerRegistry, IPubSubBrokerRegistryLookup Interfaces. This class is used by ProxyForServices (by casting IPubSubBrokerRegistry)
+ * EventSender/ EventReceiver/ ControlSender/ ControlReceiver by casting IPubSubBrokerRegistryLookup.
  */
-public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup, ISadlControlReceiver, SadlEventReceiver {
+public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistryLookup, IPubSubBrokerControlReceiver, PubSubEventReceiver {
     private static final Logger logger = LoggerFactory.getLogger(PubSubBroker.class);
 
     private final Date currentDate = new Date();
     protected SadlPersistence sadlPersistence = null;
-    protected SadlRegistry sadlRegistry = null;
+    protected PubSubBrokerRegistry pubSubBrokerRegistry = null;
     protected BezirkComms bezirkComms = null;
 
     public PubSubBroker(SadlPersistence sadlPersistence) {
@@ -80,7 +80,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup,
             logger.info(serviceId + " Zirk is already registered");
             return false;
         }
-        if (sadlRegistry.registerService(serviceId)) {
+        if (pubSubBrokerRegistry.registerService(serviceId)) {
             persistSadlRegistry();
             return true;
         }
@@ -101,7 +101,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup,
             return false;
         }
 
-        if (sadlRegistry.subscribeService(serviceId, pRole)) {
+        if (pubSubBrokerRegistry.subscribeService(serviceId, pRole)) {
             persistSadlRegistry();
             return true;
         }
@@ -114,7 +114,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup,
             logger.error("Invalid UnSubscription, Validation failed");
             return false;
         }
-        if (sadlRegistry.unsubscribe(serviceId, role)) {
+        if (pubSubBrokerRegistry.unsubscribe(serviceId, role)) {
             persistSadlRegistry();
             return true;
         }
@@ -127,7 +127,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup,
             logger.error("Invalid UnRegistration, Validation failed");
             return false;
         }
-        if (sadlRegistry.unregisterZirk(serviceId)) {
+        if (pubSubBrokerRegistry.unregisterZirk(serviceId)) {
             persistSadlRegistry();
             return true;
         }
@@ -137,7 +137,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup,
 
     @Override
     public Boolean setLocation(final ZirkId serviceId, final Location location) {
-        if (sadlRegistry.setLocation(serviceId, location)) {
+        if (pubSubBrokerRegistry.setLocation(serviceId, location)) {
             persistSadlRegistry();
             return true;
         }
@@ -147,14 +147,14 @@ public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup,
     @Override
     public Boolean isServiceRegistered(ZirkId serviceId) {
         if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
-            return sadlRegistry.isServiceRegistered(serviceId);
+            return pubSubBrokerRegistry.isServiceRegistered(serviceId);
         }
         return false;
     }
 
     @Override
     public Location getLocationForService(ZirkId serviceId) {
-        return sadlRegistry.getLocationForService(serviceId);
+        return pubSubBrokerRegistry.getLocationForService(serviceId);
     }
 
 
@@ -164,7 +164,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup,
             logger.error("Stream Topic or zirk Id is invalid");
             return false;
         }
-        return sadlRegistry.isStreamTopicRegistered(streamTopic, serviceId);
+        return pubSubBrokerRegistry.isStreamTopicRegistered(streamTopic, serviceId);
     }
 
     // SERVICE-NAME NEEDS TO BE FILLED
@@ -174,7 +174,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup,
             logger.error("Discarding Discovery Lookup as ProtocolRole is invalid");
             return null;
         }
-        return sadlRegistry.discoverServices(pRole, location);
+        return pubSubBrokerRegistry.discoverServices(pRole, location);
     }
 
 
@@ -212,7 +212,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup,
                 BezirkRestCallBack callBack = new BezirkRestCallBackImpl();
                 callBack.callBackForResponse(eLedger);
 
-            } else if (BezirkCompManager.getSphereForSadl().isZirkInSphere(serviceId, eLedger.getHeader().getSphereName())) {
+            } else if (BezirkCompManager.getSphereForPubSubBroker().isZirkInSphere(serviceId, eLedger.getHeader().getSphereName())) {
                 EventIncomingMessage eCallbackMessage = new EventIncomingMessage(serviceId, eLedger.getHeader().getSenderSEP(),
                         eLedger.getSerializedMessage(), eLedger.getHeader().getTopic(), eLedger.getHeader().getUniqueMsgId());
                 BezirkCompManager.getplatformSpecificCallback().onIncomingEvent(eCallbackMessage);
@@ -248,7 +248,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup,
      */
     private Boolean decryptMsg(EventLedger eLedger) {
         // Decrypt the event message
-        final String decryptedEventMsg = BezirkCompManager.getSphereForSadl().decryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getEncryptedMessage());
+        final String decryptedEventMsg = BezirkCompManager.getSphereForPubSubBroker().decryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getEncryptedMessage());
         if (!BezirkValidatorUtility.checkForString(decryptedEventMsg)) {
             logger.debug("Header Decryption Failed: sphereId-" + eLedger.getHeader().getSphereName() + " may not exist");
 
@@ -276,7 +276,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup,
             logger.error("Unicast Event Check failed -> topic or Recipient is not valid");
             return false;
         }
-        return sadlRegistry.checkUnicastEvent(topic, recipient);
+        return pubSubBrokerRegistry.checkUnicastEvent(topic, recipient);
     }
 
     // Return a HashSet<ZirkId> by creating a new one otherwise the receiving components can modify it!
@@ -286,17 +286,17 @@ public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup,
             logger.error("Event Topic or Recipient is valid");
             return null;
         }
-        return sadlRegistry.checkMulticastEvent(topic, location);
+        return pubSubBrokerRegistry.checkMulticastEvent(topic, location);
     }
 
     @Override
     public Set<ZirkId> getRegisteredServices() {
-        return sadlRegistry.getRegisteredServices();
+        return pubSubBrokerRegistry.getRegisteredServices();
     }
 
     private void loadSadlRegistry() {
         try {
-            sadlRegistry = sadlPersistence.loadSadlRegistry();
+            pubSubBrokerRegistry = sadlPersistence.loadSadlRegistry();
         } catch (Exception e) {
             logger.error("Error in loading sadl registry from persistence \n", e);
         }

@@ -250,7 +250,7 @@ class LogDataActivityHelper {
     String getDeviceNameFromDeviceId(final String deviceId) {
         if (deviceId == null)
             return RECIPIENT_MULTICAST_VALUE;
-        String tempDeviceName = BezirkCompManager.getSphereForSadl().getDeviceNameFromSphere(deviceId);
+        String tempDeviceName = BezirkCompManager.getSphereForPubSubBroker().getDeviceNameFromSphere(deviceId);
         return (null == tempDeviceName) ? deviceId : tempDeviceName;
     }
 

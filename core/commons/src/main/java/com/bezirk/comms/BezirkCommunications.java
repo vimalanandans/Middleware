@@ -216,7 +216,7 @@ public final class BezirkCommunications {
 	}
 */
 
-	
+
 /*	public static Boolean isDuplicateEvent(Header header){
 		String dMessage = header.getSenderSEP().device+":"+header.getMessageId().toString()+":"+header.getSphereName();
 		Long currentTime = new Date().getTime();
@@ -241,7 +241,7 @@ public final class BezirkCommunications {
 			}
 			else
 				return false;
-		}			
+		}
 	}*/
 
 }

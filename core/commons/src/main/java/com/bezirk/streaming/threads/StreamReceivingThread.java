@@ -8,8 +8,8 @@ import com.bezirk.comms.PortFactory;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.pubsubbroker.SadlEventReceiver;
-import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.pubsubbroker.PubSubEventReceiver;
+import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -54,8 +54,8 @@ public class StreamReceivingThread implements Runnable {
     private final String serializedMsg;
     private final short streamId;
     private final PortFactory portFactory;
-    private final SadlEventReceiver sadlReceiver;
-    private final BezirkSphereForSadl sphereForSadl;
+    private final PubSubEventReceiver sadlReceiver;
+    private final BezirkSphereForPubSub sphereForSadl;
 
     /**
      * Constructor that is called during starting the thread
@@ -64,7 +64,7 @@ public class StreamReceivingThread implements Runnable {
      */
     public StreamReceivingThread(int port,
                                  StreamRequest streamRequest, PortFactory portFactory,
-                                 SadlEventReceiver sadlReceiver, BezirkSphereForSadl sphereForSadl) {
+                                 PubSubEventReceiver sadlReceiver, BezirkSphereForPubSub sphereForSadl) {
         super();
         this.sphere = streamRequest.getSphereId();
         this.port = port;

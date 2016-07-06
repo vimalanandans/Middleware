@@ -1,6 +1,6 @@
 //package com.bezirk.persistence;
 //
-//import com.bezirk.pubsubbroker.SadlRegistry;
+//import com.bezirk.pubsubbroker.PubSubBrokerRegistry;
 //
 //import org.junit.Test;
 //
@@ -16,19 +16,19 @@
 //    public void test() {
 //
 //        int id = 35;
-//        SadlRegistry sadlRegistry = new SadlRegistry();
+//        PubSubBrokerRegistry pubSubBrokerRegistry = new PubSubBrokerRegistry();
 //        SphereRegistry sphereRegistry = new SphereRegistry();
 //        BezirkProxyRegistry bezirkProxyRegistry = new BezirkProxyRegistry();
 //
 //        BezirkRegistry bezirkRegistry = new BezirkRegistry();
 //
 //        bezirkRegistry.setId(id);
-//        bezirkRegistry.setSadlRegistry(sadlRegistry);
+//        bezirkRegistry.setPubSubBrokerRegistry(pubSubBrokerRegistry);
 //        bezirkRegistry.setSphereRegistry(sphereRegistry);
 //        bezirkRegistry.setBezirkProxyRegistry(bezirkProxyRegistry);
 //
 //        assertEquals("ID is not equal to the set value.", id, bezirkRegistry.getId());
-//        assertEquals("SadlRegistry is not equal to the set value.", sadlRegistry, bezirkRegistry.getSadlRegistry());
+//        assertEquals("PubSubBrokerRegistry is not equal to the set value.", pubSubBrokerRegistry, bezirkRegistry.getPubSubBrokerRegistry());
 //        assertEquals("SphererRegistry is not equal to the set value.", sphereRegistry, bezirkRegistry.getSphereRegistry());
 //        assertEquals("BezirkProxyRegistry is not equal to the set value.", bezirkProxyRegistry, bezirkRegistry.getBezirkProxyRegistry());
 //    }

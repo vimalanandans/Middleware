@@ -7,8 +7,8 @@ import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
-import com.bezirk.pubsubbroker.SadlEventReceiver;
-import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.pubsubbroker.PubSubEventReceiver;
+import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.control.Objects.StreamRecord.StreamingStatus;
 import com.bezirk.util.BezirkValidatorUtility;
@@ -35,17 +35,17 @@ public class StreamQueueProcessor implements Runnable {
 
     private final MessageQueue msgQueue;
 
-    private final SadlEventReceiver sadlReceiver;
+    private final PubSubEventReceiver sadlReceiver;
 
-    private BezirkSphereForSadl sphereForSadl;
+    private BezirkSphereForPubSub sphereForSadl;
 
-    public StreamQueueProcessor(MessageQueue msgQueue, SadlEventReceiver sadlReceiver) {
+    public StreamQueueProcessor(MessageQueue msgQueue, PubSubEventReceiver sadlReceiver) {
         this.sadlReceiver = sadlReceiver;
         this.msgQueue = msgQueue;
 
     }
 
-    public void setSphereForSadl(BezirkSphereForSadl sphereForSadl) {
+    public void setSphereForSadl(BezirkSphereForPubSub sphereForSadl) {
         this.sphereForSadl = sphereForSadl;
     }
 

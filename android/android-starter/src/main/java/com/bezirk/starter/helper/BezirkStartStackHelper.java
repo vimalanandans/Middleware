@@ -16,7 +16,7 @@ import com.bezirk.persistence.util.DatabaseConnectionForAndroid;
 import com.bezirk.pipe.android.PipeCommsFactory;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.proxy.android.ProxyForZirks;
-import com.bezirk.pubsubbroker.BezirkSadlManager;
+import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
 
@@ -82,7 +82,7 @@ class BezirkStartStackHelper {
         }
     }
 
-    BezirkComms initializeComms(InetAddress inetAddress, BezirkSadlManager bezirkSadlManager, ProxyForZirks proxy, CommsNotification errNotificationCallback) {
+    BezirkComms initializeComms(InetAddress inetAddress, PubSubBroker pubSubBroker, ProxyForZirks proxy, CommsNotification errNotificationCallback) {
         // Instantiate pipeManager before SenderThread so that it is ready to start sending over pipes
         PipeManager pipeComms = PipeCommsFactory.createPipeComms();
 
@@ -109,10 +109,10 @@ class BezirkStartStackHelper {
         comms.registerNotification(errNotificationCallback);
 
         /** initialize the communications */
-        comms.initComms(null, inetAddress, bezirkSadlManager, pipeComms);
+        comms.initComms(null, inetAddress, pubSubBroker, pipeComms);
 
         // init the comms manager for sadl
-        bezirkSadlManager.initSadlManager(comms);
+        pubSubBroker.initSadlManager(comms);
 
         return comms;
     }

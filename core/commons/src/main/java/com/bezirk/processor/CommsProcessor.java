@@ -22,8 +22,8 @@ import com.bezirk.features.CommsFeature;
 import com.bezirk.logging.LogServiceMessageHandler;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.pubsubbroker.BezirkSadlManager;
-import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.sphere.api.BezirkSphereForPubSub;
 //import com.bezirk.sphere.security.UPABlockCipherService;
 import com.bezirk.streaming.BezirkStreamManager;
 import com.bezirk.streaming.control.Objects.StreamRecord;
@@ -57,7 +57,7 @@ public abstract class CommsProcessor implements BezirkComms {
     BezirkMessageDispatcher msgDispatcher = null;
 
     //LogServiceMessageHandler logServiceMsgHandler = null;
-    BezirkSadlManager bezirkSadlManager = null;
+    PubSubBroker pubSubBroker = null;
 
     //generic notifications
     List ICommsNotification = new ArrayList<CommsNotification>();
@@ -79,11 +79,11 @@ public abstract class CommsProcessor implements BezirkComms {
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             BezirkSadlManager sadl, PipeManager pipe) {
+                             PubSubBroker sadl, PipeManager pipe) {
 
-        this.bezirkSadlManager = sadl;
+        this.pubSubBroker = sadl;
 
-        msgDispatcher = new BezirkMessageDispatcher(bezirkSadlManager);
+        msgDispatcher = new BezirkMessageDispatcher(pubSubBroker);
 
         if (BezirkCommunications.isStreamingEnabled()) {
 
@@ -127,7 +127,8 @@ public abstract class CommsProcessor implements BezirkComms {
             // and then shutdownNow
         }
 
-        if (BezirkCommunications.isStreamingEnabled()) {
+         if (BezirkCommunications.isStreamingEnabled())
+        {
 
             if (bezirkStreamManager != null) {
                 bezirkStreamManager.endStreams();
@@ -304,7 +305,7 @@ public abstract class CommsProcessor implements BezirkComms {
         //msg = cipherService.encrypt(msgData, testKey).getBytes();
         // temp fix of sending the byte stream
         String msgDataString = new String(msgData);
-        byte[] msg = BezirkCompManager.getSphereForSadl().encryptSphereContent(sphereId, msgDataString);
+        byte[] msg = BezirkCompManager.getSphereForPubSubBroker().encryptSphereContent(sphereId, msgDataString);
 
         long endTime = System.nanoTime();
         logger.info("Encryption Took " + (endTime - startTime) + " nano seconds");
@@ -333,7 +334,7 @@ public abstract class CommsProcessor implements BezirkComms {
                 || (msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED)) {
 
             //message = cipherService.decrypt(wireMessage.getMsg(), testKey).getBytes();
-            String data = BezirkCompManager.getSphereForSadl().decryptSphereContent(sphereId, msgData);
+            String data = BezirkCompManager.getSphereForPubSubBroker().decryptSphereContent(sphereId, msgData);
 
             if (data != null) {
                 msg = data.getBytes();
@@ -747,7 +748,7 @@ public abstract class CommsProcessor implements BezirkComms {
     }
 
     @Override
-    public void setSphereForSadl(BezirkSphereForSadl bezirkSphere) {
+    public void setSphereForSadl(BezirkSphereForPubSub bezirkSphere) {
         bezirkStreamManager.setSphereForSadl(bezirkSphere);
     }
 

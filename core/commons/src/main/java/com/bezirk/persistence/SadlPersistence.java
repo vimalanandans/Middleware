@@ -3,7 +3,7 @@
  */
 package com.bezirk.persistence;
 
-import com.bezirk.pubsubbroker.SadlRegistry;
+import com.bezirk.pubsubbroker.PubSubBrokerRegistry;
 
 
 /**
@@ -11,7 +11,7 @@ import com.bezirk.pubsubbroker.SadlRegistry;
  */
 public interface SadlPersistence {
     /**
-     * Persist the SadlRegistry
+     * Persist the PubSubBrokerRegistry
      *
      * @throws Exception if persisting is not possible
      */
@@ -23,5 +23,5 @@ public interface SadlPersistence {
      * @return Sadl Registry
      * @throws Exception if loading is not possible
      */
-    public SadlRegistry loadSadlRegistry() throws Exception;
+    public PubSubBrokerRegistry loadSadlRegistry() throws Exception;
 }

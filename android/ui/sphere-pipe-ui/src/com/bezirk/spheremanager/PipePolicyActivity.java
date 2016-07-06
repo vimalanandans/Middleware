@@ -58,7 +58,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
             return;
         }
 
-        final String serviceName = BezirkCompManager.getSphereForSadl().getZirkName(serviceId);
+        final String serviceName = BezirkCompManager.getSphereForPubSubBroker().getZirkName(serviceId);
 
         LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

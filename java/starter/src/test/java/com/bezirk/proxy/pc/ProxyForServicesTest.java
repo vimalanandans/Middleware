@@ -6,7 +6,7 @@ import com.bezirk.discovery.DiscoveryRecord;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.pubsubbroker.BezirkSadlManager;
+import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.util.MockProtocolsForBezirkPC;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 
@@ -28,7 +28,7 @@ public class ProxyForServicesTest {
     private static final Logger logger = LoggerFactory.getLogger(ProxyForServicesTest.class);
 
     private static final MockSetUpUtilityForBezirkPC mockSetUP = new MockSetUpUtilityForBezirkPC();
-    private static BezirkSadlManager sadlManager;
+    private static PubSubBroker sadlManager;
     private final String zirkName = "MockZirkA";
     private final String zirkAId = "MockZirkAId";
     private final ZirkId bezirkZirkAId = new ZirkId(zirkAId);
@@ -42,7 +42,7 @@ public class ProxyForServicesTest {
         mockSetUP.setUPTestEnv();
 
         try {
-            sadlManager = mockSetUP.getBezirkSadlManager();
+            sadlManager = mockSetUP.getPubSubBroker();
         } catch (UnknownHostException e) {
             fail("Unable to set up test environment.");
         }
@@ -156,7 +156,7 @@ public class ProxyForServicesTest {
         Location location = new Location("OFFICE1/BLOCK1/FLOOR1");
         proxyForServices.setLocation(bezirkZirkAId, location);
 
-        Location locInRegistry = ((BezirkSadlManager) proxyForServices
+        Location locInRegistry = ((PubSubBroker) proxyForServices
                 .getSadlRegistry()).getLocationForService(bezirkZirkAId);
         assertEquals(
                 "Location for mockservice is not matching the location set via proxy.",

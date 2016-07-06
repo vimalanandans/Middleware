@@ -80,7 +80,7 @@ public class PipeActivity extends Activity {
             return;
         }
 
-        final String serviceName = BezirkCompManager.getSphereForSadl().getZirkName(serviceId);
+        final String serviceName = BezirkCompManager.getSphereForPubSubBroker().getZirkName(serviceId);
 
         //callingActivity = getCallingActivity().getClassName();
         LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext()

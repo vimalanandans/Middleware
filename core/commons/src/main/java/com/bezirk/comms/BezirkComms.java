@@ -3,8 +3,8 @@ package com.bezirk.comms;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.pipe.core.PipeManager;
-import com.bezirk.pubsubbroker.BezirkSadlManager;
-import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
 import java.net.InetAddress;
@@ -58,14 +58,14 @@ public interface BezirkComms {
      * creates queues, threads, sockets
      **/
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             BezirkSadlManager sadl, PipeManager pipe);
+                             PubSubBroker sadl, PipeManager pipe);
 
     public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
 
     /**
      * Set the sphere for sadl. for late initialization
      */
-    public void setSphereForSadl(final BezirkSphereForSadl bezirkSphere);
+    public void setSphereForSadl(final BezirkSphereForPubSub bezirkSphere);
 
 }
 

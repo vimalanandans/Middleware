@@ -7,8 +7,8 @@ import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.pubsubbroker.SadlEventReceiver;
-import com.bezirk.pubsubbroker.BezirkSadlManager;
+import com.bezirk.pubsubbroker.PubSubEventReceiver;
+import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.BeforeClass;
@@ -77,7 +77,7 @@ public class BezirkMessageDispatcherTest {
 
     @Test
     public void test() {
-        SadlEventReceiver bezirkSadlManager = new BezirkSadlManager(null);
+        PubSubEventReceiver bezirkSadlManager = new PubSubBroker(null);
         BezirkMessageDispatcher bezirkMessageDispatcher = new BezirkMessageDispatcher(bezirkSadlManager);
 
         CtrlMsgReceiver receiver = new MockReceiver();

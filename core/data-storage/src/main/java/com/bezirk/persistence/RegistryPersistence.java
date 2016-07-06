@@ -3,7 +3,7 @@
  */
 package com.bezirk.persistence;
 
-import com.bezirk.pubsubbroker.SadlRegistry;
+import com.bezirk.pubsubbroker.PubSubBrokerRegistry;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -39,11 +39,11 @@ public class RegistryPersistence extends DatabaseHelper implements SadlPersisten
     }
 
     @Override
-    public SadlRegistry loadSadlRegistry() throws Exception {
-        if (null == getSadlRegistry()) {
+    public PubSubBrokerRegistry loadSadlRegistry() throws Exception {
+        if (null == getPubSubBrokerRegistry()) {
             loadRegistry();
         }
-        return getSadlRegistry();
+        return getPubSubBrokerRegistry();
     }
 
     @Override

@@ -59,7 +59,7 @@ class ProxyForZirksHelper {
         String sphereId = null;
         while (sphereIterator.hasNext()) {
             sphereId = sphereIterator.next();
-            if (BezirkCompManager.getSphereForSadl().isZirkInSphere(receiver.getBezirkZirkId(), sphereId)) {
+            if (BezirkCompManager.getSphereForPubSubBroker().isZirkInSphere(receiver.getBezirkZirkId(), sphereId)) {
                 logger.debug("Found the sphere:" + sphereId);
                 break;
             }

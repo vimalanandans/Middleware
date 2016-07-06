@@ -260,7 +260,7 @@ public class BezirkLogDetailsGUI extends JFrame {
 
             return RECIPIENT_MULTICAST_VALUE;
         }
-        final String tempDeviceName = BezirkCompManager.getSphereForSadl()
+        final String tempDeviceName = BezirkCompManager.getSphereForPubSubBroker()
                 .getDeviceNameFromSphere(deviceId);
         return (null == tempDeviceName) ? deviceId : tempDeviceName;
     }

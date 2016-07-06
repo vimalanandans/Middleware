@@ -3,7 +3,7 @@ package com.bezirk.comms;
 
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.processor.CommsProcessor;
-import com.bezirk.pubsubbroker.BezirkSadlManager;
+import com.bezirk.pubsubbroker.PubSubBroker;
 
 import java.net.InetAddress;
 
@@ -17,7 +17,7 @@ public class ZyreCommsManager extends CommsProcessor {
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             BezirkSadlManager sadl, PipeManager pipe) {
+                             PubSubBroker sadl, PipeManager pipe) {
         /*init zyre and internals of comms */
         if (comms == null) {
 

@@ -9,7 +9,7 @@ import com.bezirk.remotelogging.queues.LoggingQueueManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
 import com.bezirk.remotelogging.status.LoggingStatus;
 import com.bezirk.remotelogging.util.Util;
-import com.bezirk.pubsubbroker.SadlEventReceiver;
+import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -25,9 +25,9 @@ import java.util.Map;
  */
 public class BezirkMessageDispatcher implements MessageDispatcher {
     private static final Logger logger = LoggerFactory.getLogger(BezirkMessageDispatcher.class);
-    private final SadlEventReceiver sadlEventReceiver;
+    private final PubSubEventReceiver pubSubEventReceiver;
 
-    //private ISadlControlReceiver sadlCtrlRxer;
+    //private IPubSubBrokerControlReceiver sadlCtrlRxer;
     /*
     private LogServiceMessageHandler logServiceMsgHandler = null;
 
@@ -43,8 +43,8 @@ public class BezirkMessageDispatcher implements MessageDispatcher {
     Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
             new HashMap<ControlMessage.Discriminator, CtrlMsgReceiver>();
 
-    public BezirkMessageDispatcher(SadlEventReceiver sadlEventReceiver) {
-        this.sadlEventReceiver = sadlEventReceiver;
+    public BezirkMessageDispatcher(PubSubEventReceiver pubSubEventReceiver) {
+        this.pubSubEventReceiver = pubSubEventReceiver;
     }
 
     /**
@@ -65,8 +65,8 @@ public class BezirkMessageDispatcher implements MessageDispatcher {
     // if needed extend similar mechanism to control message dispatching
     @Override
     public boolean dispatchServiceMessages(EventLedger eLedger) {
-        if (BezirkValidatorUtility.isObjectNotNull(sadlEventReceiver)) {
-            return sadlEventReceiver.processEvent(eLedger);
+        if (BezirkValidatorUtility.isObjectNotNull(pubSubEventReceiver)) {
+            return pubSubEventReceiver.processEvent(eLedger);
         } else {
             logger.error("no valid zirk message receivers ");
         }

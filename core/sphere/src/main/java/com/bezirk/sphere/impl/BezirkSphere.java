@@ -16,7 +16,7 @@ import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.sphere.api.BezirkSphereMessages;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.BezirkDevMode;
@@ -43,7 +43,7 @@ import java.util.Set;
  * @author rishabh
  */
 public class BezirkSphere
-        implements BezirkSphereAPI, BezirkSphereForSadl, BezirkSphereRegistration, BezirkSphereDiscovery, BezirkSphereMessages, BezirkDevMode {
+        implements BezirkSphereAPI, BezirkSphereForPubSub, BezirkSphereRegistration, BezirkSphereDiscovery, BezirkSphereMessages, BezirkDevMode {
 
     private static final Logger logger = LoggerFactory.getLogger(BezirkSphere.class);
     private CryptoEngine cryptoEngine = null;

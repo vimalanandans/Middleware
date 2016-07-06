@@ -3,7 +3,7 @@
  */
 package com.bezirk.persistence;
 
-import com.bezirk.pubsubbroker.SadlRegistry;
+import com.bezirk.pubsubbroker.PubSubBrokerRegistry;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -17,7 +17,7 @@ public class BezirkRegistry {
     @DatabaseField(id = true, columnName = DBConstants.COLUMN_0)
     private int id;
     @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = DBConstants.COLUMN_1)
-    private SadlRegistry sadlRegistry;
+    private PubSubBrokerRegistry pubSubBrokerRegistry;
     @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = DBConstants.COLUMN_2)
     private SphereRegistry sphereRegistry;
     @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = DBConstants.COLUMN_3)
@@ -28,11 +28,11 @@ public class BezirkRegistry {
         // TODO Auto-generated constructor stub
     }
 
-    public BezirkRegistry(int id, SadlRegistry sadlRegistry,
+    public BezirkRegistry(int id, PubSubBrokerRegistry pubSubBrokerRegistry,
                           SphereRegistry sphereRegistry, BezirkProxyRegistry bezirkProxyRegistry) {
         super();
         this.id = id;
-        this.sadlRegistry = sadlRegistry;
+        this.pubSubBrokerRegistry = pubSubBrokerRegistry;
         this.sphereRegistry = sphereRegistry;
         this.bezirkProxyRegistry = bezirkProxyRegistry;
     }
@@ -45,12 +45,12 @@ public class BezirkRegistry {
         this.id = id;
     }
 
-    public SadlRegistry getSadlRegistry() {
-        return sadlRegistry;
+    public PubSubBrokerRegistry getPubSubBrokerRegistry() {
+        return pubSubBrokerRegistry;
     }
 
-    public void setSadlRegistry(SadlRegistry sadlRegistry) {
-        this.sadlRegistry = sadlRegistry;
+    public void setPubSubBrokerRegistry(PubSubBrokerRegistry pubSubBrokerRegistry) {
+        this.pubSubBrokerRegistry = pubSubBrokerRegistry;
     }
 
     public SphereRegistry getSphereRegistry() {

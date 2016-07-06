@@ -8,7 +8,7 @@ import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.pubsubbroker.ISadlControlReceiver;
+import com.bezirk.pubsubbroker.IPubSubBrokerControlReceiver;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ import java.util.Set;
 public class DiscoveryRequestHandler {
     private final static Logger logger = LoggerFactory.getLogger(DiscoveryRequestHandler.class);
 
-    private final ISadlControlReceiver sadlCtrl;
+    private final IPubSubBrokerControlReceiver sadlCtrl;
     private final DiscoveryResponse response;
     //private final MessageQueue ctrlSenderQueue;
     private final BezirkComms bezirkComms;
@@ -35,7 +35,7 @@ public class DiscoveryRequestHandler {
     /**
      * @param req incoming DiscoveryRequest
      */
-    public DiscoveryRequestHandler(ISadlControlReceiver sadlCtrl, DiscoveryRequest req, BezirkComms bezirkComms) {
+    public DiscoveryRequestHandler(IPubSubBrokerControlReceiver sadlCtrl, DiscoveryRequest req, BezirkComms bezirkComms) {
         this.sadlCtrl = sadlCtrl;
         this.bezirkComms = bezirkComms;
         this.discReq = req;
@@ -58,7 +58,7 @@ public class DiscoveryRequestHandler {
 
     private Boolean handleSphereDiscovery(DiscoveryRequest discoveryRequest) {
 
-        BezirkCompManager.getSphereForSadl().processSphereDiscoveryRequest(discoveryRequest);
+        BezirkCompManager.getSphereForPubSubBroker().processSphereDiscoveryRequest(discoveryRequest);
 
         return true;
     }
@@ -72,9 +72,9 @@ public class DiscoveryRequestHandler {
         for (BezirkDiscoveredZirk zirk : discoveredZirks) {
             ZirkId sid = ((BezirkZirkEndPoint) zirk.getZirkEndPoint()).getBezirkZirkId();
 
-            if (BezirkCompManager.getSphereForSadl().isZirkInSphere(sid, req.getSphereId())) {
+            if (BezirkCompManager.getSphereForPubSubBroker().isZirkInSphere(sid, req.getSphereId())) {
                 //Set the Zirk Name
-                zirk.name = BezirkCompManager.getSphereForSadl().getZirkName(sid);
+                zirk.name = BezirkCompManager.getSphereForPubSubBroker().getZirkName(sid);
                 //Populate response zirk list
                 response.getZirkList().add(zirk);
             }

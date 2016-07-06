@@ -2,7 +2,7 @@ package com.bezirk.commons;
 
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.messagehandler.ZirkMessageHandler;
-import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.api.BezirkSphereRegistration;
 import com.bezirk.streaming.rtc.Signaling;
@@ -42,7 +42,7 @@ public final class BezirkCompManager {
 
     private static ZirkMessageHandler platformSpecificCallback;
 
-    private static BezirkSphereForSadl bezirkSphereForSadl;
+    private static BezirkSphereForPubSub bezirkSphereForPubSub;
 
     private static BezirkSphereAPI bezirkSphereAPI;
 
@@ -94,13 +94,13 @@ public final class BezirkCompManager {
     }
 
     // this is temporary for sadl to use the spheres
-    public static BezirkSphereForSadl getSphereForSadl() {
-        return bezirkSphereForSadl;
+    public static BezirkSphereForPubSub getSphereForPubSubBroker() {
+        return bezirkSphereForPubSub;
     }
 
     // this is temporary for setting up spheres for sadl
-    public static void setSphereForSadl(BezirkSphereForSadl sphereForSadl) {
-        BezirkCompManager.bezirkSphereForSadl = sphereForSadl;
+    public static void setSphereForPubSub(BezirkSphereForPubSub sphereForPubSub) {
+        BezirkCompManager.bezirkSphereForPubSub = sphereForPubSub;
     }
 
     // this is temporary for UI to use the spheres

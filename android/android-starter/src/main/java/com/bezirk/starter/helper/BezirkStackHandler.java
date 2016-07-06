@@ -15,9 +15,9 @@ import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
+import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.rest.CommsRestController;
 import com.bezirk.rest.HttpComms;
-import com.bezirk.pubsubbroker.BezirkSadlManager;
 import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.BezirkSphereForAndroid;
@@ -150,16 +150,16 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                     registryPersistence = bezirkStartStackHelper.initializeRegistryPersistence(service);
 
                     /*************************************************************
-                     * Step 5 : Initialize BezirkSadlManager and set sadl for proxy *
+                     * Step 5 : Initialize PubSubBroker and set sadl for proxy *
                      *************************************************************/
-                    BezirkSadlManager bezirkSadlManager = new BezirkSadlManager(registryPersistence);
-                    proxy.setSadlRegistry(bezirkSadlManager);
+                    PubSubBroker pubSubBroker = new PubSubBroker(registryPersistence);
+                    proxy.setSadlRegistry(pubSubBroker);
 
                     /*************************************************************
                      * Step 6 : Initialize BezirkCommsManager                       *
                      *************************************************************/
                     InetAddress inetAddress = androidNetworkUtil.fetchInetAddress(service);
-                    comms = bezirkStartStackHelper.initializeComms(inetAddress, bezirkSadlManager, proxy, errNotificationCallback);
+                    comms = bezirkStartStackHelper.initializeComms(inetAddress, pubSubBroker, proxy, errNotificationCallback);
                     if (!BezirkValidatorUtility.isObjectNotNull(comms)) {
                         logger.error("Unable to initialize comms layer. Shutting down bezirk.");
                         service.stopSelf();

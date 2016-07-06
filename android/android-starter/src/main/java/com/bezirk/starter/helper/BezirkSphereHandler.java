@@ -5,7 +5,7 @@ import com.bezirk.comms.BezirkComms;
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereAPI;
@@ -75,9 +75,9 @@ public final class BezirkSphereHandler {
             BezirkCompManager.setSphereUI(sphereForAndroid);
             BezirkCompManager.setSphereRegistration((BezirkSphereRegistration) sphereForAndroid);
 
-            BezirkCompManager.setSphereForSadl((BezirkSphereForSadl) sphereForAndroid);
+            BezirkCompManager.setSphereForPubSub((BezirkSphereForPubSub) sphereForAndroid);
             BezirkComms uhuComms = BezirkStackHandler.getBezirkComms();
-            uhuComms.setSphereForSadl((BezirkSphereForSadl) sphereForAndroid);
+            uhuComms.setSphereForSadl((BezirkSphereForPubSub) sphereForAndroid);
         }
         return true;
     }

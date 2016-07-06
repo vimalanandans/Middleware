@@ -26,7 +26,7 @@ import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.pubsubbroker.ISadlRegistry;
+import com.bezirk.pubsubbroker.IPubSubBrokerRegistry;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
@@ -42,7 +42,7 @@ import java.util.Iterator;
 
 public class ProxyForServices implements BezirkProxyForServiceAPI {
     private static final Logger logger = LoggerFactory.getLogger(ProxyForServices.class);
-    private ISadlRegistry sadlRegistry = null;
+    private IPubSubBrokerRegistry sadlRegistry = null;
     private BezirkComms comms = null;
 
     @Override
@@ -72,7 +72,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
     @Override
     public void sendMulticastEvent(final ZirkId serviceId, final RecipientSelector recipientSelector, final String serializedEventMsg) {
 
-        final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(serviceId);
+        final Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(serviceId);
         if (null == listOfSphere) {
             logger.error("Zirk not registered with any sphere");
             return;
@@ -108,7 +108,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
 
     @Override
     public void sendUnicastEvent(final ZirkId serviceId, final BezirkZirkEndPoint recipient, final String serializedEventMsg) {
-        final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(serviceId);
+        final Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(serviceId);
         if (null == listOfSphere) {
             logger.error("Zirk not registered with the sphere");
             return;
@@ -142,7 +142,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
 
     @Override
     public void discover(final ZirkId serviceId, final RecipientSelector recipientSelector, final SubscribedRole pRole, final int discoveryId, final long timeout, final int maxDiscovered) {
-        final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(serviceId);
+        final Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(serviceId);
         if (null == listOfSphere) {
             logger.error("Zirk not registered with the sphere");
             return;
@@ -173,7 +173,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
 
     @Override
     public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId) {
-        final Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(senderId);
+        final Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(senderId);
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with any sphere: " + senderId);
             return (short) -1;
@@ -245,12 +245,12 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
     }
 
 
-    public ISadlRegistry getSadlRegistry() {
+    public IPubSubBrokerRegistry getSadlRegistry() {
         return sadlRegistry;
     }
 
 
-    public void setSadlRegistry(ISadlRegistry sadlRegistry) {
+    public void setSadlRegistry(IPubSubBrokerRegistry sadlRegistry) {
         this.sadlRegistry = sadlRegistry;
     }
 
@@ -273,7 +273,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
             return (short) -1;
         }
 
-        Iterable<String> listOfSphere = BezirkCompManager.getSphereForSadl().getSphereMembership(sender);
+        Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(sender);
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with any sphere: " + sender);
             return (short) -1;
@@ -286,7 +286,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
             String sphereId = null;
             while (sphereIterator.hasNext()) {
                 sphereId = sphereIterator.next();
-                if (BezirkCompManager.getSphereForSadl().isZirkInSphere(receiver.getBezirkZirkId(), sphereId)) {
+                if (BezirkCompManager.getSphereForPubSubBroker().isZirkInSphere(receiver.getBezirkZirkId(), sphereId)) {
                     logger.debug("Found the sphere:" + sphereId);
                     break;
                 }

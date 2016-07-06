@@ -16,7 +16,7 @@ import com.bezirk.persistence.BezirkProxyPersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.proxy.pc.ProxyForServices;
-import com.bezirk.pubsubbroker.BezirkSadlManager;
+import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.BezirkNetworkUtilities;
@@ -212,19 +212,19 @@ public class MainService {
         initializeRegistryPersistence();
 
         /**************************************************
-         * Step5 : Create BezirkSadlManager                  *
+         * Step5 : Create PubSubBroker                  *
          **************************************************/
-        final BezirkSadlManager bezirkSadlManager = new BezirkSadlManager(
+        final PubSubBroker pubSubBroker = new PubSubBroker(
                 registryPersistence);
 
         // Inject to proxyForServices
-        proxyForServices.setSadlRegistry(bezirkSadlManager);
+        proxyForServices.setSadlRegistry(pubSubBroker);
 
         /**************************************************
          * Step6 :Initialize the comms.                   *
          **************************************************/
         final boolean isCommsInitialized = initComms(bezirkPcCallback, intf,
-                bezirkSadlManager);
+                pubSubBroker);
         if (!isCommsInitialized) {
             serviceStarterHelper.fail("Problem initializing Comms.", null);
         }
@@ -328,7 +328,7 @@ public class MainService {
     }
 
     private boolean initComms(final ZirkMessageHandler bezirkPcCallback,
-                              final NetworkInterface intf, final BezirkSadlManager bezirkSadlManager) {
+                              final NetworkInterface intf, final PubSubBroker pubSubBroker) {
 
         CommsFactory commsFactory = new CommsFactory();
 
@@ -368,7 +368,7 @@ public class MainService {
          * CommsProperties is not used by comms manager. Properties are handled
          * by BezirkCommsPC
          */
-        comms.initComms(null, addr, bezirkSadlManager, pipeManager);
+        comms.initComms(null, addr, pubSubBroker, pipeManager);
         comms.startComms();
 
         // the comms manager for the proxy
@@ -382,7 +382,7 @@ public class MainService {
          	*/
 
         // init the comms manager for sadl
-        bezirkSadlManager.initSadlManager(comms);
+        pubSubBroker.initSadlManager(comms);
 
         return true;
     }

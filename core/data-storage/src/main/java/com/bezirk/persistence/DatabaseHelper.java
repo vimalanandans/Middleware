@@ -3,7 +3,7 @@
  */
 package com.bezirk.persistence;
 
-import com.bezirk.pubsubbroker.SadlRegistry;
+import com.bezirk.pubsubbroker.PubSubBrokerRegistry;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.table.TableUtils;
@@ -26,7 +26,7 @@ public class DatabaseHelper {
     /**
      * Sadl Registry - storing sadl related maps.
      */
-    private SadlRegistry sadlRegistry;
+    private PubSubBrokerRegistry pubSubBrokerRegistry;
     /**
      * Bezirk Proxy Registry -  Stores only BezirkServiceIds. It will be used only on the PC side
      */
@@ -37,7 +37,7 @@ public class DatabaseHelper {
         super();
         this.dbConnection = dbConnection;
         this.sphereRegistry = null;
-        this.sadlRegistry = null;
+        this.pubSubBrokerRegistry = null;
         this.bezirkProxyRegistry = null;
     }
 
@@ -45,7 +45,7 @@ public class DatabaseHelper {
      * Updates the only row in the database based on the column name
      *
      * @param columnName Name of the column, @see com.bosch.upa.uhu.persistence.DB_Constants
-     * @throws NullPointerException if sadlRegistry or sphereRegistry is null
+     * @throws NullPointerException if pubSubBrokerRegistry or sphereRegistry is null
      * @throws SQLException         something goes wrong while storing
      * @throws IOException          if connection to the database is not successful.
      * @throws Exception
@@ -54,10 +54,10 @@ public class DatabaseHelper {
         UpdateBuilder<BezirkRegistry, Integer> updateDb = dbConnection.getPersistenceDAO().updateBuilder();
         switch (columnName) {
             case DBConstants.COLUMN_1:
-                if (null == sadlRegistry) {
+                if (null == pubSubBrokerRegistry) {
                     throw new NullPointerException("Sadl Registry cant be null");
                 }
-                updateDb.updateColumnValue(DBConstants.COLUMN_1, sadlRegistry);
+                updateDb.updateColumnValue(DBConstants.COLUMN_1, pubSubBrokerRegistry);
                 break;
             case DBConstants.COLUMN_2:
                 if (null == sphereRegistry) {
@@ -80,14 +80,14 @@ public class DatabaseHelper {
     /**
      * Loads the registry
      *
-     * @throws NullPointerException if sadlRegistry or sphereRegistry is null
+     * @throws NullPointerException if pubSubBrokerRegistry or sphereRegistry is null
      * @throws SQLException         something goes wrong while storing
      * @throws IOException          if connection to the database is not successful.
      */
     protected void loadRegistry() throws NullPointerException, IOException, Exception {
         QueryBuilder<BezirkRegistry, Integer> queryBuilder = dbConnection.getPersistenceDAO().queryBuilder();
         BezirkRegistry tempRegistry = queryBuilder.queryForFirst();
-        sadlRegistry = tempRegistry.getSadlRegistry();
+        pubSubBrokerRegistry = tempRegistry.getPubSubBrokerRegistry();
         sphereRegistry = tempRegistry.getSphereRegistry();
         bezirkProxyRegistry = tempRegistry.getBezirkProxyRegistry();
     }
@@ -132,7 +132,7 @@ public class DatabaseHelper {
      * Insert the only row into the database
      */
     private void insertInitialRow() throws NullPointerException, SQLException, IOException, Exception {
-        dbConnection.getPersistenceDAO().createOrUpdate(new BezirkRegistry(1, new SadlRegistry(), new SphereRegistry(), new BezirkProxyRegistry()));
+        dbConnection.getPersistenceDAO().createOrUpdate(new BezirkRegistry(1, new PubSubBrokerRegistry(), new SphereRegistry(), new BezirkProxyRegistry()));
     }
 
     /**
@@ -147,10 +147,10 @@ public class DatabaseHelper {
     /**
      * Returns the Sadl Registry to the child class
      *
-     * @return sadlRegistry
+     * @return pubSubBrokerRegistry
      */
-    protected SadlRegistry getSadlRegistry() {
-        return sadlRegistry;
+    protected PubSubBrokerRegistry getPubSubBrokerRegistry() {
+        return pubSubBrokerRegistry;
     }
 
     /**
@@ -166,7 +166,7 @@ public class DatabaseHelper {
      * Clear the maps of the all the registry
      */
     protected void clearPersistence() throws NullPointerException, SQLException, IOException, Exception {
-        sadlRegistry.clearRegistry();
+        pubSubBrokerRegistry.clearRegistry();
         sphereRegistry.clearRegistry();
         bezirkProxyRegistry.clearRegistry();
     }
