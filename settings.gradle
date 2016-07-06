@@ -4,7 +4,7 @@ rootProject.name = 'Middleware'
 include ':core:bezirk-middleware-api'
 include ':core:bezirk'
 include ':core:pipes'
-include ':core:protocols:protocol-aip'
+
 
 include ':core:control-messages'
 include ':core:network-util'
@@ -22,13 +22,14 @@ include ':core:comms:comms-zyre'
 
 include ':core:device-objects'
 include ':core:actions'
-include ':core:protocols:protocol-penguin'
+/*include ':core:protocols:protocol-penguin'
 include ':core:protocols:protocol-dragonfly'
 include ':core:protocols:domain-vocabulary'
 include ':core:protocols:protocol-light'
 include ':core:protocols:parametricUI-protocols'
 include ':core:protocols:cloudpipe-protocols'
-
+include ':core:protocols:protocol-aip'
+*/
 /*--------------------java--------------------*/
 include ':java:libraries:bezirk-factory'
 include ':java:libraries:comms-zyre-jni'

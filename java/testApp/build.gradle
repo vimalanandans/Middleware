@@ -7,7 +7,7 @@ dependencies {
     compile project(':core:bezirk')
     compile project(':core:commons')
     compile project(':java:libraries:bezirk-factory')
-    compile project(':core:protocols:parametricUI-protocols')
+//    compile project(':core:protocols:parametricUI-protocols')
 
     testCompile 'junit:junit:4.12'
 }
