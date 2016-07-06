@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Platform independent API's used by SADL for validating the responses by the control channel.
  */
-public interface ISadlControlReceiver {
+public interface IPubSubBrokerControlReceiver {
 
     /**
      * Checks if the Stream is registered by the Zirk zirkId to streamTopic.

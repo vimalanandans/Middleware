@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Platform independent API's used by SADL for different Map look-up and validating the requests.
  */
-public interface ISadlRegistryLookup {
+public interface IPubSubBrokerRegistryLookup {
     /**
      * Checks if the zirk is registered with SADL.
      *

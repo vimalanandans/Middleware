@@ -24,8 +24,8 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Registry Class that deals with all the maps
  */
-public class SadlRegistry implements Serializable {
-    private static final Logger logger = LoggerFactory.getLogger(SadlRegistry.class);
+public class PubSubBrokerRegistry implements Serializable {
+    private static final Logger logger = LoggerFactory.getLogger(PubSubBrokerRegistry.class);
     /**
      * Default location used when a new zirk registers. Also used to check during location matching
      */
@@ -60,7 +60,7 @@ public class SadlRegistry implements Serializable {
      */
     protected ConcurrentHashMap<ZirkId, Location> locationMap = null;
 
-    public SadlRegistry() {
+    public PubSubBrokerRegistry() {
         sid = new HashSet<ZirkId>();
         protocolMap = new ConcurrentHashMap<String, Set<ZirkId>>();
         protocolDescMap = new ConcurrentHashMap<String, String>();
@@ -102,7 +102,7 @@ public class SadlRegistry implements Serializable {
 
             return false;
         }
-        SadlRegistry other = (SadlRegistry) obj;
+        PubSubBrokerRegistry other = (PubSubBrokerRegistry) obj;
         if (defaultLocation == null) {
             if (other.defaultLocation != null) {
 
@@ -115,7 +115,7 @@ public class SadlRegistry implements Serializable {
         return checkMaps(other);
     }
 
-    private boolean checkMaps(SadlRegistry other) {
+    private boolean checkMaps(PubSubBrokerRegistry other) {
 
         List<String> mapList = Arrays.asList("eventMap", "locationMap",
                 "protocolDescMap", "protocolMap", "streamMap");
@@ -124,7 +124,7 @@ public class SadlRegistry implements Serializable {
 
             Field field;
             try {
-                field = SadlRegistry.class.getDeclaredField(map);
+                field = PubSubBrokerRegistry.class.getDeclaredField(map);
 
                 Object currentValue = field.get(this);
                 Object otherValue = field.get(other);
@@ -137,7 +137,7 @@ public class SadlRegistry implements Serializable {
                 }
             } catch (Exception e) {
 
-                logger.error("Unable to retrieve maps from sadlRegistry for checking.", e);
+                logger.error("Unable to retrieve maps from pubSubBrokerRegistry for checking.", e);
 
                 return false;
             }

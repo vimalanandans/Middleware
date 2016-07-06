@@ -7,7 +7,7 @@ import com.bezirk.proxy.api.impl.ZirkId;
 /**
  * Platform Independent API's for SADL that are used to manipulate the SADL Maps.
  */
-public interface ISadlRegistry {
+public interface IPubSubBrokerRegistry {
     /**
      * Registers a UPA Zirk with ZirkId in SADL.
      *

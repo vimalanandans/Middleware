@@ -2,7 +2,7 @@ package com.bezirk.starter.helper;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereForPubSub;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class mockBezirkSphereForSadl implements BezirkSphereForSadl {
+public class mockBezirkSphereForPubSub implements BezirkSphereForPubSub {
     @Override
     public byte[] encryptSphereContent(String sphereId, String serializedContent) {
         return serializedContent.getBytes();

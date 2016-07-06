@@ -33,18 +33,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This class implements the ISadlRegistry, ISadlRegistryLookup Interfaces. This class is used by ProxyForServices (by casting ISadlRegistry)
+ * This class implements the IPubSubBrokerRegistry, ISadlRegistryLookup Interfaces. This class is used by ProxyForServices (by casting IPubSubBrokerRegistry)
  * EventSender/ EventReceiver/ ControlSender/ ControlReceiver by casting ISadlRegistryLookup.
  */
-public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, ISadlControlReceiver, SadlEventReceiver {
-    private static final Logger logger = LoggerFactory.getLogger(BezirkSadlManager.class);
+public class PubSubBroker implements IPubSubBrokerRegistry, ISadlRegistryLookup, ISadlControlReceiver, SadlEventReceiver {
+    private static final Logger logger = LoggerFactory.getLogger(PubSubBroker.class);
 
     private final Date currentDate = new Date();
     protected SadlPersistence sadlPersistence = null;
     protected SadlRegistry sadlRegistry = null;
     protected BezirkComms bezirkComms = null;
 
-    public BezirkSadlManager(SadlPersistence sadlPersistence) {
+    public PubSubBroker(SadlPersistence sadlPersistence) {
         this.sadlPersistence = sadlPersistence;
         loadSadlRegistry();
     }
@@ -68,7 +68,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     }
 
     /* (non-Javadoc)
-     * @see com.bezirk.api.sadl.ISadlRegistry#registerZirk(com.bezirk.api.addressing.ZirkId)
+     * @see com.bezirk.api.sadl.IPubSubBrokerRegistry#registerZirk(com.bezirk.api.addressing.ZirkId)
      */
     @Override
     public Boolean registerService(final ZirkId serviceId) {
@@ -88,7 +88,7 @@ public class BezirkSadlManager implements ISadlRegistry, ISadlRegistryLookup, IS
     }
 
     /* (non-Javadoc)
-     * @see ISadlRegistry#subscribeService(com.bezirk.api.addressing.ZirkId, ProtocolRole)
+     * @see IPubSubBrokerRegistry#subscribeService(com.bezirk.api.addressing.ZirkId, ProtocolRole)
      */
     @Override
     public Boolean subscribeService(final ZirkId serviceId, final ProtocolRole pRole) {

@@ -2,7 +2,7 @@ package com.bezirk.starter;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.sphere.api.BezirkSphereForPubSub;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +17,8 @@ import java.util.Set;
  * opaque or flat without encryption This is the Quick fix. in actual this
  * suppose to be a package altered via build
  */
-public class BezirkSphereForSadlStub implements BezirkSphereForSadl {
-    private static final Logger logger = LoggerFactory.getLogger(BezirkSphereForSadl.class);
+public class BezirkSphereForPubSubStub implements BezirkSphereForPubSub {
+    private static final Logger logger = LoggerFactory.getLogger(BezirkSphereForPubSub.class);
 
     @Override
     public byte[] encryptSphereContent(final String sphereId, final String serializedContent) {

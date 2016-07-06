@@ -12,7 +12,7 @@ import java.io.OutputStream;
 /**
  * @author Rishabh Gulati
  */
-public interface BezirkSphereForSadl {
+public interface BezirkSphereForPubSub {
 
     /**
      * Encrypts the serializedContent with sphereKey associated with the
