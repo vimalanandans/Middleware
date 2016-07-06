@@ -8,6 +8,7 @@ jar {
 dependencies {
     compile project(':core:control-messages')
     compile project(':core:pipes')
+    compile project (':core:remote-logging')
 
     // orm db files
     compile 'com.j256.ormlite:ormlite-core:4.48'
@@ -19,6 +20,8 @@ dependencies {
     compile 'org.apache.shiro:shiro-core:1.2.4'
     compile 'org.bouncycastle:bcprov-jdk15on:1.49'
 
+
+	
     testCompile 'junit:junit:4.12'
     testCompile 'org.xerial:sqlite-jdbc:3.7.2'
     testCompile 'org.mockito:mockito-all:1.10.19'

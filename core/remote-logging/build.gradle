@@ -2,9 +2,11 @@ apply plugin: 'java'
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
+        attributes 'Implementation-Title': 'remote-logging', 'Implementation-Version': version
     }
 }
 dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.6'
+    compile "com.google.code.gson:gson:2.2.4"
     testCompile 'junit:junit:4.12'
 }
