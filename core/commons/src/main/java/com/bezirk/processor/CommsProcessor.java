@@ -24,7 +24,7 @@ import com.bezirk.pipe.core.PipeManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.BezirkSadlManager;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
-import com.bezirk.sphere.security.UPABlockCipherService;
+//import com.bezirk.sphere.security.UPABlockCipherService;
 import com.bezirk.streaming.BezirkStreamManager;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.TextCompressor;
@@ -51,7 +51,7 @@ public abstract class CommsProcessor implements BezirkComms {
 
     // thread pool size
     private static final int THREAD_SIZE = 4;
-    private final UPABlockCipherService cipherService = new UPABlockCipherService();
+  //  private final UPABlockCipherService cipherService = new UPABlockCipherService();
 
     //private BezirkStreamManager bezirkStreamManager = null;
     BezirkMessageDispatcher msgDispatcher = null;

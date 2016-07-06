@@ -1,7 +1,7 @@
 apply plugin: 'java'
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
+        attributes 'Implementation-Title': 'Commons', 'Implementation-Version': version
     }
 }
 
@@ -17,8 +17,7 @@ dependencies {
     compile 'org.jasypt:jasypt:1.9.2'
 
     compile 'com.google.zxing:core:2.3.0'
-    compile 'org.apache.shiro:shiro-core:1.2.4'
-    compile 'org.bouncycastle:bcprov-jdk15on:1.49'
+
 
 
 	

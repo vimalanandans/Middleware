@@ -1,0 +1,17 @@
+apply plugin: 'java'
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'sphere', 'Implementation-Version': version
+    }
+}
+dependencies {
+    compile project(':core:commons')
+    compile project(':core:data-storage')
+    compile 'org.slf4j:slf4j-api:1.7.6'
+    compile "com.google.code.gson:gson:2.2.4"
+    compile 'org.apache.shiro:shiro-core:1.2.4'
+    compile 'org.bouncycastle:bcprov-jdk15on:1.49'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-all:1.10.19'
+}
