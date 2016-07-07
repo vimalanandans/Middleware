@@ -8,16 +8,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bezirk.pipe.core.PipeRecord;
+
 import com.bezirk.spheremanager.R;
 
 import java.util.List;
 
 //import PipeRecord;
 
-public class PipeListAdapter extends ArrayAdapter<PipeRecord> {
+public class PipeListAdapter //extends ArrayAdapter<PipeRecord>
+{
 
-
+/*
     private LayoutInflater inflater;
     private List<PipeRecord> objects;
 
@@ -47,5 +48,5 @@ public class PipeListAdapter extends ArrayAdapter<PipeRecord> {
 
         return view;
     }
-
+*/
 }

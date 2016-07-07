@@ -58,7 +58,7 @@ dependencies {
 //    compile project(':core:comms:comms-udp')
     compile project(':core:comms:comms-factory')
     compile project(':core:actions')
-    compile project(':core:pipes')
+//    compile project(':core:pipes')
     // }
 
     compile project(':android:android-libraries:android-comms-zyre-jni')

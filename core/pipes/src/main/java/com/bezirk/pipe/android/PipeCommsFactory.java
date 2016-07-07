@@ -1,7 +1,7 @@
 package com.bezirk.pipe.android;
 
 import com.bezirk.comms.BezirkCommunications;
-import com.bezirk.pipe.core.PipeManager;
+import com.bezirk.pipe.PipeManager;
 import com.bezirk.pipe.core.PipeManagerImpl;
 import com.bezirk.pipe.core.PipeRegistry;
 

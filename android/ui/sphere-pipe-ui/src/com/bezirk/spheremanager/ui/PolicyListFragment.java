@@ -7,9 +7,6 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.pipe.PipePolicyUtility;
-import com.bezirk.pipe.core.PipeRecord;
-import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.SphereListActivity;
@@ -56,6 +53,7 @@ public class PolicyListFragment extends ListFragment {
             }
             setListAdapter(adapter);
         } else { // during pipe Managmenet UI trigger
+            /*
             PipeRegistry pipeRegistry = MainService.getPipeRegistryHandle();
 
             if (pipeRegistry != null) {
@@ -96,7 +94,7 @@ public class PolicyListFragment extends ListFragment {
                 }
             } else {
                 Log.e(TAG, "unable to get pipe registry");
-            }
+            }*/
         }
 
 
@@ -122,17 +120,18 @@ public class PolicyListFragment extends ListFragment {
     }
 
     public void updateInboundList() {
-        BezirkPipePolicy policyIn = PipePolicyUtility.policyInMap.get(pipeReqId);
+     /*   BezirkPipePolicy policyIn = PipePolicyUtility.policyInMap.get(pipeReqId);
         for (String protocolName : policyIn.getReasonMap().keySet()) {
             policyListInbound.add(new ProtocolItem(protocolName, policyIn.getReasonMap().get(protocolName), true, true));
         }
+        */
     }
 
     public void updateOutboundList() {
-        BezirkPipePolicy policyOut = PipePolicyUtility.policyOutMap.get(pipeReqId);
+      /*  BezirkPipePolicy policyOut = PipePolicyUtility.policyOutMap.get(pipeReqId);
         for (String protocolName : policyOut.getReasonMap().keySet()) {
             policyListOutbound.add(new ProtocolItem(protocolName, policyOut.getReasonMap().get(protocolName), true, true));
-        }
+        }*/
     }
 
     public void setFilter(String filterSetting) {

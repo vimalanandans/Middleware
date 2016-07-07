@@ -16,16 +16,8 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import com.bezirk.R;
-import com.bezirk.pipe.BezirkApp;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.logging.LogServiceActivatorDeactivator;
-import com.bezirk.pipe.android.PipeRegistryFactory;
-import com.bezirk.pipe.core.PipeApprovalException;
-import com.bezirk.pipe.PipePolicyUtility;
-import com.bezirk.pipe.core.PipeRegistry;
-import com.bezirk.pipe.PipeRequest;
-import com.bezirk.pipe.PipeRequester;
-import com.bezirk.proxy.android.PipeActionParser;
 import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.starter.helper.NetworkBroadCastReceiver;
@@ -41,7 +33,7 @@ public class MainService extends Service implements INotificationCallback {
     private static final Logger logger = LoggerFactory.getLogger(MainService.class);
 
     private final BezirkActionProcessor bezirkActionProcessor = new BezirkActionProcessor();
-    private final PipeActionParser pipeActionParser = new PipeActionParser();
+    //private final PipeActionParser pipeActionParser = new PipeActionParser();
     private BezirkServiceHelper bezirkServiceHelper;
     private BezirkStackHandler bezirkStackHandler;
     private CommsNotification commsNotification;
@@ -70,10 +62,10 @@ public class MainService extends Service implements INotificationCallback {
      * get the pipe registry handle
      */
 
-    public static PipeRegistry getPipeRegistryHandle() {
+  /*  public static PipeRegistry getPipeRegistryHandle() {
         return PipeRegistryFactory.getPipeRegistry();
     }
-
+*/
     @Override
     public void startIntentSender(IntentSender intent, Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags) throws IntentSender.SendIntentException {
         super.startIntentSender(intent, fillInIntent, flagsMask, flagsValues, extraFlags);
@@ -138,7 +130,7 @@ public class MainService extends Service implements INotificationCallback {
      * @param intent Intent Received
      */
     public void processPipeRequest(Intent intent) {
-        logger.info("Received pipe request intent");
+ /*       logger.info("Received pipe request intent");
 
         PipeRequest pipeRequest = pipeActionParser.parsePipeRequest(intent);
         PipeRequester myPipeRequester = new PipeRequester();
@@ -157,7 +149,7 @@ public class MainService extends Service implements INotificationCallback {
                 logger.error("Pipe request failed", e);
             }
         }
-    }
+  */  }
     // TODO :use iBinder interface to send the handle reference
 
     /***

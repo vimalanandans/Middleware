@@ -14,7 +14,7 @@ import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.BezirkProxyPersistence;
 import com.bezirk.persistence.RegistryPersistence;
-import com.bezirk.pipe.core.PipeManager;
+import com.bezirk.pipe.PipeManager;
 import com.bezirk.proxy.pc.ProxyForServices;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.BezirkSphereAPI;

@@ -1,4 +1,4 @@
-package com.bezirk.pipe;
+package com.bezirk.common.pipe;
 
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 

@@ -22,8 +22,6 @@ import android.widget.Toast;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.pipe.core.PipeRecord;
-import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallbacks;
@@ -276,7 +274,7 @@ public class DeviceListActivity extends FragmentActivity implements
     @Override
     public void onItemLongClicked(int position) {
 
-        PipeRegistry pipeRegistry = MainService.getPipeRegistryHandle();
+/*        PipeRegistry pipeRegistry = MainService.getPipeRegistryHandle();
 
         if (BezirkValidatorUtility.isObjectNotNull(pipeRegistry)) {
 
@@ -302,7 +300,7 @@ public class DeviceListActivity extends FragmentActivity implements
             }
         } else {
             Log.e(TAG, "unable to get pipe registry");
-        }
+        }*/
     }
 
     @Override

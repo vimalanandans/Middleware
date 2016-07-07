@@ -10,8 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.bezirk.pipe.core.PipeRecord;
-import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.PipeListFragment;
 import com.bezirk.spheremanager.ui.PipeListFragment.ShowPipesCallbacks;
@@ -75,7 +73,7 @@ public class PipeListActivity extends FragmentActivity implements ShowPipesCallb
     }
 
     @Override
-    public void onItemLongClicked(int position) {
+    public void onItemLongClicked(int position) {/*
 
         PipeRegistry pipeRegistry = MainService.getPipeRegistryHandle();
 
@@ -102,6 +100,6 @@ public class PipeListActivity extends FragmentActivity implements ShowPipesCallb
             }
         } else {
             Log.e(TAG, "unable to get pipe registry");
-        }
+        }*/
     }
 }

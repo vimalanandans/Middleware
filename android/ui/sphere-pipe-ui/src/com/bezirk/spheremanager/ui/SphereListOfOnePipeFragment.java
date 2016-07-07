@@ -11,8 +11,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.pipe.core.PipeRecord;
-import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
@@ -79,7 +77,7 @@ public class SphereListOfOnePipeFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+/*
         PipeRegistry pipeRegistry = MainService.getPipeRegistryHandle();
 
         if (pipeRegistry != null) {
@@ -106,7 +104,7 @@ public class SphereListOfOnePipeFragment extends ListFragment {
         } else {
             Log.e(TAG, "unable to get pipe registry");
         }
-
+*/
     }
 
     @Override

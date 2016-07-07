@@ -16,8 +16,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.bezirk.pipe.core.PipeRecord;
-import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.DialogDeleteFragment;
@@ -46,7 +44,7 @@ public class ManagePipesActivity extends FragmentActivity implements SphereListO
         final int pipeId = getIntent().getIntExtra("pipeId", 0);
 
         TextView service_name = (TextView) view.findViewById(R.id.name_of_pipe);
-
+/*
         PipeRegistry pipeRegistry = MainService.getPipeRegistryHandle();
 
         if (pipeRegistry != null) {
@@ -63,7 +61,7 @@ public class ManagePipesActivity extends FragmentActivity implements SphereListO
         } else {
             Log.e(TAG, "unable to get pipe registry");
         }
-
+*/
 
         final Button filterInbound = (Button) view
                 .findViewById(R.id.filter_policies_inbound);

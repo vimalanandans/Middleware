@@ -10,7 +10,7 @@ dependencies {
 //    compile project(':core:comms:comms-udp')
     //compile project(':core:comms:comms-jyre')
     compile project(':core:comms:comms-factory')
-    compile project(':core:pipes')
+//    compile project(':core:pipes')
     compile project(':java:libraries:comms-zyre-jni')
 
     // Enable this to include Bezirk-RTC

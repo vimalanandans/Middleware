@@ -14,7 +14,7 @@ import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.logging.LogServiceMessageHandler;
-import com.bezirk.pipe.core.PipeManager;
+import com.bezirk.pipe.PipeManager;
 import com.bezirk.pubsubbroker.BezirkSadlManager;
 import com.bezirk.sphere.api.BezirkSphereForSadl;
 import com.bezirk.streaming.BezirkStreamManager;

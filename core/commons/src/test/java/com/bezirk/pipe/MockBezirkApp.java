@@ -1,5 +1,7 @@
 package com.bezirk.pipe;
 
+import com.bezirk.common.pipe.BezirkApp;
+import com.bezirk.common.pipe.PipeRequest;
 import com.bezirk.pipe.core.PipeApprovalException;
 
 import org.slf4j.Logger;
@@ -10,7 +12,7 @@ public class MockBezirkApp implements BezirkApp {
 
     private boolean approvePipeRequestCalled = false;
 
-    private BezirkPipeAPI pipeAPI = null;
+    private com.bezirk.common.pipe.BezirkPipeAPI pipeAPI = null;
 
     public MockBezirkApp() {
     }
@@ -37,11 +39,11 @@ public class MockBezirkApp implements BezirkApp {
         return approvePipeRequestCalled;
     }
 
-    public BezirkPipeAPI getPipeAPI() {
+    public com.bezirk.common.pipe.BezirkPipeAPI getPipeAPI() {
         return pipeAPI;
     }
 
-    public void setPipeAPI(BezirkPipeAPI pipeAPI) {
+    public void setPipeAPI(com.bezirk.common.pipe.BezirkPipeAPI pipeAPI) {
         logger.info("Setting pipeAPI: " + pipeAPI);
         this.pipeAPI = pipeAPI;
     }

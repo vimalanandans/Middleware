@@ -9,8 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.bezirk.pipe.PipePolicyUtility;
-import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.listitems.AbstractPolicyListItem;
 import com.bezirk.spheremanager.ui.listitems.ProtocolItem;
@@ -69,7 +67,7 @@ public class PolicyListAdapter extends ArrayAdapter<AbstractPolicyListItem> {
         view.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {/*
                 BezirkPipePolicy policyIn = PipePolicyUtility.policyInMap.get(pipeReqId);
                 BezirkPipePolicy policyOut = PipePolicyUtility.policyOutMap.get(pipeReqId);
                 if (policy_active.isChecked()) {
@@ -93,7 +91,7 @@ public class PolicyListAdapter extends ArrayAdapter<AbstractPolicyListItem> {
                         // DummyContent.policyListOutbound.set(position, item);
                     }
                 }
-
+*/
             }
         });
         return view;

@@ -1,4 +1,4 @@
-package com.bezirk.pipe;
+package com.bezirk.common.pipe;
 
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.Pipe;

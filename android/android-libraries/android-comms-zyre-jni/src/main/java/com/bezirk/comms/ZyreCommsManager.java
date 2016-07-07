@@ -1,6 +1,6 @@
 package com.bezirk.comms;
 
-import com.bezirk.pipe.core.PipeManager;
+import com.bezirk.pipe.PipeManager;
 import com.bezirk.comms.processor.CommsProcessor;
 import com.bezirk.pubsubbroker.PubSubBroker;
 //import com.bezirk.rest.BezirkRestCommsManager;

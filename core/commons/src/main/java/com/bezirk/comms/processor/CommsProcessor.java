@@ -8,6 +8,7 @@ import com.bezirk.comms.BezirkMessageDispatcher;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CtrlMsgReceiver;
+import com.bezirk.pipe.PipeManager;
 import com.bezirk.streaming.Streaming;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
@@ -21,7 +22,7 @@ import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.comms.CommsFeature;
 import com.bezirk.logging.LogServiceMessageHandler;
-import com.bezirk.pipe.core.PipeManager;
+
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;

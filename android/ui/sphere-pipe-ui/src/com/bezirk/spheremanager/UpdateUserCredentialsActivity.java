@@ -17,8 +17,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.pipe.core.PipeRecord;
-import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.DialogShowCertificateFragment;
@@ -58,7 +56,7 @@ public class UpdateUserCredentialsActivity extends FragmentActivity implements U
         TextView title = (TextView) view.findViewById(R.id.name_of_pipe);
         final int pipeId = getIntent().getIntExtra("pipeId", 0);
 
-        PipeRegistry pipeRegistry = MainService.getPipeRegistryHandle();
+    /*    PipeRegistry pipeRegistry = MainService.getPipeRegistryHandle();
 
         if (pipeRegistry != null) {
 
@@ -74,7 +72,7 @@ public class UpdateUserCredentialsActivity extends FragmentActivity implements U
         } else {
             Log.e(TAG, "unable to get pipe registry");
         }
-
+*/
         //Switch has to be enabled
         final Button filterLogin = (Button) view
                 .findViewById(R.id.filter_login);

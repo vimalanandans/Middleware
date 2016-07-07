@@ -13,8 +13,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bezirk.pipe.core.PipeRecord;
-import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.SphereListFragment.Callbacks;
 import com.bezirk.starter.MainService;
@@ -79,7 +77,7 @@ public class UpdateUserCredentialsFragment extends Fragment {
                 R.layout.fragment_update_user_credentials, container, false);
         final EditText username = (EditText) view.findViewById(R.id.username);
 
-        PipeRegistry pipeRegistry = MainService.getPipeRegistryHandle();
+      /*  PipeRegistry pipeRegistry = MainService.getPipeRegistryHandle();
 
         if (pipeRegistry != null) {
 
@@ -124,7 +122,7 @@ public class UpdateUserCredentialsFragment extends Fragment {
             Log.e(TAG, "unable to get pipe registry");
         }
 
-
+*/
         return view;
     }
 

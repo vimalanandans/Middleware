@@ -10,7 +10,7 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.pipe.core.PipeManager;
+import com.bezirk.pipe.PipeManager;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;

@@ -15,9 +15,6 @@ import android.widget.TextView;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.pipe.core.PipeApprovalException;
-import com.bezirk.pipe.PipePolicyUtility;
-import com.bezirk.pipe.PipeRequester;
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.BezirkSphereAPI;
@@ -102,7 +99,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
             @Override
             public void onClick(View v) {
                 //TODO Send back selected Policy
-                BezirkPipePolicy policyIn = PipePolicyUtility.policyInMap.get(pipeReqId);
+   /*             BezirkPipePolicy policyIn = PipePolicyUtility.policyInMap.get(pipeReqId);
                 BezirkPipePolicy policyOut = PipePolicyUtility.policyOutMap.get(pipeReqId);
                 for (String role : policyIn.getReasonMap().keySet()) {
                     logger.info("In Protocol: " + role + " is Authorized?: " + policyIn.isAuthorized(role));
@@ -117,7 +114,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
                 } catch (PipeApprovalException e) {
                     logger.error("Exception in pipe approval.", e);
                 }
-                startActivity(createBackIntent());
+              */  startActivity(createBackIntent());
             }
         });
         Button addPipeCancel = (Button) view.findViewById(R.id.add_pipe_cancel);
