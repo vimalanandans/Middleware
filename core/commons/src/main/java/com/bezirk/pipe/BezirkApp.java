@@ -1,4 +1,4 @@
-package com.bezirk.application;
+package com.bezirk.pipe;
 
 import com.bezirk.pipe.core.PipeApprovalException;
 

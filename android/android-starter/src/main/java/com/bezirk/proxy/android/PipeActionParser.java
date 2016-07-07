@@ -4,8 +4,8 @@ import android.content.Intent;
 
 import com.bezirk.actions.BezirkActions;
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.pipe.core.PipePolicyUtility;
-import com.bezirk.pipe.core.PipeRequest;
+import com.bezirk.pipe.PipePolicyUtility;
+import com.bezirk.pipe.PipeRequest;
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;

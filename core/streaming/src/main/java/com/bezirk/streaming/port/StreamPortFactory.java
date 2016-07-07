@@ -16,15 +16,15 @@ import java.util.Set;
 
 /**
  * Port Factory is a Custom Factory class that is instantiated ( singleton ) when the Proxy is instantiated. It reads the values from the
- * properties file and instantiates the starting port and ending port. A call to the PortFactory is made by the ControlReceiverThread when
+ * properties file and instantiates the starting port and ending port. A call to the StreamPortFactory is made by the ControlReceiverThread when
  * it receives the ControlMessage as StreamRequest. The port Factory checks if it has any ports free between the Range and gives the Port. It
- * keeps a record in the portsMap in StreamUtilities to avoid reassigning of ports when it receives the same request. PortFactory is also responsible
+ * keeps a record in the portsMap in StreamUtilities to avoid reassigning of ports when it receives the same request. StreamPortFactory is also responsible
  * for releasing the ports once the streaming is completed.
  *
  * @see BezirkCommunications
  */
-public class PortFactory implements com.bezirk.streaming.PortFactory {
-    private static final Logger logger = LoggerFactory.getLogger(PortFactory.class);
+public class StreamPortFactory implements com.bezirk.streaming.PortFactory {
+    private static final Logger logger = LoggerFactory.getLogger(StreamPortFactory.class);
 
     private final int startingPort; // Beginning Port of the RANGE, read from properties file
     private final Set<Integer> activePorts; // Set, that keeps the track of no_of_ports that are active and are been used
@@ -33,13 +33,13 @@ public class PortFactory implements com.bezirk.streaming.PortFactory {
 
     /**
      * Called by the {@link BezirkCommunications} if the streaming is Enabled in the properties file. It initializes the beginning and ending ports.
-     * It initializes the PortFactory.lastAssignedPort to the statingPort.
+     * It initializes the StreamPortFactory.lastAssignedPort to the statingPort.
      *
-     * @param startPort : Beginning port that can be used for Streaming. RANGE (of ports that can be used for Streaming) =  {@link PortFactory#startingPort - PortFactory#endPort }
+     * @param startPort : Beginning port that can be used for Streaming. RANGE (of ports that can be used for Streaming) =  {@link StreamPortFactory#startingPort - StreamPortFactory#endPort }
      * @see BezirkCommunications
      */
-    public PortFactory(int startPort, StreamStore streamStore) {
-        logger.info("-- Inside PortFactory constructor ---- ");
+    public StreamPortFactory(int startPort, StreamStore streamStore) {
+        logger.info("-- Inside StreamPortFactory constructor ---- ");
         startingPort = startPort;
         activePorts = new HashSet<Integer>();
         lastAssignedPort = startPort;
@@ -94,7 +94,7 @@ public class PortFactory implements com.bezirk.streaming.PortFactory {
 
     /**
      * This method is called by the StreamReceivingThread  after it has received data or if data transfer fails during the transfer.
-     * This method removes the record form the portsMap from {@link StreamStore} and {@link PortFactory#activePorts} from {@link PortFactory}
+     * This method removes the record form the portsMap from {@link StreamStore} and {@link StreamPortFactory#activePorts} from {@link StreamPortFactory}
      *
      * @param releasingPort : The Port that has to be released.
      * @return : true - if the port is released successfully. false - if tried to free the port that doesn't exists. ( Port Malfunctioning )

@@ -26,13 +26,13 @@ public class StreamStore {
     private final Map<String, StreamRecord> streamBook = new HashMap<String, StreamRecord>();
 
     // Maps key:[msgId:ZirkEndPoint] --- value: [Integer]
-    // Updated by the PortFactory during assigning a new Port
+    // Updated by the StreamPortFactory during assigning a new Port
     // Read during each ControlMessage received to check if the request is
     // always processed!
     private final Map<String, Integer> portsMap = new HashMap<String, Integer>();
 
     /*
-     * This method used by the {@link PortFactory} to update the {@link
+     * This method used by the {@link StreamPortFactory} to update the {@link
      * this#portsMap} when a {@link StreamRequest} is received and the ports are
      * available.
      * 
@@ -44,7 +44,7 @@ public class StreamStore {
      * 
      * @return status of the update. <code>true</code> if successful
      * 
-     * @see com.bosch.upa.bezirk.comms.udp.streaming.PortFactory
+     * @see com.bosch.upa.bezirk.comms.udp.streaming.StreamPortFactory
      */
     public boolean updatePortsMap(String portMapKey, int value) {
 

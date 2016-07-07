@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.bezirk.pipe.core.PipePolicyUtility;
+import com.bezirk.pipe.PipePolicyUtility;
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.listitems.AbstractPolicyListItem;

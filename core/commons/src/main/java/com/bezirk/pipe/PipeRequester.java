@@ -1,10 +1,10 @@
-package com.bezirk.pipe.core;
+package com.bezirk.pipe;
 
-import com.bezirk.application.BezirkApp;
 import com.bezirk.BezirkCompManager;
 import com.bezirk.messagehandler.PipeRequestIncomingMessage;
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.middleware.addressing.PipePolicy;
+import com.bezirk.pipe.core.*;
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.proxy.api.impl.ZirkId;
 
@@ -17,10 +17,10 @@ import java.util.Map;
 /**
  * Used by a platform to request a pipe on behalf of a zirk
  */
-public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
+public class PipeRequester implements IPipeRequester, com.bezirk.pipe.BezirkPipeAPI {
     private static final Logger logger = LoggerFactory.getLogger(PipeRequester.class);
 
-    private final Map<String, PipeRequest> outstandingRequests = new HashMap<String, PipeRequest>();
+    private final Map<String, com.bezirk.pipe.PipeRequest> outstandingRequests = new HashMap<String, com.bezirk.pipe.PipeRequest>();
 
     // Holds information about bezirk state
     private PipeRegistry registry = null;
@@ -39,7 +39,7 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
     /**
      * Request that a pipe be added to the system
      */
-    public void requestPipe(PipeRequest request) throws PipeApprovalException {
+    public void requestPipe(com.bezirk.pipe.PipeRequest request) throws PipeApprovalException {
 
         logger.info("requestPipeAuthorization() called for: " + request.getPipe());
 
@@ -126,11 +126,11 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
      * @param sphereId    The sphere the pipe has been added to
      */
     public void pipeApproved(boolean approved, String pipeRequestId, String pipePassword, String sphereId) throws PipeApprovalException {
-        PipeRequest request = outstandingRequests.get(pipeRequestId);
+        com.bezirk.pipe.PipeRequest request = outstandingRequests.get(pipeRequestId);
 
         Pipe pipe = request.getPipe();
-        BezirkPipePolicy allowedIn = PipePolicyUtility.policyInMap.get(request.getId());
-        BezirkPipePolicy allowedOut = PipePolicyUtility.policyOutMap.get(request.getId());
+        BezirkPipePolicy allowedIn = com.bezirk.pipe.PipePolicyUtility.policyInMap.get(request.getId());
+        BezirkPipePolicy allowedOut = com.bezirk.pipe.PipePolicyUtility.policyOutMap.get(request.getId());
 
         // For now, we are ignoring the approved boolean and using the pipePolicy.isApproved() to indicate approval
         if (registry.isRegistered(pipe)) {
@@ -151,10 +151,10 @@ public class PipeRequester implements IPipeRequester, BezirkPipeAPI {
         logger.info("pipe approved: " + approved);
 
         // Clear request
-        PipePolicyUtility.removeId(request.getId());
+        com.bezirk.pipe.PipePolicyUtility.removeId(request.getId());
     }
 
-    public PipeRequest getPipeRequest(String requestId) {
+    public com.bezirk.pipe.PipeRequest getPipeRequest(String requestId) {
         return outstandingRequests.get(requestId);
     }
     

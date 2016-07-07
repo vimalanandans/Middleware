@@ -42,7 +42,7 @@ public interface Streaming {
     /**
      * Retrieve the portfactory instance
      */
-    public PortFactory getPortFactory();
+   // public PortFactory getPortFactory();
 
     /**
      * Registers the stream record with stream store

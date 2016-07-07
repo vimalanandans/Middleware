@@ -14,6 +14,7 @@ import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.streaming.control.Objects.StreamRecord;
+import com.bezirk.streaming.port.StreamPortFactory;
 import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
 import com.bezirk.streaming.store.StreamStore;
@@ -47,7 +48,7 @@ public class StreamManager implements Streaming {
     public StreamManager(BezirkComms comms, PubSubEventReceiver sadlReceiver) {
 
         if (BezirkValidatorUtility.isObjectNotNull(comms)
-                && BezirkValidatorUtility.isObjectNotNull(msgDispatcher)
+
                 && BezirkValidatorUtility.isObjectNotNull(sadlReceiver)) {
             this.comms = comms;
             this.sadlReceiver = sadlReceiver;
@@ -104,15 +105,15 @@ public class StreamManager implements Streaming {
         return streamStore.registerStreamBook(key, sRecord);
     }
 
-    @Override
+  /*  @Override
     public PortFactory getPortFactory() {
         return portFactory;
     }
-
+*/
     @Override
-    public boolean initStreams(MessageDispatcher msgDispatcher) {
+    public boolean initStreams(MessageDispatcher dispatcher) {
 
-        msgDispatcher = msgDispatcher;
+        msgDispatcher = (BezirkMessageDispatcher) dispatcher;
 
         try {
 
@@ -124,7 +125,7 @@ public class StreamManager implements Streaming {
                     streamingMessageQueue, sadlReceiver);
 
 
-            portFactory = new com.bezirk.streaming.port.PortFactory(
+            portFactory = new StreamPortFactory(
                     BezirkCommunications.getSTARTING_PORT_FOR_STREAMING(), streamStore);
 
             if (msgDispatcher == null) {

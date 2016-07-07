@@ -1,9 +1,6 @@
 package com.bezirk.pipe;
 
-import com.bezirk.application.BezirkApp;
-import com.bezirk.pipe.core.BezirkPipeAPI;
 import com.bezirk.pipe.core.PipeApprovalException;
-import com.bezirk.pipe.core.PipeRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

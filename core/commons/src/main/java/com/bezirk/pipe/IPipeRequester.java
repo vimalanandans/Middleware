@@ -1,5 +1,7 @@
-package com.bezirk.pipe.core;
+package com.bezirk.pipe;
 
+
+import com.bezirk.pipe.core.PipeApprovalException;
 
 public interface IPipeRequester {
 

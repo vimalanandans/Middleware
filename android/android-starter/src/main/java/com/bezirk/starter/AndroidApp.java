@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.bezirk.actions.BezirkActions;
-import com.bezirk.application.BezirkApp;
-import com.bezirk.pipe.core.BezirkPipeAPI;
+import com.bezirk.pipe.BezirkApp;
+import com.bezirk.pipe.BezirkPipeAPI;
 import com.bezirk.pipe.core.PipeApprovalException;
-import com.bezirk.pipe.core.PipeRequest;
+import com.bezirk.pipe.PipeRequest;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;

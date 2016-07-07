@@ -70,9 +70,9 @@ public final class BezirkCommsPC {
 //        if (BezirkCommunications.isStreamingEnabled()) {
 //            // port factory is part of comms manager
 //            // BezirkCommunications.portFactory = new
-//            // PortFactory(BezirkCommunications.STARTING_PORT_FOR_STREAMING,
+//            // StreamPortFactory(BezirkCommunications.STARTING_PORT_FOR_STREAMING,
 //            // BezirkCommunications.ENDING_PORT_FOR_STREAMING); // initialize the
-//            // PortFactory
+//            // StreamPortFactory
 //            if (bezirkConfig == null) {
 //                BezirkCommunications.setDOWNLOAD_PATH(props.getProperty("FileSharePath"));
 //            } else {
@@ -120,9 +120,9 @@ public final class BezirkCommsPC {
         if (BezirkCommunications.isStreamingEnabled()) {
             // port factory is part of comms manager
             // BezirkCommunications.portFactory = new
-            // PortFactory(BezirkCommunications.STARTING_PORT_FOR_STREAMING,
+            // StreamPortFactory(BezirkCommunications.STARTING_PORT_FOR_STREAMING,
             // BezirkCommunications.ENDING_PORT_FOR_STREAMING); // initialize the
-            // PortFactory
+            // StreamPortFactory
             if (bezirkConfig == null) {
                 BezirkCommunications.setDOWNLOAD_PATH("D:\\Uhu_Downloads\\");
             } else {

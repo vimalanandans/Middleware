@@ -18,7 +18,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.pc.ProxyForServices;
-import com.bezirk.proxy.registration.ServiceRegistration;
+import com.bezirk.proxy.ServiceRegistration;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
 

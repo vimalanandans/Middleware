@@ -1,6 +1,6 @@
 package com.bezirk.sphere.ui;
 
-import com.bezirk.application.BezirkVersion;
+import com.bezirk.util.BezirkVersion;
 import com.bezirk.commstest.ui.CommsTestJFrame;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.BezirkSphere;

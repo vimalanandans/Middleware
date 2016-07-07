@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.pipe.core.PipePolicyUtility;
+import com.bezirk.pipe.PipePolicyUtility;
 import com.bezirk.pipe.core.PipeRecord;
 import com.bezirk.pipe.core.PipeRegistry;
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;

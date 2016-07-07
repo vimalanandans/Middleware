@@ -1,6 +1,5 @@
 package test;
 
-import com.bezirk.examples.protocols.parametricUI.RoleParametricUI;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
@@ -30,7 +29,7 @@ public class SimpleTest {
 
         bezirk.setLocation(new Location("null/null/kitchen"));
         /* subscribe to a protocol role */
-        bezirk.subscribe(new RoleParametricUI(), new ReceiverListener());
+        bezirk.subscribe(new ProtocolRoleTest(), new ReceiverListener());
         //display id of current service
         System.out.println("MY ID: " + UUID.randomUUID().toString().substring(0, 6));
     }

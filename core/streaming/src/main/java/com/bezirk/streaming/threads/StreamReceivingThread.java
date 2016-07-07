@@ -10,6 +10,7 @@ import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;
+import com.bezirk.streaming.port.StreamPortFactory;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -25,17 +26,17 @@ import java.net.Socket;
 import java.net.SocketException;
 
 /**
- * This thread is used by the recipient that is interested in receiving the Stream. This Thread opens socket at port ({@link com.bezirk.streaming.port.PortFactory#getPort(String)} and
+ * This thread is used by the recipient that is interested in receiving the Stream. This Thread opens socket at port ({@link StreamPortFactory#getPort(String)} and
  * waits for the sender to connect. Once the Sender gets connected, a file will be created at {@link BezirkCommunications#DOWNLOAD_PATH} and will read
  * data at a time. After the data transfer it will release the port through
- * {@link com.bezirk.streaming.port.PortFactory#releasePort(int)}. From the {@link #streamLabel}, it will query the BezirkSadl
+ * {@link StreamPortFactory#releasePort(int)}. From the {@link #streamLabel}, it will query the BezirkSadl
  * to get all the Zirk Identities via
  * corresponding to the services.
  * If error occurs during the course, it releases the port and closes the socket and Streams
  *
  * @see com.bezirk.proxy
  * @see BezirkCommunications
- * @see com.bezirk.streaming.port.PortFactory
+ * @see StreamPortFactory
  */
 public class StreamReceivingThread implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(StreamReceivingThread.class);
@@ -60,7 +61,7 @@ public class StreamReceivingThread implements Runnable {
     /**
      * Constructor that is called during starting the thread
      *
-     * @param  port   - port that this thread is listening to receive the data. { This port is got from PortFactory }
+     * @param  port   - port that this thread is listening to receive the data. { This port is got from StreamPortFactory }
      */
     public StreamReceivingThread(int port,
                                  StreamRequest streamRequest, PortFactory portFactory,

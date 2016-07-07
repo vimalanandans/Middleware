@@ -8,7 +8,7 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.proxy.registration.ServiceRegistration;
+import com.bezirk.proxy.ServiceRegistration;
 
 import java.io.File;
 import java.io.InputStream;

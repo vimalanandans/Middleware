@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.application.BezirkVersion;
+import com.bezirk.util.BezirkVersion;
 import com.bezirk.comms.CommsFeature;
 import com.bezirk.spheremanager.SphereListActivity;
 import com.bezirk.starter.MainService;

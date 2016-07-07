@@ -1,4 +1,4 @@
-package com.bezirk.proxy.registration;
+package com.bezirk.proxy;
 
 import java.util.Random;
 
