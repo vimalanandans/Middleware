@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.bezirk.controlui.commstest.CommsTestActivity">
+    <item
+        android:id="@+id/port_config"
+        android:orderInCategory="100"
+        android:title="@string/menu_config"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/hints"
+        android:orderInCategory="100"
+        android:title="@string/menu_hint"
+        app:showAsAction="never" />
+</menu>
