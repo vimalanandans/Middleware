@@ -2,7 +2,7 @@ package com.bezirk.logging.ui;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
-import com.bezirk.comms.BezirkCommunications;
+import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.remotelogging.loginterface.BezirkLogging;
 import com.bezirk.remotelogging.manager.BezirkLoggingManager;
@@ -236,7 +236,7 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
         try {
             bezirkLoggingManager = new BezirkLoggingManager();
             bezirkLoggingManager.startLoggingService(
-                    BezirkCommunications.getREMOTE_LOGGING_PORT(), this);
+                    CommsConfigurations.getREMOTE_LOGGING_PORT(), this);
         } catch (Exception e) {
             logger.error("Error in sphere Select GUI init.", e);
         }

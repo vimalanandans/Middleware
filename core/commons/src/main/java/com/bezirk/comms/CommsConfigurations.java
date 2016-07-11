@@ -10,7 +10,7 @@ import java.util.LinkedHashMap;
 
 
 /**
- * The BezirkCommunications class serves a dual purpose:
+ * The CommsConfigurations class serves a dual purpose:
  * <ul>
  *   <li>Initialize several static variables such as portNumbers, addresses, queueSizes that are
  *   necessary for comms. These values are set by <code>com.bezirk.comms.BezirkCommsPC.init()</code>
@@ -21,8 +21,8 @@ import java.util.LinkedHashMap;
  * Subsequently, Sadl acks the duplicate message and drops it (since the message has already been
  * processed)
  */
-public final class BezirkCommunications {
-    private static final Logger logger = LoggerFactory.getLogger(BezirkCommunications.class);
+public final class CommsConfigurations {
+    private static final Logger logger = LoggerFactory.getLogger(CommsConfigurations.class);
 
     private static final int retransmitTime = 10000;
     private static final int mapSize = 10;
@@ -58,7 +58,7 @@ public final class BezirkCommunications {
     private static int NO_OF_RETRIES = 0;
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
-    private BezirkCommunications() {
+    private CommsConfigurations() {
     }
 
     public static String getINTERFACE_NAME() {
@@ -66,7 +66,7 @@ public final class BezirkCommunications {
     }
 
     public static void setINTERFACE_NAME(String INTERFACE_NAME) {
-        BezirkCommunications.INTERFACE_NAME = INTERFACE_NAME;
+        CommsConfigurations.INTERFACE_NAME = INTERFACE_NAME;
     }
 
     public static String getMULTICAST_ADDRESS() {
@@ -74,7 +74,7 @@ public final class BezirkCommunications {
     }
 
     public static void setMULTICAST_ADDRESS(String MULTICAST_ADDRESS) {
-        BezirkCommunications.MULTICAST_ADDRESS = MULTICAST_ADDRESS;
+        CommsConfigurations.MULTICAST_ADDRESS = MULTICAST_ADDRESS;
     }
 
     public static int getMULTICAST_PORT() {
@@ -82,7 +82,7 @@ public final class BezirkCommunications {
     }
 
     public static void setMULTICAST_PORT(int MULTICAST_PORT) {
-        BezirkCommunications.MULTICAST_PORT = MULTICAST_PORT;
+        CommsConfigurations.MULTICAST_PORT = MULTICAST_PORT;
     }
 
     public static int getUNICAST_PORT() {
@@ -163,7 +163,7 @@ public final class BezirkCommunications {
     }
 
     public static void setStreamingEnabled(boolean isStreamingEnabled) {
-        BezirkCommunications.isStreamingEnabled = isStreamingEnabled;
+        CommsConfigurations.isStreamingEnabled = isStreamingEnabled;
     }
 
     public static String getDOWNLOAD_PATH() {
@@ -171,7 +171,7 @@ public final class BezirkCommunications {
     }
 
     public static void setDOWNLOAD_PATH(String DOWNLOAD_PATH) {
-        BezirkCommunications.DOWNLOAD_PATH = DOWNLOAD_PATH;
+        CommsConfigurations.DOWNLOAD_PATH = DOWNLOAD_PATH;
     }
 
     public static int getREMOTE_LOGGING_PORT() {
@@ -188,7 +188,7 @@ public final class BezirkCommunications {
 
     public static void setRemoteLoggingServiceEnabled(
             boolean isRemoteLoggingServiceEnabled) {
-        BezirkCommunications.isRemoteLoggingServiceEnabled = isRemoteLoggingServiceEnabled;
+        CommsConfigurations.isRemoteLoggingServiceEnabled = isRemoteLoggingServiceEnabled;
     }
 
     public static boolean isDEMO_SPHERE_MODE() {

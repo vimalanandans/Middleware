@@ -23,8 +23,8 @@ import java.util.Map;
  * Created by Vimal on 5/18/2015.
  * Dispatches the incoming events to respective registered listener
  */
-public class BezirkMessageDispatcher implements MessageDispatcher {
-    private static final Logger logger = LoggerFactory.getLogger(BezirkMessageDispatcher.class);
+public class CommsMessageDispatcher implements MessageDispatcher {
+    private static final Logger logger = LoggerFactory.getLogger(CommsMessageDispatcher.class);
     private final PubSubEventReceiver pubSubEventReceiver;
 
     //private IPubSubBrokerControlReceiver sadlCtrlRxer;
@@ -43,7 +43,7 @@ public class BezirkMessageDispatcher implements MessageDispatcher {
     Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
             new HashMap<ControlMessage.Discriminator, CtrlMsgReceiver>();
 
-    public BezirkMessageDispatcher(PubSubEventReceiver pubSubEventReceiver) {
+    public CommsMessageDispatcher(PubSubEventReceiver pubSubEventReceiver) {
         this.pubSubEventReceiver = pubSubEventReceiver;
     }
 

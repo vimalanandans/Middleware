@@ -1,7 +1,7 @@
 package com.bezirk.starter;
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.comms.BezirkCommunications;
+import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsNotification;
@@ -155,7 +155,7 @@ public class MainService {
         /*************************************
          * Step3 : Shutdown RemoteLogging    *
          *************************************/
-        if (BezirkCommunications.isRemoteLoggingServiceEnabled()
+        if (CommsConfigurations.isRemoteLoggingServiceEnabled()
                 && BezirkValidatorUtility.isObjectNotNull(loggingGUI)
                 && loggingGUI.isVisible()) {
 
@@ -194,7 +194,7 @@ public class MainService {
             BezirkCommsPC.init(bezirkConfig);
 
         } catch (Exception e) {
-            serviceStarterHelper.fail("Problem initializing BezirkCommunications", e);
+            serviceStarterHelper.fail("Problem initializing CommsConfigurations", e);
         }
 
         /**************************************************
@@ -273,7 +273,7 @@ public class MainService {
             frame.setVisible(true);
 
             // Check if the Logging is enabled and start the LoggingGUI
-            if (BezirkCommunications.isRemoteLoggingServiceEnabled()) {
+            if (CommsConfigurations.isRemoteLoggingServiceEnabled()) {
                 logger.info("*** REMOTE LOGGING SERVICE IS ENABLED");
                 SwingUtilities.invokeLater(new Runnable() {
 

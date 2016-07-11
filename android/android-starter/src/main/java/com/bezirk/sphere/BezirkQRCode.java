@@ -1,4 +1,4 @@
-package com.bezirk.sphere.impl;
+package com.bezirk.sphere;
 
 import android.graphics.Bitmap;
 

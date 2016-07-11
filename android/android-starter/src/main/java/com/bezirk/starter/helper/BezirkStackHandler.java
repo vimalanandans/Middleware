@@ -20,7 +20,7 @@ import com.bezirk.pubsubbroker.PubSubBroker;
 //import com.bezirk.rest.HttpComms;
 import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereAPI;
-import com.bezirk.sphere.impl.BezirkSphereForAndroid;
+import com.bezirk.sphere.BezirkSphereForAndroid;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkPreferences;
 import com.bezirk.starter.BezirkWifiManager;
@@ -184,7 +184,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                     }
 
                     /*************************************************************
-                     * Step 9 : Start BezirkCommunications after sphere initialization       *
+                     * Step 9 : Start CommsConfigurations after sphere initialization       *
                      *************************************************************/
                     comms.startComms();
 

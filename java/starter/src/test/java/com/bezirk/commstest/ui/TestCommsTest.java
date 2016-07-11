@@ -1,7 +1,7 @@
 package com.bezirk.commstest.ui;
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.comms.BezirkCommunications;
+import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.devices.BezirkDeviceForPC;
 import com.bezirk.devices.BezirkDeviceInterface;
 import com.bezrik.network.BezirkNetworkUtilities;
@@ -63,7 +63,7 @@ public class TestCommsTest {
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
                         BezirkNetworkUtilities.getIpForInterface(intf);
-                        BezirkCommunications.setINTERFACE_NAME(intf.toString());
+                        CommsConfigurations.setINTERFACE_NAME(intf.toString());
 
                     }
 

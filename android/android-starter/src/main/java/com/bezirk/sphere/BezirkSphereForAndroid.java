@@ -1,4 +1,4 @@
-package com.bezirk.sphere.impl;
+package com.bezirk.sphere;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.ISphereConfig;
+import com.bezirk.sphere.impl.BezirkSphere;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.starter.BezirkActionCommands;
 import com.bezirk.starter.BezirkPreferences;

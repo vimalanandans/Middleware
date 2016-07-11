@@ -2,7 +2,7 @@ package com.bezirk.starter.helper;
 
 import android.net.wifi.WifiManager;
 
-import com.bezirk.comms.BezirkCommunications;
+import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.BezirkNetworkUtilities;
@@ -56,7 +56,7 @@ public final class BezirkAndroidNetworkUtil {
         NetworkInterface networkInterface;
         InetAddress inetAddress = null;
         try {
-            networkInterface = NetworkInterface.getByName(BezirkCommunications.getINTERFACE_NAME());
+            networkInterface = NetworkInterface.getByName(CommsConfigurations.getINTERFACE_NAME());
             inetAddress = BezirkValidatorUtility.isObjectNotNull(networkInterface) ? BezirkNetworkUtilities.getIpForInterface(networkInterface) : null;
             if (inetAddress == null) {
                 logger.error("Could not resolve ip - Check InterfaceName in preferences.xml");

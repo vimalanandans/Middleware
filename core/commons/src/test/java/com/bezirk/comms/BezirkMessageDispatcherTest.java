@@ -78,35 +78,35 @@ public class BezirkMessageDispatcherTest {
     @Test
     public void test() {
         PubSubEventReceiver bezirkSadlManager = new PubSubBroker(null);
-        BezirkMessageDispatcher bezirkMessageDispatcher = new BezirkMessageDispatcher(bezirkSadlManager);
+        CommsMessageDispatcher commsMessageDispatcher = new CommsMessageDispatcher(bezirkSadlManager);
 
         CtrlMsgReceiver receiver = new MockReceiver();
-        bezirkMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, receiver);
+        commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, receiver);
 
         ControlLedger tcMessage = new ControlLedger();
         BezirkZirkEndPoint sender = new BezirkZirkEndPoint("DeviceA", new ZirkId("MockServiceA"));
         ControlMessage discoveryRequest = new DiscoveryRequest(null, sender, null, null, 0, 0, 0);
         tcMessage.setMessage(discoveryRequest);
-        bezirkMessageDispatcher.dispatchControlMessages(tcMessage);
+        commsMessageDispatcher.dispatchControlMessages(tcMessage);
 
         assertTrue("Request is not recieved by mock receiver.", requestReceived);
 
-        bezirkMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryResponse, receiver);
+        commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryResponse, receiver);
 
         ControlMessage discoveryResponse = new DiscoveryResponse(recipient, null, null, 0);
         tcMessage.setMessage(discoveryResponse);
-        bezirkMessageDispatcher.dispatchControlMessages(tcMessage);
+        commsMessageDispatcher.dispatchControlMessages(tcMessage);
 
         assertTrue("Response is not recieved by mock receiver.", responseReceived);
 
         ControlMessage streamRequest = new StreamRequest(null, recipient, null, null, null, null, null, null, true, true, true, (short) 0);
         tcMessage.setMessage(streamRequest);
-        bezirkMessageDispatcher.dispatchControlMessages(tcMessage);
+        commsMessageDispatcher.dispatchControlMessages(tcMessage);
 
         assertFalse("Unknown Message type is recieved by mock receiver.", unKnownMessageReceived);
 
         CtrlMsgReceiver duplicateReceiver = new MockReceiver();
-        assertFalse("Duplicte receiver is allowed to register for the same message type.", bezirkMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, duplicateReceiver));
+        assertFalse("Duplicte receiver is allowed to register for the same message type.", commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, duplicateReceiver));
 
 
     }

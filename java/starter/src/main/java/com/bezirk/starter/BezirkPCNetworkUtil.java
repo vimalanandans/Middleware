@@ -1,8 +1,6 @@
 package com.bezirk.starter;
 
-import com.bezirk.comms.BezirkCommunications;
-import com.bezirk.comms.BezirkCommsPC;
-import com.bezirk.devices.BezirkDeviceInterface;
+import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.util.BezirkValidatorUtility;
 import com.bezrik.network.BezirkNetworkUtilities;
 import com.bezrik.network.IntfInetPair;
@@ -10,14 +8,10 @@ import com.bezrik.network.IntfInetPair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
-import java.util.Scanner;
 
 /**
  * Helper class for main zirk to fetch the network interface details.
@@ -32,7 +26,7 @@ final class BezirkPCNetworkUtil {
 
         // Resolve the NetworkInterface object for supplied InterfaceName
         NetworkInterface networkInterface =
-                resolveInterface(BezirkCommunications.getINTERFACE_NAME(), bezirkConfig);
+                resolveInterface(CommsConfigurations.getINTERFACE_NAME(), bezirkConfig);
 
         // If we chose a different Interface than what is written in the
         // config file and the config file is writable (it is not in a jar),

@@ -1,6 +1,5 @@
 package com.bezirk.comms;
 
-import com.bezirk.devices.BezirkDeviceForPC;
 import com.bezirk.starter.BezirkConfig;
 import com.bezirk.util.BezirkValidatorUtility;
 
@@ -37,50 +36,50 @@ public final class BezirkCommsPC {
 //        overrideStringProperty("InterfaceName", props, bezirkConfig);
 //        overrideStringProperty("displayEnable", props, bezirkConfig);
 //
-//        BezirkCommunications.setINTERFACE_NAME(props.getProperty("InterfaceName"));
-//        BezirkCommunications.setMULTICAST_ADDRESS(props.getProperty("EMulticastAddress"));
-//        BezirkCommunications.setMULTICAST_PORT(Integer.parseInt(props.getProperty("EMulticastPort")));
-//        BezirkCommunications.setUNICAST_PORT(Integer.parseInt(props
+//        CommsConfigurations.setINTERFACE_NAME(props.getProperty("InterfaceName"));
+//        CommsConfigurations.setMULTICAST_ADDRESS(props.getProperty("EMulticastAddress"));
+//        CommsConfigurations.setMULTICAST_PORT(Integer.parseInt(props.getProperty("EMulticastPort")));
+//        CommsConfigurations.setUNICAST_PORT(Integer.parseInt(props
 //                .getProperty("EUnicastPort")));
-//        BezirkCommunications.setCTRL_MULTICAST_ADDRESS(props
+//        CommsConfigurations.setCTRL_MULTICAST_ADDRESS(props
 //                .getProperty("CMulticastAddress"));
-//        BezirkCommunications.setCTRL_MULTICAST_PORT(Integer.valueOf(props
+//        CommsConfigurations.setCTRL_MULTICAST_PORT(Integer.valueOf(props
 //                .getProperty("CMulticastPort")));
-//        BezirkCommunications.setCTRL_UNICAST_PORT(Integer.valueOf(props
+//        CommsConfigurations.setCTRL_UNICAST_PORT(Integer.valueOf(props
 //                .getProperty("CUnicastPort")));
-//        BezirkCommunications.setMAX_BUFFER_SIZE(Integer.valueOf(props
+//        CommsConfigurations.setMAX_BUFFER_SIZE(Integer.valueOf(props
 //                .getProperty("MaxBufferSize")));
 //
-//        BezirkCommunications.setPOOL_SIZE(Integer.valueOf(props
+//        CommsConfigurations.setPOOL_SIZE(Integer.valueOf(props
 //                .getProperty("MessageValidatorPool")));
 //
-//        BezirkCommunications.setSTARTING_PORT_FOR_STREAMING(Integer.valueOf(props
+//        CommsConfigurations.setSTARTING_PORT_FOR_STREAMING(Integer.valueOf(props
 //                .getProperty("StartPort"))); // get the starting Port
-//        BezirkCommunications.setENDING_PORT_FOR_STREAMING(Integer.valueOf(props
+//        CommsConfigurations.setENDING_PORT_FOR_STREAMING(Integer.valueOf(props
 //                .getProperty("EndPort"))); // get the last port
-//        BezirkCommunications.setMAX_SUPPORTED_STREAMS(Integer.valueOf(props
+//        CommsConfigurations.setMAX_SUPPORTED_STREAMS(Integer.valueOf(props
 //                .getProperty("NoOfActiveThreads"))); // No of active Threads
-//        BezirkCommunications.setStreamingEnabled(Boolean.valueOf(props
+//        CommsConfigurations.setStreamingEnabled(Boolean.valueOf(props
 //                .getProperty("StreamingEnabled"))); // flag to check if
 //        // Streaming Enabled
 //
-//        BezirkCommunications.setNO_OF_RETRIES(Integer.valueOf(props
+//        CommsConfigurations.setNO_OF_RETRIES(Integer.valueOf(props
 //                .getProperty("NoOfRetries")));
 //
-//        if (BezirkCommunications.isStreamingEnabled()) {
+//        if (CommsConfigurations.isStreamingEnabled()) {
 //            // port factory is part of comms manager
-//            // BezirkCommunications.portFactory = new
-//            // StreamPortFactory(BezirkCommunications.STARTING_PORT_FOR_STREAMING,
-//            // BezirkCommunications.ENDING_PORT_FOR_STREAMING); // initialize the
+//            // CommsConfigurations.portFactory = new
+//            // StreamPortFactory(CommsConfigurations.STARTING_PORT_FOR_STREAMING,
+//            // CommsConfigurations.ENDING_PORT_FOR_STREAMING); // initialize the
 //            // StreamPortFactory
 //            if (bezirkConfig == null) {
-//                BezirkCommunications.setDOWNLOAD_PATH(props.getProperty("FileSharePath"));
+//                CommsConfigurations.setDOWNLOAD_PATH(props.getProperty("FileSharePath"));
 //            } else {
-//                BezirkCommunications.setDOWNLOAD_PATH(bezirkConfig.getDataPath()
+//                CommsConfigurations.setDOWNLOAD_PATH(bezirkConfig.getDataPath()
 //                        + File.separator + "downloads");
 //            }
 //            final File createDownloadFolder = new File(
-//                    BezirkCommunications.getDOWNLOAD_PATH());
+//                    CommsConfigurations.getDOWNLOAD_PATH());
 //            if (!createDownloadFolder.exists()) {
 //                if (!createDownloadFolder.mkdir()) {
 //                    logger.error("Failed to create download direction: {}",
@@ -89,11 +88,11 @@ public final class BezirkCommsPC {
 //            }
 //        }
 //
-//        BezirkCommunications.setDEMO_SPHERE_MODE(Boolean.valueOf(props.getProperty(
+//        CommsConfigurations.setDEMO_SPHERE_MODE(Boolean.valueOf(props.getProperty(
 //                "DemoSphereMode", "false")));
-//        BezirkCommunications.setREMOTE_LOGGING_PORT(Integer.valueOf(props
+//        CommsConfigurations.setREMOTE_LOGGING_PORT(Integer.valueOf(props
 //                .getProperty("RemoteLoggingPort")));
-//        BezirkCommunications.setRemoteLoggingServiceEnabled(Boolean.valueOf(props
+//        CommsConfigurations.setRemoteLoggingServiceEnabled(Boolean.valueOf(props
 //                .getProperty("RemoteLoggingEnabled")));
 //    }
 
@@ -102,35 +101,35 @@ public final class BezirkCommsPC {
         //overrideStringProperty("InterfaceName", props, bezirkConfig);
         //overrideStringProperty("displayEnable", props, bezirkConfig);
 
-        BezirkCommunications.setINTERFACE_NAME("en0");
-        BezirkCommunications.setMULTICAST_ADDRESS("224.5.6.7");
-        BezirkCommunications.setMULTICAST_PORT(9999);
-        BezirkCommunications.setUNICAST_PORT(8888);
-        BezirkCommunications.setCTRL_MULTICAST_ADDRESS("224.5.6.7");
-        BezirkCommunications.setCTRL_MULTICAST_PORT(9997);
-        BezirkCommunications.setCTRL_UNICAST_PORT(8887);
-        BezirkCommunications.setMAX_BUFFER_SIZE(10240);
-        BezirkCommunications.setPOOL_SIZE(5);
-        BezirkCommunications.setSTARTING_PORT_FOR_STREAMING(6321);
-        BezirkCommunications.setENDING_PORT_FOR_STREAMING(6330);
-        BezirkCommunications.setMAX_SUPPORTED_STREAMS(5);
-        BezirkCommunications.setStreamingEnabled(true);
-        BezirkCommunications.setNO_OF_RETRIES(5);
+        CommsConfigurations.setINTERFACE_NAME("en0");
+        CommsConfigurations.setMULTICAST_ADDRESS("224.5.6.7");
+        CommsConfigurations.setMULTICAST_PORT(9999);
+        CommsConfigurations.setUNICAST_PORT(8888);
+        CommsConfigurations.setCTRL_MULTICAST_ADDRESS("224.5.6.7");
+        CommsConfigurations.setCTRL_MULTICAST_PORT(9997);
+        CommsConfigurations.setCTRL_UNICAST_PORT(8887);
+        CommsConfigurations.setMAX_BUFFER_SIZE(10240);
+        CommsConfigurations.setPOOL_SIZE(5);
+        CommsConfigurations.setSTARTING_PORT_FOR_STREAMING(6321);
+        CommsConfigurations.setENDING_PORT_FOR_STREAMING(6330);
+        CommsConfigurations.setMAX_SUPPORTED_STREAMS(5);
+        CommsConfigurations.setStreamingEnabled(true);
+        CommsConfigurations.setNO_OF_RETRIES(5);
 
-        if (BezirkCommunications.isStreamingEnabled()) {
+        if (CommsConfigurations.isStreamingEnabled()) {
             // port factory is part of comms manager
-            // BezirkCommunications.portFactory = new
-            // StreamPortFactory(BezirkCommunications.STARTING_PORT_FOR_STREAMING,
-            // BezirkCommunications.ENDING_PORT_FOR_STREAMING); // initialize the
+            // CommsConfigurations.portFactory = new
+            // StreamPortFactory(CommsConfigurations.STARTING_PORT_FOR_STREAMING,
+            // CommsConfigurations.ENDING_PORT_FOR_STREAMING); // initialize the
             // StreamPortFactory
             if (bezirkConfig == null) {
-                BezirkCommunications.setDOWNLOAD_PATH("D:\\Uhu_Downloads\\");
+                CommsConfigurations.setDOWNLOAD_PATH("D:\\Uhu_Downloads\\");
             } else {
-                BezirkCommunications.setDOWNLOAD_PATH(bezirkConfig.getDataPath()
+                CommsConfigurations.setDOWNLOAD_PATH(bezirkConfig.getDataPath()
                         + File.separator + "downloads");
             }
             final File createDownloadFolder = new File(
-                    BezirkCommunications.getDOWNLOAD_PATH());
+                    CommsConfigurations.getDOWNLOAD_PATH());
             if (!createDownloadFolder.exists()) {
                 if (!createDownloadFolder.mkdir()) {
                     logger.error("Failed to create download direction: {}",
@@ -139,9 +138,9 @@ public final class BezirkCommsPC {
             }
         }
 
-        BezirkCommunications.setDEMO_SPHERE_MODE(true);
-        BezirkCommunications.setREMOTE_LOGGING_PORT(7777);
-        BezirkCommunications.setRemoteLoggingServiceEnabled(false);
+        CommsConfigurations.setDEMO_SPHERE_MODE(true);
+        CommsConfigurations.setREMOTE_LOGGING_PORT(7777);
+        CommsConfigurations.setRemoteLoggingServiceEnabled(false);
     }
 
     /**

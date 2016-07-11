@@ -1,7 +1,9 @@
 package com.bezirk.sphere;
 
-import com.bezirk.sphere.impl.BezirkQRCode;
-
+/**
+ * Interface for controlling Sphere Manager
+ * TODO: this shall be part of Sphere Manager component
+ * */
 public final class SphereManager {
     private static BezirkQRCode bezirkQRCode;
 

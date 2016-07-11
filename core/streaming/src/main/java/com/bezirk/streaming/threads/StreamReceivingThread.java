@@ -3,7 +3,7 @@
  */
 package com.bezirk.streaming.threads;
 
-import com.bezirk.comms.BezirkCommunications;
+import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.streaming.PortFactory;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.messagehandler.StreamIncomingMessage;
@@ -27,7 +27,7 @@ import java.net.SocketException;
 
 /**
  * This thread is used by the recipient that is interested in receiving the Stream. This Thread opens socket at port ({@link StreamPortFactory#getPort(String)} and
- * waits for the sender to connect. Once the Sender gets connected, a file will be created at {@link BezirkCommunications#DOWNLOAD_PATH} and will read
+ * waits for the sender to connect. Once the Sender gets connected, a file will be created at {@link CommsConfigurations#DOWNLOAD_PATH} and will read
  * data at a time. After the data transfer it will release the port through
  * {@link StreamPortFactory#releasePort(int)}. From the {@link #streamLabel}, it will query the BezirkSadl
  * to get all the Zirk Identities via
@@ -35,7 +35,7 @@ import java.net.SocketException;
  * If error occurs during the course, it releases the port and closes the socket and Streams
  *
  * @see com.bezirk.proxy
- * @see BezirkCommunications
+ * @see CommsConfigurations
  * @see StreamPortFactory
  */
 public class StreamReceivingThread implements Runnable {
@@ -98,7 +98,7 @@ public class StreamReceivingThread implements Runnable {
             socket.setSoTimeout(CONNECTION_TIMEOUT_TIME);
             receivingSocket = socket.accept();
 
-            tempFile = new File(BezirkCommunications.getDOWNLOAD_PATH() + fileName);
+            tempFile = new File(CommsConfigurations.getDOWNLOAD_PATH() + fileName);
             fileOutputStream = new FileOutputStream(tempFile);
             inputStream = new DataInputStream(receivingSocket.getInputStream());
 
@@ -118,7 +118,7 @@ public class StreamReceivingThread implements Runnable {
                 }
             }
             logger.debug("--- File Received--- & saved at "
-                    + BezirkCommunications.getDOWNLOAD_PATH() + fileName);
+                    + CommsConfigurations.getDOWNLOAD_PATH() + fileName);
 
             notifyStreamFile(tempFile, portFactory.releasePort(port));
             streamErrored = false;

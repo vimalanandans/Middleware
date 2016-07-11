@@ -1,9 +1,15 @@
-package com.bezirk.messagehandler;
+package com.bezirk.proxy.android;
 
 import android.content.Context;
 import android.content.Intent;
 
 import com.bezirk.actions.BezirkActions;
+import com.bezirk.messagehandler.DiscoveryIncomingMessage;
+import com.bezirk.messagehandler.EventIncomingMessage;
+import com.bezirk.messagehandler.PipeRequestIncomingMessage;
+import com.bezirk.messagehandler.StreamIncomingMessage;
+import com.bezirk.messagehandler.StreamStatusMessage;
+import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;

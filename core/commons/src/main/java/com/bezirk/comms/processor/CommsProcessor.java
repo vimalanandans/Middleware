@@ -3,8 +3,8 @@ package com.bezirk.comms.processor;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
-import com.bezirk.comms.BezirkCommunications;
-import com.bezirk.comms.BezirkMessageDispatcher;
+import com.bezirk.comms.CommsConfigurations;
+import com.bezirk.comms.CommsMessageDispatcher;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CtrlMsgReceiver;
@@ -55,7 +55,7 @@ public abstract class CommsProcessor implements BezirkComms {
   //  private final UPABlockCipherService cipherService = new UPABlockCipherService();
 
     //private BezirkStreamManager bezirkStreamManager = null;
-    BezirkMessageDispatcher msgDispatcher = null;
+    CommsMessageDispatcher msgDispatcher = null;
 
     //LogServiceMessageHandler logServiceMsgHandler = null;
     PubSubBroker pubSubBroker = null;
@@ -84,9 +84,9 @@ public abstract class CommsProcessor implements BezirkComms {
 
         this.pubSubBroker = sadl;
 
-        msgDispatcher = new BezirkMessageDispatcher(pubSubBroker);
+        msgDispatcher = new CommsMessageDispatcher(pubSubBroker);
 
-        if (BezirkCommunications.isStreamingEnabled()) {
+        if (CommsConfigurations.isStreamingEnabled()) {
 
             //bezirkStreamManager = new BezirkStreamManager(this, msgDispatcher, sadl);
             bezirkStreamManager = streaming;
@@ -108,7 +108,7 @@ public abstract class CommsProcessor implements BezirkComms {
         // old ones are cleared with stopComms
         executor = Executors.newFixedThreadPool(THREAD_SIZE);
 
-        if (BezirkCommunications.isStreamingEnabled()) {
+        if (CommsConfigurations.isStreamingEnabled()) {
 
             if (bezirkStreamManager != null) {
                 bezirkStreamManager.startStreams();
@@ -129,7 +129,7 @@ public abstract class CommsProcessor implements BezirkComms {
             // and then shutdownNow
         }
 
-         if (BezirkCommunications.isStreamingEnabled())
+         if (CommsConfigurations.isStreamingEnabled())
         {
 
             if (bezirkStreamManager != null) {

@@ -1,10 +1,10 @@
 package com.bezirk.streaming;
 
 import com.bezirk.comms.BezirkComms;
-import com.bezirk.comms.BezirkCommunications;
+import com.bezirk.comms.CommsConfigurations;
+import com.bezirk.comms.CommsMessageDispatcher;
 import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.comms.MessageDispatcher;
-import com.bezirk.comms.BezirkMessageDispatcher;
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
@@ -38,7 +38,7 @@ public class StreamManager implements Streaming {
     private Thread sStreamingThread = null;
     private BezirkStreamHandler bezirkStreamHandler = null;
     private PortFactory portFactory;
-    private BezirkMessageDispatcher msgDispatcher;
+    private CommsMessageDispatcher msgDispatcher;
     private BezirkComms comms = null;
 
     private StreamStore streamStore = null;
@@ -55,7 +55,7 @@ public class StreamManager implements Streaming {
             bezirkStreamHandler = new BezirkStreamHandler();
         } else {
             logger.error("Unable to initialize StreamManager. Please ensure ControlSenderQueue, " +
-                    "BezirkMessageDispatcher and BezirkCallback are initialized.");
+                    "CommsMessageDispatcher and BezirkCallback are initialized.");
         }
 
     }
@@ -113,7 +113,7 @@ public class StreamManager implements Streaming {
     @Override
     public boolean initStreams(MessageDispatcher dispatcher) {
 
-        msgDispatcher = (BezirkMessageDispatcher) dispatcher;
+        msgDispatcher = (CommsMessageDispatcher) dispatcher;
 
         try {
 
@@ -126,7 +126,7 @@ public class StreamManager implements Streaming {
 
 
             portFactory = new StreamPortFactory(
-                    BezirkCommunications.getSTARTING_PORT_FOR_STREAMING(), streamStore);
+                    CommsConfigurations.getSTARTING_PORT_FOR_STREAMING(), streamStore);
 
             if (msgDispatcher == null) {
 

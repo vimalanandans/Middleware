@@ -1,6 +1,5 @@
-package com.bezirk.sphere.impl;
+package com.bezirk.sphere;
 
-import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.SpherePrefs;
 import com.bezirk.starter.BezirkPreferences;

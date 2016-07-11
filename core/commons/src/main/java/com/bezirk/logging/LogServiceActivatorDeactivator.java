@@ -3,7 +3,7 @@
  */
 package com.bezirk.logging;
 
-import com.bezirk.comms.BezirkCommunications;
+import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
@@ -32,7 +32,7 @@ public final class LogServiceActivatorDeactivator {
 
         for (String sphereId : sphereList) {
             final ControlLedger controlLedger = new ControlLedger();
-            final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep, sphereId, BezirkNetworkUtilities.getDeviceIp(), BezirkCommunications.getREMOTE_LOGGING_PORT(), selectedLogSpheres, isActivate);
+            final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep, sphereId, BezirkNetworkUtilities.getDeviceIp(), CommsConfigurations.getREMOTE_LOGGING_PORT(), selectedLogSpheres, isActivate);
             controlLedger.setSphereId(sphereId);
             controlLedger.setMessage(loggingServiceActivateRequest);
             controlLedger.setSerializedMessage(controlLedger.getMessage().serialize());
