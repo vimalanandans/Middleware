@@ -85,7 +85,7 @@
 
         <!-- Development mode. false by default. Change to true for turning on development mode-->
         <EditTextPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="DEVELOPMENT_SPHERE_MODE_KEY" />
 
         <!-- Development sphere information-->
@@ -96,13 +96,13 @@
             android:defaultValue="DEVELOPMENT_SPHERE_ID_DEFAULT_VALUE"
             android:key="DEVELOPMENT_SPHERE_ID_KEY" />
         <EditTextPreference
-            android:defaultValue="eCUSEA+QRRJnuj9yAe8QAQ=="
+            android:defaultValue="0123456789abcdef"
             android:key="DEVELOPMENT_SPHEREKEY_KEY" />
         <!-- Development sphere information-->
 
         <!-- #Creating your development sphere:
         Provide your own sphereName and sphereId
-        Provide your own 24-Character sphere key
+        Provide your own 16-Character sphere key
         Ensure that all details are different from default values
         If the development mode is set to false, then the development sphere information is ignored.-->
 
