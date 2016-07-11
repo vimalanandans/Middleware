@@ -6,24 +6,22 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
-import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.BezirkCommsAndroid;
+import com.bezirk.comms.CommsNotification;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.rest.CommsRestController;
-import com.bezirk.rest.HttpComms;
 import com.bezirk.sadl.BezirkSadlManager;
 import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.impl.BezirkSphereForAndroid;
-import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkPreferences;
 import com.bezirk.starter.BezirkWifiManager;
+import com.bezirk.starter.MainService;
 import com.bezirk.util.BezirkValidatorUtility;
 
 import org.slf4j.Logger;
@@ -343,18 +341,18 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
         comms.restartComms();
     }
 
-    @Override
-    public void startStopRestServer(int startStopStatus) {
-        //if http feature is enabled, start the httpServer.//http server instance.
-        HttpComms httpServer = new CommsRestController();
-
-        if (startStopStatus == 100) {
-            httpServer.startHttpComms();
-        } else if (startStopStatus == 101) {
-            httpServer.stopHttpComms();
-        }
-
-
-        logger.debug("Started HTTP Server.. ");
-    }
+//    @Override
+//    public void startStopRestServer(int startStopStatus) {
+//        //if http feature is enabled, start the httpServer.//http server instance.
+//        HttpComms httpServer = new CommsRestController();
+//
+//        if (startStopStatus == 100) {
+//            httpServer.startHttpComms();
+//        } else if (startStopStatus == 101) {
+//            httpServer.stopHttpComms();
+//        }
+//
+//
+//        logger.debug("Started HTTP Server.. ");
+//    }
 }

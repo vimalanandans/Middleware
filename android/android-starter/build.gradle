@@ -51,7 +51,7 @@ dependencies {
     compile project(':core:bezirk')
     compile project(':core:control-messages')
     compile project(':core:commons')
-    compile project(':core:comms:http-comms')
+    //compile project(':core:comms:http-comms')
     compile project(':core:comms:comms-udp')
     compile project(':core:comms:comms-factory')
     compile project(':core:actions')

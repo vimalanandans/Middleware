@@ -81,10 +81,10 @@ public final class BezirkActionProcessor {
                 bezirkStackHandler.diagPing(intent);
                 break;
             case ACTION_START_REST_SERVER:
-                bezirkStackHandler.startStopRestServer(START_CODE);
+                //bezirkStackHandler.startStopRestServer(START_CODE);
                 break;
             case ACTION_STOP_REST_SERVER:
-                bezirkStackHandler.startStopRestServer(STOP_CODE);
+                //bezirkStackHandler.startStopRestServer(STOP_CODE);
                 break;
             default:
                 logger.warn("Received unknown intent action: " + intentAction.message);

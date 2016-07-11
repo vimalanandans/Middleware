@@ -5,5 +5,5 @@ public interface BezirkStackHandler {
 
     public void startStack(MainService mainService);
 
-    public void startStopRestServer(int startStopStatus);
+    //public void startStopRestServer(int startStopStatus);
 }
