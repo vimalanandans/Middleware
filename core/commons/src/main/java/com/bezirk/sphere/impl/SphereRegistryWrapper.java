@@ -190,7 +190,7 @@ public class SphereRegistryWrapper {
             if (!(sphere instanceof MemberSphere && ((MemberSphere) sphere).isTemporarySphere())) {
 
                 Iterable<BezirkDeviceInfo> devicesIterable = getBezirkDeviceInfo(sphere.getDeviceServices(),
-                        (HashSet<String>) sphere.getOwnerDevices());
+                        new HashSet<String>(sphere.getOwnerDevices()));
 
                 ArrayList<BezirkDeviceInfo> devices = (devicesIterable != null)
                         ? (ArrayList<BezirkDeviceInfo>) devicesIterable : null;
@@ -390,8 +390,8 @@ public class SphereRegistryWrapper {
      * Creates a sphere with the name and type as passed in the parameters. If
      * there already exists the same sphereId, then new sphere is NOT created.
      *
-     * @param sphereName        - Name to be assigned to the new sphere.
-     * @param sphereType        - Type of sphere to be created
+     * @param sphereName           - Name to be assigned to the new sphere.
+     * @param sphereType           - Type of sphere to be created
      * @param bezirkSphereListener
      * @return - SphereId if sphere was created successfully or if the sphereId
      * existed already, null otherwise.
@@ -443,8 +443,8 @@ public class SphereRegistryWrapper {
     private void initDefaultSphere() {
         String defaultSphereName;
         // check if defaultSphereName is not defined
-        if ((sphereConfig.getDefaultSphereName()!= null ) &&
-        sphereConfig.getDefaultSphereName().equalsIgnoreCase("")) {
+        if ((sphereConfig.getDefaultSphereName() != null) &&
+                sphereConfig.getDefaultSphereName().equalsIgnoreCase("")) {
             defaultSphereName = generateSphereName();
             // set the value in the properties file
             sphereConfig.setDefaultSphereName(defaultSphereName);
@@ -511,7 +511,7 @@ public class SphereRegistryWrapper {
      *
      * @param serviceId of the zirk which has to be added to the sphere membership
      *                  map.
-     * @param zirk   - Zirk object which has to be added to the sphere
+     * @param zirk      - Zirk object which has to be added to the sphere
      *                  membership map.
      * @return true if the zirk was added to the sphereMembership map false
      * otherwise
@@ -785,9 +785,9 @@ public class SphereRegistryWrapper {
      * them to the registry and the sphere.
      *
      * @param bezirkDeviceInfo - BezirkDeviceInfo object from where the zirk list will be
-     *                      retrieved. It has to be non-null
-     * @param sphereId      - which has to be added to the sphere set of the services.
-     * @param ownerDeviceId - has to be non-null
+     *                         retrieved. It has to be non-null
+     * @param sphereId         - which has to be added to the sphere set of the services.
+     * @param ownerDeviceId    - has to be non-null
      * @return - True if the zirk was added, False otherwise.
      */
     public boolean addMemberServices(BezirkDeviceInfo bezirkDeviceInfo, String sphereId, String ownerDeviceId) {
@@ -824,9 +824,9 @@ public class SphereRegistryWrapper {
      * Add the local services to the given sphere. The zirk Ids are retrieved
      * from the list of BezirkZirkInfo objects.
      *
-     * @param sphereId     of the sphere to be added in the sphere set of the services
+     * @param sphereId of the sphere to be added in the sphere set of the services
      * @param zirkInfo - List of BezirkZirkInfo objects from which ZirkId list
-     *                     is retrieved. It has to be non-null
+     *                 is retrieved. It has to be non-null
      * @return - True if the zirk was added. False otherwise.
      */
     public boolean addLocalServicesToSphere(String sphereId, Iterable<BezirkZirkInfo> zirkInfo) {

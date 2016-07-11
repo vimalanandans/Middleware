@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class Sphere implements Serializable {
     /**
      * @return the ownerDevices
      */
-    public final Iterable<String> getOwnerDevices() {
+    public final Set<String> getOwnerDevices() {
         return ownerDevices;
     }
 
