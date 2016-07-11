@@ -17,7 +17,7 @@ import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkPreferences;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +81,7 @@ class DeviceControlActivityHelper {
                 return;
         }
 
-        if (BezirkValidatorUtility.isObjectNotNull(actions)) {
+        if (ValidatorUtility.isObjectNotNull(actions)) {
             Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
             intent.setAction(actions);
             deviceControlActivity.startService(intent);
@@ -247,7 +247,7 @@ class DeviceControlActivityHelper {
                                 String data = confirmTextView.getText().toString();
                                 logger.info("clear database confirmed " + data);
                                 onPromptTextResult(resultId, data);
-                                if (BezirkValidatorUtility.isObjectNotNull(bezirkZirkInfos) && !bezirkZirkInfos.isEmpty()) {
+                                if (ValidatorUtility.isObjectNotNull(bezirkZirkInfos) && !bezirkZirkInfos.isEmpty()) {
                                     for (BezirkZirkInfo info : bezirkZirkInfos) {
                                         if (sharedPrefs.getAll().containsKey(info.getZirkId())) {
                                             sharedPrefs.edit().remove(info.getZirkId()).apply();

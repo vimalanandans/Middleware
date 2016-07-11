@@ -2,9 +2,7 @@ package com.bezirk.streaming;
 
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.CommsConfigurations;
-import com.bezirk.comms.CommsMessageDispatcher;
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.comms.MessageDispatcher;
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
@@ -19,7 +17,7 @@ import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
 import com.bezirk.streaming.store.StreamStore;
 import com.bezirk.streaming.threads.StreamQueueProcessor;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +36,7 @@ public class StreamManager implements Streaming {
     private Thread sStreamingThread = null;
     private BezirkStreamHandler bezirkStreamHandler = null;
     private PortFactory portFactory;
-    private CommsMessageDispatcher msgDispatcher;
+    //private CommsMessageDispatcher msgDispatcher;
     private BezirkComms comms = null;
 
     private StreamStore streamStore = null;
@@ -47,9 +45,9 @@ public class StreamManager implements Streaming {
 
     public StreamManager(BezirkComms comms, PubSubEventReceiver sadlReceiver) {
 
-        if (BezirkValidatorUtility.isObjectNotNull(comms)
+        if (ValidatorUtility.isObjectNotNull(comms)
 
-                && BezirkValidatorUtility.isObjectNotNull(sadlReceiver)) {
+                && ValidatorUtility.isObjectNotNull(sadlReceiver)) {
             this.comms = comms;
             this.sadlReceiver = sadlReceiver;
             bezirkStreamHandler = new BezirkStreamHandler();
@@ -111,10 +109,7 @@ public class StreamManager implements Streaming {
     }
 */
     @Override
-    public boolean initStreams(MessageDispatcher dispatcher) {
-
-        msgDispatcher = (CommsMessageDispatcher) dispatcher;
-
+    public boolean initStreams(BezirkComms comms) {
         try {
 
             streamingMessageQueue = new MessageQueue();
@@ -128,22 +123,22 @@ public class StreamManager implements Streaming {
             portFactory = new StreamPortFactory(
                     CommsConfigurations.getSTARTING_PORT_FOR_STREAMING(), streamStore);
 
-            if (msgDispatcher == null) {
+            if (comms == null) {
 
-                logger.error("Unable to register message receivers as MessageDispatcher is not initialized.");
+                logger.error("Unable to register message receivers as comms is not initialized.");
                 return false;
 
             } else {
 
-                msgDispatcher.registerControlMessageReceiver(
+                comms.registerControlMessageReceiver(
                         ControlMessage.Discriminator.StreamRequest,
                         ctrlReceiver);
 
-                msgDispatcher.registerControlMessageReceiver(
+                comms.registerControlMessageReceiver(
                         ControlMessage.Discriminator.StreamResponse,
                         ctrlReceiver);
 
-                msgDispatcher.registerControlMessageReceiver(
+                comms.registerControlMessageReceiver(
                         ControlMessage.Discriminator.RTCControlMessage,
                         ctrlReceiver);
             }

@@ -16,11 +16,11 @@ import java.net.Socket;
  * The logging client send the serialized Logging Message. The Zirk accepts the connection and
  * loads the serialized message into ReceiverQueue.
  */
-public class BezirkLoggingService extends Thread {
+public class RemoteLoggingService extends Thread {
     /**
      * private logger for the class
      */
-    private static final Logger logger = LoggerFactory.getLogger(BezirkLoggingService.class);
+    private static final Logger logger = LoggerFactory.getLogger(RemoteLoggingService.class);
     /**
      * TCP listening Port for the zirk
      */
@@ -39,7 +39,7 @@ public class BezirkLoggingService extends Thread {
      *
      * @param port at which the Zirk is listening for the clients to connect.
      */
-    public BezirkLoggingService(final int port) {
+    public RemoteLoggingService(final int port) {
         this.listeningPort = port;
     }
 

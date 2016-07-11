@@ -3,7 +3,7 @@ package com.bezirk.pubsubbroker.discovery;
 import com.bezirk.BezirkCompManager;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.messagehandler.DiscoveryIncomingMessage;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -53,12 +53,12 @@ public class Discovery {
 
     public boolean addResponse(DiscoveryResponse response) {
         synchronized (this) {
-            if (BezirkValidatorUtility.checkBezirkZirkEndPoint(response
+            if (ValidatorUtility.checkBezirkZirkEndPoint(response
                     .getRecipient())) {
                 final DiscoveryLabel dLabel = new DiscoveryLabel(
                         response.getRecipient(), response.getReqDiscoveryId());
                 final com.bezirk.pubsubbroker.discovery.DiscoveryRecord discRecord = discoveredMap.get(dLabel);
-                if (BezirkValidatorUtility.isObjectNotNull(discRecord)) {
+                if (ValidatorUtility.isObjectNotNull(discRecord)) {
                     //update discovered services list
                     discRecord.updateList(response.getZirkList());
                     final long currentTime = new Date().getTime();

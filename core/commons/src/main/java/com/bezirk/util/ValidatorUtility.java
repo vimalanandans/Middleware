@@ -12,10 +12,10 @@ import com.bezirk.proxy.api.impl.ZirkId;
  * Utility class that is used to Validate different Data Structures used in Bezirk.
  * BezirkDevelopers are advised to create corresponding functions here and validate the data structure.
  */
-public final class BezirkValidatorUtility {
+public final class ValidatorUtility {
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
-    private BezirkValidatorUtility() {
+    private ValidatorUtility() {
 
     }
 
@@ -108,20 +108,6 @@ public final class BezirkValidatorUtility {
     }
 
 
-    public static boolean checkLoggingServiceMessage(final LoggingServiceMessage logServiceMsg) {
-        return !(null == logServiceMsg || !checkRemoteLoggingIPAndPort(logServiceMsg) || !checkSphereListIsEmpty(logServiceMsg.getSphereList()));
-    }
-
-    private static boolean checkRemoteLoggingIPAndPort(
-            LoggingServiceMessage logServiceMsg) {
-
-        return !(!checkForString(logServiceMsg.getRemoteLoggingServiceIP()) ||
-                logServiceMsg.getRemoteLoggingServicePort() == -1);
-    }
-
-    private static boolean checkSphereListIsEmpty(String[] sphereList) {
-        return !(sphereList == null || sphereList.length == 0);
-    }
 
     public static boolean checkRTCStreamRequest(final ZirkId serviceId, final BezirkZirkEndPoint sep) {
         return checkBezirkZirkId(serviceId) && checkBezirkZirkEndPoint(sep);

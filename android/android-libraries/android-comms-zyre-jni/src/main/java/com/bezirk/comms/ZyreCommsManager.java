@@ -4,7 +4,7 @@ import com.bezirk.pipe.PipeManager;
 import com.bezirk.comms.processor.CommsProcessor;
 import com.bezirk.pubsubbroker.PubSubBroker;
 //import com.bezirk.rest.BezirkRestCommsManager;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import java.net.InetAddress;
 
@@ -43,7 +43,7 @@ public class ZyreCommsManager extends CommsProcessor {
     @Override
     public boolean startComms() {
 
-        if (BezirkValidatorUtility.isObjectNotNull(zyreGroup)) {
+        if (ValidatorUtility.isObjectNotNull(zyreGroup)) {
             // you can join the zyre group you specify here..
             comms = new ZyreCommsJni(this, zyreGroup);
         } else {

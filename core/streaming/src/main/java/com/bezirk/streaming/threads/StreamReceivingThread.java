@@ -11,7 +11,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.streaming.port.StreamPortFactory;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,7 +103,7 @@ public class StreamReceivingThread implements Runnable {
             inputStream = new DataInputStream(receivingSocket.getInputStream());
 
             if (isEncrypted) {
-                if (BezirkValidatorUtility.isObjectNotNull(sphereForSadl)) {
+                if (ValidatorUtility.isObjectNotNull(sphereForSadl)) {
                     sphereForSadl.decryptSphereContent(inputStream, fileOutputStream, sphere);
                 } else {
                     logger.error("SphereForSadl is not initialized. Unable to process secure streaming request.");
@@ -151,18 +151,18 @@ public class StreamReceivingThread implements Runnable {
     private void closeResources(ServerSocket socket, Socket receivingSocket,
                                 FileOutputStream fileOutputStream, DataInputStream inputStream) {
         try {
-            if (BezirkValidatorUtility.isObjectNotNull(inputStream)) {
+            if (ValidatorUtility.isObjectNotNull(inputStream)) {
                 inputStream.close();
             }
 
-            if (BezirkValidatorUtility.isObjectNotNull(fileOutputStream)) {
+            if (ValidatorUtility.isObjectNotNull(fileOutputStream)) {
                 fileOutputStream.flush();
                 fileOutputStream.close();
             }
-            if (BezirkValidatorUtility.isObjectNotNull(receivingSocket)) {                                     // If SocketTimeout Exception occurs, receivingSocket==null
+            if (ValidatorUtility.isObjectNotNull(receivingSocket)) {                                     // If SocketTimeout Exception occurs, receivingSocket==null
                 receivingSocket.close();
             }
-            if (BezirkValidatorUtility.isObjectNotNull(socket)) {                                              // If SocketTimeout Exception occurs, socket==null
+            if (ValidatorUtility.isObjectNotNull(socket)) {                                              // If SocketTimeout Exception occurs, socket==null
                 socket.close();
             }
         } catch (IOException e) {
@@ -176,7 +176,7 @@ public class StreamReceivingThread implements Runnable {
             StreamIncomingMessage uStreamCallbackMsg = new StreamIncomingMessage(
                     recipient.zirkId, streamLabel, serializedMsg,
                     tempFile, streamId, sender);
-            if (BezirkValidatorUtility.isObjectNotNull(sadlReceiver)) {
+            if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {
 
                 sadlReceiver.processNewStream(uStreamCallbackMsg);
 

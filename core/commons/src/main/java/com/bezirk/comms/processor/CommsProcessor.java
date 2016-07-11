@@ -19,9 +19,8 @@ import com.bezirk.control.messages.MulticastControlMessage;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.control.messages.UnicastHeader;
-import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.comms.CommsFeature;
-import com.bezirk.logging.LogServiceMessageHandler;
+
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubBroker;
@@ -54,7 +53,6 @@ public abstract class CommsProcessor implements BezirkComms {
     private static final int THREAD_SIZE = 4;
   //  private final UPABlockCipherService cipherService = new UPABlockCipherService();
 
-    //private BezirkStreamManager bezirkStreamManager = null;
     CommsMessageDispatcher msgDispatcher = null;
 
     //LogServiceMessageHandler logServiceMsgHandler = null;
@@ -62,11 +60,6 @@ public abstract class CommsProcessor implements BezirkComms {
 
     //generic notifications
     List ICommsNotification = new ArrayList<CommsNotification>();
-    //Quickfix : using the logging manger from udp comms. fix this.
-    LogServiceMessageHandler logServiceMsgHandler = null;
-
-    //private BezirkCallback bezirkCallback = null;
-    CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver();
     /**
      * Version Callback that will be used to inform the platforms when there is mismatch in versions.
      * This parameter will be injected in all the components that will be checking for versions to
@@ -88,15 +81,11 @@ public abstract class CommsProcessor implements BezirkComms {
 
         if (CommsConfigurations.isStreamingEnabled()) {
 
-            //bezirkStreamManager = new BezirkStreamManager(this, msgDispatcher, sadl);
             bezirkStreamManager = streaming;
 
-            bezirkStreamManager.initStreams(msgDispatcher);
+            bezirkStreamManager.initStreams(this);
 
         }
-
-        // register the logging zirk message
-        msgDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage, ctrlReceiver);
 
         return true;
     }
@@ -832,30 +821,4 @@ public abstract class CommsProcessor implements BezirkComms {
         }
     }
 
-    class CommCtrlReceiver implements CtrlMsgReceiver {
-        @Override
-        // FIXME : remove the below Log related quickfix, by moving the implementation to respective module
-        public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
-            switch (id) {
-                case LoggingServiceMessage:
-                    //logger.debug("<<<<<<<<  LOGGING MESSAGE RECEIVED FROM LOGGING SERVICE  >>>>>>>>>");
-                    logger.debug("ReceivedLogMessage-> " + serializedMsg);
-                    try {
-                        final LoggingServiceMessage loggingServiceMsg = ControlMessage.deserialize(serializedMsg, LoggingServiceMessage.class);
-
-                        if (null == logServiceMsgHandler) {
-                            logServiceMsgHandler = new LogServiceMessageHandler();
-                        }
-                        logServiceMsgHandler.handleLogServiceMessage(loggingServiceMsg);
-                    } catch (Exception e) {
-                        logger.error("Error in Deserializing LogServiceMessage", e);
-                    }
-                    break;
-                default:
-                    logger.error("Unknown control message > " + id);
-                    return false;
-            }
-            return true;
-        }
-    }
 }

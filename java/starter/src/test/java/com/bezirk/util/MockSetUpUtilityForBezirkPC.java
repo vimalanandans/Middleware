@@ -140,7 +140,7 @@ public class MockSetUpUtilityForBezirkPC {
         try {
 
             NetworkInterface intf = getInterface();
-            if (BezirkValidatorUtility.isObjectNotNull(intf)) {
+            if (ValidatorUtility.isObjectNotNull(intf)) {
 
                 return BezirkNetworkUtilities.getIpForInterface(intf);
 

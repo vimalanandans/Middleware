@@ -7,7 +7,7 @@ import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.remotelogging.manager.BezirkLoggingManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
 import com.bezirk.remotelogging.status.LoggingStatus;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +26,22 @@ public final class LogServiceMessageHandler {
      */
     private BezirkLoggingManager loggingManager = null;
 
+
+
+    public static boolean checkLoggingServiceMessage(final LoggingServiceMessage logServiceMsg) {
+        return !(null == logServiceMsg || !checkRemoteLoggingIPAndPort(logServiceMsg) || !checkSphereListIsEmpty(logServiceMsg.getSphereList()));
+    }
+
+    private static boolean checkRemoteLoggingIPAndPort(
+            LoggingServiceMessage logServiceMsg) {
+
+        return !(!ValidatorUtility.checkForString(logServiceMsg.getRemoteLoggingServiceIP()) ||
+                logServiceMsg.getRemoteLoggingServicePort() == -1);
+    }
+
+    private static boolean checkSphereListIsEmpty(String[] sphereList) {
+        return !(sphereList == null || sphereList.length == 0);
+    }
     /**
      * Handles the LogServiceMessage.
      * It will start/ stop the logging client accordingly based on the status received on the LoggingServiceMessage
@@ -33,7 +49,7 @@ public final class LogServiceMessageHandler {
      * @param loggingServiceMsg
      */
     public void handleLogServiceMessage(final LoggingServiceMessage loggingServiceMsg) {
-        if (BezirkValidatorUtility.checkLoggingServiceMessage(loggingServiceMsg)) {
+        if (checkLoggingServiceMessage(loggingServiceMsg)) {
             if (loggingServiceMsg.isLoggingStatus()) {//Start or Update the client
                 if (null == loggingManager) {
                     loggingManager = new BezirkLoggingManager();
@@ -46,7 +62,7 @@ public final class LogServiceMessageHandler {
                 FilterLogMessages.setLoggingSphereList(Arrays.asList(loggingServiceMsg.getSphereList()));
                 LoggingStatus.setLoggingEnabled(loggingServiceMsg.isLoggingStatus());
             } else {
-                if (BezirkValidatorUtility.isObjectNotNull(loggingManager)) {
+                if (ValidatorUtility.isObjectNotNull(loggingManager)) {
                     try {
                         loggingManager.stopLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(), loggingServiceMsg.getRemoteLoggingServicePort());
                         loggingManager = null;

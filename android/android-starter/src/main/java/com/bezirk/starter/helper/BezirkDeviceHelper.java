@@ -9,7 +9,7 @@ import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkPreferences;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public final class BezirkDeviceHelper {
     BezirkDevice setBezirkDevice(final BezirkPreferences preferences, final MainService service) {
         BezirkDevice bezirkDevice = initDevice(preferences, service);
 
-        if (BezirkValidatorUtility.isObjectNotNull(bezirkDevice)) {
+        if (ValidatorUtility.isObjectNotNull(bezirkDevice)) {
 
             BezirkCompManager.setUpaDevice(bezirkDevice);
 
@@ -93,7 +93,7 @@ public final class BezirkDeviceHelper {
 
         String deviceName = preferences.getString(BezirkPreferences.DEVICE_NAME_TAG_PREFERENCE, null);
 
-        if (BezirkValidatorUtility.checkForString(deviceName)) {
+        if (ValidatorUtility.checkForString(deviceName)) {
             logger.info("device type is already initialized to " + deviceName);
             bezirkDevice.setDeviceName(deviceName);
         } else {

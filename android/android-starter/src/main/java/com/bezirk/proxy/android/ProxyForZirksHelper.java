@@ -7,7 +7,7 @@ import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.streaming.control.Objects.StreamRecord;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -70,7 +70,7 @@ class ProxyForZirksHelper {
     void sendStreamToSpheres(Iterator<String> sphereIterator, String streamRequestKey, StreamRecord streamRecord, File tempFile, BezirkComms comms) {
         while (sphereIterator.hasNext()) {
             final ControlLedger tcMessage = prepareMessage(sphereIterator, streamRequestKey, streamRecord, tempFile);
-            if (BezirkValidatorUtility.isObjectNotNull(comms)) {
+            if (ValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(tcMessage);
             } else {
                 logger.error("Comms manager not initialized");

@@ -5,7 +5,7 @@ import java.util.concurrent.SynchronousQueue;
 
 /**
  * Manager Class that manages <b>singleton</b> queues used by the stack to send and receive the
- * Log messages (BezirkLoggingMessage). The Processors defined in the {@link com.bezirk.remotelogging.processors}
+ * Log messages (RemoteLogMessage). The Processors defined in the {@link com.bezirk.remotelogging.processors}
  * will process these queues accordingly.
  */
 @SuppressWarnings("PMD")// inorder to avoid the synchronized
@@ -17,7 +17,7 @@ public final class LoggingQueueManager {
     /**
      * Blocking Queue that is used to queue logger messages at the Logging Zirk.
      *
-     * @see BezirkLoggingService
+     * @see RemoteLoggingService
      */
     private static volatile BlockingQueue<String> logReceiverQueue = null;
 
@@ -28,7 +28,7 @@ public final class LoggingQueueManager {
     }
 
     /**
-     * loads the serialized BezirkLoggingMessage into LogSenderQueue
+     * loads the serialized RemoteLogMessage into LogSenderQueue
      *
      * @param serializedLogMsg serialized Log Message
      * @throws InterruptedException if multiple threads try to access the queue.
@@ -43,7 +43,7 @@ public final class LoggingQueueManager {
     /**
      * Waits on the logSenderQueue to retrieve the logger Message
      *
-     * @return String representation of the BezirkLoggingMessage
+     * @return String representation of the RemoteLogMessage
      * @throws InterruptedException if multiple threads try to access the queue.
      */
     public static StringBuilder fetchFromLogSenderQueue() throws InterruptedException {
@@ -54,7 +54,7 @@ public final class LoggingQueueManager {
     }
 
     /**
-     * loads the serialized BezirkLoggingMessage into LogReceiverQueue
+     * loads the serialized RemoteLogMessage into LogReceiverQueue
      *
      * @param serializedLogMsg serialized Log Message
      * @throws InterruptedException if multiple threads try to access the queue.
@@ -69,7 +69,7 @@ public final class LoggingQueueManager {
     /**
      * Waits on the logReceiverQueue to retrieve the logger Message
      *
-     * @return String representation of the BezirkLoggingMessage
+     * @return String representation of the RemoteLogMessage
      * @throws InterruptedException if multiple threads try to access the queue.
      */
     public static StringBuilder fetchFromLogReceiverQueue() throws InterruptedException {

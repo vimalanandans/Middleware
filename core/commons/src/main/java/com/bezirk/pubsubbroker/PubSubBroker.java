@@ -15,12 +15,12 @@ import com.bezirk.persistence.PubSubBrokerPersistence;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
+import com.bezirk.remotelogging.messages.RemoteLogMessage;
 import com.bezirk.remotelogging.queues.LoggingQueueManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
 import com.bezirk.remotelogging.status.LoggingStatus;
 import com.bezirk.remotelogging.util.Util;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +69,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
      */
     @Override
     public Boolean registerService(final ZirkId serviceId) {
-        if (!BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
+        if (!ValidatorUtility.checkBezirkZirkId(serviceId)) {
             logger.error("Invalid ZirkId");
             return false;
         }
@@ -89,7 +89,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
      */
     @Override
     public Boolean subscribeService(final ZirkId serviceId, final ProtocolRole pRole) {
-        if (!BezirkValidatorUtility.checkBezirkZirkId(serviceId) || !BezirkValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
+        if (!ValidatorUtility.checkBezirkZirkId(serviceId) || !ValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
             logger.error("Invalid Subscription, Validation failed");
             return false;
         }
@@ -107,7 +107,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
 
     @Override
     public Boolean unsubscribe(final ZirkId serviceId, final ProtocolRole role) {
-        if (!BezirkValidatorUtility.checkBezirkZirkId(serviceId) || !BezirkValidatorUtility.checkProtocolRole((SubscribedRole) role)) {
+        if (!ValidatorUtility.checkBezirkZirkId(serviceId) || !ValidatorUtility.checkProtocolRole((SubscribedRole) role)) {
             logger.error("Invalid UnSubscription, Validation failed");
             return false;
         }
@@ -120,7 +120,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
 
     @Override
     public Boolean unregisterService(final ZirkId serviceId) {
-        if (!BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
+        if (!ValidatorUtility.checkBezirkZirkId(serviceId)) {
             logger.error("Invalid UnRegistration, Validation failed");
             return false;
         }
@@ -143,7 +143,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
 
     @Override
     public Boolean isServiceRegistered(ZirkId serviceId) {
-        if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
+        if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
             return pubSubBrokerRegistry.isServiceRegistered(serviceId);
         }
         return false;
@@ -157,7 +157,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
 
     @Override
     public Boolean isStreamTopicRegistered(String streamTopic, ZirkId serviceId) {
-        if (!BezirkValidatorUtility.checkForString(streamTopic) || !BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
+        if (!ValidatorUtility.checkForString(streamTopic) || !ValidatorUtility.checkBezirkZirkId(serviceId)) {
             logger.error("Stream Topic or zirk Id is invalid");
             return false;
         }
@@ -167,7 +167,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
     // SERVICE-NAME NEEDS TO BE FILLED
     @Override
     public Set<BezirkDiscoveredZirk> discoverZirks(ProtocolRole pRole, Location location) {
-        if (!BezirkValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
+        if (!ValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
             logger.error("Discarding Discovery Lookup as ProtocolRole is invalid");
             return null;
         }
@@ -248,7 +248,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
     private Boolean decryptMsg(EventLedger eLedger) {
         // Decrypt the event message
         final String decryptedEventMsg = BezirkCompManager.getSphereForPubSubBroker().decryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getEncryptedMessage());
-        if (!BezirkValidatorUtility.checkForString(decryptedEventMsg)) {
+        if (!ValidatorUtility.checkForString(decryptedEventMsg)) {
             logger.debug("Header Decryption Failed: sphereId-" + eLedger.getHeader().getSphereName() + " may not exist");
 
             return false;
@@ -262,7 +262,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
      */
     private void sendRemoteLogMessage(EventLedger eLedger) {
         try {
-            LoggingQueueManager.loadLogSenderQueue(new BezirkLoggingMessage(eLedger.getHeader().getSphereName(),
+            LoggingQueueManager.loadLogSenderQueue(new RemoteLogMessage(eLedger.getHeader().getSphereName(),
                     String.valueOf(currentDate.getTime()), BezirkCompManager.getUpaDevice().getDeviceName(),
                     Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(), eLedger.getHeader().getTopic(), Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {
@@ -271,7 +271,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
     }
 
     public boolean checkUnicastEvent(String topic, ZirkId recipient) {
-        if (!BezirkValidatorUtility.checkForString(topic) || !BezirkValidatorUtility.checkBezirkZirkId(recipient)) {
+        if (!ValidatorUtility.checkForString(topic) || !ValidatorUtility.checkBezirkZirkId(recipient)) {
             logger.error("Unicast Event Check failed -> topic or Recipient is not valid");
             return false;
         }
@@ -281,7 +281,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
     // Return a HashSet<ZirkId> by creating a new one otherwise the receiving components can modify it!
 
     public Set<ZirkId> checkMulticastEvent(String topic, Location location) {
-        if (!BezirkValidatorUtility.checkForString(topic)) {
+        if (!ValidatorUtility.checkForString(topic)) {
             logger.error("Event Topic or Recipient is valid");
             return null;
         }

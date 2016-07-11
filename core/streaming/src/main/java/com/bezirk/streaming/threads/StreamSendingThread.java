@@ -8,7 +8,7 @@ import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.streaming.control.Objects.StreamRecord;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,7 @@ public class StreamSendingThread implements Runnable {
             dataOutputStream = new DataOutputStream(client.getOutputStream());
             if (isEncrypted) {
                 logger.debug("---------- Secure Data transfer requested! -------------");
-                if (BezirkValidatorUtility.isObjectNotNull(sphereForSadl)) {
+                if (ValidatorUtility.isObjectNotNull(sphereForSadl)) {
                     sphereForSadl.encryptSphereContent(fileInputStream, dataOutputStream, sphere);
                     logger.debug("---------- Secure Data transfer Completed! -------------");
                 } else {
@@ -95,7 +95,7 @@ public class StreamSendingThread implements Runnable {
 
         StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
                 senderServiceID, sentStatus, localStreamId);
-        if (BezirkValidatorUtility.isObjectNotNull(sadlReceiver)) {
+        if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {
 
             sadlReceiver.processStreamStatus(streamStatusMessage);
 
@@ -111,14 +111,14 @@ public class StreamSendingThread implements Runnable {
     private void closeResources(FileInputStream fileInputStream,
                                 DataOutputStream dataOutputStream) {
         try {
-            if (BezirkValidatorUtility.isObjectNotNull(dataOutputStream)) {
+            if (ValidatorUtility.isObjectNotNull(dataOutputStream)) {
                 dataOutputStream.flush();
                 dataOutputStream.close();
             }
-            if (BezirkValidatorUtility.isObjectNotNull(fileInputStream)) {
+            if (ValidatorUtility.isObjectNotNull(fileInputStream)) {
                 fileInputStream.close();
             }
-            if (BezirkValidatorUtility.isObjectNotNull(client)) {
+            if (ValidatorUtility.isObjectNotNull(client)) {
                 client.close();
             }
 

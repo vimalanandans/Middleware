@@ -3,7 +3,7 @@ package com.bezirk.sphere.discovery;
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
 import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
 import com.bezirk.sphere.api.BezirkSphereDiscovery;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,13 +62,13 @@ public class SphereDiscovery {
     public boolean addResponse(SphereDiscoveryResponse response) {
 
         synchronized (this) {
-            if (BezirkValidatorUtility.checkBezirkZirkEndPoint(response
+            if (ValidatorUtility.checkBezirkZirkEndPoint(response
                     .getRecipient())) {
 
                 final DiscoveryLabel dLabel = new DiscoveryLabel(
                         response.getRecipient(), response.getReqDiscoveryId());
                 final SphereDiscoveryRecord discRecord = discoveredMap.get(dLabel);
-                if (BezirkValidatorUtility.isObjectNotNull(discRecord)) {
+                if (ValidatorUtility.isObjectNotNull(discRecord)) {
                     //update sphere discovery record
                     discRecord.updateSet(response.getBezirkSphereInfo(),
                             response.getSender());

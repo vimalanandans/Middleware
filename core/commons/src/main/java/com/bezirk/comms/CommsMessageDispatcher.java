@@ -1,21 +1,16 @@
 package com.bezirk.comms;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
-import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
-import com.bezirk.remotelogging.queues.LoggingQueueManager;
-import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
-import com.bezirk.remotelogging.status.LoggingStatus;
-import com.bezirk.remotelogging.util.Util;
+import com.bezirk.remotelogging.RemoteMessageLog;
+
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,20 +20,11 @@ import java.util.Map;
  */
 public class CommsMessageDispatcher implements MessageDispatcher {
     private static final Logger logger = LoggerFactory.getLogger(CommsMessageDispatcher.class);
+
     private final PubSubEventReceiver pubSubEventReceiver;
 
-    //private IPubSubBrokerControlReceiver sadlCtrlRxer;
-    /*
-    private LogServiceMessageHandler logServiceMsgHandler = null;
+    RemoteMessageLog msgLog = null;
 
-    private MessageQueue msgQueue = null;
-
-    // temp implementation.
-    MessageQueue ctrlSenderQueue = null;
-    MessageQueue streamQueue = null;
-    PortFactory  portFactory = null;
-    */
-    private final Date currentDate = new Date();
     // Map of control receivers
     Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
             new HashMap<ControlMessage.Discriminator, CtrlMsgReceiver>();
@@ -65,7 +51,7 @@ public class CommsMessageDispatcher implements MessageDispatcher {
     // if needed extend similar mechanism to control message dispatching
     @Override
     public boolean dispatchServiceMessages(EventLedger eLedger) {
-        if (BezirkValidatorUtility.isObjectNotNull(pubSubEventReceiver)) {
+        if (ValidatorUtility.isObjectNotNull(pubSubEventReceiver)) {
             return pubSubEventReceiver.processEvent(eLedger);
         } else {
             logger.error("no valid zirk message receivers ");
@@ -83,15 +69,19 @@ public class CommsMessageDispatcher implements MessageDispatcher {
 
         logger.debug("Message decrypted with Discriminator : " + id);
 
-        if (LoggingStatus.isLoggingEnabled() && FilterLogMessages.checkSphere(ctrlMsg.getSphereId())) {
-            sendRemoteLogMessage(ctrlMsg);
+        if(msgLog != null)
+        {
+            if(msgLog.isEnabled())
+            {
+                msgLog.sendRemoteLogMessage(ctrlMsg);
+            }
         }
 
 
         //get the registered receiver
         CtrlMsgReceiver ctrlReceiver = ctrlReceivers.get(id);
 
-        if (BezirkValidatorUtility.isObjectNotNull(ctrlReceiver)) {
+        if (ValidatorUtility.isObjectNotNull(ctrlReceiver)) {
             // invoke the listener
             if (!ctrlReceiver.processControlMessage(id, serializedMsg)) {
                 logger.debug("Receiver not processing id > " + id);
@@ -116,8 +106,11 @@ public class CommsMessageDispatcher implements MessageDispatcher {
         ControlMessage msg = tcMessage.getMessage();
         logger.debug("Message decrypted with Discriminator : " + msg.getDiscriminator());
 
-        if (LoggingStatus.isLoggingEnabled() && FilterLogMessages.checkSphere(tcMessage.getSphereId())) {
-            sendRemoteLogMessage(tcMessage);
+        if(msgLog != null)
+        {
+            if(msgLog.isEnabled()) {
+                msgLog.sendRemoteLogMessage(tcMessage);
+            }
         }
 
         ControlMessage.Discriminator id = msg.getDiscriminator();
@@ -125,7 +118,7 @@ public class CommsMessageDispatcher implements MessageDispatcher {
         //get the registered receiver
         CtrlMsgReceiver ctrlReceiver = ctrlReceivers.get(id);
 
-        if (BezirkValidatorUtility.isObjectNotNull(ctrlReceiver)) {
+        if (ValidatorUtility.isObjectNotNull(ctrlReceiver)) {
             // invoke the listener
             if (!ctrlReceiver.processControlMessage(id, tcMessage.getSerializedMessage())) {
                 logger.debug("Receiver not processing id > " + id);
@@ -140,38 +133,6 @@ public class CommsMessageDispatcher implements MessageDispatcher {
     }
 
 
-    private void sendRemoteLogMessage(ControlLedger tcMessage) {
-        try {
-            LoggingQueueManager.loadLogSenderQueue(
-                    new BezirkLoggingMessage(
-                            tcMessage.getSphereId(),
-                            String.valueOf(currentDate.getTime()),
-                            BezirkCompManager.getUpaDevice().getDeviceName(),
-                            Util.CONTROL_RECEIVER_VALUE,
-                            tcMessage.getMessage().getUniqueKey(),
-                            tcMessage.getMessage().getDiscriminator().name(),
-                            Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
-                            Util.LOGGING_VERSION).serialize());
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
-        }
-    }
 
-    private void sendRemoteLogMessage(ControlMessage msg) {
-        try {
-            LoggingQueueManager.loadLogSenderQueue(
-                    new BezirkLoggingMessage(
-                            msg.getSphereId(),
-                            String.valueOf(currentDate.getTime()),
-                            BezirkCompManager.getUpaDevice().getDeviceName(),
-                            Util.CONTROL_RECEIVER_VALUE,
-                            msg.getUniqueKey(),
-                            msg.getDiscriminator().name(),
-                            Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
-                            Util.LOGGING_VERSION).serialize());
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
-        }
-    }
 
 }

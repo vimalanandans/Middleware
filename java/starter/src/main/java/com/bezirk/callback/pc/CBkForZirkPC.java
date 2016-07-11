@@ -6,7 +6,7 @@ import com.bezirk.messagehandler.PipeRequestIncomingMessage;
 import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.messagehandler.StreamIncomingMessage;
 import com.bezirk.messagehandler.StreamStatusMessage;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ public final class CBkForZirkPC implements ZirkMessageHandler {
 
     @Override
     public void onIncomingEvent(EventIncomingMessage eventIncomingMessage) {
-        if (BezirkValidatorUtility.isObjectNotNull(brForService)) {
+        if (ValidatorUtility.isObjectNotNull(brForService)) {
             brForService.onReceive(eventIncomingMessage);
         } else {
             logger.debug(RECEIVER_NULL_ERROR);
@@ -36,7 +36,7 @@ public final class CBkForZirkPC implements ZirkMessageHandler {
 
     @Override
     public void onIncomingStream(StreamIncomingMessage streamIncomingMessage) {
-        if (BezirkValidatorUtility.isObjectNotNull(brForService)) {
+        if (ValidatorUtility.isObjectNotNull(brForService)) {
             brForService.onReceive(streamIncomingMessage);
         } else {
 
@@ -64,7 +64,7 @@ public final class CBkForZirkPC implements ZirkMessageHandler {
 
     @Override
     public void onStreamStatus(StreamStatusMessage streamStatusMessage) {
-        if (BezirkValidatorUtility.isObjectNotNull(brForService)) {
+        if (ValidatorUtility.isObjectNotNull(brForService)) {
             brForService.onReceive(streamStatusMessage);
         } else {
             logger.debug(RECEIVER_NULL_ERROR);
@@ -74,7 +74,7 @@ public final class CBkForZirkPC implements ZirkMessageHandler {
     @Override
     public void onDiscoveryIncomingMessage(
             DiscoveryIncomingMessage discoveryCallback) {
-        if (BezirkValidatorUtility.isObjectNotNull(brForService)) {
+        if (ValidatorUtility.isObjectNotNull(brForService)) {
             brForService.onReceive(discoveryCallback);
         } else {
             logger.debug(RECEIVER_NULL_ERROR);

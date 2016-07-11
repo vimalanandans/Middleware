@@ -1,14 +1,15 @@
-package com.bezirk.logging.ui;
+package com.bezirk.remotelogging.ui;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.remotelogging.loginterface.BezirkLogging;
+import com.bezirk.remotelogging.RemoteLoggingMessage;
+import com.bezirk.remotelogging.RemoteLoggingMessageNotification;
 import com.bezirk.remotelogging.manager.BezirkLoggingManager;
-import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
-import com.bezirk.remotelogging.service.BezirkLoggingService;
-import com.bezirk.remotelogging.util.Util;
+
+import com.bezirk.remotelogging.RemoteMessageLog;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,12 +47,12 @@ import javax.swing.event.ListSelectionListener;
 
 /**
  * Class that displays the GUI to select the spheres and start the logging Zirk.
- * {@link com.bezirk.remotelogging.BezirkLogging}
+ * {@link RemoteLoggingMessageNotification}
  */
-public final class SphereSelectGUI extends JFrame implements BezirkLogging {
+public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLoggingMessageNotification {
     private static final long serialVersionUID = 1L;
 
-    private static final Logger logger = LoggerFactory.getLogger(SphereSelectGUI.class);
+    private static final Logger logger = LoggerFactory.getLogger(RemoteLogSphereSelectGUI.class);
 
     /**
      * GUI components
@@ -95,7 +96,7 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
         public void actionPerformed(ActionEvent arg0) {
             leftSphereListModel.removeAllElements();
             rightSphereListModel.removeAllElements();
-            leftSphereListModel.addElement(Util.ANY_SPHERE);
+            leftSphereListModel.addElement(RemoteMessageLog.ALL_SPHERES);
             try {
                 final Iterator<BezirkSphereInfo> sphereInfoIterator = BezirkCompManager
                         .getSphereUI().getSpheres().iterator();
@@ -109,6 +110,7 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
         }
     };
     transient BezirkComms comms;
+    RemoteMessageLog msgLog = null;
     private String[] tempArray;
     private int size;
     /**
@@ -123,8 +125,8 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
             tempArray = new String[leftSphereListModel.size()];
 
             final String temp = leftSphereListModel.elementAt(index);
-            if (temp.equals(Util.ANY_SPHERE)) {
-                rightSphereListModel.addElement(Util.ANY_SPHERE);
+            if (temp.equals(RemoteMessageLog.ALL_SPHERES)) {
+                rightSphereListModel.addElement(RemoteMessageLog.ALL_SPHERES);
                 for (int i = 0; i < size; i++) {
                     tempArray[i] = leftSphereListModel.elementAt(0);
                     leftSphereListModel.removeElementAt(0);
@@ -135,7 +137,7 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
             } else {
                 rightSphereListModel.addElement(temp);
                 leftSphereListModel.remove(index);
-                leftSphereListModel.removeElement(Util.ANY_SPHERE);
+                leftSphereListModel.removeElement(RemoteMessageLog.ALL_SPHERES);
                 if (!rightSphereListModel.isEmpty()) {
                     startLoggingBtn.setEnabled(true);
                 }
@@ -157,9 +159,9 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
             leftSphereListModel.addElement(temp);
             if (!rightSphereListModel.isEmpty()) {
                 startLoggingBtn.setEnabled(false);
-                if (!leftSphereListModel.elementAt(0).equals(Util.ANY_SPHERE)) {
-                    leftSphereListModel.add(0, Util.ANY_SPHERE);
-                } else if (temp.equals(Util.ANY_SPHERE)) {
+                if (!leftSphereListModel.elementAt(0).equals(RemoteMessageLog.ALL_SPHERES)) {
+                    leftSphereListModel.add(0, RemoteMessageLog.ALL_SPHERES);
+                } else if (temp.equals(RemoteMessageLog.ALL_SPHERES)) {
                     leftSphereListModel.removeAllElements();
                     startLoggingBtn.setEnabled(false);
                     for (int i = 0; i < size; i++) {
@@ -174,9 +176,9 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
     /**
      * Thread that starts and stops the LoggingService.
      *
-     * @see BezirkLoggingService
+     *
      */
-    private transient BezirkLogDetailsGUI bezirk;
+    private transient RemoteLogDetailsGUI remoteLogDetails;
     private transient BezirkLoggingManager bezirkLoggingManager;
     private final transient WindowAdapter closeButtonListener = new WindowAdapter() {
         @Override
@@ -210,11 +212,11 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
                 selectedSpheres[i] = rightSphereListModel.getElementAt(i);
             }
 
-            if (selectedSpheres[0].equals(Util.ANY_SPHERE)) {
+            if (selectedSpheres[0].equals(RemoteMessageLog.ALL_SPHERES)) {
                 selectedSpheres = tempArray;
             }
 
-            bezirk = new BezirkLogDetailsGUI(comms, selectedSpheres, thisFrame,
+            remoteLogDetails = new RemoteLogDetailsGUI(comms, selectedSpheres, thisFrame,
                     isDeveloperModeEnabled);
         }
     };
@@ -224,7 +226,7 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
      *
      * @param comms
      */
-    public SphereSelectGUI(BezirkComms comms) {
+    public RemoteLogSphereSelectGUI(BezirkComms comms) {
         thisFrame = this;
         this.comms = comms;
         try {
@@ -358,10 +360,12 @@ public final class SphereSelectGUI extends JFrame implements BezirkLogging {
     }
 
     @Override
-    public void handleLogMessage(BezirkLoggingMessage bezirkLogMessage) {
-        if (null != bezirk) {
-
-            bezirk.updateTable(bezirkLogMessage);
+    public void handleLogMessage(RemoteLoggingMessage logMessage) {
+        if (null != remoteLogDetails && msgLog != null) {
+            if(msgLog.isRemoteMessageValid(logMessage))
+            {
+                remoteLogDetails.updateTable(logMessage);
+            }
         }
     }
 

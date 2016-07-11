@@ -1,11 +1,11 @@
-package com.bezirk.remotelogging.messages;
+package com.bezirk.remotelogging;
 
 import com.google.gson.Gson;
 
 /**
- * This class defines the Bezirk Logging Message that are used by the Platforms for Remote Logging.
+ * This class defines the Remote Logging Message that are used by the Platforms for Remote Logging.
  */
-public class BezirkLoggingMessage {
+public class RemoteLoggingMessage {
     /**
      * sphere Name on which the Remote Logging Message is sent.
      */
@@ -39,7 +39,7 @@ public class BezirkLoggingMessage {
      */
     public String version = null;
 
-    public BezirkLoggingMessage() {
+    public RemoteLoggingMessage() {
         //	 Empty Constructor used by Json to toJson Deserialize
     }
 
@@ -50,13 +50,13 @@ public class BezirkLoggingMessage {
      * @param sphereName    Name of the sphere
      * @param timeStamp     timeStamp of the Message
      * @param sender        Sender IP
-     * @param recipient     Recipient Ip, null incase of multicast
+     * @param recipient     Recipient Ip, null in case of multicast
      * @param uniqueMsgId   MsgId of the message that is sent or received
-     * @param topic         topic of the Message, discriminator incase of Control Message
+     * @param topic         topic of the Message, discriminator in case of Control Message
      * @param typeOfMessage one of (EVENT-SEND, EVENT-RECEIVE, CONTROL-MESSAGE-SEND, CONTROL-MESSAGE-RECEIVE)
      * @param version       Version of the Logging Message
      */
-    public BezirkLoggingMessage(String sphereName, String timeStamp,
+    public RemoteLoggingMessage(String sphereName, String timeStamp,
                                 String sender, String recipient, String uniqueMsgId, String topic,
                                 String typeOfMessage, String version) {
         super();

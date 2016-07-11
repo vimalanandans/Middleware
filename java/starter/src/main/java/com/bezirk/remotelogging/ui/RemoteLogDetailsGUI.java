@@ -1,10 +1,9 @@
-package com.bezirk.logging.ui;
+package com.bezirk.remotelogging.ui;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
-import com.bezirk.logging.LogServiceActivatorDeactivator;
-import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
-import com.bezirk.remotelogging.util.Util;
+import com.bezirk.remotelogging.RemoteLoggingMessage;
+import com.bezirk.remotelogging.RemoteMessageLog;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,15 +36,17 @@ import javax.swing.table.DefaultTableModel;
 /**
  * Class that shows the Log Details of the connected logging clients.
  */
-public class BezirkLogDetailsGUI extends JFrame {
+public class RemoteLogDetailsGUI extends JFrame {
     private static final long serialVersionUID = 1210684068159783241L;
 
-    private static final Logger logger = LoggerFactory.getLogger(BezirkLogDetailsGUI.class);
+    private static final Logger logger = LoggerFactory.getLogger(RemoteLogDetailsGUI.class);
     /**
      * Value to be displayed for the Recipient during MULTICAST
      */
     private static final String RECIPIENT_MULTICAST_VALUE = "MULTI-CAST";
     private static final int SIZE_OF_LOG_MSG_MAP = 128;
+
+    RemoteMessageLog msgLog = null;
     /*
      * GUI Components
      */
@@ -97,7 +98,7 @@ public class BezirkLogDetailsGUI extends JFrame {
      * start the loggingService Processors and init the GUI
      *
      */
-    public BezirkLogDetailsGUI(BezirkComms comms, String[] spheres, JFrame frame,
+    public RemoteLogDetailsGUI(BezirkComms comms, String[] spheres, JFrame frame,
                                boolean isDeveloperModeEnabled) {
         this.sphereSelectFrame = frame;
         selectedSpheres = spheres.clone();
@@ -192,27 +193,15 @@ public class BezirkLogDetailsGUI extends JFrame {
     }
 
     private void sendLoggingServiceMsg(boolean isActivateLogging) {
-        String[] loggingSpheres;
-        if (Util.ANY_SPHERE.equals(selectedSpheres[0])) {
-            loggingSpheres = new String[1];
-            loggingSpheres[0] = Util.ANY_SPHERE;
-        } else {
-            loggingSpheres = selectedSpheres;
-        }
 
-        LogServiceActivatorDeactivator.sendLoggingServiceMsgToClients(comms,
-                selectedSpheres, loggingSpheres, isActivateLogging);
+        msgLog.setLogger(isActivateLogging,selectedSpheres);
+
     }
 
-    public void updateTable(BezirkLoggingMessage bezirkLogMessage) {
+    public void updateTable(RemoteLoggingMessage bezirkLogMessage) {
 
-        if (!isDeveloperModeEnabled
-                && bezirkLogMessage.typeOfMessage
-                .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE
-                        .name())
-                || bezirkLogMessage.typeOfMessage
-                .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND
-                        .name())) {
+        if (!isDeveloperModeEnabled){
+
             return;
         }
 

@@ -1,7 +1,7 @@
 package com.bezirk.comms;
 
 import com.bezirk.starter.BezirkConfig;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -156,7 +156,7 @@ public final class BezirkCommsPC {
                                                Properties props, BezirkConfig bezirkConfig) {
         final String value = System.getProperty(propName);
 
-        if (BezirkValidatorUtility.checkForString(value)) {
+        if (ValidatorUtility.checkForString(value)) {
             logger.info("found system property: " + propName + ": " + value);
             props.setProperty(propName, value);
 

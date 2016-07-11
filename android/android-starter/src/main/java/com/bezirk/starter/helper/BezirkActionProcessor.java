@@ -5,7 +5,7 @@ import android.content.Intent;
 import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkActionCommands;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public final class BezirkActionProcessor {
 
         INTENT_ACTIONS intentAction = INTENT_ACTIONS.getActionUsingMessage(intent.getAction());
 
-        if (BezirkValidatorUtility.isObjectNotNull(intentAction)) {
+        if (ValidatorUtility.isObjectNotNull(intentAction)) {
             logger.info("Intent Action > {}", intentAction.message);
 
             INTENT_ACTIONS.ACTION_TYPE actionType = intentAction.type;
@@ -248,7 +248,7 @@ public final class BezirkActionProcessor {
         static INTENT_ACTIONS getActionUsingMessage(String actionMessage) {
 
             for (INTENT_ACTIONS intentAction : INTENT_ACTIONS.values()) {
-                if (intentAction.message.equals(actionMessage) && BezirkValidatorUtility.isObjectNotNull(intentAction.type)) {
+                if (intentAction.message.equals(actionMessage) && ValidatorUtility.isObjectNotNull(intentAction.type)) {
                     return intentAction;
                 }
             }

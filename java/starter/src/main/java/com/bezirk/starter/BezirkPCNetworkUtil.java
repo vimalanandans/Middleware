@@ -1,7 +1,7 @@
 package com.bezirk.starter;
 
 import com.bezirk.comms.CommsConfigurations;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 import com.bezrik.network.BezirkNetworkUtilities;
 import com.bezrik.network.IntfInetPair;
 
@@ -91,7 +91,7 @@ final class BezirkPCNetworkUtil {
             else {
                 logger.info("Found multiple interfaces, prompting user to choose ...");
                 final String intfName = promptUserForInterface(bezirkConfig);
-                if (BezirkValidatorUtility.checkForString(intfName)) {
+                if (ValidatorUtility.checkForString(intfName)) {
                     networkInterface = NetworkInterface.getByName(intfName);
                 } else {
                     logger.error("Invalid interface name selected! Bezirk is shutting down. . .");

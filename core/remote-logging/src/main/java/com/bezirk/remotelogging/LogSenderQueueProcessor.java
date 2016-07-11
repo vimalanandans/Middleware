@@ -1,4 +1,6 @@
-package com.bezirk.remotelogging;
+package com.bezirk.remotelogging.processors;
+
+import com.bezirk.remotelogging.queues.LoggingQueueManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +15,6 @@ import java.net.Socket;
  * and removes it from the queue.
  */
 public class LogSenderQueueProcessor extends Thread {
-    /**
-     * private logger for the class
-     */
     private static final Logger logger = LoggerFactory.getLogger(LogSenderQueueProcessor.class);
     /**
      * Logging Zirk IP. This will set based on the LoggingMessage from the Logging zirk.

@@ -48,10 +48,6 @@ public final class BezirkCompManager {
 
     private static BezirkSphereRegistration bezirkSphereRegistration;
 
-    //private static BezirkSphereMessages uhuSphereMessages;
-
-
-
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
     private BezirkCompManager() {

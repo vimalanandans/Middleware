@@ -1,5 +1,9 @@
-package com.bezirk.remotelogging;
+package com.bezirk.remotelogging.processors;
 
+import com.bezirk.remotelogging.loginterface.RemoteLogMessageNotification;
+import com.bezirk.remotelogging.messages.RemoteLogMessage;
+import com.bezirk.remotelogging.queues.LoggingQueueManager;
+import com.bezirk.remotelogging.util.Util;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -8,24 +12,21 @@ import org.slf4j.LoggerFactory;
 /**
  * Processes the LogReceiverQueue. It makes a blocking call on the Log Receiver Queue and
  * waits for the queue to be updated. It retrieve the String from the LogReceiverQueue and
- * converts (de-serializes) it into the BezirkLoggingMessage and gives it to the platform specific
+ * converts (de-serializes) it into the RemoteLogMessage and gives it to the platform specific
  * BezirkLoggingHandler to update the UI.
  */
 public class LogReceiverQueueProcessor extends Thread {
-    /**
-     * private logger for the class
-     */
     private static final Logger logger = LoggerFactory.getLogger(LogReceiverQueueProcessor.class);
     /**
      * Platform specific logger
      */
-    private final BezirkLogging platformSpecificLogger;
+    private final RemoteLogMessageNotification platformSpecificLogger;
     /**
      * Flag used for starting/ Stopping Threads!
      */
     private boolean isRunning = false;
     /**
-     * Gson to fromJson into BezirkLoggingMessage
+     * Gson to fromJson into RemoteLogMessage
      */
     private Gson gson = null;
 
@@ -34,7 +35,7 @@ public class LogReceiverQueueProcessor extends Thread {
      *
      * @param logger platform Specific Logger that is used to update the UI.
      */
-    public LogReceiverQueueProcessor(BezirkLogging logger) {
+    public LogReceiverQueueProcessor(RemoteLogMessageNotification logger) {
         this.platformSpecificLogger = logger;
     }
 
@@ -45,7 +46,7 @@ public class LogReceiverQueueProcessor extends Thread {
                 StringBuilder logMsgString = LoggingQueueManager.fetchFromLogReceiverQueue();
 
                 try {
-                    BezirkLoggingMessage logMsg = gson.fromJson(logMsgString.toString(), BezirkLoggingMessage.class);
+                    RemoteLogMessage logMsg = gson.fromJson(logMsgString.toString(), RemoteLogMessage.class);
                     if (Util.LOGGING_VERSION.equals(logMsg.version)) {
                         platformSpecificLogger.handleLogMessage(logMsg);
                     } else {

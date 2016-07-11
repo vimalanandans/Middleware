@@ -24,7 +24,7 @@ import com.bezirk.sphere.BezirkSphereForAndroid;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkPreferences;
 import com.bezirk.starter.BezirkWifiManager;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -160,7 +160,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                      *************************************************************/
                     InetAddress inetAddress = androidNetworkUtil.fetchInetAddress(service);
                     comms = bezirkStartStackHelper.initializeComms(inetAddress, pubSubBroker, proxy, errNotificationCallback);
-                    if (!BezirkValidatorUtility.isObjectNotNull(comms)) {
+                    if (!ValidatorUtility.isObjectNotNull(comms)) {
                         logger.error("Unable to initialize comms layer. Shutting down bezirk.");
                         service.stopSelf();
                     }
@@ -172,7 +172,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                     /*************************************************************
                      * Step 8 : Initialize BezirkSphere                             *
                      *************************************************************/
-                    if (BezirkValidatorUtility.isObjectNotNull(bezirkDevice) && !sphereProcessorForMainService.initSphere(bezirkDevice, service, registryPersistence, preferences)) {
+                    if (ValidatorUtility.isObjectNotNull(bezirkDevice) && !sphereProcessorForMainService.initSphere(bezirkDevice, service, registryPersistence, preferences)) {
                         // at the moment the init sphere fails due to persistence. hence delete it
                         // quickfix.delete the database
                         logger.error("delete DB");
@@ -285,7 +285,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
     /* clear the persistence */
     void clearPersistence(MainService service) {
 
-        if (BezirkValidatorUtility.isObjectNotNull(registryPersistence)) {
+        if (ValidatorUtility.isObjectNotNull(registryPersistence)) {
             try {
                 registryPersistence.clearPersistence();
             } catch (Exception e) {

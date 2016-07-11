@@ -11,7 +11,7 @@ import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.control.Objects.StreamRecord.StreamingStatus;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +71,7 @@ public class StreamQueueProcessor implements Runnable {
             List<Ledger> streamQueue = new CopyOnWriteArrayList<Ledger>(
                     msgQueue.getQueue()); // pop the Stream record
             Iterator<Ledger> it = streamQueue.iterator();
-            if (BezirkValidatorUtility.isObjectNotNull(sadlReceiver)) {
+            if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {
 
                 bezirkCallbackPresent = true;
 
@@ -119,7 +119,7 @@ public class StreamQueueProcessor implements Runnable {
 
         } else {
 
-            if (BezirkValidatorUtility.isObjectNotNull(sphereForSadl)) {
+            if (ValidatorUtility.isObjectNotNull(sphereForSadl)) {
 
                 new Thread(new StreamSendingThread(streamRecord, sadlReceiver, sphereForSadl)).start();                       // spawn the thread
             } else {

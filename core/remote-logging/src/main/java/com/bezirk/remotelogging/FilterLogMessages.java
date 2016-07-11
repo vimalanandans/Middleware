@@ -15,7 +15,7 @@ public final class FilterLogMessages {
      */
     private static List<String> loggingSphereList = null;
     /**
-     * ANY_SPHERE flag
+     * ALL_SPHERES flag
      */
     private static boolean anySphereEnabled = false;
 
@@ -28,7 +28,7 @@ public final class FilterLogMessages {
     /**
      * Updates the <code>loggingSphereList</code> with spheres selected by the logging Zirk.
      * <p>
-     * This method checks if the list contains only <code>ANY_SPHERE</code> mode and if so sets the
+     * This method checks if the list contains only <code>ALL_SPHERES</code> mode and if so sets the
      * <code>anySphereEnabled</code> flag to <code>true</code>.
      * </p>
      *
@@ -46,7 +46,7 @@ public final class FilterLogMessages {
      * Logging Zirk is activated
      *
      * @param sphereId sphereId of the control/ Event Message
-     * @return true if Logging Zirk is activated for ANY_SPHERE or if the message belongs to the
+     * @return true if Logging Zirk is activated for ALL_SPHERES or if the message belongs to the
      * sphere in which Logging zirk is activated. False, otherwise.
      */
     public static boolean checkSphere(final String sphereId) {

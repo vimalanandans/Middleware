@@ -9,9 +9,9 @@ public class Util {
      */
     public static final String LOGGING_VERSION = "0.0.1";
     /**
-     * Constant label for ANY_SPHERE logging
+     * Constant label for ALL_SPHERES logging
      */
-    public static final String ANY_SPHERE = "ALL-SPHERES";
+    //public static final String ALL_SPHERE = "ALL-SPHERES";
     /**
      * Value for the Control ReceiverField that is sent on the wire.
      */

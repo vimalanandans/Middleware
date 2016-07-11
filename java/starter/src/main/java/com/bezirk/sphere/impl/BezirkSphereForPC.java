@@ -7,7 +7,7 @@ import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezirk.sphere.api.ISphereConfig;
 import com.bezirk.sphere.security.CryptoEngine;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 import com.google.zxing.common.BitMatrix;
 
 import org.slf4j.Logger;
@@ -69,7 +69,7 @@ public class BezirkSphereForPC extends BezirkSphere implements BezirkQRCode,
     public boolean saveQRCode(String filePath, String filePrefix) {
         final String fileName;
 
-        if (BezirkValidatorUtility.checkForString(filePath)) {
+        if (ValidatorUtility.checkForString(filePath)) {
             final File folder = new File(filePath);
 
             if (!folder.exists()) {

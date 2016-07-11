@@ -20,7 +20,7 @@ import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.pc.ProxyForServices;
 import com.bezirk.proxy.ServiceRegistration;
 import com.bezirk.starter.MainService;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,13 +120,13 @@ public class Proxy implements Bezirk {
             throw new IllegalArgumentException("No listener specified when subscribing to role");
         }
 
-        if (BezirkValidatorUtility.isObjectNotNull(protocolRole.getEventTopics())) {
+        if (ValidatorUtility.isObjectNotNull(protocolRole.getEventTopics())) {
             proxyUtil.addTopicsToMaps(zirkId, protocolRole.getEventTopics(),
                     listener, sidMap, eventListenerMap, "Event");
         } else {
             logger.info("No Events to Subscribe");
         }
-        if (BezirkValidatorUtility.isObjectNotNull(protocolRole.getStreamTopics())) {
+        if (ValidatorUtility.isObjectNotNull(protocolRole.getStreamTopics())) {
 
             proxyUtil.addTopicsToMaps(zirkId, protocolRole.getStreamTopics(),
                     listener, sidMap, streamListenerMap, "Stream");

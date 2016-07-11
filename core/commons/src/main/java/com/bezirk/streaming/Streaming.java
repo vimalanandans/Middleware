@@ -1,5 +1,6 @@
 package com.bezirk.streaming;
 
+import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.MessageDispatcher;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;
@@ -13,11 +14,10 @@ import com.bezirk.streaming.control.Objects.StreamRecord;
  */
 public interface Streaming {
 
-
     /**
      * Initialize the streaming queue, streaming thread,stream store and register the receivers with the message dispatcher.
      */
-    public boolean initStreams(MessageDispatcher dispatcher);
+    public boolean initStreams(BezirkComms comms);
 
     /**
      * Start the streaming thread

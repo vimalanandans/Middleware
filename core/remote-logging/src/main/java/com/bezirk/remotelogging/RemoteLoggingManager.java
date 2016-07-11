@@ -1,20 +1,16 @@
-package com.bezirk.remotelogging.manager;
+package com.bezirk.remotelogging;
 
-import com.bezirk.remotelogging.client.LoggingClient;
-import com.bezirk.remotelogging.loginterface.BezirkLogging;
-import com.bezirk.remotelogging.processors.LogReceiverQueueProcessor;
-import com.bezirk.remotelogging.service.BezirkLoggingService;
 
 
 /**
  * Logging Manager class that starts/stops LoggingServices and LoggingClient.
  * The platforms need to instantiate this manager and can start stop the zirk.
  */
-public final class BezirkLoggingManager {
+public final class RemoteLoggingManager {
     /**
-     * BezirkLoggingService
+     * RemoteLoggingService
      */
-    private BezirkLoggingService bezirkLoggingService = null;
+    private RemoteLoggingService remoteLoggingService = null;
     /**
      * LogReceiverProcessor used by the Logging Zirk
      */
@@ -24,7 +20,7 @@ public final class BezirkLoggingManager {
      */
     private LoggingClient logClient = null;
 
-    public BezirkLoggingManager() {
+    public RemoteLoggingManager() {
         // TODO Auto-generated constructor stub
     }
 
@@ -35,11 +31,11 @@ public final class BezirkLoggingManager {
      * @param platformSpecificHandler handler to give callback once the zirk receives the request
      * @throws Exception if handler is null, or something goes wrong while processing.
      */
-    public void startLoggingService(final int loggingPort, final BezirkLogging platformSpecificHandler) throws Exception {
-        if (bezirkLoggingService == null && platformSpecificHandler != null) {
-            bezirkLoggingService = new BezirkLoggingService(loggingPort);
+    public void startLoggingService(final int loggingPort, final RemoteLoggingMessageNotification platformSpecificHandler) throws Exception {
+        if (remoteLoggingService == null && platformSpecificHandler != null) {
+            remoteLoggingService = new RemoteLoggingService(loggingPort);
             receiverQueueProcessor = new LogReceiverQueueProcessor(platformSpecificHandler);
-            bezirkLoggingService.startLoggingService();
+            remoteLoggingService.startLoggingService();
             receiverQueueProcessor.startProcessing();
             return;
         }
@@ -52,10 +48,10 @@ public final class BezirkLoggingManager {
      * @throws Exception if logging zirk is tried to stop that is not started
      */
     public void stopLoggingService() throws Exception {
-        if (bezirkLoggingService != null) {
+        if (remoteLoggingService != null) {
             receiverQueueProcessor.stopProcessing();
-            bezirkLoggingService.stopLoggingService();
-            bezirkLoggingService = null;
+            remoteLoggingService.stopLoggingService();
+            remoteLoggingService = null;
             receiverQueueProcessor = null;
             return;
         }

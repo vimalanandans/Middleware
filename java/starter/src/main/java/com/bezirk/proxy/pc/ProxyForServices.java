@@ -30,7 +30,7 @@ import com.bezirk.pubsubbroker.discovery.DiscoveryRecord;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 import com.bezrik.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
@@ -96,7 +96,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
             ecMessage.setHeader(mHeader);
             ecMessage.setSerializedHeader(mHeader.serialize());
             //MessageQueueManager.getSendingMessageQueue().addToQueue(ecMessage);
-            if (BezirkValidatorUtility.isObjectNotNull(comms)) {
+            if (ValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(ecMessage);
             } else {
                 logger.error("Comms manager not initialized");
@@ -132,7 +132,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
             ecMessage.setHeader(uHeader);
             ecMessage.setSerializedHeader(uHeader.serialize());
             //MessageQueueManager.getSendingMessageQueue().addToQueue(ecMessage);
-            if (BezirkValidatorUtility.isObjectNotNull(comms)) {
+            if (ValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(ecMessage);
             } else {
                 logger.error("Comms manager not initialized");
@@ -150,7 +150,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
 
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         final BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(serviceId);
-        final Location loc = BezirkValidatorUtility.isObjectNotNull(recipientSelector) ? recipientSelector.getLocation() : null;
+        final Location loc = ValidatorUtility.isObjectNotNull(recipientSelector) ? recipientSelector.getLocation() : null;
 
         while (sphereIterator.hasNext()) {
             final ControlLedger ControlLedger = new ControlLedger();
@@ -160,7 +160,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
             ControlLedger.setMessage(discoveryRequest);
             ControlLedger.setSerializedMessage(ControlLedger.getMessage().serialize());
             //MessageQueueManager.getControlSenderQueue().addToQueue(ControlLedger);
-            if (BezirkValidatorUtility.isObjectNotNull(comms)) {
+            if (ValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(ControlLedger);
             } else {
                 logger.error("Comms manager not initialized");
@@ -216,7 +216,7 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
                 tcMessage.setMessage(request);
                 tcMessage.setSerializedMessage(new Gson().toJson(request));
                 //MessageQueueManager.getControlSenderQueue().addToQueue(tcMessage);
-                if (BezirkValidatorUtility.isObjectNotNull(comms)) {
+                if (ValidatorUtility.isObjectNotNull(comms)) {
                     comms.sendMessage(tcMessage);
                 } else {
                     logger.error("Comms manager not initialized");

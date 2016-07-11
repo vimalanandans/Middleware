@@ -11,7 +11,7 @@ import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -45,11 +45,11 @@ public final class BezirkServiceHelper {
 
         String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
         String protocolRoleAsString = intent.getStringExtra(subPrtclKEY);
-        if (BezirkValidatorUtility.checkForString(serviceIdAsString) && BezirkValidatorUtility.checkForString(protocolRoleAsString)) {
+        if (ValidatorUtility.checkForString(serviceIdAsString) && ValidatorUtility.checkForString(protocolRoleAsString)) {
             final Gson gson = new Gson();
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final SubscribedRole subscribedRole = gson.fromJson(protocolRoleAsString, SubscribedRole.class);
-            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId) && BezirkValidatorUtility.checkProtocolRole(subscribedRole)) {
+            if (ValidatorUtility.checkBezirkZirkId(serviceId) && ValidatorUtility.checkProtocolRole(subscribedRole)) {
                 proxy.subscribeService(serviceId, subscribedRole);
 
             } else {
@@ -75,9 +75,9 @@ public final class BezirkServiceHelper {
 
         logger.info("Zirk registration to Bezirk. Name : " + serviceName + " Id : " + serviceIdAsString);
 
-        if (BezirkValidatorUtility.checkForString(serviceIdAsString) && BezirkValidatorUtility.checkForString(serviceName)) {
+        if (ValidatorUtility.checkForString(serviceIdAsString) && ValidatorUtility.checkForString(serviceName)) {
             final ZirkId serviceId = new Gson().fromJson(serviceIdAsString, ZirkId.class);
-            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
+            if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
                 proxy.registerService(serviceId, serviceName);
             } else {
                 logger.error("Trying to subscribe with null ZirkId");
@@ -100,12 +100,12 @@ public final class BezirkServiceHelper {
 
         final String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
         final String protocolRoleAsString = intent.getStringExtra(subPrtclKEY);
-        if (BezirkValidatorUtility.checkForString(serviceIdAsString)) {
+        if (ValidatorUtility.checkForString(serviceIdAsString)) {
             final Gson gson = new Gson();
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final SubscribedRole subscribedRole = gson.fromJson(protocolRoleAsString, SubscribedRole.class);
-            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
-                if (BezirkValidatorUtility.isObjectNotNull(subscribedRole)) {
+            if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
+                if (ValidatorUtility.isObjectNotNull(subscribedRole)) {
                     proxy.unsubscribe(serviceId, subscribedRole);
                 } else {
                     proxy.unregister(serviceId);
@@ -139,7 +139,7 @@ public final class BezirkServiceHelper {
         final String pRoleMsg = intent.getStringExtra(pRoleKEY);
 
 
-        if (BezirkValidatorUtility.checkForString(serviceIdAsString) && BezirkValidatorUtility.checkForString(addressAsString) && BezirkValidatorUtility.checkForString(pRoleMsg)) {
+        if (ValidatorUtility.checkForString(serviceIdAsString) && ValidatorUtility.checkForString(addressAsString) && ValidatorUtility.checkForString(pRoleMsg)) {
             final Gson gson = new Gson();
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final RecipientSelector recipientSelector = gson.fromJson(addressAsString, RecipientSelector.class);
@@ -148,7 +148,7 @@ public final class BezirkServiceHelper {
             final int maxDiscovered = intent.getIntExtra(maxDiscoveredKEY, 1);
             final int discoveryId = intent.getIntExtra(discoveryIdKEY, 1);
 
-            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
+            if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
                 proxy.discover(serviceId, recipientSelector, pRole, discoveryId, timeout, maxDiscovered);
                 logger.info("Discovery Request pass to Proxy");
 
@@ -179,7 +179,7 @@ public final class BezirkServiceHelper {
         final String streamAsString = intent.getStringExtra("stream");
         final short localStreamId = intent.getShortExtra("localStreamId", (short) -1);
 
-        if (BezirkValidatorUtility.checkForString(serviceIdAsString, recipientAsString, streamAsString) && -1 != localStreamId) {
+        if (ValidatorUtility.checkForString(serviceIdAsString, recipientAsString, streamAsString) && -1 != localStreamId) {
             final Gson gson = new Gson();
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final BezirkZirkEndPoint recipient = gson.fromJson(recipientAsString, BezirkZirkEndPoint.class);
@@ -198,7 +198,7 @@ public final class BezirkServiceHelper {
     }
 
     private boolean sendStream(File file, String streamAsString, short localStreamId, ZirkId serviceId, BezirkZirkEndPoint recipient) {
-        if (BezirkValidatorUtility.checkBezirkZirkEndPoint(recipient) && BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
+        if (ValidatorUtility.checkBezirkZirkEndPoint(recipient) && ValidatorUtility.checkBezirkZirkId(serviceId)) {
             short sendStreamStatus = proxy.sendStream(serviceId, recipient, streamAsString, file, localStreamId);
             if (-1 == sendStreamStatus) {
                 return false;
@@ -234,7 +234,7 @@ public final class BezirkServiceHelper {
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final BezirkZirkEndPoint recipient = gson.fromJson(recipientAsString, BezirkZirkEndPoint.class);
 
-            if (BezirkValidatorUtility.checkRTCStreamRequest(serviceId, recipient)) {
+            if (ValidatorUtility.checkRTCStreamRequest(serviceId, recipient)) {
 
                 if (-1 == proxy.sendStream(serviceId, recipient, streamAsString, localStreamId)) {
                     isStreamingValid = false;
@@ -271,10 +271,10 @@ public final class BezirkServiceHelper {
         final String mEventMsg = intent.getStringExtra(mEventMsgKEY);
 
         // Validate intent properties
-        if (BezirkValidatorUtility.checkForString(serviceIdAsString) && BezirkValidatorUtility.checkForString(addressAsString) && BezirkValidatorUtility.checkForString(mEventMsg)) {
+        if (ValidatorUtility.checkForString(serviceIdAsString) && ValidatorUtility.checkForString(addressAsString) && ValidatorUtility.checkForString(mEventMsg)) {
             final Gson gson = new Gson();
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
-            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
+            if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
                 final RecipientSelector recipientSelector = RecipientSelector.fromJson(addressAsString);
                 logger.debug("Sending multicast event from zirk: " + serviceIdAsString);
                 proxy.sendMulticastEvent(serviceId, recipientSelector, mEventMsg);
@@ -302,11 +302,11 @@ public final class BezirkServiceHelper {
         final String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
         final String sepAsString = intent.getStringExtra(sepKEY);
         final String msg = intent.getStringExtra(uEventMsgKEY);
-        if (BezirkValidatorUtility.checkForString(serviceIdAsString) && BezirkValidatorUtility.checkForString(sepAsString) && BezirkValidatorUtility.checkForString(msg)) {
+        if (ValidatorUtility.checkForString(serviceIdAsString) && ValidatorUtility.checkForString(sepAsString) && ValidatorUtility.checkForString(msg)) {
             final Gson gson = new Gson();
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final BezirkZirkEndPoint serviceEndPoint = gson.fromJson(sepAsString, BezirkZirkEndPoint.class);
-            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId) && BezirkValidatorUtility.checkBezirkZirkEndPoint(serviceEndPoint)) {
+            if (ValidatorUtility.checkBezirkZirkId(serviceId) && ValidatorUtility.checkBezirkZirkEndPoint(serviceEndPoint)) {
                 proxy.sendUnicastEvent(serviceId, serviceEndPoint, msg);
             } else {
                 logger.error("Check unicast parameters");
@@ -327,10 +327,10 @@ public final class BezirkServiceHelper {
         String location = (String) intent.getExtras().get("locationData");
         logger.info("Received location " + location + " from zirk");
 
-        if (BezirkValidatorUtility.checkForString(sid) && BezirkValidatorUtility.checkForString(location)) {
+        if (ValidatorUtility.checkForString(sid) && ValidatorUtility.checkForString(location)) {
             ZirkId serviceId = new Gson().fromJson(sid, ZirkId.class);
             Location loc = new Gson().fromJson(location, Location.class);
-            if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
+            if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
                 proxy.setLocation(serviceId, loc);
             }
         } else {

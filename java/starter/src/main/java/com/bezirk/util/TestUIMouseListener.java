@@ -34,7 +34,7 @@ public class TestUIMouseListener implements MouseListener {
             final String receivedMsgs = commsTest
                     .getSelectedServices(BezirkCompManager.getUpaDevice()
                             .getDeviceName() + ":" + pingCount);
-            if (BezirkValidatorUtility.checkForString(receivedMsgs)) {
+            if (ValidatorUtility.checkForString(receivedMsgs)) {
                 JOptionPane.showMessageDialog(null, receivedMsgs,
                         "DEVICES THAT RESPONDED TO PING MESSAGE",
                         JOptionPane.PLAIN_MESSAGE);

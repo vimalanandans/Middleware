@@ -10,6 +10,7 @@ import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.comms.CommsFeature;
+import com.bezirk.remotelogging.ui.RemoteLogSphereSelectGUI;
 import com.bezirk.messagehandler.ZirkMessageHandler;
 import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.BezirkProxyPersistence;
@@ -20,7 +21,7 @@ import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.streaming.StreamManager;
 import com.bezirk.streaming.Streaming;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
@@ -55,7 +56,7 @@ public class MainService {
     private Boolean stoppedStack = false;
     private RegistryPersistence registryPersistence;
     // Logging GUI
-    private com.bezirk.logging.ui.SphereSelectGUI loggingGUI;
+    private RemoteLogSphereSelectGUI loggingGUI;
     private com.bezirk.sphere.ui.SphereManagementGUI frame;
     /**
      * communication interface to send and receive the data
@@ -156,7 +157,7 @@ public class MainService {
          * Step3 : Shutdown RemoteLogging    *
          *************************************/
         if (CommsConfigurations.isRemoteLoggingServiceEnabled()
-                && BezirkValidatorUtility.isObjectNotNull(loggingGUI)
+                && ValidatorUtility.isObjectNotNull(loggingGUI)
                 && loggingGUI.isVisible()) {
 
             loggingGUI.shutGUI();
@@ -240,12 +241,12 @@ public class MainService {
          * Step8 :Initialize sphere                       *
          **************************************************/
 
-        if (BezirkValidatorUtility.isObjectNotNull(bezirkDevice)) {
+        if (ValidatorUtility.isObjectNotNull(bezirkDevice)) {
 
             sphereForPC = serviceStarterHelper.initSphere(bezirkDevice,
                     registryPersistence, comms);
 
-            if (!BezirkValidatorUtility.isObjectNotNull(sphereForPC)) {
+            if (!ValidatorUtility.isObjectNotNull(sphereForPC)) {
 
                 serviceStarterHelper.fail("Problem initializing sphere.", null);
 
@@ -279,7 +280,7 @@ public class MainService {
 
                     @Override
                     public void run() {
-                        loggingGUI = new com.bezirk.logging.ui.SphereSelectGUI(comms);
+                        loggingGUI = new RemoteLogSphereSelectGUI(comms);
                     }
                 });
             }

@@ -33,7 +33,7 @@ import com.bezirk.starter.helper.BezirkStackHandler;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 import com.bezrik.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
 
@@ -134,7 +134,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             mHeader.setSphereName(sphereIterator.next());
             ecMessage.setHeader(mHeader);
             ecMessage.setSerializedHeader(mHeader.serialize());
-            if (BezirkValidatorUtility.isObjectNotNull(comms)) {
+            if (ValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(ecMessage);
             } else {
                 logger.error("Comms manager not initialized");
@@ -174,7 +174,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             uHeader.setSphereName(sphereIterator.next());
             ecMessage.setHeader(uHeader);
             ecMessage.setSerializedHeader(uHeader.serialize());
-            if (BezirkValidatorUtility.isObjectNotNull(comms)) {
+            if (ValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(ecMessage);
             } else {
                 logger.error("Comms manager not initialized");
@@ -208,7 +208,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             ControlLedger.setSphereId(tempSphereName);
             ControlLedger.setMessage(discoveryRequest);
             ControlLedger.setSerializedMessage(ControlLedger.getMessage().serialize());
-            if (BezirkValidatorUtility.isObjectNotNull(comms)) {
+            if (ValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(ControlLedger);
             } else {
                 logger.error("Comms manager not initialized");

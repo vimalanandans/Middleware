@@ -1,7 +1,7 @@
-package com.bezirk.logging.ui;
+package com.bezirk.remotelogging.ui;
 
 /**
- * GUI labels used in the @link(SphereSelectGUI).
+ * GUI labels used in the @link(RemoteLogSphereSelectGUI).
  */
 final class LoggingGUILabels {
 

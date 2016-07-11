@@ -18,7 +18,7 @@ import com.bezirk.sphere.api.BezirkDevMode;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkActionCommands;
 import com.bezirk.starter.BezirkPreferences;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,9 +157,9 @@ public class DeviceControlActivity extends ActionBarActivity
         Intent intent;
         String action;
         // we selecting based on image id hence list must have image id and it has to be unique
-        if (BezirkValidatorUtility.isObjectNotNull(listData) && !listData.isEmpty()) {
+        if (ValidatorUtility.isObjectNotNull(listData) && !listData.isEmpty()) {
             DataModel dataModel = listData.get(position);
-            if (BezirkValidatorUtility.isObjectNotNull(dataModel)) {
+            if (ValidatorUtility.isObjectNotNull(dataModel)) {
                 intent = new Intent(context, MainService.class);
                 switch (dataModel.getImageId()) {
                     case R.drawable.upa_control: // Bezirk On/OFF

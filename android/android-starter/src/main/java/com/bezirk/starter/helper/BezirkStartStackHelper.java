@@ -17,7 +17,7 @@ import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.starter.MainService;
 import com.bezirk.streaming.StreamManager;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +64,7 @@ class BezirkStartStackHelper {
             return false;
         }
 
-        if (BezirkValidatorUtility.checkForString(ipAddress)) {
+        if (ValidatorUtility.checkForString(ipAddress)) {
             logger.info("Wifi Connected to " + wifi.getConnectionInfo().getSSID());
         } else {
             logger.error("Unable to get ip address. Is it connected to network");

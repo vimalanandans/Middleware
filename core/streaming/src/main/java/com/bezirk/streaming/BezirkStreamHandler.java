@@ -10,7 +10,7 @@ import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.store.StreamStore;
 import com.bezirk.streaming.threads.StreamReceivingThread;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
@@ -104,7 +104,7 @@ final class BezirkStreamHandler {
 
         streamRecord.recipientPort = streamResponse.streamPort;
 
-        if (BezirkValidatorUtility.isObjectNotNull(streamQueue)) {
+        if (ValidatorUtility.isObjectNotNull(streamQueue)) {
             streamQueue.addToQueue(streamRecord);
         }
 
