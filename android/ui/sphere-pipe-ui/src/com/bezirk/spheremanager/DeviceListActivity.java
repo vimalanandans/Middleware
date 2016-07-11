@@ -121,7 +121,10 @@ public class DeviceListActivity extends FragmentActivity implements
         Log.v(TAG, entry.getmSphere().getSphereID());
         setContentView(view);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if (null != getActionBar()) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         sphereIntentReceiver = new SphereIntentReceiver(this);
 
