@@ -4,11 +4,11 @@ import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
+import com.bezirk.remotelogging.RemoteLoggingManager;
 import com.bezirk.remotelogging.RemoteLoggingMessage;
 import com.bezirk.remotelogging.RemoteLoggingMessageNotification;
-import com.bezirk.remotelogging.manager.BezirkLoggingManager;
 
-import com.bezirk.remotelogging.RemoteMessageLog;
+import com.bezirk.remotelogging.RemoteLog;
 
 
 import org.slf4j.Logger;
@@ -96,7 +96,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
         public void actionPerformed(ActionEvent arg0) {
             leftSphereListModel.removeAllElements();
             rightSphereListModel.removeAllElements();
-            leftSphereListModel.addElement(RemoteMessageLog.ALL_SPHERES);
+            leftSphereListModel.addElement(RemoteLog.ALL_SPHERES);
             try {
                 final Iterator<BezirkSphereInfo> sphereInfoIterator = BezirkCompManager
                         .getSphereUI().getSpheres().iterator();
@@ -110,7 +110,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
         }
     };
     transient BezirkComms comms;
-    RemoteMessageLog msgLog = null;
+    RemoteLog msgLog = null;
     private String[] tempArray;
     private int size;
     /**
@@ -125,8 +125,8 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
             tempArray = new String[leftSphereListModel.size()];
 
             final String temp = leftSphereListModel.elementAt(index);
-            if (temp.equals(RemoteMessageLog.ALL_SPHERES)) {
-                rightSphereListModel.addElement(RemoteMessageLog.ALL_SPHERES);
+            if (temp.equals(RemoteLog.ALL_SPHERES)) {
+                rightSphereListModel.addElement(RemoteLog.ALL_SPHERES);
                 for (int i = 0; i < size; i++) {
                     tempArray[i] = leftSphereListModel.elementAt(0);
                     leftSphereListModel.removeElementAt(0);
@@ -137,7 +137,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
             } else {
                 rightSphereListModel.addElement(temp);
                 leftSphereListModel.remove(index);
-                leftSphereListModel.removeElement(RemoteMessageLog.ALL_SPHERES);
+                leftSphereListModel.removeElement(RemoteLog.ALL_SPHERES);
                 if (!rightSphereListModel.isEmpty()) {
                     startLoggingBtn.setEnabled(true);
                 }
@@ -159,9 +159,9 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
             leftSphereListModel.addElement(temp);
             if (!rightSphereListModel.isEmpty()) {
                 startLoggingBtn.setEnabled(false);
-                if (!leftSphereListModel.elementAt(0).equals(RemoteMessageLog.ALL_SPHERES)) {
-                    leftSphereListModel.add(0, RemoteMessageLog.ALL_SPHERES);
-                } else if (temp.equals(RemoteMessageLog.ALL_SPHERES)) {
+                if (!leftSphereListModel.elementAt(0).equals(RemoteLog.ALL_SPHERES)) {
+                    leftSphereListModel.add(0, RemoteLog.ALL_SPHERES);
+                } else if (temp.equals(RemoteLog.ALL_SPHERES)) {
                     leftSphereListModel.removeAllElements();
                     startLoggingBtn.setEnabled(false);
                     for (int i = 0; i < size; i++) {
@@ -179,7 +179,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
      *
      */
     private transient RemoteLogDetailsGUI remoteLogDetails;
-    private transient BezirkLoggingManager bezirkLoggingManager;
+    private transient RemoteLog remoteLog;
     private final transient WindowAdapter closeButtonListener = new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent arg0) {
@@ -212,7 +212,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
                 selectedSpheres[i] = rightSphereListModel.getElementAt(i);
             }
 
-            if (selectedSpheres[0].equals(RemoteMessageLog.ALL_SPHERES)) {
+            if (selectedSpheres[0].equals(RemoteLog.ALL_SPHERES)) {
                 selectedSpheres = tempArray;
             }
 
@@ -236,8 +236,8 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
         }
 
         try {
-            bezirkLoggingManager = new BezirkLoggingManager();
-            bezirkLoggingManager.startLoggingService(
+            remoteLog = new RemoteLoggingManager();
+            remoteLog.startLoggingService(
                     CommsConfigurations.getREMOTE_LOGGING_PORT(), this);
         } catch (Exception e) {
             logger.error("Error in sphere Select GUI init.", e);
@@ -351,7 +351,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
     public void shutGUI() {
         if (this != null) {
             try {
-                bezirkLoggingManager.stopLoggingService();
+                remoteLog.stopLoggingService();
             } catch (Exception e) {
                 logger.error("Error in stopping logging zirk. ", e);
             }

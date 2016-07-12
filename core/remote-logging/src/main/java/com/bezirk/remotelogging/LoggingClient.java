@@ -24,7 +24,7 @@ public class LoggingClient {
     /**
      * Processor for LogSenderQueue
      */
-    private LogSenderQueueProcessor logSenderQueueProcessor = null;
+    private SenderQueueProcessor senderQueueProcessor = null;
 
     /**
      * Starts the client and the logger sender Processor.
@@ -35,8 +35,8 @@ public class LoggingClient {
     public void startClient(String remoteIP, int port) throws Exception {
         this.serviceIP = remoteIP;
         this.servicePort = port;
-        logSenderQueueProcessor = new LogSenderQueueProcessor(this.serviceIP, this.servicePort);
-        logSenderQueueProcessor.startProcessing();
+        senderQueueProcessor = new SenderQueueProcessor(this.serviceIP, this.servicePort);
+        senderQueueProcessor.startProcessing();
     }
 
     /**
@@ -46,10 +46,10 @@ public class LoggingClient {
      * @param port     port at which the logging zirk was listening for the clients
      */
     public void stopClient(String remoteIP, int port) throws Exception {
-        if (null != logSenderQueueProcessor && remoteIP.equals(this.serviceIP) && port == this.servicePort) {
+        if (null != senderQueueProcessor && remoteIP.equals(this.serviceIP) && port == this.servicePort) {
             LoggingQueueManager.clearLogSenderQueue();
-            logSenderQueueProcessor.stopProcessing();
-            logSenderQueueProcessor = null;
+            senderQueueProcessor.stopProcessing();
+            senderQueueProcessor = null;
             serviceIP = null;
             servicePort = -1;
 

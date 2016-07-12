@@ -12,13 +12,14 @@ import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Date;
 
 /**
  * Logging Manager class that starts/stops LoggingServices and LoggingClient.
  * The platforms need to instantiate this manager and can start stop the zirk.
  */
-public final class RemoteLoggingManager implements RemoteMessageLog{
+public final class RemoteLoggingManager implements RemoteLog {
     /**
      * RemoteLoggingService
      */
@@ -26,20 +27,23 @@ public final class RemoteLoggingManager implements RemoteMessageLog{
     /**
      * LogReceiverProcessor used by the Logging Zirk
      */
-    private LogReceiverQueueProcessor receiverQueueProcessor = null;
+    private ReceiverQueueProcessor receiverQueueProcessor = null;
     /**
      * Logging Client
      */
     private LoggingClient logClient = null;
 
+    private static final Logger logger = LoggerFactory.getLogger(RemoteLoggingManager.class);
+
+    private final Date currentDate = new Date();
+
+
     public RemoteLoggingManager() {
         // TODO Auto-generated constructor stub
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(RemoteMessageLogManager.class);
-    private final Date currentDate = new Date();
 
-    LogServiceMessageHandler logServiceMsgHandler = null;
+    ServiceMessageHandler logServiceMsgHandler = null;
     BezirkComms comms;
 
     //private BezirkCallback bezirkCallback = null;
@@ -58,14 +62,14 @@ public final class RemoteLoggingManager implements RemoteMessageLog{
     @Override
     public boolean setLogger(boolean enable, String[] sphereNameList) {
         String[] loggingSpheres;
-        if (RemoteMessageLog.ALL_SPHERES.equals(sphereNameList)) {
+        if (RemoteLog.ALL_SPHERES.equals(sphereNameList)) {
             loggingSpheres = new String[1];
-            loggingSpheres[0] = RemoteMessageLog.ALL_SPHERES;
+            loggingSpheres[0] = RemoteLog.ALL_SPHERES;
         } else {
             loggingSpheres = sphereNameList;
         }
 
-        LogServiceActivatorDeactivator.sendLoggingServiceMsgToClients(comms,
+        ServiceActivatorDeactivator.sendLoggingServiceMsgToClients(comms,
                 sphereNameList, loggingSpheres, enable);
         return true;
     }
@@ -168,7 +172,7 @@ public final class RemoteLoggingManager implements RemoteMessageLog{
                         final LoggingServiceMessage loggingServiceMsg = ControlMessage.deserialize(serializedMsg, LoggingServiceMessage.class);
 
                         if (null == logServiceMsgHandler) {
-                            logServiceMsgHandler = new LogServiceMessageHandler();
+                            logServiceMsgHandler = new ServiceMessageHandler();
                         }
                         logServiceMsgHandler.handleLogServiceMessage(loggingServiceMsg);
                     } catch (Exception e) {
@@ -190,15 +194,24 @@ public final class RemoteLoggingManager implements RemoteMessageLog{
      * @param platformSpecificHandler handler to give callback once the zirk receives the request
      * @throws Exception if handler is null, or something goes wrong while processing.
      */
-    public void startLoggingService(final int loggingPort, final RemoteLoggingMessageNotification platformSpecificHandler) throws Exception {
+    public boolean startLoggingService(final int loggingPort, final RemoteLoggingMessageNotification platformSpecificHandler) {
         if (remoteLoggingService == null && platformSpecificHandler != null) {
             remoteLoggingService = new RemoteLoggingService(loggingPort);
-            receiverQueueProcessor = new LogReceiverQueueProcessor(platformSpecificHandler);
-            remoteLoggingService.startLoggingService();
-            receiverQueueProcessor.startProcessing();
-            return;
+            receiverQueueProcessor = new ReceiverQueueProcessor(platformSpecificHandler);
+            try {
+                remoteLoggingService.startLoggingService();
+                receiverQueueProcessor.startProcessing();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return true;
         }
-        throw new Exception("Tried to start LoggingService again, that is already started or Handler is null");
+        //throw new Exception("Tried to start LoggingService again, that is already started or Handler is null");
+        return false;
     }
 
     /**
@@ -206,15 +219,22 @@ public final class RemoteLoggingManager implements RemoteMessageLog{
      *
      * @throws Exception if logging zirk is tried to stop that is not started
      */
-    public void stopLoggingService() throws Exception {
+    public boolean stopLoggingService() {
         if (remoteLoggingService != null) {
-            receiverQueueProcessor.stopProcessing();
-            remoteLoggingService.stopLoggingService();
+            try {
+                receiverQueueProcessor.stopProcessing();
+                remoteLoggingService.stopLoggingService();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+
             remoteLoggingService = null;
             receiverQueueProcessor = null;
-            return;
+            return true;
         }
-        throw new Exception("Logging zirk tried to stop that is not started");
+        //throw new Exception("Logging zirk tried to stop that is not started");
+        return false;
     }
 
     /**

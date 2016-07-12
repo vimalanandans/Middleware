@@ -101,7 +101,12 @@ public class NativeUtils {
 
     private static void loadLib(String name) {
         //name = NativeLibraryUtil.getPlatformLibraryName(name);
-        System.loadLibrary(name);
+        try {
+            System.loadLibrary(name);
+        }catch (UnsatisfiedLinkError e){
+            logger.error("Unable to load zyre libraries. \n" +
+                    "Please refer http://developer.bezirk.com/documentation/installation_setup.php");
+        }
     }
 
     /**

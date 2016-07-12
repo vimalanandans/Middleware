@@ -16,13 +16,12 @@ import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 
-import com.bezirk.remotelogging.RemoteMessageLog;
+import com.bezirk.remotelogging.RemoteLog;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,7 +35,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
     protected PubSubBrokerPersistence pubSubBrokerPersistence = null;
     protected PubSubBrokerRegistry pubSubBrokerRegistry = null;
     protected BezirkComms bezirkComms = null;
-    RemoteMessageLog remoteMessageLog = null;
+    RemoteLog remoteLog = null;
 
     public PubSubBroker(PubSubBrokerPersistence pubSubBrokerPersistence) {
         this.pubSubBrokerPersistence = pubSubBrokerPersistence;
@@ -186,9 +185,9 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
             return false;
         }
 
-        if((remoteMessageLog != null) && remoteMessageLog.isEnabled())
+        if((remoteLog != null) && remoteLog.isEnabled())
         {
-            remoteMessageLog.sendRemoteLogMessage(eLedger);
+            remoteLog.sendRemoteLogMessage(eLedger);
         }
 
         // give a callback to appropriate zirk..

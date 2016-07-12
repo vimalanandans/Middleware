@@ -42,15 +42,17 @@ public class ZyreCommsJni extends Thread {
      */
     public boolean initZyre() {
 
-        zyre = new Zyre();
-        /*try{
+        //zyre = new Zyre();
+        try{
             zyre = new Zyre();
 		}
 		catch (UnsatisfiedLinkError e) {
 
-			logger.error("Unable to load zyre comms. ", e);
+			//logger.error("Unable to load zyre comms. ", e);
+            logger.error("Unable to load zyre libraries. \n" +
+                "Please refer http://developer.bezirk.com/documentation/installation_setup.php");
             return false;
-        }*/
+        }
         // create the zyre
         zyre.create();
 

@@ -11,13 +11,19 @@ import com.bezirk.control.messages.EventLedger;
  * Interface for the remote logging feature to the middleware
  *  TODO: make it as component
  */
-public interface RemoteMessageLog {
+public interface RemoteLog {
 
     /**
      * Constant label for ALL_SPHERES logging.
      * TODO : Used in GUI selection display and internal modules. Review it
      */
     public static final String ALL_SPHERES = "ALL-SPHERES";
+
+    /** Start Logging . By component manager */
+    public boolean startLoggingService(final int loggingPort, final RemoteLoggingMessageNotification platformSpecificHandler) ;
+
+    /** Start Logging . By component manager */
+    public boolean stopLoggingService();
 
     /** initialize the remote logging module. */
     public boolean initRemoteLogger(BezirkComms comms);

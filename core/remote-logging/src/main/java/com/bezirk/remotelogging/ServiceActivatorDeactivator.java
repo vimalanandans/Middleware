@@ -20,10 +20,10 @@ import org.slf4j.LoggerFactory;
  * Control Sender Queue.
  */
 
-public final class LogServiceActivatorDeactivator {
-    private static final Logger logger = LoggerFactory.getLogger(LogServiceActivatorDeactivator.class);
+public final class ServiceActivatorDeactivator {
+    private static final Logger logger = LoggerFactory.getLogger(ServiceActivatorDeactivator.class);
 
-    private LogServiceActivatorDeactivator() {
+    private ServiceActivatorDeactivator() {
     }
 
     public static void sendLoggingServiceMsgToClients(BezirkComms comms, final String[] sphereList, final String[] selectedLogSpheres, final boolean isActivate) {

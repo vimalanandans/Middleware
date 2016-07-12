@@ -16,8 +16,8 @@ import java.util.Arrays;
  * Handles the LogMessage received from the Log Zirk. It activates/Deactivates/Updates
  * the logging zirk properties for the client to logger the data.
  */
-public final class LogServiceMessageHandler {
-    private static final Logger logger = LoggerFactory.getLogger(LogServiceMessageHandler.class);
+public final class ServiceMessageHandler {
+    private static final Logger logger = LoggerFactory.getLogger(ServiceMessageHandler.class);
     /**
      * Logging Manager to start/ stop the logging client
      */

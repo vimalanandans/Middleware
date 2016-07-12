@@ -12,7 +12,7 @@ dependencies {
     compile project(':core:comms:comms-factory')
 //    compile project(':core:pipes')
     compile project(':java:libraries:comms-zyre-jni')
-
+    compile project(':core:remote-logging')
     // Enable this to include Bezirk-RTC
     //	compile project(':bezirk-pc-rtc')
 

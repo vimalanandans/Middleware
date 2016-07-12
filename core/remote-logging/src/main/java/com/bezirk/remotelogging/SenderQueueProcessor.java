@@ -13,8 +13,8 @@ import java.net.Socket;
  * It retrieve the String from the LogSenderQueue and pushes the message onto the Logging Zirk
  * and removes it from the queue.
  */
-public class LogSenderQueueProcessor extends Thread {
-    private static final Logger logger = LoggerFactory.getLogger(LogSenderQueueProcessor.class);
+public class SenderQueueProcessor extends Thread {
+    private static final Logger logger = LoggerFactory.getLogger(SenderQueueProcessor.class);
     /**
      * Logging Zirk IP. This will set based on the LoggingMessage from the Logging zirk.
      */
@@ -34,7 +34,7 @@ public class LogSenderQueueProcessor extends Thread {
      * @param remoteServiceIP IP address of the Logging Zirk
      * @param remotePort      Logging Zirk Port
      */
-    public LogSenderQueueProcessor(String remoteServiceIP, int remotePort) {
+    public SenderQueueProcessor(String remoteServiceIP, int remotePort) {
         this.remoteServiceIP = remoteServiceIP;
         this.remoteServicePort = remotePort;
     }

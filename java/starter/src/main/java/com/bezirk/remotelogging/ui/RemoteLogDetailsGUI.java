@@ -3,7 +3,7 @@ package com.bezirk.remotelogging.ui;
 import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.remotelogging.RemoteLoggingMessage;
-import com.bezirk.remotelogging.RemoteMessageLog;
+import com.bezirk.remotelogging.RemoteLog;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class RemoteLogDetailsGUI extends JFrame {
     private static final String RECIPIENT_MULTICAST_VALUE = "MULTI-CAST";
     private static final int SIZE_OF_LOG_MSG_MAP = 128;
 
-    RemoteMessageLog msgLog = null;
+    RemoteLog msgLog = null;
     /*
      * GUI Components
      */

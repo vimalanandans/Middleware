@@ -3,7 +3,7 @@ package com.bezirk.comms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
-import com.bezirk.remotelogging.RemoteMessageLog;
+import com.bezirk.remotelogging.RemoteLog;
 
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.util.ValidatorUtility;
@@ -23,7 +23,7 @@ public class CommsMessageDispatcher implements MessageDispatcher {
 
     private final PubSubEventReceiver pubSubEventReceiver;
 
-    RemoteMessageLog msgLog = null;
+    RemoteLog msgLog = null;
 
     // Map of control receivers
     Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =

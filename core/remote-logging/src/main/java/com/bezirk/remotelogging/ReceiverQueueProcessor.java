@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
  * converts (de-serializes) it into the RemoteLogMessage and gives it to the platform specific
  * BezirkLoggingHandler to update the UI.
  */
-public class LogReceiverQueueProcessor extends Thread {
-    private static final Logger logger = LoggerFactory.getLogger(LogReceiverQueueProcessor.class);
+public class ReceiverQueueProcessor extends Thread {
+    private static final Logger logger = LoggerFactory.getLogger(ReceiverQueueProcessor.class);
     /**
      * Platform specific logger
      */
@@ -31,7 +31,7 @@ public class LogReceiverQueueProcessor extends Thread {
      *
      * @param logger platform Specific Logger that is used to update the UI.
      */
-    public LogReceiverQueueProcessor(RemoteLoggingMessageNotification logger) {
+    public ReceiverQueueProcessor(RemoteLoggingMessageNotification logger) {
         this.platformSpecificLogger = logger;
     }
 
@@ -50,7 +50,7 @@ public class LogReceiverQueueProcessor extends Thread {
                                 " CURRENT LOGGING VERSION: " + Util.LOGGING_VERSION);
                     }
                 } catch (Exception e) {
-                    logger.error("Some error occurred in LogReceiverQueueProcessor \n", e);
+                    logger.error("Some error occurred in ReceiverQueueProcessor \n", e);
                 }
             }
         } catch (InterruptedException e) {
