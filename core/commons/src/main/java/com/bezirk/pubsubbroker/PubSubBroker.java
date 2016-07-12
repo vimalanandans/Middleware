@@ -15,11 +15,8 @@ import com.bezirk.persistence.PubSubBrokerPersistence;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.remotelogging.messages.RemoteLogMessage;
-import com.bezirk.remotelogging.queues.LoggingQueueManager;
-import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
-import com.bezirk.remotelogging.status.LoggingStatus;
-import com.bezirk.remotelogging.util.Util;
+
+import com.bezirk.remotelogging.RemoteMessageLog;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -36,10 +33,10 @@ import java.util.Set;
 public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistryLookup, IPubSubBrokerControlReceiver, PubSubEventReceiver {
     private static final Logger logger = LoggerFactory.getLogger(PubSubBroker.class);
 
-    private final Date currentDate = new Date();
     protected PubSubBrokerPersistence pubSubBrokerPersistence = null;
     protected PubSubBrokerRegistry pubSubBrokerRegistry = null;
     protected BezirkComms bezirkComms = null;
+    RemoteMessageLog remoteMessageLog = null;
 
     public PubSubBroker(PubSubBrokerPersistence pubSubBrokerPersistence) {
         this.pubSubBrokerPersistence = pubSubBrokerPersistence;
@@ -189,8 +186,9 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
             return false;
         }
 
-        if (LoggingStatus.isLoggingEnabled() && FilterLogMessages.checkSphere(eLedger.getHeader().getSphereName())) {
-            sendRemoteLogMessage(eLedger);
+        if((remoteMessageLog != null) && remoteMessageLog.isEnabled())
+        {
+            remoteMessageLog.sendRemoteLogMessage(eLedger);
         }
 
         // give a callback to appropriate zirk..
@@ -257,18 +255,7 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
         return true;
     }
 
-    /**
-     * route the events logging message to
-     */
-    private void sendRemoteLogMessage(EventLedger eLedger) {
-        try {
-            LoggingQueueManager.loadLogSenderQueue(new RemoteLogMessage(eLedger.getHeader().getSphereName(),
-                    String.valueOf(currentDate.getTime()), BezirkCompManager.getUpaDevice().getDeviceName(),
-                    Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(), eLedger.getHeader().getTopic(), Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
-        }
-    }
+
 
     public boolean checkUnicastEvent(String topic, ZirkId recipient) {
         if (!ValidatorUtility.checkForString(topic) || !ValidatorUtility.checkBezirkZirkId(recipient)) {

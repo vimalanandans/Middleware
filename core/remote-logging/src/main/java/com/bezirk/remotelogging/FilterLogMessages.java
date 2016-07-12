@@ -37,7 +37,7 @@ public final class FilterLogMessages {
     public static void setLoggingSphereList(final List<String> list) {
         loggingSphereList = list;
         if (list.size() == 1) {
-            anySphereEnabled = list.get(0).equals(Util.ANY_SPHERE);
+            anySphereEnabled = list.get(0).equals(RemoteMessageLog.ALL_SPHERES);
         }
     }
 

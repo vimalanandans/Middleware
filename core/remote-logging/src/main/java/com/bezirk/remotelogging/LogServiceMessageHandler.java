@@ -1,12 +1,9 @@
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com)
  */
-package com.bezirk.logging;
+package com.bezirk.remotelogging;
 
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
-import com.bezirk.remotelogging.manager.BezirkLoggingManager;
-import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
-import com.bezirk.remotelogging.status.LoggingStatus;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -24,7 +21,7 @@ public final class LogServiceMessageHandler {
     /**
      * Logging Manager to start/ stop the logging client
      */
-    private BezirkLoggingManager loggingManager = null;
+    private RemoteLoggingManager loggingManager = null;
 
 
 
@@ -52,7 +49,7 @@ public final class LogServiceMessageHandler {
         if (checkLoggingServiceMessage(loggingServiceMsg)) {
             if (loggingServiceMsg.isLoggingStatus()) {//Start or Update the client
                 if (null == loggingManager) {
-                    loggingManager = new BezirkLoggingManager();
+                    loggingManager = new RemoteLoggingManager();
                 }
                 try {
                     loggingManager.startLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(), loggingServiceMsg.getRemoteLoggingServicePort());

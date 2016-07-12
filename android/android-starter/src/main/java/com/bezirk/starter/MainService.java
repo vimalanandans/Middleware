@@ -17,8 +17,8 @@ import android.support.v4.app.NotificationCompat;
 
 import com.bezirk.R;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.logging.LogServiceActivatorDeactivator;
 import com.bezirk.proxy.android.ProxyForZirks;
+import com.bezirk.remotelogging.RemoteMessageLog;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.starter.helper.NetworkBroadCastReceiver;
 import com.bezirk.starter.helper.BezirkActionProcessor;
@@ -44,13 +44,18 @@ public class MainService extends Service implements INotificationCallback {
         return BezirkStackHandler.isStackStarted();
     }
 
+    RemoteMessageLog remoteLoggingManager = null;
     /**
      * get the sphere object handle.
      */
-    public static boolean sendLoggingServiceMsgToClients(final String[] selSpheres,
+    public  boolean sendLoggingServiceMsgToClients(final String[] selSpheres,
                                                          final String[] tempLoggingSphereList, boolean isActivate) {
-        LogServiceActivatorDeactivator.sendLoggingServiceMsgToClients(BezirkStackHandler.getBezirkComms(), selSpheres, tempLoggingSphereList, isActivate);
-        return true;
+        if(remoteLoggingManager != null)
+        {
+            remoteLoggingManager.setLogger(isActivate,tempLoggingSphereList);
+            return true;
+        }
+        return false;
     }
 
     // TODO :use iBinder interface to send the handle reference

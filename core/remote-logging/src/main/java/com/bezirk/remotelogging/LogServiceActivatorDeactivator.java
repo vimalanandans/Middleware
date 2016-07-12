@@ -1,7 +1,7 @@
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com)
  */
-package com.bezirk.logging;
+package com.bezirk.remotelogging;
 
 import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.BezirkComms;

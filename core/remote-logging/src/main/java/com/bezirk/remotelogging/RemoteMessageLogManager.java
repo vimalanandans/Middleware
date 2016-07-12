@@ -6,12 +6,9 @@ import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 
+import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
-import com.bezirk.logging.LogServiceActivatorDeactivator;
-import com.bezirk.logging.LogServiceMessageHandler;
-import com.bezirk.remotelogging.messages.*;
-import com.bezirk.remotelogging.queues.LoggingQueueManager;
-import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,7 +104,22 @@ public class RemoteMessageLogManager implements RemoteMessageLog {
                                 Util.LOGGING_VERSION).serialize());
             } catch (InterruptedException e) {
                 logger.error(e.getMessage());
-                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean sendRemoteLogMessage(EventLedger eLedger) {
+        if(FilterLogMessages.checkSphere(eLedger.getHeader().getSphereName())) {
+            try {
+                LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(eLedger.getHeader().getSphereName(),
+                        String.valueOf(currentDate.getTime()), BezirkCompManager.getUpaDevice().getDeviceName(),
+                        Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(), eLedger.getHeader().getTopic(),
+                        Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
+            } catch (InterruptedException e) {
+                logger.error(e.getMessage());
             }
             return true;
         }

@@ -1,9 +1,5 @@
-package com.bezirk.remotelogging.processors;
+package com.bezirk.remotelogging;
 
-import com.bezirk.remotelogging.loginterface.RemoteLogMessageNotification;
-import com.bezirk.remotelogging.messages.RemoteLogMessage;
-import com.bezirk.remotelogging.queues.LoggingQueueManager;
-import com.bezirk.remotelogging.util.Util;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -20,7 +16,7 @@ public class LogReceiverQueueProcessor extends Thread {
     /**
      * Platform specific logger
      */
-    private final RemoteLogMessageNotification platformSpecificLogger;
+    private final RemoteLoggingMessageNotification platformSpecificLogger;
     /**
      * Flag used for starting/ Stopping Threads!
      */
@@ -35,7 +31,7 @@ public class LogReceiverQueueProcessor extends Thread {
      *
      * @param logger platform Specific Logger that is used to update the UI.
      */
-    public LogReceiverQueueProcessor(RemoteLogMessageNotification logger) {
+    public LogReceiverQueueProcessor(RemoteLoggingMessageNotification logger) {
         this.platformSpecificLogger = logger;
     }
 
@@ -46,7 +42,7 @@ public class LogReceiverQueueProcessor extends Thread {
                 StringBuilder logMsgString = LoggingQueueManager.fetchFromLogReceiverQueue();
 
                 try {
-                    RemoteLogMessage logMsg = gson.fromJson(logMsgString.toString(), RemoteLogMessage.class);
+                    RemoteLoggingMessage logMsg = gson.fromJson(logMsgString.toString(), RemoteLoggingMessage.class);
                     if (Util.LOGGING_VERSION.equals(logMsg.version)) {
                         platformSpecificLogger.handleLogMessage(logMsg);
                     } else {

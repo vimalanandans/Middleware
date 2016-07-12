@@ -3,11 +3,12 @@ package com.bezirk.remotelogging;
 import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
+import com.bezirk.control.messages.EventLedger;
 
 
 /**
  * Created by Vimal on 7/11/2016.
- * Interface for the remote logging feature
+ * Interface for the remote logging feature to the middleware
  *  TODO: make it as component
  */
 public interface RemoteMessageLog {
@@ -32,6 +33,9 @@ public interface RemoteMessageLog {
 
     /** send the control message to logging */
     public boolean sendRemoteLogMessage(ControlMessage msg) ;
+
+    /** send the event message to logging */
+    public boolean sendRemoteLogMessage(EventLedger eLedger) ;
 
     public boolean isRemoteMessageValid(RemoteLoggingMessage logMessage);
 }

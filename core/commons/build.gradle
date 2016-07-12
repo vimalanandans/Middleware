@@ -8,7 +8,7 @@ jar {
 dependencies {
     compile project(':core:control-messages')
     //compile project(':core:pipes') // refactoring pipes
-    compile project (':core:remote-logging') // TODO: FIXME: inverse the dependency of remote-logging to commons
+    compile 'org.slf4j:slf4j-api:1.7.6'
 
     // orm db files
     compile 'com.j256.ormlite:ormlite-core:4.48'
@@ -16,11 +16,9 @@ dependencies {
 
     compile 'org.jasypt:jasypt:1.9.2'
 
-    compile 'com.google.zxing:core:2.3.0'
+    compile 'com.google.zxing:core:2.3.0' // remove it
 
 
-
-	
     testCompile 'junit:junit:4.12'
     testCompile 'org.xerial:sqlite-jdbc:3.7.2'
     testCompile 'org.mockito:mockito-all:1.10.19'

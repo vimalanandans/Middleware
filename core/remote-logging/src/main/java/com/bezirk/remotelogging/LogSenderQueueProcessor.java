@@ -1,6 +1,5 @@
-package com.bezirk.remotelogging.processors;
+package com.bezirk.remotelogging;
 
-import com.bezirk.remotelogging.queues.LoggingQueueManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
