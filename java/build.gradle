@@ -5,7 +5,7 @@ subprojects {
     //apply from: "${rootDir}/gradle-plugins/script/java-support.gradle"
     //apply from: "${rootDir}/gradle-plugins/script/maven-publishing-java.gradle"
     //apply from: "${rootDir}/gradle-plugins/script/native.gradle"
-    apply from: "${rootDir}/gradle-plugins/script/artifactory-publishing-java.gradle"
+    //apply from: "${rootDir}/gradle-plugins/script/artifactory-publishing-java.gradle"
 
     sourceCompatibility = 1.7
 }

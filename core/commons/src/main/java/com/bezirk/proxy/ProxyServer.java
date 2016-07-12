@@ -21,9 +21,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 
 /**
- * Bridges the main module / Main service to pubsub broker. 
+ * Bridges the main module / Main service to pubsub broker.
  * TODO : Do we really need this module. This has become just an adopter for PubSubBroker
- * */
+ */
 public class ProxyServer {
     private static final Logger logger = LoggerFactory.getLogger(ProxyServer.class);
 
@@ -39,20 +39,20 @@ public class ProxyServer {
     }
 
 
-    public void sendMulticastEvent(final ZirkId serviceId, final RecipientSelector recipientSelector, final String serializedEventMsg) {
-        pubSubBrokerService.sendMulticastEvent(serviceId, recipientSelector, serializedEventMsg);
+    public void sendMulticastEvent(final ZirkId serviceId, final RecipientSelector recipientSelector, final String serializedEventMsg, final String topic) {
+        pubSubBrokerService.sendMulticastEvent(serviceId, recipientSelector, serializedEventMsg, topic);
 
 
     }
 
 
-    public void sendUnicastEvent(final ZirkId serviceId, final BezirkZirkEndPoint recipient, final String serializedEventMsg) {
-        pubSubBrokerService.sendUnicastEvent(serviceId, recipient, serializedEventMsg );
+    public void sendUnicastEvent(final ZirkId serviceId, final BezirkZirkEndPoint recipient, final String serializedEventMsg, final String topic) {
+        pubSubBrokerService.sendUnicastEvent(serviceId, recipient, serializedEventMsg, topic);
     }
 
 
     public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId) {
-        return pubSubBrokerService.sendStream(senderId,receiver,serializedString,file,streamId);
+        return pubSubBrokerService.sendStream(senderId, receiver, serializedString, file, streamId);
     }
 
 

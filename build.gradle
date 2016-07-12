@@ -20,16 +20,16 @@ buildscript {
     ext {
         androidGradleToolsVersion = "2.1.0"
         androidBuildToolsVersion = "23.0.3"
-        androidSupportLibraryVersion = "19.+"
-        androidCompileSdkVersion = "19"
+        androidSupportLibraryVersion = "23.2.1"
+        androidCompileSdkVersion = "23"
         androidMinSdkVersion = "16"
-        androidTargetSdkVersion = "19"
+        androidTargetSdkVersion = "23"
         androidVersionCode = "1"
         androidVersionName = "1.0"
     }
     dependencies {
         classpath "com.android.tools.build:gradle:${project.androidGradleToolsVersion}"
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.1+"
+        classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '4.1.0')
     }
     ext {
         local = true //change to false for compiling project artifacts from remote maven

@@ -162,7 +162,7 @@ public class Proxy implements Bezirk {
             throw new IllegalArgumentException("Cannot send a null event");
         }
 
-        proxy.sendMulticastEvent(zirkId, recipient, event.toJson());
+        proxy.sendMulticastEvent(zirkId, recipient, event.toJson(), event.topic);
     }
 
     @Override
@@ -177,7 +177,7 @@ public class Proxy implements Bezirk {
             throw new IllegalArgumentException("Cannot send a null event");
         }
 
-        proxy.sendUnicastEvent(zirkId, (BezirkZirkEndPoint) recipient, event.toJson());
+        proxy.sendUnicastEvent(zirkId, (BezirkZirkEndPoint) recipient, event.toJson(), event.topic);
     }
 
     @Override
