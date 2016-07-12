@@ -204,7 +204,7 @@ public final class Proxy implements Bezirk {
 
         multicastEventIntent.putExtra("address", recipient.toJson());
         multicastEventIntent.putExtra("multicastEvent", event.toJson());
-
+        multicastEventIntent.putExtra("topic", event.topic);
         ComponentName retName = context.startService(multicastEventIntent);
 
         if (retName == null) {
@@ -229,6 +229,7 @@ public final class Proxy implements Bezirk {
         unicastEventIntent.putExtra("zirkId", new Gson().toJson(zirkId));
         unicastEventIntent.putExtra("receiverSep", new Gson().toJson(recipient));
         unicastEventIntent.putExtra("eventMsg", event.toJson());
+        unicastEventIntent.putExtra("topic", event.topic);
         ComponentName retName = context.startService(unicastEventIntent);
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");

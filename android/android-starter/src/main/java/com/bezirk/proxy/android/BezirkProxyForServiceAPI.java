@@ -20,9 +20,9 @@ public interface BezirkProxyForServiceAPI {
 
     public void subscribeService(ZirkId serviceId, SubscribedRole pRole);
 
-    public void sendUnicastEvent(ZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg);
+    public void sendUnicastEvent(ZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg, String topic);
 
-    public void sendMulticastEvent(ZirkId serviceId, RecipientSelector recipientSelector, String serializedEventMsg);
+    public void sendMulticastEvent(ZirkId serviceId, RecipientSelector recipientSelector, String serializedEventMsg, String topic);
 
     public void discover(ZirkId service, RecipientSelector scope, SubscribedRole pRole, int discoveryId, long timeout, int maxDiscovered);
 

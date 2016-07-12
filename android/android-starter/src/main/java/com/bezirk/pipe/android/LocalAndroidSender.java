@@ -37,12 +37,12 @@ public class LocalAndroidSender implements LocalBezirkSender {
             PipeUnicastHeader pipeUnicastHeader = (PipeUnicastHeader) pipeHeader;
 
             // Send the reply directly to the recipient
-            proxy.sendUnicastEvent(serviceId, pipeUnicastHeader.getRecipient(), serializedEvent);
+            //proxy.sendUnicastEvent(serviceId, pipeUnicastHeader.getRecipient(), serializedEvent);
         } else if (pipeHeader instanceof PipeMulticastHeader) {
             PipeMulticastHeader pipeMulticastHeader = (PipeMulticastHeader) pipeHeader;
 
             // This sends to services on this device and local nework
-            proxy.sendMulticastEvent(serviceId, pipeMulticastHeader.getRecipientSelector(), serializedEvent);
+            //proxy.sendMulticastEvent(serviceId, pipeMulticastHeader.getRecipientSelector(), serializedEvent);
         } else {
             logger.error("unknown header type: " + pipeHeader.getClass().getSimpleName());
         }

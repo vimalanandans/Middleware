@@ -262,13 +262,15 @@ public final class BezirkServiceHelper {
      */
     void sendMulticastEvent(Intent intent) {
         logger.info("Received multicast message from zirk");
-        String serviceIdKEY = "zirkId";
-        String addressKEY = "address";
-        String mEventMsgKEY = "multicastEvent";
+        final String serviceIdKEY = "zirkId";
+        final String addressKEY = "address";
+        final String mEventMsgKEY = "multicastEvent";
+        final String topic = "topic";
 
         final String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
         final String addressAsString = intent.getStringExtra(addressKEY);
         final String mEventMsg = intent.getStringExtra(mEventMsgKEY);
+        final String eventTopic = intent.getStringExtra(topic);
 
         // Validate intent properties
         if (BezirkValidatorUtility.checkForString(serviceIdAsString) && BezirkValidatorUtility.checkForString(addressAsString) && BezirkValidatorUtility.checkForString(mEventMsg)) {
@@ -277,7 +279,7 @@ public final class BezirkServiceHelper {
             if (BezirkValidatorUtility.checkBezirkZirkId(serviceId)) {
                 final RecipientSelector recipientSelector = RecipientSelector.fromJson(addressAsString);
                 logger.debug("Sending multicast event from zirk: " + serviceIdAsString);
-                proxy.sendMulticastEvent(serviceId, recipientSelector, mEventMsg);
+                proxy.sendMulticastEvent(serviceId, recipientSelector, mEventMsg, eventTopic);
             } else {
                 logger.error("trying to send multicast message with Null zirkId");
 
@@ -295,19 +297,22 @@ public final class BezirkServiceHelper {
      */
     void sendUnicastEvent(Intent intent) {
         logger.info("Received unicast message from zirk");
-        String serviceIdKEY = "zirkId";
-        String sepKEY = "receiverSep";
-        String uEventMsgKEY = "eventMsg";
+        final String serviceIdKEY = "zirkId";
+        final String sepKEY = "receiverSep";
+        final String uEventMsgKEY = "eventMsg";
+        final String topic = "topic";
 
         final String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
         final String sepAsString = intent.getStringExtra(sepKEY);
         final String msg = intent.getStringExtra(uEventMsgKEY);
+        final String eventTopic = intent.getStringExtra(topic);
+
         if (BezirkValidatorUtility.checkForString(serviceIdAsString) && BezirkValidatorUtility.checkForString(sepAsString) && BezirkValidatorUtility.checkForString(msg)) {
             final Gson gson = new Gson();
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final BezirkZirkEndPoint serviceEndPoint = gson.fromJson(sepAsString, BezirkZirkEndPoint.class);
             if (BezirkValidatorUtility.checkBezirkZirkId(serviceId) && BezirkValidatorUtility.checkBezirkZirkEndPoint(serviceEndPoint)) {
-                proxy.sendUnicastEvent(serviceId, serviceEndPoint, msg);
+                proxy.sendUnicastEvent(serviceId, serviceEndPoint, msg, eventTopic);
             } else {
                 logger.error("Check unicast parameters");
             }

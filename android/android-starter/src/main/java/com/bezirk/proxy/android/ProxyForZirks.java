@@ -104,7 +104,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
     }
 
     @Override
-    public void sendMulticastEvent(final ZirkId serviceId, final RecipientSelector recipientSelector, final String serializedEventMsg) {
+    public void sendMulticastEvent(final ZirkId serviceId, final RecipientSelector recipientSelector, final String serializedEventMsg, final String topic) {
         //if Stack was not started correctly, return without any further actions.
         if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
@@ -119,7 +119,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         final BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(serviceId);
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
-        final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
+        //final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
 
         while (sphereIterator.hasNext()) {
             final EventLedger ecMessage = new EventLedger();
@@ -130,7 +130,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             mHeader.setRecipientSelector(recipientSelector);
             mHeader.setSenderSEP(senderSEP);
             mHeader.setUniqueMsgId(uniqueMsgId.toString());
-            mHeader.setTopic(eventTopic.toString());
+            mHeader.setTopic(topic);
             mHeader.setSphereName(sphereIterator.next());
             ecMessage.setHeader(mHeader);
             ecMessage.setSerializedHeader(mHeader.serialize());
@@ -144,7 +144,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
     }
 
     @Override
-    public void sendUnicastEvent(final ZirkId serviceId, final BezirkZirkEndPoint recipient, final String serializedEventMsg) {
+    public void sendUnicastEvent(final ZirkId serviceId, final BezirkZirkEndPoint recipient, final String serializedEventMsg, final String topic) {
         //if Stack was not started correctly, return without any further actions.
         if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
@@ -159,7 +159,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         final BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(serviceId);
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
-        final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
+        //final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
 
         while (sphereIterator.hasNext()) {
             final EventLedger ecMessage = new EventLedger();
@@ -170,7 +170,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             uHeader.setRecipient(recipient);
             uHeader.setSenderSEP(senderSEP);
             uHeader.setUniqueMsgId(uniqueMsgId.toString());
-            uHeader.setTopic(eventTopic.toString());
+            uHeader.setTopic(topic);
             uHeader.setSphereName(sphereIterator.next());
             ecMessage.setHeader(uHeader);
             ecMessage.setSerializedHeader(uHeader.serialize());

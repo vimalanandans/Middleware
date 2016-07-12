@@ -83,7 +83,7 @@ public abstract class Message {
 
     static {
         final GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeHierarchyAdapter(Message.class, new MessageAdapter());
+        gsonBuilder.registerTypeAdapter(Message.class, new MessageAdapter());
         gson = gsonBuilder.create();
     }
 
@@ -140,9 +140,9 @@ public abstract class Message {
         private static final Gson gson;
 
         static {
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeHierarchyAdapter(ZirkEndPoint.class, new InterfaceAdapter<ZirkEndPoint>());
-            gson = gsonBuilder.create();
+//            GsonBuilder gsonBuilder = new GsonBuilder();
+//            gsonBuilder.registerTypeHierarchyAdapter(ZirkEndPoint.class, new InterfaceAdapter<ZirkEndPoint>());
+            gson = new Gson();
         }
 
         @Override
@@ -161,7 +161,7 @@ public abstract class Message {
             JsonElement element = jsonObject.get("properties");
 
             try {
-                return (Message)gson.fromJson(element, Class.forName(type));
+                return (Message) gson.fromJson(element, Class.forName(type));
             } catch (ClassNotFoundException cnfe) {
                 throw new JsonParseException("Unknown element type: " + type, cnfe);
             }
