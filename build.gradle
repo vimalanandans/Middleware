@@ -32,7 +32,8 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:${project.androidGradleToolsVersion}"
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.1+"
+        //classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.1+"
+        classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '4.4.0')
     }
     ext {
         local = true //change to false for compiling project artifacts from remote maven
