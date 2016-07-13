@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.bezirk.actions.BezirkActions;
-import com.bezirk.messagehandler.DiscoveryIncomingMessage;
-import com.bezirk.messagehandler.EventIncomingMessage;
-import com.bezirk.messagehandler.PipeRequestIncomingMessage;
-import com.bezirk.messagehandler.StreamIncomingMessage;
-import com.bezirk.messagehandler.StreamStatusMessage;
-import com.bezirk.messagehandler.ZirkMessageHandler;
+import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
+import com.bezirk.proxy.messagehandler.EventIncomingMessage;
+import com.bezirk.proxy.messagehandler.PipeRequestIncomingMessage;
+import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
+import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;

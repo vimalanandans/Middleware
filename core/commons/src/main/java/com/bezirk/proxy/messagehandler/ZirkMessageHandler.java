@@ -1,7 +1,7 @@
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com)
  */
-package com.bezirk.messagehandler;
+package com.bezirk.proxy.messagehandler;
 
 /**
  * Platform independent API used to give ZirkMessageHandler to the ProxyForBezirk Library.

@@ -1,7 +1,7 @@
 package com.bezirk;
 
 import com.bezirk.devices.BezirkDeviceInterface;
-import com.bezirk.messagehandler.ZirkMessageHandler;
+import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.sphere.api.BezirkSphereAPI;
 import com.bezirk.sphere.api.BezirkSphereRegistration;

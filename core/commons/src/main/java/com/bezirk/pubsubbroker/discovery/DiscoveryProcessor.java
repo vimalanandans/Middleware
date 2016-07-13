@@ -1,7 +1,7 @@
 package com.bezirk.pubsubbroker.discovery;
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.messagehandler.DiscoveryIncomingMessage;
+import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;

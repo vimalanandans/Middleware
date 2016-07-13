@@ -2,7 +2,7 @@ package com.bezirk.discovery;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
-import com.bezirk.messagehandler.ZirkMessageHandler;
+import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.pipe.MockCallBackZirk;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;

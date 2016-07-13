@@ -1,4 +1,4 @@
-package com.bezirk.messagehandler;
+package com.bezirk.proxy.messagehandler;
 
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;

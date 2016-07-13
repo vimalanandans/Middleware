@@ -2,7 +2,7 @@ package com.bezirk.pubsubbroker.discovery;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
-import com.bezirk.messagehandler.DiscoveryIncomingMessage;
+import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.util.ValidatorUtility;
 import com.google.gson.Gson;
 

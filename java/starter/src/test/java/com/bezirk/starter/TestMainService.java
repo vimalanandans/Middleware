@@ -1,6 +1,6 @@
 package com.bezirk.starter;
 
-import com.bezirk.messagehandler.ZirkMessageHandler;
+import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
 import com.bezirk.proxy.pc.ProxyForServices;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 

@@ -1,11 +1,11 @@
 package com.bezirk.middleware.proxy;
 
 import com.bezirk.callback.pc.BroadcastReceiver;
-import com.bezirk.messagehandler.DiscoveryIncomingMessage;
-import com.bezirk.messagehandler.EventIncomingMessage;
-import com.bezirk.messagehandler.ServiceIncomingMessage;
-import com.bezirk.messagehandler.StreamIncomingMessage;
-import com.bezirk.messagehandler.StreamStatusMessage;
+import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
+import com.bezirk.proxy.messagehandler.EventIncomingMessage;
+import com.bezirk.proxy.messagehandler.ServiceIncomingMessage;
+import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
+import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.messages.Event;

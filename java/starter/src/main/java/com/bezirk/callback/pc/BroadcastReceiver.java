@@ -1,6 +1,6 @@
 package com.bezirk.callback.pc;
 
-import com.bezirk.messagehandler.ServiceIncomingMessage;
+import com.bezirk.proxy.messagehandler.ServiceIncomingMessage;
 
 /**
  * Common BroadcastReceiver Interface that is defined to mimin the android BroadcastReceiver onto PC side.

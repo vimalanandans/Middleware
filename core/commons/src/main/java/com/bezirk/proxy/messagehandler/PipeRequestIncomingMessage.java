@@ -1,4 +1,4 @@
-package com.bezirk.messagehandler;
+package com.bezirk.proxy.messagehandler;
 
 import com.bezirk.middleware.addressing.Pipe;
 import com.bezirk.pipe.policy.ext.BezirkPipePolicy;

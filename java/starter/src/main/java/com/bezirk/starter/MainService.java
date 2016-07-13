@@ -11,7 +11,7 @@ import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.BezirkDevice;
 import com.bezirk.comms.CommsFeature;
 import com.bezirk.remotelogging.ui.RemoteLogSphereSelectGUI;
-import com.bezirk.messagehandler.ZirkMessageHandler;
+import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
 import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.BezirkProxyPersistence;
 import com.bezirk.persistence.RegistryPersistence;

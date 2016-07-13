@@ -4,7 +4,7 @@ import android.content.Intent;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.CommsConfigurations;
-import com.bezirk.messagehandler.StreamStatusMessage;
+import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.android.ProxyForZirks;

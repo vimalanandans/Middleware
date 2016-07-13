@@ -1,4 +1,4 @@
-package com.bezirk.messagehandler;
+package com.bezirk.proxy.messagehandler;
 
 /**
  * Subclass of ServiceIncomingMessage that is used to handle MulticastCallback

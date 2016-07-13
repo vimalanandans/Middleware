@@ -1,8 +1,8 @@
 package com.bezirk.pubsubbroker;
 
 import com.bezirk.control.messages.EventLedger;
-import com.bezirk.messagehandler.StreamIncomingMessage;
-import com.bezirk.messagehandler.StreamStatusMessage;
+import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
+import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 
 /**
  * Platform independent API's used by the SADL for handling incoming event pub sub Reception.

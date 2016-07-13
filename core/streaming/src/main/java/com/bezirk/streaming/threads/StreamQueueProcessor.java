@@ -5,8 +5,8 @@ package com.bezirk.streaming.threads;
 
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.Ledger;
-import com.bezirk.messagehandler.StreamIncomingMessage;
-import com.bezirk.messagehandler.StreamStatusMessage;
+import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
+import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.streaming.control.Objects.StreamRecord;

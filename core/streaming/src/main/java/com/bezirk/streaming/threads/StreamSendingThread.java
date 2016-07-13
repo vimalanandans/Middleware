@@ -3,7 +3,7 @@
  */
 package com.bezirk.streaming.threads;
 
-import com.bezirk.messagehandler.StreamStatusMessage;
+import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.BezirkSphereForPubSub;

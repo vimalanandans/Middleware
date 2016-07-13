@@ -3,6 +3,10 @@ package com.bezirk.messagehandler;
 import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
+import com.bezirk.proxy.messagehandler.EventIncomingMessage;
+import com.bezirk.proxy.messagehandler.MulticastCallbackMessage;
+import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 
 import org.junit.Test;
 
@@ -31,11 +35,11 @@ public class CallBackMessageTest {
     }
 
     private void testUnicastStreamCallbackMessage() {
-        StreamIncomingMessage streamIncomingMessage = new StreamIncomingMessage();
+        com.bezirk.proxy.messagehandler.StreamIncomingMessage streamIncomingMessage = new com.bezirk.proxy.messagehandler.StreamIncomingMessage();
         assertEquals("Callbackdiscriminator is not set to STREAM_UNICAST for unicastStreamCallbackMessage.", "STREAM_UNICAST", streamIncomingMessage.callbackDiscriminator);
 
         String serializedCallback = streamIncomingMessage.serialize();
-        StreamIncomingMessage deserializedcallbackMessage = StreamIncomingMessage.deserialize(serializedCallback, StreamIncomingMessage.class);
+        com.bezirk.proxy.messagehandler.StreamIncomingMessage deserializedcallbackMessage = com.bezirk.proxy.messagehandler.StreamIncomingMessage.deserialize(serializedCallback, com.bezirk.proxy.messagehandler.StreamIncomingMessage.class);
         assertEquals("Callbackdiscriminator is not set to STREAM_UNICAST for unicastStreamCallbackMessage.", "STREAM_UNICAST", deserializedcallbackMessage.getCallbackType());
 
         streamIncomingMessage = new StreamIncomingMessage(null, null, null, null, (short) 0, null);
@@ -44,32 +48,32 @@ public class CallBackMessageTest {
     }
 
     private void testStreamStatusCallbackMessage() {
-        StreamStatusMessage streamStatusMessage = new StreamStatusMessage();
+        com.bezirk.proxy.messagehandler.StreamStatusMessage streamStatusMessage = new com.bezirk.proxy.messagehandler.StreamStatusMessage();
         assertEquals("Callbackdiscriminator is not set to STREAM_STATUS for streamStatusCallbackMessage.", "STREAM_STATUS", streamStatusMessage.callbackDiscriminator);
 
         String serializedCallback = streamStatusMessage.serialize();
-        StreamStatusMessage deserializedcallbackMessage = StreamStatusMessage.deserialize(serializedCallback, StreamStatusMessage.class);
+        com.bezirk.proxy.messagehandler.StreamStatusMessage deserializedcallbackMessage = com.bezirk.proxy.messagehandler.StreamStatusMessage.deserialize(serializedCallback, com.bezirk.proxy.messagehandler.StreamStatusMessage.class);
         assertEquals("Callbackdiscriminator is not set to STREAM_STATUS for streamStatusCallbackMessage.", "STREAM_STATUS", deserializedcallbackMessage.getCallbackType());
 
-        streamStatusMessage = new StreamStatusMessage(null, 0, (short) 0);
+        streamStatusMessage = new com.bezirk.proxy.messagehandler.StreamStatusMessage(null, 0, (short) 0);
         assertEquals("Callbackdiscriminator is not set to STREAM_STATUS for streamStatusCallbackMessage.", "STREAM_STATUS", streamStatusMessage.callbackDiscriminator);
     }
 
     private void testMulticastCallbackMessage() {
-        MulticastCallbackMessage multicastCallbackMessage = new MulticastCallbackMessage();
+        com.bezirk.proxy.messagehandler.MulticastCallbackMessage multicastCallbackMessage = new com.bezirk.proxy.messagehandler.MulticastCallbackMessage();
         assertEquals("Callbackdiscriminator is not set to MULTICAST_STREAM for multicastCallbackMessage.", "MULTICAST_STREAM", multicastCallbackMessage.callbackDiscriminator);
 
         String serializedCallback = multicastCallbackMessage.serialize();
-        MulticastCallbackMessage deserializedcallbackMessage = MulticastCallbackMessage.deserialize(serializedCallback, MulticastCallbackMessage.class);
+        com.bezirk.proxy.messagehandler.MulticastCallbackMessage deserializedcallbackMessage = com.bezirk.proxy.messagehandler.MulticastCallbackMessage.deserialize(serializedCallback, MulticastCallbackMessage.class);
         assertEquals("Callbackdiscriminator is not set to MULTICAST_STREAM for multicastCallbackMessage.", "MULTICAST_STREAM", deserializedcallbackMessage.getCallbackType());
     }
 
     private void testEventCallBackMessage() {
-        EventIncomingMessage eventIncomingMessage = new EventIncomingMessage();
+        com.bezirk.proxy.messagehandler.EventIncomingMessage eventIncomingMessage = new com.bezirk.proxy.messagehandler.EventIncomingMessage();
         assertEquals("Callbackdiscriminator is not set to EVENT for eventCallbackMessage.", "EVENT", eventIncomingMessage.callbackDiscriminator);
 
         String serializedCallback = eventIncomingMessage.serialize();
-        EventIncomingMessage deserializedcallbackMessage = EventIncomingMessage.deserialize(serializedCallback, EventIncomingMessage.class);
+        com.bezirk.proxy.messagehandler.EventIncomingMessage deserializedcallbackMessage = com.bezirk.proxy.messagehandler.EventIncomingMessage.deserialize(serializedCallback, com.bezirk.proxy.messagehandler.EventIncomingMessage.class);
         assertEquals("Callbackdiscriminator is not set to EVENT for eventCallbackMessage.", "EVENT", deserializedcallbackMessage.getCallbackType());
 
         ZirkId recipientId = new ZirkId("TestService");
@@ -77,20 +81,20 @@ public class CallBackMessageTest {
         String serialzedEvent = "TestEvent";
         String eventTopic = "TestTopic";
         String msgId = "1234";
-        eventIncomingMessage = new EventIncomingMessage(recipientId, senderSEP, serialzedEvent, eventTopic, msgId);
+        eventIncomingMessage = new com.bezirk.proxy.messagehandler.EventIncomingMessage(recipientId, senderSEP, serialzedEvent, eventTopic, msgId);
         assertEquals("Callbackdiscriminator is not set to EVENT for eventCallbackMessage.", "EVENT", eventIncomingMessage.callbackDiscriminator);
 
         serializedCallback = eventIncomingMessage.serialize();
-        deserializedcallbackMessage = EventIncomingMessage.deserialize(serializedCallback, EventIncomingMessage.class);
+        deserializedcallbackMessage = com.bezirk.proxy.messagehandler.EventIncomingMessage.deserialize(serializedCallback, EventIncomingMessage.class);
         assertEquals("Callbackdiscriminator is not set to EVENT for eventCallbackMessage.", "EVENT", deserializedcallbackMessage.getCallbackType());
     }
 
     private void testDiscoveryCallBackMessage() {
-        DiscoveryIncomingMessage discoveryCallBackMessage = new DiscoveryIncomingMessage();
+        com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage discoveryCallBackMessage = new com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage();
         assertEquals("Callbackdiscriminator is not set to DISCOVERY for discoverycallbackmessage.", "DISCOVERY", discoveryCallBackMessage.callbackDiscriminator);
 
         String serializedCallback = discoveryCallBackMessage.serialize();
-        DiscoveryIncomingMessage deserializedcallbackMessage = DiscoveryIncomingMessage.deserialize(serializedCallback, DiscoveryIncomingMessage.class);
+        com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage deserializedcallbackMessage = com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage.deserialize(serializedCallback, com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage.class);
         assertEquals("Callbackdiscriminator is not set to DISCOVERY for discoveryCallBackMessage.", "DISCOVERY", deserializedcallbackMessage.getCallbackType());
 
         discoveryCallBackMessage = new DiscoveryIncomingMessage(null, null, 0, true);

@@ -1,11 +1,11 @@
 package com.bezirk.callback.pc;
 
-import com.bezirk.messagehandler.DiscoveryIncomingMessage;
-import com.bezirk.messagehandler.EventIncomingMessage;
-import com.bezirk.messagehandler.PipeRequestIncomingMessage;
-import com.bezirk.messagehandler.ServiceIncomingMessage;
-import com.bezirk.messagehandler.StreamIncomingMessage;
-import com.bezirk.messagehandler.StreamStatusMessage;
+import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
+import com.bezirk.proxy.messagehandler.EventIncomingMessage;
+import com.bezirk.proxy.messagehandler.PipeRequestIncomingMessage;
+import com.bezirk.proxy.messagehandler.ServiceIncomingMessage;
+import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
+import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
