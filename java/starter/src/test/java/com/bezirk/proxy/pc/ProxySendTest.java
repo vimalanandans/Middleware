@@ -69,28 +69,28 @@ public class ProxySendTest {
         mockSetUP.destroyTestSetUp();
     }
 
-    @Test
-    public void testSendStream() {
-        try {
-            sendFile = new File(getClass().getClassLoader().getResource("streamingTest.txt").getPath());
-        } catch (NullPointerException e) {
-            logger.error("Unable to find file");
-        }
-        ProxyForServices proxyForServices = new ProxyForServices();
-        proxyForServices.setSadlRegistry(sadlManager);
-        MockComms mockComms = (MockComms) mockSetUP.getBezirkComms();
-        proxyForServices.setCommsManager(mockComms);
-
-        proxyForServices.registerService(senderId, serviceName);
-        String serializedStream = new MockRequestStream(Message.Flag.REQUEST, "MockStream", receiver).toJson();
-        receiver.device = "DeviceB";
-        short streamId = proxyForServices.sendStream(senderId, receiver, serializedStream, sendFile, (short) 5);
-        // checking the stream id is not enough
-        assertEquals("Proxy is unable to send stream. ", 1, streamId);
-
-        assertEquals("Proxy is unable to add stream request to the comms queue.", mockSetUP.getTotalSpheres(), mockComms.getStreamList().size());
-        mockComms.clearQueues();
-    }
+//    @Test
+//    public void testSendStream() {
+//        try {
+//            sendFile = new File(getClass().getClassLoader().getResource("streamingTest.txt").getPath());
+//        } catch (NullPointerException e) {
+//            logger.error("Unable to find file");
+//        }
+//        ProxyForServices proxyForServices = new ProxyForServices();
+//        proxyForServices.setSadlRegistry(sadlManager);
+//        MockComms mockComms = (MockComms) mockSetUP.getBezirkComms();
+//        proxyForServices.setCommsManager(mockComms);
+//
+//        proxyForServices.registerService(senderId, serviceName);
+//        String serializedStream = new MockRequestStream(Message.Flag.REQUEST, "MockStream", receiver).toJson();
+//        receiver.device = "DeviceB";
+//        short streamId = proxyForServices.sendStream(senderId, receiver, serializedStream, sendFile, (short) 5);
+//        // checking the stream id is not enough
+//        assertEquals("Proxy is unable to send stream. ", 1, streamId);
+//
+//        assertEquals("Proxy is unable to add stream request to the comms queue.", mockSetUP.getTotalSpheres(), mockComms.getStreamList().size());
+//        mockComms.clearQueues();
+//    }
 
     @Test
     public void testSendUnicastEvent() {

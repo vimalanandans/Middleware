@@ -30,7 +30,7 @@ public class TestMainService {
         System.clearProperty("displayEnable");
     }
 
-    @Test
+    //@Test
     public void test() {
 
         //testStartStack();
@@ -45,7 +45,7 @@ public class TestMainService {
     /**
      * Positive TestCase: SphereForPC should be initialized once the MainService starts the stack.
      */
-    @Test
+    //@Test
     public void testStartStack() {
         ProxyForServices proxyforServices = new ProxyForServices();
         BezirkConfig bezirkConfigRef = new BezirkConfig();
@@ -77,7 +77,7 @@ public class TestMainService {
     /**
      * Positive TestCase: Reference to SphereForPC should be cleared once the stack is stopped.
      */
-    @Test
+    //@Test
     public void testStopStack() {
         ProxyForServices proxyForServices = new ProxyForServices();
         BezirkConfig bezirkConfigRef = new BezirkConfig();
@@ -94,7 +94,7 @@ public class TestMainService {
     /**
      * Positive TestCase: SphereForPC should be initialized once the stack is rebooted.
      */
-    @Test
+    //@Test
     public void testReboot() {
         ProxyForServices proxyForServices = new ProxyForServices();
         BezirkConfig bezirkConfigRef = new BezirkConfig();
