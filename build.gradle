@@ -14,6 +14,7 @@
  * 3.0.0-alpha+011 Fixes issue #91 (first event duplication)(Rishabh)
  * 3.0.0-alpha+012 Changing text display for issue #59 (bezirk ethernet configuration), testApp Pub/Sub testing through different applications until 2-zirk registration issue is resolved (Rishabh)
  * 3.0.0-alpha+013 bezrik -> bezirk for network-util package fix (Rishabh)
+ * 3.0.0-alpha+014 android send/receive messages, serialization-deserialization & bug fixes for UI (Rishabh)
  */
 buildscript {
     repositories {
