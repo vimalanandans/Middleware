@@ -1,7 +1,8 @@
 package com.bezirk.util;
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.statckstatus.ui.StackStatusUI;
+import com.bezirk.ui.statckstatus.StackStatusUI;
+import com.bezirk.ui.commstest.CommsTest;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -14,11 +15,11 @@ import javax.swing.JOptionPane;
 public class TestUIMouseListener implements MouseListener {
 
     private final String uiType;
-    private final com.bezirk.commstest.ui.CommsTest commsTest;
+    private final CommsTest commsTest;
     private final Integer pingCount;
     private final String misMatchVersion;
 
-    public TestUIMouseListener(String uiType, com.bezirk.commstest.ui.CommsTest commsTest, Integer pingCount,
+    public TestUIMouseListener(String uiType, CommsTest commsTest, Integer pingCount,
                                String misMatchVersion) {
         super();
         this.uiType = uiType;

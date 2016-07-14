@@ -1,6 +1,6 @@
 package com.bezirk.sphere.impl;
 
-import com.bezirk.devices.BezirkDeviceInterface;
+import com.bezirk.devices.DeviceInterface;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
@@ -10,14 +10,14 @@ import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.sphere.api.BezirkSphereListener;
-import com.bezirk.sphere.api.BezirkSphereType;
+import com.bezirk.sphere.api.SphereListener;
+import com.bezirk.sphere.api.SphereType;
 import com.bezirk.sphere.api.CryptoInternals;
-import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.ISphereUtils;
-import com.bezirk.sphere.api.BezirkDevMode.Mode;
-import com.bezirk.sphere.api.BezirkSphereListener.SphereCreateStatus;
-import com.bezirk.sphere.api.BezirkSphereListener.Status;
+import com.bezirk.sphere.api.SphereConfig;
+import com.bezirk.sphere.api.SphereUtils;
+import com.bezirk.sphere.api.DevMode.Mode;
+import com.bezirk.sphere.api.SphereListener.SphereCreateStatus;
+import com.bezirk.sphere.api.SphereListener.Status;
 import com.bezirk.sphere.security.SphereKeys;
 import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
@@ -49,9 +49,9 @@ public class SphereRegistryWrapper {
 
     private SphereRegistry registry = null;
     private SpherePersistence spherePersistence = null;
-    private BezirkDeviceInterface upaDevice;
-    private BezirkSphereListener sphereListener;
-    private ISphereConfig sphereConfig;
+    private DeviceInterface upaDevice;
+    private SphereListener sphereListener;
+    private SphereConfig sphereConfig;
     private CryptoInternals crypto;
     private DevelopmentSphere developmentSphere;
 
@@ -72,8 +72,8 @@ public class SphereRegistryWrapper {
      * @param spherePersistence - SpherePersistence interface object. Should not be null.
      */
     public SphereRegistryWrapper(SphereRegistry registry, SpherePersistence spherePersistence,
-                                 BezirkDeviceInterface upaDevice, CryptoInternals crypto, BezirkSphereListener sphereListener,
-                                 ISphereConfig sphereConfig) {
+                                 DeviceInterface upaDevice, CryptoInternals crypto, SphereListener sphereListener,
+                                 SphereConfig sphereConfig) {
         if (null == registry || null == spherePersistence || null == upaDevice || null == crypto
                 || null == sphereConfig) {
             throw new IllegalArgumentException("Parameters should be not null");
@@ -351,7 +351,7 @@ public class SphereRegistryWrapper {
          * 2) iterate through the keyset of the spheres map to find the default
          * sphereId
          *
-         * 3) if using the listener approach with BezirkSphere, we could store the
+         * 3) if using the listener approach with SphereSphereAccess, we could store the
          * default sphereId on creation of the default sphere
          */
     }
@@ -370,7 +370,7 @@ public class SphereRegistryWrapper {
     public boolean createDefaultSphere(String defaultSphereName) {
         String defaultSphereId = getDefaultSphereId();
         if (null == defaultSphereId) {
-            createSphere(defaultSphereName, BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT, null);
+            createSphere(defaultSphereName, SphereType.BEZIRK_SPHERE_TYPE_DEFAULT, null);
             return true;
         } else {
             // default sphere id exists. check the name of the sphere and update
@@ -391,13 +391,13 @@ public class SphereRegistryWrapper {
      *
      * @param sphereName        - Name to be assigned to the new sphere.
      * @param sphereType        - Type of sphere to be created
-     * @param bezirkSphereListener
+     * @param sphereListener
      * @return - SphereId if sphere was created successfully or if the sphereId
      * existed already, null otherwise.
      */
-    public String createSphere(String sphereName, String sphereType, BezirkSphereListener bezirkSphereListener) {
+    public String createSphere(String sphereName, String sphereType, SphereListener sphereListener) {
         String name = (null == sphereName) ? DEFAULT_SPHERE_NAME : sphereName;
-        String type = (null == sphereType) ? BezirkSphereType.BEZIRK_SPHERE_TYPE_OTHER : sphereType;
+        String type = (null == sphereType) ? SphereType.BEZIRK_SPHERE_TYPE_OTHER : sphereType;
         SphereCreateStatus status;
         String sphereId = null;
 
@@ -427,8 +427,8 @@ public class SphereRegistryWrapper {
         }
 
         logger.info("Create sphere, sphereId : {}, status : {}", sphereId, status);
-        if (bezirkSphereListener != null) {
-            bezirkSphereListener.onSphereCreateStatus(sphereId, status);
+        if (sphereListener != null) {
+            sphereListener.onSphereCreateStatus(sphereId, status);
         } else {
             logger.debug("Create sphere, no listener registered");
         }
@@ -458,7 +458,7 @@ public class SphereRegistryWrapper {
     }
 
     /**
-     * Generate sphere name using information from {@link BezirkDeviceInterface}
+     * Generate sphere name using information from {@link DeviceInterface}
      *
      * @return - generated sphere name.
      */
@@ -602,7 +602,7 @@ public class SphereRegistryWrapper {
     }
 
     /**
-     * Registers the zirk with BezirkSphere's. In case the zirk is already
+     * Registers the zirk with SphereSphereAccess's. In case the zirk is already
      * registered, call to this method updates the name of the zirk to
      * serviceName passed
      *
@@ -980,9 +980,9 @@ public class SphereRegistryWrapper {
      * <p>
      * NOTE: The current device information is not stored in the sphere
      * registry. For retrieving device information, use
-     * {@link ISphereUtils#getDeviceInformation(String)}
+     * {@link SphereUtils#getDeviceInformation(String)}
      * which wraps around this method along with retrieving current device's
-     * information from {@link BezirkDeviceInterface}
+     * information from {@link DeviceInterface}
      * </p>
      *
      * @param deviceId whose DeviceInformation object has to be retrieved.
@@ -1022,7 +1022,7 @@ public class SphereRegistryWrapper {
      * out the current implementation of storing device information
      * <p>
      * Currently the information about the current device is maintained using
-     * BezirkDeviceInterface implementation. Also the information which is received
+     * DeviceInterface implementation. Also the information which is received
      * from other devices in operation like invite/join/catch is stored in the
      * sphere registry.
      * </p><p>

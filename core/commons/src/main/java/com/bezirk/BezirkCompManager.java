@@ -1,10 +1,10 @@
 package com.bezirk;
 
-import com.bezirk.devices.BezirkDeviceInterface;
+import com.bezirk.devices.DeviceInterface;
 import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
-import com.bezirk.sphere.api.BezirkSphereForPubSub;
-import com.bezirk.sphere.api.BezirkSphereAPI;
-import com.bezirk.sphere.api.BezirkSphereRegistration;
+import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereAPI;
+import com.bezirk.sphere.api.SphereRegistration;
 //import com.bezirk.streaming.rtc.Signaling;
 
 /**
@@ -37,16 +37,16 @@ public final class BezirkCompManager {
      * or UPADeviceForAndroid
      *
      */
-    private static BezirkDeviceInterface upaDevice;
+    private static DeviceInterface upaDevice;
 
 
     private static ZirkMessageHandler platformSpecificCallback;
 
-    private static BezirkSphereForPubSub bezirkSphereForPubSub;
+    private static PubSubSphereAccess pubSubSphereAccess;
 
-    private static BezirkSphereAPI bezirkSphereAPI;
+    private static SphereAPI sphereAPI;
 
-    private static BezirkSphereRegistration bezirkSphereRegistration;
+    private static SphereRegistration sphereRegistration;
 
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
@@ -71,7 +71,7 @@ public final class BezirkCompManager {
     /**
      * @return the upaDevice
      */
-    public static BezirkDeviceInterface getUpaDevice() {
+    public static DeviceInterface getUpaDevice() {
         return upaDevice;
     }
 
@@ -79,7 +79,7 @@ public final class BezirkCompManager {
      * @param upaDevice
      *            the upaDevice to set
      */
-    public static void setUpaDevice(BezirkDeviceInterface upaDevice) {
+    public static void setUpaDevice(DeviceInterface upaDevice) {
         BezirkCompManager.upaDevice = upaDevice;
     }
 
@@ -92,33 +92,33 @@ public final class BezirkCompManager {
     }
 
     // this is temporary for sadl to use the spheres
-    public static BezirkSphereForPubSub getSphereForPubSubBroker() {
-        return bezirkSphereForPubSub;
+    public static PubSubSphereAccess getSphereForPubSubBroker() {
+        return pubSubSphereAccess;
     }
 
     // this is temporary for setting up spheres for sadl
-    public static void setSphereForPubSub(BezirkSphereForPubSub sphereForPubSub) {
-        BezirkCompManager.bezirkSphereForPubSub = sphereForPubSub;
+    public static void setSphereForPubSub(PubSubSphereAccess sphereForPubSub) {
+        BezirkCompManager.pubSubSphereAccess = sphereForPubSub;
     }
 
     // this is temporary for UI to use the spheres
-    public static BezirkSphereAPI getSphereUI() {
-        return bezirkSphereAPI;
+    public static SphereAPI getSphereUI() {
+        return sphereAPI;
     }
 
     // this is temporary for setting up spheres for UI
-    public static void setSphereUI(BezirkSphereAPI bezirkSphereAPI) {
-        BezirkCompManager.bezirkSphereAPI = bezirkSphereAPI;
+    public static void setSphereUI(SphereAPI sphereAPI) {
+        BezirkCompManager.sphereAPI = sphereAPI;
     }
 
     // this is temporary for proxyForServices to use registration
-    public static BezirkSphereRegistration getSphereRegistration() {
-        return bezirkSphereRegistration;
+    public static SphereRegistration getSphereRegistration() {
+        return sphereRegistration;
     }
 
     // this is temporary for setting up zirk registration with spheres for UI
     public static void setSphereRegistration(
-            BezirkSphereRegistration sphereRegistration) {
-        BezirkCompManager.bezirkSphereRegistration = sphereRegistration;
+            SphereRegistration sphereRegistration) {
+        BezirkCompManager.sphereRegistration = sphereRegistration;
     }
 }

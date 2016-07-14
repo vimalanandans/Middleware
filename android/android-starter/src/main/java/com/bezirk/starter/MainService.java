@@ -19,10 +19,10 @@ import com.bezirk.R;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.proxy.android.ProxyForZirks;
 import com.bezirk.remotelogging.RemoteLog;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.starter.helper.NetworkBroadCastReceiver;
 import com.bezirk.starter.helper.BezirkActionProcessor;
-import com.bezirk.starter.helper.BezirkServiceHelper;
+import com.bezirk.starter.helper.ServiceHelper;
 import com.bezirk.starter.helper.BezirkStackHandler;
 
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class MainService extends Service implements INotificationCallback {
 
     private final BezirkActionProcessor bezirkActionProcessor = new BezirkActionProcessor();
     //private final PipeActionParser pipeActionParser = new PipeActionParser();
-    private BezirkServiceHelper bezirkServiceHelper;
+    private ServiceHelper serviceHelper;
     private BezirkStackHandler bezirkStackHandler;
     private CommsNotification commsNotification;
 
@@ -59,7 +59,7 @@ public class MainService extends Service implements INotificationCallback {
     }
 
     // TODO :use iBinder interface to send the handle reference
-    public static BezirkSphereAPI getSphereHandle() {
+    public static SphereAPI getSphereHandle() {
         return BezirkStackHandler.getSphereForAndroid();
     }
 
@@ -82,7 +82,7 @@ public class MainService extends Service implements INotificationCallback {
         //Acquire the Wifi Lock for Multicast
         logger.info("Bezirk Services is Created");
         final ProxyForZirks proxy = new ProxyForZirks(this);
-        bezirkServiceHelper = new BezirkServiceHelper(proxy);
+        serviceHelper = new ServiceHelper(proxy);
         //Gain permissions for multicast
 
         //initialize the commsNotification object
@@ -105,7 +105,7 @@ public class MainService extends Service implements INotificationCallback {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         if (intent != null) {
-            bezirkActionProcessor.processBezirkAction(intent, this, bezirkServiceHelper, bezirkStackHandler);
+            bezirkActionProcessor.processBezirkAction(intent, this, serviceHelper, bezirkStackHandler);
         }
 
         return START_STICKY;

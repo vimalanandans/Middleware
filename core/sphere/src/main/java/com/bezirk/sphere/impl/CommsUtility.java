@@ -3,7 +3,7 @@
  */
 package com.bezirk.sphere.impl;
 
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 
@@ -16,10 +16,10 @@ import org.slf4j.LoggerFactory;
 public final class CommsUtility {
     private static final Logger logger = LoggerFactory.getLogger(CommsUtility.class);
 
-    private BezirkComms bezirkComms;
+    private Comms comms;
 
-    public CommsUtility(BezirkComms bezirkComms) {
-        this.bezirkComms = bezirkComms;
+    public CommsUtility(Comms comms) {
+        this.comms = comms;
     }
 
     public boolean sendMessage(ControlMessage controlMessage) {
@@ -29,9 +29,9 @@ public final class CommsUtility {
         transControlMessage.setSerializedMessage(transControlMessage.getMessage().serialize());
 
         // send the message
-        if (bezirkComms != null) {
+        if (comms != null) {
             logger.debug("Sending message: " + controlMessage.getDiscriminator());
-            return bezirkComms.sendMessage(transControlMessage);
+            return comms.sendMessage(transControlMessage);
         }
         logger.error("Failed to send message: " + controlMessage.getDiscriminator());
         return false;

@@ -1,7 +1,7 @@
 package com.bezirk.sphere.discovery;
 
-import com.bezirk.comms.BezirkComms;
-import com.bezirk.sphere.api.BezirkSphereDiscovery;
+import com.bezirk.comms.Comms;
+import com.bezirk.sphere.api.SphereDiscovery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,21 +15,21 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class SphereDiscoveryProcessor implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(SphereDiscoveryProcessor.class);
 
-    private static SphereDiscovery discovery;
-    private final BezirkSphereDiscovery sphereDiscoveryHandler;
+    private static com.bezirk.sphere.discovery.SphereDiscovery discovery;
+    private final SphereDiscovery sphereDiscoveryHandler;
     private Boolean running = false;
-    // private BezirkComms bezirkComms = null;
+    // private Comms comms = null;
 
-    public SphereDiscoveryProcessor(BezirkSphereDiscovery sphereDiscoveryHandler, BezirkComms bezirkComms) {
+    public SphereDiscoveryProcessor(SphereDiscovery sphereDiscoveryHandler, Comms comms) {
         this.sphereDiscoveryHandler = sphereDiscoveryHandler;
-        // this.bezirkComms = bezirkComms;
+        // this.comms = comms;
     }
 
-    public static SphereDiscovery getDiscovery() {
+    public static com.bezirk.sphere.discovery.SphereDiscovery getDiscovery() {
         return discovery;
     }
 
-    public static void setDiscovery(SphereDiscovery discovery) {
+    public static void setDiscovery(com.bezirk.sphere.discovery.SphereDiscovery discovery) {
         SphereDiscoveryProcessor.discovery = discovery;
     }
 

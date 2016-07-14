@@ -5,17 +5,17 @@ package com.bezirk.sphere;
  * TODO: this shall be part of Sphere Manager component
  * */
 public final class SphereManager {
-    private static BezirkQRCode bezirkQRCode;
+    private static QRCode QRCode;
 
     private SphereManager() {
         //To hide implicit public constructor
     }
 
-    public static BezirkQRCode getBezirkQRCode() {
-        return bezirkQRCode;
+    public static QRCode getQRCode() {
+        return QRCode;
     }
 
-    public static void setBezirkQRCode(BezirkQRCode bezirkQRCode) {
-        SphereManager.bezirkQRCode = bezirkQRCode;
+    public static void setQRCode(QRCode QRCode) {
+        SphereManager.QRCode = QRCode;
     }
 }

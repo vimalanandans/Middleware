@@ -11,7 +11,7 @@ public class CommsFactory {
 
     CommsFeature activeComms = CommsFeature.COMMS_BEZIRK;
 
-    BezirkComms getComms() {
+    Comms getComms() {
 
         if (!CommsFeature.COMMS_BEZIRK.isActive() && !CommsFeature.COMMS_ZYRE.isActive()) {
             logger.error("both comms are not active. Selecting only the default comms");

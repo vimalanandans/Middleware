@@ -2,7 +2,7 @@ package com.bezirk.remotelogging;
 
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
@@ -44,14 +44,14 @@ public final class RemoteLoggingManager implements RemoteLog {
 
 
     ServiceMessageHandler logServiceMsgHandler = null;
-    BezirkComms comms;
+    Comms comms;
 
     //private BezirkCallback bezirkCallback = null;
     CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver();
 
 
     @Override
-    public boolean  initRemoteLogger(BezirkComms comms) {
+    public boolean  initRemoteLogger(Comms comms) {
         // register the logging zirk message
         comms.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage, ctrlReceiver);
         this.comms = comms;

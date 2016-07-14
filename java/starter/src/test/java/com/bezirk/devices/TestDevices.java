@@ -7,8 +7,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Properties;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -17,11 +15,11 @@ import static org.junit.Assert.fail;
 public class TestDevices {
 
     private final static Logger LOG = LoggerFactory.getLogger(TestDevices.class);
-    BezirkDeviceForPC upaDeviceForPC;
+    DeviceForPC upaDeviceForPC;
 
     @Before
     public void setUp() throws Exception {
-        upaDeviceForPC = new BezirkDeviceForPC();
+        upaDeviceForPC = new DeviceForPC();
     }
 
     @Test
@@ -59,7 +57,7 @@ public class TestDevices {
 /*	@Test(expected = Exception.class)  
 	public void testStoreProperties() throws IOException{
 		Properties props = new Properties();
-		BezirkDeviceForPC.storeProperties(props);
+		DeviceForPC.storeProperties(props);
 	}
 	*/
 

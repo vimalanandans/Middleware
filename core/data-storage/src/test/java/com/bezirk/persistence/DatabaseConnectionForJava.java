@@ -14,7 +14,7 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
 
     private final String dbFilePath;
     private ConnectionSource dbConnectionSource = null;
-    private Dao<BezirkRegistry, Integer> bezirkPersistenceDao = null;
+    private Dao<PersistenceRegistry, Integer> bezirkPersistenceDao = null;
 
     public DatabaseConnectionForJava(String dbFileLocation) throws IOException {
         dbFilePath = dbFileLocation;
@@ -23,20 +23,20 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
 
     public ConnectionSource getDatabaseConnection() throws NullPointerException, SQLException, IOException {
 
-        dbConnectionSource = new JdbcConnectionSource(DBConstants.DB_URL_PATH + dbFilePath + "/" + DBConstants.DB_FILE_NAME);
+        dbConnectionSource = new JdbcConnectionSource(PersistenceConstants.DB_URL_PATH + dbFilePath + "/" + PersistenceConstants.DB_FILE_NAME);
         return dbConnectionSource;
     }
 
-    public Dao<BezirkRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException {
+    public Dao<PersistenceRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException {
         if (null == bezirkPersistenceDao) {
-            bezirkPersistenceDao = DaoManager.createDao(getDatabaseConnection(), BezirkRegistry.class);
+            bezirkPersistenceDao = DaoManager.createDao(getDatabaseConnection(), PersistenceRegistry.class);
             bezirkPersistenceDao.setAutoCommit(true);
         }
         return bezirkPersistenceDao;
     }
 
     private void setupDatabase() throws IOException {
-        File tempDBFile = new File(dbFilePath + "/" + DBConstants.DB_FILE_NAME);
+        File tempDBFile = new File(dbFilePath + "/" + PersistenceConstants.DB_FILE_NAME);
         tempDBFile.setWritable(true);
         System.out.println("FilePaht" + tempDBFile.getAbsolutePath());
         if (!tempDBFile.exists()) {

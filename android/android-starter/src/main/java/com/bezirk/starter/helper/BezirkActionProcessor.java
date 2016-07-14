@@ -2,7 +2,7 @@ package com.bezirk.starter.helper;
 
 import android.content.Intent;
 
-import com.bezirk.sphere.api.BezirkDevMode;
+import com.bezirk.sphere.api.DevMode;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkActionCommands;
 import com.bezirk.util.ValidatorUtility;
@@ -26,10 +26,10 @@ public final class BezirkActionProcessor {
      *
      * @param intent
      * @param service
-     * @param bezirkServiceHelper
+     * @param serviceHelper
      * @param bezirkStackHandler
      */
-    public void processBezirkAction(Intent intent, MainService service, BezirkServiceHelper bezirkServiceHelper, BezirkStackHandler bezirkStackHandler) {
+    public void processBezirkAction(Intent intent, MainService service, ServiceHelper serviceHelper, BezirkStackHandler bezirkStackHandler) {
 
         INTENT_ACTIONS intentAction = INTENT_ACTIONS.getActionUsingMessage(intent.getAction());
 
@@ -47,10 +47,10 @@ public final class BezirkActionProcessor {
                     processDeviceActions(intentAction, service);
                     break;
                 case SEND_ACTION:
-                    processSendActions(intentAction, intent, bezirkServiceHelper);
+                    processSendActions(intentAction, intent, serviceHelper);
                     break;
                 case SERVICE_ACTION:
-                    processServiceActions(intentAction, intent, service, bezirkServiceHelper);
+                    processServiceActions(intentAction, intent, service, serviceHelper);
                     break;
                 default:
                     logger.warn("Received unknown intent action: " + intentAction.message);
@@ -103,13 +103,13 @@ public final class BezirkActionProcessor {
                 sendIntent(BezirkActionCommands.CMD_CHANGE_DEVICE_TYPE_STATUS, true, service);
                 break;
             case ACTION_DEV_MODE_ON:
-                sendIntent(BezirkActionCommands.CMD_DEV_MODE_ON_STATUS, BezirkStackHandler.getDevMode().switchMode(BezirkDevMode.Mode.ON), service);
+                sendIntent(BezirkActionCommands.CMD_DEV_MODE_ON_STATUS, BezirkStackHandler.getDevMode().switchMode(DevMode.Mode.ON), service);
                 break;
             case ACTION_DEV_MODE_OFF:
-                sendIntent(BezirkActionCommands.CMD_DEV_MODE_OFF_STATUS, BezirkStackHandler.getDevMode().switchMode(BezirkDevMode.Mode.OFF), service);
+                sendIntent(BezirkActionCommands.CMD_DEV_MODE_OFF_STATUS, BezirkStackHandler.getDevMode().switchMode(DevMode.Mode.OFF), service);
                 break;
             case ACTION_DEV_MODE_STATUS:
-                BezirkDevMode.Mode mode = getDevMode();
+                DevMode.Mode mode = getDevMode();
                 sendIntent(BezirkActionCommands.CMD_DEV_MODE_STATUS, mode, service);
                 break;
             default:
@@ -119,35 +119,35 @@ public final class BezirkActionProcessor {
 
     }
 
-    private BezirkDevMode.Mode getDevMode() {
-        BezirkDevMode.Mode mode;
+    private DevMode.Mode getDevMode() {
+        DevMode.Mode mode;
         if (BezirkStackHandler.getDevMode() == null) {
             // if user wifi supplicant status is Disconnected and on Init he clicks on DeviceControl, devMode will be null.
-            mode = BezirkDevMode.Mode.OFF;
+            mode = DevMode.Mode.OFF;
         } else {
             mode = BezirkStackHandler.getDevMode().getStatus();
         }
         return mode;
     }
 
-    private void processServiceActions(INTENT_ACTIONS intentAction, Intent intent, MainService service, BezirkServiceHelper bezirkServiceHelper) {
+    private void processServiceActions(INTENT_ACTIONS intentAction, Intent intent, MainService service, ServiceHelper serviceHelper) {
 
         switch (intentAction) {
 
             case ACTION_BEZIRK_REGISTER:
-                bezirkServiceHelper.registerService(intent);
+                serviceHelper.registerService(intent);
                 break;
             case ACTION_BEZIRK_SUBSCRIBE:
-                bezirkServiceHelper.subscribeService(intent);
+                serviceHelper.subscribeService(intent);
                 break;
             case ACTION_BEZIRK_SETLOCATION:
-                bezirkServiceHelper.setLocation(intent);
+                serviceHelper.setLocation(intent);
                 break;
             case ACTION_SERVICE_DISCOVER:
-                bezirkServiceHelper.discoverService(intent);
+                serviceHelper.discoverService(intent);
                 break;
             case ACTION_BEZIRK_UNSUBSCRIBE:
-                bezirkServiceHelper.unsubscribeService(intent);
+                serviceHelper.unsubscribeService(intent);
                 break;
             case ACTION_PIPE_REQUEST:
                 service.processPipeRequest(intent);
@@ -158,20 +158,20 @@ public final class BezirkActionProcessor {
         }
     }
 
-    private void processSendActions(INTENT_ACTIONS intentAction, Intent intent, BezirkServiceHelper bezirkServiceHelper) {
+    private void processSendActions(INTENT_ACTIONS intentAction, Intent intent, ServiceHelper serviceHelper) {
 
         switch (intentAction) {
             case ACTION_SERVICE_SEND_MULTICAST_EVENT:
-                bezirkServiceHelper.sendMulticastEvent(intent);
+                serviceHelper.sendMulticastEvent(intent);
                 break;
             case ACTION_SERVICE_SEND_UNICAST_EVENT:
-                bezirkServiceHelper.sendUnicastEvent(intent);
+                serviceHelper.sendUnicastEvent(intent);
                 break;
             case ACTION_BEZIRK_PUSH_UNICAST_STREAM:
-                bezirkServiceHelper.sendUnicastStream(intent);
+                serviceHelper.sendUnicastStream(intent);
                 break;
             case ACTION_BEZIRK_PUSH_MULTICAST_STREAM:
-                bezirkServiceHelper.sendMulticastStream(intent);
+                serviceHelper.sendMulticastStream(intent);
                 break;
             default:
                 logger.warn("Received unknown intent action: " + intentAction.message);
@@ -188,7 +188,7 @@ public final class BezirkActionProcessor {
         service.getApplicationContext().sendBroadcast(intent);
     }
 
-    private void sendIntent(String command, BezirkDevMode.Mode mode, MainService service) {
+    private void sendIntent(String command, DevMode.Mode mode, MainService service) {
         Intent intent = new Intent();
         intent.setAction(CONTROL_UI_NOTIFICATION_ACTION);
         intent.putExtra("Command", command);

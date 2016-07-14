@@ -2,8 +2,8 @@ package com.bezirk.middleware.proxy;
 
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.devices.BezirkDeviceForPC;
-import com.bezirk.devices.BezirkDeviceInterface;
+import com.bezirk.devices.DeviceForPC;
+import com.bezirk.devices.DeviceInterface;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.RecipientSelector;
@@ -171,11 +171,11 @@ public class DiscoveryTest {
             if (isTestWithNullLocPassed == false && zirkSet.size() == 3) {
 
                 for (DiscoveredZirk aZirkSet : zirkSet) {
-                    BezirkDeviceForPC bezirkDeviceForPC = new BezirkDeviceForPC();
+                    DeviceForPC bezirkDeviceForPC = new DeviceForPC();
 //                    Properties props;
 //
 //                    try {
-//                        props = BezirkDeviceForPC.loadProperties();
+//                        props = DeviceForPC.loadProperties();
 //                        String location = props.getProperty("DeviceLocation");
 //                        bezirkDeviceForPC.setDeviceLocation(new Location(location));
 //                        BezirkCompManager.setUpaDevice(bezirkDeviceForPC);
@@ -189,7 +189,7 @@ public class DiscoveryTest {
                     bezirkDeviceForPC.setDeviceLocation(new Location(location));
                     BezirkCompManager.setUpaDevice(bezirkDeviceForPC);
 
-                    BezirkDeviceInterface bezirkDevice = BezirkCompManager.getUpaDevice();
+                    DeviceInterface bezirkDevice = BezirkCompManager.getUpaDevice();
                     BezirkDiscoveredZirk tempDisService = (BezirkDiscoveredZirk) aZirkSet;
                     assertNotNull("Discovered Zirk is null. ", tempDisService);
                     switch (tempDisService.name) {

@@ -3,9 +3,9 @@ package com.bezirk.persistence.util;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.bezirk.persistence.DBConstants;
+import com.bezirk.persistence.PersistenceConstants;
 import com.bezirk.persistence.DatabaseConnection;
-import com.bezirk.persistence.BezirkRegistry;
+import com.bezirk.persistence.PersistenceRegistry;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
@@ -18,10 +18,10 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
     private static final int DATABASE_VERSION = 1;
     private final Context mContext;
     private ConnectionSource dbConnectionSource;
-    private Dao<BezirkRegistry, Integer> bezirkPersistenceDao;
+    private Dao<PersistenceRegistry, Integer> bezirkPersistenceDao;
 
     public DatabaseConnectionForAndroid(Context context) {
-        super(context, context.getFilesDir().getPath() + File.separator + DBConstants.DB_FILE_NAME, null, DATABASE_VERSION);
+        super(context, context.getFilesDir().getPath() + File.separator + PersistenceConstants.DB_FILE_NAME, null, DATABASE_VERSION);
         mContext = context;
     }
 
@@ -33,9 +33,9 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
     }
 
     @Override
-    public Dao<BezirkRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException {
+    public Dao<PersistenceRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException {
         if (null == bezirkPersistenceDao) {
-            bezirkPersistenceDao = getDao(BezirkRegistry.class);
+            bezirkPersistenceDao = getDao(PersistenceRegistry.class);
             bezirkPersistenceDao.setAutoCommit(true);
         }
         return bezirkPersistenceDao;
@@ -44,7 +44,7 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         dbConnectionSource = connectionSource;
-        String internalMemoryPath = mContext.getFilesDir().getPath() + File.separator + DBConstants.DB_FILE_NAME;
+        String internalMemoryPath = mContext.getFilesDir().getPath() + File.separator + PersistenceConstants.DB_FILE_NAME;
         File tempDbFile = new File(internalMemoryPath);
         if (!tempDbFile.exists()) {
             try {

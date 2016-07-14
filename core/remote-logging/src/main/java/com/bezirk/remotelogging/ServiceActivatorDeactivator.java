@@ -4,7 +4,7 @@
 package com.bezirk.remotelogging;
 
 import com.bezirk.comms.CommsConfigurations;
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.proxy.api.impl.ZirkId;
@@ -26,7 +26,7 @@ public final class ServiceActivatorDeactivator {
     private ServiceActivatorDeactivator() {
     }
 
-    public static void sendLoggingServiceMsgToClients(BezirkComms comms, final String[] sphereList, final String[] selectedLogSpheres, final boolean isActivate) {
+    public static void sendLoggingServiceMsgToClients(Comms comms, final String[] sphereList, final String[] selectedLogSpheres, final boolean isActivate) {
         final ZirkId myId = new ZirkId("BEZIRK-REMOTE-LOGGING-SERVICE");
         final BezirkZirkEndPoint sep = BezirkNetworkUtilities.getServiceEndPoint(myId);
 

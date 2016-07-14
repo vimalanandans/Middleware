@@ -2,7 +2,6 @@ package com.bezirk.sphere.discovery;
 
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
 import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
-import com.bezirk.sphere.api.BezirkSphereDiscovery;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -22,9 +21,9 @@ public class SphereDiscovery {
     private final Map<DiscoveryLabel, SphereDiscoveryRecord> discoveredMap;
 
     //TODO change the name
-    //private final BezirkSphereDiscovery sphereDiscoveryHandler;
+    //private final SphereDiscovery sphereDiscoveryHandler;
 
-    public SphereDiscovery(BezirkSphereDiscovery sphereDiscoveryHandler) {
+    public SphereDiscovery(com.bezirk.sphere.api.SphereDiscovery sphereDiscoveryHandler) {
         discoveredMap = new ConcurrentHashMap<DiscoveryLabel, SphereDiscoveryRecord>();
         // this.sphereDiscoveryHandler = sphereDiscoveryHandler;
     }

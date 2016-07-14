@@ -1,6 +1,6 @@
 package com.bezirk.sphere;
 
-import com.bezirk.sphere.api.BezirkDevMode;
+import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SpherePrefs;
 import com.bezirk.starter.BezirkPreferences;
 
@@ -18,7 +18,7 @@ public class SphereProperties extends SpherePrefs {
 //    private static final String SPHERE_MODE = "devMode";
 //    private static final String DEFAULT_SPHERE_NAME = "defaultSphereName";
     BezirkPreferences preferences;
-    private BezirkDevMode.Mode mode;
+    private DevMode.Mode mode;
     /* Development sphere variables */
     private String sphereName;
     private String sphereId;
@@ -41,7 +41,7 @@ public class SphereProperties extends SpherePrefs {
     }
 
     @Override
-    public BezirkDevMode.Mode getMode() {
+    public DevMode.Mode getMode() {
         return mode;
     }
 
@@ -75,9 +75,9 @@ public class SphereProperties extends SpherePrefs {
     }
 
     @Override
-    public boolean setMode(BezirkDevMode.Mode mode) {
+    public boolean setMode(DevMode.Mode mode) {
         if (!this.mode.equals(mode)) {
-            String modeToSet = (mode.equals(BezirkDevMode.Mode.ON)) ? "true" : "false";
+            String modeToSet = (mode.equals(DevMode.Mode.ON)) ? "true" : "false";
             if (preferences.putString(DEVELOPMENT_SPHERE_MODE_KEY, modeToSet)) {
                 this.mode = mode;
                 return true;
@@ -120,7 +120,7 @@ public class SphereProperties extends SpherePrefs {
         sphereName = preferences.getString(DEVELOPMENT_SPHERE_NAME_KEY, null);
         sphereId = preferences.getString(DEVELOPMENT_SPHERE_ID_KEY, null);
         sphereKey = preferences.getString(DEVELOPMENT_SPHEREKEY_KEY, null).getBytes();
-        mode = ("true".equalsIgnoreCase(preferences.getString(DEVELOPMENT_SPHERE_MODE_KEY, null))) ? BezirkDevMode.Mode.ON : BezirkDevMode.Mode.OFF;
+        mode = ("true".equalsIgnoreCase(preferences.getString(DEVELOPMENT_SPHERE_MODE_KEY, null))) ? DevMode.Mode.ON : DevMode.Mode.OFF;
         defaultSphereName = preferences.getString(DEFAULT_SPHERE_NAME_KEY, null);
         logger.info("sphere name: " + sphereName + " sphereId: " + sphereId + " sphereKey: " + Arrays.toString(sphereKey)
                 + " mode: " + mode + " defaultSphereName: " + defaultSphereName);

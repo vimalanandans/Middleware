@@ -1,7 +1,7 @@
 package com.bezirk.starter;
 
 import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
-import com.bezirk.proxy.pc.ProxyForServices;
+import com.bezirk.proxy.ProxyForServices;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 
 import org.junit.AfterClass;

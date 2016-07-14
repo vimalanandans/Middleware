@@ -6,7 +6,7 @@ package com.bezirk.streaming.threads;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezirk.sphere.api.BezirkSphereForPubSub;
+import com.bezirk.sphere.api.PubSubSphereAccess;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.ValidatorUtility;
 
@@ -36,11 +36,11 @@ public class StreamSendingThread implements Runnable {
     private final File file;                                    // path to the file that has to be sent
     private final String sphere;
     private final PubSubEventReceiver sadlReceiver;
-    private final BezirkSphereForPubSub sphereForSadl;
+    private final PubSubSphereAccess sphereForSadl;
     private Socket client;
 
     public StreamSendingThread(StreamRecord streamRecord,
-                               PubSubEventReceiver sadlReceiver, BezirkSphereForPubSub sphereForSadl) {
+                               PubSubEventReceiver sadlReceiver, PubSubSphereAccess sphereForSadl) {
         super();
         this.sphere = streamRecord.sphere;
         this.recipientIP = streamRecord.recipientIP;

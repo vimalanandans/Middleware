@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class TestBezirkSphereForSadlStub {
-    BezirkSphereForPubSubStub bezirkSphereForSadlStub = new BezirkSphereForPubSubStub();
+    PubSubSphereAccessStub bezirkSphereForSadlStub = new PubSubSphereAccessStub();
     String testStr = "TestString";
     ZirkId zirkId = new ZirkId("123");
 

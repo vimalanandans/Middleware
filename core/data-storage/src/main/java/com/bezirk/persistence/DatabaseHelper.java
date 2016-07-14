@@ -30,7 +30,7 @@ public class DatabaseHelper {
     /**
      * Bezirk Proxy Registry -  Stores only BezirkServiceIds. It will be used only on the PC side
      */
-    private BezirkProxyRegistry bezirkProxyRegistry;
+    private ProxyRegistry proxyRegistry;
 
 
     protected DatabaseHelper(DatabaseConnection dbConnection) {
@@ -38,7 +38,7 @@ public class DatabaseHelper {
         this.dbConnection = dbConnection;
         this.sphereRegistry = null;
         this.pubSubBrokerRegistry = null;
-        this.bezirkProxyRegistry = null;
+        this.proxyRegistry = null;
     }
 
     /**
@@ -51,25 +51,25 @@ public class DatabaseHelper {
      * @throws Exception
      */
     protected void updateRegistry(String columnName) throws NullPointerException, SQLException, IOException, Exception {
-        UpdateBuilder<BezirkRegistry, Integer> updateDb = dbConnection.getPersistenceDAO().updateBuilder();
+        UpdateBuilder<PersistenceRegistry, Integer> updateDb = dbConnection.getPersistenceDAO().updateBuilder();
         switch (columnName) {
-            case DBConstants.COLUMN_1:
+            case PersistenceConstants.COLUMN_1:
                 if (null == pubSubBrokerRegistry) {
                     throw new NullPointerException("Sadl Registry cant be null");
                 }
-                updateDb.updateColumnValue(DBConstants.COLUMN_1, pubSubBrokerRegistry);
+                updateDb.updateColumnValue(PersistenceConstants.COLUMN_1, pubSubBrokerRegistry);
                 break;
-            case DBConstants.COLUMN_2:
+            case PersistenceConstants.COLUMN_2:
                 if (null == sphereRegistry) {
                     throw new NullPointerException("sphere Registry cant be null");
                 }
-                updateDb.updateColumnValue(DBConstants.COLUMN_2, sphereRegistry);
+                updateDb.updateColumnValue(PersistenceConstants.COLUMN_2, sphereRegistry);
                 break;
-            case DBConstants.COLUMN_3:
-                if (null == bezirkProxyRegistry) {
+            case PersistenceConstants.COLUMN_3:
+                if (null == proxyRegistry) {
                     throw new NullPointerException("BezirkProxy Registry cant be null");
                 }
-                updateDb.updateColumnValue(DBConstants.COLUMN_3, bezirkProxyRegistry);
+                updateDb.updateColumnValue(PersistenceConstants.COLUMN_3, proxyRegistry);
                 break;
 
             default:
@@ -85,11 +85,11 @@ public class DatabaseHelper {
      * @throws IOException          if connection to the database is not successful.
      */
     protected void loadRegistry() throws NullPointerException, IOException, Exception {
-        QueryBuilder<BezirkRegistry, Integer> queryBuilder = dbConnection.getPersistenceDAO().queryBuilder();
-        BezirkRegistry tempRegistry = queryBuilder.queryForFirst();
+        QueryBuilder<PersistenceRegistry, Integer> queryBuilder = dbConnection.getPersistenceDAO().queryBuilder();
+        PersistenceRegistry tempRegistry = queryBuilder.queryForFirst();
         pubSubBrokerRegistry = tempRegistry.getPubSubBrokerRegistry();
         sphereRegistry = tempRegistry.getSphereRegistry();
-        bezirkProxyRegistry = tempRegistry.getBezirkProxyRegistry();
+        proxyRegistry = tempRegistry.getProxyRegistry();
     }
 
     /**
@@ -104,11 +104,11 @@ public class DatabaseHelper {
      * @throws Exception
      */
     protected boolean checkDatabase(final String DB_VERSION) throws NullPointerException, SQLException, IOException, Exception {
-        if (!DBConstants.DB_VERSION.equals(DB_VERSION)) {
+        if (!PersistenceConstants.DB_VERSION.equals(DB_VERSION)) {
             dropTable();
         }
         if (dbConnection != null && !dbConnection.getPersistenceDAO().isTableExists()) {
-            TableUtils.createTable(dbConnection.getDatabaseConnection(), BezirkRegistry.class);
+            TableUtils.createTable(dbConnection.getDatabaseConnection(), PersistenceRegistry.class);
             insertInitialRow();
         }
         return true;
@@ -124,7 +124,7 @@ public class DatabaseHelper {
      */
     private void dropTable() throws NullPointerException, SQLException, IOException, Exception {
         if (dbConnection != null) {
-            TableUtils.dropTable(dbConnection.getDatabaseConnection(), BezirkRegistry.class, true);
+            TableUtils.dropTable(dbConnection.getDatabaseConnection(), PersistenceRegistry.class, true);
         }
     }
 
@@ -132,7 +132,7 @@ public class DatabaseHelper {
      * Insert the only row into the database
      */
     private void insertInitialRow() throws NullPointerException, SQLException, IOException, Exception {
-        dbConnection.getPersistenceDAO().createOrUpdate(new BezirkRegistry(1, new PubSubBrokerRegistry(), new SphereRegistry(), new BezirkProxyRegistry()));
+        dbConnection.getPersistenceDAO().createOrUpdate(new PersistenceRegistry(1, new PubSubBrokerRegistry(), new SphereRegistry(), new ProxyRegistry()));
     }
 
     /**
@@ -154,12 +154,12 @@ public class DatabaseHelper {
     }
 
     /**
-     * Returns BezirkProxyRegistry associated with the Proxy
+     * Returns ProxyRegistry associated with the Proxy
      *
-     * @return BezirkProxyRegistry
+     * @return ProxyRegistry
      */
-    protected BezirkProxyRegistry getBezirkProxyRegistry() {
-        return bezirkProxyRegistry;
+    protected ProxyRegistry getProxyRegistry() {
+        return proxyRegistry;
     }
 
     /**
@@ -168,6 +168,6 @@ public class DatabaseHelper {
     protected void clearPersistence() throws NullPointerException, SQLException, IOException, Exception {
         pubSubBrokerRegistry.clearRegistry();
         sphereRegistry.clearRegistry();
-        bezirkProxyRegistry.clearRegistry();
+        proxyRegistry.clearRegistry();
     }
 }

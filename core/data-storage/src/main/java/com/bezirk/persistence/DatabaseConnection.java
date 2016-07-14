@@ -30,5 +30,5 @@ public interface DatabaseConnection {
      * @throws SQLException         if connection is not possible or some thing happens while getting the DAO
      * @throws IOException          if the database file is not present
      */
-    public Dao<BezirkRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException;
+    public Dao<PersistenceRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException;
 }

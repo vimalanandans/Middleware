@@ -1,24 +1,24 @@
 package com.bezirk.starter;
 
 import com.bezirk.BezirkCompManager;
+import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.BezirkComms;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.control.messages.MessageLedger;
-import com.bezirk.device.BezirkDevice;
+import com.bezirk.device.Device;
 import com.bezirk.comms.CommsFeature;
-import com.bezirk.remotelogging.ui.RemoteLogSphereSelectGUI;
+import com.bezirk.persistence.ProxyPersistence;
+import com.bezirk.ui.remotelogging.RemoteLogSphereSelectGUI;
 import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
 import com.bezirk.persistence.DatabaseConnection;
-import com.bezirk.persistence.BezirkProxyPersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.pipe.PipeManager;
-import com.bezirk.proxy.pc.ProxyForServices;
+import com.bezirk.proxy.ProxyForServices;
 import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.streaming.StreamManager;
 import com.bezirk.streaming.Streaming;
 import com.bezirk.util.ValidatorUtility;
@@ -46,7 +46,7 @@ public class MainService {
     private final ProxyForServices proxyForServices;
     private final BezirkPCNetworkUtil bezirkPcNetworkUtil = new BezirkPCNetworkUtil();
     private final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
-    BezirkSphereAPI sphereForPC;
+    SphereAPI sphereForPC;
     /**
      * List of configurations
      */
@@ -57,11 +57,11 @@ public class MainService {
     private RegistryPersistence registryPersistence;
     // Logging GUI
     private RemoteLogSphereSelectGUI loggingGUI;
-    private com.bezirk.sphere.ui.SphereManagementGUI frame;
+    private com.bezirk.ui.spheremanagement.SphereManagementGUI frame;
     /**
      * communication interface to send and receive the data
      */
-    private BezirkComms comms;
+    private Comms comms;
     /**
      * Keeps track of no of error messages notified. Each time a notification is
      * received, its value is incremented and after reaching
@@ -232,9 +232,9 @@ public class MainService {
             serviceStarterHelper.fail("Problem initializing Comms.", null);
         }
         /**************************************************
-         * Step7 :Create and configure the BezirkDevice      *
+         * Step7 :Create and configure the Device      *
          **************************************************/
-        final BezirkDevice bezirkDevice = serviceStarterHelper
+        final Device bezirkDevice = serviceStarterHelper
                 .configureBezirkDevice(this.bezirkConfig);
 
         /**************************************************
@@ -267,10 +267,10 @@ public class MainService {
         this.startedStack = true;
     }
 
-    private void displayQRCode(final BezirkDevice bezirkDevice) {
+    private void displayQRCode(final Device bezirkDevice) {
         if (bezirkConfig.isDisplayEnabled()) {
             // commented to test in beaglebone. uncomment it for PC
-            frame = new com.bezirk.sphere.ui.SphereManagementGUI(sphereForPC);
+            frame = new com.bezirk.ui.spheremanagement.SphereManagementGUI(sphereForPC);
             frame.setVisible(true);
 
             // Check if the Logging is enabled and start the LoggingGUI
@@ -290,7 +290,7 @@ public class MainService {
              */
             // save the qr code
             // if display is not stored then save the QR code
-            //((BezirkSphereForPC) sphereForPC).saveQRCode(bezirkConfig.getDataPath(),
+            //((PCSphereAccess) sphereForPC).saveQRCode(bezirkConfig.getDataPath(),
             //        bezirkDevice.getDeviceName());
         }
     }
@@ -313,7 +313,7 @@ public class MainService {
     /**
      * @return registryPersistence
      */
-    public BezirkProxyPersistence getBezirkProxyPersistence() {
+    public ProxyPersistence getBezirkProxyPersistence() {
         return registryPersistence;
     }
 
@@ -354,7 +354,7 @@ public class MainService {
         /* comms triggers sadle send this data.
          * try {
 
-            ((BezirkComms) comms).setBezirkCallback(bezirkPcCallback);
+            ((Comms) comms).setBezirkCallback(bezirkPcCallback);
 
         } catch (Exception e) {
 

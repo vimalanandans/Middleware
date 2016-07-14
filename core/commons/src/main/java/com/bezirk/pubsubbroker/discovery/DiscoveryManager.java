@@ -1,6 +1,6 @@
 package com.bezirk.pubsubbroker.discovery;
 
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
@@ -18,11 +18,11 @@ public class DiscoveryManager implements CtrlMsgReceiver {
 
     private PubSubBroker sadlManager;
 
-    private BezirkComms comms;
+    private Comms comms;
 
     private Thread discThread;
 
-    public DiscoveryManager(PubSubBroker sadlManager, BezirkComms comms) {
+    public DiscoveryManager(PubSubBroker sadlManager, Comms comms) {
         this.sadlManager = sadlManager;
         this.comms = comms;
     }

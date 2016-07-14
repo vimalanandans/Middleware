@@ -1,12 +1,12 @@
 package com.bezirk.starter;
 
 
-import com.bezirk.comms.BezirkComms;
-import com.bezirk.device.BezirkDevice;
-import com.bezirk.device.BezirkDeviceType;
-import com.bezirk.devices.BezirkDeviceInterface;
+import com.bezirk.comms.Comms;
+import com.bezirk.device.Device;
+import com.bezirk.device.DeviceType;
+import com.bezirk.devices.DeviceInterface;
 import com.bezirk.persistence.RegistryPersistence;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 
 import org.junit.AfterClass;
@@ -46,17 +46,17 @@ public class ZirkStarterHelperTest {
     }
 
     /**
-     * BezirkSphere should be non null after successful invocation of initSphere in MainService.
+     * SphereSphereAccess should be non null after successful invocation of initSphere in MainService.
      */
     private void testInitSphere() {
 
         com.bezirk.starter.ServiceStarterHelper helper = new com.bezirk.starter.ServiceStarterHelper();
-        BezirkDeviceInterface bezirkDevice = mockSetUP.getUpaDevice();
+        DeviceInterface bezirkDevice = mockSetUP.getUpaDevice();
         RegistryPersistence registryPersistence = mockSetUP.getRegistryPersistence();
-        BezirkComms commsLegacy = Mockito.mock(BezirkComms.class);
-        BezirkSphereAPI bezirkSphere = helper.initSphere(bezirkDevice, registryPersistence, commsLegacy);
+        Comms commsLegacy = Mockito.mock(Comms.class);
+        SphereAPI bezirkSphere = helper.initSphere(bezirkDevice, registryPersistence, commsLegacy);
 
-        assertNotNull("BezirkSphere is not initialized. ", bezirkSphere);
+        assertNotNull("SphereSphereAccess is not initialized. ", bezirkSphere);
 
     }
 
@@ -70,20 +70,20 @@ public class ZirkStarterHelperTest {
      * </p> <p>
      * b) BezirkConfig Display disabled
      * </p>
-     * In this case the BezirkDevice type should be set as EMBEDDED_KIT upon device configuration.
+     * In this case the Device type should be set as EMBEDDED_KIT upon device configuration.
      */
     private void testConfigureBezirkDevice() {
         com.bezirk.starter.ServiceStarterHelper helper = new com.bezirk.starter.ServiceStarterHelper();
         BezirkConfig bezirkConfig = new BezirkConfig();
 
-        BezirkDevice bezirkDevice = helper.configureBezirkDevice(bezirkConfig);
+        Device bezirkDevice = helper.configureBezirkDevice(bezirkConfig);
 
-        assertNotNull("BezirkDevice is null after configuration. ", bezirkDevice);
+        assertNotNull("Device is null after configuration. ", bezirkDevice);
 
-        assertNotNull("BezirkDeviceType is null after configuration. ", bezirkDevice.getDeviceType());
+        assertNotNull("DeviceType is null after configuration. ", bezirkDevice.getDeviceType());
 
         // commenting as the display enabled logic has been changed to false by default
-        //assertEquals("Bezirk Device Type is not configured to PC when display is enabled.", BezirkDeviceType.BEZIRK_DEVICE_TYPE_PC, bezirkDevice.getDeviceType());
+        //assertEquals("Bezirk Device Type is not configured to PC when display is enabled.", DeviceType.BEZIRK_DEVICE_TYPE_PC, bezirkDevice.getDeviceType());
 
         assertNotNull("BezirkDeviceLocation is null after configuration. ", bezirkDevice.getDeviceLocation());
 
@@ -92,7 +92,7 @@ public class ZirkStarterHelperTest {
 
         bezirkDevice = helper.configureBezirkDevice(bezirkConfig);
 
-        assertEquals("Bezirk Device Type is not configured to EMBEDDED KIT when display is disabled.", BezirkDeviceType.BEZIRK_DEVICE_TYPE_EMBEDDED_KIT, bezirkDevice.getDeviceType());
+        assertEquals("Bezirk Device Type is not configured to EMBEDDED KIT when display is disabled.", DeviceType.BEZIRK_DEVICE_TYPE_EMBEDDED_KIT, bezirkDevice.getDeviceType());
     }
 
 }

@@ -2,7 +2,7 @@ package com.bezirk.comms.processor;
 
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.CommsMessageDispatcher;
 import com.bezirk.comms.CommsNotification;
@@ -24,7 +24,7 @@ import com.bezirk.comms.CommsFeature;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.sphere.api.BezirkSphereForPubSub;
+import com.bezirk.sphere.api.PubSubSphereAccess;
 //import com.bezirk.sphere.security.UPABlockCipherService;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.TextCompressor;
@@ -46,7 +46,7 @@ import java.util.concurrent.Executors;
  * new comms implementations shall use this as base class
  */
 
-public abstract class CommsProcessor implements BezirkComms {
+public abstract class CommsProcessor implements Comms {
     private static final Logger logger = LoggerFactory.getLogger(CommsProcessor.class);
 
     // thread pool size
@@ -739,7 +739,7 @@ public abstract class CommsProcessor implements BezirkComms {
     }
 
     @Override
-    public void setSphereForSadl(BezirkSphereForPubSub bezirkSphere) {
+    public void setSphereForSadl(PubSubSphereAccess bezirkSphere) {
         bezirkStreamManager.setSphereForSadl(bezirkSphere);
     }
 

@@ -119,7 +119,7 @@ final class BezirkPCNetworkUtil {
         //if (bezirkConfig.isDisplayEnabled()) {
         final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
                 .getIntfInetPair().iterator();
-        final com.bezirk.ethernetconfigui.EthernetConfigurationDialog ethConfigDialog = new com.bezirk.ethernetconfigui.EthernetConfigurationDialog(
+        final com.bezirk.ui.ethernetconfigui.EthernetConfigurationDialog ethConfigDialog = new com.bezirk.ui.ethernetconfigui.EthernetConfigurationDialog(
                 itr);
         interfaceName = ethConfigDialog.showDialog();
         //}
@@ -166,7 +166,7 @@ final class BezirkPCNetworkUtil {
 //            final Properties properties = BezirkCommsPC.loadProperties();
 //
 //            // Get the path to the properties file
-//            final String path = BezirkDeviceInterface.class.getClassLoader()
+//            final String path = DeviceInterface.class.getClassLoader()
 //                    .getResource(BezirkCommsPC.PROPS_FILE).getPath();
 //            final FileOutputStream output = new FileOutputStream(path);
 //

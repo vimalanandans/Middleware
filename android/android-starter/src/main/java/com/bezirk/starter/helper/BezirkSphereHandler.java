@@ -1,17 +1,17 @@
 package com.bezirk.starter.helper;
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
-import com.bezirk.devices.BezirkDeviceInterface;
+import com.bezirk.comms.Comms;
+import com.bezirk.devices.DeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.api.BezirkSphereForPubSub;
-import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.BezirkDevMode;
-import com.bezirk.sphere.api.BezirkSphereAPI;
-import com.bezirk.sphere.api.BezirkSphereRegistration;
+import com.bezirk.sphere.AndroidSphereAccess;
+import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereConfig;
+import com.bezirk.sphere.api.DevMode;
+import com.bezirk.sphere.api.SphereAPI;
+import com.bezirk.sphere.api.SphereRegistration;
 import com.bezirk.sphere.SphereProperties;
-import com.bezirk.sphere.BezirkSphereForAndroid;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkPreferences;
@@ -25,8 +25,8 @@ import org.slf4j.LoggerFactory;
 public final class BezirkSphereHandler {
     private static final Logger logger = LoggerFactory.getLogger(BezirkSphereHandler.class);
 
-    static BezirkSphereAPI sphereForAndroid;
-    static BezirkDevMode devMode;
+    static SphereAPI sphereForAndroid;
+    static DevMode devMode;
 
     /**
      * deinitialize the sphere
@@ -43,7 +43,7 @@ public final class BezirkSphereHandler {
     /**
      * create and initialise the sphere
      */
-    boolean initSphere(BezirkDeviceInterface bezirkDevice, MainService service, SpherePersistence spherePersistence, BezirkPreferences preferences) {
+    boolean initSphere(DeviceInterface bezirkDevice, MainService service, SpherePersistence spherePersistence, BezirkPreferences preferences) {
 
         /** start the sphere related init*/
         if (sphereForAndroid == null) {
@@ -56,13 +56,13 @@ public final class BezirkSphereHandler {
             }
             CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
 
-            sphereForAndroid = new BezirkSphereForAndroid(cryptoEngine, bezirkDevice, sphereRegistry, service.getApplicationContext(), preferences);
+            sphereForAndroid = new AndroidSphereAccess(cryptoEngine, bezirkDevice, sphereRegistry, service.getApplicationContext(), preferences);
 
-            BezirkSphereForAndroid bezirkSphereForAndroid = (BezirkSphereForAndroid) BezirkSphereHandler.sphereForAndroid;
+            AndroidSphereAccess bezirkSphereForAndroid = (AndroidSphereAccess) BezirkSphereHandler.sphereForAndroid;
 
-            bezirkSphereForAndroid.setBezirkSphereListener(bezirkSphereForAndroid);
+            bezirkSphereForAndroid.setSphereListener(bezirkSphereForAndroid);
 
-            ISphereConfig sphereConfig = new SphereProperties(preferences);
+            SphereConfig sphereConfig = new SphereProperties(preferences);
             sphereConfig.init();
 
             if (!(bezirkSphereForAndroid.initSphere(spherePersistence, BezirkStackHandler.getBezirkComms()))) {
@@ -70,14 +70,14 @@ public final class BezirkSphereHandler {
                 return false;
             }
 
-            devMode = (BezirkDevMode) sphereForAndroid;
+            devMode = (DevMode) sphereForAndroid;
 
             BezirkCompManager.setSphereUI(sphereForAndroid);
-            BezirkCompManager.setSphereRegistration((BezirkSphereRegistration) sphereForAndroid);
+            BezirkCompManager.setSphereRegistration((SphereRegistration) sphereForAndroid);
 
-            BezirkCompManager.setSphereForPubSub((BezirkSphereForPubSub) sphereForAndroid);
-            BezirkComms uhuComms = BezirkStackHandler.getBezirkComms();
-            uhuComms.setSphereForSadl((BezirkSphereForPubSub) sphereForAndroid);
+            BezirkCompManager.setSphereForPubSub((PubSubSphereAccess) sphereForAndroid);
+            Comms uhuComms = BezirkStackHandler.getBezirkComms();
+            uhuComms.setSphereForSadl((PubSubSphereAccess) sphereForAndroid);
         }
         return true;
     }

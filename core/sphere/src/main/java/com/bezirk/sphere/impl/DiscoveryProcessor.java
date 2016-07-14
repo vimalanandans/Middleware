@@ -6,8 +6,9 @@ package com.bezirk.sphere.impl;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
-import com.bezirk.devices.BezirkDeviceInterface;
+import com.bezirk.devices.DeviceInterface;
 import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
+import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.discovery.SphereDiscoveryProcessor;
 import com.bezirk.sphere.discovery.SphereDiscoveryRecord;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
@@ -16,7 +17,6 @@ import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.sphere.api.BezirkSphereListener;
 import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
@@ -32,22 +32,22 @@ import java.util.Set;
 public class DiscoveryProcessor {
     private static final Logger logger = LoggerFactory.getLogger(DiscoveryProcessor.class);
 
-    private BezirkDeviceInterface bezirkDeviceInterface;
+    private DeviceInterface deviceInterface;
     private CommsUtility comms;
     private SphereRegistryWrapper sphereRegistryWrapper;
-    private BezirkSphereListener bezirkSphereListener;
+    private SphereListener sphereListener;
 
     // sphere discovery parameters
     private int discoveryId = 0;
     private int maxDiscovered = 20;
     private int timeout = 5000; /* ms */
 
-    public DiscoveryProcessor(BezirkDeviceInterface bezirkDeviceInterface, CommsUtility comms,
-                              SphereRegistryWrapper sphereRegistryWrapper, BezirkSphereListener bezirkSphereListener) {
-        this.bezirkDeviceInterface = bezirkDeviceInterface;
+    public DiscoveryProcessor(DeviceInterface deviceInterface, CommsUtility comms,
+                              SphereRegistryWrapper sphereRegistryWrapper, SphereListener sphereListener) {
+        this.deviceInterface = deviceInterface;
         this.comms = comms;
         this.sphereRegistryWrapper = sphereRegistryWrapper;
-        this.bezirkSphereListener = bezirkSphereListener;
+        this.sphereListener = sphereListener;
     }
 
     /**
@@ -141,8 +141,8 @@ public class DiscoveryProcessor {
                 }
             }
         }
-        if ((bezirkSphereListener != null)) {
-            bezirkSphereListener.onSphereDiscovered(status, sphereId);
+        if ((sphereListener != null)) {
+            sphereListener.onSphereDiscovered(status, sphereId);
         }
     }
 
@@ -186,7 +186,7 @@ public class DiscoveryProcessor {
                 // send only the services belongs to this device
                 for (BezirkDeviceInfo localDeviceInfo : bezirkSphereInfo.getDeviceList()) {
                     // get the local device or development device id
-                    if (localDeviceInfo.getDeviceId().equals(bezirkDeviceInterface.getDeviceId()) || localDeviceInfo
+                    if (localDeviceInfo.getDeviceId().equals(deviceInterface.getDeviceId()) || localDeviceInfo
                             .getDeviceId().equalsIgnoreCase(SphereRegistryWrapper.DEVELOPMENT_DEVICE_ID)) {
 
                         // construct the bezirk sphere info with only local device

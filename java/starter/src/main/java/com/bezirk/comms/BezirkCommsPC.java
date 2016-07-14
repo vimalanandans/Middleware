@@ -167,6 +167,6 @@ public final class BezirkCommsPC {
     }
 
 //    public static Properties loadProperties() throws Exception {
-//        return BezirkDeviceForPC.loadProperties(PROPS_FILE);
+//        return DeviceForPC.loadProperties(PROPS_FILE);
 //    }
 }

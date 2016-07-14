@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * This testcase verifies BezirkDevice by setting the values and retrieving them.
+ * This testcase verifies Device by setting the values and retrieving them.
  *
  * @author AJC6KOR
  */
@@ -18,10 +18,10 @@ public class BezirkDeviceTest {
 
         Location loc = new Location("FLOOR1/ROOM1/TABLE");
         String deviceName = "DeviceA";
-        String deviceType = BezirkDeviceType.BEZIRK_DEVICE_TYPE_CAR;
+        String deviceType = DeviceType.BEZIRK_DEVICE_TYPE_CAR;
         String deviceId = "Device123";
 
-        BezirkDevice bezirkDevice = new BezirkDevice();
+        Device bezirkDevice = new Device();
         bezirkDevice.initDevice(deviceId, deviceType);
         bezirkDevice.setDeviceLocation(loc);
         bezirkDevice.setDeviceName(deviceName);
@@ -31,7 +31,7 @@ public class BezirkDeviceTest {
         assertEquals("Device Name is not equal to the set value.", deviceName, bezirkDevice.getDeviceName());
         assertEquals("Device Type is not equal to the set value.", deviceType, bezirkDevice.getDeviceType());
 
-        deviceType = BezirkDeviceType.BEZIRK_DEVICE_TYPE_COFFEE;
+        deviceType = DeviceType.BEZIRK_DEVICE_TYPE_COFFEE;
         bezirkDevice.setDeviceType(deviceType);
 
         assertEquals("Device Type is not equal to the set value.", deviceType, bezirkDevice.getDeviceType());

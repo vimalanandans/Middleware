@@ -1,6 +1,6 @@
 //package com.bezirk.network.test;
 //
-//import com.bezirk.comms.BezirkComms;
+//import com.bezirk.comms.Comms;
 //import com.bezirk.comms.BezirkCommsPC;
 //import com.bezrik.network.IntfInetPair;
 //import com.bezrik.network.BezirkNetworkUtilities;
@@ -42,7 +42,7 @@
 //		InetAddress addr;
 //		try {
 //			BezirkCommsPC.init();
-//			addr = BezirkNetworkUtilities.getIpForInterface(NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME()));
+//			addr = BezirkNetworkUtilities.getIpForInterface(NetworkInterface.getByName(Comms.getINTERFACE_NAME()));
 //			if(addr == null){
 //				logger.error("Failure to resolve ip - Check interface in comms.properties ");
 //				logger.error("Possible interface/ ip pairs are: ");

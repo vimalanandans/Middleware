@@ -4,7 +4,7 @@ import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.ZyreCommsManager;
@@ -81,13 +81,13 @@ class BezirkStartStackHelper {
         }
     }
 
-    BezirkComms initializeComms(InetAddress inetAddress, PubSubBroker pubSubBroker, ProxyForZirks proxy, CommsNotification errNotificationCallback) {
+    Comms initializeComms(InetAddress inetAddress, PubSubBroker pubSubBroker, ProxyForZirks proxy, CommsNotification errNotificationCallback) {
         // Instantiate pipeManager before SenderThread so that it is ready to start sending over pipes
        // PipeManager pipeComms = PipeCommsFactory.createPipeComms();
 
         CommsFactory commsFactory = new CommsFactory();
 
-        BezirkComms comms;
+        Comms comms;
 
         // comms zyre jni is injected from platform specific code
         if (commsFactory.getActiveComms() == CommsFeature.COMMS_ZYRE_JNI) {

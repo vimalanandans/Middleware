@@ -1,12 +1,12 @@
 package com.bezirk.streaming;
 
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.control.messages.streaming.StreamResponse;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezirk.sphere.api.BezirkSphereForPubSub;
+import com.bezirk.sphere.api.PubSubSphereAccess;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.store.StreamStore;
 import com.bezirk.streaming.threads.StreamReceivingThread;
@@ -31,9 +31,9 @@ final class BezirkStreamHandler {
      * @param streamRequest
      * @return
      */
-    boolean handleStreamRequest(final StreamRequest streamRequest, final BezirkComms comms,
+    boolean handleStreamRequest(final StreamRequest streamRequest, final Comms comms,
                                 final PortFactory portFactory, final StreamStore streamStore,
-                                final PubSubEventReceiver sadlReceiver, final BezirkSphereForPubSub sphereForSadl) {
+                                final PubSubEventReceiver sadlReceiver, final PubSubSphereAccess sphereForSadl) {
 
         // Check if the request is duplicate
         StreamRecord.StreamingStatus status = StreamRecord.StreamingStatus.ADDRESSED;

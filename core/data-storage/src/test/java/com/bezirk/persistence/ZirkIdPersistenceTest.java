@@ -32,7 +32,7 @@
 //    @After
 //    public void tearDown() throws NullPointerException, SQLException, IOException {
 //        // Deleting the uhu_database.sqlite is not happening so after each test, I am dropping the table
-//        TableUtils.dropTable(dbConnection.getDatabaseConnection(), BezirkRegistry.class, true);
+//        TableUtils.dropTable(dbConnection.getDatabaseConnection(), PersistenceRegistry.class, true);
 //    }
 //
 //    /**
@@ -45,11 +45,11 @@
 //     */
 //    @Test
 //    public void testForBezirkServiceIdPersistenceRegistration() throws Exception {
-//        RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
+//        RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, PersistenceConstants.DB_VERSION);
 //        assertNotNull(regPersistence);
-//        BezirkProxyPersistence proxyPersistence = regPersistence;
+//        ProxyPersistence proxyPersistence = regPersistence;
 //
-//        BezirkProxyRegistry proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
+//        ProxyRegistry proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 //        assertNotNull(proxyRegistry);
 //        assertNull(proxyRegistry.getBezirkServiceId("null"));
 //        // update the registry
@@ -61,7 +61,7 @@
 //        //close the db == Bezirk is stopped or Restart the Bezirk
 //        dbConnection.getDatabaseConnection().close();
 //        //Check if the data is persisted
-//        regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
+//        regPersistence = new RegistryPersistence(dbConnection, PersistenceConstants.DB_VERSION);
 //        proxyPersistence = regPersistence;
 //        proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 //
@@ -72,7 +72,7 @@
 //    }
 //
 //    /**
-//     * Check the ServiceIdPersistence. Get the BezirkProxyRegistry and update the BezirkProxyRegisty with sample
+//     * Check the ServiceIdPersistence. Get the ProxyRegistry and update the BezirkProxyRegisty with sample
 //     * ServiceIds. Then close the dbConnection that stimulates restarting or shutting of Bezirk. Delete the
 //     * sample zirk Ids and shut the Bezirk. Check the registry for map that contains no zirkId that
 //     * validates this test case.
@@ -81,11 +81,11 @@
 //     */
 //    @Test
 //    public void testForBezirkServiceIdPersistenceUnRegistrationWithBezirkStartUp() throws Exception {
-//        RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
+//        RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, PersistenceConstants.DB_VERSION);
 //        assertNotNull(regPersistence);
-//        BezirkProxyPersistence proxyPersistence = regPersistence;
+//        ProxyPersistence proxyPersistence = regPersistence;
 //
-//        BezirkProxyRegistry proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
+//        ProxyRegistry proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 //        assertNotNull(proxyRegistry);
 //        assertNull(proxyRegistry.getBezirkServiceId("null"));
 //        // update the registry
@@ -100,7 +100,7 @@
 //        //close the db == Bezirk is stopped or Restart the Bezirk
 //        dbConnection.getDatabaseConnection().close();
 //        //Check if the data is persisted
-//        regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
+//        regPersistence = new RegistryPersistence(dbConnection, PersistenceConstants.DB_VERSION);
 //        proxyPersistence = regPersistence;
 //        proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 //
@@ -114,7 +114,7 @@
 //        //close the db == Bezirk is stopped or Restart the Bezirk
 //        dbConnection.getDatabaseConnection().close();
 //
-//        regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
+//        regPersistence = new RegistryPersistence(dbConnection, PersistenceConstants.DB_VERSION);
 //        proxyPersistence = regPersistence;
 //        proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 //
@@ -124,7 +124,7 @@
 //    }
 //
 //    /**
-//     * Check the ServiceIdPersistence. Get the BezirkProxyRegistry and update the BezirkProxyRegisty with sample
+//     * Check the ServiceIdPersistence. Get the ProxyRegistry and update the BezirkProxyRegisty with sample
 //     * ServiceIds. Then close the dbConnection that stimulates restarting or shutting of Bezirk. Check the
 //     * same and verify.
 //     *
@@ -132,11 +132,11 @@
 //     */
 //    @Test
 //    public void testForBezirkServiceIdPersistenceUnRegistrationWithoutBezirkStartUp() throws Exception {
-//        RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, DBConstants.DB_VERSION);
+//        RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, PersistenceConstants.DB_VERSION);
 //        assertNotNull(regPersistence);
-//        BezirkProxyPersistence proxyPersistence = regPersistence;
+//        ProxyPersistence proxyPersistence = regPersistence;
 //
-//        BezirkProxyRegistry proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
+//        ProxyRegistry proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 //        assertNotNull(proxyRegistry);
 //        assertNull(proxyRegistry.getBezirkServiceId("null"));
 //        // update the registry

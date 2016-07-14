@@ -14,7 +14,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 
 import com.bezirk.actions.BezirkActions;
-import com.bezirk.sphere.api.BezirkDevMode;
+import com.bezirk.sphere.api.DevMode;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkActionCommands;
 import com.bezirk.starter.BezirkPreferences;
@@ -193,7 +193,7 @@ public class DeviceControlActivity extends ActionBarActivity
             Log.d(TAG, "Command >" + intent.getStringExtra("Command"));
 
             if (intent.getStringExtra("Command").equalsIgnoreCase(BezirkActionCommands.CMD_DEV_MODE_STATUS)) {
-                deviceControlActivityHelper.updateList((BezirkDevMode.Mode) intent.getSerializableExtra("Mode"), listData);
+                deviceControlActivityHelper.updateList((DevMode.Mode) intent.getSerializableExtra("Mode"), listData);
             }
         }
     }

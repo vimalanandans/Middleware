@@ -135,8 +135,8 @@ public class BezirkSphereForPC extends BezirkSphere implements BezirkQRCode, Bez
 
 	}
 
-	public void initSphere(ISpherePersistence spherePersistence, BezirkComms bezirkComms, ISphereConfig sphereConfig) {
-		super.initSphere(spherePersistence, bezirkComms, this, sphereConfig);
+	public void initSphere(ISpherePersistence spherePersistence, BezirkComms comms, ISphereConfig sphereConfig) {
+		super.initSphere(spherePersistence, comms, this, sphereConfig);
 	}
 =======
 public class BezirkSphereForPC extends BezirkSphere implements BezirkQRCode,
@@ -260,8 +260,8 @@ public class BezirkSphereForPC extends BezirkSphere implements BezirkQRCode,
     }
 
     public void initSphere(ISpherePersistence spherePersistence,
-            BezirkComms bezirkComms) {
-        super.initSphere(spherePersistence, bezirkComms, this);
+            BezirkComms comms) {
+        super.initSphere(spherePersistence, comms, this);
     }
 >>>>>>> integration
 

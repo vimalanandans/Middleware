@@ -1,6 +1,6 @@
 package com.bezirk.streaming;
 
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.comms.MessageQueue;
@@ -10,7 +10,7 @@ import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.control.messages.streaming.StreamResponse;
 import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezirk.sphere.api.BezirkSphereForPubSub;
+import com.bezirk.sphere.api.PubSubSphereAccess;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.port.StreamPortFactory;
 import com.bezirk.streaming.rtc.Signaling;
@@ -30,20 +30,20 @@ public class StreamManager implements Streaming {
     private static final Logger logger = LoggerFactory.getLogger(StreamManager.class);
 
     private final StreamCtrlReceiver ctrlReceiver = new StreamCtrlReceiver();
-    private BezirkSphereForPubSub sphereForSadl = null;
+    private PubSubSphereAccess sphereForSadl = null;
     private MessageQueue streamingMessageQueue = null;
     private StreamQueueProcessor streamQueueProcessor = null;
     private Thread sStreamingThread = null;
     private BezirkStreamHandler bezirkStreamHandler = null;
     private PortFactory portFactory;
     //private CommsMessageDispatcher msgDispatcher;
-    private BezirkComms comms = null;
+    private Comms comms = null;
 
     private StreamStore streamStore = null;
 
     private PubSubEventReceiver sadlReceiver = null;
 
-    public StreamManager(BezirkComms comms, PubSubEventReceiver sadlReceiver) {
+    public StreamManager(Comms comms, PubSubEventReceiver sadlReceiver) {
 
         if (ValidatorUtility.isObjectNotNull(comms)
 
@@ -109,7 +109,7 @@ public class StreamManager implements Streaming {
     }
 */
     @Override
-    public boolean initStreams(BezirkComms comms) {
+    public boolean initStreams(Comms comms) {
         try {
 
             streamingMessageQueue = new MessageQueue();
@@ -185,7 +185,7 @@ public class StreamManager implements Streaming {
     }
 
     @Override
-    public void setSphereForSadl(BezirkSphereForPubSub bezirkSphere) {
+    public void setSphereForSadl(PubSubSphereAccess bezirkSphere) {
 
         this.sphereForSadl = bezirkSphere;
         this.streamQueueProcessor.setSphereForSadl(sphereForSadl);

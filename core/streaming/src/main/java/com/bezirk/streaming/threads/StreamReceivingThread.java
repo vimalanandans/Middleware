@@ -4,12 +4,12 @@
 package com.bezirk.streaming.threads;
 
 import com.bezirk.comms.CommsConfigurations;
+import com.bezirk.sphere.api.PubSubSphereAccess;
 import com.bezirk.streaming.PortFactory;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezirk.sphere.api.BezirkSphereForPubSub;
 import com.bezirk.streaming.port.StreamPortFactory;
 import com.bezirk.util.ValidatorUtility;
 
@@ -56,7 +56,7 @@ public class StreamReceivingThread implements Runnable {
     private final short streamId;
     private final PortFactory portFactory;
     private final PubSubEventReceiver sadlReceiver;
-    private final BezirkSphereForPubSub sphereForSadl;
+    private final PubSubSphereAccess sphereForSadl;
 
     /**
      * Constructor that is called during starting the thread
@@ -65,7 +65,7 @@ public class StreamReceivingThread implements Runnable {
      */
     public StreamReceivingThread(int port,
                                  StreamRequest streamRequest, PortFactory portFactory,
-                                 PubSubEventReceiver sadlReceiver, BezirkSphereForPubSub sphereForSadl) {
+                                 PubSubEventReceiver sadlReceiver, PubSubSphereAccess sphereForSadl) {
         super();
         this.sphere = streamRequest.getSphereId();
         this.port = port;

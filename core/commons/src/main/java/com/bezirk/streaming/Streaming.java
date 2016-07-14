@@ -1,9 +1,8 @@
 package com.bezirk.streaming;
 
-import com.bezirk.comms.BezirkComms;
-import com.bezirk.comms.MessageDispatcher;
+import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.Ledger;
-import com.bezirk.sphere.api.BezirkSphereForPubSub;
+import com.bezirk.sphere.api.PubSubSphereAccess;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
 
@@ -17,7 +16,7 @@ public interface Streaming {
     /**
      * Initialize the streaming queue, streaming thread,stream store and register the receivers with the message dispatcher.
      */
-    public boolean initStreams(BezirkComms comms);
+    public boolean initStreams(Comms comms);
 
     /**
      * Start the streaming thread
@@ -52,5 +51,5 @@ public interface Streaming {
     /**
      * Set the sphere for sadl
      */
-    public void setSphereForSadl(final BezirkSphereForPubSub bezirkSphere);
+    public void setSphereForSadl(final PubSubSphereAccess bezirkSphere);
 }

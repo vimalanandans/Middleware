@@ -1,6 +1,6 @@
 package com.bezirk.util;
 
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CtrlMsgReceiver;
@@ -12,14 +12,14 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.pipe.PipeManager;
 import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.sphere.api.BezirkSphereForPubSub;
+import com.bezirk.sphere.api.PubSubSphereAccess;
 import com.bezirk.streaming.Streaming;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
 
-public class MockComms implements BezirkComms {
+public class MockComms implements Comms {
 
     private ArrayList<ControlLedger> ctrlList;
 
@@ -129,7 +129,7 @@ public class MockComms implements BezirkComms {
     }
 
     @Override
-    public void setSphereForSadl(BezirkSphereForPubSub bezirkSphere) {
+    public void setSphereForSadl(PubSubSphereAccess bezirkSphere) {
         // TODO Auto-generated method stub
 
     }

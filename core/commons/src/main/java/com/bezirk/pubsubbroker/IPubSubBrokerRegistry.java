@@ -5,11 +5,11 @@ import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.ZirkId;
 
 /**
- * Platform Independent API's for SADL that are used to manipulate the SADL Maps.
+ * Platform Independent API's for PubSubBroker that are used to manipulate the PubSubBroker Maps.
  */
 public interface IPubSubBrokerRegistry {
     /**
-     * Registers a UPA Zirk with ZirkId in SADL.
+     * Registers a UPA Zirk with ZirkId in PubSubBroker.
      *
      * @param serviceId ZirkId of the registering Zirk.
      * @return true is successful, false otherwise.
@@ -17,7 +17,7 @@ public interface IPubSubBrokerRegistry {
     public Boolean registerService(final ZirkId serviceId);
 
     /**
-     * Subscribes the BezirkService to SADL.
+     * Subscribes the BezirkService to PubSubBroker.
      *
      * @param serviceId ZirkId of the subscribing UPAService
      * @param pRole     SubscribedRole of the subscribing Zirk
@@ -26,7 +26,7 @@ public interface IPubSubBrokerRegistry {
     public Boolean subscribeService(final ZirkId serviceId, final ProtocolRole pRole);
 
     /**
-     * Unsubscribes the Zirk from the SADL.
+     * Unsubscribes the Zirk from the PubSubBroker.
      *
      * @param serviceId ZirkId of the unsubscribing Zirk
      * @param role      SubscribedRole of the Zirk
@@ -35,7 +35,7 @@ public interface IPubSubBrokerRegistry {
     public Boolean unsubscribe(final ZirkId serviceId, final ProtocolRole role);
 
     /**
-     * Un-Registers the Zirk from SADL.
+     * Un-Registers the Zirk from PubSubBroker.
      *
      * @param serviceId ZirkId of the UnRegistering Zirk
      * @return true if successful, false otherwise

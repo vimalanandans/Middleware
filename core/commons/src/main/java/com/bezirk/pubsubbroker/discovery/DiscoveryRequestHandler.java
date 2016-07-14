@@ -1,14 +1,14 @@
 package com.bezirk.pubsubbroker.discovery;
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.pubsubbroker.IPubSubBrokerControlReceiver;
+import com.bezirk.pubsubbroker.PubSubBrokerControlReceiver;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,18 +26,18 @@ import java.util.Set;
 public class DiscoveryRequestHandler {
     private final static Logger logger = LoggerFactory.getLogger(DiscoveryRequestHandler.class);
 
-    private final IPubSubBrokerControlReceiver sadlCtrl;
+    private final PubSubBrokerControlReceiver sadlCtrl;
     private final DiscoveryResponse response;
     //private final MessageQueue ctrlSenderQueue;
-    private final BezirkComms bezirkComms;
+    private final Comms comms;
     private final DiscoveryRequest discReq;
 
     /**
      * @param req incoming DiscoveryRequest
      */
-    public DiscoveryRequestHandler(IPubSubBrokerControlReceiver sadlCtrl, DiscoveryRequest req, BezirkComms bezirkComms) {
+    public DiscoveryRequestHandler(PubSubBrokerControlReceiver sadlCtrl, DiscoveryRequest req, Comms comms) {
         this.sadlCtrl = sadlCtrl;
-        this.bezirkComms = bezirkComms;
+        this.comms = comms;
         this.discReq = req;
         response = new DiscoveryResponse(discReq.getSender(), discReq.getSphereId(), discReq.getUniqueKey(), discReq.getDiscoveryId());
 
@@ -90,6 +90,6 @@ public class DiscoveryRequestHandler {
         responseMsg.setSerializedMessage(responseMsg.getMessage().serialize());
         responseMsg.setSphereId(response.getSphereId());
         //ctrlSenderQueue.addToQueue(responseMsg);
-        bezirkComms.sendMessage(responseMsg);
+        comms.sendMessage(responseMsg);
     }
 }

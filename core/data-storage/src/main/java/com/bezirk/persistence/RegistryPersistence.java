@@ -13,7 +13,7 @@ import java.sql.SQLException;
  * of the Bezirk that needs to be persisted. The different layers will get the corresponding interfaces through
  * which they can load/ save the data to the persistence
  */
-public class RegistryPersistence extends DatabaseHelper implements PubSubBrokerPersistence, SpherePersistence, BezirkProxyPersistence {
+public class RegistryPersistence extends DatabaseHelper implements PubSubBrokerPersistence, SpherePersistence, ProxyPersistence {
 
     public RegistryPersistence(DatabaseConnection dbConnection, String DBVersion) throws NullPointerException, SQLException, IOException, Exception {
         super(dbConnection);
@@ -22,7 +22,7 @@ public class RegistryPersistence extends DatabaseHelper implements PubSubBrokerP
 
     @Override
     public void persistSphereRegistry() throws Exception {
-        updateRegistry(DBConstants.COLUMN_2);
+        updateRegistry(PersistenceConstants.COLUMN_2);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class RegistryPersistence extends DatabaseHelper implements PubSubBrokerP
 
     @Override
     public void persistPubSubBrokerRegistry() throws Exception {
-        updateRegistry(DBConstants.COLUMN_1);
+        updateRegistry(PersistenceConstants.COLUMN_1);
     }
 
     @Override
@@ -47,17 +47,17 @@ public class RegistryPersistence extends DatabaseHelper implements PubSubBrokerP
     }
 
     @Override
-    public BezirkProxyRegistry loadBezirkProxyRegistry() throws Exception {
-        if (null == getBezirkProxyRegistry()) {
+    public ProxyRegistry loadBezirkProxyRegistry() throws Exception {
+        if (null == getProxyRegistry()) {
             loadRegistry();
         }
-        return getBezirkProxyRegistry();
+        return getProxyRegistry();
     }
 
 
     @Override
     public void persistBezirkProxyRegistry() throws Exception {
-        updateRegistry(DBConstants.COLUMN_3);
+        updateRegistry(PersistenceConstants.COLUMN_3);
     }
 
     /* (non-Javadoc)

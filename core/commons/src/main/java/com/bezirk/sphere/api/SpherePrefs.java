@@ -3,7 +3,7 @@ package com.bezirk.sphere.api;
 /**
  * @author Rishabh Gulati
  */
-public abstract class SpherePrefs implements ISphereConfig {
+public abstract class SpherePrefs implements SphereConfig {
 
     public static final String DEVELOPMENT_SPHERE_NAME_KEY = "DEVELOPMENT_SPHERE_NAME_KEY";
     public static final String DEVELOPMENT_SPHERE_NAME_DEFAULT_VALUE = "Dev Sphere";

@@ -1,7 +1,7 @@
 package com.bezirk.pubsubbroker;
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
@@ -26,15 +26,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This class implements the IPubSubBrokerRegistry, IPubSubBrokerRegistryLookup Interfaces. This class is used by ProxyForServices (by casting IPubSubBrokerRegistry)
- * EventSender/ EventReceiver/ ControlSender/ ControlReceiver by casting IPubSubBrokerRegistryLookup.
+ * This class implements the IPubSubBrokerRegistry, PubSubBrokerServiceInfo Interfaces. This class is used by ProxyForServices (by casting IPubSubBrokerRegistry)
+ * EventSender/ EventReceiver/ ControlSender/ ControlReceiver by casting PubSubBrokerServiceInfo.
  */
-public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistryLookup, IPubSubBrokerControlReceiver, PubSubEventReceiver {
+public class PubSubBroker implements IPubSubBrokerRegistry, PubSubBrokerServiceInfo, PubSubBrokerControlReceiver, PubSubEventReceiver {
     private static final Logger logger = LoggerFactory.getLogger(PubSubBroker.class);
 
     protected PubSubBrokerPersistence pubSubBrokerPersistence = null;
     protected PubSubBrokerRegistry pubSubBrokerRegistry = null;
-    protected BezirkComms bezirkComms = null;
+    protected Comms comms = null;
     RemoteLog remoteLog = null;
 
     public PubSubBroker(PubSubBrokerPersistence pubSubBrokerPersistence) {
@@ -45,17 +45,17 @@ public class PubSubBroker implements IPubSubBrokerRegistry, IPubSubBrokerRegistr
     /**
      * initialize the object references for future use
      */
-    public void initSadlManager(BezirkComms bezirkComms) {
-        this.bezirkComms = bezirkComms;
-        initServiceDiscovery(bezirkComms);
+    public void initSadlManager(Comms comms) {
+        this.comms = comms;
+        initServiceDiscovery(comms);
     }
 
     /**
      * moved the init discovery from comms layer to sphere.
      * because this is out of comms layer
      */
-    public void initServiceDiscovery(BezirkComms bezirkComms) {
-        DiscoveryManager discoveryManager = new DiscoveryManager(this, bezirkComms);
+    public void initServiceDiscovery(Comms comms) {
+        DiscoveryManager discoveryManager = new DiscoveryManager(this, comms);
 
         discoveryManager.initDiscovery();
     }

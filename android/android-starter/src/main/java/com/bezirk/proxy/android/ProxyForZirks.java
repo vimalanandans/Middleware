@@ -10,14 +10,13 @@ package com.bezirk.proxy.android;
 import android.app.Service;
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.GenerateMsgId;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
 import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
 import com.bezirk.pubsubbroker.discovery.DiscoveryProcessor;
 import com.bezirk.pubsubbroker.discovery.DiscoveryRecord;
@@ -49,8 +48,8 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
     // TODO: do we need do know who the zirk is???  It looks like this variable is not used!
     private static Service serviceInstance;
     private final ProxyForZirksHelper proxyForZirksHelper;
-    private IPubSubBrokerRegistry sadlRegistry;
-    private BezirkComms comms;
+    private IPubSubBrokerRegistry pubSubBrokerRegistry;
+    private Comms comms;
 
     public ProxyForZirks(Service service) {
         serviceInstance = service;
@@ -73,7 +72,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
 
 
         // Step 1: Register with SADL
-        boolean isSADLPassed = sadlRegistry.registerService(serviceId);
+        boolean isSADLPassed = pubSubBrokerRegistry.registerService(serviceId);
 
         if (isSADLPassed) {
             // Step 2: moved to outside since the sphere persistence is not ready
@@ -89,7 +88,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
         } else {
             // unregister the sadl due to failure in sphere
             logger.error("sphere Registration Failed. unregistring SADL");
-            sadlRegistry.unregisterService(serviceId);
+            pubSubBrokerRegistry.unregisterService(serviceId);
         }
     }
 
@@ -100,7 +99,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
-        sadlRegistry.subscribeService(serviceId, pRole);
+        pubSubBrokerRegistry.subscribeService(serviceId, pRole);
     }
 
     @Override
@@ -280,9 +279,9 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(sender);
             String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":" + streamId;
 
-            String sphereId = proxyForZirksHelper.getSphereId(receiver, sphereIterator);
+           /* String sphereId = proxyForZirksHelper.getSphereId(receiver, sphereIterator);
             RTCControlMessage request = new RTCControlMessage(senderSEP, receiver, sphereId, streamRequestKey, RTCControlMessage.RTCControlMessageType.RTCSessionId, null);
-            signaling.startSignaling(request);
+            signaling.startSignaling(request);*/
         } catch (Exception e) {
             logger.error("Cant get the SEP of the sender", e);
             return (short) -1;
@@ -298,7 +297,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             return;
         }
 
-        sadlRegistry.setLocation(serviceId, location);
+        pubSubBrokerRegistry.setLocation(serviceId, location);
     }
 
     @Override
@@ -309,7 +308,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             return;
         }
 
-        sadlRegistry.unsubscribe(serviceId, role);
+        pubSubBrokerRegistry.unsubscribe(serviceId, role);
     }
 
     @Override
@@ -320,14 +319,14 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             return;
         }
 
-        sadlRegistry.unregisterService(serviceId);
+        pubSubBrokerRegistry.unregisterService(serviceId);
     }
 
-    public void setSadlRegistry(IPubSubBrokerRegistry sadlRegistry) {
-        this.sadlRegistry = sadlRegistry;
+    public void setPubSubBrokerRegistry(IPubSubBrokerRegistry pubSubBrokerRegistry) {
+        this.pubSubBrokerRegistry = pubSubBrokerRegistry;
     }
 
-    public void setComms(BezirkComms comms) {
+    public void setComms(Comms comms) {
         this.comms = comms;
     }
 

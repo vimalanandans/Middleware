@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 
-import com.bezirk.device.BezirkDeviceType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,31 +30,31 @@ public class DeviceTypeSelection extends ActionBarActivity {
         setContentView(R.layout.activity_device_control);
 
         // populate data model
-  /*      listData.add(new DataModel(R.drawable.ic_smartphone, BezirkDeviceType.BEZIRK_DEVICE_TYPE_SMARTPHONE, "", false, false, false));
+  /*      listData.add(new DataModel(R.drawable.ic_smartphone, DeviceType.BEZIRK_DEVICE_TYPE_SMARTPHONE, "", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_tablet, BezirkDeviceType.BEZIRK_DEVICE_TYPE_TABLET, "", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_tablet, DeviceType.BEZIRK_DEVICE_TYPE_TABLET, "", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_car, BezirkDeviceType.BEZIRK_DEVICE_TYPE_CAR, "", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_car, DeviceType.BEZIRK_DEVICE_TYPE_CAR, "", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_heating, BezirkDeviceType.BEZIRK_DEVICE_TYPE_HEATING, "", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_heating, DeviceType.BEZIRK_DEVICE_TYPE_HEATING, "", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_light, BezirkDeviceType.BEZIRK_DEVICE_TYPE_LIGHT, "", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_light, DeviceType.BEZIRK_DEVICE_TYPE_LIGHT, "", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_thermostat, BezirkDeviceType.BEZIRK_DEVICE_TYPE_THERMOSTAT, "", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_thermostat, DeviceType.BEZIRK_DEVICE_TYPE_THERMOSTAT, "", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_microwave, BezirkDeviceType.BEZIRK_DEVICE_TYPE_MICROWAVE, "", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_microwave, DeviceType.BEZIRK_DEVICE_TYPE_MICROWAVE, "", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_tv, BezirkDeviceType.BEZIRK_DEVICE_TYPE_TV, "", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_tv, DeviceType.BEZIRK_DEVICE_TYPE_TV, "", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_washingmachine, BezirkDeviceType.BEZIRK_DEVICE_TYPE_WASHING_MACHINE, "", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_washingmachine, DeviceType.BEZIRK_DEVICE_TYPE_WASHING_MACHINE, "", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_coffee, BezirkDeviceType.BEZIRK_DEVICE_TYPE_COFFEE, "", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_coffee, DeviceType.BEZIRK_DEVICE_TYPE_COFFEE, "", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_controller, BezirkDeviceType.BEZIRK_DEVICE_TYPE_GAME, "", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_controller, DeviceType.BEZIRK_DEVICE_TYPE_GAME, "", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_fan, BezirkDeviceType.BEZIRK_DEVICE_TYPE_FAN, "", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_fan, DeviceType.BEZIRK_DEVICE_TYPE_FAN, "", false, false, false));
 
-        listData.add(new DataModel(R.drawable.ic_pc, BezirkDeviceType.BEZIRK_DEVICE_TYPE_PC, "", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_pc, DeviceType.BEZIRK_DEVICE_TYPE_PC, "", false, false, false));
 */
         AbsListView list;
 

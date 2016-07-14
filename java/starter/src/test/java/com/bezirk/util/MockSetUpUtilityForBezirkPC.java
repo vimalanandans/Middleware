@@ -1,25 +1,25 @@
 package com.bezirk.util;
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.device.BezirkDevice;
-import com.bezirk.device.BezirkDeviceType;
-import com.bezirk.devices.BezirkDeviceInterface;
-import com.bezirk.persistence.BezirkRegistry;
-import com.bezirk.persistence.DBConstants;
+import com.bezirk.device.Device;
+import com.bezirk.device.DeviceType;
+import com.bezirk.devices.DeviceInterface;
+import com.bezirk.persistence.PersistenceConstants;
+import com.bezirk.persistence.PersistenceRegistry;
 import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.PubSubBrokerPersistence;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.sphere.api.BezirkDevMode;
-import com.bezirk.sphere.api.BezirkSphereListener;
-import com.bezirk.sphere.api.BezirkSphereRegistration;
-import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.impl.BezirkSphere;
+import com.bezirk.sphere.api.DevMode;
+import com.bezirk.sphere.api.SphereListener;
+import com.bezirk.sphere.api.SphereRegistration;
+import com.bezirk.sphere.api.SphereConfig;
+import com.bezirk.sphere.impl.SphereSphereAccess;
 import com.bezirk.sphere.impl.JavaPrefs;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.streaming.StreamManager;
@@ -48,16 +48,16 @@ public class MockSetUpUtilityForBezirkPC {
     private final static Logger logger = LoggerFactory.getLogger(MockSetUpUtilityForBezirkPC.class);
 
     private static final String DBPath = "./";
-    private static final String DBVersion = DBConstants.DB_VERSION;
+    private static final String DBVersion = PersistenceConstants.DB_VERSION;
     private static InetAddress inetAddr;
     PubSubBroker pubSubBroker = null;
     PubSubBrokerPersistence pubSubBrokerPersistence;
     SpherePersistence spherePersistence;
-    BezirkDevice upaDevice;
+    Device upaDevice;
     CryptoEngine cryptoEngine;
     SphereRegistry sphereRegistry;
-    BezirkComms bezirkComms;
-    ISphereConfig sphereConfig;
+    Comms comms;
+    SphereConfig sphereConfig;
     private DatabaseConnectionForJava dbConnection;
     private RegistryPersistence regPersistence;
 
@@ -81,18 +81,18 @@ public class MockSetUpUtilityForBezirkPC {
         sphereConfig.init();
 
 
-        bezirkComms = new MockComms();
-        Streaming streamManager = new StreamManager(bezirkComms,pubSubBroker);
-        bezirkComms.initComms(null, inetAddr, pubSubBroker, null,streamManager);
-        pubSubBroker.initSadlManager(bezirkComms);
-        bezirkComms.registerNotification(Mockito.mock(CommsNotification.class));
-        bezirkComms.startComms();
+        comms = new MockComms();
+        Streaming streamManager = new StreamManager(comms,pubSubBroker);
+        comms.initComms(null, inetAddr, pubSubBroker, null,streamManager);
+        pubSubBroker.initSadlManager(comms);
+        comms.registerNotification(Mockito.mock(CommsNotification.class));
+        comms.startComms();
 
         setUpUpaDevice();
-        BezirkSphere bezirkSphere = new BezirkSphere(cryptoEngine, upaDevice, sphereRegistry);
-        BezirkSphereListener sphereListener = Mockito.mock(BezirkSphereListener.class);
-        bezirkSphere.initSphere(spherePersistence, bezirkComms, sphereListener, sphereConfig);
-        BezirkCompManager.setSphereRegistration((BezirkSphereRegistration) bezirkSphere);
+        SphereSphereAccess bezirkSphere = new SphereSphereAccess(cryptoEngine, upaDevice, sphereRegistry);
+        SphereListener sphereListener = Mockito.mock(SphereListener.class);
+        bezirkSphere.initSphere(spherePersistence, comms, sphereListener, sphereConfig);
+        BezirkCompManager.setSphereRegistration((SphereRegistration) bezirkSphere);
         BezirkCompManager.setSphereForPubSub(bezirkSphere);
         BezirkCompManager.setplatformSpecificCallback(new MockCallbackZirk());
     }
@@ -102,10 +102,10 @@ public class MockSetUpUtilityForBezirkPC {
      * @throws UnknownHostException
      */
     private void setUpUpaDevice() throws UnknownHostException {
-        upaDevice = new BezirkDevice();
+        upaDevice = new Device();
         String deviceIdString = InetAddress.getLocalHost().getHostName();
         upaDevice.initDevice(deviceIdString,
-                BezirkDeviceType.BEZIRK_DEVICE_TYPE_PC);
+                DeviceType.BEZIRK_DEVICE_TYPE_PC);
         BezirkCompManager.setUpaDevice(upaDevice);
     }
 
@@ -159,16 +159,16 @@ public class MockSetUpUtilityForBezirkPC {
         return regPersistence;
     }
 
-    public BezirkComms getBezirkComms() {
+    public Comms getComms() {
 
-        return bezirkComms;
+        return comms;
     }
 
     public PubSubBroker getPubSubBroker() throws UnknownHostException {
         return pubSubBroker;
     }
 
-    public BezirkDeviceInterface getUpaDevice() {
+    public DeviceInterface getUpaDevice() {
 
         return upaDevice;
     }
@@ -176,8 +176,8 @@ public class MockSetUpUtilityForBezirkPC {
 
     public void destroyTestSetUp() throws SQLException,
             IOException, Exception {
-        bezirkComms.stopComms();
-        bezirkComms.closeComms();
+        comms.stopComms();
+        comms.closeComms();
         regPersistence.clearPersistence();
 
         BezirkCompManager.setSphereRegistration(null);
@@ -186,7 +186,7 @@ public class MockSetUpUtilityForBezirkPC {
         BezirkCompManager.setUpaDevice(null);
 
         TableUtils.dropTable(dbConnection.getDatabaseConnection(),
-                BezirkRegistry.class, true);
+                PersistenceRegistry.class, true);
     }
 
     /**
@@ -195,6 +195,6 @@ public class MockSetUpUtilityForBezirkPC {
      * @return 2 if development sphere is on, 1 otherwise.
      */
     public int getTotalSpheres() {
-        return (sphereConfig.getMode().equals(BezirkDevMode.Mode.ON)) ? 2 : 1;
+        return (sphereConfig.getMode().equals(DevMode.Mode.ON)) ? 2 : 1;
     }
 }

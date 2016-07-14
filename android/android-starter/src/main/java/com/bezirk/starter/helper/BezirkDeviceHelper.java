@@ -4,8 +4,8 @@ import android.content.Context;
 import android.telephony.TelephonyManager;
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.device.BezirkDevice;
-import com.bezirk.device.BezirkDeviceType;
+import com.bezirk.device.Device;
+import com.bezirk.device.DeviceType;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkPreferences;
@@ -22,8 +22,8 @@ import java.util.UUID;
 public final class BezirkDeviceHelper {
     private static final Logger logger = LoggerFactory.getLogger(BezirkDeviceHelper.class);
 
-    BezirkDevice setBezirkDevice(final BezirkPreferences preferences, final MainService service) {
-        BezirkDevice bezirkDevice = initDevice(preferences, service);
+    Device setBezirkDevice(final BezirkPreferences preferences, final MainService service) {
+        Device bezirkDevice = initDevice(preferences, service);
 
         if (ValidatorUtility.isObjectNotNull(bezirkDevice)) {
 
@@ -49,7 +49,7 @@ public final class BezirkDeviceHelper {
      * create and initialise the sphere
      * TODO: Move this code to modular place
      */
-    private BezirkDevice initDevice(final BezirkPreferences preferences, final MainService service) {
+    private Device initDevice(final BezirkPreferences preferences, final MainService service) {
 
         String deviceId = preferences.getString(BezirkPreferences.DEVICE_ID_TAG_PREFERENCE, null);
 
@@ -83,11 +83,11 @@ public final class BezirkDeviceHelper {
         if (deviceType == null) {
             logger.info("device type is not initialized. setting to default");
 
-            deviceType = BezirkDeviceType.BEZIRK_DEVICE_TYPE_SMARTPHONE;
+            deviceType = DeviceType.BEZIRK_DEVICE_TYPE_SMARTPHONE;
         }
 
 
-        BezirkDevice bezirkDevice = new BezirkDevice();
+        Device bezirkDevice = new Device();
 
         bezirkDevice.initDevice(deviceId, deviceType);
 

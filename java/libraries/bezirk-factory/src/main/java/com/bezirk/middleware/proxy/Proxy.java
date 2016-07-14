@@ -1,7 +1,7 @@
 package com.bezirk.middleware.proxy;
 
-import com.bezirk.callback.pc.CBkForZirkPC;
-import com.bezirk.callback.pc.BroadcastReceiver;
+import com.bezirk.proxy.messagehandler.ServiceMessageHandler;
+import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.RecipientSelector;
@@ -12,12 +12,12 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.Stream;
-import com.bezirk.persistence.BezirkProxyPersistence;
-import com.bezirk.persistence.BezirkProxyRegistry;
+import com.bezirk.persistence.ProxyPersistence;
+import com.bezirk.persistence.ProxyRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.pc.ProxyForServices;
+import com.bezirk.proxy.ProxyForServices;
 import com.bezirk.proxy.ServiceRegistration;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.ValidatorUtility;
@@ -41,11 +41,11 @@ public class Proxy implements Bezirk {
     protected final HashMap<String, String> activeStreams = new HashMap<String, String>();
     private final ProxyForServices proxy;
     private final ProxyUtil proxyUtil;
-    private final BezirkProxyPersistence proxyPersistence;
+    private final ProxyPersistence proxyPersistence;
     private final MainService mainService;
     // Stream
     private short streamFactory = 0;
-    private BezirkProxyRegistry bezirkProxyRegistry = null;
+    private ProxyRegistry proxyRegistry = null;
 
     private ZirkId zirkId;
 
@@ -55,13 +55,13 @@ public class Proxy implements Bezirk {
         mainService = new MainService(proxy, null);
         final BroadcastReceiver brForService = new BRForService(activeStreams, dListenerMap,
                 eventListenerMap, sidMap, streamListenerMap);
-        CBkForZirkPC bezirkPcCallback = new CBkForZirkPC(brForService);
+        ServiceMessageHandler bezirkPcCallback = new ServiceMessageHandler(brForService);
         mainService.startStack(bezirkPcCallback);
         proxyPersistence = mainService.getBezirkProxyPersistence();
         try {
-            bezirkProxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
+            proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         } catch (Exception e) {
-            logger.error("Error loading BezirkProxyRegistry", e);
+            logger.error("Error loading ProxyRegistry", e);
             System.exit(-1);
         }
     }
@@ -72,11 +72,11 @@ public class Proxy implements Bezirk {
             throw new IllegalArgumentException("Cannot register a Zirk with a null name");
         }
 
-        String zirkIdAsString = bezirkProxyRegistry.getBezirkServiceId(zirkName);
+        String zirkIdAsString = proxyRegistry.getBezirkServiceId(zirkName);
 
         if (null == zirkIdAsString) {
             zirkIdAsString = ServiceRegistration.generateUniqueServiceID() + ":" + zirkName;
-            bezirkProxyRegistry.updateBezirkZirkId(zirkName, zirkIdAsString);
+            proxyRegistry.updateBezirkZirkId(zirkName, zirkIdAsString);
             try {
                 proxyPersistence.persistBezirkProxyRegistry();
             } catch (Exception e) {
@@ -96,7 +96,7 @@ public class Proxy implements Bezirk {
     public void unregisterZirk() {
         // Clear the Persistence by removing the ZirkId of the unregistering Zirk
         ZirkId sId = (ZirkId) zirkId;
-        bezirkProxyRegistry.deleteBezirkZirkId(sId.getZirkId());
+        proxyRegistry.deleteBezirkZirkId(sId.getZirkId());
         try {
             proxyPersistence.persistBezirkProxyRegistry();
         } catch (Exception e) {

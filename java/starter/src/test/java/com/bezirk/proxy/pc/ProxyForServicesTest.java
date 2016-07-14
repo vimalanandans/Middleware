@@ -1,6 +1,7 @@
 package com.bezirk.proxy.pc;
 
 import com.bezirk.middleware.addressing.Location;
+import com.bezirk.proxy.ProxyForServices;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBroker;

@@ -1,6 +1,6 @@
 package com.bezirk.middleware.proxy;
 
-import com.bezirk.callback.pc.BroadcastReceiver;
+import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.messagehandler.ServiceIncomingMessage;

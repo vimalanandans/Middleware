@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.bezirk.actions.BezirkActions;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.sphere.api.BezirkDevMode;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.DevMode;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkPreferences;
 import com.bezirk.util.ValidatorUtility;
@@ -219,7 +219,7 @@ class DeviceControlActivityHelper {
 // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptsView = layoutInflater.inflate(R.layout.prompt_confirm, null);
-        BezirkSphereAPI sphereAPI = MainService.getSphereHandle();
+        SphereAPI sphereAPI = MainService.getSphereHandle();
         final List<BezirkZirkInfo> bezirkZirkInfos = sphereAPI.getServiceInfo();
         final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(deviceControlActivity.getApplicationContext());
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -284,7 +284,7 @@ class DeviceControlActivityHelper {
      *
      * @param mode
      */
-    void updateList(BezirkDevMode.Mode mode, List<DataModel> listData) {
+    void updateList(DevMode.Mode mode, List<DataModel> listData) {
         if(mode == null)
             return;
 

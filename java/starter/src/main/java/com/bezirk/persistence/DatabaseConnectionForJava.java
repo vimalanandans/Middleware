@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public final class DatabaseConnectionForJava implements DatabaseConnection {
 
     private final String dbFilePath;
-    private Dao<BezirkRegistry, Integer> bezirkPersistenceDao;
+    private Dao<PersistenceRegistry, Integer> bezirkPersistenceDao;
 
     public DatabaseConnectionForJava(String dbFileLocation) {
         dbFilePath = dbFileLocation;
@@ -23,23 +23,23 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
             throws NullPointerException, SQLException, IOException {
         setupDatabase();
         return new JdbcConnectionSource(
-                DBConstants.DB_URL_PATH + dbFilePath + File.separator
-                        + DBConstants.DB_FILE_NAME);
+                PersistenceConstants.DB_URL_PATH + dbFilePath + File.separator
+                        + PersistenceConstants.DB_FILE_NAME);
     }
 
     @Override
-    public Dao<BezirkRegistry, Integer> getPersistenceDAO()
+    public Dao<PersistenceRegistry, Integer> getPersistenceDAO()
             throws NullPointerException, SQLException, IOException {
         if (null == bezirkPersistenceDao) {
             bezirkPersistenceDao = DaoManager.createDao(getDatabaseConnection(),
-                    BezirkRegistry.class);
+                    PersistenceRegistry.class);
         }
         return bezirkPersistenceDao;
     }
 
     private void setupDatabase() throws IOException {
         final File tempDBFile = new File(dbFilePath + File.separator
-                + DBConstants.DB_FILE_NAME);
+                + PersistenceConstants.DB_FILE_NAME);
         if (!tempDBFile.exists()) {
             tempDBFile.createNewFile();
         }

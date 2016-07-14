@@ -1,22 +1,22 @@
 package com.bezirk.starter;
 
 import com.bezirk.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
-import com.bezirk.device.BezirkDevice;
-import com.bezirk.device.BezirkDeviceType;
-import com.bezirk.devices.BezirkDeviceForPC;
-import com.bezirk.devices.BezirkDeviceInterface;
+import com.bezirk.comms.Comms;
+import com.bezirk.device.Device;
+import com.bezirk.device.DeviceType;
+import com.bezirk.devices.DeviceForPC;
+import com.bezirk.devices.DeviceInterface;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.pipe.PipeManager;
-import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.api.BezirkSphereAPI;
-import com.bezirk.sphere.api.BezirkSphereForPubSub;
-import com.bezirk.sphere.api.BezirkSphereRegistration;
+import com.bezirk.sphere.api.SphereAPI;
+import com.bezirk.sphere.api.SphereConfig;
+import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereRegistration;
 import com.bezirk.sphere.impl.BezirkQRCode;
-import com.bezirk.sphere.impl.BezirkSphereForPC;
+import com.bezirk.sphere.impl.PCSphereAccess;
 import com.bezirk.sphere.impl.JavaPrefs;
 import com.bezirk.sphere.security.CryptoEngine;
 
@@ -42,8 +42,8 @@ final class ServiceStarterHelper {
      * @param registryPersistence
      * @param comms
      */
-    BezirkSphereAPI initSphere(final BezirkDeviceInterface bezirkDevice,
-                               final RegistryPersistence registryPersistence, final BezirkComms comms) {
+    SphereAPI initSphere(final DeviceInterface bezirkDevice,
+                         final RegistryPersistence registryPersistence, final Comms comms) {
 
         // init the actual
         final SpherePersistence spherePersistence = registryPersistence;
@@ -55,31 +55,31 @@ final class ServiceStarterHelper {
         }
 
         final CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
-        BezirkSphereAPI sphereForPC = new BezirkSphereForPC(cryptoEngine, bezirkDevice,
+        SphereAPI sphereForPC = new PCSphereAccess(cryptoEngine, bezirkDevice,
                 sphereRegistry);
 
         // BezirkSphereForAndroid implements the listener, hence set the
         // listener object as same.
-        final BezirkSphereForPC bezirkSphereForPC = (BezirkSphereForPC) sphereForPC;
-        bezirkSphereForPC.setBezirkSphereListener(bezirkSphereForPC);
-        //ISphereConfig sphereConfig = new com.bezirk.sphere.impl.SphereProperties();
+        final PCSphereAccess bezirkSphereForPC = (PCSphereAccess) sphereForPC;
+        bezirkSphereForPC.setSphereListener(bezirkSphereForPC);
+        //SphereConfig sphereConfig = new com.bezirk.sphere.impl.SphereProperties();
         //sphereConfig.init();
-        ISphereConfig sphereConfig = new JavaPrefs();
+        SphereConfig sphereConfig = new JavaPrefs();
         sphereConfig.init();
         bezirkSphereForPC.initSphere(registryPersistence, comms, sphereConfig);
 
         BezirkCompManager.setSphereUI(sphereForPC);
         BezirkCompManager
-                .setSphereRegistration((BezirkSphereRegistration) sphereForPC);
+                .setSphereRegistration((SphereRegistration) sphereForPC);
 
         com.bezirk.sphere.SphereManager.setBezirkQRCode((BezirkQRCode) sphereForPC);
 
-        final BezirkSphereForPubSub sphereForSadl = (BezirkSphereForPubSub) sphereForPC;
+        final PubSubSphereAccess sphereForSadl = (PubSubSphereAccess) sphereForPC;
         BezirkCompManager.setSphereForPubSub(sphereForSadl);
 
         try {
 
-            final BezirkComms bezirkComms = (BezirkComms) comms;
+            final Comms bezirkComms = (Comms) comms;
             bezirkComms.setSphereForSadl(sphereForSadl);
 
         } catch (Exception e) {
@@ -97,17 +97,17 @@ final class ServiceStarterHelper {
      * Loads the default location for UPA device from the properties.
      */
     private Location loadLocation() {
-        return BezirkDeviceForPC.deviceLocation;
+        return DeviceForPC.deviceLocation;
     }
 
     /**
-     * Initializes the BezirkDevice and configures the location
+     * Initializes the Device and configures the location
      *
      * @param bezirkConfig
      * @return
      */
-    BezirkDevice configureBezirkDevice(final BezirkConfig bezirkConfig) {
-        final BezirkDevice bezirkDevice = new BezirkDevice();
+    Device configureBezirkDevice(final BezirkConfig bezirkConfig) {
+        final Device bezirkDevice = new Device();
 
         String deviceIdString = null;
 
@@ -119,10 +119,10 @@ final class ServiceStarterHelper {
 
         if (bezirkConfig.isDisplayEnabled()) {
             bezirkDevice.initDevice(deviceIdString,
-                    BezirkDeviceType.BEZIRK_DEVICE_TYPE_PC);
+                    DeviceType.BEZIRK_DEVICE_TYPE_PC);
         } else {
             bezirkDevice.initDevice(deviceIdString,
-                    BezirkDeviceType.BEZIRK_DEVICE_TYPE_EMBEDDED_KIT);
+                    DeviceType.BEZIRK_DEVICE_TYPE_EMBEDDED_KIT);
         }
 
         BezirkCompManager.setUpaDevice(bezirkDevice);

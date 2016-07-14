@@ -1,11 +1,11 @@
 package com.bezirk.sphere.impl;
 
+import com.bezirk.comms.Comms;
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.comms.BezirkComms;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
 import com.bezirk.sphere.discovery.SphereDiscoveryProcessor;
-import com.bezirk.sphere.api.BezirkSphereMessages;
+import com.bezirk.sphere.api.SphereMessages;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.messages.ShareRequest;
@@ -20,10 +20,10 @@ import org.slf4j.LoggerFactory;
 public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(SphereCtrlMsgReceiver.class);
 
-    BezirkSphereMessages bezirkSphereMessages = null;
+    SphereMessages sphereMessages = null;
 
-    SphereCtrlMsgReceiver(BezirkSphereMessages bezirkSphereMessages) {
-        this.bezirkSphereMessages = bezirkSphereMessages;
+    SphereCtrlMsgReceiver(SphereMessages sphereMessages) {
+        this.sphereMessages = sphereMessages;
     }
 
     @Override
@@ -42,23 +42,23 @@ public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
             case CatchRequest:
                 final CatchRequest catchRequest = ControlMessage.deserialize(serializedMsg, CatchRequest.class);
                 logger.debug("Catch Request " + catchRequest.getSphereId());
-                bezirkSphereMessages.processCatchRequestExt(catchRequest);
+                sphereMessages.processCatchRequestExt(catchRequest);
                 break;
             case CatchResponse:
                 final CatchResponse catchResponse = ControlMessage.deserialize(serializedMsg, CatchResponse.class);
 
                 logger.debug("Catch Response " + catchResponse.getSphereId());
-                bezirkSphereMessages.processCatchResponse(catchResponse);
+                sphereMessages.processCatchResponse(catchResponse);
                 break;
             case ShareRequest:
                 ShareRequest shareRequest = ControlMessage.deserialize(serializedMsg, ShareRequest.class);
                 logger.debug("Share Request " + shareRequest.getSphereId());
-                bezirkSphereMessages.processShareRequest(shareRequest);
+                sphereMessages.processShareRequest(shareRequest);
                 break;
             case ShareResponse:
                 ShareResponse shareResponse = ControlMessage.deserialize(serializedMsg, ShareResponse.class);
                 logger.debug("Share Response " + shareResponse.getSphereId());
-                bezirkSphereMessages.processShareResponse(shareResponse);
+                sphereMessages.processShareResponse(shareResponse);
                 break;
             default: // unregistered message
                 logger.error("unregistered message. dispatcher map of is corrupted ? ");
@@ -70,7 +70,7 @@ public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
     /**
      * register the control message id with message Dispatcher
      */
-    public boolean initControlMessageListener(BezirkComms comms) {
+    public boolean initControlMessageListener(Comms comms) {
         if (comms != null) {
             /**
              * register all the control messages, in which sphere is interested

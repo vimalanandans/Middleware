@@ -1,6 +1,6 @@
 package com.bezirk.streaming.rtc;
 
-import com.bezirk.comms.BezirkComms;
+import com.bezirk.comms.Comms;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public final class SignalingFactory {
     }
 
     /**
-     * Getting the singleton instance of class implementing {@link BezirkComms}
+     * Getting the singleton instance of class implementing {@link Comms}
      *
      * @return Object holding signaling instance
      */
@@ -34,12 +34,12 @@ public final class SignalingFactory {
     }
 
     /**
-     * Creates a instance of the  class implementing {@link BezirkComms}
+     * Creates a instance of the  class implementing {@link Comms}
      *
      * @param className name of the class
      * @param comms     parameter to be passed to the constructor
      */
-    public static void createSignalingInstance(final String className, final BezirkComms comms) {
+    public static void createSignalingInstance(final String className, final Comms comms) {
         synchronized (SignalingFactory.class) {
             try {
                 if (signaling == null) {
@@ -125,16 +125,16 @@ public final class SignalingFactory {
     }
 
     /**
-     * Get the new object instance of the class of type className with the parameter {@link BezirkComms}
+     * Get the new object instance of the class of type className with the parameter {@link Comms}
      *
      * @param className name of the class need to be instantiated
      * @param comms     parameter accepted by the constructor
      * @return new Object instance of the class {@code className}
      */
-    private static Object getNewInstance(final String className, final BezirkComms comms) {
+    private static Object getNewInstance(final String className, final Comms comms) {
         Object newInstance = null;
         try {
-            Constructor<?> ctor = getClass(className).getConstructor(BezirkComms.class);
+            Constructor<?> ctor = getClass(className).getConstructor(Comms.class);
             newInstance = ctor.newInstance(new Object[]{comms});
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
             logger.error("New Instance creation failed. \n", e);
