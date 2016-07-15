@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ProxyHelper {
+public class ProxyClientHelper {
 
-    static final String TAG = ProxyHelper.class.getSimpleName();
+    static final String TAG = ProxyClientHelper.class.getSimpleName();
 
     void addTopicsToMap(String[] topics, Map<String, List<BezirkListener>> listenerMap, BezirkListener listener, String type) {
         if (StringValidatorUtil.areValidStrings(topics)) {

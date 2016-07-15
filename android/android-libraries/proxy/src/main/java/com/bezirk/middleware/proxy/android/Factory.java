@@ -19,8 +19,8 @@ public abstract class Factory {
      */
     public static Bezirk registerZirk(Context context, String zirkName) {
         synchronized (Factory.class) {
-            ZirkId zirkId = Proxy.registerZirk(context, zirkName);
-            return zirkId == null ? null : new Proxy(context, zirkId);
+            ZirkId zirkId = ProxyClient.registerZirk(context, zirkName);
+            return zirkId == null ? null : new ProxyClient(context, zirkId);
         }
     }
 }

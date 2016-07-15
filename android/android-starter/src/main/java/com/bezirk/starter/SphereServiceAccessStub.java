@@ -2,7 +2,7 @@ package com.bezirk.starter;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereServiceAccess;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,28 +17,17 @@ import java.util.Set;
  * This is the stub code for making sphere opaque or flat without encryption
  * This is the Quick fix. in actual this suppose to be a package altered via build
  */
-public class PubSubSphereAccessStub implements PubSubSphereAccess {
-    private static final Logger logger = LoggerFactory.getLogger(PubSubSphereAccessStub.class);
+public class SphereServiceAccessStub implements SphereServiceAccess {
+    private static final Logger logger = LoggerFactory.getLogger(SphereServiceAccessStub.class);
 
     @Override
-    public byte[] encryptSphereContent(String sphereId, String serializedContent) {
-
-        return serializedContent.getBytes();
+    public boolean registerService(ZirkId zirkId, String zirkName) {
+        return false;
     }
 
     @Override
-    public String decryptSphereContent(String sphereId, byte[] serializedContent) {
-        return new String(serializedContent);
-    }
-
-    @Override
-    public void encryptSphereContent(InputStream inputStream, OutputStream outputStream, String sphereId) {
-        logger.error("Interface not implemented > encryptSphereContent");
-    }
-
-    @Override
-    public void decryptSphereContent(InputStream inputStream, OutputStream outputStream, String sphereId) {
-        logger.error("Interface not implemented > decryptSphereContent");
+    public boolean unregisterService(ZirkId serviceId) {
+        return false;
     }
 
     @Override
@@ -49,15 +38,15 @@ public class PubSubSphereAccessStub implements PubSubSphereAccess {
     }
 
     @Override
-    public boolean isZirkInSphere(ZirkId zirk, String sphereId) {
+    public boolean isServiceInSphere(ZirkId zirk, String sphereId) {
 
         return true;
     }
 
     @Override
-    public String getZirkName(ZirkId zirkId) {
+    public String getServiceName(ZirkId zirkId) {
         // I see, used during sadl discovery
-        logger.error("Interface not implemented > getZirkName.");
+        logger.error("Interface not implemented > getServiceName.");
         return null;
     }
 

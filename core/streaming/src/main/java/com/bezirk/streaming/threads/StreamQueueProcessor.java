@@ -8,7 +8,7 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.control.Objects.StreamRecord.StreamingStatus;
 import com.bezirk.util.ValidatorUtility;
@@ -37,7 +37,7 @@ public class StreamQueueProcessor implements Runnable {
 
     private final PubSubEventReceiver sadlReceiver;
 
-    private PubSubSphereAccess sphereForSadl;
+    private SphereSecurity sphereSecurity;
 
     public StreamQueueProcessor(MessageQueue msgQueue, PubSubEventReceiver sadlReceiver) {
         this.sadlReceiver = sadlReceiver;
@@ -45,8 +45,8 @@ public class StreamQueueProcessor implements Runnable {
 
     }
 
-    public void setSphereForSadl(PubSubSphereAccess sphereForSadl) {
-        this.sphereForSadl = sphereForSadl;
+    public void setSphereSecurity(SphereSecurity sphereSecurity) {
+        this.sphereSecurity = sphereSecurity;
     }
 
     /**
@@ -119,9 +119,9 @@ public class StreamQueueProcessor implements Runnable {
 
         } else {
 
-            if (ValidatorUtility.isObjectNotNull(sphereForSadl)) {
+            if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {
 
-                new Thread(new StreamSendingThread(streamRecord, sadlReceiver, sphereForSadl)).start();                       // spawn the thread
+                new Thread(new StreamSendingThread(streamRecord, sadlReceiver, sphereSecurity)).start();                       // spawn the thread
             } else {
 
                 logger.error("SphereForSadl is not initialized.");

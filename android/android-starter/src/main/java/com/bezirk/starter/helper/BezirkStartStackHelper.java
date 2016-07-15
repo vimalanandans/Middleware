@@ -13,7 +13,7 @@ import com.bezirk.proxy.android.ProxyClientMessageHandler;
 import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.persistence.util.DatabaseConnectionForAndroid;
-import com.bezirk.proxy.ProxyService;
+import com.bezirk.proxy.ProxyServer;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.starter.MainService;
 import com.bezirk.streaming.StreamManager;
@@ -81,7 +81,7 @@ class BezirkStartStackHelper {
         }
     }
 
-    Comms initializeComms(InetAddress inetAddress, PubSubBroker pubSubBroker, ProxyService proxy, CommsNotification errNotificationCallback) {
+    Comms initializeComms(InetAddress inetAddress, PubSubBroker pubSubBroker, ProxyServer proxy, CommsNotification errNotificationCallback) {
         // Instantiate pipeManager before SenderThread so that it is ready to start sending over pipes
        // PipeManager pipeComms = PipeCommsFactory.createPipeComms();
 
@@ -102,7 +102,7 @@ class BezirkStartStackHelper {
 
 
         // the comms manager for the proxy
-        proxy.setComms(comms);
+        //proxy.setComms(comms);
 
         //init the error notification
         comms.registerNotification(errNotificationCallback);

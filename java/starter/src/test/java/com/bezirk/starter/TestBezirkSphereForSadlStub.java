@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class TestBezirkSphereForSadlStub {
-    PubSubSphereAccessStub bezirkSphereForSadlStub = new PubSubSphereAccessStub();
+    SphereServiceAccessStub bezirkSphereForSadlStub = new SphereServiceAccessStub();
     String testStr = "TestString";
     ZirkId zirkId = new ZirkId("123");
 
@@ -43,14 +43,14 @@ public class TestBezirkSphereForSadlStub {
         bezirkSphereForSadlStub.encryptSphereContent(null, null, null);
         bezirkSphereForSadlStub.decryptSphereContent(null, null, null);
         bezirkSphereForSadlStub.processSphereDiscoveryRequest(null);
-        assertNull("ServiceName is non null.", bezirkSphereForSadlStub.getZirkName(zirkId));
+        assertNull("ServiceName is non null.", bezirkSphereForSadlStub.getServiceName(zirkId));
         assertNull("Device name is non null.", bezirkSphereForSadlStub.getDeviceNameFromSphere("testDevId"));
 
     }
 
     @Test
     public void testIsServiceInSphere() {
-        assertTrue("Zirk is not identified as a member zirk in sphere.", bezirkSphereForSadlStub.isZirkInSphere(zirkId, "123"));
+        assertTrue("Zirk is not identified as a member zirk in sphere.", bezirkSphereForSadlStub.isServiceInSphere(zirkId, "123"));
     }
 
 }

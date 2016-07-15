@@ -2,9 +2,9 @@ package com.bezirk;
 
 import com.bezirk.devices.DeviceInterface;
 import com.bezirk.proxy.messagehandler.MessageHandler;
-import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereSecurity;
+import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.sphere.api.SphereAPI;
-import com.bezirk.sphere.api.SphereRegistration;
 //import com.bezirk.streaming.rtc.Signaling;
 
 /**
@@ -42,11 +42,11 @@ public final class BezirkCompManager {
 
     private static MessageHandler platformSpecificCallback;
 
-    private static PubSubSphereAccess pubSubSphereAccess;
+    private static SphereServiceAccess sphereServiceAccess;
 
     private static SphereAPI sphereAPI;
 
-    private static SphereRegistration sphereRegistration;
+    private static SphereSecurity sphereSecurity;
 
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
@@ -92,13 +92,13 @@ public final class BezirkCompManager {
     }
 
     // this is temporary for sadl to use the spheres
-    public static PubSubSphereAccess getSphereForPubSubBroker() {
-        return pubSubSphereAccess;
+    public static SphereServiceAccess getSphereForPubSubBroker() {
+        return sphereServiceAccess;
     }
 
     // this is temporary for setting up spheres for sadl
-    public static void setSphereForPubSub(PubSubSphereAccess sphereForPubSub) {
-        BezirkCompManager.pubSubSphereAccess = sphereForPubSub;
+    public static void setSphereForPubSub(SphereServiceAccess sphereForPubSub) {
+        BezirkCompManager.sphereServiceAccess = sphereForPubSub;
     }
 
     // this is temporary for UI to use the spheres
@@ -112,13 +112,13 @@ public final class BezirkCompManager {
     }
 
     // this is temporary for proxyForServices to use registration
-    public static SphereRegistration getSphereRegistration() {
-        return sphereRegistration;
+    public static SphereSecurity getSphereSecurity() {
+        return sphereSecurity;
     }
 
     // this is temporary for setting up zirk registration with spheres for UI
-    public static void setSphereRegistration(
-            SphereRegistration sphereRegistration) {
-        BezirkCompManager.sphereRegistration = sphereRegistration;
+    public static void setSphereSecurity(
+            SphereSecurity sphereSecurity) {
+        BezirkCompManager.sphereSecurity = sphereSecurity;
     }
 }

@@ -32,7 +32,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public final class Proxy implements Bezirk {
+public final class ProxyClient implements Bezirk {
     static final int TIME_DURATION = 15000;
     static final int MAX_MAP_SIZE = 50;
     static final ConcurrentMap<String, List<BezirkListener>> eventListenerMap = new ConcurrentHashMap<String, List<BezirkListener>>();
@@ -53,17 +53,17 @@ public final class Proxy implements Bezirk {
     private static final String ACTION_BEZIRK_PUSH_MULTICAST_STREAM = "MULTICAST_STREAM";
     private static final String COMPONENT_NAME = "com.bezirk.controlui";
     private static final String SERVICE_PKG_NAME = "com.bezirk.starter.MainService";
-    private static final ProxyHelper proxyHelper = new ProxyHelper();
+    private static final ProxyClientHelper PROXY_CLIENT_HELPER = new ProxyClientHelper();
     static Context context;
     static BezirkListener DiscoveryListener;
     static int discoveryCount; // keep track of Discovery Id
-    private static final String TAG = Proxy.class.getSimpleName();
+    private static final String TAG = ProxyClient.class.getSimpleName();
     private short streamFactory;
 
     private ZirkId zirkId;
 
-    public Proxy(Context context, ZirkId zirkId) {
-        Proxy.context = context;
+    public ProxyClient(Context context, ZirkId zirkId) {
+        ProxyClient.context = context;
         this.zirkId = zirkId;
     }
 
@@ -136,8 +136,8 @@ public final class Proxy implements Bezirk {
     public void subscribe(final ProtocolRole protocolRole, final BezirkListener listener) {
         isRequestValid(zirkId, protocolRole, listener);
 
-        proxyHelper.addTopicsToMap(protocolRole.getEventTopics(), eventListenerMap, listener, "Event");
-        proxyHelper.addTopicsToMap(protocolRole.getStreamTopics(), streamListenerMap, listener, "Stream");
+        PROXY_CLIENT_HELPER.addTopicsToMap(protocolRole.getEventTopics(), eventListenerMap, listener, "Event");
+        PROXY_CLIENT_HELPER.addTopicsToMap(protocolRole.getStreamTopics(), streamListenerMap, listener, "Stream");
         // Send the intent
         Intent subscribeIntent = new Intent();
         subscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));

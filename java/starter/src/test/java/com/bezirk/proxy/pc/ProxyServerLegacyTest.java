@@ -25,8 +25,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class ProxyServiceLegacyTest {
-    private static final Logger logger = LoggerFactory.getLogger(ProxyServiceLegacyTest.class);
+public class ProxyServerLegacyTest {
+    private static final Logger logger = LoggerFactory.getLogger(ProxyServerLegacyTest.class);
 
     private static final MockSetUpUtilityForBezirkPC mockSetUP = new MockSetUpUtilityForBezirkPC();
     private static PubSubBroker sadlManager;
@@ -38,7 +38,7 @@ public class ProxyServiceLegacyTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        logger.info("********** Setting up ProxyServiceLegacyTest Testcase **********");
+        logger.info("********** Setting up ProxyServerLegacyTest Testcase **********");
 
         mockSetUP.setUPTestEnv();
 
@@ -51,7 +51,7 @@ public class ProxyServiceLegacyTest {
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        logger.info("********** Shutting down ProxyServiceLegacyTest Testcase **********");
+        logger.info("********** Shutting down ProxyServerLegacyTest Testcase **********");
 
         mockSetUP.destroyTestSetUp();
     }

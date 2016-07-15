@@ -17,12 +17,13 @@ import android.support.v4.app.NotificationCompat;
 
 import com.bezirk.R;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.proxy.ProxyService;
+import com.bezirk.proxy.ProxyServer;
+import com.bezirk.proxy.android.ProxyServerIntend;
 import com.bezirk.remotelogging.RemoteLog;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.starter.helper.NetworkBroadCastReceiver;
 import com.bezirk.starter.helper.BezirkActionProcessor;
-import com.bezirk.starter.helper.ServiceHelper;
+
 import com.bezirk.starter.helper.BezirkStackHandler;
 
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class MainService extends Service implements INotificationCallback {
 
     private final BezirkActionProcessor bezirkActionProcessor = new BezirkActionProcessor();
     //private final PipeActionParser pipeActionParser = new PipeActionParser();
-    private ServiceHelper serviceHelper;
+    private ProxyServer proxyService;
     private BezirkStackHandler bezirkStackHandler;
     private CommsNotification commsNotification;
 
@@ -81,15 +82,15 @@ public class MainService extends Service implements INotificationCallback {
         super.onCreate();
         //Acquire the Wifi Lock for Multicast
         logger.info("Bezirk Services is Created");
-        //final ProxyService proxy = new ProxyService(this); // Pipe needs service
-        final ProxyService proxy = new ProxyService();
-        serviceHelper = new ServiceHelper(proxy);
+        //final ProxyServer proxy = new ProxyServer(this); // Pipe needs service
+
+        proxyService = new ProxyServerIntend();
         //Gain permissions for multicast
 
         //initialize the commsNotification object
         commsNotification = new com.bezirk.starter.CommsNotification(this);
 
-        bezirkStackHandler = new BezirkStackHandler(proxy, commsNotification);
+        bezirkStackHandler = new BezirkStackHandler(proxyService, commsNotification);
 
         //register to the broadcast receiver to receive changes in network state.
         broadcastReceiver = new NetworkBroadCastReceiver(this, bezirkStackHandler);
@@ -106,7 +107,7 @@ public class MainService extends Service implements INotificationCallback {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         if (intent != null) {
-            bezirkActionProcessor.processBezirkAction(intent, this, serviceHelper, bezirkStackHandler);
+            bezirkActionProcessor.processBezirkAction(intent, this, (ProxyServerIntend)proxyService, bezirkStackHandler);
         }
 
         return START_STICKY;

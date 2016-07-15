@@ -3,7 +3,6 @@
  */
 package com.bezirk.sphere.api;
 
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.proxy.api.impl.ZirkId;
 
 import java.io.InputStream;
@@ -12,7 +11,8 @@ import java.io.OutputStream;
 /**
  * @author Rishabh Gulati
  */
-public interface PubSubSphereAccess {
+public interface SphereSecurity {
+
 
     /**
      * Encrypts the serializedContent with sphereKey associated with the
@@ -97,48 +97,4 @@ public interface PubSubSphereAccess {
      *                            </pre>
      */
     public void decryptSphereContent(InputStream in, OutputStream out, String sphereId);
-
-    /**
-     * Provides iterable collection of sphereIds associated with passed
-     * ZirkId
-     *
-     * @param zirkId ZirkId for retrieving stored membership information
-     * @return iterable Collection of sphereIds for the passed ZirkId, <code>null</code> in case
-     * the <code>zirkId</code> passed is <code>null</code> or not registered
-     */
-    public Iterable<String> getSphereMembership(ZirkId zirkId);
-
-    // TODO add to wiki : found while refactoring to the new API
-
-    /**
-     * Checks if the zirk is a part of the sphere
-     *
-     * @param service  ZirkId for finding existence in a sphere
-     * @param sphereId sphere to be tested
-     * @return true if the zirk exist in the sphere false otherwise
-     */
-    public boolean isZirkInSphere(ZirkId service, String sphereId);
-
-    /**
-     * Gets the zirk name of the passed ZirkId
-     *
-     * @param serviceId ZirkId for retrieving the zirk name
-     * @return Zirk name if the zirk id is valid and not null null
-     * otherwise
-     */
-    public String getZirkName(ZirkId serviceId);
-
-    /**
-     * This method handles processing the sphere related discovery request
-     *
-     * @param discoveryRequest
-     */
-    public void processSphereDiscoveryRequest(DiscoveryRequest discoveryRequest);
-
-    /**
-     * @param deviceId the deviceId whose Device Name needs to be known
-     * @return Device Name if exists, null otherwise
-     */
-    public String getDeviceNameFromSphere(String deviceId);
-
 }

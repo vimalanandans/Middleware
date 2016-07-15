@@ -11,7 +11,7 @@ import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.api.SphereConfig;
-import com.bezirk.sphere.impl.SphereSphereAccess;
+import com.bezirk.sphere.impl.SphereServiceManager;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.starter.BezirkActionCommands;
 import com.bezirk.starter.BezirkPreferences;
@@ -20,15 +20,15 @@ import com.google.zxing.common.BitMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AndroidSphereAccess extends SphereSphereAccess implements SphereListener, QRCode {
-    private static final Logger logger = LoggerFactory.getLogger(AndroidSphereAccess.class);
+public class AndroidSphereServiceManager extends SphereServiceManager implements SphereListener, QRCode {
+    private static final Logger logger = LoggerFactory.getLogger(AndroidSphereServiceManager.class);
 
     private final Context applicationContext;
     private final BezirkPreferences preferences;
     private SphereConfig sphereConfig;
 
-    public AndroidSphereAccess(CryptoEngine cryptoEngine, DeviceInterface upaDevice,
-                               SphereRegistry sphereRegistry, Context context, BezirkPreferences preferences) {
+    public AndroidSphereServiceManager(CryptoEngine cryptoEngine, DeviceInterface upaDevice,
+                                       SphereRegistry sphereRegistry, Context context, BezirkPreferences preferences) {
         super(cryptoEngine, upaDevice, sphereRegistry);
         this.preferences = preferences;
         applicationContext = context;

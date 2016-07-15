@@ -12,7 +12,7 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.pipe.PipeManager;
 import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.streaming.Streaming;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
@@ -129,7 +129,7 @@ public class MockComms implements Comms {
     }
 
     @Override
-    public void setSphereForSadl(PubSubSphereAccess bezirkSphere) {
+    public void setSphereSecurity(SphereServiceAccess bezirkSphere) {
         // TODO Auto-generated method stub
 
     }

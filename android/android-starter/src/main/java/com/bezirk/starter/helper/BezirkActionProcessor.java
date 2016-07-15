@@ -2,6 +2,8 @@ package com.bezirk.starter.helper;
 
 import android.content.Intent;
 
+
+import com.bezirk.proxy.android.ProxyServerIntend;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkActionCommands;
@@ -26,10 +28,10 @@ public final class BezirkActionProcessor {
      *
      * @param intent
      * @param service
-     * @param serviceHelper
+     * @param ProxyService
      * @param bezirkStackHandler
      */
-    public void processBezirkAction(Intent intent, MainService service, ServiceHelper serviceHelper, BezirkStackHandler bezirkStackHandler) {
+    public void processBezirkAction(Intent intent, MainService service, ProxyServerIntend ProxyService, BezirkStackHandler bezirkStackHandler) {
 
         INTENT_ACTIONS intentAction = INTENT_ACTIONS.getActionUsingMessage(intent.getAction());
 
@@ -47,10 +49,10 @@ public final class BezirkActionProcessor {
                     processDeviceActions(intentAction, service);
                     break;
                 case SEND_ACTION:
-                    processSendActions(intentAction, intent, serviceHelper);
+                    processSendActions(intentAction, intent, ProxyService);
                     break;
                 case SERVICE_ACTION:
-                    processServiceActions(intentAction, intent, service, serviceHelper);
+                    processServiceActions(intentAction, intent, service, ProxyService);
                     break;
                 default:
                     logger.warn("Received unknown intent action: " + intentAction.message);
@@ -130,24 +132,24 @@ public final class BezirkActionProcessor {
         return mode;
     }
 
-    private void processServiceActions(INTENT_ACTIONS intentAction, Intent intent, MainService service, ServiceHelper serviceHelper) {
+    private void processServiceActions(INTENT_ACTIONS intentAction, Intent intent, MainService service, ProxyServerIntend ProxyService) {
 
         switch (intentAction) {
 
             case ACTION_BEZIRK_REGISTER:
-                serviceHelper.registerService(intent);
+                ProxyService.registerService(intent);
                 break;
             case ACTION_BEZIRK_SUBSCRIBE:
-                serviceHelper.subscribeService(intent);
+                ProxyService.subscribeService(intent);
                 break;
             case ACTION_BEZIRK_SETLOCATION:
-                serviceHelper.setLocation(intent);
+                ProxyService.setLocation(intent);
                 break;
             case ACTION_SERVICE_DISCOVER:
-                serviceHelper.discoverService(intent);
+                ProxyService.discoverService(intent);
                 break;
             case ACTION_BEZIRK_UNSUBSCRIBE:
-                serviceHelper.unsubscribeService(intent);
+                ProxyService.unsubscribeService(intent);
                 break;
             case ACTION_PIPE_REQUEST:
                 service.processPipeRequest(intent);
@@ -158,20 +160,20 @@ public final class BezirkActionProcessor {
         }
     }
 
-    private void processSendActions(INTENT_ACTIONS intentAction, Intent intent, ServiceHelper serviceHelper) {
+    private void processSendActions(INTENT_ACTIONS intentAction, Intent intent, ProxyServerIntend ProxyService) {
 
         switch (intentAction) {
             case ACTION_SERVICE_SEND_MULTICAST_EVENT:
-                serviceHelper.sendMulticastEvent(intent);
+                ProxyService.sendMulticastEvent(intent);
                 break;
             case ACTION_SERVICE_SEND_UNICAST_EVENT:
-                serviceHelper.sendUnicastEvent(intent);
+                ProxyService.sendUnicastEvent(intent);
                 break;
             case ACTION_BEZIRK_PUSH_UNICAST_STREAM:
-                serviceHelper.sendUnicastStream(intent);
+                ProxyService.sendUnicastStream(intent);
                 break;
             case ACTION_BEZIRK_PUSH_MULTICAST_STREAM:
-                serviceHelper.sendMulticastStream(intent);
+                ProxyService.sendMulticastStream(intent);
                 break;
             default:
                 logger.warn("Received unknown intent action: " + intentAction.message);

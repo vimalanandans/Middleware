@@ -11,7 +11,7 @@ import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.Device;
 import com.bezirk.comms.CommsFeature;
 import com.bezirk.persistence.ProxyPersistence;
-import com.bezirk.proxy.ProxyService;
+import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.ui.remotelogging.RemoteLogSphereSelectGUI;
@@ -43,7 +43,7 @@ public class MainService {
      * Max value for the notification
      */
     private static final int MAX_ERROR_REPEAT_COUNT = 100;
-    private final ProxyService proxyService;
+    private final ProxyServer proxyServer;
     private final NetworkUtil networkUtil = new NetworkUtil();
     private final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
     SphereAPI sphereForPC;
@@ -109,13 +109,13 @@ public class MainService {
     /**
      * Configure proxy and <code>bezirkConfig</code> for main zirk
      *
-     * @param proxyService
+     * @param proxyServer
      * @param bezirkConfigRef
      */
-    public MainService(final ProxyService proxyService,
+    public MainService(final ProxyServer proxyServer,
                        final BezirkConfig bezirkConfigRef) {
 
-        this.proxyService = proxyService;
+        this.proxyServer = proxyServer;
 
         bezirkConfig = bezirkConfigRef;
 
@@ -221,7 +221,7 @@ public class MainService {
                 registryPersistence);
 
         // Inject to proxyServer
-        proxyService.setPubSubBrokerService(pubSubBroker);
+        proxyServer.setPubSubBrokerService(pubSubBroker);
 
         /**************************************************
          * Step6 :Initialize the comms.                   *
@@ -290,7 +290,7 @@ public class MainService {
              */
             // save the qr code
             // if display is not stored then save the QR code
-            //((PCSphereAccess) sphereForPC).saveQRCode(bezirkConfig.getDataPath(),
+            //((PCSphereServiceManager) sphereForPC).saveQRCode(bezirkConfig.getDataPath(),
             //        bezirkDevice.getDeviceName());
         }
     }
@@ -376,7 +376,7 @@ public class MainService {
         comms.startComms();
 
         // the comms manager for the proxy
-        proxyService.setComms(comms);
+        //proxyServer.setComms(comms);
 
         // Set RTC Signalling for streaming
 

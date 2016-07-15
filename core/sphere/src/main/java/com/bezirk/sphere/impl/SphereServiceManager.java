@@ -6,11 +6,11 @@ package com.bezirk.sphere.impl;
 import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.devices.DeviceInterface;
-import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereSecurity;
+import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereConfig;
 import com.bezirk.sphere.api.SphereDiscovery;
-import com.bezirk.sphere.api.SphereRegistration;
 import com.bezirk.sphere.discovery.SphereDiscoveryProcessor;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
@@ -41,10 +41,10 @@ import java.util.Set;
 /**
  * @author rishabh
  */
-public class SphereSphereAccess
-        implements SphereAPI, PubSubSphereAccess, SphereRegistration, SphereDiscovery, SphereMessages, DevMode {
+public class SphereServiceManager
+        implements SphereAPI, SphereServiceAccess, SphereSecurity, SphereDiscovery, SphereMessages, DevMode {
 
-    private static final Logger logger = LoggerFactory.getLogger(SphereSphereAccess.class);
+    private static final Logger logger = LoggerFactory.getLogger(SphereServiceManager.class);
     private CryptoEngine cryptoEngine = null;
     private DeviceInterface upaDevice = null;
     private SphereRegistry registry = null;
@@ -56,10 +56,10 @@ public class SphereSphereAccess
     private DiscoveryProcessor discoveryProcessor = null;
     private SphereRegistryWrapper sphereRegistryWrapper = null;
 
-    public SphereSphereAccess(CryptoEngine cryptoEngine, DeviceInterface upaDevice, SphereRegistry sphereRegistry) {
+    public SphereServiceManager(CryptoEngine cryptoEngine, DeviceInterface upaDevice, SphereRegistry sphereRegistry) {
 
         if (cryptoEngine == null || upaDevice == null || sphereRegistry == null) {
-            logger.error("Exiting SphereSphereAccess setup. A parameter to the constructor is null");
+            logger.error("Exiting SphereServiceManager setup. A parameter to the constructor is null");
             return;
         }
 
@@ -130,12 +130,12 @@ public class SphereSphereAccess
     }
 
     @Override
-    public boolean registerZirk(ZirkId zirkId, String zirkName) {
+    public boolean registerService(ZirkId zirkId, String zirkName) {
         return sphereRegistryWrapper.registerService(zirkId, zirkName);
     }
 
     @Override
-    public boolean unregisterZirk(ZirkId serviceId) {
+    public boolean unregisterService(ZirkId serviceId) {
         // TODO Implement
         return false;
     }
@@ -166,12 +166,12 @@ public class SphereSphereAccess
     }
 
     @Override
-    public boolean isZirkInSphere(ZirkId service, String sphereId) {
+    public boolean isServiceInSphere(ZirkId service, String sphereId) {
         return sphereRegistryWrapper.isServiceInSphere(service, sphereId);
     }
 
     @Override
-    public String getZirkName(ZirkId serviceId) {
+    public String getServiceName(ZirkId serviceId) {
         return sphereRegistryWrapper.getServiceName(serviceId);
     }
 

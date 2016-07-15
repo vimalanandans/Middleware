@@ -2,7 +2,7 @@ package com.bezirk.starter.helper;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereServiceAccess;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,26 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class mockPubSubSphereAccess implements PubSubSphereAccess {
+public class mockSphereServiceAccess implements SphereServiceAccess {
+
+
     @Override
-    public byte[] encryptSphereContent(String sphereId, String serializedContent) {
-        return serializedContent.getBytes();
+    public boolean registerService(ZirkId zirkId, String zirkName) {
+        return true;
     }
 
     @Override
-    public String decryptSphereContent(String sphereId, byte[] serializedContent) {
-        return new String(serializedContent);
-    }
-
-    @Override
-    public void encryptSphereContent(InputStream inputStream, OutputStream outputStream, String sphereId) {
-        //Not mandatory for mock implementation
-
-    }
-
-    @Override
-    public void decryptSphereContent(InputStream inputStream, OutputStream outputStream, String sphereId) {
-        //Not mandatory for mock implementation
+    public boolean unregisterService(ZirkId serviceId) {
+        return true;
     }
 
     @Override
@@ -41,12 +32,12 @@ public class mockPubSubSphereAccess implements PubSubSphereAccess {
     }
 
     @Override
-    public boolean isZirkInSphere(ZirkId service, String sphereId) {
+    public boolean isServiceInSphere(ZirkId service, String sphereId) {
         return true;
     }
 
     @Override
-    public String getZirkName(ZirkId serviceId) {
+    public String getServiceName(ZirkId serviceId) {
         return null;
     }
 

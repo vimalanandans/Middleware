@@ -1,7 +1,6 @@
 package com.bezirk.starter;
 
-import com.bezirk.proxy.ProxyService;
-import com.bezirk.proxy.ProxyServiceLegacy;
+import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 
@@ -48,12 +47,12 @@ public class TestMainService {
      */
     @Test
     public void testStartStack() {
-        ProxyService proxyService = new ProxyService();
+        ProxyServer proxyServer = new ProxyServer();
         BezirkConfig bezirkConfigRef = new BezirkConfig();
         //bezirkConfigRef.setDisplayEnable("false");
         /** DisplayEnable - true  */
         //System.setProperty("displayEnable", "true");
-        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyService, bezirkConfigRef);
+        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyServer, bezirkConfigRef);
         MessageHandler testMock = Mockito.mock(MessageHandler.class);
         mainService.startStack(testMock);
 
@@ -80,10 +79,10 @@ public class TestMainService {
      */
     @Test
     public void testStopStack() {
-        ProxyService proxyService = new ProxyService();
+        ProxyServer proxyServer = new ProxyServer();
         BezirkConfig bezirkConfigRef = new BezirkConfig();
         //bezirkConfigRef.setDisplayEnable("false");
-        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyService, bezirkConfigRef);
+        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyServer, bezirkConfigRef);
         MessageHandler testMock = Mockito.mock(MessageHandler.class);
         mainService.startStack(testMock);
 
@@ -97,10 +96,10 @@ public class TestMainService {
      */
     @Test
     public void testReboot() {
-        ProxyService proxyService = new ProxyService();
+        ProxyServer proxyServer = new ProxyServer();
         BezirkConfig bezirkConfigRef = new BezirkConfig();
         //bezirkConfigRef.setDisplayEnable("false");
-        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyService, bezirkConfigRef);
+        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyServer, bezirkConfigRef);
         mainService.startStack(Mockito.mock(MessageHandler.class));
 
         mainService.reboot();

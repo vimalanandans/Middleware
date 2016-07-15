@@ -19,14 +19,14 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class PCSphereAccess extends SphereSphereAccess implements BezirkQRCode,
+public class PCSphereServiceManager extends SphereServiceManager implements BezirkQRCode,
         SphereListener {
 
-    private static final Logger logger = LoggerFactory.getLogger(PCSphereAccess.class);
+    private static final Logger logger = LoggerFactory.getLogger(PCSphereServiceManager.class);
     private final SphereUI sphereUI;
 
-    public PCSphereAccess(CryptoEngine cryptoEngine,
-                          DeviceInterface upaDevice, SphereRegistry sphereRegistry) {
+    public PCSphereServiceManager(CryptoEngine cryptoEngine,
+                                  DeviceInterface upaDevice, SphereRegistry sphereRegistry) {
         super(cryptoEngine, upaDevice, sphereRegistry);
         sphereUI = new SphereUI();
     }

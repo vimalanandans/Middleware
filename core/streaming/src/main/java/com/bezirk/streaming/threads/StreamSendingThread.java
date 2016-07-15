@@ -6,7 +6,7 @@ package com.bezirk.streaming.threads;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.ValidatorUtility;
 
@@ -36,11 +36,11 @@ public class StreamSendingThread implements Runnable {
     private final File file;                                    // path to the file that has to be sent
     private final String sphere;
     private final PubSubEventReceiver sadlReceiver;
-    private final PubSubSphereAccess sphereForSadl;
+    private final SphereSecurity sphereSecurity;
     private Socket client;
 
     public StreamSendingThread(StreamRecord streamRecord,
-                               PubSubEventReceiver sadlReceiver, PubSubSphereAccess sphereForSadl) {
+                               PubSubEventReceiver sadlReceiver, SphereSecurity sphereSecurity) {
         super();
         this.sphere = streamRecord.sphere;
         this.recipientIP = streamRecord.recipientIP;
@@ -50,7 +50,7 @@ public class StreamSendingThread implements Runnable {
         this.localStreamId = streamRecord.localStreamId;
         this.senderServiceID = streamRecord.senderSEP.zirkId;
         this.sadlReceiver = sadlReceiver;
-        this.sphereForSadl = sphereForSadl;
+        this.sphereSecurity = sphereSecurity;
     }
 
     @Override
@@ -66,8 +66,8 @@ public class StreamSendingThread implements Runnable {
             dataOutputStream = new DataOutputStream(client.getOutputStream());
             if (isEncrypted) {
                 logger.debug("---------- Secure Data transfer requested! -------------");
-                if (ValidatorUtility.isObjectNotNull(sphereForSadl)) {
-                    sphereForSadl.encryptSphereContent(fileInputStream, dataOutputStream, sphere);
+                if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {
+                    sphereSecurity.encryptSphereContent(fileInputStream, dataOutputStream, sphere);
                     logger.debug("---------- Secure Data transfer Completed! -------------");
                 } else {
                     logger.error("SphereForSadl is not initialized. Unable to process secure streaming request.");

@@ -72,9 +72,9 @@ public class DiscoveryRequestHandler {
         for (BezirkDiscoveredZirk zirk : discoveredZirks) {
             ZirkId sid = ((BezirkZirkEndPoint) zirk.getZirkEndPoint()).getBezirkZirkId();
 
-            if (BezirkCompManager.getSphereForPubSubBroker().isZirkInSphere(sid, req.getSphereId())) {
+            if (BezirkCompManager.getSphereForPubSubBroker().isServiceInSphere(sid, req.getSphereId())) {
                 //Set the Zirk Name
-                zirk.name = BezirkCompManager.getSphereForPubSubBroker().getZirkName(sid);
+                zirk.name = BezirkCompManager.getSphereForPubSubBroker().getServiceName(sid);
                 //Populate response zirk list
                 response.getZirkList().add(zirk);
             }

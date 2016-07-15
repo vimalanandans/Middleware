@@ -47,13 +47,13 @@ public class ProxyServiceLegacy implements PubSubBrokerServiceTrigger {
     @Override
     public void registerService(final ZirkId serviceId, final String serviceName) {
         // Step 1: Register with SADL
-        boolean isSADLPassed = pubSubBrokerRegistry.registerService(serviceId);
+        boolean isSADLPassed = pubSubBrokerRegistry.registerService(serviceId,serviceName);
         if (isSADLPassed) {
             // Step 2: moved to outside since the sphere persistence is not ready
         } else {
             logger.debug("Don't need to register Zirk: Zirk ID is already registered");
         }
-        boolean isSpherePassed = BezirkCompManager.getSphereRegistration().registerZirk(serviceId, serviceName);
+        boolean isSpherePassed = BezirkCompManager.getSphereForPubSubBroker().registerService(serviceId, serviceName);
         if (isSpherePassed) {
             logger.info("Zirk Registration Complete for: {}, {}", serviceName, serviceId);
         } else {
@@ -285,7 +285,7 @@ public class ProxyServiceLegacy implements PubSubBrokerServiceTrigger {
             String sphereId = null;
             while (sphereIterator.hasNext()) {
                 sphereId = sphereIterator.next();
-                if (BezirkCompManager.getSphereForPubSubBroker().isZirkInSphere(receiver.getBezirkZirkId(), sphereId)) {
+                if (BezirkCompManager.getSphereForPubSubBroker().isServiceInSphere(receiver.getBezirkZirkId(), sphereId)) {
                     logger.debug("Found the sphere:" + sphereId);
                     break;
                 }

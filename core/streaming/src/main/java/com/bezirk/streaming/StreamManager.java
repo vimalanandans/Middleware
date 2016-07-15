@@ -10,7 +10,7 @@ import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.control.messages.streaming.StreamResponse;
 import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.port.StreamPortFactory;
 import com.bezirk.streaming.rtc.Signaling;
@@ -30,7 +30,7 @@ public class StreamManager implements Streaming {
     private static final Logger logger = LoggerFactory.getLogger(StreamManager.class);
 
     private final StreamCtrlReceiver ctrlReceiver = new StreamCtrlReceiver();
-    private PubSubSphereAccess sphereForSadl = null;
+    private SphereSecurity sphereForSadl = null;
     private MessageQueue streamingMessageQueue = null;
     private StreamQueueProcessor streamQueueProcessor = null;
     private Thread sStreamingThread = null;
@@ -185,10 +185,10 @@ public class StreamManager implements Streaming {
     }
 
     @Override
-    public void setSphereForSadl(PubSubSphereAccess bezirkSphere) {
+    public void setSphereForSadl(SphereSecurity sphereSecurity) {
 
-        this.sphereForSadl = bezirkSphere;
-        this.streamQueueProcessor.setSphereForSadl(sphereForSadl);
+        this.sphereForSadl = sphereSecurity;
+        this.streamQueueProcessor.setSphereSecurity(sphereForSadl);
     }
 
     class StreamCtrlReceiver implements CtrlMsgReceiver {

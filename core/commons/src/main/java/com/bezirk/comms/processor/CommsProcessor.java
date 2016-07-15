@@ -10,6 +10,7 @@ import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.pipe.PipeManager;
 import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.Streaming;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
@@ -24,7 +25,7 @@ import com.bezirk.comms.CommsFeature;
 
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereServiceAccess;
 //import com.bezirk.sphere.security.UPABlockCipherService;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.TextCompressor;
@@ -296,7 +297,7 @@ public abstract class CommsProcessor implements Comms {
         //msg = cipherService.encrypt(msgData, testKey).getBytes();
         // temp fix of sending the byte stream
         String msgDataString = new String(msgData);
-        byte[] msg = BezirkCompManager.getSphereForPubSubBroker().encryptSphereContent(sphereId, msgDataString);
+        byte[] msg = BezirkCompManager.getSphereSecurity().encryptSphereContent(sphereId, msgDataString);
 
         long endTime = System.nanoTime();
         logger.info("Encryption Took " + (endTime - startTime) + " nano seconds");
@@ -325,7 +326,7 @@ public abstract class CommsProcessor implements Comms {
                 || (msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED)) {
 
             //message = cipherService.decrypt(wireMessage.getMsg(), testKey).getBytes();
-            String data = BezirkCompManager.getSphereForPubSubBroker().decryptSphereContent(sphereId, msgData);
+            String data = BezirkCompManager.getSphereSecurity().decryptSphereContent(sphereId, msgData);
 
             if (data != null) {
                 msg = data.getBytes();
@@ -739,8 +740,8 @@ public abstract class CommsProcessor implements Comms {
     }
 
     @Override
-    public void setSphereForSadl(PubSubSphereAccess bezirkSphere) {
-        bezirkStreamManager.setSphereForSadl(bezirkSphere);
+    public void setSphereSecurity(SphereSecurity sphereSecurity) {
+        bezirkStreamManager.setSphereForSadl(sphereSecurity);
     }
 
     /**

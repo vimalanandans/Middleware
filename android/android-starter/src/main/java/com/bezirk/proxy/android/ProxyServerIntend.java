@@ -1,13 +1,13 @@
-package com.bezirk.starter.helper;
+package com.bezirk.proxy.android;
 
 import android.content.Intent;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.CommsConfigurations;
+import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.proxy.ProxyService;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
@@ -20,25 +20,25 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 
 /**
- * This is a helper class to pass the intent to proxy for zirk actions.
+ * This is android specific proxy server based on android intend communication
  */
-public final class ServiceHelper {
+public class ProxyServerIntend extends ProxyServer {
 
-    private static final Logger logger = LoggerFactory.getLogger(ServiceHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProxyServerIntend.class);
 
-    private final ProxyService proxy;
 
-    public ServiceHelper(ProxyService proxy) {
+    public ProxyServerIntend() {
 
-        this.proxy = proxy;
+
     }
 
     /**
      * Sends the subscribe request to proxy.
      *
+     *
      * @param intent Intent received
      */
-    void subscribeService(Intent intent) {
+    public void subscribeService(Intent intent) {
         logger.info("Received subscription from zirk");
         String serviceIdKEY = "zirkId";
         String subPrtclKEY = "protocol";
@@ -50,7 +50,7 @@ public final class ServiceHelper {
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final SubscribedRole subscribedRole = gson.fromJson(protocolRoleAsString, SubscribedRole.class);
             if (ValidatorUtility.checkBezirkZirkId(serviceId) && ValidatorUtility.checkProtocolRole(subscribedRole)) {
-                proxy.subscribeService(serviceId, subscribedRole);
+                super.subscribeService(serviceId, subscribedRole);
 
             } else {
                 logger.error("trying to subscribe with Null zirkId/ protocolRole");
@@ -66,7 +66,7 @@ public final class ServiceHelper {
      *
      * @param intent Intent received
      */
-    void registerService(Intent intent) {
+    public void registerService(Intent intent) {
         String serviceIdKEY = "zirkId";
         String serviceNameKEY = "serviceName";
 
@@ -78,7 +78,7 @@ public final class ServiceHelper {
         if (ValidatorUtility.checkForString(serviceIdAsString) && ValidatorUtility.checkForString(serviceName)) {
             final ZirkId serviceId = new Gson().fromJson(serviceIdAsString, ZirkId.class);
             if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
-                proxy.registerService(serviceId, serviceName);
+                super.registerService(serviceId, serviceName);
             } else {
                 logger.error("Trying to subscribe with null ZirkId");
             }
@@ -93,7 +93,7 @@ public final class ServiceHelper {
      *
      * @param intent Intent received
      */
-    void unsubscribeService(Intent intent) {
+    public void unsubscribeService(Intent intent) {
         logger.info("Received unsubscribe from zirk");
         String serviceIdKEY = "zirkId";
         String subPrtclKEY = "protocol";
@@ -106,9 +106,9 @@ public final class ServiceHelper {
             final SubscribedRole subscribedRole = gson.fromJson(protocolRoleAsString, SubscribedRole.class);
             if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
                 if (ValidatorUtility.isObjectNotNull(subscribedRole)) {
-                    proxy.unsubscribe(serviceId, subscribedRole);
+                    super.unsubscribe(serviceId, subscribedRole);
                 } else {
-                    proxy.unregister(serviceId);
+                    super.unregister(serviceId);
                 }
 
             } else {
@@ -125,7 +125,7 @@ public final class ServiceHelper {
      *
      * @param intent Intent received
      */
-    void discoverService(Intent intent) {
+    public void discoverService(Intent intent) {
         logger.info("Received discovery message from zirk");
         String serviceIdKEY = "zirkId";
         String addressKEY = "address";
@@ -149,7 +149,7 @@ public final class ServiceHelper {
             final int discoveryId = intent.getIntExtra(discoveryIdKEY, 1);
 
             if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
-                proxy.discover(serviceId, recipientSelector, pRole, discoveryId, timeout, maxDiscovered);
+                super.discover(serviceId, recipientSelector, pRole, discoveryId, timeout, maxDiscovered);
                 logger.info("Discovery Request pass to Proxy");
 
             } else {
@@ -167,7 +167,7 @@ public final class ServiceHelper {
      *
      * @param intent Intent received
      */
-    void sendUnicastStream(Intent intent) {
+    public void sendUnicastStream(Intent intent) {
         logger.info("------------ Received message to push the Stream ----------------------");
         boolean isStreamingValid = CommsConfigurations.isStreamingEnabled();
         if (!isStreamingValid) {
@@ -199,7 +199,7 @@ public final class ServiceHelper {
 
     private boolean sendStream(File file, String streamAsString, short localStreamId, ZirkId serviceId, BezirkZirkEndPoint recipient) {
         if (ValidatorUtility.checkBezirkZirkEndPoint(recipient) && ValidatorUtility.checkBezirkZirkId(serviceId)) {
-            short sendStreamStatus = proxy.sendStream(serviceId, recipient, streamAsString, file, localStreamId);
+            short sendStreamStatus = super.sendStream(serviceId, recipient, streamAsString, file, localStreamId);
             if (-1 == sendStreamStatus) {
                 return false;
             }
@@ -216,7 +216,7 @@ public final class ServiceHelper {
      *
      * @param intent Intent received
      */
-    void sendMulticastStream(Intent intent) {
+    public void sendMulticastStream(Intent intent) {
         logger.info("------------ Received message to push the Stream ----------------------");
         boolean isStreamingValid = true;
         if (!CommsConfigurations.isStreamingEnabled()) {
@@ -236,7 +236,7 @@ public final class ServiceHelper {
 
             if (ValidatorUtility.checkRTCStreamRequest(serviceId, recipient)) {
 
-                if (-1 == proxy.sendStream(serviceId, recipient, streamAsString, localStreamId)) {
+                if (-1 == super.sendStream(serviceId, recipient, streamAsString, localStreamId)) {
                     isStreamingValid = false;
                 }
 
@@ -260,7 +260,7 @@ public final class ServiceHelper {
      *
      * @param intent Intent received
      */
-    void sendMulticastEvent(Intent intent) {
+    public void sendMulticastEvent(Intent intent) {
         logger.info("Received multicast message from zirk");
         String serviceIdKEY = "zirkId";
         String addressKEY = "address";
@@ -277,7 +277,7 @@ public final class ServiceHelper {
             if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
                 final RecipientSelector recipientSelector = RecipientSelector.fromJson(addressAsString);
                 logger.debug("Sending multicast event from zirk: " + serviceIdAsString);
-                proxy.sendMulticastEvent(serviceId, recipientSelector, mEventMsg);
+                super.sendMulticastEvent(serviceId, recipientSelector, mEventMsg);
             } else {
                 logger.error("trying to send multicast message with Null zirkId");
 
@@ -293,7 +293,7 @@ public final class ServiceHelper {
      *
      * @param intent Intent received
      */
-    void sendUnicastEvent(Intent intent) {
+    public void sendUnicastEvent(Intent intent) {
         logger.info("Received unicast message from zirk");
         String serviceIdKEY = "zirkId";
         String sepKEY = "receiverSep";
@@ -307,7 +307,7 @@ public final class ServiceHelper {
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final BezirkZirkEndPoint serviceEndPoint = gson.fromJson(sepAsString, BezirkZirkEndPoint.class);
             if (ValidatorUtility.checkBezirkZirkId(serviceId) && ValidatorUtility.checkBezirkZirkEndPoint(serviceEndPoint)) {
-                proxy.sendUnicastEvent(serviceId, serviceEndPoint, msg);
+                super.sendUnicastEvent(serviceId, serviceEndPoint, msg);
             } else {
                 logger.error("Check unicast parameters");
             }
@@ -322,7 +322,7 @@ public final class ServiceHelper {
      *
      * @param intent Intent received
      */
-    void setLocation(Intent intent) {
+    public void setLocation(Intent intent) {
         String sid = (String) intent.getExtras().get("zirkId");
         String location = (String) intent.getExtras().get("locationData");
         logger.info("Received location " + location + " from zirk");
@@ -331,7 +331,7 @@ public final class ServiceHelper {
             ZirkId serviceId = new Gson().fromJson(sid, ZirkId.class);
             Location loc = new Gson().fromJson(location, Location.class);
             if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
-                proxy.setLocation(serviceId, loc);
+                super.setLocation(serviceId, loc);
             }
         } else {
             logger.error("Invalid parameters for location");

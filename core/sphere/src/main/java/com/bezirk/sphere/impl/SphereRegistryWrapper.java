@@ -351,7 +351,7 @@ public class SphereRegistryWrapper {
          * 2) iterate through the keyset of the spheres map to find the default
          * sphereId
          *
-         * 3) if using the listener approach with SphereSphereAccess, we could store the
+         * 3) if using the listener approach with SphereServiceManager, we could store the
          * default sphereId on creation of the default sphere
          */
     }
@@ -602,7 +602,7 @@ public class SphereRegistryWrapper {
     }
 
     /**
-     * Registers the zirk with SphereSphereAccess's. In case the zirk is already
+     * Registers the zirk with SphereServiceManager's. In case the zirk is already
      * registered, call to this method updates the name of the zirk to
      * serviceName passed
      *

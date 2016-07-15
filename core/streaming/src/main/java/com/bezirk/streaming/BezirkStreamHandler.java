@@ -6,7 +6,7 @@ import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.control.messages.streaming.StreamResponse;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.store.StreamStore;
 import com.bezirk.streaming.threads.StreamReceivingThread;
@@ -33,7 +33,7 @@ final class BezirkStreamHandler {
      */
     boolean handleStreamRequest(final StreamRequest streamRequest, final Comms comms,
                                 final PortFactory portFactory, final StreamStore streamStore,
-                                final PubSubEventReceiver sadlReceiver, final PubSubSphereAccess sphereForSadl) {
+                                final PubSubEventReceiver sadlReceiver, final SphereSecurity sphereSecurity) {
 
         // Check if the request is duplicate
         StreamRecord.StreamingStatus status = StreamRecord.StreamingStatus.ADDRESSED;
@@ -48,7 +48,7 @@ final class BezirkStreamHandler {
             } else {
                 status = StreamRecord.StreamingStatus.READY;
                 new Thread(new StreamReceivingThread(assignedPort,
-                        streamRequest, portFactory, sadlReceiver, sphereForSadl))
+                        streamRequest, portFactory, sadlReceiver, sphereSecurity))
                         .start();
             }
         }

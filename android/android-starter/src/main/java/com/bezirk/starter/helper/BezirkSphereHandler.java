@@ -5,12 +5,12 @@ import com.bezirk.comms.Comms;
 import com.bezirk.devices.DeviceInterface;
 import com.bezirk.persistence.SpherePersistence;
 import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sphere.AndroidSphereAccess;
-import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.AndroidSphereServiceManager;
+import com.bezirk.sphere.api.SphereSecurity;
+import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.sphere.api.SphereConfig;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SphereAPI;
-import com.bezirk.sphere.api.SphereRegistration;
 import com.bezirk.sphere.SphereProperties;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.starter.MainService;
@@ -56,9 +56,9 @@ public final class BezirkSphereHandler {
             }
             CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
 
-            sphereForAndroid = new AndroidSphereAccess(cryptoEngine, bezirkDevice, sphereRegistry, service.getApplicationContext(), preferences);
+            sphereForAndroid = new AndroidSphereServiceManager(cryptoEngine, bezirkDevice, sphereRegistry, service.getApplicationContext(), preferences);
 
-            AndroidSphereAccess bezirkSphereForAndroid = (AndroidSphereAccess) BezirkSphereHandler.sphereForAndroid;
+            AndroidSphereServiceManager bezirkSphereForAndroid = (AndroidSphereServiceManager) BezirkSphereHandler.sphereForAndroid;
 
             bezirkSphereForAndroid.setSphereListener(bezirkSphereForAndroid);
 
@@ -73,11 +73,11 @@ public final class BezirkSphereHandler {
             devMode = (DevMode) sphereForAndroid;
 
             BezirkCompManager.setSphereUI(sphereForAndroid);
-            BezirkCompManager.setSphereRegistration((SphereRegistration) sphereForAndroid);
+            BezirkCompManager.setSphereSecurity((SphereSecurity) sphereForAndroid);
 
-            BezirkCompManager.setSphereForPubSub((PubSubSphereAccess) sphereForAndroid);
+            BezirkCompManager.setSphereForPubSub((SphereServiceAccess) sphereForAndroid);
             Comms uhuComms = BezirkStackHandler.getBezirkComms();
-            uhuComms.setSphereForSadl((PubSubSphereAccess) sphereForAndroid);
+            uhuComms.setSphereSecurity((SphereSecurity) sphereForAndroid);
         }
         return true;
     }

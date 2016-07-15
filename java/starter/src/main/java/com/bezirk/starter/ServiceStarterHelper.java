@@ -13,10 +13,10 @@ import com.bezirk.persistence.SphereRegistry;
 import com.bezirk.pipe.PipeManager;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereConfig;
-import com.bezirk.sphere.api.PubSubSphereAccess;
-import com.bezirk.sphere.api.SphereRegistration;
+import com.bezirk.sphere.api.SphereSecurity;
+import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.sphere.impl.BezirkQRCode;
-import com.bezirk.sphere.impl.PCSphereAccess;
+import com.bezirk.sphere.impl.PCSphereServiceManager;
 import com.bezirk.sphere.impl.JavaPrefs;
 import com.bezirk.sphere.security.CryptoEngine;
 
@@ -55,12 +55,12 @@ final class ServiceStarterHelper {
         }
 
         final CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
-        SphereAPI sphereForPC = new PCSphereAccess(cryptoEngine, bezirkDevice,
+        SphereAPI sphereForPC = new PCSphereServiceManager(cryptoEngine, bezirkDevice,
                 sphereRegistry);
 
         // BezirkSphereForAndroid implements the listener, hence set the
         // listener object as same.
-        final PCSphereAccess bezirkSphereForPC = (PCSphereAccess) sphereForPC;
+        final PCSphereServiceManager bezirkSphereForPC = (PCSphereServiceManager) sphereForPC;
         bezirkSphereForPC.setSphereListener(bezirkSphereForPC);
         //SphereConfig sphereConfig = new com.bezirk.sphere.impl.SphereProperties();
         //sphereConfig.init();
@@ -70,17 +70,17 @@ final class ServiceStarterHelper {
 
         BezirkCompManager.setSphereUI(sphereForPC);
         BezirkCompManager
-                .setSphereRegistration((SphereRegistration) sphereForPC);
+                .setSphereSecurity((SphereSecurity) sphereForPC);
 
         com.bezirk.sphere.SphereManager.setBezirkQRCode((BezirkQRCode) sphereForPC);
 
-        final PubSubSphereAccess sphereForSadl = (PubSubSphereAccess) sphereForPC;
-        BezirkCompManager.setSphereForPubSub(sphereForSadl);
+        final SphereSecurity sphereForSadl = (SphereSecurity) sphereForPC;
+        BezirkCompManager.setSphereForPubSub((SphereServiceAccess) sphereForPC);
 
         try {
 
             final Comms bezirkComms = (Comms) comms;
-            bezirkComms.setSphereForSadl(sphereForSadl);
+            bezirkComms.setSphereSecurity(sphereForSadl);
 
         } catch (Exception e) {
 

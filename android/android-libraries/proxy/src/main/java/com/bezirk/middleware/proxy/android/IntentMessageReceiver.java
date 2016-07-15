@@ -85,7 +85,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         }
         Log.d(TAG, "receivedServiceId" + receivedServiceId);
 
-        if (null == Proxy.context) {
+        if (null == ProxyClient.context) {
             // TODO - Check with Joao if the application has to be launched!
             Log.e(TAG, "Application is not started");
             return false;
@@ -116,7 +116,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         BezirkZirkEndPoint sourceOfEventSEP = new Gson().fromJson(eventSender, BezirkZirkEndPoint.class);
         //Check for duplicate message
         if (checkDuplicateMsg(sourceOfEventSEP.zirkId.getZirkId(), messageId)) {
-            boolean isEventReceived = receiveEventOrStream(eventTopic, eventMessage, sourceOfEventSEP, (short) 0, null, "EVENT", Proxy.eventListenerMap);
+            boolean isEventReceived = receiveEventOrStream(eventTopic, eventMessage, sourceOfEventSEP, (short) 0, null, "EVENT", ProxyClient.eventListenerMap);
             if (isEventReceived) {
                 return;
             }
@@ -184,7 +184,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         if (checkDuplicateStream(sourceOfStreamSEP.zirkId.getZirkId(), streamId)) {
 
             boolean isStreamReceived = receiveEventOrStream(streamTopic, streamMsg, sourceOfStreamSEP, streamId, filePath, "STREAM_UNICAST",
-                    Proxy.streamListenerMap);
+                    ProxyClient.streamListenerMap);
 
             if (!isStreamReceived) {
 
@@ -204,23 +204,23 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             return;
         }
         final BezirkListener.StreamStates streamCondition = (streamStatus == 1) ? BezirkListener.StreamStates.END_OF_DATA : BezirkListener.StreamStates.LOST_CONNECTION;
-        if (Proxy.activeStreams.containsKey(streamId)) {
-            final String streamTopic = Proxy.activeStreams.get(streamId);
-            if (Proxy.streamListenerMap.containsKey(streamTopic)) {
-                for (BezirkListener listener : Proxy.streamListenerMap.get(streamTopic)) {
+        if (ProxyClient.activeStreams.containsKey(streamId)) {
+            final String streamTopic = ProxyClient.activeStreams.get(streamId);
+            if (ProxyClient.streamListenerMap.containsKey(streamTopic)) {
+                for (BezirkListener listener : ProxyClient.streamListenerMap.get(streamTopic)) {
                     listener.streamStatus(streamId, streamCondition);
                 }
             }
-            Proxy.activeStreams.remove(streamId);
+            ProxyClient.activeStreams.remove(streamId);
         }
         Log.e(TAG, "No StreamId is found");
     }
 
     private void processDiscovery(Intent intent) {
-        if (StringValidatorUtil.isObjectNotNull(Proxy.DiscoveryListener)) {
+        if (StringValidatorUtil.isObjectNotNull(ProxyClient.DiscoveryListener)) {
             final int receivedDiscoveryId = intent.getIntExtra("DiscoveryId", -1);
 
-            if (Proxy.discoveryCount == receivedDiscoveryId) {
+            if (ProxyClient.discoveryCount == receivedDiscoveryId) {
                 final Gson gson = new Gson();
                 final String discoveredListAsString = intent.getStringExtra("DiscoveredServices");
                 //Deserialiaze
@@ -234,7 +234,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
                     return;
                 }
 
-                Proxy.DiscoveryListener.discovered(new HashSet<DiscoveredZirk>(discoveredList));
+                ProxyClient.DiscoveryListener.discovered(new HashSet<DiscoveredZirk>(discoveredList));
             } else {
                 Log.e(TAG, "Discovery Id not matched");
             }
@@ -246,7 +246,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
     private void processPipeApproval(Intent intent) {
         final String jsonPipe = intent.getStringExtra(KEY_PIPE);
         final String pipeId = intent.getStringExtra(KEY_PIPE_REQ_ID);
-        if (Proxy.pipeListenerMap.containsKey(pipeId)) {
+        if (ProxyClient.pipeListenerMap.containsKey(pipeId)) {
             final String jsonInPolicy = intent.getStringExtra(KEY_PIPE_POLICY_IN);
             final String jsonOutPolicy = intent.getStringExtra(KEY_PIPE_POLICY_OUT);
             Log.i(TAG, "-- RECEIVED In Policy --");
@@ -256,7 +256,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             final BezirkPipePolicy policyIn = PipePolicy.fromJson(jsonInPolicy, BezirkPipePolicy.class);
             final BezirkPipePolicy policyOut = PipePolicy.fromJson(jsonOutPolicy, BezirkPipePolicy.class);
             // final Pipe pipe = Pipe.fromJson(jsonPipe, CloudPipe.class);
-            // Proxy.pipeListenerMap.get(pipeId).pipeGranted(pipe, policyIn, policyOut);
+            // ProxyClient.pipeListenerMap.get(pipeId).pipeGranted(pipe, policyIn, policyOut);
         } else {
             Log.e(TAG, "Pipe with this Id:" + pipeId + " is not in Map");
         }
@@ -265,20 +265,20 @@ public class IntentMessageReceiver extends BroadcastReceiver {
     private boolean checkDuplicateMsg(final String sid, final String messageId) {
         final String key = sid + ":" + messageId;
         final Long currentTime = new Date().getTime();
-        if (Proxy.duplicateMsgMap.containsKey(key)) {
-            if (currentTime - Proxy.duplicateMsgMap.get(key) > Proxy.TIME_DURATION) {
-                Proxy.duplicateMsgMap.remove(key);
-                Proxy.duplicateMsgMap.put(key, currentTime);
+        if (ProxyClient.duplicateMsgMap.containsKey(key)) {
+            if (currentTime - ProxyClient.duplicateMsgMap.get(key) > ProxyClient.TIME_DURATION) {
+                ProxyClient.duplicateMsgMap.remove(key);
+                ProxyClient.duplicateMsgMap.put(key, currentTime);
                 return true;
             } else
                 return false;
         } else {
-            if (Proxy.duplicateMsgMap.size() < Proxy.MAX_MAP_SIZE) {
-                Proxy.duplicateMsgMap.put(key, currentTime);
+            if (ProxyClient.duplicateMsgMap.size() < ProxyClient.MAX_MAP_SIZE) {
+                ProxyClient.duplicateMsgMap.put(key, currentTime);
                 return true;
             } else {
-                Proxy.duplicateMsgMap.remove(Proxy.duplicateMsgMap.keySet().iterator().next());
-                Proxy.duplicateMsgMap.put(key, currentTime);
+                ProxyClient.duplicateMsgMap.remove(ProxyClient.duplicateMsgMap.keySet().iterator().next());
+                ProxyClient.duplicateMsgMap.put(key, currentTime);
                 return true;
             }
         }
@@ -287,20 +287,20 @@ public class IntentMessageReceiver extends BroadcastReceiver {
     private boolean checkDuplicateStream(final String sid, final int streamId) {
         final String key = sid + ":" + streamId;
         final Long currentTime = new Date().getTime();
-        if (Proxy.duplicateStreamMap.containsKey(key)) {
-            if (currentTime - Proxy.duplicateStreamMap.get(key) > Proxy.TIME_DURATION) {
-                Proxy.duplicateStreamMap.remove(key);
-                Proxy.duplicateStreamMap.put(key, currentTime);
+        if (ProxyClient.duplicateStreamMap.containsKey(key)) {
+            if (currentTime - ProxyClient.duplicateStreamMap.get(key) > ProxyClient.TIME_DURATION) {
+                ProxyClient.duplicateStreamMap.remove(key);
+                ProxyClient.duplicateStreamMap.put(key, currentTime);
                 return true;
             } else
                 return false;
         } else {
-            if (Proxy.duplicateStreamMap.size() < Proxy.MAX_MAP_SIZE) {
-                Proxy.duplicateStreamMap.put(key, currentTime);
+            if (ProxyClient.duplicateStreamMap.size() < ProxyClient.MAX_MAP_SIZE) {
+                ProxyClient.duplicateStreamMap.put(key, currentTime);
                 return true;
             } else {
-                Proxy.duplicateStreamMap.remove(Proxy.duplicateStreamMap.keySet().iterator().next());
-                Proxy.duplicateStreamMap.put(key, currentTime);
+                ProxyClient.duplicateStreamMap.remove(ProxyClient.duplicateStreamMap.keySet().iterator().next());
+                ProxyClient.duplicateStreamMap.put(key, currentTime);
                 return true;
             }
         }
@@ -316,7 +316,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
      * @return
      */
     private boolean isRequestForCurrentApp(final String serviceId) {
-        SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(Proxy.context);
+        SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(ProxyClient.context);
         Map<String, ?> keys = shrdPref.getAll();
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
             //find and delete the entry corresponding to this zirkId

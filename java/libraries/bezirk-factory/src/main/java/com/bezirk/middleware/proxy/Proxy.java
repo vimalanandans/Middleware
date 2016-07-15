@@ -1,6 +1,6 @@
 package com.bezirk.middleware.proxy;
 
-import com.bezirk.proxy.ProxyService;
+import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.messagehandler.ServiceMessageHandler;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.middleware.Bezirk;
@@ -39,7 +39,7 @@ public class Proxy implements Bezirk {
     protected final HashMap<String, HashSet<BezirkListener>> eventListenerMap = new HashMap<String, HashSet<BezirkListener>>();
     protected final HashMap<String, HashSet<BezirkListener>> streamListenerMap = new HashMap<String, HashSet<BezirkListener>>();
     protected final HashMap<String, String> activeStreams = new HashMap<String, String>();
-    private final ProxyService proxy;
+    private final ProxyServer proxy;
     private final ProxyUtil proxyUtil;
     private final ProxyPersistence proxyPersistence;
     private final MainService mainService;
@@ -50,7 +50,7 @@ public class Proxy implements Bezirk {
     private ZirkId zirkId;
 
     public Proxy() {
-        proxy = new ProxyService();
+        proxy = new ProxyServer();
         proxyUtil = new ProxyUtil();
         mainService = new MainService(proxy, null);
         final BroadcastReceiver brForService = new BRForService(activeStreams, dListenerMap,

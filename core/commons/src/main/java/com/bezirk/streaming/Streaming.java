@@ -2,7 +2,7 @@ package com.bezirk.streaming;
 
 import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.Ledger;
-import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
 
@@ -51,5 +51,5 @@ public interface Streaming {
     /**
      * Set the sphere for sadl
      */
-    public void setSphereForSadl(final PubSubSphereAccess bezirkSphere);
+    public void setSphereForSadl(SphereSecurity sphereSecurity);
 }

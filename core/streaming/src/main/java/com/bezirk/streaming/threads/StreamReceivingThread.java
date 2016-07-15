@@ -4,7 +4,7 @@
 package com.bezirk.streaming.threads;
 
 import com.bezirk.comms.CommsConfigurations;
-import com.bezirk.sphere.api.PubSubSphereAccess;
+import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.PortFactory;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
@@ -56,7 +56,7 @@ public class StreamReceivingThread implements Runnable {
     private final short streamId;
     private final PortFactory portFactory;
     private final PubSubEventReceiver sadlReceiver;
-    private final PubSubSphereAccess sphereForSadl;
+    private final SphereSecurity sphereSecurity;
 
     /**
      * Constructor that is called during starting the thread
@@ -65,7 +65,7 @@ public class StreamReceivingThread implements Runnable {
      */
     public StreamReceivingThread(int port,
                                  StreamRequest streamRequest, PortFactory portFactory,
-                                 PubSubEventReceiver sadlReceiver, PubSubSphereAccess sphereForSadl) {
+                                 PubSubEventReceiver sadlReceiver, SphereSecurity sphereSecurity) {
         super();
         this.sphere = streamRequest.getSphereId();
         this.port = port;
@@ -78,7 +78,7 @@ public class StreamReceivingThread implements Runnable {
         this.streamId = streamRequest.localStreamId;
         this.portFactory = portFactory;
         this.sadlReceiver = sadlReceiver;
-        this.sphereForSadl = sphereForSadl;
+        this.sphereSecurity = sphereSecurity;
     }
 
     @Override
@@ -103,8 +103,8 @@ public class StreamReceivingThread implements Runnable {
             inputStream = new DataInputStream(receivingSocket.getInputStream());
 
             if (isEncrypted) {
-                if (ValidatorUtility.isObjectNotNull(sphereForSadl)) {
-                    sphereForSadl.decryptSphereContent(inputStream, fileOutputStream, sphere);
+                if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {
+                    sphereSecurity.decryptSphereContent(inputStream, fileOutputStream, sphere);
                 } else {
                     logger.error("SphereForSadl is not initialized. Unable to process secure streaming request.");
                 }

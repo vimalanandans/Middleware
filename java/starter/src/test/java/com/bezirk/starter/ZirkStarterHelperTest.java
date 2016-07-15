@@ -46,7 +46,7 @@ public class ZirkStarterHelperTest {
     }
 
     /**
-     * SphereSphereAccess should be non null after successful invocation of initSphere in MainService.
+     * SphereServiceManager should be non null after successful invocation of initSphere in MainService.
      */
     private void testInitSphere() {
 
@@ -56,7 +56,7 @@ public class ZirkStarterHelperTest {
         Comms commsLegacy = Mockito.mock(Comms.class);
         SphereAPI bezirkSphere = helper.initSphere(bezirkDevice, registryPersistence, commsLegacy);
 
-        assertNotNull("SphereSphereAccess is not initialized. ", bezirkSphere);
+        assertNotNull("SphereServiceManager is not initialized. ", bezirkSphere);
 
     }
 
