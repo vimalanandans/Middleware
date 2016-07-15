@@ -12,8 +12,8 @@ import java.util.Map;
 /**
  * Bezirk Preference storing the setting for keeping all the android way of storing the preferences
  */
-public class BezirkPreferences {
-    private static final Logger logger = LoggerFactory.getLogger(BezirkPreferences.class);
+public class MainStackPreferences {
+    private static final Logger logger = LoggerFactory.getLogger(MainStackPreferences.class);
 
     public static final String DEVICE_ID_TAG_PREFERENCE = "DeviceId";
     public static final String DEVICE_TYPE_TAG_PREFERENCE = "DeviceType";
@@ -21,7 +21,7 @@ public class BezirkPreferences {
     public static final String DEFAULT_SPHERE_NAME_TAG_PREFERENCE = "DefaultSphereName";
     private SharedPreferences preferences;
 
-    public BezirkPreferences(Context context) {
+    public MainStackPreferences(Context context) {
         if (context != null) {
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
             Map<String, ?> keys = preferences.getAll();

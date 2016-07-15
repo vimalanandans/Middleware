@@ -14,7 +14,6 @@ import com.bezirk.pipe.PipeManager;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereConfig;
 import com.bezirk.sphere.api.SphereSecurity;
-import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.sphere.impl.BezirkQRCode;
 import com.bezirk.sphere.impl.PCSphereServiceManager;
 import com.bezirk.sphere.impl.JavaPrefs;
@@ -138,7 +137,7 @@ final class ServiceStarterHelper {
      */
     boolean deinitSphere(final MainService service) {
         // clear the reference
-        service.sphereForPC = null;
+        service.sphereManager = null;
 
         return true;
     }

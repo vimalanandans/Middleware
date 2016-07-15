@@ -13,16 +13,18 @@ import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.Device;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.proxy.ProxyServer;
+import com.bezirk.proxy.android.ProxyClientMessageHandler;
+import com.bezirk.proxy.android.ProxyServerIntend;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
+import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
-//import com.bezirk.rest.CommsRestController;
-//import com.bezirk.rest.HttpComms;
 import com.bezirk.sphere.AndroidSphereServiceManager;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SphereAPI;
+import com.bezirk.starter.StackHandler;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.BezirkPreferences;
+import com.bezirk.starter.MainStackPreferences;
 import com.bezirk.starter.BezirkWifiManager;
 import com.bezirk.util.ValidatorUtility;
 
@@ -36,8 +38,8 @@ import java.util.Date;
 /**
  * Handles all bezirk stack control operations requested  by Main Zirk
  */
-public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackHandler {
-    private static final Logger logger = LoggerFactory.getLogger(BezirkStackHandler.class);
+public final class MainStackHandler implements StackHandler {
+    private static final Logger logger = LoggerFactory.getLogger(MainStackHandler.class);
 
     private static Boolean startedStack = false;
     private static Boolean stoppedStack;
@@ -47,11 +49,11 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
      */
     private static Comms comms;
 
-    private final BezirkSphereHandler sphereProcessorForMainService = new BezirkSphereHandler();
+    private final SphereHandler sphereProcessorForMainService = new SphereHandler();
 
-    private final BezirkAndroidNetworkUtil androidNetworkUtil = new BezirkAndroidNetworkUtil();
+    private final AndroidNetworkUtil androidNetworkUtil = new AndroidNetworkUtil();
 
-    private final BezirkDeviceHelper bezirkDeviceHelper = new BezirkDeviceHelper();
+    private final DeviceHelper deviceHelper = new DeviceHelper();
 
     private final ProxyServer proxy;
 
@@ -60,7 +62,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
     private final BezirkStartStackHelper bezirkStartStackHelper;
     private RegistryPersistence registryPersistence;
 
-    public BezirkStackHandler(ProxyServer proxy, CommsNotification errorNotificationCallback) {
+    public MainStackHandler(ProxyServer proxy, CommsNotification errorNotificationCallback) {
         this.proxy = proxy;
         this.errNotificationCallback = errorNotificationCallback;
         this.bezirkWifiManager = BezirkWifiManager.getInstance();
@@ -71,11 +73,11 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
      * @return sphereForAndroid
      */
     public static SphereAPI getSphereForAndroid() {
-        return BezirkSphereHandler.sphereForAndroid;
+        return SphereHandler.sphereForAndroid;
     }
 
     public static DevMode getDevMode() {
-        return BezirkSphereHandler.devMode;
+        return SphereHandler.devMode;
     }
 
     /**
@@ -104,7 +106,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
         synchronized (this) {
 
             WifiManager wifi;
-            if (!com.bezirk.starter.helper.BezirkStackHandler.isStackStarted()) {
+            if (!MainStackHandler.isStackStarted()) {
                 // Need to acquire wifi zirk as every time u start the stack, pick the new connected wifi access point information.
                 wifi = (WifiManager) service.getSystemService(Context.WIFI_SERVICE);
                 if (bezirkStartStackHelper.isWifiEnabled(wifi)) {
@@ -136,12 +138,13 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                     /*************************************************************
                      * Step 2 : Set Android callback zirk                     *
                      *************************************************************/
-                    bezirkStartStackHelper.setAndroicallback(service);
+                   // bezirkStartStackHelper.setAndroidMessageHandler(service);
+                    ProxyClientMessageHandler serviceMessageHandler = new ProxyClientMessageHandler(service.getApplicationContext());
 
                     /*************************************************************
                      * Step 3 :  Initialize BezirkCommsForAndroid with preferences  *
                      *************************************************************/
-                    BezirkPreferences preferences = new BezirkPreferences(service);
+                    MainStackPreferences preferences = new MainStackPreferences(service);
                     CommsConfigAndroid.init(preferences);
 
                     /*************************************************************
@@ -159,7 +162,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                      * Step 6 : Initialize BezirkCommsManager                       *
                      *************************************************************/
                     InetAddress inetAddress = androidNetworkUtil.fetchInetAddress(service);
-                    comms = bezirkStartStackHelper.initializeComms(inetAddress, pubSubBroker, proxy, errNotificationCallback);
+                    comms = bezirkStartStackHelper.initializeComms(inetAddress, pubSubBroker, errNotificationCallback);
                     if (!ValidatorUtility.isObjectNotNull(comms)) {
                         logger.error("Unable to initialize comms layer. Shutting down bezirk.");
                         service.stopSelf();
@@ -167,12 +170,13 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                     /*************************************************************
                      * Step 7 : Configure Device with preferences             *
                      *************************************************************/
-                    Device bezirkDevice = bezirkDeviceHelper.setBezirkDevice(preferences, service);
+                    Device bezirkDevice = deviceHelper.setBezirkDevice(preferences, service);
 
                     /*************************************************************
                      * Step 8 : Initialize SphereServiceManager                             *
                      *************************************************************/
-                    if (ValidatorUtility.isObjectNotNull(bezirkDevice) && !sphereProcessorForMainService.initSphere(bezirkDevice, service, registryPersistence, preferences)) {
+                    if (ValidatorUtility.isObjectNotNull(bezirkDevice)
+                            && !sphereProcessorForMainService.initSphere(bezirkDevice, service, registryPersistence, preferences)) {
                         // at the moment the init sphere fails due to persistence. hence delete it
                         // quickfix.delete the database
                         logger.error("delete DB");
@@ -184,9 +188,12 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                     }
 
                     // init the comms manager for sadl
-                    pubSubBroker.initPubSubBroker(comms,  sphereProcessorForMainService.getSphereServiceAccess(),
+                    pubSubBroker.initPubSubBroker(comms,  serviceMessageHandler, sphereProcessorForMainService.getSphereServiceAccess(),
                             sphereProcessorForMainService.getSphereSecurity());
 
+                    // set proxy handler
+                    ProxyServerIntend proxyIntend = (ProxyServerIntend)proxy;
+                    proxyIntend.InitProxyServerIntend(serviceMessageHandler);
                     /*************************************************************
                      * Step 9 : Start CommsConfigurations after sphere initialization       *
                      *************************************************************/
@@ -198,8 +205,8 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                     int FOREGROUND_ID = 1336;
                     service.startForeground(FOREGROUND_ID,
                             service.buildForegroundNotification("Bezirk ON"));
-                    com.bezirk.starter.helper.BezirkStackHandler.stoppedStack = false;
-                    com.bezirk.starter.helper.BezirkStackHandler.startedStack = true;
+                    MainStackHandler.stoppedStack = false;
+                    MainStackHandler.startedStack = true;
                 } else {
                     logger.debug("Disconnected from network!!!");
                     Toast.makeText(service.getApplicationContext(),
@@ -231,7 +238,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
 
             //Set status of stack
             this.stoppedStack = true;
-            com.bezirk.starter.helper.BezirkStackHandler.startedStack = false;
+            MainStackHandler.startedStack = false;
             // Close the zirk for testing quick fix
             service.stopSelf();
 
@@ -303,7 +310,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ((AndroidSphereServiceManager) BezirkSphereHandler.sphereForAndroid).initSphere(registryPersistence, comms);
+                ((AndroidSphereServiceManager) SphereHandler.sphereForAndroid).initSphere(registryPersistence, comms);
             }
         }).start();
         Toast.makeText(service.getApplicationContext(), "Bezirk Data Cleared", Toast.LENGTH_SHORT).show();

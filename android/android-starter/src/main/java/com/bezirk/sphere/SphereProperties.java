@@ -2,7 +2,7 @@ package com.bezirk.sphere;
 
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SpherePrefs;
-import com.bezirk.starter.BezirkPreferences;
+import com.bezirk.starter.MainStackPreferences;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class SphereProperties extends SpherePrefs {
 //    private static final String SPHERE_KEY = "sphereKey";
 //    private static final String SPHERE_MODE = "devMode";
 //    private static final String DEFAULT_SPHERE_NAME = "defaultSphereName";
-    BezirkPreferences preferences;
+    MainStackPreferences preferences;
     private DevMode.Mode mode;
     /* Development sphere variables */
     private String sphereName;
@@ -28,7 +28,7 @@ public class SphereProperties extends SpherePrefs {
     /**
      * @param preferences: should not be null
      */
-    public SphereProperties(BezirkPreferences preferences) {
+    public SphereProperties(MainStackPreferences preferences) {
         this.preferences = preferences;
     }
 

@@ -54,7 +54,7 @@ class BezirkStartStackHelper {
         }
     }
 
-    boolean isIPAddressValid(MainService service, WifiManager wifi, BezirkAndroidNetworkUtil androidNetworkUtil) {
+    boolean isIPAddressValid(MainService service, WifiManager wifi, AndroidNetworkUtil androidNetworkUtil) {
         String ipAddress;
         try {
             ipAddress = androidNetworkUtil.getIpAddress(wifi);
@@ -74,14 +74,14 @@ class BezirkStartStackHelper {
         return true;
     }
 
-    void setAndroicallback(MainService service) {
-        if (BezirkCompManager.getplatformSpecificCallback() == null) {
+    void setAndroidMessageHandler(MainService service) {
+       /* if (BezirkCompManager.getplatformSpecificCallback() == null) {
             ProxyClientMessageHandler bezirkAndroidCallback = new ProxyClientMessageHandler(service.getApplicationContext());
             BezirkCompManager.setplatformSpecificCallback(bezirkAndroidCallback);
-        }
+        } */
     }
 
-    Comms initializeComms(InetAddress inetAddress, PubSubBroker pubSubBroker, ProxyServer proxy, CommsNotification errNotificationCallback) {
+    Comms initializeComms(InetAddress inetAddress, PubSubBroker pubSubBroker,  CommsNotification errNotificationCallback) {
         // Instantiate pipeManager before SenderThread so that it is ready to start sending over pipes
        // PipeManager pipeComms = PipeCommsFactory.createPipeComms();
 

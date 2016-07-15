@@ -22,9 +22,9 @@ import com.bezirk.proxy.android.ProxyServerIntend;
 import com.bezirk.remotelogging.RemoteLog;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.starter.helper.NetworkBroadCastReceiver;
-import com.bezirk.starter.helper.BezirkActionProcessor;
+import com.bezirk.starter.helper.ActionProcessor;
 
-import com.bezirk.starter.helper.BezirkStackHandler;
+import com.bezirk.starter.helper.MainStackHandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,16 +33,16 @@ import org.slf4j.LoggerFactory;
 public class MainService extends Service implements INotificationCallback {
     private static final Logger logger = LoggerFactory.getLogger(MainService.class);
 
-    private final BezirkActionProcessor bezirkActionProcessor = new BezirkActionProcessor();
+    private final ActionProcessor actionProcessor = new ActionProcessor();
     //private final PipeActionParser pipeActionParser = new PipeActionParser();
     private ProxyServer proxyService;
-    private BezirkStackHandler bezirkStackHandler;
+    private MainStackHandler mainStackHandler;
     private CommsNotification commsNotification;
 
     private NetworkBroadCastReceiver broadcastReceiver;
 
     public static Boolean getStartedStack() {
-        return BezirkStackHandler.isStackStarted();
+        return MainStackHandler.isStackStarted();
     }
 
     RemoteLog remoteLoggingManager = null;
@@ -61,7 +61,7 @@ public class MainService extends Service implements INotificationCallback {
 
     // TODO :use iBinder interface to send the handle reference
     public static SphereAPI getSphereHandle() {
-        return BezirkStackHandler.getSphereForAndroid();
+        return MainStackHandler.getSphereForAndroid();
     }
 
     /**
@@ -90,16 +90,16 @@ public class MainService extends Service implements INotificationCallback {
         //initialize the commsNotification object
         commsNotification = new com.bezirk.starter.CommsNotification(this);
 
-        bezirkStackHandler = new BezirkStackHandler(proxyService, commsNotification);
+        mainStackHandler = new MainStackHandler(proxyService, commsNotification);
 
         //register to the broadcast receiver to receive changes in network state.
-        broadcastReceiver = new NetworkBroadCastReceiver(this, bezirkStackHandler);
+        broadcastReceiver = new NetworkBroadCastReceiver(this, mainStackHandler);
         registerToWifiBroadcastReceivers(broadcastReceiver);
 
         // this is needed when the zirk starts first before bezirk stack.
         // (zirk sends registration intent before start stack intent)
-        if (!BezirkStackHandler.isStackStarted()) {
-            bezirkStackHandler.startStack(this);
+        if (!MainStackHandler.isStackStarted()) {
+            mainStackHandler.startStack(this);
         }
     }
 
@@ -107,7 +107,7 @@ public class MainService extends Service implements INotificationCallback {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         if (intent != null) {
-            bezirkActionProcessor.processBezirkAction(intent, this, (ProxyServerIntend)proxyService, bezirkStackHandler);
+            actionProcessor.processBezirkAction(intent, this, (ProxyServerIntend)proxyService, mainStackHandler);
         }
 
         return START_STICKY;
@@ -117,9 +117,9 @@ public class MainService extends Service implements INotificationCallback {
 
     @Override
     public void onDestroy() {
-        if (!bezirkStackHandler.isStackStopped()) {
+        if (!mainStackHandler.isStackStopped()) {
 
-            bezirkStackHandler.stopStack(this);
+            mainStackHandler.stopStack(this);
         }
         super.onDestroy();
     }

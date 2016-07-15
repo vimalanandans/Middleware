@@ -82,14 +82,14 @@ public final class BezirkCompManager {
     public static void setUpaDevice(DeviceInterface upaDevice) {
         BezirkCompManager.upaDevice = upaDevice;
     }
-
-    public static void setplatformSpecificCallback(MessageHandler bezirkCallback) {
-        BezirkCompManager.platformSpecificCallback = bezirkCallback;
-    }
-
-    public static MessageHandler getplatformSpecificCallback() {
-        return BezirkCompManager.platformSpecificCallback;
-    }
+//
+//    public static void setplatformSpecificCallback(MessageHandler bezirkCallback) {
+//        BezirkCompManager.platformSpecificCallback = bezirkCallback;
+//    }
+//
+//    public static MessageHandler getplatformSpecificCallback() {
+//        return BezirkCompManager.platformSpecificCallback;
+//    }
 
     // this is temporary for UI to use the spheres
     public static SphereAPI getSphereUI() {

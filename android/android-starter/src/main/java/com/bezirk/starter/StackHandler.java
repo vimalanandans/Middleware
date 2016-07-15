@@ -1,6 +1,6 @@
 package com.bezirk.starter;
 
-public interface BezirkStackHandler {
+public interface StackHandler {
     public void restartComms();
 
     public void startStack(MainService mainService);

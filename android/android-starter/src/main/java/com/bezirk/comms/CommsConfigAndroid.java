@@ -3,7 +3,7 @@ package com.bezirk.comms;
 import android.os.Environment;
 
 import com.bezirk.devices.AndroidDeviceInfo;
-import com.bezirk.starter.BezirkPreferences;
+import com.bezirk.starter.MainStackPreferences;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public final class CommsConfigAndroid {
     private CommsConfigAndroid() {
     }
 
-    public static void init(BezirkPreferences pref) {
+    public static void init(MainStackPreferences pref) {
 
         //Initialize AndroidDeviceInfo preferences
         AndroidDeviceInfo.setPreferences(pref.getSharedPreferences());

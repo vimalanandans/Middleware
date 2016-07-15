@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import android.view.WindowManager;
 
 import com.bezirk.R;
-import com.bezirk.starter.BezirkStackHandler;
+import com.bezirk.starter.StackHandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +21,9 @@ class RestartCommsAsyncTask extends AsyncTask {
     private static AlertDialog dialog;
     private final Context context;
     private final String message;
-    private final BezirkStackHandler stackHandler;
+    private final StackHandler stackHandler;
 
-    RestartCommsAsyncTask(Context context, String alertMessage, BezirkStackHandler stackHandler) {
+    RestartCommsAsyncTask(Context context, String alertMessage, StackHandler stackHandler) {
         this.context = context;
         this.message = alertMessage;
         this.stackHandler = stackHandler;

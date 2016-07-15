@@ -8,7 +8,7 @@ import com.bezirk.device.Device;
 import com.bezirk.device.DeviceType;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.BezirkPreferences;
+import com.bezirk.starter.MainStackPreferences;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -19,10 +19,10 @@ import java.util.UUID;
 /**
  * Configures the bezirk device by setting the location and preferences.
  */
-public final class BezirkDeviceHelper {
-    private static final Logger logger = LoggerFactory.getLogger(BezirkDeviceHelper.class);
+public final class DeviceHelper {
+    private static final Logger logger = LoggerFactory.getLogger(DeviceHelper.class);
 
-    Device setBezirkDevice(final BezirkPreferences preferences, final MainService service) {
+    Device setBezirkDevice(final MainStackPreferences preferences, final MainService service) {
         Device bezirkDevice = initDevice(preferences, service);
 
         if (ValidatorUtility.isObjectNotNull(bezirkDevice)) {
@@ -40,7 +40,7 @@ public final class BezirkDeviceHelper {
         return bezirkDevice;
     }
 
-    private Location loadLocation(final BezirkPreferences preferences) {
+    private Location loadLocation(final MainStackPreferences preferences) {
         String location = preferences.getString("indoorlocation", null);
         return new Location(location);
     }
@@ -49,9 +49,9 @@ public final class BezirkDeviceHelper {
      * create and initialise the sphere
      * TODO: Move this code to modular place
      */
-    private Device initDevice(final BezirkPreferences preferences, final MainService service) {
+    private Device initDevice(final MainStackPreferences preferences, final MainService service) {
 
-        String deviceId = preferences.getString(BezirkPreferences.DEVICE_ID_TAG_PREFERENCE, null);
+        String deviceId = preferences.getString(MainStackPreferences.DEVICE_ID_TAG_PREFERENCE, null);
 
         if (null == deviceId || deviceId.isEmpty()) {
             // http://stackoverflow.com/questions/2785485/is-there-a-unique-android-device-id
@@ -72,13 +72,13 @@ public final class BezirkDeviceHelper {
             logger.info("DEVICE ID not persisted, generating from the android id > " + androidId + " device uuid id > " + deviceId);
 
             // save to persistence
-            preferences.putString(BezirkPreferences.DEVICE_ID_TAG_PREFERENCE, deviceId);
+            preferences.putString(MainStackPreferences.DEVICE_ID_TAG_PREFERENCE, deviceId);
 
         } else {
             logger.info(" DEVICE ID from storage > " + deviceId);
         }
 
-        String deviceType = preferences.getString(BezirkPreferences.DEVICE_TYPE_TAG_PREFERENCE, null);
+        String deviceType = preferences.getString(MainStackPreferences.DEVICE_TYPE_TAG_PREFERENCE, null);
 
         if (deviceType == null) {
             logger.info("device type is not initialized. setting to default");
@@ -91,7 +91,7 @@ public final class BezirkDeviceHelper {
 
         bezirkDevice.initDevice(deviceId, deviceType);
 
-        String deviceName = preferences.getString(BezirkPreferences.DEVICE_NAME_TAG_PREFERENCE, null);
+        String deviceName = preferences.getString(MainStackPreferences.DEVICE_NAME_TAG_PREFERENCE, null);
 
         if (ValidatorUtility.checkForString(deviceName)) {
             logger.info("device type is already initialized to " + deviceName);

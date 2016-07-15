@@ -16,7 +16,7 @@ import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.BezirkPreferences;
+import com.bezirk.starter.MainStackPreferences;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ class DeviceControlActivityHelper {
 
     private final DeviceControlActivity deviceControlActivity;
     private final Context context;
-    private final BezirkPreferences preferences;
+    private final MainStackPreferences preferences;
 
     DeviceControlActivityHelper(DeviceControlActivity deviceControlActivity, Context context) {
         this.deviceControlActivity = deviceControlActivity;

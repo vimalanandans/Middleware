@@ -1,6 +1,5 @@
 package com.bezirk.starter;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.BezirkCommsPC;
@@ -19,7 +18,6 @@ import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.ui.remotelogging.RemoteLogSphereSelectGUI;
 import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.RegistryPersistence;
-import com.bezirk.pipe.PipeManager;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.streaming.StreamManager;
 import com.bezirk.streaming.Streaming;
@@ -48,7 +46,7 @@ public class MainService {
     private final ProxyServer proxyServer;
     private final NetworkUtil networkUtil = new NetworkUtil();
     private final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
-    SphereAPI sphereForPC;
+    SphereAPI sphereManager;
     /**
      * List of configurations
      */
@@ -174,18 +172,18 @@ public class MainService {
     /**
      * Start BezirkStack. Initializes sadl, sphere, comms.
      *
-     * @param bezirkPcCallback
+     * @param messageHandler
      */
-    public void startStack(final MessageHandler bezirkPcCallback) {
+    public void startStack(final MessageHandler messageHandler) {
         logger.info("BezirkStarter has started");
 
         /**************************************************
          * Step1 : Set Platform specific call back        *
          **************************************************/
-        if (null == BezirkCompManager.getplatformSpecificCallback()
-                && bezirkPcCallback != null) {
-            BezirkCompManager.setplatformSpecificCallback(bezirkPcCallback);
-        }
+      /*  if (null == BezirkCompManager.getplatformSpecificCallback()
+                && messageHandler != null) {
+            BezirkCompManager.setplatformSpecificCallback(messageHandler);
+        } */
 
         /**************************************************
          * Step2 : Configure BezirkCommsPC                   *
@@ -228,7 +226,7 @@ public class MainService {
         /**************************************************
          * Step6 :Initialize the comms.                   *
          **************************************************/
-        final boolean isCommsInitialized = initComms(bezirkPcCallback, intf,
+        final boolean isCommsInitialized = initComms(messageHandler, intf,
                 pubSubBroker);
         if (!isCommsInitialized) {
             serviceStarterHelper.fail("Problem initializing Comms.", null);
@@ -245,10 +243,10 @@ public class MainService {
 
         if (ValidatorUtility.isObjectNotNull(bezirkDevice)) {
 
-            sphereForPC = serviceStarterHelper.initSphere(bezirkDevice,
+            sphereManager = serviceStarterHelper.initSphere(bezirkDevice,
                     registryPersistence, comms);
 
-            if (!ValidatorUtility.isObjectNotNull(sphereForPC)) {
+            if (!ValidatorUtility.isObjectNotNull(sphereManager)) {
 
                 serviceStarterHelper.fail("Problem initializing sphere.", null);
 
@@ -256,8 +254,9 @@ public class MainService {
 
         }
 
-        // init the comms manager for sadl
-        pubSubBroker.initPubSubBroker(comms, (SphereServiceAccess) sphereForPC,(SphereSecurity) sphereForPC);
+        // init the comms manager for pubsubbroker
+        pubSubBroker.initPubSubBroker(comms,  messageHandler,
+                (SphereServiceAccess) sphereManager,(SphereSecurity) sphereManager);
 
 
         /**************************************************
@@ -276,7 +275,7 @@ public class MainService {
     private void displayQRCode(final Device bezirkDevice) {
         if (bezirkConfig.isDisplayEnabled()) {
             // commented to test in beaglebone. uncomment it for PC
-            frame = new com.bezirk.ui.spheremanagement.SphereManagementGUI(sphereForPC);
+            frame = new com.bezirk.ui.spheremanagement.SphereManagementGUI(sphereManager);
             frame.setVisible(true);
 
             // Check if the Logging is enabled and start the LoggingGUI
@@ -296,7 +295,7 @@ public class MainService {
              */
             // save the qr code
             // if display is not stored then save the QR code
-            //((PCSphereServiceManager) sphereForPC).saveQRCode(bezirkConfig.getDataPath(),
+            //((PCSphereServiceManager) sphereManager).saveQRCode(bezirkConfig.getDataPath(),
             //        bezirkDevice.getDeviceName());
         }
     }
@@ -368,9 +367,9 @@ public class MainService {
             return false;
         }
         */
-        final PipeManager pipeManager = serviceStarterHelper
+      /*  final PipeManager pipeManager = serviceStarterHelper
                 .createPipeManager();
-
+*/
         final InetAddress addr = BezirkNetworkUtilities.getIpForInterface(intf);
 
         /*
@@ -378,7 +377,7 @@ public class MainService {
          * by BezirkCommsPC
          */
         Streaming streamManager = new StreamManager(comms,pubSubBroker);
-        comms.initComms(null, addr, pubSubBroker, (SphereSecurity) sphereForPC, streamManager);
+        comms.initComms(null, addr, pubSubBroker, (SphereSecurity) sphereManager, streamManager);
 
 
 

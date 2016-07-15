@@ -14,7 +14,7 @@ import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.SphereProperties;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.BezirkPreferences;
+import com.bezirk.starter.MainStackPreferences;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +22,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Handles the sphere initialization for MainService
  */
-public final class BezirkSphereHandler {
-    private static final Logger logger = LoggerFactory.getLogger(BezirkSphereHandler.class);
+public final class SphereHandler {
+    private static final Logger logger = LoggerFactory.getLogger(SphereHandler.class);
 
     static SphereAPI sphereForAndroid;
     static DevMode devMode;
@@ -55,7 +55,7 @@ public final class BezirkSphereHandler {
     /**
      * create and initialise the sphere
      */
-    boolean initSphere(DeviceInterface bezirkDevice, MainService service, SpherePersistence spherePersistence, BezirkPreferences preferences) {
+    boolean initSphere(DeviceInterface bezirkDevice, MainService service, SpherePersistence spherePersistence, MainStackPreferences preferences) {
 
         /** start the sphere related init*/
         if (sphereForAndroid == null) {
@@ -70,14 +70,14 @@ public final class BezirkSphereHandler {
 
             sphereForAndroid = new AndroidSphereServiceManager(cryptoEngine, bezirkDevice, sphereRegistry, service.getApplicationContext(), preferences);
 
-            AndroidSphereServiceManager bezirkSphereForAndroid = (AndroidSphereServiceManager) BezirkSphereHandler.sphereForAndroid;
+            AndroidSphereServiceManager bezirkSphereForAndroid = (AndroidSphereServiceManager) SphereHandler.sphereForAndroid;
 
             bezirkSphereForAndroid.setSphereListener(bezirkSphereForAndroid);
 
             SphereConfig sphereConfig = new SphereProperties(preferences);
             sphereConfig.init();
 
-            if (!(bezirkSphereForAndroid.initSphere(spherePersistence, BezirkStackHandler.getBezirkComms()))) {
+            if (!(bezirkSphereForAndroid.initSphere(spherePersistence, MainStackHandler.getBezirkComms()))) {
                 // at the moment the init sphere fails due to persistence
                 return false;
             }
@@ -88,7 +88,7 @@ public final class BezirkSphereHandler {
 
 
            // BezirkCompManager.setSphereForPubSub((SphereServiceAccess) sphereForAndroid);
-            Comms uhuComms = BezirkStackHandler.getBezirkComms();
+            Comms uhuComms = MainStackHandler.getBezirkComms();
             uhuComms.setSphereSecurity((SphereSecurity) sphereForAndroid);
         }
         return true;

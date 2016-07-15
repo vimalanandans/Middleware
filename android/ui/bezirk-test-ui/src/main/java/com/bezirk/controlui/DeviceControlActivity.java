@@ -16,8 +16,8 @@ import android.widget.AdapterView;
 import com.bezirk.actions.BezirkActions;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.BezirkActionCommands;
-import com.bezirk.starter.BezirkPreferences;
+import com.bezirk.starter.ActionCommands;
+import com.bezirk.starter.MainStackPreferences;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ public class DeviceControlActivity extends ActionBarActivity
     private static final Logger logger = LoggerFactory.getLogger(DeviceControlActivity.class);
     // UI Create
     List<DataModel> listData = new ArrayList<DataModel>();
-    BezirkPreferences preferences;
+    MainStackPreferences preferences;
     private GenericListItemView adapter;
     private DeviceControlActivityHelper deviceControlActivityHelper;
     private DeviceIntentReceiver deviceIntentReceiver;
@@ -44,7 +44,7 @@ public class DeviceControlActivity extends ActionBarActivity
         setContentView(R.layout.activity_device_control);
 
         // preference for storing the settings
-        preferences = new BezirkPreferences(this);
+        preferences = new MainStackPreferences(this);
         deviceControlActivityHelper = new DeviceControlActivityHelper(this, context);
 
         /** set up the device list
@@ -192,7 +192,7 @@ public class DeviceControlActivity extends ActionBarActivity
             Log.d(TAG, "Received Intent for Device control >" + intent.getAction());
             Log.d(TAG, "Command >" + intent.getStringExtra("Command"));
 
-            if (intent.getStringExtra("Command").equalsIgnoreCase(BezirkActionCommands.CMD_DEV_MODE_STATUS)) {
+            if (intent.getStringExtra("Command").equalsIgnoreCase(ActionCommands.CMD_DEV_MODE_STATUS)) {
                 deviceControlActivityHelper.updateList((DevMode.Mode) intent.getSerializableExtra("Mode"), listData);
             }
         }

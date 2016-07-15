@@ -6,7 +6,7 @@ import android.content.Intent;
 import com.bezirk.proxy.android.ProxyServerIntend;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.BezirkActionCommands;
+import com.bezirk.starter.ActionCommands;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
  * Takes care of processing intent action based on type.
  * Handles zirk actions, send actions, stack actions and bezirk device actions.
  */
-public final class BezirkActionProcessor {
-    private static final Logger logger = LoggerFactory.getLogger(BezirkActionProcessor.class);
+public final class ActionProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(ActionProcessor.class);
 
     private static final String CONTROL_UI_NOTIFICATION_ACTION = "com.bosch.upa.uhu.controluinotfication";
     private static final int START_CODE = 100;
@@ -29,9 +29,9 @@ public final class BezirkActionProcessor {
      * @param intent
      * @param service
      * @param ProxyService
-     * @param bezirkStackHandler
+     * @param mainStackHandler
      */
-    public void processBezirkAction(Intent intent, MainService service, ProxyServerIntend ProxyService, BezirkStackHandler bezirkStackHandler) {
+    public void processBezirkAction(Intent intent, MainService service, ProxyServerIntend ProxyService, MainStackHandler mainStackHandler) {
 
         INTENT_ACTIONS intentAction = INTENT_ACTIONS.getActionUsingMessage(intent.getAction());
 
@@ -43,7 +43,7 @@ public final class BezirkActionProcessor {
             switch (actionType) {
 
                 case BEZIRK_STACK_ACTION:
-                    processBezirkStackAction(service, intent, intentAction, bezirkStackHandler);
+                    processBezirkStackAction(service, intent, intentAction, mainStackHandler);
                     break;
                 case DEVICE_ACTION:
                     processDeviceActions(intentAction, service);
@@ -65,28 +65,28 @@ public final class BezirkActionProcessor {
 
     }
 
-    private void processBezirkStackAction(MainService service, Intent intent, INTENT_ACTIONS intentAction, BezirkStackHandler bezirkStackHandler) {
+    private void processBezirkStackAction(MainService service, Intent intent, INTENT_ACTIONS intentAction, MainStackHandler mainStackHandler) {
         switch (intentAction) {
             case ACTION_START_BEZIRK:
-                bezirkStackHandler.startStack(service);
+                mainStackHandler.startStack(service);
                 break;
             case ACTION_STOP_BEZIRK:
-                bezirkStackHandler.stopStack(service);
+                mainStackHandler.stopStack(service);
                 break;
             case ACTION_REBOOT:
-                bezirkStackHandler.reboot(service);
+                mainStackHandler.reboot(service);
                 break;
             case ACTION_CLEAR_PERSISTENCE:
-                bezirkStackHandler.clearPersistence(service);
+                mainStackHandler.clearPersistence(service);
                 break;
             case ACTION_DIAG_PING:
-                bezirkStackHandler.diagPing(intent);
+                mainStackHandler.diagPing(intent);
                 break;
             case ACTION_START_REST_SERVER:
-                bezirkStackHandler.startStopRestServer(START_CODE);
+                mainStackHandler.startStopRestServer(START_CODE);
                 break;
             case ACTION_STOP_REST_SERVER:
-                bezirkStackHandler.startStopRestServer(STOP_CODE);
+                mainStackHandler.startStopRestServer(STOP_CODE);
                 break;
             default:
                 logger.warn("Received unknown intent action: " + intentAction.message);
@@ -99,20 +99,20 @@ public final class BezirkActionProcessor {
         switch (intentAction) {
 
             case ACTION_CHANGE_DEVICE_NAME:
-                sendIntent(BezirkActionCommands.CMD_CHANGE_DEVICE_NAME_STATUS, true, service);
+                sendIntent(ActionCommands.CMD_CHANGE_DEVICE_NAME_STATUS, true, service);
                 break;
             case ACTION_CHANGE_DEVICE_TYPE:
-                sendIntent(BezirkActionCommands.CMD_CHANGE_DEVICE_TYPE_STATUS, true, service);
+                sendIntent(ActionCommands.CMD_CHANGE_DEVICE_TYPE_STATUS, true, service);
                 break;
             case ACTION_DEV_MODE_ON:
-                sendIntent(BezirkActionCommands.CMD_DEV_MODE_ON_STATUS, BezirkStackHandler.getDevMode().switchMode(DevMode.Mode.ON), service);
+                sendIntent(ActionCommands.CMD_DEV_MODE_ON_STATUS, MainStackHandler.getDevMode().switchMode(DevMode.Mode.ON), service);
                 break;
             case ACTION_DEV_MODE_OFF:
-                sendIntent(BezirkActionCommands.CMD_DEV_MODE_OFF_STATUS, BezirkStackHandler.getDevMode().switchMode(DevMode.Mode.OFF), service);
+                sendIntent(ActionCommands.CMD_DEV_MODE_OFF_STATUS, MainStackHandler.getDevMode().switchMode(DevMode.Mode.OFF), service);
                 break;
             case ACTION_DEV_MODE_STATUS:
                 DevMode.Mode mode = getDevMode();
-                sendIntent(BezirkActionCommands.CMD_DEV_MODE_STATUS, mode, service);
+                sendIntent(ActionCommands.CMD_DEV_MODE_STATUS, mode, service);
                 break;
             default:
                 logger.warn("Received unknown intent action: {}", intentAction.message);
@@ -123,11 +123,11 @@ public final class BezirkActionProcessor {
 
     private DevMode.Mode getDevMode() {
         DevMode.Mode mode;
-        if (BezirkStackHandler.getDevMode() == null) {
+        if (MainStackHandler.getDevMode() == null) {
             // if user wifi supplicant status is Disconnected and on Init he clicks on DeviceControl, devMode will be null.
             mode = DevMode.Mode.OFF;
         } else {
-            mode = BezirkStackHandler.getDevMode().getStatus();
+            mode = MainStackHandler.getDevMode().getStatus();
         }
         return mode;
     }

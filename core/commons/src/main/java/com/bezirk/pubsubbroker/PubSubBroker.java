@@ -1,6 +1,5 @@
 package com.bezirk.pubsubbroker;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.EventLedger;
@@ -13,6 +12,7 @@ import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
 import com.bezirk.pubsubbroker.discovery.DiscoveryManager;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
@@ -58,6 +58,8 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     RemoteLog remoteLog = null;
 
+    MessageHandler msgHandler;
+
     public PubSubBroker(PubSubBrokerPersistence pubSubBrokerPersistence) {
         this.pubSubBrokerPersistence = pubSubBrokerPersistence;
         loadSadlRegistry();
@@ -67,11 +69,12 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     /**
      * initialize the object references for future use
      */
-    public void initPubSubBroker(Comms comms, SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity) {
+    public void initPubSubBroker(Comms comms, MessageHandler msgHandler,
+                                 SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity) {
         this.comms = comms;
         this.sphereServiceAccess = sphereServiceAccess;
         this.sphereSecurity = sphereSecurity;
-
+        this.msgHandler = msgHandler;
         initServiceDiscovery(comms);
     }
 
@@ -459,7 +462,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             if (sphereServiceAccess.isServiceInSphere(serviceId, eLedger.getHeader().getSphereName())) {
                 EventIncomingMessage eCallbackMessage = new EventIncomingMessage(serviceId, eLedger.getHeader().getSenderSEP(),
                         eLedger.getSerializedMessage(), eLedger.getHeader().getTopic(), eLedger.getHeader().getUniqueMsgId());
-                BezirkCompManager.getplatformSpecificCallback().onIncomingEvent(eCallbackMessage);
+                msgHandler.onIncomingEvent(eCallbackMessage);
             } else {
                 logger.debug("Unknown Zirk ID!!!!!");
             }
@@ -539,13 +542,13 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     @Override
     public boolean processStreamStatus(StreamStatusMessage streamStatusNotification) {
-        BezirkCompManager.getplatformSpecificCallback().onStreamStatus(streamStatusNotification);
+        msgHandler.onStreamStatus(streamStatusNotification);
         return true;
     }
 
     @Override
     public boolean processNewStream(StreamIncomingMessage streamData) {
-        BezirkCompManager.getplatformSpecificCallback().onIncomingStream(streamData);
+        msgHandler.onIncomingStream(streamData);
         return true;
     }
 

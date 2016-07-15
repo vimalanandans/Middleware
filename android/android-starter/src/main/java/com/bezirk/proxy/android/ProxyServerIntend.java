@@ -2,9 +2,9 @@ package com.bezirk.proxy.android;
 
 import android.content.Intent;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.proxy.ProxyServer;
+import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
@@ -26,12 +26,17 @@ public class ProxyServerIntend extends ProxyServer {
 
     private static final Logger logger = LoggerFactory.getLogger(ProxyServerIntend.class);
 
+    MessageHandler messageHandler ;
 
     public ProxyServerIntend() {
 
-
+        super();
     }
 
+    // TODO: If it makes sense , move it to proxy server
+    public void InitProxyServerIntend(MessageHandler messageHandler) {
+        this.messageHandler = messageHandler;
+    }
     /**
      * Sends the subscribe request to proxy.
      *
@@ -193,7 +198,7 @@ public class ProxyServerIntend extends ProxyServer {
 
         if (!isStreamingValid) {
             StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(new Gson().fromJson(serviceIdAsString, ZirkId.class), 0, localStreamId);
-            BezirkCompManager.getplatformSpecificCallback().onStreamStatus(streamStatusCallbackMessage);
+            messageHandler.onStreamStatus(streamStatusCallbackMessage);
         }
     }
 
@@ -250,8 +255,9 @@ public class ProxyServerIntend extends ProxyServer {
         }
 
         if (!isStreamingValid) {
+            logger.error("FIXME: Implement the stream status");
             StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(new Gson().fromJson(serviceIdAsString, ZirkId.class), 0, localStreamId);
-            BezirkCompManager.getplatformSpecificCallback().onStreamStatus(streamStatusCallbackMessage);
+            messageHandler.onStreamStatus(streamStatusCallbackMessage);
         }
     }
 
