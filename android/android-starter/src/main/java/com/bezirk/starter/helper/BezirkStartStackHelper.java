@@ -112,8 +112,7 @@ class BezirkStartStackHelper {
         /** initialize the communications */
         comms.initComms(null, inetAddress, pubSubBroker, null,streaming);
 
-        // init the comms manager for sadl
-        pubSubBroker.initPubSubBroker(comms);
+
 
         return comms;
     }

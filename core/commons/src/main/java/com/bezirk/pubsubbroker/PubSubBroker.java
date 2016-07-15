@@ -28,6 +28,8 @@ import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.pubsubbroker.discovery.DiscoveryProcessor;
 import com.bezirk.pubsubbroker.discovery.DiscoveryRecord;
 import com.bezirk.remotelogging.RemoteLog;
+import com.bezirk.sphere.api.SphereSecurity;
+import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.ValidatorUtility;
 import com.bezrik.network.BezirkNetworkUtilities;
@@ -51,6 +53,9 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     protected PubSubBrokerPersistence pubSubBrokerPersistence = null;
     protected PubSubBrokerRegistry pubSubBrokerRegistry = null;
     protected Comms comms = null;
+    protected SphereServiceAccess sphereServiceAccess = null;
+    protected SphereSecurity sphereSecurity = null;
+
     RemoteLog remoteLog = null;
 
     public PubSubBroker(PubSubBrokerPersistence pubSubBrokerPersistence) {
@@ -58,11 +63,15 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         loadSadlRegistry();
     }
 
+
     /**
      * initialize the object references for future use
      */
-    public void initPubSubBroker(Comms comms) {
+    public void initPubSubBroker(Comms comms, SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity) {
         this.comms = comms;
+        this.sphereServiceAccess = sphereServiceAccess;
+        this.sphereSecurity = sphereSecurity;
+
         initServiceDiscovery(comms);
     }
 
@@ -71,7 +80,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
      * because this is out of comms layer
      */
     public void initServiceDiscovery(Comms comms) {
-        DiscoveryManager discoveryManager = new DiscoveryManager(this, comms);
+        DiscoveryManager discoveryManager = new DiscoveryManager(this, comms,sphereServiceAccess);
 
         discoveryManager.initDiscovery();
     }
@@ -92,7 +101,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         }
 
         // Step 2: Register with sphere
-        boolean isSpherePassed = BezirkCompManager.getSphereForPubSubBroker().registerService(serviceId, serviceName);
+        boolean isSpherePassed = sphereServiceAccess.registerService(serviceId, serviceName);
 
         if (isSpherePassed) {
             logger.info("Zirk Registration Complete for: {}, {}", serviceName, serviceId);
@@ -179,7 +188,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     @Override
     public boolean sendMulticastEvent(ZirkId serviceId, RecipientSelector recipientSelector, String serializedEventMsg) {
 
-        final Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(serviceId);
+        final Iterable<String> listOfSphere = sphereServiceAccess.getSphereMembership(serviceId);
 
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with any sphere: " + serviceId.getZirkId());
@@ -218,7 +227,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     @Override
     public boolean sendUnicastEvent(ZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg){
-        final Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(serviceId);
+        final Iterable<String> listOfSphere = sphereServiceAccess.getSphereMembership(serviceId);
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with the sphere");
             return false;
@@ -253,7 +262,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
     public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId) {
 
-        final Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(senderId);
+        final Iterable<String> listOfSphere = sphereServiceAccess.getSphereMembership(senderId);
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with any sphere: " + senderId);
             return (short) -1;
@@ -303,7 +312,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         String sphereId = null;
         while (sphereIterator.hasNext()) {
             sphereId = sphereIterator.next();
-            if (BezirkCompManager.getSphereForPubSubBroker().isServiceInSphere(receiver.getBezirkZirkId(), sphereId)) {
+            if (sphereServiceAccess.isServiceInSphere(receiver.getBezirkZirkId(), sphereId)) {
                 logger.debug("Found the sphere:" + sphereId);
                 break;
             }
@@ -345,7 +354,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     public boolean discover(final ZirkId serviceId, final RecipientSelector recipientSelector, final SubscribedRole pRole,
                          final int discoveryId, final long timeout, final int maxDiscovered) {
 
-        final Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(serviceId);
+        final Iterable<String> listOfSphere = sphereServiceAccess.getSphereMembership(serviceId);
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with the sphere");
             return false;
@@ -373,7 +382,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         final DiscoveryRecord pendingRequest = new DiscoveryRecord(timeout, maxDiscovered);
         DiscoveryProcessor.getDiscovery().addRequest(discoveryLabel, pendingRequest);
 
-        return true;
+        return false;
     }
 
     @Override
@@ -447,7 +456,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
                 callBack.callBackForResponse(eLedger);
 
             } else */
-            if (BezirkCompManager.getSphereForPubSubBroker().isServiceInSphere(serviceId, eLedger.getHeader().getSphereName())) {
+            if (sphereServiceAccess.isServiceInSphere(serviceId, eLedger.getHeader().getSphereName())) {
                 EventIncomingMessage eCallbackMessage = new EventIncomingMessage(serviceId, eLedger.getHeader().getSenderSEP(),
                         eLedger.getSerializedMessage(), eLedger.getHeader().getTopic(), eLedger.getHeader().getUniqueMsgId());
                 BezirkCompManager.getplatformSpecificCallback().onIncomingEvent(eCallbackMessage);
@@ -484,8 +493,8 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
      */
     private Boolean decryptMsg(EventLedger eLedger) {
         // Decrypt the event message
-        final String decryptedEventMsg = BezirkCompManager.getSphereSecurity().
-                decryptSphereContent(eLedger.getHeader().getSphereName(), eLedger.getEncryptedMessage());
+        final String decryptedEventMsg = sphereSecurity.decryptSphereContent(
+                eLedger.getHeader().getSphereName(), eLedger.getEncryptedMessage());
         if (!ValidatorUtility.checkForString(decryptedEventMsg)) {
             logger.debug("Header Decryption Failed: sphereId-" + eLedger.getHeader().getSphereName() + " may not exist");
 

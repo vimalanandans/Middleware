@@ -40,6 +40,18 @@ public final class BezirkSphereHandler {
         return true;
     }
 
+    /** return the sphere security*/
+    public SphereSecurity getSphereSecurity()
+    {
+        return (SphereSecurity) sphereForAndroid;
+    }
+
+    /** return the sphere security*/
+    public SphereServiceAccess getSphereServiceAccess()
+    {
+        return (SphereServiceAccess) sphereForAndroid;
+    }
+
     /**
      * create and initialise the sphere
      */
@@ -73,9 +85,9 @@ public final class BezirkSphereHandler {
             devMode = (DevMode) sphereForAndroid;
 
             BezirkCompManager.setSphereUI(sphereForAndroid);
-            BezirkCompManager.setSphereSecurity((SphereSecurity) sphereForAndroid);
 
-            BezirkCompManager.setSphereForPubSub((SphereServiceAccess) sphereForAndroid);
+
+           // BezirkCompManager.setSphereForPubSub((SphereServiceAccess) sphereForAndroid);
             Comms uhuComms = BezirkStackHandler.getBezirkComms();
             uhuComms.setSphereSecurity((SphereSecurity) sphereForAndroid);
         }

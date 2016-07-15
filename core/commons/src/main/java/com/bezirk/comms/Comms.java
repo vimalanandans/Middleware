@@ -60,7 +60,7 @@ public interface Comms {
      * creates queues, threads, sockets
      **/
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             PubSubBroker pubSubBroker, PipeManager pipe,
+                             PubSubBroker pubSubBroker, SphereSecurity sphereSecurity,
                              com.bezirk.streaming.Streaming streaming);
 
     public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);

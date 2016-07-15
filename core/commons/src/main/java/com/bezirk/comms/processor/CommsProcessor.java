@@ -1,7 +1,7 @@
 package com.bezirk.comms.processor;
 
 
-import com.bezirk.BezirkCompManager;
+//import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.CommsMessageDispatcher;
@@ -59,6 +59,8 @@ public abstract class CommsProcessor implements Comms {
     //LogServiceMessageHandler logServiceMsgHandler = null;
     PubSubBroker pubSubBroker = null;
 
+    SphereSecurity sphereSecurity = null;
+
     //generic notifications
     List ICommsNotification = new ArrayList<CommsNotification>();
     /**
@@ -74,7 +76,7 @@ public abstract class CommsProcessor implements Comms {
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             PubSubBroker sadl, PipeManager pipe, Streaming streaming) {
+                             PubSubBroker sadl, SphereSecurity sphereSecurity, Streaming streaming) {
 
         this.pubSubBroker = sadl;
 
@@ -297,7 +299,12 @@ public abstract class CommsProcessor implements Comms {
         //msg = cipherService.encrypt(msgData, testKey).getBytes();
         // temp fix of sending the byte stream
         String msgDataString = new String(msgData);
-        byte[] msg = BezirkCompManager.getSphereSecurity().encryptSphereContent(sphereId, msgDataString);
+        byte[] msg ;
+
+        if(sphereSecurity != null)
+            msg = sphereSecurity.encryptSphereContent(sphereId, msgDataString);
+        else // No encryption when there is no interface
+            msg = msgData;
 
         long endTime = System.nanoTime();
         logger.info("Encryption Took " + (endTime - startTime) + " nano seconds");
@@ -325,8 +332,12 @@ public abstract class CommsProcessor implements Comms {
         if ((msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED_COMPRESSED)
                 || (msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED)) {
 
-            //message = cipherService.decrypt(wireMessage.getMsg(), testKey).getBytes();
-            String data = BezirkCompManager.getSphereSecurity().decryptSphereContent(sphereId, msgData);
+            String data ;
+
+            if(sphereSecurity != null)
+                data = sphereSecurity.decryptSphereContent(sphereId, msgData);
+            else // No decryption when there is no interface
+                data = new String(msgData);
 
             if (data != null) {
                 msg = data.getBytes();

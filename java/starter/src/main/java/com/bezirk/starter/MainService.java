@@ -14,6 +14,8 @@ import com.bezirk.persistence.ProxyPersistence;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.sphere.api.SphereSecurity;
+import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.ui.remotelogging.RemoteLogSphereSelectGUI;
 import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.RegistryPersistence;
@@ -254,6 +256,10 @@ public class MainService {
 
         }
 
+        // init the comms manager for sadl
+        pubSubBroker.initPubSubBroker(comms, (SphereServiceAccess) sphereForPC,(SphereSecurity) sphereForPC);
+
+
         /**************************************************
          * Step9 :Display or save Share sphere QR code    *
          * Enable LoggingGUI                              *
@@ -372,7 +378,10 @@ public class MainService {
          * by BezirkCommsPC
          */
         Streaming streamManager = new StreamManager(comms,pubSubBroker);
-        comms.initComms(null, addr, pubSubBroker, pipeManager, streamManager);
+        comms.initComms(null, addr, pubSubBroker, (SphereSecurity) sphereForPC, streamManager);
+
+
+
         comms.startComms();
 
         // the comms manager for the proxy
@@ -385,8 +394,6 @@ public class MainService {
                 "com.bosch.upa.uhu.rtc.streaming.Signaling", comms);
          	*/
 
-        // init the comms manager for sadl
-        pubSubBroker.initPubSubBroker(comms);
 
         return true;
     }

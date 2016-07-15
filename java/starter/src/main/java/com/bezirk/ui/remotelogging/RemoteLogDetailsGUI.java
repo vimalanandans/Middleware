@@ -249,8 +249,11 @@ public class RemoteLogDetailsGUI extends JFrame {
 
             return RECIPIENT_MULTICAST_VALUE;
         }
-        final String tempDeviceName = BezirkCompManager.getSphereForPubSubBroker()
-                .getDeviceNameFromSphere(deviceId);
+        // Fixme : tempDeviceName get the device name from SphereServiceAccess
+        //      object to access the info
+        final String tempDeviceName = null;
+        // final String tempDeviceName = BezirkCompManager.getSphereForPubSubBroker() \
+       //         .getDeviceNameFromSphere(deviceId);
         return (null == tempDeviceName) ? deviceId : tempDeviceName;
     }
 

@@ -6,7 +6,6 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.UnicastStream;
-import com.bezirk.proxy.ProxyServiceLegacy;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBroker;

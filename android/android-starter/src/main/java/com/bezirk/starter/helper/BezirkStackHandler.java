@@ -183,6 +183,10 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                         return;
                     }
 
+                    // init the comms manager for sadl
+                    pubSubBroker.initPubSubBroker(comms,  sphereProcessorForMainService.getSphereServiceAccess(),
+                            sphereProcessorForMainService.getSphereSecurity());
+
                     /*************************************************************
                      * Step 9 : Start CommsConfigurations after sphere initialization       *
                      *************************************************************/

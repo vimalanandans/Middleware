@@ -91,16 +91,6 @@ public final class BezirkCompManager {
         return BezirkCompManager.platformSpecificCallback;
     }
 
-    // this is temporary for sadl to use the spheres
-    public static SphereServiceAccess getSphereForPubSubBroker() {
-        return sphereServiceAccess;
-    }
-
-    // this is temporary for setting up spheres for sadl
-    public static void setSphereForPubSub(SphereServiceAccess sphereForPubSub) {
-        BezirkCompManager.sphereServiceAccess = sphereForPubSub;
-    }
-
     // this is temporary for UI to use the spheres
     public static SphereAPI getSphereUI() {
         return sphereAPI;
@@ -111,14 +101,4 @@ public final class BezirkCompManager {
         BezirkCompManager.sphereAPI = sphereAPI;
     }
 
-    // this is temporary for proxyForServices to use registration
-    public static SphereSecurity getSphereSecurity() {
-        return sphereSecurity;
-    }
-
-    // this is temporary for setting up zirk registration with spheres for UI
-    public static void setSphereSecurity(
-            SphereSecurity sphereSecurity) {
-        BezirkCompManager.sphereSecurity = sphereSecurity;
-    }
 }

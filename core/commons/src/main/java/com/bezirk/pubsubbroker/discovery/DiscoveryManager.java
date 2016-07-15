@@ -6,6 +6,7 @@ import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.sphere.api.SphereServiceAccess;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,11 +21,16 @@ public class DiscoveryManager implements CtrlMsgReceiver {
 
     private Comms comms;
 
+    SphereServiceAccess sphereServiceAccess;
+
+
+
     private Thread discThread;
 
-    public DiscoveryManager(PubSubBroker sadlManager, Comms comms) {
+    public DiscoveryManager(PubSubBroker sadlManager, Comms comms, SphereServiceAccess sphereServiceAccess) {
         this.sadlManager = sadlManager;
         this.comms = comms;
+        this.sphereServiceAccess = sphereServiceAccess;
     }
 
     public boolean initDiscovery() {
@@ -57,7 +63,7 @@ public class DiscoveryManager implements CtrlMsgReceiver {
         switch (id) {
             case DiscoveryRequest:
                 final DiscoveryRequest req = ControlMessage.deserialize(serializedMsg, DiscoveryRequest.class);
-                new DiscoveryRequestHandler(sadlManager, req, comms).getDiscoveryResponse();
+                new DiscoveryRequestHandler(sadlManager, req, comms, sphereServiceAccess).getDiscoveryResponse();
 
                 break;
             case DiscoveryResponse:

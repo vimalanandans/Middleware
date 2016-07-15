@@ -9,6 +9,8 @@ import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBrokerControlReceiver;
+import com.bezirk.sphere.api.SphereSecurity;
+import com.bezirk.sphere.api.SphereServiceAccess;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,14 +33,16 @@ public class DiscoveryRequestHandler {
     //private final MessageQueue ctrlSenderQueue;
     private final Comms comms;
     private final DiscoveryRequest discReq;
-
+    SphereServiceAccess serviceAccess ;
     /**
      * @param req incoming DiscoveryRequest
      */
-    public DiscoveryRequestHandler(PubSubBrokerControlReceiver sadlCtrl, DiscoveryRequest req, Comms comms) {
+    public DiscoveryRequestHandler(PubSubBrokerControlReceiver sadlCtrl, DiscoveryRequest req,  Comms comms, SphereServiceAccess serviceAccess) {
         this.sadlCtrl = sadlCtrl;
         this.comms = comms;
         this.discReq = req;
+        this.serviceAccess = serviceAccess;
+
         response = new DiscoveryResponse(discReq.getSender(), discReq.getSphereId(), discReq.getUniqueKey(), discReq.getDiscoveryId());
 
     }
@@ -58,7 +62,7 @@ public class DiscoveryRequestHandler {
 
     private Boolean handleSphereDiscovery(DiscoveryRequest discoveryRequest) {
 
-        BezirkCompManager.getSphereForPubSubBroker().processSphereDiscoveryRequest(discoveryRequest);
+        serviceAccess.processSphereDiscoveryRequest(discoveryRequest);
 
         return true;
     }
@@ -72,9 +76,9 @@ public class DiscoveryRequestHandler {
         for (BezirkDiscoveredZirk zirk : discoveredZirks) {
             ZirkId sid = ((BezirkZirkEndPoint) zirk.getZirkEndPoint()).getBezirkZirkId();
 
-            if (BezirkCompManager.getSphereForPubSubBroker().isServiceInSphere(sid, req.getSphereId())) {
+            if (serviceAccess.isServiceInSphere(sid, req.getSphereId())) {
                 //Set the Zirk Name
-                zirk.name = BezirkCompManager.getSphereForPubSubBroker().getServiceName(sid);
+                zirk.name = serviceAccess.getServiceName(sid);
                 //Populate response zirk list
                 response.getZirkList().add(zirk);
             }

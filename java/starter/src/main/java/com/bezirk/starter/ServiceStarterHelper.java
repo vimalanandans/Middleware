@@ -69,13 +69,12 @@ final class ServiceStarterHelper {
         bezirkSphereForPC.initSphere(registryPersistence, comms, sphereConfig);
 
         BezirkCompManager.setSphereUI(sphereForPC);
-        BezirkCompManager
-                .setSphereSecurity((SphereSecurity) sphereForPC);
+
 
         com.bezirk.sphere.SphereManager.setBezirkQRCode((BezirkQRCode) sphereForPC);
 
         final SphereSecurity sphereForSadl = (SphereSecurity) sphereForPC;
-        BezirkCompManager.setSphereForPubSub((SphereServiceAccess) sphereForPC);
+
 
         try {
 
