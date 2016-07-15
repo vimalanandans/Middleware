@@ -5,11 +5,11 @@ import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.ZirkId;
 
 /**
- * Platform Independent API's for PubSubBroker that are used to manipulate the PubSubBroker Maps.
+ * Platform Independent API's for Proxy server to control PubSubBroker regarding service related actions.
  */
-public interface IPubSubBrokerRegistry {
+public interface PubSubBrokerServiceTrigger {
     /**
-     * Registers a UPA Zirk with ZirkId in PubSubBroker.
+     * Registers a Zirk with ZirkId in PubSubBroker.
      *
      * @param serviceId ZirkId of the registering Zirk.
      * @return true is successful, false otherwise.

@@ -11,8 +11,8 @@ import com.bezirk.proxy.api.impl.SubscribedRole;
 
 import java.io.File;
 
-
-public interface BezirkProxyForServiceAPI {
+@Deprecated // Use Core > PubSubBrokerServiceTrigger
+public interface PubSubBrokerServiceTrigger {
     void registerService(ZirkId serviceId, String serviceName);
 
     void subscribeService(ZirkId serviceId, SubscribedRole pRole);

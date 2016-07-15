@@ -3,14 +3,14 @@ package com.bezirk.pipe;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.messagehandler.PipeRequestIncomingMessage;
-import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
+import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 
-public class MockCallBackZirk implements ZirkMessageHandler {
+public class MockCallBack implements MessageHandler {
     private MockBezirkZirk mockBezirkZirk = null;
 
-    public MockCallBackZirk(MockBezirkZirk mockBezirkZirk) {
+    public MockCallBack(MockBezirkZirk mockBezirkZirk) {
         super();
         this.mockBezirkZirk = mockBezirkZirk;
     }

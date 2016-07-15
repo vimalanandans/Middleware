@@ -3,7 +3,7 @@ package com.bezirk.util;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.messagehandler.PipeRequestIncomingMessage;
-import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
+import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 
@@ -12,7 +12,7 @@ import com.bezirk.proxy.messagehandler.StreamStatusMessage;
  *
  * @author AJC6KOR
  */
-public class MockCallbackZirk implements ZirkMessageHandler {
+public class MockCallback implements MessageHandler {
 
     @Override
     public void onIncomingEvent(EventIncomingMessage eventIncomingMessage) {

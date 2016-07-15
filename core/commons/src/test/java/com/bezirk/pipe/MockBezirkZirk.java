@@ -8,7 +8,7 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.proxy.ServiceRegistration;
+import com.bezirk.proxy.ServiceRegistrationUtil;
 
 import java.io.File;
 import java.io.InputStream;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class MockBezirkZirk implements BezirkListener {
 
-    private ZirkId serviceId = new ZirkId(ServiceRegistration.generateUniqueServiceID());
+    private ZirkId serviceId = new ZirkId(ServiceRegistrationUtil.generateUniqueServiceID());
 
     private boolean pipeGrantedCalled = false;
     private boolean pipeGranted = false;

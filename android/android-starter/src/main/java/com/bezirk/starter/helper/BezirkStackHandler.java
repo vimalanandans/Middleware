@@ -12,7 +12,7 @@ import com.bezirk.comms.CommsConfigAndroid;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.Device;
 import com.bezirk.persistence.RegistryPersistence;
-import com.bezirk.proxy.android.ProxyForZirks;
+import com.bezirk.proxy.ProxyService;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBroker;
@@ -53,14 +53,14 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
 
     private final BezirkDeviceHelper bezirkDeviceHelper = new BezirkDeviceHelper();
 
-    private final ProxyForZirks proxy;
+    private final ProxyService proxy;
 
     private final CommsNotification errNotificationCallback;
     private final BezirkWifiManager bezirkWifiManager;
     private final BezirkStartStackHelper bezirkStartStackHelper;
     private RegistryPersistence registryPersistence;
 
-    public BezirkStackHandler(ProxyForZirks proxy, CommsNotification errorNotificationCallback) {
+    public BezirkStackHandler(ProxyService proxy, CommsNotification errorNotificationCallback) {
         this.proxy = proxy;
         this.errNotificationCallback = errorNotificationCallback;
         this.bezirkWifiManager = BezirkWifiManager.getInstance();
@@ -153,7 +153,7 @@ public final class BezirkStackHandler implements com.bezirk.starter.BezirkStackH
                      * Step 5 : Initialize PubSubBroker and set sadl for proxy *
                      *************************************************************/
                     PubSubBroker pubSubBroker = new PubSubBroker(registryPersistence);
-                    proxy.setPubSubBrokerRegistry(pubSubBroker);
+                    proxy.setPubSubBrokerService(pubSubBroker);
 
                     /*************************************************************
                      * Step 6 : Initialize BezirkCommsManager                       *

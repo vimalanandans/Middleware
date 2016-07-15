@@ -5,9 +5,8 @@
  *
  */
 
-package com.bezirk.proxy.android;
+package com.bezirk.proxy;
 
-import android.app.Service;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.Comms;
@@ -17,6 +16,7 @@ import com.bezirk.control.messages.GenerateMsgId;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
+import com.bezirk.pubsubbroker.PubSubBrokerServiceTrigger;
 import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
 import com.bezirk.pubsubbroker.discovery.DiscoveryProcessor;
 import com.bezirk.pubsubbroker.discovery.DiscoveryRecord;
@@ -27,11 +27,7 @@ import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.pubsubbroker.IPubSubBrokerRegistry;
-import com.bezirk.starter.helper.BezirkStackHandler;
 import com.bezirk.streaming.control.Objects.StreamRecord;
-import com.bezirk.streaming.rtc.Signaling;
-import com.bezirk.streaming.rtc.SignalingFactory;
 import com.bezirk.util.ValidatorUtility;
 import com.bezrik.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;
@@ -42,37 +38,45 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Iterator;
 
-public class ProxyForZirks implements BezirkProxyForServiceAPI {
-    private static final Logger logger = LoggerFactory.getLogger(ProxyForZirks.class);
+public class ProxyService {
+    private static final Logger logger = LoggerFactory.getLogger(ProxyService.class);
 
     // TODO: do we need do know who the zirk is???  It looks like this variable is not used!
-    private static Service serviceInstance;
-    private final ProxyForZirksHelper proxyForZirksHelper;
-    private IPubSubBrokerRegistry pubSubBrokerRegistry;
+   // private static Service serviceInstance; // Used for pipe to get access. delete it later
+    private final ProxyServerUtilHelper proxyServerUtilHelper;
+    private PubSubBrokerServiceTrigger pubSubBrokerService;
     private Comms comms;
 
-    public ProxyForZirks(Service service) {
+    public ProxyService() {
+        proxyServerUtilHelper = new ProxyServerUtilHelper();
+    }
+    /*
+    public ProxyService(Service service) {
         serviceInstance = service;
-        proxyForZirksHelper = new ProxyForZirksHelper();
+        proxyServerUtilHelper = new ProxyServerUtilHelper();
+    }
+    /*public ProxyService(Service service) {
+        serviceInstance = service;
+        proxyServerUtilHelper = new ProxyServerUtilHelper();
     }
 
     public static Service getServiceInstance() {
         return serviceInstance;
     }
+*/
 
-    @Override
     public void registerService(final ZirkId serviceId, final String serviceName) {
 
-        //TODO this code is common across all the methods here, implement a annotation.
+      /*  //TODO this code is common across all the methods here, implement a annotation.
         //if Stack was not started correctly, return without any further actions.
         if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
-
+*/
 
         // Step 1: Register with SADL
-        boolean isSADLPassed = pubSubBrokerRegistry.registerService(serviceId);
+        boolean isSADLPassed = pubSubBrokerService.registerService(serviceId);
 
         if (isSADLPassed) {
             // Step 2: moved to outside since the sphere persistence is not ready
@@ -88,28 +92,28 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
         } else {
             // unregister the sadl due to failure in sphere
             logger.error("sphere Registration Failed. unregistring SADL");
-            pubSubBrokerRegistry.unregisterService(serviceId);
+            pubSubBrokerService.unregisterService(serviceId);
         }
     }
 
-    @Override
+
     public void subscribeService(final ZirkId serviceId, final SubscribedRole pRole) {
         //if Stack was not started correctly, return without any further actions.
-        if (!BezirkStackHandler.isStackStarted()) {
+    /*    if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
-        pubSubBrokerRegistry.subscribeService(serviceId, pRole);
+      */  pubSubBrokerService.subscribeService(serviceId, pRole);
     }
 
-    @Override
+
     public void sendMulticastEvent(final ZirkId serviceId, final RecipientSelector recipientSelector, final String serializedEventMsg) {
         //if Stack was not started correctly, return without any further actions.
-        if (!BezirkStackHandler.isStackStarted()) {
+     /*   if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
-
+*/
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(serviceId);
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with any sphere: " + serviceId.getZirkId());
@@ -142,19 +146,20 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
 
     }
 
-    @Override
+
     public void sendUnicastEvent(final ZirkId serviceId, final BezirkZirkEndPoint recipient, final String serializedEventMsg) {
         //if Stack was not started correctly, return without any further actions.
-        if (!BezirkStackHandler.isStackStarted()) {
+      /*  if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
-
+*/
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(serviceId);
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with the sphere");
             return;
         }
+
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         final BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(serviceId);
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
@@ -182,14 +187,14 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
 
     }
 
-    @Override
+
     public void discover(final ZirkId serviceId, final RecipientSelector recipientSelector, final SubscribedRole pRole, final int discoveryId, final long timeout, final int maxDiscovered) {
         //if Stack was not started correctly, return without any further actions.
-        if (!BezirkStackHandler.isStackStarted()) {
+     /*   if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
-
+*/
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(serviceId);
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with the sphere");
@@ -218,14 +223,14 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
         DiscoveryProcessor.getDiscovery().addRequest(discoveryLabel, pendingRequest);
     }
 
-    @Override
+
     public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId) {
         //if Stack was not started correctly, return without any further actions.
-        if (!BezirkStackHandler.isStackStarted()) {
+    /*    if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
             return (short) -1;
         }
-
+*/
         final Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(senderId);
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with any sphere: " + senderId);
@@ -237,14 +242,14 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":" + streamId;
             final Stream stream = new Gson().fromJson(serializedString, Stream.class);
 
-            final StreamRecord streamRecord = proxyForZirksHelper.prepareStreamRecord(receiver, serializedString, file, streamId, senderSEP, stream);
+            final StreamRecord streamRecord = proxyServerUtilHelper.prepareStreamRecord(receiver, serializedString, file, streamId, senderSEP, stream);
 
             boolean streamStoreStatus = comms.registerStreamBook(streamRequestKey, streamRecord);
             if (!streamStoreStatus) {
                 logger.error("Cannot Register Stream, CtrlMsgId is already present in StreamBook");
                 return (short) -1;
             }
-            proxyForZirksHelper.sendStreamToSpheres(sphereIterator, streamRequestKey, streamRecord, file, comms);
+            proxyServerUtilHelper.sendStreamToSpheres(sphereIterator, streamRequestKey, streamRecord, file, comms);
         } catch (Exception e) {
             logger.error("Cant get the SEP of the sender", e);
             return (short) -1;
@@ -252,15 +257,15 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
         return (short) 1;
     }
 
-    @Override
+
     public short sendStream(ZirkId sender, BezirkZirkEndPoint receiver, String serializedString, short streamId) {
         //if Stack was not started correctly, return without any further actions.
-        if (!BezirkStackHandler.isStackStarted()) {
+     /*   if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
             return (short) -1;
         }
-
-        Signaling signaling = null;
+*/
+    /*    Signaling signaling = null;
         if (SignalingFactory.getSignalingInstance() instanceof Signaling) {
             signaling = (Signaling) SignalingFactory.getSignalingInstance();
         }
@@ -268,7 +273,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             logger.error("Feature not enabled.");
             return (short) -1;
         }
-
+*/
         Iterable<String> listOfSphere = BezirkCompManager.getSphereForPubSubBroker().getSphereMembership(sender);
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with any sphere: " + sender);
@@ -279,7 +284,7 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
             BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(sender);
             String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":" + streamId;
 
-           /* String sphereId = proxyForZirksHelper.getSphereId(receiver, sphereIterator);
+           /* String sphereId = proxyServerUtilHelper.getSphereId(receiver, sphereIterator);
             RTCControlMessage request = new RTCControlMessage(senderSEP, receiver, sphereId, streamRequestKey, RTCControlMessage.RTCControlMessageType.RTCSessionId, null);
             signaling.startSignaling(request);*/
         } catch (Exception e) {
@@ -289,41 +294,41 @@ public class ProxyForZirks implements BezirkProxyForServiceAPI {
         return (short) 1;
     }
 
-    @Override
+
     public void setLocation(final ZirkId serviceId, final Location location) {
         //if Stack was not started correctly, return without any further actions.
-        if (!BezirkStackHandler.isStackStarted()) {
+     /*   if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
-
-        pubSubBrokerRegistry.setLocation(serviceId, location);
+*/
+        pubSubBrokerService.setLocation(serviceId, location);
     }
 
-    @Override
-    public void unsubscribe(final ZirkId serviceId, final SubscribedRole role) {
+
+    public boolean unsubscribe(final ZirkId serviceId, final SubscribedRole role) {
         //if Stack was not started correctly, return without any further actions.
-        if (!BezirkStackHandler.isStackStarted()) {
+      /*  if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
-
-        pubSubBrokerRegistry.unsubscribe(serviceId, role);
+*/
+        return pubSubBrokerService.unsubscribe(serviceId, role);
     }
 
-    @Override
+
     public void unregister(ZirkId serviceId) {
         //if Stack was not started correctly, return without any further actions.
-        if (!BezirkStackHandler.isStackStarted()) {
+     /*   if (!BezirkStackHandler.isStackStarted()) {
             logger.error("Bezirk was not started properly!!!. Restart the stack.");
             return;
         }
-
-        pubSubBrokerRegistry.unregisterService(serviceId);
+*/
+        pubSubBrokerService.unregisterService(serviceId);
     }
 
-    public void setPubSubBrokerRegistry(IPubSubBrokerRegistry pubSubBrokerRegistry) {
-        this.pubSubBrokerRegistry = pubSubBrokerRegistry;
+    public void setPubSubBrokerService(PubSubBrokerServiceTrigger pubSubBrokerService) {
+        this.pubSubBrokerService = pubSubBrokerService;
     }
 
     public void setComms(Comms comms) {

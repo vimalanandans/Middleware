@@ -18,8 +18,8 @@ import java.util.List;
  *
  * @author ajc6kor
  */
-final class BezirkPCNetworkUtil {
-    private static final Logger logger = LoggerFactory.getLogger(BezirkPCNetworkUtil.class);
+final class NetworkUtil {
+    private static final Logger logger = LoggerFactory.getLogger(NetworkUtil.class);
 
     NetworkInterface fetchNetworkInterface(final BezirkConfig bezirkConfig)
             throws SocketException, NullPointerException {

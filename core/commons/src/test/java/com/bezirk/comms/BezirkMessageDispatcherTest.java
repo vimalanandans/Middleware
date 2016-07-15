@@ -7,8 +7,8 @@ import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.BeforeClass;

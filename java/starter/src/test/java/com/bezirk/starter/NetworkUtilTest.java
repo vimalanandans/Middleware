@@ -17,7 +17,7 @@ import static org.junit.Assert.fail;
  *
  * @author AJC6KOR
  */
-public class BezirkPCNetworkUtilTest {
+public class NetworkUtilTest {
     private static MockSetUpUtilityForBezirkPC mockSetUP = new MockSetUpUtilityForBezirkPC();
 
     @BeforeClass
@@ -44,13 +44,13 @@ public class BezirkPCNetworkUtilTest {
      */
     private void testFetchNetworkInterface() {
 
-        BezirkPCNetworkUtil bezirkPCNetworkUtil = new BezirkPCNetworkUtil();
+        NetworkUtil networkUtil = new NetworkUtil();
         BezirkConfig bezirkConfig = new BezirkConfig();
 
         BezirkCommsPC.init();
         NetworkInterface intf = null;
         try {
-            intf = bezirkPCNetworkUtil.fetchNetworkInterface(bezirkConfig);
+            intf = networkUtil.fetchNetworkInterface(bezirkConfig);
         } catch (Exception e) {
             fail("Unable to fetch network interface. " + e.getMessage());
         }

@@ -1,7 +1,7 @@
 package com.bezirk;
 
 import com.bezirk.devices.DeviceInterface;
-import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
+import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.sphere.api.PubSubSphereAccess;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereRegistration;
@@ -40,7 +40,7 @@ public final class BezirkCompManager {
     private static DeviceInterface upaDevice;
 
 
-    private static ZirkMessageHandler platformSpecificCallback;
+    private static MessageHandler platformSpecificCallback;
 
     private static PubSubSphereAccess pubSubSphereAccess;
 
@@ -83,11 +83,11 @@ public final class BezirkCompManager {
         BezirkCompManager.upaDevice = upaDevice;
     }
 
-    public static void setplatformSpecificCallback(ZirkMessageHandler bezirkCallback) {
+    public static void setplatformSpecificCallback(MessageHandler bezirkCallback) {
         BezirkCompManager.platformSpecificCallback = bezirkCallback;
     }
 
-    public static ZirkMessageHandler getplatformSpecificCallback() {
+    public static MessageHandler getplatformSpecificCallback() {
         return BezirkCompManager.platformSpecificCallback;
     }
 

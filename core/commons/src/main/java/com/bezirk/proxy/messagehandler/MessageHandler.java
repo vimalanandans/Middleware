@@ -4,10 +4,10 @@
 package com.bezirk.proxy.messagehandler;
 
 /**
- * Platform independent API used to give ZirkMessageHandler to the ProxyForBezirk Library.
+ * Platform independent API used to give MessageHandler to the ProxyForBezirk Library.
  * Specific platforms should implement this interface and should inject it in BezirkCompManager.
  */
-public interface ZirkMessageHandler {
+public interface MessageHandler {
     /**
      * Method fires the EventCallbackMessage to the ProxyForBezirkLibrary.
      *

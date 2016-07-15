@@ -23,7 +23,6 @@ import com.bezirk.middleware.messages.Stream;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.pubsubbroker.IPubSubBrokerRegistry;
 import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
 import com.bezirk.pubsubbroker.discovery.DiscoveryProcessor;
 import com.bezirk.pubsubbroker.discovery.DiscoveryRecord;
@@ -39,16 +38,16 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Iterator;
-
-public class ProxyForServices implements BezirkProxyForServiceAPI {
-    private static final Logger logger = LoggerFactory.getLogger(ProxyForServices.class);
-    private IPubSubBrokerRegistry sadlRegistry = null;
+@Deprecated // Use Core > Proxy Server. Kept only as reference
+public class ProxyServiceLegacy implements PubSubBrokerServiceTrigger {
+    private static final Logger logger = LoggerFactory.getLogger(ProxyServiceLegacy.class);
+    private com.bezirk.pubsubbroker.PubSubBrokerServiceTrigger pubSubBrokerRegistry = null;
     private Comms comms = null;
 
     @Override
     public void registerService(final ZirkId serviceId, final String serviceName) {
         // Step 1: Register with SADL
-        boolean isSADLPassed = sadlRegistry.registerService(serviceId);
+        boolean isSADLPassed = pubSubBrokerRegistry.registerService(serviceId);
         if (isSADLPassed) {
             // Step 2: moved to outside since the sphere persistence is not ready
         } else {
@@ -60,13 +59,13 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
         } else {
             // unregister the sadl due to failure in sphere
             logger.error("Sphere Registration Failed: unregistering SADL");
-            sadlRegistry.unregisterService(serviceId);
+            pubSubBrokerRegistry.unregisterService(serviceId);
         }
     }
 
     @Override
     public void subscribeService(final ZirkId serviceId, final SubscribedRole pRole) {
-        sadlRegistry.subscribeService(serviceId, pRole);
+        pubSubBrokerRegistry.subscribeService(serviceId, pRole);
     }
 
     @Override
@@ -231,27 +230,27 @@ public class ProxyForServices implements BezirkProxyForServiceAPI {
 
     @Override
     public void setLocation(final ZirkId serviceId, final Location location) {
-        sadlRegistry.setLocation(serviceId, location);
+        pubSubBrokerRegistry.setLocation(serviceId, location);
     }
 
     @Override
     public boolean unsubscribe(final ZirkId serviceId, final SubscribedRole role) {
-        return sadlRegistry.unsubscribe(serviceId, role);
+        return pubSubBrokerRegistry.unsubscribe(serviceId, role);
     }
 
     @Override
     public void unregister(ZirkId serviceId) {
-        sadlRegistry.unregisterService(serviceId);
+        pubSubBrokerRegistry.unregisterService(serviceId);
     }
 
 
-    public IPubSubBrokerRegistry getSadlRegistry() {
-        return sadlRegistry;
+    public com.bezirk.pubsubbroker.PubSubBrokerServiceTrigger getPubSubBrokerRegistry() {
+        return pubSubBrokerRegistry;
     }
 
 
-    public void setSadlRegistry(IPubSubBrokerRegistry sadlRegistry) {
-        this.sadlRegistry = sadlRegistry;
+    public void setPubSubBrokerRegistry(com.bezirk.pubsubbroker.PubSubBrokerServiceTrigger pubSubBrokerRegistry) {
+        this.pubSubBrokerRegistry = pubSubBrokerRegistry;
     }
 
 

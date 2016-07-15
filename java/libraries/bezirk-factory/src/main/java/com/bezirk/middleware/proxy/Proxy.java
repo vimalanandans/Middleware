@@ -1,5 +1,6 @@
 package com.bezirk.middleware.proxy;
 
+import com.bezirk.proxy.ProxyService;
 import com.bezirk.proxy.messagehandler.ServiceMessageHandler;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.middleware.Bezirk;
@@ -17,8 +18,7 @@ import com.bezirk.persistence.ProxyRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.ProxyForServices;
-import com.bezirk.proxy.ServiceRegistration;
+import com.bezirk.proxy.ServiceRegistrationUtil;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.ValidatorUtility;
 
@@ -39,7 +39,7 @@ public class Proxy implements Bezirk {
     protected final HashMap<String, HashSet<BezirkListener>> eventListenerMap = new HashMap<String, HashSet<BezirkListener>>();
     protected final HashMap<String, HashSet<BezirkListener>> streamListenerMap = new HashMap<String, HashSet<BezirkListener>>();
     protected final HashMap<String, String> activeStreams = new HashMap<String, String>();
-    private final ProxyForServices proxy;
+    private final ProxyService proxy;
     private final ProxyUtil proxyUtil;
     private final ProxyPersistence proxyPersistence;
     private final MainService mainService;
@@ -50,7 +50,7 @@ public class Proxy implements Bezirk {
     private ZirkId zirkId;
 
     public Proxy() {
-        proxy = new ProxyForServices();
+        proxy = new ProxyService();
         proxyUtil = new ProxyUtil();
         mainService = new MainService(proxy, null);
         final BroadcastReceiver brForService = new BRForService(activeStreams, dListenerMap,
@@ -75,7 +75,7 @@ public class Proxy implements Bezirk {
         String zirkIdAsString = proxyRegistry.getBezirkServiceId(zirkName);
 
         if (null == zirkIdAsString) {
-            zirkIdAsString = ServiceRegistration.generateUniqueServiceID() + ":" + zirkName;
+            zirkIdAsString = ServiceRegistrationUtil.generateUniqueServiceID() + ":" + zirkName;
             proxyRegistry.updateBezirkZirkId(zirkName, zirkIdAsString);
             try {
                 proxyPersistence.persistBezirkProxyRegistry();

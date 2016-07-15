@@ -84,7 +84,7 @@ public class MockSetUpUtilityForBezirkPC {
         comms = new MockComms();
         Streaming streamManager = new StreamManager(comms,pubSubBroker);
         comms.initComms(null, inetAddr, pubSubBroker, null,streamManager);
-        pubSubBroker.initSadlManager(comms);
+        pubSubBroker.initPubSubBroker(comms);
         comms.registerNotification(Mockito.mock(CommsNotification.class));
         comms.startComms();
 
@@ -94,7 +94,7 @@ public class MockSetUpUtilityForBezirkPC {
         bezirkSphere.initSphere(spherePersistence, comms, sphereListener, sphereConfig);
         BezirkCompManager.setSphereRegistration((SphereRegistration) bezirkSphere);
         BezirkCompManager.setSphereForPubSub(bezirkSphere);
-        BezirkCompManager.setplatformSpecificCallback(new MockCallbackZirk());
+        BezirkCompManager.setplatformSpecificCallback(new MockCallback());
     }
 
 

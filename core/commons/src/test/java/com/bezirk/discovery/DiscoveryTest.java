@@ -2,9 +2,9 @@ package com.bezirk.discovery;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
-import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
+import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.pipe.MockCallBackZirk;
+import com.bezirk.pipe.MockCallBack;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
@@ -98,7 +98,7 @@ public class DiscoveryTest {
 
         assertEquals("DiscoveredMap size is not equal to the number of requests added", 2, getDiscoveredMapsize(discovery));
 
-        ZirkMessageHandler bezirkCallback = new MockCallBackZirk(new MockBezirkZirk());
+        MessageHandler bezirkCallback = new MockCallBack(new MockBezirkZirk());
         BezirkCompManager.setplatformSpecificCallback(bezirkCallback);
 
 		/*Testing addResponse api in discovery*/

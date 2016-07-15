@@ -1,4 +1,4 @@
-package com.bezirk.ui.commstest.ui;
+package com.bezirk.ui.commstest;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.CommsConfigurations;

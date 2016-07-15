@@ -7,7 +7,7 @@ import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.proxy.android.ProxyForZirks;
+import com.bezirk.proxy.ProxyService;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
@@ -26,9 +26,9 @@ public final class ServiceHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceHelper.class);
 
-    private final ProxyForZirks proxy;
+    private final ProxyService proxy;
 
-    public ServiceHelper(ProxyForZirks proxy) {
+    public ServiceHelper(ProxyService proxy) {
 
         this.proxy = proxy;
     }

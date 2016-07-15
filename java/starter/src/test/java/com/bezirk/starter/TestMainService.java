@@ -1,7 +1,8 @@
 package com.bezirk.starter;
 
-import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
-import com.bezirk.proxy.ProxyForServices;
+import com.bezirk.proxy.ProxyService;
+import com.bezirk.proxy.ProxyServiceLegacy;
+import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 
 import org.junit.AfterClass;
@@ -47,13 +48,13 @@ public class TestMainService {
      */
     @Test
     public void testStartStack() {
-        ProxyForServices proxyforServices = new ProxyForServices();
+        ProxyService proxyService = new ProxyService();
         BezirkConfig bezirkConfigRef = new BezirkConfig();
         //bezirkConfigRef.setDisplayEnable("false");
         /** DisplayEnable - true  */
         //System.setProperty("displayEnable", "true");
-        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyforServices, bezirkConfigRef);
-        ZirkMessageHandler testMock = Mockito.mock(ZirkMessageHandler.class);
+        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyService, bezirkConfigRef);
+        MessageHandler testMock = Mockito.mock(MessageHandler.class);
         mainService.startStack(testMock);
 
         assertNotNull("sphere not initialized in startStack.", mainService.sphereForPC);
@@ -79,11 +80,11 @@ public class TestMainService {
      */
     @Test
     public void testStopStack() {
-        ProxyForServices proxyForServices = new ProxyForServices();
+        ProxyService proxyService = new ProxyService();
         BezirkConfig bezirkConfigRef = new BezirkConfig();
         //bezirkConfigRef.setDisplayEnable("false");
-        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyForServices, bezirkConfigRef);
-        ZirkMessageHandler testMock = Mockito.mock(ZirkMessageHandler.class);
+        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyService, bezirkConfigRef);
+        MessageHandler testMock = Mockito.mock(MessageHandler.class);
         mainService.startStack(testMock);
 
         mainService.stopStack();
@@ -96,11 +97,11 @@ public class TestMainService {
      */
     @Test
     public void testReboot() {
-        ProxyForServices proxyForServices = new ProxyForServices();
+        ProxyService proxyService = new ProxyService();
         BezirkConfig bezirkConfigRef = new BezirkConfig();
         //bezirkConfigRef.setDisplayEnable("false");
-        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyForServices, bezirkConfigRef);
-        mainService.startStack(Mockito.mock(ZirkMessageHandler.class));
+        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyService, bezirkConfigRef);
+        mainService.startStack(Mockito.mock(MessageHandler.class));
 
         mainService.reboot();
         assertNotNull("sphere not intialized after reboot.", mainService.sphereForPC);

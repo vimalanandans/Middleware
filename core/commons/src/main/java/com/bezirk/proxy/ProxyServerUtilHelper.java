@@ -1,4 +1,4 @@
-package com.bezirk.proxy.android;
+package com.bezirk.proxy;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.Comms;
@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Iterator;
 
-class ProxyForZirksHelper {
-    private static final Logger logger = LoggerFactory.getLogger(ProxyForZirksHelper.class);
+class ProxyServerUtilHelper {
+    private static final Logger logger = LoggerFactory.getLogger(ProxyServerUtilHelper.class);
 
     private ControlLedger prepareMessage(Iterator<String> sphereIterator, String streamRequestKey, StreamRecord streamRecord, File tempFile) {
         final String sphereName = sphereIterator.next();

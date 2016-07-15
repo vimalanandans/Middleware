@@ -11,13 +11,13 @@ import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.device.Device;
 import com.bezirk.comms.CommsFeature;
 import com.bezirk.persistence.ProxyPersistence;
+import com.bezirk.proxy.ProxyService;
+import com.bezirk.proxy.messagehandler.MessageHandler;
+import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.ui.remotelogging.RemoteLogSphereSelectGUI;
-import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
 import com.bezirk.persistence.DatabaseConnection;
 import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.pipe.PipeManager;
-import com.bezirk.proxy.ProxyForServices;
-import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.streaming.StreamManager;
 import com.bezirk.streaming.Streaming;
@@ -43,8 +43,8 @@ public class MainService {
      * Max value for the notification
      */
     private static final int MAX_ERROR_REPEAT_COUNT = 100;
-    private final ProxyForServices proxyForServices;
-    private final BezirkPCNetworkUtil bezirkPcNetworkUtil = new BezirkPCNetworkUtil();
+    private final ProxyService proxyService;
+    private final NetworkUtil networkUtil = new NetworkUtil();
     private final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
     SphereAPI sphereForPC;
     /**
@@ -109,13 +109,13 @@ public class MainService {
     /**
      * Configure proxy and <code>bezirkConfig</code> for main zirk
      *
-     * @param proxyForServices
+     * @param proxyService
      * @param bezirkConfigRef
      */
-    public MainService(final ProxyForServices proxyForServices,
+    public MainService(final ProxyService proxyService,
                        final BezirkConfig bezirkConfigRef) {
 
-        this.proxyForServices = proxyForServices;
+        this.proxyService = proxyService;
 
         bezirkConfig = bezirkConfigRef;
 
@@ -174,7 +174,7 @@ public class MainService {
      *
      * @param bezirkPcCallback
      */
-    public void startStack(final ZirkMessageHandler bezirkPcCallback) {
+    public void startStack(final MessageHandler bezirkPcCallback) {
         logger.info("BezirkStarter has started");
 
         /**************************************************
@@ -204,7 +204,7 @@ public class MainService {
 
         NetworkInterface intf = null;
         try {
-            intf = bezirkPcNetworkUtil.fetchNetworkInterface(this.bezirkConfig);
+            intf = networkUtil.fetchNetworkInterface(this.bezirkConfig);
         } catch (Exception e) {
             serviceStarterHelper.fail("Error in fetching interface name", e);
         }
@@ -220,8 +220,8 @@ public class MainService {
         final PubSubBroker pubSubBroker = new PubSubBroker(
                 registryPersistence);
 
-        // Inject to proxyForServices
-        proxyForServices.setSadlRegistry(pubSubBroker);
+        // Inject to proxyServer
+        proxyService.setPubSubBrokerService(pubSubBroker);
 
         /**************************************************
          * Step6 :Initialize the comms.                   *
@@ -330,7 +330,7 @@ public class MainService {
         }
     }
 
-    private boolean initComms(final ZirkMessageHandler bezirkPcCallback,
+    private boolean initComms(final MessageHandler bezirkPcCallback,
                               final NetworkInterface intf, final PubSubBroker pubSubBroker) {
 
         CommsFactory commsFactory = new CommsFactory();
@@ -376,7 +376,7 @@ public class MainService {
         comms.startComms();
 
         // the comms manager for the proxy
-        proxyForServices.setCommsManager(comms);
+        proxyService.setComms(comms);
 
         // Set RTC Signalling for streaming
 
@@ -386,7 +386,7 @@ public class MainService {
          	*/
 
         // init the comms manager for sadl
-        pubSubBroker.initSadlManager(comms);
+        pubSubBroker.initPubSubBroker(comms);
 
         return true;
     }

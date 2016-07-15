@@ -6,10 +6,10 @@ import android.content.Intent;
 import com.bezirk.actions.BezirkActions;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
+import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.proxy.messagehandler.PipeRequestIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
-import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
 /**
  * This class implements BezirkCallback and provides platform specific implementations for android
  */
-public class AndroidZirkMessageHandler implements ZirkMessageHandler {
-    private static final Logger logger = LoggerFactory.getLogger(AndroidZirkMessageHandler.class);
+public class ProxyClientMessageHandler implements MessageHandler {
+    private static final Logger logger = LoggerFactory.getLogger(ProxyClientMessageHandler.class);
 
     /**
      * This intent action is subscribed by all the ProxyForBezirk
@@ -34,7 +34,7 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
      */
     private final Context applicationContext;
 
-    public AndroidZirkMessageHandler(Context context) {
+    public ProxyClientMessageHandler(Context context) {
         this.applicationContext = context;
     }
 
@@ -121,7 +121,7 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
             fireIntent.putExtra(discoveryIdKEY, discoveryIncomingMessage.discoveryId);
             fireIntent.putExtra(discoveredServiceListKEY, discoveryIncomingMessage.discoveredList);
             if (discoveryIncomingMessage.isSphereDiscovery) {
-                fireIntenttoSphere(fireIntent);
+                fireIntentToSphere(fireIntent);
             } else {
                 fireIntentToService(fireIntent);
             }
@@ -161,7 +161,7 @@ public class AndroidZirkMessageHandler implements ZirkMessageHandler {
         logger.error("Application Context is null, cant fire the  broadcast Intent intent!");
     }
 
-    private void fireIntenttoSphere(Intent fireIntent) {
+    private void fireIntentToSphere(Intent fireIntent) {
         fireIntent.setAction("SphereScanReceiver");
         fireIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (null != applicationContext) {
