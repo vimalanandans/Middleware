@@ -6,6 +6,7 @@ jar {
 }
 
 dependencies {
+    testCompile project(':core:bezirk-middleware-api')
     compile project(':core:control-messages')
     //compile project(':core:pipes') // refactoring pipes
     compile 'org.slf4j:slf4j-api:1.7.6'
@@ -22,7 +23,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.xerial:sqlite-jdbc:3.7.2'
     testCompile 'org.mockito:mockito-all:1.10.19'
-    testCompile project(':core:bezirk-middleware-api')
+
 
     /*
     // TODO: decide if we want to use spock.  If so, uncomment the following lines.

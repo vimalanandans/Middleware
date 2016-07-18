@@ -383,7 +383,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         }
         final DiscoveryLabel discoveryLabel = new DiscoveryLabel(senderSEP, discoveryId);
         final DiscoveryRecord pendingRequest = new DiscoveryRecord(timeout, maxDiscovered);
-        DiscoveryProcessor.getDiscovery().addRequest(discoveryLabel, pendingRequest);
+        DiscoveryProcessor.getDiscovery().addRequest(discoveryLabel, pendingRequest, msgHandler);
 
         return false;
     }

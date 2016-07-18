@@ -12,6 +12,7 @@ import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.util.MockComms;
 import com.bezirk.util.MockProtocolsForBezirkPC;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
+import com.bezirk.proxy.ProxyServer;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -68,72 +69,7 @@ public class ProxySendTest {
         mockSetUP.destroyTestSetUp();
     }
 
-    @Test
-    public void testSendStream() {
-        try {
-            sendFile = new File(getClass().getClassLoader().getResource("streamingTest.txt").getPath());
-        } catch (NullPointerException e) {
-            logger.error("Unable to find file");
-        }
-        ProxyServiceLegacy proxyServiceLegacy = new ProxyServiceLegacy();
-        proxyServiceLegacy.setPubSubBrokerRegistry(sadlManager);
-        MockComms mockComms = (MockComms) mockSetUP.getComms();
-        proxyServiceLegacy.setCommsManager(mockComms);
-
-        proxyServiceLegacy.registerService(senderId, serviceName);
-        String serializedStream = new MockRequestStream(Message.Flag.REQUEST, "MockStream", receiver).toJson();
-        receiver.device = "DeviceB";
-        short streamId = proxyServiceLegacy.sendStream(senderId, receiver, serializedStream, sendFile, (short) 5);
-        // checking the stream id is not enough
-        assertEquals("Proxy is unable to send stream. ", 1, streamId);
-
-        assertEquals("Proxy is unable to add stream request to the comms queue.", mockSetUP.getTotalSpheres(), mockComms.getStreamList().size());
-        mockComms.clearQueues();
-    }
-
-    @Test
-    public void testSendUnicastEvent() {
-        try {
-            ProxyServiceLegacy proxyServiceLegacy = new ProxyServiceLegacy();
-            proxyServiceLegacy.setPubSubBrokerRegistry(sadlManager);
-            MockComms mockComms = (MockComms) mockSetUP.getComms();
-            proxyServiceLegacy.setCommsManager(mockComms);
-            proxyServiceLegacy.registerService(senderId, serviceName);
-
-            String serializedEventMsg = new MockProtocolsForBezirkPC().new MockEvent1(Flag.REQUEST, "MockEvent").toJson();
-            receiver.device = "DeviceB";
-            proxyServiceLegacy.sendUnicastEvent(senderId, receiver, serializedEventMsg);
-
-            assertEquals("Proxy is unable to add unicast event message to the comms queue.", mockSetUP.getTotalSpheres(), mockComms.getEventList().size());
-
-            mockComms.clearQueues();
-        } catch (Exception e) {
-            fail("Proxy is unable to send unicast events.");
-        }
-    }
-
-    @Test
-    public void testSendMulticastEvent() {
-        try {
-            ProxyServiceLegacy proxyServiceLegacy = new ProxyServiceLegacy();
-            proxyServiceLegacy.setPubSubBrokerRegistry(sadlManager);
-            MockComms mockComms = (MockComms) mockSetUP.getComms();
-            proxyServiceLegacy.setCommsManager(mockComms);
-            proxyServiceLegacy.registerService(senderId, serviceName);
-
-            String serializedEventMsg = new MockProtocolsForBezirkPC().new MockEvent1(Flag.REQUEST, "MockEvent").toJson();
-            RecipientSelector recipientSelector = new RecipientSelector(new Location("FLOOR1/BLOCk1/ROOM1"));
-            proxyServiceLegacy.sendMulticastEvent(senderId, recipientSelector, serializedEventMsg);
-            assertEquals("Proxy is unable to add multicast event message to the comms queue.", mockSetUP.getTotalSpheres(), mockComms.getEventList().size());
-
-            proxyServiceLegacy.sendMulticastEvent(senderId, null, serializedEventMsg);
-            assertEquals("Proxy is unable to add multicast event message to the comms queue.", mockSetUP.getTotalSpheres() * 2, mockComms.getEventList().size());
-            mockComms.clearQueues();
-        } catch (Exception e) {
-            fail("Proxy is unable to send unicast events.");
-        }
-    }
-
+  
     /**
      * Stream Descriptor
      */

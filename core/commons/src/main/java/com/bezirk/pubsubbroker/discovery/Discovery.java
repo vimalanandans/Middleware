@@ -3,6 +3,7 @@ package com.bezirk.pubsubbroker.discovery;
 import com.bezirk.BezirkCompManager;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
+import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.util.ValidatorUtility;
 import com.google.gson.Gson;
 
@@ -19,6 +20,8 @@ public class Discovery {
     private final ConcurrentMap<DiscoveryLabel, com.bezirk.pubsubbroker.discovery.DiscoveryRecord> discoveredMap;
 
     private final Gson gson = new Gson();
+
+    public MessageHandler messageHandler;
 
     public Discovery() {
         discoveredMap = new ConcurrentHashMap<DiscoveryLabel, com.bezirk.pubsubbroker.discovery.DiscoveryRecord>();
@@ -44,9 +47,12 @@ public class Discovery {
         }
     }
 
-    public void addRequest(DiscoveryLabel discoveryLabel, com.bezirk.pubsubbroker.discovery.DiscoveryRecord disc) {
+    public void addRequest(DiscoveryLabel discoveryLabel, com.bezirk.pubsubbroker.discovery.DiscoveryRecord disc, MessageHandler msgHandler) {
         synchronized (this) {
             discoveredMap.put(discoveryLabel, disc);
+
+            this.messageHandler = msgHandler;
+
             notifyAll();
         }
     }
@@ -69,8 +75,7 @@ public class Discovery {
                                 dLabel.getRequester().zirkId,
                                 gson.toJson(discRecord.getList()),
                                 dLabel.getDiscoveryId(), dLabel.isSphereDiscovery());
-                        BezirkCompManager.getplatformSpecificCallback()
-                                .onDiscoveryIncomingMessage(callbackMessage);
+                        messageHandler.onDiscoveryIncomingMessage(callbackMessage);
                         discoveredMap.remove(dLabel);
                         return true;
                     }

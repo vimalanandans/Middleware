@@ -60,8 +60,9 @@ public class DiscoveryProcessor implements Runnable {
                 //	Invoke the requester with the discovered and drop the request
                 if (curTime - discRecord.getCreationTime() >= discRecord.getTimeout()) {
                     final Gson gson = new Gson();
-                    DiscoveryIncomingMessage callbackMessage = new DiscoveryIncomingMessage(discoveryLabel.getRequester().zirkId, gson.toJson(discRecord.getList()), discoveryLabel.getDiscoveryId(), discoveryLabel.isSphereDiscovery());
-                    BezirkCompManager.getplatformSpecificCallback().onDiscoveryIncomingMessage(callbackMessage);
+                    DiscoveryIncomingMessage callbackMessage = new DiscoveryIncomingMessage(discoveryLabel.getRequester().zirkId,
+                            gson.toJson(discRecord.getList()), discoveryLabel.getDiscoveryId(), discoveryLabel.isSphereDiscovery());
+                    getDiscovery().messageHandler.onDiscoveryIncomingMessage(callbackMessage);
                     DiscoveryProcessor.discovery.remove(discoveryLabel);
                 }
             }

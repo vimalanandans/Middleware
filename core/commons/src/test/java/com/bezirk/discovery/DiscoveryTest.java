@@ -88,18 +88,19 @@ public class DiscoveryTest {
         com.bezirk.pubsubbroker.discovery.DiscoveryLabel dlabel = new com.bezirk.pubsubbroker.discovery.DiscoveryLabel(recipient, discoveryId);
         long timeout = 10000;
         int max = 1;
+
+        MessageHandler bezirkCallback = new MockCallBack(new MockBezirkZirk());
         com.bezirk.pubsubbroker.discovery.DiscoveryRecord disc = new com.bezirk.pubsubbroker.discovery.DiscoveryRecord(timeout, max);
 
         com.bezirk.pubsubbroker.discovery.Discovery discovery = new com.bezirk.pubsubbroker.discovery.Discovery();
-        discovery.addRequest(dlabel, disc);
+        discovery.addRequest(dlabel, disc,bezirkCallback);
 
         com.bezirk.pubsubbroker.discovery.DiscoveryLabel dlabelTemp = new com.bezirk.pubsubbroker.discovery.DiscoveryLabel(zirkBEndPoint, 14);
-        discovery.addRequest(dlabelTemp, disc);
+        discovery.addRequest(dlabelTemp, disc,bezirkCallback);
 
         assertEquals("DiscoveredMap size is not equal to the number of requests added", 2, getDiscoveredMapsize(discovery));
 
-        MessageHandler bezirkCallback = new MockCallBack(new MockBezirkZirk());
-        BezirkCompManager.setplatformSpecificCallback(bezirkCallback);
+
 
 		/*Testing addResponse api in discovery*/
         DiscoveryResponse response = new DiscoveryResponse(recipient, sphereId, requestKey, discoveryId);
@@ -110,7 +111,7 @@ public class DiscoveryTest {
 
 		/*Testing remove api in discovery*/
         dlabelTemp = new DiscoveryLabel(recipient, 25);
-        discovery.addRequest(dlabelTemp, disc);
+        discovery.addRequest(dlabelTemp, disc, bezirkCallback);
         discovery.remove(dlabelTemp);
         assertEquals("DiscoveredMap size is not equal to 1 after removing entry.", 1, getDiscoveredMapsize(discovery));
 
@@ -122,13 +123,13 @@ public class DiscoveryTest {
 
 		/*Testing addResponse for servicelist less than max mentioned in discovery record*/
         disc = new com.bezirk.pubsubbroker.discovery.DiscoveryRecord(200000, 3);
-        discovery.addRequest(dlabel, disc);
+        discovery.addRequest(dlabel, disc, bezirkCallback);
         response = new DiscoveryResponse(recipient, sphereId, requestKey, discoveryId);
         assertTrue("Discovery response is not added even when discovered servicelist is less than max and timeout happened.", discovery.addResponse(response));
 
 		/*Testing addResponse for invalid discoveryId*/
         disc = new com.bezirk.pubsubbroker.discovery.DiscoveryRecord(200000, 3);
-        discovery.addRequest(dlabel, disc);
+        discovery.addRequest(dlabel, disc,bezirkCallback);
         response = new DiscoveryResponse(recipient, sphereId, requestKey, 24);
         assertFalse("Discovery response is not added even when discoveryId is invalid.", discovery.addResponse(response));
 

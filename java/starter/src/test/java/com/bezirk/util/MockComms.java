@@ -12,6 +12,7 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.pipe.PipeManager;
 import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.streaming.Streaming;
 import com.bezirk.streaming.control.Objects.StreamRecord;
@@ -115,10 +116,11 @@ public class MockComms implements Comms {
     }
 
     @Override
-    public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             PubSubBroker sadl, PipeManager pipe, Streaming streaming) {
+    public boolean initComms(CommsProperties commsProperties, InetAddress addr, PubSubBroker pubSubBroker, SphereSecurity sphereSecurity, Streaming streaming) {
         return false;
     }
+
+
 
 
     @Override
@@ -129,10 +131,10 @@ public class MockComms implements Comms {
     }
 
     @Override
-    public void setSphereSecurity(SphereServiceAccess bezirkSphere) {
-        // TODO Auto-generated method stub
+    public void setSphereSecurity(SphereSecurity sphereSecurity) {
 
     }
+
 
     public void clearQueues() {
 

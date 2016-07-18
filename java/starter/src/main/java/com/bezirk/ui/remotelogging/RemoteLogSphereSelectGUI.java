@@ -98,12 +98,14 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
             rightSphereListModel.removeAllElements();
             leftSphereListModel.addElement(RemoteLog.ALL_SPHERES);
             try {
+                final Iterator<BezirkSphereInfo> sphereInfoIterator ;
+                /*commented for the MVP refactoring. inject the sphere API to get access
                 final Iterator<BezirkSphereInfo> sphereInfoIterator = BezirkCompManager
                         .getSphereUI().getSpheres().iterator();
                 while (sphereInfoIterator.hasNext()) {
                     leftSphereListModel.addElement(sphereInfoIterator.next()
                             .getSphereID());
-                }
+                }*/
             } catch (Exception ex) {
                 logger.error("Error in sphere list model.", ex);
             }

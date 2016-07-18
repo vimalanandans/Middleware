@@ -84,7 +84,7 @@ public class MockSetUpUtilityForBezirkPC {
         comms = new MockComms();
         Streaming streamManager = new StreamManager(comms,pubSubBroker);
         comms.initComms(null, inetAddr, pubSubBroker, null,streamManager);
-        pubSubBroker.initPubSubBroker(comms);
+
         comms.registerNotification(Mockito.mock(CommsNotification.class));
         comms.startComms();
 
@@ -92,9 +92,11 @@ public class MockSetUpUtilityForBezirkPC {
         SphereServiceManager bezirkSphere = new SphereServiceManager(cryptoEngine, upaDevice, sphereRegistry);
         SphereListener sphereListener = Mockito.mock(SphereListener.class);
         bezirkSphere.initSphere(spherePersistence, comms, sphereListener, sphereConfig);
-        BezirkCompManager.setSphereSecurity((SphereSecurity) bezirkSphere);
+
+        pubSubBroker.initPubSubBroker(comms,new MockCallback(),bezirkSphere,bezirkSphere);
+        /*BezirkCompManager.setSphereSecurity((SphereSecurity) bezirkSphere);
         BezirkCompManager.setSphereForPubSub(bezirkSphere);
-        BezirkCompManager.setplatformSpecificCallback(new MockCallback());
+        BezirkCompManager.setplatformSpecificCallback(new MockCallback());*/
     }
 
 
@@ -180,9 +182,10 @@ public class MockSetUpUtilityForBezirkPC {
         comms.closeComms();
         regPersistence.clearPersistence();
 
-        BezirkCompManager.setSphereSecurity(null);
-        BezirkCompManager.setSphereForPubSub(null);
-        BezirkCompManager.setplatformSpecificCallback(null);
+          /*  BezirkCompManager.setSphereSecurity(null);
+            BezirkCompManager.setSphereForPubSub(null);
+            BezirkCompManager.setplatformSpecificCallback(null);
+        */
         BezirkCompManager.setUpaDevice(null);
 
         TableUtils.dropTable(dbConnection.getDatabaseConnection(),
