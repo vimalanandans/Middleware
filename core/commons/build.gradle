@@ -5,6 +5,16 @@ jar {
     }
 }
 
+/*
+  placing the resources in "build/classes/main" as we are picking the resources from classLoader classpath.
+  And "classes/main" will be the classpath folder.
+ */
+sourceSets {
+    main {
+        output.resourcesDir = "build/classes/main"
+    }
+}
+
 dependencies {
     compile project(':core:control-messages')
     compile project(':core:pipes')

@@ -15,6 +15,7 @@
  * 3.0.0-alpha+012 Changing text display for issue #59 (bezirk ethernet configuration), testApp Pub/Sub testing through different applications until 2-zirk registration issue is resolved (Rishabh)
  * 3.0.0-alpha+013 bezrik -> bezirk for network-util package fix (Rishabh)
  * 3.0.0-alpha+014 android send/receive messages, serialization-deserialization & bug fixes for UI (Rishabh)
+ * 3.0.0-alpha+015 Bezirk-Java: issue #98 and #97, issue with loading features.properties and failre to startup Bezirk-PC
  */
 buildscript {
     repositories {
@@ -45,7 +46,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha+014"
+    version = "3.0.0-alpha+015"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
