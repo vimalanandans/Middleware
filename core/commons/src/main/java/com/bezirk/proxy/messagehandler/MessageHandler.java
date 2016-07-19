@@ -21,11 +21,6 @@ public interface MessageHandler {
      * @param streamIncomingMessage the callback message that will be fired.
      */
     public void onIncomingStream(StreamIncomingMessage streamIncomingMessage);
-    /**
-     * Method that fires the MulticastStream to ProxyForBezirk
-     * @param multicastStreamCallbackMessage  the callback message that will be fired.
-     */
-    //public void fireMulticastStream(MulticastCallbackMessage multicastStreamCallbackMessage);
 
     /**
      * Method that fires the StreamStatus for ProxyForBezirk

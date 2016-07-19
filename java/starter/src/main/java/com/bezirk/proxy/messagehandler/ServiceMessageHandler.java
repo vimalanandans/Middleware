@@ -38,24 +38,6 @@ public final class ServiceMessageHandler implements MessageHandler {
         }
     }
 
-/*  Define   
- * @Override
-    public void fireMulticastStream(
-            MulticastCallbackMessage multicastStreamCallbackMessage) {
-
-        if (SignalingFactory
-                .checkClassExists("com.bosch.upa.uhu.rtc.streaming.VideoChat")) {
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    SignalingFactory
-                            .getUIChatInstance("com.bosch.upa.uhu.rtc.streaming.VideoChat");
-                }
-            });
-        }
-    }*/
-
     @Override
     public void onStreamStatus(StreamStatusMessage streamStatusMessage) {
         if (ValidatorUtility.isObjectNotNull(brForService)) {

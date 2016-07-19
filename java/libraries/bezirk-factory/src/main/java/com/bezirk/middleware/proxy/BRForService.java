@@ -87,22 +87,12 @@ public class BRForService implements BroadcastReceiver {
                     DiscoveryIncomingMessage discObj = (DiscoveryIncomingMessage) incomingMessage;
                     handleDiscoveryCallback(discObj);
                     break;
-             /*	Not used   
-              * case "MULTICAST_STREAM":
-                    MulticastCallbackMessage multicastCallbackMessage = (MulticastCallbackMessage) incomingMessage;
-                    handleMulticastCallback(multicastCallbackMessage);
-                    break;*/
                 default:
                     logger.error("Unknown incoming message type : " + incomingMessage.getCallbackType());
             }
         }
 
     }
-
-  /*      private void handleMulticastCallback(
-                MulticastCallbackMessage multicastCallbackMessage) {
-            logger.debug("Not yet implemented");
-        }*/
 
     /**
      * Handles the Event Callback Message and gives the callback to the services. It is being invoked from

@@ -5,7 +5,6 @@ import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
-import com.bezirk.proxy.messagehandler.MulticastCallbackMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 
 import org.junit.Test;
@@ -25,8 +24,6 @@ public class CallBackMessageTest {
         testDiscoveryCallBackMessage();
 
         testEventCallBackMessage();
-
-        testMulticastCallbackMessage();
 
         testStreamStatusCallbackMessage();
 
@@ -57,15 +54,6 @@ public class CallBackMessageTest {
 
         streamStatusMessage = new com.bezirk.proxy.messagehandler.StreamStatusMessage(null, 0, (short) 0);
         assertEquals("Callbackdiscriminator is not set to STREAM_STATUS for streamStatusCallbackMessage.", "STREAM_STATUS", streamStatusMessage.callbackDiscriminator);
-    }
-
-    private void testMulticastCallbackMessage() {
-        com.bezirk.proxy.messagehandler.MulticastCallbackMessage multicastCallbackMessage = new com.bezirk.proxy.messagehandler.MulticastCallbackMessage();
-        assertEquals("Callbackdiscriminator is not set to MULTICAST_STREAM for multicastCallbackMessage.", "MULTICAST_STREAM", multicastCallbackMessage.callbackDiscriminator);
-
-        String serializedCallback = multicastCallbackMessage.serialize();
-        com.bezirk.proxy.messagehandler.MulticastCallbackMessage deserializedcallbackMessage = com.bezirk.proxy.messagehandler.MulticastCallbackMessage.deserialize(serializedCallback, MulticastCallbackMessage.class);
-        assertEquals("Callbackdiscriminator is not set to MULTICAST_STREAM for multicastCallbackMessage.", "MULTICAST_STREAM", deserializedcallbackMessage.getCallbackType());
     }
 
     private void testEventCallBackMessage() {
