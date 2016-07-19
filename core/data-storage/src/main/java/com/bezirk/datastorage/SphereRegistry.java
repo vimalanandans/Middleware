@@ -1,7 +1,7 @@
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com) & Rishabh
  */
-package com.bezirk.persistence;
+package com.bezirk.datastorage;
 
 import com.bezirk.sphere.impl.DeviceInformation;
 import com.bezirk.sphere.impl.Zirk;

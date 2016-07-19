@@ -2,10 +2,10 @@ package com.bezirk.starter;
 
 
 import com.bezirk.comms.Comms;
+import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.Device;
 import com.bezirk.device.DeviceType;
 import com.bezirk.devices.DeviceInterface;
-import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 
@@ -52,7 +52,7 @@ public class ZirkStarterHelperTest {
 
         com.bezirk.starter.ServiceStarterHelper helper = new com.bezirk.starter.ServiceStarterHelper();
         DeviceInterface bezirkDevice = mockSetUP.getUpaDevice();
-        RegistryPersistence registryPersistence = mockSetUP.getRegistryPersistence();
+        RegistryStorage registryPersistence = mockSetUP.getRegistryPersistence();
         Comms commsLegacy = Mockito.mock(Comms.class);
         SphereAPI bezirkSphere = helper.initSphere(bezirkDevice, registryPersistence, commsLegacy);
 

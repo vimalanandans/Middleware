@@ -1,7 +1,7 @@
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com)
  */
-package com.bezirk.persistence;
+package com.bezirk.datastorage;
 
 import com.bezirk.pubsubbroker.PubSubBrokerRegistry;
 import com.j256.ormlite.stmt.QueryBuilder;

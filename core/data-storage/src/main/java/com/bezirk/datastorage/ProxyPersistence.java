@@ -1,4 +1,4 @@
-package com.bezirk.persistence;
+package com.bezirk.datastorage;
 
 
 public interface ProxyPersistence {

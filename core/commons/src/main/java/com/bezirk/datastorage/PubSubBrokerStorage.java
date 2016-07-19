@@ -1,7 +1,7 @@
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com)
  */
-package com.bezirk.persistence;
+package com.bezirk.datastorage;
 
 import com.bezirk.pubsubbroker.PubSubBrokerRegistry;
 
@@ -9,7 +9,7 @@ import com.bezirk.pubsubbroker.PubSubBrokerRegistry;
 /**
  * Interface for the PubSubBroker to load and persist the registry
  */
-public interface PubSubBrokerPersistence {
+public interface PubSubBrokerStorage {
     /**
      * Persist the PubSubBrokerRegistry
      *

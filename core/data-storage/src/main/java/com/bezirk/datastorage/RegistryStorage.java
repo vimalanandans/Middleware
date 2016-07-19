@@ -1,7 +1,7 @@
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com)
  */
-package com.bezirk.persistence;
+package com.bezirk.datastorage;
 
 import com.bezirk.pubsubbroker.PubSubBrokerRegistry;
 
@@ -13,9 +13,9 @@ import java.sql.SQLException;
  * of the Bezirk that needs to be persisted. The different layers will get the corresponding interfaces through
  * which they can load/ save the data to the persistence
  */
-public class RegistryPersistence extends DatabaseHelper implements PubSubBrokerPersistence, SpherePersistence, ProxyPersistence {
+public class RegistryStorage extends DatabaseHelper implements PubSubBrokerStorage, SpherePersistence, ProxyPersistence {
 
-    public RegistryPersistence(DatabaseConnection dbConnection, String DBVersion) throws NullPointerException, SQLException, IOException, Exception {
+    public RegistryStorage(DatabaseConnection dbConnection, String DBVersion) throws NullPointerException, SQLException, IOException, Exception {
         super(dbConnection);
         checkDatabase(DBVersion);
     }

@@ -3,17 +3,14 @@ package com.bezirk.starter.helper;
 import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.comms.CommsFeature;
-import com.bezirk.proxy.android.ProxyClientMessageHandler;
-import com.bezirk.persistence.DatabaseConnection;
-import com.bezirk.persistence.RegistryPersistence;
+import com.bezirk.datastorage.DatabaseConnection;
+import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.persistence.util.DatabaseConnectionForAndroid;
-import com.bezirk.proxy.ProxyServer;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.starter.MainService;
 import com.bezirk.streaming.StreamManager;
@@ -32,13 +29,13 @@ class BezirkStartStackHelper {
         return wifi != null && wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
     }
 
-    RegistryPersistence initializeRegistryPersistence(MainService service) {
+    RegistryStorage initializeRegistryPersistence(MainService service) {
         DatabaseConnection dbConnection = new DatabaseConnectionForAndroid(service);
         String DB_VERSION = "0.0.4";
-        RegistryPersistence registryPersistence = null;
+        RegistryStorage registryPersistence = null;
 
         try {
-            registryPersistence = new RegistryPersistence(dbConnection, DB_VERSION);
+            registryPersistence = new RegistryStorage(dbConnection, DB_VERSION);
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
         }

@@ -8,6 +8,7 @@ import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.streaming.StreamRequest;
+import com.bezirk.datastorage.PubSubBrokerStorage;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Stream;
@@ -20,7 +21,6 @@ import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.persistence.PubSubBrokerPersistence;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
@@ -50,7 +50,7 @@ import java.util.Set;
 public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerServiceInfo, PubSubBrokerControlReceiver, PubSubEventReceiver {
     private static final Logger logger = LoggerFactory.getLogger(PubSubBroker.class);
 
-    protected PubSubBrokerPersistence pubSubBrokerPersistence = null;
+    protected PubSubBrokerStorage pubSubBrokerStorage = null;
     protected PubSubBrokerRegistry pubSubBrokerRegistry = null;
     protected Comms comms = null;
     protected SphereServiceAccess sphereServiceAccess = null;
@@ -60,8 +60,8 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     MessageHandler msgHandler;
 
-    public PubSubBroker(PubSubBrokerPersistence pubSubBrokerPersistence) {
-        this.pubSubBrokerPersistence = pubSubBrokerPersistence;
+    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage) {
+        this.pubSubBrokerStorage = pubSubBrokerStorage;
         loadSadlRegistry();
     }
 
@@ -534,7 +534,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     private void loadSadlRegistry() {
         try {
-            pubSubBrokerRegistry = pubSubBrokerPersistence.loadPubSubBrokerRegistry();
+            pubSubBrokerRegistry = pubSubBrokerStorage.loadPubSubBrokerRegistry();
         } catch (Exception e) {
             logger.error("Error in loading sadl registry from persistence \n", e);
         }
@@ -554,7 +554,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     private void persistSadlRegistry() {
         try {
-            pubSubBrokerPersistence.persistPubSubBrokerRegistry();
+            pubSubBrokerStorage.persistPubSubBrokerRegistry();
         } catch (Exception e) {
             logger.error("Error in storing data \n", e);
         }

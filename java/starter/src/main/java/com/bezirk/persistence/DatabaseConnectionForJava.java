@@ -1,5 +1,7 @@
 package com.bezirk.persistence;
 
+import com.bezirk.datastorage.DatabaseConnection;
+import com.bezirk.datastorage.PersistenceConstants;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -12,7 +14,7 @@ import java.sql.SQLException;
 public final class DatabaseConnectionForJava implements DatabaseConnection {
 
     private final String dbFilePath;
-    private Dao<PersistenceRegistry, Integer> bezirkPersistenceDao;
+    private Dao<com.bezirk.datastorage.PersistenceRegistry, Integer> bezirkPersistenceDao;
 
     public DatabaseConnectionForJava(String dbFileLocation) {
         dbFilePath = dbFileLocation;
@@ -23,16 +25,16 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
             throws NullPointerException, SQLException, IOException {
         setupDatabase();
         return new JdbcConnectionSource(
-                PersistenceConstants.DB_URL_PATH + dbFilePath + File.separator
-                        + PersistenceConstants.DB_FILE_NAME);
+                com.bezirk.datastorage.PersistenceConstants.DB_URL_PATH + dbFilePath + File.separator
+                        + com.bezirk.datastorage.PersistenceConstants.DB_FILE_NAME);
     }
 
     @Override
-    public Dao<PersistenceRegistry, Integer> getPersistenceDAO()
+    public Dao<com.bezirk.datastorage.PersistenceRegistry, Integer> getPersistenceDAO()
             throws NullPointerException, SQLException, IOException {
         if (null == bezirkPersistenceDao) {
             bezirkPersistenceDao = DaoManager.createDao(getDatabaseConnection(),
-                    PersistenceRegistry.class);
+                    com.bezirk.datastorage.PersistenceRegistry.class);
         }
         return bezirkPersistenceDao;
     }

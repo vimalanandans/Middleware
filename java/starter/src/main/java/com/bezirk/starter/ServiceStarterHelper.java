@@ -2,14 +2,14 @@ package com.bezirk.starter;
 
 import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.Comms;
+import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.Device;
 import com.bezirk.device.DeviceType;
 import com.bezirk.devices.DeviceForPC;
 import com.bezirk.devices.DeviceInterface;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.persistence.SpherePersistence;
-import com.bezirk.persistence.RegistryPersistence;
-import com.bezirk.persistence.SphereRegistry;
+import com.bezirk.datastorage.SpherePersistence;
+import com.bezirk.datastorage.SphereRegistry;
 import com.bezirk.pipe.PipeManager;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereConfig;
@@ -42,7 +42,7 @@ final class ServiceStarterHelper {
      * @param comms
      */
     SphereAPI initSphere(final DeviceInterface bezirkDevice,
-                         final RegistryPersistence registryPersistence, final Comms comms) {
+                         final RegistryStorage registryPersistence, final Comms comms) {
 
         // init the actual
         final SpherePersistence spherePersistence = registryPersistence;

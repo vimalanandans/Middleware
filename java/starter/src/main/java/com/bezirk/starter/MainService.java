@@ -7,17 +7,17 @@ import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.control.messages.MessageLedger;
+import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.Device;
 import com.bezirk.comms.CommsFeature;
-import com.bezirk.persistence.ProxyPersistence;
+import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.ui.remotelogging.RemoteLogSphereSelectGUI;
-import com.bezirk.persistence.DatabaseConnection;
-import com.bezirk.persistence.RegistryPersistence;
+import com.bezirk.datastorage.DatabaseConnection;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.streaming.StreamManager;
 import com.bezirk.streaming.Streaming;
@@ -54,7 +54,7 @@ public class MainService {
     // Booleans to start and stop stack gracefully
     private Boolean startedStack = false;
     private Boolean stoppedStack = false;
-    private RegistryPersistence registryPersistence;
+    private RegistryStorage registryPersistence;
     // Logging GUI
     private RemoteLogSphereSelectGUI loggingGUI;
     private com.bezirk.ui.spheremanagement.SphereManagementGUI frame;
@@ -326,7 +326,7 @@ public class MainService {
         final DatabaseConnection dbConnection = new com.bezirk.persistence.DatabaseConnectionForJava(
                 bezirkConfig.getDataPath());
         try {
-            registryPersistence = new RegistryPersistence(dbConnection,
+            registryPersistence = new RegistryStorage(dbConnection,
                     DB_VERSION);
         } catch (Exception e1) {
             logger.error("Error in loading Registry Persistence from:"
