@@ -33,8 +33,6 @@ import java.util.HashSet;
 public class Proxy implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(Proxy.class);
 
-    private static int discoveryCount = 0; // keep track of Discovery Id
-    protected final HashMap<ZirkId, DiscoveryBookKeeper> dListenerMap = new HashMap<ZirkId, DiscoveryBookKeeper>();
     protected final HashMap<ZirkId, HashSet<BezirkListener>> sidMap = new HashMap<ZirkId, HashSet<BezirkListener>>();
     protected final HashMap<String, HashSet<BezirkListener>> eventListenerMap = new HashMap<String, HashSet<BezirkListener>>();
     protected final HashMap<String, HashSet<BezirkListener>> streamListenerMap = new HashMap<String, HashSet<BezirkListener>>();
@@ -53,7 +51,7 @@ public class Proxy implements Bezirk {
         proxy = new ProxyServer();
         proxyUtil = new ProxyUtil();
         mainService = new MainService(proxy, null);
-        final BroadcastReceiver brForService = new BRForService(activeStreams, dListenerMap,
+        final BroadcastReceiver brForService = new BRForService(activeStreams,
                 eventListenerMap, sidMap, streamListenerMap);
         ServiceMessageHandler bezirkPcCallback = new ServiceMessageHandler(brForService);
         mainService.startStack(bezirkPcCallback);
@@ -221,51 +219,11 @@ public class Proxy implements Bezirk {
     }
 
     @Override
-    public void requestPipeAuthorization(Pipe pipe, PipePolicy allowedIn,
-                                         PipePolicy allowedOut, BezirkListener listener) {
-        // TODO: Design and implement pipes API
-    }
-
-    @Override
-    public void getPipePolicy(Pipe pipe,
-                              BezirkListener listener) {
-        // TODO: Design and implement pipes API
-    }
-
-    @Override
-    public void discover(RecipientSelector scope,
-                         ProtocolRole protocolRole, long timeout,
-                         int maxResults, BezirkListener listener) {
-        discoveryCount = (++discoveryCount) % Integer.MAX_VALUE;
-        dListenerMap.put(zirkId, new DiscoveryBookKeeper(discoveryCount, listener));
-        proxy.discover(zirkId, scope, new SubscribedRole(protocolRole), discoveryCount, timeout, maxResults);
-    }
-
-    @Override
     public void setLocation(Location location) {
         if (location == null) {
             throw new IllegalArgumentException("Cannot set a null location");
         } else {
             proxy.setLocation(zirkId, location);
-        }
-    }
-
-    //Create object for listener, discoveryId pair
-    class DiscoveryBookKeeper {
-        private final int discoveryId;
-        private final BezirkListener listener;
-
-        DiscoveryBookKeeper(int id, BezirkListener listener) {
-            this.discoveryId = id;
-            this.listener = listener;
-        }
-
-        public int getDiscoveryId() {
-            return discoveryId;
-        }
-
-        public BezirkListener getListener() {
-            return listener;
         }
     }
 }

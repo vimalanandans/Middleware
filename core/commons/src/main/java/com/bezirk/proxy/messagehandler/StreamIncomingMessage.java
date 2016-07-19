@@ -18,17 +18,14 @@ public final class StreamIncomingMessage extends ServiceIncomingMessage {
      */
     public File file;
     public short localStreamId;
-    /**
-     * ZirkEndPoint of the recipient
-     */
-    public BezirkZirkEndPoint senderSEP;
+    public BezirkZirkEndPoint sender;
 
     public StreamIncomingMessage() {
         callbackDiscriminator = "STREAM_UNICAST";
     }
 
     public StreamIncomingMessage(ZirkId recipientId, String streamTopic, String serializedStream,
-                                 File file, short localStreamId, BezirkZirkEndPoint senderSEP) {
+                                 File file, short localStreamId, BezirkZirkEndPoint sender) {
         super();
         callbackDiscriminator = "STREAM_UNICAST";
         recipient = recipientId;
@@ -36,6 +33,6 @@ public final class StreamIncomingMessage extends ServiceIncomingMessage {
         this.serializedStream = serializedStream;
         this.file = file;
         this.localStreamId = localStreamId;
-        this.senderSEP = senderSEP;
+        this.sender = sender;
     }
 }

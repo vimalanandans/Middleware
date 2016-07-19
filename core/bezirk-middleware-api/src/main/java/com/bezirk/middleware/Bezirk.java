@@ -105,9 +105,7 @@ public interface Bezirk {
     /**
      * Publish an event with one specific recipient.
      *
-     * @param recipient intended recipient, as extracted from a received message, or as discovered
-     *                  by calling
-     *                  {@link #discover(RecipientSelector, ProtocolRole, long, int, BezirkListener)}
+     * @param recipient intended recipient, as extracted from a received message
      * @param event     the <code>Event</code> being sent
      * @see BezirkListener#receiveEvent(String, Event, ZirkEndPoint)
      */
@@ -120,10 +118,7 @@ public interface Bezirk {
      * {@link #sendStream(ZirkEndPoint, Stream, File)}. Streams sent using this
      * method are assumed to be incremental (see {@link Stream#isIncremental()}).
      *
-     * @param recipient  intended recipient, as extracted from a received message, or as discovered
-     *                   by calling
-     *                   {@link #discover(RecipientSelector, ProtocolRole, long, int, BezirkListener)}
-     * @param stream     communication channel's descriptor
+     * @param recipient  intended recipient, as extracted from a received message
      * @param dataStream io stream where the outgoing data will be written into by this method's
      *                   caller. Internally, the Bezirk middleware will read data from the
      *                   <code>dataStream</code> in a thread-safe manner by creating a
@@ -142,9 +137,7 @@ public interface Bezirk {
      * version is intended to send a specific file instead of general data. Streams sent using this
      * method are assumed to be non-incremental (see {@link Stream#isIncremental()}).
      *
-     * @param recipient intended recipient, as extracted from a received message, or as discovered
-     *                  by calling
-     *                  {@link #discover(RecipientSelector, ProtocolRole, long, int, BezirkListener)}
+     * @param recipient intended recipient, as extracted from a received message
      * @param stream    communication channel's descriptor
      * @param file      the file whose contents will be sent using the <code>stream</code>
      * @return Bezirk middleware-generated id for the stream, which will be referred to in
@@ -153,72 +146,6 @@ public interface Bezirk {
      * @see BezirkListener#receiveStream(String, Stream, short, File, ZirkEndPoint)
      */
     public short sendStream(ZirkEndPoint recipient, Stream stream, File file);
-
-    /**
-     * Request the use of a {@link com.bezirk.middleware.addressing.Pipe} to send data outside of the
-     * <code>requester</code>'s sphere(s). A pipe may break the confidentiality property established
-     * by spheres, thus the user must authorize the use of the pipe. The authorization process is
-     * initiated via this request. Pipes are governed by security policies, specified by
-     * <code>allowedIn</code> and <code>allowedOut</code>, which restrict the messages that can flow
-     * into and out of the sphere via the pipe to just those messages belonging to explicitly listed
-     * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles's}.
-     *
-     * @param pipe       the pipe the Zirk wants permission to use
-     * @param allowedIn  specification of message roles allowed to flow into the requester's sphere(s)
-     *                   via the pipe. If <code>null</code>, no security policy is imposed
-     * @param allowedOut specification of message roles allowed to flow out of the requester's sphere(s)
-     *                   via the pipe. If <code>null</code>, no security policy is imposed
-     * @param listener   recipient of notifications issued by the Bezirk middleware when the user
-     *                   authorizes the creation of a pipe
-     * @see BezirkListener#pipeGranted(Pipe, PipePolicy, PipePolicy)
-     */
-    public void requestPipeAuthorization(Pipe pipe, PipePolicy allowedIn,
-                                         PipePolicy allowedOut, BezirkListener listener);
-
-    /**
-     * Fetch the security policies governing an authorized <code>pipe</code>. If the pipe is not
-     * authorized, this method does nothing. Use
-     * {@link #requestPipeAuthorization(Pipe, PipePolicy, PipePolicy, BezirkListener)} to request
-     * the authority to use a pipe.
-     *
-     * @param pipe     the authorized pipe whose policy we want to retrieve
-     * @param listener recipient of notifications issued by the Bezirk middleware when
-     *                 <code>pipe</code>'s policies is discovered
-     * @see BezirkListener#pipeGranted(Pipe, PipePolicy, PipePolicy)
-     */
-    public void getPipePolicy(Pipe pipe, BezirkListener listener);
-
-    /**
-     * Find Zirks subscribed to <code>protocolRole</code> within <code>zirk</code>'s sphere(s).
-     * The <code>listener</code> will be notified when a set of results is ready. The set of results
-     * is considered ready after all of the Zirks within the relevant sphere(s) that are subscribed to
-     * the role are found, the <code>timeout</code> elapses, or the number of discovered Zirks in the
-     * result set hits <code>maxResults</code>. The discovery of Zirks subscribed to a role can
-     * be further constrained to just the set of Zirks described by <code>scope</code> (see
-     * {@link com.bezirk.middleware.addressing.Location}).
-     * <p>
-     * Internally, the Bezirk middleware issues one discovery request at a time. If this method
-     * is called multiple times in short succession, a new discovery request will occur only after
-     * the first request is fulfilled. Each new discovery request will be fulfilled in the order they
-     * were received as soon as the currently executing request finishes.
-     * </p>
-     *
-     * @param scope        semantic address to further constrain the discovery of Zirks fulfilling
-     *                     <code>protocolRole</code>
-     * @param protocolRole the role that Zirks we want to discover are subscribed to, or
-     *                     <code>null</code> to discover all Zirks in <code>zirk</code>'s
-     *                     spheres
-     * @param timeout      max time in milliseconds that the Bezirk middleware can wait for replies
-     *                     to discovery requests
-     * @param maxResults   number of Zirks the Bezirk middleware is to wait for
-     * @param listener     recipient of notifications issued by the Bezirk middleware when the set
-     *                     of discovered Zirks is complete
-     * @see BezirkListener#discovered(java.util.Set)
-     * @see DiscoveredZirk
-     * @see #setLocation(Location)
-     */
-    public void discover(RecipientSelector scope, ProtocolRole protocolRole, long timeout,
-                         int maxResults, BezirkListener listener);
 
     /**
      * Inform the Bezirk middleware of the Zirk's {@link com.bezirk.middleware.addressing.Location}.

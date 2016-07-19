@@ -27,7 +27,6 @@ public final class ServiceMessageHandler implements MessageHandler {
         }
     }
 
-
     @Override
     public void onIncomingStream(StreamIncomingMessage streamIncomingMessage) {
         if (ValidatorUtility.isObjectNotNull(brForService)) {

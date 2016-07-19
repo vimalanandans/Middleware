@@ -24,40 +24,17 @@ public class TestCBkForServicePC {
     private boolean receivedEvent = false;
     private boolean receivedUnicastStream = false;
     private boolean receivedStreamStatus = false;
-    private boolean receivedDiscovery = false;
-
-    @BeforeClass
-    public static void setUpClass() {
-        logger.info("********** Setting up TestCBkForServicePC Testcase **********");
-    }
-
-
-    @AfterClass
-    public static void tearDownClass() {
-        logger.info("********** Shutting down TestCBkForServicePC Testcase **********");
-    }
 
     @Test
-    public void test() {
-
-        testFireEventCallback();
-
-        testFireUnicastStreamCallback();
-
-        testFireStreamStatusCallback();
-
-        testFireDiscoveryCallback();
-
-    }
-
-    private void testFireEventCallback() {
+    public void testFireEventCallback() {
         EventIncomingMessage eventCallbackMessage = new EventIncomingMessage();
         cBkForServicePC.onIncomingEvent(eventCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire eventCallback. ", receivedEvent);
     }
 
-    private void testFireUnicastStreamCallback() {
+    @Test
+    public void testFireUnicastStreamCallback() {
         StreamIncomingMessage unicastStreamCallbackMessage = new StreamIncomingMessage();
         cBkForServicePC.onIncomingStream(unicastStreamCallbackMessage);
 
@@ -65,13 +42,8 @@ public class TestCBkForServicePC {
 
     }
 
-    @Test(expected = RuntimeException.class)
-    public void testFirePipeApprovedCallBack() {
-        PipeRequestIncomingMessage pipeMsg = new PipeRequestIncomingMessage();
-        cBkForServicePC.onPipeApprovedMessage(pipeMsg);
-    }
-
-    private void testFireStreamStatusCallback() {
+    @Test
+    public void testFireStreamStatusCallback() {
         StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage();
         cBkForServicePC.onStreamStatus(streamStatusCallbackMessage);
 
@@ -79,16 +51,8 @@ public class TestCBkForServicePC {
 
     }
 
-    private void testFireDiscoveryCallback() {
-        DiscoveryIncomingMessage discoveryCallbackMessage = new DiscoveryIncomingMessage();
-        cBkForServicePC.onDiscoveryIncomingMessage(discoveryCallbackMessage);
-
-        assertTrue("Callback Zirk is unable to fire Discovery callback.", receivedDiscovery);
-
-    }
-
     private enum CallBackDiscriminator {
-        EVENT, STREAM_UNICAST, STREAM_STATUS, DISCOVERY
+        EVENT, STREAM_UNICAST, STREAM_STATUS
     }
 
     class BRForServiceMock implements BroadcastReceiver {
@@ -107,9 +71,6 @@ public class TestCBkForServicePC {
             } else if (callbackMessage.getCallbackType().equalsIgnoreCase(CallBackDiscriminator.STREAM_STATUS.name())) {
 
                 receivedStreamStatus = true;
-            } else if (callbackMessage.getCallbackType().equalsIgnoreCase(CallBackDiscriminator.DISCOVERY.name())) {
-
-                receivedDiscovery = true;
             }
         }
 

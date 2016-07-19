@@ -42,37 +42,12 @@ public class UnicastEventLocalTest {
     private UnicastMockServiceA mockA = new UnicastMockServiceA();
     private UnicastMockServiceB mockB = new UnicastMockServiceB();
 
-    @BeforeClass
-    public static void setup() {
-        logger.info(" ************** Setting up UnicastEventLocallyTest Testcase ****************************");
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        logger.info(" ************** Shutting down UnicastEventLocallyTest Testcase ****************************");
-    }
-
     @Before
     public void setUpMockservices() {
         mockB.setupMockService();
         mockA.setupMockService();
     }
-
-    //@Test(timeout=60000)
-    public void testLocalEventCommunication() {
-
-        mockA.discoverMockService();
-
-        while (!isTestPassed) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        logger.info(" ************** Testcase Successful ****************************");
-    }
-
+    
     @After
     public void destroyMockservices() {
 
@@ -96,14 +71,6 @@ public class UnicastEventLocalTest {
             bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
             pRole = new MockServiceBProtocolRole();
             bezirk.subscribe(pRole, this);
-        }
-
-        /**
-         * Discover the zirk
-         */
-        private final void discoverMockService() {
-            MockServiceAProtocolRole pRole = new MockServiceAProtocolRole();
-            bezirk.discover(null, pRole, 10000, 1, this);
         }
 
         @Override

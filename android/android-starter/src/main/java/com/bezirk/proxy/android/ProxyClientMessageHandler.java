@@ -3,7 +3,6 @@ package com.bezirk.proxy.android;
 import android.content.Context;
 import android.content.Intent;
 
-import com.bezirk.actions.BezirkActions;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.messagehandler.MessageHandler;
@@ -78,7 +77,7 @@ public class ProxyClientMessageHandler implements MessageHandler {
             fireintent.putExtra(streamMsgKEY, streamIncomingMessage.serializedStream);
             fireintent.putExtra(filePathKEY, streamIncomingMessage.file.getAbsolutePath());
             fireintent.putExtra(streamIdKEY, streamIncomingMessage.localStreamId); //
-            fireintent.putExtra(senderSEPKEY, gson.toJson(streamIncomingMessage.senderSEP));
+            fireintent.putExtra(senderSEPKEY, gson.toJson(streamIncomingMessage.sender));
             fireIntentToService(fireintent);
         } catch (Exception e) {
             logger.error("Cannot give callback as all the fields are not set", e);

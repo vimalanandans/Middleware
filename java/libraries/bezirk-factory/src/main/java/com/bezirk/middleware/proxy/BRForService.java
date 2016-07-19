@@ -33,19 +33,16 @@ public class BRForService implements BroadcastReceiver {
     private static final LinkedHashMap<String, Long> duplicateMsgMap = new LinkedHashMap<String, Long>();
     private static final LinkedHashMap<String, Long> duplicateStreamMap = new LinkedHashMap<String, Long>();
     private final HashMap<String, String> activeStreams;
-    private final HashMap<ZirkId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap;
     private final HashMap<String, HashSet<BezirkListener>> eventListenerMap;
     private final HashMap<ZirkId, HashSet<BezirkListener>> sidMap;
     private final HashMap<String, HashSet<BezirkListener>> streamListenerMap;
 
     public BRForService(HashMap<String, String> activeStreams,
-                        HashMap<ZirkId, com.bezirk.middleware.proxy.Proxy.DiscoveryBookKeeper> dListenerMap,
                         HashMap<String, HashSet<BezirkListener>> eventListenerMap,
                         HashMap<ZirkId, HashSet<BezirkListener>> sidMap,
                         HashMap<String, HashSet<BezirkListener>> streamListenerMap) {
         super();
         this.activeStreams = activeStreams;
-        this.dListenerMap = dListenerMap;
         this.eventListenerMap = eventListenerMap;
         this.sidMap = sidMap;
         this.streamListenerMap = streamListenerMap;
@@ -78,14 +75,6 @@ public class BRForService implements BroadcastReceiver {
 
                     StreamStatusMessage streamStatusCallbackMessage = (StreamStatusMessage) incomingMessage;
                     handleStreamStatusCallback(streamStatusCallbackMessage);
-                    break;
-                case "DISCOVERY":
-                    if (!(incomingMessage instanceof DiscoveryIncomingMessage)) {
-                        throw new AssertionError("incomingMessage is not an instance of DiscoveryIncomingMessage");
-                    }
-
-                    DiscoveryIncomingMessage discObj = (DiscoveryIncomingMessage) incomingMessage;
-                    handleDiscoveryCallback(discObj);
                     break;
                 default:
                     logger.error("Unknown incoming message type : " + incomingMessage.getCallbackType());
@@ -127,12 +116,12 @@ public class BRForService implements BroadcastReceiver {
      * @param strmMsg streamMessage that will be given back to the services.
      */
     private void handlerStreamUnicastCallback(StreamIncomingMessage strmMsg) {
-        if (checkDuplicateStream(strmMsg.senderSEP.zirkId.getZirkId(), strmMsg.localStreamId)) {
+        if (checkDuplicateStream(strmMsg.sender.zirkId.getZirkId(), strmMsg.localStreamId)) {
             if (streamListenerMap.containsKey(strmMsg.streamTopic)) {
                 for (BezirkListener listener : streamListenerMap.get(strmMsg.streamTopic)) {
                     Stream stream = Message.fromJson(strmMsg.serializedStream, Stream.class);
                     listener.receiveStream(strmMsg.streamTopic, stream, strmMsg.localStreamId,
-                            strmMsg.file, strmMsg.senderSEP);
+                            strmMsg.file, strmMsg.sender);
                 }
             } else {
                 logger.error("StreamListenerMap does not have a mapped Stream");
@@ -161,30 +150,6 @@ public class BRForService implements BroadcastReceiver {
                 }
             }
             activeStreams.remove(activeStreamKey);
-        }
-    }
-
-    /**
-     * handles the DiscoveryCallback for the Services. This is called from Platform specific BezirkCallback Implementation.
-     *
-     * @param discObj - callbackObject to the Zirk.
-     */
-    private void handleDiscoveryCallback(DiscoveryIncomingMessage discObj) {
-        if (dListenerMap.containsKey(discObj.getRecipient()) && dListenerMap.get(discObj.getRecipient()).getDiscoveryId() == discObj.discoveryId) {
-            final Gson gson = new Gson();
-            final String discoveredListAsString = discObj.discoveredList;
-            // Deserialize
-            Type discoveredListType = new TypeToken<HashSet<BezirkDiscoveredZirk>>() {
-            }.getType();
-
-            final HashSet<BezirkDiscoveredZirk> discoveredList = gson.fromJson(discoveredListAsString, discoveredListType);
-
-            if (null == discoveredList || discoveredList.isEmpty()) {
-                logger.error("Empty discovered List");
-                return;
-            }
-
-            dListenerMap.get(discObj.getRecipient()).getListener().discovered(new HashSet<DiscoveredZirk>(discoveredList));
         }
     }
 

@@ -43,7 +43,6 @@ public final class ProxyClient implements Bezirk {
     //Pipe Listener Map -- pipeId : listener
     static final ConcurrentMap<String, BezirkListener> pipeListenerMap = new ConcurrentHashMap<String, BezirkListener>();
     public static final String ACTION_BEZIRK_REGISTER = "REGISTER";
-    private static final String ACTION_SERVICE_DISCOVER = "DISCOVER";
     private static final String ACTION_SERVICE_SEND_MULTICAST_EVENT = "MULTICAST_EVENT";
     private static final String ACTION_SERVICE_SEND_UNICAST_EVENT = "UNICAST_EVENT";
     private static final String ACTION_BEZIRK_SUBSCRIBE = "SUBSCRIBE";
@@ -297,67 +296,6 @@ public final class ProxyClient implements Bezirk {
         }
         Log.d(TAG, "StreamId-> " + streamId);
         return streamId;
-    }
-
-    @Override
-    /**
-     * Currently the behavior of this method is:
-     *   1. register the pipe with the PipeManager, or
-     *   2. if the pipe already exists, overwrite an existing pipe with the same uri
-     */
-    public void requestPipeAuthorization(Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut, BezirkListener listener) {
-        //Update Listener Map
-        final String pipeId = UUID.randomUUID().toString();
-        pipeListenerMap.put(pipeId, listener);
-
-        Intent addPipe = new Intent();
-        addPipe.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
-        addPipe.setAction(BezirkActions.ACTION_PIPE_REQUEST);
-        addPipe.putExtra(BezirkActions.KEY_PIPE_NAME, pipe.getName());
-        addPipe.putExtra(BezirkActions.KEY_PIPE_REQ_ID, pipeId);
-        addPipe.putExtra(BezirkActions.KEY_SENDER_ZIRK_ID, new Gson().toJson(zirkId));
-
-        addPipe.putExtra(BezirkActions.KEY_PIPE_CLASS, pipe.getClass().getCanonicalName());
-
-        addPipe.putExtra(BezirkActions.KEY_PIPE_POLICY_IN, allowedIn == null ? null : new BezirkPipePolicy(allowedIn).toJson());
-        addPipe.putExtra(BezirkActions.KEY_PIPE_POLICY_OUT, allowedOut == null ? null : new BezirkPipePolicy(allowedOut).toJson());
-
-        Log.i(TAG, "Sending intent for pipe class: " + pipe.getClass().getCanonicalName());
-
-        Log.d(TAG, "addCloudPipe() Sending intent: " + addPipe.getAction());
-
-        ComponentName retName = context.startService(addPipe);
-        if (retName == null) {
-            Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
-        }
-    }
-
-    @Override
-    public void getPipePolicy(Pipe pipe, BezirkListener listener) {
-        // Need not do now
-        Log.w(TAG, "getPipePolicy() not implemented yet");
-    }
-
-    @Override
-    public void discover(RecipientSelector scope, ProtocolRole protocolRole, long timeout, int maxResults, BezirkListener listener) {
-        if (listener == null) {
-            throw new IllegalArgumentException("Cannot discover Zirks with a null listener");
-        }
-
-        DiscoveryListener = listener;
-        discoveryCount = (++discoveryCount) % Integer.MAX_VALUE;
-
-        Intent discoverIntent = new Intent();
-        discoverIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
-        discoverIntent.setAction(ACTION_SERVICE_DISCOVER);
-        discoverIntent.putExtra("zirkId", new Gson().toJson(zirkId));
-        discoverIntent.putExtra("address", new Gson().toJson(scope));
-        discoverIntent.putExtra("protocolRole", new SubscribedRole(protocolRole).getSubscribedProtocolRole());
-        discoverIntent.putExtra("timeout", timeout);
-        discoverIntent.putExtra("maxDiscovered", maxResults);
-        discoverIntent.putExtra("discoveryId", discoveryCount);
-        context.startService(discoverIntent);
-        Log.i(TAG, "Discovery Request to BezirkStack");
     }
 
     @Override

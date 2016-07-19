@@ -50,18 +50,6 @@ public class StreamLocalTest {
     private StreamLocalMockServiceA mockA;
     private StreamLocalMockServiceB mockB;
 
-    @BeforeClass
-    public static void setup() {
-        logger.info(" ****************** Setting up Stream Local Testcase *******************");
-
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        logger.info(" ************** Shutting down Stream Local Testcase ****************************");
-
-    }
-
     @Before
     public void setUpServices() {
         StreamLocalTest streamLocalTest = new StreamLocalTest();
@@ -70,21 +58,6 @@ public class StreamLocalTest {
 
         mockA = streamLocalTest.new StreamLocalMockServiceA();
         mockA.setupMockService();
-    }
-
-    // TODO: This test fails sporadically
-    //@Test(timeout=60000)
-    public void testForLocalStreaming() {
-
-
-        mockA.discoverMockService();
-        while (!isStreamSuccess) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @After
@@ -109,15 +82,6 @@ public class StreamLocalTest {
             bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
             pRole = new StreamLocalDummyProtocolRole();
             bezirk.subscribe(pRole, this);
-
-        }
-
-        /**
-         * Discover the services to stream unicastly
-         */
-        private final void discoverMockService() {
-            StreamLocalMockServiceProtocolRole pRole = new StreamLocalMockServiceProtocolRole();
-            bezirk.discover(null, pRole, 10000, 1, this);
 
         }
 

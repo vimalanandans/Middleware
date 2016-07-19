@@ -145,9 +145,6 @@ public final class ActionProcessor {
             case ACTION_BEZIRK_SETLOCATION:
                 ProxyService.setLocation(intent);
                 break;
-            case ACTION_SERVICE_DISCOVER:
-                ProxyService.discoverService(intent);
-                break;
             case ACTION_BEZIRK_UNSUBSCRIBE:
                 ProxyService.unsubscribeService(intent);
                 break;

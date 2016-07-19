@@ -126,48 +126,6 @@ public class ProxyServerIntend extends ProxyServer {
     }
 
     /**
-     * Sends discovery request to proxy
-     *
-     * @param intent Intent received
-     */
-    public void discoverService(Intent intent) {
-        logger.info("Received discovery message from zirk");
-        String serviceIdKEY = "zirkId";
-        String addressKEY = "address";
-        String pRoleKEY = "protocolRole";
-        String timeoutKEY = "timeout";
-        String maxDiscoveredKEY = "maxDiscovered";
-        String discoveryIdKEY = "discoveryId";
-
-        final String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
-        final String addressAsString = intent.getStringExtra(addressKEY);
-        final String pRoleMsg = intent.getStringExtra(pRoleKEY);
-
-
-        if (ValidatorUtility.checkForString(serviceIdAsString) && ValidatorUtility.checkForString(addressAsString) && ValidatorUtility.checkForString(pRoleMsg)) {
-            final Gson gson = new Gson();
-            final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
-            final RecipientSelector recipientSelector = gson.fromJson(addressAsString, RecipientSelector.class);
-            final SubscribedRole pRole = gson.fromJson(pRoleMsg, SubscribedRole.class);
-            final long timeout = intent.getLongExtra(timeoutKEY, 1000);
-            final int maxDiscovered = intent.getIntExtra(maxDiscoveredKEY, 1);
-            final int discoveryId = intent.getIntExtra(discoveryIdKEY, 1);
-
-            if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
-                super.discover(serviceId, recipientSelector, pRole, discoveryId, timeout, maxDiscovered);
-                logger.info("Discovery Request pass to Proxy");
-
-            } else {
-                logger.error("Zirk Id is null, dropping discovery request");
-            }
-
-        } else {
-
-            logger.error(" Invalid arguments received to discover");
-        }
-    }
-
-    /**
      * Sends UnicastStream to proxy
      *
      * @param intent Intent received

@@ -81,11 +81,4 @@ public class ProxyServer {
     public void setPubSubBrokerService(PubSubBrokerServiceTrigger pubSubBrokerService) {
         this.pubSubBrokerService = pubSubBrokerService;
     }
-
-
-    public boolean discover(ZirkId zirkId, RecipientSelector scope, SubscribedRole subscribedRole, int discoveryCount, long timeout, int maxResults) {
-        return pubSubBrokerService.discover(zirkId,scope,subscribedRole,discoveryCount,timeout,maxResults);
-    }
-
-
 }

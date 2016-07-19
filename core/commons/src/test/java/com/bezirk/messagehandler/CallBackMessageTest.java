@@ -13,8 +13,6 @@ import static org.junit.Assert.*;
 
 /**
  * This testcase verifies the construction of different callback messages by retrieving the callback type after deserialization.
- *
- * @author AJC6KOR
  */
 public class CallBackMessageTest {
 
