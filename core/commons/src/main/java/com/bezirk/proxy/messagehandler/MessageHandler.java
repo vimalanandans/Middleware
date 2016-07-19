@@ -40,11 +40,4 @@ public interface MessageHandler {
      * @param discoveryCallback callback Message that will be fired.
      */
     public void onDiscoveryIncomingMessage(DiscoveryIncomingMessage discoveryCallback);
-
-    /**
-     * Method that fires the onPipeApprovedMessage for ProxyForBezirk
-     *
-     * @param pipeMsg callback message for pipe Approved
-     */
-    public void onPipeApprovedMessage(PipeRequestIncomingMessage pipeMsg);
 }

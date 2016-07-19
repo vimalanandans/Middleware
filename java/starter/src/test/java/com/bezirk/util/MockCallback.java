@@ -2,7 +2,6 @@ package com.bezirk.util;
 
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
-import com.bezirk.proxy.messagehandler.PipeRequestIncomingMessage;
 import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
@@ -35,12 +34,6 @@ public class MockCallback implements MessageHandler {
     @Override
     public void onDiscoveryIncomingMessage(
             DiscoveryIncomingMessage discoveryCallback) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onPipeApprovedMessage(PipeRequestIncomingMessage pipeMsg) {
         // TODO Auto-generated method stub
 
     }

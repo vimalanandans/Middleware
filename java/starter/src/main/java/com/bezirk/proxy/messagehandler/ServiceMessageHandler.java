@@ -76,11 +76,4 @@ public final class ServiceMessageHandler implements MessageHandler {
 
     }
 
-    @Override
-    public void onPipeApprovedMessage(PipeRequestIncomingMessage pipeMsg) {
-        throw new RuntimeException(
-                "Method not implemented on PC yet: ServiceMessageHandler.firePipeApprovedCallBack() ");
-    }
-
-
 }

@@ -27,27 +27,7 @@ import java.io.File;
 public class ProxyServer {
     private static final Logger logger = LoggerFactory.getLogger(ProxyServer.class);
 
-    // TODO: do we need do know who the zirk is???  It looks like this variable is not used!
-   // private static Service serviceInstance; // Used for pipe to get access. delete it later
-
     private PubSubBrokerServiceTrigger pubSubBrokerService;
-   // private Comms comms;
-
-
-    /*
-    public ProxyServer(Service service) {
-        serviceInstance = service;
-        proxyServerUtilHelper = new ProxyServerUtilHelper();
-    }
-    /*public ProxyServer(Service service) {
-        serviceInstance = service;
-        proxyServerUtilHelper = new ProxyServerUtilHelper();
-    }
-
-    public static Service getServiceInstance() {
-        return serviceInstance;
-    }
-*/
 
     public void registerService(final ZirkId serviceId, final String serviceName) {
 

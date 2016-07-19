@@ -11,21 +11,12 @@ import java.io.File;
  * ProxyForBezirk.
  */
 public final class StreamIncomingMessage extends ServiceIncomingMessage {
-    /**
-     * Stream Topic
-     */
     public String streamTopic;
-    /**
-     * Serialized Stream request.
-     */
     public String serializedStream;
     /**
      * Path to downloaded file.
      */
     public File file;
-    /**
-     * LocalStreamId
-     */
     public short localStreamId;
     /**
      * ZirkEndPoint of the recipient

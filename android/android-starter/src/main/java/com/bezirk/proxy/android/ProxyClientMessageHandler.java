@@ -7,7 +7,6 @@ import com.bezirk.actions.BezirkActions;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.messagehandler.MessageHandler;
-import com.bezirk.proxy.messagehandler.PipeRequestIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.google.gson.Gson;
@@ -125,24 +124,6 @@ public class ProxyClientMessageHandler implements MessageHandler {
             } else {
                 fireIntentToService(fireIntent);
             }
-        } catch (Exception e) {
-            logger.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
-        }
-    }
-
-    public void onPipeApprovedMessage(PipeRequestIncomingMessage pipeMsg) {
-        String serviceIdKEY = "service_id_tag";
-        String discriminatorKEY = "discriminator";
-        Intent fireIntent = new Intent();
-        try {
-            fireIntent.putExtra(serviceIdKEY, gson.toJson(pipeMsg.getRecipient()));
-            fireIntent.putExtra(discriminatorKEY, pipeMsg.getCallbackType());
-            fireIntent.putExtra(BezirkActions.KEY_PIPE, pipeMsg.getPipe().toJson());
-            fireIntent.putExtra(BezirkActions.KEY_PIPE_REQ_ID, pipeMsg.getPipeReqId());
-            fireIntent.putExtra(BezirkActions.KEY_PIPE_POLICY_IN, pipeMsg.getAllowedIn().toJson());
-            fireIntent.putExtra(BezirkActions.KEY_PIPE_POLICY_OUT, pipeMsg.getAllowedOut().toJson());
-
-            fireIntentToService(fireIntent);
         } catch (Exception e) {
             logger.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
         }
