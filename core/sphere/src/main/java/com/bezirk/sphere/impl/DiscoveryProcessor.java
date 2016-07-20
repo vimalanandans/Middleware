@@ -4,9 +4,9 @@
 package com.bezirk.sphere.impl;
 
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
 import com.bezirk.devices.DeviceInterface;
+import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
 import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.discovery.SphereDiscoveryProcessor;
@@ -15,7 +15,6 @@ import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezrik.network.BezirkNetworkUtilities;
 

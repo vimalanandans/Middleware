@@ -7,18 +7,14 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.bezirk.actions.BezirkActions;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.Pipe;
-import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.middleware.messages.Stream;
-import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
+import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
@@ -136,7 +132,7 @@ public final class ProxyClient implements Bezirk {
         isRequestValid(zirkId, protocolRole, listener);
 
         PROXY_CLIENT_HELPER.addTopicsToMap(protocolRole.getEventTopics(), eventListenerMap, listener, "Event");
-        PROXY_CLIENT_HELPER.addTopicsToMap(protocolRole.getStreamTopics(), streamListenerMap, listener, "Stream");
+        PROXY_CLIENT_HELPER.addTopicsToMap(protocolRole.getStreamTopics(), streamListenerMap, listener, "StreamDescriptor");
         // Send the intent
         Intent subscribeIntent = new Intent();
         subscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
@@ -235,9 +231,9 @@ public final class ProxyClient implements Bezirk {
     }
 
     @Override
-    public short sendStream(ZirkEndPoint recipient, Stream stream, PipedOutputStream dataStream) {
+    public short sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, PipedOutputStream dataStream) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
-        activeStreams.put(streamId, stream.topic);
+        activeStreams.put(streamId, streamDescriptor.topic);
         BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) recipient;
 
         final Intent multicastStreamIntent = new Intent();
@@ -245,7 +241,7 @@ public final class ProxyClient implements Bezirk {
         multicastStreamIntent.setAction(ACTION_BEZIRK_PUSH_MULTICAST_STREAM);
         multicastStreamIntent.putExtra("zirkId", new Gson().toJson(zirkId));
         multicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
-        multicastStreamIntent.putExtra("stream", stream.toJson());
+        multicastStreamIntent.putExtra("streamDescriptor", streamDescriptor.toJson());
         multicastStreamIntent.putExtra("localStreamId", streamId);
         ComponentName retName = context.startService(multicastStreamIntent);
         if (retName == null) {
@@ -258,13 +254,13 @@ public final class ProxyClient implements Bezirk {
     }
 
     @Override
-    public short sendStream(ZirkEndPoint recipient, Stream stream, File file) {
+    public short sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file) {
         if (recipient == null) {
-            throw new IllegalArgumentException("Cannot send a stream to a null recipient");
+            throw new IllegalArgumentException("Cannot send a streamDescriptor to a null recipient");
         }
 
-        if (stream == null || stream.topic.isEmpty()) {
-            throw new IllegalArgumentException("Null or empty stream specified when sending " +
+        if (streamDescriptor == null || streamDescriptor.topic.isEmpty()) {
+            throw new IllegalArgumentException("Null or empty streamDescriptor specified when sending " +
                     "a file");
         }
         if (file == null) {
@@ -272,12 +268,12 @@ public final class ProxyClient implements Bezirk {
         }
 
         if (!file.exists()) {
-            Log.e(TAG, "Cannot send file stream. File not found: " + file.getPath());
+            Log.e(TAG, "Cannot send file streamDescriptor. File not found: " + file.getPath());
             return (short) -1;
         }
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
 
-        activeStreams.put(streamId, stream.topic);
+        activeStreams.put(streamId, streamDescriptor.topic);
 
         BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) recipient;
 
@@ -286,7 +282,7 @@ public final class ProxyClient implements Bezirk {
         unicastStreamIntent.setAction(ACTION_BEZIRK_PUSH_UNICAST_STREAM);
         unicastStreamIntent.putExtra("zirkId", new Gson().toJson(zirkId));
         unicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
-        unicastStreamIntent.putExtra("stream", stream.toJson());
+        unicastStreamIntent.putExtra("streamDescriptor", streamDescriptor.toJson());
         unicastStreamIntent.putExtra("filePath", file);
         unicastStreamIntent.putExtra("localStreamId", streamId);
         ComponentName retName = context.startService(unicastStreamIntent);

@@ -8,30 +8,17 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.DiscoveredZirk;
-import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
-import com.bezirk.middleware.messages.Stream;
-import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
+import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
-import java.lang.reflect.Type;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import static com.bezirk.actions.BezirkActions.KEY_PIPE;
-import static com.bezirk.actions.BezirkActions.KEY_PIPE_POLICY_IN;
-import static com.bezirk.actions.BezirkActions.KEY_PIPE_POLICY_OUT;
-import static com.bezirk.actions.BezirkActions.KEY_PIPE_REQ_ID;
 
 public class IntentMessageReceiver extends BroadcastReceiver {
     private final String TAG = "BezirkIntentReceiver";
@@ -62,17 +49,8 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             case "STREAM_UNICAST":
                 processStreamUnicast(intent);
                 break;
-            case "STREAM_MULTICAST":
-                Log.e(TAG, "Multicast Stream received");
-                break;
             case "STREAM_STATUS":
                 processStreamStatus(intent);
-                break;
-            case "DISCOVERY":
-                processDiscovery(intent);
-                break;
-            case "PIPE-APPROVED":
-                processPipeApproval(intent);
                 break;
             default:
         }
@@ -137,8 +115,8 @@ public class IntentMessageReceiver extends BroadcastReceiver {
                     Event event = Message.fromJson(message, Event.class);
                     listener.receiveEvent(topic, event, sourceSEP);
                 } else if ("STREAM_UNICAST".equalsIgnoreCase(type)) {
-                    Stream stream = Message.fromJson(message, Stream.class);
-                    listener.receiveStream(topic, stream, streamId, new File(filePath), sourceSEP);
+                    StreamDescriptor streamDescriptor = Message.fromJson(message, StreamDescriptor.class);
+                    listener.receiveStream(topic, streamDescriptor, streamId, new File(filePath), sourceSEP);
                 }
             }
             return true;
@@ -174,7 +152,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         Log.d(TAG, " " + streamTopic + "," + streamMsg + "+" + filePath + "-" + senderSep);
 
         if (null == streamTopic || null == streamMsg || null == filePath || null == senderSep) {
-            Log.e(TAG, "Unicast Stream has some null quantities");
+            Log.e(TAG, "Unicast StreamDescriptor has some null quantities");
             return;
         }
         final short streamId = intent.getShortExtra("streamId", (short) -1);
@@ -188,11 +166,11 @@ public class IntentMessageReceiver extends BroadcastReceiver {
 
             if (!isStreamReceived) {
 
-                Log.e(TAG, " StreamListnerMap doesnt have a mapped Stream");
+                Log.e(TAG, " StreamListnerMap doesnt have a mapped StreamDescriptor");
             }
 
         } else {
-            Log.e(TAG, "Duplicate Stream Request Received");
+            Log.e(TAG, "Duplicate StreamDescriptor Request Received");
         }
     }
 
@@ -200,7 +178,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         final short streamId = intent.getShortExtra("streamId", (short) -1);
         final int streamStatus = intent.getIntExtra("streamStatus", -1);
         if (-1 == streamId || -1 == streamStatus) {
-            Log.e(TAG, "Error in Stream Status received Intent ");
+            Log.e(TAG, "Error in StreamDescriptor Status received Intent ");
             return;
         }
         final BezirkListener.StreamStates streamCondition = (streamStatus == 1) ? BezirkListener.StreamStates.END_OF_DATA : BezirkListener.StreamStates.LOST_CONNECTION;
@@ -214,52 +192,6 @@ public class IntentMessageReceiver extends BroadcastReceiver {
             ProxyClient.activeStreams.remove(streamId);
         }
         Log.e(TAG, "No StreamId is found");
-    }
-
-    private void processDiscovery(Intent intent) {
-        if (StringValidatorUtil.isObjectNotNull(ProxyClient.DiscoveryListener)) {
-            final int receivedDiscoveryId = intent.getIntExtra("DiscoveryId", -1);
-
-            if (ProxyClient.discoveryCount == receivedDiscoveryId) {
-                final Gson gson = new Gson();
-                final String discoveredListAsString = intent.getStringExtra("DiscoveredServices");
-                //Deserialiaze
-                Type discoveredListType = new TypeToken<HashSet<BezirkDiscoveredZirk>>() {
-                }.getType();
-
-                final Set<BezirkDiscoveredZirk> discoveredList = gson.fromJson(discoveredListAsString, discoveredListType);
-
-                if (null == discoveredList) {
-                    Log.e(TAG, "Empty discovered List");
-                    return;
-                }
-
-                ProxyClient.DiscoveryListener.discovered(new HashSet<DiscoveredZirk>(discoveredList));
-            } else {
-                Log.e(TAG, "Discovery Id not matched");
-            }
-        } else {
-            Log.e(TAG, "Discovery Callback not found");
-        }
-    }
-
-    private void processPipeApproval(Intent intent) {
-        final String jsonPipe = intent.getStringExtra(KEY_PIPE);
-        final String pipeId = intent.getStringExtra(KEY_PIPE_REQ_ID);
-        if (ProxyClient.pipeListenerMap.containsKey(pipeId)) {
-            final String jsonInPolicy = intent.getStringExtra(KEY_PIPE_POLICY_IN);
-            final String jsonOutPolicy = intent.getStringExtra(KEY_PIPE_POLICY_OUT);
-            Log.i(TAG, "-- RECEIVED In Policy --");
-            Log.i(TAG, jsonInPolicy);
-            Log.i(TAG, "-- RECEIVED Out Policy --");
-            Log.i(TAG, jsonOutPolicy);
-            final BezirkPipePolicy policyIn = PipePolicy.fromJson(jsonInPolicy, BezirkPipePolicy.class);
-            final BezirkPipePolicy policyOut = PipePolicy.fromJson(jsonOutPolicy, BezirkPipePolicy.class);
-            // final Pipe pipe = Pipe.fromJson(jsonPipe, CloudPipe.class);
-            // ProxyClient.pipeListenerMap.get(pipeId).pipeGranted(pipe, policyIn, policyOut);
-        } else {
-            Log.e(TAG, "Pipe with this Id:" + pipeId + " is not in Map");
-        }
     }
 
     private boolean checkDuplicateMsg(final String sid, final String messageId) {

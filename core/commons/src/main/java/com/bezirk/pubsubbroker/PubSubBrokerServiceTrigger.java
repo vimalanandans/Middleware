@@ -66,7 +66,4 @@ public interface PubSubBrokerServiceTrigger {
     public boolean sendUnicastEvent(ZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg);
 
     public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId);
-
-    public boolean discover(final ZirkId serviceId, final RecipientSelector recipientSelector, final SubscribedRole pRole,
-                         final int discoveryId, final long timeout, final int maxDiscovered);
 }

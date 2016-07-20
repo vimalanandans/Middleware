@@ -26,7 +26,7 @@ class ProxyUtil {
                 listeners.add(listener);
                 sidMap.put(subscriber, listeners);
             }
-            //Update Event/Stream Map
+            //Update Event/StreamDescriptor Map
             if (listenerMap.containsKey(topic)) {
                 HashSet<BezirkListener> zirkList = listenerMap.get(topic);
                 if (zirkList.contains(listener)) {

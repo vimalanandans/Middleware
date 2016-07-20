@@ -10,7 +10,7 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.middleware.messages.Stream;
+import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.ProxyRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
@@ -39,7 +39,7 @@ public class Proxy implements Bezirk {
     private final ProxyUtil proxyUtil;
     private final ProxyPersistence proxyPersistence;
     private final MainService mainService;
-    // Stream
+    // StreamDescriptor
     private short streamFactory = 0;
     private ProxyRegistry proxyRegistry = null;
 
@@ -125,7 +125,7 @@ public class Proxy implements Bezirk {
         if (ValidatorUtility.isObjectNotNull(protocolRole.getStreamTopics())) {
 
             proxyUtil.addTopicsToMaps(zirkId, protocolRole.getStreamTopics(),
-                    listener, sidMap, streamListenerMap, "Stream");
+                    listener, sidMap, streamListenerMap, "StreamDescriptor");
 
         } else {
             logger.info("No Streams to Subscribe");
@@ -182,22 +182,22 @@ public class Proxy implements Bezirk {
 
     @Override
     public short sendStream(ZirkEndPoint recipient,
-                            Stream stream, PipedOutputStream dataStream) {
+                            StreamDescriptor streamDescriptor, PipedOutputStream dataStream) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
-        activeStreams.put(zirkId.getZirkId() + streamId, stream.topic);
+        activeStreams.put(zirkId.getZirkId() + streamId, streamDescriptor.topic);
         BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) recipient;
-        proxy.sendStream(zirkId, recipientSEP, stream.toJson(), streamId);
+        proxy.sendStream(zirkId, recipientSEP, streamDescriptor.toJson(), streamId);
         return streamId;
     }
 
     @Override
-    public short sendStream(ZirkEndPoint recipient, Stream stream, File file) {
+    public short sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file) {
         if (recipient == null) {
-            throw new IllegalArgumentException("Cannot send a stream to a null recipient");
+            throw new IllegalArgumentException("Cannot send a streamDescriptor to a null recipient");
         }
 
-        if (stream == null || stream.topic.isEmpty()) {
-            throw new IllegalArgumentException("Null or empty stream specified when sending " +
+        if (streamDescriptor == null || streamDescriptor.topic.isEmpty()) {
+            throw new IllegalArgumentException("Null or empty streamDescriptor specified when sending " +
                     "a file");
         }
 
@@ -206,13 +206,13 @@ public class Proxy implements Bezirk {
         }
 
         if (!file.exists()) {
-            throw new IllegalArgumentException("Cannot send file stream because {} is not found: " +
+            throw new IllegalArgumentException("Cannot send file streamDescriptor because {} is not found: " +
                     file.getName());
         }
 
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
-        activeStreams.put(zirkId.getZirkId() + streamId, stream.topic);
-        proxy.sendStream(zirkId, (BezirkZirkEndPoint) recipient, stream.toJson(), file, streamId);
+        activeStreams.put(zirkId.getZirkId() + streamId, streamDescriptor.topic);
+        proxy.sendStream(zirkId, (BezirkZirkEndPoint) recipient, streamDescriptor.toJson(), file, streamId);
         return streamId;
     }
 

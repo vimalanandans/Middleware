@@ -6,12 +6,11 @@ import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.GenerateMsgId;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.datastorage.PubSubBrokerStorage;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.Stream;
+import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
@@ -23,7 +22,6 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
-import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 
 import com.bezirk.pubsubbroker.discovery.DiscoveryProcessor;
 import com.bezirk.pubsubbroker.discovery.DiscoveryRecord;
@@ -274,13 +272,13 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         try {
             final BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(senderId);
             final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":" + streamId;
-            final Stream stream = new Gson().fromJson(serializedString, Stream.class);
+            final StreamDescriptor streamDescriptor = new Gson().fromJson(serializedString, StreamDescriptor.class);
 
-            final StreamRecord streamRecord = prepareStreamRecord(receiver, serializedString, file, streamId, senderSEP, stream);
+            final StreamRecord streamRecord = prepareStreamRecord(receiver, serializedString, file, streamId, senderSEP, streamDescriptor);
 
             boolean streamStoreStatus = comms.registerStreamBook(streamRequestKey, streamRecord);
             if (!streamStoreStatus) {
-                logger.error("Cannot Register Stream, CtrlMsgId is already present in StreamBook");
+                logger.error("Cannot Register StreamDescriptor, CtrlMsgId is already present in StreamBook");
                 return (short) -1;
             }
             sendStreamToSpheres(sphereIterator, streamRequestKey, streamRecord, file, comms);
@@ -292,13 +290,13 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
 
-    StreamRecord prepareStreamRecord(BezirkZirkEndPoint receiver, String serializedStream, File file, short streamId, BezirkZirkEndPoint senderSEP, Stream stream) {
+    StreamRecord prepareStreamRecord(BezirkZirkEndPoint receiver, String serializedStream, File file, short streamId, BezirkZirkEndPoint senderSEP, StreamDescriptor streamDescriptor) {
         final StreamRecord streamRecord = new StreamRecord();
         streamRecord.localStreamId = streamId;
         streamRecord.senderSEP = senderSEP;
         streamRecord.isReliable = false;
         streamRecord.isIncremental = false;
-        streamRecord.isEncrypted = stream.isEncrypted();
+        streamRecord.isEncrypted = streamDescriptor.isEncrypted();
         streamRecord.sphere = null;
         streamRecord.streamStatus = StreamRecord.StreamingStatus.PENDING;
         streamRecord.recipientIP = receiver.device;
@@ -307,7 +305,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         streamRecord.pipedInputStream = null;
         streamRecord.recipientSEP = receiver;
         streamRecord.serializedStream = serializedStream;
-        streamRecord.streamTopic = stream.topic;
+        streamRecord.streamTopic = streamDescriptor.topic;
         return streamRecord;
     }
 
@@ -354,40 +352,6 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         return tcMessage;
     }
 
-    public boolean discover(final ZirkId serviceId, final RecipientSelector recipientSelector, final SubscribedRole pRole,
-                         final int discoveryId, final long timeout, final int maxDiscovered) {
-
-        final Iterable<String> listOfSphere = sphereServiceAccess.getSphereMembership(serviceId);
-        if (null == listOfSphere) {
-            logger.error("Zirk Not Registered with the sphere");
-            return false;
-        }
-
-        final Iterator<String> sphereIterator = listOfSphere.iterator();
-        final BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(serviceId);
-        final Location loc = (recipientSelector == null) ? null : recipientSelector.getLocation();
-
-        while (sphereIterator.hasNext()) {
-            final ControlLedger ControlLedger = new ControlLedger();
-            final String tempSphereName = sphereIterator.next();
-            final DiscoveryRequest discoveryRequest = new DiscoveryRequest(tempSphereName, senderSEP, loc, pRole, discoveryId, timeout, maxDiscovered);
-            ControlLedger.setSphereId(tempSphereName);
-            ControlLedger.setMessage(discoveryRequest);
-            ControlLedger.setSerializedMessage(ControlLedger.getMessage().serialize());
-            if (ValidatorUtility.isObjectNotNull(comms)) {
-                comms.sendMessage(ControlLedger);
-            } else {
-                logger.error("Comms manager not initialized");
-                return false;
-            }
-        }
-        final DiscoveryLabel discoveryLabel = new DiscoveryLabel(senderSEP, discoveryId);
-        final DiscoveryRecord pendingRequest = new DiscoveryRecord(timeout, maxDiscovered);
-        DiscoveryProcessor.getDiscovery().addRequest(discoveryLabel, pendingRequest, msgHandler);
-
-        return false;
-    }
-
     @Override
     public Boolean isServiceRegistered(ZirkId serviceId) {
         if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
@@ -405,22 +369,11 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     @Override
     public Boolean isStreamTopicRegistered(String streamTopic, ZirkId serviceId) {
         if (!ValidatorUtility.checkForString(streamTopic) || !ValidatorUtility.checkBezirkZirkId(serviceId)) {
-            logger.error("Stream Topic or zirk Id is invalid");
+            logger.error("StreamDescriptor Topic or zirk Id is invalid");
             return false;
         }
         return pubSubBrokerRegistry.isStreamTopicRegistered(streamTopic, serviceId);
     }
-
-    // SERVICE-NAME NEEDS TO BE FILLED
-    @Override
-    public Set<BezirkDiscoveredZirk> discoverZirks(ProtocolRole pRole, Location location) {
-        if (!ValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
-            logger.error("Discarding Discovery Lookup as ProtocolRole is invalid");
-            return null;
-        }
-        return pubSubBrokerRegistry.discoverServices(pRole, location);
-    }
-
 
     @Override
     public boolean processEvent(final EventLedger eLedger) {

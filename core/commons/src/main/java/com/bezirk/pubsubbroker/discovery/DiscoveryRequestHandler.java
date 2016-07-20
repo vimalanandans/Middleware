@@ -1,6 +1,5 @@
 package com.bezirk.pubsubbroker.discovery;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
@@ -9,7 +8,6 @@ import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBrokerControlReceiver;
-import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereServiceAccess;
 
 import org.slf4j.Logger;
@@ -48,8 +46,7 @@ public class DiscoveryRequestHandler {
     }
 
     public void getDiscoveryResponse() {
-        final Boolean success = (null == discReq.getProtocol()) ? handleSphereDiscovery(discReq) :
-                handleZirkDiscovery(discReq);
+        final Boolean success = handleSphereDiscovery(discReq);
 
         if (success) {
             populateReceiverQueue(response);
@@ -65,26 +62,6 @@ public class DiscoveryRequestHandler {
         serviceAccess.processSphereDiscoveryRequest(discoveryRequest);
 
         return true;
-    }
-
-    private Boolean handleZirkDiscovery(DiscoveryRequest req) {
-        Set<BezirkDiscoveredZirk> discoveredZirks = this.sadlCtrl.discoverZirks(req.getProtocol(), req.getLocation());
-        if (null == discoveredZirks || discoveredZirks.isEmpty()) {
-            return false;
-        }
-
-        for (BezirkDiscoveredZirk zirk : discoveredZirks) {
-            ZirkId sid = ((BezirkZirkEndPoint) zirk.getZirkEndPoint()).getBezirkZirkId();
-
-            if (serviceAccess.isServiceInSphere(sid, req.getSphereId())) {
-                //Set the Zirk Name
-                zirk.name = serviceAccess.getServiceName(sid);
-                //Populate response zirk list
-                response.getZirkList().add(zirk);
-            }
-        }
-
-        return !(null == response.getZirkList() || response.getZirkList().isEmpty());
     }
 
 

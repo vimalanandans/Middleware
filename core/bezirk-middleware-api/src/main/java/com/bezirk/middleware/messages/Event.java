@@ -24,11 +24,11 @@ package com.bezirk.middleware.messages;
  * <p>
  * An <code>Event</code> is used to represent simple messages that communicate one request, reply, or
  * notification. To combine multiple messages into one send or to include non-trivial message
- * payloads, use the {@link Stream} class.
+ * payloads, use the {@link StreamDescriptor} class.
  * </p>
  *
  * @see Message
- * @see Stream
+ * @see StreamDescriptor
  */
 public class Event extends Message {
     /**

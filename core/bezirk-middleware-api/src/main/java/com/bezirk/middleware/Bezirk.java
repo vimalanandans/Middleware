@@ -17,15 +17,12 @@
  */
 package com.bezirk.middleware;
 
-import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.Pipe;
-import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.middleware.messages.Stream;
+import com.bezirk.middleware.messages.StreamDescriptor;
 
 import java.io.File;
 import java.io.PipedOutputStream;
@@ -112,11 +109,11 @@ public interface Bezirk {
     public void sendEvent(ZirkEndPoint recipient, Event event);
 
     /**
-     * Publish a {@link com.bezirk.middleware.messages.Stream} with one specific recipient. The
+     * Publish a {@link StreamDescriptor} with one specific recipient. The
      * channel's properties are described by <code>stream</code>. The transmitted data is supplied by
      * writes to <code>dataStream</code>. To send a file use
-     * {@link #sendStream(ZirkEndPoint, Stream, File)}. Streams sent using this
-     * method are assumed to be incremental (see {@link Stream#isIncremental()}).
+     * {@link #sendStream(ZirkEndPoint, StreamDescriptor, File)}. Streams sent using this
+     * method are assumed to be incremental (see {@link StreamDescriptor#isIncremental()}).
      *
      * @param recipient  intended recipient, as extracted from a received message
      * @param dataStream io stream where the outgoing data will be written into by this method's
@@ -125,27 +122,27 @@ public interface Bezirk {
      *                   <code>PipedInputStream</code> linked to <code>dataStream</code>
      * @return Bezirk middleware-generated id for the stream, which will be referred to in
      * {@link BezirkListener#streamStatus(short, BezirkListener.StreamStates)}
-     * @see BezirkListener#receiveStream(String, Stream, short, java.io.InputStream, ZirkEndPoint)
-     * @see BezirkListener#receiveStream(String, Stream, short, File, ZirkEndPoint)
+     * @see BezirkListener#receiveStream(String, StreamDescriptor, short, java.io.InputStream, ZirkEndPoint)
+     * @see BezirkListener#receiveStream(String, StreamDescriptor, short, File, ZirkEndPoint)
      */
-    public short sendStream(ZirkEndPoint recipient, Stream stream,
+    public short sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor,
                             PipedOutputStream dataStream);
 
     /**
      * Publish a file with one specific recipient. This method is identical to
-     * {@link Bezirk#sendStream(ZirkEndPoint, Stream, PipedOutputStream)}, except this
+     * {@link Bezirk#sendStream(ZirkEndPoint, StreamDescriptor, PipedOutputStream)}, except this
      * version is intended to send a specific file instead of general data. Streams sent using this
-     * method are assumed to be non-incremental (see {@link Stream#isIncremental()}).
+     * method are assumed to be non-incremental (see {@link StreamDescriptor#isIncremental()}).
      *
      * @param recipient intended recipient, as extracted from a received message
-     * @param stream    communication channel's descriptor
+     * @param streamDescriptor    communication channel's descriptor
      * @param file      the file whose contents will be sent using the <code>stream</code>
      * @return Bezirk middleware-generated id for the stream, which will be referred to in
      * {@link BezirkListener#streamStatus(short, BezirkListener.StreamStates)}
-     * @see BezirkListener#receiveStream(String, Stream, short, java.io.InputStream, ZirkEndPoint)
-     * @see BezirkListener#receiveStream(String, Stream, short, File, ZirkEndPoint)
+     * @see BezirkListener#receiveStream(String, StreamDescriptor, short, java.io.InputStream, ZirkEndPoint)
+     * @see BezirkListener#receiveStream(String, StreamDescriptor, short, File, ZirkEndPoint)
      */
-    public short sendStream(ZirkEndPoint recipient, Stream stream, File file);
+    public short sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file);
 
     /**
      * Inform the Bezirk middleware of the Zirk's {@link com.bezirk.middleware.addressing.Location}.

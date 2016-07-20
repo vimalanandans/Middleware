@@ -2,21 +2,13 @@ package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.DiscoveredZirk;
-import com.bezirk.middleware.addressing.Pipe;
-import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.middleware.messages.Stream;
-import com.bezirk.middleware.messages.UnicastStream;
-import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
+import com.bezirk.middleware.messages.StreamDescriptor;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +18,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Iterator;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -37,8 +27,8 @@ import static org.junit.Assert.fail;
 /**
  * @author VBD4KOR
  *         This testcase is used to test the Streaming locally. Two MockServices are used for testing.
- *         MockService-B registers and subscribes for a Stream.
- *         MockService-A registers and subscribes for dummy Stream. MS-A discovers the services and streams the file to the MS-B.
+ *         MockService-B registers and subscribes for a StreamDescriptor.
+ *         MockService-A registers and subscribes for dummy StreamDescriptor. MS-A discovers the services and streams the file to the MS-B.
  *         MS-B receives the file.
  */
 public class StreamLocalTest {
@@ -46,7 +36,7 @@ public class StreamLocalTest {
     private static boolean isStreamSuccess = false;
     private short sendStreamId = -1;
     private File sendFile = new File(StreamLocalTest.class.getClassLoader().getResource("streamingTestFile.txt").getPath());
-    private StreamLocalMockRequestStream request = null;
+    private StreamLocalMockRequestStreamDescriptor request = null;
     private StreamLocalMockServiceA mockA;
     private StreamLocalMockServiceB mockB;
 
@@ -90,53 +80,16 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
         public void streamStatus(short streamId, StreamStates status) {
         }
-
-        @Override
-        public void pipeStatus(Pipe pipe, PipeStates status) {
-        }
-
-        @Override
-        public void discovered(Set<DiscoveredZirk> zirkSet) {
-            logger.info("Received Discovery Response");
-            if (zirkSet == null) {
-                fail("Zirk Set of Discovered Services in Null");
-                return;
-            }
-            if (zirkSet.isEmpty()) {
-                fail("Zirk Set is Empty");
-                return;
-            }
-
-            assertEquals(1, zirkSet.size());
-            BezirkDiscoveredZirk dService = null;
-
-            Iterator<DiscoveredZirk> iterator = zirkSet.iterator();
-            dService = (BezirkDiscoveredZirk) iterator.next();
-            logger.info("DiscoveredServiceName : " + dService.name + "\n" +
-                    "Discovered Role : " + dService.protocolRole + "\n" +
-                    "Discovered SEP" + dService.zirk + "\n");
-
-            request = new StreamLocalMockRequestStream(Message.Flag.REQUEST, "MockRequestStream", dService.zirk);
-
-            sendStreamId = bezirk.sendStream(dService.zirk, request, sendFile);
-        }
-
-        @Override
-        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
-                                PipePolicy allowedOut) {
-
-        }
-
     }
 
     /**
@@ -171,7 +124,7 @@ public class StreamLocalTest {
      */
     private final class StreamLocalMockServiceProtocolRole extends ProtocolRole {
 
-        private final String[] streams = {"MockRequestStream"};
+        private final String[] streams = {"MockRequestStreamDescriptor"};
 
         @Override
         public String getRoleName() {
@@ -196,20 +149,19 @@ public class StreamLocalTest {
     }
 
     /**
-     * Stream Descriptor
+     * StreamDescriptor Descriptor
      */
-    private final class StreamLocalMockRequestStream extends UnicastStream {
+    private final class StreamLocalMockRequestStreamDescriptor extends StreamDescriptor {
 
-        private StreamLocalMockRequestStream(Flag flag, String topic,
-                                             ZirkEndPoint recipient) {
-            super(flag, topic, recipient);
+        private StreamLocalMockRequestStreamDescriptor() {
+            super(false, true);
         }
 
 
     }
 
     /**
-     * Zirk that is consumer of Stream
+     * Zirk that is consumer of StreamDescriptor
      */
     private final class StreamLocalMockServiceB implements BezirkListener {
         private final String zirkName = "StreamLocalMockServiceB";
@@ -229,29 +181,29 @@ public class StreamLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
 
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
             logger.info("****** RECEIVED STREAM REQUEST ******");
             assertNotNull(topic);
-            assertNotNull(stream);
+            assertNotNull(streamDescriptor);
             assertNotNull(file);
             assertNotNull(sender);
 
             logger.info("topic-> " + topic);
-            logger.info("stream-> " + stream);
+            logger.info("streamDescriptor-> " + streamDescriptor);
             logger.info("streamId-> " + streamId);
             logger.info("filePath-> " + file);
             logger.info("sender-> " + sender);
 
-            assertEquals("MockRequestStream", topic);
+            assertEquals("MockRequestStreamDescriptor", topic);
             assertEquals(sendFile, file);
             assertEquals(sendStreamId, streamId);
-            assertEquals(request.toJson(), stream);
-            // Read and verify the stream
+            assertEquals(request.toJson(), streamDescriptor);
+            // Read and verify the streamDescriptor
             FileInputStream fileInputStream = null;
             BufferedReader reader = null;
             try {
@@ -283,22 +235,6 @@ public class StreamLocalTest {
             assertEquals(StreamStates.END_OF_DATA, status);
             logger.info("**** STREAM STATUS SUCCESSFUL FOR END_OF_DATA");
         }
-
-
-        @Override
-        public void pipeStatus(Pipe pipe, PipeStates status) {
-        }
-
-        @Override
-        public void discovered(Set<DiscoveredZirk> zirkSet) {
-        }
-
-        @Override
-        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
-                                PipePolicy allowedOut) {
-
-        }
-
 
     }
 }

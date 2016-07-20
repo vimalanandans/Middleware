@@ -84,7 +84,7 @@ final class BezirkStreamHandler {
         StreamRecord streamRecord = streamStore.popStreamRecord(streamResponse
                 .getUniqueKey());
         if (null == streamRecord) {
-            logger.debug("No StreamRecord for this Response or the Stream is already addressed");
+            logger.debug("No StreamRecord for this Response or the StreamDescriptor is already addressed");
             return false;
         }
         streamRecord.sphere = streamResponse.getSphereId();

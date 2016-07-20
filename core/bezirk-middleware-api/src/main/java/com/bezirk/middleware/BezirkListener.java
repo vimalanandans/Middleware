@@ -17,18 +17,13 @@
  */
 package com.bezirk.middleware;
 
-import com.bezirk.middleware.addressing.DiscoveredZirk;
-import com.bezirk.middleware.addressing.Pipe;
-import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.middleware.messages.Stream;
+import com.bezirk.middleware.messages.StreamDescriptor;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Set;
 
 /**
  * Interface implemented by all Zirks that will receive messages, discover Zirks, or use pipes.
@@ -36,7 +31,7 @@ import java.util.Set;
  * {@link Bezirk} are completed or reach an interesting state.
  * <p>
  * {@link com.bezirk.middleware.messages.Event Events} and
- * {@link com.bezirk.middleware.messages.Stream Streams} are received by Zirks subscribed to
+ * {@link StreamDescriptor Streams} are received by Zirks subscribed to
  * specific topics. Zirks subscribe to topics by subscribing to a
  * {@link com.bezirk.middleware.messages.ProtocolRole} using
  * {@link Bezirk#subscribe(ProtocolRole, BezirkListener)}. It may make sense to
@@ -60,86 +55,54 @@ public interface BezirkListener {
     public void receiveEvent(String topic, Event event, ZirkEndPoint sender);
 
     /**
-     * Called by the Bezirk middleware when a <code>stream</code> arrives whose topic the Zirk
+     * Called by the Bezirk middleware when a <code>streamDescriptor</code> arrives whose topic the Zirk
      * implementing this interface is subscribed to.
      * <p>
-     * This callback is for streams marked {@link Stream#isIncremental()}
+     * This callback is for streams marked {@link StreamDescriptor#isIncremental()}
      * </p>
      *
      * @param topic       the event's topic. Topics are defined by
      *                    {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles}
-     * @param stream      the received stream descriptor. Use <code>topic</code> to determine the
+     * @param streamDescriptor      the received streamDescriptor descriptor. Use <code>topic</code> to determine the
      *                    more specific type of the descriptor if you need to cast it to access
      *                    custom class members.
-     * @param streamId    Bezirk middleware-generated id for the stream, used to refer to the stream in
+     * @param streamId    Bezirk middleware-generated id for the streamDescriptor, used to refer to the streamDescriptor in
      *                    {@link #streamStatus(short, StreamStates)}
-     * @param inputStream input stream containing the received data
-     * @param sender      the Zirk that sent the stream
+     * @param inputStream input streamDescriptor containing the received data
+     * @param sender      the Zirk that sent the streamDescriptor
      */
-    public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream,
+    public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream,
                               ZirkEndPoint sender);
 
     /**
-     * Called by the Bezirk middleware when a <code>stream</code> arrives whose topic the Zirk
+     * Called by the Bezirk middleware when a <code>streamDescriptor</code> arrives whose topic the Zirk
      * implementing this interface is subscribed to.
      * <p>
-     * This callback is for streams marked {@link Stream#isIncremental()} as <code>false</code>.
+     * This callback is for streams marked {@link StreamDescriptor#isIncremental()} as <code>false</code>.
      * </p>
      *
      * @param topic    the event's topic. Topics are defined by
      *                 {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles}
-     * @param stream   the received stream descriptor. Use <code>topic</code> to determine the
+     * @param streamDescriptor   the received streamDescriptor descriptor. Use <code>topic</code> to determine the
      *                 more specific type of the descriptor if you need to cast it to access
      *                 custom class members.
-     * @param streamId Bezirk middleware-generated id for the stream, used to refer to the stream in
+     * @param streamId Bezirk middleware-generated id for the streamDescriptor, used to refer to the streamDescriptor in
      *                 {@link #streamStatus(short, StreamStates)}
      * @param file     the received file
-     * @param sender   the Zirk that sent the stream
+     * @param sender   the Zirk that sent the streamDescriptor
      */
-    public void receiveStream(String topic, Stream stream, short streamId, File file,
+    public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file,
                               ZirkEndPoint sender);
 
     /**
      * Called by the Bezirk middleware if something unexpected happens to the stream referred to
      * by <code>streamId</code>, or when an incremental stream closes.
      *
-     * @param streamId as returned by {@link Bezirk#sendStream(ZirkEndPoint, Stream, java.io.PipedOutputStream)}
-     *                 or received in {@link #receiveStream(String, Stream, short, InputStream, ZirkEndPoint)}
+     * @param streamId as returned by {@link Bezirk#sendStream(ZirkEndPoint, StreamDescriptor, java.io.PipedOutputStream)}
+     *                 or received in {@link #receiveStream(String, StreamDescriptor, short, InputStream, ZirkEndPoint)}
      * @param status   the status of the stream referenced by <code>streamId</code>
      */
     public void streamStatus(short streamId, StreamStates status);
-
-    /**
-     * Called by the Bezirk middleware when a user grants or denies a Zirk authorization to use a pipe.
-     * Pipe authorization is requested using
-     * {@link Bezirk#requestPipeAuthorization(Pipe, PipePolicy, PipePolicy, BezirkListener)}.
-     *
-     * @param pipe       the pipe the user authorized the Zirk implementing this interface
-     *                   to use, or <code>null</code> if authorization was denied
-     * @param allowedIn  specification of message roles allowed to flow into the requester's sphere(s)
-     *                   via the pipe. If <code>null</code>, no security policy is imposed
-     * @param allowedOut specification of message roles allowed to flow out of the requester's sphere(s)
-     *                   via the pipe. If <code>null</code>, no security policy is imposed
-     */
-    public void pipeGranted(Pipe pipe, PipePolicy allowedIn, PipePolicy allowedOut);
-
-    /**
-     * Called by the Bezirk middleware if something unexpected happens to <code>pipe</code>.
-     *
-     * @param pipe   as passed in {@link #pipeGranted(Pipe, PipePolicy, PipePolicy)}
-     * @param status the new status of <code>pipe</code>
-     */
-    public void pipeStatus(Pipe pipe, PipeStates status);
-
-    /**
-     * Called by the Bezirk middleware when a discovery request issued using
-     * {@link Bezirk#discover(RecipientSelector, ProtocolRole, long, int, BezirkListener)}
-     * completes.
-     *
-     * @param zirkSet a set of Zirks discovered as subscribing to a particular
-     *                {@link com.bezirk.middleware.messages.ProtocolRole}.
-     */
-    public void discovered(Set<DiscoveredZirk> zirkSet);
 
     /**
      * Unexpected states a stream can be in.

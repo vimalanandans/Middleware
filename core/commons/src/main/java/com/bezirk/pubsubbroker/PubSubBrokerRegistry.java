@@ -3,7 +3,6 @@ package com.bezirk.pubsubbroker;
 import com.bezirk.BezirkCompManager;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezrik.network.BezirkNetworkUtilities;
 
@@ -206,7 +205,7 @@ public class PubSubBrokerRegistry implements Serializable {
                 eventMap.put(eventTopic, eventsResServices);
             }
         }
-        // Updating Stream Map
+        // Updating StreamDescriptor Map
         if (null == streamTopics) {
             logger.info("Protocol does not contain any Streams to subscribe");
         } else {
@@ -387,40 +386,6 @@ public class PubSubBrokerRegistry implements Serializable {
     public Boolean isStreamTopicRegistered(String streamTopic, ZirkId serviceId) {
         return isServiceRegistered(serviceId) && streamMap.containsKey(streamTopic) && streamMap.get(streamTopic).contains(serviceId);
     }
-
-    /**
-     * Checks for Discovery based on the Protocol Role and Location
-     *
-     * @param protocolRole
-     * @param location
-     * @return
-     */
-    public Set<BezirkDiscoveredZirk> discoverServices(ProtocolRole protocolRole, Location location) {
-        if (!protocolMap.containsKey(protocolRole.getRoleName())) {
-            logger.debug("No services are subscribed for this protocol Role");
-            return null;
-        }
-        final HashSet<BezirkDiscoveredZirk> discoveredServices = new HashSet<BezirkDiscoveredZirk>();
-        // Get all the services associated with the protocols
-        final Set<ZirkId> services = protocolMap.get(protocolRole.getRoleName());
-        for (ZirkId serviceId : services) {
-            Location serviceLocation = getLocationForService(serviceId);
-
-            if (null != location && !location.subsumes(serviceLocation)) {
-                logger.debug("inside if before continue, Location did not match");
-                continue;
-            }
-            discoveredServices.add(new BezirkDiscoveredZirk(
-                    BezirkNetworkUtilities.getServiceEndPoint(serviceId), null, protocolRole, serviceLocation));
-        }
-        if (discoveredServices.isEmpty()) {
-            logger.debug("No services are present in the location: {} subscribed to Protocol Role: {}",
-                    location.toString(), protocolRole.getRoleName());
-            return null;
-        }
-        return discoveredServices;
-    }
-
 
     /**
      * Checks the topic is registered by the recipient

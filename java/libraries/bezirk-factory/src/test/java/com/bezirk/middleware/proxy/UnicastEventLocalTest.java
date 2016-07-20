@@ -2,27 +2,19 @@ package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.DiscoveredZirk;
-import com.bezirk.middleware.addressing.Pipe;
-import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.middleware.messages.Stream;
-import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
+import com.bezirk.middleware.messages.StreamDescriptor;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -47,7 +39,7 @@ public class UnicastEventLocalTest {
         mockB.setupMockService();
         mockA.setupMockService();
     }
-    
+
     @After
     public void destroyMockservices() {
 
@@ -85,51 +77,15 @@ public class UnicastEventLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
         public void streamStatus(short streamId, StreamStates status) {
-        }
-
-        @Override
-        public void pipeStatus(Pipe pipe, PipeStates status) {
-        }
-
-        @Override
-        public void discovered(Set<DiscoveredZirk> zirkSet) {
-            logger.info("Received Discovery Response");
-            if (zirkSet == null) {
-                fail("Zirk Set of Discovered Services in Null");
-                return;
-            }
-            if (zirkSet.isEmpty()) {
-                fail("Zirk Set is Empty");
-                return;
-            }
-
-            assertEquals(1, zirkSet.size());
-            BezirkDiscoveredZirk dService = null;
-
-            Iterator<DiscoveredZirk> iterator = zirkSet.iterator();
-            dService = (BezirkDiscoveredZirk) iterator.next();
-            logger.info("DiscoveredServiceName : " + dService.name + "\n" +
-                    "Discovered Role : " + dService.protocolRole + "\n" +
-                    "Discovered SEP" + dService.zirk + "\n");
-
-            MockRequestEvent request = new MockRequestEvent(Message.Flag.REQUEST, "MockRequestEvent");
-            bezirk.sendEvent(dService.zirk, request);
-        }
-
-
-        @Override
-        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
-                                PipePolicy allowedOut) {
-
         }
     }
 
@@ -243,30 +199,15 @@ public class UnicastEventLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
         public void streamStatus(short streamId, StreamStates status) {
-        }
-
-
-        @Override
-        public void pipeStatus(Pipe pipe, PipeStates status) {
-        }
-
-        @Override
-        public void discovered(Set<DiscoveredZirk> zirkSet) {
-        }
-
-        @Override
-        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
-                                PipePolicy allowedOut) {
-
         }
 
     }
