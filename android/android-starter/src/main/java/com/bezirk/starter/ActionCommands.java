@@ -1,7 +1,6 @@
 package com.bezirk.starter;
 
 /**
- * Created by vnd2kor on 12/21/2014.
  * Bezirk Action Commands to send the notification to UI Via intents
  * At the moment this is specific to android. if this shall be
  */

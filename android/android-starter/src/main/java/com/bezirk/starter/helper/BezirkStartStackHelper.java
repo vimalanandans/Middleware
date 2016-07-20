@@ -5,9 +5,9 @@ import android.widget.Toast;
 
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsFactory;
+import com.bezirk.comms.CommsFeature;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.ZyreCommsManager;
-import com.bezirk.comms.CommsFeature;
 import com.bezirk.datastorage.DatabaseConnection;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.persistence.util.DatabaseConnectionForAndroid;
@@ -19,8 +19,10 @@ import com.bezirk.util.ValidatorUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.ByteOrder;
 
 class BezirkStartStackHelper {
     private static final Logger logger = LoggerFactory.getLogger(BezirkStartStackHelper.class);
@@ -51,10 +53,10 @@ class BezirkStartStackHelper {
         }
     }
 
-    boolean isIPAddressValid(MainService service, WifiManager wifi, AndroidNetworkUtil androidNetworkUtil) {
+    boolean isIPAddressValid(MainService service, WifiManager wifi) {
         String ipAddress;
         try {
-            ipAddress = androidNetworkUtil.getIpAddress(wifi);
+            ipAddress = getIpAddress(wifi);
         } catch (UnknownHostException e) {
             logger.error("Unable to get ip address. Is it connected to network", e);
             Toast.makeText(service.getApplicationContext(), "Unable to get ip address. Is it connected to network", Toast.LENGTH_SHORT).show();
@@ -71,11 +73,24 @@ class BezirkStartStackHelper {
         return true;
     }
 
+    private String getIpAddress(WifiManager wifi) throws UnknownHostException {
+        // From http://stackoverflow.com/questions/16730711/get-my-wifi-ip-address-android
+        int ip = wifi.getConnectionInfo().getIpAddress();
+
+        // Convert little-endian to big-endian if needed
+        if (ByteOrder.LITTLE_ENDIAN.equals(ByteOrder.nativeOrder())) {
+            ip = Integer.reverseBytes(ip);
+        }
+
+        byte[] ipByteArray = BigInteger.valueOf(ip).toByteArray();
+
+        return InetAddress.getByAddress(ipByteArray).getHostAddress();
+    }
 
 
-    Comms initializeComms(InetAddress inetAddress, PubSubBroker pubSubBroker,  CommsNotification errNotificationCallback) {
+    Comms initializeComms(InetAddress inetAddress, PubSubBroker pubSubBroker, CommsNotification errNotificationCallback) {
         // Instantiate pipeManager before SenderThread so that it is ready to start sending over pipes
-       // PipeManager pipeComms = PipeCommsFactory.createPipeComms();
+        // PipeManager pipeComms = PipeCommsFactory.createPipeComms();
 
         CommsFactory commsFactory = new CommsFactory();
 
@@ -102,8 +117,7 @@ class BezirkStartStackHelper {
         /** initialize the streaming */
         StreamManager streaming = new StreamManager(comms, pubSubBroker);
         /** initialize the communications */
-        comms.initComms(null, inetAddress, pubSubBroker, null,streaming);
-
+        comms.initComms(null, inetAddress, pubSubBroker, null, streaming);
 
 
         return comms;

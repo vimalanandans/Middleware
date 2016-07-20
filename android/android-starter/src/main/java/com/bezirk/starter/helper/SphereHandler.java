@@ -1,16 +1,16 @@
 package com.bezirk.starter.helper;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.devices.DeviceInterface;
 import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
+import com.bezirk.devices.DeviceInterface;
 import com.bezirk.sphere.AndroidSphereServiceManager;
-import com.bezirk.sphere.api.SphereSecurity;
-import com.bezirk.sphere.api.SphereServiceAccess;
-import com.bezirk.sphere.api.SphereConfig;
+import com.bezirk.sphere.SphereProperties;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SphereAPI;
-import com.bezirk.sphere.SphereProperties;
+import com.bezirk.sphere.api.SphereConfig;
+import com.bezirk.sphere.api.SphereSecurity;
+import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.MainStackPreferences;
@@ -39,15 +39,17 @@ public final class SphereHandler {
         return true;
     }
 
-    /** return the sphere security*/
-    public SphereSecurity getSphereSecurity()
-    {
+    /**
+     * return the sphere security
+     */
+    public SphereSecurity getSphereSecurity() {
         return (SphereSecurity) sphereForAndroid;
     }
 
-    /** return the sphere security*/
-    public SphereServiceAccess getSphereServiceAccess()
-    {
+    /**
+     * return the sphere security
+     */
+    public SphereServiceAccess getSphereServiceAccess() {
         return (SphereServiceAccess) sphereForAndroid;
     }
 
@@ -82,7 +84,6 @@ public final class SphereHandler {
             }
 
             devMode = (DevMode) sphereForAndroid;
-
 
 
             Comms uhuComms = MainStackHandler.getBezirkComms();

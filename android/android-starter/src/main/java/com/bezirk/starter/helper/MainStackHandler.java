@@ -7,31 +7,36 @@ import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CommsConfigAndroid;
+import com.bezirk.comms.CommsConfigurations;
+import com.bezirk.comms.CommsNotification;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.Device;
 import com.bezirk.proxy.ProxyServer;
-import com.bezirk.proxy.android.ProxyClientMessageHandler;
 import com.bezirk.proxy.android.AndroidProxyServer;
+import com.bezirk.proxy.android.ProxyClientMessageHandler;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.AndroidSphereServiceManager;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SphereAPI;
-import com.bezirk.starter.StackHandler;
+import com.bezirk.starter.BezirkWifiManager;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.MainStackPreferences;
-import com.bezirk.starter.BezirkWifiManager;
+import com.bezirk.starter.StackHandler;
 import com.bezirk.util.ValidatorUtility;
+import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.IntfInetPair;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.Date;
 
 /**
@@ -49,8 +54,6 @@ public final class MainStackHandler implements StackHandler {
     private static Comms comms;
 
     private final SphereHandler sphereProcessorForMainService = new SphereHandler();
-
-    private final AndroidNetworkUtil androidNetworkUtil = new AndroidNetworkUtil();
 
     private final DeviceHelper deviceHelper = new DeviceHelper();
 
@@ -129,7 +132,7 @@ public final class MainStackHandler implements StackHandler {
                     /*************************************************************
                      * Step 1 : Fetches ipAddress from Wifi connection           *
                      *************************************************************/
-                    if (!bezirkStartStackHelper.isIPAddressValid(service, wifi, androidNetworkUtil))
+                    if (!bezirkStartStackHelper.isIPAddressValid(service, wifi))
                         return;
                     Toast.makeText(service.getApplicationContext(), "Starting Bezirk....", Toast.LENGTH_SHORT).show();
 
@@ -137,7 +140,7 @@ public final class MainStackHandler implements StackHandler {
                     /*************************************************************
                      * Step 2 : Set Android callback zirk                     *
                      *************************************************************/
-                   // bezirkStartStackHelper.setAndroidMessageHandler(service);
+                    // bezirkStartStackHelper.setAndroidMessageHandler(service);
                     ProxyClientMessageHandler serviceMessageHandler = new ProxyClientMessageHandler(service.getApplicationContext());
 
                     /*************************************************************
@@ -159,13 +162,13 @@ public final class MainStackHandler implements StackHandler {
                     /*************************************************************
                      * Step 6 : Initialize PubSubBroker and set sadl for proxy *
                      *************************************************************/
-                    PubSubBroker pubSubBroker = new PubSubBroker(registryPersistence,bezirkDevice);
+                    PubSubBroker pubSubBroker = new PubSubBroker(registryPersistence, bezirkDevice);
                     proxy.setPubSubBrokerService(pubSubBroker);
 
                     /*************************************************************
                      * Step 7 : Initialize BezirkCommsManager                       *
                      *************************************************************/
-                    InetAddress inetAddress = androidNetworkUtil.fetchInetAddress(service);
+                    InetAddress inetAddress = fetchInetAddress(service);
                     comms = bezirkStartStackHelper.initializeComms(inetAddress, pubSubBroker, errNotificationCallback);
                     if (!ValidatorUtility.isObjectNotNull(comms)) {
                         logger.error("Unable to initialize comms layer. Shutting down bezirk.");
@@ -189,11 +192,11 @@ public final class MainStackHandler implements StackHandler {
                     }
 
                     // init the comms manager for sadl
-                    pubSubBroker.initPubSubBroker(comms,  serviceMessageHandler, sphereProcessorForMainService.getSphereServiceAccess(),
+                    pubSubBroker.initPubSubBroker(comms, serviceMessageHandler, sphereProcessorForMainService.getSphereServiceAccess(),
                             sphereProcessorForMainService.getSphereSecurity());
 
                     // set proxy handler
-                    AndroidProxyServer proxyIntend = (AndroidProxyServer)proxy;
+                    AndroidProxyServer proxyIntend = (AndroidProxyServer) proxy;
                     proxyIntend.InitProxyServerIntend(serviceMessageHandler);
                     /*************************************************************
                      * Step 9 : Start CommsConfigurations after sphere initialization       *
@@ -216,6 +219,39 @@ public final class MainStackHandler implements StackHandler {
                 }
             }
         }
+    }
+
+    private InetAddress fetchInetAddress(MainService service) {
+        InetAddress inetAddress = null;
+
+        try {
+            final NetworkInterface networkInterface = NetworkInterface.getByName(CommsConfigurations.getINTERFACE_NAME());
+            inetAddress = networkInterface != null ?
+                    BezirkNetworkUtilities.getIpForInterface(networkInterface) : null;
+
+            if (inetAddress == null) {
+                logger.error("Could not resolve ip - Check InterfaceName in preferences.xml\n" +
+                        "Possible interface and ip pairs are: {}\n" +
+                        "SHUTTING DOWN BEZIRK", createInfInetPairsMessage());
+                service.onDestroy();
+            }
+        } catch (SocketException e) {
+            logger.error("Could not find Interface - SHUTTING DOWN BEZIRK", e);
+            service.onDestroy();
+        }
+
+        return null;
+    }
+
+    private String createInfInetPairsMessage() {
+        final StringBuilder interfacePairs = new StringBuilder();
+
+        for (IntfInetPair pair : BezirkNetworkUtilities.getIntfInetPair()) {
+            if (interfacePairs.length() > 0) interfacePairs.append("\n");
+            interfacePairs.append("Interface: " + pair.getIntf().getName() + " IP:" + pair.getInet().getHostAddress());
+        }
+
+        return interfacePairs.toString();
     }
 
     /**
