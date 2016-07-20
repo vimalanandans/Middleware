@@ -3,7 +3,6 @@ package com.bezirk.starter.helper;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.device.Device;
 import com.bezirk.device.DeviceType;
 import com.bezirk.middleware.addressing.Location;
@@ -27,7 +26,6 @@ public final class DeviceHelper {
 
         if (ValidatorUtility.isObjectNotNull(bezirkDevice)) {
 
-            BezirkCompManager.setUpaDevice(bezirkDevice);
 
             //Load Location
             Location deviceLocation = loadLocation(preferences);

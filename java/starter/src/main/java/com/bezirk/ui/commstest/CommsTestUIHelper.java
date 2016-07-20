@@ -1,6 +1,6 @@
 package com.bezirk.ui.commstest;
 
-import com.bezirk.BezirkCompManager;
+import com.bezirk.devices.DeviceInterface;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -45,7 +45,9 @@ public class CommsTestUIHelper {
     private final JScrollPane scrollPane = new JScrollPane();
     private final CommsTestActionPerformer commsTestActionPerformer = new CommsTestActionPerformer();
 
-    void setInfoAndSettingsButton(final CommsTest commsTest) {
+    DeviceInterface deviceInterface;
+
+    void setInfoAndSettingsButton(final CommsTest commsTest, DeviceInterface deviceInterface) {
         infoBtn.setToolTipText(CommsTestConstants.HINT_DIALOG_TITLE);
         infoBtn.setBounds(new Rectangle(690, 0, 25, 25));
         infoBtn.addActionListener(new ActionListener() {
@@ -64,6 +66,8 @@ public class CommsTestUIHelper {
                         statusDisplayTxt, startBtn, pingBtn);
             }
         });
+
+        this.deviceInterface = deviceInterface;
     }
 
     void setDeviceNameLabelAndDeviceNameTxt() {
@@ -74,7 +78,7 @@ public class CommsTestUIHelper {
         deviceNameTxt.setBounds(new Rectangle(120, 10, 575, 25));
         deviceNameTxt.setFont(new Font(TAHOMA_FONT, 1, 12));
         deviceNameTxt.setEditable(false);
-        deviceNameTxt.setText(BezirkCompManager.getUpaDevice().getDeviceName());
+        deviceNameTxt.setText(deviceInterface.getDeviceName());
         deviceNameTxt.setForeground(Color.GRAY);
     }
 
@@ -124,7 +128,7 @@ public class CommsTestUIHelper {
         statusDisplayTxt.setEditable(false);
         statusDisplayTxt.setForeground(Color.GRAY);
         final com.bezirk.util.TestUIMouseListener testUIMouseListener = new com.bezirk.util.TestUIMouseListener(UI_TYPE, commsTest,
-                commsTestActionPerformer.pingCount, null);
+                commsTestActionPerformer.pingCount, null, deviceInterface);
 
         statusDisplayTxt.addMouseListener(testUIMouseListener);
     }

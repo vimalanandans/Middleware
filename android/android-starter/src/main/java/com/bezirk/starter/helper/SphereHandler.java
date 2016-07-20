@@ -1,6 +1,5 @@
 package com.bezirk.starter.helper;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.Comms;
 import com.bezirk.devices.DeviceInterface;
 import com.bezirk.datastorage.SpherePersistence;
@@ -84,10 +83,8 @@ public final class SphereHandler {
 
             devMode = (DevMode) sphereForAndroid;
 
-            //BezirkCompManager.setSphereUI(sphereForAndroid);
 
 
-           // BezirkCompManager.setSphereForPubSub((SphereServiceAccess) sphereForAndroid);
             Comms uhuComms = MainStackHandler.getBezirkComms();
             uhuComms.setSphereSecurity((SphereSecurity) sphereForAndroid);
         }

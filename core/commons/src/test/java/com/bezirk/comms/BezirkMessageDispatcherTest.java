@@ -5,6 +5,8 @@ import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.control.messages.streaming.StreamRequest;
+import com.bezirk.device.Device;
+import com.bezirk.device.DeviceType;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBroker;
@@ -19,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 import static org.junit.Assert.assertFalse;
@@ -75,9 +78,19 @@ public class BezirkMessageDispatcherTest {
         return null;
     }
 
+
     @Test
     public void test() {
-        PubSubEventReceiver bezirkSadlManager = new PubSubBroker(null);
+        Device device = new Device();
+        String deviceIdString = null;
+        try {
+            deviceIdString = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        device .initDevice(deviceIdString,
+                DeviceType.BEZIRK_DEVICE_TYPE_PC);
+        PubSubEventReceiver bezirkSadlManager = new PubSubBroker(null,device);
         CommsMessageDispatcher commsMessageDispatcher = new CommsMessageDispatcher(bezirkSadlManager);
 
         CtrlMsgReceiver receiver = new MockReceiver();

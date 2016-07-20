@@ -35,7 +35,7 @@ public class DeviceWindow extends JFrame {
      * Create the frame.
      */
     public DeviceWindow(final DeviceInterface upaDevice) {
-        //final DeviceInterface upaDevice = BezirkCompManager.getUpaDevice();
+
 
         setTitle("Device Location Window");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
