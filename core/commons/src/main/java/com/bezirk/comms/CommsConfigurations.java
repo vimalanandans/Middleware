@@ -70,69 +70,69 @@ public final class CommsConfigurations {
         CommsConfigurations.INTERFACE_NAME = INTERFACE_NAME;
     }
 
-    public static String getMULTICAST_ADDRESS() {
-        return MULTICAST_ADDRESS;
-    }
+    /*    public static String getMULTICAST_ADDRESS() {
+            return MULTICAST_ADDRESS;
+        }
 
-    public static void setMULTICAST_ADDRESS(String MULTICAST_ADDRESS) {
-        CommsConfigurations.MULTICAST_ADDRESS = MULTICAST_ADDRESS;
-    }
+        public static void setMULTICAST_ADDRESS(String MULTICAST_ADDRESS) {
+            CommsConfigurations.MULTICAST_ADDRESS = MULTICAST_ADDRESS;
+        }
 
-    public static int getMULTICAST_PORT() {
-        return MULTICAST_PORT;
-    }
+        public static int getMULTICAST_PORT() {
+            return MULTICAST_PORT;
+        }
 
-    public static void setMULTICAST_PORT(int MULTICAST_PORT) {
-        CommsConfigurations.MULTICAST_PORT = MULTICAST_PORT;
-    }
+        public static void setMULTICAST_PORT(int MULTICAST_PORT) {
+            CommsConfigurations.MULTICAST_PORT = MULTICAST_PORT;
+        }
 
-    public static int getUNICAST_PORT() {
-        return UNICAST_PORT;
-    }
+        public static int getUNICAST_PORT() {
+            return UNICAST_PORT;
+        }
 
-    public static void setUNICAST_PORT(int uNICAST_PORT) {
-        UNICAST_PORT = uNICAST_PORT;
-    }
+        public static void setUNICAST_PORT(int uNICAST_PORT) {
+            UNICAST_PORT = uNICAST_PORT;
+        }
 
-    public static String getCTRL_MULTICAST_ADDRESS() {
-        return CTRL_MULTICAST_ADDRESS;
-    }
+        public static String getCTRL_MULTICAST_ADDRESS() {
+            return CTRL_MULTICAST_ADDRESS;
+        }
 
-    public static void setCTRL_MULTICAST_ADDRESS(String cTRL_MULTICAST_ADDRESS) {
-        CTRL_MULTICAST_ADDRESS = cTRL_MULTICAST_ADDRESS;
-    }
+        public static void setCTRL_MULTICAST_ADDRESS(String cTRL_MULTICAST_ADDRESS) {
+            CTRL_MULTICAST_ADDRESS = cTRL_MULTICAST_ADDRESS;
+        }
 
-    public static int getCTRL_MULTICAST_PORT() {
-        return CTRL_MULTICAST_PORT;
-    }
+        public static int getCTRL_MULTICAST_PORT() {
+            return CTRL_MULTICAST_PORT;
+        }
 
-    public static void setCTRL_MULTICAST_PORT(int cTRL_MULTICAST_PORT) {
-        CTRL_MULTICAST_PORT = cTRL_MULTICAST_PORT;
-    }
+        public static void setCTRL_MULTICAST_PORT(int cTRL_MULTICAST_PORT) {
+            CTRL_MULTICAST_PORT = cTRL_MULTICAST_PORT;
+        }
 
-    public static int getCTRL_UNICAST_PORT() {
-        return CTRL_UNICAST_PORT;
-    }
+        public static int getCTRL_UNICAST_PORT() {
+            return CTRL_UNICAST_PORT;
+        }
 
-    public static void setCTRL_UNICAST_PORT(int cTRL_UNICAST_PORT) {
-        CTRL_UNICAST_PORT = cTRL_UNICAST_PORT;
-    }
+        public static void setCTRL_UNICAST_PORT(int cTRL_UNICAST_PORT) {
+            CTRL_UNICAST_PORT = cTRL_UNICAST_PORT;
+        }
 
-    public static int getMAX_BUFFER_SIZE() {
-        return MAX_BUFFER_SIZE;
-    }
+        public static int getMAX_BUFFER_SIZE() {
+            return MAX_BUFFER_SIZE;
+        }
 
-    public static void setMAX_BUFFER_SIZE(int mAX_BUFFER_SIZE) {
-        MAX_BUFFER_SIZE = mAX_BUFFER_SIZE;
-    }
+        public static void setMAX_BUFFER_SIZE(int mAX_BUFFER_SIZE) {
+            MAX_BUFFER_SIZE = mAX_BUFFER_SIZE;
+        }
 
-    public static int getPOOL_SIZE() {
-        return POOL_SIZE;
-    }
+        public static int getPOOL_SIZE() {
+            return POOL_SIZE;
+        }
 
-    public static void setPOOL_SIZE(int pOOL_SIZE) {
-        POOL_SIZE = pOOL_SIZE;
-    }
+        public static void setPOOL_SIZE(int pOOL_SIZE) {
+            POOL_SIZE = pOOL_SIZE;
+        }
 
     public static int getSTARTING_PORT_FOR_STREAMING() {
         return STARTING_PORT_FOR_STREAMING;
@@ -174,7 +174,7 @@ public final class CommsConfigurations {
     public static void setDOWNLOAD_PATH(String DOWNLOAD_PATH) {
         CommsConfigurations.DOWNLOAD_PATH = DOWNLOAD_PATH;
     }
-
+/*
     public static int getREMOTE_LOGGING_PORT() {
         return REMOTE_LOGGING_PORT;
     }
@@ -192,7 +192,7 @@ public final class CommsConfigurations {
         CommsConfigurations.isRemoteLoggingServiceEnabled = isRemoteLoggingServiceEnabled;
     }
 
-    public static boolean isDEMO_SPHERE_MODE() {
+   /* public static boolean isDEMO_SPHERE_MODE() {
         return DEMO_SPHERE_MODE;
     }
 
@@ -208,7 +208,7 @@ public final class CommsConfigurations {
         NO_OF_RETRIES = nO_OF_RETRIES;
     }
 
-/*	public static int getPOOL_SIZE() {
+	public static int getPOOL_SIZE() {
         return POOL_SIZE;
 	}
 

@@ -57,18 +57,20 @@ public class StreamReceivingThread implements Runnable {
     private final PortFactory portFactory;
     private final PubSubEventReceiver sadlReceiver;
     private final SphereSecurity sphereSecurity;
+    private final String downloadPath;
 
     /**
      * Constructor that is called during starting the thread
      *
      * @param  port   - port that this thread is listening to receive the data. { This port is got from StreamPortFactory }
      */
-    public StreamReceivingThread(int port,
+    public StreamReceivingThread(int port,String downloadPath,
                                  StreamRequest streamRequest, PortFactory portFactory,
                                  PubSubEventReceiver sadlReceiver, SphereSecurity sphereSecurity) {
         super();
         this.sphere = streamRequest.getSphereId();
         this.port = port;
+        this.downloadPath = downloadPath;
         this.streamLabel = streamRequest.streamLabel;
         this.fileName = streamRequest.fileName;
         this.isEncrypted = streamRequest.isEncrypted;
@@ -98,7 +100,7 @@ public class StreamReceivingThread implements Runnable {
             socket.setSoTimeout(CONNECTION_TIMEOUT_TIME);
             receivingSocket = socket.accept();
 
-            tempFile = new File(CommsConfigurations.getDOWNLOAD_PATH() + fileName);
+            tempFile = new File(downloadPath + fileName);
             fileOutputStream = new FileOutputStream(tempFile);
             inputStream = new DataInputStream(receivingSocket.getInputStream());
 
@@ -118,7 +120,7 @@ public class StreamReceivingThread implements Runnable {
                 }
             }
             logger.debug("--- File Received--- & saved at "
-                    + CommsConfigurations.getDOWNLOAD_PATH() + fileName);
+                    + downloadPath + fileName);
 
             notifyStreamFile(tempFile, portFactory.releasePort(port));
             streamErrored = false;

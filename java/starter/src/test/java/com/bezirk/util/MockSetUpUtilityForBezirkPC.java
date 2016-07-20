@@ -29,6 +29,7 @@ import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -81,7 +82,7 @@ public class MockSetUpUtilityForBezirkPC {
 
 
         comms = new MockComms();
-        Streaming streamManager = new StreamManager(comms,pubSubBroker);
+        Streaming streamManager = new StreamManager(comms,pubSubBroker,getStreamDownloadPath());
         comms.initComms(null, inetAddr, pubSubBroker, null,streamManager);
 
         comms.registerNotification(Mockito.mock(CommsNotification.class));
@@ -94,7 +95,26 @@ public class MockSetUpUtilityForBezirkPC {
 
         pubSubBroker.initPubSubBroker(comms,new MockCallback(),bezirkSphere,bezirkSphere);
         }
+    String getStreamDownloadPath()
+    {
+        String downloadPath;
+        // port factory is part of comms manager
+        // CommsConfigurations.portFactory = new
+        // StreamPortFactory(CommsConfigurations.STARTING_PORT_FOR_STREAMING,
+        // CommsConfigurations.ENDING_PORT_FOR_STREAMING); // initialize the
+        // StreamPortFactory
 
+        downloadPath= File.separator+ new String ("downloads")+File.separator;
+        final File createDownloadFolder = new File(
+                downloadPath);
+        if (!createDownloadFolder.exists()) {
+            if (!createDownloadFolder.mkdir()) {
+                logger.error("Failed to create download direction: {}",
+                        createDownloadFolder.getAbsolutePath());
+            }
+        }
+        return downloadPath;
+    }
 
     /**
      * @throws UnknownHostException

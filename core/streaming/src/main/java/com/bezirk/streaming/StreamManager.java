@@ -29,6 +29,13 @@ import org.slf4j.LoggerFactory;
 public class StreamManager implements Streaming {
     private static final Logger logger = LoggerFactory.getLogger(StreamManager.class);
 
+    /** Streaming specific constants*/
+
+    static int STREAM_START_PORT = 6321;
+    static int STREAM_END_PORT = 6330;
+    static int STREAM_PARALLEL_MAX = 5;
+    static int STREAM_RETRY_COUNT = 5;
+
     private final StreamCtrlReceiver ctrlReceiver = new StreamCtrlReceiver();
     private SphereSecurity sphereForSadl = null;
     private MessageQueue streamingMessageQueue = null;
@@ -39,23 +46,26 @@ public class StreamManager implements Streaming {
     //private CommsMessageDispatcher msgDispatcher;
     private Comms comms = null;
 
+    String downloadPath = null;
+
     private StreamStore streamStore = null;
 
     private PubSubEventReceiver sadlReceiver = null;
 
-    public StreamManager(Comms comms, PubSubEventReceiver sadlReceiver) {
+    public StreamManager(Comms comms, PubSubEventReceiver sadlReceiver, String downloadPath) {
 
         if (ValidatorUtility.isObjectNotNull(comms)
 
                 && ValidatorUtility.isObjectNotNull(sadlReceiver)) {
             this.comms = comms;
             this.sadlReceiver = sadlReceiver;
-            bezirkStreamHandler = new BezirkStreamHandler();
+            bezirkStreamHandler = new BezirkStreamHandler(downloadPath);
         } else {
             logger.error("Unable to initialize StreamManager. Please ensure ControlSenderQueue, " +
                     "CommsMessageDispatcher and BezirkCallback are initialized.");
         }
 
+        this.downloadPath = downloadPath;
     }
 
     /**
@@ -121,7 +131,7 @@ public class StreamManager implements Streaming {
 
 
             portFactory = new StreamPortFactory(
-                    CommsConfigurations.getSTARTING_PORT_FOR_STREAMING(), streamStore);
+                    STREAM_START_PORT, streamStore,STREAM_PARALLEL_MAX);
 
             if (comms == null) {
 

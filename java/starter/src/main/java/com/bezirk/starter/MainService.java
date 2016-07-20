@@ -27,6 +27,7 @@ import com.bezrik.network.BezirkNetworkUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Date;
@@ -153,15 +154,16 @@ public class MainService {
          *************************************/
         serviceStarterHelper.deinitSphere(this);
 
+        //TODO Manage the remote loggin ui inside ui component
         /*************************************
          * Step3 : Shutdown RemoteLogging    *
          *************************************/
-        if (CommsConfigurations.isRemoteLoggingServiceEnabled()
+        /*if (CommsConfigurations.isRemoteLoggingServiceEnabled()
                 && ValidatorUtility.isObjectNotNull(loggingGUI)
                 && loggingGUI.isVisible()) {
 
             loggingGUI.shutGUI();
-        }
+        }*/
         /*************************************
          * Step4 : Set status of stack       *
          *************************************/
@@ -277,25 +279,26 @@ public class MainService {
             frame = new com.bezirk.ui.spheremanagement.SphereManagementGUI(sphereManager, bezirkDevice);
             frame.setVisible(true);
 
+            //FIXME: check for the remote logging and launch the ui
             // Check if the Logging is enabled and start the LoggingGUI
-            if (CommsConfigurations.isRemoteLoggingServiceEnabled()) {
-                logger.info("*** REMOTE LOGGING SERVICE IS ENABLED");
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        loggingGUI = new RemoteLogSphereSelectGUI(comms);
-                    }
-                });
-            }
-        } else {
-            /**
-             * Rishabh: Commenting out saving of QR as it is not used.
-             */
-            // save the qr code
-            // if display is not stored then save the QR code
-            //((PCSphereServiceManager) sphereManager).saveQRCode(bezirkConfig.getDataPath(),
-            //        bezirkDevice.getDeviceName());
+//            if (CommsConfigurations.isRemoteLoggingServiceEnabled()) {
+//                logger.info("*** REMOTE LOGGING SERVICE IS ENABLED");
+//                SwingUtilities.invokeLater(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        loggingGUI = new RemoteLogSphereSelectGUI(comms);
+//                    }
+//                });
+//            }
+//        } else {
+//            /**
+//             * Rishabh: Commenting out saving of QR as it is not used.
+//             */
+//            // save the qr code
+//            // if display is not stored then save the QR code
+//            //((PCSphereServiceManager) sphereManager).saveQRCode(bezirkConfig.getDataPath(),
+//            //        bezirkDevice.getDeviceName());
         }
     }
 
@@ -375,7 +378,7 @@ public class MainService {
          * CommsProperties is not used by comms manager. Properties are handled
          * by BezirkCommsPC
          */
-        Streaming streamManager = new StreamManager(comms,pubSubBroker);
+        Streaming streamManager = new StreamManager(comms, pubSubBroker, getStreamDownloadPath());
         comms.initComms(null, addr, pubSubBroker, (SphereSecurity) sphereManager, streamManager);
 
 
@@ -396,4 +399,27 @@ public class MainService {
         return true;
     }
 
+    String getStreamDownloadPath()
+    {
+      String downloadPath;
+            // port factory is part of comms manager
+            // CommsConfigurations.portFactory = new
+            // StreamPortFactory(CommsConfigurations.STARTING_PORT_FOR_STREAMING,
+            // CommsConfigurations.ENDING_PORT_FOR_STREAMING); // initialize the
+            // StreamPortFactory
+            if (bezirkConfig == null) {
+                downloadPath= File.separator+ new String ("downloads")+File.separator;
+            } else {
+                downloadPath= File.separator+ bezirkConfig.getDataPath()+File.separator;
+            }
+            final File createDownloadFolder = new File(
+                    downloadPath);
+            if (!createDownloadFolder.exists()) {
+                if (!createDownloadFolder.mkdir()) {
+                    logger.error("Failed to create download direction: {}",
+                            createDownloadFolder.getAbsolutePath());
+                }
+            }
+        return downloadPath;
+    }
 }

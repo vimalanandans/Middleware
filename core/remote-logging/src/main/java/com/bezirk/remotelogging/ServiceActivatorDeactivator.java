@@ -23,6 +23,9 @@ import org.slf4j.LoggerFactory;
 public final class ServiceActivatorDeactivator {
     private static final Logger logger = LoggerFactory.getLogger(ServiceActivatorDeactivator.class);
 
+    // Move to the remote logging component manager
+    public static int REMOTE_LOGGING_PORT = 7777;
+
     private ServiceActivatorDeactivator() {
     }
 
@@ -32,7 +35,7 @@ public final class ServiceActivatorDeactivator {
 
         for (String sphereId : sphereList) {
             final ControlLedger controlLedger = new ControlLedger();
-            final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep, sphereId, BezirkNetworkUtilities.getDeviceIp(), CommsConfigurations.getREMOTE_LOGGING_PORT(), selectedLogSpheres, isActivate);
+            final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep, sphereId, BezirkNetworkUtilities.getDeviceIp(), REMOTE_LOGGING_PORT, selectedLogSpheres, isActivate);
             controlLedger.setSphereId(sphereId);
             controlLedger.setMessage(loggingServiceActivateRequest);
             controlLedger.setSerializedMessage(controlLedger.getMessage().serialize());

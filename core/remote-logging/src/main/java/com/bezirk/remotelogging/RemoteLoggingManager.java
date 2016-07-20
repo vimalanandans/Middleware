@@ -192,13 +192,12 @@ public final class RemoteLoggingManager implements RemoteLog {
     /**
      * Starts the Logging Zirk
      *
-     * @param loggingPort             port at which the LoggingService Starts
      * @param platformSpecificHandler handler to give callback once the zirk receives the request
      * @throws Exception if handler is null, or something goes wrong while processing.
      */
-    public boolean startLoggingService(final int loggingPort, final RemoteLoggingMessageNotification platformSpecificHandler) {
+    public boolean startLoggingService(final RemoteLoggingMessageNotification platformSpecificHandler) {
         if (remoteLoggingService == null && platformSpecificHandler != null) {
-            remoteLoggingService = new RemoteLoggingService(loggingPort);
+            remoteLoggingService = new RemoteLoggingService(ServiceActivatorDeactivator.REMOTE_LOGGING_PORT);
             receiverQueueProcessor = new ReceiverQueueProcessor(platformSpecificHandler);
             try {
                 remoteLoggingService.startLoggingService();

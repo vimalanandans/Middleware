@@ -1,9 +1,11 @@
 package com.bezirk.starter.helper;
 
 import android.net.wifi.WifiManager;
+import android.os.Environment;
 import android.widget.Toast;
 
 import com.bezirk.comms.Comms;
+import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.ZyreCommsManager;
@@ -19,6 +21,7 @@ import com.bezirk.util.ValidatorUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -100,7 +103,7 @@ class BezirkStartStackHelper {
         comms.registerNotification(errNotificationCallback);
 
         /** initialize the streaming */
-        StreamManager streaming = new StreamManager(comms, pubSubBroker);
+        StreamManager streaming = new StreamManager(comms, pubSubBroker,getStreamDownloadPath());
         /** initialize the communications */
         comms.initComms(null, inetAddress, pubSubBroker, null,streaming);
 
@@ -108,4 +111,20 @@ class BezirkStartStackHelper {
 
         return comms;
     }
+
+    String getStreamDownloadPath()
+    {
+        String downloadPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/bezirk-downloads/";
+
+            // create a Downloads folder for streaming
+            File createDownloadFolder = new File(downloadPath);
+            if (!createDownloadFolder.exists()) {
+                if (!createDownloadFolder.mkdir()) {
+                    logger.error("Failed to create download direction: {}",
+                            createDownloadFolder.getAbsolutePath());
+                }
+            }
+        return downloadPath;
+    }
+
 }

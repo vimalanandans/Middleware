@@ -25,7 +25,7 @@ public final class CommsConfigAndroid {
         //Refer res/preferences.xml for values
         CommsConfigurations.setINTERFACE_NAME(pref.getString("InterfaceName", null));
         logger.info("InterfaceName:" + CommsConfigurations.getINTERFACE_NAME());
-        CommsConfigurations.setMULTICAST_ADDRESS(pref.getString("EMulticastAddress", null));
+        /*CommsConfigurations.setMULTICAST_ADDRESS(pref.getString("EMulticastAddress", null));
         logger.info("MulticastAddress " + CommsConfigurations.getMULTICAST_ADDRESS());
         CommsConfigurations.setMULTICAST_PORT(Integer.parseInt(pref.getString("EMulticastPort", "0")));
         logger.info("MulticastPort " + CommsConfigurations.getMULTICAST_PORT());
@@ -50,8 +50,8 @@ public final class CommsConfigAndroid {
         logger.info("No of active threads supported " + CommsConfigurations.getMAX_SUPPORTED_STREAMS());
         CommsConfigurations.setStreamingEnabled(Boolean.parseBoolean(pref.getString("StreamingEnabled", "false")));
         logger.info("Is streaming Enabled" + CommsConfigurations.isStreamingEnabled());
-
-        CommsConfigurations.setDOWNLOAD_PATH(Environment.getExternalStorageDirectory().getAbsolutePath() + "/UhuDownloads/");
+*/
+       /* CommsConfigurations.setDOWNLOAD_PATH(Environment.getExternalStorageDirectory().getAbsolutePath() + "/bezirk-downloads/");
         if (CommsConfigurations.isStreamingEnabled()) {
             // port factory is moved to the bezirk comms manager
             // create a Downloads folder
@@ -63,10 +63,10 @@ public final class CommsConfigAndroid {
                 }
             }
         }
-
-        CommsConfigurations.setDEMO_SPHERE_MODE(Boolean.valueOf(pref.getString("DemoSphereMode", "false")));
+*/
+       // CommsConfigurations.setDEMO_SPHERE_MODE(Boolean.valueOf(pref.getString("DemoSphereMode", "false")));
         //Logging
-        CommsConfigurations.setREMOTE_LOGGING_PORT(Integer.parseInt(pref.getString("RemoteLoggingPort", "7777")));
-        CommsConfigurations.setRemoteLoggingServiceEnabled(Boolean.valueOf(pref.getString("RemoteLoggingEnabled", "false")));
+      //  CommsConfigurations.setREMOTE_LOGGING_PORT(Integer.parseInt(pref.getString("RemoteLoggingPort", "7777")));
+       // CommsConfigurations.setRemoteLoggingServiceEnabled(Boolean.valueOf(pref.getString("RemoteLoggingEnabled", "false")));
     }
 }

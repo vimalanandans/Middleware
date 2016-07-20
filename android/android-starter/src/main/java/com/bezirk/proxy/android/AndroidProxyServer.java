@@ -127,10 +127,13 @@ public class AndroidProxyServer extends ProxyServer {
      */
     public void sendUnicastStream(Intent intent) {
         logger.info("------------ Received message to push the StreamDescriptor ----------------------");
-        boolean isStreamingValid = CommsConfigurations.isStreamingEnabled();
-        if (!isStreamingValid) {
-            logger.error(" Streaming is not enabled!");
-        }
+
+        // Use a interface from component manager to find out enabled component to respond back
+        boolean isStreamingValid;
+//        boolean isStreamingValid = CommsConfigurations.isStreamingEnabled();
+//        if (!isStreamingValid) {
+//            logger.error(" Streaming is not enabled!");
+//        }
         final String serviceIdAsString = intent.getStringExtra("zirkId");
         final String recipientAsString = intent.getStringExtra("receiverSEP");
         final File file = new File(intent.getStringExtra("filePath"));
@@ -174,7 +177,7 @@ public class AndroidProxyServer extends ProxyServer {
      *
      * @param intent Intent received
      */
-    public void sendMulticastStream(Intent intent) {
+ /*   public void sendMulticastStream(Intent intent) {
         logger.info("------------ Received message to push the StreamDescriptor ----------------------");
         boolean isStreamingValid = true;
         if (!CommsConfigurations.isStreamingEnabled()) {
@@ -213,7 +216,7 @@ public class AndroidProxyServer extends ProxyServer {
             messageHandler.onStreamStatus(streamStatusCallbackMessage);
         }
     }
-
+*/
     /**
      * Sends MulticastEvent to proxy
      *

@@ -13,12 +13,13 @@ import com.bezirk.streaming.control.Objects.StreamRecord;
  */
 public interface Streaming {
 
+
     /**
      * Initialize the streaming queue, streaming thread,stream store and register the receivers with the message dispatcher.
      */
     public boolean initStreams(Comms comms);
 
-    /**
+      /**
      * Start the streaming thread
      */
     public boolean startStreams();

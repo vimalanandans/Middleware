@@ -21,7 +21,7 @@ public interface RemoteLog {
     public static final String ALL_SPHERES = "ALL-SPHERES";
 
     /** Start Logging . By component manager */
-    public boolean startLoggingService(final int loggingPort, final RemoteLoggingMessageNotification platformSpecificHandler) ;
+    public boolean startLoggingService( final RemoteLoggingMessageNotification platformSpecificHandler) ;
 
     /** Start Logging . By component manager */
     public boolean stopLoggingService();

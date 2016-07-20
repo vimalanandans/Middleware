@@ -82,7 +82,7 @@ public abstract class CommsProcessor implements Comms {
 
         msgDispatcher = new CommsMessageDispatcher(pubSubBroker);
 
-        if (CommsConfigurations.isStreamingEnabled()) {
+        if (streaming != null) {
 
             bezirkStreamManager = streaming;
 
@@ -100,12 +100,10 @@ public abstract class CommsProcessor implements Comms {
         // old ones are cleared with stopComms
         executor = Executors.newFixedThreadPool(THREAD_SIZE);
 
-        if (CommsConfigurations.isStreamingEnabled()) {
-
-            if (bezirkStreamManager != null) {
-                bezirkStreamManager.startStreams();
-            }
+        if (bezirkStreamManager != null) {
+            bezirkStreamManager.startStreams();
         }
+
 
 
         return true;
@@ -121,13 +119,11 @@ public abstract class CommsProcessor implements Comms {
             // and then shutdownNow
         }
 
-         if (CommsConfigurations.isStreamingEnabled())
-        {
 
-            if (bezirkStreamManager != null) {
-                bezirkStreamManager.endStreams();
-            }
+        if (bezirkStreamManager != null) {
+            bezirkStreamManager.endStreams();
         }
+
 
         return true;
     }

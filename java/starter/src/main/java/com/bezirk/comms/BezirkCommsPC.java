@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Properties;
 
+
 public final class BezirkCommsPC {
     //public static final String PROPS_FILE = "comms.properties";
     // Comms properties
@@ -102,7 +103,7 @@ public final class BezirkCommsPC {
         //overrideStringProperty("displayEnable", props, bezirkConfig);
 
         CommsConfigurations.setINTERFACE_NAME("en0");
-        CommsConfigurations.setMULTICAST_ADDRESS("224.5.6.7");
+      /*  CommsConfigurations.setMULTICAST_ADDRESS("224.5.6.7");
         CommsConfigurations.setMULTICAST_PORT(9999);
         CommsConfigurations.setUNICAST_PORT(8888);
         CommsConfigurations.setCTRL_MULTICAST_ADDRESS("224.5.6.7");
@@ -110,11 +111,11 @@ public final class BezirkCommsPC {
         CommsConfigurations.setCTRL_UNICAST_PORT(8887);
         CommsConfigurations.setMAX_BUFFER_SIZE(10240);
         CommsConfigurations.setPOOL_SIZE(5);
-        CommsConfigurations.setSTARTING_PORT_FOR_STREAMING(6321);
+       CommsConfigurations.setSTARTING_PORT_FOR_STREAMING(6321);
         CommsConfigurations.setENDING_PORT_FOR_STREAMING(6330);
-        CommsConfigurations.setMAX_SUPPORTED_STREAMS(5);
-        CommsConfigurations.setStreamingEnabled(true);
-        CommsConfigurations.setNO_OF_RETRIES(5);
+        //CommsConfigurations.setMAX_SUPPORTED_STREAMS(5);
+        //CommsConfigurations.setStreamingEnabled(true);
+        //CommsConfigurations.setNO_OF_RETRIES(5);
 
         if (CommsConfigurations.isStreamingEnabled()) {
             // port factory is part of comms manager
@@ -137,10 +138,11 @@ public final class BezirkCommsPC {
                 }
             }
         }
-
-        CommsConfigurations.setDEMO_SPHERE_MODE(true);
+/*
+      //  CommsConfigurations.setDEMO_SPHERE_MODE(true);
         CommsConfigurations.setREMOTE_LOGGING_PORT(7777);
         CommsConfigurations.setRemoteLoggingServiceEnabled(false);
+        */
     }
 
     /**

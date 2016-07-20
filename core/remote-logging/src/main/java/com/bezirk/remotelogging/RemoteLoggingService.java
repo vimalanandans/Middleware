@@ -17,6 +17,8 @@ import java.net.Socket;
  * loads the serialized message into ReceiverQueue.
  */
 public class RemoteLoggingService extends Thread {
+
+
     /**
      * private logger for the class
      */

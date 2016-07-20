@@ -24,6 +24,12 @@ final class BezirkStreamHandler {
     private static final Logger logger = LoggerFactory
             .getLogger(BezirkStreamHandler.class);
 
+    String downloadPath;
+
+    BezirkStreamHandler(String downloadPath){
+        this.downloadPath = downloadPath;
+    }
+
     /**
      * The assumption is that the ControlReceiverThread has already checked for
      * validity of StreamRequest.
@@ -47,7 +53,7 @@ final class BezirkStreamHandler {
                 status = StreamRecord.StreamingStatus.BUSY;
             } else {
                 status = StreamRecord.StreamingStatus.READY;
-                new Thread(new StreamReceivingThread(assignedPort,
+                new Thread(new StreamReceivingThread(assignedPort, downloadPath,
                         streamRequest, portFactory, sadlReceiver, sphereSecurity))
                         .start();
             }
