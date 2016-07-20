@@ -20,7 +20,7 @@ public interface DatabaseConnection {
      * @throws NullPointerException if connection is null
      * @throws SQLException         if connection is null
      */
-    public ConnectionSource getDatabaseConnection() throws NullPointerException, SQLException, IOException;
+    ConnectionSource getDatabaseConnection() throws NullPointerException, SQLException, IOException;
 
     /**
      * Returns the DAO class associated with the entity
@@ -30,5 +30,5 @@ public interface DatabaseConnection {
      * @throws SQLException         if connection is not possible or some thing happens while getting the DAO
      * @throws IOException          if the database file is not present
      */
-    public Dao<PersistenceRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException;
+    Dao<PersistenceRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException;
 }

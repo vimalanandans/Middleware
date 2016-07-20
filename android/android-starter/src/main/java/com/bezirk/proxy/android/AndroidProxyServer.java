@@ -24,11 +24,6 @@ public class AndroidProxyServer extends ProxyServer {
 
     MessageHandler messageHandler;
 
-    public AndroidProxyServer() {
-
-        super();
-    }
-
     // TODO: If it makes sense , move it to proxy server
     public void InitProxyServerIntend(MessageHandler messageHandler) {
         this.messageHandler = messageHandler;

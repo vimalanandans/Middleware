@@ -20,10 +20,10 @@ public interface SphereServiceAccess {
      * @param zirkName Name to be associated with the zirk
      * @return <code>true</code> if zirk was added successfully
      */
-    public boolean registerService(ZirkId zirkId, String zirkName);
+    boolean registerService(ZirkId zirkId, String zirkName);
 
     /** unregister service*/
-    public boolean unregisterService(ZirkId serviceId);
+    boolean unregisterService(ZirkId serviceId);
 
     /**
      * Provides iterable collection of sphereIds associated with passed
@@ -33,7 +33,7 @@ public interface SphereServiceAccess {
      * @return iterable Collection of sphereIds for the passed ZirkId, <code>null</code> in case
      * the <code>zirkId</code> passed is <code>null</code> or not registered
      */
-    public Iterable<String> getSphereMembership(ZirkId zirkId);
+    Iterable<String> getSphereMembership(ZirkId zirkId);
 
     // TODO add to wiki : found while refactoring to the new API
 
@@ -44,7 +44,7 @@ public interface SphereServiceAccess {
      * @param sphereId sphere to be tested
      * @return true if the zirk exist in the sphere false otherwise
      */
-    public boolean isServiceInSphere(ZirkId service, String sphereId);
+    boolean isServiceInSphere(ZirkId service, String sphereId);
 
     /**
      * Gets the zirk name of the passed ZirkId
@@ -53,19 +53,19 @@ public interface SphereServiceAccess {
      * @return Zirk name if the zirk id is valid and not null null
      * otherwise
      */
-    public String getServiceName(ZirkId serviceId);
+    String getServiceName(ZirkId serviceId);
 
     /**
      * This method handles processing the sphere related discovery request
      *
      * @param discoveryRequest
      */
-    public void processSphereDiscoveryRequest(DiscoveryRequest discoveryRequest);
+    void processSphereDiscoveryRequest(DiscoveryRequest discoveryRequest);
 
     /**
      * @param deviceId the deviceId whose Device Name needs to be known
      * @return Device Name if exists, null otherwise
      */
-    public String getDeviceNameFromSphere(String deviceId);
+    String getDeviceNameFromSphere(String deviceId);
 
 }

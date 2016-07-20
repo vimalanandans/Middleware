@@ -14,7 +14,7 @@ public interface SphereConfig {
      * Initialize the relevant properties of the class like sphereId, sphereName
      * and sphereKey
      */
-    public void init();
+    void init();
 
     /**
      * Get the mode of operation for the sphere's, i.e. Development or
@@ -22,32 +22,32 @@ public interface SphereConfig {
      *
      * @return
      */
-    public Mode getMode();
+    Mode getMode();
 
     /**
      * @return development sphereName if operating in dev mode <br>
      * null otherwise
      */
-    public String getSphereName();
+    String getSphereName();
 
     /**
      * @return development sphereId if operating in dev mode <br>
      * null otherwise
      */
-    public String getSphereId();
+    String getSphereId();
 
     /**
      * @return development sphereKey if operating in dev mode <br>
      * null otherwise
      */
-    public byte[] getSphereKey();
+    byte[] getSphereKey();
 
     /**
      * Get default sphere name
      *
      * @return
      */
-    public String getDefaultSphereName();
+    String getDefaultSphereName();
 
     /**
      * Set default sphere name in configuration file
@@ -55,7 +55,7 @@ public interface SphereConfig {
      * @return true if the defaultSphereName is changed successfully <br>
      * false otherwise
      */
-    public boolean setDefaultSphereName(String name);
+    boolean setDefaultSphereName(String name);
 
     /**
      * Set the passed mode in configuration file
@@ -64,5 +64,5 @@ public interface SphereConfig {
      * @return true if the mode was set successfully<br>
      * false otherwise
      */
-    public boolean setMode(Mode mode);
+    boolean setMode(Mode mode);
 }

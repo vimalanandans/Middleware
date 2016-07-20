@@ -1,9 +1,9 @@
 package com.bezirk.starter;
 
 public interface StackHandler {
-    public void restartComms();
+    void restartComms();
 
-    public void startStack(MainService mainService);
+    void startStack(MainService mainService);
 
-    public void startStopRestServer(int startStopStatus);
+    void startStopRestServer(int startStopStatus);
 }

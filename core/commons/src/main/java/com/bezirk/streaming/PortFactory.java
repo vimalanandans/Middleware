@@ -5,9 +5,9 @@ package com.bezirk.streaming;
  */
 // used for streaming. remove it
 public interface PortFactory {
-    public int getPort(String portMapKey);
+    int getPort(String portMapKey);
 
-    public boolean releasePort(int releasingPort);
+    boolean releasePort(int releasingPort);
 
-    public int getNoOfActivePorts();
+    int getNoOfActivePorts();
 }

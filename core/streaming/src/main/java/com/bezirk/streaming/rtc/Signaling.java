@@ -12,19 +12,19 @@ public interface Signaling {
      *
      * @param ctrlMsg control message containing handshake data
      */
-    public void startSignaling(final UnicastControlMessage ctrlMsg);
+    void startSignaling(final UnicastControlMessage ctrlMsg);
 
     /**
      * Send the handshake control message
      *
      * @param ctrlMsg control message containing handshake data
      */
-    public void sendControlMessage(final UnicastControlMessage ctrlMsg);
+    void sendControlMessage(final UnicastControlMessage ctrlMsg);
 
     /**
      * Receive the handshake control message
      *
      * @param ctrlMsg control message containing handshake data
      */
-    public void receiveControlMessage(final UnicastControlMessage ctrlMsg);
+    void receiveControlMessage(final UnicastControlMessage ctrlMsg);
 }

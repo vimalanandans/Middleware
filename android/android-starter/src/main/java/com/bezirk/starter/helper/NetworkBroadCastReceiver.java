@@ -8,9 +8,9 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
-import com.bezirk.starter.StackHandler;
-import com.bezirk.starter.MainService;
 import com.bezirk.starter.BezirkWifiManager;
+import com.bezirk.starter.MainService;
+import com.bezirk.starter.StackHandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

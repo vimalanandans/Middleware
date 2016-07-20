@@ -13,13 +13,13 @@ public interface CommsNotification {
      *
      * @param mismatchedVersionId details Message regarding the version mismatch
      */
-    public void versionMismatch(String mismatchedVersionId);
+    void versionMismatch(String mismatchedVersionId);
 
     // Diag Ping and pong message for displaying
-    public void diagMsg(MessageLedger msgLedger);
+    void diagMsg(MessageLedger msgLedger);
 
 
     // error message from comms
-    public void handleError(String errorMsg);
+    void handleError(String errorMsg);
 
 }

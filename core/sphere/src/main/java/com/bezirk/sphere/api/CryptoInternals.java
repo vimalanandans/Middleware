@@ -15,12 +15,12 @@ public interface CryptoInternals {
      * @param sphereId sphereId for which keys need to be generated
      * @return <code>true</code> if the keys were generated and stored successfully
      */
-    public boolean generateKeys(String sphereId);
+    boolean generateKeys(String sphereId);
 
     /**
      * create secret key basedon passcode
      */
-    public byte[] generateKey(String code);
+    byte[] generateKey(String code);
 
     /**
      * Provides the key details which can be used for sharing a sphere with
@@ -36,9 +36,9 @@ public interface CryptoInternals {
      * @param sphereId sphereId for which keys need to be generated
      * @return <code>true</code> if the keys were generated and stored successfully
      */
-    public boolean generateKeys(String sphereId, boolean fromSphereId);
+    boolean generateKeys(String sphereId, boolean fromSphereId);
 
-    public SphereVitals getSphereVitals(String sphereId);
+    SphereVitals getSphereVitals(String sphereId);
 
-    public void addMemberKeys(String sphereId, SphereKeys sphereKeys);
+    void addMemberKeys(String sphereId, SphereKeys sphereKeys);
 }

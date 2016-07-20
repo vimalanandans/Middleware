@@ -14,12 +14,12 @@ import com.bezirk.sphere.messages.ShareResponse;
 
 public interface SphereMessages {
 
-    public boolean processCatchRequestExt(CatchRequest catchRequest);
+    boolean processCatchRequestExt(CatchRequest catchRequest);
 
-    public boolean processCatchResponse(CatchResponse catchResponse);
+    boolean processCatchResponse(CatchResponse catchResponse);
 
-    public void processShareResponse(ShareResponse shareResponse);
+    void processShareResponse(ShareResponse shareResponse);
 
-    public void processShareRequest(ShareRequest shareRequest);
+    void processShareRequest(ShareRequest shareRequest);
 
 }

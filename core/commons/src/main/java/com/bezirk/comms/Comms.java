@@ -24,51 +24,51 @@ public interface Comms {
     /**
      * start the communication
      */
-    public boolean startComms();
+    boolean startComms();
 
     /**
      * stop the communication
      */
-    public boolean stopComms();
+    boolean stopComms();
 
     /**
      * close the communication
      */
-    public boolean closeComms();
+    boolean closeComms();
 
     /**
      * restart the underlying comms
      */
-    public boolean restartComms();
+    boolean restartComms();
 
     /**
      * send the control or event message depends of ledger type
      */
-    public boolean sendMessage(Ledger message);
+    boolean sendMessage(Ledger message);
 
     /**
      * send the stream message based on unique key
      */
-    public boolean sendStream(String uniqueKey);
+    boolean sendStream(String uniqueKey);
 
-    public boolean registerStreamBook(String key, StreamRecord sRecord);
+    boolean registerStreamBook(String key, StreamRecord sRecord);
 
-    public boolean registerNotification(CommsNotification notification);
+    boolean registerNotification(CommsNotification notification);
 
     /**
      * Initialize the communications
      * creates queues, threads, sockets
      **/
-    public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             PubSubBroker pubSubBroker, SphereSecurity sphereSecurity,
-                             com.bezirk.streaming.Streaming streaming);
+    boolean initComms(CommsProperties commsProperties, InetAddress addr,
+                      PubSubBroker pubSubBroker, SphereSecurity sphereSecurity,
+                      com.bezirk.streaming.Streaming streaming);
 
-    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
+    boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
 
     /**
      * Set the sphere for sadl. for late initialization
      */
-    public void setSphereSecurity(final SphereSecurity sphereSecurity);
+    void setSphereSecurity(final SphereSecurity sphereSecurity);
 
 }
 

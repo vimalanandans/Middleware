@@ -18,31 +18,32 @@ public interface RemoteLog {
      * Constant label for ALL_SPHERES logging.
      * TODO : Used in GUI selection display and internal modules. Review it
      */
-    public static final String ALL_SPHERES = "ALL-SPHERES";
+    String ALL_SPHERES = "ALL-SPHERES";
 
     /** Start Logging . By component manager */
+
     public boolean startLoggingService( final RemoteLoggingMessageNotification platformSpecificHandler) ;
 
     /** Start Logging . By component manager */
-    public boolean stopLoggingService();
+    boolean stopLoggingService();
 
     /** initialize the remote logging module. */
-    public boolean initRemoteLogger(Comms comms, DeviceInterface deviceInterface);
+    boolean initRemoteLogger(Comms comms, DeviceInterface deviceInterface);
 
     /** set logger to enable or disable **/
-    public boolean setLogger(boolean enable, String[] sphereName);
+    boolean setLogger(boolean enable, String[] sphereName);
 
     /** is logging enabled. returns true if it is enabled */
-    public boolean isEnabled();
+    boolean isEnabled();
 
     /** send the control ledger to logging */
-    public boolean sendRemoteLogMessage(ControlLedger tcMessage) ;
+    boolean sendRemoteLogMessage(ControlLedger tcMessage) ;
 
     /** send the control message to logging */
-    public boolean sendRemoteLogMessage(ControlMessage msg) ;
+    boolean sendRemoteLogMessage(ControlMessage msg) ;
 
     /** send the event message to logging */
-    public boolean sendRemoteLogMessage(EventLedger eLedger) ;
+    boolean sendRemoteLogMessage(EventLedger eLedger) ;
 
-    public boolean isRemoteMessageValid(RemoteLoggingMessage logMessage);
+    boolean isRemoteMessageValid(RemoteLoggingMessage logMessage);
 }

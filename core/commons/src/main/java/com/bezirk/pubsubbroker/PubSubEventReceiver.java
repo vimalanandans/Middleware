@@ -17,7 +17,7 @@ public interface PubSubEventReceiver {
      * @param eLedger - zirkId of the recipient
      * @return true if the event is processed
      */
-    public boolean processEvent(final EventLedger eLedger);
+    boolean processEvent(final EventLedger eLedger);
     /**
      * Checks if the recipient has subscribed for this topic. O
      * @param topic - Topic of the incoming Event
@@ -39,11 +39,11 @@ public interface PubSubEventReceiver {
     /**
      * notify the stream status
      */
-    public boolean processStreamStatus(StreamStatusMessage streamStatusNotification);
+    boolean processStreamStatus(StreamStatusMessage streamStatusNotification);
 
     /**
      * notify the stream data
      */
-    public boolean processNewStream(StreamIncomingMessage streamCallbackMessage);
+    boolean processNewStream(StreamIncomingMessage streamCallbackMessage);
 
 }

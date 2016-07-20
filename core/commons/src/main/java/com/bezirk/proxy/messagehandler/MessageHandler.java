@@ -13,26 +13,26 @@ public interface MessageHandler {
      *
      * @param eventIncomingMessage the callback message that will be fired.
      */
-    public void onIncomingEvent(EventIncomingMessage eventIncomingMessage);
+    void onIncomingEvent(EventIncomingMessage eventIncomingMessage);
 
     /**
      * Method that fires the Unicast StreamDescriptor response to ProxyForBezirkLibrary.
      *
      * @param streamIncomingMessage the callback message that will be fired.
      */
-    public void onIncomingStream(StreamIncomingMessage streamIncomingMessage);
+    void onIncomingStream(StreamIncomingMessage streamIncomingMessage);
 
     /**
      * Method that fires the StreamStatus for ProxyForBezirk
      *
      * @param streamStatusMessage callbackMessage that will be fired.
      */
-    public void onStreamStatus(StreamStatusMessage streamStatusMessage);
+    void onStreamStatus(StreamStatusMessage streamStatusMessage);
 
     /**
      * Method that fires the onDiscoveryIncomingMessage for ProxyForBezirk
      *
      * @param discoveryCallback callback Message that will be fired.
      */
-    public void onDiscoveryIncomingMessage(DiscoveryIncomingMessage discoveryCallback);
+    void onDiscoveryIncomingMessage(DiscoveryIncomingMessage discoveryCallback);
 }

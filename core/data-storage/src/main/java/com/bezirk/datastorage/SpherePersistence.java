@@ -12,7 +12,7 @@ public interface SpherePersistence {
      *
      * @throws Exception if problem in persisting the data
      */
-    public void persistSphereRegistry() throws Exception;
+    void persistSphereRegistry() throws Exception;
 
     /**
      * Interface to load the registry
@@ -20,5 +20,5 @@ public interface SpherePersistence {
      * @return SphereRegistry from the persistence
      * @throws Exception if problem in loading the SphereRegistry from persistence
      */
-    public SphereRegistry loadSphereRegistry() throws Exception;
+    SphereRegistry loadSphereRegistry() throws Exception;
 }

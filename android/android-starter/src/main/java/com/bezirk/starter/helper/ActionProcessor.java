@@ -2,11 +2,10 @@ package com.bezirk.starter.helper;
 
 import android.content.Intent;
 
-
 import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.sphere.api.DevMode;
-import com.bezirk.starter.MainService;
 import com.bezirk.starter.ActionCommands;
+import com.bezirk.starter.MainService;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -32,16 +31,15 @@ public final class ActionProcessor {
      * @param mainStackHandler
      */
     public void processBezirkAction(Intent intent, MainService service, AndroidProxyServer ProxyService, MainStackHandler mainStackHandler) {
-
-        INTENT_ACTIONS intentAction = INTENT_ACTIONS.getActionUsingMessage(intent.getAction());
+        IntentActions intentAction = IntentActions.getActionUsingMessage(intent.getAction());
 
         if (ValidatorUtility.isObjectNotNull(intentAction)) {
-            logger.info("Intent Action > {}", intentAction.message);
+            if (logger.isDebugEnabled())
+                logger.debug("Received intent, action: {}", intentAction.message);
 
-            INTENT_ACTIONS.ACTION_TYPE actionType = intentAction.type;
+            IntentActions.ActionType actionType = intentAction.type;
 
             switch (actionType) {
-
                 case BEZIRK_STACK_ACTION:
                     processBezirkStackAction(service, intent, intentAction, mainStackHandler);
                     break;
@@ -59,13 +57,13 @@ public final class ActionProcessor {
                     break;
             }
         } else {
-
-            logger.warn("Received unknown intent action: " + intent.getAction());
+            if (logger.isWarnEnabled())
+                logger.warn("Received unknown intent action: {}", intent.getAction());
         }
 
     }
 
-    private void processBezirkStackAction(MainService service, Intent intent, INTENT_ACTIONS intentAction, MainStackHandler mainStackHandler) {
+    private void processBezirkStackAction(MainService service, Intent intent, IntentActions intentAction, MainStackHandler mainStackHandler) {
         switch (intentAction) {
             case ACTION_START_BEZIRK:
                 mainStackHandler.startStack(service);
@@ -89,12 +87,13 @@ public final class ActionProcessor {
                 mainStackHandler.startStopRestServer(STOP_CODE);
                 break;
             default:
-                logger.warn("Received unknown intent action: " + intentAction.message);
+                if (logger.isWarnEnabled())
+                    logger.warn("Received unknown intent action: {}", intent.getAction());
                 break;
         }
     }
 
-    private void processDeviceActions(INTENT_ACTIONS intentAction, MainService service) {
+    private void processDeviceActions(IntentActions intentAction, MainService service) {
 
         switch (intentAction) {
 
@@ -115,24 +114,19 @@ public final class ActionProcessor {
                 sendIntent(ActionCommands.CMD_DEV_MODE_STATUS, mode, service);
                 break;
             default:
-                logger.warn("Received unknown intent action: {}", intentAction.message);
+                if (logger.isWarnEnabled())
+                    logger.warn("Received unknown intent action: {}", intentAction.message);
                 break;
         }
 
     }
 
     private DevMode.Mode getDevMode() {
-        DevMode.Mode mode;
-        if (MainStackHandler.getDevMode() == null) {
-            // if user wifi supplicant status is Disconnected and on Init he clicks on DeviceControl, devMode will be null.
-            mode = DevMode.Mode.OFF;
-        } else {
-            mode = MainStackHandler.getDevMode().getStatus();
-        }
-        return mode;
+        return MainStackHandler.getDevMode() == null ? DevMode.Mode.OFF :
+                MainStackHandler.getDevMode().getStatus();
     }
 
-    private void processServiceActions(INTENT_ACTIONS intentAction, Intent intent, MainService service, AndroidProxyServer ProxyService) {
+    private void processServiceActions(IntentActions intentAction, Intent intent, MainService service, AndroidProxyServer ProxyService) {
         switch (intentAction) {
             case ACTION_BEZIRK_REGISTER:
                 ProxyService.registerService(intent);
@@ -147,12 +141,13 @@ public final class ActionProcessor {
                 ProxyService.unsubscribeService(intent);
                 break;
             default:
-                logger.warn("Received unknown intent action: " + intentAction.message);
+                if (logger.isWarnEnabled())
+                    logger.warn("Received unknown intent action: {}", intent.getAction());
                 break;
         }
     }
 
-    private void processSendActions(INTENT_ACTIONS intentAction, Intent intent, AndroidProxyServer ProxyService) {
+    private void processSendActions(IntentActions intentAction, Intent intent, AndroidProxyServer ProxyService) {
 
         switch (intentAction) {
             case ACTION_SERVICE_SEND_MULTICAST_EVENT:
@@ -165,7 +160,8 @@ public final class ActionProcessor {
                 ProxyService.sendUnicastStream(intent);
                 break;
             default:
-                logger.warn("Received unknown intent action: " + intentAction.message);
+                if (logger.isWarnEnabled())
+                    logger.warn("Received unknown intent action: {}", intent.getAction());
                 break;
         }
     }
@@ -187,55 +183,41 @@ public final class ActionProcessor {
         service.getApplicationContext().sendBroadcast(intent);
     }
 
-    //Intent actions
-    private enum INTENT_ACTIONS {
+    private enum IntentActions {
+        // actionName, type
+        ACTION_START_BEZIRK("START_BEZIRK", ActionType.BEZIRK_STACK_ACTION),
+        ACTION_STOP_BEZIRK("STOP_BEZIRK", ActionType.BEZIRK_STACK_ACTION),
+        ACTION_REBOOT("RESTART", ActionType.BEZIRK_STACK_ACTION),
+        ACTION_CLEAR_PERSISTENCE("ACTION_CLEAR_PERSISTENCE", ActionType.BEZIRK_STACK_ACTION),
+        ACTION_DIAG_PING("ACTION_DIAG_PING", ActionType.BEZIRK_STACK_ACTION),
+        ACTION_START_REST_SERVER("START_REST_SERVER", ActionType.BEZIRK_STACK_ACTION),
+        ACTION_STOP_REST_SERVER("STOP_REST_SERVER", ActionType.BEZIRK_STACK_ACTION),
 
-        /**
-         * STACK Actions
-         */
-        ACTION_START_BEZIRK("START_BEZIRK", ACTION_TYPE.BEZIRK_STACK_ACTION),
-        ACTION_STOP_BEZIRK("STOP_BEZIRK", ACTION_TYPE.BEZIRK_STACK_ACTION),
-        ACTION_REBOOT("RESTART", ACTION_TYPE.BEZIRK_STACK_ACTION),
-        ACTION_CLEAR_PERSISTENCE("ACTION_CLEAR_PERSISTENCE", ACTION_TYPE.BEZIRK_STACK_ACTION),
-        ACTION_DIAG_PING("ACTION_DIAG_PING", ACTION_TYPE.BEZIRK_STACK_ACTION),
-        ACTION_START_REST_SERVER("START_REST_SERVER", ACTION_TYPE.BEZIRK_STACK_ACTION),
-        ACTION_STOP_REST_SERVER("STOP_REST_SERVER", ACTION_TYPE.BEZIRK_STACK_ACTION),
+        ACTION_SERVICE_SEND_MULTICAST_EVENT("MULTICAST_EVENT", ActionType.SEND_ACTION),
+        ACTION_SERVICE_SEND_UNICAST_EVENT("UNICAST_EVENT", ActionType.SEND_ACTION),
+        ACTION_BEZIRK_PUSH_UNICAST_STREAM("UNICAST_STREAM", ActionType.SEND_ACTION),
 
-        /**
-         * SEND Actions
-         */
-        ACTION_SERVICE_SEND_MULTICAST_EVENT("MULTICAST_EVENT", ACTION_TYPE.SEND_ACTION),
-        ACTION_SERVICE_SEND_UNICAST_EVENT("UNICAST_EVENT", ACTION_TYPE.SEND_ACTION),
-        ACTION_BEZIRK_PUSH_UNICAST_STREAM("UNICAST_STREAM", ACTION_TYPE.SEND_ACTION),
+        ACTION_BEZIRK_REGISTER("REGISTER", ActionType.SERVICE_ACTION),
+        ACTION_BEZIRK_UNSUBSCRIBE("UNSUBSCRIBE", ActionType.SERVICE_ACTION),
+        ACTION_BEZIRK_SUBSCRIBE("SUBSCRIBE", ActionType.SERVICE_ACTION),
+        ACTION_BEZIRK_SETLOCATION("LOCATION", ActionType.SERVICE_ACTION),
 
-        /**
-         * SERVICE Actions
-         */
-        ACTION_BEZIRK_REGISTER("REGISTER", ACTION_TYPE.SERVICE_ACTION),
-        ACTION_BEZIRK_UNSUBSCRIBE("UNSUBSCRIBE", ACTION_TYPE.SERVICE_ACTION),
-        ACTION_BEZIRK_SUBSCRIBE("SUBSCRIBE", ACTION_TYPE.SERVICE_ACTION),
-        ACTION_BEZIRK_SETLOCATION("LOCATION", ACTION_TYPE.SERVICE_ACTION),
-
-        /**
-         * DEVICE Actions
-         */
-        ACTION_CHANGE_DEVICE_NAME("ACTION_CHANGE_DEVICE_NAME", ACTION_TYPE.DEVICE_ACTION),
-        ACTION_CHANGE_DEVICE_TYPE("ACTION_CHANGE_DEVICE_TYPE", ACTION_TYPE.DEVICE_ACTION),
-        ACTION_DEV_MODE_ON("ACTION_DEV_MODE_ON", ACTION_TYPE.DEVICE_ACTION),
-        ACTION_DEV_MODE_OFF("ACTION_DEV_MODE_OFF", ACTION_TYPE.DEVICE_ACTION),
-        ACTION_DEV_MODE_STATUS("ACTION_DEV_MODE_STATUS", ACTION_TYPE.DEVICE_ACTION);
+        ACTION_CHANGE_DEVICE_NAME("ACTION_CHANGE_DEVICE_NAME", ActionType.DEVICE_ACTION),
+        ACTION_CHANGE_DEVICE_TYPE("ACTION_CHANGE_DEVICE_TYPE", ActionType.DEVICE_ACTION),
+        ACTION_DEV_MODE_ON("ACTION_DEV_MODE_ON", ActionType.DEVICE_ACTION),
+        ACTION_DEV_MODE_OFF("ACTION_DEV_MODE_OFF", ActionType.DEVICE_ACTION),
+        ACTION_DEV_MODE_STATUS("ACTION_DEV_MODE_STATUS", ActionType.DEVICE_ACTION);
 
         private final String message;
-        private final ACTION_TYPE type;
+        private final ActionType type;
 
-        INTENT_ACTIONS(String actionName, ACTION_TYPE actionType) {
+        IntentActions(String actionName, ActionType actionType) {
             message = actionName;
             type = actionType;
         }
 
-        static INTENT_ACTIONS getActionUsingMessage(String actionMessage) {
-
-            for (INTENT_ACTIONS intentAction : INTENT_ACTIONS.values()) {
+        static IntentActions getActionUsingMessage(String actionMessage) {
+            for (IntentActions intentAction : IntentActions.values()) {
                 if (intentAction.message.equals(actionMessage) && ValidatorUtility.isObjectNotNull(intentAction.type)) {
                     return intentAction;
                 }
@@ -243,7 +225,6 @@ public final class ActionProcessor {
             return null;
         }
 
-        private enum ACTION_TYPE {SERVICE_ACTION, SEND_ACTION, DEVICE_ACTION, BEZIRK_STACK_ACTION}
-
+        private enum ActionType {SERVICE_ACTION, SEND_ACTION, DEVICE_ACTION, BEZIRK_STACK_ACTION}
     }
 }

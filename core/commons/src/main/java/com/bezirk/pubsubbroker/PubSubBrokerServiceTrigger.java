@@ -20,7 +20,7 @@ public interface PubSubBrokerServiceTrigger {
      * @param serviceId ZirkId of the registering Zirk.
      * @return true is successful, false otherwise.
      */
-    public Boolean registerService(final ZirkId serviceId, final String serviceName);
+    Boolean registerService(final ZirkId serviceId, final String serviceName);
 
     /**
      * Subscribes the BezirkService to PubSubBroker.
@@ -29,7 +29,7 @@ public interface PubSubBrokerServiceTrigger {
      * @param pRole     SubscribedRole of the subscribing Zirk
      * @return true if successful, false otherwise.
      */
-    public Boolean subscribeService(final ZirkId serviceId, final ProtocolRole pRole);
+    Boolean subscribeService(final ZirkId serviceId, final ProtocolRole pRole);
 
     /**
      * Unsubscribes the Zirk from the PubSubBroker.
@@ -38,7 +38,7 @@ public interface PubSubBrokerServiceTrigger {
      * @param role      SubscribedRole of the Zirk
      * @return true if successful, false otherwise
      */
-    public Boolean unsubscribe(final ZirkId serviceId, final ProtocolRole role);
+    Boolean unsubscribe(final ZirkId serviceId, final ProtocolRole role);
 
     /**
      * Un-Registers the Zirk from PubSubBroker.
@@ -47,7 +47,7 @@ public interface PubSubBrokerServiceTrigger {
      * @return true if successful, false otherwise
      */
 
-    public Boolean unregisterService(final ZirkId serviceId);
+    Boolean unregisterService(final ZirkId serviceId);
 
     /**
      * Update the location of the UPA Zirk
@@ -56,14 +56,14 @@ public interface PubSubBrokerServiceTrigger {
      * @param location  Location of the BezirkService
      * @return true if successful, false otherwise
      */
-    public Boolean setLocation(final ZirkId serviceId, final Location location);
+    Boolean setLocation(final ZirkId serviceId, final Location location);
 
     /**
      * Send multicast event
      */
-    public boolean sendMulticastEvent(ZirkId serviceId, RecipientSelector recipientSelector, String serializedEventMsg, String topic);
+    boolean sendMulticastEvent(ZirkId serviceId, RecipientSelector recipientSelector, String serializedEventMsg, String topic);
 
-    public boolean sendUnicastEvent(ZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg, String topic);
+    boolean sendUnicastEvent(ZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg, String topic);
 
-    public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId);
+    short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId);
 }

@@ -24,13 +24,13 @@ public interface SphereAPI {
      * @param sphereName name of the sphere to be created
      * @param sphereType type of the sphere to be created
      */
-    public String createSphere(String sphereName, String sphereType);
+    String createSphere(String sphereName, String sphereType);
 
     /**
      * Delete the sphere removes the list of services in the sphere and informs
      * other services and deletes the sphere from internal list
      */
-    public boolean deleteSphere(String sphereId);
+    boolean deleteSphere(String sphereId);
 
     /**
      * Get all the spheres visible/authorized to this device bezirk This contains
@@ -38,7 +38,7 @@ public interface SphereAPI {
      *
      * @return Iterator sphere Info
      */
-    public Iterable<BezirkSphereInfo> getSpheres();
+    Iterable<BezirkSphereInfo> getSpheres();
 
     /**
      * Get the sphere Info by sphere Id
@@ -46,7 +46,7 @@ public interface SphereAPI {
      * @param sphereId String sphereId
      * @return sphere Info if found else null
      */
-    public BezirkSphereInfo getSphere(String sphereId);
+    BezirkSphereInfo getSphere(String sphereId);
 
     /**
      * Get the sphere Info by sphere Id
@@ -54,7 +54,7 @@ public interface SphereAPI {
      * @param sphereInfo
      * @return true if this device owns this sphere or not
      */
-    public boolean isThisDeviceOwnsSphere(BezirkSphereInfo sphereInfo);
+    boolean isThisDeviceOwnsSphere(BezirkSphereInfo sphereInfo);
 
     /**
      * Get all the devices visible/authorized to this device bezirk *
@@ -65,7 +65,7 @@ public interface SphereAPI {
      * {@link #getSpheres()}
      */
     @Deprecated
-    public Iterable<BezirkDeviceInfo> getDevicesOnSphere(String sphereId);
+    Iterable<BezirkDeviceInfo> getDevicesOnSphere(String sphereId);
 
     /**
      * Get all the pipes visible/authorized to this device bezirk *
@@ -76,7 +76,7 @@ public interface SphereAPI {
      * {@link #getSpheres()}
      */
     @Deprecated
-    public Iterable<BezirkPipeInfo> getPipesOnSphere(String sphereId);
+    Iterable<BezirkPipeInfo> getPipesOnSphere(String sphereId);
 
     /**
      * Get all devices known to this Bezirk apart from the one's that are a part of
@@ -85,7 +85,7 @@ public interface SphereAPI {
      * @param sphereId
      * @return Iterable device info
      */
-    public Iterable<BezirkDeviceInfo> getOtherDevices(String sphereId);
+    Iterable<BezirkDeviceInfo> getOtherDevices(String sphereId);
 
     /**
      * Add services to sphere (Add the local services to a sphere owned by the
@@ -98,7 +98,7 @@ public interface SphereAPI {
      * @deprecated use {@link #addLocalServicesToSphere(String, Iterable)}
      */
     @Deprecated // UI has BezirkZirkInfo not ZirkId
-    public boolean addLocalServicesToSphere(Iterable<ZirkId> serviceIds, String sphereId);
+    boolean addLocalServicesToSphere(Iterable<ZirkId> serviceIds, String sphereId);
 
     /**
      * Add services to sphere (Add the local services to a sphere owned by the
@@ -109,12 +109,12 @@ public interface SphereAPI {
      * @return true if request is accepted to process. Task completion via
      * Listener
      */
-    public boolean addLocalServicesToSphere(String sphereId, Iterable<BezirkZirkInfo> serviceInfo);
+    boolean addLocalServicesToSphere(String sphereId, Iterable<BezirkZirkInfo> serviceInfo);
 
     /**
      * Add the local services (from default sphere) to the given sphere
      */
-    public boolean addLocalServicesToSphere(String sphereId);
+    boolean addLocalServicesToSphere(String sphereId);
 
     /**
      * request the zirk to leave the sphere
@@ -123,7 +123,7 @@ public interface SphereAPI {
      * @return true if request is accepted to process. Task completion via
      * Listener
      */
-    public boolean serviceLeaveRequest(String serviceId, String sphereId);
+    boolean serviceLeaveRequest(String serviceId, String sphereId);
 
     /**
      * Expel zirk from sphere
@@ -135,7 +135,7 @@ public interface SphereAPI {
      * @deprecated use {@link #expelDeviceFromSphere(String, String)}
      */
     @Deprecated // concept is always expel the device from zirk
-    public boolean expelServiceFromSphere(String zirkId, String sphereId);
+    boolean expelServiceFromSphere(String zirkId, String sphereId);
 
     /**
      * Expel zirk from sphere
@@ -145,7 +145,7 @@ public interface SphereAPI {
      * @return true if request is accepted to process. Task completion via
      * Listener
      */
-    public boolean expelDeviceFromSphere(String deviceId, String sphereId);
+    boolean expelDeviceFromSphere(String deviceId, String sphereId);
 
     /**
      * TODO Discover sphere (needs feedback how many discovered, how many
@@ -164,7 +164,7 @@ public interface SphereAPI {
      * @param sphereId
      * @return BitMatrix
      */
-    public BitMatrix getQRCodeMatrix(String sphereId);
+    BitMatrix getQRCodeMatrix(String sphereId);
 
     /**
      * Provides the BitMatrix for generating platform specific QR codes with
@@ -175,7 +175,7 @@ public interface SphereAPI {
      * @param height   height of the image
      * @return Bitmatrix containing the QRCode imprinted with the sphereId
      */
-    public BitMatrix getQRCodeMatrix(String sphereId, int width, int height);
+    BitMatrix getQRCodeMatrix(String sphereId, int width, int height);
 
     /**
      * This implementation along with <code>BarCodeUtilities</code> needs further refinement.
@@ -190,12 +190,12 @@ public interface SphereAPI {
      * @return boolean about processed or processing accepted
      */
 
-    public boolean processShareQRCode(String qrcodeString, String sphereId);
+    boolean processShareQRCode(String qrcodeString, String sphereId);
 
-    public boolean processCatchQRCodeRequest(String qrcodeString, String joinSphereId);
+    boolean processCatchQRCodeRequest(String qrcodeString, String joinSphereId);
 
-    public boolean discoverSphere(String sphereId);
+    boolean discoverSphere(String sphereId);
 
-    public List<BezirkZirkInfo> getServiceInfo();
+    List<BezirkZirkInfo> getServiceInfo();
 
 }

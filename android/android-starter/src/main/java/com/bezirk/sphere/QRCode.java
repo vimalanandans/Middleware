@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
  * Not used since it is project specific implementation
  */
 public interface QRCode {
-    public Bitmap getQRCode(String sphereId);
+    Bitmap getQRCode(String sphereId);
 
     /**
      * Retrieves the QRCode with specific dimensions. This method is useful to show QRCode of different sizes on different devices.
@@ -18,5 +18,5 @@ public interface QRCode {
      * @param height   height of the image
      * @return Bitmap containing the QRCode imprinted with the sphereId
      */
-    public Bitmap getQRCode(String sphereId, int width, int height);
+    Bitmap getQRCode(String sphereId, int width, int height);
 }
