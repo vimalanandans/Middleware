@@ -108,14 +108,24 @@ public class IntentMessageReceiver extends BroadcastReceiver {
     private boolean receiveEventOrStream(String topic, String message, BezirkZirkEndPoint sourceSEP, short streamId,
                                          String filePath, String type, Map<String, List<BezirkListener>> listenerMap) {
 
+        // find the class of the received event using the topic of the event, as the topic will hold the canonical name of the event
+        Class c;
+        try {
+            c = Class.forName(topic, false, this.getClass().getClassLoader());
+        } catch (ClassNotFoundException e) {
+            Log.d(TAG, "Unable to find class '" + topic + "'");
+            return false;
+        }
+
         if (listenerMap.containsKey(topic)) {
             final List<BezirkListener> tempEventListners = listenerMap.get(topic);
             for (BezirkListener listener : tempEventListners) {
                 if ("EVENT".equalsIgnoreCase(type)) {
-                    Event event = Message.fromJson(message, Event.class);
+                    Event event = (Event) Message.fromJson(message, c);
                     listener.receiveEvent(topic, event, sourceSEP);
                 } else if ("STREAM_UNICAST".equalsIgnoreCase(type)) {
-                    StreamDescriptor streamDescriptor = Message.fromJson(message, StreamDescriptor.class);
+
+                    StreamDescriptor streamDescriptor = (StreamDescriptor) Message.fromJson(message, c);
                     listener.receiveStream(topic, streamDescriptor, streamId, new File(filePath), sourceSEP);
                 }
             }

@@ -22,7 +22,7 @@ import java.io.File;
 public class AndroidProxyServer extends ProxyServer {
     private static final Logger logger = LoggerFactory.getLogger(AndroidProxyServer.class);
 
-    MessageHandler messageHandler ;
+    MessageHandler messageHandler;
 
     public AndroidProxyServer() {
 
@@ -33,9 +33,9 @@ public class AndroidProxyServer extends ProxyServer {
     public void InitProxyServerIntend(MessageHandler messageHandler) {
         this.messageHandler = messageHandler;
     }
+
     /**
      * Sends the subscribe request to proxy.
-     *
      *
      * @param intent Intent received
      */
@@ -221,13 +221,15 @@ public class AndroidProxyServer extends ProxyServer {
      */
     public void sendMulticastEvent(Intent intent) {
         logger.info("Received multicast message from zirk");
-        String serviceIdKEY = "zirkId";
-        String addressKEY = "address";
-        String mEventMsgKEY = "multicastEvent";
+        final String serviceIdKEY = "zirkId";
+        final String addressKEY = "address";
+        final String mEventMsgKEY = "multicastEvent";
+        final String topic = "topic";
 
         final String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
         final String addressAsString = intent.getStringExtra(addressKEY);
         final String mEventMsg = intent.getStringExtra(mEventMsgKEY);
+        final String eventTopic = intent.getStringExtra(topic);
 
         // Validate intent properties
         if (ValidatorUtility.checkForString(serviceIdAsString) && ValidatorUtility.checkForString(addressAsString) && ValidatorUtility.checkForString(mEventMsg)) {
@@ -236,7 +238,7 @@ public class AndroidProxyServer extends ProxyServer {
             if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
                 final RecipientSelector recipientSelector = RecipientSelector.fromJson(addressAsString);
                 logger.debug("Sending multicast event from zirk: " + serviceIdAsString);
-                super.sendMulticastEvent(serviceId, recipientSelector, mEventMsg);
+                super.sendMulticastEvent(serviceId, recipientSelector, mEventMsg, eventTopic);
             } else {
                 logger.error("trying to send multicast message with Null zirkId");
 
@@ -254,19 +256,22 @@ public class AndroidProxyServer extends ProxyServer {
      */
     public void sendUnicastEvent(Intent intent) {
         logger.info("Received unicast message from zirk");
-        String serviceIdKEY = "zirkId";
-        String sepKEY = "receiverSep";
-        String uEventMsgKEY = "eventMsg";
+        final String serviceIdKEY = "zirkId";
+        final String sepKEY = "receiverSep";
+        final String uEventMsgKEY = "eventMsg";
+        final String topic = "topic";
 
         final String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
         final String sepAsString = intent.getStringExtra(sepKEY);
         final String msg = intent.getStringExtra(uEventMsgKEY);
+        final String eventTopic = intent.getStringExtra(topic);
         if (ValidatorUtility.checkForString(serviceIdAsString) && ValidatorUtility.checkForString(sepAsString) && ValidatorUtility.checkForString(msg)) {
             final Gson gson = new Gson();
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final BezirkZirkEndPoint serviceEndPoint = gson.fromJson(sepAsString, BezirkZirkEndPoint.class);
             if (ValidatorUtility.checkBezirkZirkId(serviceId) && ValidatorUtility.checkBezirkZirkEndPoint(serviceEndPoint)) {
-                super.sendUnicastEvent(serviceId, serviceEndPoint, msg);
+                super.sendUnicastEvent(serviceId, serviceEndPoint, msg, eventTopic);
+
             } else {
                 logger.error("Check unicast parameters");
             }

@@ -1,6 +1,5 @@
 package com.bezirk.util;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsNotification;
@@ -74,7 +73,8 @@ public class MockSetUpUtilityForBezirkPC {
         sphereRegistry = new SphereRegistry();
         cryptoEngine = new CryptoEngine(sphereRegistry);
         pubSubBrokerStorage = (PubSubBrokerStorage) regPersistence;
-        pubSubBroker = new PubSubBroker(pubSubBrokerStorage);
+        setUpUpaDevice();
+        pubSubBroker = new PubSubBroker(pubSubBrokerStorage,upaDevice);
         //sphereConfig = new SphereProperties();
         sphereConfig = new JavaPrefs();
         sphereConfig.init();
@@ -87,16 +87,13 @@ public class MockSetUpUtilityForBezirkPC {
         comms.registerNotification(Mockito.mock(CommsNotification.class));
         comms.startComms();
 
-        setUpUpaDevice();
+
         SphereServiceManager bezirkSphere = new SphereServiceManager(cryptoEngine, upaDevice, sphereRegistry);
         SphereListener sphereListener = Mockito.mock(SphereListener.class);
         bezirkSphere.initSphere(spherePersistence, comms, sphereListener, sphereConfig);
 
         pubSubBroker.initPubSubBroker(comms,new MockCallback(),bezirkSphere,bezirkSphere);
-        /*BezirkCompManager.setSphereSecurity((SphereSecurity) bezirkSphere);
-        BezirkCompManager.setSphereForPubSub(bezirkSphere);
-        BezirkCompManager.setplatformSpecificCallback(new MockCallback());*/
-    }
+        }
 
 
     /**
@@ -107,7 +104,7 @@ public class MockSetUpUtilityForBezirkPC {
         String deviceIdString = InetAddress.getLocalHost().getHostName();
         upaDevice.initDevice(deviceIdString,
                 DeviceType.BEZIRK_DEVICE_TYPE_PC);
-        BezirkCompManager.setUpaDevice(upaDevice);
+
     }
 
     public NetworkInterface getInterface() {
@@ -181,11 +178,6 @@ public class MockSetUpUtilityForBezirkPC {
         comms.closeComms();
         regPersistence.clearPersistence();
 
-          /*  BezirkCompManager.setSphereSecurity(null);
-            BezirkCompManager.setSphereForPubSub(null);
-            BezirkCompManager.setplatformSpecificCallback(null);
-        */
-        BezirkCompManager.setUpaDevice(null);
 
         TableUtils.dropTable(dbConnection.getDatabaseConnection(),
                 PersistenceRegistry.class, true);

@@ -1,13 +1,13 @@
 package com.bezirk.remotelogging;
 
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
+import com.bezirk.devices.DeviceInterface;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +37,8 @@ public final class RemoteLoggingManager implements RemoteLog {
 
     private final Date currentDate = new Date();
 
+    DeviceInterface deviceInterface ;
+
 
     public RemoteLoggingManager() {
         // TODO Auto-generated constructor stub
@@ -51,11 +53,11 @@ public final class RemoteLoggingManager implements RemoteLog {
 
 
     @Override
-    public boolean  initRemoteLogger(Comms comms) {
+    public boolean  initRemoteLogger(Comms comms, DeviceInterface deviceInterface) {
         // register the logging zirk message
         comms.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage, ctrlReceiver);
         this.comms = comms;
-
+        this.deviceInterface = deviceInterface;
         return true;
     }
 
@@ -90,7 +92,7 @@ public final class RemoteLoggingManager implements RemoteLog {
                         new RemoteLoggingMessage(
                                 tcMessage.getSphereId(),
                                 String.valueOf(currentDate.getTime()),
-                                BezirkCompManager.getUpaDevice().getDeviceName(),
+                                deviceInterface.getDeviceName(),
                                 Util.CONTROL_RECEIVER_VALUE,
                                 tcMessage.getMessage().getUniqueKey(),
                                 tcMessage.getMessage().getDiscriminator().name(),
@@ -115,7 +117,7 @@ public final class RemoteLoggingManager implements RemoteLog {
                         new RemoteLoggingMessage(
                                 msg.getSphereId(),
                                 String.valueOf(currentDate.getTime()),
-                                BezirkCompManager.getUpaDevice().getDeviceName(),
+                                deviceInterface.getDeviceName(),
                                 Util.CONTROL_RECEIVER_VALUE,
                                 msg.getUniqueKey(),
                                 msg.getDiscriminator().name(),
@@ -134,7 +136,7 @@ public final class RemoteLoggingManager implements RemoteLog {
     public boolean sendRemoteLogMessage(EventLedger eLedger) {
         try {
             LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(eLedger.getHeader().getSphereName(),
-                    String.valueOf(currentDate.getTime()), BezirkCompManager.getUpaDevice().getDeviceName(),
+                    String.valueOf(currentDate.getTime()), deviceInterface.getDeviceName(),
                     Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(), eLedger.getHeader().getTopic(),
                     Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {

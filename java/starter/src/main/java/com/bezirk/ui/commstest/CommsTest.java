@@ -1,6 +1,5 @@
 package com.bezirk.ui.commstest;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.ui.commstest.threads.UnicastReceiver;
 import com.bezrik.network.BezirkNetworkUtilities;
 import com.google.gson.Gson;

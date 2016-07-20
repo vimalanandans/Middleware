@@ -8,6 +8,8 @@ import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.datastorage.PubSubBrokerStorage;
+import com.bezirk.device.Device;
+import com.bezirk.devices.DeviceInterface;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.StreamDescriptor;
@@ -53,13 +55,14 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     protected Comms comms = null;
     protected SphereServiceAccess sphereServiceAccess = null;
     protected SphereSecurity sphereSecurity = null;
-
+    DeviceInterface deviceInterface = null;
     RemoteLog remoteLog = null;
 
     MessageHandler msgHandler;
 
-    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage) {
+    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, DeviceInterface deviceInterface) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
+        this.deviceInterface = deviceInterface;
         loadSadlRegistry();
     }
 
@@ -81,7 +84,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
      * because this is out of comms layer
      */
     public void initServiceDiscovery(Comms comms) {
-        DiscoveryManager discoveryManager = new DiscoveryManager(this, comms,sphereServiceAccess);
+        DiscoveryManager discoveryManager = new DiscoveryManager(this, comms, sphereServiceAccess);
 
         discoveryManager.initDiscovery();
     }
@@ -93,7 +96,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     public Boolean registerService(final ZirkId serviceId, final String serviceName) {
 
         // Step 1: Register with PubSubBroker
-        boolean isPubSubPassed = registerService(serviceId );
+        boolean isPubSubPassed = registerService(serviceId);
 
         if (isPubSubPassed) {
             // Step 2: moved to outside since the sphere persistence is not ready
@@ -129,6 +132,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         }
         return false;
     }
+
     /* (non-Javadoc)
      * @see PubSubBrokerServiceTrigger#subscribeService(com.bezirk.api.addressing.ZirkId, ProtocolRole)
      */
@@ -187,7 +191,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public boolean sendMulticastEvent(ZirkId serviceId, RecipientSelector recipientSelector, String serializedEventMsg) {
+    public boolean sendMulticastEvent(ZirkId serviceId, RecipientSelector recipientSelector, String serializedEventMsg, String topic) {
 
         final Iterable<String> listOfSphere = sphereServiceAccess.getSphereMembership(serviceId);
 
@@ -199,7 +203,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         final BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(serviceId);
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
-        final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
+        //final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
 
         while (sphereIterator.hasNext()) {
 
@@ -211,7 +215,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             mHeader.setRecipientSelector(recipientSelector);
             mHeader.setSenderSEP(senderSEP);
             mHeader.setUniqueMsgId(uniqueMsgId.toString());
-            mHeader.setTopic(eventTopic.toString());
+            mHeader.setTopic(topic);
             mHeader.setSphereName(sphereIterator.next());
             ecMessage.setHeader(mHeader);
             ecMessage.setSerializedHeader(mHeader.serialize());
@@ -227,7 +231,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public boolean sendUnicastEvent(ZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg){
+    public boolean sendUnicastEvent(ZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg, String topic) {
         final Iterable<String> listOfSphere = sphereServiceAccess.getSphereMembership(serviceId);
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with the sphere");
@@ -237,7 +241,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         final BezirkZirkEndPoint senderSEP = BezirkNetworkUtilities.getServiceEndPoint(serviceId);
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
-        final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
+        //final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
 
         while (sphereIterator.hasNext()) {
             final EventLedger ecMessage = new EventLedger();
@@ -248,7 +252,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             uHeader.setRecipient(recipient);
             uHeader.setSenderSEP(senderSEP);
             uHeader.setUniqueMsgId(uniqueMsgId.toString());
-            uHeader.setTopic(eventTopic.toString());
+            uHeader.setTopic(topic);
             uHeader.setSphereName(sphereIterator.next());
             ecMessage.setHeader(uHeader);
             ecMessage.setSerializedHeader(uHeader.serialize());
@@ -261,6 +265,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         }
         return true;
     }
+
     public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId) {
 
         final Iterable<String> listOfSphere = sphereServiceAccess.getSphereMembership(senderId);
@@ -362,7 +367,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     @Override
     public Location getLocationForService(ZirkId serviceId) {
-        return pubSubBrokerRegistry.getLocationForService(serviceId);
+        return pubSubBrokerRegistry.getLocationForService(serviceId, deviceInterface);
     }
 
 
@@ -389,8 +394,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             return false;
         }
 
-        if((remoteLog != null) && remoteLog.isEnabled())
-        {
+        if ((remoteLog != null) && remoteLog.isEnabled()) {
             remoteLog.sendRemoteLogMessage(eLedger);
         }
 
@@ -436,7 +440,8 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
                     && uHeader.getRecipient().zirkId.getZirkId().equals("THIS-SERVICE-ID-IS-HTTP-SPOOFED")) {
                 serviceList = new HashSet<ZirkId>();
                 serviceList.add(new ZirkId("SPOOFED"));
-            } else*/ if (this.checkUnicastEvent(uHeader.getTopic(), uHeader.getRecipient().zirkId)) {
+            } else*/
+            if (this.checkUnicastEvent(uHeader.getTopic(), uHeader.getRecipient().zirkId)) {
                 serviceList = new HashSet<ZirkId>();
                 serviceList.add(uHeader.getRecipient().zirkId);
             }
@@ -461,7 +466,6 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
 
-
     public boolean checkUnicastEvent(String topic, ZirkId recipient) {
         if (!ValidatorUtility.checkForString(topic) || !ValidatorUtility.checkBezirkZirkId(recipient)) {
             logger.error("Unicast Event Check failed -> topic or Recipient is not valid");
@@ -477,7 +481,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             logger.error("Event Topic or Recipient is valid");
             return null;
         }
-        return pubSubBrokerRegistry.checkMulticastEvent(topic, location);
+        return pubSubBrokerRegistry.checkMulticastEvent(topic, location,deviceInterface);
     }
 
     @Override

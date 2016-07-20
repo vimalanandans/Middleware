@@ -1,5 +1,9 @@
 package com.bezirk.ui.commstest;
 
+import com.bezirk.device.Device;
+import com.bezirk.device.DeviceType;
+import com.bezirk.devices.DeviceInterface;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +15,8 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -45,17 +51,26 @@ public class CommsTestJFrame extends JFrame implements IUpdateResponse {
         }
     };
 
-    public CommsTestJFrame(String deviceName) {
+    public CommsTestJFrame(String deviceName, DeviceInterface deviceInterface) {
         commsTest = new CommsTest(this, deviceName);
         try {
-            jbInit();
+            jbInit(deviceInterface);
         } catch (Exception e) {
             logger.error("Error initializing commsTest ", e);
         }
     }
 
     public static void main(String... args) {
-        final JFrame frame = new CommsTestJFrame("TestDevice"); // TODO : Device Name
+        Device upaDevice = new Device();
+        String deviceIdString = null;
+        try {
+            deviceIdString = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        upaDevice.initDevice(deviceIdString,
+                DeviceType.BEZIRK_DEVICE_TYPE_PC);
+        final JFrame frame = new CommsTestJFrame(upaDevice.getDeviceName(),upaDevice);
         final Dimension screenSize = Toolkit.getDefaultToolkit()
                 .getScreenSize();
         final Dimension frameSize = frame.getSize();
@@ -74,7 +89,7 @@ public class CommsTestJFrame extends JFrame implements IUpdateResponse {
     /**
      * Initializing UI
      */
-    private void jbInit() {
+    private void jbInit( DeviceInterface deviceInterface) {
         this.getContentPane().setLayout(mainFrameLayout);
         this.setSize(new Dimension(730, 604));
         this.setTitle("Communication Test");
@@ -95,7 +110,7 @@ public class CommsTestJFrame extends JFrame implements IUpdateResponse {
                 (screenSize.height - frameSize.height) / 2);
         componentsPanel.setLayout(null);
 
-        commsUIHelper.setInfoAndSettingsButton(commsTest);
+        commsUIHelper.setInfoAndSettingsButton(commsTest,deviceInterface);
 
         displayPanel.setBounds(new Rectangle(10, 40, 695, 45));
         displayPanel.setLayout(null);

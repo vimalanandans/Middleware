@@ -1,6 +1,5 @@
 package com.bezirk.starter;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.Comms;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.Device;
@@ -67,7 +66,7 @@ final class ServiceStarterHelper {
         sphereConfig.init();
         bezirkSphereForPC.initSphere(registryPersistence, comms, sphereConfig);
 
-        //BezirkCompManager.setSphereUI(sphereForPC);
+
 
 
         com.bezirk.sphere.SphereManager.setBezirkQRCode((BezirkQRCode) sphereForPC);
@@ -123,7 +122,6 @@ final class ServiceStarterHelper {
                     DeviceType.BEZIRK_DEVICE_TYPE_EMBEDDED_KIT);
         }
 
-        BezirkCompManager.setUpaDevice(bezirkDevice);
 
         // Load Location
         final Location deviceLocation = loadLocation();

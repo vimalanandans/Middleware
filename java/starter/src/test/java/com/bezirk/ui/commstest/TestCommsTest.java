@@ -1,13 +1,8 @@
 package com.bezirk.ui.commstest;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.devices.DeviceForPC;
 import com.bezirk.devices.DeviceInterface;
-import com.bezirk.ui.commstest.CommsTest;
-import com.bezirk.ui.commstest.IUpdateResponse;
-import com.bezirk.ui.commstest.PingMessage;
-import com.bezirk.ui.commstest.PongMessage;
 import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.junit.Before;
@@ -35,10 +30,10 @@ public class TestCommsTest {
     public void init() {
         upaDevice.setDeviceLocation(null);
         upaDevice.setDeviceName("Test-PC");
-        BezirkCompManager.setUpaDevice(upaDevice);
+        //BezirkCompManager.setUpaDevice(upaDevice);
         getInetAddress();
         IUpdateResponseMock responseUT = new IUpdateResponseMock();
-        commsTest = new CommsTest(responseUT,"deviceName");
+        commsTest = new CommsTest(responseUT,upaDevice.getDeviceName());
     }
 
     @Test
