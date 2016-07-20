@@ -52,15 +52,25 @@ public final class DeviceHelper {
         String deviceId = preferences.getString(MainStackPreferences.DEVICE_ID_TAG_PREFERENCE, null);
 
         if (null == deviceId || deviceId.isEmpty()) {
-            // http://stackoverflow.com/questions/2785485/is-there-a-unique-android-device-id
-            final TelephonyManager telephonyManager = (TelephonyManager) service.getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
 
-            String tmDevice = telephonyManager.getDeviceId();
-            String tmSerial = telephonyManager.getSimSerialNumber();
+            String tmDevice = null;
+            String tmSerial = null;
             String androidId = android.provider.Settings.Secure.getString(service.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
 
+            try {
+                // http://stackoverflow.com/questions/2785485/is-there-a-unique-android-device-id
+                final TelephonyManager telephonyManager = (TelephonyManager) service.getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
+
+                tmDevice = telephonyManager.getDeviceId();
+                tmSerial = telephonyManager.getSimSerialNumber();
+            }
+            catch (Exception e)
+            {
+                logger.debug("permission error to get the device id "+e);
+            }
+
             UUID deviceUuid;
-            if (telephonyManager.getDeviceId() == null || telephonyManager.getSimSerialNumber() == null) // any of these are not valid
+            if (tmDevice == null || tmSerial == null) // any of these are not valid
             {
                 deviceUuid = new UUID(androidId.hashCode(), androidId.hashCode());
             } else {
