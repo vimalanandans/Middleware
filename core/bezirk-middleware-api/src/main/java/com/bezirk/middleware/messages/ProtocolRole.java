@@ -25,7 +25,7 @@ package com.bezirk.middleware.messages;
  * concept; it includes a set of topics and a human readable description of the role.
  *
  * @see Event
- * @see Stream
+ * @see StreamDescriptor
  */
 public abstract class ProtocolRole {
     /**
@@ -69,7 +69,7 @@ public abstract class ProtocolRole {
 
     /**
      * The specific pub-sub topics any Zirk subscribed to this role will subscribe to. In
-     * particular, a Zirk will receive any <code>Stream</code> sent in its sphere(s) whose topic is
+     * particular, a Zirk will receive any <code>StreamDescriptor</code> sent in its sphere(s) whose topic is
      * listed in the array returned by this method.
      *
      * @return the set of topics this role subscribes to

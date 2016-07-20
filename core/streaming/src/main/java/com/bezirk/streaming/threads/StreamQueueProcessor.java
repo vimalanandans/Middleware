@@ -60,16 +60,16 @@ public class StreamQueueProcessor implements Runnable {
     @Override
     public void run() {
         boolean running = true;
-        logger.debug("Bezirk Stream Processor has started");
+        logger.debug("Bezirk StreamDescriptor Processor has started");
         boolean bezirkCallbackPresent = false;
         while (running) {
             if (Thread.currentThread().isInterrupted()) {
-                logger.debug("Stopping Bezirk Stream Processor Thread");
+                logger.debug("Stopping Bezirk StreamDescriptor Processor Thread");
                 running = false;
                 continue;
             }
             List<Ledger> streamQueue = new CopyOnWriteArrayList<Ledger>(
-                    msgQueue.getQueue()); // pop the Stream record
+                    msgQueue.getQueue()); // pop the StreamDescriptor record
             Iterator<Ledger> it = streamQueue.iterator();
             if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {
 
@@ -87,7 +87,7 @@ public class StreamQueueProcessor implements Runnable {
                     processLocalStreamMessage(bezirkCallbackPresent, streamRecord);
 
                 } else if (StreamingStatus.ADDRESSED == streamRecord.streamStatus) {
-                    logger.debug("Stream Request is already Addressed.");
+                    logger.debug("StreamDescriptor Request is already Addressed.");
                 } else if (streamRecord.streamStatus == StreamingStatus.READY) {
                     processStreamReadyMessage(streamRecord);
                 } else if (streamRecord.streamStatus == StreamingStatus.BUSY) {

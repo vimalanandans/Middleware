@@ -1,6 +1,5 @@
 package com.bezirk.messagehandler;
 
-import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
@@ -85,11 +84,5 @@ public class CallBackMessageTest {
 
         discoveryCallBackMessage = new DiscoveryIncomingMessage(null, null, 0, true);
         assertEquals("Callbackdiscriminator is not set to DISCOVERY for discoverycallbackmessage.", "DISCOVERY", discoveryCallBackMessage.callbackDiscriminator);
-    }
-
-    private class MockPipePolicy extends PipePolicy {
-        public boolean isAuthorized(String protocolRoleName) {
-            return false;
-        }
     }
 }

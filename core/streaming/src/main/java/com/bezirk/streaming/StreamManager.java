@@ -77,7 +77,7 @@ public class StreamManager implements Streaming {
     }
 
     /**
-     * send the Stream ledger message
+     * send the StreamDescriptor ledger message
      */
     @Override
     public boolean sendStreamMessage(Ledger message) {
@@ -205,11 +205,11 @@ public class StreamManager implements Streaming {
                     processStreamResponse(serializedMsg);
                     break;
                 case RTCControlMessage:
-                    logger.debug("Real Time Stream Message Received");
+                    logger.debug("Real Time StreamDescriptor Message Received");
                     processRTCMessage(serializedMsg);
                     break;
                 default:
-                    logger.error("Unknown Stream message type.");
+                    logger.error("Unknown StreamDescriptor message type.");
                     break;
             }
 
@@ -217,7 +217,7 @@ public class StreamManager implements Streaming {
         }
 
         private void processStreamResponse(String serializedMsg) {
-            logger.debug("Stream Response Received");
+            logger.debug("StreamDescriptor Response Received");
             try {
 
                 final StreamResponse streamResponse = ControlMessage
@@ -227,13 +227,13 @@ public class StreamManager implements Streaming {
 
             } catch (Exception e) {
                 logger.error(
-                        "Something Wrong in processing Stream Request, Removing Message from Queue",
+                        "Something Wrong in processing StreamDescriptor Request, Removing Message from Queue",
                         e);
             }
         }
 
         private void processStreamRequest(String serializedMsg) {
-            logger.debug("Stream Request Received");
+            logger.debug("StreamDescriptor Request Received");
             try {
 
                 final StreamRequest streamRequest = ControlMessage.deserialize(
@@ -244,7 +244,7 @@ public class StreamManager implements Streaming {
 
             } catch (Exception e) {
                 logger.error(
-                        "Something Wrong in processing Stream Request, Removing Message from Queue",
+                        "Something Wrong in processing StreamDescriptor Request, Removing Message from Queue",
                         e);
             }
         }

@@ -2,7 +2,6 @@ package com.bezirk.util;
 
 import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.SubscribedRole;

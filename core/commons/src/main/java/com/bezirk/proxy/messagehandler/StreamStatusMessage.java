@@ -13,7 +13,7 @@ public final class StreamStatusMessage extends ServiceIncomingMessage {
     public int streamStatus = 0;
 
     /**
-     * Id of the pushed Stream
+     * Id of the pushed StreamDescriptor
      */
     public short streamId;
 

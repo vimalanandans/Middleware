@@ -4,13 +4,11 @@ import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.SphereServiceAccess;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class mockSphereServiceAccess implements SphereServiceAccess {
+public class MockSphereServiceAccess implements SphereServiceAccess {
 
 
     @Override

@@ -3,15 +3,12 @@ package com.bezirk.middleware.proxy;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.RecipientSelector;
-import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.Pipe;
-import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message.Flag;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.middleware.messages.Stream;
+import com.bezirk.middleware.messages.StreamDescriptor;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -137,30 +134,15 @@ public class MulticastEventLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
         public void streamStatus(short streamId, StreamStates status) {
-        }
-
-
-        @Override
-        public void pipeStatus(Pipe pipe, PipeStates status) {
-        }
-
-        @Override
-        public void discovered(Set<DiscoveredZirk> zirkSet) {
-        }
-
-        @Override
-        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
-                                PipePolicy allowedOut) {
-
         }
     }
 
@@ -232,29 +214,15 @@ public class MulticastEventLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
         public void streamStatus(short streamId, StreamStates status) {
-        }
-
-        @Override
-        public void pipeStatus(Pipe pipe, PipeStates status) {
-        }
-
-        @Override
-        public void discovered(Set<DiscoveredZirk> zirkSet) {
-        }
-
-        @Override
-        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
-                                PipePolicy allowedOut) {
-
         }
     }
 
@@ -299,29 +267,15 @@ public class MulticastEventLocalTest {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
         }
 
         @Override
         public void streamStatus(short streamId, StreamStates status) {
-        }
-
-        @Override
-        public void pipeStatus(Pipe pipe, PipeStates status) {
-        }
-
-        @Override
-        public void discovered(Set<DiscoveredZirk> zirkSet) {
-        }
-
-        @Override
-        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
-                                PipePolicy allowedOut) {
-
         }
     }
 }

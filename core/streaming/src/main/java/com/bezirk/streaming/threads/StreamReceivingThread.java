@@ -26,7 +26,7 @@ import java.net.Socket;
 import java.net.SocketException;
 
 /**
- * This thread is used by the recipient that is interested in receiving the Stream. This Thread opens socket at port ({@link StreamPortFactory#getPort(String)} and
+ * This thread is used by the recipient that is interested in receiving the StreamDescriptor. This Thread opens socket at port ({@link StreamPortFactory#getPort(String)} and
  * waits for the sender to connect. Once the Sender gets connected, a file will be created at {@link CommsConfigurations#DOWNLOAD_PATH} and will read
  * data at a time. After the data transfer it will release the port through
  * {@link StreamPortFactory#releasePort(int)}. From the {@link #streamLabel}, it will query the BezirkSadl

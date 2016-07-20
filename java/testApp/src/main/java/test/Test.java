@@ -5,16 +5,12 @@ package test;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.Pipe;
-import com.bezirk.middleware.addressing.PipePolicy;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.MulticastStream;
 import com.bezirk.middleware.messages.ProtocolRole;
-import com.bezirk.middleware.messages.Stream;
+import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.middleware.proxy.Factory;
 
 import java.io.File;
@@ -43,7 +39,7 @@ public class Test {
         senderBezirk.sendEvent(helloEvent);
         System.out.println("Sender Published: " + helloEvent.toJson());
 
-        Stream helloStream = new TestStream();
+        StreamDescriptor helloStreamDescriptor = new TestStreamDescriptor();
         // TODO: create data stream and send it
 
         // TODO: send file stream
@@ -76,9 +72,9 @@ public class Test {
         }
     }
 
-    private static class TestStream extends MulticastStream {
-        public TestStream() {
-            super(Flag.NOTICE, "Hello Stream", new RecipientSelector(new Location("test/location")));
+    private static class TestStreamDescriptor extends StreamDescriptor {
+        public TestStreamDescriptor() {
+            super(false, true);
         }
     }
 
@@ -89,31 +85,17 @@ public class Test {
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, InputStream inputStream, ZirkEndPoint sender) {
-            // TODO: Receive data stream
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+            // TODO: Receive data streamDescriptor
         }
 
         @Override
-        public void receiveStream(String topic, Stream stream, short streamId, File file, ZirkEndPoint sender) {
-            // TODO: Receive file stream
+        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
+            // TODO: Receive file streamDescriptor
         }
 
         @Override
         public void streamStatus(short streamId, StreamStates status) {
-        }
-
-        @Override
-        public void pipeStatus(Pipe pipe, PipeStates status) {
-        }
-
-        @Override
-        public void discovered(Set<DiscoveredZirk> zirkSet) {
-        }
-
-        @Override
-        public void pipeGranted(Pipe pipe, PipePolicy allowedIn,
-                                PipePolicy allowedOut) {
-
         }
     }
 }

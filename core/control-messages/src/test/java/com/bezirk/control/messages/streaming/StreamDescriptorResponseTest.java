@@ -24,8 +24,8 @@ import static org.junit.Assert.assertEquals;
  *
  * @author AJC6KOR
  */
-public class StreamResponseTest {
-    private static final Logger logger = LoggerFactory.getLogger(StreamResponseTest.class);
+public class StreamDescriptorResponseTest {
+    private static final Logger logger = LoggerFactory.getLogger(StreamDescriptorResponseTest.class);
 
     private static final String sphereName = "Home";
     private static final ZirkId serviceAId = new ZirkId("ServiceA");
@@ -43,7 +43,7 @@ public class StreamResponseTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        logger.info("***** Setting up StreamResponseTest TestCase *****");
+        logger.info("***** Setting up StreamDescriptorResponseTest TestCase *****");
         inetAddr = getInetAddress();
         recipient.device = inetAddr.getHostAddress();
     }
@@ -54,7 +54,7 @@ public class StreamResponseTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
-        logger.info("***** Shutting down StreamResponseTest TestCase *****");
+        logger.info("***** Shutting down StreamDescriptorResponseTest TestCase *****");
     }
 
     private static InetAddress getInetAddress() {

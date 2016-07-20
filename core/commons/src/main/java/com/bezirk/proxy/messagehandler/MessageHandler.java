@@ -16,7 +16,7 @@ public interface MessageHandler {
     public void onIncomingEvent(EventIncomingMessage eventIncomingMessage);
 
     /**
-     * Method that fires the Unicast Stream response to ProxyForBezirkLibrary.
+     * Method that fires the Unicast StreamDescriptor response to ProxyForBezirkLibrary.
      *
      * @param streamIncomingMessage the callback message that will be fired.
      */

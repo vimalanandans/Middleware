@@ -17,15 +17,15 @@ public class StreamRequest extends UnicastControlMessage {
      */
     private final static Discriminator discriminator = ControlMessage.Discriminator.StreamRequest;
     /**
-     * Location that is used for MulticastStream
+     * Location that is used for MulticastStreamDescriptor
      */
     public Location location = null;
     /**
-     * Contains the serialized String of the Stream Descriptor pushed by the Stream
+     * Contains the serialized String of the StreamDescriptor Descriptor pushed by the StreamDescriptor
      */
     public String serialzedString = null;
     /**
-     * Stream Topic of the Stream Descriptor
+     * StreamDescriptor Topic of the StreamDescriptor Descriptor
      */
     public String streamLabel = null;
     /**

@@ -126,12 +126,12 @@ public class ProxyServerIntend extends ProxyServer {
     }
 
     /**
-     * Sends UnicastStream to proxy
+     * Sends UnicastStreamDescriptor to proxy
      *
      * @param intent Intent received
      */
     public void sendUnicastStream(Intent intent) {
-        logger.info("------------ Received message to push the Stream ----------------------");
+        logger.info("------------ Received message to push the StreamDescriptor ----------------------");
         boolean isStreamingValid = CommsConfigurations.isStreamingEnabled();
         if (!isStreamingValid) {
             logger.error(" Streaming is not enabled!");
@@ -180,7 +180,7 @@ public class ProxyServerIntend extends ProxyServer {
      * @param intent Intent received
      */
     public void sendMulticastStream(Intent intent) {
-        logger.info("------------ Received message to push the Stream ----------------------");
+        logger.info("------------ Received message to push the StreamDescriptor ----------------------");
         boolean isStreamingValid = true;
         if (!CommsConfigurations.isStreamingEnabled()) {
             logger.error(" Streaming is not enabled!");

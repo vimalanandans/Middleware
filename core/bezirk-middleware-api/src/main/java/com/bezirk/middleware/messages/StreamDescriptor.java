@@ -1,0 +1,116 @@
+/**
+ * This file is part of Bezirk-Middleware-API.
+ * <p>
+ * Bezirk-Middleware-API is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * </p>
+ * <p>
+ * Bezirk-Middleware-API is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * </p>
+ * You should have received a copy of the GNU General Public License
+ * along with Bezirk-Middleware-API.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.bezirk.middleware.messages;
+
+/**
+ * Base class for non-trivial Bezirk messages and data transfers. A stream represents a set of data
+ * elements such as multiple messages or picture and music data. This class is extended by protocol
+ * implementors to define concrete streams and their custom attributes and payloads. To implement
+ * a simple, small message, extend the {@link Event} class.
+ * <p>
+ * At this time, streams may only be unicast.
+ * </p>
+ *
+ * @see Message
+ * @see Event
+ */
+public abstract class StreamDescriptor extends Message {
+    /**
+     * Subclass sets to <code>true</code> if the payload can be processed incrementally (e.g. a
+     * music stream) or <code>false</code> if all data elements must be received before processing
+     * can continue (e.g. image file data).
+     */
+    private final boolean incremental;
+    /**
+     * Subclass sets to <code>true</code> if Bezirk must encrypt the stream's data before transmitting. If
+     * set to <code>false</code>, Bezirk will offer the user the opportunity to encrypt the stream anyway.
+     * This option is provided to allow users to make a trade-off between privacy and performance where the
+     * protocol designer does not believe the stream will always require confidentiality.
+     */
+    private final boolean encrypted;
+    private StateListener stateListener = null;
+
+    /**
+     * The concrete implementation of a <code>StreamDescriptor</code> must specify the stream's topic.
+     * Message topics are documented in {@link Message}.
+     *
+     * @param isIncremental <code>true</code>, the recipient may begin processing the payload as data elements
+     *                      are received (e.g. a music stream). Otherwise, all of the data must be received first
+     *                      (e.g. a picture stream).
+     * @param isEncrypted   <code>true</code> if the contents of the stream must be encrypted
+     *                      for transmission.
+     */
+    public StreamDescriptor(boolean isIncremental, boolean isEncrypted) {
+        super(Flag.NOTICE, "TEMP_DUMMY");
+        incremental = isIncremental;
+        encrypted = isEncrypted;
+    }
+
+    /**
+     * Returns <code>true</code> if the payload can be processed as data elements arrive.
+     *
+     * @return <code>true</code> if the payload can be processed as data elements arrive
+     */
+    public boolean isIncremental() {
+        return incremental;
+    }
+
+    /**
+     * Returns <code>true</code> if the stream's contents must be encrypted.
+     *
+     * @return <code>true</code> if the stream's contents must be encrypted
+     */
+    public boolean isEncrypted() {
+        return encrypted;
+    }
+
+    /**
+     * Get the listener observing state changes to this stream.
+     *
+     * @return the listener observing state changes to this stream, or <code>null</code> if
+     * one was not set
+     */
+    public StateListener getStateListener() {
+        return stateListener;
+    }
+
+    /**
+     * Set the listener observing state changes to this stream.
+     *
+     * @param stateListener the listener observing state changes to this stream, or <code>null</code>
+     *                      to remove an existing listener
+     */
+    public void setStateListener(StateListener stateListener) {
+        this.stateListener = stateListener;
+    }
+
+    /**
+     * States a stream can be in.
+     */
+    public enum StreamStates {
+        LOST_CONNECTION, END_OF_DATA
+    }
+
+    /**
+     * Interface implemented by observers of a <code>StreamDescriptor</code> that want to be notified when
+     * the stream changes states (e.g. gets to the end of its data, prematurely closes, etc.).
+     */
+    public interface StateListener {
+        void streamNotification(StreamStates state);
+    }
+}

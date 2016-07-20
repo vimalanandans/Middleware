@@ -52,7 +52,7 @@ public class StreamPortFactory implements com.bezirk.streaming.PortFactory {
      * If Bezirk has already opened the {@link CommsConfigurations#MAX_SUPPORTED_STREAMS} then it returns -1. If the port is available and the key is not duplicate( i,e the Request has
      * arrived for the first time ) then it updates the activePorts Map with the port and portsMap in StreamStore with portMapKey and port.
      *
-     * @param portMapKey key in form [MsgId:ServiceName:DeviceId] that used to keep track of active Stream
+     * @param portMapKey key in form [MsgId:ServiceName:DeviceId] that used to keep track of active StreamDescriptor
      * @return positive integer: indicating the port that is assigned for this request. ( Port &gt;= startingPort and  Port&lt;= endingPort-startingPort )
      * -1 : if all the ports are busy.
      */

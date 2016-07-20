@@ -24,10 +24,5 @@ public class RecipientSelectorTest {
         loc = new Location("OFFICE1/BLOCK1/FLOOR2");
 
         assertNotEquals("Location in recipientSelector is equal to another invalid location.", loc, recipientSelector.getLocation());
-
-        com.bezirk.middleware.addressing.Pipe pipe = new Pipe();
-        recipientSelector = new RecipientSelector(loc, pipe);
-
-        assertEquals("Pipe is not equal to the set value.", pipe, recipientSelector.getPipe());
     }
 }

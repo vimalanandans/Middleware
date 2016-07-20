@@ -1,22 +1,14 @@
 package com.bezirk.proxy.pc;
 
-import com.bezirk.middleware.addressing.RecipientSelector;
-import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.messages.Message;
-import com.bezirk.middleware.messages.Message.Flag;
-import com.bezirk.middleware.messages.UnicastStream;
+import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.util.MockComms;
-import com.bezirk.util.MockProtocolsForBezirkPC;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
-import com.bezirk.proxy.ProxyServer;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,14 +63,13 @@ public class ProxySendTest {
 
   
     /**
-     * Stream Descriptor
+     * StreamDescriptor Descriptor
      */
-    class MockRequestStream extends UnicastStream {
+    class MockRequestStreamDescriptor extends StreamDescriptor {
         public String sampleValue = "TestValue";
 
-        public MockRequestStream(Flag flag, String topic,
-                                 ZirkEndPoint recipient) {
-            super(flag, topic, recipient);
+        public MockRequestStreamDescriptor(boolean incremental, boolean encrypted) {
+            super(incremental, encrypted);
         }
     }
 }

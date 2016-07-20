@@ -1,7 +1,7 @@
 package com.bezirk.middleware.proxy;
 
+import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
-import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.messagehandler.ServiceIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
@@ -10,16 +10,11 @@ import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.DiscoveredZirk;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
-import com.bezirk.middleware.messages.Stream;
-import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -119,20 +114,20 @@ public class BRForService implements BroadcastReceiver {
         if (checkDuplicateStream(strmMsg.sender.zirkId.getZirkId(), strmMsg.localStreamId)) {
             if (streamListenerMap.containsKey(strmMsg.streamTopic)) {
                 for (BezirkListener listener : streamListenerMap.get(strmMsg.streamTopic)) {
-                    Stream stream = Message.fromJson(strmMsg.serializedStream, Stream.class);
-                    listener.receiveStream(strmMsg.streamTopic, stream, strmMsg.localStreamId,
+                    StreamDescriptor streamDescriptor = Message.fromJson(strmMsg.serializedStream, StreamDescriptor.class);
+                    listener.receiveStream(strmMsg.streamTopic, streamDescriptor, strmMsg.localStreamId,
                             strmMsg.file, strmMsg.sender);
                 }
             } else {
-                logger.error("StreamListenerMap does not have a mapped Stream");
+                logger.error("StreamListenerMap does not have a mapped StreamDescriptor");
             }
         } else {
-            logger.error("Duplicate Stream Request Received");
+            logger.error("Duplicate StreamDescriptor Request Received");
         }
     }
 
     /**
-     * Handles the Stream Status callback and gives the callback to the zirk. This is called from
+     * Handles the StreamDescriptor Status callback and gives the callback to the zirk. This is called from
      * platform specific BezirkCallback Implementation.
      *
      * @param streamStatusCallbackMessage StreamStatusCallback that will be invoked for the services.
