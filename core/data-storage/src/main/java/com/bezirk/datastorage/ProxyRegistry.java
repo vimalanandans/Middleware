@@ -1,4 +1,4 @@
-package com.bezirk.persistence;
+package com.bezirk.datastorage;
 
 import java.io.Serializable;
 import java.util.HashMap;

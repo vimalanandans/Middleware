@@ -2,7 +2,7 @@ package com.bezirk.sphere.security;
 
 import com.bezirk.sphere.impl.BezirkId;
 import com.bezirk.middleware.objects.SphereVitals;
-import com.bezirk.persistence.SphereRegistry;
+import com.bezirk.datastorage.SphereRegistry;
 import com.bezirk.sphere.api.CryptoInternals;
 
 import org.slf4j.Logger;

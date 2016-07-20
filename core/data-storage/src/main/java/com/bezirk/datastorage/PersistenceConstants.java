@@ -1,7 +1,7 @@
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com)
  */
-package com.bezirk.persistence;
+package com.bezirk.datastorage;
 
 /**
  * Constants that are used to define in the database

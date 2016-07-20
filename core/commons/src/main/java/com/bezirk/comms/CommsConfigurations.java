@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
  * Subsequently, Sadl acks the duplicate message and drops it (since the message has already been
  * processed)
  */
+@Deprecated
 public final class CommsConfigurations {
     private static final Logger logger = LoggerFactory.getLogger(CommsConfigurations.class);
 

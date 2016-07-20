@@ -3,9 +3,9 @@ package com.bezirk.persistence.util;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.bezirk.persistence.PersistenceConstants;
-import com.bezirk.persistence.DatabaseConnection;
-import com.bezirk.persistence.PersistenceRegistry;
+import com.bezirk.datastorage.PersistenceConstants;
+import com.bezirk.datastorage.DatabaseConnection;
+import com.bezirk.datastorage.PersistenceRegistry;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;

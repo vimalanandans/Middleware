@@ -4,20 +4,19 @@ import com.bezirk.BezirkCompManager;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsNotification;
+import com.bezirk.datastorage.PubSubBrokerStorage;
+import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.Device;
 import com.bezirk.device.DeviceType;
 import com.bezirk.devices.DeviceInterface;
-import com.bezirk.persistence.PersistenceConstants;
-import com.bezirk.persistence.PersistenceRegistry;
+import com.bezirk.datastorage.PersistenceConstants;
+import com.bezirk.datastorage.PersistenceRegistry;
 import com.bezirk.persistence.DatabaseConnectionForJava;
-import com.bezirk.persistence.RegistryPersistence;
-import com.bezirk.persistence.PubSubBrokerPersistence;
-import com.bezirk.persistence.SpherePersistence;
-import com.bezirk.persistence.SphereRegistry;
+import com.bezirk.datastorage.SpherePersistence;
+import com.bezirk.datastorage.SphereRegistry;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SphereListener;
-import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereConfig;
 import com.bezirk.sphere.impl.SphereServiceManager;
 import com.bezirk.sphere.impl.JavaPrefs;
@@ -51,7 +50,7 @@ public class MockSetUpUtilityForBezirkPC {
     private static final String DBVersion = PersistenceConstants.DB_VERSION;
     private static InetAddress inetAddr;
     PubSubBroker pubSubBroker = null;
-    PubSubBrokerPersistence pubSubBrokerPersistence;
+    PubSubBrokerStorage pubSubBrokerStorage;
     SpherePersistence spherePersistence;
     Device upaDevice;
     CryptoEngine cryptoEngine;
@@ -59,13 +58,13 @@ public class MockSetUpUtilityForBezirkPC {
     Comms comms;
     SphereConfig sphereConfig;
     private DatabaseConnectionForJava dbConnection;
-    private RegistryPersistence regPersistence;
+    private RegistryStorage regPersistence;
 
     public void setUPTestEnv() throws IOException, SQLException,
             Exception {
 
         dbConnection = new DatabaseConnectionForJava(DBPath);
-        regPersistence = new RegistryPersistence(
+        regPersistence = new RegistryStorage(
                 dbConnection, DBVersion);
 
         inetAddr = getInetAddress();
@@ -74,8 +73,8 @@ public class MockSetUpUtilityForBezirkPC {
         spherePersistence = (SpherePersistence) regPersistence;
         sphereRegistry = new SphereRegistry();
         cryptoEngine = new CryptoEngine(sphereRegistry);
-        pubSubBrokerPersistence = (PubSubBrokerPersistence) regPersistence;
-        pubSubBroker = new PubSubBroker(pubSubBrokerPersistence);
+        pubSubBrokerStorage = (PubSubBrokerStorage) regPersistence;
+        pubSubBroker = new PubSubBroker(pubSubBrokerStorage);
         //sphereConfig = new SphereProperties();
         sphereConfig = new JavaPrefs();
         sphereConfig.init();
@@ -156,7 +155,7 @@ public class MockSetUpUtilityForBezirkPC {
         return null;
     }
 
-    public RegistryPersistence getRegistryPersistence() {
+    public RegistryStorage getRegistryPersistence() {
 
         return regPersistence;
     }

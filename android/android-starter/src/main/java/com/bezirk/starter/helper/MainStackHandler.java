@@ -10,14 +10,13 @@ import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CommsConfigAndroid;
 import com.bezirk.control.messages.MessageLedger;
+import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.Device;
-import com.bezirk.persistence.RegistryPersistence;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.android.ProxyClientMessageHandler;
 import com.bezirk.proxy.android.ProxyServerIntend;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.AndroidSphereServiceManager;
 import com.bezirk.sphere.api.DevMode;
@@ -60,7 +59,7 @@ public final class MainStackHandler implements StackHandler {
     private final CommsNotification errNotificationCallback;
     private final BezirkWifiManager bezirkWifiManager;
     private final BezirkStartStackHelper bezirkStartStackHelper;
-    private RegistryPersistence registryPersistence;
+    private RegistryStorage registryPersistence;
 
     public MainStackHandler(ProxyServer proxy, CommsNotification errorNotificationCallback) {
         this.proxy = proxy;

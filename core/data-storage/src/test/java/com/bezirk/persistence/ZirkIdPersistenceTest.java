@@ -45,7 +45,7 @@
 //     */
 //    @Test
 //    public void testForBezirkServiceIdPersistenceRegistration() throws Exception {
-//        RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, PersistenceConstants.DB_VERSION);
+//        RegistryStorage regPersistence = new RegistryStorage(dbConnection, PersistenceConstants.DB_VERSION);
 //        assertNotNull(regPersistence);
 //        ProxyPersistence proxyPersistence = regPersistence;
 //
@@ -61,7 +61,7 @@
 //        //close the db == Bezirk is stopped or Restart the Bezirk
 //        dbConnection.getDatabaseConnection().close();
 //        //Check if the data is persisted
-//        regPersistence = new RegistryPersistence(dbConnection, PersistenceConstants.DB_VERSION);
+//        regPersistence = new RegistryStorage(dbConnection, PersistenceConstants.DB_VERSION);
 //        proxyPersistence = regPersistence;
 //        proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 //
@@ -81,7 +81,7 @@
 //     */
 //    @Test
 //    public void testForBezirkServiceIdPersistenceUnRegistrationWithBezirkStartUp() throws Exception {
-//        RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, PersistenceConstants.DB_VERSION);
+//        RegistryStorage regPersistence = new RegistryStorage(dbConnection, PersistenceConstants.DB_VERSION);
 //        assertNotNull(regPersistence);
 //        ProxyPersistence proxyPersistence = regPersistence;
 //
@@ -100,7 +100,7 @@
 //        //close the db == Bezirk is stopped or Restart the Bezirk
 //        dbConnection.getDatabaseConnection().close();
 //        //Check if the data is persisted
-//        regPersistence = new RegistryPersistence(dbConnection, PersistenceConstants.DB_VERSION);
+//        regPersistence = new RegistryStorage(dbConnection, PersistenceConstants.DB_VERSION);
 //        proxyPersistence = regPersistence;
 //        proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 //
@@ -114,7 +114,7 @@
 //        //close the db == Bezirk is stopped or Restart the Bezirk
 //        dbConnection.getDatabaseConnection().close();
 //
-//        regPersistence = new RegistryPersistence(dbConnection, PersistenceConstants.DB_VERSION);
+//        regPersistence = new RegistryStorage(dbConnection, PersistenceConstants.DB_VERSION);
 //        proxyPersistence = regPersistence;
 //        proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 //
@@ -132,7 +132,7 @@
 //     */
 //    @Test
 //    public void testForBezirkServiceIdPersistenceUnRegistrationWithoutBezirkStartUp() throws Exception {
-//        RegistryPersistence regPersistence = new RegistryPersistence(dbConnection, PersistenceConstants.DB_VERSION);
+//        RegistryStorage regPersistence = new RegistryStorage(dbConnection, PersistenceConstants.DB_VERSION);
 //        assertNotNull(regPersistence);
 //        ProxyPersistence proxyPersistence = regPersistence;
 //

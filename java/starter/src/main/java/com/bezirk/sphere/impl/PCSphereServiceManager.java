@@ -2,8 +2,8 @@ package com.bezirk.sphere.impl;
 
 import com.bezirk.comms.Comms;
 import com.bezirk.devices.DeviceInterface;
-import com.bezirk.persistence.SpherePersistence;
-import com.bezirk.persistence.SphereRegistry;
+import com.bezirk.datastorage.SpherePersistence;
+import com.bezirk.datastorage.SphereRegistry;
 import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.api.SphereConfig;
 import com.bezirk.sphere.security.CryptoEngine;

@@ -1,7 +1,7 @@
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com)
  */
-package com.bezirk.persistence;
+package com.bezirk.datastorage;
 
 /**
  * Interface for the sphere to load and store persistence

@@ -61,7 +61,7 @@ public class ProxySendTest {
         mockSetUP.destroyTestSetUp();
     }
 
-  
+
     /**
      * StreamDescriptor Descriptor
      */
