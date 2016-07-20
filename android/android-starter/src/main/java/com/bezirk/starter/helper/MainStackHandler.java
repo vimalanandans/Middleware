@@ -14,7 +14,7 @@ import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.Device;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.android.ProxyClientMessageHandler;
-import com.bezirk.proxy.android.ProxyServerIntend;
+import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBroker;
@@ -191,7 +191,7 @@ public final class MainStackHandler implements StackHandler {
                             sphereProcessorForMainService.getSphereSecurity());
 
                     // set proxy handler
-                    ProxyServerIntend proxyIntend = (ProxyServerIntend)proxy;
+                    AndroidProxyServer proxyIntend = (AndroidProxyServer)proxy;
                     proxyIntend.InitProxyServerIntend(serviceMessageHandler);
                     /*************************************************************
                      * Step 9 : Start CommsConfigurations after sphere initialization       *

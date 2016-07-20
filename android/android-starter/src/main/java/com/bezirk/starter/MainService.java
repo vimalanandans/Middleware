@@ -18,7 +18,7 @@ import android.support.v4.app.NotificationCompat;
 import com.bezirk.R;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.proxy.ProxyServer;
-import com.bezirk.proxy.android.ProxyServerIntend;
+import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.remotelogging.RemoteLog;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.starter.helper.NetworkBroadCastReceiver;
@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class MainService extends Service implements INotificationCallback {
+public class MainService extends Service implements NotificationCallback {
     private static final Logger logger = LoggerFactory.getLogger(MainService.class);
 
     private final ActionProcessor actionProcessor = new ActionProcessor();
@@ -84,7 +84,7 @@ public class MainService extends Service implements INotificationCallback {
         logger.info("Bezirk Services is Created");
         //final ProxyServer proxy = new ProxyServer(this); // Pipe needs service
 
-        proxyService = new ProxyServerIntend();
+        proxyService = new AndroidProxyServer();
         //Gain permissions for multicast
 
         //initialize the commsNotification object
@@ -107,7 +107,7 @@ public class MainService extends Service implements INotificationCallback {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         if (intent != null) {
-            actionProcessor.processBezirkAction(intent, this, (ProxyServerIntend)proxyService, mainStackHandler);
+            actionProcessor.processBezirkAction(intent, this, (AndroidProxyServer)proxyService, mainStackHandler);
         }
 
         return START_STICKY;

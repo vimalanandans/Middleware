@@ -10,9 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-/**
- * This class contains the platform specific
- */
 public final class CommsConfigAndroid {
     private static final Logger logger = LoggerFactory.getLogger(CommsConfigAndroid.class);
 

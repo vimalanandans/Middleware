@@ -1,9 +1,5 @@
 package com.bezirk.starter;
 
-/**
- * singleton class, only one state
- * Created by PIK6KOR on 12/14/2015.
- */
 public final class BezirkWifiManager {
     private static BezirkWifiManager context;
     private String connectedWifiSSID;

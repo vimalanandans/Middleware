@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by vnd2kor on 6/12/2015.
  * This is the stub code for making sphere opaque or flat without encryption
  * This is the Quick fix. in actual this suppose to be a package altered via build
  */

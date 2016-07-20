@@ -16,14 +16,14 @@ public class CommsNotification implements com.bezirk.comms.CommsNotification {
 
     private final String BR_SYSTEM_STATUS_ACTION = "com.bezirk.systemstatus";
     private final String BR_COMMS_DIAG_RESPONSE = "com.bezirk.comms.diag";
-    private final INotificationCallback callback;
+    private final NotificationCallback callback;
     /**
      * Keeps track of no of error messages notified. Each time a notification is received, its value is
      * incremented and after reaching MAX_ERROR_REPEAT_COUNT the value is reset to 0 and notified.
      */
     private int errorCallbackCount = -1;
 
-    public CommsNotification(INotificationCallback callback) {
+    public CommsNotification(NotificationCallback callback) {
         this.callback = callback;
     }
 

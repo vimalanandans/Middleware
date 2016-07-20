@@ -17,14 +17,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:replace="icon, label, theme">
-        <!-- The receiver is now bound to the DeviceControlActivity lifecycle -->
-        <!--<receiver android:name=".DeviceControlActivity$DeviceIntentReceiver" >-->
-        <!--<intent-filter>-->
-        <!--<action android:name="com.bosch.upa.uhu.controluinotfication" >-->
-        <!--<category android:name="android.intent.category.DEFAULT" />-->
-        <!--</action>-->
-        <!--</intent-filter>-->
-        <!--</receiver>-->
 
         <activity
             android:name="com.bezirk.controlui.ControlActivity"
