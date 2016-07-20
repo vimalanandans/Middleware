@@ -45,8 +45,8 @@ public class CommsTestJFrame extends JFrame implements IUpdateResponse {
         }
     };
 
-    public CommsTestJFrame() {
-        commsTest = new CommsTest(this);
+    public CommsTestJFrame(String deviceName) {
+        commsTest = new CommsTest(this, deviceName);
         try {
             jbInit();
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class CommsTestJFrame extends JFrame implements IUpdateResponse {
     }
 
     public static void main(String... args) {
-        final JFrame frame = new CommsTestJFrame();
+        final JFrame frame = new CommsTestJFrame("TestDevice"); // TODO : Device Name
         final Dimension screenSize = Toolkit.getDefaultToolkit()
                 .getScreenSize();
         final Dimension frameSize = frame.getSize();

@@ -67,7 +67,7 @@ final class ServiceStarterHelper {
         sphereConfig.init();
         bezirkSphereForPC.initSphere(registryPersistence, comms, sphereConfig);
 
-        BezirkCompManager.setSphereUI(sphereForPC);
+        //BezirkCompManager.setSphereUI(sphereForPC);
 
 
         com.bezirk.sphere.SphereManager.setBezirkQRCode((BezirkQRCode) sphereForPC);

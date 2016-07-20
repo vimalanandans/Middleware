@@ -84,7 +84,7 @@ public final class SphereHandler {
 
             devMode = (DevMode) sphereForAndroid;
 
-            BezirkCompManager.setSphereUI(sphereForAndroid);
+            //BezirkCompManager.setSphereUI(sphereForAndroid);
 
 
            // BezirkCompManager.setSphereForPubSub((SphereServiceAccess) sphereForAndroid);

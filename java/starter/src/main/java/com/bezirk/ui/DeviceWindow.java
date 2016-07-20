@@ -1,6 +1,6 @@
 package com.bezirk.ui;
 
-import com.bezirk.BezirkCompManager;
+
 import com.bezirk.devices.DeviceInterface;
 import com.bezirk.middleware.addressing.Location;
 
@@ -22,6 +22,7 @@ import javax.swing.border.CompoundBorder;
 /**
  * This class is used to show the current Device Location which is represented as the fields within {@link Location}
  */
+@Deprecated
 public class DeviceWindow extends JFrame {
     private static final Logger logger = LoggerFactory.getLogger(DeviceWindow.class);
     private static final long serialVersionUID = 1L;
@@ -33,8 +34,8 @@ public class DeviceWindow extends JFrame {
     /**
      * Create the frame.
      */
-    public DeviceWindow() {
-        final DeviceInterface upaDevice = BezirkCompManager.getUpaDevice();
+    public DeviceWindow(final DeviceInterface upaDevice) {
+        //final DeviceInterface upaDevice = BezirkCompManager.getUpaDevice();
 
         setTitle("Device Location Window");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -20,7 +20,7 @@ public final class CommsTest {
     private static final Logger logger = LoggerFactory.getLogger(CommsTest.class);
 
     private static final String CTRL_MULTICAST_ADDRESS = "224.5.5.5";
-    private final String name = BezirkCompManager.getUpaDevice().getDeviceName();
+    private String deviceName ;
     private final IUpdateResponse responseUI;
     private final UIStore uiStore = new UIStore();
     private final String myAddress = BezirkNetworkUtilities.getDeviceIp();
@@ -28,15 +28,16 @@ public final class CommsTest {
     private UnicastReceiver uReceiver;
     private com.bezirk.ui.commstest.threads.MulticastReceiver mReceiver;
 
-    public CommsTest(IUpdateResponse response) {
+    public CommsTest(IUpdateResponse response, String deviceName) {
         this.responseUI = response;
+        this.deviceName = deviceName;
     }
 
     public void sendPing(int pingCount) {
         final PingMessage msg = new PingMessage();
         msg.pingId = pingCount;
         msg.deviceIp = myAddress;
-        msg.deviceName = name;
+        msg.deviceName = deviceName;
         sendPingMsg(msg);
 
     }
@@ -71,7 +72,7 @@ public final class CommsTest {
      */
     public void startCommsReceiverThread() {
         if (null == mReceiver) {
-            mReceiver = new com.bezirk.ui.commstest.threads.MulticastReceiver(CTRL_MULTICAST_ADDRESS, responseUI, myAddress, name);
+            mReceiver = new com.bezirk.ui.commstest.threads.MulticastReceiver(CTRL_MULTICAST_ADDRESS, responseUI, myAddress, deviceName);
         }
         mReceiver.startComms();
         if (null == uReceiver) {

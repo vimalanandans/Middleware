@@ -38,7 +38,7 @@ public class TestCommsTest {
         BezirkCompManager.setUpaDevice(upaDevice);
         getInetAddress();
         IUpdateResponseMock responseUT = new IUpdateResponseMock();
-        commsTest = new CommsTest(responseUT);
+        commsTest = new CommsTest(responseUT,"deviceName");
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.bezirk.pubsubbroker.discovery;
 
-import com.bezirk.BezirkCompManager;
+
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.proxy.messagehandler.MessageHandler;
