@@ -3,7 +3,6 @@ rootProject.name = 'Middleware'
 /*--------------------core--------------------*/
 include ':core:bezirk-middleware-api'
 include ':core:bezirk'
-//include ':core:pipes'
 
 
 include ':core:control-messages'
