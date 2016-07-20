@@ -71,12 +71,7 @@ class BezirkStartStackHelper {
         return true;
     }
 
-    void setAndroidMessageHandler(MainService service) {
-       /* if (BezirkCompManager.getplatformSpecificCallback() == null) {
-            ProxyClientMessageHandler bezirkAndroidCallback = new ProxyClientMessageHandler(service.getApplicationContext());
-            BezirkCompManager.setplatformSpecificCallback(bezirkAndroidCallback);
-        } */
-    }
+
 
     Comms initializeComms(InetAddress inetAddress, PubSubBroker pubSubBroker,  CommsNotification errNotificationCallback) {
         // Instantiate pipeManager before SenderThread so that it is ready to start sending over pipes

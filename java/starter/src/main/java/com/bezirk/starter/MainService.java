@@ -178,12 +178,9 @@ public class MainService {
         logger.info("BezirkStarter has started");
 
         /**************************************************
-         * Step1 : Set Platform specific call back        *
+         * Step1 : Go to step 2 :)                            *
          **************************************************/
-      /*  if (null == BezirkCompManager.getplatformSpecificCallback()
-                && messageHandler != null) {
-            BezirkCompManager.setplatformSpecificCallback(messageHandler);
-        } */
+        //
 
         /**************************************************
          * Step2 : Configure BezirkCommsPC                   *
@@ -215,27 +212,29 @@ public class MainService {
         initializeRegistryPersistence();
 
         /**************************************************
-         * Step5 : Create PubSubBroker                  *
+         * Step5 :Create and configure the Device      *
+         **************************************************/
+        final Device bezirkDevice = serviceStarterHelper
+                .configureBezirkDevice(this.bezirkConfig);
+
+        /**************************************************
+         * Step6 : Create PubSubBroker                  *
          **************************************************/
         final PubSubBroker pubSubBroker = new PubSubBroker(
-                registryPersistence);
+                registryPersistence, bezirkDevice);
 
         // Inject to proxyServer
         proxyServer.setPubSubBrokerService(pubSubBroker);
 
         /**************************************************
-         * Step6 :Initialize the comms.                   *
+         * Step7 :Initialize the comms.                   *
          **************************************************/
         final boolean isCommsInitialized = initComms(messageHandler, intf,
                 pubSubBroker);
         if (!isCommsInitialized) {
             serviceStarterHelper.fail("Problem initializing Comms.", null);
         }
-        /**************************************************
-         * Step7 :Create and configure the Device      *
-         **************************************************/
-        final Device bezirkDevice = serviceStarterHelper
-                .configureBezirkDevice(this.bezirkConfig);
+
 
         /**************************************************
          * Step8 :Initialize sphere                       *
@@ -275,7 +274,7 @@ public class MainService {
     private void displayQRCode(final Device bezirkDevice) {
         if (bezirkConfig.isDisplayEnabled()) {
             // commented to test in beaglebone. uncomment it for PC
-            frame = new com.bezirk.ui.spheremanagement.SphereManagementGUI(sphereManager);
+            frame = new com.bezirk.ui.spheremanagement.SphereManagementGUI(sphereManager, bezirkDevice);
             frame.setVisible(true);
 
             // Check if the Logging is enabled and start the LoggingGUI

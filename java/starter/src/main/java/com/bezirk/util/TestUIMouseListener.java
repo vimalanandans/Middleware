@@ -1,6 +1,6 @@
 package com.bezirk.util;
 
-import com.bezirk.BezirkCompManager;
+import com.bezirk.devices.DeviceInterface;
 import com.bezirk.ui.statckstatus.StackStatusUI;
 import com.bezirk.ui.commstest.CommsTest;
 
@@ -18,14 +18,16 @@ public class TestUIMouseListener implements MouseListener {
     private final CommsTest commsTest;
     private final Integer pingCount;
     private final String misMatchVersion;
+    DeviceInterface deviceInterface;
 
     public TestUIMouseListener(String uiType, CommsTest commsTest, Integer pingCount,
-                               String misMatchVersion) {
+                               String misMatchVersion, DeviceInterface deviceInterface) {
         super();
         this.uiType = uiType;
         this.commsTest = commsTest;
         this.pingCount = pingCount;
         this.misMatchVersion = misMatchVersion;
+        this.deviceInterface = deviceInterface;
     }
 
     @Override
@@ -33,8 +35,7 @@ public class TestUIMouseListener implements MouseListener {
 
         if ("commsUI".equalsIgnoreCase(uiType)) {
             final String receivedMsgs = commsTest
-                    .getSelectedServices(BezirkCompManager.getUpaDevice()
-                            .getDeviceName() + ":" + pingCount);
+                    .getSelectedServices(deviceInterface.getDeviceName() + ":" + pingCount);
             if (ValidatorUtility.checkForString(receivedMsgs)) {
                 JOptionPane.showMessageDialog(null, receivedMsgs,
                         "DEVICES THAT RESPONDED TO PING MESSAGE",

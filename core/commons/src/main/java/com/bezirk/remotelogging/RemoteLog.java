@@ -4,6 +4,7 @@ import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
+import com.bezirk.devices.DeviceInterface;
 
 
 /**
@@ -26,7 +27,7 @@ public interface RemoteLog {
     public boolean stopLoggingService();
 
     /** initialize the remote logging module. */
-    public boolean initRemoteLogger(Comms comms);
+    public boolean initRemoteLogger(Comms comms, DeviceInterface deviceInterface);
 
     /** set logger to enable or disable **/
     public boolean setLogger(boolean enable, String[] sphereName);

@@ -1,6 +1,5 @@
 package com.bezirk.pubsubbroker.discovery;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.google.gson.Gson;
 

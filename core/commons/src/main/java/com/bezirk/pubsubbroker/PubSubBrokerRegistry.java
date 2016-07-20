@@ -1,10 +1,10 @@
 package com.bezirk.pubsubbroker;
 
-import com.bezirk.BezirkCompManager;
+import com.bezirk.devices.DeviceInterface;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezrik.network.BezirkNetworkUtilities;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -320,10 +320,10 @@ public class PubSubBrokerRegistry implements Serializable {
      * @param serviceId whose location needs to be known
      * @return Location of the zirk
      */
-    public Location getLocationForService(ZirkId serviceId) {
+    public Location getLocationForService(ZirkId serviceId, DeviceInterface deviceInterface) {
         if (isServiceRegistered(serviceId)) {
             try {
-                return (defaultLocation.equals(locationMap.get(serviceId)) ? BezirkCompManager.getUpaDevice().getDeviceLocation() : locationMap.get(serviceId));
+                return (defaultLocation.equals(locationMap.get(serviceId)) ? deviceInterface.getDeviceLocation() : locationMap.get(serviceId));
             } catch (Exception e) {
                 logger.error("Exception in fetching the device Location", e);
                 return null;
@@ -405,7 +405,7 @@ public class PubSubBrokerRegistry implements Serializable {
      * @param location of the Zirk
      * @return Set&lt;ZirkId&gt; if the zirks are present, <code>null</code> otherwise
      */
-    public Set<ZirkId> checkMulticastEvent(String topic, Location location) {
+    public Set<ZirkId> checkMulticastEvent(String topic, Location location, DeviceInterface deviceInterface) {
         HashSet<ZirkId> services = null;
 
         if (eventMap.containsKey(topic)) {
@@ -416,7 +416,7 @@ public class PubSubBrokerRegistry implements Serializable {
             HashSet<ZirkId> tempServices = (HashSet<ZirkId>) eventMap.get(topic);
             services = new HashSet<ZirkId>();
             for (ZirkId serviceId : tempServices) {
-                Location serviceLocation = getLocationForService(serviceId);
+                Location serviceLocation = getLocationForService(serviceId, deviceInterface);
                 if (serviceLocation != null && location.subsumes(serviceLocation)) {
                     services.add(serviceId);
                 }

@@ -8,6 +8,8 @@ import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.datastorage.PubSubBrokerStorage;
+import com.bezirk.device.Device;
+import com.bezirk.devices.DeviceInterface;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.StreamDescriptor;
@@ -53,13 +55,14 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     protected Comms comms = null;
     protected SphereServiceAccess sphereServiceAccess = null;
     protected SphereSecurity sphereSecurity = null;
-
+    DeviceInterface deviceInterface = null;
     RemoteLog remoteLog = null;
 
     MessageHandler msgHandler;
 
-    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage) {
+    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, DeviceInterface deviceInterface) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
+        this.deviceInterface = deviceInterface;
         loadSadlRegistry();
     }
 
@@ -362,7 +365,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     @Override
     public Location getLocationForService(ZirkId serviceId) {
-        return pubSubBrokerRegistry.getLocationForService(serviceId);
+        return pubSubBrokerRegistry.getLocationForService(serviceId, deviceInterface);
     }
 
 
@@ -477,7 +480,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             logger.error("Event Topic or Recipient is valid");
             return null;
         }
-        return pubSubBrokerRegistry.checkMulticastEvent(topic, location);
+        return pubSubBrokerRegistry.checkMulticastEvent(topic, location,deviceInterface);
     }
 
     @Override

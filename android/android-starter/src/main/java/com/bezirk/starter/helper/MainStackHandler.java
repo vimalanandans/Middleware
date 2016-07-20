@@ -152,13 +152,18 @@ public final class MainStackHandler implements StackHandler {
                     registryPersistence = bezirkStartStackHelper.initializeRegistryPersistence(service);
 
                     /*************************************************************
-                     * Step 5 : Initialize PubSubBroker and set sadl for proxy *
+                     * Step 5 : Configure Device with preferences             *
                      *************************************************************/
-                    PubSubBroker pubSubBroker = new PubSubBroker(registryPersistence);
+                    Device bezirkDevice = deviceHelper.setBezirkDevice(preferences, service);
+
+                    /*************************************************************
+                     * Step 6 : Initialize PubSubBroker and set sadl for proxy *
+                     *************************************************************/
+                    PubSubBroker pubSubBroker = new PubSubBroker(registryPersistence,bezirkDevice);
                     proxy.setPubSubBrokerService(pubSubBroker);
 
                     /*************************************************************
-                     * Step 6 : Initialize BezirkCommsManager                       *
+                     * Step 7 : Initialize BezirkCommsManager                       *
                      *************************************************************/
                     InetAddress inetAddress = androidNetworkUtil.fetchInetAddress(service);
                     comms = bezirkStartStackHelper.initializeComms(inetAddress, pubSubBroker, errNotificationCallback);
@@ -166,10 +171,7 @@ public final class MainStackHandler implements StackHandler {
                         logger.error("Unable to initialize comms layer. Shutting down bezirk.");
                         service.stopSelf();
                     }
-                    /*************************************************************
-                     * Step 7 : Configure Device with preferences             *
-                     *************************************************************/
-                    Device bezirkDevice = deviceHelper.setBezirkDevice(preferences, service);
+
 
                     /*************************************************************
                      * Step 8 : Initialize SphereServiceManager                             *
