@@ -30,7 +30,7 @@ public class ProxyServer {
     private PubSubBrokerServiceTrigger pubSubBrokerService;
 
     public void registerService(final ZirkId serviceId, final String serviceName) {
-
+        pubSubBrokerService.registerService(serviceId,serviceName);
     }
 
 
