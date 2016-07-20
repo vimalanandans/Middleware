@@ -3,7 +3,7 @@ package com.bezirk.starter.helper;
 import android.content.Intent;
 
 
-import com.bezirk.proxy.android.ProxyServerIntend;
+import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.ActionCommands;
@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 public final class ActionProcessor {
     private static final Logger logger = LoggerFactory.getLogger(ActionProcessor.class);
 
-    private static final String CONTROL_UI_NOTIFICATION_ACTION = "com.bosch.upa.uhu.controluinotfication";
+    private static final String CONTROL_UI_NOTIFICATION_ACTION = "com.bezirk.controlui.DeviceControlActivity";
     private static final int START_CODE = 100;
     private static final int STOP_CODE = 101;
 
@@ -31,7 +31,7 @@ public final class ActionProcessor {
      * @param ProxyService
      * @param mainStackHandler
      */
-    public void processBezirkAction(Intent intent, MainService service, ProxyServerIntend ProxyService, MainStackHandler mainStackHandler) {
+    public void processBezirkAction(Intent intent, MainService service, AndroidProxyServer ProxyService, MainStackHandler mainStackHandler) {
 
         INTENT_ACTIONS intentAction = INTENT_ACTIONS.getActionUsingMessage(intent.getAction());
 
@@ -132,10 +132,8 @@ public final class ActionProcessor {
         return mode;
     }
 
-    private void processServiceActions(INTENT_ACTIONS intentAction, Intent intent, MainService service, ProxyServerIntend ProxyService) {
-
+    private void processServiceActions(INTENT_ACTIONS intentAction, Intent intent, MainService service, AndroidProxyServer ProxyService) {
         switch (intentAction) {
-
             case ACTION_BEZIRK_REGISTER:
                 ProxyService.registerService(intent);
                 break;
@@ -148,16 +146,13 @@ public final class ActionProcessor {
             case ACTION_BEZIRK_UNSUBSCRIBE:
                 ProxyService.unsubscribeService(intent);
                 break;
-            case ACTION_PIPE_REQUEST:
-                service.processPipeRequest(intent);
-                break;
             default:
                 logger.warn("Received unknown intent action: " + intentAction.message);
                 break;
         }
     }
 
-    private void processSendActions(INTENT_ACTIONS intentAction, Intent intent, ProxyServerIntend ProxyService) {
+    private void processSendActions(INTENT_ACTIONS intentAction, Intent intent, AndroidProxyServer ProxyService) {
 
         switch (intentAction) {
             case ACTION_SERVICE_SEND_MULTICAST_EVENT:
@@ -168,9 +163,6 @@ public final class ActionProcessor {
                 break;
             case ACTION_BEZIRK_PUSH_UNICAST_STREAM:
                 ProxyService.sendUnicastStream(intent);
-                break;
-            case ACTION_BEZIRK_PUSH_MULTICAST_STREAM:
-                ProxyService.sendMulticastStream(intent);
                 break;
             default:
                 logger.warn("Received unknown intent action: " + intentAction.message);
@@ -212,7 +204,6 @@ public final class ActionProcessor {
         /**
          * SEND Actions
          */
-        ACTION_BEZIRK_PUSH_MULTICAST_STREAM("MULTICAST_STREAM", ACTION_TYPE.SEND_ACTION),
         ACTION_SERVICE_SEND_MULTICAST_EVENT("MULTICAST_EVENT", ACTION_TYPE.SEND_ACTION),
         ACTION_SERVICE_SEND_UNICAST_EVENT("UNICAST_EVENT", ACTION_TYPE.SEND_ACTION),
         ACTION_BEZIRK_PUSH_UNICAST_STREAM("UNICAST_STREAM", ACTION_TYPE.SEND_ACTION),
@@ -221,9 +212,7 @@ public final class ActionProcessor {
          * SERVICE Actions
          */
         ACTION_BEZIRK_REGISTER("REGISTER", ACTION_TYPE.SERVICE_ACTION),
-        ACTION_SERVICE_DISCOVER("DISCOVER", ACTION_TYPE.SERVICE_ACTION),
         ACTION_BEZIRK_UNSUBSCRIBE("UNSUBSCRIBE", ACTION_TYPE.SERVICE_ACTION),
-        ACTION_PIPE_REQUEST("PIPE_REQUEST", ACTION_TYPE.SERVICE_ACTION),
         ACTION_BEZIRK_SUBSCRIBE("SUBSCRIBE", ACTION_TYPE.SERVICE_ACTION),
         ACTION_BEZIRK_SETLOCATION("LOCATION", ACTION_TYPE.SERVICE_ACTION),
 

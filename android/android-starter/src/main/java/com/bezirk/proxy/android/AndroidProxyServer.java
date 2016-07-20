@@ -19,16 +19,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-/**
- * This is android specific proxy server based on android intend communication
- */
-public class ProxyServerIntend extends ProxyServer {
-
-    private static final Logger logger = LoggerFactory.getLogger(ProxyServerIntend.class);
+public class AndroidProxyServer extends ProxyServer {
+    private static final Logger logger = LoggerFactory.getLogger(AndroidProxyServer.class);
 
     MessageHandler messageHandler;
 
-    public ProxyServerIntend() {
+    public AndroidProxyServer() {
 
         super();
     }
@@ -56,7 +52,6 @@ public class ProxyServerIntend extends ProxyServer {
             final SubscribedRole subscribedRole = gson.fromJson(protocolRoleAsString, SubscribedRole.class);
             if (ValidatorUtility.checkBezirkZirkId(serviceId) && ValidatorUtility.checkProtocolRole(subscribedRole)) {
                 super.subscribeService(serviceId, subscribedRole);
-
             } else {
                 logger.error("trying to subscribe with Null zirkId/ protocolRole");
             }

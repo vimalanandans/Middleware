@@ -1,12 +1,4 @@
-/*
- * @author: Marcelo Cataldo (CR/RTC3-NA)
- *
- * @description: This class implements Android-specific Bezirk Proxy.
- *
- */
-
 package com.bezirk.proxy;
-
 
 import com.bezirk.pubsubbroker.PubSubBrokerServiceTrigger;
 import com.bezirk.middleware.addressing.RecipientSelector;
@@ -41,8 +33,6 @@ public class ProxyServer {
 
     public void sendMulticastEvent(final ZirkId serviceId, final RecipientSelector recipientSelector, final String serializedEventMsg, final String topic) {
         pubSubBrokerService.sendMulticastEvent(serviceId, recipientSelector, serializedEventMsg, topic);
-
-
     }
 
 
@@ -62,20 +52,20 @@ public class ProxyServer {
     }
 
 
-    public void setLocation(final ZirkId serviceId, final Location location) {
-        pubSubBrokerService.setLocation(serviceId, location);
+    public void setLocation(final ZirkId zirkId, final Location location) {
+        pubSubBrokerService.setLocation(zirkId, location);
     }
 
 
-    public boolean unsubscribe(final ZirkId serviceId, final SubscribedRole role) {
+    public boolean unsubscribe(final ZirkId zirkId, final SubscribedRole role) {
 
-        return pubSubBrokerService.unsubscribe(serviceId, role);
+        return pubSubBrokerService.unsubscribe(zirkId, role);
     }
 
 
-    public boolean unregister(ZirkId serviceId) {
+    public boolean unregister(ZirkId zirkId) {
 
-        return pubSubBrokerService.unregisterService(serviceId);
+        return pubSubBrokerService.unregisterService(zirkId);
     }
 
     public void setPubSubBrokerService(PubSubBrokerServiceTrigger pubSubBrokerService) {
