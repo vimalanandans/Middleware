@@ -14,7 +14,7 @@ import java.util.Set;
  * reply the discovery request.
  */
 public interface DiscoveredZirk {
-    public boolean equals(Object obj);
+    boolean equals(Object obj);
 
     /**
      * An endpoint that can be used to unicast to a Zirk discovered by
@@ -22,14 +22,14 @@ public interface DiscoveredZirk {
      *
      * @return the endpoint of the subscribing Zirk
      */
-    public ZirkEndPoint getZirkEndPoint();
+    ZirkEndPoint getZirkEndPoint();
 
     /**
      * The name of the Zirk subscribed to the targeted role.
      *
      * @return the name of the subscribing Zirk
      */
-    public String getZirkName();
+    String getZirkName();
 
     /**
      * Get the <code>ProtocolRole</code> that was searched for using the
@@ -38,12 +38,12 @@ public interface DiscoveredZirk {
      *
      * @return the <code>ProtocolRole</code> that was searched for to discover the Zirk
      */
-    public ProtocolRole getProtocolRole();
+    ProtocolRole getProtocolRole();
 
     /**
      * The semantic address of the Zirk subscribed to the targeted role
      *
      * @return the semantic address of the subscribing Zirk
      */
-    public Location getLocation();
+    Location getLocation();
 }

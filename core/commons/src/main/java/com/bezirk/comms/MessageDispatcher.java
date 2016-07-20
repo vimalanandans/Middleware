@@ -14,7 +14,7 @@ public interface MessageDispatcher {
     /**
      * register control Message receivers
      */
-    public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
+    boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
 
     // currently sadl consumes all the zirk message. hence no registration
     // if needed extend similar mechanism to control message dispatching
@@ -23,17 +23,17 @@ public interface MessageDispatcher {
     /**
      * dispatch the control message
      */
-    public boolean dispatchServiceMessages(EventLedger eLedger);
+    boolean dispatchServiceMessages(EventLedger eLedger);
 
     /**
      * dispatch the control message using ledger
      */
-    public boolean dispatchControlMessages(ControlLedger tcMessage);
+    boolean dispatchControlMessages(ControlLedger tcMessage);
 
     /**
      * dispatch the control message using ControlMessage and msg
      */
-    public boolean dispatchControlMessages(ControlMessage ctrlMsg, String msg);
+    boolean dispatchControlMessages(ControlMessage ctrlMsg, String msg);
 
 
 }

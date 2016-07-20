@@ -17,7 +17,7 @@ public interface DeviceInterface {
      * @return true : if the name was changed successfully
      * false: otherwise
      */
-    public boolean setDeviceName(String deviceName);
+    boolean setDeviceName(String deviceName);
 
 
     /**
@@ -26,7 +26,7 @@ public interface DeviceInterface {
      * @return device name of the device
      * null if the device name is not configured
      */
-    public String getDeviceName();
+    String getDeviceName();
 
 
     /**
@@ -36,7 +36,7 @@ public interface DeviceInterface {
      * @return true: if the location was set successfully
      * false: otherwise
      */
-    public boolean setDeviceLocation(Location loc);
+    boolean setDeviceLocation(Location loc);
 
     /**
      * Provides the location of the device
@@ -44,11 +44,11 @@ public interface DeviceInterface {
      * @return location of the device
      * null if the device location is not configured
      */
-    public Location getDeviceLocation();
+    Location getDeviceLocation();
 
-    public boolean setDeviceType(String deviceType);
+    boolean setDeviceType(String deviceType);
 
-    public String getDeviceType();
+    String getDeviceType();
 
     /**
      * Provides the unique ID of the device
@@ -56,5 +56,5 @@ public interface DeviceInterface {
      * @return device id of the device
      * null if the device id is not configured
      */
-    public String getDeviceId();
+    String getDeviceId();
 }

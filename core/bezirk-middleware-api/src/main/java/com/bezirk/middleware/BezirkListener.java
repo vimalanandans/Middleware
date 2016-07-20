@@ -52,7 +52,7 @@ public interface BezirkListener {
      *               of the event if you need to cast it to access custom class members.
      * @param sender the Zirk that sent the event
      */
-    public void receiveEvent(String topic, Event event, ZirkEndPoint sender);
+    void receiveEvent(String topic, Event event, ZirkEndPoint sender);
 
     /**
      * Called by the Bezirk middleware when a <code>streamDescriptor</code> arrives whose topic the Zirk
@@ -71,8 +71,8 @@ public interface BezirkListener {
      * @param inputStream input streamDescriptor containing the received data
      * @param sender      the Zirk that sent the streamDescriptor
      */
-    public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream,
-                              ZirkEndPoint sender);
+    void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream,
+                       ZirkEndPoint sender);
 
     /**
      * Called by the Bezirk middleware when a <code>streamDescriptor</code> arrives whose topic the Zirk
@@ -91,8 +91,8 @@ public interface BezirkListener {
      * @param file     the received file
      * @param sender   the Zirk that sent the streamDescriptor
      */
-    public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file,
-                              ZirkEndPoint sender);
+    void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file,
+                       ZirkEndPoint sender);
 
     /**
      * Called by the Bezirk middleware if something unexpected happens to the stream referred to
@@ -102,19 +102,19 @@ public interface BezirkListener {
      *                 or received in {@link #receiveStream(String, StreamDescriptor, short, InputStream, ZirkEndPoint)}
      * @param status   the status of the stream referenced by <code>streamId</code>
      */
-    public void streamStatus(short streamId, StreamStates status);
+    void streamStatus(short streamId, StreamStates status);
 
     /**
      * Unexpected states a stream can be in.
      */
-    public enum StreamStates {
+    enum StreamStates {
         LOST_CONNECTION, END_OF_DATA
     }
 
     /**
      * Unexpected states a pipe can be in.
      */
-    public enum PipeStates {
+    enum PipeStates {
         LOST_CONNECTION
     }
 }

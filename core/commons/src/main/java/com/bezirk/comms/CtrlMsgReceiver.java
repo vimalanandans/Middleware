@@ -6,5 +6,5 @@ import com.bezirk.control.messages.ControlMessage;
 // registers the respective control message Discriminator type
 public interface CtrlMsgReceiver {
     // interface to process control message.
-    public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg);
+    boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg);
 }

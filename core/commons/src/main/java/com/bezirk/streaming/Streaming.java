@@ -16,27 +16,27 @@ public interface Streaming {
     /**
      * Initialize the streaming queue, streaming thread,stream store and register the receivers with the message dispatcher.
      */
-    public boolean initStreams(Comms comms);
+    boolean initStreams(Comms comms);
 
     /**
      * Start the streaming thread
      */
-    public boolean startStreams();
+    boolean startStreams();
 
     /**
      * Interrupt the streaming thread
      */
-    public boolean endStreams();
+    boolean endStreams();
 
     /**
      * send the stream message based on unique key
      */
-    public boolean sendStream(final String uniqueKey);
+    boolean sendStream(final String uniqueKey);
 
     /**
      * send the stream message
      */
-    public boolean sendStreamMessage(final Ledger message);
+    boolean sendStreamMessage(final Ledger message);
 
     /**
      * Retrieve the portfactory instance
@@ -46,10 +46,10 @@ public interface Streaming {
     /**
      * Registers the stream record with stream store
      */
-    public boolean registerStreamBook(final String key, final StreamRecord sRecord);
+    boolean registerStreamBook(final String key, final StreamRecord sRecord);
 
     /**
      * Set the sphere for sadl
      */
-    public void setSphereForSadl(SphereSecurity sphereSecurity);
+    void setSphereForSadl(SphereSecurity sphereSecurity);
 }

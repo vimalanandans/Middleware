@@ -12,5 +12,5 @@ import java.util.Set;
  */
 public interface SphereDiscovery {
 
-    public void processDiscoveredSphereInfo(Set<BezirkSphereInfo> discoveredSphereInfoSet, String sphereId);
+    void processDiscoveredSphereInfo(Set<BezirkSphereInfo> discoveredSphereInfoSet, String sphereId);
 }

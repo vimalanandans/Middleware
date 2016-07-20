@@ -35,7 +35,7 @@ public interface Bezirk {
      * subscriptions as if {@link #unsubscribe(ProtocolRole)} were called with <code>null</code> as
      * the <code>ProtocolRole</code>.
      */
-    public void unregisterZirk();
+    void unregisterZirk();
 
     /**
      * Register a Zirk <code>listener</code> to receive all events and streams whose topics are
@@ -47,7 +47,7 @@ public interface Bezirk {
      *                     Zirk should receive all messages whose topic is defined in this role
      * @param listener     recipient of notifications issued from the Bezirk middleware when events
      */
-    public void subscribe(ProtocolRole protocolRole, BezirkListener listener);
+    void subscribe(ProtocolRole protocolRole, BezirkListener listener);
 
     /**
      * Unsubscribe a Zirk from a particular role. This method undoes the effects of
@@ -61,7 +61,7 @@ public interface Bezirk {
      * @return <code>true</code> if <code>subscriber</code> was unsubscribed from at least one
      * role as a result of this method call
      */
-    public boolean unsubscribe(ProtocolRole protocolRole);
+    boolean unsubscribe(ProtocolRole protocolRole);
 
     /**
      * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event's topic.
@@ -69,7 +69,7 @@ public interface Bezirk {
      * @param event the <code>Event</code> being sent
      * @see BezirkListener#receiveEvent(String, Event, ZirkEndPoint)
      */
-    public void sendEvent(Event event);
+    void sendEvent(Event event);
 
     /**
      * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event's topic.
@@ -80,7 +80,7 @@ public interface Bezirk {
      * @param event     the <code>Event</code> being sent
      * @see BezirkListener#receiveEvent(String, Event, ZirkEndPoint)
      */
-    public void sendEvent(RecipientSelector recipient, Event event);
+    void sendEvent(RecipientSelector recipient, Event event);
 
     /**
      * Publish an event with one specific recipient.
@@ -89,7 +89,7 @@ public interface Bezirk {
      * @param event     the <code>Event</code> being sent
      * @see BezirkListener#receiveEvent(String, Event, ZirkEndPoint)
      */
-    public void sendEvent(ZirkEndPoint recipient, Event event);
+    void sendEvent(ZirkEndPoint recipient, Event event);
 
     /**
      * Publish a {@link StreamDescriptor} with one specific recipient. The
@@ -108,8 +108,8 @@ public interface Bezirk {
      * @see BezirkListener#receiveStream(String, StreamDescriptor, short, java.io.InputStream, ZirkEndPoint)
      * @see BezirkListener#receiveStream(String, StreamDescriptor, short, File, ZirkEndPoint)
      */
-    public short sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor,
-                            PipedOutputStream dataStream);
+    short sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor,
+                     PipedOutputStream dataStream);
 
     /**
      * Publish a file with one specific recipient. This method is identical to
@@ -125,7 +125,7 @@ public interface Bezirk {
      * @see BezirkListener#receiveStream(String, StreamDescriptor, short, java.io.InputStream, ZirkEndPoint)
      * @see BezirkListener#receiveStream(String, StreamDescriptor, short, File, ZirkEndPoint)
      */
-    public short sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file);
+    short sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file);
 
     /**
      * Inform the Bezirk middleware of the Zirk's {@link com.bezirk.middleware.addressing.Location}.
@@ -136,5 +136,5 @@ public interface Bezirk {
      *
      * @param location the physical location of the Thing <code>Zirk</code> controls
      */
-    public void setLocation(Location location);
+    void setLocation(Location location);
 }

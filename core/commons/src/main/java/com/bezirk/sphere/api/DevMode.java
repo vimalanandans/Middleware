@@ -7,9 +7,9 @@ package com.bezirk.sphere.api;
  * @author rishabh
  */
 public interface DevMode {
-    public boolean switchMode(Mode mode);
+    boolean switchMode(Mode mode);
 
-    public Mode getStatus();
+    Mode getStatus();
 
-    public enum Mode {ON, OFF}
+    enum Mode {ON, OFF}
 }

@@ -18,7 +18,7 @@ public interface PubSubBrokerControlReceiver {
      * @param serviceId   - ZirkId of the Zirk
      * @return true if registered, false otherwise.
      */
-    public Boolean isStreamTopicRegistered(final String streamTopic, final ZirkId serviceId);
+    Boolean isStreamTopicRegistered(final String streamTopic, final ZirkId serviceId);
 
     /**
      * Returns the Location of the Zirk.
@@ -26,5 +26,5 @@ public interface PubSubBrokerControlReceiver {
      * @param serviceId ZirkId of the Zirk whose location needs to be known
      * @return Location if exists, null if the zirk is not registered
      */
-    public Location getLocationForService(final ZirkId serviceId);
+    Location getLocationForService(final ZirkId serviceId);
 }

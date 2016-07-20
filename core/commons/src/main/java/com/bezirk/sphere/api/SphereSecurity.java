@@ -25,7 +25,7 @@ public interface SphereSecurity {
      * sphereKey associated with it 2. <code>serializedContent</code> is not <code>null</code>,
      * <code>null</code> otherwise
      */
-    public byte[] encryptSphereContent(String sphereId, String serializedContent);
+    byte[] encryptSphereContent(String sphereId, String serializedContent);
 
     /**
      * Decrypts the serializedContent with sphereKey associated with the
@@ -38,7 +38,7 @@ public interface SphereSecurity {
      * <code>null</code> and has a sphereKey associated with it 2. <code>serializedContent</code>
      * is not <code>null</code>, <code>null</code> otherwise
      */
-    public String decryptSphereContent(String sphereId, byte[] serializedContent);
+    String decryptSphereContent(String sphereId, byte[] serializedContent);
 
     /**
      * Encrypts a stream into another stream. This method does NOT flush or close either stream
@@ -67,7 +67,7 @@ public interface SphereSecurity {
      * @param sphereId sphereId of the sphere for which input stream needs to be
      *                 encrypted
      */
-    public void encryptSphereContent(InputStream in, OutputStream out, String sphereId);
+    void encryptSphereContent(InputStream in, OutputStream out, String sphereId);
 
     /**
      * Decrypts a stream into another stream
@@ -96,5 +96,5 @@ public interface SphereSecurity {
      *                   }}
      *                            </pre>
      */
-    public void decryptSphereContent(InputStream in, OutputStream out, String sphereId);
+    void decryptSphereContent(InputStream in, OutputStream out, String sphereId);
 }
