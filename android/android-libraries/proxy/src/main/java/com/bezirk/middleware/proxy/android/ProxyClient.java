@@ -9,15 +9,15 @@ import android.util.Log;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -29,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public final class ProxyClient implements Bezirk {
+    public static final String ACTION_BEZIRK_REGISTER = "REGISTER";
     static final int TIME_DURATION = 15000;
     static final int MAX_MAP_SIZE = 50;
     static final ConcurrentMap<String, List<BezirkListener>> eventListenerMap = new ConcurrentHashMap<String, List<BezirkListener>>();
@@ -38,7 +39,6 @@ public final class ProxyClient implements Bezirk {
     static final ConcurrentMap<String, Long> duplicateStreamMap = new ConcurrentHashMap<String, Long>();
     //Pipe Listener Map -- pipeId : listener
     static final ConcurrentMap<String, BezirkListener> pipeListenerMap = new ConcurrentHashMap<String, BezirkListener>();
-    public static final String ACTION_BEZIRK_REGISTER = "REGISTER";
     private static final String ACTION_SERVICE_SEND_MULTICAST_EVENT = "MULTICAST_EVENT";
     private static final String ACTION_SERVICE_SEND_UNICAST_EVENT = "UNICAST_EVENT";
     private static final String ACTION_BEZIRK_SUBSCRIBE = "SUBSCRIBE";
@@ -49,10 +49,10 @@ public final class ProxyClient implements Bezirk {
     private static final String COMPONENT_NAME = "com.bezirk.controlui";
     private static final String SERVICE_PKG_NAME = "com.bezirk.starter.MainService";
     private static final ProxyClientHelper PROXY_CLIENT_HELPER = new ProxyClientHelper();
+    private static final String TAG = ProxyClient.class.getSimpleName();
     static Context context;
     static BezirkListener DiscoveryListener;
     static int discoveryCount; // keep track of Discovery Id
-    private static final String TAG = ProxyClient.class.getSimpleName();
     private short streamFactory;
 
     private ZirkId zirkId;
@@ -148,7 +148,8 @@ public final class ProxyClient implements Bezirk {
     }
 
     private void isRequestValid(ZirkId subscriber, ProtocolRole pRole, BezirkListener listener) {
-        if (!StringValidatorUtil.areValidStrings(pRole.getRoleName()) || null == listener || null == subscriber) {
+        if (pRole.getRoleName() == null || pRole.getRoleName().isEmpty() || null == listener ||
+                null == subscriber) {
             throw new IllegalArgumentException("Check for ProtocolRole/ BezirkListener/ZirkId for null or empty values");
         }
 

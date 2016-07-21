@@ -13,18 +13,18 @@ public class ProxyClientHelper {
     static final String TAG = ProxyClientHelper.class.getSimpleName();
 
     void addTopicsToMap(String[] topics, Map<String, List<BezirkListener>> listenerMap, BezirkListener listener, String type) {
-        if (StringValidatorUtil.areValidStrings(topics)) {
-            for (String topic : topics) {
-                if (listenerMap.containsKey(topic)) {
-                    addListener(listenerMap, listener, type, topic);
-                } else {
-                    List<BezirkListener> regServiceList = new ArrayList<BezirkListener>();
-                    regServiceList.add(listener);
-                    listenerMap.put(topic, regServiceList);
-                }
+        for (String topic : topics) {
+            if (topic == null || topic.isEmpty()) {
+                continue;
             }
-        } else {
-            Log.i(TAG, "No " + type + " to Subscribe");
+
+            if (listenerMap.containsKey(topic)) {
+                addListener(listenerMap, listener, type, topic);
+            } else {
+                List<BezirkListener> regServiceList = new ArrayList<BezirkListener>();
+                regServiceList.add(listener);
+                listenerMap.put(topic, regServiceList);
+            }
         }
     }
 
