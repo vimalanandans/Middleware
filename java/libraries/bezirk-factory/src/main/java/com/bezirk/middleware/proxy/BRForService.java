@@ -25,8 +25,8 @@ public class BRForService implements BroadcastReceiver {
 
     private static final int TIME_DURATION = 15000;
     private static final int MAX_MAP_SIZE = 50;
-    private static final LinkedHashMap<String, Long> duplicateMsgMap = new LinkedHashMap<String, Long>();
-    private static final LinkedHashMap<String, Long> duplicateStreamMap = new LinkedHashMap<String, Long>();
+    private static final LinkedHashMap<String, Long> duplicateMsgMap = new LinkedHashMap<>();
+    private static final LinkedHashMap<String, Long> duplicateStreamMap = new LinkedHashMap<>();
     private final HashMap<String, String> activeStreams;
     private final HashMap<String, HashSet<BezirkListener>> eventListenerMap;
     private final HashMap<ZirkId, HashSet<BezirkListener>> sidMap;
@@ -85,18 +85,18 @@ public class BRForService implements BroadcastReceiver {
      * @param eCallbackMessage
      */
     private void handleEventCallback(EventIncomingMessage eCallbackMessage) {
-        logger.debug("About to callback sid:" + eCallbackMessage.getRecipient().getZirkId() + " for id:" + eCallbackMessage.msgId);
+        logger.debug("About to callback sid:" + eCallbackMessage.getRecipient().getZirkId() + " for id:" + eCallbackMessage.getMsgId());
         //Make a combined sid for sender and recipient
-        String combinedSid = eCallbackMessage.senderEndPoint.zirkId.getZirkId() + ":" + eCallbackMessage.getRecipient().getZirkId();
-        if (checkDuplicateMsg(combinedSid, eCallbackMessage.msgId)) {
+        String combinedSid = eCallbackMessage.getSenderEndPoint().zirkId.getZirkId() + ":" + eCallbackMessage.getRecipient().getZirkId();
+        if (checkDuplicateMsg(combinedSid, eCallbackMessage.getMsgId())) {
             HashSet<BezirkListener> tempListenersSidMap = sidMap.get(eCallbackMessage.getRecipient());
-            HashSet<BezirkListener> tempListenersTopicsMap = eventListenerMap.get(eCallbackMessage.eventTopic);
+            HashSet<BezirkListener> tempListenersTopicsMap = eventListenerMap.get(eCallbackMessage.getEventTopic());
             if (null != tempListenersSidMap && null != tempListenersTopicsMap) {
                 for (BezirkListener invokingListener : tempListenersSidMap) {
                     if (tempListenersTopicsMap.contains(invokingListener)) {
-                        Event event = Message.fromJson(eCallbackMessage.serializedEvent, Event.class);
-                        invokingListener.receiveEvent(eCallbackMessage.eventTopic,
-                                event, eCallbackMessage.senderEndPoint);
+                        Event event = Message.fromJson(eCallbackMessage.getSerializedEvent(), Event.class);
+                        invokingListener.receiveEvent(eCallbackMessage.getEventTopic(),
+                                event, eCallbackMessage.getSenderEndPoint());
                     }
                 }
             }
@@ -111,12 +111,12 @@ public class BRForService implements BroadcastReceiver {
      * @param strmMsg streamMessage that will be given back to the services.
      */
     private void handlerStreamUnicastCallback(StreamIncomingMessage strmMsg) {
-        if (checkDuplicateStream(strmMsg.sender.zirkId.getZirkId(), strmMsg.localStreamId)) {
-            if (streamListenerMap.containsKey(strmMsg.streamTopic)) {
-                for (BezirkListener listener : streamListenerMap.get(strmMsg.streamTopic)) {
-                    StreamDescriptor streamDescriptor = Message.fromJson(strmMsg.serializedStream, StreamDescriptor.class);
-                    listener.receiveStream(strmMsg.streamTopic, streamDescriptor, strmMsg.localStreamId,
-                            strmMsg.file, strmMsg.sender);
+        if (checkDuplicateStream(strmMsg.getSender().zirkId.getZirkId(), strmMsg.getLocalStreamId())) {
+            if (streamListenerMap.containsKey(strmMsg.getStreamTopic())) {
+                for (BezirkListener listener : streamListenerMap.get(strmMsg.getStreamTopic())) {
+                    StreamDescriptor streamDescriptor = Message.fromJson(strmMsg.getSerializedStream(), StreamDescriptor.class);
+                    listener.receiveStream(strmMsg.getStreamTopic(), streamDescriptor, strmMsg.getLocalStreamId(),
+                            strmMsg.getFile(), strmMsg.getSender());
                 }
             } else {
                 logger.error("StreamListenerMap does not have a mapped StreamDescriptor");
@@ -133,14 +133,14 @@ public class BRForService implements BroadcastReceiver {
      * @param streamStatusCallbackMessage StreamStatusCallback that will be invoked for the services.
      */
     private void handleStreamStatusCallback(StreamStatusMessage streamStatusCallbackMessage) {
-        String activeStreamKey = streamStatusCallbackMessage.getRecipient().getZirkId() + streamStatusCallbackMessage.streamId;
+        String activeStreamKey = streamStatusCallbackMessage.getRecipient().getZirkId() + streamStatusCallbackMessage.getStreamId();
         if (activeStreams.containsKey(activeStreamKey)) {
             HashSet<BezirkListener> tempHashSet = streamListenerMap.get(activeStreams.get(activeStreamKey));
             if (tempHashSet != null && !tempHashSet.isEmpty()) {
                 for (BezirkListener listener : tempHashSet) {
                     listener.streamStatus(
-                            streamStatusCallbackMessage.streamId,
-                            ((1 == streamStatusCallbackMessage.streamStatus) ? BezirkListener.StreamStates.END_OF_DATA
+                            streamStatusCallbackMessage.getStreamId(),
+                            ((1 == streamStatusCallbackMessage.getStreamStatus()) ? BezirkListener.StreamStates.END_OF_DATA
                                     : BezirkListener.StreamStates.LOST_CONNECTION));
                 }
             }

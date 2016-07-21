@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 public class IntentMessageReceiver extends BroadcastReceiver {
     private final String TAG = IntentMessageReceiver.class.getSimpleName();
@@ -28,8 +27,8 @@ public class IntentMessageReceiver extends BroadcastReceiver {
     private static final int TIME_DURATION = 15000;
     private static final int MAX_MAP_SIZE = 50;
 
-    private static final ConcurrentMap<String, Long> duplicateMsgMap = new ConcurrentHashMap<>();
-    private static final ConcurrentMap<String, Long> duplicateStreamMap = new ConcurrentHashMap<>();
+    private static final Map<String, Long> duplicateMsgMap = new ConcurrentHashMap<>();
+    private static final Map<String, Long> duplicateStreamMap = new ConcurrentHashMap<>();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -67,7 +66,6 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         Log.d(TAG, "receivedServiceId" + receivedServiceId);
 
         if (null == ProxyClient.context) {
-            // TODO - Check with Joao if the application has to be launched!
             Log.e(TAG, "Application is not started");
             return false;
         }

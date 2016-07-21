@@ -9,36 +9,37 @@ import com.bezirk.proxy.api.impl.ZirkId;
  * required for ProxyForBezirk to give the callback.
  */
 public final class EventIncomingMessage extends ServiceIncomingMessage {
-
-    /**
-     * BezirkZirkEndPoint of the the recipient.
-     */
-    public BezirkZirkEndPoint senderEndPoint;
-    /**
-     * Serialized Topic
-     */
-    public String serializedEvent;
-    /**
-     * Name of the Event topic
-     */
-    public String eventTopic;
+    private final BezirkZirkEndPoint senderEndPoint;
+    private final String serializedEvent;
+    private final String eventTopic;
     /**
      * unique msg id for each event. This is useful to avoid duplicates at ProxyForBezirk side when
      * a zirk is residing in multiple spheres.
      */
-    public String msgId;
-
-    public EventIncomingMessage() {
-        callbackDiscriminator = "EVENT";
-    }
+    private final String msgId;
 
     public EventIncomingMessage(ZirkId recipientId, BezirkZirkEndPoint senderEndPoint, String serializedEvent, String eventTopic, String msgId) {
-        super();
-        callbackDiscriminator = "EVENT";
-        recipient = recipientId;
+        super("EVENT", recipientId);
+
         this.senderEndPoint = senderEndPoint;
         this.serializedEvent = serializedEvent;
         this.eventTopic = eventTopic;
         this.msgId = msgId;
+    }
+
+    public BezirkZirkEndPoint getSenderEndPoint() {
+        return senderEndPoint;
+    }
+
+    public String getSerializedEvent() {
+        return serializedEvent;
+    }
+
+    public String getEventTopic() {
+        return eventTopic;
+    }
+
+    public String getMsgId() {
+        return msgId;
     }
 }

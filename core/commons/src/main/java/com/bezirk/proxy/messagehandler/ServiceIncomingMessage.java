@@ -3,12 +3,14 @@ package com.bezirk.proxy.messagehandler;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
 
-/**
- * Base class of the Callback messages used in Bezirk.
- */
 public class ServiceIncomingMessage {
-    public String callbackDiscriminator = null;
-    protected ZirkId recipient;
+    private final String callbackDiscriminator;
+    private final ZirkId recipient;
+
+    public ServiceIncomingMessage(String callbackDiscriminator, ZirkId recipient) {
+        this.callbackDiscriminator = callbackDiscriminator;
+        this.recipient = recipient;
+    }
 
     /**
      * @param json The Json String that is to be deserialized

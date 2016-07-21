@@ -27,28 +27,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 public final class ProxyClient implements Bezirk {
     private static final String TAG = ProxyClient.class.getSimpleName();
 
-    static final ConcurrentMap<String, List<BezirkListener>> eventListenerMap = new ConcurrentHashMap<>();
-    static final ConcurrentMap<String, List<BezirkListener>> streamListenerMap = new ConcurrentHashMap<>();
-    static final ConcurrentMap<Short, String> activeStreams = new ConcurrentHashMap<>();
+    static final Map<String, List<BezirkListener>> eventListenerMap = new ConcurrentHashMap<>();
+    static final Map<String, List<BezirkListener>> streamListenerMap = new ConcurrentHashMap<>();
+    static final Map<Short, String> activeStreams = new ConcurrentHashMap<>();
 
-    public static final String ACTION_BEZIRK_REGISTER = "REGISTER";
+    private static final String COMPONENT_NAME = "com.bezirk.controlui";
+    private static final String SERVICE_PKG_NAME = "com.bezirk.starter.MainService";
+    private static final ComponentName RECEIVING_COMPONENT = new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME);
+
+    private static final String ACTION_BEZIRK_REGISTER = "REGISTER";
     private static final String ACTION_SERVICE_SEND_MULTICAST_EVENT = "MULTICAST_EVENT";
     private static final String ACTION_SERVICE_SEND_UNICAST_EVENT = "UNICAST_EVENT";
     private static final String ACTION_BEZIRK_SUBSCRIBE = "SUBSCRIBE";
     private static final String ACTION_BEZIRK_UNSUBSCRIBE = "UNSUBSCRIBE";
     private static final String ACTION_BEZIRK_SETLOCATION = "LOCATION";
     private static final String ACTION_BEZIRK_PUSH_UNICAST_STREAM = "UNICAST_STREAM";
-    private static final String COMPONENT_NAME = "com.bezirk.controlui";
-    private static final String SERVICE_PKG_NAME = "com.bezirk.starter.MainService";
+
     static Context context;
+    private static final Gson gson = new Gson();
     private short streamFactory;
 
-    private ZirkId zirkId;
+    private final ZirkId zirkId;
 
     public ProxyClient(Context context, ZirkId zirkId) {
         ProxyClient.context = context;
@@ -56,36 +59,29 @@ public final class ProxyClient implements Bezirk {
     }
 
     public static ZirkId registerZirk(Context context, final String zirkName) {
-        Log.i(TAG, "RegisteringService: " + zirkName);
+        Log.d(TAG, "RegisteringService: " + zirkName);
         if (zirkName == null) {
             throw new IllegalArgumentException("Cannot register a Zirk with a null name");
         }
 
-        // TODO: if the zirk id is uninstalled then owner device shows cached and new one.
-
         final SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(context);
         String zirkIdAsString = shrdPref.getString(zirkName, null);
         if (null == zirkIdAsString) {
-            // UUID for zirk id
             zirkIdAsString = UUID.randomUUID().toString();
+            Log.d(TAG, "ZirkId-> " + zirkIdAsString);
 
             SharedPreferences.Editor editor = shrdPref.edit();
             editor.putString(zirkName, zirkIdAsString);
             editor.commit();
         }
 
-        ZirkId zirkId = new ZirkId(zirkIdAsString);
-        Log.d(TAG, "ZirkId-> " + zirkIdAsString); // Remove this line
-        // Send the Intent to the BezirkStack
-        String serviceIdKEY = "zirkId";
-        String serviceNameKEY = "serviceName";
-        Intent registerIntent = new Intent();
+        final ZirkId zirkId = new ZirkId(zirkIdAsString);
 
-        ComponentName componentName = new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME);
-        registerIntent.setComponent(componentName);
+        final Intent registerIntent = new Intent();
+        registerIntent.setComponent(RECEIVING_COMPONENT);
         registerIntent.setAction(ACTION_BEZIRK_REGISTER);
-        registerIntent.putExtra(serviceIdKEY, new Gson().toJson(zirkId));
-        registerIntent.putExtra(serviceNameKEY, zirkName);
+        registerIntent.putExtra("zirkId", gson.toJson(zirkId));
+        registerIntent.putExtra("serviceName", zirkName);
 
         ComponentName retName = context.startService(registerIntent);
 
@@ -99,18 +95,15 @@ public final class ProxyClient implements Bezirk {
         return zirkId;
     }
 
-/* Old unregisterZirk method available in commit ID : 53012cbff5b00847b765ac59efc0c5b9cfb5cd33 */
-
-    //TODO: Test this implementation
     @Override
     public void unregisterZirk() {
-        Log.i(TAG, "Unregister request for serviceID: " + ((ZirkId) zirkId).getZirkId());
+        Log.i(TAG, "Unregister request for serviceID: " + zirkId.getZirkId());
 
         SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(context);
         Map<String, ?> keys = shrdPref.getAll();
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
             //find and delete the entry corresponding to this zirkId
-            if (entry.getValue().toString().equalsIgnoreCase(((ZirkId) zirkId).getZirkId())) {
+            if (entry.getValue().toString().equalsIgnoreCase(zirkId.getZirkId())) {
                 Log.i(TAG, "Unregistering zirk: " + entry.getKey());
                 SharedPreferences.Editor editor = shrdPref.edit();
                 editor.remove(entry.getKey());
@@ -130,9 +123,9 @@ public final class ProxyClient implements Bezirk {
             addTopicsToMap(protocolRole.getStreamTopics(), streamListenerMap, listener, "StreamDescriptor");
         // Send the intent
         Intent subscribeIntent = new Intent();
-        subscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
+        subscribeIntent.setComponent(RECEIVING_COMPONENT);
         subscribeIntent.setAction(ACTION_BEZIRK_SUBSCRIBE);
-        subscribeIntent.putExtra("zirkId", new Gson().toJson(zirkId));
+        subscribeIntent.putExtra("zirkId", gson.toJson(zirkId));
         SubscribedRole subRole = new SubscribedRole(protocolRole);
         subscribeIntent.putExtra("protocol", subRole.getSubscribedProtocolRole());
         ComponentName retName = context.startService(subscribeIntent);
@@ -151,7 +144,7 @@ public final class ProxyClient implements Bezirk {
             if (listenerMap.containsKey(topic)) {
                 addListener(listenerMap, listener, type, topic);
             } else {
-                List<BezirkListener> regServiceList = new ArrayList<BezirkListener>();
+                List<BezirkListener> regServiceList = new ArrayList<>();
                 regServiceList.add(listener);
                 listenerMap.put(topic, regServiceList);
             }
@@ -181,9 +174,9 @@ public final class ProxyClient implements Bezirk {
     @Override
     public boolean unsubscribe(final ProtocolRole protocolRole) {
         Intent unSubscribeIntent = new Intent();
-        unSubscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
+        unSubscribeIntent.setComponent(RECEIVING_COMPONENT);
         unSubscribeIntent.setAction(ACTION_BEZIRK_UNSUBSCRIBE);
-        unSubscribeIntent.putExtra("zirkId", new Gson().toJson(zirkId));
+        unSubscribeIntent.putExtra("zirkId", gson.toJson(zirkId));
         String pRoleAsString = (null == protocolRole) ? null : (new SubscribedRole(protocolRole).getSubscribedProtocolRole());
         unSubscribeIntent.putExtra("protocol", pRoleAsString);
 
@@ -214,10 +207,9 @@ public final class ProxyClient implements Bezirk {
         }
 
         Intent multicastEventIntent = new Intent();
-        multicastEventIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
+        multicastEventIntent.setComponent(RECEIVING_COMPONENT);
         multicastEventIntent.setAction(ACTION_SERVICE_SEND_MULTICAST_EVENT);
-        multicastEventIntent.putExtra("zirkId", new Gson().toJson(zirkId));
-
+        multicastEventIntent.putExtra("zirkId", gson.toJson(zirkId));
         multicastEventIntent.putExtra("address", recipient.toJson());
         multicastEventIntent.putExtra("multicastEvent", event.toJson());
         multicastEventIntent.putExtra("topic", event.topic);
@@ -240,10 +232,10 @@ public final class ProxyClient implements Bezirk {
         }
 
         Intent unicastEventIntent = new Intent();
-        unicastEventIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
+        unicastEventIntent.setComponent(RECEIVING_COMPONENT);
         unicastEventIntent.setAction(ACTION_SERVICE_SEND_UNICAST_EVENT);
-        unicastEventIntent.putExtra("zirkId", new Gson().toJson(zirkId));
-        unicastEventIntent.putExtra("receiverSep", new Gson().toJson(recipient));
+        unicastEventIntent.putExtra("zirkId", gson.toJson(zirkId));
+        unicastEventIntent.putExtra("receiverSep", gson.toJson(recipient));
         unicastEventIntent.putExtra("eventMsg", event.toJson());
         unicastEventIntent.putExtra("topic", event.topic);
         ComponentName retName = context.startService(unicastEventIntent);
@@ -259,10 +251,10 @@ public final class ProxyClient implements Bezirk {
         BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) recipient;
 
         final Intent multicastStreamIntent = new Intent();
-        multicastStreamIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
+        multicastStreamIntent.setComponent(RECEIVING_COMPONENT);
         multicastStreamIntent.setAction(ACTION_BEZIRK_PUSH_UNICAST_STREAM);
-        multicastStreamIntent.putExtra("zirkId", new Gson().toJson(zirkId));
-        multicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
+        multicastStreamIntent.putExtra("zirkId", gson.toJson(zirkId));
+        multicastStreamIntent.putExtra("receiverSEP", gson.toJson(recipientSEP));
         multicastStreamIntent.putExtra("streamDescriptor", streamDescriptor.toJson());
         multicastStreamIntent.putExtra("localStreamId", streamId);
         ComponentName retName = context.startService(multicastStreamIntent);
@@ -300,10 +292,10 @@ public final class ProxyClient implements Bezirk {
         BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) recipient;
 
         final Intent unicastStreamIntent = new Intent();
-        unicastStreamIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
+        unicastStreamIntent.setComponent(RECEIVING_COMPONENT);
         unicastStreamIntent.setAction(ACTION_BEZIRK_PUSH_UNICAST_STREAM);
-        unicastStreamIntent.putExtra("zirkId", new Gson().toJson(zirkId));
-        unicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
+        unicastStreamIntent.putExtra("zirkId", gson.toJson(zirkId));
+        unicastStreamIntent.putExtra("receiverSEP", gson.toJson(recipientSEP));
         unicastStreamIntent.putExtra("streamDescriptor", streamDescriptor.toJson());
         unicastStreamIntent.putExtra("filePath", file);
         unicastStreamIntent.putExtra("localStreamId", streamId);
@@ -323,10 +315,10 @@ public final class ProxyClient implements Bezirk {
         }
 
         Intent locationIntent = new Intent();
-        locationIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
+        locationIntent.setComponent(RECEIVING_COMPONENT);
         locationIntent.setAction(ACTION_BEZIRK_SETLOCATION);
-        locationIntent.putExtra("zirkId", new Gson().toJson(zirkId));
-        locationIntent.putExtra("locationData", new Gson().toJson(location));
+        locationIntent.putExtra("zirkId", gson.toJson(zirkId));
+        locationIntent.putExtra("locationData", gson.toJson(location));
         context.startService(locationIntent);
     }
 }
