@@ -4,7 +4,7 @@ import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -71,7 +71,7 @@ public class StreamDescriptorRequestTest {
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
 
-                        inetAddr = BezirkNetworkUtilities.getIpForInterface(intf);
+                        inetAddr = NetworkUtilities.getIpForInterface(intf);
                         return inetAddr;
                     }
 

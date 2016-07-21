@@ -2,7 +2,7 @@ package com.bezirk.starter;
 
 import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.util.ValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 import com.bezrik.network.IntfInetPair;
 
 import org.slf4j.Logger;
@@ -62,7 +62,7 @@ final class NetworkUtil {
         if (networkInterface == null) {
             logger.info("Configured interface {} could not be resolved. " +
                     "Trying to detect interface.", interfaceName);
-            final List<IntfInetPair> interfaces = BezirkNetworkUtilities
+            final List<IntfInetPair> interfaces = NetworkUtilities
                     .getIntfInetPair();
             final int numInf = interfaces.size();
 
@@ -117,7 +117,7 @@ final class NetworkUtil {
     private String promptUserForInterface(final BezirkConfig bezirkConfig) {
         String interfaceName;
         //if (bezirkConfig.isDisplayEnabled()) {
-        final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
+        final Iterator<IntfInetPair> itr = NetworkUtilities
                 .getIntfInetPair().iterator();
         final com.bezirk.ui.ethernetconfigui.EthernetConfigurationDialog ethConfigDialog = new com.bezirk.ui.ethernetconfigui.EthernetConfigurationDialog(
                 itr);
@@ -125,7 +125,7 @@ final class NetworkUtil {
         //}
         // If UI is not enabled, prompt user to enter interface via console
 //        else {
-//            for (IntfInetPair pair : BezirkNetworkUtilities.getIntfInetPair()) {
+//            for (IntfInetPair pair : NetworkUtilities.getIntfInetPair()) {
 //                logger.info("Found interface: " + pair.getIntf().getName()
 //                        + " IP:" + pair.getInet().getHostAddress());
 //            }
@@ -134,7 +134,7 @@ final class NetworkUtil {
 //                    intfScanner.next());
 //            interfaceName = tempInterfaceName.toString();
 //
-//            final Iterator<IntfInetPair> itr = BezirkNetworkUtilities
+//            final Iterator<IntfInetPair> itr = NetworkUtilities
 //                    .getIntfInetPair().iterator();
 //            while (itr.hasNext()) {
 //                final IntfInetPair pair = itr.next();

@@ -3,7 +3,7 @@ package com.bezirk.control.messages.streaming.rtc;
 import com.bezirk.control.messages.streaming.rtc.RTCControlMessage.RTCControlMessageType;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -69,7 +69,7 @@ public class RTCControlMessageTest {
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
 
-                        inetAddr = BezirkNetworkUtilities.getIpForInterface(intf);
+                        inetAddr = NetworkUtilities.getIpForInterface(intf);
                         return inetAddr;
                     }
 

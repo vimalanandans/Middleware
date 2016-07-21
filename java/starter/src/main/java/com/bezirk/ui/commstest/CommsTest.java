@@ -1,7 +1,7 @@
 package com.bezirk.ui.commstest;
 
 import com.bezirk.ui.commstest.threads.UnicastReceiver;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public final class CommsTest {
     private String deviceName ;
     private final IUpdateResponse responseUI;
     private final UIStore uiStore = new UIStore();
-    private final String myAddress = BezirkNetworkUtilities.getDeviceIp();
+    private final String myAddress = NetworkUtilities.getDeviceIp();
     private int multicastSendingPort = CommsTestConstants.DEFAULT_MULTICAST_SENDING_PORT;
     private UnicastReceiver uReceiver;
     private com.bezirk.ui.commstest.threads.MulticastReceiver mReceiver;

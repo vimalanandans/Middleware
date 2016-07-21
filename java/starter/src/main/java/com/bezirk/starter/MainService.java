@@ -1,7 +1,6 @@
 package com.bezirk.starter;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsNotification;
@@ -22,7 +21,7 @@ import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.streaming.StreamManager;
 import com.bezirk.streaming.Streaming;
 import com.bezirk.util.ValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +30,6 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Date;
-
-import javax.swing.SwingUtilities;
 
 /**
  * MainService for bezirk-pc which controls the bezirk stack
@@ -372,7 +369,7 @@ public class MainService {
       /*  final PipeManager pipeManager = serviceStarterHelper
                 .createPipeManager();
 */
-        final InetAddress addr = BezirkNetworkUtilities.getIpForInterface(intf);
+        final InetAddress addr = NetworkUtilities.getIpForInterface(intf);
 
         /*
          * CommsProperties is not used by comms manager. Properties are handled

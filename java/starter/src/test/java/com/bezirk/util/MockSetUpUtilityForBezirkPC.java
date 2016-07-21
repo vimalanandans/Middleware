@@ -22,7 +22,7 @@ import com.bezirk.sphere.impl.JavaPrefs;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.streaming.StreamManager;
 import com.bezirk.streaming.Streaming;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 import com.j256.ormlite.table.TableUtils;
 
 import org.mockito.Mockito;
@@ -160,7 +160,7 @@ public class MockSetUpUtilityForBezirkPC {
             NetworkInterface intf = getInterface();
             if (ValidatorUtility.isObjectNotNull(intf)) {
 
-                return BezirkNetworkUtilities.getIpForInterface(intf);
+                return NetworkUtilities.getIpForInterface(intf);
 
             }
 

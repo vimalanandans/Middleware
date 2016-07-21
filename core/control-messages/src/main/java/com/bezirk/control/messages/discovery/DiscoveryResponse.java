@@ -4,7 +4,7 @@ import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 public class DiscoveryResponse extends UnicastControlMessage {
     private static final Discriminator discriminator = ControlMessage.Discriminator.DiscoveryResponse;
     //ZirkEndPoint for this response only contains deviceID
-    private static final BezirkZirkEndPoint sender = BezirkNetworkUtilities.getServiceEndPoint(null);
+    private static final BezirkZirkEndPoint sender = NetworkUtilities.getServiceEndPoint(null);
     private final List<BezirkDiscoveredZirk> serviceList;
     private final Integer reqDiscoveryId;
 

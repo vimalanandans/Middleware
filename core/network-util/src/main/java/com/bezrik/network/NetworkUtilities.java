@@ -19,12 +19,12 @@ import java.util.List;
  *
  * @author Jan Zibuschka
  */
-public final class BezirkNetworkUtilities {
-    private static final Logger logger = LoggerFactory.getLogger(BezirkNetworkUtilities.class);
+public final class NetworkUtilities {
+    private static final Logger logger = LoggerFactory.getLogger(NetworkUtilities.class);
 
     private static NetworkInterface curInterface = null;
 
-    private BezirkNetworkUtilities() {
+    private NetworkUtilities() {
         //This is a utility class
     }
 

@@ -10,7 +10,7 @@ import com.bezirk.sphere.api.CryptoInternals;
 import com.bezirk.sphere.messages.ShareRequest;
 import com.bezirk.sphere.messages.ShareResponse;
 import com.bezirk.sphere.security.SphereKeys;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -373,7 +373,7 @@ public class ShareProcessor {
                         (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
 
                 shareRequest = new ShareRequest(inviterShortCode, bezirkDeviceInfo,
-                        BezirkNetworkUtilities.getServiceEndPoint(null), sharerSphereId);
+                        NetworkUtilities.getServiceEndPoint(null), sharerSphereId);
                 return shareRequest;
             }
         }
@@ -484,7 +484,7 @@ public class ShareProcessor {
                 BezirkDeviceInfo bezirkDeviceInfoToSend = new BezirkDeviceInfo(deviceInterface.getDeviceId(),
                         deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
                         (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
-                shareResponse = new ShareResponse(BezirkNetworkUtilities.getServiceEndPoint(null), sharer, uniqueKey,
+                shareResponse = new ShareResponse(NetworkUtilities.getServiceEndPoint(null), sharer, uniqueKey,
                         inviterShortCode, bezirkDeviceInfoToSend, sphereExchangeData, sharerSphereId);
                 return shareResponse;
             }

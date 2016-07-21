@@ -5,7 +5,7 @@ package com.bezirk.control.messages.discovery;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 /**
  * @author Rishabh Gulati
@@ -14,7 +14,7 @@ public final class SphereDiscoveryResponse extends com.bezirk.control.messages.U
 
     private static final Discriminator discriminator = com.bezirk.control.messages.ControlMessage.Discriminator.SphereDiscoveryResponse;
     //ZirkEndPoint for this response only contains deviceID
-    private static final BezirkZirkEndPoint sender = BezirkNetworkUtilities.getServiceEndPoint(null);
+    private static final BezirkZirkEndPoint sender = NetworkUtilities.getServiceEndPoint(null);
     private final Integer reqDiscoveryId;
     private BezirkSphereInfo bezirkSphereInfo;
 

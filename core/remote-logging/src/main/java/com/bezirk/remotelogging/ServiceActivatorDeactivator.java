@@ -3,13 +3,12 @@
  */
 package com.bezirk.remotelogging;
 
-import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,11 +30,11 @@ public final class ServiceActivatorDeactivator {
 
     public static void sendLoggingServiceMsgToClients(Comms comms, final String[] sphereList, final String[] selectedLogSpheres, final boolean isActivate) {
         final ZirkId myId = new ZirkId("BEZIRK-REMOTE-LOGGING-SERVICE");
-        final BezirkZirkEndPoint sep = BezirkNetworkUtilities.getServiceEndPoint(myId);
+        final BezirkZirkEndPoint sep = NetworkUtilities.getServiceEndPoint(myId);
 
         for (String sphereId : sphereList) {
             final ControlLedger controlLedger = new ControlLedger();
-            final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep, sphereId, BezirkNetworkUtilities.getDeviceIp(), REMOTE_LOGGING_PORT, selectedLogSpheres, isActivate);
+            final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep, sphereId, NetworkUtilities.getDeviceIp(), REMOTE_LOGGING_PORT, selectedLogSpheres, isActivate);
             controlLedger.setSphereId(sphereId);
             controlLedger.setMessage(loggingServiceActivateRequest);
             controlLedger.setSerializedMessage(controlLedger.getMessage().serialize());
