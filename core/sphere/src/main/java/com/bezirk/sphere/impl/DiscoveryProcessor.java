@@ -7,7 +7,7 @@ import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
 import com.bezirk.devices.DeviceInterface;
 import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
-import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
+import com.bezirk.sphere.discovery.DiscoveryLabel;
 import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.discovery.SphereDiscoveryProcessor;
 import com.bezirk.sphere.discovery.SphereDiscoveryRecord;

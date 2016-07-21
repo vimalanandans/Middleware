@@ -8,15 +8,11 @@ import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.datastorage.PubSubBrokerStorage;
-import com.bezirk.device.Device;
 import com.bezirk.devices.DeviceInterface;
 import com.bezirk.middleware.addressing.RecipientSelector;
-import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.messagehandler.MessageHandler;
-import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
-import com.bezirk.pubsubbroker.discovery.DiscoveryManager;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
@@ -25,8 +21,6 @@ import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.api.impl.SubscribedRole;
 
-import com.bezirk.pubsubbroker.discovery.DiscoveryProcessor;
-import com.bezirk.pubsubbroker.discovery.DiscoveryRecord;
 import com.bezirk.remotelogging.RemoteLog;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereServiceAccess;
@@ -76,17 +70,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         this.sphereServiceAccess = sphereServiceAccess;
         this.sphereSecurity = sphereSecurity;
         this.msgHandler = msgHandler;
-        initServiceDiscovery(comms);
-    }
 
-    /**
-     * moved the init discovery from comms layer to sphere.
-     * because this is out of comms layer
-     */
-    public void initServiceDiscovery(Comms comms) {
-        DiscoveryManager discoveryManager = new DiscoveryManager(this, comms, sphereServiceAccess);
-
-        discoveryManager.initDiscovery();
     }
 
     /* (non-Javadoc)
