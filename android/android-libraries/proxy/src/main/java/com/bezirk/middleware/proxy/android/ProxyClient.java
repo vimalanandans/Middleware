@@ -32,20 +32,17 @@ public final class ProxyClient implements Bezirk {
     public static final String ACTION_BEZIRK_REGISTER = "REGISTER";
     static final int TIME_DURATION = 15000;
     static final int MAX_MAP_SIZE = 50;
-    static final ConcurrentMap<String, List<BezirkListener>> eventListenerMap = new ConcurrentHashMap<String, List<BezirkListener>>();
-    static final ConcurrentMap<String, List<BezirkListener>> streamListenerMap = new ConcurrentHashMap<String, List<BezirkListener>>();
-    static final ConcurrentMap<Short, String> activeStreams = new ConcurrentHashMap<Short, String>();
-    static final ConcurrentMap<String, Long> duplicateMsgMap = new ConcurrentHashMap<String, Long>();
-    static final ConcurrentMap<String, Long> duplicateStreamMap = new ConcurrentHashMap<String, Long>();
-    //Pipe Listener Map -- pipeId : listener
-    static final ConcurrentMap<String, BezirkListener> pipeListenerMap = new ConcurrentHashMap<String, BezirkListener>();
+    static final ConcurrentMap<String, List<BezirkListener>> eventListenerMap = new ConcurrentHashMap<>();
+    static final ConcurrentMap<String, List<BezirkListener>> streamListenerMap = new ConcurrentHashMap<>();
+    static final ConcurrentMap<Short, String> activeStreams = new ConcurrentHashMap<>();
+    static final ConcurrentMap<String, Long> duplicateMsgMap = new ConcurrentHashMap<>();
+    static final ConcurrentMap<String, Long> duplicateStreamMap = new ConcurrentHashMap<>();
     private static final String ACTION_SERVICE_SEND_MULTICAST_EVENT = "MULTICAST_EVENT";
     private static final String ACTION_SERVICE_SEND_UNICAST_EVENT = "UNICAST_EVENT";
     private static final String ACTION_BEZIRK_SUBSCRIBE = "SUBSCRIBE";
     private static final String ACTION_BEZIRK_UNSUBSCRIBE = "UNSUBSCRIBE";
     private static final String ACTION_BEZIRK_SETLOCATION = "LOCATION";
     private static final String ACTION_BEZIRK_PUSH_UNICAST_STREAM = "UNICAST_STREAM";
-    private static final String ACTION_BEZIRK_PUSH_MULTICAST_STREAM = "MULTICAST_STREAM";
     private static final String COMPONENT_NAME = "com.bezirk.controlui";
     private static final String SERVICE_PKG_NAME = "com.bezirk.starter.MainService";
     private static final ProxyClientHelper PROXY_CLIENT_HELPER = new ProxyClientHelper();
@@ -240,7 +237,7 @@ public final class ProxyClient implements Bezirk {
 
         final Intent multicastStreamIntent = new Intent();
         multicastStreamIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
-        multicastStreamIntent.setAction(ACTION_BEZIRK_PUSH_MULTICAST_STREAM);
+        multicastStreamIntent.setAction(ACTION_BEZIRK_PUSH_UNICAST_STREAM);
         multicastStreamIntent.putExtra("zirkId", new Gson().toJson(zirkId));
         multicastStreamIntent.putExtra("receiverSEP", new Gson().toJson(recipientSEP));
         multicastStreamIntent.putExtra("streamDescriptor", streamDescriptor.toJson());
