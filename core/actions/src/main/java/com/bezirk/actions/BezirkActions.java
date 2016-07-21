@@ -1,65 +1,56 @@
 package com.bezirk.actions;
 
-public class BezirkActions {
+public enum BezirkActions {
+    // actionName, type
+    ACTION_START_BEZIRK("START_BEZIRK", ActionType.BEZIRK_STACK_ACTION),
+    ACTION_STOP_BEZIRK("STOP_BEZIRK", ActionType.BEZIRK_STACK_ACTION),
+    ACTION_REBOOT("RESTART", ActionType.BEZIRK_STACK_ACTION),
+    ACTION_CLEAR_PERSISTENCE("ACTION_CLEAR_PERSISTENCE", ActionType.BEZIRK_STACK_ACTION),
+    ACTION_DIAG_PING("ACTION_DIAG_PING", ActionType.BEZIRK_STACK_ACTION),
+    ACTION_START_REST_SERVER("START_REST_SERVER", ActionType.BEZIRK_STACK_ACTION),
+    ACTION_STOP_REST_SERVER("STOP_REST_SERVER", ActionType.BEZIRK_STACK_ACTION),
+    ACTION_CHANGE_SPHERE_TYPE("ACTION_CHANGE_SPHERE_TYPE", ActionType.BEZIRK_STACK_ACTION),
+    ACTION_CHANGE_SPHERE_NAME("ACTION_CHANGE_SPHERE_NAME", ActionType.BEZIRK_STACK_ACTION),
 
-    //------------------------
-    // Component constants
-    //------------------------
+    ACTION_SERVICE_SEND_MULTICAST_EVENT("MULTICAST_EVENT", ActionType.SEND_ACTION),
+    ACTION_SERVICE_SEND_UNICAST_EVENT("UNICAST_EVENT", ActionType.SEND_ACTION),
+    ACTION_BEZIRK_PUSH_UNICAST_STREAM("UNICAST_STREAM", ActionType.SEND_ACTION),
 
-    public final static String COMPONENT_BEZIRK_PKG = "BEZIRK_PKG";
-    public final static String COMPONENT_BEZIRK_CLASS = "BEZIRK_CLASS";
+    ACTION_BEZIRK_REGISTER("REGISTER", ActionType.ZIRK_ACTION),
+    ACTION_BEZIRK_UNSUBSCRIBE("UNSUBSCRIBE", ActionType.ZIRK_ACTION),
+    ACTION_BEZIRK_SUBSCRIBE("SUBSCRIBE", ActionType.ZIRK_ACTION),
+    ACTION_BEZIRK_SETLOCATION("LOCATION", ActionType.ZIRK_ACTION),
 
-    //------------------------
-    // Action name constants
-    //------------------------
-    //------------------------
-    // Bezirk Pipe Actions
-    //------------------------
-    public final static String ACTION_PIPE_REQUEST = "PIPE_REQUEST";
+    ACTION_CHANGE_DEVICE_NAME("ACTION_CHANGE_DEVICE_NAME", ActionType.DEVICE_ACTION),
+    ACTION_CHANGE_DEVICE_TYPE("ACTION_CHANGE_DEVICE_TYPE", ActionType.DEVICE_ACTION),
+    ACTION_DEV_MODE_ON("ACTION_DEV_MODE_ON", ActionType.DEVICE_ACTION),
+    ACTION_DEV_MODE_OFF("ACTION_DEV_MODE_OFF", ActionType.DEVICE_ACTION),
+    ACTION_DEV_MODE_STATUS("ACTION_DEV_MODE_STATUS", ActionType.DEVICE_ACTION);
 
-    //------------------------
-    // Bezirk Control Actions
-    //------------------------
-    public final static String ACTION_START_BEZIRK = "START_BEZIRK";
+    private final String name;
+    private final ActionType type;
 
-    public final static String ACTION_STOP_BEZIRK = "STOP_BEZIRK";
+    BezirkActions(String actionName, ActionType actionType) {
+        name = actionName;
+        type = actionType;
+    }
 
-    public final static String ACTION_REST_START_BEZIRK = "START_REST_SERVER";
+    public String getName() {
+        return name;
+    }
 
-    public final static String ACTION_REST_STOP_BEZIRK = "STOP_REST_SERVER";
+    public ActionType getType() {
+        return type;
+    }
 
-    public final static String ACTION_CHANGE_DEVICE_TYPE = "ACTION_CHANGE_DEVICE_TYPE";
+    public static BezirkActions getActionUsingMessage(String actionMessage) {
+        for (BezirkActions intentAction : BezirkActions.values()) {
+            if (intentAction.name.equals(actionMessage) && intentAction.type != null) {
+                return intentAction;
+            }
+        }
+        return null;
+    }
 
-    public final static String ACTION_CHANGE_DEVICE_NAME = "ACTION_CHANGE_DEVICE_NAME";
-
-    public final static String ACTION_CHANGE_SPHERE_NAME = "ACTION_CHANGE_SPHERE_NAME";
-
-    public final static String ACTION_CHANGE_SPHERE_TYPE = "ACTION_CHANGE_SPHERE_TYPE";
-
-    public final static String ACTION_CHANGE_DEVICE_LOCATION = "ACTION_CHANGE_DEVICE_LOCATION";
-
-    public final static String ACTION_CLEAR_PERSISTENCE = "ACTION_CLEAR_PERSISTENCE";
-
-    public final static String ACTION_DIAG_BEZIRK = "ACTION_DIAG_BEZIRK";
-
-    public final static String ACTION_DEV_MODE_ON = "ACTION_DEV_MODE_ON";
-
-    public final static String ACTION_DEV_MODE_OFF = "ACTION_DEV_MODE_OFF";
-
-    public final static String ACTION_DEV_MODE_STATUS = "ACTION_DEV_MODE_STATUS";
-
-    //-----------------------------
-    // Intent "extra" key constants
-    //-----------------------------
-
-    public final static String KEY_SENDER_ZIRK_ID = "SENDER_ZIRK_ID";
-    public final static String KEY_PIPE_REQ_ID = "PIPE_REQ_ID";
-    public final static String KEY_PIPE_NAME = "PIPE_NAME";
-    public final static String KEY_PIPE_URI = "PIPE_URI";
-    public final static String KEY_PIPE_TYPE = "PIPE_TYPE";
-    public final static String KEY_PIPE_CLASS = "PIPE_CLASS";
-    public final static String KEY_PIPE_POLICY_IN = "PIPE_POLICY_IN";
-    public final static String KEY_PIPE_POLICY_OUT = "PIPE_POLICY_OUT";
-    public final static String KEY_PIPE_SPHEREID = "PIPE_SPHEREID";
-    public final static String KEY_PIPE = "PIPE_ONLY";
+    public enum ActionType {ZIRK_ACTION, SEND_ACTION, DEVICE_ACTION, BEZIRK_STACK_ACTION}
 }
