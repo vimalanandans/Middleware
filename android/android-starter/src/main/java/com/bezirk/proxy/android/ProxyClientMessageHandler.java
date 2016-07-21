@@ -22,7 +22,7 @@ public class ProxyClientMessageHandler implements MessageHandler {
     /**
      * This intent action is subscribed by all the ProxyForBezirk
      */
-    final String FIRE_INTENT_ACTION = "com.bosch.upa.uhu.broadcast";
+    final String FIRE_INTENT_ACTION = "com.bezirk.middleware.broadcast";
     /**
      * Used to convert the object to its string
      */
