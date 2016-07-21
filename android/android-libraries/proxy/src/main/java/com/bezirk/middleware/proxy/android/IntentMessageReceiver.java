@@ -19,21 +19,25 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class IntentMessageReceiver extends BroadcastReceiver {
-    private final String TAG = "BezirkIntentReceiver";
+    private final String TAG = IntentMessageReceiver.class.getSimpleName();
+
+    private static final int TIME_DURATION = 15000;
+    private static final int MAX_MAP_SIZE = 50;
+
+    private static final ConcurrentMap<String, Long> duplicateMsgMap = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, Long> duplicateStreamMap = new ConcurrentHashMap<>();
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
         final String receivedServiceId = intent.getStringExtra("service_id_tag");
 
         if (!isValidRequest(receivedServiceId)) {
-
             return;
         }
-
-        // TODO: need to implement logback / slf4j style logging (ASW)
 
         processReceivedIntent(intent);
     }
@@ -42,7 +46,6 @@ public class IntentMessageReceiver extends BroadcastReceiver {
         final String discriminator = intent.getStringExtra("discriminator");
 
         switch (discriminator) {
-
             case "EVENT":
                 processEvent(intent);
                 break;
@@ -176,7 +179,7 @@ public class IntentMessageReceiver extends BroadcastReceiver {
 
             if (!isStreamReceived) {
 
-                Log.e(TAG, " StreamListnerMap doesnt have a mapped StreamDescriptor");
+                Log.e(TAG, " StreamListenerMap doesn't have a mapped StreamDescriptor");
             }
 
         } else {
@@ -207,20 +210,20 @@ public class IntentMessageReceiver extends BroadcastReceiver {
     private boolean checkDuplicateMsg(final String sid, final String messageId) {
         final String key = sid + ":" + messageId;
         final Long currentTime = new Date().getTime();
-        if (ProxyClient.duplicateMsgMap.containsKey(key)) {
-            if (currentTime - ProxyClient.duplicateMsgMap.get(key) > ProxyClient.TIME_DURATION) {
-                ProxyClient.duplicateMsgMap.remove(key);
-                ProxyClient.duplicateMsgMap.put(key, currentTime);
+        if (duplicateMsgMap.containsKey(key)) {
+            if (currentTime - duplicateMsgMap.get(key) > TIME_DURATION) {
+                duplicateMsgMap.remove(key);
+                duplicateMsgMap.put(key, currentTime);
                 return true;
             } else
                 return false;
         } else {
-            if (ProxyClient.duplicateMsgMap.size() < ProxyClient.MAX_MAP_SIZE) {
-                ProxyClient.duplicateMsgMap.put(key, currentTime);
+            if (duplicateMsgMap.size() < MAX_MAP_SIZE) {
+                duplicateMsgMap.put(key, currentTime);
                 return true;
             } else {
-                ProxyClient.duplicateMsgMap.remove(ProxyClient.duplicateMsgMap.keySet().iterator().next());
-                ProxyClient.duplicateMsgMap.put(key, currentTime);
+                duplicateMsgMap.remove(duplicateMsgMap.keySet().iterator().next());
+                duplicateMsgMap.put(key, currentTime);
                 return true;
             }
         }
@@ -229,20 +232,20 @@ public class IntentMessageReceiver extends BroadcastReceiver {
     private boolean checkDuplicateStream(final String sid, final int streamId) {
         final String key = sid + ":" + streamId;
         final Long currentTime = new Date().getTime();
-        if (ProxyClient.duplicateStreamMap.containsKey(key)) {
-            if (currentTime - ProxyClient.duplicateStreamMap.get(key) > ProxyClient.TIME_DURATION) {
-                ProxyClient.duplicateStreamMap.remove(key);
-                ProxyClient.duplicateStreamMap.put(key, currentTime);
+        if (duplicateStreamMap.containsKey(key)) {
+            if (currentTime - duplicateStreamMap.get(key) > TIME_DURATION) {
+                duplicateStreamMap.remove(key);
+                duplicateStreamMap.put(key, currentTime);
                 return true;
             } else
                 return false;
         } else {
-            if (ProxyClient.duplicateStreamMap.size() < ProxyClient.MAX_MAP_SIZE) {
-                ProxyClient.duplicateStreamMap.put(key, currentTime);
+            if (duplicateStreamMap.size() < MAX_MAP_SIZE) {
+                duplicateStreamMap.put(key, currentTime);
                 return true;
             } else {
-                ProxyClient.duplicateStreamMap.remove(ProxyClient.duplicateStreamMap.keySet().iterator().next());
-                ProxyClient.duplicateStreamMap.put(key, currentTime);
+                duplicateStreamMap.remove(duplicateStreamMap.keySet().iterator().next());
+                duplicateStreamMap.put(key, currentTime);
                 return true;
             }
         }

@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.PipedOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -29,14 +30,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public final class ProxyClient implements Bezirk {
-    public static final String ACTION_BEZIRK_REGISTER = "REGISTER";
-    static final int TIME_DURATION = 15000;
-    static final int MAX_MAP_SIZE = 50;
+    private static final String TAG = ProxyClient.class.getSimpleName();
+
     static final ConcurrentMap<String, List<BezirkListener>> eventListenerMap = new ConcurrentHashMap<>();
     static final ConcurrentMap<String, List<BezirkListener>> streamListenerMap = new ConcurrentHashMap<>();
     static final ConcurrentMap<Short, String> activeStreams = new ConcurrentHashMap<>();
-    static final ConcurrentMap<String, Long> duplicateMsgMap = new ConcurrentHashMap<>();
-    static final ConcurrentMap<String, Long> duplicateStreamMap = new ConcurrentHashMap<>();
+
+    public static final String ACTION_BEZIRK_REGISTER = "REGISTER";
     private static final String ACTION_SERVICE_SEND_MULTICAST_EVENT = "MULTICAST_EVENT";
     private static final String ACTION_SERVICE_SEND_UNICAST_EVENT = "UNICAST_EVENT";
     private static final String ACTION_BEZIRK_SUBSCRIBE = "SUBSCRIBE";
@@ -45,11 +45,7 @@ public final class ProxyClient implements Bezirk {
     private static final String ACTION_BEZIRK_PUSH_UNICAST_STREAM = "UNICAST_STREAM";
     private static final String COMPONENT_NAME = "com.bezirk.controlui";
     private static final String SERVICE_PKG_NAME = "com.bezirk.starter.MainService";
-    private static final ProxyClientHelper PROXY_CLIENT_HELPER = new ProxyClientHelper();
-    private static final String TAG = ProxyClient.class.getSimpleName();
     static Context context;
-    static BezirkListener DiscoveryListener;
-    static int discoveryCount; // keep track of Discovery Id
     private short streamFactory;
 
     private ZirkId zirkId;
@@ -128,8 +124,10 @@ public final class ProxyClient implements Bezirk {
     public void subscribe(final ProtocolRole protocolRole, final BezirkListener listener) {
         isRequestValid(zirkId, protocolRole, listener);
 
-        PROXY_CLIENT_HELPER.addTopicsToMap(protocolRole.getEventTopics(), eventListenerMap, listener, "Event");
-        PROXY_CLIENT_HELPER.addTopicsToMap(protocolRole.getStreamTopics(), streamListenerMap, listener, "StreamDescriptor");
+        if (protocolRole.getEventTopics() != null)
+            addTopicsToMap(protocolRole.getEventTopics(), eventListenerMap, listener, "Event");
+        if (protocolRole.getStreamTopics() != null)
+            addTopicsToMap(protocolRole.getStreamTopics(), streamListenerMap, listener, "StreamDescriptor");
         // Send the intent
         Intent subscribeIntent = new Intent();
         subscribeIntent.setComponent(new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME));
@@ -141,6 +139,31 @@ public final class ProxyClient implements Bezirk {
 
         if (retName == null) {
             Log.e(TAG, "Unable to start the Bezirk Service. returning null for zirk id. Is Bezirk this installed?");
+        }
+    }
+
+    private void addTopicsToMap(String[] topics, Map<String, List<BezirkListener>> listenerMap, BezirkListener listener, String type) {
+        for (String topic : topics) {
+            if (topic == null || topic.isEmpty()) {
+                continue;
+            }
+
+            if (listenerMap.containsKey(topic)) {
+                addListener(listenerMap, listener, type, topic);
+            } else {
+                List<BezirkListener> regServiceList = new ArrayList<BezirkListener>();
+                regServiceList.add(listener);
+                listenerMap.put(topic, regServiceList);
+            }
+        }
+    }
+
+    private void addListener(Map<String, List<BezirkListener>> listenerMap, BezirkListener listener, String type, String topic) {
+        List<BezirkListener> zirkList = listenerMap.get(topic);
+        if (zirkList.contains(listener)) {
+            Log.w(TAG, type + " already registered with the " + type + "Label " + topic);
+        } else {
+            zirkList.add(listener);
         }
     }
 
