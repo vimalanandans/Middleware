@@ -20,7 +20,6 @@ include ':core:comms:comms-zyre'
 
 include ':core:device-objects'
 include ':core:actions'
-*/
 /*--------------------java--------------------*/
 include ':java:libraries:bezirk-factory'
 include ':java:libraries:comms-zyre-jni'
