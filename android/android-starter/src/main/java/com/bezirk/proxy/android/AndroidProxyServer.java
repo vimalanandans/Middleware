@@ -2,7 +2,6 @@ package com.bezirk.proxy.android;
 
 import android.content.Intent;
 
-import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.messagehandler.MessageHandler;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
@@ -22,27 +21,21 @@ import java.io.File;
 public class AndroidProxyServer extends ProxyServer {
     private static final Logger logger = LoggerFactory.getLogger(AndroidProxyServer.class);
 
-    MessageHandler messageHandler;
+    private static final Gson gson = new Gson();
+    private MessageHandler messageHandler;
 
     // TODO: If it makes sense , move it to proxy server
     public void InitProxyServerIntend(MessageHandler messageHandler) {
         this.messageHandler = messageHandler;
     }
 
-    /**
-     * Sends the subscribe request to proxy.
-     *
-     * @param intent Intent received
-     */
     public void subscribeService(Intent intent) {
-        logger.info("Received subscription from zirk");
-        String serviceIdKEY = "zirkId";
-        String subPrtclKEY = "protocol";
+        logger.debug("Received subscription from zirk");
 
-        String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
-        String protocolRoleAsString = intent.getStringExtra(subPrtclKEY);
+        String serviceIdAsString = intent.getStringExtra("zirkId");
+        String protocolRoleAsString = intent.getStringExtra("protocol");
+
         if (ValidatorUtility.checkForString(serviceIdAsString) && ValidatorUtility.checkForString(protocolRoleAsString)) {
-            final Gson gson = new Gson();
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final SubscribedRole subscribedRole = gson.fromJson(protocolRoleAsString, SubscribedRole.class);
             if (ValidatorUtility.checkBezirkZirkId(serviceId) && ValidatorUtility.checkProtocolRole(subscribedRole)) {
@@ -50,28 +43,19 @@ public class AndroidProxyServer extends ProxyServer {
             } else {
                 logger.error("trying to subscribe with Null zirkId/ protocolRole");
             }
-
         } else {
             logger.error("Error in Zirk Subscription. Check for the values being sent");
         }
     }
 
-    /**
-     * Sends Register request to proxy
-     *
-     * @param intent Intent received
-     */
     public void registerService(Intent intent) {
-        String serviceIdKEY = "zirkId";
-        String serviceNameKEY = "serviceName";
+        final String serviceIdAsString = intent.getStringExtra("zirkId");
+        final String serviceName = intent.getStringExtra("serviceName");
 
-        final String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
-        final String serviceName = intent.getStringExtra(serviceNameKEY);
-
-        logger.info("Zirk registration to Bezirk. Name : " + serviceName + " Id : " + serviceIdAsString);
+        logger.debug("Zirk registration to Bezirk. Name : " + serviceName + " Id : " + serviceIdAsString);
 
         if (ValidatorUtility.checkForString(serviceIdAsString) && ValidatorUtility.checkForString(serviceName)) {
-            final ZirkId serviceId = new Gson().fromJson(serviceIdAsString, ZirkId.class);
+            final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
                 super.registerService(serviceId, serviceName);
             } else {
@@ -83,20 +67,12 @@ public class AndroidProxyServer extends ProxyServer {
         }
     }
 
-    /**
-     * Sends UnSubscribe request to proxy
-     *
-     * @param intent Intent received
-     */
     public void unsubscribeService(Intent intent) {
-        logger.info("Received unsubscribe from zirk");
-        String serviceIdKEY = "zirkId";
-        String subPrtclKEY = "protocol";
+        logger.debug("Received unsubscribe from zirk");
 
-        final String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
-        final String protocolRoleAsString = intent.getStringExtra(subPrtclKEY);
+        final String serviceIdAsString = intent.getStringExtra("zirkId");
+        final String protocolRoleAsString = intent.getStringExtra("protocol");
         if (ValidatorUtility.checkForString(serviceIdAsString)) {
-            final Gson gson = new Gson();
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final SubscribedRole subscribedRole = gson.fromJson(protocolRoleAsString, SubscribedRole.class);
             if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
@@ -115,28 +91,19 @@ public class AndroidProxyServer extends ProxyServer {
         }
     }
 
-    /**
-     * Sends UnicastStreamDescriptor to proxy
-     *
-     * @param intent Intent received
-     */
     public void sendUnicastStream(Intent intent) {
-        logger.info("------------ Received message to push the StreamDescriptor ----------------------");
+        logger.debug("------------ Received message to push the StreamDescriptor ----------------------");
 
         // Use a interface from component manager to find out enabled component to respond back
-        boolean isStreamingValid;
-//        boolean isStreamingValid = CommsConfigurations.isStreamingEnabled();
-//        if (!isStreamingValid) {
-//            logger.error(" Streaming is not enabled!");
-//        }
         final String serviceIdAsString = intent.getStringExtra("zirkId");
         final String recipientAsString = intent.getStringExtra("receiverSEP");
         final File file = new File(intent.getStringExtra("filePath"));
         final String streamAsString = intent.getStringExtra("stream");
         final short localStreamId = intent.getShortExtra("localStreamId", (short) -1);
 
+        boolean isStreamingValid;
+
         if (ValidatorUtility.checkForString(serviceIdAsString, recipientAsString, streamAsString) && -1 != localStreamId) {
-            final Gson gson = new Gson();
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final BezirkZirkEndPoint recipient = gson.fromJson(recipientAsString, BezirkZirkEndPoint.class);
 
@@ -148,7 +115,7 @@ public class AndroidProxyServer extends ProxyServer {
         }
 
         if (!isStreamingValid) {
-            StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(new Gson().fromJson(serviceIdAsString, ZirkId.class), 0, localStreamId);
+            StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(gson.fromJson(serviceIdAsString, ZirkId.class), 0, localStreamId);
             messageHandler.onStreamStatus(streamStatusCallbackMessage);
         }
     }
@@ -167,71 +134,19 @@ public class AndroidProxyServer extends ProxyServer {
         return true;
     }
 
-    /**
-     * Sends Multicast stream to proxy
-     *
-     * @param intent Intent received
-     */
- /*   public void sendMulticastStream(Intent intent) {
-        logger.info("------------ Received message to push the StreamDescriptor ----------------------");
-        boolean isStreamingValid = true;
-        if (!CommsConfigurations.isStreamingEnabled()) {
-            logger.error(" Streaming is not enabled!");
-            isStreamingValid = false;
-        }
-        final String serviceIdAsString = intent.getStringExtra("zirkId");
-        final String recipientAsString = intent.getStringExtra("receiverSEP");
-        final String streamAsString = intent.getStringExtra("stream");
-        final short localStreamId = intent.getShortExtra("localStreamId", (short) -1);
-
-
-        try {
-            final Gson gson = new Gson();
-            final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
-            final BezirkZirkEndPoint recipient = gson.fromJson(recipientAsString, BezirkZirkEndPoint.class);
-
-            if (ValidatorUtility.checkRTCStreamRequest(serviceId, recipient)) {
-
-                if (-1 == super.sendStream(serviceId, recipient, streamAsString, localStreamId)) {
-                    isStreamingValid = false;
-                }
-
-            } else {
-                logger.error("Invalid arguments received");
-                isStreamingValid = false;
-            }
-        } catch (Exception e) {
-            logger.error("Invalid arguments received", e);
-            isStreamingValid = false;
-        }
-
-        if (!isStreamingValid) {
-            logger.error("FIXME: Implement the stream status");
-            StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(new Gson().fromJson(serviceIdAsString, ZirkId.class), 0, localStreamId);
-            messageHandler.onStreamStatus(streamStatusCallbackMessage);
-        }
-    }
-*/
-    /**
-     * Sends MulticastEvent to proxy
-     *
-     * @param intent Intent received
-     */
     public void sendMulticastEvent(Intent intent) {
-        logger.info("Received multicast message from zirk");
-        final String serviceIdKEY = "zirkId";
-        final String addressKEY = "address";
-        final String mEventMsgKEY = "multicastEvent";
-        final String topic = "topic";
+        logger.debug("Received multicast message from zirk");
 
-        final String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
-        final String addressAsString = intent.getStringExtra(addressKEY);
-        final String mEventMsg = intent.getStringExtra(mEventMsgKEY);
-        final String eventTopic = intent.getStringExtra(topic);
+        final String serviceIdAsString = intent.getStringExtra("zirkId");
+        final String addressAsString = intent.getStringExtra("address");
+        final String mEventMsg = intent.getStringExtra("multicastEvent");
+        final String eventTopic = intent.getStringExtra("topic");
 
         // Validate intent properties
-        if (ValidatorUtility.checkForString(serviceIdAsString) && ValidatorUtility.checkForString(addressAsString) && ValidatorUtility.checkForString(mEventMsg)) {
-            final Gson gson = new Gson();
+        if (ValidatorUtility.checkForString(serviceIdAsString) &&
+                ValidatorUtility.checkForString(addressAsString) &&
+                ValidatorUtility.checkForString(mEventMsg)) {
+
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
                 final RecipientSelector recipientSelector = RecipientSelector.fromJson(addressAsString);
@@ -239,32 +154,22 @@ public class AndroidProxyServer extends ProxyServer {
                 super.sendMulticastEvent(serviceId, recipientSelector, mEventMsg, eventTopic);
             } else {
                 logger.error("trying to send multicast message with Null zirkId");
-
             }
         } else {
 
-            logger.error(" Invalid arguments received to send multicast Event");
+            logger.error("Invalid arguments received to send multicast Event");
         }
     }
 
-    /**
-     * Sends UnicastEvent to proxy
-     *
-     * @param intent Intent received
-     */
     public void sendUnicastEvent(Intent intent) {
-        logger.info("Received unicast message from zirk");
-        final String serviceIdKEY = "zirkId";
-        final String sepKEY = "receiverSep";
-        final String uEventMsgKEY = "eventMsg";
-        final String topic = "topic";
+        logger.debug("Received unicast message from zirk");
 
-        final String serviceIdAsString = intent.getStringExtra(serviceIdKEY);
-        final String sepAsString = intent.getStringExtra(sepKEY);
-        final String msg = intent.getStringExtra(uEventMsgKEY);
-        final String eventTopic = intent.getStringExtra(topic);
+        final String serviceIdAsString = intent.getStringExtra("zirkId");
+        final String sepAsString = intent.getStringExtra("receiverSep");
+        final String msg = intent.getStringExtra("eventMsg");
+        final String eventTopic = intent.getStringExtra("topic");
+
         if (ValidatorUtility.checkForString(serviceIdAsString) && ValidatorUtility.checkForString(sepAsString) && ValidatorUtility.checkForString(msg)) {
-            final Gson gson = new Gson();
             final ZirkId serviceId = gson.fromJson(serviceIdAsString, ZirkId.class);
             final BezirkZirkEndPoint serviceEndPoint = gson.fromJson(sepAsString, BezirkZirkEndPoint.class);
             if (ValidatorUtility.checkBezirkZirkId(serviceId) && ValidatorUtility.checkBezirkZirkEndPoint(serviceEndPoint)) {
@@ -274,24 +179,18 @@ public class AndroidProxyServer extends ProxyServer {
                 logger.error("Check unicast parameters");
             }
         } else {
-            logger.error(" Invalid arguments received to send Unicast Event");
-
+            logger.error("Invalid arguments received to send Unicast Event");
         }
     }
 
-    /**
-     * Sets zirk location via proxy
-     *
-     * @param intent Intent received
-     */
     public void setLocation(Intent intent) {
         String sid = (String) intent.getExtras().get("zirkId");
         String location = (String) intent.getExtras().get("locationData");
-        logger.info("Received location " + location + " from zirk");
+        logger.debug("Received location " + location + " from zirk");
 
         if (ValidatorUtility.checkForString(sid) && ValidatorUtility.checkForString(location)) {
-            ZirkId serviceId = new Gson().fromJson(sid, ZirkId.class);
-            Location loc = new Gson().fromJson(location, Location.class);
+            ZirkId serviceId = gson.fromJson(sid, ZirkId.class);
+            Location loc = gson.fromJson(location, Location.class);
             if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
                 super.setLocation(serviceId, loc);
             }
@@ -299,6 +198,4 @@ public class AndroidProxyServer extends ProxyServer {
             logger.error("Invalid parameters for location");
         }
     }
-
-
 }

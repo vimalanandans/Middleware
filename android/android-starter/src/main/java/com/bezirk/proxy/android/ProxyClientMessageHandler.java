@@ -23,14 +23,13 @@ public class ProxyClientMessageHandler implements MessageHandler {
      * This intent action is subscribed by all the ProxyForBezirk
      */
     final String FIRE_INTENT_ACTION = "com.bezirk.middleware.broadcast";
-    /**
-     * Used to convert the object to its string
-     */
-    final Gson gson = new Gson();
+
     /**
      * Context to fire the Intent
      */
     private final Context applicationContext;
+
+    private final Gson gson = new Gson();
 
     public ProxyClientMessageHandler(Context context) {
         this.applicationContext = context;
@@ -38,21 +37,14 @@ public class ProxyClientMessageHandler implements MessageHandler {
 
     @Override
     public void onIncomingEvent(EventIncomingMessage eventIncomingMessage) {
-        String serviceIdKEY = "service_id_tag";
-        String eventSenderKEY = "eventSender";
-        String eventMsgKEY = "eventMessage";
-        String eventTopicKEY = "eventTopic";
-        String msgIdKEY = "msgId";
-        String discriminatorKEY = "discriminator";
-
         try {
-            Intent fireIntent = new Intent();
-            fireIntent.putExtra(serviceIdKEY, gson.toJson(eventIncomingMessage.getRecipient()));
-            fireIntent.putExtra(eventSenderKEY, gson.toJson(eventIncomingMessage.senderEndPoint));
-            fireIntent.putExtra(eventMsgKEY, eventIncomingMessage.serializedEvent);
-            fireIntent.putExtra(eventTopicKEY, eventIncomingMessage.eventTopic);
-            fireIntent.putExtra(msgIdKEY, eventIncomingMessage.msgId);
-            fireIntent.putExtra(discriminatorKEY, eventIncomingMessage.getCallbackType());
+            final Intent fireIntent = new Intent();
+            fireIntent.putExtra("service_id_tag", gson.toJson(eventIncomingMessage.getRecipient()));
+            fireIntent.putExtra("eventSender", gson.toJson(eventIncomingMessage.getSenderEndPoint()));
+            fireIntent.putExtra("eventMessage", eventIncomingMessage.getSerializedEvent());
+            fireIntent.putExtra("eventTopic", eventIncomingMessage.getEventTopic());
+            fireIntent.putExtra("msgId", eventIncomingMessage.getMsgId());
+            fireIntent.putExtra("discriminator", eventIncomingMessage.getCallbackType());
             fireIntentToService(fireIntent);
         } catch (Exception e) {
             logger.error("Cant fire the intent to the services as the ppd intent is not valid.", e);
@@ -61,43 +53,29 @@ public class ProxyClientMessageHandler implements MessageHandler {
 
     @Override
     public void onIncomingStream(StreamIncomingMessage streamIncomingMessage) {
-        String serviceIdKEY = "service_id_tag";
-        String streamIdKEY = "streamId";
-        String streamTopicKEY = "streamTopic";
-        String discriminatorKEY = "discriminator";
-        String streamMsgKEY = "streamMsg";
-        String filePathKEY = "filePath";
-        String senderSEPKEY = "senderEndPoint";
-
         try {
-            Intent fireintent = new Intent();
-            fireintent.putExtra(serviceIdKEY, gson.toJson(streamIncomingMessage.getRecipient()));
-            fireintent.putExtra(discriminatorKEY, streamIncomingMessage.getCallbackType());
-            fireintent.putExtra(streamTopicKEY, streamIncomingMessage.streamTopic);
-            fireintent.putExtra(streamMsgKEY, streamIncomingMessage.serializedStream);
-            fireintent.putExtra(filePathKEY, streamIncomingMessage.file.getAbsolutePath());
-            fireintent.putExtra(streamIdKEY, streamIncomingMessage.localStreamId); //
-            fireintent.putExtra(senderSEPKEY, gson.toJson(streamIncomingMessage.sender));
-            fireIntentToService(fireintent);
+            final Intent fireIntent = new Intent();
+            fireIntent.putExtra("service_id_tag", gson.toJson(streamIncomingMessage.getRecipient()));
+            fireIntent.putExtra("streamId", streamIncomingMessage.getCallbackType());
+            fireIntent.putExtra("streamTopic", streamIncomingMessage.getStreamTopic());
+            fireIntent.putExtra("streamMsg", streamIncomingMessage.getSerializedStream());
+            fireIntent.putExtra("filePath", streamIncomingMessage.getFile().getAbsolutePath());
+            fireIntent.putExtra("streamId", streamIncomingMessage.getLocalStreamId()); //
+            fireIntent.putExtra("senderEndPoint", gson.toJson(streamIncomingMessage.getSender()));
+            fireIntentToService(fireIntent);
         } catch (Exception e) {
             logger.error("Cannot give callback as all the fields are not set", e);
         }
     }
 
-    /*fireMulticastStream available in commitID 0fc60754247ec4131ac1a595a0b8c4e78c0b20a8*/
-
     @Override
     public void onStreamStatus(StreamStatusMessage streamStatusMessage) {
-        String serviceIdKEY = "service_id_tag";
-        String streamIdKEY = "streamId";
-        String streamStatusKEY = "streamStatus";
-        String discriminatorKEY = "discriminator";
-        Intent fireIntent = new Intent();
         try {
-            fireIntent.putExtra(serviceIdKEY, gson.toJson(streamStatusMessage.getRecipient()));
-            fireIntent.putExtra(discriminatorKEY, streamStatusMessage.getCallbackType());
-            fireIntent.putExtra(streamIdKEY, streamStatusMessage.streamId);
-            fireIntent.putExtra(streamStatusKEY, streamStatusMessage.streamStatus);
+            final Intent fireIntent = new Intent();
+            fireIntent.putExtra("service_id_tag", gson.toJson(streamStatusMessage.getRecipient()));
+            fireIntent.putExtra("discriminator", streamStatusMessage.getCallbackType());
+            fireIntent.putExtra("streamId", streamStatusMessage.getStreamId());
+            fireIntent.putExtra("streamStatus", streamStatusMessage.getStreamStatus());
             fireIntentToService(fireIntent);
         } catch (Exception e) {
             logger.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
@@ -107,18 +85,13 @@ public class ProxyClientMessageHandler implements MessageHandler {
 
     @Override
     public void onDiscoveryIncomingMessage(DiscoveryIncomingMessage discoveryIncomingMessage) {
-
-        String serviceIdKEY = "service_id_tag";
-        String discriminatorKEY = "discriminator";
-        String discoveredServiceListKEY = "DiscoveredServices";
-        String discoveryIdKEY = "DiscoveryId";
-        Intent fireIntent = new Intent();
         try {
-            fireIntent.putExtra(serviceIdKEY, gson.toJson(discoveryIncomingMessage.getRecipient()));
-            fireIntent.putExtra(discriminatorKEY, discoveryIncomingMessage.getCallbackType());
-            fireIntent.putExtra(discoveryIdKEY, discoveryIncomingMessage.discoveryId);
-            fireIntent.putExtra(discoveredServiceListKEY, discoveryIncomingMessage.discoveredList);
-            if (discoveryIncomingMessage.isSphereDiscovery) {
+            final Intent fireIntent = new Intent();
+            fireIntent.putExtra("service_id_tag", gson.toJson(discoveryIncomingMessage.getRecipient()));
+            fireIntent.putExtra("discriminator", discoveryIncomingMessage.getCallbackType());
+            fireIntent.putExtra("DiscoveryId", discoveryIncomingMessage.getDiscoveryId());
+            fireIntent.putExtra("DiscoveredServices", discoveryIncomingMessage.getDiscoveredList());
+            if (discoveryIncomingMessage.isSphereDiscovery()) {
                 fireIntentToSphere(fireIntent);
             } else {
                 fireIntentToService(fireIntent);
@@ -150,6 +123,4 @@ public class ProxyClientMessageHandler implements MessageHandler {
         }
         logger.error("Application Context is null, cant fire the  broadcast Intent intent!");
     }
-
-
 }

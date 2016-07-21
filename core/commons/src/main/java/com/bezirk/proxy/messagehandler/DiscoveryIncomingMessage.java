@@ -7,29 +7,27 @@ import com.bezirk.proxy.api.impl.ZirkId;
  * notification to the ProxyForBezirkLibrary.
  */
 public final class DiscoveryIncomingMessage extends ServiceIncomingMessage {
-    /**
-     * List of discoveredServices serialized as String
-     */
-    public String discoveredList;
-    /**
-     * Unique discovered id.
-     */
-    public int discoveryId;
-
-    public Boolean isSphereDiscovery;
-
-    public DiscoveryIncomingMessage() {
-        callbackDiscriminator = "DISCOVERY";
-    }
+    private final String discoveredList;
+    private final int discoveryId;
+    private final Boolean isSphereDiscovery;
 
     public DiscoveryIncomingMessage(ZirkId serviceId, String discoveredList, int discoveryId, Boolean isSphereDiscovery) {
-        super();
-        callbackDiscriminator = "DISCOVERY";
-        recipient = serviceId;
+        super("DISCOVERY", serviceId);
+
         this.discoveredList = discoveredList;
         this.discoveryId = discoveryId;
         this.isSphereDiscovery = isSphereDiscovery;
     }
 
+    public String getDiscoveredList() {
+        return discoveredList;
+    }
 
+    public int getDiscoveryId() {
+        return discoveryId;
+    }
+
+    public Boolean isSphereDiscovery() {
+        return isSphereDiscovery;
+    }
 }

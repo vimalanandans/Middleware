@@ -27,7 +27,7 @@ public class TestCBkForServicePC {
 
     @Test
     public void testFireEventCallback() {
-        EventIncomingMessage eventCallbackMessage = new EventIncomingMessage();
+        EventIncomingMessage eventCallbackMessage = new EventIncomingMessage(null, null, null, null, null);
         cBkForServicePC.onIncomingEvent(eventCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire eventCallback. ", receivedEvent);
@@ -35,20 +35,18 @@ public class TestCBkForServicePC {
 
     @Test
     public void testFireUnicastStreamCallback() {
-        StreamIncomingMessage unicastStreamCallbackMessage = new StreamIncomingMessage();
+        StreamIncomingMessage unicastStreamCallbackMessage = new StreamIncomingMessage(null, null, null, null, (short) 0, null);
         cBkForServicePC.onIncomingStream(unicastStreamCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire Unicast stream.", receivedUnicastStream);
-
     }
 
     @Test
     public void testFireStreamStatusCallback() {
-        StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage();
+        StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(null, 0, (short) 0);
         cBkForServicePC.onStreamStatus(streamStatusCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire stream status.", receivedStreamStatus);
-
     }
 
     private enum CallBackDiscriminator {
@@ -56,24 +54,15 @@ public class TestCBkForServicePC {
     }
 
     class BRForServiceMock implements BroadcastReceiver {
-
         @Override
         public void onReceive(ServiceIncomingMessage callbackMessage) {
-
             if (callbackMessage.getCallbackType().equalsIgnoreCase(CallBackDiscriminator.EVENT.name())) {
-
                 receivedEvent = true;
-
             } else if (callbackMessage.getCallbackType().equalsIgnoreCase(CallBackDiscriminator.STREAM_UNICAST.name())) {
-
                 receivedUnicastStream = true;
-
             } else if (callbackMessage.getCallbackType().equalsIgnoreCase(CallBackDiscriminator.STREAM_STATUS.name())) {
-
                 receivedStreamStatus = true;
             }
         }
-
-
     }
 }

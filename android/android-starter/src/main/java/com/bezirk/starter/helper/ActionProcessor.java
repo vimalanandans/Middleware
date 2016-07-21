@@ -50,7 +50,7 @@ public final class ActionProcessor {
                     processSendActions(intentAction, intent, ProxyService);
                     break;
                 case SERVICE_ACTION:
-                    processServiceActions(intentAction, intent, service, ProxyService);
+                    processServiceActions(intentAction, intent, ProxyService);
                     break;
                 default:
                     logger.warn("Received unknown intent action: " + intentAction.message);
@@ -126,7 +126,7 @@ public final class ActionProcessor {
                 MainStackHandler.getDevMode().getStatus();
     }
 
-    private void processServiceActions(IntentActions intentAction, Intent intent, MainService service, AndroidProxyServer ProxyService) {
+    private void processServiceActions(IntentActions intentAction, Intent intent, AndroidProxyServer ProxyService) {
         switch (intentAction) {
             case ACTION_BEZIRK_REGISTER:
                 ProxyService.registerService(intent);

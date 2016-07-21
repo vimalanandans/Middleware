@@ -11,28 +11,43 @@ import java.io.File;
  * ProxyForBezirk.
  */
 public final class StreamIncomingMessage extends ServiceIncomingMessage {
-    public String streamTopic;
-    public String serializedStream;
+    private final String streamTopic;
+    private final String serializedStream;
     /**
      * Path to downloaded file.
      */
-    public File file;
-    public short localStreamId;
-    public BezirkZirkEndPoint sender;
-
-    public StreamIncomingMessage() {
-        callbackDiscriminator = "STREAM_UNICAST";
-    }
+    private final File file;
+    private final short localStreamId;
+    private final BezirkZirkEndPoint sender;
 
     public StreamIncomingMessage(ZirkId recipientId, String streamTopic, String serializedStream,
                                  File file, short localStreamId, BezirkZirkEndPoint sender) {
-        super();
-        callbackDiscriminator = "STREAM_UNICAST";
-        recipient = recipientId;
+        super("STREAM_UNICAST", recipientId);
+
         this.streamTopic = streamTopic;
         this.serializedStream = serializedStream;
         this.file = file;
         this.localStreamId = localStreamId;
         this.sender = sender;
+    }
+
+    public String getStreamTopic() {
+        return streamTopic;
+    }
+
+    public String getSerializedStream() {
+        return serializedStream;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public short getLocalStreamId() {
+        return localStreamId;
+    }
+
+    public BezirkZirkEndPoint getSender() {
+        return sender;
     }
 }
