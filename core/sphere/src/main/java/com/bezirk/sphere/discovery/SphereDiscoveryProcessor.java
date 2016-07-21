@@ -44,16 +44,16 @@ public class SphereDiscoveryProcessor implements Runnable {
                 continue;
             }
 //			//Copy a list of pending discoveries
-            CopyOnWriteArrayList<com.bezirk.pubsubbroker.discovery.DiscoveryLabel> discoveryLabels;
+            CopyOnWriteArrayList<DiscoveryLabel> discoveryLabels;
 
             try {
-                discoveryLabels = new CopyOnWriteArrayList<com.bezirk.pubsubbroker.discovery.DiscoveryLabel>(SphereDiscoveryProcessor.discovery.getDiscoveredMap().keySet());
+                discoveryLabels = new CopyOnWriteArrayList<DiscoveryLabel>(SphereDiscoveryProcessor.discovery.getDiscoveredMap().keySet());
             } catch (InterruptedException e) {
                 this.stop();
                 continue;
             }
 
-            for (com.bezirk.pubsubbroker.discovery.DiscoveryLabel discoveryLabel : discoveryLabels) {
+            for (DiscoveryLabel discoveryLabel : discoveryLabels) {
                 SphereDiscoveryRecord discRecord;
                 try {
                     discRecord = discovery.getDiscoveredMap().get(discoveryLabel);
@@ -73,7 +73,7 @@ public class SphereDiscoveryProcessor implements Runnable {
 
     }
 
-    private void checkRequestTimeOutAndInvokeRequestor(com.bezirk.pubsubbroker.discovery.DiscoveryLabel discoveryLabel,
+    private void checkRequestTimeOutAndInvokeRequestor(DiscoveryLabel discoveryLabel,
                                                        SphereDiscoveryRecord discRecord) {
         long curTime = new Date().getTime();
         //If discovery request has timed out

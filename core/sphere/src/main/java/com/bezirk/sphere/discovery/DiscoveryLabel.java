@@ -1,4 +1,4 @@
-package com.bezirk.pubsubbroker.discovery;
+package com.bezirk.sphere.discovery;
 
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;

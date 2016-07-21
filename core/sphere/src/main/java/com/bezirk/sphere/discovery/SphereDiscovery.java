@@ -1,7 +1,6 @@
 package com.bezirk.sphere.discovery;
 
 import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
-import com.bezirk.pubsubbroker.discovery.DiscoveryLabel;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;

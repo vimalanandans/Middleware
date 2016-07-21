@@ -1,4 +1,4 @@
-package com.bezirk.pubsubbroker.discovery;
+package com.bezirk.sphere.discovery;
 
 
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
@@ -17,17 +17,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Discovery {
     private static final Logger logger = LoggerFactory.getLogger(Discovery.class);
 
-    private final ConcurrentMap<DiscoveryLabel, com.bezirk.pubsubbroker.discovery.DiscoveryRecord> discoveredMap;
+    private final ConcurrentMap<DiscoveryLabel, DiscoveryRecord> discoveredMap;
 
     private final Gson gson = new Gson();
 
     public MessageHandler messageHandler;
 
     public Discovery() {
-        discoveredMap = new ConcurrentHashMap<DiscoveryLabel, com.bezirk.pubsubbroker.discovery.DiscoveryRecord>();
+        discoveredMap = new ConcurrentHashMap<DiscoveryLabel, DiscoveryRecord>();
     }
 
-    public ConcurrentHashMap<DiscoveryLabel, com.bezirk.pubsubbroker.discovery.DiscoveryRecord> getDiscoveredMap() throws InterruptedException {
+    public ConcurrentHashMap<DiscoveryLabel, DiscoveryRecord> getDiscoveredMap() throws InterruptedException {
         synchronized (this) {
             while (discoveredMap.keySet().size() == 0) {
                 try {
@@ -47,7 +47,7 @@ public class Discovery {
         }
     }
 
-    public void addRequest(DiscoveryLabel discoveryLabel, com.bezirk.pubsubbroker.discovery.DiscoveryRecord disc, MessageHandler msgHandler) {
+    public void addRequest(DiscoveryLabel discoveryLabel, DiscoveryRecord disc, MessageHandler msgHandler) {
         synchronized (this) {
             discoveredMap.put(discoveryLabel, disc);
 
@@ -63,7 +63,7 @@ public class Discovery {
                     .getRecipient())) {
                 final DiscoveryLabel dLabel = new DiscoveryLabel(
                         response.getRecipient(), response.getReqDiscoveryId());
-                final com.bezirk.pubsubbroker.discovery.DiscoveryRecord discRecord = discoveredMap.get(dLabel);
+                final DiscoveryRecord discRecord = discoveredMap.get(dLabel);
                 if (ValidatorUtility.isObjectNotNull(discRecord)) {
                     //update discovered services list
                     discRecord.updateList(response.getZirkList());
