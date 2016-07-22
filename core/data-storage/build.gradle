@@ -12,5 +12,10 @@ dependencies {
     compile "com.google.code.gson:gson:2.2.4"
     compile 'org.apache.shiro:shiro-core:1.2.4'
     compile 'org.bouncycastle:bcprov-jdk15on:1.49'
+
+    //google guice dependency injection framework for component manager
+    compile group: 'com.google.inject', name: 'guice', version: '4.0'
+    compile group: 'com.google.inject.extensions', name: 'guice-assistedinject', version: '4.0'
+
     testCompile 'junit:junit:4.12'
 }
