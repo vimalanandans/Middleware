@@ -1,6 +1,5 @@
 package com.bezirk.starter;
 
-import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.util.ValidatorUtility;
 import com.bezrik.network.NetworkUtilities;
 import com.bezrik.network.IntfInetPair;
@@ -24,14 +23,13 @@ final class NetworkUtil {
     NetworkInterface fetchNetworkInterface(final BezirkConfig bezirkConfig)
             throws SocketException, NullPointerException {
 
+        JavaNetworkInterfacePreference networkInterfacePreference = new JavaNetworkInterfacePreference();
+
         // Resolve the NetworkInterface object for supplied InterfaceName
         NetworkInterface networkInterface =
-                resolveInterface(CommsConfigurations.getINTERFACE_NAME(), bezirkConfig);
+                resolveInterface(networkInterfacePreference.getStoredInterfaceName(), bezirkConfig);
 
-        // If we chose a different Interface than what is written in the
-        // config file and the config file is writable (it is not in a jar),
-        // then write the new interface name to the config file
-        updateInterfaceInPropsFile(networkInterface);
+        networkInterfacePreference.setStoredInterfaceName(networkInterface.getName());
 
         return networkInterface;
     }
@@ -152,46 +150,5 @@ final class NetworkUtil {
         return interfaceName;
     }
 
-    /**
-     * Update the comms.properties file with the chosen interface if possible.
-     * This is not possible if comms.properties is in a jar, in which case we do
-     * nothing and return <code>false</code>
-     *
-     * @param networkInterface
-     * @return <code>false</code> if the interface was not updated in the properties file
-     */
-    //todo: implement using preferences api
-    private boolean updateInterfaceInPropsFile(final NetworkInterface networkInterface) {
-//        try {
-//            final Properties properties = BezirkCommsPC.loadProperties();
-//
-//            // Get the path to the properties file
-//            final String path = DeviceInterface.class.getClassLoader()
-//                    .getResource(BezirkCommsPC.PROPS_FILE).getPath();
-//            final FileOutputStream output = new FileOutputStream(path);
-//
-//            /*
-//             * Write the interface name to comms.properties if a different
-//             * Interface was chosen and the config file was not loaded from a
-//             * jar (as signified by a "!" being in the path)
-//             */
-//            if (!networkInterface.getName().equals(BezirkCommsPC.PROPS_FILE)
-//                    && !path.contains("!")) {
-//                properties.setProperty("InterfaceName", networkInterface.getName());
-//                properties.store(output, null);
-//
-//                logger.info("Updated chosen interface in config file: " + path);
-//                return true;
-//            }
-//
-//            output.close();
-//            logger.debug("Did not update interface in config file: " + path);
-//        } catch (FileNotFoundException e) {
-//            logger.error("Properties file not found in default path.", e);
-//        } catch (Exception e) {
-//            logger.error("Exception in storing interface name to properties.", e);
-//        }
-        return false;
-    }
 
 }

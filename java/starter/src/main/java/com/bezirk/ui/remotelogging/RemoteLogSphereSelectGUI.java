@@ -1,7 +1,6 @@
 package com.bezirk.ui.remotelogging;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.remotelogging.RemoteLoggingManager;
 import com.bezirk.remotelogging.RemoteLoggingMessage;

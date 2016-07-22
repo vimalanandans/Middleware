@@ -23,8 +23,8 @@ public final class CommsConfigAndroid {
         AndroidDeviceInfo.setPreferences(pref.getSharedPreferences());
         //Initializes ports , Addresses and MaxBufferSize
         //Refer res/preferences.xml for values
-        CommsConfigurations.setINTERFACE_NAME(pref.getString("InterfaceName", null));
-        logger.info("InterfaceName:" + CommsConfigurations.getINTERFACE_NAME());
+        //CommsConfigurations.setINTERFACE_NAME(pref.getString("InterfaceName", null));
+       // logger.info("InterfaceName:" + CommsConfigurations.getINTERFACE_NAME());
         /*CommsConfigurations.setMULTICAST_ADDRESS(pref.getString("EMulticastAddress", null));
         logger.info("MulticastAddress " + CommsConfigurations.getMULTICAST_ADDRESS());
         CommsConfigurations.setMULTICAST_PORT(Integer.parseInt(pref.getString("EMulticastPort", "0")));

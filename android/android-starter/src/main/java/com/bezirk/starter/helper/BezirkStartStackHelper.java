@@ -5,7 +5,6 @@ import android.os.Environment;
 import android.widget.Toast;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsFeature;
 import com.bezirk.comms.CommsNotification;

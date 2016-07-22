@@ -102,7 +102,7 @@ public final class BezirkCommsPC {
         //overrideStringProperty("InterfaceName", props, bezirkConfig);
         //overrideStringProperty("displayEnable", props, bezirkConfig);
 
-        CommsConfigurations.setINTERFACE_NAME("en0");
+        //CommsConfigurations.setINTERFACE_NAME("en0");
       /*  CommsConfigurations.setMULTICAST_ADDRESS("224.5.6.7");
         CommsConfigurations.setMULTICAST_PORT(9999);
         CommsConfigurations.setUNICAST_PORT(8888);

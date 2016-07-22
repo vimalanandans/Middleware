@@ -1,6 +1,5 @@
 package com.bezirk.ui.commstest;
 
-import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.devices.DeviceForPC;
 import com.bezirk.devices.DeviceInterface;
 import com.bezrik.network.NetworkUtilities;
@@ -62,7 +61,7 @@ public class TestCommsTest {
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
                         NetworkUtilities.getIpForInterface(intf);
-                        CommsConfigurations.setINTERFACE_NAME(intf.toString());
+                       // CommsConfigurations.setINTERFACE_NAME(intf.toString());
 
                     }
 
