@@ -3,7 +3,7 @@
  */
 package com.bezirk.streaming.threads;
 
-import com.bezirk.comms.MessageQueue;
+import com.bezirk.streaming.MessageQueue;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;

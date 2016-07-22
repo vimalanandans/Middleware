@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.bezirk.comms;
+package com.bezirk.streaming;
 
 
 import com.bezirk.control.messages.Ledger;
