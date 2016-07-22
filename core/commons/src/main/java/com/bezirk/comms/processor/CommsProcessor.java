@@ -73,9 +73,9 @@ public abstract class CommsProcessor implements Comms {
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             PubSubBroker sadl, SphereSecurity sphereSecurity, Streaming streaming) {
+                             PubSubBroker pubSubBroker, SphereSecurity sphereSecurity, Streaming streaming) {
 
-        this.pubSubBroker = sadl;
+        this.pubSubBroker = pubSubBroker;
 
         msgDispatcher = new CommsMessageDispatcher(pubSubBroker);
 
