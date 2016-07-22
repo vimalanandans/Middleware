@@ -1,7 +1,6 @@
 package com.bezirk.starter;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsFactory;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.ZyreCommsManager;

@@ -1,6 +1,5 @@
 package com.bezirk.starter;
 
-import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 
 import org.junit.AfterClass;

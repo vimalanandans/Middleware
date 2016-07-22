@@ -2,6 +2,7 @@ package com.bezirk.ui.spheremanagement;
 
 import com.bezirk.devices.DeviceInterface;
 import com.bezirk.sphere.impl.SphereServiceManager;
+import com.bezirk.ui.util.TestUIMouseListener;
 import com.bezirk.util.BezirkVersion;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezrik.network.NetworkUtilities;
@@ -125,7 +126,7 @@ public class SphereManagementGUI extends JFrame {
         warningLbl.setBounds(new Rectangle(20, 20, 1600, 40));
         warningLbl.setVisible(false);
 
-        final com.bezirk.util.TestUIMouseListener testUIMouseListener = new com.bezirk.util.TestUIMouseListener("sphereUI", null, 0, misMatchVersion, bezirkDevice);
+        final TestUIMouseListener testUIMouseListener = new TestUIMouseListener("sphereUI",  0, misMatchVersion, bezirkDevice);
 
         warningLbl.addMouseListener(testUIMouseListener);
         return warningLbl;

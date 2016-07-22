@@ -1,7 +1,6 @@
 package com.bezirk.util;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.datastorage.PubSubBrokerStorage;
 import com.bezirk.datastorage.RegistryStorage;
@@ -68,7 +67,7 @@ public class MockSetUpUtilityForBezirkPC {
                 dbConnection, DBVersion);
 
         inetAddr = getInetAddress();
-        BezirkCommsPC.init();
+
 
         spherePersistence = (SpherePersistence) regPersistence;
         sphereRegistry = new SphereRegistry();
