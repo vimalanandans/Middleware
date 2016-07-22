@@ -1,7 +1,7 @@
 package com.bezirk.devices;
 
 import com.bezirk.middleware.addressing.Location;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 import org.apache.shiro.codec.Hex;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class DeviceForPC implements DeviceInterface {
         deviceDetails = new DeviceDetails();
         String deviceName;
         deviceName = fetchDeviceName();
-        deviceDetails.setDeviceId(Hex.encodeToString(BezirkNetworkUtilities
+        deviceDetails.setDeviceId(Hex.encodeToString(NetworkUtilities
                 .getLocalMACAddress()));
         deviceDetails.setDeviceName(deviceName);
         deviceDetails.setDeviceLocation(deviceLocation);

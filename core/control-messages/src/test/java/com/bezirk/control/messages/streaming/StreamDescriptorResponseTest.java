@@ -4,7 +4,7 @@ import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.streaming.control.Objects.StreamRecord.StreamingStatus;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -34,7 +34,7 @@ public class StreamDescriptorResponseTest {
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceBId);
     private static InetAddress inetAddr;
     private String strmKey = "STREAM_KEY";
-    private String streamIp = BezirkNetworkUtilities.getDeviceIp();
+    private String streamIp = NetworkUtilities.getDeviceIp();
     private int streamPort = 7999;
 
     /**
@@ -71,7 +71,7 @@ public class StreamDescriptorResponseTest {
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
 
-                        inetAddr = BezirkNetworkUtilities.getIpForInterface(intf);
+                        inetAddr = NetworkUtilities.getIpForInterface(intf);
                         return inetAddr;
                     }
 

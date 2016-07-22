@@ -3,12 +3,10 @@ package com.bezirk.comms.processor;
 
 
 import com.bezirk.comms.Comms;
-import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.CommsMessageDispatcher;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.pipe.PipeManager;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.Streaming;
@@ -25,11 +23,10 @@ import com.bezirk.comms.CommsFeature;
 
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.sphere.api.SphereServiceAccess;
 //import com.bezirk.sphere.security.UPABlockCipherService;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.TextCompressor;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -592,7 +589,7 @@ public abstract class CommsProcessor implements Comms {
     //enable the above code later. Quickfix network device id is taken as local ip as of now
     // for zyre this needs to return from actual comms
     public String getDeviceId() {
-        return BezirkNetworkUtilities.getDeviceIp();
+        return NetworkUtilities.getDeviceIp();
     }
 
     //public abstract String getDeviceId();
@@ -601,7 +598,7 @@ public abstract class CommsProcessor implements Comms {
     // for zyre this needs to return from actual comms
     public boolean isLocalMessage(String deviceId) {
 
-        return deviceId.equals(BezirkNetworkUtilities.getDeviceIp());
+        return deviceId.equals(NetworkUtilities.getDeviceIp());
     }
 
     //public abstract String isLocalMessage();

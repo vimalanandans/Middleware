@@ -11,7 +11,7 @@ import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.store.StreamStore;
 import com.bezirk.streaming.threads.StreamReceivingThread;
 import com.bezirk.util.ValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +65,7 @@ final class BezirkStreamHandler {
                 + streamRequest.getRecipient().zirkId);
 
         //send device Ip
-        String streamIp = BezirkNetworkUtilities.getLocalInet().getHostAddress();
+        String streamIp = NetworkUtilities.getLocalInet().getHostAddress();
 
         StreamResponse streamResponse = new StreamResponse(
                 streamRequest.getRecipient(), streamRequest.getSender(),

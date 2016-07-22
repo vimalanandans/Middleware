@@ -163,12 +163,12 @@ public class DeviceControlActivity extends ActionBarActivity
                 intent = new Intent(context, MainService.class);
                 switch (dataModel.getImageId()) {
                     case R.drawable.upa_control: // Bezirk On/OFF
-                        action = checkStatus ? BezirkActions.ACTION_START_BEZIRK : BezirkActions.ACTION_STOP_BEZIRK;
+                        action = checkStatus ? BezirkActions.ACTION_START_BEZIRK.getName() : BezirkActions.ACTION_STOP_BEZIRK.getName();
                         intent.setAction(action);
                         startService(intent);
                         break;
                     case R.drawable.ic_action_dev_mode: //dev mode on/off
-                        action = checkStatus ? BezirkActions.ACTION_DEV_MODE_ON : BezirkActions.ACTION_DEV_MODE_OFF;
+                        action = checkStatus ? BezirkActions.ACTION_DEV_MODE_ON.getName() : BezirkActions.ACTION_DEV_MODE_OFF.getName();
                         intent.setAction(action);
                         startService(intent);
                         break;

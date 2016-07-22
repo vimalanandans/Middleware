@@ -9,7 +9,7 @@ import com.bezirk.sphere.api.CryptoInternals;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.security.SphereKeys;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -357,7 +357,7 @@ public class CatchProcessor {
                         deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
                         (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
 
-                sphereCatchRequest = new CatchRequest(BezirkNetworkUtilities.getServiceEndPoint(null), inviterShortCode,
+                sphereCatchRequest = new CatchRequest(NetworkUtilities.getServiceEndPoint(null), inviterShortCode,
                         catcherSphereId, catcherBezirkDeviceInfo, sphereExchangeData);
 
                 return sphereCatchRequest;
@@ -474,7 +474,7 @@ public class CatchProcessor {
                             (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
 
                     // FIXME: send unicast for device
-                    CatchResponse response = new CatchResponse(BezirkNetworkUtilities.getServiceEndPoint(null),
+                    CatchResponse response = new CatchResponse(NetworkUtilities.getServiceEndPoint(null),
                             catcherSphereId, catcherDeviceId, inviterSphereDeviceInfo);
 
                     logger.debug("Response prepared");

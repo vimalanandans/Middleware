@@ -3,7 +3,7 @@ package com.bezirk.ui.commstest;
 import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.devices.DeviceForPC;
 import com.bezirk.devices.DeviceInterface;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +61,7 @@ public class TestCommsTest {
                     if (!inetAddress.isLoopbackAddress()
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
-                        BezirkNetworkUtilities.getIpForInterface(intf);
+                        NetworkUtilities.getIpForInterface(intf);
                         CommsConfigurations.setINTERFACE_NAME(intf.toString());
 
                     }

@@ -5,7 +5,7 @@ import com.bezirk.ui.commstest.IUpdateResponse;
 import com.bezirk.ui.commstest.PongMessage;
 import com.bezirk.ui.commstest.UIStore;
 import com.bezirk.util.ValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -41,7 +41,7 @@ public class UnicastReceiver extends Thread {
         try {
             intf = NetworkInterface.getByName(CommsConfigurations.getINTERFACE_NAME());
             addr = ValidatorUtility.isObjectNotNull(intf) ? null
-                    : BezirkNetworkUtilities.getIpForInterface(intf);
+                    : NetworkUtilities.getIpForInterface(intf);
             if (addr == null) {
                 logger.error("ERROR IN STARTING UNICAST LISTENER");
             }

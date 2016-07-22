@@ -11,7 +11,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -66,7 +66,7 @@ public class BezirkMessageDispatcherTest {
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
 
-                        inetAddr = BezirkNetworkUtilities.getIpForInterface(intf);
+                        inetAddr = NetworkUtilities.getIpForInterface(intf);
                         return inetAddr;
                     }
 

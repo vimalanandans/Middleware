@@ -27,7 +27,7 @@ import com.bezirk.starter.MainService;
 import com.bezirk.starter.MainStackPreferences;
 import com.bezirk.starter.StackHandler;
 import com.bezirk.util.ValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 import com.bezrik.network.IntfInetPair;
 
 import org.slf4j.Logger;
@@ -227,7 +227,7 @@ public final class MainStackHandler implements StackHandler {
         try {
             final NetworkInterface networkInterface = NetworkInterface.getByName(CommsConfigurations.getINTERFACE_NAME());
             inetAddress = networkInterface != null ?
-                    BezirkNetworkUtilities.getIpForInterface(networkInterface) : null;
+                    NetworkUtilities.getIpForInterface(networkInterface) : null;
 
             if (inetAddress == null) {
                 logger.error("Could not resolve ip - Check InterfaceName in preferences.xml\n" +
@@ -246,7 +246,7 @@ public final class MainStackHandler implements StackHandler {
     private String createInfInetPairsMessage() {
         final StringBuilder interfacePairs = new StringBuilder();
 
-        for (IntfInetPair pair : BezirkNetworkUtilities.getIntfInetPair()) {
+        for (IntfInetPair pair : NetworkUtilities.getIntfInetPair()) {
             if (interfacePairs.length() > 0) interfacePairs.append("\n");
             interfacePairs.append("Interface: " + pair.getIntf().getName() + " IP:" + pair.getInet().getHostAddress());
         }

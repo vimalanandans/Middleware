@@ -16,7 +16,7 @@ import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -152,7 +152,7 @@ public class DiscoveryProcessor {
         // TODO discuss, for now hardcoded for test
         final String serviceIdStr = "______SPHERESCANNER#1";
         final ZirkId serviceId = new ZirkId(serviceIdStr);
-        final BezirkZirkEndPoint sender = BezirkNetworkUtilities.getServiceEndPoint(serviceId);
+        final BezirkZirkEndPoint sender = NetworkUtilities.getServiceEndPoint(serviceId);
         logger.debug("Discovery initiator device : " + sender.device);
 
         // Assign discovery Id
@@ -218,7 +218,7 @@ public class DiscoveryProcessor {
     }
 
     private boolean validateRequest(DiscoveryRequest discoveryRequest) {
-        if (discoveryRequest.getSender().device.equals(BezirkNetworkUtilities.getDeviceIp())) {
+        if (discoveryRequest.getSender().device.equals(NetworkUtilities.getDeviceIp())) {
             logger.debug("Msg from same device, ignoring discovery request");
             return false;
         }

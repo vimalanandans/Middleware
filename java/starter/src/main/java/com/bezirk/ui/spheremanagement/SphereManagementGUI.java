@@ -4,7 +4,7 @@ import com.bezirk.devices.DeviceInterface;
 import com.bezirk.sphere.impl.SphereServiceManager;
 import com.bezirk.util.BezirkVersion;
 import com.bezirk.sphere.api.SphereAPI;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezrik.network.NetworkUtilities;
 import com.bezrik.network.IntfInetPair;
 
 import org.slf4j.Logger;
@@ -173,7 +173,7 @@ public class SphereManagementGUI extends JFrame {
     }
 
     private void selectInterface() {
-        final Iterator<IntfInetPair> itr = BezirkNetworkUtilities.getIntfInetPair()
+        final Iterator<IntfInetPair> itr = NetworkUtilities.getIntfInetPair()
                 .iterator();
         final List<String> temp = new ArrayList<String>();
         IntfInetPair pair;
