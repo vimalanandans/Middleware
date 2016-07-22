@@ -176,26 +176,10 @@ public class MainService {
     public void startStack(final MessageHandler messageHandler) {
         logger.info("BezirkStarter has started");
 
-        /**************************************************
-         * Step1 : Go to step 2 :)                            *
-         **************************************************/
-        //
+
 
         /**************************************************
-         * Step2 : Configure BezirkCommsPC                   *
-         **************************************************/
-        try {
-            // Initialize Comms, which reads properties including
-            // InterfaceName from config file. Any system properties will
-            // override those written in the config file
-            BezirkCommsPC.init(bezirkConfig);
-
-        } catch (Exception e) {
-            serviceStarterHelper.fail("Problem initializing CommsConfigurations", e);
-        }
-
-        /**************************************************
-         * Step3 : Determine NetworkInterface             *
+         * Step1 : Determine NetworkInterface             *
          **************************************************/
 
         NetworkInterface intf = null;
@@ -206,18 +190,18 @@ public class MainService {
         }
 
         /**************************************************
-         * Step4 : Initialize Registry Persistence        *
+         * Step2 : Initialize Registry Persistence        *
          **************************************************/
         initializeRegistryPersistence();
 
         /**************************************************
-         * Step5 :Create and configure the Device      *
+         * Step3 :Create and configure the Device      *
          **************************************************/
         final Device bezirkDevice = serviceStarterHelper
                 .configureBezirkDevice(this.bezirkConfig);
 
         /**************************************************
-         * Step6 : Create PubSubBroker                  *
+         * Step4 : Create PubSubBroker                  *
          **************************************************/
         final PubSubBroker pubSubBroker = new PubSubBroker(
                 registryPersistence, bezirkDevice);
@@ -226,7 +210,7 @@ public class MainService {
         proxyServer.setPubSubBrokerService(pubSubBroker);
 
         /**************************************************
-         * Step7 :Initialize the comms.                   *
+         * Step5 :Initialize the comms.                   *
          **************************************************/
         final boolean isCommsInitialized = initComms(messageHandler, intf,
                 pubSubBroker);
@@ -236,7 +220,7 @@ public class MainService {
 
 
         /**************************************************
-         * Step8 :Initialize sphere                       *
+         * Step6 :Initialize sphere                       *
          **************************************************/
 
         if (ValidatorUtility.isObjectNotNull(bezirkDevice)) {
@@ -258,7 +242,7 @@ public class MainService {
 
 
         /**************************************************
-         * Step9 :Display or save Share sphere QR code    *
+         * Step7 :Display or save Share sphere QR code    *
          * Enable LoggingGUI                              *
          **************************************************/
         displayQRCode(bezirkDevice);

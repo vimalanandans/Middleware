@@ -47,7 +47,7 @@ public class NetworkUtilTest {
         NetworkUtil networkUtil = new NetworkUtil();
         BezirkConfig bezirkConfig = new BezirkConfig();
 
-        BezirkCommsPC.init();
+       // BezirkCommsPC.init();
         NetworkInterface intf = null;
         try {
             intf = networkUtil.fetchNetworkInterface(bezirkConfig);

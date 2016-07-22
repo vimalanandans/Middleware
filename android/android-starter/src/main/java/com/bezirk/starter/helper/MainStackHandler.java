@@ -7,7 +7,6 @@ import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.comms.CommsConfigAndroid;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.datastorage.RegistryStorage;
@@ -144,10 +143,10 @@ public final class MainStackHandler implements StackHandler {
                     ProxyClientMessageHandler serviceMessageHandler = new ProxyClientMessageHandler(service.getApplicationContext());
 
                     /*************************************************************
-                     * Step 3 :  Initialize BezirkCommsForAndroid with preferences  *
+                     * Step 3 :  Initialize preferences  *
                      *************************************************************/
                     MainStackPreferences preferences = new MainStackPreferences(service);
-                    CommsConfigAndroid.init(preferences);
+
 
                     /*************************************************************
                      * Step 4 : Initialize Registry Persistence                  *
@@ -228,12 +227,7 @@ public final class MainStackHandler implements StackHandler {
         MainStackPreferences preferences = new MainStackPreferences(service);
 
         AndroidNetworkInterfacePreference networkPreference = new AndroidNetworkInterfacePreference(preferences);
-     /*   String ifName = networkPreference.getStoredInterfaceName();
 
-        if(ifName == null )
-        {
-            ifName = AndroidNetworkInterfacePreference.defaultAndroidInterface;
-        }*/
 
         try {
             final NetworkInterface networkInterface = NetworkInterface.getByName(networkPreference.getStoredInterfaceName());

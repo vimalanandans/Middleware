@@ -5,7 +5,7 @@ import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
 import com.bezirk.devices.DeviceInterface;
 import com.bezirk.sphere.AndroidSphereServiceManager;
-import com.bezirk.sphere.SphereProperties;
+import com.bezirk.sphere.AndroidSpherePreference;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereConfig;
@@ -75,7 +75,7 @@ public final class SphereHandler {
 
             bezirkSphereForAndroid.setSphereListener(bezirkSphereForAndroid);
 
-            SphereConfig sphereConfig = new SphereProperties(preferences);
+            SphereConfig sphereConfig = new AndroidSpherePreference(preferences);
             sphereConfig.init();
 
             if (!(bezirkSphereForAndroid.initSphere(spherePersistence, MainStackHandler.getBezirkComms()))) {
