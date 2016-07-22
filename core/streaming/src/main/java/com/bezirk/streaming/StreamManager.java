@@ -1,9 +1,7 @@
 package com.bezirk.streaming;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.comms.MessageQueue;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.streaming.StreamRequest;

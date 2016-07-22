@@ -3,7 +3,6 @@
  */
 package com.bezirk.streaming.port;
 
-import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.streaming.store.StreamStore;

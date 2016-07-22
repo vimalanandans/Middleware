@@ -43,7 +43,7 @@ public class AndroidSphereServiceManager extends SphereServiceManager implements
     private void initializeSphereConfig() {
         if (sphereConfig == null) {
             logger.info("Initializing the SphereConfig");
-            sphereConfig = new SphereProperties(preferences);
+            sphereConfig = new AndroidSpherePreference(preferences);
             sphereConfig.init();
         }
     }

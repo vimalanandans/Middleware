@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 //TODO synchronise implementation with JavaPrefs api.
-public class SphereProperties extends SpherePrefs {
-    private static final Logger logger = LoggerFactory.getLogger(SphereProperties.class);
+public class AndroidSpherePreference extends SpherePrefs {
+    private static final Logger logger = LoggerFactory.getLogger(AndroidSpherePreference.class);
     /* Keys used in sphere.properties */
 //    private static final String SPHERE_NAME = "sphereName";
 //    private static final String SPHERE_ID = "sphereId";
@@ -28,7 +28,7 @@ public class SphereProperties extends SpherePrefs {
     /**
      * @param preferences: should not be null
      */
-    public SphereProperties(MainStackPreferences preferences) {
+    public AndroidSpherePreference(MainStackPreferences preferences) {
         this.preferences = preferences;
     }
 

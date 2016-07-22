@@ -7,8 +7,6 @@ import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.comms.CommsConfigAndroid;
-import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.datastorage.RegistryStorage;
@@ -22,6 +20,7 @@ import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.AndroidSphereServiceManager;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SphereAPI;
+import com.bezirk.starter.AndroidNetworkInterfacePreference;
 import com.bezirk.starter.BezirkWifiManager;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.MainStackPreferences;
@@ -144,10 +143,10 @@ public final class MainStackHandler implements StackHandler {
                     ProxyClientMessageHandler serviceMessageHandler = new ProxyClientMessageHandler(service.getApplicationContext());
 
                     /*************************************************************
-                     * Step 3 :  Initialize BezirkCommsForAndroid with preferences  *
+                     * Step 3 :  Initialize preferences  *
                      *************************************************************/
                     MainStackPreferences preferences = new MainStackPreferences(service);
-                    CommsConfigAndroid.init(preferences);
+
 
                     /*************************************************************
                      * Step 4 : Initialize Registry Persistence                  *
@@ -222,10 +221,16 @@ public final class MainStackHandler implements StackHandler {
     }
 
     private InetAddress fetchInetAddress(MainService service) {
+
         InetAddress inetAddress = null;
 
+        MainStackPreferences preferences = new MainStackPreferences(service);
+
+        AndroidNetworkInterfacePreference networkPreference = new AndroidNetworkInterfacePreference(preferences);
+
+
         try {
-            final NetworkInterface networkInterface = NetworkInterface.getByName(CommsConfigurations.getINTERFACE_NAME());
+            final NetworkInterface networkInterface = NetworkInterface.getByName(networkPreference.getStoredInterfaceName());
             inetAddress = networkInterface != null ?
                     NetworkUtilities.getIpForInterface(networkInterface) : null;
 
@@ -233,6 +238,7 @@ public final class MainStackHandler implements StackHandler {
                 logger.error("Could not resolve ip - Check InterfaceName in preferences.xml\n" +
                         "Possible interface and ip pairs are: {}\n" +
                         "SHUTTING DOWN BEZIRK", createInfInetPairsMessage());
+                // TODO : implement the selecting the interface and storing the same
                 service.onDestroy();
             }
         } catch (SocketException e) {

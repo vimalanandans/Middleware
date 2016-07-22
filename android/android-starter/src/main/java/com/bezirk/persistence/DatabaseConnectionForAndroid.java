@@ -1,4 +1,4 @@
-package com.bezirk.persistence.util;
+package com.bezirk.persistence;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

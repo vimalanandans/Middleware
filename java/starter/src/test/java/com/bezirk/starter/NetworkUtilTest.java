@@ -1,6 +1,5 @@
 package com.bezirk.starter;
 
-import com.bezirk.comms.BezirkCommsPC;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 
 import org.junit.AfterClass;
@@ -47,7 +46,7 @@ public class NetworkUtilTest {
         NetworkUtil networkUtil = new NetworkUtil();
         BezirkConfig bezirkConfig = new BezirkConfig();
 
-        BezirkCommsPC.init();
+       // BezirkCommsPC.init();
         NetworkInterface intf = null;
         try {
             intf = networkUtil.fetchNetworkInterface(bezirkConfig);

@@ -3,7 +3,6 @@
  */
 package com.bezirk.streaming.threads;
 
-import com.bezirk.comms.CommsConfigurations;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.PortFactory;
 import com.bezirk.control.messages.streaming.StreamRequest;
