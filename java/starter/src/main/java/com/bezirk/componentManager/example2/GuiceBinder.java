@@ -1,4 +1,4 @@
-package com.bezirk.componentManager.example;
+package com.bezirk.componentManager.example2;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;

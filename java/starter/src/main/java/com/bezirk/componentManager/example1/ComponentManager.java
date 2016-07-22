@@ -1,4 +1,4 @@
-package com.bezirk.componentManager.example;
+package com.bezirk.componentManager.example1;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;

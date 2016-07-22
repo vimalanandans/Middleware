@@ -2,6 +2,8 @@ package com.bezirk.persistence;
 
 import com.bezirk.datastorage.DatabaseConnection;
 import com.bezirk.datastorage.PersistenceConstants;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -15,6 +17,11 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
 
     private final String dbFilePath;
     private Dao<com.bezirk.datastorage.PersistenceRegistry, Integer> bezirkPersistenceDao;
+
+    @Inject
+    private DatabaseConnectionForJava(){
+        this.dbFilePath = ".";
+    }
 
     public DatabaseConnectionForJava(String dbFileLocation) {
         dbFilePath = dbFileLocation;

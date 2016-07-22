@@ -1,32 +1,21 @@
-package com.bezirk.componentManager;
+package com.bezirk.componentManager.example2;
 
-import com.bezirk.datastorage.RegistryStorage;
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
-
-import javax.inject.Inject;
-
-/**
- * This class is used for
- * <ul>
- * <li>Managing Bezirk lifecycle, eg. create, start, pause, stop, destroy, etc</li>
- * <li>Injecting dependencies among various components</li>
- * <li>Launching Bezirk with some pre-defined configurations regarding which components to be initialized and injected</li>
- * </ul>
- */
-
 
 public class ComponentManager {
 
     @Inject
-    private RegistryStorageFactory registryStorageFactory;
+    private ComponentAFactory componentAFactory;
 
     @Inject
     private ComponentManager() {
     }
 
     public void start() {
-        RegistryStorage registryStorage = registryStorageFactory.createRS("0.0.5");
+        ComponentA componentA = this.componentAFactory.create("string-input-1", "string-input-2");
+        componentA.methodA();
     }
 
     public static void main(String[] args) {
