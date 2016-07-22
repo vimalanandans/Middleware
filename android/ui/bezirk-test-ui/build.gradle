@@ -49,7 +49,6 @@ dependencies {
 */
     compile project(':core')
     compile project(':core:commons')
-    compile project(':core:actions')
     //}
     compile project(':android:android-starter')
     compile project(':android:android-libraries:android-comms-zyre-jni')

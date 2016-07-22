@@ -123,8 +123,6 @@ public abstract class Message {
         private static final Gson gson;
 
         static {
-//            GsonBuilder gsonBuilder = new GsonBuilder();
-//            gsonBuilder.registerTypeHierarchyAdapter(ZirkEndPoint.class, new InterfaceAdapter<ZirkEndPoint>());
             gson = new Gson();
         }
 

@@ -6,7 +6,6 @@ import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezrik.network.NetworkUtilities;
 
 import org.junit.BeforeClass;
@@ -74,26 +73,7 @@ public class ValidatorUtilityTest {
     }
 
     @Test
-    public void test() {
-
-        testCheckDiscoveryRequest();
-
-        testCheckHeader();
-
-        testCheckProtocolRole();
-
-        testCheckRTCStreamRequest();
-
-        testCheckStreamRequest();
-
-        testCheckBezirkServiceId();
-
-        testCheckBezirkServiceEndPoint();
-
-
-    }
-
-    private void testCheckBezirkServiceEndPoint() {
+    public void testCheckBezirkServiceEndPoint() {
 
 		/*-------------- Positive cases --------------*/
         isValid = ValidatorUtility.checkBezirkZirkEndPoint(recipient);
@@ -116,7 +96,8 @@ public class ValidatorUtilityTest {
 
     }
 
-    private void testCheckBezirkServiceId() {
+    @Test
+    public void testCheckBezirkServiceId() {
 
 		/*-------------- Positive cases --------------*/
         isValid = ValidatorUtility.checkBezirkZirkId(zirkId);
@@ -130,7 +111,8 @@ public class ValidatorUtilityTest {
         assertFalse("Null serviceID is considered valid by validator", isValid);
     }
 
-    private void testCheckStreamRequest() {
+    @Test
+    public void testCheckStreamRequest() {
 
 		/*-------------- Positive cases --------------*/
         StreamRequest request = new StreamRequest(sender, recipient, sphereId,
@@ -176,7 +158,8 @@ public class ValidatorUtilityTest {
 
     }
 
-    private void testCheckRTCStreamRequest() {
+    @Test
+    public void testCheckRTCStreamRequest() {
 
 		/*-------------- Positive cases --------------*/
         isValid = ValidatorUtility.checkRTCStreamRequest(zirkId, recipient);
@@ -191,12 +174,12 @@ public class ValidatorUtilityTest {
 
     }
 
-    private void testCheckProtocolRole() {
+    @Test
+    public void testCheckProtocolRole() {
 
 		/*-------------- Positive cases --------------*/
         MockProtocolRole pRole = new MockProtocolRole();
-        SubscribedRole role = new SubscribedRole(pRole);
-        isValid = ValidatorUtility.checkProtocolRole(role);
+        isValid = ValidatorUtility.checkProtocolRole(pRole);
         assertTrue("Valid protocolrole is considered invalie by validator.", isValid);
 
 		/*-------------- Negative cases --------------*/
@@ -204,13 +187,13 @@ public class ValidatorUtilityTest {
         assertFalse("Null protocolrole is considered valid by validator.", isValid);
 
         pRole.setProtocolName(null);
-        role = new SubscribedRole(pRole);
-        isValid = ValidatorUtility.checkProtocolRole(role);
+        isValid = ValidatorUtility.checkProtocolRole(pRole);
         assertFalse("Null protocolrole is considered valid by validator.", isValid);
 
     }
 
-    private void testCheckHeader() {
+    @Test
+    public void testCheckHeader() {
 
 		/*-------------- Positive cases --------------*/
         Header mHeader = new Header(sphereId, sender, "12", "test");
@@ -233,7 +216,8 @@ public class ValidatorUtilityTest {
 
     }
 
-    private void testCheckDiscoveryRequest() {
+    @Test
+    public void testCheckDiscoveryRequest() {
 
 		/*-------------- Positive cases --------------*/
         DiscoveryRequest discoveryRequest = new DiscoveryRequest(sphereId, sender, null, null, 2, 90000, 3);

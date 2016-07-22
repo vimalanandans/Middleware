@@ -37,21 +37,8 @@ android {
 
 dependencies {
     compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
-    //compile "com.android.support:support-v4:${project.androidSupportLibraryVersion}"
 
-/*    if (project.local == "false") {
-
-        compile "com.bezirk:commons:${version}"
-        compile "com.bezirk:actions:${version}"
-        compile("com.bezirk:pipes:${version}")
-
-    } else {
-*/
-    compile project(':core')
     compile project(':core:commons')
-    compile project(':core:actions')
-//    compile project(':core:pipes')
-    //}
     compile project(':android:android-starter')
     compile project(':android:ui:sphere-pipe-ui')
     compile project(':android:android-libraries:android-comms-zyre-jni')

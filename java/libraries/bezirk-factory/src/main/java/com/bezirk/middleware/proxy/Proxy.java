@@ -15,7 +15,6 @@ import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.ProxyRegistry;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.ServiceRegistrationUtil;
 import com.bezirk.starter.MainService;
 import com.bezirk.util.ValidatorUtility;
@@ -84,7 +83,7 @@ public class Proxy implements Bezirk {
 
         zirkId = new ZirkId(zirkIdAsString);
         // Register with Bezirk
-        proxy.registerService(zirkId, zirkName);
+        proxy.registerZirk(zirkId, zirkName);
         return true;
     }
 
@@ -130,11 +129,9 @@ public class Proxy implements Bezirk {
         } else {
             logger.info("No Streams to Subscribe");
         }
-        // Send the intent
-        SubscribedRole subRole = new SubscribedRole(protocolRole);
 
         //Subscribe to protocol
-        proxy.subscribeService(zirkId, subRole);
+        proxy.subscribeService(zirkId, protocolRole);
     }
 
     @Override
@@ -143,7 +140,7 @@ public class Proxy implements Bezirk {
             throw new IllegalArgumentException("Cannot unsubscribe from a null role");
         }
 
-        return proxy.unsubscribe(zirkId, new SubscribedRole(protocolRole));
+        return proxy.unsubscribe(zirkId, protocolRole);
     }
 
     @Override
@@ -162,7 +159,7 @@ public class Proxy implements Bezirk {
             throw new IllegalArgumentException("Cannot send a null event");
         }
 
-        proxy.sendMulticastEvent(zirkId, recipient, event.toJson(), event.topic);
+        proxy.sendMulticastEvent(zirkId, recipient, event);
     }
 
     @Override
@@ -177,17 +174,13 @@ public class Proxy implements Bezirk {
             throw new IllegalArgumentException("Cannot send a null event");
         }
 
-        proxy.sendUnicastEvent(zirkId, (BezirkZirkEndPoint) recipient, event.toJson(), event.topic);
+        proxy.sendUnicastEvent(zirkId, (BezirkZirkEndPoint) recipient, event);
     }
 
     @Override
     public short sendStream(ZirkEndPoint recipient,
                             StreamDescriptor streamDescriptor, PipedOutputStream dataStream) {
-        short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
-        activeStreams.put(zirkId.getZirkId() + streamId, streamDescriptor.topic);
-        BezirkZirkEndPoint recipientSEP = (BezirkZirkEndPoint) recipient;
-        proxy.sendStream(zirkId, recipientSEP, streamDescriptor.toJson(), streamId);
-        return streamId;
+        throw new UnsupportedOperationException("Calling sendStream with a PipedOutputStream is current unimplemented.");
     }
 
     @Override
@@ -212,7 +205,7 @@ public class Proxy implements Bezirk {
 
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
         activeStreams.put(zirkId.getZirkId() + streamId, streamDescriptor.topic);
-        proxy.sendStream(zirkId, (BezirkZirkEndPoint) recipient, streamDescriptor.toJson(), file, streamId);
+        proxy.sendStream(zirkId, (BezirkZirkEndPoint) recipient, streamDescriptor, file, streamId);
         return streamId;
     }
 

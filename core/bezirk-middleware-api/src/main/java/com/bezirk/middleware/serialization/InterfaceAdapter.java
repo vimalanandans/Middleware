@@ -22,7 +22,7 @@ public class InterfaceAdapter<T> implements JsonSerializer<T>, JsonDeserializer<
 
     @Override
     public T deserialize(JsonElement elem, Type interfaceType, JsonDeserializationContext context) throws JsonParseException {
-        final JsonObject wrapper = (JsonObject) elem;
+        final JsonObject wrapper = elem.getAsJsonObject();
         final JsonElement typeName = get(wrapper, "type");
         final JsonElement data = get(wrapper, "data");
         final Type actualType = typeForName(typeName);

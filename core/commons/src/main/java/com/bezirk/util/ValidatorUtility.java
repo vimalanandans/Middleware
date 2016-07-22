@@ -3,8 +3,8 @@ package com.bezirk.util;
 import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.streaming.StreamRequest;
+import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.SubscribedRole;
 import com.bezirk.proxy.api.impl.ZirkId;
 
 /**
@@ -52,7 +52,7 @@ public final class ValidatorUtility {
      * @param role protocolRole that should be validated
      * @return true if valid, false otherwise
      */
-    public static boolean checkProtocolRole(final SubscribedRole role) {
+    public static boolean checkProtocolRole(final ProtocolRole role) {
         return !(null == role || !checkForString(role.getRoleName()));
     }
 

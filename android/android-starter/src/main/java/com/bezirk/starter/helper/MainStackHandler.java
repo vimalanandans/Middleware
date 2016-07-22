@@ -195,8 +195,8 @@ public final class MainStackHandler implements StackHandler {
                             sphereProcessorForMainService.getSphereSecurity());
 
                     // set proxy handler
-                    AndroidProxyServer proxyIntend = (AndroidProxyServer) proxy;
-                    proxyIntend.InitProxyServerIntend(serviceMessageHandler);
+                    AndroidProxyServer proxyServer = (AndroidProxyServer) proxy;
+                    proxyServer.setMessageHandler(serviceMessageHandler);
                     /*************************************************************
                      * Step 9 : Start CommsConfigurations after sphere initialization       *
                      *************************************************************/

@@ -19,7 +19,6 @@ import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.proxy.api.impl.SubscribedRole;
 
 import com.bezirk.remotelogging.RemoteLog;
 import com.bezirk.sphere.api.SphereSecurity;
@@ -74,7 +73,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     /* (non-Javadoc)
-     * @see com.bezirk.api.sadl.PubSubBrokerServiceTrigger#registerService(com.bezirk.api.addressing.ZirkId)
+     * @see com.bezirk.api.sadl.PubSubBrokerServiceTrigger#registerZirk(com.bezirk.api.addressing.ZirkId)
      */
     @Override
     public Boolean registerService(final ZirkId serviceId, final String serviceName) {
@@ -122,10 +121,6 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
      */
     @Override
     public Boolean subscribeService(final ZirkId serviceId, final ProtocolRole pRole) {
-        if (!ValidatorUtility.checkBezirkZirkId(serviceId) || !ValidatorUtility.checkProtocolRole((SubscribedRole) pRole)) {
-            logger.error("Invalid Subscription, Validation failed");
-            return false;
-        }
         if (!isServiceRegistered(serviceId)) {
             logger.info("Zirk tried to subscribe without Registration");
             return false;
@@ -140,10 +135,6 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     @Override
     public Boolean unsubscribe(final ZirkId serviceId, final ProtocolRole role) {
-        if (!ValidatorUtility.checkBezirkZirkId(serviceId) || !ValidatorUtility.checkProtocolRole((SubscribedRole) role)) {
-            logger.error("Invalid UnSubscription, Validation failed");
-            return false;
-        }
         if (pubSubBrokerRegistry.unsubscribe(serviceId, role)) {
             persistSadlRegistry();
             return true;

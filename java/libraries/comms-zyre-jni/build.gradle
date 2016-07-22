@@ -75,7 +75,6 @@ dependencies {
     } else {
   */ compile project(':core:bezirk-middleware-api')
     compile project(':core:bezirk')
-    compile project(':core:actions')
     compile project(':core:commons')
     //}
     //compile "com.bezirk:streaming:${version}"

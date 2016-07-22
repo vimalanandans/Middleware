@@ -32,7 +32,7 @@ public final class ActionProcessor {
      * @param mainStackHandler
      */
     public void processBezirkAction(Intent intent, MainService service, AndroidProxyServer ProxyService, MainStackHandler mainStackHandler) {
-        BezirkActions intentAction = BezirkActions.getActionUsingMessage(intent.getAction());
+        BezirkActions intentAction = BezirkActions.getActionFromString(intent.getAction());
 
         if (ValidatorUtility.isObjectNotNull(intentAction)) {
             if (logger.isDebugEnabled())
@@ -130,12 +130,12 @@ public final class ActionProcessor {
     private void processServiceActions(BezirkActions intentAction, Intent intent, AndroidProxyServer ProxyService) {
         switch (intentAction) {
             case ACTION_BEZIRK_REGISTER:
-                ProxyService.registerService(intent);
+                ProxyService.registerZirk(intent);
                 break;
             case ACTION_BEZIRK_SUBSCRIBE:
                 ProxyService.subscribeService(intent);
                 break;
-            case ACTION_BEZIRK_SETLOCATION:
+            case ACTION_BEZIRK_SET_LOCATION:
                 ProxyService.setLocation(intent);
                 break;
             case ACTION_BEZIRK_UNSUBSCRIBE:

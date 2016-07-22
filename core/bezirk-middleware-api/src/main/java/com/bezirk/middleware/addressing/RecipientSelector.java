@@ -5,6 +5,8 @@ import com.bezirk.middleware.messages.StreamDescriptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.Serializable;
+
 /**
  * Aggregates addressing information for publishing {@link Event events} and
  * {@link StreamDescriptor streams} using the Bezirk middleware. Typically
@@ -25,7 +27,7 @@ import com.google.gson.GsonBuilder;
  * @see StreamDescriptor
  * @see Location
  */
-public class RecipientSelector {
+public class RecipientSelector implements Serializable {
     private static final Gson gson;
 
     static {
