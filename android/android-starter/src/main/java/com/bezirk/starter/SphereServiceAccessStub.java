@@ -1,6 +1,5 @@
 package com.bezirk.starter;
 
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.SphereServiceAccess;
 
@@ -29,7 +28,7 @@ public class SphereServiceAccessStub implements SphereServiceAccess {
 
     @Override
     public Iterable<String> getSphereMembership(ZirkId zirkId) {
-        Set<String> spheres = new HashSet<String>();
+        Set<String> spheres = new HashSet<>();
         spheres.add("default sphere");
         return spheres;
     }

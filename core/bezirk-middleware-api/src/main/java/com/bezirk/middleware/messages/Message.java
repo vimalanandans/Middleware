@@ -1,8 +1,6 @@
 package com.bezirk.middleware.messages;
 
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.serialization.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;

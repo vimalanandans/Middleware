@@ -3,7 +3,6 @@
  */
 package com.bezirk.sphere.api;
 
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.proxy.api.impl.ZirkId;
 
 /**

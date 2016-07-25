@@ -1,11 +1,9 @@
 package com.bezirk.comms;
 
-import com.bezirk.pipe.PipeManager;
 import com.bezirk.comms.processor.CommsProcessor;
 import com.bezirk.pubsubbroker.PubSubBroker;
 //import com.bezirk.rest.BezirkRestCommsManager;
 import com.bezirk.sphere.api.SphereSecurity;
-import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.util.ValidatorUtility;
 
 import java.net.InetAddress;
@@ -35,11 +33,8 @@ public class ZyreCommsManager extends CommsProcessor {
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
                              PubSubBroker broker, SphereSecurity sphereServiceAccess, com.bezirk.streaming.Streaming streaming) {
         /*init zyre and internals of comms */
-        if (comms == null) {
-            return super.initComms(commsProperties, addr, broker, sphereServiceAccess, streaming);
-        }
+        return comms == null && super.initComms(commsProperties, addr, broker, sphereServiceAccess, streaming);
 
-        return false;
     }
 
     @Override

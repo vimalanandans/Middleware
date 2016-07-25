@@ -7,7 +7,7 @@ import com.bezirk.middleware.messages.Event;
  */
 public class UpdateAcceptedEvent extends Event {
     public static final String TOPIC = UpdateAcceptedEvent.class.getCanonicalName();
-    private String testField;
+    private final String testField;
 
     public UpdateAcceptedEvent(String testField) {
         super(Flag.REPLY, TOPIC);

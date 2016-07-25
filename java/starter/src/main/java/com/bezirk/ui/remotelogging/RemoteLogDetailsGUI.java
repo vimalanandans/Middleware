@@ -60,7 +60,7 @@ public class RemoteLogDetailsGUI extends JFrame {
     /**
      * Linked HashMap that is used to store the logger messages and update them.
      */
-    private final transient Map<String, Integer> logMsgMap = new LinkedHashMap<String, Integer>(
+    private final transient Map<String, Integer> logMsgMap = new LinkedHashMap<>(
             SIZE_OF_LOG_MSG_MAP);
     /**
      * To print the timestamp of the received msg

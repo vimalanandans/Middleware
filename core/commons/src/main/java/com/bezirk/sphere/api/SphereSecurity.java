@@ -3,8 +3,6 @@
  */
 package com.bezirk.sphere.api;
 
-import com.bezirk.proxy.api.impl.ZirkId;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 

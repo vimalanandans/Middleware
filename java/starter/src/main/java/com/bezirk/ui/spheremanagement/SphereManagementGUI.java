@@ -176,7 +176,7 @@ public class SphereManagementGUI extends JFrame {
     private void selectInterface() {
         final Iterator<IntfInetPair> itr = NetworkUtilities.getIntfInetPair()
                 .iterator();
-        final List<String> temp = new ArrayList<String>();
+        final List<String> temp = new ArrayList<>();
         IntfInetPair pair;
         while (itr.hasNext()) {
             pair = itr.next();

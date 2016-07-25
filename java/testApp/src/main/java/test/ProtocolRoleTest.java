@@ -2,9 +2,6 @@ package test;
 
 import com.bezirk.middleware.messages.ProtocolRole;
 
-/**
- * Created by SEV1PI on 7/6/2016.
- */
 public class ProtocolRoleTest extends ProtocolRole {
     private static final String evts[] =
             {EventTest.TOPIC};

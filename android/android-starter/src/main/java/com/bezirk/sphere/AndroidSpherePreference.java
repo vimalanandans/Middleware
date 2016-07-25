@@ -17,7 +17,7 @@ public class AndroidSpherePreference extends SpherePrefs {
 //    private static final String SPHERE_KEY = "sphereKey";
 //    private static final String SPHERE_MODE = "devMode";
 //    private static final String DEFAULT_SPHERE_NAME = "defaultSphereName";
-    MainStackPreferences preferences;
+    final MainStackPreferences preferences;
     private DevMode.Mode mode;
     /* Development sphere variables */
     private String sphereName;
