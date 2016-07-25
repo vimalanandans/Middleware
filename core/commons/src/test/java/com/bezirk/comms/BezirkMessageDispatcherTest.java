@@ -2,8 +2,6 @@ package com.bezirk.comms;
 
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.device.Device;
 import com.bezirk.device.DeviceType;
@@ -25,13 +23,10 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * This testcase tests the working of message dispatcher. A mock receiver is registered for different control messages with the message dispatcher.
  * Tests verifies that the control messages are properly routed to the receiver based on the discriminators registered wth message dispatcher.
- *
- * @author ajc6kor
  */
 public class BezirkMessageDispatcherTest {
 
@@ -97,21 +92,6 @@ public class BezirkMessageDispatcherTest {
         commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, receiver);
 
         ControlLedger tcMessage = new ControlLedger();
-        BezirkZirkEndPoint sender = new BezirkZirkEndPoint("DeviceA", new ZirkId("MockServiceA"));
-        ControlMessage discoveryRequest = new DiscoveryRequest(null, sender, null, null, 0, 0, 0);
-        tcMessage.setMessage(discoveryRequest);
-        commsMessageDispatcher.dispatchControlMessages(tcMessage);
-
-        assertTrue("Request is not recieved by mock receiver.", requestReceived);
-
-        commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryResponse, receiver);
-
-        ControlMessage discoveryResponse = new DiscoveryResponse(recipient, null, null, 0);
-        tcMessage.setMessage(discoveryResponse);
-        commsMessageDispatcher.dispatchControlMessages(tcMessage);
-
-        assertTrue("Response is not recieved by mock receiver.", responseReceived);
-
         ControlMessage streamRequest = new StreamRequest(null, recipient, null, null, null, null, null, null, true, true, true, (short) 0);
         tcMessage.setMessage(streamRequest);
         commsMessageDispatcher.dispatchControlMessages(tcMessage);

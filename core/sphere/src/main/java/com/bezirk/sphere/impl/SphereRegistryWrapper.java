@@ -9,7 +9,6 @@ import com.bezirk.middleware.objects.BezirkDeviceInfo.BezirkDeviceRole;
 import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.api.SphereType;
 import com.bezirk.sphere.api.CryptoInternals;
@@ -945,21 +944,6 @@ public class SphereRegistryWrapper {
         } else {
             logger.error("Error in updating membership for zirkId " + serviceId + " sphereId " + sphereId);
             return false;
-        }
-    }
-
-    /**
-     * Change the active status to True for all the discovered services whose ID
-     * matches the BezirkZirkInfo zirk ID.
-     *
-     * @param discoveredServices
-     * @param serviceInfo
-     */
-    public void updateBezirkServiceInfo(Set<BezirkDiscoveredZirk> discoveredServices, BezirkZirkInfo serviceInfo) {
-        for (BezirkDiscoveredZirk discoveredServ : discoveredServices) {
-            if (discoveredServ.zirk.getBezirkZirkId().getZirkId().equals(serviceInfo.getZirkId())) {
-                serviceInfo.setActive(true);
-            }
         }
     }
 
