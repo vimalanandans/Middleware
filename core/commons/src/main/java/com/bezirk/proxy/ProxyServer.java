@@ -1,29 +1,18 @@
 package com.bezirk.proxy;
 
 import com.bezirk.actions.RegisterZirkAction;
-import com.bezirk.actions.SendEventAction;
 import com.bezirk.actions.SendMulticastEventAction;
 import com.bezirk.actions.SendUnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
-import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.pubsubbroker.PubSubBrokerServiceTrigger;
-import com.bezirk.middleware.addressing.RecipientSelector;
-import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
 public class ProxyServer {
-    private static final Logger logger = LoggerFactory.getLogger(ProxyServer.class);
-
     private PubSubBrokerServiceTrigger pubSubBrokerService;
 
     public void registerZirk(RegisterZirkAction registerZirkAction) {

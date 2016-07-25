@@ -10,7 +10,6 @@ import com.bezirk.actions.SendUnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
