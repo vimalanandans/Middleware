@@ -224,7 +224,7 @@ public class MainService {
 
         if (ValidatorUtility.isObjectNotNull(bezirkDevice)) {
 
-            sphereManager = serviceStarterHelper.initSphere(bezirkDevice,
+          /*  sphereManager = serviceStarterHelper.initSphere(bezirkDevice,
                     registryPersistence, comms);
 
             if (!ValidatorUtility.isObjectNotNull(sphereManager)) {
@@ -232,12 +232,14 @@ public class MainService {
                 serviceStarterHelper.fail("Problem initializing sphere.", null);
 
             }
+            */
 
         }
 
         // init the comms manager for pubsubbroker
-        pubSubBroker.initPubSubBroker(comms,  messageHandler,
-                (SphereServiceAccess) sphereManager,(SphereSecurity) sphereManager);
+       // pubSubBroker.initPubSubBroker(comms,  messageHandler,
+         //       (SphereServiceAccess) sphereManager,(SphereSecurity) sphereManager);
+        pubSubBroker.initPubSubBroker(comms,  messageHandler, null, null);
 
 
         /**************************************************
@@ -256,7 +258,8 @@ public class MainService {
     private void displayQRCode(final Device bezirkDevice) {
         if (bezirkConfig.isDisplayEnabled()) {
             // commented to test in beaglebone. uncomment it for PC
-            frame = new com.bezirk.ui.spheremanagement.SphereManagementGUI(sphereManager, bezirkDevice);
+            //frame = new com.bezirk.ui.spheremanagement.SphereManagementGUI(sphereManager, bezirkDevice);
+            frame = new com.bezirk.ui.spheremanagement.SphereManagementGUI(null, bezirkDevice);
             frame.setVisible(true);
 
             //FIXME: check for the remote logging and launch the ui
@@ -358,8 +361,9 @@ public class MainService {
          * CommsProperties is not used by comms manager. Properties are handled
          * by BezirkCommsPC
          */
-        Streaming streamManager = new StreamManager(comms, pubSubBroker, getStreamDownloadPath());
-        comms.initComms(null, addr, pubSubBroker, (SphereSecurity) sphereManager, streamManager);
+       // Streaming streamManager = new StreamManager(comms, pubSubBroker, getStreamDownloadPath());
+        //comms.initComms(null, addr, pubSubBroker, (SphereSecurity) sphereManager, streamManager);
+        comms.initComms(null, addr, pubSubBroker, (SphereSecurity) null, null);
 
 
 

@@ -215,7 +215,7 @@ public class SphereManagementGUI extends JFrame {
                 "Catch the PC\n", "Enter below the catch code for other PC",
                 JOptionPane.PLAIN_MESSAGE, null, null, "");
 
-        if (catchCode != null && !catchCode.isEmpty()) {
+        if (catchCode != null && !catchCode.isEmpty() && sphereManager != null) {
             // send the catch code to the sphere
             sphereManager.processCatchShortCode(catchCode);
         }

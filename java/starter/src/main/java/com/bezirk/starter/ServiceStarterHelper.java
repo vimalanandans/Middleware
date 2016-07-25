@@ -133,7 +133,7 @@ final class ServiceStarterHelper {
      */
     boolean deinitSphere(final MainService service) {
         // clear the reference
-        service.sphereManager = null;
+      //  service.sphereManager = null;
 
         return true;
     }

@@ -88,11 +88,12 @@ public class MockSetUpUtilityForBezirkPC {
         comms.startComms();
 
 
-        SphereServiceManager bezirkSphere = new SphereServiceManager(cryptoEngine, upaDevice, sphereRegistry);
+       // SphereServiceManager bezirkSphere = new SphereServiceManager(cryptoEngine, upaDevice, sphereRegistry);
         SphereListener sphereListener = Mockito.mock(SphereListener.class);
-        bezirkSphere.initSphere(spherePersistence, comms, sphereListener, sphereConfig);
+        //bezirkSphere.initSphere(spherePersistence, comms, sphereListener, sphereConfig);
 
-        pubSubBroker.initPubSubBroker(comms,new MockCallback(),bezirkSphere,bezirkSphere);
+        //pubSubBroker.initPubSubBroker(comms,new MockCallback(),bezirkSphere,bezirkSphere);
+        pubSubBroker.initPubSubBroker(comms,new MockCallback(),null ,null);
         }
     String getStreamDownloadPath()
     {
