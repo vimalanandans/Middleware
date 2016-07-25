@@ -18,6 +18,11 @@ public class SendEventAction extends ZirkAction {
         serializedEvent = event.toJson();
     }
 
-    public String getTopic() { return topic; }
-    public String getSerializedEvent() { return serializedEvent; }
+    public String getTopic() {
+        return topic;
+    }
+
+    public String getSerializedEvent() {
+        return serializedEvent;
+    }
 }

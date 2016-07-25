@@ -55,7 +55,7 @@ public class AndroidProxyServer extends ProxyServer {
         if (subscriptionAction.getRole() != null) {
             super.unsubscribe(subscriptionAction);
         } else {
-            super.unregister(subscriptionAction);
+            super.unregister(new RegisterZirkAction(subscriptionAction.getZirkId(), null));
         }
     }
 
@@ -80,8 +80,7 @@ public class AndroidProxyServer extends ProxyServer {
 
         SendFileStreamAction streamAction = (SendFileStreamAction) intent.getSerializableExtra(BezirkActions.ACTION_SERVICE_SEND_UNICAST_EVENT.getName());
 
-        short sendStreamStatus = super.sendStream(streamAction.getZirkId(), (BezirkZirkEndPoint) streamAction.getRecipient(),
-                streamAction.getDescriptor(), streamAction.getFile(), streamAction.getStreamId());
+        short sendStreamStatus = super.sendStream(streamAction);
 
         if (sendStreamStatus != -1) {
             StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(
@@ -93,9 +92,8 @@ public class AndroidProxyServer extends ProxyServer {
 
     public void setLocation(Intent intent) {
         SetLocationAction locationAction = (SetLocationAction) intent.getSerializableExtra(BezirkActions.ACTION_BEZIRK_SET_LOCATION.getName());
-        Location location = locationAction.getLocation();
 
-        logger.trace("Received location {} from zirk", location);
+        logger.trace("Received location {} from zirk", locationAction.getLocation());
 
         super.setLocation(locationAction);
     }

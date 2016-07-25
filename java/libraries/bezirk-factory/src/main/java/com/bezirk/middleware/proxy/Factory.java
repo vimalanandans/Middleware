@@ -16,8 +16,8 @@ public abstract class Factory {
      */
     public static Bezirk registerZirk(String zirkName) {
         synchronized (Factory.class) {
-            Proxy proxy = new Proxy();
-            return proxy.registerZirk(zirkName) ? proxy : null;
+            ProxyClient proxyClient = new ProxyClient();
+            return proxyClient.registerZirk(zirkName) ? proxyClient : null;
         }
     }
 }

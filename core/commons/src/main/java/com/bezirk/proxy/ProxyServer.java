@@ -1,16 +1,13 @@
 package com.bezirk.proxy;
 
 import com.bezirk.actions.RegisterZirkAction;
+import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.actions.SendMulticastEventAction;
 import com.bezirk.actions.SendUnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
-import com.bezirk.middleware.messages.StreamDescriptor;
-import com.bezirk.pubsubbroker.PubSubBrokerServiceTrigger;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.api.impl.ZirkId;
-
-import java.io.File;
+import com.bezirk.pubsubbroker.PubSubBrokerServiceTrigger;
 
 public class ProxyServer {
     private PubSubBrokerServiceTrigger pubSubBrokerService;
@@ -33,8 +30,10 @@ public class ProxyServer {
                 eventAction.getSerializedEvent(), eventAction.getTopic());
     }
 
-    public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, StreamDescriptor descriptor, File file, short streamId) {
-        return pubSubBrokerService.sendStream(senderId, receiver, descriptor.toJson(), file, streamId);
+    public short sendStream(SendFileStreamAction streamAction) {
+        return pubSubBrokerService.sendStream(streamAction.getZirkId(),
+                (BezirkZirkEndPoint) streamAction.getRecipient(), streamAction.getDescriptor().toJson(),
+                streamAction.getFile(), streamAction.getStreamId());
     }
 
     public void setLocation(SetLocationAction locationAction) {
@@ -46,8 +45,8 @@ public class ProxyServer {
         return pubSubBrokerService.unsubscribe(subscriptionAction.getZirkId(), subscriptionAction.getRole());
     }
 
-    public boolean unregister(SubscriptionAction subscriptionAction) {
-        return pubSubBrokerService.unregisterService(subscriptionAction.getZirkId());
+    public boolean unregister(RegisterZirkAction registerZirkAction) {
+        return pubSubBrokerService.unregisterService(registerZirkAction.getZirkId());
     }
 
     public void setPubSubBrokerService(PubSubBrokerServiceTrigger pubSubBrokerService) {

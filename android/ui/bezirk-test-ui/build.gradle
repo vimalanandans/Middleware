@@ -37,19 +37,10 @@ android {
 
 dependencies {
     compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
-    //compile "com.android.support:support-v4:${project.androidSupportLibraryVersion}"
 
-/*    if (project.local == "false") {
-
-        compile "com.bezirk:commons:${version}"
-        compile "com.bezirk:actions:${version}"
-        compile("com.bezirk:pipes:${version}")
-
-    } else {
-*/
     compile project(':core')
     compile project(':core:commons')
-    //}
+
     compile project(':android:android-starter')
     compile project(':android:android-libraries:android-comms-zyre-jni')
 
@@ -60,8 +51,4 @@ dependencies {
     compile 'com.github.tony19:logback-android-classic:1.1.1-2'
     compile 'org.slf4j:slf4j-api:1.7.6'
     compile 'org.sqldroid:sqldroid:1.0.3'
-
-    /** http client used in http-comms
-  //   compile ('org.apache.httpcomponents:httpmime:4.5.2'){exclude group: 'org.apache.httpcomponents', module: 'httpclient'}compile ('org.apache.httpcomponents:httpcore:4.4.4'){exclude group: 'org.apache.httpcomponents', module: 'httpclient'}compile 'commons-io:commons-io:1.3.2'
-     */
 }

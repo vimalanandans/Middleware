@@ -121,8 +121,6 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void subscribe(final ProtocolRole protocolRole, final BezirkListener listener) {
-        Log.d(TAG, "Zirk subscribing to role: " + protocolRole.getRoleName());
-
         if (listener == null) {
             throw new IllegalArgumentException("Must subscribe with a non-null listener");
         }
@@ -134,8 +132,6 @@ public final class ProxyClient implements Bezirk {
 
         sendBezirkIntent(BezirkActions.ACTION_BEZIRK_SUBSCRIBE.getName(),
                 new SubscriptionAction(zirkId, protocolRole));
-
-        Log.d(TAG, "Zirk subscribed to role: " + protocolRole.getRoleName());
     }
 
     private void addTopicsToMap(String[] topics, Map<String, List<BezirkListener>> listenerMap, BezirkListener listener, String type) {

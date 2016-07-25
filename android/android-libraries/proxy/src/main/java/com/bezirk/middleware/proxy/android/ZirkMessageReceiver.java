@@ -21,14 +21,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class IntentMessageReceiver extends BroadcastReceiver {
-    private final String TAG = IntentMessageReceiver.class.getSimpleName();
-
+public class ZirkMessageReceiver extends BroadcastReceiver {
     private static final int TIME_DURATION = 15000;
     private static final int MAX_MAP_SIZE = 50;
-
     private static final Map<String, Long> duplicateMsgMap = new ConcurrentHashMap<>();
     private static final Map<String, Long> duplicateStreamMap = new ConcurrentHashMap<>();
+    private final String TAG = ZirkMessageReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
