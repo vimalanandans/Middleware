@@ -18,4 +18,6 @@ public abstract class ZirkAction implements Serializable {
     public ZirkId getZirkId() {
         return zirkId;
     }
+
+    public abstract BezirkAction getAction();
 }

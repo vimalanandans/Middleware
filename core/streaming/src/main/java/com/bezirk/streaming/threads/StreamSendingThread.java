@@ -3,7 +3,7 @@
  */
 package com.bezirk.streaming.threads;
 
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.actions.StreamStatusAction;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
@@ -93,11 +93,11 @@ public class StreamSendingThread implements Runnable {
             closeResources(fileInputStream, dataOutputStream);
         }
 
-        StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
+        StreamStatusAction streamStatusAction = new StreamStatusAction(
                 senderServiceID, sentStatus, localStreamId);
         if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {
 
-            sadlReceiver.processStreamStatus(streamStatusMessage);
+            sadlReceiver.processStreamStatus(streamStatusAction);
 
         } else {
 

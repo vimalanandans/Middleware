@@ -3,10 +3,10 @@
  */
 package com.bezirk.streaming.threads;
 
+import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.PortFactory;
 import com.bezirk.control.messages.streaming.StreamRequest;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.streaming.port.StreamPortFactory;
@@ -170,7 +170,7 @@ public class StreamReceivingThread implements Runnable {
 
     private void notifyStreamFile(File tempFile, boolean portReleased) {
         if (portReleased) {
-            StreamIncomingMessage uStreamCallbackMsg = new StreamIncomingMessage(
+            ReceiveFileStreamAction uStreamCallbackMsg = new ReceiveFileStreamAction(
                     recipient.zirkId, streamLabel, serializedMsg,
                     tempFile, streamId, sender);
             if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {

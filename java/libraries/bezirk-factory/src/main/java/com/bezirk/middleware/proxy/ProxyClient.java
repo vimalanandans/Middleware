@@ -1,9 +1,10 @@
 package com.bezirk.middleware.proxy;
 
+import com.bezirk.actions.BezirkAction;
 import com.bezirk.actions.RegisterZirkAction;
 import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.actions.SendMulticastEventAction;
-import com.bezirk.actions.SendUnicastEventAction;
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.datastorage.ProxyPersistence;
@@ -111,7 +112,8 @@ public class ProxyClient implements Bezirk {
             logger.trace("No Streams to Subscribe");
         }
 
-        proxy.subscribeService(new SubscriptionAction(zirkId, protocolRole));
+        proxy.subscribeService(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE, zirkId,
+                protocolRole));
     }
 
     private void addTopicsToMaps(final ZirkId subscriber, final String[] topics,
@@ -143,7 +145,8 @@ public class ProxyClient implements Bezirk {
 
     @Override
     public boolean unsubscribe(ProtocolRole protocolRole) {
-        return proxy.unsubscribe(new SubscriptionAction(zirkId, protocolRole));
+        return proxy.unsubscribe(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId,
+                protocolRole));
     }
 
     @Override
@@ -158,7 +161,8 @@ public class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
-        proxy.sendUnicastEvent(new SendUnicastEventAction(zirkId, recipient, event));
+        proxy.sendUnicastEvent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
+                zirkId, recipient, event));
     }
 
     @Override

@@ -5,9 +5,10 @@ import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
 
 public class SubscriptionAction extends ZirkAction {
+    private BezirkAction action;
     private final String role;
 
-    public SubscriptionAction(ZirkId zirkId, ProtocolRole role) {
+    public SubscriptionAction(BezirkAction action, ZirkId zirkId, ProtocolRole role) {
         super(zirkId);
 
         // Role can be null for unsubscribing from all roles
@@ -18,11 +19,16 @@ public class SubscriptionAction extends ZirkAction {
                     "least one event or stream");
         }
 
+        this.action = action;
         this.role = new SubscribedRole(role).toJson();
     }
 
     public ProtocolRole getRole() {
         return SubscribedRole.fromJson(role);
+    }
+
+    public BezirkAction getAction() {
+        return action;
     }
 
     private static class SubscribedRole extends ProtocolRole {

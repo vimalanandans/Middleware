@@ -4,7 +4,7 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.ZirkId;
 
-public class StreamAction extends ZirkAction {
+public abstract class StreamAction extends ZirkAction {
     private final ZirkEndPoint recipient;
     private final StreamDescriptor descriptor;
     private final short streamId;

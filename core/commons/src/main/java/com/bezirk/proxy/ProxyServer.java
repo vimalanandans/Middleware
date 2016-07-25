@@ -3,7 +3,7 @@ package com.bezirk.proxy;
 import com.bezirk.actions.RegisterZirkAction;
 import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.actions.SendMulticastEventAction;
-import com.bezirk.actions.SendUnicastEventAction;
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
@@ -25,8 +25,8 @@ public class ProxyServer {
                 eventAction.getSerializedEvent(), eventAction.getTopic());
     }
 
-    public void sendUnicastEvent(SendUnicastEventAction eventAction) {
-        pubSubBrokerService.sendUnicastEvent(eventAction.getZirkId(), (BezirkZirkEndPoint) eventAction.getRecipient(),
+    public void sendUnicastEvent(UnicastEventAction eventAction) {
+        pubSubBrokerService.sendUnicastEvent(eventAction.getZirkId(), (BezirkZirkEndPoint) eventAction.getEndpoint(),
                 eventAction.getSerializedEvent(), eventAction.getTopic());
     }
 

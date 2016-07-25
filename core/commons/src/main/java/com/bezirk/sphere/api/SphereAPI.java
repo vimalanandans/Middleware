@@ -194,8 +194,6 @@ public interface SphereAPI {
 
     boolean processCatchQRCodeRequest(String qrcodeString, String joinSphereId);
 
-    boolean discoverSphere(String sphereId);
-
     List<BezirkZirkInfo> getServiceInfo();
 
 }

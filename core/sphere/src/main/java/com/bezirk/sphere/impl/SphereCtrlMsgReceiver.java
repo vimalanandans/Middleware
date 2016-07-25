@@ -3,8 +3,6 @@ package com.bezirk.sphere.impl;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.control.messages.ControlMessage;
-import com.bezirk.control.messages.discovery.SphereDiscoveryResponse;
-import com.bezirk.sphere.discovery.SphereDiscoveryProcessor;
 import com.bezirk.sphere.api.SphereMessages;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
@@ -31,14 +29,6 @@ public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
     public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
 
         switch (id) {
-            case SphereDiscoveryResponse:
-                logger.debug("Processing sphere Discovery Response");
-                final SphereDiscoveryResponse discoveryResponse = ControlMessage.deserialize(serializedMsg,
-                        SphereDiscoveryResponse.class);
-
-                // Fixme: avoid global access
-                SphereDiscoveryProcessor.getDiscovery().addResponse(discoveryResponse);
-                break;
             case CatchRequest:
                 final CatchRequest catchRequest = ControlMessage.deserialize(serializedMsg, CatchRequest.class);
                 logger.debug("Catch Request " + catchRequest.getSphereId());
@@ -75,7 +65,6 @@ public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
             /**
              * register all the control messages, in which sphere is interested
              */
-            comms.registerControlMessageReceiver(ControlMessage.Discriminator.SphereDiscoveryResponse, this);
             comms.registerControlMessageReceiver(ControlMessage.Discriminator.CatchRequest, this);
             comms.registerControlMessageReceiver(ControlMessage.Discriminator.CatchResponse, this);
             comms.registerControlMessageReceiver(ControlMessage.Discriminator.ShareRequest, this);

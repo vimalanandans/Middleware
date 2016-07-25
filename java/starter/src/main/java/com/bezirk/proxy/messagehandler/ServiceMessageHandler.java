@@ -1,5 +1,6 @@
 package com.bezirk.proxy.messagehandler;
 
+import com.bezirk.actions.*;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -8,7 +9,7 @@ import org.slf4j.LoggerFactory;
 /**
  * PC specific callback implementation that is used to give the callback to the ProxyServiceLegacy.
  */
-public final class ServiceMessageHandler implements MessageHandler {
+public final class ServiceMessageHandler implements com.bezirk.proxy.MessageHandler {
     private static final Logger logger = LoggerFactory.getLogger(ServiceMessageHandler.class);
 
     private static final String RECEIVER_NULL_ERROR = "Broadcast Receiver For Zirk is null, cannot give callback";
@@ -19,7 +20,7 @@ public final class ServiceMessageHandler implements MessageHandler {
     }
 
     @Override
-    public void onIncomingEvent(EventIncomingMessage eventIncomingMessage) {
+    public void onIncomingEvent(UnicastEventAction eventIncomingMessage) {
         if (ValidatorUtility.isObjectNotNull(brForService)) {
             brForService.onReceive(eventIncomingMessage);
         } else {
@@ -28,9 +29,9 @@ public final class ServiceMessageHandler implements MessageHandler {
     }
 
     @Override
-    public void onIncomingStream(StreamIncomingMessage streamIncomingMessage) {
+    public void onIncomingStream(ReceiveFileStreamAction receiveFileStreamAction) {
         if (ValidatorUtility.isObjectNotNull(brForService)) {
-            brForService.onReceive(streamIncomingMessage);
+            brForService.onReceive(receiveFileStreamAction);
         } else {
 
             logger.debug(RECEIVER_NULL_ERROR);
@@ -38,23 +39,11 @@ public final class ServiceMessageHandler implements MessageHandler {
     }
 
     @Override
-    public void onStreamStatus(StreamStatusMessage streamStatusMessage) {
+    public void onStreamStatus(StreamStatusAction streamStatusAction) {
         if (ValidatorUtility.isObjectNotNull(brForService)) {
-            brForService.onReceive(streamStatusMessage);
+            brForService.onReceive(streamStatusAction);
         } else {
             logger.debug(RECEIVER_NULL_ERROR);
         }
     }
-
-    @Override
-    public void onDiscoveryIncomingMessage(
-            DiscoveryIncomingMessage discoveryCallback) {
-        if (ValidatorUtility.isObjectNotNull(brForService)) {
-            brForService.onReceive(discoveryCallback);
-        } else {
-            logger.debug(RECEIVER_NULL_ERROR);
-        }
-
-    }
-
 }

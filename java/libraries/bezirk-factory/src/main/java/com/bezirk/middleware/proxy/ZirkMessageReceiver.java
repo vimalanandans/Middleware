@@ -1,15 +1,16 @@
 package com.bezirk.middleware.proxy;
 
+import com.bezirk.actions.ReceiveFileStreamAction;
+import com.bezirk.actions.UnicastEventAction;
+import com.bezirk.actions.ZirkAction;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.StreamDescriptor;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
-import com.bezirk.proxy.messagehandler.EventIncomingMessage;
-import com.bezirk.proxy.messagehandler.ServiceIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.actions.StreamStatusAction;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,35 +45,35 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
     }
 
     @Override
-    public void onReceive(ServiceIncomingMessage incomingMessage) {
-        if (sidMap.containsKey(incomingMessage.getRecipient())) {
-            switch (incomingMessage.getCallbackType()) {
-                case "EVENT":
-                    if (!(incomingMessage instanceof EventIncomingMessage)) {
-                        throw new AssertionError("incomingMessage is not an instance of EventIncomingMessage");
+    public void onReceive(ZirkAction incomingMessage) {
+        if (sidMap.containsKey(incomingMessage.getZirkId())) {
+            switch (incomingMessage.getAction()) {
+                case ACTION_ZIRK_RECEIVE_EVENT:
+                    if (!(incomingMessage instanceof UnicastEventAction)) {
+                        throw new AssertionError("incomingMessage is not an instance of UnicastEventAction");
                     }
 
-                    EventIncomingMessage eventCallbackMessage = (EventIncomingMessage) incomingMessage;
+                    UnicastEventAction eventCallbackMessage = (UnicastEventAction) incomingMessage;
                     handleEventCallback(eventCallbackMessage);
                     break;
-                case "STREAM_UNICAST":
-                    if (!(incomingMessage instanceof StreamIncomingMessage)) {
-                        throw new AssertionError("incomingMessage is not an instance of StreamIncomingMessage");
+                case ACTION_ZIRK_RECEIVE_STREAM:
+                    if (!(incomingMessage instanceof ReceiveFileStreamAction)) {
+                        throw new AssertionError("incomingMessage is not an instance of ReceiveFileStreamAction");
                     }
 
-                    StreamIncomingMessage strmMsg = (StreamIncomingMessage) incomingMessage;
+                    ReceiveFileStreamAction strmMsg = (ReceiveFileStreamAction) incomingMessage;
                     handlerStreamUnicastCallback(strmMsg);
                     break;
-                case "STREAM_STATUS":
-                    if (!(incomingMessage instanceof StreamStatusMessage)) {
-                        throw new AssertionError("incomingMessage is not an instance of StreamStatusMessage");
+                case ACTION_ZIRK_RECEIVE_STREAM_STATUS:
+                    if (!(incomingMessage instanceof StreamStatusAction)) {
+                        throw new AssertionError("incomingMessage is not an instance of StreamStatusAction");
                     }
 
-                    StreamStatusMessage streamStatusCallbackMessage = (StreamStatusMessage) incomingMessage;
+                    StreamStatusAction streamStatusCallbackMessage = (StreamStatusAction) incomingMessage;
                     handleStreamStatusCallback(streamStatusCallbackMessage);
                     break;
                 default:
-                    logger.error("Unknown incoming message type : " + incomingMessage.getCallbackType());
+                    logger.error("Unimplemented action: {}" + incomingMessage.getAction());
             }
         }
     }
@@ -83,19 +84,22 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      *
      * @param incomingEvent new event to send up to Zirks registered to receive it
      */
-    private void handleEventCallback(EventIncomingMessage incomingEvent) {
-        logger.debug("About to callback sid:" + incomingEvent.getRecipient().getZirkId() + " for id:" + incomingEvent.getMsgId());
+    private void handleEventCallback(UnicastEventAction incomingEvent) {
+        Event event = Event.fromJson(incomingEvent.getSerializedEvent(), Event.class);
+        BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
+
+        logger.debug("About to callback sid:" + incomingEvent.getZirkId().getZirkId() + " for id:" + incomingEvent.getMessageId());
+
         //Make a combined sid for sender and recipient
-        String combinedSid = incomingEvent.getSenderEndPoint().zirkId.getZirkId() + ":" + incomingEvent.getRecipient().getZirkId();
-        if (checkDuplicateMsg(combinedSid, incomingEvent.getMsgId())) {
-            Set<BezirkListener> tempListenersSidMap = sidMap.get(incomingEvent.getRecipient());
-            Set<BezirkListener> tempListenersTopicsMap = eventListenerMap.get(incomingEvent.getEventTopic());
+        String combinedSid = endpoint.zirkId.getZirkId() + ":" + incomingEvent.getZirkId().getZirkId();
+        if (checkDuplicateMsg(combinedSid, incomingEvent.getMessageId())) {
+            Set<BezirkListener> tempListenersSidMap = sidMap.get(incomingEvent.getZirkId());
+            Set<BezirkListener> tempListenersTopicsMap = eventListenerMap.get(event.topic);
             if (tempListenersSidMap != null && tempListenersTopicsMap != null) {
                 for (BezirkListener invokingListener : tempListenersSidMap) {
                     if (tempListenersTopicsMap.contains(invokingListener)) {
-                        Event event = Message.fromJson(incomingEvent.getSerializedEvent(), Event.class);
-                        invokingListener.receiveEvent(incomingEvent.getEventTopic(),
-                                event, incomingEvent.getSenderEndPoint());
+                        invokingListener.receiveEvent(event.topic,
+                                event, endpoint);
                     }
                 }
             }
@@ -109,7 +113,7 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      *
      * @param strmMsg streamMessage that will be given back to the services.
      */
-    private void handlerStreamUnicastCallback(StreamIncomingMessage strmMsg) {
+    private void handlerStreamUnicastCallback(ReceiveFileStreamAction strmMsg) {
         if (checkDuplicateStream(strmMsg.getSender().zirkId.getZirkId(), strmMsg.getLocalStreamId())) {
             if (streamListenerMap.containsKey(strmMsg.getStreamTopic())) {
                 for (BezirkListener listener : streamListenerMap.get(strmMsg.getStreamTopic())) {
@@ -131,8 +135,8 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      *
      * @param streamStatusCallbackMessage StreamStatusCallback that will be invoked for the services.
      */
-    private void handleStreamStatusCallback(StreamStatusMessage streamStatusCallbackMessage) {
-        String activeStreamKey = streamStatusCallbackMessage.getRecipient().getZirkId() + streamStatusCallbackMessage.getStreamId();
+    private void handleStreamStatusCallback(StreamStatusAction streamStatusCallbackMessage) {
+        String activeStreamKey = streamStatusCallbackMessage.getZirkId().getZirkId() + streamStatusCallbackMessage.getStreamId();
         if (activeStreams.containsKey(activeStreamKey)) {
             Set<BezirkListener> tempHashSet = streamListenerMap.get(activeStreams.get(activeStreamKey));
             if (tempHashSet != null && !tempHashSet.isEmpty()) {

@@ -10,7 +10,7 @@ import com.bezirk.device.Device;
 import com.bezirk.comms.CommsFeature;
 import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.proxy.ProxyServer;
-import com.bezirk.proxy.messagehandler.MessageHandler;
+import com.bezirk.proxy.MessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereServiceAccess;

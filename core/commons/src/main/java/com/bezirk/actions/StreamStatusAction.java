@@ -1,11 +1,10 @@
-package com.bezirk.proxy.messagehandler;
+package com.bezirk.actions;
 
+import com.bezirk.actions.BezirkAction;
+import com.bezirk.actions.ZirkAction;
 import com.bezirk.proxy.api.impl.ZirkId;
 
-/**
- * Sub class of BezirkCallbackMessage that gives back the StreamStatusCallback to proxyForBezirk
- */
-public final class StreamStatusMessage extends ServiceIncomingMessage {
+public final class StreamStatusAction extends ZirkAction {
     /**
      * StreamStatus id. 0 -&gt; UnSuccessful | 1 -&gt; Successful.
      */
@@ -16,8 +15,8 @@ public final class StreamStatusMessage extends ServiceIncomingMessage {
      */
     private final short streamId;
 
-    public StreamStatusMessage(ZirkId recipientId, int streamStatus, short streamId) {
-        super("STREAM_STATUS", recipientId);
+    public StreamStatusAction(ZirkId zirkId, int streamStatus, short streamId) {
+        super(zirkId);
 
         this.streamStatus = streamStatus;
         this.streamId = streamId;
@@ -29,5 +28,10 @@ public final class StreamStatusMessage extends ServiceIncomingMessage {
 
     public int getStreamStatus() {
         return streamStatus;
+    }
+
+    @Override
+    public BezirkAction getAction() {
+        return BezirkAction.ACTION_ZIRK_RECEIVE_STREAM_STATUS;
     }
 }

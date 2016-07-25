@@ -6,13 +6,13 @@ import com.bezirk.actions.BezirkAction;
 import com.bezirk.actions.RegisterZirkAction;
 import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.actions.SendMulticastEventAction;
-import com.bezirk.actions.SendUnicastEventAction;
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.proxy.messagehandler.MessageHandler;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.proxy.MessageHandler;
+import com.bezirk.actions.StreamStatusAction;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -68,7 +68,7 @@ public class AndroidProxyServer extends ProxyServer {
     public void sendUnicastEvent(Intent intent) {
         logger.trace("Received unicast message from zirk");
 
-        SendUnicastEventAction eventAction = (SendUnicastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName());
+        UnicastEventAction eventAction = (UnicastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName());
 
         super.sendUnicastEvent(eventAction);
     }
@@ -81,7 +81,7 @@ public class AndroidProxyServer extends ProxyServer {
         short sendStreamStatus = super.sendStream(streamAction);
 
         if (sendStreamStatus != -1) {
-            StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(
+            StreamStatusAction streamStatusCallbackMessage = new StreamStatusAction(
                     gson.fromJson(streamAction.getDescriptor().toJson(), ZirkId.class),
                     0, streamAction.getStreamId());
             messageHandler.onStreamStatus(streamStatusCallbackMessage);

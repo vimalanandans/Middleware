@@ -48,13 +48,6 @@ public class SphereServiceAccessStub implements SphereServiceAccess {
     }
 
     @Override
-    public void processSphereDiscoveryRequest(DiscoveryRequest discoveryRequest) {
-        // I see, used during sadl discovery
-        logger.error("Interface not implemented > processSphereDiscoveryRequest.");
-
-    }
-
-    @Override
     public String getDeviceNameFromSphere(String deviceId) {
         logger.error("Interface not implemented > getDeviceNameFromSphere.");
         return null;
