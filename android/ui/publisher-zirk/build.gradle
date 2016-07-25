@@ -4,6 +4,9 @@ android {
     compileSdkVersion project.androidCompileSdkVersion.toInteger()
     buildToolsVersion project.androidBuildToolsVersion
 
+    lintOptions {
+        abortOnError false
+    }
     defaultConfig {
         applicationId "com.bezirk.android.publisher"
         minSdkVersion project.androidMinSdkVersion.toInteger()
