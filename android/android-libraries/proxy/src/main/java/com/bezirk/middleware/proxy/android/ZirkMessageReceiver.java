@@ -8,11 +8,16 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
+import com.bezirk.proxy.messagehandler.EventIncomingMessage;
+import com.bezirk.proxy.messagehandler.ServiceIncomingMessage;
+import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
+import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -30,70 +35,64 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        final String receivedServiceId = intent.getStringExtra("service_id_tag");
+        ServiceIncomingMessage message = (ServiceIncomingMessage) intent.getSerializableExtra("message");
 
-        if (!isValidRequest(receivedServiceId)) {
+        if (!isValidRequest(message.getRecipient())) {
             return;
         }
 
-        processReceivedIntent(intent);
+        processReceivedIntent(message);
     }
 
-    private void processReceivedIntent(Intent intent) {
-        final String discriminator = intent.getStringExtra("discriminator");
-
-        switch (discriminator) {
+    private void processReceivedIntent(ServiceIncomingMessage message) {
+        switch (message.getCallbackType()) {
             case "EVENT":
-                processEvent(intent);
+                processEvent((EventIncomingMessage) message);
                 break;
             case "STREAM_UNICAST":
-                processStreamUnicast(intent);
+                processStreamUnicast((StreamIncomingMessage) message);
                 break;
             case "STREAM_STATUS":
-                processStreamStatus(intent);
+                processStreamStatus((StreamStatusMessage) message);
                 break;
             default:
         }
     }
 
-    private boolean isValidRequest(String receivedServiceId) {
-        if (null == receivedServiceId) {
+    private boolean isValidRequest(ZirkId receivedZirkId) {
+        if (null == receivedZirkId) {
             Log.e(TAG, "ZirkId is malfunctioning");
             return false;
         }
-        Log.d(TAG, "receivedServiceId" + receivedServiceId);
 
         if (null == ProxyClient.context) {
             Log.e(TAG, "Application is not started");
             return false;
         }
 
-        ZirkId serviceId = new Gson().fromJson(receivedServiceId, ZirkId.class);
-
-        if (!isRequestForCurrentApp(serviceId.getZirkId())) {
+        if (!isRequestForCurrentApp(receivedZirkId.getZirkId())) {
             Log.e(TAG, "Intent is not for this Service");
             return false;
         }
         return true;
     }
 
-    private void processEvent(Intent intent) {
-        final String eventTopic = intent.getStringExtra("eventTopic");
-        final String eventMessage = intent.getStringExtra("eventMessage");
-        final String eventSender = intent.getStringExtra("eventSender");
+    private void processEvent(EventIncomingMessage eventMessage) {
+        final String eventTopic = eventMessage.getEventTopic();
+        final String serializedEvent = eventMessage.getSerializedEvent();
+        final BezirkZirkEndPoint eventSender = eventMessage.getSenderEndPoint();
 
-        boolean valid = isIntentValid(eventTopic, eventMessage, eventSender);
+        boolean valid = isIntentValid(eventTopic, serializedEvent);
 
         if (!valid) {
             Log.e(TAG, "The Unicast event intent is received but dropped as it doesn't contain the required fields");
             return;
         }
 
-        final String messageId = intent.getStringExtra("msgId");
-        BezirkZirkEndPoint sourceOfEventSEP = new Gson().fromJson(eventSender, BezirkZirkEndPoint.class);
+        final String messageId = eventMessage.getMsgId();
         //Check for duplicate message
-        if (checkDuplicateMsg(sourceOfEventSEP.zirkId.getZirkId(), messageId)) {
-            boolean isEventReceived = receiveEventOrStream(eventTopic, eventMessage, sourceOfEventSEP, (short) 0, null, "EVENT", ProxyClient.eventListenerMap);
+        if (checkDuplicateMsg(eventSender.zirkId.getZirkId(), messageId)) {
+            boolean isEventReceived = receiveEventOrStream(eventTopic, serializedEvent, eventSender, (short) 0, null, "EVENT", ProxyClient.eventListenerMap);
             if (isEventReceived) {
                 return;
             }
@@ -134,7 +133,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
 
     }
 
-    private boolean isIntentValid(String eventTopic, String eventMessage, String eventSender) {
+    private boolean isIntentValid(String eventTopic, String eventMessage) {
         boolean valid = true;
         String err = "Intent doesn't contain extra property: ";
 
@@ -146,31 +145,26 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
             Log.e(TAG, err + " eventMessage");
             valid = false;
         }
-        if (null == eventSender) {
-            Log.e(TAG, err + " eventSender");
-            valid = false;
-        }
+
         return valid;
     }
 
-    private void processStreamUnicast(Intent intent) {
-        final String streamTopic = intent.getStringExtra("streamTopic");
-        final String streamMsg = intent.getStringExtra("streamMsg");
-        final String filePath = intent.getStringExtra("filePath");
-        final String senderSep = intent.getStringExtra("senderSEP");
-        Log.d(TAG, " " + streamTopic + "," + streamMsg + "+" + filePath + "-" + senderSep);
+    private void processStreamUnicast(StreamIncomingMessage streamMessage) {
+        final String streamTopic = streamMessage.getStreamTopic();
+        final String streamMsg = streamMessage.getSerializedStream();
+        final File file = streamMessage.getFile();
+        final BezirkZirkEndPoint senderSep = streamMessage.getSender();
+        Log.d(TAG, " " + streamTopic + "," + streamMsg + "+" + file + "-" + senderSep);
 
-        if (null == streamTopic || null == streamMsg || null == filePath || null == senderSep) {
+        if (null == streamTopic || null == streamMsg || null == file || null == senderSep) {
             Log.e(TAG, "Unicast StreamDescriptor has some null quantities");
             return;
         }
-        final short streamId = intent.getShortExtra("streamId", (short) -1);
+        final short streamId = streamMessage.getLocalStreamId();
 
-        BezirkZirkEndPoint sourceOfStreamSEP = new Gson().fromJson(senderSep, BezirkZirkEndPoint.class);
-        Log.e(TAG, sourceOfStreamSEP.zirkId.getZirkId() + ":" + streamId);
-        if (checkDuplicateStream(sourceOfStreamSEP.zirkId.getZirkId(), streamId)) {
+        if (checkDuplicateStream(senderSep.zirkId.getZirkId(), streamId)) {
 
-            boolean isStreamReceived = receiveEventOrStream(streamTopic, streamMsg, sourceOfStreamSEP, streamId, filePath, "STREAM_UNICAST",
+            boolean isStreamReceived = receiveEventOrStream(streamTopic, streamMsg, senderSep, streamId, file.getPath(), "STREAM_UNICAST",
                     ProxyClient.streamListenerMap);
 
             if (!isStreamReceived) {
@@ -183,9 +177,9 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         }
     }
 
-    private void processStreamStatus(Intent intent) {
-        final short streamId = intent.getShortExtra("streamId", (short) -1);
-        final int streamStatus = intent.getIntExtra("streamStatus", -1);
+    private void processStreamStatus(StreamStatusMessage statusMessage) {
+        final short streamId = statusMessage.getStreamId();
+        final int streamStatus = statusMessage.getStreamStatus();
         if (-1 == streamId || -1 == streamStatus) {
             Log.e(TAG, "Error in StreamDescriptor Status received Intent ");
             return;

@@ -3,7 +3,9 @@ package com.bezirk.proxy.messagehandler;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
 
-public class ServiceIncomingMessage {
+import java.io.Serializable;
+
+public class ServiceIncomingMessage implements Serializable {
     private final String callbackDiscriminator;
     private final ZirkId recipient;
 
