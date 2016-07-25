@@ -32,8 +32,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -43,11 +45,13 @@ import java.util.Set;
 public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerServiceInfo, PubSubBrokerControlReceiver, PubSubEventReceiver {
     private static final Logger logger = LoggerFactory.getLogger(PubSubBroker.class);
 
+    private static final String SPHERE_NULL_NAME = "SPHERE_NONE";
+
     protected PubSubBrokerStorage pubSubBrokerStorage = null;
     protected PubSubBrokerRegistry pubSubBrokerRegistry = null;
     protected Comms comms = null;
-    protected SphereServiceAccess sphereServiceAccess = null;
-    protected SphereSecurity sphereSecurity = null;
+    protected SphereServiceAccess sphereServiceAccess = null; // Nullable object
+    protected SphereSecurity sphereSecurity = null; // Nullable object
     DeviceInterface deviceInterface = null;
     RemoteLog remoteLog = null;
 
@@ -87,18 +91,21 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             logger.error("PubSubBroker Registration failed, Zirk ID is already registered");
         }
 
-        // Step 2: Register with sphere
-        boolean isSpherePassed = sphereServiceAccess.registerService(serviceId, serviceName);
+        if(sphereServiceAccess != null) {
+            // Step 2: Register with sphere
+            boolean isSpherePassed = sphereServiceAccess.registerService(serviceId, serviceName);
 
-        if (isSpherePassed) {
-            logger.info("Zirk Registration Complete for: {}, {}", serviceName, serviceId);
-        } else {
-            // unregister the PubSubBroker due to failure in sphere
-            logger.error("sphere Registration Failed. unregistring PubSubBroker");
-            unregisterService(serviceId);
+            if (isSpherePassed) {
+                logger.info("Zirk Registration Complete for: {}, {}", serviceName, serviceId);
+            } else {
+                // unregister the PubSubBroker due to failure in sphere
+                logger.error("sphere Registration Failed. unregistring PubSubBroker");
+                unregisterService(serviceId);
+            }
         }
         return isPubSubPassed;
     }
+
 
     public Boolean registerService(final ZirkId serviceId) {
         if (!ValidatorUtility.checkBezirkZirkId(serviceId)) {
@@ -168,7 +175,16 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     @Override
     public boolean sendMulticastEvent(ZirkId serviceId, RecipientSelector recipientSelector, String serializedEventMsg, String topic) {
 
-        final Iterable<String> listOfSphere = sphereServiceAccess.getSphereMembership(serviceId);
+        final Iterable<String> listOfSphere ;
+
+        if(sphereServiceAccess != null) {
+            listOfSphere = sphereServiceAccess.getSphereMembership(serviceId);
+        }
+        else{
+            Set<String> spheres = new HashSet<String>();
+            spheres.add(SPHERE_NULL_NAME);
+            listOfSphere = spheres;
+        }
 
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with any sphere: " + serviceId.getZirkId());
@@ -207,7 +223,17 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     @Override
     public boolean sendUnicastEvent(ZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg, String topic) {
-        final Iterable<String> listOfSphere = sphereServiceAccess.getSphereMembership(serviceId);
+        final Iterable<String> listOfSphere ;
+
+        if(sphereServiceAccess != null) {
+            listOfSphere = sphereServiceAccess.getSphereMembership(serviceId);
+        }
+        else{
+            Set<String> spheres = new HashSet<String>();
+            spheres.add(SPHERE_NULL_NAME);
+            listOfSphere = spheres;
+        }
+
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with the sphere");
             return false;
@@ -243,7 +269,17 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId) {
 
-        final Iterable<String> listOfSphere = sphereServiceAccess.getSphereMembership(senderId);
+        final Iterable<String> listOfSphere ;
+
+        if(sphereServiceAccess != null) {
+            listOfSphere = sphereServiceAccess.getSphereMembership(senderId);
+        }
+        else{
+            Set<String> spheres = new HashSet<String>();
+            spheres.add(SPHERE_NULL_NAME);
+            listOfSphere = spheres;
+        }
+
         if (null == listOfSphere) {
             logger.error("Zirk Not Registered with any sphere: " + senderId);
             return (short) -1;
@@ -290,11 +326,18 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     String getSphereId(BezirkZirkEndPoint receiver, Iterator<String> sphereIterator) {
+
         String sphereId = null;
+
         while (sphereIterator.hasNext()) {
+
             sphereId = sphereIterator.next();
-            if (sphereServiceAccess.isServiceInSphere(receiver.getBezirkZirkId(), sphereId)) {
+
+            if (sphereServiceAccess != null && // valid object, but no service
+                    sphereServiceAccess.isServiceInSphere(receiver.getBezirkZirkId(), sphereId)) {
                 logger.debug("Found the sphere:" + sphereId);
+                break;
+            }else{ // not valid sphere object return the first one
                 break;
             }
         }
@@ -383,7 +426,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
                                        Set<ZirkId> invokeList) {
         // check if the zirk exists in that sphere then give callback
         for (ZirkId serviceId : invokeList) {
-            if (sphereServiceAccess.isServiceInSphere(serviceId, eLedger.getHeader().getSphereName())) {
+            if (isServiceInSphere(serviceId, eLedger.getHeader().getSphereName())) {
                 EventIncomingMessage eCallbackMessage = new EventIncomingMessage(serviceId, eLedger.getHeader().getSenderSEP(),
                         eLedger.getSerializedMessage(), eLedger.getHeader().getTopic(), eLedger.getHeader().getUniqueMsgId());
                 msgHandler.onIncomingEvent(eCallbackMessage);
@@ -391,6 +434,15 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
                 logger.debug("Unknown Zirk ID!!!!!");
             }
         }
+    }
+
+    // true - valid service in sphere
+    private boolean isServiceInSphere(ZirkId service, String sphereId){
+        if(sphereServiceAccess != null)
+        {
+            return sphereServiceAccess.isServiceInSphere(service,sphereId);
+        }
+        return true; // if no valid sphere reference
     }
 
     private Set<ZirkId> getAssociatedServiceList(final EventLedger eLedger) {
@@ -420,9 +472,18 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
      * decrypt the event
      */
     private Boolean decryptMsg(EventLedger eLedger) {
-        // Decrypt the event message
-        final String decryptedEventMsg = sphereSecurity.decryptSphereContent(
-                eLedger.getHeader().getSphereName(), eLedger.getEncryptedMessage());
+        final String decryptedEventMsg;
+
+        if(sphereSecurity != null) {
+            // Decrypt the event message
+            decryptedEventMsg = sphereSecurity.decryptSphereContent(
+                    eLedger.getHeader().getSphereName(), eLedger.getEncryptedMessage());
+        }
+        else{ // no sphere object hence
+            decryptedEventMsg = new String (eLedger.getEncryptedMessage());
+        }
+
+
         if (!ValidatorUtility.checkForString(decryptedEventMsg)) {
             logger.debug("Header Decryption Failed: sphereId-" + eLedger.getHeader().getSphereName() + " may not exist");
 
