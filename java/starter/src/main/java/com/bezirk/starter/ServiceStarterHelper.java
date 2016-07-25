@@ -133,12 +133,12 @@ final class ServiceStarterHelper {
     /**
      * deinitialize the sphere
      */
-    boolean deinitSphere(final MainService service) {
-        // clear the reference
-        service.sphereManager = null;
-
-        return true;
-    }
+//    boolean deinitSphere(final MainService service) {
+//        // clear the reference
+//        service.sphereManager = null;
+//
+//        return true;
+//    }
 
     PipeManager createPipeManager() {
         return null;

@@ -17,17 +17,17 @@ import java.util.List;
  *
  * @author ajc6kor
  */
-final class NetworkUtil {
+public final class NetworkUtil {
     private static final Logger logger = LoggerFactory.getLogger(NetworkUtil.class);
 
-    NetworkInterface fetchNetworkInterface(final BezirkConfig bezirkConfig)
+    public NetworkInterface fetchNetworkInterface()
             throws SocketException, NullPointerException {
 
         JavaNetworkInterfacePreference networkInterfacePreference = new JavaNetworkInterfacePreference();
 
         // Resolve the NetworkInterface object for supplied InterfaceName
         NetworkInterface networkInterface =
-                resolveInterface(networkInterfacePreference.getStoredInterfaceName(), bezirkConfig);
+                resolveInterface(networkInterfacePreference.getStoredInterfaceName());
 
         networkInterfacePreference.setStoredInterfaceName(networkInterface.getName());
 
@@ -43,13 +43,12 @@ final class NetworkUtil {
      * interface
      *
      * @param interfaceName
-     * @param bezirkConfig
      * @return
      * @throws SocketException
      * @throws NullPointerException
      */
-    private NetworkInterface resolveInterface(final String interfaceName,
-                                              final BezirkConfig bezirkConfig) throws SocketException,
+    private NetworkInterface resolveInterface(final String interfaceName
+    ) throws SocketException,
             NullPointerException {
         final ServiceStarterHelper serviceStarterHelper = new ServiceStarterHelper();
         // Try to resolve interface for supplied interfaceName
@@ -88,7 +87,7 @@ final class NetworkUtil {
             // prompt the user to choose from available interfaces
             else {
                 logger.info("Found multiple interfaces, prompting user to choose ...");
-                final String intfName = promptUserForInterface(bezirkConfig);
+                final String intfName = promptUserForInterface();
                 if (ValidatorUtility.checkForString(intfName)) {
                     networkInterface = NetworkInterface.getByName(intfName);
                 } else {
@@ -112,7 +111,7 @@ final class NetworkUtil {
      * @return
      * @throws SocketException
      */
-    private String promptUserForInterface(final BezirkConfig bezirkConfig) {
+    private String promptUserForInterface() {
         String interfaceName;
         //if (bezirkConfig.isDisplayEnabled()) {
         final Iterator<IntfInetPair> itr = NetworkUtilities

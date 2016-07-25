@@ -4,9 +4,10 @@ import com.bezirk.actions.BezirkAction;
 import com.bezirk.actions.RegisterZirkAction;
 import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.actions.SendMulticastEventAction;
-import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
+import com.bezirk.actions.UnicastEventAction;
+import com.bezirk.componentManager.ComponentManager;
 import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.ProxyRegistry;
 import com.bezirk.middleware.Bezirk;
@@ -22,7 +23,6 @@ import com.bezirk.proxy.ServiceRegistrationUtil;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.proxy.messagehandler.ServiceMessageHandler;
-import com.bezirk.starter.MainService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,12 +50,13 @@ public class ProxyClient implements Bezirk {
     private ZirkId zirkId;
 
     public ProxyClient() {
-        MainService mainService = new MainService(proxy, null);
+        ComponentManager componentManager = new ComponentManager(proxy);
+        //MainService mainService = new MainService(proxy, null);
         final BroadcastReceiver brForService = new ZirkMessageReceiver(activeStreams,
                 eventListenerMap, sidMap, streamListenerMap);
         ServiceMessageHandler bezirkPcCallback = new ServiceMessageHandler(brForService);
-        mainService.startStack(bezirkPcCallback);
-        proxyPersistence = mainService.getBezirkProxyPersistence();
+        //mainService.startStack(bezirkPcCallback);
+        proxyPersistence = componentManager.getBezirkProxyPersistence();
         try {
             proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         } catch (Exception e) {

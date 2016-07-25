@@ -1,14 +1,13 @@
 package com.bezirk.comms;
 
-import com.bezirk.pipe.PipeManager;
 import com.bezirk.comms.processor.CommsProcessor;
 import com.bezirk.pubsubbroker.PubSubBroker;
-//import com.bezirk.rest.BezirkRestCommsManager;
 import com.bezirk.sphere.api.SphereSecurity;
-import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.util.ValidatorUtility;
 
 import java.net.InetAddress;
+
+//import com.bezirk.rest.BezirkRestCommsManager;
 
 /**
  * vimal : Bezirk Communication manager for zyre - jni

@@ -1,13 +1,13 @@
 package com.bezirk.comms.processor;
 
 
-
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsMessageDispatcher;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.Streaming;
 import com.bezirk.control.messages.ControlLedger;
@@ -49,12 +49,12 @@ public abstract class CommsProcessor implements Comms {
 
     // thread pool size
     private static final int THREAD_SIZE = 4;
-  //  private final UPABlockCipherService cipherService = new UPABlockCipherService();
+    //  private final UPABlockCipherService cipherService = new UPABlockCipherService();
 
     CommsMessageDispatcher msgDispatcher = null;
 
     //LogServiceMessageHandler logServiceMsgHandler = null;
-    PubSubBroker pubSubBroker = null;
+    PubSubEventReceiver pubSubEventReceiver = null;
 
     SphereSecurity sphereSecurity = null;
 
@@ -71,11 +71,30 @@ public abstract class CommsProcessor implements Comms {
     private ExecutorService executor;
     private Streaming bezirkStreamManager = null;
 
+    public CommsProcessor(){}
+
+    public CommsProcessor(CommsProperties commsProperties, InetAddress addr,
+                          PubSubEventReceiver pubSubEventReceiver, SphereSecurity sphereSecurity, Streaming streaming, CommsNotification commsNotification) {
+        this.notification = commsNotification;
+        this.pubSubEventReceiver = pubSubEventReceiver;
+
+        msgDispatcher = new CommsMessageDispatcher(pubSubEventReceiver);
+
+        if (streaming != null) {
+
+            bezirkStreamManager = streaming;
+
+            bezirkStreamManager.initStreams(this);
+
+        }
+
+    }
+
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
                              PubSubBroker pubSubBroker, SphereSecurity sphereSecurity, Streaming streaming) {
 
-        this.pubSubBroker = pubSubBroker;
+        this.pubSubEventReceiver = pubSubBroker;
 
         msgDispatcher = new CommsMessageDispatcher(pubSubBroker);
 
@@ -100,7 +119,6 @@ public abstract class CommsProcessor implements Comms {
         if (bezirkStreamManager != null) {
             bezirkStreamManager.startStreams();
         }
-
 
 
         return true;
@@ -292,9 +310,9 @@ public abstract class CommsProcessor implements Comms {
         //msg = cipherService.encrypt(msgData, testKey).getBytes();
         // temp fix of sending the byte stream
         String msgDataString = new String(msgData);
-        byte[] msg ;
+        byte[] msg;
 
-        if(sphereSecurity != null)
+        if (sphereSecurity != null)
             msg = sphereSecurity.encryptSphereContent(sphereId, msgDataString);
         else // No encryption when there is no interface
             msg = msgData;
@@ -325,9 +343,9 @@ public abstract class CommsProcessor implements Comms {
         if ((msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED_COMPRESSED)
                 || (msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED)) {
 
-            String data ;
+            String data;
 
-            if(sphereSecurity != null)
+            if (sphereSecurity != null)
                 data = sphereSecurity.decryptSphereContent(sphereId, msgData);
             else // No decryption when there is no interface
                 data = new String(msgData);
