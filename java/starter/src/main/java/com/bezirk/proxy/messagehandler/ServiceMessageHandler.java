@@ -1,7 +1,6 @@
 package com.bezirk.proxy.messagehandler;
 
-import com.bezirk.actions.StreamStatusAction;
-import com.bezirk.actions.UnicastEventAction;
+import com.bezirk.actions.*;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -30,9 +29,9 @@ public final class ServiceMessageHandler implements com.bezirk.proxy.MessageHand
     }
 
     @Override
-    public void onIncomingStream(StreamIncomingMessage streamIncomingMessage) {
+    public void onIncomingStream(ReceiveFileStreamAction receiveFileStreamAction) {
         if (ValidatorUtility.isObjectNotNull(brForService)) {
-            brForService.onReceive(streamIncomingMessage);
+            brForService.onReceive(receiveFileStreamAction);
         } else {
 
             logger.debug(RECEIVER_NULL_ERROR);

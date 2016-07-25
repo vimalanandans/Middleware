@@ -15,7 +15,7 @@ import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
+import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.actions.StreamStatusAction;
 
 import java.io.File;
@@ -46,7 +46,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
                 processEvent((UnicastEventAction) message);
                 break;
             case ACTION_ZIRK_RECEIVE_STREAM:
-                processStreamUnicast((StreamIncomingMessage) message);
+                processStreamUnicast((ReceiveFileStreamAction) message);
                 break;
             case ACTION_ZIRK_RECEIVE_STREAM_STATUS:
                 processStreamStatus((StreamStatusAction) message);
@@ -146,7 +146,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         return valid;
     }
 
-    private void processStreamUnicast(StreamIncomingMessage streamMessage) {
+    private void processStreamUnicast(ReceiveFileStreamAction streamMessage) {
         final String streamTopic = streamMessage.getStreamTopic();
         final String streamMsg = streamMessage.getSerializedStream();
         final File file = streamMessage.getFile();

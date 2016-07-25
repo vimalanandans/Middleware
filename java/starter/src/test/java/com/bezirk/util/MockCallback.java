@@ -2,7 +2,7 @@ package com.bezirk.util;
 
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.proxy.MessageHandler;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
+import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.actions.StreamStatusAction;
 
 /**
@@ -19,7 +19,7 @@ public class MockCallback implements MessageHandler {
     }
 
     @Override
-    public void onIncomingStream(StreamIncomingMessage streamIncomingMessage) {
+    public void onIncomingStream(ReceiveFileStreamAction receiveFileStreamAction) {
         // TODO Auto-generated method stub
 
     }

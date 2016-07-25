@@ -15,7 +15,7 @@ import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.MessageHandler;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
+import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.actions.StreamStatusAction;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
@@ -473,7 +473,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public boolean processNewStream(StreamIncomingMessage streamData) {
+    public boolean processNewStream(ReceiveFileStreamAction streamData) {
         msgHandler.onIncomingStream(streamData);
         return true;
     }

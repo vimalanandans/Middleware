@@ -1,6 +1,7 @@
 package com.bezirk.messagehandler.pc;
 
 import com.bezirk.actions.BezirkAction;
+import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
 import com.bezirk.middleware.messages.Event;
@@ -9,7 +10,6 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.proxy.messagehandler.ServiceMessageHandler;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.actions.StreamStatusAction;
 
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class TestCBkForServicePC {
 
     @Test
     public void testFireUnicastStreamCallback() {
-        StreamIncomingMessage unicastStreamCallbackMessage = new StreamIncomingMessage(new ZirkId("TEST"), null, null, null, (short) 0, null);
+        ReceiveFileStreamAction unicastStreamCallbackMessage = new ReceiveFileStreamAction(new ZirkId("TEST"), null, null, null, (short) 0, null);
         cBkForServicePC.onIncomingStream(unicastStreamCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire Unicast stream.", receivedUnicastStream);
