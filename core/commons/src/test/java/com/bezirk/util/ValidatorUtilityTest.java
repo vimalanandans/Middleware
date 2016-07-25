@@ -1,7 +1,6 @@
 package com.bezirk.util;
 
 import com.bezirk.control.messages.Header;
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
@@ -21,9 +20,6 @@ import java.util.Enumeration;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author ajc6kor
- */
 public class ValidatorUtilityTest {
     private static final Logger logger = LoggerFactory.getLogger(ValidatorUtilityTest.class);
 
@@ -213,27 +209,6 @@ public class ValidatorUtilityTest {
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertFalse("Invalid header is considered valid by validator.", isValid);
 
-
-    }
-
-    @Test
-    public void testCheckDiscoveryRequest() {
-
-		/*-------------- Positive cases --------------*/
-        DiscoveryRequest discoveryRequest = new DiscoveryRequest(sphereId, sender, null, null, 2, 90000, 3);
-        isValid = ValidatorUtility.checkDiscoveryRequest(discoveryRequest);
-        assertTrue("Valid discoveryRequest is considered invalid by validator.", isValid);
-
-
-		/*-------------- Negative cases --------------*/
-        discoveryRequest = new DiscoveryRequest(null, sender, null, null, 2, 60000, 3);
-        isValid = ValidatorUtility.checkDiscoveryRequest(discoveryRequest);
-        assertFalse("Invalid discoveryRequest is considered valid by validator.", isValid);
-
-        BezirkZirkEndPoint sep = new BezirkZirkEndPoint(zirkId);
-        discoveryRequest = new DiscoveryRequest(sphereId, sep, null, null, 2, 60000, 3);
-        isValid = ValidatorUtility.checkDiscoveryRequest(discoveryRequest);
-        assertFalse("Invalid discoveryRequest is considered valid by validator.", isValid);
 
     }
 

@@ -1,7 +1,6 @@
 package com.bezirk.util;
 
 import com.bezirk.control.messages.Header;
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
@@ -79,11 +78,6 @@ public final class ValidatorUtility {
     public static boolean checkHeader(final Header mHeader) {
         return !(!checkForString(mHeader.getSphereName(), mHeader.getTopic()) ||
                 !checkBezirkZirkEndPoint(mHeader.getSenderSEP()));
-
-    }
-
-    public static boolean checkDiscoveryRequest(DiscoveryRequest request) {
-        return !(!checkForString(request.getSphereId()) || request.getMessageId() == -1 || !checkBezirkZirkEndPoint(request.getSender()));
 
     }
 
