@@ -37,7 +37,7 @@ public class AndroidProxyServer extends ProxyServer {
         logger.debug("Zirk registration received by Bezirk. Name: {}, ID: {}",
                 registrationAction.getZirkName(), registrationAction.getZirkId());
 
-        super.registerZirk(registrationAction.getZirkId(), registrationAction.getZirkName());
+        super.registerZirk(registrationAction);
     }
 
     public void subscribeService(Intent intent) {
@@ -45,7 +45,7 @@ public class AndroidProxyServer extends ProxyServer {
 
         final SubscriptionAction subscriptionAction = (SubscriptionAction) intent.getSerializableExtra(BezirkActions.ACTION_BEZIRK_SUBSCRIBE.getName());
 
-        super.subscribeService(subscriptionAction.getZirkId(), subscriptionAction.getRole());
+        super.subscribeService(subscriptionAction);
     }
 
     public void unsubscribeService(Intent intent) {
@@ -53,11 +53,10 @@ public class AndroidProxyServer extends ProxyServer {
 
         final SubscriptionAction subscriptionAction = (SubscriptionAction) intent.getSerializableExtra(BezirkActions.ACTION_BEZIRK_UNSUBSCRIBE.getName());
 
-        ProtocolRole subscribedRole = subscriptionAction.getRole();
-        if (subscribedRole != null) {
-            super.unsubscribe(subscriptionAction.getZirkId(), subscribedRole);
+        if (subscriptionAction.getRole() != null) {
+            super.unsubscribe(subscriptionAction);
         } else {
-            super.unregister(subscriptionAction.getZirkId());
+            super.unregister(subscriptionAction);
         }
     }
 
@@ -99,6 +98,6 @@ public class AndroidProxyServer extends ProxyServer {
 
         logger.trace("Received location {} from zirk", location);
 
-        super.setLocation(locationAction.getZirkId(), location);
+        super.setLocation(locationAction);
     }
 }

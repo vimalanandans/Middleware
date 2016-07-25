@@ -62,7 +62,7 @@ public final class ProxyClient implements Bezirk {
         intent.setAction(actionName);
         intent.putExtra(actionName, action);
 
-        if (context.startService(intent) == null) {
+        if (context.startService(intent) == null) {;
             Log.e(TAG, "Failed to send intent for action: " + actionName +
                     ". Is the middleware running?");
 

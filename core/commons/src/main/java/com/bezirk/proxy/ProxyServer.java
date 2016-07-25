@@ -1,8 +1,11 @@
 package com.bezirk.proxy;
 
+import com.bezirk.actions.RegisterZirkAction;
 import com.bezirk.actions.SendEventAction;
 import com.bezirk.actions.SendMulticastEventAction;
 import com.bezirk.actions.SendUnicastEventAction;
+import com.bezirk.actions.SetLocationAction;
+import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
@@ -18,21 +21,17 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-/**
- * Bridges the main module / Main service to pubsub broker.
- * TODO : Do we really need this module. This has become just an adapter for PubSubBroker
- */
 public class ProxyServer {
     private static final Logger logger = LoggerFactory.getLogger(ProxyServer.class);
 
     private PubSubBrokerServiceTrigger pubSubBrokerService;
 
-    public void registerZirk(final ZirkId serviceId, final String serviceName) {
-        pubSubBrokerService.registerService(serviceId,serviceName);
+    public void registerZirk(RegisterZirkAction registerZirkAction) {
+        pubSubBrokerService.registerService(registerZirkAction.getZirkId(), registerZirkAction.getZirkName());
     }
 
-    public void subscribeService(final ZirkId serviceId, final ProtocolRole pRole) {
-        pubSubBrokerService.subscribeService(serviceId, pRole);
+    public void subscribeService(SubscriptionAction subscriptionAction) {
+        pubSubBrokerService.subscribeService(subscriptionAction.getZirkId(), subscriptionAction.getRole());
     }
 
     public void sendMulticastEvent(SendMulticastEventAction eventAction) {
@@ -49,17 +48,17 @@ public class ProxyServer {
         return pubSubBrokerService.sendStream(senderId, receiver, descriptor.toJson(), file, streamId);
     }
 
-    public void setLocation(final ZirkId zirkId, final Location location) {
-        pubSubBrokerService.setLocation(zirkId, location);
+    public void setLocation(SetLocationAction locationAction) {
+        pubSubBrokerService.setLocation(locationAction.getZirkId(), locationAction.getLocation());
     }
 
-    public boolean unsubscribe(final ZirkId zirkId, final ProtocolRole role) {
+    public boolean unsubscribe(SubscriptionAction subscriptionAction) {
 
-        return pubSubBrokerService.unsubscribe(zirkId, role);
+        return pubSubBrokerService.unsubscribe(subscriptionAction.getZirkId(), subscriptionAction.getRole());
     }
 
-    public boolean unregister(ZirkId zirkId) {
-        return pubSubBrokerService.unregisterService(zirkId);
+    public boolean unregister(SubscriptionAction subscriptionAction) {
+        return pubSubBrokerService.unregisterService(subscriptionAction.getZirkId());
     }
 
     public void setPubSubBrokerService(PubSubBrokerServiceTrigger pubSubBrokerService) {

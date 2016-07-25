@@ -383,14 +383,6 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
                                        Set<ZirkId> invokeList) {
         // check if the zirk exists in that sphere then give callback
         for (ZirkId serviceId : invokeList) {
-            /* rest comms disabled
-            if (invokeList.contains(new ZirkId("SPOOFED")) &&
-                    eLedger.getHeader().getSphereName().equals(BezirkRestCommsManager.getInstance().getSelectedSphereName())) {
-                //send the response to HTTPComms also..
-                BezirkRestCallBack callBack = new BezirkRestCallBackImpl();
-                callBack.callBackForResponse(eLedger);
-
-            } else */
             if (sphereServiceAccess.isServiceInSphere(serviceId, eLedger.getHeader().getSphereName())) {
                 EventIncomingMessage eCallbackMessage = new EventIncomingMessage(serviceId, eLedger.getHeader().getSenderSEP(),
                         eLedger.getSerializedMessage(), eLedger.getHeader().getTopic(), eLedger.getHeader().getUniqueMsgId());
