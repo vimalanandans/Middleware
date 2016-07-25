@@ -35,7 +35,7 @@ public class StreamManager implements Streaming {
     static int STREAM_RETRY_COUNT = 5;
 
     private final StreamCtrlReceiver ctrlReceiver = new StreamCtrlReceiver();
-    private SphereSecurity sphereForSadl = null;
+    private SphereSecurity sphereSecurity = null;
     private MessageQueue streamingMessageQueue = null;
     private StreamQueueProcessor streamQueueProcessor = null;
     private Thread sStreamingThread = null;
@@ -192,11 +192,10 @@ public class StreamManager implements Streaming {
         }
     }
 
-    @Override
-    public void setSphereForSadl(SphereSecurity sphereSecurity) {
+    public void setSphereSecurity(SphereSecurity sphereSecurity) {
 
-        this.sphereForSadl = sphereSecurity;
-        this.streamQueueProcessor.setSphereSecurity(sphereForSadl);
+        this.sphereSecurity = sphereSecurity;
+        this.streamQueueProcessor.setSphereSecurity(this.sphereSecurity);
     }
 
     class StreamCtrlReceiver implements CtrlMsgReceiver {
@@ -248,7 +247,7 @@ public class StreamManager implements Streaming {
                         serializedMsg, StreamRequest.class);
                 bezirkStreamHandler.handleStreamRequest(streamRequest,
                         comms, portFactory,
-                        streamStore, sadlReceiver, sphereForSadl);
+                        streamStore, sadlReceiver, sphereSecurity);
 
             } catch (Exception e) {
                 logger.error(

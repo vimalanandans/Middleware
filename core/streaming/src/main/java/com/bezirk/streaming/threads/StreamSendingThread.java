@@ -64,14 +64,14 @@ public class StreamSendingThread implements Runnable {
             fileInputStream = new FileInputStream(file);                              // open the file
             client = new Socket(recipientIP, port);                                       // open the socket
             dataOutputStream = new DataOutputStream(client.getOutputStream());
-            if (isEncrypted) {
+
+            if (isEncrypted && sphereSecurity != null ) // encrypted and valid sphere security object
+            {
                 logger.debug("---------- Secure Data transfer requested! -------------");
-                if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {
+
                     sphereSecurity.encryptSphereContent(fileInputStream, dataOutputStream, sphere);
                     logger.debug("---------- Secure Data transfer Completed! -------------");
-                } else {
-                    logger.error("SphereForSadl is not initialized. Unable to process secure streaming request.");
-                }
+
             } else {
                 int noOfBytesReadFromTheFile;
                 final byte[] buffer = new byte[BUFFER_SIZE];

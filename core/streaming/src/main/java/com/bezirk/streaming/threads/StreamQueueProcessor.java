@@ -119,13 +119,8 @@ public class StreamQueueProcessor implements Runnable {
 
         } else {
 
-            if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {
-
                 new Thread(new StreamSendingThread(streamRecord, sadlReceiver, sphereSecurity)).start();                       // spawn the thread
-            } else {
 
-                logger.error("SphereForSadl is not initialized.");
-            }
         }
     }
 

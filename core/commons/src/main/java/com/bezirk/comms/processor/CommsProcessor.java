@@ -56,7 +56,7 @@ public abstract class CommsProcessor implements Comms {
     //LogServiceMessageHandler logServiceMsgHandler = null;
     PubSubBroker pubSubBroker = null;
 
-    SphereSecurity sphereSecurity = null;
+    SphereSecurity sphereSecurity = null; // nullable object
 
     //generic notifications
     List ICommsNotification = new ArrayList<CommsNotification>();
@@ -745,7 +745,7 @@ public abstract class CommsProcessor implements Comms {
 
     @Override
     public void setSphereSecurity(SphereSecurity sphereSecurity) {
-        bezirkStreamManager.setSphereForSadl(sphereSecurity);
+        bezirkStreamManager.setSphereSecurity(sphereSecurity);
     }
 
     /**
