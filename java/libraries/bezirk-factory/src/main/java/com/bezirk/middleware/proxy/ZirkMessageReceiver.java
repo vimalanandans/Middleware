@@ -1,13 +1,14 @@
 package com.bezirk.middleware.proxy;
 
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.StreamDescriptor;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
-import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 
@@ -48,11 +49,11 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
         if (sidMap.containsKey(incomingMessage.getZirkId())) {
             switch (incomingMessage.getAction()) {
                 case ACTION_ZIRK_RECEIVE_EVENT:
-                    if (!(incomingMessage instanceof EventIncomingMessage)) {
-                        throw new AssertionError("incomingMessage is not an instance of EventIncomingMessage");
+                    if (!(incomingMessage instanceof UnicastEventAction)) {
+                        throw new AssertionError("incomingMessage is not an instance of UnicastEventAction");
                     }
 
-                    EventIncomingMessage eventCallbackMessage = (EventIncomingMessage) incomingMessage;
+                    UnicastEventAction eventCallbackMessage = (UnicastEventAction) incomingMessage;
                     handleEventCallback(eventCallbackMessage);
                     break;
                 case ACTION_ZIRK_RECEIVE_STREAM:
@@ -83,19 +84,22 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      *
      * @param incomingEvent new event to send up to Zirks registered to receive it
      */
-    private void handleEventCallback(EventIncomingMessage incomingEvent) {
-        logger.debug("About to callback sid:" + incomingEvent.getZirkId().getZirkId() + " for id:" + incomingEvent.getMsgId());
+    private void handleEventCallback(UnicastEventAction incomingEvent) {
+        Event event = Event.fromJson(incomingEvent.getSerializedEvent(), Event.class);
+        BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
+
+        logger.debug("About to callback sid:" + incomingEvent.getZirkId().getZirkId() + " for id:" + incomingEvent.getMessageId());
+
         //Make a combined sid for sender and recipient
-        String combinedSid = incomingEvent.getSenderEndPoint().zirkId.getZirkId() + ":" + incomingEvent.getZirkId().getZirkId();
-        if (checkDuplicateMsg(combinedSid, incomingEvent.getMsgId())) {
+        String combinedSid = endpoint.zirkId.getZirkId() + ":" + incomingEvent.getZirkId().getZirkId();
+        if (checkDuplicateMsg(combinedSid, incomingEvent.getMessageId())) {
             Set<BezirkListener> tempListenersSidMap = sidMap.get(incomingEvent.getZirkId());
-            Set<BezirkListener> tempListenersTopicsMap = eventListenerMap.get(incomingEvent.getEventTopic());
+            Set<BezirkListener> tempListenersTopicsMap = eventListenerMap.get(event.topic);
             if (tempListenersSidMap != null && tempListenersTopicsMap != null) {
                 for (BezirkListener invokingListener : tempListenersSidMap) {
                     if (tempListenersTopicsMap.contains(invokingListener)) {
-                        Event event = Message.fromJson(incomingEvent.getSerializedEvent(), Event.class);
-                        invokingListener.receiveEvent(incomingEvent.getEventTopic(),
-                                event, incomingEvent.getSenderEndPoint());
+                        invokingListener.receiveEvent(event.topic,
+                                event, endpoint);
                     }
                 }
             }

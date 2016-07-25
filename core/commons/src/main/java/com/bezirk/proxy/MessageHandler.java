@@ -3,8 +3,8 @@
  */
 package com.bezirk.proxy;
 
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
-import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 
@@ -18,7 +18,7 @@ public interface MessageHandler {
      *
      * @param eventIncomingMessage the callback message that will be fired.
      */
-    void onIncomingEvent(EventIncomingMessage eventIncomingMessage);
+    void onIncomingEvent(UnicastEventAction eventIncomingMessage);
 
     /**
      * Method that fires the Unicast StreamDescriptor response to ProxyForBezirkLibrary.

@@ -1,11 +1,14 @@
 package com.bezirk.messagehandler.pc;
 
 import com.bezirk.actions.BezirkAction;
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.Message;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.proxy.messagehandler.ServiceMessageHandler;
-import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 
@@ -26,7 +29,8 @@ public class TestCBkForServicePC {
 
     @Test
     public void testFireEventCallback() {
-        EventIncomingMessage eventCallbackMessage = new EventIncomingMessage(new ZirkId("TEST"), null, null, null, null);
+        UnicastEventAction eventCallbackMessage = new UnicastEventAction(BezirkAction.ACTION_ZIRK_RECEIVE_EVENT,
+                new ZirkId("TEST"), new BezirkZirkEndPoint(new ZirkId("TEST 2")), new Event(Message.Flag.NOTICE, "What"));
         cBkForServicePC.onIncomingEvent(eventCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire eventCallback. ", receivedEvent);

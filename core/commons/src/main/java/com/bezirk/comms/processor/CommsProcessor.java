@@ -174,7 +174,7 @@ public abstract class CommsProcessor implements Comms {
             } else if (message.getMessage() instanceof UnicastControlMessage) {
                /* UnicastControlMessage uMsg = (UnicastControlMessage) message.getMessage();
 
-				 String recipient = uMsg.getRecipient().device;
+				 String recipient = uMsg.getEndpoint().device;
 
 				if(isLocalMessage(recipient))
                 {

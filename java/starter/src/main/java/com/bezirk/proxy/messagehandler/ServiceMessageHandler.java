@@ -1,5 +1,6 @@
 package com.bezirk.proxy.messagehandler;
 
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ public final class ServiceMessageHandler implements com.bezirk.proxy.MessageHand
     }
 
     @Override
-    public void onIncomingEvent(EventIncomingMessage eventIncomingMessage) {
+    public void onIncomingEvent(UnicastEventAction eventIncomingMessage) {
         if (ValidatorUtility.isObjectNotNull(brForService)) {
             brForService.onReceive(eventIncomingMessage);
         } else {

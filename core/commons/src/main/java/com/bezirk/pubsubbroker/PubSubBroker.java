@@ -1,5 +1,7 @@
 package com.bezirk.pubsubbroker;
 
+import com.bezirk.actions.BezirkAction;
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.EventLedger;
@@ -10,10 +12,10 @@ import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.datastorage.PubSubBrokerStorage;
 import com.bezirk.devices.DeviceInterface;
 import com.bezirk.middleware.addressing.RecipientSelector;
+import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.MessageHandler;
-import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.middleware.addressing.Location;
@@ -384,9 +386,10 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         // check if the zirk exists in that sphere then give callback
         for (ZirkId serviceId : invokeList) {
             if (sphereServiceAccess.isServiceInSphere(serviceId, eLedger.getHeader().getSphereName())) {
-                EventIncomingMessage eCallbackMessage = new EventIncomingMessage(serviceId, eLedger.getHeader().getSenderSEP(),
-                        eLedger.getSerializedMessage(), eLedger.getHeader().getTopic(), eLedger.getHeader().getUniqueMsgId());
-                msgHandler.onIncomingEvent(eCallbackMessage);
+                UnicastEventAction eventMessage = new UnicastEventAction(BezirkAction.ACTION_ZIRK_RECEIVE_EVENT,
+                        serviceId, eLedger.getHeader().getSenderSEP(),
+                        eLedger.getHeader().getTopic(), eLedger.getSerializedMessage(), eLedger.getHeader().getUniqueMsgId());
+                msgHandler.onIncomingEvent(eventMessage);
             } else {
                 logger.debug("Unknown Zirk ID!!!!!");
             }
@@ -403,8 +406,8 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             UnicastHeader uHeader = (UnicastHeader) eLedger.getHeader();
 
             //here i can check for the spoofed event and bypass the sadl validation
-           /* if (uHeader != null && uHeader.getRecipient().zirkId.getBezirkEventId() != null
-                    && uHeader.getRecipient().zirkId.getZirkId().equals("THIS-SERVICE-ID-IS-HTTP-SPOOFED")) {
+           /* if (uHeader != null && uHeader.getEndpoint().zirkId.getBezirkEventId() != null
+                    && uHeader.getEndpoint().zirkId.getZirkId().equals("THIS-SERVICE-ID-IS-HTTP-SPOOFED")) {
                 serviceList = new HashSet<ZirkId>();
                 serviceList.add(new ZirkId("SPOOFED"));
             } else*/

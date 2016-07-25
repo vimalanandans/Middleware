@@ -3,8 +3,8 @@ package com.bezirk.proxy.android;
 import android.content.Context;
 import android.content.Intent;
 
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
-import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.MessageHandler;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
@@ -36,7 +36,7 @@ public class ProxyClientMessageHandler implements MessageHandler {
     }
 
     @Override
-    public void onIncomingEvent(EventIncomingMessage eventIncomingMessage) {
+    public void onIncomingEvent(UnicastEventAction eventIncomingMessage) {
         try {
             final Intent fireIntent = new Intent();
             fireIntent.putExtra("message", eventIncomingMessage);

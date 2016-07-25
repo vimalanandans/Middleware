@@ -6,7 +6,7 @@ import com.bezirk.actions.BezirkAction;
 import com.bezirk.actions.RegisterZirkAction;
 import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.actions.SendMulticastEventAction;
-import com.bezirk.actions.SendUnicastEventAction;
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.proxy.ProxyServer;
@@ -68,7 +68,7 @@ public class AndroidProxyServer extends ProxyServer {
     public void sendUnicastEvent(Intent intent) {
         logger.trace("Received unicast message from zirk");
 
-        SendUnicastEventAction eventAction = (SendUnicastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName());
+        UnicastEventAction eventAction = (UnicastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName());
 
         super.sendUnicastEvent(eventAction);
     }

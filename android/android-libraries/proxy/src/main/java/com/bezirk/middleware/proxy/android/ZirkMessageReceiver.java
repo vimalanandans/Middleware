@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.messages.Event;
@@ -14,10 +15,8 @@ import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
-import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.Date;
@@ -44,7 +43,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
     private void processReceivedIntent(ZirkAction message) {
         switch (message.getAction()) {
             case ACTION_ZIRK_RECEIVE_EVENT:
-                processEvent((EventIncomingMessage) message);
+                processEvent((UnicastEventAction) message);
                 break;
             case ACTION_ZIRK_RECEIVE_STREAM:
                 processStreamUnicast((StreamIncomingMessage) message);
@@ -75,10 +74,10 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         return true;
     }
 
-    private void processEvent(EventIncomingMessage eventMessage) {
-        final String eventTopic = eventMessage.getEventTopic();
+    private void processEvent(UnicastEventAction eventMessage) {
+        final String eventTopic = eventMessage.getTopic();
         final String serializedEvent = eventMessage.getSerializedEvent();
-        final BezirkZirkEndPoint eventSender = eventMessage.getSenderEndPoint();
+        final BezirkZirkEndPoint eventSender = (BezirkZirkEndPoint) eventMessage.getEndpoint();
 
         boolean valid = isIntentValid(eventTopic, serializedEvent);
 
@@ -87,7 +86,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
             return;
         }
 
-        final String messageId = eventMessage.getMsgId();
+        final String messageId = eventMessage.getMessageId();
         //Check for duplicate message
         if (checkDuplicateMsg(eventSender.zirkId.getZirkId(), messageId)) {
             boolean isEventReceived = receiveEventOrStream(eventTopic, serializedEvent, eventSender, (short) 0, null, "EVENT", ProxyClient.eventListenerMap);

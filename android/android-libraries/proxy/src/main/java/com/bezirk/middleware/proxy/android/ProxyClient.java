@@ -11,7 +11,7 @@ import com.bezirk.actions.BezirkAction;
 import com.bezirk.actions.RegisterZirkAction;
 import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.actions.SendMulticastEventAction;
-import com.bezirk.actions.SendUnicastEventAction;
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.actions.ZirkAction;
@@ -177,7 +177,8 @@ public final class ProxyClient implements Bezirk {
     public void sendEvent(ZirkEndPoint recipient, Event event) {
         Log.d(TAG, "Zirk sending event: " + event.topic);
 
-        sendBezirkIntent(new SendUnicastEventAction(zirkId, recipient, event));
+        sendBezirkIntent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
+                zirkId, recipient, event));
     }
 
     @Override

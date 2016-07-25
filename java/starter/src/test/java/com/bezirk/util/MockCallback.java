@@ -1,7 +1,7 @@
 package com.bezirk.util;
 
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
-import com.bezirk.proxy.messagehandler.EventIncomingMessage;
 import com.bezirk.proxy.MessageHandler;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
@@ -14,7 +14,7 @@ import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 public class MockCallback implements MessageHandler {
 
     @Override
-    public void onIncomingEvent(EventIncomingMessage eventIncomingMessage) {
+    public void onIncomingEvent(UnicastEventAction eventIncomingMessage) {
         // TODO Auto-generated method stub
 
     }
