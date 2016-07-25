@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 /**
  * PC specific callback implementation that is used to give the callback to the ProxyServiceLegacy.
  */
-public final class ServiceMessageHandler implements MessageHandler {
+public final class ServiceMessageHandler implements com.bezirk.proxy.MessageHandler {
     private static final Logger logger = LoggerFactory.getLogger(ServiceMessageHandler.class);
 
     private static final String RECEIVER_NULL_ERROR = "Broadcast Receiver For Zirk is null, cannot give callback";

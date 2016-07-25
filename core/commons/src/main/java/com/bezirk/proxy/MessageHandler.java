@@ -1,7 +1,12 @@
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com)
  */
-package com.bezirk.proxy.messagehandler;
+package com.bezirk.proxy;
+
+import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
+import com.bezirk.proxy.messagehandler.EventIncomingMessage;
+import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
+import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 
 /**
  * Platform independent API used to give MessageHandler to the ProxyForBezirk Library.

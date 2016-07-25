@@ -37,25 +37,24 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         ServiceIncomingMessage message = (ServiceIncomingMessage) intent.getSerializableExtra("message");
 
-        if (!isValidRequest(message.getRecipient())) {
-            return;
+        if (isValidRequest(message.getRecipient())) {
+            processReceivedIntent(message);
         }
-
-        processReceivedIntent(message);
     }
 
     private void processReceivedIntent(ServiceIncomingMessage message) {
-        switch (message.getCallbackType()) {
-            case "EVENT":
+        switch (message.getAction()) {
+            case ACTION_ZIRK_RECEIVE_EVENT:
                 processEvent((EventIncomingMessage) message);
                 break;
-            case "STREAM_UNICAST":
+            case ACTION_ZIRK_RECEIVE_STREAM:
                 processStreamUnicast((StreamIncomingMessage) message);
                 break;
-            case "STREAM_STATUS":
+            case ACTION_ZIRK_RECEIVE_STREAM_STATUS:
                 processStreamStatus((StreamStatusMessage) message);
                 break;
             default:
+                Log.e(TAG, "Unimplemented action: " + message.getAction());
         }
     }
 

@@ -1,5 +1,6 @@
 package com.bezirk.proxy.messagehandler;
 
+import com.bezirk.actions.BezirkAction;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 
@@ -22,7 +23,7 @@ public final class StreamIncomingMessage extends ServiceIncomingMessage {
 
     public StreamIncomingMessage(ZirkId recipientId, String streamTopic, String serializedStream,
                                  File file, short localStreamId, BezirkZirkEndPoint sender) {
-        super("STREAM_UNICAST", recipientId);
+        super(BezirkAction.ACTION_ZIRK_RECEIVE_STREAM, recipientId);
 
         this.streamTopic = streamTopic;
         this.serializedStream = serializedStream;

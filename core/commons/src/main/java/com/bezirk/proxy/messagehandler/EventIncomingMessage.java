@@ -1,5 +1,6 @@
 package com.bezirk.proxy.messagehandler;
 
+import com.bezirk.actions.BezirkAction;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 
@@ -19,7 +20,7 @@ public final class EventIncomingMessage extends ServiceIncomingMessage {
     private final String msgId;
 
     public EventIncomingMessage(ZirkId recipientId, BezirkZirkEndPoint senderEndPoint, String serializedEvent, String eventTopic, String msgId) {
-        super("EVENT", recipientId);
+        super(BezirkAction.ACTION_ZIRK_RECEIVE_EVENT, recipientId);
 
         this.senderEndPoint = senderEndPoint;
         this.serializedEvent = serializedEvent;

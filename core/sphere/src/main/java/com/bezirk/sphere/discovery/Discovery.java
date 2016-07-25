@@ -3,7 +3,7 @@ package com.bezirk.sphere.discovery;
 
 import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
-import com.bezirk.proxy.messagehandler.MessageHandler;
+import com.bezirk.proxy.MessageHandler;
 import com.bezirk.util.ValidatorUtility;
 import com.google.gson.Gson;
 

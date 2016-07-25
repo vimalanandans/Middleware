@@ -46,8 +46,8 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
     @Override
     public void onReceive(ServiceIncomingMessage incomingMessage) {
         if (sidMap.containsKey(incomingMessage.getRecipient())) {
-            switch (incomingMessage.getCallbackType()) {
-                case "EVENT":
+            switch (incomingMessage.getAction()) {
+                case ACTION_ZIRK_RECEIVE_EVENT:
                     if (!(incomingMessage instanceof EventIncomingMessage)) {
                         throw new AssertionError("incomingMessage is not an instance of EventIncomingMessage");
                     }
@@ -55,7 +55,7 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
                     EventIncomingMessage eventCallbackMessage = (EventIncomingMessage) incomingMessage;
                     handleEventCallback(eventCallbackMessage);
                     break;
-                case "STREAM_UNICAST":
+                case ACTION_ZIRK_RECEIVE_STREAM:
                     if (!(incomingMessage instanceof StreamIncomingMessage)) {
                         throw new AssertionError("incomingMessage is not an instance of StreamIncomingMessage");
                     }
@@ -63,7 +63,7 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
                     StreamIncomingMessage strmMsg = (StreamIncomingMessage) incomingMessage;
                     handlerStreamUnicastCallback(strmMsg);
                     break;
-                case "STREAM_STATUS":
+                case ACTION_ZIRK_RECEIVE_STREAM_STATUS:
                     if (!(incomingMessage instanceof StreamStatusMessage)) {
                         throw new AssertionError("incomingMessage is not an instance of StreamStatusMessage");
                     }
@@ -72,7 +72,7 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
                     handleStreamStatusCallback(streamStatusCallbackMessage);
                     break;
                 default:
-                    logger.error("Unknown incoming message type : " + incomingMessage.getCallbackType());
+                    logger.error("Unimplemented action: {}" + incomingMessage.getAction());
             }
         }
     }
