@@ -4,8 +4,6 @@
 package com.bezirk.datastorage;
 
 import com.bezirk.pubsubbroker.PubSubBrokerRegistry;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -17,8 +15,7 @@ import java.sql.SQLException;
  */
 public class RegistryStorage extends DatabaseHelper implements PubSubBrokerStorage, SpherePersistence, ProxyPersistence {
 
-    @Inject
-    public RegistryStorage(DatabaseConnection dbConnection, @Assisted String DBVersion) throws NullPointerException, SQLException, IOException, Exception {
+    public RegistryStorage(DatabaseConnection dbConnection, String DBVersion) throws NullPointerException, SQLException, IOException, Exception {
         super(dbConnection);
         checkDatabase(DBVersion);
     }
