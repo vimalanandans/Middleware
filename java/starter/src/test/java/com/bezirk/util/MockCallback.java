@@ -1,10 +1,9 @@
 package com.bezirk.util;
 
 import com.bezirk.actions.UnicastEventAction;
-import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.proxy.MessageHandler;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.actions.StreamStatusAction;
 
 /**
  * Mock callback zirk implementing BezirkCallback, used for unit testing
@@ -26,16 +25,8 @@ public class MockCallback implements MessageHandler {
     }
 
     @Override
-    public void onStreamStatus(StreamStatusMessage streamStatusMessage) {
+    public void onStreamStatus(StreamStatusAction streamStatusAction) {
         // TODO Auto-generated method stub
 
     }
-
-    @Override
-    public void onDiscoveryIncomingMessage(
-            DiscoveryIncomingMessage discoveryCallback) {
-        // TODO Auto-generated method stub
-
-    }
-
 }

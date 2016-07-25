@@ -12,12 +12,11 @@ import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.datastorage.PubSubBrokerStorage;
 import com.bezirk.devices.DeviceInterface;
 import com.bezirk.middleware.addressing.RecipientSelector;
-import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.MessageHandler;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.actions.StreamStatusAction;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.ZirkId;
@@ -468,7 +467,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public boolean processStreamStatus(StreamStatusMessage streamStatusNotification) {
+    public boolean processStreamStatus(StreamStatusAction streamStatusNotification) {
         msgHandler.onStreamStatus(streamStatusNotification);
         return true;
     }

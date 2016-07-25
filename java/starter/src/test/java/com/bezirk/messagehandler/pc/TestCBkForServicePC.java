@@ -10,7 +10,7 @@ import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.proxy.messagehandler.ServiceMessageHandler;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.actions.StreamStatusAction;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ public class TestCBkForServicePC {
 
     @Test
     public void testFireStreamStatusCallback() {
-        StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(new ZirkId("TEST"), 0, (short) 0);
+        StreamStatusAction streamStatusCallbackMessage = new StreamStatusAction(new ZirkId("TEST"), 0, (short) 0);
         cBkForServicePC.onStreamStatus(streamStatusCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire stream status.", receivedStreamStatus);

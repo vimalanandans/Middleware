@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.bezirk.actions.UnicastEventAction;
-import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.proxy.MessageHandler;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.actions.StreamStatusAction;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -58,25 +57,11 @@ public class ProxyClientMessageHandler implements MessageHandler {
     }
 
     @Override
-    public void onStreamStatus(StreamStatusMessage streamStatusMessage) {
+    public void onStreamStatus(StreamStatusAction streamStatusAction) {
         try {
             final Intent fireIntent = new Intent();
-            fireIntent.putExtra("message", streamStatusMessage);
+            fireIntent.putExtra("message", streamStatusAction);
             fireIntentToService(fireIntent);
-        } catch (Exception e) {
-            logger.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
-        }
-    }
-
-
-    @Override
-    public void onDiscoveryIncomingMessage(DiscoveryIncomingMessage discoveryIncomingMessage) {
-        try {
-            final Intent fireIntent = new Intent();
-            fireIntent.putExtra("message", discoveryIncomingMessage);
-            if (discoveryIncomingMessage.isSphereDiscovery()) {
-                fireIntentToSphere(fireIntent);
-            }
         } catch (Exception e) {
             logger.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
         }

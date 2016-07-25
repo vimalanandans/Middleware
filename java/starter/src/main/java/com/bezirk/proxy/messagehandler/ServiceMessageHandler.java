@@ -1,5 +1,6 @@
 package com.bezirk.proxy.messagehandler;
 
+import com.bezirk.actions.StreamStatusAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.util.ValidatorUtility;
 
@@ -39,23 +40,11 @@ public final class ServiceMessageHandler implements com.bezirk.proxy.MessageHand
     }
 
     @Override
-    public void onStreamStatus(StreamStatusMessage streamStatusMessage) {
+    public void onStreamStatus(StreamStatusAction streamStatusAction) {
         if (ValidatorUtility.isObjectNotNull(brForService)) {
-            brForService.onReceive(streamStatusMessage);
+            brForService.onReceive(streamStatusAction);
         } else {
             logger.debug(RECEIVER_NULL_ERROR);
         }
     }
-
-    @Override
-    public void onDiscoveryIncomingMessage(
-            DiscoveryIncomingMessage discoveryCallback) {
-        if (ValidatorUtility.isObjectNotNull(brForService)) {
-            brForService.onReceive(discoveryCallback);
-        } else {
-            logger.debug(RECEIVER_NULL_ERROR);
-        }
-
-    }
-
 }

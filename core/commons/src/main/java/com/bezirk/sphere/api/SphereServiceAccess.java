@@ -56,13 +56,6 @@ public interface SphereServiceAccess {
     String getServiceName(ZirkId serviceId);
 
     /**
-     * This method handles processing the sphere related discovery request
-     *
-     * @param discoveryRequest
-     */
-    void processSphereDiscoveryRequest(DiscoveryRequest discoveryRequest);
-
-    /**
      * @param deviceId the deviceId whose Device Name needs to be known
      * @return Device Name if exists, null otherwise
      */

@@ -2,7 +2,7 @@ package com.bezirk.pubsubbroker;
 
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.actions.StreamStatusAction;
 
 /**
  * Platform independent API's used by the SADL for handling incoming event pub sub Reception.
@@ -39,7 +39,7 @@ public interface PubSubEventReceiver {
     /**
      * notify the stream status
      */
-    boolean processStreamStatus(StreamStatusMessage streamStatusNotification);
+    boolean processStreamStatus(StreamStatusAction streamStatusNotification);
 
     /**
      * notify the stream data

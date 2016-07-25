@@ -3,10 +3,10 @@
  */
 package com.bezirk.streaming.threads;
 
+import com.bezirk.actions.StreamStatusAction;
 import com.bezirk.streaming.MessageQueue;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
@@ -103,11 +103,11 @@ public class StreamQueueProcessor implements Runnable {
 
         logger.debug("The Recipient is Busy, Giving Callback to the Zirk");
 
-        StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
+        StreamStatusAction streamStatusAction = new StreamStatusAction(
                 streamRecord.senderSEP.zirkId, 0, streamRecord.localStreamId);
 
         if (bezirkCallbackPresent) {
-            sadlReceiver.processStreamStatus(streamStatusMessage);
+            sadlReceiver.processStreamStatus(streamStatusAction);
         }
     }
 
@@ -132,11 +132,11 @@ public class StreamQueueProcessor implements Runnable {
     private void processLocalStreamMessage(boolean bezirkCallbackPresent,
                                            StreamRecord streamRecord) {
         // GIVE THE CALLBACK AS SUCCESS FOR THE SENDER
-        StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
+        StreamStatusAction streamStatusAction = new StreamStatusAction(
                 streamRecord.senderSEP.zirkId, 1, streamRecord.localStreamId);
         if (bezirkCallbackPresent) {
 
-            sadlReceiver.processStreamStatus(streamStatusMessage);
+            sadlReceiver.processStreamStatus(streamStatusAction);
 
         }
         // GIVE CALLBACK FOR RECIPIENT

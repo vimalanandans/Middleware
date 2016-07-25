@@ -4,15 +4,11 @@
 package com.bezirk.sphere.impl;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.devices.DeviceInterface;
-import com.bezirk.proxy.api.impl.BezirkDiscoveredZirk;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereConfig;
-import com.bezirk.sphere.api.SphereDiscovery;
-import com.bezirk.sphere.discovery.SphereDiscoveryProcessor;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
@@ -42,7 +38,7 @@ import java.util.Set;
  * @author rishabh
  */
 public class SphereServiceManager
-        implements SphereAPI, SphereServiceAccess, SphereSecurity, SphereDiscovery, SphereMessages, DevMode {
+        implements SphereAPI, SphereServiceAccess, SphereSecurity, SphereMessages, DevMode {
 
     private static final Logger logger = LoggerFactory.getLogger(SphereServiceManager.class);
     private CryptoEngine cryptoEngine = null;
@@ -53,7 +49,6 @@ public class SphereServiceManager
     private SphereCtrlMsgReceiver ctrlMsgReceiver = null;
     private ShareProcessor shareProcessor = null;
     private CatchProcessor catchProcessor = null;
-    private DiscoveryProcessor discoveryProcessor = null;
     private SphereRegistryWrapper sphereRegistryWrapper = null;
 
     public SphereServiceManager(CryptoEngine cryptoEngine, DeviceInterface upaDevice, SphereRegistry sphereRegistry) {
@@ -101,32 +96,9 @@ public class SphereServiceManager
                 sphereRegistryWrapper);
         catchProcessor = new CatchProcessor(cryptoEngine, upaDevice, comms,
                 sphereRegistryWrapper);
-        discoveryProcessor = new DiscoveryProcessor(upaDevice, comms, sphereRegistryWrapper,
-                this.sphereListener);
-
-        // init the sphere for receiving sphere discovery message
-        //comms.initDiscovery(this);
-        initSphereDiscovery(bezirkComms);
 
         ctrlMsgReceiver.initControlMessageListener(bezirkComms);
         return true;
-    }
-
-    /**
-     * moved the init discovery from comms layer to sphere.
-     * because this is out of comms layer
-     */
-    public void initSphereDiscovery(Comms comms) {
-        // initialize the discovery here
-        SphereDiscoveryProcessor.setDiscovery(new com.bezirk.sphere.discovery.SphereDiscovery(this));
-
-        Thread sphereDiscThread = new Thread(new SphereDiscoveryProcessor(this, comms));
-
-        if (sphereDiscThread != null)
-            sphereDiscThread.start();
-
-        //  add the sphere discovery stop
-
     }
 
     @Override
@@ -173,11 +145,6 @@ public class SphereServiceManager
     @Override
     public String getServiceName(ZirkId serviceId) {
         return sphereRegistryWrapper.getServiceName(serviceId);
-    }
-
-    @Override
-    public void processSphereDiscoveryRequest(DiscoveryRequest discoveryRequest) {
-        discoveryProcessor.processRequest(discoveryRequest);
     }
 
     @Override
@@ -284,11 +251,6 @@ public class SphereServiceManager
     }
 
     @Override
-    public boolean discoverSphere(String sphereId) {
-        return discoveryProcessor.discoverSphere(sphereId);
-    }
-
-    @Override
     public List<BezirkZirkInfo> getServiceInfo() {
         return sphereRegistryWrapper.getServiceInfo();
     }
@@ -324,19 +286,6 @@ public class SphereServiceManager
     @Override
     public boolean processCatchResponse(CatchResponse catchResponseMsg) {
         return catchProcessor.processResponse(catchResponseMsg);
-    }
-
-    /**
-     * @deprecated use {@link #processDiscoveredSphereInfo(Set, String)} instead
-     */
-    @Deprecated
-    public BezirkSphereInfo processDiscoveryResponse(Set<BezirkDiscoveredZirk> discoveredServices, String sphereId) {
-        return discoveryProcessor.processDiscoveryResponse(discoveredServices, sphereId);
-    }
-
-    @Override
-    public void processDiscoveredSphereInfo(Set<BezirkSphereInfo> discoveredSphereInfoSet, String sphereId) {
-        discoveryProcessor.processDiscoveredSphereInfo(discoveredSphereInfoSet, sphereId);
     }
 
     @Override

@@ -4,9 +4,8 @@
 package com.bezirk.proxy;
 
 import com.bezirk.actions.UnicastEventAction;
-import com.bezirk.proxy.messagehandler.DiscoveryIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.actions.StreamStatusAction;
 
 /**
  * Platform independent API used to give MessageHandler to the ProxyForBezirk Library.
@@ -30,14 +29,7 @@ public interface MessageHandler {
     /**
      * Method that fires the StreamStatus for ProxyForBezirk
      *
-     * @param streamStatusMessage callbackMessage that will be fired.
+     * @param streamStatusAction callbackMessage that will be fired.
      */
-    void onStreamStatus(StreamStatusMessage streamStatusMessage);
-
-    /**
-     * Method that fires the onDiscoveryIncomingMessage for ProxyForBezirk
-     *
-     * @param discoveryCallback callback Message that will be fired.
-     */
-    void onDiscoveryIncomingMessage(DiscoveryIncomingMessage discoveryCallback);
+    void onStreamStatus(StreamStatusAction streamStatusAction);
 }

@@ -10,7 +10,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.actions.StreamStatusAction;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,11 +65,11 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
                     handlerStreamUnicastCallback(strmMsg);
                     break;
                 case ACTION_ZIRK_RECEIVE_STREAM_STATUS:
-                    if (!(incomingMessage instanceof StreamStatusMessage)) {
-                        throw new AssertionError("incomingMessage is not an instance of StreamStatusMessage");
+                    if (!(incomingMessage instanceof StreamStatusAction)) {
+                        throw new AssertionError("incomingMessage is not an instance of StreamStatusAction");
                     }
 
-                    StreamStatusMessage streamStatusCallbackMessage = (StreamStatusMessage) incomingMessage;
+                    StreamStatusAction streamStatusCallbackMessage = (StreamStatusAction) incomingMessage;
                     handleStreamStatusCallback(streamStatusCallbackMessage);
                     break;
                 default:
@@ -135,7 +135,7 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      *
      * @param streamStatusCallbackMessage StreamStatusCallback that will be invoked for the services.
      */
-    private void handleStreamStatusCallback(StreamStatusMessage streamStatusCallbackMessage) {
+    private void handleStreamStatusCallback(StreamStatusAction streamStatusCallbackMessage) {
         String activeStreamKey = streamStatusCallbackMessage.getZirkId().getZirkId() + streamStatusCallbackMessage.getStreamId();
         if (activeStreams.containsKey(activeStreamKey)) {
             Set<BezirkListener> tempHashSet = streamListenerMap.get(activeStreams.get(activeStreamKey));

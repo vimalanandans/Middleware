@@ -16,7 +16,7 @@ import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.actions.StreamStatusAction;
 
 import java.io.File;
 import java.util.Date;
@@ -49,7 +49,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
                 processStreamUnicast((StreamIncomingMessage) message);
                 break;
             case ACTION_ZIRK_RECEIVE_STREAM_STATUS:
-                processStreamStatus((StreamStatusMessage) message);
+                processStreamStatus((StreamStatusAction) message);
                 break;
             default:
                 Log.e(TAG, "Unimplemented action: " + message.getAction());
@@ -174,7 +174,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         }
     }
 
-    private void processStreamStatus(StreamStatusMessage statusMessage) {
+    private void processStreamStatus(StreamStatusAction statusMessage) {
         final short streamId = statusMessage.getStreamId();
         final int streamStatus = statusMessage.getStreamStatus();
         if (-1 == streamId || -1 == streamStatus) {
