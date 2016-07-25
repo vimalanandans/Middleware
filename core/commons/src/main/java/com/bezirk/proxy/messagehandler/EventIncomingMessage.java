@@ -1,15 +1,16 @@
 package com.bezirk.proxy.messagehandler;
 
 import com.bezirk.actions.BezirkAction;
+import com.bezirk.actions.ZirkAction;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 
 
 /**
- * Sub class of ServiceIncomingMessage that contains the EventCallbackMessage fields, that are
+ * Sub class of ZirkAction that contains the EventCallbackMessage fields, that are
  * required for ProxyForBezirk to give the callback.
  */
-public final class EventIncomingMessage extends ServiceIncomingMessage {
+public final class EventIncomingMessage extends ZirkAction {
     private final BezirkZirkEndPoint senderEndPoint;
     private final String serializedEvent;
     private final String eventTopic;
@@ -20,7 +21,7 @@ public final class EventIncomingMessage extends ServiceIncomingMessage {
     private final String msgId;
 
     public EventIncomingMessage(ZirkId recipientId, BezirkZirkEndPoint senderEndPoint, String serializedEvent, String eventTopic, String msgId) {
-        super(BezirkAction.ACTION_ZIRK_RECEIVE_EVENT, recipientId);
+        super(recipientId);
 
         this.senderEndPoint = senderEndPoint;
         this.serializedEvent = serializedEvent;
@@ -42,5 +43,10 @@ public final class EventIncomingMessage extends ServiceIncomingMessage {
 
     public String getMsgId() {
         return msgId;
+    }
+
+    @Override
+    public BezirkAction getAction() {
+        return BezirkAction.ACTION_ZIRK_RECEIVE_EVENT;
     }
 }

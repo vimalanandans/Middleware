@@ -1,5 +1,6 @@
 package com.bezirk.middleware.proxy;
 
+import com.bezirk.actions.BezirkAction;
 import com.bezirk.actions.RegisterZirkAction;
 import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.actions.SendMulticastEventAction;
@@ -111,7 +112,8 @@ public class ProxyClient implements Bezirk {
             logger.trace("No Streams to Subscribe");
         }
 
-        proxy.subscribeService(new SubscriptionAction(zirkId, protocolRole));
+        proxy.subscribeService(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE, zirkId,
+                protocolRole));
     }
 
     private void addTopicsToMaps(final ZirkId subscriber, final String[] topics,
@@ -143,7 +145,8 @@ public class ProxyClient implements Bezirk {
 
     @Override
     public boolean unsubscribe(ProtocolRole protocolRole) {
-        return proxy.unsubscribe(new SubscriptionAction(zirkId, protocolRole));
+        return proxy.unsubscribe(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId,
+                protocolRole));
     }
 
     @Override

@@ -7,15 +7,14 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.bezirk.actions.ZirkAction;
 import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
-import com.bezirk.proxy.messagehandler.ServiceIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.google.gson.Gson;
@@ -35,14 +34,14 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        ServiceIncomingMessage message = (ServiceIncomingMessage) intent.getSerializableExtra("message");
+        ZirkAction message = (ZirkAction) intent.getSerializableExtra("message");
 
-        if (isValidRequest(message.getRecipient())) {
+        if (isValidRequest(message.getZirkId())) {
             processReceivedIntent(message);
         }
     }
 
-    private void processReceivedIntent(ServiceIncomingMessage message) {
+    private void processReceivedIntent(ZirkAction message) {
         switch (message.getAction()) {
             case ACTION_ZIRK_RECEIVE_EVENT:
                 processEvent((EventIncomingMessage) message);

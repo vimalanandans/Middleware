@@ -1,5 +1,6 @@
 package com.bezirk.middleware.proxy;
 
+import com.bezirk.actions.ZirkAction;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.Message;
@@ -7,7 +8,6 @@ import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
-import com.bezirk.proxy.messagehandler.ServiceIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 
@@ -44,8 +44,8 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
     }
 
     @Override
-    public void onReceive(ServiceIncomingMessage incomingMessage) {
-        if (sidMap.containsKey(incomingMessage.getRecipient())) {
+    public void onReceive(ZirkAction incomingMessage) {
+        if (sidMap.containsKey(incomingMessage.getZirkId())) {
             switch (incomingMessage.getAction()) {
                 case ACTION_ZIRK_RECEIVE_EVENT:
                     if (!(incomingMessage instanceof EventIncomingMessage)) {
@@ -84,11 +84,11 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      * @param incomingEvent new event to send up to Zirks registered to receive it
      */
     private void handleEventCallback(EventIncomingMessage incomingEvent) {
-        logger.debug("About to callback sid:" + incomingEvent.getRecipient().getZirkId() + " for id:" + incomingEvent.getMsgId());
+        logger.debug("About to callback sid:" + incomingEvent.getZirkId().getZirkId() + " for id:" + incomingEvent.getMsgId());
         //Make a combined sid for sender and recipient
-        String combinedSid = incomingEvent.getSenderEndPoint().zirkId.getZirkId() + ":" + incomingEvent.getRecipient().getZirkId();
+        String combinedSid = incomingEvent.getSenderEndPoint().zirkId.getZirkId() + ":" + incomingEvent.getZirkId().getZirkId();
         if (checkDuplicateMsg(combinedSid, incomingEvent.getMsgId())) {
-            Set<BezirkListener> tempListenersSidMap = sidMap.get(incomingEvent.getRecipient());
+            Set<BezirkListener> tempListenersSidMap = sidMap.get(incomingEvent.getZirkId());
             Set<BezirkListener> tempListenersTopicsMap = eventListenerMap.get(incomingEvent.getEventTopic());
             if (tempListenersSidMap != null && tempListenersTopicsMap != null) {
                 for (BezirkListener invokingListener : tempListenersSidMap) {
@@ -132,7 +132,7 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      * @param streamStatusCallbackMessage StreamStatusCallback that will be invoked for the services.
      */
     private void handleStreamStatusCallback(StreamStatusMessage streamStatusCallbackMessage) {
-        String activeStreamKey = streamStatusCallbackMessage.getRecipient().getZirkId() + streamStatusCallbackMessage.getStreamId();
+        String activeStreamKey = streamStatusCallbackMessage.getZirkId().getZirkId() + streamStatusCallbackMessage.getStreamId();
         if (activeStreams.containsKey(activeStreamKey)) {
             Set<BezirkListener> tempHashSet = streamListenerMap.get(activeStreams.get(activeStreamKey));
             if (tempHashSet != null && !tempHashSet.isEmpty()) {

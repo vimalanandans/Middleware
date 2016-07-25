@@ -3,7 +3,7 @@ package com.bezirk.actions;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.proxy.api.impl.ZirkId;
 
-public class EventAction extends ZirkAction {
+public abstract class EventAction extends ZirkAction {
     private final String topic;
     private final String serializedEvent;
 

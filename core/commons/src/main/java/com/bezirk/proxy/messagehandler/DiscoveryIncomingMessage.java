@@ -1,19 +1,20 @@
 package com.bezirk.proxy.messagehandler;
 
 import com.bezirk.actions.BezirkAction;
+import com.bezirk.actions.ZirkAction;
 import com.bezirk.proxy.api.impl.ZirkId;
 
 /**
  * Pojo class for Discovery notifier containing all the fields that are necessary to give the
  * notification to the ProxyForBezirkLibrary.
  */
-public final class DiscoveryIncomingMessage extends ServiceIncomingMessage {
+public final class DiscoveryIncomingMessage extends ZirkAction {
     private final String discoveredList;
     private final int discoveryId;
     private final Boolean isSphereDiscovery;
 
     public DiscoveryIncomingMessage(ZirkId serviceId, String discoveredList, int discoveryId, Boolean isSphereDiscovery) {
-        super(BezirkAction.ACTION_ZIRK_DISCOVER, serviceId);
+        super(serviceId);
 
         this.discoveredList = discoveredList;
         this.discoveryId = discoveryId;
@@ -30,5 +31,10 @@ public final class DiscoveryIncomingMessage extends ServiceIncomingMessage {
 
     public Boolean isSphereDiscovery() {
         return isSphereDiscovery;
+    }
+
+    @Override
+    public BezirkAction getAction() {
+        return BezirkAction.ACTION_ZIRK_DISCOVER;
     }
 }

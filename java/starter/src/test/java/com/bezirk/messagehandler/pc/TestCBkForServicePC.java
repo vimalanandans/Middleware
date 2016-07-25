@@ -1,9 +1,11 @@
 package com.bezirk.messagehandler.pc;
 
+import com.bezirk.actions.BezirkAction;
+import com.bezirk.actions.ZirkAction;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.proxy.messagehandler.ServiceMessageHandler;
 import com.bezirk.proxy.messagehandler.EventIncomingMessage;
-import com.bezirk.proxy.messagehandler.ServiceIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 
@@ -24,7 +26,7 @@ public class TestCBkForServicePC {
 
     @Test
     public void testFireEventCallback() {
-        EventIncomingMessage eventCallbackMessage = new EventIncomingMessage(null, null, null, null, null);
+        EventIncomingMessage eventCallbackMessage = new EventIncomingMessage(new ZirkId("TEST"), null, null, null, null);
         cBkForServicePC.onIncomingEvent(eventCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire eventCallback. ", receivedEvent);
@@ -32,7 +34,7 @@ public class TestCBkForServicePC {
 
     @Test
     public void testFireUnicastStreamCallback() {
-        StreamIncomingMessage unicastStreamCallbackMessage = new StreamIncomingMessage(null, null, null, null, (short) 0, null);
+        StreamIncomingMessage unicastStreamCallbackMessage = new StreamIncomingMessage(new ZirkId("TEST"), null, null, null, (short) 0, null);
         cBkForServicePC.onIncomingStream(unicastStreamCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire Unicast stream.", receivedUnicastStream);
@@ -40,24 +42,20 @@ public class TestCBkForServicePC {
 
     @Test
     public void testFireStreamStatusCallback() {
-        StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(null, 0, (short) 0);
+        StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(new ZirkId("TEST"), 0, (short) 0);
         cBkForServicePC.onStreamStatus(streamStatusCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire stream status.", receivedStreamStatus);
     }
 
-    private enum CallBackDiscriminator {
-        EVENT, STREAM_UNICAST, STREAM_STATUS
-    }
-
     class BRForServiceMock implements BroadcastReceiver {
         @Override
-        public void onReceive(ServiceIncomingMessage callbackMessage) {
-            if (callbackMessage.getCallbackType().equalsIgnoreCase(CallBackDiscriminator.EVENT.name())) {
+        public void onReceive(ZirkAction callbackMessage) {
+            if (BezirkAction.ACTION_ZIRK_RECEIVE_EVENT.equals(callbackMessage.getAction())) {
                 receivedEvent = true;
-            } else if (callbackMessage.getCallbackType().equalsIgnoreCase(CallBackDiscriminator.STREAM_UNICAST.name())) {
+            } else if (BezirkAction.ACTION_ZIRK_RECEIVE_STREAM.equals(callbackMessage.getAction())) {
                 receivedUnicastStream = true;
-            } else if (callbackMessage.getCallbackType().equalsIgnoreCase(CallBackDiscriminator.STREAM_STATUS.name())) {
+            } else if (BezirkAction.ACTION_ZIRK_RECEIVE_STREAM_STATUS.equals(callbackMessage.getAction())) {
                 receivedStreamStatus = true;
             }
         }

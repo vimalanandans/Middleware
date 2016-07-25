@@ -21,4 +21,9 @@ public class SendUnicastEventAction extends EventAction {
     public ZirkEndPoint getRecipient() {
         return recipient;
     }
+
+    @Override
+    public BezirkAction getAction() {
+        return BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT;
+    }
 }

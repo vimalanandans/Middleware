@@ -23,4 +23,9 @@ public class SendMulticastEventAction extends EventAction implements Serializabl
     public RecipientSelector getRecipientSelector() {
         return selector;
     }
+
+    @Override
+    public BezirkAction getAction() {
+        return BezirkAction.ACTION_ZIRK_SEND_MULTICAST_EVENT;
+    }
 }

@@ -1,5 +1,7 @@
 package com.bezirk.proxy.messagehandler;
 
+import com.bezirk.actions.ZirkAction;
+
 /**
  * Common BroadcastReceiver Interface that is defined to mimin the android BroadcastReceiver onto PC side.
  */
@@ -9,5 +11,5 @@ public interface BroadcastReceiver {
      *
      * @param incomingMessage
      */
-    void onReceive(ServiceIncomingMessage incomingMessage);
+    void onReceive(ZirkAction incomingMessage);
 }

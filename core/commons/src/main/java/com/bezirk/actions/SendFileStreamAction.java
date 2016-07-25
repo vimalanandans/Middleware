@@ -27,4 +27,9 @@ public class SendFileStreamAction extends StreamAction {
     public File getFile() {
         return file;
     }
+
+    @Override
+    public BezirkAction getAction() {
+        return BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM;
+    }
 }

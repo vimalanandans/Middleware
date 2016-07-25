@@ -1,6 +1,7 @@
 package com.bezirk.proxy.messagehandler;
 
 import com.bezirk.actions.BezirkAction;
+import com.bezirk.actions.ZirkAction;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 
@@ -11,7 +12,7 @@ import java.io.File;
  * Sub class of StreamMessageStatus that is used to give the stream status notification to the
  * ProxyForBezirk.
  */
-public final class StreamIncomingMessage extends ServiceIncomingMessage {
+public final class StreamIncomingMessage extends ZirkAction {
     private final String streamTopic;
     private final String serializedStream;
     /**
@@ -23,7 +24,7 @@ public final class StreamIncomingMessage extends ServiceIncomingMessage {
 
     public StreamIncomingMessage(ZirkId recipientId, String streamTopic, String serializedStream,
                                  File file, short localStreamId, BezirkZirkEndPoint sender) {
-        super(BezirkAction.ACTION_ZIRK_RECEIVE_STREAM, recipientId);
+        super(recipientId);
 
         this.streamTopic = streamTopic;
         this.serializedStream = serializedStream;
@@ -50,5 +51,10 @@ public final class StreamIncomingMessage extends ServiceIncomingMessage {
 
     public BezirkZirkEndPoint getSender() {
         return sender;
+    }
+
+    @Override
+    public BezirkAction getAction() {
+        return BezirkAction.ACTION_ZIRK_RECEIVE_STREAM;
     }
 }
