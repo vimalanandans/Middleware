@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.bezirk.actions.BezirkActions;
+import com.bezirk.actions.BezirkAction;
 import com.bezirk.actions.RegisterZirkAction;
 import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.actions.SendMulticastEventAction;
@@ -92,7 +92,7 @@ public final class ProxyClient implements Bezirk {
 
         final ZirkId zirkId = new ZirkId(zirkIdAsString);
 
-        if (sendBezirkIntent(context, BezirkActions.ACTION_BEZIRK_REGISTER.getName(),
+        if (sendBezirkIntent(context, BezirkAction.ACTION_BEZIRK_REGISTER.getName(),
                 new RegisterZirkAction(zirkId, zirkName))) {
             Log.d(TAG, "Registered Zirk: " + zirkName);
             return zirkId;
@@ -130,7 +130,7 @@ public final class ProxyClient implements Bezirk {
         if (protocolRole.getStreamTopics() != null)
             addTopicsToMap(protocolRole.getStreamTopics(), streamListenerMap, listener, "StreamDescriptor");
 
-        sendBezirkIntent(BezirkActions.ACTION_BEZIRK_SUBSCRIBE.getName(),
+        sendBezirkIntent(BezirkAction.ACTION_BEZIRK_SUBSCRIBE.getName(),
                 new SubscriptionAction(zirkId, protocolRole));
     }
 
@@ -161,7 +161,7 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public boolean unsubscribe(final ProtocolRole protocolRole) {
-        return sendBezirkIntent(BezirkActions.ACTION_BEZIRK_UNSUBSCRIBE.getName(),
+        return sendBezirkIntent(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE.getName(),
                 new SubscriptionAction(zirkId, protocolRole));
     }
 
@@ -172,7 +172,7 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
-        sendBezirkIntent(BezirkActions.ACTION_SERVICE_SEND_MULTICAST_EVENT.getName(),
+        sendBezirkIntent(BezirkAction.ACTION_SERVICE_SEND_MULTICAST_EVENT.getName(),
                 new SendMulticastEventAction(zirkId, recipient, event));
     }
 
@@ -180,7 +180,7 @@ public final class ProxyClient implements Bezirk {
     public void sendEvent(ZirkEndPoint recipient, Event event) {
         Log.d(TAG, "Zirk sending event: " + event.topic);
 
-        sendBezirkIntent(BezirkActions.ACTION_SERVICE_SEND_UNICAST_EVENT.getName(),
+        sendBezirkIntent(BezirkAction.ACTION_SERVICE_SEND_UNICAST_EVENT.getName(),
                 new SendUnicastEventAction(zirkId, recipient, event));
     }
 
@@ -195,7 +195,7 @@ public final class ProxyClient implements Bezirk {
 
         activeStreams.put(streamId, streamDescriptor.topic);
 
-        if (sendBezirkIntent(BezirkActions.ACTION_BEZIRK_PUSH_UNICAST_STREAM.getName(),
+        if (sendBezirkIntent(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM.getName(),
                 new SendFileStreamAction(zirkId, recipient, streamDescriptor, streamId, file))) {
             return streamId;
         }
@@ -205,7 +205,7 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void setLocation(Location location) {
-        sendBezirkIntent(BezirkActions.ACTION_BEZIRK_SET_LOCATION.getName(),
+        sendBezirkIntent(BezirkAction.ACTION_BEZIRK_SET_LOCATION.getName(),
                 new SetLocationAction(zirkId, location));
     }
 }

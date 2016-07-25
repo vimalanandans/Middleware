@@ -2,7 +2,7 @@ package com.bezirk.starter.helper;
 
 import android.content.Intent;
 
-import com.bezirk.actions.BezirkActions;
+import com.bezirk.actions.BezirkAction;
 import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.starter.ActionCommands;
@@ -32,13 +32,13 @@ public final class ActionProcessor {
      * @param mainStackHandler
      */
     public void processBezirkAction(Intent intent, MainService service, AndroidProxyServer ProxyService, MainStackHandler mainStackHandler) {
-        BezirkActions intentAction = BezirkActions.getActionFromString(intent.getAction());
+        BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
 
         if (ValidatorUtility.isObjectNotNull(intentAction)) {
             if (logger.isDebugEnabled())
                 logger.debug("Received intent, action: {}", intentAction.getName());
 
-            BezirkActions.ActionType actionType = intentAction.getType();
+            BezirkAction.ActionType actionType = intentAction.getType();
 
             switch (actionType) {
                 case BEZIRK_STACK_ACTION:
@@ -64,7 +64,7 @@ public final class ActionProcessor {
 
     }
 
-    private void processBezirkStackAction(MainService service, Intent intent, BezirkActions intentAction, MainStackHandler mainStackHandler) {
+    private void processBezirkStackAction(MainService service, Intent intent, BezirkAction intentAction, MainStackHandler mainStackHandler) {
         switch (intentAction) {
             case ACTION_START_BEZIRK:
                 mainStackHandler.startStack(service);
@@ -94,7 +94,7 @@ public final class ActionProcessor {
         }
     }
 
-    private void processDeviceActions(BezirkActions intentAction, MainService service) {
+    private void processDeviceActions(BezirkAction intentAction, MainService service) {
 
         switch (intentAction) {
 
@@ -127,7 +127,7 @@ public final class ActionProcessor {
                 MainStackHandler.getDevMode().getStatus();
     }
 
-    private void processServiceActions(BezirkActions intentAction, Intent intent, AndroidProxyServer ProxyService) {
+    private void processServiceActions(BezirkAction intentAction, Intent intent, AndroidProxyServer ProxyService) {
         switch (intentAction) {
             case ACTION_BEZIRK_REGISTER:
                 ProxyService.registerZirk(intent);
@@ -148,7 +148,7 @@ public final class ActionProcessor {
         }
     }
 
-    private void processSendActions(BezirkActions intentAction, Intent intent, AndroidProxyServer ProxyService) {
+    private void processSendActions(BezirkAction intentAction, Intent intent, AndroidProxyServer ProxyService) {
 
         switch (intentAction) {
             case ACTION_SERVICE_SEND_MULTICAST_EVENT:

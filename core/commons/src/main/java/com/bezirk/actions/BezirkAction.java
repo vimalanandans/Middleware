@@ -1,6 +1,6 @@
 package com.bezirk.actions;
 
-public enum BezirkActions {
+public enum BezirkAction {
     // actionName, type
     ACTION_START_BEZIRK("START_BEZIRK", ActionType.BEZIRK_STACK_ACTION),
     ACTION_STOP_BEZIRK("STOP_BEZIRK", ActionType.BEZIRK_STACK_ACTION),
@@ -30,13 +30,13 @@ public enum BezirkActions {
     private final String name;
     private final ActionType type;
 
-    BezirkActions(String actionName, ActionType actionType) {
+    BezirkAction(String actionName, ActionType actionType) {
         name = actionName;
         type = actionType;
     }
 
-    public static BezirkActions getActionFromString(String actionName) {
-        for (BezirkActions intentAction : BezirkActions.values()) {
+    public static BezirkAction getActionFromString(String actionName) {
+        for (BezirkAction intentAction : BezirkAction.values()) {
             if (intentAction.name.equals(actionName) && intentAction.type != null) {
                 return intentAction;
             }

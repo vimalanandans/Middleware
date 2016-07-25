@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bezirk.actions.BezirkActions;
+import com.bezirk.actions.BezirkAction;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SphereAPI;
@@ -66,7 +66,7 @@ class DeviceControlActivityHelper {
                 promptSettingTextChange(listData.get(position).getTitleText(), RESULT_SPHERE_NAME_CHANGE);
                 break;
             case R.drawable.ic_action_sphere_type: // set default sphere name
-                actions = BezirkActions.ACTION_CHANGE_SPHERE_TYPE.getName();
+                actions = BezirkAction.ACTION_CHANGE_SPHERE_TYPE.getName();
                 break;
             case R.drawable.ic_delete_database:
                 promptClearConfirmation(listData.get(position).getTitleText(), "Do you want to Clear the sphere data ?",
@@ -111,7 +111,7 @@ class DeviceControlActivityHelper {
      * clear the device database
      */
     private void clearDataBase() {
-        String actions = BezirkActions.ACTION_CLEAR_PERSISTENCE.getName();
+        String actions = BezirkAction.ACTION_CLEAR_PERSISTENCE.getName();
         Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
 
         intent.setAction(actions);
@@ -126,7 +126,7 @@ class DeviceControlActivityHelper {
         // store the device type
         preferences.putString(MainStackPreferences.DEVICE_TYPE_TAG_PREFERENCE, deviceType);
 
-        String actions = BezirkActions.ACTION_CHANGE_DEVICE_TYPE.getName();
+        String actions = BezirkAction.ACTION_CHANGE_DEVICE_TYPE.getName();
         Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
 
         intent.setAction(actions);
@@ -143,7 +143,7 @@ class DeviceControlActivityHelper {
         // store the device name
         preferences.putString(MainStackPreferences.DEVICE_NAME_TAG_PREFERENCE, deviceName);
 
-        String actions = BezirkActions.ACTION_CHANGE_DEVICE_NAME.getName();
+        String actions = BezirkAction.ACTION_CHANGE_DEVICE_NAME.getName();
         Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
 
         intent.setAction(actions);
@@ -160,7 +160,7 @@ class DeviceControlActivityHelper {
         // store the device name
         preferences.putString(MainStackPreferences.DEFAULT_SPHERE_NAME_TAG_PREFERENCE, sphereName);
 
-        String actions = BezirkActions.ACTION_CHANGE_SPHERE_NAME.getName();
+        String actions = BezirkAction.ACTION_CHANGE_SPHERE_NAME.getName();
         Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
 
         intent.setAction(actions);
@@ -275,7 +275,7 @@ class DeviceControlActivityHelper {
      */
     void getStatus() {
         Intent devIntent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
-        devIntent.setAction(BezirkActions.ACTION_DEV_MODE_STATUS.getName());
+        devIntent.setAction(BezirkAction.ACTION_DEV_MODE_STATUS.getName());
         deviceControlActivity.startService(devIntent);
     }
 

@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 
-import com.bezirk.actions.BezirkActions;
+import com.bezirk.actions.BezirkAction;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.ActionCommands;
@@ -163,12 +163,12 @@ public class DeviceControlActivity extends ActionBarActivity
                 intent = new Intent(context, MainService.class);
                 switch (dataModel.getImageId()) {
                     case R.drawable.upa_control: // Bezirk On/OFF
-                        action = checkStatus ? BezirkActions.ACTION_START_BEZIRK.getName() : BezirkActions.ACTION_STOP_BEZIRK.getName();
+                        action = checkStatus ? BezirkAction.ACTION_START_BEZIRK.getName() : BezirkAction.ACTION_STOP_BEZIRK.getName();
                         intent.setAction(action);
                         startService(intent);
                         break;
                     case R.drawable.ic_action_dev_mode: //dev mode on/off
-                        action = checkStatus ? BezirkActions.ACTION_DEV_MODE_ON.getName() : BezirkActions.ACTION_DEV_MODE_OFF.getName();
+                        action = checkStatus ? BezirkAction.ACTION_DEV_MODE_ON.getName() : BezirkAction.ACTION_DEV_MODE_OFF.getName();
                         intent.setAction(action);
                         startService(intent);
                         break;
