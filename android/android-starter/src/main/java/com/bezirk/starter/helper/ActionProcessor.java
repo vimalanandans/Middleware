@@ -151,10 +151,10 @@ public final class ActionProcessor {
     private void processSendActions(BezirkAction intentAction, Intent intent, AndroidProxyServer ProxyService) {
 
         switch (intentAction) {
-            case ACTION_SERVICE_SEND_MULTICAST_EVENT:
+            case ACTION_ZIRK_SEND_MULTICAST_EVENT:
                 ProxyService.sendMulticastEvent(intent);
                 break;
-            case ACTION_SERVICE_SEND_UNICAST_EVENT:
+            case ACTION_ZIRK_SEND_UNICAST_EVENT:
                 ProxyService.sendUnicastEvent(intent);
                 break;
             case ACTION_BEZIRK_PUSH_UNICAST_STREAM:

@@ -172,7 +172,7 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
-        sendBezirkIntent(BezirkAction.ACTION_SERVICE_SEND_MULTICAST_EVENT.getName(),
+        sendBezirkIntent(BezirkAction.ACTION_ZIRK_SEND_MULTICAST_EVENT.getName(),
                 new SendMulticastEventAction(zirkId, recipient, event));
     }
 
@@ -180,7 +180,7 @@ public final class ProxyClient implements Bezirk {
     public void sendEvent(ZirkEndPoint recipient, Event event) {
         Log.d(TAG, "Zirk sending event: " + event.topic);
 
-        sendBezirkIntent(BezirkAction.ACTION_SERVICE_SEND_UNICAST_EVENT.getName(),
+        sendBezirkIntent(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName(),
                 new SendUnicastEventAction(zirkId, recipient, event));
     }
 

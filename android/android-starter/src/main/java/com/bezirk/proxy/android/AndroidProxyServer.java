@@ -60,7 +60,7 @@ public class AndroidProxyServer extends ProxyServer {
     public void sendMulticastEvent(Intent intent) {
         logger.trace("Received multicast message from zirk");
 
-        SendMulticastEventAction eventAction = (SendMulticastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_SERVICE_SEND_MULTICAST_EVENT.getName());
+        SendMulticastEventAction eventAction = (SendMulticastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_MULTICAST_EVENT.getName());
 
         super.sendMulticastEvent(eventAction);
     }
@@ -68,7 +68,7 @@ public class AndroidProxyServer extends ProxyServer {
     public void sendUnicastEvent(Intent intent) {
         logger.trace("Received unicast message from zirk");
 
-        SendUnicastEventAction eventAction = (SendUnicastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_SERVICE_SEND_UNICAST_EVENT.getName());
+        SendUnicastEventAction eventAction = (SendUnicastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName());
 
         super.sendUnicastEvent(eventAction);
     }
@@ -76,7 +76,7 @@ public class AndroidProxyServer extends ProxyServer {
     public void sendUnicastStream(Intent intent) {
         logger.trace("Stream to unicast from Zirk");
 
-        SendFileStreamAction streamAction = (SendFileStreamAction) intent.getSerializableExtra(BezirkAction.ACTION_SERVICE_SEND_UNICAST_EVENT.getName());
+        SendFileStreamAction streamAction = (SendFileStreamAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName());
 
         short sendStreamStatus = super.sendStream(streamAction);
 

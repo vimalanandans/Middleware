@@ -4,7 +4,7 @@ import com.bezirk.proxy.api.impl.ZirkId;
 
 import java.io.Serializable;
 
-public class ZirkAction implements Serializable {
+public abstract class ZirkAction implements Serializable {
     private final ZirkId zirkId;
 
     public ZirkAction(ZirkId zirkId) {
