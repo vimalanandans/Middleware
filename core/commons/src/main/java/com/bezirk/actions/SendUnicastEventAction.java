@@ -4,7 +4,7 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.proxy.api.impl.ZirkId;
 
-public class SendUnicastEventAction extends SendEventAction {
+public class SendUnicastEventAction extends EventAction {
     private final ZirkEndPoint recipient;
 
     public SendUnicastEventAction(ZirkId zirkId, ZirkEndPoint recipient, Event event) {

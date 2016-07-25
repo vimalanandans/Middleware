@@ -6,7 +6,7 @@ import com.bezirk.proxy.api.impl.ZirkId;
 
 import java.io.Serializable;
 
-public class SendMulticastEventAction extends SendEventAction implements Serializable {
+public class SendMulticastEventAction extends EventAction implements Serializable {
     private final RecipientSelector selector;
 
     public SendMulticastEventAction(ZirkId zirkId, RecipientSelector selector, Event event) {

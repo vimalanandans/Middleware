@@ -3,11 +3,11 @@ package com.bezirk.actions;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.proxy.api.impl.ZirkId;
 
-public class SendEventAction extends ZirkAction {
+public class EventAction extends ZirkAction {
     private final String topic;
     private final String serializedEvent;
 
-    public SendEventAction(ZirkId zirkId, Event event) {
+    public EventAction(ZirkId zirkId, Event event) {
         super(zirkId);
 
         if (event == null) {

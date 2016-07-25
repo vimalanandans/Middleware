@@ -7,7 +7,7 @@ import com.bezirk.proxy.api.impl.ZirkId;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-public class SendFileStreamAction extends SendStreamAction {
+public class SendFileStreamAction extends StreamAction {
     private final File file;
 
     public SendFileStreamAction(ZirkId zirkId, ZirkEndPoint recipient, StreamDescriptor descriptor, short streamId, File file) {
