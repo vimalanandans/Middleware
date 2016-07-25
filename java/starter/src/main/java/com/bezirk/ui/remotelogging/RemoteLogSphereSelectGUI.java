@@ -66,10 +66,10 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
             sphereListRightScroll = new JScrollPane();
     private final JLabel selectSphereLbl = new JLabel(),
             selectedSphereLbl = new JLabel();
-    private final DefaultListModel<String> leftSphereListModel = new DefaultListModel<String>(),
-            rightSphereListModel = new DefaultListModel<String>();
-    private final JList<String> leftSphereList = new JList<String>(
-            leftSphereListModel), rightSphereList = new JList<String>(
+    private final DefaultListModel<String> leftSphereListModel = new DefaultListModel<>(),
+            rightSphereListModel = new DefaultListModel<>();
+    private final JList<String> leftSphereList = new JList<>(
+            leftSphereListModel), rightSphereList = new JList<>(
             rightSphereListModel);
     private final JButton listSphereBtn = new JButton(),
             startLoggingBtn = new JButton(), moveRightBtn = new JButton(),

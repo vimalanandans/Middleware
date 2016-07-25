@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,13 +26,12 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class DeviceControlActivity extends ActionBarActivity
+public class DeviceControlActivity extends AppCompatActivity
         implements GenericListItemView.ItemToggleListener {
     final Context context = this;
     private static final Logger logger = LoggerFactory.getLogger(DeviceControlActivity.class);
     // UI Create
-    List<DataModel> listData = new ArrayList<DataModel>();
+    final List<DataModel> listData = new ArrayList<>();
     MainStackPreferences preferences;
     private GenericListItemView adapter;
     private DeviceControlActivityHelper deviceControlActivityHelper;

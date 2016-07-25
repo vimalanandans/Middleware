@@ -2,9 +2,6 @@ package test;
 
 import com.bezirk.middleware.messages.Event;
 
-/**
- * Created by SEV1PI on 7/6/2016.
- */
 public class EventTest extends Event {
     /**
      * The concrete implementation of an <code>Event</code> must specify the event's flag

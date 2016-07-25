@@ -32,10 +32,10 @@
              android:screenOrientation="portrait">
 
          </activity>
-         -->
-        <zirk
+         -->s
+        <service
             android:name="com.bezirk.starter.MainService"
-            android:exported="true"></zirk>
+            android:exported="true"></service>
 
         <!--<receiver android:name="com.bosch.upa.uhu.sphere.juggler.SphereScanner" >
            <intent-filter>

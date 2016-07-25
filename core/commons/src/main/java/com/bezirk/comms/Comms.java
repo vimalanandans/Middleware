@@ -3,10 +3,8 @@ package com.bezirk.comms;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
 
-import com.bezirk.pipe.PipeManager;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.SphereSecurity;
-import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
 import java.net.InetAddress;

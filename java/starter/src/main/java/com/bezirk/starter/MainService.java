@@ -388,9 +388,9 @@ public class MainService {
             // CommsConfigurations.ENDING_PORT_FOR_STREAMING); // initialize the
             // StreamPortFactory
             if (bezirkConfig == null) {
-                downloadPath= File.separator+ new String ("downloads")+File.separator;
+                downloadPath= File.separator + "downloads" + File.separator;
             } else {
-                downloadPath= File.separator+ bezirkConfig.getDataPath()+File.separator;
+                downloadPath= File.separator + bezirkConfig.getDataPath() + File.separator;
             }
             final File createDownloadFolder = new File(
                     downloadPath);
