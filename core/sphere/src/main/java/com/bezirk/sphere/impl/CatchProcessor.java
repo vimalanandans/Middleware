@@ -1,11 +1,11 @@
 package com.bezirk.sphere.impl;
 
-import com.bezirk.devices.DeviceInterface;
-import com.bezirk.middleware.objects.BezirkZirkInfo;
+import com.bezirk.device.Device;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.api.CryptoInternals;
+import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.security.SphereKeys;
@@ -29,13 +29,13 @@ public class CatchProcessor {
     private static final String CATCH_FAILURE_MSG = "Catch Failed";
     private SphereRegistryWrapper sphereRegistryWrapper;
     private CryptoInternals crypto;
-    private DeviceInterface deviceInterface;
+    private Device device;
     private CommsUtility comms;
 
-    public CatchProcessor(CryptoInternals crypto, DeviceInterface deviceInterface,
+    public CatchProcessor(CryptoInternals crypto, Device device,
                           CommsUtility comms, SphereRegistryWrapper sphereRegistryWrapper) {
         this.crypto = crypto;
-        this.deviceInterface = deviceInterface;
+        this.device = device;
         this.comms = comms;
         this.sphereRegistryWrapper = sphereRegistryWrapper;
     }
@@ -138,13 +138,13 @@ public class CatchProcessor {
         // ignore loop back message
         // remove this check[not required, once the response is made
         // unicast]
-        if (catchResponse.getInviterSphereDeviceInfo().getDeviceId().equals(deviceInterface.getDeviceId())) {
+        if (catchResponse.getInviterSphereDeviceInfo().getDeviceId().equals(device.getDeviceId())) {
             logger.debug("Found response initiated by same device, dropping SphereCatchRequest");
             return false;
         }
 
         // Check if the catch request is initiated by the current device
-        if (!catcherDeviceId.equals(deviceInterface.getDeviceId())) {
+        if (!catcherDeviceId.equals(device.getDeviceId())) {
             logger.debug("Catch request not initiated by the current device");
             return false;
         }
@@ -344,16 +344,16 @@ public class CatchProcessor {
         Map<String, ArrayList<ZirkId>> deviceServices = sphere.deviceServices;
 
         if (deviceServices != null && !deviceServices.isEmpty()
-                && deviceServices.containsKey(deviceInterface.getDeviceId())) {
+                && deviceServices.containsKey(device.getDeviceId())) {
 
             // get device services of sphere
-            ArrayList<ZirkId> services = deviceServices.get(deviceInterface.getDeviceId());
+            ArrayList<ZirkId> services = deviceServices.get(device.getDeviceId());
 
             if (services != null && !services.isEmpty()) {
                 DeviceInformation deviceInformation = sphereRegistryWrapper
-                        .getDeviceInformation(deviceInterface.getDeviceId());
+                        .getDeviceInformation(device.getDeviceId());
 
-                BezirkDeviceInfo catcherBezirkDeviceInfo = new BezirkDeviceInfo(deviceInterface.getDeviceId(),
+                BezirkDeviceInfo catcherBezirkDeviceInfo = new BezirkDeviceInfo(device.getDeviceId(),
                         deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
                         (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
 
@@ -396,7 +396,7 @@ public class CatchProcessor {
         }
 
         // sender device is equal to current device ignore the results
-        if (catcherBezirkDeviceInfo.getDeviceId().equals(deviceInterface.getDeviceId())) {
+        if (catcherBezirkDeviceInfo.getDeviceId().equals(device.getDeviceId())) {
             logger.debug("Found request initiated by same device, dropping SphereCatchRequest");
             return false;
         }
@@ -435,9 +435,9 @@ public class CatchProcessor {
         Map<String, ArrayList<ZirkId>> deviceServices = catchCodeGeneratorSphere.deviceServices;
 
         if (deviceServices != null && !deviceServices.isEmpty()
-                && deviceServices.containsKey(deviceInterface.getDeviceId())) {
+                && deviceServices.containsKey(device.getDeviceId())) {
 
-            ArrayList<ZirkId> services = deviceServices.get(deviceInterface.getDeviceId());
+            ArrayList<ZirkId> services = deviceServices.get(device.getDeviceId());
 
             if (services == null || services.isEmpty()) {
                 logger.error("No services are at the device, nothing to catch");
@@ -466,10 +466,10 @@ public class CatchProcessor {
                     // send local services of temp sharing sphere Id to catch
                     // sphere via
                     DeviceInformation deviceInformation = sphereRegistryWrapper
-                            .getDeviceInformation(deviceInterface.getDeviceId());
+                            .getDeviceInformation(device.getDeviceId());
 
                     // create the device info with only local services
-                    BezirkDeviceInfo inviterSphereDeviceInfo = new BezirkDeviceInfo(deviceInterface.getDeviceId(),
+                    BezirkDeviceInfo inviterSphereDeviceInfo = new BezirkDeviceInfo(device.getDeviceId(),
                             deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
                             (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
 

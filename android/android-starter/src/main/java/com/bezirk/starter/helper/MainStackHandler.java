@@ -10,6 +10,7 @@ import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.datastorage.RegistryStorage;
+import com.bezirk.device.AndroidDevice;
 import com.bezirk.device.Device;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.android.AndroidProxyServer;
@@ -26,8 +27,8 @@ import com.bezirk.starter.MainService;
 import com.bezirk.starter.MainStackPreferences;
 import com.bezirk.starter.StackHandler;
 import com.bezirk.util.ValidatorUtility;
-import com.bezrik.network.NetworkUtilities;
 import com.bezrik.network.IntfInetPair;
+import com.bezrik.network.NetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,9 +53,9 @@ public final class MainStackHandler implements StackHandler {
      */
     private static Comms comms;
 
-  //  private final SphereHandler sphereProcessorForMainService = new SphereHandler();
+    //  private final SphereHandler sphereProcessorForMainService = new SphereHandler();
 
-    private final DeviceHelper deviceHelper = new DeviceHelper();
+    //private final DeviceHelper deviceHelper = new DeviceHelper();
 
     private final ProxyServer proxy;
 
@@ -154,10 +155,10 @@ public final class MainStackHandler implements StackHandler {
                     registryPersistence = bezirkStartStackHelper.initializeRegistryPersistence(service);
 
                     /*************************************************************
-                     * Step 5 : Configure Device with preferences             *
+                     * Step 5 : Create device             *
                      *************************************************************/
-                    Device bezirkDevice = deviceHelper.setBezirkDevice(preferences, service);
-
+                    //Device bezirkDevice = deviceHelper.setBezirkDevice(preferences, service);
+                    Device bezirkDevice = new AndroidDevice();
                     /*************************************************************
                      * Step 6 : Initialize PubSubBroker and set sadl for proxy *
                      *************************************************************/
@@ -194,7 +195,7 @@ public final class MainStackHandler implements StackHandler {
                     //pubSubBroker.initPubSubBroker(comms, serviceMessageHandler, sphereProcessorForMainService.getSphereServiceAccess(),
                     //      sphereProcessorForMainService.getSphereSecurity());
                     // making sphere object reference null
-                    pubSubBroker.initPubSubBroker(comms, serviceMessageHandler,null,null);
+                    pubSubBroker.initPubSubBroker(comms, serviceMessageHandler, null, null);
 
                     // set proxy handler
                     AndroidProxyServer proxyServer = (AndroidProxyServer) proxy;
@@ -279,7 +280,7 @@ public final class MainStackHandler implements StackHandler {
             }
 
             // deinit the sphere
-           // sphereProcessorForMainService.deinitSphere();
+            // sphereProcessorForMainService.deinitSphere();
 
             //Set status of stack
             this.stoppedStack = true;

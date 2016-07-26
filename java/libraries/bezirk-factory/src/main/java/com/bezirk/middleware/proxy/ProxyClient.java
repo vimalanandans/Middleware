@@ -51,6 +51,7 @@ public class ProxyClient implements Bezirk {
 
     public ProxyClient() {
         ComponentManager componentManager = new ComponentManager(proxy);
+        componentManager.start();
         //MainService mainService = new MainService(proxy, null);
         final BroadcastReceiver brForService = new ZirkMessageReceiver(activeStreams,
                 eventListenerMap, sidMap, streamListenerMap);

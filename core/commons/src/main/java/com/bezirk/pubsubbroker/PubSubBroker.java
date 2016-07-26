@@ -1,6 +1,8 @@
 package com.bezirk.pubsubbroker;
 
 import com.bezirk.actions.BezirkAction;
+import com.bezirk.actions.ReceiveFileStreamAction;
+import com.bezirk.actions.StreamStatusAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlLedger;
@@ -10,17 +12,14 @@ import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.datastorage.PubSubBrokerStorage;
-import com.bezirk.devices.DeviceInterface;
-import com.bezirk.middleware.addressing.RecipientSelector;
-import com.bezirk.middleware.messages.StreamDescriptor;
-import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.proxy.MessageHandler;
-import com.bezirk.actions.ReceiveFileStreamAction;
-import com.bezirk.actions.StreamStatusAction;
+import com.bezirk.device.Device;
 import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.StreamDescriptor;
+import com.bezirk.proxy.MessageHandler;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-
 import com.bezirk.remotelogging.RemoteLog;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereServiceAccess;
@@ -51,14 +50,14 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     protected Comms comms = null;
     protected SphereServiceAccess sphereServiceAccess = null; // Nullable object
     protected SphereSecurity sphereSecurity = null; // Nullable object
-    DeviceInterface deviceInterface = null;
+    Device device = null;
     RemoteLog remoteLog = null;
 
     MessageHandler msgHandler;
 
-    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, DeviceInterface deviceInterface) {
+    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
-        this.deviceInterface = deviceInterface;
+        this.device = device;
         loadSadlRegistry();
     }
 
@@ -90,7 +89,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             logger.error("PubSubBroker Registration failed, Zirk ID is already registered");
         }
 
-        if(sphereServiceAccess != null) {
+        if (sphereServiceAccess != null) {
             // Step 2: Register with sphere
             boolean isSpherePassed = sphereServiceAccess.registerService(zirkId, zirkName);
 
@@ -174,12 +173,11 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     @Override
     public boolean sendMulticastEvent(ZirkId zirkId, RecipientSelector recipientSelector, String serializedEventMsg, String topic) {
 
-        final Iterable<String> listOfSphere ;
+        final Iterable<String> listOfSphere;
 
-        if(sphereServiceAccess != null) {
+        if (sphereServiceAccess != null) {
             listOfSphere = sphereServiceAccess.getSphereMembership(zirkId);
-        }
-        else{
+        } else {
             Set<String> spheres = new HashSet<>();
             spheres.add(SPHERE_NULL_NAME);
             listOfSphere = spheres;
@@ -222,12 +220,11 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     @Override
     public boolean sendUnicastEvent(ZirkId zirkId, BezirkZirkEndPoint recipient, String serializedEventMsg, String topic) {
-        final Iterable<String> listOfSphere ;
+        final Iterable<String> listOfSphere;
 
-        if(sphereServiceAccess != null) {
+        if (sphereServiceAccess != null) {
             listOfSphere = sphereServiceAccess.getSphereMembership(zirkId);
-        }
-        else{
+        } else {
             Set<String> spheres = new HashSet<>();
             spheres.add(SPHERE_NULL_NAME);
             listOfSphere = spheres;
@@ -268,12 +265,11 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId) {
 
-        final Iterable<String> listOfSphere ;
+        final Iterable<String> listOfSphere;
 
-        if(sphereServiceAccess != null) {
+        if (sphereServiceAccess != null) {
             listOfSphere = sphereServiceAccess.getSphereMembership(senderId);
-        }
-        else{
+        } else {
             Set<String> spheres = new HashSet<>();
             spheres.add(SPHERE_NULL_NAME);
             listOfSphere = spheres;
@@ -336,7 +332,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
                     sphereServiceAccess.isServiceInSphere(receiver.getBezirkZirkId(), sphereId)) {
                 logger.debug("Found the sphere:" + sphereId);
                 break;
-            }else{ // not valid sphere object return the first one
+            } else { // not valid sphere object return the first one
                 break;
             }
         }
@@ -384,7 +380,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     @Override
     public Location getLocationForService(ZirkId serviceId) {
-        return pubSubBrokerRegistry.getLocationForZirk(serviceId, deviceInterface);
+        return pubSubBrokerRegistry.getLocationForZirk(serviceId, device);
     }
 
 
@@ -438,10 +434,9 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     // true - valid service in sphere
-    private boolean isServiceInSphere(ZirkId service, String sphereId){
-        if(sphereServiceAccess != null)
-        {
-            return sphereServiceAccess.isServiceInSphere(service,sphereId);
+    private boolean isServiceInSphere(ZirkId service, String sphereId) {
+        if (sphereServiceAccess != null) {
+            return sphereServiceAccess.isServiceInSphere(service, sphereId);
         }
         return true; // if no valid sphere reference
     }
@@ -475,13 +470,12 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     private Boolean decryptMsg(EventLedger eLedger) {
         final String decryptedEventMsg;
 
-        if(sphereSecurity != null) {
+        if (sphereSecurity != null) {
             // Decrypt the event message
             decryptedEventMsg = sphereSecurity.decryptSphereContent(
                     eLedger.getHeader().getSphereName(), eLedger.getEncryptedMessage());
-        }
-        else{ // no sphere object hence
-            decryptedEventMsg = new String (eLedger.getEncryptedMessage());
+        } else { // no sphere object hence
+            decryptedEventMsg = new String(eLedger.getEncryptedMessage());
         }
 
 
@@ -510,7 +504,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             logger.error("Event Topic or Recipient is valid");
             return null;
         }
-        return pubSubBrokerRegistry.checkMulticastEvent(topic, location,deviceInterface);
+        return pubSubBrokerRegistry.checkMulticastEvent(topic, location, device);
     }
 
     @Override

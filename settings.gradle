@@ -18,7 +18,6 @@ include ':core:comms:comms-factory'
 //include ':core:comms:comms-zyre'
 //include ':core:comms:http-comms' // experimentation module is removed
 
-include ':core:device-objects'
 /*--------------------java--------------------*/
 include ':java:libraries:bezirk-factory'
 include ':java:libraries:comms-zyre-jni'

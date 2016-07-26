@@ -4,21 +4,21 @@
 package com.bezirk.sphere.impl;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.devices.DeviceInterface;
-import com.bezirk.sphere.api.SphereSecurity;
-import com.bezirk.sphere.api.SphereServiceAccess;
-import com.bezirk.sphere.api.SphereAPI;
-import com.bezirk.sphere.api.SphereConfig;
-import com.bezirk.middleware.objects.BezirkDeviceInfo;
-import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.middleware.objects.BezirkPipeInfo;
 import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
+import com.bezirk.device.Device;
+import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkPipeInfo;
+import com.bezirk.middleware.objects.BezirkSphereInfo;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.sphere.api.SphereMessages;
 import com.bezirk.sphere.api.DevMode;
+import com.bezirk.sphere.api.SphereAPI;
+import com.bezirk.sphere.api.SphereConfig;
 import com.bezirk.sphere.api.SphereListener;
+import com.bezirk.sphere.api.SphereMessages;
+import com.bezirk.sphere.api.SphereSecurity;
+import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.messages.ShareRequest;
@@ -41,7 +41,7 @@ public class SphereServiceManager
 
     private static final Logger logger = LoggerFactory.getLogger(SphereServiceManager.class);
     private CryptoEngine cryptoEngine = null;
-    private DeviceInterface upaDevice = null;
+    private Device upaDevice = null;
     private SphereRegistry registry = null;
     private SphereListener sphereListener;
     private SphereConfig sphereConfig = null;
@@ -50,7 +50,7 @@ public class SphereServiceManager
     private CatchProcessor catchProcessor = null;
     private SphereRegistryWrapper sphereRegistryWrapper = null;
 
-    public SphereServiceManager(CryptoEngine cryptoEngine, DeviceInterface upaDevice, SphereRegistry sphereRegistry) {
+    public SphereServiceManager(CryptoEngine cryptoEngine, Device upaDevice, SphereRegistry sphereRegistry) {
 
         if (cryptoEngine == null || upaDevice == null || sphereRegistry == null) {
             logger.error("Exiting SphereServiceManager setup. A parameter to the constructor is null");

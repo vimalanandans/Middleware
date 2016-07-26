@@ -2,21 +2,19 @@ package com.bezirk.util;
 
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.datastorage.PubSubBrokerStorage;
-import com.bezirk.datastorage.RegistryStorage;
-import com.bezirk.device.Device;
-import com.bezirk.device.DeviceType;
-import com.bezirk.devices.DeviceInterface;
 import com.bezirk.datastorage.PersistenceConstants;
 import com.bezirk.datastorage.PersistenceRegistry;
-import com.bezirk.persistence.DatabaseConnectionForJava;
+import com.bezirk.datastorage.PubSubBrokerStorage;
+import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
+import com.bezirk.device.Device;
+import com.bezirk.device.JavaDevice;
+import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.DevMode;
-import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.api.SphereConfig;
-import com.bezirk.sphere.impl.SphereServiceManager;
+import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.impl.JavaPrefs;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.streaming.StreamManager;
@@ -120,10 +118,7 @@ public class MockSetUpUtilityForBezirkPC {
      * @throws UnknownHostException
      */
     private void setUpUpaDevice() throws UnknownHostException {
-        upaDevice = new Device();
-        String deviceIdString = InetAddress.getLocalHost().getHostName();
-        upaDevice.initDevice(deviceIdString,
-                DeviceType.BEZIRK_DEVICE_TYPE_PC);
+        upaDevice = new JavaDevice();
 
     }
 
@@ -186,7 +181,7 @@ public class MockSetUpUtilityForBezirkPC {
         return pubSubBroker;
     }
 
-    public DeviceInterface getUpaDevice() {
+    public Device getUpaDevice() {
 
         return upaDevice;
     }

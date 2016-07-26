@@ -1,10 +1,9 @@
 package com.bezirk.pubsubbroker;
 
-import com.bezirk.devices.DeviceInterface;
+import com.bezirk.device.Device;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.ZirkId;
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -298,10 +297,10 @@ public class PubSubBrokerRegistry implements Serializable {
      * @param zirkId whose location needs to be known
      * @return Location of the zirk
      */
-    public Location getLocationForZirk(ZirkId zirkId, DeviceInterface deviceInterface) {
+    public Location getLocationForZirk(ZirkId zirkId, Device device) {
         if (isZirkRegistered(zirkId)) {
             try {
-                return (defaultLocation.equals(locationMap.get(zirkId)) ? deviceInterface.getDeviceLocation() : locationMap.get(zirkId));
+                return (defaultLocation.equals(locationMap.get(zirkId)) ? device.getDeviceLocation() : locationMap.get(zirkId));
             } catch (Exception e) {
                 logger.error("Exception in fetching the device Location", e);
                 return null;
@@ -361,7 +360,7 @@ public class PubSubBrokerRegistry implements Serializable {
      * @param location of the Zirk
      * @return Set&lt;ZirkId&gt; if the zirks are present, <code>null</code> otherwise
      */
-    public Set<ZirkId> checkMulticastEvent(String topic, Location location, DeviceInterface deviceInterface) {
+    public Set<ZirkId> checkMulticastEvent(String topic, Location location, Device device) {
         Set<ZirkId> zirks = null;
 
         if (eventMap.containsKey(topic)) {
@@ -372,7 +371,7 @@ public class PubSubBrokerRegistry implements Serializable {
             Set<ZirkId> tempZirks = eventMap.get(topic);
             zirks = new HashSet<>();
             for (ZirkId zirkId : tempZirks) {
-                Location zirkLocation = getLocationForZirk(zirkId, deviceInterface);
+                Location zirkLocation = getLocationForZirk(zirkId, device);
                 if (zirkLocation != null && location.subsumes(zirkLocation)) {
                     zirks.add(zirkId);
                 }

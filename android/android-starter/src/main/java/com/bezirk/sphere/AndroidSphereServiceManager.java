@@ -6,9 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.devices.DeviceInterface;
 import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
+import com.bezirk.device.Device;
 import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.api.SphereConfig;
 import com.bezirk.sphere.impl.SphereServiceManager;
@@ -27,7 +27,7 @@ public class AndroidSphereServiceManager extends SphereServiceManager implements
     private final MainStackPreferences preferences;
     private SphereConfig sphereConfig;
 
-    public AndroidSphereServiceManager(CryptoEngine cryptoEngine, DeviceInterface upaDevice,
+    public AndroidSphereServiceManager(CryptoEngine cryptoEngine, Device upaDevice,
                                        SphereRegistry sphereRegistry, Context context, MainStackPreferences preferences) {
         super(cryptoEngine, upaDevice, sphereRegistry);
         this.preferences = preferences;

@@ -3,7 +3,8 @@ package com.bezirk.starter.helper;
 import com.bezirk.comms.Comms;
 import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
-import com.bezirk.devices.DeviceInterface;
+
+import com.bezirk.device.Device;
 import com.bezirk.sphere.AndroidSphereServiceManager;
 import com.bezirk.sphere.AndroidSpherePreference;
 import com.bezirk.sphere.api.DevMode;
@@ -56,7 +57,7 @@ public final class SphereHandler {
     /**
      * create and initialise the sphere
      */
-    boolean initSphere(DeviceInterface bezirkDevice, MainService service, SpherePersistence spherePersistence, MainStackPreferences preferences) {
+    boolean initSphere(Device bezirkDevice, MainService service, SpherePersistence spherePersistence, MainStackPreferences preferences) {
 
         /** start the sphere related init*/
         if (sphereForAndroid == null) {

@@ -1,22 +1,23 @@
 package com.bezirk.sphere.impl;
 
-import com.bezirk.devices.DeviceInterface;
+
+import com.bezirk.datastorage.SpherePersistence;
+import com.bezirk.datastorage.SphereRegistry;
+import com.bezirk.device.Device;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
+import com.bezirk.middleware.objects.BezirkDeviceInfo.BezirkDeviceRole;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.SphereVitals;
-import com.bezirk.middleware.objects.BezirkDeviceInfo.BezirkDeviceRole;
-import com.bezirk.datastorage.SpherePersistence;
-import com.bezirk.datastorage.SphereRegistry;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.sphere.api.SphereListener;
-import com.bezirk.sphere.api.SphereType;
 import com.bezirk.sphere.api.CryptoInternals;
-import com.bezirk.sphere.api.SphereConfig;
-import com.bezirk.sphere.api.SphereUtils;
 import com.bezirk.sphere.api.DevMode.Mode;
+import com.bezirk.sphere.api.SphereConfig;
+import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.api.SphereListener.SphereCreateStatus;
 import com.bezirk.sphere.api.SphereListener.Status;
+import com.bezirk.sphere.api.SphereType;
+import com.bezirk.sphere.api.SphereUtils;
 import com.bezirk.sphere.security.SphereKeys;
 import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
@@ -48,7 +49,7 @@ public class SphereRegistryWrapper {
 
     private SphereRegistry registry = null;
     private SpherePersistence spherePersistence = null;
-    private DeviceInterface upaDevice;
+    private Device upaDevice;
     private SphereListener sphereListener;
     private SphereConfig sphereConfig;
     private CryptoInternals crypto;
@@ -71,7 +72,7 @@ public class SphereRegistryWrapper {
      * @param spherePersistence - SpherePersistence interface object. Should not be null.
      */
     public SphereRegistryWrapper(SphereRegistry registry, SpherePersistence spherePersistence,
-                                 DeviceInterface upaDevice, CryptoInternals crypto, SphereListener sphereListener,
+                                 Device upaDevice, CryptoInternals crypto, SphereListener sphereListener,
                                  SphereConfig sphereConfig) {
         if (null == registry || null == spherePersistence || null == upaDevice || null == crypto
                 || null == sphereConfig) {
@@ -388,8 +389,8 @@ public class SphereRegistryWrapper {
      * Creates a sphere with the name and type as passed in the parameters. If
      * there already exists the same sphereId, then new sphere is NOT created.
      *
-     * @param sphereName        - Name to be assigned to the new sphere.
-     * @param sphereType        - Type of sphere to be created
+     * @param sphereName     - Name to be assigned to the new sphere.
+     * @param sphereType     - Type of sphere to be created
      * @param sphereListener
      * @return - SphereId if sphere was created successfully or if the sphereId
      * existed already, null otherwise.
@@ -441,8 +442,8 @@ public class SphereRegistryWrapper {
     private void initDefaultSphere() {
         String defaultSphereName;
         // check if defaultSphereName is not defined
-        if ((sphereConfig.getDefaultSphereName()!= null ) &&
-        sphereConfig.getDefaultSphereName().equalsIgnoreCase("")) {
+        if ((sphereConfig.getDefaultSphereName() != null) &&
+                sphereConfig.getDefaultSphereName().equalsIgnoreCase("")) {
             defaultSphereName = generateSphereName();
             // set the value in the properties file
             sphereConfig.setDefaultSphereName(defaultSphereName);
@@ -457,7 +458,7 @@ public class SphereRegistryWrapper {
     }
 
     /**
-     * Generate sphere name using information from {@link DeviceInterface}
+     * Generate sphere name using information from {@link Device}
      *
      * @return - generated sphere name.
      */
@@ -509,7 +510,7 @@ public class SphereRegistryWrapper {
      *
      * @param serviceId of the zirk which has to be added to the sphere membership
      *                  map.
-     * @param zirk   - Zirk object which has to be added to the sphere
+     * @param zirk      - Zirk object which has to be added to the sphere
      *                  membership map.
      * @return true if the zirk was added to the sphereMembership map false
      * otherwise
@@ -783,9 +784,9 @@ public class SphereRegistryWrapper {
      * them to the registry and the sphere.
      *
      * @param bezirkDeviceInfo - BezirkDeviceInfo object from where the zirk list will be
-     *                      retrieved. It has to be non-null
-     * @param sphereId      - which has to be added to the sphere set of the services.
-     * @param ownerDeviceId - has to be non-null
+     *                         retrieved. It has to be non-null
+     * @param sphereId         - which has to be added to the sphere set of the services.
+     * @param ownerDeviceId    - has to be non-null
      * @return - True if the zirk was added, False otherwise.
      */
     public boolean addMemberServices(BezirkDeviceInfo bezirkDeviceInfo, String sphereId, String ownerDeviceId) {
@@ -822,9 +823,9 @@ public class SphereRegistryWrapper {
      * Add the local services to the given sphere. The zirk Ids are retrieved
      * from the list of BezirkZirkInfo objects.
      *
-     * @param sphereId     of the sphere to be added in the sphere set of the services
+     * @param sphereId of the sphere to be added in the sphere set of the services
      * @param zirkInfo - List of BezirkZirkInfo objects from which ZirkId list
-     *                     is retrieved. It has to be non-null
+     *                 is retrieved. It has to be non-null
      * @return - True if the zirk was added. False otherwise.
      */
     public boolean addLocalServicesToSphere(String sphereId, Iterable<BezirkZirkInfo> zirkInfo) {
@@ -966,7 +967,7 @@ public class SphereRegistryWrapper {
      * registry. For retrieving device information, use
      * {@link SphereUtils#getDeviceInformation(String)}
      * which wraps around this method along with retrieving current device's
-     * information from {@link DeviceInterface}
+     * information from {@link Device}
      * </p>
      *
      * @param deviceId whose DeviceInformation object has to be retrieved.
@@ -1021,7 +1022,7 @@ public class SphereRegistryWrapper {
     public DeviceInformation getDeviceInformation(String deviceId) {
         DeviceInformation deviceInfo = null;
         if (upaDevice.getDeviceId().equals(deviceId)) {
-            deviceInfo = new DeviceInformation(upaDevice.getDeviceName(), upaDevice.getDeviceType());
+            deviceInfo = new DeviceInformation(upaDevice.getDeviceName(), upaDevice.getDeviceType().name());
         } else if (containsDevice(deviceId)) {
             deviceInfo = getDevice(deviceId);
         } else {
@@ -1163,7 +1164,7 @@ public class SphereRegistryWrapper {
                 // device info
                 shareData.setDeviceID(upaDevice.getDeviceId());
                 shareData.setDeviceName(upaDevice.getDeviceName());
-                shareData.setDeviceType(upaDevice.getDeviceType());
+                shareData.setDeviceType(upaDevice.getDeviceType().name());
 
                 // sphere info
                 shareData.setSphereID(sphereId);

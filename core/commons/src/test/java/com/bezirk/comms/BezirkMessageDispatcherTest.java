@@ -13,6 +13,7 @@ import com.bezrik.network.NetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,15 +77,8 @@ public class BezirkMessageDispatcherTest {
 
     @Test
     public void test() {
-        Device device = new Device();
-        String deviceIdString = null;
-        try {
-            deviceIdString = InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        device .initDevice(deviceIdString,
-                DeviceType.BEZIRK_DEVICE_TYPE_PC);
+        Device device = Mockito.mock(Device.class);
+
         PubSubEventReceiver bezirkSadlManager = new PubSubBroker(null,device);
         CommsMessageDispatcher commsMessageDispatcher = new CommsMessageDispatcher(bezirkSadlManager);
 

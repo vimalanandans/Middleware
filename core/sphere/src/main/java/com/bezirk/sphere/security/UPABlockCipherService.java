@@ -1,7 +1,5 @@
 package com.bezirk.sphere.security;
 
-import com.bezirk.devices.OsPlatformInfo;
-
 import org.apache.shiro.crypto.DefaultBlockCipherService;
 import org.apache.shiro.crypto.OperationMode;
 import org.apache.shiro.crypto.PaddingScheme;
@@ -19,12 +17,13 @@ public class UPABlockCipherService extends DefaultBlockCipherService {
     private static final String ENCRYPTION_ALGORITHM = "AES";
     private static final OperationMode operationMode = OperationMode.GCM;
     private static final PaddingScheme paddingScheme = PaddingScheme.NONE;
+    public final static String UPA_SERV__RUNTIME_ENV__JAVA = "Java Platform API Specification";
     // Bouncy Castle Provider registered?
     private static boolean bouncyRegistered = false;
 
     public UPABlockCipherService() {
         super(ENCRYPTION_ALGORITHM);
-        if (!bouncyRegistered && OsPlatformInfo.getCurrentOSPlatform().equals(OsPlatformInfo.UPA_SERV__RUNTIME_ENV__JAVA))
+        if (!bouncyRegistered && getCurrentOSPlatform().equals(UPA_SERV__RUNTIME_ENV__JAVA))
             registerBouncy();
         setMode(operationMode);
         setPaddingScheme(paddingScheme);
@@ -34,5 +33,12 @@ public class UPABlockCipherService extends DefaultBlockCipherService {
         if (!bouncyRegistered)
             Security.addProvider(new BouncyCastleProvider());
         bouncyRegistered = true;
+    }
+
+    /**
+     * @return the name of the current running Platform
+     */
+    public static String getCurrentOSPlatform() {
+        return System.getProperty("java.specification.name");
     }
 }

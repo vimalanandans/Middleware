@@ -5,6 +5,7 @@ import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.Device;
+import com.bezirk.device.JavaDevice;
 import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.pubsubbroker.PubSubBroker;
@@ -26,25 +27,27 @@ import java.net.NetworkInterface;
 public class ComponentManager {
 
     private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
-    private final Comms comms;
-    private final PubSubBroker pubSubBroker;
+    private Comms comms;
+    private PubSubBroker pubSubBroker;
     private RegistryStorage registryStorage;
-    private final ProxyServer proxyServer;
-    private final Device device;
-    private final InetAddress addr;
-    private final NetworkUtil networkUtil;
-    private final LifecycleManager lifecycleManager;
+    private ProxyServer proxyServer;
+    private Device device;
+    private InetAddress addr;
+    private NetworkUtil networkUtil;
+    private LifecycleManager lifecycleManager;
 
     public ComponentManager(ProxyServer proxyServer) {
-
-        this.lifecycleManager = new LifecycleManager();
-        this.lifecycleManager.addObserver(new LifeCycleObserver());
-        this.lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
-
         this.proxyServer = proxyServer;
+        create();
+    }
 
-        //TODO move to Comms component
-        //Start
+    public void create() {
+        this.lifecycleManager = new LifecycleManager();
+        this.lifecycleManager.addObserver(new LifeCycleObserver()); //sample observer, does nothing
+        // other observers are added here
+
+
+        //TODO move Network utilities to Comms component and keep it internal to comms or define it as a component within bezirk
         this.networkUtil = new NetworkUtil();
         NetworkInterface intf = null;
         try {
@@ -54,7 +57,6 @@ public class ComponentManager {
             System.exit(0);
         }
         this.addr = NetworkUtilities.getIpForInterface(intf);
-        //End
 
 
         try {
@@ -63,18 +65,21 @@ public class ComponentManager {
             e.printStackTrace();
         }
 
-        //TODO: Clean device interfaces/implementation based on requirements by other modules, remote-logging, pubsubbroker, spheres(possibly)*/
-        //TODO: Add device initialization to constructor instead of initDevice
-        this.device = new Device();
-        this.device.initDevice();
-
+        this.device = new JavaDevice();
 
         this.pubSubBroker = new PubSubBroker(registryStorage, device);
         this.proxyServer.setPubSubBrokerService(pubSubBroker);
         this.comms = new ZyreCommsManager(null, addr, pubSubBroker, null, null, null);
-        this.comms.startComms();
 
+        this.lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
+    }
 
+    public void start() {
+        comms.startComms();
+    }
+
+    public void stop() {
+        comms.closeComms();
     }
 
     //TODO: Remove this dependency for proxy client by providing a persistance implementation

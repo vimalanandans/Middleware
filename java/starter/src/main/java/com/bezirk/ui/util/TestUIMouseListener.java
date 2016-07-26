@@ -1,6 +1,6 @@
 package com.bezirk.ui.util;
 
-import com.bezirk.devices.DeviceInterface;
+import com.bezirk.device.Device;
 import com.bezirk.ui.statckstatus.StackStatusUI;
 
 import java.awt.event.MouseEvent;
@@ -15,16 +15,16 @@ public class TestUIMouseListener implements MouseListener {
 
     private final Integer pingCount;
     private final String misMatchVersion;
-    DeviceInterface deviceInterface;
+    Device device;
 
     public TestUIMouseListener(String uiType, Integer pingCount,
-                               String misMatchVersion, DeviceInterface deviceInterface) {
+                               String misMatchVersion, Device device) {
         super();
         this.uiType = uiType;
 
         this.pingCount = pingCount;
         this.misMatchVersion = misMatchVersion;
-        this.deviceInterface = deviceInterface;
+        this.device = device;
     }
 
     @Override
