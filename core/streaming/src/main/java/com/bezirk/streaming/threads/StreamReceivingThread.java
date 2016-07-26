@@ -26,7 +26,7 @@ import java.net.SocketException;
 
 /**
  * This thread is used by the recipient that is interested in receiving the StreamDescriptor. This Thread opens socket at port ({@link StreamPortFactory#getPort(String)} and
- * waits for the sender to connect. Once the Sender gets connected, a file will be created at {@link CommsConfigurations#DOWNLOAD_PATH} and will read
+ * waits for the sender to connect. Once the Sender gets connected, a file will be created at {} and will read
  * data at a time. After the data transfer it will release the port through
  * {@link StreamPortFactory#releasePort(int)}. From the {@link #streamLabel}, it will query the BezirkSadl
  * to get all the Zirk Identities via
@@ -34,7 +34,6 @@ import java.net.SocketException;
  * If error occurs during the course, it releases the port and closes the socket and Streams
  *
  * @see com.bezirk.proxy
- * @see CommsConfigurations
  * @see StreamPortFactory
  */
 public class StreamReceivingThread implements Runnable {

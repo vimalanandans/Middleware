@@ -92,12 +92,12 @@ final class BezirkStreamHandler {
             logger.debug("No StreamRecord for this Response or the StreamDescriptor is already addressed");
             return false;
         }
-        streamRecord.sphere = streamResponse.getSphereId();
-        streamRecord.streamStatus = streamResponse.status;
+        streamRecord.setSphere(streamResponse.getSphereId());
+        streamRecord.setStreamStatus(streamResponse.status);
 
-        streamRecord.recipientIP = streamResponse.streamIp;
+        streamRecord.setRecipientIP(streamResponse.streamIp);
 
-        logger.info("recipient key = " + streamResponse.getUniqueKey() + " rec IP = " + streamRecord.recipientIP + "sender device " + streamResponse.getSender().device);
+        logger.info("recipient key = " + streamResponse.getUniqueKey() + " rec IP = " + streamRecord.getRecipientIP() + "sender device " + streamResponse.getSender().device);
         //quickfix to test: remove it later.
         /*List quickFix_keys = Arrays.asList(streamResponse.getUniqueKey().split(":"));
 
@@ -107,7 +107,7 @@ final class BezirkStreamHandler {
         }*/
 
 
-        streamRecord.recipientPort = streamResponse.streamPort;
+        streamRecord.setRecipientPort(streamResponse.streamPort);
 
         if (ValidatorUtility.isObjectNotNull(streamQueue)) {
             streamQueue.addToQueue(streamRecord);

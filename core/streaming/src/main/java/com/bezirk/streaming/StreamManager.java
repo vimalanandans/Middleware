@@ -44,7 +44,7 @@ public class StreamManager implements Streaming {
     //private CommsMessageDispatcher msgDispatcher;
     private Comms comms = null;
 
-    String downloadPath = null;
+    private String downloadPath = null;
 
     private StreamStore streamStore = null;
 
@@ -84,38 +84,23 @@ public class StreamManager implements Streaming {
         this.streamingMessageQueue = streamingMessageQueue;
     }
 
-    /**
-     * send the StreamDescriptor ledger message
-     */
     @Override
-    public boolean sendStreamMessage(Ledger message) {
-
-        streamingMessageQueue.addToQueue(message);
-
-        return true;
-    }
-
-    @Override
-    public boolean sendStream(String uniqueKey) {
-        StreamRecord tempStreamRecord = streamStore.popStreamRecord(uniqueKey);
+    public boolean sendStream(String streamId) {
+        StreamRecord tempStreamRecord = streamStore.popStreamRecord(streamId);
         if (null == tempStreamRecord) {
             return false;
         }
-        tempStreamRecord.streamStatus = StreamRecord.StreamingStatus.LOCAL;
-        return sendStreamMessage(tempStreamRecord);
+        tempStreamRecord.setStreamStatus(StreamRecord.StreamingStatus.LOCAL);
+        streamingMessageQueue.addToQueue(tempStreamRecord);
+        return true;
 
     }
 
     @Override
-    public boolean registerStreamBook(String key, StreamRecord sRecord) {
-        return streamStore.registerStreamBook(key, sRecord);
+    public boolean addStreamRecordToStreamStore(String streamId, StreamRecord sRecord) {
+        return streamStore.registerStreamBook(streamId, sRecord);
     }
 
-  /*  @Override
-    public PortFactory getPortFactory() {
-        return portFactory;
-    }
-*/
     @Override
     public boolean initStreams(Comms comms) {
         try {
@@ -137,6 +122,8 @@ public class StreamManager implements Streaming {
                 return false;
 
             } else {
+
+                ctrlReceiver.initStreamCtrlReceiver();
 
                 comms.registerControlMessageReceiver(
                         ControlMessage.Discriminator.StreamRequest,
@@ -165,6 +152,7 @@ public class StreamManager implements Streaming {
     @Override
     public boolean startStreams() {
 
+        //This has to be changed to Executors.. With a a thread submit with future.
         sStreamingThread = new Thread(streamQueueProcessor);
 
         if (sStreamingThread == null) {
@@ -192,86 +180,22 @@ public class StreamManager implements Streaming {
         }
     }
 
+    /**
+     * We can here interrupt a single streaming thread...
+     * @param streamId
+     * @return
+     */
     @Override
-    public void setSphereForSadl(SphereSecurity sphereSecurity) {
+    public boolean interruptStream(String streamId) {
+        return false;
+    }
+
+    @Override
+    public void setSphereSecurityForEncryption(SphereSecurity sphereSecurity) {
 
         this.sphereForSadl = sphereSecurity;
         this.streamQueueProcessor.setSphereSecurity(sphereForSadl);
     }
 
-    class StreamCtrlReceiver implements CtrlMsgReceiver {
-
-        @Override
-        public boolean processControlMessage(ControlMessage.Discriminator id,
-                                             String serializedMsg) {
-
-            switch (id) {
-                case StreamRequest:
-                    processStreamRequest(serializedMsg);
-                    break;
-                case StreamResponse:
-                    processStreamResponse(serializedMsg);
-                    break;
-                case RTCControlMessage:
-                    logger.debug("Real Time StreamDescriptor Message Received");
-                    processRTCMessage(serializedMsg);
-                    break;
-                default:
-                    logger.error("Unknown StreamDescriptor message type.");
-                    break;
-            }
-
-            return true;
-        }
-
-        private void processStreamResponse(String serializedMsg) {
-            logger.debug("StreamDescriptor Response Received");
-            try {
-
-                final StreamResponse streamResponse = ControlMessage
-                        .deserialize(serializedMsg, StreamResponse.class);
-                bezirkStreamHandler.handleStreamResponse(streamResponse,
-                        streamingMessageQueue, streamStore);
-
-            } catch (Exception e) {
-                logger.error(
-                        "Something Wrong in processing StreamDescriptor Request, Removing Message from Queue",
-                        e);
-            }
-        }
-
-        private void processStreamRequest(String serializedMsg) {
-            logger.debug("StreamDescriptor Request Received");
-            try {
-
-                final StreamRequest streamRequest = ControlMessage.deserialize(
-                        serializedMsg, StreamRequest.class);
-                bezirkStreamHandler.handleStreamRequest(streamRequest,
-                        comms, portFactory,
-                        streamStore, sadlReceiver, sphereForSadl);
-
-            } catch (Exception e) {
-                logger.error(
-                        "Something Wrong in processing StreamDescriptor Request, Removing Message from Queue",
-                        e);
-            }
-        }
-
-        private void processRTCMessage(String serializedMsg) {
-            Signaling signaling = null;
-            if (SignalingFactory.getSignalingInstance() instanceof Signaling) {
-                signaling = (Signaling) SignalingFactory
-                        .getSignalingInstance();
-            }
-            if (signaling == null) {
-
-                logger.error("Feature not enabled.");
-            } else {
-                final RTCControlMessage rtcCtrlMsg = ControlMessage
-                        .deserialize(serializedMsg, RTCControlMessage.class);
-                signaling.receiveControlMessage(rtcCtrlMsg);
-            }
-        }
-    }
 
 }

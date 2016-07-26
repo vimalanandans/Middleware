@@ -272,20 +272,20 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     StreamRecord prepareStreamRecord(BezirkZirkEndPoint receiver, String serializedStream, File file, short streamId, BezirkZirkEndPoint senderSEP, StreamDescriptor streamDescriptor) {
         final StreamRecord streamRecord = new StreamRecord();
-        streamRecord.localStreamId = streamId;
-        streamRecord.senderSEP = senderSEP;
-        streamRecord.isReliable = false;
-        streamRecord.isIncremental = false;
-        streamRecord.isEncrypted = streamDescriptor.isEncrypted();
-        streamRecord.sphere = null;
-        streamRecord.streamStatus = StreamRecord.StreamingStatus.PENDING;
-        streamRecord.recipientIP = receiver.device;
-        streamRecord.recipientPort = 0;
-        streamRecord.file = file;
-        streamRecord.pipedInputStream = null;
-        streamRecord.recipientSEP = receiver;
-        streamRecord.serializedStream = serializedStream;
-        streamRecord.streamTopic = streamDescriptor.topic;
+        streamRecord.setLocalStreamId(streamId);
+        streamRecord.setSenderSEP(senderSEP);
+        streamRecord.setReliable(false);
+        streamRecord.setIncremental(false);
+        streamRecord.setEncrypted(streamDescriptor.isEncrypted());
+        streamRecord.setSphere(null);
+        streamRecord.setStreamStatus(StreamRecord.StreamingStatus.PENDING);
+        streamRecord.setRecipientIP(receiver.device);
+        streamRecord.setRecipientPort(0);
+        streamRecord.setFile(file);
+        streamRecord.setPipedInputStream(null);
+        streamRecord.setRecipientSEP(receiver);
+        streamRecord.setSerializedStream(serializedStream);
+        streamRecord.setStreamTopic(streamDescriptor.topic);
         return streamRecord;
     }
 
@@ -318,13 +318,13 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         final String sphereName = sphereIterator.next();
         final ControlLedger tcMessage = new ControlLedger();
         tcMessage.setSphereId(sphereName);
-        BezirkZirkEndPoint senderSEP = streamRecord.senderSEP;
-        BezirkZirkEndPoint receiver = streamRecord.recipientSEP;
-        String serializedStream = streamRecord.serializedStream;
-        String streamTopic = streamRecord.streamTopic;
-        short streamId = streamRecord.localStreamId;
+        BezirkZirkEndPoint senderSEP = streamRecord.getSenderSEP();
+        BezirkZirkEndPoint receiver = streamRecord.getRecipientSEP();
+        String serializedStream = streamRecord.getSerializedStream();
+        String streamTopic = streamRecord.getStreamTopic();
+        short streamId = streamRecord.getLocalStreamId();
         final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedStream, streamTopic, tempFile.getName(),
-                streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.isReliable, streamId);
+                streamRecord.isEncrypted(), streamRecord.isIncremental(), streamRecord.isReliable(), streamId);
         tcMessage.setSphereId(sphereName);
         tcMessage.setMessage(request);
         tcMessage.setSerializedMessage(new Gson().toJson(request));

@@ -139,15 +139,16 @@ public abstract class CommsProcessor implements Comms {
     @Override
     public boolean sendMessage(Ledger message) {
         // send as it is
-        if (message instanceof ControlLedger)
+        if (message instanceof ControlLedger) {
             return this.sendControlMessage((ControlLedger) message);
-        else if (message instanceof EventLedger)
+        }else if (message instanceof EventLedger) {
             return this.sendEventMessage((EventLedger) message);
-        else if (message instanceof MessageLedger)
+        }else if (message instanceof MessageLedger) {
             return sendMessageLedger((MessageLedger) message);
-        else // stream ledger // hopefully there are no other types
-            return this.sendStreamMessage(message);
-
+        }else { // stream ledger // hopefully there are no other types
+            //return this.sendStreamMessage(message);
+            return false;
+        }
         // FIXME: Bridge the local message. look udp sendControlMessage
 
 
@@ -423,7 +424,7 @@ public abstract class CommsProcessor implements Comms {
     /**
      * send the stream data
      */
-    public boolean sendStreamMessage(Ledger message) {
+    /*public boolean sendStreamMessage(Ledger message) {
         if (bezirkStreamManager != null) {
 
             bezirkStreamManager.sendStreamMessage(message);
@@ -434,7 +435,7 @@ public abstract class CommsProcessor implements Comms {
             return false;
         }
 
-    }
+    }*/
 
     /**
      * send the raw message to comms
@@ -703,7 +704,7 @@ public abstract class CommsProcessor implements Comms {
 
         if (bezirkStreamManager != null) {
 
-            return bezirkStreamManager.registerStreamBook(key, sRecord);
+            return bezirkStreamManager.addStreamRecordToStreamStore(key, sRecord);
 
         } else {
 
@@ -745,7 +746,7 @@ public abstract class CommsProcessor implements Comms {
 
     @Override
     public void setSphereSecurity(SphereSecurity sphereSecurity) {
-        bezirkStreamManager.setSphereForSadl(sphereSecurity);
+        bezirkStreamManager.setSphereSecurityForEncryption(sphereSecurity);
     }
 
     /**

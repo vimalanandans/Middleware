@@ -42,13 +42,13 @@ public class StreamSendingThread implements Runnable {
     public StreamSendingThread(StreamRecord streamRecord,
                                PubSubEventReceiver sadlReceiver, SphereSecurity sphereSecurity) {
         super();
-        this.sphere = streamRecord.sphere;
-        this.recipientIP = streamRecord.recipientIP;
-        this.port = streamRecord.recipientPort;
-        this.file = streamRecord.file;
-        this.isEncrypted = streamRecord.isEncrypted;
-        this.localStreamId = streamRecord.localStreamId;
-        this.senderServiceID = streamRecord.senderSEP.zirkId;
+        this.sphere = streamRecord.getSphere();
+        this.recipientIP = streamRecord.getRecipientIP();
+        this.port = streamRecord.getRecipientPort();
+        this.file = streamRecord.getFile();
+        this.isEncrypted = streamRecord.isEncrypted();
+        this.localStreamId = streamRecord.getLocalStreamId();
+        this.senderServiceID = streamRecord.getSenderSEP().zirkId;
         this.sadlReceiver = sadlReceiver;
         this.sphereSecurity = sphereSecurity;
     }

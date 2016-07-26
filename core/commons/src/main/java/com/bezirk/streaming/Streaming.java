@@ -9,7 +9,7 @@ import com.bezirk.streaming.control.Objects.StreamRecord;
 /**
  * This interface is introduced to separate the streaming functionalities from BezirkCommsManager.
  *
- * @author ajc6kor
+ * @author pik6kor
  */
 public interface Streaming {
 
@@ -19,38 +19,33 @@ public interface Streaming {
      */
     boolean initStreams(Comms comms);
 
-      /**
+    /**
      * Start the streaming thread
      */
     boolean startStreams();
 
     /**
-     * Interrupt the streaming thread
+     * Interrupt all the streaming threads, shutdown streaming module.
      */
     boolean endStreams();
 
     /**
-     * send the stream message based on unique key
+     * Interrupt a single streaming thread
      */
-    boolean sendStream(final String uniqueKey);
+    boolean interruptStream(final String streamId);
 
     /**
-     * send the stream message
+     * send the stream message based on streamId
      */
-    boolean sendStreamMessage(final Ledger message);
+    boolean sendStream(final String streamId);
 
     /**
-     * Retrieve the portfactory instance
+     * Registers the stream record within stream store
      */
-   // public PortFactory getPortFactory();
+    boolean addStreamRecordToStreamStore(final String streamId, final StreamRecord sRecord);
 
     /**
-     * Registers the stream record with stream store
+     * set Sphere Security. this is used for the late initalization, when a new Sphere is created. Sphere security object is updated
      */
-    boolean registerStreamBook(final String key, final StreamRecord sRecord);
-
-    /**
-     * Set the sphere for sadl
-     */
-    void setSphereForSadl(SphereSecurity sphereSecurity);
+    void setSphereSecurityForEncryption(SphereSecurity sphereSecurity);
 }

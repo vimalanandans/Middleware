@@ -83,14 +83,14 @@ public class StreamQueueProcessor implements Runnable {
             while (it.hasNext()) {
                 StreamRecord streamRecord = (StreamRecord) it.next();
 
-                if (StreamingStatus.LOCAL == streamRecord.streamStatus) {
+                if (StreamingStatus.LOCAL == streamRecord.getStreamStatus()) {
                     processLocalStreamMessage(bezirkCallbackPresent, streamRecord);
 
-                } else if (StreamingStatus.ADDRESSED == streamRecord.streamStatus) {
+                } else if (StreamingStatus.ADDRESSED == streamRecord.getStreamStatus()) {
                     logger.debug("StreamDescriptor Request is already Addressed.");
-                } else if (streamRecord.streamStatus == StreamingStatus.READY) {
+                } else if (streamRecord.getStreamStatus()== StreamingStatus.READY) {
                     processStreamReadyMessage(streamRecord);
-                } else if (streamRecord.streamStatus == StreamingStatus.BUSY) {
+                } else if (streamRecord.getStreamStatus() == StreamingStatus.BUSY) {
                     processStreamBusyMessage(bezirkCallbackPresent, streamRecord);
                 }
                 msgQueue.removeFromQueue(streamRecord);
@@ -104,7 +104,7 @@ public class StreamQueueProcessor implements Runnable {
         logger.debug("The Recipient is Busy, Giving Callback to the Zirk");
 
         StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
-                streamRecord.senderSEP.zirkId, 0, streamRecord.localStreamId);
+                streamRecord.getSenderSEP().zirkId, 0, streamRecord.getLocalStreamId());
 
         if (bezirkCallbackPresent) {
             sadlReceiver.processStreamStatus(streamStatusMessage);
@@ -112,8 +112,8 @@ public class StreamQueueProcessor implements Runnable {
     }
 
     private void processStreamReadyMessage(StreamRecord streamRecord) {
-        if (streamRecord.isIncremental
-                || streamRecord.isReliable) {
+        if (streamRecord.isIncremental()
+                || streamRecord.isReliable()) {
 
             logger.debug("Bezirk Supports only RELIABLE-COMPLETE..as of now..");
 
@@ -133,7 +133,7 @@ public class StreamQueueProcessor implements Runnable {
                                            StreamRecord streamRecord) {
         // GIVE THE CALLBACK AS SUCCESS FOR THE SENDER
         StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
-                streamRecord.senderSEP.zirkId, 1, streamRecord.localStreamId);
+                streamRecord.getSenderSEP().zirkId, 1, streamRecord.getLocalStreamId());
         if (bezirkCallbackPresent) {
 
             sadlReceiver.processStreamStatus(streamStatusMessage);
@@ -141,9 +141,9 @@ public class StreamQueueProcessor implements Runnable {
         }
         // GIVE CALLBACK FOR RECIPIENT
         StreamIncomingMessage uStreamCallbackMsg = new StreamIncomingMessage(
-                streamRecord.recipientSEP.zirkId, streamRecord.streamTopic,
-                streamRecord.serializedStream, streamRecord.file,
-                streamRecord.localStreamId, streamRecord.senderSEP);
+                streamRecord.getRecipientSEP().zirkId, streamRecord.getStreamTopic(),
+                streamRecord.getSerializedStream(), streamRecord.getFile(),
+                streamRecord.getLocalStreamId(), streamRecord.getSenderSEP());
 
         if (bezirkCallbackPresent) {
             sadlReceiver.processNewStream(uStreamCallbackMsg);
