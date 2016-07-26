@@ -12,15 +12,15 @@ public interface PubSubBrokerServiceInfo {
     /**
      * Checks if the zirk is registered with SADL.
      *
-     * @param serviceId ZirkId of the Zirk that has to be checked
+     * @param zirkId ZirkId of the Zirk that has to be checked
      * @return true if successful, false otherwise
      */
-    Boolean isServiceRegistered(final ZirkId serviceId);
+    Boolean isServiceRegistered(final ZirkId zirkId);
 
     /**
      * Returns the Set of Registered Services.
      *
      * @return set of registered Services.
      */
-    Set<ZirkId> getRegisteredServices();
+    Set<ZirkId> getRegisteredZirks();
 }

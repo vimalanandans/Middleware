@@ -29,12 +29,12 @@ public class PubSubBrokerRegistry implements Serializable {
      */
     private final Location defaultLocation = new Location(null, null, null);
     /**
-     * Stores the list of Registered ZirkId's of the Services.
+     * Stores the list of Registered ZirkId's of the Zirks.
      */
     protected final Set<ZirkId> zid = new HashSet<>();
     /**
-     * Stores the list of Services associated with the Protocol. Typically used in Discovery.
-     * [Key -&gt; Value] = [ProtocolName -&gt; [Set of ServiceIds]]
+     * Stores the list of Zirks associated with the Protocol. Typically used in Discovery.
+     * [Key -&gt; Value] = [ProtocolName -&gt; [Set of ZirkIds]]
      */
     protected final Map<String, Set<ZirkId>> protocolMap = new ConcurrentHashMap<>();
     /**
@@ -128,7 +128,7 @@ public class PubSubBrokerRegistry implements Serializable {
      * @param zirkId of the zirk being registered
      * @return true if registered, false otherwise
      */
-    public Boolean registerService(final ZirkId zirkId) {
+    public Boolean registerZirk(final ZirkId zirkId) {
 
         zid.add(zirkId);
         // Update the location!
@@ -145,23 +145,23 @@ public class PubSubBrokerRegistry implements Serializable {
      * @param pRole     protocolRole of the zirk.
      * @return true if subscribed, false otherwise
      */
-    public Boolean subscribeService(final ZirkId zirkId, final ProtocolRole pRole) {
+    public Boolean subscribe(final ZirkId zirkId, final ProtocolRole pRole) {
         final String protocolName = pRole.getRoleName();
         final String protocolDescription = pRole.getDescription();
         final String[] eventsTopics = pRole.getEventTopics();
         final String[] streamTopics = pRole.getStreamTopics();
 
         // Update the Protocol Map
-        final Set<ZirkId> protocolServices;
+        final Set<ZirkId> protocolZirks;
         if (protocolMap.containsKey(protocolName)) {
-            protocolServices = protocolMap.get(protocolName);
-            protocolServices.add(zirkId);
+            protocolZirks = protocolMap.get(protocolName);
+            protocolZirks.add(zirkId);
         } else {
-            protocolServices = new HashSet<>();
-            protocolServices.add(zirkId);
+            protocolZirks = new HashSet<>();
+            protocolZirks.add(zirkId);
         }
 
-        protocolMap.put(protocolName, protocolServices);
+        protocolMap.put(protocolName, protocolZirks);
         // Updating protocolDescription
         if (null != protocolDescription) {
 
@@ -172,15 +172,15 @@ public class PubSubBrokerRegistry implements Serializable {
             logger.info("Protocol does not contain any Events to subscribe");
         } else {
             for (String eventTopic : eventsTopics) {
-                final Set<ZirkId> eventsResServices;
+                final Set<ZirkId> eventsResZirks;
                 if (eventMap.containsKey(eventTopic)) {
-                    eventsResServices = eventMap.get(eventTopic);
+                    eventsResZirks = eventMap.get(eventTopic);
                 } else {
-                    eventsResServices = new HashSet<>();
+                    eventsResZirks = new HashSet<>();
                 }
 
-                eventsResServices.add(zirkId);
-                eventMap.put(eventTopic, eventsResServices);
+                eventsResZirks.add(zirkId);
+                eventMap.put(eventTopic, eventsResZirks);
             }
         }
         // Updating StreamDescriptor Map
@@ -188,15 +188,15 @@ public class PubSubBrokerRegistry implements Serializable {
             logger.info("Protocol does not contain any Streams to subscribe");
         } else {
             for (String streamTopic : streamTopics) {
-                final Set<ZirkId> strmsResServices;
+                final Set<ZirkId> strmsResZirks;
                 if (streamMap.containsKey(streamTopic)) {
-                    strmsResServices = streamMap.get(streamTopic);
+                    strmsResZirks = streamMap.get(streamTopic);
                 } else {
-                    strmsResServices = new HashSet<>();
+                    strmsResZirks = new HashSet<>();
                 }
 
-                strmsResServices.add(zirkId);
-                streamMap.put(streamTopic, strmsResServices);
+                strmsResZirks.add(zirkId);
+                streamMap.put(streamTopic, strmsResZirks);
             }
         }
         logger.info(protocolName + " Protocol Role subscribed successfully");
@@ -249,7 +249,7 @@ public class PubSubBrokerRegistry implements Serializable {
     }
 
     public Boolean unregisterZirk(final ZirkId zirkId) {
-        if (isServiceRegistered(zirkId)) {
+        if (isZirkRegistered(zirkId)) {
             // Remove the events from event Map
             removeZidFromMaps(zirkId, eventMap, false);
             // remove the steams from stream map
@@ -274,7 +274,7 @@ public class PubSubBrokerRegistry implements Serializable {
      * @return true if updated, false otherwise
      */
     public Boolean setLocation(final ZirkId zirkId, final Location location) {
-        if (isServiceRegistered(zirkId)) {
+        if (isZirkRegistered(zirkId)) {
             locationMap.put(zirkId, location);
             return true;
         }
@@ -288,7 +288,7 @@ public class PubSubBrokerRegistry implements Serializable {
      * @param zirkId of the Zirk
      * @return true if zid contains ZirkId, false otherwise
      */
-    public Boolean isServiceRegistered(ZirkId zirkId) {
+    public Boolean isZirkRegistered(ZirkId zirkId) {
         return zid.contains(zirkId);
     }
 
@@ -298,8 +298,8 @@ public class PubSubBrokerRegistry implements Serializable {
      * @param zirkId whose location needs to be known
      * @return Location of the zirk
      */
-    public Location getLocationForService(ZirkId zirkId, DeviceInterface deviceInterface) {
-        if (isServiceRegistered(zirkId)) {
+    public Location getLocationForZirk(ZirkId zirkId, DeviceInterface deviceInterface) {
+        if (isZirkRegistered(zirkId)) {
             try {
                 return (defaultLocation.equals(locationMap.get(zirkId)) ? deviceInterface.getDeviceLocation() : locationMap.get(zirkId));
             } catch (Exception e) {
@@ -340,7 +340,7 @@ public class PubSubBrokerRegistry implements Serializable {
     }
 
     public Boolean isStreamTopicRegistered(String streamTopic, ZirkId zirkId) {
-        return isServiceRegistered(zirkId) && streamMap.containsKey(streamTopic) && streamMap.get(streamTopic).contains(zirkId);
+        return isZirkRegistered(zirkId) && streamMap.containsKey(streamTopic) && streamMap.get(streamTopic).contains(zirkId);
     }
 
     /**
@@ -351,7 +351,7 @@ public class PubSubBrokerRegistry implements Serializable {
      * @return true if registered, false otherwise
      */
     public boolean checkUnicastEvent(String topic, ZirkId recipient) {
-        return isServiceRegistered(recipient) && eventMap.containsKey(topic) && eventMap.get(topic).contains(recipient);
+        return isZirkRegistered(recipient) && eventMap.containsKey(topic) && eventMap.get(topic).contains(recipient);
     }
 
     /**
@@ -369,10 +369,10 @@ public class PubSubBrokerRegistry implements Serializable {
                 return new HashSet<>(eventMap.get(topic));
             }
 
-            HashSet<ZirkId> tempServices = (HashSet<ZirkId>) eventMap.get(topic);
+            Set<ZirkId> tempZirks = eventMap.get(topic);
             zirks = new HashSet<>();
-            for (ZirkId zirkId : tempServices) {
-                Location zirkLocation = getLocationForService(zirkId, deviceInterface);
+            for (ZirkId zirkId : tempZirks) {
+                Location zirkLocation = getLocationForZirk(zirkId, deviceInterface);
                 if (zirkLocation != null && location.subsumes(zirkLocation)) {
                     zirks.add(zirkId);
                 }
@@ -385,11 +385,11 @@ public class PubSubBrokerRegistry implements Serializable {
     }
 
     /**
-     * Get the list of Registered Services
+     * Get the list of Registered Zirks
      *
      * @return the list of Registered Zirk
      */
-    public Set<ZirkId> getRegisteredServices() {
+    public Set<ZirkId> getRegisteredZirks() {
         return new HashSet<>(zid);
     }
 
