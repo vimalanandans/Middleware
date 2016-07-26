@@ -6,7 +6,6 @@ package test;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.ProtocolRole;
@@ -15,15 +14,13 @@ import com.bezirk.middleware.proxy.Factory;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Set;
 
 public class Test {
     private final Bezirk senderBezirk;
-    private final Bezirk receiverBezirk;
 
     public Test() {
         senderBezirk = Factory.registerZirk("sender");
-        receiverBezirk = Factory.registerZirk("receiver");
+        Bezirk receiverBezirk = Factory.registerZirk("receiver");
 
         receiverBezirk.subscribe(new TestRole(), new ReceiverListener());
         receiverBezirk.setLocation(new Location("test/location"));
@@ -63,8 +60,7 @@ public class Test {
         }
 
         public String[] getEventTopics() {
-            String[] topics = {TestEvent.TOPIC};
-            return topics;
+            return new String[]{TestEvent.TOPIC};
         }
 
         public String[] getStreamTopics() {

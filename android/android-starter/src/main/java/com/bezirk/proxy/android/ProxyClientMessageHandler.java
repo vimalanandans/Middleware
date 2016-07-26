@@ -3,9 +3,9 @@ package com.bezirk.proxy.android;
 import android.content.Context;
 import android.content.Intent;
 
+import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.proxy.MessageHandler;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.actions.StreamStatusAction;
 import com.google.gson.Gson;
 
@@ -46,10 +46,10 @@ public class ProxyClientMessageHandler implements MessageHandler {
     }
 
     @Override
-    public void onIncomingStream(StreamIncomingMessage streamIncomingMessage) {
+    public void onIncomingStream(ReceiveFileStreamAction receiveFileStreamAction) {
         try {
             final Intent fireIntent = new Intent();
-            fireIntent.putExtra("message", streamIncomingMessage);
+            fireIntent.putExtra("message", receiveFileStreamAction);
             fireIntentToService(fireIntent);
         } catch (Exception e) {
             logger.error("Cannot give callback as all the fields are not set", e);

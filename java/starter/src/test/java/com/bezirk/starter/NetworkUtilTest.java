@@ -49,7 +49,7 @@ public class NetworkUtilTest {
        // BezirkCommsPC.init();
         NetworkInterface intf = null;
         try {
-            intf = networkUtil.fetchNetworkInterface(bezirkConfig);
+            intf = networkUtil.fetchNetworkInterface();
         } catch (Exception e) {
             fail("Unable to fetch network interface. " + e.getMessage());
         }

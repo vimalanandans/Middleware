@@ -15,7 +15,7 @@ include  ':core:streaming'
 
 //include ':core:comms:comms-udp'
 include ':core:comms:comms-factory'
-include ':core:comms:comms-zyre'
+//include ':core:comms:comms-zyre'
 //include ':core:comms:http-comms' // experimentation module is removed
 
 include ':core:device-objects'

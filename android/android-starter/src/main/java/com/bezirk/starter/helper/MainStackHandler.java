@@ -52,7 +52,7 @@ public final class MainStackHandler implements StackHandler {
      */
     private static Comms comms;
 
-    private final SphereHandler sphereProcessorForMainService = new SphereHandler();
+  //  private final SphereHandler sphereProcessorForMainService = new SphereHandler();
 
     private final DeviceHelper deviceHelper = new DeviceHelper();
 
@@ -178,7 +178,7 @@ public final class MainStackHandler implements StackHandler {
                     /*************************************************************
                      * Step 8 : Initialize SphereServiceManager                             *
                      *************************************************************/
-                    if (ValidatorUtility.isObjectNotNull(bezirkDevice)
+                   /* if (ValidatorUtility.isObjectNotNull(bezirkDevice)
                             && !sphereProcessorForMainService.initSphere(bezirkDevice, service, registryPersistence, preferences)) {
                         // at the moment the init sphere fails due to persistence. hence delete it
                         // quickfix.delete the database
@@ -188,11 +188,13 @@ public final class MainStackHandler implements StackHandler {
                         logger.error("Shutting down the bezirk");
                         // don't proceed further without initiating the sphere
                         return;
-                    }
+                    }*/
 
                     // init the comms manager for sadl
-                    pubSubBroker.initPubSubBroker(comms, serviceMessageHandler, sphereProcessorForMainService.getSphereServiceAccess(),
-                            sphereProcessorForMainService.getSphereSecurity());
+                    //pubSubBroker.initPubSubBroker(comms, serviceMessageHandler, sphereProcessorForMainService.getSphereServiceAccess(),
+                    //      sphereProcessorForMainService.getSphereSecurity());
+                    // making sphere object reference null
+                    pubSubBroker.initPubSubBroker(comms, serviceMessageHandler,null,null);
 
                     // set proxy handler
                     AndroidProxyServer proxyServer = (AndroidProxyServer) proxy;
@@ -277,7 +279,7 @@ public final class MainStackHandler implements StackHandler {
             }
 
             // deinit the sphere
-            sphereProcessorForMainService.deinitSphere();
+           // sphereProcessorForMainService.deinitSphere();
 
             //Set status of stack
             this.stoppedStack = true;

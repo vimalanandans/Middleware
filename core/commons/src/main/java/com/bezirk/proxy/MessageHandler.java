@@ -3,8 +3,8 @@
  */
 package com.bezirk.proxy;
 
+import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.actions.UnicastEventAction;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.actions.StreamStatusAction;
 
 /**
@@ -22,9 +22,9 @@ public interface MessageHandler {
     /**
      * Method that fires the Unicast StreamDescriptor response to ProxyForBezirkLibrary.
      *
-     * @param streamIncomingMessage the callback message that will be fired.
+     * @param receiveFileStreamAction the callback message that will be fired.
      */
-    void onIncomingStream(StreamIncomingMessage streamIncomingMessage);
+    void onIncomingStream(ReceiveFileStreamAction receiveFileStreamAction);
 
     /**
      * Method that fires the StreamStatus for ProxyForBezirk

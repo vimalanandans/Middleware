@@ -1,7 +1,7 @@
 package com.bezirk.pubsubbroker;
 
+import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.control.messages.EventLedger;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.actions.StreamStatusAction;
 
 /**
@@ -44,6 +44,6 @@ public interface PubSubEventReceiver {
     /**
      * notify the stream data
      */
-    boolean processNewStream(StreamIncomingMessage streamCallbackMessage);
+    boolean processNewStream(ReceiveFileStreamAction streamCallbackMessage);
 
 }

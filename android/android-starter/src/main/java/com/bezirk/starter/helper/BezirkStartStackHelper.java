@@ -117,9 +117,10 @@ class BezirkStartStackHelper {
         comms.registerNotification(errNotificationCallback);
 
         /** initialize the streaming */
-        StreamManager streaming = new StreamManager(comms, pubSubBroker,getStreamDownloadPath());
+       // StreamManager streaming = new StreamManager(comms, pubSubBroker,getStreamDownloadPath());
         /** initialize the communications */
-        comms.initComms(null, inetAddress, pubSubBroker, null, streaming);
+      //  comms.initComms(null, inetAddress, pubSubBroker, null, streaming);
+        comms.initComms(null, inetAddress, pubSubBroker, null, null);
 
 
         return comms;

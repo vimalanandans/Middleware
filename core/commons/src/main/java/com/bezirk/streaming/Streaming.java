@@ -52,5 +52,5 @@ public interface Streaming {
     /**
      * Set the sphere for sadl
      */
-    void setSphereForSadl(SphereSecurity sphereSecurity);
+    void setSphereSecurity(SphereSecurity sphereSecurity);
 }

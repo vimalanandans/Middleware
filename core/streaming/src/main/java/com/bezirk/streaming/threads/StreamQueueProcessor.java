@@ -6,7 +6,7 @@ package com.bezirk.streaming.threads;
 import com.bezirk.actions.StreamStatusAction;
 import com.bezirk.streaming.MessageQueue;
 import com.bezirk.control.messages.Ledger;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
+import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
@@ -119,13 +119,8 @@ public class StreamQueueProcessor implements Runnable {
 
         } else {
 
-            if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {
-
                 new Thread(new StreamSendingThread(streamRecord, sadlReceiver, sphereSecurity)).start();                       // spawn the thread
-            } else {
 
-                logger.error("SphereForSadl is not initialized.");
-            }
         }
     }
 
@@ -140,7 +135,7 @@ public class StreamQueueProcessor implements Runnable {
 
         }
         // GIVE CALLBACK FOR RECIPIENT
-        StreamIncomingMessage uStreamCallbackMsg = new StreamIncomingMessage(
+        ReceiveFileStreamAction uStreamCallbackMsg = new ReceiveFileStreamAction(
                 streamRecord.recipientSEP.zirkId, streamRecord.streamTopic,
                 streamRecord.serializedStream, streamRecord.file,
                 streamRecord.localStreamId, streamRecord.senderSEP);

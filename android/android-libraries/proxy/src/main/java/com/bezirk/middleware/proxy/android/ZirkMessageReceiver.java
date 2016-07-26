@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.bezirk.actions.BezirkAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
 import com.bezirk.middleware.BezirkListener;
@@ -15,7 +16,7 @@ import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
+import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.actions.StreamStatusAction;
 
 import java.io.File;
@@ -46,7 +47,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
                 processEvent((UnicastEventAction) message);
                 break;
             case ACTION_ZIRK_RECEIVE_STREAM:
-                processStreamUnicast((StreamIncomingMessage) message);
+                processStreamUnicast((ReceiveFileStreamAction) message);
                 break;
             case ACTION_ZIRK_RECEIVE_STREAM_STATUS:
                 processStreamStatus((StreamStatusAction) message);
@@ -79,17 +80,16 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         final String serializedEvent = eventMessage.getSerializedEvent();
         final BezirkZirkEndPoint eventSender = (BezirkZirkEndPoint) eventMessage.getEndpoint();
 
-        boolean valid = isIntentValid(eventTopic, serializedEvent);
-
-        if (!valid) {
-            Log.e(TAG, "The Unicast event intent is received but dropped as it doesn't contain the required fields");
+        if (eventTopic == null && serializedEvent == null) {
+            Log.e(TAG, "Received a null event or event topic");
             return;
         }
 
         final String messageId = eventMessage.getMessageId();
         //Check for duplicate message
         if (checkDuplicateMsg(eventSender.zirkId.getZirkId(), messageId)) {
-            boolean isEventReceived = receiveEventOrStream(eventTopic, serializedEvent, eventSender, (short) 0, null, "EVENT", ProxyClient.eventListenerMap);
+            boolean isEventReceived = receiveEventOrStream(eventTopic, serializedEvent, eventSender,
+                    (short) 0, null, eventMessage.getAction(), ProxyClient.eventListenerMap);
             if (isEventReceived) {
                 return;
             }
@@ -101,7 +101,8 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
     }
 
     private boolean receiveEventOrStream(String topic, String message, BezirkZirkEndPoint sourceSEP, short streamId,
-                                         String filePath, String type, Map<String, List<BezirkListener>> listenerMap) {
+                                         String filePath, BezirkAction action,
+                                         Map<String, List<BezirkListener>> listenerMap) {
 
         // find the class of the received event using the topic of the event, as the topic will hold the canonical name of the event
         Class c;
@@ -113,40 +114,24 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         }
 
         if (listenerMap.containsKey(topic)) {
-            final List<BezirkListener> tempEventListners = listenerMap.get(topic);
-            for (BezirkListener listener : tempEventListners) {
-                if ("EVENT".equalsIgnoreCase(type)) {
+            final List<BezirkListener> messageListeners = listenerMap.get(topic);
+            for (BezirkListener listener : messageListeners) {
+                if (BezirkAction.ACTION_ZIRK_RECEIVE_EVENT.equals(action)) {
                     Event event = (Event) Message.fromJson(message, c);
                     listener.receiveEvent(topic, event, sourceSEP);
-                } else if ("STREAM_UNICAST".equalsIgnoreCase(type)) {
-
+                } else if (BezirkAction.ACTION_ZIRK_RECEIVE_STREAM.equals(action)) {
                     StreamDescriptor streamDescriptor = (StreamDescriptor) Message.fromJson(message, c);
                     listener.receiveStream(topic, streamDescriptor, streamId, new File(filePath), sourceSEP);
                 }
             }
+
             return true;
         }
+
         return false;
-
     }
 
-    private boolean isIntentValid(String eventTopic, String eventMessage) {
-        boolean valid = true;
-        String err = "Intent doesn't contain extra property: ";
-
-        if (null == eventTopic) {
-            Log.e(TAG, err + " eventTopic");
-            valid = false;
-        }
-        if (null == eventMessage) {
-            Log.e(TAG, err + " eventMessage");
-            valid = false;
-        }
-
-        return valid;
-    }
-
-    private void processStreamUnicast(StreamIncomingMessage streamMessage) {
+    private void processStreamUnicast(ReceiveFileStreamAction streamMessage) {
         final String streamTopic = streamMessage.getStreamTopic();
         final String streamMsg = streamMessage.getSerializedStream();
         final File file = streamMessage.getFile();
@@ -161,7 +146,8 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
 
         if (checkDuplicateStream(senderSep.zirkId.getZirkId(), streamId)) {
 
-            boolean isStreamReceived = receiveEventOrStream(streamTopic, streamMsg, senderSep, streamId, file.getPath(), "STREAM_UNICAST",
+            boolean isStreamReceived = receiveEventOrStream(streamTopic, streamMsg, senderSep,
+                    streamId, file.getPath(), streamMessage.getAction(),
                     ProxyClient.streamListenerMap);
 
             if (!isStreamReceived) {

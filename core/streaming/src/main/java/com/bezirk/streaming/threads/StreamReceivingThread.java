@@ -3,10 +3,10 @@
  */
 package com.bezirk.streaming.threads;
 
+import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.PortFactory;
 import com.bezirk.control.messages.streaming.StreamRequest;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.streaming.port.StreamPortFactory;
@@ -26,7 +26,7 @@ import java.net.SocketException;
 
 /**
  * This thread is used by the recipient that is interested in receiving the StreamDescriptor. This Thread opens socket at port ({@link StreamPortFactory#getPort(String)} and
- * waits for the sender to connect. Once the Sender gets connected, a file will be created at {@link CommsConfigurations#DOWNLOAD_PATH} and will read
+ * waits for the sender to connect. Once the Sender gets connected, a file will be created at and will read
  * data at a time. After the data transfer it will release the port through
  * {@link StreamPortFactory#releasePort(int)}. From the {@link #streamLabel}, it will query the BezirkSadl
  * to get all the Zirk Identities via
@@ -34,7 +34,6 @@ import java.net.SocketException;
  * If error occurs during the course, it releases the port and closes the socket and Streams
  *
  * @see com.bezirk.proxy
- * @see CommsConfigurations
  * @see StreamPortFactory
  */
 public class StreamReceivingThread implements Runnable {
@@ -103,14 +102,11 @@ public class StreamReceivingThread implements Runnable {
             fileOutputStream = new FileOutputStream(tempFile);
             inputStream = new DataInputStream(receivingSocket.getInputStream());
 
-            if (isEncrypted) {
-                if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {
-                    sphereSecurity.decryptSphereContent(inputStream, fileOutputStream, sphere);
-                } else {
-                    logger.error("SphereForSadl is not initialized. Unable to process secure streaming request.");
-                }
-
+            if (isEncrypted  && sphereSecurity != null) {
+                // message is encrypted and sphere security object is not null
+                sphereSecurity.decryptSphereContent(inputStream, fileOutputStream, sphere);
                 logger.debug("---------- Secure Data transfer Completed! -------------");
+
             } else {
                 int noOfBytesRead;
                 final byte[] buffer = new byte[BUFFER_SIZE];
@@ -174,7 +170,7 @@ public class StreamReceivingThread implements Runnable {
 
     private void notifyStreamFile(File tempFile, boolean portReleased) {
         if (portReleased) {
-            StreamIncomingMessage uStreamCallbackMsg = new StreamIncomingMessage(
+            ReceiveFileStreamAction uStreamCallbackMsg = new ReceiveFileStreamAction(
                     recipient.zirkId, streamLabel, serializedMsg,
                     tempFile, streamId, sender);
             if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {

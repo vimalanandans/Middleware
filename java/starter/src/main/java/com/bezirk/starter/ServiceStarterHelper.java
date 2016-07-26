@@ -7,7 +7,6 @@ import com.bezirk.device.DeviceType;
 import com.bezirk.devices.DeviceForPC;
 import com.bezirk.devices.DeviceInterface;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
 import com.bezirk.pipe.PipeManager;
 import com.bezirk.sphere.api.SphereAPI;
@@ -44,10 +43,9 @@ final class ServiceStarterHelper {
                          final RegistryStorage registryPersistence, final Comms comms) {
 
         // init the actual
-        final SpherePersistence spherePersistence = registryPersistence;
         SphereRegistry sphereRegistry = null;
         try {
-            sphereRegistry = spherePersistence.loadSphereRegistry();
+            sphereRegistry = registryPersistence.loadSphereRegistry();
         } catch (Exception e) {
             logger.error("Error in loading sphere Registry", e);
         }
@@ -76,7 +74,7 @@ final class ServiceStarterHelper {
 
         try {
 
-            final Comms bezirkComms = (Comms) comms;
+            final Comms bezirkComms = comms;
             bezirkComms.setSphereSecurity(sphereForSadl);
 
         } catch (Exception e) {
@@ -129,16 +127,6 @@ final class ServiceStarterHelper {
 
         return bezirkDevice;
     }
-
-    /**
-     * deinitialize the sphere
-     */
-//    boolean deinitSphere(final MainService service) {
-//        // clear the reference
-//        service.sphereManager = null;
-//
-//        return true;
-//    }
 
     PipeManager createPipeManager() {
         return null;

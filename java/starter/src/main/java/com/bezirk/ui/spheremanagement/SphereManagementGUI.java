@@ -176,7 +176,7 @@ public class SphereManagementGUI extends JFrame {
     private void selectInterface() {
         final Iterator<IntfInetPair> itr = NetworkUtilities.getIntfInetPair()
                 .iterator();
-        final List<String> temp = new ArrayList<String>();
+        final List<String> temp = new ArrayList<>();
         IntfInetPair pair;
         while (itr.hasNext()) {
             pair = itr.next();
@@ -215,7 +215,7 @@ public class SphereManagementGUI extends JFrame {
                 "Catch the PC\n", "Enter below the catch code for other PC",
                 JOptionPane.PLAIN_MESSAGE, null, null, "");
 
-        if (catchCode != null && !catchCode.isEmpty()) {
+        if (catchCode != null && !catchCode.isEmpty() && sphereManager != null) {
             // send the catch code to the sphere
             sphereManager.processCatchShortCode(catchCode);
         }

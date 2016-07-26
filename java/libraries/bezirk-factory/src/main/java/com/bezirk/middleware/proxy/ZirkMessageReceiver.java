@@ -1,5 +1,6 @@
 package com.bezirk.middleware.proxy;
 
+import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
 import com.bezirk.middleware.BezirkListener;
@@ -9,7 +10,6 @@ import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.actions.StreamStatusAction;
 
 import org.slf4j.Logger;
@@ -57,11 +57,11 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
                     handleEventCallback(eventCallbackMessage);
                     break;
                 case ACTION_ZIRK_RECEIVE_STREAM:
-                    if (!(incomingMessage instanceof StreamIncomingMessage)) {
-                        throw new AssertionError("incomingMessage is not an instance of StreamIncomingMessage");
+                    if (!(incomingMessage instanceof ReceiveFileStreamAction)) {
+                        throw new AssertionError("incomingMessage is not an instance of ReceiveFileStreamAction");
                     }
 
-                    StreamIncomingMessage strmMsg = (StreamIncomingMessage) incomingMessage;
+                    ReceiveFileStreamAction strmMsg = (ReceiveFileStreamAction) incomingMessage;
                     handlerStreamUnicastCallback(strmMsg);
                     break;
                 case ACTION_ZIRK_RECEIVE_STREAM_STATUS:
@@ -113,7 +113,7 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      *
      * @param strmMsg streamMessage that will be given back to the services.
      */
-    private void handlerStreamUnicastCallback(StreamIncomingMessage strmMsg) {
+    private void handlerStreamUnicastCallback(ReceiveFileStreamAction strmMsg) {
         if (checkDuplicateStream(strmMsg.getSender().zirkId.getZirkId(), strmMsg.getLocalStreamId())) {
             if (streamListenerMap.containsKey(strmMsg.getStreamTopic())) {
                 for (BezirkListener listener : streamListenerMap.get(strmMsg.getStreamTopic())) {

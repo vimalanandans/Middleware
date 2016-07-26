@@ -45,7 +45,7 @@ public class MainService extends Service implements NotificationCallback {
         return MainStackHandler.isStackStarted();
     }
 
-    RemoteLog remoteLoggingManager = null;
+    final RemoteLog remoteLoggingManager = null;
     /**
      * get the sphere object handle.
      */
@@ -64,14 +64,6 @@ public class MainService extends Service implements NotificationCallback {
         return MainStackHandler.getSphereForAndroid();
     }
 
-    /**
-     * get the pipe registry handle
-     */
-
-  /*  public static PipeRegistry getPipeRegistryHandle() {
-        return PipeRegistryFactory.getPipeRegistry();
-    }
-*/
     @Override
     public void startIntentSender(IntentSender intent, Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags) throws IntentSender.SendIntentException {
         super.startIntentSender(intent, fillInIntent, flagsMask, flagsValues, extraFlags);

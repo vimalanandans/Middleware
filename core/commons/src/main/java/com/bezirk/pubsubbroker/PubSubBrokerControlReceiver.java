@@ -1,10 +1,7 @@
 package com.bezirk.pubsubbroker;
 
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.ZirkId;
-
-import java.util.Set;
 
 /**
  * Platform independent API's used by SADL for validating the responses by the control channel.

@@ -27,12 +27,12 @@ public class ZyreCommsJni extends Thread {
     public static final String TAG = ZyreCommsJni.class.getSimpleName();
     public static final String BEZIRK_GROUP = "BEZIRK_GROUP";
     private static boolean isZyreReady;
-    private final ConcurrentMap<String, List<String>> peers = new ConcurrentHashMap<String, List<String>>();
+    private final ConcurrentMap<String, List<String>> peers = new ConcurrentHashMap<>();
     private final ZyreCommsHelper zyreCommsHelper;
     private final int numberOfEventThreads = 100;
-    CommsProcessor commsProcessor;
+    final CommsProcessor commsProcessor;
 
-    int delayedInitTime = 5000; //in ms
+    final int delayedInitTime = 5000; //in ms
     private Zyre zyre;
     private String group;
     private boolean listenToEventsFlag;
@@ -72,7 +72,7 @@ public class ZyreCommsJni extends Thread {
             }
 
             // delaying since zyre for android doesn't connect as fast as wifi available
-            if (delayedInit == true) {
+            if (delayedInit) {
                 delayZyreCreation();
             } else {
                 isZyreReady = true;

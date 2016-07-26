@@ -6,7 +6,7 @@ import com.bezrik.network.NetworkInterfacePreference;
 public class AndroidNetworkInterfacePreference implements NetworkInterfacePreference {
 
     public static final String defaultAndroidInterface = "wlan0";
-    MainStackPreferences preferences;
+    final MainStackPreferences preferences;
 
     public AndroidNetworkInterfacePreference(MainStackPreferences preferences) {
         this.preferences = preferences;
