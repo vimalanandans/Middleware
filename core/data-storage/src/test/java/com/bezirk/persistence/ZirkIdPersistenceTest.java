@@ -53,9 +53,9 @@
 //        assertNotNull(proxyRegistry);
 //        assertNull(proxyRegistry.getBezirkServiceId("null"));
 //        // update the registry
-//        proxyRegistry.updateBezirkZirkId("zirk-A", "sid-1");
+//        proxyRegistry.updateBezirkZirkId("zirk-A", "zid-1");
 //        proxyPersistence.persistBezirkProxyRegistry();
-//        proxyRegistry.updateBezirkZirkId("zirk-B", "sid-2");
+//        proxyRegistry.updateBezirkZirkId("zirk-B", "zid-2");
 //        proxyPersistence.persistBezirkProxyRegistry();
 //
 //        //close the db == Bezirk is stopped or Restart the Bezirk
@@ -65,8 +65,8 @@
 //        proxyPersistence = regPersistence;
 //        proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 //
-//        assertEquals(proxyRegistry.getBezirkServiceId("zirk-A"), "sid-1");
-//        assertEquals(proxyRegistry.getBezirkServiceId("zirk-B"), "sid-2");
+//        assertEquals(proxyRegistry.getBezirkServiceId("zirk-A"), "zid-1");
+//        assertEquals(proxyRegistry.getBezirkServiceId("zirk-B"), "zid-2");
 //        assertNull(proxyRegistry.getBezirkServiceId("zirk-X")); // should fail
 //
 //    }
@@ -89,9 +89,9 @@
 //        assertNotNull(proxyRegistry);
 //        assertNull(proxyRegistry.getBezirkServiceId("null"));
 //        // update the registry
-//        proxyRegistry.updateBezirkZirkId("zirk-A", "sid-1");
+//        proxyRegistry.updateBezirkZirkId("zirk-A", "zid-1");
 //        proxyPersistence.persistBezirkProxyRegistry();
-//        proxyRegistry.updateBezirkZirkId("zirk-B", "sid-2");
+//        proxyRegistry.updateBezirkZirkId("zirk-B", "zid-2");
 //        proxyPersistence.persistBezirkProxyRegistry();
 //
 //        proxyRegistry.deleteBezirkZirkId("zirk-A");
@@ -105,7 +105,7 @@
 //        proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
 //
 //        assertNull(proxyRegistry.getBezirkServiceId("zirk-A")); // should fail
-//        assertEquals(proxyRegistry.getBezirkServiceId("zirk-B"), "sid-2");
+//        assertEquals(proxyRegistry.getBezirkServiceId("zirk-B"), "zid-2");
 //        assertNull(proxyRegistry.getBezirkServiceId("zirk-X")); // should fail
 //
 //        proxyRegistry.deleteBezirkZirkId("zirk-B");
@@ -140,9 +140,9 @@
 //        assertNotNull(proxyRegistry);
 //        assertNull(proxyRegistry.getBezirkServiceId("null"));
 //        // update the registry
-//        proxyRegistry.updateBezirkZirkId("zirk-A", "sid-1");
+//        proxyRegistry.updateBezirkZirkId("zirk-A", "zid-1");
 //        proxyPersistence.persistBezirkProxyRegistry();
-//        proxyRegistry.updateBezirkZirkId("zirk-B", "sid-2");
+//        proxyRegistry.updateBezirkZirkId("zirk-B", "zid-2");
 //        proxyPersistence.persistBezirkProxyRegistry();
 //
 //        proxyRegistry.deleteBezirkZirkId("zirk-A");

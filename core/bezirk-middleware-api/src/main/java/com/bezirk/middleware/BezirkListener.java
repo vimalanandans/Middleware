@@ -110,11 +110,4 @@ public interface BezirkListener {
     enum StreamStates {
         LOST_CONNECTION, END_OF_DATA
     }
-
-    /**
-     * Unexpected states a pipe can be in.
-     */
-    enum PipeStates {
-        LOST_CONNECTION
-    }
 }

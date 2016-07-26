@@ -9,60 +9,60 @@ import com.bezirk.proxy.api.impl.ZirkId;
 import java.io.File;
 
 /**
- * Platform Independent API's for Proxy server to control PubSubBroker regarding service related actions.
+ * Platform Independent API's for Proxy server to control PubSubBroker regarding zirk related actions.
  *  Any better name for PubSubBrokerServiceTrigger ?
  */
 public interface PubSubBrokerServiceTrigger {
     /**
      * Registers a Zirk with ZirkId in PubSubBroker.
      *
-     * @param serviceId ZirkId of the registering Zirk.
+     * @param zirkId ZirkId of the registering Zirk.
      * @return true is successful, false otherwise.
      */
-    Boolean registerService(final ZirkId serviceId, final String serviceName);
+    Boolean registerService(final ZirkId zirkId, final String zirkName);
 
     /**
      * Subscribes the BezirkService to PubSubBroker.
      *
-     * @param serviceId ZirkId of the subscribing UPAService
+     * @param zirkId ZirkId of the subscribing UPAService
      * @param pRole     ProtocolRole of the subscribing Zirk
      * @return true if successful, false otherwise.
      */
-    Boolean subscribeService(final ZirkId serviceId, final ProtocolRole pRole);
+    Boolean subscribeService(final ZirkId zirkId, final ProtocolRole pRole);
 
     /**
      * Unsubscribes the Zirk from the PubSubBroker.
      *
-     * @param serviceId ZirkId of the unsubscribing Zirk
+     * @param zirkId ZirkId of the unsubscribing Zirk
      * @param role      SubscribedRole of the Zirk
      * @return true if successful, false otherwise
      */
-    Boolean unsubscribe(final ZirkId serviceId, final ProtocolRole role);
+    Boolean unsubscribe(final ZirkId zirkId, final ProtocolRole role);
 
     /**
      * Un-Registers the Zirk from PubSubBroker.
      *
-     * @param serviceId ZirkId of the UnRegistering Zirk
+     * @param zirkId ZirkId of the UnRegistering Zirk
      * @return true if successful, false otherwise
      */
 
-    Boolean unregisterService(final ZirkId serviceId);
+    Boolean unregisterService(final ZirkId zirkId);
 
     /**
      * Update the location of the UPA Zirk
      *
-     * @param serviceId ZirkId of the unregistering zirk
+     * @param zirkId ZirkId of the unregistering zirk
      * @param location  Location of the BezirkService
      * @return true if successful, false otherwise
      */
-    Boolean setLocation(final ZirkId serviceId, final Location location);
+    Boolean setLocation(final ZirkId zirkId, final Location location);
 
     /**
      * Send multicast event
      */
-    boolean sendMulticastEvent(ZirkId serviceId, RecipientSelector recipientSelector, String serializedEventMsg, String topic);
+    boolean sendMulticastEvent(ZirkId zirkId, RecipientSelector recipientSelector, String serializedEventMsg, String topic);
 
-    boolean sendUnicastEvent(ZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg, String topic);
+    boolean sendUnicastEvent(ZirkId zirkId, BezirkZirkEndPoint recipient, String serializedEventMsg, String topic);
 
     short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId);
 }

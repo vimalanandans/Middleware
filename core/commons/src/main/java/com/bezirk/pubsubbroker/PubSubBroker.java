@@ -33,10 +33,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -81,10 +79,10 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
      * @see com.bezirk.api.sadl.PubSubBrokerServiceTrigger#registerZirk(com.bezirk.api.addressing.ZirkId)
      */
     @Override
-    public Boolean registerService(final ZirkId serviceId, final String serviceName) {
+    public Boolean registerService(final ZirkId zirkId, final String zirkName) {
 
         // Step 1: Register with PubSubBroker
-        boolean isPubSubPassed = registerService(serviceId);
+        boolean isPubSubPassed = registerService(zirkId);
 
         if (isPubSubPassed) {
             // Step 2: moved to outside since the sphere persistence is not ready
@@ -94,14 +92,14 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
         if(sphereServiceAccess != null) {
             // Step 2: Register with sphere
-            boolean isSpherePassed = sphereServiceAccess.registerService(serviceId, serviceName);
+            boolean isSpherePassed = sphereServiceAccess.registerService(zirkId, zirkName);
 
             if (isSpherePassed) {
-                logger.info("Zirk Registration Complete for: {}, {}", serviceName, serviceId);
+                logger.info("Zirk Registration Complete for: {}, {}", zirkName, zirkId);
             } else {
                 // unregister the PubSubBroker due to failure in sphere
                 logger.error("sphere Registration Failed. unregistring PubSubBroker");
-                unregisterService(serviceId);
+                unregisterService(zirkId);
             }
         }
         return isPubSubPassed;
@@ -117,7 +115,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             logger.info(serviceId + " Zirk is already registered");
             return false;
         }
-        if (pubSubBrokerRegistry.registerService(serviceId)) {
+        if (pubSubBrokerRegistry.registerZirk(serviceId)) {
             persistSadlRegistry();
             return true;
         }
@@ -125,16 +123,16 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     /* (non-Javadoc)
-     * @see PubSubBrokerServiceTrigger#subscribeService(com.bezirk.api.addressing.ZirkId, ProtocolRole)
+     * @see PubSubBrokerServiceTrigger#subscribe(com.bezirk.api.addressing.ZirkId, ProtocolRole)
      */
     @Override
-    public Boolean subscribeService(final ZirkId serviceId, final ProtocolRole pRole) {
-        if (!isServiceRegistered(serviceId)) {
+    public Boolean subscribeService(final ZirkId zirkId, final ProtocolRole pRole) {
+        if (!isServiceRegistered(zirkId)) {
             logger.info("Zirk tried to subscribe without Registration");
             return false;
         }
 
-        if (pubSubBrokerRegistry.subscribeService(serviceId, pRole)) {
+        if (pubSubBrokerRegistry.subscribe(zirkId, pRole)) {
             persistSadlRegistry();
             return true;
         }
@@ -142,8 +140,8 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public Boolean unsubscribe(final ZirkId serviceId, final ProtocolRole role) {
-        if (pubSubBrokerRegistry.unsubscribe(serviceId, role)) {
+    public Boolean unsubscribe(final ZirkId zirkId, final ProtocolRole role) {
+        if (pubSubBrokerRegistry.unsubscribe(zirkId, role)) {
             persistSadlRegistry();
             return true;
         }
@@ -151,12 +149,12 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public Boolean unregisterService(final ZirkId serviceId) {
-        if (!ValidatorUtility.checkBezirkZirkId(serviceId)) {
+    public Boolean unregisterService(final ZirkId zirkId) {
+        if (!ValidatorUtility.checkBezirkZirkId(zirkId)) {
             logger.error("Invalid UnRegistration, Validation failed");
             return false;
         }
-        if (pubSubBrokerRegistry.unregisterZirk(serviceId)) {
+        if (pubSubBrokerRegistry.unregisterZirk(zirkId)) {
             persistSadlRegistry();
             return true;
         }
@@ -165,8 +163,8 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
 
     @Override
-    public Boolean setLocation(final ZirkId serviceId, final Location location) {
-        if (pubSubBrokerRegistry.setLocation(serviceId, location)) {
+    public Boolean setLocation(final ZirkId zirkId, final Location location) {
+        if (pubSubBrokerRegistry.setLocation(zirkId, location)) {
             persistSadlRegistry();
             return true;
         }
@@ -174,26 +172,26 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public boolean sendMulticastEvent(ZirkId serviceId, RecipientSelector recipientSelector, String serializedEventMsg, String topic) {
+    public boolean sendMulticastEvent(ZirkId zirkId, RecipientSelector recipientSelector, String serializedEventMsg, String topic) {
 
         final Iterable<String> listOfSphere ;
 
         if(sphereServiceAccess != null) {
-            listOfSphere = sphereServiceAccess.getSphereMembership(serviceId);
+            listOfSphere = sphereServiceAccess.getSphereMembership(zirkId);
         }
         else{
-            Set<String> spheres = new HashSet<String>();
+            Set<String> spheres = new HashSet<>();
             spheres.add(SPHERE_NULL_NAME);
             listOfSphere = spheres;
         }
 
         if (null == listOfSphere) {
-            logger.error("Zirk Not Registered with any sphere: " + serviceId.getZirkId());
+            logger.error("Zirk Not Registered with any sphere: " + zirkId.getZirkId());
             return false;
         }
 
         final Iterator<String> sphereIterator = listOfSphere.iterator();
-        final BezirkZirkEndPoint senderSEP = NetworkUtilities.getServiceEndPoint(serviceId);
+        final BezirkZirkEndPoint senderSEP = NetworkUtilities.getServiceEndPoint(zirkId);
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
         //final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
 
@@ -223,14 +221,14 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public boolean sendUnicastEvent(ZirkId serviceId, BezirkZirkEndPoint recipient, String serializedEventMsg, String topic) {
+    public boolean sendUnicastEvent(ZirkId zirkId, BezirkZirkEndPoint recipient, String serializedEventMsg, String topic) {
         final Iterable<String> listOfSphere ;
 
         if(sphereServiceAccess != null) {
-            listOfSphere = sphereServiceAccess.getSphereMembership(serviceId);
+            listOfSphere = sphereServiceAccess.getSphereMembership(zirkId);
         }
         else{
-            Set<String> spheres = new HashSet<String>();
+            Set<String> spheres = new HashSet<>();
             spheres.add(SPHERE_NULL_NAME);
             listOfSphere = spheres;
         }
@@ -241,7 +239,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         }
 
         final Iterator<String> sphereIterator = listOfSphere.iterator();
-        final BezirkZirkEndPoint senderSEP = NetworkUtilities.getServiceEndPoint(serviceId);
+        final BezirkZirkEndPoint senderSEP = NetworkUtilities.getServiceEndPoint(zirkId);
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
         //final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
 
@@ -276,7 +274,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             listOfSphere = sphereServiceAccess.getSphereMembership(senderId);
         }
         else{
-            Set<String> spheres = new HashSet<String>();
+            Set<String> spheres = new HashSet<>();
             spheres.add(SPHERE_NULL_NAME);
             listOfSphere = spheres;
         }
@@ -377,16 +375,16 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public Boolean isServiceRegistered(ZirkId serviceId) {
-        if (ValidatorUtility.checkBezirkZirkId(serviceId)) {
-            return pubSubBrokerRegistry.isServiceRegistered(serviceId);
+    public Boolean isServiceRegistered(ZirkId zirkId) {
+        if (ValidatorUtility.checkBezirkZirkId(zirkId)) {
+            return pubSubBrokerRegistry.isZirkRegistered(zirkId);
         }
         return false;
     }
 
     @Override
     public Location getLocationForService(ZirkId serviceId) {
-        return pubSubBrokerRegistry.getLocationForService(serviceId, deviceInterface);
+        return pubSubBrokerRegistry.getLocationForZirk(serviceId, deviceInterface);
     }
 
 
@@ -464,7 +462,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
                 serviceList.add(new ZirkId("SPOOFED"));
             } else*/
             if (this.checkUnicastEvent(uHeader.getTopic(), uHeader.getRecipient().zirkId)) {
-                serviceList = new HashSet<ZirkId>();
+                serviceList = new HashSet<>();
                 serviceList.add(uHeader.getRecipient().zirkId);
             }
         }
@@ -516,8 +514,8 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public Set<ZirkId> getRegisteredServices() {
-        return pubSubBrokerRegistry.getRegisteredServices();
+    public Set<ZirkId> getRegisteredZirks() {
+        return pubSubBrokerRegistry.getRegisteredZirks();
     }
 
     private void loadSadlRegistry() {

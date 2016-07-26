@@ -88,9 +88,9 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
         Event event = Event.fromJson(incomingEvent.getSerializedEvent(), Event.class);
         BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
 
-        logger.debug("About to callback sid:" + incomingEvent.getZirkId().getZirkId() + " for id:" + incomingEvent.getMessageId());
+        logger.debug("About to callback zid:" + incomingEvent.getZirkId().getZirkId() + " for id:" + incomingEvent.getMessageId());
 
-        //Make a combined sid for sender and recipient
+        //Make a combined zid for sender and recipient
         String combinedSid = endpoint.zirkId.getZirkId() + ":" + incomingEvent.getZirkId().getZirkId();
         if (checkDuplicateMsg(combinedSid, incomingEvent.getMessageId())) {
             Set<BezirkListener> tempListenersSidMap = sidMap.get(incomingEvent.getZirkId());
