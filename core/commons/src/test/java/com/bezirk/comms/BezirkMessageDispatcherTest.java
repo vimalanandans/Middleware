@@ -4,7 +4,6 @@ import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.device.Device;
-import com.bezirk.device.DeviceType;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBroker;
@@ -20,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 import static org.junit.Assert.assertFalse;
