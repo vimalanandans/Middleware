@@ -4,6 +4,7 @@ import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CtrlMsgReceiver;
+import com.bezirk.comms.processor.EventMsgReceiver;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.ControlMessage.Discriminator;
@@ -116,7 +117,7 @@ public class MockComms implements Comms {
     }
 
     @Override
-    public boolean initComms(CommsProperties commsProperties, InetAddress addr, PubSubBroker pubSubBroker, SphereSecurity sphereSecurity, Streaming streaming) {
+    public boolean initComms(CommsProperties commsProperties, InetAddress addr, SphereSecurity sphereSecurity, Streaming streaming) {
         return false;
     }
 
@@ -128,6 +129,11 @@ public class MockComms implements Comms {
                                                   CtrlMsgReceiver receiver) {
         // TODO Auto-generated method stub
         return true;
+    }
+
+    @Override
+    public boolean registerEventMessageReceiver(EventMsgReceiver receiver) {
+        return false;
     }
 
     @Override

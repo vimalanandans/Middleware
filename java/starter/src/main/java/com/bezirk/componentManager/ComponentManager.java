@@ -70,7 +70,7 @@ public class ComponentManager {
 
         this.pubSubBroker = new PubSubBroker(registryStorage, device, networkManager);
         this.proxyServer.setPubSubBrokerService(pubSubBroker);
-        this.comms = new ZyreCommsManager(null, networkManager.getIpForInterface(intf), pubSubBroker, null, null, null, networkManager);
+        this.comms = new ZyreCommsManager(null, networkManager.getIpForInterface(intf),  null, null, null, networkManager);
 
         this.lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
     }

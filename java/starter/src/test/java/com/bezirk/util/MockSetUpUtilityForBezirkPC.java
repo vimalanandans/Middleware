@@ -82,7 +82,7 @@ public class MockSetUpUtilityForBezirkPC {
 
         comms = new MockComms();
         Streaming streamManager = new StreamManager(comms,pubSubBroker,getStreamDownloadPath(), networkManager);
-        comms.initComms(null, inetAddr, pubSubBroker, null,streamManager);
+        comms.initComms(null, inetAddr, null,streamManager);
 
         comms.registerNotification(Mockito.mock(CommsNotification.class));
         comms.startComms();

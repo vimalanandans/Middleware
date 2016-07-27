@@ -18,7 +18,6 @@ import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.Streaming;
@@ -53,7 +52,7 @@ public abstract class CommsProcessor implements Comms {
     CommsMessageDispatcher msgDispatcher = null;
 
     //LogServiceMessageHandler logServiceMsgHandler = null;
-    PubSubEventReceiver pubSubEventReceiver = null;
+
 
     SphereSecurity sphereSecurity = null; // nullable object
 
@@ -75,12 +74,11 @@ public abstract class CommsProcessor implements Comms {
         this.networkManager = networkManager;
     }
 
-    public CommsProcessor(CommsProperties commsProperties, InetAddress addr,
-                          PubSubEventReceiver pubSubEventReceiver, SphereSecurity sphereSecurity, Streaming streaming, CommsNotification commsNotification, NetworkManager networkManager) {
+    public CommsProcessor(CommsProperties commsProperties, InetAddress addr, SphereSecurity sphereSecurity,
+                          Streaming streaming, CommsNotification commsNotification, NetworkManager networkManager) {
         this.notification = commsNotification;
-        this.pubSubEventReceiver = pubSubEventReceiver;
         this.networkManager = networkManager;
-        msgDispatcher = new CommsMessageDispatcher(pubSubEventReceiver);
+        msgDispatcher = new CommsMessageDispatcher();
 
         if (streaming != null) {
 
@@ -94,11 +92,10 @@ public abstract class CommsProcessor implements Comms {
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             PubSubBroker pubSubBroker, SphereSecurity sphereSecurity, Streaming streaming) {
+                              SphereSecurity sphereSecurity, Streaming streaming) {
 
-        this.pubSubEventReceiver = pubSubBroker;
 
-        msgDispatcher = new CommsMessageDispatcher(pubSubBroker);
+        msgDispatcher = new CommsMessageDispatcher();
 
         if (streaming != null) {
 
@@ -761,6 +758,16 @@ public abstract class CommsProcessor implements Comms {
 
         return msgDispatcher.registerControlMessageReceiver(id, receiver);
 
+    }
+
+    /* register event message receiver */
+    @Override
+    public boolean registerEventMessageReceiver(EventMsgReceiver receiver)
+    {
+
+        msgDispatcher.registerEventMessageReceiver(receiver);
+
+        return true;
     }
 
     @Override

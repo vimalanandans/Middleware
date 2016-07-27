@@ -5,6 +5,7 @@ import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.actions.StreamStatusAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.comms.Comms;
+import com.bezirk.comms.processor.EventMsgReceiver;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.GenerateMsgId;
@@ -40,7 +41,7 @@ import java.util.Set;
  * This class implements the PubSubBrokerServiceTrigger, PubSubBrokerServiceInfo Interfaces. This class is used by ProxyForServices (by casting PubSubBrokerServiceTrigger)
  * EventSender/ EventReceiver/ ControlSender/ ControlReceiver by casting PubSubBrokerServiceInfo.
  */
-public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerServiceInfo, PubSubBrokerControlReceiver, PubSubEventReceiver {
+public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerServiceInfo, PubSubBrokerControlReceiver, PubSubEventReceiver, EventMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(PubSubBroker.class);
 
     private static final String SPHERE_NULL_NAME = "SPHERE_NONE";
@@ -70,6 +71,8 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     public void initPubSubBroker(Comms comms, MessageHandler msgHandler,
                                  SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity) {
         this.comms = comms;
+        // register event processor
+        comms.registerEventMessageReceiver(this);
         this.sphereServiceAccess = sphereServiceAccess;
         this.sphereSecurity = sphereSecurity;
         this.msgHandler = msgHandler;
