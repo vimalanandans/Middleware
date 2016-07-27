@@ -2,14 +2,11 @@ package com.bezirk.comms.processor;
 
 
 import com.bezirk.comms.Comms;
+import com.bezirk.comms.CommsFeature;
 import com.bezirk.comms.CommsMessageDispatcher;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezirk.sphere.api.SphereSecurity;
-import com.bezirk.streaming.Streaming;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
@@ -19,14 +16,14 @@ import com.bezirk.control.messages.MulticastControlMessage;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.control.messages.UnicastHeader;
-import com.bezirk.comms.CommsFeature;
-
-
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-//import com.bezirk.sphere.security.UPABlockCipherService;
+import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.pubsubbroker.PubSubEventReceiver;
+import com.bezirk.sphere.api.SphereSecurity;
+import com.bezirk.streaming.Streaming;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.TextCompressor;
-import com.bezrik.network.NetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -37,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+//import com.bezirk.sphere.security.UPABlockCipherService;
 
 /**
  * Created by Vimal on 11/19/2015.
@@ -70,14 +69,17 @@ public abstract class CommsProcessor implements Comms {
     //private final byte[] testKey = {'B','E','Z','I','R','K','_','G','R','O','U','P','N','E','W','1'};
     private ExecutorService executor;
     private Streaming bezirkStreamManager = null;
+    private final NetworkManager networkManager;
 
-    public CommsProcessor(){}
+    public CommsProcessor(NetworkManager networkManager) {
+        this.networkManager = networkManager;
+    }
 
     public CommsProcessor(CommsProperties commsProperties, InetAddress addr,
-                          PubSubEventReceiver pubSubEventReceiver, SphereSecurity sphereSecurity, Streaming streaming, CommsNotification commsNotification) {
+                          PubSubEventReceiver pubSubEventReceiver, SphereSecurity sphereSecurity, Streaming streaming, CommsNotification commsNotification, NetworkManager networkManager) {
         this.notification = commsNotification;
         this.pubSubEventReceiver = pubSubEventReceiver;
-
+        this.networkManager = networkManager;
         msgDispatcher = new CommsMessageDispatcher(pubSubEventReceiver);
 
         if (streaming != null) {
@@ -607,7 +609,7 @@ public abstract class CommsProcessor implements Comms {
     //enable the above code later. Quickfix network device id is taken as local ip as of now
     // for zyre this needs to return from actual comms
     public String getDeviceId() {
-        return NetworkUtilities.getDeviceIp();
+        return networkManager.getDeviceIp();
     }
 
     //public abstract String getDeviceId();
@@ -616,7 +618,7 @@ public abstract class CommsProcessor implements Comms {
     // for zyre this needs to return from actual comms
     public boolean isLocalMessage(String deviceId) {
 
-        return deviceId.equals(NetworkUtilities.getDeviceIp());
+        return deviceId.equals(networkManager.getDeviceIp());
     }
 
     //public abstract String isLocalMessage();

@@ -11,6 +11,7 @@ import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkPipeInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SphereAPI;
@@ -49,10 +50,11 @@ public class SphereServiceManager
     private ShareProcessor shareProcessor = null;
     private CatchProcessor catchProcessor = null;
     private SphereRegistryWrapper sphereRegistryWrapper = null;
+    private NetworkManager networkManager = null;
 
-    public SphereServiceManager(CryptoEngine cryptoEngine, Device upaDevice, SphereRegistry sphereRegistry) {
+    public SphereServiceManager(CryptoEngine cryptoEngine, Device upaDevice, SphereRegistry sphereRegistry, NetworkManager networkManager) {
 
-        if (cryptoEngine == null || upaDevice == null || sphereRegistry == null) {
+        if (cryptoEngine == null || upaDevice == null || sphereRegistry == null || networkManager == null) {
             logger.error("Exiting SphereServiceManager setup. A parameter to the constructor is null");
             return;
         }
@@ -60,6 +62,7 @@ public class SphereServiceManager
         this.cryptoEngine = cryptoEngine;
         this.upaDevice = upaDevice;
         this.registry = sphereRegistry;
+        this.networkManager = networkManager;
         this.ctrlMsgReceiver = new SphereCtrlMsgReceiver(this);
     }
 
@@ -92,9 +95,9 @@ public class SphereServiceManager
         this.sphereRegistryWrapper.init();
         CommsUtility comms = new CommsUtility(bezirkComms);
         shareProcessor = new ShareProcessor(cryptoEngine, upaDevice, comms,
-                sphereRegistryWrapper);
+                sphereRegistryWrapper, networkManager);
         catchProcessor = new CatchProcessor(cryptoEngine, upaDevice, comms,
-                sphereRegistryWrapper);
+                sphereRegistryWrapper, networkManager);
 
         ctrlMsgReceiver.initControlMessageListener(bezirkComms);
         return true;

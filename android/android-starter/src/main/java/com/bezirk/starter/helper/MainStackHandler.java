@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.bezirk.comms.Comms;
@@ -12,6 +13,9 @@ import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.AndroidDevice;
 import com.bezirk.device.Device;
+import com.bezirk.networking.AndroidNetworkManager;
+import com.bezirk.networking.IntfInetPair;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.proxy.android.ProxyClientMessageHandler;
@@ -21,14 +25,10 @@ import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.AndroidSphereServiceManager;
 import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SphereAPI;
-import com.bezirk.starter.AndroidNetworkInterfacePreference;
 import com.bezirk.starter.BezirkWifiManager;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.MainStackPreferences;
 import com.bezirk.starter.StackHandler;
 import com.bezirk.util.ValidatorUtility;
-import com.bezrik.network.IntfInetPair;
-import com.bezrik.network.NetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +58,7 @@ public final class MainStackHandler implements StackHandler {
     //private final DeviceHelper deviceHelper = new DeviceHelper();
 
     private final ProxyServer proxy;
-
+    private NetworkManager networkManager;
     private final CommsNotification errNotificationCallback;
     private final BezirkWifiManager bezirkWifiManager;
     private final BezirkStartStackHelper bezirkStartStackHelper;
@@ -144,10 +144,9 @@ public final class MainStackHandler implements StackHandler {
                     ProxyClientMessageHandler serviceMessageHandler = new ProxyClientMessageHandler(service.getApplicationContext());
 
                     /*************************************************************
-                     * Step 3 :  Initialize preferences  *
+                     * Step 3 :  Initialize network manager
                      *************************************************************/
-                    MainStackPreferences preferences = new MainStackPreferences(service);
-
+                    this.networkManager = new AndroidNetworkManager(PreferenceManager.getDefaultSharedPreferences(service));
 
                     /*************************************************************
                      * Step 4 : Initialize Registry Persistence                  *
@@ -162,14 +161,14 @@ public final class MainStackHandler implements StackHandler {
                     /*************************************************************
                      * Step 6 : Initialize PubSubBroker and set sadl for proxy *
                      *************************************************************/
-                    PubSubBroker pubSubBroker = new PubSubBroker(registryPersistence, bezirkDevice);
+                    PubSubBroker pubSubBroker = new PubSubBroker(registryPersistence, bezirkDevice, networkManager);
                     proxy.setPubSubBrokerService(pubSubBroker);
 
                     /*************************************************************
                      * Step 7 : Initialize BezirkCommsManager                       *
                      *************************************************************/
                     InetAddress inetAddress = fetchInetAddress(service);
-                    comms = bezirkStartStackHelper.initializeComms(inetAddress, pubSubBroker, errNotificationCallback);
+                    comms = bezirkStartStackHelper.initializeComms(inetAddress, pubSubBroker, errNotificationCallback, networkManager);
                     if (!ValidatorUtility.isObjectNotNull(comms)) {
                         logger.error("Unable to initialize comms layer. Shutting down bezirk.");
                         service.stopSelf();
@@ -224,18 +223,12 @@ public final class MainStackHandler implements StackHandler {
     }
 
     private InetAddress fetchInetAddress(MainService service) {
-
         InetAddress inetAddress = null;
 
-        MainStackPreferences preferences = new MainStackPreferences(service);
-
-        AndroidNetworkInterfacePreference networkPreference = new AndroidNetworkInterfacePreference(preferences);
-
-
         try {
-            final NetworkInterface networkInterface = NetworkInterface.getByName(networkPreference.getStoredInterfaceName());
+            final NetworkInterface networkInterface = NetworkInterface.getByName(networkManager.getStoredInterfaceName());
             inetAddress = networkInterface != null ?
-                    NetworkUtilities.getIpForInterface(networkInterface) : null;
+                    networkManager.getIpForInterface(networkInterface) : null;
 
             if (inetAddress == null) {
                 logger.error("Could not resolve ip - Check InterfaceName in preferences.xml\n" +
@@ -255,7 +248,7 @@ public final class MainStackHandler implements StackHandler {
     private String createInfInetPairsMessage() {
         final StringBuilder interfacePairs = new StringBuilder();
 
-        for (IntfInetPair pair : NetworkUtilities.getIntfInetPair()) {
+        for (IntfInetPair pair : networkManager.getIntfInetPair()) {
             if (interfacePairs.length() > 0) interfacePairs.append("\n");
             interfacePairs.append("Interface: " + pair.getIntf().getName() + " IP:" + pair.getInet().getHostAddress());
         }

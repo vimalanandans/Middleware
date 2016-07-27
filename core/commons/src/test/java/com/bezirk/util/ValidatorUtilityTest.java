@@ -3,9 +3,9 @@ package com.bezirk.util;
 import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezrik.network.NetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 import static org.junit.Assert.assertFalse;
@@ -34,38 +35,13 @@ public class ValidatorUtilityTest {
 
     @BeforeClass
     public static void setUpBeforeClass() {
-
-        inetAddr = getInetAddress();
+        try {
+            inetAddr = InetAddress.getByName("127.0.0.1");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         recipient.device = inetAddr.getHostAddress();
         sender.device = inetAddr.getHostAddress();
-    }
-
-    private static InetAddress getInetAddress() {
-        try {
-
-            for (Enumeration<NetworkInterface> en = NetworkInterface
-                    .getNetworkInterfaces(); en.hasMoreElements(); ) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf
-                        .getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
-
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress()
-                            && !inetAddress.isLinkLocalAddress()
-                            && inetAddress.isSiteLocalAddress()) {
-
-                        inetAddr = NetworkUtilities.getIpForInterface(intf);
-                        return inetAddr;
-                    }
-
-                }
-            }
-        } catch (SocketException e) {
-
-            logger.error("Unable to fetch network interface");
-
-        }
-        return null;
     }
 
     @Test

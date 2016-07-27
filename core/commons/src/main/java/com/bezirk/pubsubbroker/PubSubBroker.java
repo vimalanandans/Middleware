@@ -17,6 +17,7 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.StreamDescriptor;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.MessageHandler;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
@@ -25,7 +26,6 @@ import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.ValidatorUtility;
-import com.bezrik.network.NetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -50,14 +50,16 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     protected Comms comms = null;
     protected SphereServiceAccess sphereServiceAccess = null; // Nullable object
     protected SphereSecurity sphereSecurity = null; // Nullable object
-    Device device = null;
+    private final NetworkManager networkManager;
+    private final Device device;
     RemoteLog remoteLog = null;
 
     MessageHandler msgHandler;
 
-    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device) {
+    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
         this.device = device;
+        this.networkManager = networkManager;
         loadSadlRegistry();
     }
 
@@ -189,7 +191,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         }
 
         final Iterator<String> sphereIterator = listOfSphere.iterator();
-        final BezirkZirkEndPoint senderSEP = NetworkUtilities.getServiceEndPoint(zirkId);
+        final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(zirkId);
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
         //final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
 
@@ -236,7 +238,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         }
 
         final Iterator<String> sphereIterator = listOfSphere.iterator();
-        final BezirkZirkEndPoint senderSEP = NetworkUtilities.getServiceEndPoint(zirkId);
+        final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(zirkId);
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
         //final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
 
@@ -281,7 +283,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         try {
-            final BezirkZirkEndPoint senderSEP = NetworkUtilities.getServiceEndPoint(senderId);
+            final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(senderId);
             final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":" + streamId;
             final StreamDescriptor streamDescriptor = new Gson().fromJson(serializedString, StreamDescriptor.class);
 

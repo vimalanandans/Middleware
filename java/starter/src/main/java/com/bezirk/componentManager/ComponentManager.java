@@ -6,11 +6,12 @@ import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.Device;
 import com.bezirk.device.JavaDevice;
+import com.bezirk.networking.JavaNetworkManager;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.starter.NetworkUtil;
-import com.bezrik.network.NetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ public class ComponentManager {
     private RegistryStorage registryStorage;
     private ProxyServer proxyServer;
     private Device device;
-    private InetAddress addr;
+    private NetworkManager networkManager;
     private NetworkUtil networkUtil;
     private LifecycleManager lifecycleManager;
 
@@ -48,6 +49,7 @@ public class ComponentManager {
 
 
         //TODO move Network utilities to Comms component and keep it internal to comms or define it as a component within bezirk
+        networkManager = new JavaNetworkManager();
         this.networkUtil = new NetworkUtil();
         NetworkInterface intf = null;
         try {
@@ -56,7 +58,6 @@ public class ComponentManager {
             logger.error("Error in fetching interface name", e);
             System.exit(0);
         }
-        this.addr = NetworkUtilities.getIpForInterface(intf);
 
 
         try {
@@ -67,9 +68,9 @@ public class ComponentManager {
 
         this.device = new JavaDevice();
 
-        this.pubSubBroker = new PubSubBroker(registryStorage, device);
+        this.pubSubBroker = new PubSubBroker(registryStorage, device, networkManager);
         this.proxyServer.setPubSubBrokerService(pubSubBroker);
-        this.comms = new ZyreCommsManager(null, addr, pubSubBroker, null, null, null);
+        this.comms = new ZyreCommsManager(null, networkManager.getIpForInterface(intf), pubSubBroker, null, null, null, networkManager);
 
         this.lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
     }

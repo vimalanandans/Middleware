@@ -10,6 +10,8 @@ import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
 import com.bezirk.device.Device;
 import com.bezirk.device.JavaDevice;
+import com.bezirk.networking.JavaNetworkManager;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.DevMode;
@@ -19,7 +21,6 @@ import com.bezirk.sphere.impl.JavaPrefs;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.streaming.StreamManager;
 import com.bezirk.streaming.Streaming;
-import com.bezrik.network.NetworkUtilities;
 import com.j256.ormlite.table.TableUtils;
 
 import org.mockito.Mockito;
@@ -56,10 +57,11 @@ public class MockSetUpUtilityForBezirkPC {
     SphereConfig sphereConfig;
     private DatabaseConnectionForJava dbConnection;
     private RegistryStorage regPersistence;
+    NetworkManager networkManager;
 
     public void setUPTestEnv() throws IOException, SQLException,
             Exception {
-
+        networkManager = new JavaNetworkManager();
         dbConnection = new DatabaseConnectionForJava(DBPath);
         regPersistence = new RegistryStorage(
                 dbConnection, DBVersion);
@@ -72,14 +74,14 @@ public class MockSetUpUtilityForBezirkPC {
         cryptoEngine = new CryptoEngine(sphereRegistry);
         pubSubBrokerStorage = (PubSubBrokerStorage) regPersistence;
         setUpUpaDevice();
-        pubSubBroker = new PubSubBroker(pubSubBrokerStorage,upaDevice);
+        pubSubBroker = new PubSubBroker(pubSubBrokerStorage,upaDevice, networkManager);
         //sphereConfig = new SphereProperties();
         sphereConfig = new JavaPrefs();
         sphereConfig.init();
 
 
         comms = new MockComms();
-        Streaming streamManager = new StreamManager(comms,pubSubBroker,getStreamDownloadPath());
+        Streaming streamManager = new StreamManager(comms,pubSubBroker,getStreamDownloadPath(), networkManager);
         comms.initComms(null, inetAddr, pubSubBroker, null,streamManager);
 
         comms.registerNotification(Mockito.mock(CommsNotification.class));
@@ -155,7 +157,7 @@ public class MockSetUpUtilityForBezirkPC {
             NetworkInterface intf = getInterface();
             if (ValidatorUtility.isObjectNotNull(intf)) {
 
-                return NetworkUtilities.getIpForInterface(intf);
+                return networkManager.getIpForInterface(intf);
 
             }
 

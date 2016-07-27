@@ -8,7 +8,7 @@ jar {
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.6'
     compile project(':core:bezirk')
-    compile project(':core:network-util')
+    //compile project(':core:network-util')
     testCompile 'junit:junit:4.12'
 }
 

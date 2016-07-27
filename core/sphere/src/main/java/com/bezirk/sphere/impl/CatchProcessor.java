@@ -3,13 +3,13 @@ package com.bezirk.sphere.impl;
 import com.bezirk.device.Device;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.CryptoInternals;
 import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.messages.CatchRequest;
 import com.bezirk.sphere.messages.CatchResponse;
 import com.bezirk.sphere.security.SphereKeys;
-import com.bezrik.network.NetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,17 +27,19 @@ public class CatchProcessor {
     private static final Logger logger = LoggerFactory.getLogger(CatchProcessor.class);
 
     private static final String CATCH_FAILURE_MSG = "Catch Failed";
-    private SphereRegistryWrapper sphereRegistryWrapper;
-    private CryptoInternals crypto;
-    private Device device;
-    private CommsUtility comms;
+    private final SphereRegistryWrapper sphereRegistryWrapper;
+    private final CryptoInternals crypto;
+    private final Device device;
+    private final CommsUtility comms;
+    private final NetworkManager networkManager;
 
     public CatchProcessor(CryptoInternals crypto, Device device,
-                          CommsUtility comms, SphereRegistryWrapper sphereRegistryWrapper) {
+                          CommsUtility comms, SphereRegistryWrapper sphereRegistryWrapper, NetworkManager networkManager) {
         this.crypto = crypto;
         this.device = device;
         this.comms = comms;
         this.sphereRegistryWrapper = sphereRegistryWrapper;
+        this.networkManager = networkManager;
     }
 
     public boolean processShortCode(String shortCode) {
@@ -357,7 +359,7 @@ public class CatchProcessor {
                         deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
                         (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
 
-                sphereCatchRequest = new CatchRequest(NetworkUtilities.getServiceEndPoint(null), inviterShortCode,
+                sphereCatchRequest = new CatchRequest(networkManager.getServiceEndPoint(null), inviterShortCode,
                         catcherSphereId, catcherBezirkDeviceInfo, sphereExchangeData);
 
                 return sphereCatchRequest;
@@ -406,10 +408,10 @@ public class CatchProcessor {
     /**
      * Generate the catch response to be sent.
      *
-     * @param sphereExchangeData   - has to be non-null
+     * @param sphereExchangeData      - has to be non-null
      * @param catcherBezirkDeviceInfo - has to be non-null
-     * @param inviterShortCode     - has to be non-null
-     * @param -                    catcherSphereId
+     * @param inviterShortCode        - has to be non-null
+     * @param -                       catcherSphereId
      * @return - CatchResponse object if all parameters are valid.
      * <br>- Exception if sphereExchangeData or catcherBezirkDeviceInfo are null
      * <br>- null if catcherSphereId is null.
@@ -474,7 +476,7 @@ public class CatchProcessor {
                             (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
 
                     // FIXME: send unicast for device
-                    CatchResponse response = new CatchResponse(NetworkUtilities.getServiceEndPoint(null),
+                    CatchResponse response = new CatchResponse(networkManager.getServiceEndPoint(null),
                             catcherSphereId, catcherDeviceId, inviterSphereDeviceInfo);
 
                     logger.debug("Response prepared");

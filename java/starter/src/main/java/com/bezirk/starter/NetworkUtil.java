@@ -1,8 +1,9 @@
 package com.bezirk.starter;
 
+import com.bezirk.networking.IntfInetPair;
+import com.bezirk.networking.JavaNetworkManager;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.util.ValidatorUtility;
-import com.bezrik.network.NetworkUtilities;
-import com.bezrik.network.IntfInetPair;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,17 +20,22 @@ import java.util.List;
  */
 public final class NetworkUtil {
     private static final Logger logger = LoggerFactory.getLogger(NetworkUtil.class);
+    private final NetworkManager networkManager;
+
+    public NetworkUtil() {
+        networkManager = new JavaNetworkManager();
+    }
 
     public NetworkInterface fetchNetworkInterface()
             throws SocketException, NullPointerException {
 
-        JavaNetworkInterfacePreference networkInterfacePreference = new JavaNetworkInterfacePreference();
+        //JavaNetworkInterfacePreference networkInterfacePreference = new JavaNetworkInterfacePreference();
 
         // Resolve the NetworkInterface object for supplied InterfaceName
         NetworkInterface networkInterface =
-                resolveInterface(networkInterfacePreference.getStoredInterfaceName());
+                resolveInterface(networkManager.getStoredInterfaceName());
 
-        networkInterfacePreference.setStoredInterfaceName(networkInterface.getName());
+        networkManager.setStoredInterfaceName(networkInterface.getName());
 
         return networkInterface;
     }
@@ -59,7 +65,7 @@ public final class NetworkUtil {
         if (networkInterface == null) {
             logger.info("Configured interface {} could not be resolved. " +
                     "Trying to detect interface.", interfaceName);
-            final List<IntfInetPair> interfaces = NetworkUtilities
+            final List<IntfInetPair> interfaces = networkManager
                     .getIntfInetPair();
             final int numInf = interfaces.size();
 
@@ -114,7 +120,7 @@ public final class NetworkUtil {
     private String promptUserForInterface() {
         String interfaceName;
         //if (bezirkConfig.isDisplayEnabled()) {
-        final Iterator<IntfInetPair> itr = NetworkUtilities
+        final Iterator<IntfInetPair> itr = networkManager
                 .getIntfInetPair().iterator();
         final com.bezirk.ui.ethernetconfigui.EthernetConfigurationDialog ethConfigDialog = new com.bezirk.ui.ethernetconfigui.EthernetConfigurationDialog(
                 itr);
@@ -122,7 +128,7 @@ public final class NetworkUtil {
         //}
         // If UI is not enabled, prompt user to enter interface via console
 //        else {
-//            for (IntfInetPair pair : NetworkUtilities.getIntfInetPair()) {
+//            for (IntfInetPair pair : NetworkManager.getIntfInetPair()) {
 //                logger.info("Found interface: " + pair.getIntf().getName()
 //                        + " IP:" + pair.getInet().getHostAddress());
 //            }
@@ -131,7 +137,7 @@ public final class NetworkUtil {
 //                    intfScanner.next());
 //            interfaceName = tempInterfaceName.toString();
 //
-//            final Iterator<IntfInetPair> itr = NetworkUtilities
+//            final Iterator<IntfInetPair> itr = NetworkManager
 //                    .getIntfInetPair().iterator();
 //            while (itr.hasNext()) {
 //                final IntfInetPair pair = itr.next();

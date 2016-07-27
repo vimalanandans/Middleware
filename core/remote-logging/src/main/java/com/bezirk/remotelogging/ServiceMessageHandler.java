@@ -4,6 +4,7 @@
 package com.bezirk.remotelogging;
 
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -22,8 +23,11 @@ public final class ServiceMessageHandler {
      * Logging Manager to start/ stop the logging client
      */
     private RemoteLoggingManager loggingManager = null;
+    private final NetworkManager networkManager;
 
-
+    public ServiceMessageHandler(NetworkManager networkManager) {
+        this.networkManager = networkManager;
+    }
 
     public static boolean checkLoggingServiceMessage(final LoggingServiceMessage logServiceMsg) {
         return !(null == logServiceMsg || !checkRemoteLoggingIPAndPort(logServiceMsg) || !checkSphereListIsEmpty(logServiceMsg.getSphereList()));
@@ -39,6 +43,7 @@ public final class ServiceMessageHandler {
     private static boolean checkSphereListIsEmpty(String[] sphereList) {
         return !(sphereList == null || sphereList.length == 0);
     }
+
     /**
      * Handles the LogServiceMessage.
      * It will start/ stop the logging client accordingly based on the status received on the LoggingServiceMessage
@@ -49,7 +54,7 @@ public final class ServiceMessageHandler {
         if (checkLoggingServiceMessage(loggingServiceMsg)) {
             if (loggingServiceMsg.isLoggingStatus()) {//Start or Update the client
                 if (null == loggingManager) {
-                    loggingManager = new RemoteLoggingManager();
+                    loggingManager = new RemoteLoggingManager(networkManager);
                 }
                 try {
                     loggingManager.startLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(), loggingServiceMsg.getRemoteLoggingServicePort());

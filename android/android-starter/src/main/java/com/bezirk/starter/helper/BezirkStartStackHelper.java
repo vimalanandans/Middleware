@@ -11,6 +11,7 @@ import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.datastorage.DatabaseConnection;
 import com.bezirk.datastorage.RegistryStorage;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.persistence.DatabaseConnectionForAndroid;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.starter.MainService;
@@ -90,7 +91,7 @@ class BezirkStartStackHelper {
     }
 
 
-    Comms initializeComms(InetAddress inetAddress, PubSubBroker pubSubBroker, CommsNotification errNotificationCallback) {
+    Comms initializeComms(InetAddress inetAddress, PubSubBroker pubSubBroker, CommsNotification errNotificationCallback, NetworkManager networkManager) {
         // Instantiate pipeManager before SenderThread so that it is ready to start sending over pipes
         // PipeManager pipeComms = PipeCommsFactory.createPipeComms();
 
@@ -102,7 +103,7 @@ class BezirkStartStackHelper {
         if (commsFactory.getActiveComms() == CommsFeature.COMMS_ZYRE_JNI) {
             String arch = System.getProperty("os.arch");
             logger.info("phone arch " + arch);
-            comms = new ZyreCommsManager();
+            comms = new ZyreCommsManager(networkManager);
         } else {
             //rest of the comms are returned from factory
             /** Initialize the comms. */
@@ -117,27 +118,26 @@ class BezirkStartStackHelper {
         comms.registerNotification(errNotificationCallback);
 
         /** initialize the streaming */
-       // StreamManager streaming = new StreamManager(comms, pubSubBroker,getStreamDownloadPath());
+        // StreamManager streaming = new StreamManager(comms, pubSubBroker,getStreamDownloadPath());
         /** initialize the communications */
-      //  comms.initComms(null, inetAddress, pubSubBroker, null, streaming);
+        //  comms.initComms(null, inetAddress, pubSubBroker, null, streaming);
         comms.initComms(null, inetAddress, pubSubBroker, null, null);
 
 
         return comms;
     }
 
-    String getStreamDownloadPath()
-    {
+    String getStreamDownloadPath() {
         String downloadPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/bezirk-downloads/";
 
-            // create a Downloads folder for streaming
-            File createDownloadFolder = new File(downloadPath);
-            if (!createDownloadFolder.exists()) {
-                if (!createDownloadFolder.mkdir()) {
-                    logger.error("Failed to create download direction: {}",
-                            createDownloadFolder.getAbsolutePath());
-                }
+        // create a Downloads folder for streaming
+        File createDownloadFolder = new File(downloadPath);
+        if (!createDownloadFolder.exists()) {
+            if (!createDownloadFolder.mkdir()) {
+                logger.error("Failed to create download direction: {}",
+                        createDownloadFolder.getAbsolutePath());
             }
+        }
         return downloadPath;
     }
 

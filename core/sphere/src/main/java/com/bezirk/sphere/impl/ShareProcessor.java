@@ -4,6 +4,7 @@ package com.bezirk.sphere.impl;
 import com.bezirk.device.Device;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.sphere.api.CryptoInternals;
@@ -11,7 +12,6 @@ import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.messages.ShareRequest;
 import com.bezirk.sphere.messages.ShareResponse;
 import com.bezirk.sphere.security.SphereKeys;
-import com.bezrik.network.NetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,13 +32,15 @@ public class ShareProcessor {
     private Device device;
     private CommsUtility comms;
     private SphereRegistryWrapper sphereRegistryWrapper;
+    private NetworkManager networkManager;
 
     public ShareProcessor(CryptoInternals crypto, Device device, CommsUtility comms,
-                          SphereRegistryWrapper sphereRegistryWrapper) {
+                          SphereRegistryWrapper sphereRegistryWrapper, NetworkManager networkManager) {
         this.crypto = crypto;
         this.device = device;
         this.comms = comms;
         this.sphereRegistryWrapper = sphereRegistryWrapper;
+        this.networkManager = networkManager;
     }
 
     /**
@@ -222,7 +224,7 @@ public class ShareProcessor {
      * Store the inviter SphereID and sharer Device Info from the received share
      * request.
      *
-     * @param inviterSphereId     - has to be valid and non-null
+     * @param inviterSphereId        - has to be valid and non-null
      * @param sharerBezirkDeviceInfo - has to be non-null
      * @return - True if data was added to the registry successfully, else,
      * False.
@@ -241,9 +243,9 @@ public class ShareProcessor {
     /**
      * Store the data
      *
-     * @param sphereExchangeData   - has to be non-null
+     * @param sphereExchangeData      - has to be non-null
      * @param inviterBezirkDeviceInfo - has to be non-null
-     * @param sharerSphereId       - has to be non-null
+     * @param sharerSphereId          - has to be non-null
      * @return - True if data was stored successfully in the registry, else
      * False. <br>
      * - NullPointerException is thrown if SphereExchangeData obj is
@@ -374,7 +376,7 @@ public class ShareProcessor {
                         (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
 
                 shareRequest = new ShareRequest(inviterShortCode, bezirkDeviceInfo,
-                        NetworkUtilities.getServiceEndPoint(null), sharerSphereId);
+                        networkManager.getServiceEndPoint(null), sharerSphereId);
                 return shareRequest;
             }
         }
@@ -485,7 +487,7 @@ public class ShareProcessor {
                 BezirkDeviceInfo bezirkDeviceInfoToSend = new BezirkDeviceInfo(device.getDeviceId(),
                         deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
                         (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
-                shareResponse = new ShareResponse(NetworkUtilities.getServiceEndPoint(null), sharer, uniqueKey,
+                shareResponse = new ShareResponse(networkManager.getServiceEndPoint(null), sharer, uniqueKey,
                         inviterShortCode, bezirkDeviceInfoToSend, sphereExchangeData, sharerSphereId);
                 return shareResponse;
             }

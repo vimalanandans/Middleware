@@ -2,6 +2,7 @@ package com.bezirk.comms;
 
 
 import com.bezirk.comms.processor.CommsProcessor;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 
@@ -16,8 +17,8 @@ public class ZyreCommsManager extends CommsProcessor {
     private ZyreCommsJni comms = null;
 
     public ZyreCommsManager(CommsProperties commsProperties, InetAddress addr,
-                            PubSubEventReceiver pubSubEventReceiver, SphereSecurity security, com.bezirk.streaming.Streaming streaming, CommsNotification commsNotification) {
-        super(commsProperties, addr, pubSubEventReceiver, security, streaming, commsNotification);
+                            PubSubEventReceiver pubSubEventReceiver, SphereSecurity security, com.bezirk.streaming.Streaming streaming, CommsNotification commsNotification, NetworkManager networkManager) {
+        super(commsProperties, addr, pubSubEventReceiver, security, streaming, commsNotification, networkManager);
         /*init zyre and internals of comms */
         if (comms == null) {
 

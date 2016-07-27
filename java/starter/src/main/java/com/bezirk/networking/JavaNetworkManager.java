@@ -1,6 +1,4 @@
-package com.bezirk.starter;
-
-import com.bezrik.network.NetworkInterfacePreference;
+package com.bezirk.networking;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,21 +6,17 @@ import org.slf4j.LoggerFactory;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-/**
- * Java specific interface name preference
- */
-public class JavaNetworkInterfacePreference implements NetworkInterfacePreference {
-    private static final Logger logger = LoggerFactory.getLogger(JavaNetworkInterfacePreference.class);
+public class JavaNetworkManager extends NetworkManager {
+    private static final Logger logger = LoggerFactory.getLogger(JavaNetworkManager.class);
     private Preferences preferences;
 
-    JavaNetworkInterfacePreference(){
+    public JavaNetworkManager() {
         init();
     }
 
-   // @Override
     void init() {
         try {
-            preferences = Preferences.userNodeForPackage(JavaNetworkInterfacePreference.class);
+            preferences = Preferences.userNodeForPackage(JavaNetworkManager.class);
             logger.debug("Network preferences initialized successfully");
             logger.debug(NETWORK_INTERFACE_NAME_KEY + " --> " + getStoredInterfaceName());
         } catch (Exception e) {
@@ -42,13 +36,12 @@ public class JavaNetworkInterfacePreference implements NetworkInterfacePreferenc
     public void setStoredInterfaceName(String interfaceName) {
 
         try {
-            preferences.put(NETWORK_INTERFACE_NAME_KEY,interfaceName);
+            preferences.put(NETWORK_INTERFACE_NAME_KEY, interfaceName);
             preferences.sync();
             logger.debug("Network preferences is stored");
         } catch (BackingStoreException e) {
             logger.error(e.getMessage());
         }
     }
-
 
 }

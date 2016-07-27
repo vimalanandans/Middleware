@@ -4,6 +4,7 @@ package com.bezirk.starter;
 import com.bezirk.comms.Comms;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.Device;
+import com.bezirk.networking.JavaNetworkManager;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.util.MockSetUpUtilityForBezirkPC;
 
@@ -50,7 +51,7 @@ public class ZirkStarterHelperTest {
         Device bezirkDevice = mockSetUP.getUpaDevice();
         RegistryStorage registryPersistence = mockSetUP.getRegistryPersistence();
         Comms commsLegacy = Mockito.mock(Comms.class);
-        SphereAPI bezirkSphere = helper.initSphere(bezirkDevice, registryPersistence, commsLegacy);
+        SphereAPI bezirkSphere = helper.initSphere(bezirkDevice, registryPersistence, commsLegacy, new JavaNetworkManager());
 
         assertNotNull("SphereServiceManager is not initialized. ", bezirkSphere);
     }

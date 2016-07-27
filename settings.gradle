@@ -5,7 +5,7 @@ include ':core:bezirk-middleware-api'
 include ':core:bezirk'
 
 include ':core:control-messages'
-include ':core:network-util'
+//include ':core:network-util'
 include ':core:commons'
 
 include  ':core:remote-logging'

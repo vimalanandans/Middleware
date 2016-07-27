@@ -20,7 +20,7 @@
 //import com.bezirk.streaming.StreamManager;
 //import com.bezirk.streaming.Streaming;
 //import com.bezirk.util.ValidatorUtility;
-//import com.bezrik.network.NetworkUtilities;
+//import com.bezirk.networking.NetworkManager;
 //
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
@@ -348,7 +348,7 @@
 //      /*  final PipeManager pipeManager = serviceStarterHelper
 //                .createPipeManager();
 //*/
-//        final InetAddress addr = NetworkUtilities.getIpForInterface(intf);
+//        final InetAddress addr = NetworkManager.getIpForInterface(intf);
 //
 //        /*
 //         * CommsProperties is not used by comms manager. Properties are handled

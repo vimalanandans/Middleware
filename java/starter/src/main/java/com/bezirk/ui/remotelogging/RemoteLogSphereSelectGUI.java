@@ -2,6 +2,7 @@ package com.bezirk.ui.remotelogging;
 
 import com.bezirk.comms.Comms;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.remotelogging.RemoteLoggingManager;
 import com.bezirk.remotelogging.RemoteLoggingMessage;
 import com.bezirk.remotelogging.RemoteLoggingMessageNotification;
@@ -96,7 +97,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
             rightSphereListModel.removeAllElements();
             leftSphereListModel.addElement(RemoteLog.ALL_SPHERES);
             try {
-                final Iterator<BezirkSphereInfo> sphereInfoIterator ;
+                final Iterator<BezirkSphereInfo> sphereInfoIterator;
                 /*commented for the MVP refactoring. inject the sphere API to get access
                 final Iterator<BezirkSphereInfo> sphereInfoIterator = BezirkCompManager
                         .getSphereUI().getSpheres().iterator();
@@ -175,8 +176,6 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
     };
     /**
      * Thread that starts and stops the LoggingService.
-     *
-     *
      */
     private transient RemoteLogDetailsGUI remoteLogDetails;
     private transient RemoteLog remoteLog;
@@ -226,7 +225,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
      *
      * @param comms
      */
-    public RemoteLogSphereSelectGUI(Comms comms) {
+    public RemoteLogSphereSelectGUI(Comms comms, NetworkManager networkManager) {
         thisFrame = this;
         this.comms = comms;
         try {
@@ -236,7 +235,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
         }
 
         try {
-            remoteLog = new RemoteLoggingManager();
+            remoteLog = new RemoteLoggingManager(networkManager);
             remoteLog.startLoggingService(this);
         } catch (Exception e) {
             logger.error("Error in sphere Select GUI init.", e);
@@ -361,8 +360,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
     @Override
     public void handleLogMessage(RemoteLoggingMessage logMessage) {
         if (null != remoteLogDetails && msgLog != null) {
-            if(msgLog.isRemoteMessageValid(logMessage))
-            {
+            if (msgLog.isRemoteMessageValid(logMessage)) {
                 remoteLogDetails.updateTable(logMessage);
             }
         }

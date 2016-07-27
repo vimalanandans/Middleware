@@ -1,9 +1,7 @@
 package com.bezirk.device;
 
 import com.bezirk.middleware.addressing.Location;
-import com.bezrik.network.NetworkUtilities;
 
-import org.apache.shiro.codec.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,12 +21,12 @@ public class JavaDevice extends Device {
     }
 
     private static final String defaultDeviceId() {
-        final byte[] macAddress = NetworkUtilities
-                .getLocalMACAddress();
-
-        if (null != macAddress) {
-            return Hex.encodeToString(macAddress);
-        }
+//        final byte[] macAddress = NetworkManager
+//                .getLocalMACAddress();
+//
+//        if (null != macAddress) {
+//            return Hex.encodeToString(macAddress);
+//        }
         return UUID.randomUUID().toString();
     }
 

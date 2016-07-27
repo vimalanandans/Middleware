@@ -5,6 +5,7 @@ import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
 
 import com.bezirk.device.Device;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.sphere.AndroidSphereServiceManager;
 import com.bezirk.sphere.AndroidSpherePreference;
 import com.bezirk.sphere.api.DevMode;
@@ -57,7 +58,7 @@ public final class SphereHandler {
     /**
      * create and initialise the sphere
      */
-    boolean initSphere(Device bezirkDevice, MainService service, SpherePersistence spherePersistence, MainStackPreferences preferences) {
+    boolean initSphere(Device bezirkDevice, MainService service, SpherePersistence spherePersistence, MainStackPreferences preferences, NetworkManager networkManager) {
 
         /** start the sphere related init*/
         if (sphereForAndroid == null) {
@@ -70,7 +71,7 @@ public final class SphereHandler {
             }
             CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
 
-            sphereForAndroid = new AndroidSphereServiceManager(cryptoEngine, bezirkDevice, sphereRegistry, service.getApplicationContext(), preferences);
+            sphereForAndroid = new AndroidSphereServiceManager(cryptoEngine, bezirkDevice, sphereRegistry, service.getApplicationContext(), preferences, networkManager);
 
             AndroidSphereServiceManager bezirkSphereForAndroid = (AndroidSphereServiceManager) SphereHandler.sphereForAndroid;
 

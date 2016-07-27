@@ -9,8 +9,9 @@ import com.bezirk.comms.Comms;
 import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
 import com.bezirk.device.Device;
-import com.bezirk.sphere.api.SphereListener;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.sphere.api.SphereConfig;
+import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.impl.SphereServiceManager;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.starter.ActionCommands;
@@ -28,8 +29,8 @@ public class AndroidSphereServiceManager extends SphereServiceManager implements
     private SphereConfig sphereConfig;
 
     public AndroidSphereServiceManager(CryptoEngine cryptoEngine, Device upaDevice,
-                                       SphereRegistry sphereRegistry, Context context, MainStackPreferences preferences) {
-        super(cryptoEngine, upaDevice, sphereRegistry);
+                                       SphereRegistry sphereRegistry, Context context, MainStackPreferences preferences, NetworkManager networkManager) {
+        super(cryptoEngine, upaDevice, sphereRegistry, networkManager);
         this.preferences = preferences;
         applicationContext = context;
     }

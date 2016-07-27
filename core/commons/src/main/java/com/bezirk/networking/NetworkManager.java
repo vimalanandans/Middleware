@@ -1,5 +1,4 @@
-package com.bezrik.network;
-
+package com.bezirk.networking;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
@@ -13,22 +12,14 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+public abstract class NetworkManager {
+    private static final Logger logger = LoggerFactory.getLogger(NetworkManager.class);
+    protected static final String NETWORK_INTERFACE_NAME_KEY = "NETWORK_INTERFACE_PREFERENCE";
+    protected static final String NETWORK_INTERFACE_DEFAULT_VALUE = "";
 
-/**
- * Helper class containing functions for networking, e.g. getting local IP and MAC address
- *
- * @author Jan Zibuschka
- */
-public final class NetworkUtilities {
-    private static final Logger logger = LoggerFactory.getLogger(NetworkUtilities.class);
+    private NetworkInterface curInterface = null;
 
-    private static NetworkInterface curInterface = null;
-
-    private NetworkUtilities() {
-        //This is a utility class
-    }
-
-    public static List<IntfInetPair> getIntfInetPair() {
+    public List<IntfInetPair> getIntfInetPair() {
         ArrayList<IntfInetPair> list = new ArrayList<IntfInetPair>();
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
@@ -47,7 +38,7 @@ public final class NetworkUtilities {
         return list;
     }
 
-    public static InetAddress getIpForInterface(NetworkInterface intf) {
+    public InetAddress getIpForInterface(NetworkInterface intf) {
         if (intf == null) {
             logger.debug("Input interface is null");
             return null;
@@ -76,7 +67,7 @@ public final class NetworkUtilities {
     }
 
 
-    public static InetAddress getLocalInet() {
+    public InetAddress getLocalInet() {
         if (curInterface == null) {
             logger.error("Input interface is null");
             return null;
@@ -97,7 +88,7 @@ public final class NetworkUtilities {
      *
      * @return Local MAC address
      */
-    public static byte[] getLocalMACAddress() {
+    public byte[] getLocalMACAddress() {
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface intf = en.nextElement();
@@ -116,7 +107,7 @@ public final class NetworkUtilities {
         return null;
     }
 
-    public static BezirkZirkEndPoint getServiceEndPoint(ZirkId zirkId) {
+    public BezirkZirkEndPoint getServiceEndPoint(ZirkId zirkId) {
         BezirkZirkEndPoint sep = new BezirkZirkEndPoint(zirkId);
         sep.device = getLocalInet().getHostAddress();
         return sep;
@@ -125,8 +116,18 @@ public final class NetworkUtilities {
     /**
      * get the device ip address detail
      */
-    public static String getDeviceIp() {
+    public String getDeviceIp() {
         return getLocalInet().getHostAddress();
     }
+
+    /**
+     * Get the stored interface name
+     */
+    public abstract String getStoredInterfaceName();
+
+    /**
+     * Set the stored interface name
+     */
+    public abstract void setStoredInterfaceName(String interfaceName);
 
 }

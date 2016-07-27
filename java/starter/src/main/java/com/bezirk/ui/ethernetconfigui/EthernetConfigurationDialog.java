@@ -1,6 +1,6 @@
 package com.bezirk.ui.ethernetconfigui;
 
-import com.bezrik.network.IntfInetPair;
+import com.bezirk.networking.IntfInetPair;
 
 import java.util.ArrayList;
 import java.util.Iterator;

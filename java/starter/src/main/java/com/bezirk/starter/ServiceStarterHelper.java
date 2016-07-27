@@ -4,6 +4,7 @@ import com.bezirk.comms.Comms;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.datastorage.SphereRegistry;
 import com.bezirk.device.Device;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.pipe.PipeManager;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereConfig;
@@ -33,7 +34,7 @@ final class ServiceStarterHelper {
      * @param comms
      */
     SphereAPI initSphere(final Device bezirkDevice,
-                         final RegistryStorage registryPersistence, final Comms comms) {
+                         final RegistryStorage registryPersistence, final Comms comms, final NetworkManager networkManager) {
 
         // init the actual
         SphereRegistry sphereRegistry = null;
@@ -45,7 +46,7 @@ final class ServiceStarterHelper {
 
         final CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
         SphereAPI sphereForPC = new PCSphereServiceManager(cryptoEngine, bezirkDevice,
-                sphereRegistry);
+                sphereRegistry, networkManager);
 
         // BezirkSphereForAndroid implements the listener, hence set the
         // listener object as same.

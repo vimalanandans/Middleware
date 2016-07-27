@@ -1,7 +1,6 @@
 package com.bezirk.control.messages;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezrik.network.NetworkUtilities;
 
 public class UnicastControlMessage extends ControlMessage {
 
@@ -30,12 +29,6 @@ public class UnicastControlMessage extends ControlMessage {
                                  Discriminator discriminator, Boolean retransmit, String key) {
         super(sender, sphereId, discriminator, retransmit, key);
         this.recipient = recipient;
-        //Check if msg is local
-        // device is generic may (udp) or may not (zyre) contain the ip. check generic means
-        if (recipient.device.equals(NetworkUtilities.getLocalInet().getHostAddress())) {
-
-            this.isLocal = true;
-        }
     }
 
     /**
@@ -52,12 +45,15 @@ public class UnicastControlMessage extends ControlMessage {
                                  Discriminator discriminator, Boolean retransmit) {
         super(sender, sphereId, discriminator, retransmit);
         this.recipient = recipient;
-        //Check if msg is local
-        if (recipient.device.equals(NetworkUtilities.getLocalInet().getHostAddress())) {
-            this.isLocal = true;
-        }
     }
 
+    /**
+     * Always returns false.
+     *
+     * Previous implementation was coupled with the network information of the device to figure out if the message is local. Networking and control messages need to be de-coupled.
+     * @return
+     */
+    @Deprecated
     public Boolean getIsLocal() {
         return isLocal;
     }

@@ -4,11 +4,11 @@ import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.device.Device;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezrik.network.NetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,7 +33,6 @@ public class BezirkMessageDispatcherTest {
     private static final ZirkId serviceId = new ZirkId("ServiceA");
     private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceId);
     private static InetAddress inetAddr;
-
     boolean requestReceived = false;
     boolean responseReceived = false;
     boolean unKnownMessageReceived = false;
@@ -42,42 +41,42 @@ public class BezirkMessageDispatcherTest {
     public static void setUpBeforeClass() {
 
         logger.info("***** Setting up BezirkMessageDispatcherTest TestCase *****");
-        inetAddr = getInetAddress();
-        recipient.device = inetAddr.getHostAddress();
+//        inetAddr = getInetAddress();
+//        recipient.device = inetAddr.getHostAddress();
     }
 
-    private static InetAddress getInetAddress() {
-        try {
-
-            for (Enumeration<NetworkInterface> en = NetworkInterface
-                    .getNetworkInterfaces(); en.hasMoreElements(); ) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf
-                        .getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
-
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress()
-                            && !inetAddress.isLinkLocalAddress()
-                            && inetAddress.isSiteLocalAddress()) {
-
-                        inetAddr = NetworkUtilities.getIpForInterface(intf);
-                        return inetAddr;
-                    }
-
-                }
-            }
-        } catch (SocketException e) {
-            logger.error("Unable to fetch network interface");
-        }
-        return null;
-    }
+//    private static InetAddress getInetAddress() {
+//        try {
+//
+//            for (Enumeration<NetworkInterface> en = NetworkInterface
+//                    .getNetworkInterfaces(); en.hasMoreElements(); ) {
+//                NetworkInterface intf = en.nextElement();
+//                for (Enumeration<InetAddress> enumIpAddr = intf
+//                        .getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+//
+//                    InetAddress inetAddress = enumIpAddr.nextElement();
+//                    if (!inetAddress.isLoopbackAddress()
+//                            && !inetAddress.isLinkLocalAddress()
+//                            && inetAddress.isSiteLocalAddress()) {
+//
+//                        inetAddr = NetworkManager.getIpForInterface(intf);
+//                        return inetAddr;
+//                    }
+//
+//                }
+//            }
+//        } catch (SocketException e) {
+//            logger.error("Unable to fetch network interface");
+//        }
+//        return null;
+//    }
 
 
     @Test
     public void test() {
         Device device = Mockito.mock(Device.class);
-
-        PubSubEventReceiver bezirkSadlManager = new PubSubBroker(null,device);
+        NetworkManager networkManager = Mockito.mock(NetworkManager.class);
+        PubSubEventReceiver bezirkSadlManager = new PubSubBroker(null,device, networkManager);
         CommsMessageDispatcher commsMessageDispatcher = new CommsMessageDispatcher(bezirkSadlManager);
 
         CtrlMsgReceiver receiver = new MockReceiver();

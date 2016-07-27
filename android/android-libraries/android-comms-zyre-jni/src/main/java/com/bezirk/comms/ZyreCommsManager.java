@@ -1,6 +1,7 @@
 package com.bezirk.comms;
 
 import com.bezirk.comms.processor.CommsProcessor;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.util.ValidatorUtility;
@@ -22,13 +23,14 @@ public class ZyreCommsManager extends CommsProcessor {
 
     private String zyreGroup;
 
-    public ZyreCommsManager() {
+    public ZyreCommsManager(NetworkManager networkManager) {
+        super(networkManager);
         //default constructor
     }
 
-    public ZyreCommsManager(String zyreGroup) {
-        this.zyreGroup = zyreGroup;
-    }
+//    public ZyreCommsManager(String zyreGroup) {
+//        this.zyreGroup = zyreGroup;
+//    }
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,

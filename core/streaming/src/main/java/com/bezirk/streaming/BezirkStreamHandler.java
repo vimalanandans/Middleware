@@ -4,13 +4,13 @@ import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.control.messages.streaming.StreamResponse;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.store.StreamStore;
 import com.bezirk.streaming.threads.StreamReceivingThread;
 import com.bezirk.util.ValidatorUtility;
-import com.bezrik.network.NetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +24,11 @@ final class BezirkStreamHandler {
             .getLogger(BezirkStreamHandler.class);
 
     String downloadPath;
+    private final NetworkManager networkManager;
 
-    BezirkStreamHandler(String downloadPath){
+    BezirkStreamHandler(String downloadPath, NetworkManager networkManager) {
         this.downloadPath = downloadPath;
+        this.networkManager = networkManager;
     }
 
     /**
@@ -64,7 +66,7 @@ final class BezirkStreamHandler {
                 + streamRequest.getRecipient().zirkId);
 
         //send device Ip
-        String streamIp = NetworkUtilities.getLocalInet().getHostAddress();
+        String streamIp = networkManager.getLocalInet().getHostAddress();
 
         StreamResponse streamResponse = new StreamResponse(
                 streamRequest.getRecipient(), streamRequest.getSender(),

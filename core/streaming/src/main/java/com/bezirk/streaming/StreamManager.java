@@ -7,6 +7,7 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.control.messages.streaming.StreamResponse;
 import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
@@ -50,14 +51,14 @@ public class StreamManager implements Streaming {
 
     private PubSubEventReceiver sadlReceiver = null;
 
-    public StreamManager(Comms comms, PubSubEventReceiver sadlReceiver, String downloadPath) {
+    public StreamManager(Comms comms, PubSubEventReceiver sadlReceiver, String downloadPath, NetworkManager networkManager) {
 
         if (ValidatorUtility.isObjectNotNull(comms)
 
                 && ValidatorUtility.isObjectNotNull(sadlReceiver)) {
             this.comms = comms;
             this.sadlReceiver = sadlReceiver;
-            bezirkStreamHandler = new BezirkStreamHandler(downloadPath);
+            bezirkStreamHandler = new BezirkStreamHandler(downloadPath, networkManager);
         } else {
             logger.error("Unable to initialize StreamManager. Please ensure ControlSenderQueue, " +
                     "CommsMessageDispatcher and BezirkCallback are initialized.");
