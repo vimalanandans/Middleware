@@ -11,13 +11,14 @@ import com.bezirk.componentManager.ComponentManager;
 import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.ProxyRegistry;
 import com.bezirk.middleware.Bezirk;
-import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.EventSet;
+import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.messages.StreamDescriptor;
+import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.ServiceRegistrationUtil;
 import com.bezirk.proxy.api.impl.ZirkId;
@@ -37,9 +38,10 @@ import java.util.Set;
 public class ProxyClient implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(ProxyClient.class);
 
-    private final Map<ZirkId, Set<BezirkListener>> sidMap = new HashMap<>();
-    private final Map<String, Set<BezirkListener>> eventListenerMap = new HashMap<>();
-    private final Map<String, Set<BezirkListener>> streamListenerMap = new HashMap<>();
+    private final Map<ZirkId, Set<EventSet.EventReceiver>> eventMap = new HashMap<>();
+    private final Map<ZirkId, Set<StreamSet.StreamReceiver>> streamMap = new HashMap<>();
+    private final Map<String, Set<EventSet.EventReceiver>> eventListenerMap = new HashMap<>();
+    private final Map<String, Set<StreamSet.StreamReceiver>> streamListenerMap = new HashMap<>();
     private final Map<String, String> activeStreams = new HashMap<>();
     private final ProxyServer proxy = new ProxyServer();
     private final ProxyPersistence proxyPersistence;
@@ -53,8 +55,8 @@ public class ProxyClient implements Bezirk {
         ComponentManager componentManager = new ComponentManager(proxy);
         componentManager.start();
         //MainService mainService = new MainService(proxy, null);
-        final BroadcastReceiver brForService = new ZirkMessageReceiver(activeStreams,
-                eventListenerMap, sidMap, streamListenerMap);
+        final BroadcastReceiver brForService = new ZirkMessageReceiver(
+                eventMap, eventListenerMap, streamMap, streamListenerMap);
         ServiceMessageHandler bezirkPcCallback = new ServiceMessageHandler(brForService);
         //mainService.startStack(bezirkPcCallback);
         proxyPersistence = componentManager.getBezirkProxyPersistence();
@@ -100,60 +102,87 @@ public class ProxyClient implements Bezirk {
     }
 
     @Override
-    public void subscribe(final ProtocolRole protocolRole, final BezirkListener listener) {
-        if (protocolRole.getEventTopics() != null) {
-            addTopicsToMaps(zirkId, protocolRole.getEventTopics(),
-                    listener, sidMap, eventListenerMap, "Event");
+    public void subscribe(final MessageSet messageSet) {
+        if (messageSet instanceof EventSet) {
+            EventSet.EventReceiver listener = ((EventSet) messageSet).getEventReceiver();
+            addTopicsToMaps(zirkId, messageSet, listener, eventListenerMap);
+        } else if (messageSet instanceof StreamSet) {
+            StreamSet.StreamReceiver listener = ((StreamSet) messageSet).getStreamReceiver();
+            addTopicsToMaps(zirkId, messageSet, listener, streamListenerMap);
         } else {
-            logger.trace("No Events to Subscribe");
-        }
-        if (protocolRole.getStreamTopics() != null) {
-            addTopicsToMaps(zirkId, protocolRole.getStreamTopics(),
-                    listener, sidMap, streamListenerMap, "StreamDescriptor");
-        } else {
-            logger.trace("No Streams to Subscribe");
+            throw new AssertionError("Unknown MessageSet type: " +
+                    messageSet.getClass().getSimpleName());
         }
 
         proxy.subscribeService(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE, zirkId,
-                protocolRole));
+                messageSet));
     }
 
-    private void addTopicsToMaps(final ZirkId subscriber, final String[] topics,
-                                 final BezirkListener listener, Map<ZirkId, Set<BezirkListener>> sidMap,
-                                 Map<String, Set<BezirkListener>> listenerMap, String topicType) {
-        for (String topic : topics) {
-            if (sidMap.containsKey(subscriber)) {
-                sidMap.get(subscriber).add(listener);
+    private void addTopicsToMaps(final ZirkId subscriber, final MessageSet messageSet,
+                                 final EventSet.EventReceiver listener,
+                                 Map<String, Set<EventSet.EventReceiver>> listenerMap) {
+        for (String messageName : messageSet.getMessages()) {
+            if (eventMap.containsKey(subscriber)) {
+                eventMap.get(subscriber).add(listener);
             } else {
-                Set<BezirkListener> listeners = new HashSet<>();
+                Set<EventSet.EventReceiver> listeners = new HashSet<>();
                 listeners.add(listener);
-                sidMap.put(subscriber, listeners);
+                eventMap.put(subscriber, listeners);
             }
 
-            if (listenerMap.containsKey(topic)) {
-                final Set<BezirkListener> zirkList = listenerMap.get(topic);
+            if (listenerMap.containsKey(messageName)) {
+                final Set<EventSet.EventReceiver> zirkList = listenerMap.get(messageName);
                 if (zirkList.contains(listener)) {
-                    logger.warn(topicType + " already registered with the Label " + topic);
+                    throw new IllegalArgumentException("The assigned listener is already in use for "
+                            + messageName);
                 } else {
                     zirkList.add(listener);
                 }
             } else {
-                Set<BezirkListener> regServiceList = new HashSet<>();
+                Set<EventSet.EventReceiver> regServiceList = new HashSet<>();
                 regServiceList.add(listener);
-                listenerMap.put(topic, regServiceList);
+                listenerMap.put(messageName, regServiceList);
+            }
+        }
+    }
+
+    private void addTopicsToMaps(final ZirkId subscriber, final MessageSet messageSet,
+                                 final StreamSet.StreamReceiver listener,
+                                 Map<String, Set<StreamSet.StreamReceiver>> listenerMap) {
+        for (String messageName : messageSet.getMessages()) {
+            if (streamMap.containsKey(subscriber)) {
+                streamMap.get(subscriber).add(listener);
+            } else {
+                Set<StreamSet.StreamReceiver> listeners = new HashSet<>();
+                listeners.add(listener);
+                streamMap.put(subscriber, listeners);
+            }
+
+            if (listenerMap.containsKey(messageName)) {
+                final Set<StreamSet.StreamReceiver> zirkList = listenerMap.get(messageName);
+                if (zirkList.contains(listener)) {
+                    throw new IllegalArgumentException("The assigned listener is already in use for "
+                            + messageName);
+                } else {
+                    zirkList.add(listener);
+                }
+            } else {
+                Set<StreamSet.StreamReceiver> regServiceList = new HashSet<>();
+                regServiceList.add(listener);
+                listenerMap.put(messageName, regServiceList);
             }
         }
     }
 
     @Override
-    public boolean unsubscribe(ProtocolRole protocolRole) {
+    public boolean unsubscribe(MessageSet messageSet) {
         return proxy.unsubscribe(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId,
-                protocolRole));
+                messageSet));
     }
 
     @Override
     public void sendEvent(Event event) {
-        sendEvent(new RecipientSelector(new Location(null)), event);
+        sendEvent(new RecipientSelector(new Location("null/null/null")), event);
     }
 
     @Override
@@ -168,17 +197,16 @@ public class ProxyClient implements Bezirk {
     }
 
     @Override
-    public short sendStream(ZirkEndPoint recipient,
-                            StreamDescriptor streamDescriptor, PipedOutputStream dataStream) {
+    public void sendStream(ZirkEndPoint recipient,
+                           StreamDescriptor streamDescriptor, PipedOutputStream dataStream) {
         throw new UnsupportedOperationException("Calling sendStream with a PipedOutputStream is current unimplemented.");
     }
 
     @Override
-    public short sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file) {
+    public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
         activeStreams.put(zirkId.getZirkId() + streamId, streamDescriptor.topic);
         proxy.sendStream(new SendFileStreamAction(zirkId, recipient, streamDescriptor, streamId, file));
-        return streamId;
     }
 
     @Override
