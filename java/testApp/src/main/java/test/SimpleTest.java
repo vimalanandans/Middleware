@@ -1,11 +1,10 @@
 package test;
 
 import com.bezirk.middleware.Bezirk;
-import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.StreamDescriptor;
+import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.proxy.Factory;
 
 import java.io.File;
@@ -25,29 +24,17 @@ public class SimpleTest {
 
         bezirk.setLocation(new Location("null/null/kitchen"));
         /* subscribe to a protocol role */
-        bezirk.subscribe(new ProtocolRoleTest(), new ReceiverListener());
+        EventSet es = new EventSetTest();
+
+        es.setEventReceiver(new EventSet.EventReceiver() {
+            @Override
+            public void receiveEvent(Event event, ZirkEndPoint sender) {
+                System.out.println("Received Event with topic: " + event.getClass().getName());
+            }
+        });
+
+        bezirk.subscribe(es);
         //display id of current service
         System.out.println("MY ID: " + UUID.randomUUID().toString().substring(0, 6));
-    }
-
-    private static class ReceiverListener implements BezirkListener {
-        @Override
-        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
-            System.out.println("Received Event with topic: " + event.topic);
-        }
-
-        @Override
-        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
-            // TODO: Receive data streamDescriptor
-        }
-
-        @Override
-        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
-            // TODO: Receive file streamDescriptor
-        }
-
-        @Override
-        public void streamStatus(short streamId, StreamStates status) {
-        }
     }
 }

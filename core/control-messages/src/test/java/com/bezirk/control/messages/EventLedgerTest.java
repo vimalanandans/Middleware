@@ -32,7 +32,7 @@ public class EventLedgerTest {
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceId);
     private static final com.bezirk.control.messages.ControlMessage message = new com.bezirk.control.messages.ControlMessage(sender, sphereId, discriminator, retransmit);
     private static final String serializedMessage = message.serialize();
-    private static final com.bezirk.control.messages.Header header = new Header(sphereId, sender, "TESTID", "Message");
+    private static final com.bezirk.control.messages.Header header = new Header(sphereId, sender, "TESTID");
     private static final String serializedHeader = header.serialize();
     private static final Boolean isLocal = true;
     private static final Boolean isMulticast = true;

@@ -1,16 +1,16 @@
 package com.bezirk.middleware.proxy;
 
 import com.bezirk.actions.ReceiveFileStreamAction;
+import com.bezirk.actions.StreamStatusAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
-import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.Message;
+import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.StreamDescriptor;
+import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
-import com.bezirk.actions.StreamStatusAction;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,25 +28,26 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
     private static final Map<String, Long> duplicateMsgMap = new LinkedHashMap<>();
     private static final Map<String, Long> duplicateStreamMap = new LinkedHashMap<>();
 
-    private final Map<String, String> activeStreams;
-    private final Map<String, Set<BezirkListener>> eventListenerMap;
-    private final Map<ZirkId, Set<BezirkListener>> sidMap;
-    private final Map<String, Set<BezirkListener>> streamListenerMap;
+    private final Map<ZirkId, Set<EventSet.EventReceiver>> eventMap;
+    private final Map<String, Set<EventSet.EventReceiver>> eventListenerMap;
+    private final Map<ZirkId, Set<StreamSet.StreamReceiver>> streamMap;
+    private final Map<String, Set<StreamSet.StreamReceiver>> streamListenerMap;
 
-    public ZirkMessageReceiver(Map<String, String> activeStreams,
-                               Map<String, Set<BezirkListener>> eventListenerMap,
-                               Map<ZirkId, Set<BezirkListener>> sidMap,
-                               Map<String, Set<BezirkListener>> streamListenerMap) {
+    public ZirkMessageReceiver(Map<ZirkId, Set<EventSet.EventReceiver>> eventMap,
+                               Map<String, Set<EventSet.EventReceiver>> eventListenerMap,
+                               Map<ZirkId, Set<StreamSet.StreamReceiver>> streamMap,
+                               Map<String, Set<StreamSet.StreamReceiver>> streamListenerMap) {
         super();
-        this.activeStreams = activeStreams;
+        this.eventMap = eventMap;
         this.eventListenerMap = eventListenerMap;
-        this.sidMap = sidMap;
+        this.streamMap = streamMap;
         this.streamListenerMap = streamListenerMap;
     }
 
     @Override
     public void onReceive(ZirkAction incomingMessage) {
-        if (sidMap.containsKey(incomingMessage.getZirkId())) {
+        if (eventMap.containsKey(incomingMessage.getZirkId()) ||
+                streamMap.containsKey(incomingMessage.getZirkId())) {
             switch (incomingMessage.getAction()) {
                 case ACTION_ZIRK_RECEIVE_EVENT:
                     if (!(incomingMessage instanceof UnicastEventAction)) {
@@ -86,6 +87,8 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      */
     private void handleEventCallback(UnicastEventAction incomingEvent) {
         Event event = Event.fromJson(incomingEvent.getSerializedEvent(), Event.class);
+        String eventName = event.getClass().getName();
+
         BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
 
         logger.debug("About to callback zid:" + incomingEvent.getZirkId().getZirkId() + " for id:" + incomingEvent.getMessageId());
@@ -93,13 +96,12 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
         //Make a combined zid for sender and recipient
         String combinedSid = endpoint.zirkId.getZirkId() + ":" + incomingEvent.getZirkId().getZirkId();
         if (checkDuplicateMsg(combinedSid, incomingEvent.getMessageId())) {
-            Set<BezirkListener> tempListenersSidMap = sidMap.get(incomingEvent.getZirkId());
-            Set<BezirkListener> tempListenersTopicsMap = eventListenerMap.get(event.topic);
-            if (tempListenersSidMap != null && tempListenersTopicsMap != null) {
-                for (BezirkListener invokingListener : tempListenersSidMap) {
-                    if (tempListenersTopicsMap.contains(invokingListener)) {
-                        invokingListener.receiveEvent(event.topic,
-                                event, endpoint);
+            Set<EventSet.EventReceiver> tempListenersEventMap = eventMap.get(incomingEvent.getZirkId());
+            Set<EventSet.EventReceiver> tempListenersMessageMap = eventListenerMap.get(eventName);
+            if (tempListenersEventMap != null && tempListenersMessageMap != null) {
+                for (EventSet.EventReceiver invokingListener : tempListenersEventMap) {
+                    if (tempListenersMessageMap.contains(invokingListener)) {
+                        invokingListener.receiveEvent(event, endpoint);
                     }
                 }
             }
@@ -111,15 +113,17 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
     /**
      * Handle the stream Unicast callback.This is called from platform specific BezirkCallback Implementation.
      *
-     * @param strmMsg streamMessage that will be given back to the services.
+     * @param incomingStream streamMessage that will be given back to the services.
      */
-    private void handlerStreamUnicastCallback(ReceiveFileStreamAction strmMsg) {
-        if (checkDuplicateStream(strmMsg.getSender().zirkId.getZirkId(), strmMsg.getLocalStreamId())) {
-            if (streamListenerMap.containsKey(strmMsg.getStreamTopic())) {
-                for (BezirkListener listener : streamListenerMap.get(strmMsg.getStreamTopic())) {
-                    StreamDescriptor streamDescriptor = Message.fromJson(strmMsg.getSerializedStream(), StreamDescriptor.class);
-                    listener.receiveStream(strmMsg.getStreamTopic(), streamDescriptor, strmMsg.getLocalStreamId(),
-                            strmMsg.getFile(), strmMsg.getSender());
+    private void handlerStreamUnicastCallback(ReceiveFileStreamAction incomingStream) {
+        StreamDescriptor streamDescriptor = StreamDescriptor.fromJson(incomingStream.getSerializedStream(),
+                StreamDescriptor.class);
+        String streamName = streamDescriptor.getClass().getName();
+
+        if (checkDuplicateStream(incomingStream.getSender().zirkId.getZirkId(), incomingStream.getLocalStreamId())) {
+            if (streamListenerMap.containsKey(streamName)) {
+                for (StreamSet.StreamReceiver listener : streamListenerMap.get(streamName)) {
+                    listener.receiveStream(streamDescriptor, incomingStream.getFile(), incomingStream.getSender());
                 }
             } else {
                 logger.error("StreamListenerMap does not have a mapped StreamDescriptor");
@@ -136,19 +140,8 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      * @param streamStatusCallbackMessage StreamStatusCallback that will be invoked for the services.
      */
     private void handleStreamStatusCallback(StreamStatusAction streamStatusCallbackMessage) {
-        String activeStreamKey = streamStatusCallbackMessage.getZirkId().getZirkId() + streamStatusCallbackMessage.getStreamId();
-        if (activeStreams.containsKey(activeStreamKey)) {
-            Set<BezirkListener> tempHashSet = streamListenerMap.get(activeStreams.get(activeStreamKey));
-            if (tempHashSet != null && !tempHashSet.isEmpty()) {
-                for (BezirkListener listener : tempHashSet) {
-                    listener.streamStatus(
-                            streamStatusCallbackMessage.getStreamId(),
-                            ((1 == streamStatusCallbackMessage.getStreamStatus()) ? BezirkListener.StreamStates.END_OF_DATA
-                                    : BezirkListener.StreamStates.LOST_CONNECTION));
-                }
-            }
-            activeStreams.remove(activeStreamKey);
-        }
+        throw new UnsupportedOperationException("Passing a stream's status to a stream status " +
+                "listener is currently unsupported.");
     }
 
     /**

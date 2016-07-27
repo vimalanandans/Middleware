@@ -1,9 +1,9 @@
 package com.bezirk.comms;
 
+import com.bezirk.comms.processor.EventMsgReceiver;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
 
-import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
@@ -58,10 +58,13 @@ public interface Comms {
      * creates queues, threads, sockets
      **/
     boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                      PubSubBroker pubSubBroker, SphereSecurity sphereSecurity,
+                      SphereSecurity sphereSecurity,
                       com.bezirk.streaming.Streaming streaming);
 
     boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
+
+    /* register event message receiver */
+    boolean registerEventMessageReceiver(EventMsgReceiver receiver);
 
     /**
      * Set the sphere for sadl. for late initialization

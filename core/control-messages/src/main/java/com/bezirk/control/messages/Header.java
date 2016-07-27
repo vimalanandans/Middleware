@@ -11,16 +11,14 @@ public class Header {
     private String sphereName = null; //Don't touch
     private BezirkZirkEndPoint senderSEP = null; // Change to ZirkEndPoint sender
     private String uniqueMsgId = null;
-    private String topic = null; //Get topic(=label) from Event
 
     public Header() {
     }
 
-    public Header(String sphereName, BezirkZirkEndPoint senderSEP, String uniqueMsgId, String topic) {
+    public Header(String sphereName, BezirkZirkEndPoint senderSEP, String uniqueMsgId) {
         this.sphereName = sphereName;
         this.senderSEP = senderSEP;
         this.uniqueMsgId = uniqueMsgId;
-        this.topic = topic;
     }
 
     /**
@@ -64,20 +62,6 @@ public class Header {
      */
     public void setSenderSEP(BezirkZirkEndPoint senderSEP) {
         this.senderSEP = senderSEP;
-    }
-
-    /**
-     * @return messageType (Eg:sphereJoin, discovery,..) or messageLabel (Event labels)
-     */
-    public String getTopic() {
-        return topic;
-    }
-
-    /**
-     * @param msgTypeOrLabel messageType (Eg:sphereJoin, discovery,..) or messageLabel (Event labels)
-     */
-    public void setTopic(String msgTypeOrLabel) {
-        this.topic = msgTypeOrLabel;
     }
 
     public String serialize() {

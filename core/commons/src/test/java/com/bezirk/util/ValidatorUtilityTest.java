@@ -2,7 +2,6 @@ package com.bezirk.util;
 
 import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.streaming.StreamRequest;
-import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
@@ -13,10 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Enumeration;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -87,44 +83,35 @@ public class ValidatorUtilityTest {
     public void testCheckStreamRequest() {
 
 		/*-------------- Positive cases --------------*/
-        StreamRequest request = new StreamRequest(sender, recipient, sphereId,
-                null, null, "testString", "testLabel", "testFile", true, true, true, (short) 3);
-        isValid = ValidatorUtility.checkStreamRequest(request);
-        assertTrue("Valid streamRequest is considered invalid by validator.", isValid);
 
 		/*-------------- Negative cases --------------*/
         isValid = ValidatorUtility.checkStreamRequest(null);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
-        request = new StreamRequest(sender, recipient, sphereId,
-                null, null, null, "testLabel", "testFile", true, true, true, (short) 3);
+        StreamRequest request = new StreamRequest(sender, recipient, sphereId,
+                null, null, null, "testFile", true, true, true, (short) 3);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(sender, recipient, sphereId,
-                null, null, "testString", "testLabel", null, true, true, true, (short) 3);
-        isValid = ValidatorUtility.checkStreamRequest(request);
-        assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
-
-        request = new StreamRequest(sender, recipient, sphereId,
-                null, null, "testString", null, "testFile", true, true, true, (short) 3);
+                null, null, "testString", null, true, true, true, (short) 3);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(sender, recipient, null,
-                null, null, "testString", "testLabel", "testFile", true, true, true, (short) 3);
+                null, null, "testString", "testFile", true, true, true, (short) 3);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(null, recipient, sphereId,
-                null, null, "testString", "testLabel", "testFile", true, true, true, (short) 3);
+                null, null, "testString", "testFile", true, true, true, (short) 3);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         BezirkZirkEndPoint recepient = new BezirkZirkEndPoint(new ZirkId("test"));
         recepient.device = "";
         request = new StreamRequest(sender, recepient, sphereId,
-                null, null, "testString", "testLabel", "testFile", true, true, true, (short) 3);
+                null, null, "testString", "testFile", true, true, true, (short) 3);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
@@ -147,74 +134,21 @@ public class ValidatorUtilityTest {
     }
 
     @Test
-    public void testCheckProtocolRole() {
-
-		/*-------------- Positive cases --------------*/
-        MockProtocolRole pRole = new MockProtocolRole();
-        isValid = ValidatorUtility.checkProtocolRole(pRole);
-        assertTrue("Valid protocolrole is considered invalie by validator.", isValid);
-
-		/*-------------- Negative cases --------------*/
-        isValid = ValidatorUtility.checkProtocolRole(null);
-        assertFalse("Null protocolrole is considered valid by validator.", isValid);
-
-        pRole.setProtocolName(null);
-        isValid = ValidatorUtility.checkProtocolRole(pRole);
-        assertFalse("Null protocolrole is considered valid by validator.", isValid);
-
-    }
-
-    @Test
     public void testCheckHeader() {
 
 		/*-------------- Positive cases --------------*/
-        Header mHeader = new Header(sphereId, sender, "12", "test");
+        Header mHeader = new Header(sphereId, sender, "12");
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertTrue("Valid header is considered invalid by validator.", isValid);
 
 		/*-------------- Negative cases --------------*/
-        mHeader = new Header(null, sender, "12", "test");
+        mHeader = new Header(null, sender, "12");
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertFalse("Invalid header is considered valid by validator.", isValid);
 
-        mHeader = new Header(sphereId, sender, "12", null);
+        mHeader = new Header(sphereId, null, "12");
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertFalse("Invalid header is considered valid by validator.", isValid);
-
-        mHeader = new Header(sphereId, null, "12", "test");
-        isValid = ValidatorUtility.checkHeader(mHeader);
-        assertFalse("Invalid header is considered valid by validator.", isValid);
-
-
-    }
-
-    class MockProtocolRole extends ProtocolRole {
-
-        String protocolName = this.getClass().getSimpleName();
-
-        @Override
-        public String getRoleName() {
-            return protocolName;
-        }
-
-        public void setProtocolName(String protocolName) {
-            this.protocolName = protocolName;
-        }
-
-        @Override
-        public String getDescription() {
-            return null;
-        }
-
-        @Override
-        public String[] getEventTopics() {
-            return null;
-        }
-
-        @Override
-        public String[] getStreamTopics() {
-            return null;
-        }
 
 
     }

@@ -1,11 +1,9 @@
 package com.bezirk.middleware.proxy;
 
 import com.bezirk.middleware.Bezirk;
-import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.middleware.messages.StreamDescriptor;
+import com.bezirk.middleware.messages.StreamSet;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,7 +14,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import static org.junit.Assert.assertEquals;
@@ -60,92 +57,32 @@ public class StreamLocalTest {
     /**
      * The zirk that discovers and streams the file
      */
-    private final class StreamLocalMockServiceA implements BezirkListener {
+    private final class StreamLocalMockServiceA {
         private final String zirkName = "StreamLocalMockZirkA";
         private Bezirk bezirk = null;
-        private StreamLocalDummyProtocolRole pRole;
+        private StreamLocalDummyMessageSet messagetSet;
 
         /**
          * Setup the zirk
          */
         private final void setupMockService() {
             bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
-            pRole = new StreamLocalDummyProtocolRole();
-            bezirk.subscribe(pRole, this);
+            messagetSet = new StreamLocalDummyMessageSet();
+            bezirk.subscribe(messagetSet);
 
-        }
-
-        @Override
-        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
-        }
-
-        @Override
-        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
-        }
-
-        @Override
-        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
-        }
-
-        @Override
-        public void streamStatus(short streamId, StreamStates status) {
         }
     }
 
-    /**
-     * ProtocolRole used by MockServiceA.
-     */
-    private final class StreamLocalDummyProtocolRole extends ProtocolRole {
-        private final String[] streams = {"DummyStream"};
-
-        @Override
-        public String getRoleName() {
-            return StreamLocalDummyProtocolRole.class.getSimpleName();
-        }
-
-        @Override
-        public String getDescription() {
-            return null;
-        }
-
-        @Override
-        public String[] getEventTopics() {
-            return null;
-        }
-
-        @Override
-        public String[] getStreamTopics() {
-            return streams;
+    private final class StreamLocalDummyMessageSet extends StreamSet {
+        public StreamLocalDummyMessageSet() {
+            super(StreamLocalMockRequestStreamDescriptor.class);
         }
     }
 
-    /**
-     * ProtocolRole used by MockServiceB
-     */
-    private final class StreamLocalMockServiceProtocolRole extends ProtocolRole {
-
-        private final String[] streams = {"MockRequestStreamDescriptor"};
-
-        @Override
-        public String getRoleName() {
-            return StreamLocalMockServiceProtocolRole.class.getSimpleName();
+    private final class StreamLocalMockServiceMessageSet extends StreamSet {
+        public StreamLocalMockServiceMessageSet() {
+            super(StreamLocalMockRequestStreamDescriptor.class);
         }
-
-        @Override
-        public String getDescription() {
-            return null;
-        }
-
-        @Override
-        public String[] getEventTopics() {
-            return null;
-        }
-
-        @Override
-        public String[] getStreamTopics() {
-            return streams;
-        }
-
     }
 
     /**
@@ -163,7 +100,7 @@ public class StreamLocalTest {
     /**
      * Zirk that is consumer of StreamDescriptor
      */
-    private final class StreamLocalMockServiceB implements BezirkListener {
+    private final class StreamLocalMockServiceB {
         private final String zirkName = "StreamLocalMockServiceB";
         private Bezirk bezirk = null;
 
@@ -172,69 +109,50 @@ public class StreamLocalTest {
          */
         private final void setupMockService() {
             bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
-            bezirk.subscribe(new StreamLocalMockServiceProtocolRole(), this);
-        }
+            StreamLocalMockServiceMessageSet streams = new StreamLocalMockServiceMessageSet();
 
-        @Override
-        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
+            streams.setStreamReceiver(new StreamSet.StreamReceiver<File>() {
+                @Override
+                public void receiveStream(StreamDescriptor streamDescriptor, File file, ZirkEndPoint sender) {
+                    logger.info("****** RECEIVED STREAM REQUEST ******");
+                    assertNotNull(streamDescriptor);
+                    assertNotNull(file);
+                    assertNotNull(sender);
 
-        }
+                    logger.info("streamDescriptor-> " + streamDescriptor);
+                    logger.info("filePath-> " + file);
+                    logger.info("sender-> " + sender);
 
-        @Override
-        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
+                    assertEquals(sendFile, file);
+                    assertEquals(request.toJson(), streamDescriptor);
+                    // Read and verify the streamDescriptor
+                    FileInputStream fileInputStream = null;
+                    BufferedReader reader = null;
+                    try {
+                        fileInputStream = new FileInputStream(file);
+                        reader = new BufferedReader(new InputStreamReader(fileInputStream));
+                        String readData = reader.readLine();
+                        assertEquals("Streaming test file", readData);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        fail();
+                    } finally {
 
-        }
+                        try {
+                            if (reader != null)
+                                reader.close();
+                            if (fileInputStream != null)
+                                fileInputStream.close();
+                        } catch (IOException e) {
 
-        @Override
-        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
-            logger.info("****** RECEIVED STREAM REQUEST ******");
-            assertNotNull(topic);
-            assertNotNull(streamDescriptor);
-            assertNotNull(file);
-            assertNotNull(sender);
-
-            logger.info("topic-> " + topic);
-            logger.info("streamDescriptor-> " + streamDescriptor);
-            logger.info("streamId-> " + streamId);
-            logger.info("filePath-> " + file);
-            logger.info("sender-> " + sender);
-
-            assertEquals("MockRequestStreamDescriptor", topic);
-            assertEquals(sendFile, file);
-            assertEquals(sendStreamId, streamId);
-            assertEquals(request.toJson(), streamDescriptor);
-            // Read and verify the streamDescriptor
-            FileInputStream fileInputStream = null;
-            BufferedReader reader = null;
-            try {
-                fileInputStream = new FileInputStream(file);
-                reader = new BufferedReader(new InputStreamReader(fileInputStream));
-                String readData = reader.readLine();
-                assertEquals("Streaming test file", readData);
-            } catch (Exception e) {
-                e.printStackTrace();
-                fail();
-            } finally {
-
-                try {
-                    if (reader != null)
-                        reader.close();
-                    if (fileInputStream != null)
-                        fileInputStream.close();
-                } catch (IOException e) {
-
-                    logger.error("Error in closing resources.");
+                            logger.error("Error in closing resources.");
+                        }
+                    }
+                    isStreamSuccess = true;
                 }
-            }
-            isStreamSuccess = true;
-        }
+            });
 
-        @Override
-        public void streamStatus(short streamId, StreamStates status) {
-            assertEquals(sendStreamId, streamId);
-            assertEquals(StreamStates.END_OF_DATA, status);
-            logger.info("**** STREAM STATUS SUCCESSFUL FOR END_OF_DATA");
+            bezirk.subscribe(streams);
         }
-
     }
 }

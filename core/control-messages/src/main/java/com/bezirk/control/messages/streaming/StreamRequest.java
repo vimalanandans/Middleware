@@ -51,7 +51,7 @@ public class StreamRequest extends UnicastControlMessage {
     public short localStreamId = (short) -1;
 
     public StreamRequest(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereName,
-                         String key, Location location, String serialzedString, String streamLabel, String fileName, boolean isEncrypted,
+                         String key, Location location, String serialzedString, String fileName, boolean isEncrypted,
                          boolean isIncremental, boolean reliable, short localStreamId) {
         super(sender, recipient, sphereName, discriminator, false, key);
         this.location = location;

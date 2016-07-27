@@ -136,7 +136,7 @@ public class StreamQueueProcessor implements Runnable {
         }
         // GIVE CALLBACK FOR RECIPIENT
         ReceiveFileStreamAction uStreamCallbackMsg = new ReceiveFileStreamAction(
-                streamRecord.recipientSEP.zirkId, streamRecord.streamTopic,
+                streamRecord.recipientSEP.zirkId,
                 streamRecord.serializedStream, streamRecord.file,
                 streamRecord.localStreamId, streamRecord.senderSEP);
 

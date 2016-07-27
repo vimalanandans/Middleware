@@ -15,7 +15,7 @@ public interface PubSubBrokerServiceInfo {
      * @param zirkId ZirkId of the Zirk that has to be checked
      * @return true if successful, false otherwise
      */
-    Boolean isServiceRegistered(final ZirkId zirkId);
+    Boolean isZirkRegistered(final ZirkId zirkId);
 
     /**
      * Returns the Set of Registered Services.

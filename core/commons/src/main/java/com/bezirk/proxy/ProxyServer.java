@@ -17,17 +17,17 @@ public class ProxyServer {
     }
 
     public void subscribeService(SubscriptionAction subscriptionAction) {
-        pubSubBrokerService.subscribeService(subscriptionAction.getZirkId(), subscriptionAction.getRole());
+        pubSubBrokerService.subscribeService(subscriptionAction.getZirkId(), subscriptionAction.getMessageSet());
     }
 
     public void sendMulticastEvent(SendMulticastEventAction eventAction) {
         pubSubBrokerService.sendMulticastEvent(eventAction.getZirkId(), eventAction.getRecipientSelector(),
-                eventAction.getSerializedEvent(), eventAction.getTopic());
+                eventAction.getSerializedEvent());
     }
 
     public void sendUnicastEvent(UnicastEventAction eventAction) {
         pubSubBrokerService.sendUnicastEvent(eventAction.getZirkId(), (BezirkZirkEndPoint) eventAction.getEndpoint(),
-                eventAction.getSerializedEvent(), eventAction.getTopic());
+                eventAction.getSerializedEvent());
     }
 
     public short sendStream(SendFileStreamAction streamAction) {
@@ -42,7 +42,7 @@ public class ProxyServer {
 
     public boolean unsubscribe(SubscriptionAction subscriptionAction) {
 
-        return pubSubBrokerService.unsubscribe(subscriptionAction.getZirkId(), subscriptionAction.getRole());
+        return pubSubBrokerService.unsubscribe(subscriptionAction.getZirkId(), subscriptionAction.getMessageSet());
     }
 
     public boolean unregister(RegisterZirkAction registerZirkAction) {

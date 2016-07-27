@@ -11,11 +11,11 @@ public interface PubSubBrokerControlReceiver {
     /**
      * Checks if the StreamDescriptor is registered by the Zirk zirkId to streamTopic.
      *
-     * @param streamTopic - StreamDescriptor Topic of the stream Descriptor
-     * @param serviceId   - ZirkId of the Zirk
+     * @param streamName - StreamDescriptor name of the stream Descriptor
+     * @param serviceId  - ZirkId of the Zirk
      * @return true if registered, false otherwise.
      */
-    Boolean isStreamTopicRegistered(final String streamTopic, final ZirkId serviceId);
+    boolean isStreamTopicRegistered(final String streamName, final ZirkId serviceId);
 
     /**
      * Returns the Location of the Zirk.

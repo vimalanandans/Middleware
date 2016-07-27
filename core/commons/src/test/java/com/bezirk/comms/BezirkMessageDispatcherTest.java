@@ -7,8 +7,6 @@ import com.bezirk.device.Device;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.pubsubbroker.PubSubEventReceiver;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -76,14 +74,14 @@ public class BezirkMessageDispatcherTest {
     public void test() {
         Device device = Mockito.mock(Device.class);
         NetworkManager networkManager = Mockito.mock(NetworkManager.class);
-        PubSubEventReceiver bezirkSadlManager = new PubSubBroker(null,device, networkManager);
-        CommsMessageDispatcher commsMessageDispatcher = new CommsMessageDispatcher(bezirkSadlManager);
+        //PubSubEventReceiver bezirkSadlManager = new PubSubBroker(null,device, networkManager);
+        CommsMessageDispatcher commsMessageDispatcher = new CommsMessageDispatcher();
 
         CtrlMsgReceiver receiver = new MockReceiver();
         commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, receiver);
 
         ControlLedger tcMessage = new ControlLedger();
-        ControlMessage streamRequest = new StreamRequest(null, recipient, null, null, null, null, null, null, true, true, true, (short) 0);
+        ControlMessage streamRequest = new StreamRequest(null, recipient, null, null, null, null, null, true, true, true, (short) 0);
         tcMessage.setMessage(streamRequest);
         commsMessageDispatcher.dispatchControlMessages(tcMessage);
 

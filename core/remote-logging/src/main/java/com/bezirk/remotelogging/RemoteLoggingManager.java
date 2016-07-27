@@ -97,7 +97,6 @@ public final class RemoteLoggingManager implements RemoteLog {
                                 device.getDeviceName(),
                                 Util.CONTROL_RECEIVER_VALUE,
                                 tcMessage.getMessage().getUniqueKey(),
-                                tcMessage.getMessage().getDiscriminator().name(),
                                 Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
                                 Util.LOGGING_VERSION).serialize());
             } catch (InterruptedException e) {
@@ -121,7 +120,6 @@ public final class RemoteLoggingManager implements RemoteLog {
                                 device.getDeviceName(),
                                 Util.CONTROL_RECEIVER_VALUE,
                                 msg.getUniqueKey(),
-                                msg.getDiscriminator().name(),
                                 Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
                                 Util.LOGGING_VERSION).serialize());
             } catch (InterruptedException e) {
@@ -138,7 +136,7 @@ public final class RemoteLoggingManager implements RemoteLog {
         try {
             LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(eLedger.getHeader().getSphereName(),
                     String.valueOf(currentDate.getTime()), device.getDeviceName(),
-                    Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(), eLedger.getHeader().getTopic(),
+                    Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(),
                     Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {
             logger.error(e.getMessage());

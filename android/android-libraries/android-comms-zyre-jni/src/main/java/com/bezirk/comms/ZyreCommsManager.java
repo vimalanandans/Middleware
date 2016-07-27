@@ -34,9 +34,9 @@ public class ZyreCommsManager extends CommsProcessor {
 
     @Override
     public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             PubSubBroker broker, SphereSecurity sphereServiceAccess, com.bezirk.streaming.Streaming streaming) {
+                             SphereSecurity sphereServiceAccess, com.bezirk.streaming.Streaming streaming) {
         /*init zyre and internals of comms */
-        return comms == null && super.initComms(commsProperties, addr, broker, sphereServiceAccess, streaming);
+        return comms == null && super.initComms(commsProperties, addr, sphereServiceAccess, streaming);
 
     }
 

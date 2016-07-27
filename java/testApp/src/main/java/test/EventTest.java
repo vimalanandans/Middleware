@@ -14,9 +14,4 @@ public class EventTest extends Event {
      * Useful for static references to the event topic, e.g. protocol definitions
      */
     public static final String TOPIC = EventTest.class.getSimpleName();
-
-
-    public EventTest(Flag flag, String topic) {
-        super(flag.NOTICE, TOPIC);
-    }
 }
