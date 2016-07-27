@@ -108,12 +108,12 @@ public interface Bezirk {
      * {@link #sendStream(ZirkEndPoint, StreamDescriptor, File)}. Streams sent using this
      * method are assumed to be incremental (see {@link StreamDescriptor#isIncremental()}).
      *
-     * @param recipient        intended recipient, as extracted from a received message
-     * @param streamDescriptor communication channel's descriptor
-     * @param dataStream       io stream where the outgoing data will be written into by this method's
-     *                         caller. Internally, the Bezirk middleware will read data from the
-     *                         <code>dataStream</code> in a thread-safe manner by creating a
-     *                         <code>PipedInputStream</code> linked to <code>dataStream</code>
+     * @param recipient  intended recipient, as extracted from a received message
+     * @param streamDescriptor     communication channel's descriptor
+     * @param dataStream io stream where the outgoing data will be written into by this method's
+     *                   caller. Internally, the Bezirk middleware will read data from the
+     *                   <code>dataStream</code> in a thread-safe manner by creating a
+     *                   <code>PipedInputStream</code> linked to <code>dataStream</code>
      */
     void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor,
                     PipedOutputStream dataStream);
@@ -124,9 +124,9 @@ public interface Bezirk {
      * version is intended to send a specific file instead of general data. Streams sent using this
      * method are assumed to be non-incremental (see {@link StreamDescriptor#isIncremental()}).
      *
-     * @param recipient        intended recipient, as extracted from a received message
-     * @param streamDescriptor communication channel's descriptor
-     * @param file             the file whose contents will be sent using the <code>stream</code>
+     * @param recipient intended recipient, as extracted from a received message
+     * @param streamDescriptor    communication channel's descriptor
+     * @param file      the file whose contents will be sent using the <code>stream</code>
      */
     void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file);
 

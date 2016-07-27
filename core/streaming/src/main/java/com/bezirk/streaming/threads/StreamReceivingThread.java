@@ -171,7 +171,7 @@ public class StreamReceivingThread implements Runnable {
     private void notifyStreamFile(File tempFile, boolean portReleased) {
         if (portReleased) {
             ReceiveFileStreamAction uStreamCallbackMsg = new ReceiveFileStreamAction(
-                    recipient.zirkId, streamLabel, serializedMsg,
+                    recipient.zirkId, serializedMsg,
                     tempFile, streamId, sender);
             if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {
 

@@ -61,7 +61,6 @@ public class UnicastEventLocalTest {
             messageSet.setEventReceiver(new EventSet.EventReceiver() {
                 @Override
                 public void receiveEvent(Event event, ZirkEndPoint sender) {
-                    assertEquals("MockReplyEvent", event.topic);
                     MockReplyEvent reply = (MockReplyEvent) event;
                     assertNotNull(reply);
                     logger.info("**** REPLY FROM MOCK SERVICE **** " + reply.answer);
@@ -99,8 +98,8 @@ public class UnicastEventLocalTest {
     private final class MockRequestEvent extends Event {
         private final String question = "Who am I?";
 
-        public MockRequestEvent(Flag flag, String topic) {
-            super(flag, topic);
+        public MockRequestEvent() {
+
         }
     }
 
@@ -110,8 +109,8 @@ public class UnicastEventLocalTest {
     private final class MockReplyEvent extends Event {
         private String answer = "";
 
-        public MockReplyEvent(Flag flag, String topic) {
-            super(flag, topic);
+        public MockReplyEvent() {
+
         }
 
     }
@@ -134,11 +133,10 @@ public class UnicastEventLocalTest {
                 @Override
                 public void receiveEvent(Event event, ZirkEndPoint sender) {
                     logger.info(" **** Received Event *****");
-                    assertEquals("MockRequestEvent", event.topic);
                     MockRequestEvent receivedEvent = (MockRequestEvent) event;
                     assertEquals("Who am I?", receivedEvent.question);
                     // send the reply
-                    MockReplyEvent replyEvent = new MockReplyEvent(Message.Flag.REPLY, "MockReplyEvent");
+                    MockReplyEvent replyEvent = new MockReplyEvent();
                     replyEvent.answer = "I am Fine! Thank you";
                     bezirk.sendEvent(sender, replyEvent);
                     logger.info("********* MOCK_SERVICE B responded to the Event **************");

@@ -175,7 +175,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public boolean sendMulticastEvent(ZirkId zirkId, RecipientSelector recipientSelector, String serializedEventMsg, String topic) {
+    public boolean sendMulticastEvent(ZirkId zirkId, RecipientSelector recipientSelector, String serializedEventMsg) {
 
         final Iterable<String> listOfSphere;
 
@@ -207,7 +207,6 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             mHeader.setRecipientSelector(recipientSelector);
             mHeader.setSenderSEP(senderSEP);
             mHeader.setUniqueMsgId(uniqueMsgId.toString());
-            mHeader.setTopic(topic);
             mHeader.setSphereName(sphereIterator.next());
             ecMessage.setHeader(mHeader);
             ecMessage.setSerializedHeader(mHeader.serialize());
@@ -223,7 +222,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public boolean sendUnicastEvent(ZirkId zirkId, BezirkZirkEndPoint recipient, String serializedEventMsg, String topic) {
+    public boolean sendUnicastEvent(ZirkId zirkId, BezirkZirkEndPoint recipient, String serializedEventMsg) {
         final Iterable<String> listOfSphere;
 
         if (sphereServiceAccess != null) {
@@ -253,7 +252,6 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             uHeader.setRecipient(recipient);
             uHeader.setSenderSEP(senderSEP);
             uHeader.setUniqueMsgId(uniqueMsgId.toString());
-            uHeader.setTopic(topic);
             uHeader.setSphereName(sphereIterator.next());
             ecMessage.setHeader(uHeader);
             ecMessage.setSerializedHeader(uHeader.serialize());
@@ -320,7 +318,6 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         streamRecord.pipedInputStream = null;
         streamRecord.recipientSEP = receiver;
         streamRecord.serializedStream = serializedStream;
-        streamRecord.streamTopic = streamDescriptor.topic;
         return streamRecord;
     }
 
@@ -363,9 +360,8 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         BezirkZirkEndPoint senderSEP = streamRecord.senderSEP;
         BezirkZirkEndPoint receiver = streamRecord.recipientSEP;
         String serializedStream = streamRecord.serializedStream;
-        String streamTopic = streamRecord.streamTopic;
         short streamId = streamRecord.localStreamId;
-        final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedStream, streamTopic, tempFile.getName(),
+        final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedStream, tempFile.getName(),
                 streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.isReliable, streamId);
         tcMessage.setSphereId(sphereName);
         tcMessage.setMessage(request);
@@ -424,8 +420,8 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
             if (isServiceInSphere(serviceId, eLedger.getHeader().getSphereName())) {
                 UnicastEventAction eventMessage = new UnicastEventAction(BezirkAction.ACTION_ZIRK_RECEIVE_EVENT,
-                        serviceId, eLedger.getHeader().getSenderSEP(),
-                        eLedger.getHeader().getTopic(), eLedger.getSerializedMessage(), eLedger.getHeader().getUniqueMsgId());
+                        serviceId, eLedger.getHeader().getSenderSEP(), eLedger.getSerializedMessage(),
+                        eLedger.getHeader().getUniqueMsgId());
                 msgHandler.onIncomingEvent(eventMessage);
             } else {
                 logger.debug("Unknown Zirk ID!!!!!");
@@ -442,8 +438,13 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     private Set<ZirkId> getAssociatedServiceList(final EventLedger eLedger) {
-        JsonObject eventJson = new JsonParser().parse(eLedger.getSerializedMessage()).getAsJsonObject();
-        String eventName = eventJson.get("type").getAsString();
+        String eventName;
+        if (eLedger.getSerializedMessage() == null || eLedger.getSerializedMessage().isEmpty()) {
+            eventName = "";
+        } else {
+            JsonObject eventJson = new JsonParser().parse(eLedger.getSerializedMessage()).getAsJsonObject();
+            eventName = eventJson.get("type").getAsString();
+        }
 
         Set<ZirkId> serviceList = null;
         if (eLedger.getIsMulticast()) {

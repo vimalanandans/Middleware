@@ -65,7 +65,7 @@ public final class ValidatorUtility {
     }
 
     public static boolean checkHeader(final Header mHeader) {
-        return !(!checkForString(mHeader.getSphereName(), mHeader.getTopic()) ||
+        return !(!checkForString(mHeader.getSphereName()) ||
                 !checkBezirkZirkEndPoint(mHeader.getSenderSEP()));
 
     }

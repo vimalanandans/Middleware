@@ -83,44 +83,35 @@ public class ValidatorUtilityTest {
     public void testCheckStreamRequest() {
 
 		/*-------------- Positive cases --------------*/
-        StreamRequest request = new StreamRequest(sender, recipient, sphereId,
-                null, null, "testString", "testLabel", "testFile", true, true, true, (short) 3);
-        isValid = ValidatorUtility.checkStreamRequest(request);
-        assertTrue("Valid streamRequest is considered invalid by validator.", isValid);
 
 		/*-------------- Negative cases --------------*/
         isValid = ValidatorUtility.checkStreamRequest(null);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
-        request = new StreamRequest(sender, recipient, sphereId,
-                null, null, null, "testLabel", "testFile", true, true, true, (short) 3);
+        StreamRequest request = new StreamRequest(sender, recipient, sphereId,
+                null, null, null, "testFile", true, true, true, (short) 3);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(sender, recipient, sphereId,
-                null, null, "testString", "testLabel", null, true, true, true, (short) 3);
-        isValid = ValidatorUtility.checkStreamRequest(request);
-        assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
-
-        request = new StreamRequest(sender, recipient, sphereId,
-                null, null, "testString", null, "testFile", true, true, true, (short) 3);
+                null, null, "testString", null, true, true, true, (short) 3);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(sender, recipient, null,
-                null, null, "testString", "testLabel", "testFile", true, true, true, (short) 3);
+                null, null, "testString", "testFile", true, true, true, (short) 3);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(null, recipient, sphereId,
-                null, null, "testString", "testLabel", "testFile", true, true, true, (short) 3);
+                null, null, "testString", "testFile", true, true, true, (short) 3);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         BezirkZirkEndPoint recepient = new BezirkZirkEndPoint(new ZirkId("test"));
         recepient.device = "";
         request = new StreamRequest(sender, recepient, sphereId,
-                null, null, "testString", "testLabel", "testFile", true, true, true, (short) 3);
+                null, null, "testString", "testFile", true, true, true, (short) 3);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
@@ -146,20 +137,16 @@ public class ValidatorUtilityTest {
     public void testCheckHeader() {
 
 		/*-------------- Positive cases --------------*/
-        Header mHeader = new Header(sphereId, sender, "12", "test");
+        Header mHeader = new Header(sphereId, sender, "12");
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertTrue("Valid header is considered invalid by validator.", isValid);
 
 		/*-------------- Negative cases --------------*/
-        mHeader = new Header(null, sender, "12", "test");
+        mHeader = new Header(null, sender, "12");
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertFalse("Invalid header is considered valid by validator.", isValid);
 
-        mHeader = new Header(sphereId, sender, "12", null);
-        isValid = ValidatorUtility.checkHeader(mHeader);
-        assertFalse("Invalid header is considered valid by validator.", isValid);
-
-        mHeader = new Header(sphereId, null, "12", "test");
+        mHeader = new Header(sphereId, null, "12");
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertFalse("Invalid header is considered valid by validator.", isValid);
 

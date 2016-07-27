@@ -115,17 +115,14 @@ public class StreamLocalTest {
                 @Override
                 public void receiveStream(StreamDescriptor streamDescriptor, File file, ZirkEndPoint sender) {
                     logger.info("****** RECEIVED STREAM REQUEST ******");
-                    assertNotNull(streamDescriptor.topic);
                     assertNotNull(streamDescriptor);
                     assertNotNull(file);
                     assertNotNull(sender);
 
-                    logger.info("topic-> " + streamDescriptor.topic);
                     logger.info("streamDescriptor-> " + streamDescriptor);
                     logger.info("filePath-> " + file);
                     logger.info("sender-> " + sender);
 
-                    assertEquals("MockRequestStreamDescriptor", streamDescriptor.topic);
                     assertEquals(sendFile, file);
                     assertEquals(request.toJson(), streamDescriptor);
                     // Read and verify the streamDescriptor

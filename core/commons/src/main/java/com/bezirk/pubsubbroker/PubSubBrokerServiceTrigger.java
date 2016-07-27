@@ -60,9 +60,9 @@ public interface PubSubBrokerServiceTrigger {
     /**
      * Send multicast event
      */
-    boolean sendMulticastEvent(ZirkId zirkId, RecipientSelector recipientSelector, String serializedEventMsg, String topic);
+    boolean sendMulticastEvent(ZirkId zirkId, RecipientSelector recipientSelector, String serializedEventMsg);
 
-    boolean sendUnicastEvent(ZirkId zirkId, BezirkZirkEndPoint recipient, String serializedEventMsg, String topic);
+    boolean sendUnicastEvent(ZirkId zirkId, BezirkZirkEndPoint recipient, String serializedEventMsg);
 
     short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId);
 }

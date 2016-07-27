@@ -190,7 +190,7 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
-        Log.d(TAG, "Zirk sending event: " + event.topic);
+        Log.d(TAG, "Zirk sending event: " + event.getClass().getName());
 
         sendBezirkIntent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
                 zirkId, recipient, event));
@@ -205,7 +205,7 @@ public final class ProxyClient implements Bezirk {
     public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
 
-        activeStreams.put(streamId, streamDescriptor.topic);
+        activeStreams.put(streamId, streamDescriptor.getClass().getName());
 
         sendBezirkIntent(new SendFileStreamAction(zirkId, recipient, streamDescriptor, streamId,
                 file));

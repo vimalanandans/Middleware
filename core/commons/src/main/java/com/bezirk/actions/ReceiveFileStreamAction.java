@@ -6,7 +6,6 @@ import com.bezirk.proxy.api.impl.ZirkId;
 import java.io.File;
 
 public final class ReceiveFileStreamAction extends ZirkAction {
-    private final String streamTopic;
     private final String serializedStream;
     /**
      * Path to downloaded file.
@@ -15,19 +14,14 @@ public final class ReceiveFileStreamAction extends ZirkAction {
     private final short localStreamId;
     private final BezirkZirkEndPoint sender;
 
-    public ReceiveFileStreamAction(ZirkId recipientId, String streamTopic, String serializedStream,
+    public ReceiveFileStreamAction(ZirkId recipientId, String serializedStream,
                                    File file, short localStreamId, BezirkZirkEndPoint sender) {
         super(recipientId);
 
-        this.streamTopic = streamTopic;
         this.serializedStream = serializedStream;
         this.file = file;
         this.localStreamId = localStreamId;
         this.sender = sender;
-    }
-
-    public String getStreamTopic() {
-        return streamTopic;
     }
 
     public String getSerializedStream() {

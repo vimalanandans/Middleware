@@ -16,7 +16,7 @@ public abstract class StreamAction extends ZirkAction {
             throw new IllegalArgumentException("Cannot send a streamDescriptor to a null recipient");
         }
 
-        if (descriptor == null || descriptor.topic.isEmpty()) {
+        if (descriptor == null) {
             throw new IllegalArgumentException("Null or empty streamDescriptor specified when sending " +
                     "a file");
         }

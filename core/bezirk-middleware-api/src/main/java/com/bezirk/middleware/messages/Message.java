@@ -11,6 +11,7 @@ import com.google.gson.GsonBuilder;
  */
 public abstract class Message {
     private static final Gson gson;
+    private String msgId;
 
     static {
         final GsonBuilder gsonBuilder = new GsonBuilder();
@@ -18,47 +19,23 @@ public abstract class Message {
         gson = gsonBuilder.create();
     }
 
-    /**
-     * Hint about how the sender expects the recipient(s) to handle the message. This is typically
-     * set by the concrete implementation class's constructor.
-     *
-     * @see #topic
-     * @see Message.Flag
-     */
-    public final Flag flag;
-    /**
-     * The pub-sub topic for this message. Topics are defined by
-     * {@link com.bezirk.middleware.messages.MessageSet MessageSets}. A Zirk subscribes to
-     * certain topics by using
-     * {@link com.bezirk.middleware.Bezirk#subscribe(MessageSet)} to
-     * subscribe to a role. When the Bezirk middleware receives a message, it forwards that
-     * message on to any registered Zirk that is subscribed to the role defining the topic.
-     * The concrete implementation of a message specifies the topic, which should usually be the
-     * implementation class's simple name. For example:
-     * <pre>
-     * public class TemperatureReadEvent implements Event {
-     *     public TemperatureReadEvent() {
-     *         super(Flag.NOTICE, TemperatureReadEvent.class.getSimpleName());
-     *     }
-     * }
-     * </pre>
-     */
-    public final String topic;
-    /**
-     * Intended to help Zirks match messages with {@link #flag flags} set to {@link Message.Flag#REQUEST}
-     * with their corresponding {@link Message.Flag#REPLY reply} when the reply is received by a
-     * listener. The middleware does not use this property internally.
-     * The Zirk sending the request should set this ID, and the responding Zirk should echo it in
-     * the corresponding reply.
-     * <p>
-     * This property may be ignored for notices.
-     * </p>
-     */
-    public String msgId;
 
-    public Message(Flag flag, String topic) {
-        this.flag = flag;
-        this.topic = topic;
+    /**
+     * Get the ID of this message to identify the conversations it is apart of.
+     *
+     * The message ID is intended to help Zirks match messages that are making a request with their
+     * reply when the reply is received. The middleware does not use this property internally. The
+     * Zirk sending the request should set this ID, and the responding Zirk should echo it in the
+     * corresponding reply.
+     *
+     * @param messageId the ID used to identify the conversation this message is a part ofs
+     */
+    public void setMessageId(String messageId) {
+        msgId = messageId;
+    }
+
+    public String getMessageId() {
+        return msgId;
     }
 
     /**

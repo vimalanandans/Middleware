@@ -29,7 +29,7 @@ public class SimpleTest {
         es.setEventReceiver(new EventSet.EventReceiver() {
             @Override
             public void receiveEvent(Event event, ZirkEndPoint sender) {
-                System.out.println("Received Event with topic: " + event.topic);
+                System.out.println("Received Event with topic: " + event.getClass().getName());
             }
         });
 

@@ -22,12 +22,12 @@ public class ProxyServer {
 
     public void sendMulticastEvent(SendMulticastEventAction eventAction) {
         pubSubBrokerService.sendMulticastEvent(eventAction.getZirkId(), eventAction.getRecipientSelector(),
-                eventAction.getSerializedEvent(), eventAction.getTopic());
+                eventAction.getSerializedEvent());
     }
 
     public void sendUnicastEvent(UnicastEventAction eventAction) {
         pubSubBrokerService.sendUnicastEvent(eventAction.getZirkId(), (BezirkZirkEndPoint) eventAction.getEndpoint(),
-                eventAction.getSerializedEvent(), eventAction.getTopic());
+                eventAction.getSerializedEvent());
     }
 
     public short sendStream(SendFileStreamAction streamAction) {

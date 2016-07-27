@@ -30,7 +30,6 @@ public class MulticastHeaderTest {
     private static final Location loc = new Location("OFFICE1", "BLOCk1", "ROOM1");
     private static final RecipientSelector RECIPIENT_SELECTOR = new RecipientSelector(loc);
     private static final String messageId = "TestID";
-    private static final String topic = "Message";
 
 
     /**
@@ -64,7 +63,6 @@ public class MulticastHeaderTest {
 		assertEquals("DataOnWire not equal to the set value.",sender, multicastHeader.getSenderSEP());
 		*/
         assertEquals("SphereName not equal to the set value.", sphereName, multicastHeader.getSphereName());
-        assertEquals("Topic not equal to the set value.", topic, multicastHeader.getTopic());
         assertEquals("MessageID not equal to the set value.", messageId, multicastHeader.getUniqueMsgId());
 
 
@@ -75,7 +73,6 @@ public class MulticastHeaderTest {
         multicastHeader.setRecipientSelector(RECIPIENT_SELECTOR);
         multicastHeader.setSenderSEP(sender);
         multicastHeader.setSphereName(sphereName);
-        multicastHeader.setTopic(topic);
         multicastHeader.setUniqueMsgId(messageId);
         return multicastHeader;
     }

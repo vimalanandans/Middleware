@@ -26,7 +26,6 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
     public File file;                        // path to the file
     public BezirkZirkEndPoint recipientSEP;    // Used for Local streaming.
     public String serializedStream;                // USed for Local Streaming
-    public String streamTopic;                    // USed for Local Streaming
     /* Streaming Status indicates the status of the Streams.
      * PENDING -  indicates the waiting to know the response
      * READY   -  indicating the recipient has agreed to receive the stream

@@ -30,7 +30,7 @@ public class TestCBkForServicePC {
     @Test
     public void testFireEventCallback() {
         UnicastEventAction eventCallbackMessage = new UnicastEventAction(BezirkAction.ACTION_ZIRK_RECEIVE_EVENT,
-                new ZirkId("TEST"), new BezirkZirkEndPoint(new ZirkId("TEST 2")), new Event(Message.Flag.NOTICE, "What"));
+                new ZirkId("TEST"), new BezirkZirkEndPoint(new ZirkId("TEST 2")), new Event());
         cBkForServicePC.onIncomingEvent(eventCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire eventCallback. ", receivedEvent);
@@ -38,7 +38,7 @@ public class TestCBkForServicePC {
 
     @Test
     public void testFireUnicastStreamCallback() {
-        ReceiveFileStreamAction unicastStreamCallbackMessage = new ReceiveFileStreamAction(new ZirkId("TEST"), null, null, null, (short) 0, null);
+        ReceiveFileStreamAction unicastStreamCallbackMessage = new ReceiveFileStreamAction(new ZirkId("TEST"), null, null, (short) 0, null);
         cBkForServicePC.onIncomingStream(unicastStreamCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire Unicast stream.", receivedUnicastStream);

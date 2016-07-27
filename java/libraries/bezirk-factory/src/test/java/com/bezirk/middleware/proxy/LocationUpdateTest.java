@@ -123,7 +123,7 @@ public class LocationUpdateTest {
          * Send Multi cast request with null location on the wire
          */
         private final void pingServices(Location location) {
-            MockRequestEvent req = new MockRequestEvent(Flag.REQUEST, "MockRequestEvent");
+            MockRequestEvent req = new MockRequestEvent();
             RecipientSelector recipientSelector = new RecipientSelector(location);
             bezirk.sendEvent(recipientSelector, req);
         }
@@ -149,8 +149,8 @@ public class LocationUpdateTest {
 
         private final String question = "Ping to Mock Services";
 
-        public MockRequestEvent(Flag flag, String topic) {
-            super(flag, topic);
+        public MockRequestEvent() {
+
         }
     }
 
@@ -175,7 +175,6 @@ public class LocationUpdateTest {
 
                     ++countPingServiceB;
 
-                    assertEquals("MockRequestEvent", event.topic);
                     MockRequestEvent receivedEvent = (MockRequestEvent) event;
                     assertEquals("Ping to Mock Services", receivedEvent.question);
                     if (countPingServiceB == 1) {

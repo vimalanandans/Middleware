@@ -109,7 +109,7 @@ public class MulticastEventLocalTest {
          * Send Multi cast request with null location on the wire
          */
         private final void pingServiceC() {
-            MulticastMockRequestEvent req = new MulticastMockRequestEvent(Flag.REQUEST, "MockRequestEvent");
+            MulticastMockRequestEvent req = new MulticastMockRequestEvent();
             RecipientSelector recipientSelector = new RecipientSelector(loc);
             bezirk.sendEvent(recipientSelector, req);
         }
@@ -118,7 +118,7 @@ public class MulticastEventLocalTest {
          * Send Multi cast request with specific location on the wire
          */
         private final void pingServices() {
-            MulticastMockRequestEvent req = new MulticastMockRequestEvent(Flag.REQUEST, "MockRequestEvent");
+            MulticastMockRequestEvent req = new MulticastMockRequestEvent();
             RecipientSelector recipientSelector = null;
             bezirk.sendEvent(recipientSelector, req);
         }
@@ -137,8 +137,8 @@ public class MulticastEventLocalTest {
 
         private final String question = "Ping to Mock Services";
 
-        private MulticastMockRequestEvent(Flag flag, String topic) {
-            super(flag, topic);
+        private MulticastMockRequestEvent() {
+
         }
     }
 
@@ -161,7 +161,6 @@ public class MulticastEventLocalTest {
                 public void receiveEvent(Event event, ZirkEndPoint sender) {
                     logger.info(" **** Received Event *****");
 
-                    assertEquals("MockRequestEvent", event.topic);
                     MulticastMockRequestEvent receivedEvent = (MulticastMockRequestEvent) event;
                     assertEquals("Ping to Mock Services", receivedEvent.question);
                     didMockBreceive = true;
@@ -193,7 +192,6 @@ public class MulticastEventLocalTest {
                 public void receiveEvent(Event event, ZirkEndPoint sender) {
                     logger.info(" **** Received Event *****");
 
-                    assertEquals("MockRequestEvent", event.topic);
                     MulticastMockRequestEvent receivedEvent = (MulticastMockRequestEvent) event;
                     assertEquals("Ping to Mock Services", receivedEvent.question);
                     if (!didMockCreceive) {

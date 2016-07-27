@@ -76,11 +76,10 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
     }
 
     private void processEvent(UnicastEventAction eventMessage) {
-        final String eventTopic = eventMessage.getTopic();
         final String serializedEvent = eventMessage.getSerializedEvent();
         final BezirkZirkEndPoint eventSender = (BezirkZirkEndPoint) eventMessage.getEndpoint();
 
-        if (eventTopic == null && serializedEvent == null) {
+        if (serializedEvent == null) {
             Log.e(TAG, "Received a null event or event topic");
             return;
         }
@@ -88,7 +87,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         final String messageId = eventMessage.getMessageId();
         //Check for duplicate message
         if (checkDuplicateMsg(eventSender.zirkId.getZirkId(), messageId)) {
-            boolean isEventReceived = receiveEvent(eventTopic, serializedEvent, eventSender,
+            boolean isEventReceived = receiveEvent(serializedEvent, eventSender,
                     ProxyClient.eventListenerMap);
             if (isEventReceived) {
                 return;
@@ -100,19 +99,9 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         Log.e(TAG, "Event Topic Malfunctioning");
     }
 
-    private boolean receiveEvent(String topic, String message, BezirkZirkEndPoint sourceEndpoint,
+    private boolean receiveEvent(String message, BezirkZirkEndPoint sourceEndpoint,
                                  Map<String, List<EventSet.EventReceiver>> listenerMap) {
-
-        // find the class of the received event using the topic of the event, as the topic will hold the canonical name of the event
-        Class c;
-        try {
-            c = Class.forName(topic, false, this.getClass().getClassLoader());
-        } catch (ClassNotFoundException e) {
-            Log.d(TAG, "Unable to find class '" + topic + "'");
-            return false;
-        }
-
-        Event event = (Event) Message.fromJson(message, c);
+        Event event = Message.fromJson(message, Event.class);
         String eventName = event.getClass().getName();
 
         if (listenerMap.containsKey(eventName)) {
@@ -127,19 +116,9 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         return false;
     }
 
-    private boolean receiveStream(String topic, String message, BezirkZirkEndPoint sourceEndpoint,
+    private boolean receiveStream(String message, BezirkZirkEndPoint sourceEndpoint,
                                   String filePath, Map<String, List<StreamSet.StreamReceiver>> listenerMap) {
-
-        // find the class of the received event using the topic of the event, as the topic will hold the canonical name of the event
-        Class c;
-        try {
-            c = Class.forName(topic, false, this.getClass().getClassLoader());
-        } catch (ClassNotFoundException e) {
-            Log.d(TAG, "Unable to find class '" + topic + "'");
-            return false;
-        }
-
-        StreamDescriptor streamDescriptor = (StreamDescriptor) Message.fromJson(message, c);
+        StreamDescriptor streamDescriptor = Message.fromJson(message, StreamDescriptor.class);
         String streamName = streamDescriptor.getClass().getName();
 
         if (listenerMap.containsKey(streamName)) {
@@ -155,13 +134,12 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
     }
 
     private void processStreamUnicast(ReceiveFileStreamAction streamMessage) {
-        final String streamTopic = streamMessage.getStreamTopic();
         final String streamMsg = streamMessage.getSerializedStream();
         final File file = streamMessage.getFile();
         final BezirkZirkEndPoint senderSep = streamMessage.getSender();
-        Log.d(TAG, " " + streamTopic + "," + streamMsg + "+" + file + "-" + senderSep);
+        Log.d(TAG, " " + streamMsg + "+" + file + "-" + senderSep);
 
-        if (null == streamTopic || null == streamMsg || null == file || null == senderSep) {
+        if (streamMsg == null || file == null || senderSep == null) {
             Log.e(TAG, "Unicast StreamDescriptor has some null quantities");
             return;
         }
@@ -169,7 +147,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
 
         if (checkDuplicateStream(senderSep.zirkId.getZirkId(), streamId)) {
 
-            boolean isStreamReceived = receiveStream(streamTopic, streamMsg, senderSep,
+            boolean isStreamReceived = receiveStream(streamMsg, senderSep,
                     file.getPath(), ProxyClient.streamListenerMap);
 
             if (!isStreamReceived) {

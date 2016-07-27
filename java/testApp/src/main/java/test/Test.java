@@ -23,7 +23,7 @@ public class Test {
         es.setEventReceiver(new EventSet.EventReceiver() {
             @Override
             public void receiveEvent(Event event, ZirkEndPoint sender) {
-                System.out.println("Received Event with topic: " + event.topic);
+                System.out.println("Received Event with topic: " + event.getClass().getName());
             }
         });
 
@@ -48,11 +48,6 @@ public class Test {
     }
 
     private static class TestEvent extends Event {
-        private static final String TOPIC = "Hello World";
-
-        public TestEvent() {
-            super(Flag.NOTICE, TOPIC);
-        }
     }
 
     private static class TestEventSet extends EventSet {

@@ -205,7 +205,7 @@ public class ProxyClient implements Bezirk {
     @Override
     public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
-        activeStreams.put(zirkId.getZirkId() + streamId, streamDescriptor.topic);
+        activeStreams.put(zirkId.getZirkId() + streamId, streamDescriptor.getClass().getName());
         proxy.sendStream(new SendFileStreamAction(zirkId, recipient, streamDescriptor, streamId, file));
     }
 

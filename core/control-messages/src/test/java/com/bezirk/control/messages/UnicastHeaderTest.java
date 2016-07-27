@@ -26,7 +26,6 @@ public class UnicastHeaderTest {
     private static final ZirkId serviceBId = new ZirkId("ServiceB");
     private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceBId);
     private static final String messageId = GenerateMsgId.generateEvtId(senderSEP);
-    private static final String topic = "Message";
 
     /**
      * @throws java.lang.Exception
@@ -58,8 +57,6 @@ public class UnicastHeaderTest {
                 unicastHeader.getSenderSEP());
         assertEquals("SphereName not equal to the set value.",
                 sphereName, unicastHeader.getSphereName());
-        assertEquals("Topic not equal to the set value.",
-                topic, unicastHeader.getTopic());
         assertEquals("MessageID not equal to the set value.", messageId,
                 unicastHeader.getUniqueMsgId());
 
@@ -70,7 +67,6 @@ public class UnicastHeaderTest {
         unicastHeader.setRecipient(recipient);
         unicastHeader.setSenderSEP(senderSEP);
         unicastHeader.setSphereName(sphereName);
-        unicastHeader.setTopic(topic);
         unicastHeader.setUniqueMsgId(messageId);
         return unicastHeader;
     }
