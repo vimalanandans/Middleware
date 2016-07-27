@@ -102,7 +102,8 @@ public class StreamManager implements Streaming {
     }
 
     @Override
-    public boolean initStreams(Comms comms) {
+    public boolean startStreams(Comms comms) {
+
         try {
 
             streamingMessageQueue = new MessageQueue();
@@ -138,32 +139,24 @@ public class StreamManager implements Streaming {
                         ctrlReceiver);
             }
 
+
+            //This has to be changed to Executors.. With a a thread submit with future.
+            sStreamingThread = new Thread(streamQueueProcessor);
+
+            if (sStreamingThread == null) {
+                logger.error("unable to start the streaming thread ");
+                return false;
+
+            } else {
+                sStreamingThread.start();
+            }
+
         } catch (Exception e) {
-
-            logger.error(
-                    "Exception in initializing the streams in stream manager. ",
-                    e);
+            logger.error("Exception in initializing the streams in stream manager. ", e);
             return false;
         }
-
         return true;
-    }
 
-    @Override
-    public boolean startStreams() {
-
-        //This has to be changed to Executors.. With a a thread submit with future.
-        sStreamingThread = new Thread(streamQueueProcessor);
-
-        if (sStreamingThread == null) {
-            logger.error("unable to start the streaming thread ");
-            return false;
-
-        } else {
-
-            sStreamingThread.start();
-            return true;
-        }
     }
 
     @Override

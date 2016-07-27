@@ -13,16 +13,11 @@ import com.bezirk.streaming.control.Objects.StreamRecord;
  */
 public interface Streaming {
 
-
     /**
-     * Initialize the streaming queue, streaming thread,stream store and register the receivers with the message dispatcher.
+     * This will initialize the streaming queue, streaming thread,stream store and register the receivers with the message dispatcher.
+     * and Start the streaming thread
      */
-    boolean initStreams(Comms comms);
-
-    /**
-     * Start the streaming thread
-     */
-    boolean startStreams();
+    boolean startStreams(Comms comms);
 
     /**
      * Interrupt all the streaming threads, shutdown streaming module.
