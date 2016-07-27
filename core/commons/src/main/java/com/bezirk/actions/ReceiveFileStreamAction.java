@@ -1,7 +1,5 @@
 package com.bezirk.actions;
 
-import com.bezirk.actions.BezirkAction;
-import com.bezirk.actions.ZirkAction;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 

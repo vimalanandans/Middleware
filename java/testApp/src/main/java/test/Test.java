@@ -4,16 +4,12 @@
 package test;
 
 import com.bezirk.middleware.Bezirk;
-import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.middleware.proxy.Factory;
-
-import java.io.File;
-import java.io.InputStream;
 
 public class Test {
     private final Bezirk senderBezirk;
@@ -22,7 +18,16 @@ public class Test {
         senderBezirk = Factory.registerZirk("sender");
         Bezirk receiverBezirk = Factory.registerZirk("receiver");
 
-        receiverBezirk.subscribe(new TestRole(), new ReceiverListener());
+        EventSet es = new TestEventSet();
+
+        es.setEventReceiver(new EventSet.EventReceiver() {
+            @Override
+            public void receiveEvent(Event event, ZirkEndPoint sender) {
+                System.out.println("Received Event with topic: " + event.topic);
+            }
+        });
+
+        receiverBezirk.subscribe(es);
         receiverBezirk.setLocation(new Location("test/location"));
     }
 
@@ -50,48 +55,15 @@ public class Test {
         }
     }
 
-    private static class TestRole extends ProtocolRole {
-        public String getRoleName() {
-            return TestRole.class.getSimpleName();
-        }
-
-        public String getDescription() {
-            return "This role is simply used for testing";
-        }
-
-        public String[] getEventTopics() {
-            return new String[]{TestEvent.TOPIC};
-        }
-
-        public String[] getStreamTopics() {
-            return null;
+    private static class TestEventSet extends EventSet {
+        public TestEventSet() {
+            super(TestEvent.class);
         }
     }
 
     private static class TestStreamDescriptor extends StreamDescriptor {
         public TestStreamDescriptor() {
             super(false, true);
-        }
-    }
-
-    private static class ReceiverListener implements BezirkListener {
-        @Override
-        public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
-            System.out.println("Received Event with topic: " + event.topic);
-        }
-
-        @Override
-        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
-            // TODO: Receive data streamDescriptor
-        }
-
-        @Override
-        public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
-            // TODO: Receive file streamDescriptor
-        }
-
-        @Override
-        public void streamStatus(short streamId, StreamStates status) {
         }
     }
 }

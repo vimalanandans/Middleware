@@ -6,16 +6,10 @@ import android.widget.TextView;
 
 import com.bezirk.android.subscriber.R;
 import com.bezirk.middleware.Bezirk;
-import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.StreamDescriptor;
+import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.proxy.android.Factory;
-
-import java.io.File;
-import java.io.InputStream;
-
-//import com.bezirk.examples.protocols.parametricUI.NoticeUIshowText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,9 +25,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void receiverZirk() {
         final Bezirk bezirk = Factory.registerZirk(this, "Receiver Zirk");
-        bezirk.subscribe(new HouseInfoRole(), new BezirkListener() {
+
+        HouseInfoEventSet houseEvents = new HouseInfoEventSet();
+
+        houseEvents.setEventReceiver(new EventSet.EventReceiver() {
             @Override
-            public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
+            public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof AirQualityUpdateEvent) {
                     AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
                     tv.append("\nReceived air quality update: " + aqUpdate.toString());
@@ -50,21 +47,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-
-            @Override
-            public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
-
-            }
-
-            @Override
-            public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
-
-            }
-
-            @Override
-            public void streamStatus(short streamId, StreamStates status) {
-
-            }
         });
+
+        bezirk.subscribe(houseEvents);
     }
 }

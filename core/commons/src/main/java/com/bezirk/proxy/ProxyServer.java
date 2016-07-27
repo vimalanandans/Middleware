@@ -17,7 +17,7 @@ public class ProxyServer {
     }
 
     public void subscribeService(SubscriptionAction subscriptionAction) {
-        pubSubBrokerService.subscribeService(subscriptionAction.getZirkId(), subscriptionAction.getRole());
+        pubSubBrokerService.subscribeService(subscriptionAction.getZirkId(), subscriptionAction.getMessageSet());
     }
 
     public void sendMulticastEvent(SendMulticastEventAction eventAction) {
@@ -42,7 +42,7 @@ public class ProxyServer {
 
     public boolean unsubscribe(SubscriptionAction subscriptionAction) {
 
-        return pubSubBrokerService.unsubscribe(subscriptionAction.getZirkId(), subscriptionAction.getRole());
+        return pubSubBrokerService.unsubscribe(subscriptionAction.getZirkId(), subscriptionAction.getMessageSet());
     }
 
     public boolean unregister(RegisterZirkAction registerZirkAction) {

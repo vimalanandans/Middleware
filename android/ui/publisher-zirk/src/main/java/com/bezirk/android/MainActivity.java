@@ -5,14 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.bezirk.middleware.Bezirk;
-import com.bezirk.middleware.BezirkListener;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.StreamDescriptor;
+import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.proxy.android.Factory;
 
-import java.io.File;
-import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,33 +28,23 @@ public class MainActivity extends AppCompatActivity {
         senderZirk();
     }
 
-
     private void senderZirk() {
         final Bezirk bezirk = Factory.registerZirk(this, "Sender Zirk");
-        bezirk.subscribe(new HouseInfoRole(), new BezirkListener() {
+
+        HouseInfoEventSet houseEvents = new HouseInfoEventSet();
+
+        houseEvents.setEventReceiver(new EventSet.EventReceiver() {
             @Override
-            public void receiveEvent(String topic, Event event, ZirkEndPoint sender) {
+            public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
                     tv.append("\nReceived UpdateAcceptedEvent with test field: " + acceptedEventUpdate.getTestField());
                 }
             }
-
-            @Override
-            public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, InputStream inputStream, ZirkEndPoint sender) {
-
-            }
-
-            @Override
-            public void receiveStream(String topic, StreamDescriptor streamDescriptor, short streamId, File file, ZirkEndPoint sender) {
-
-            }
-
-            @Override
-            public void streamStatus(short streamId, StreamStates status) {
-
-            }
         });
+
+        bezirk.subscribe(houseEvents);
+
         //publish messages periodically
         new Timer().scheduleAtFixedRate(new TimerTask() {
             int pollenLevel = 1;
@@ -72,9 +60,5 @@ public class MainActivity extends AppCompatActivity {
                 //tv.append("Published air quality update: " + airQualityUpdateEvent.toString());
             }
         }, 0, 5000);
-
-
     }
-
-
 }

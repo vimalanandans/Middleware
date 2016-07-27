@@ -2,7 +2,6 @@ package com.bezirk.util;
 
 import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.streaming.StreamRequest;
-import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
@@ -13,10 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Enumeration;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -147,24 +143,6 @@ public class ValidatorUtilityTest {
     }
 
     @Test
-    public void testCheckProtocolRole() {
-
-		/*-------------- Positive cases --------------*/
-        MockProtocolRole pRole = new MockProtocolRole();
-        isValid = ValidatorUtility.checkProtocolRole(pRole);
-        assertTrue("Valid protocolrole is considered invalie by validator.", isValid);
-
-		/*-------------- Negative cases --------------*/
-        isValid = ValidatorUtility.checkProtocolRole(null);
-        assertFalse("Null protocolrole is considered valid by validator.", isValid);
-
-        pRole.setProtocolName(null);
-        isValid = ValidatorUtility.checkProtocolRole(pRole);
-        assertFalse("Null protocolrole is considered valid by validator.", isValid);
-
-    }
-
-    @Test
     public void testCheckHeader() {
 
 		/*-------------- Positive cases --------------*/
@@ -184,37 +162,6 @@ public class ValidatorUtilityTest {
         mHeader = new Header(sphereId, null, "12", "test");
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertFalse("Invalid header is considered valid by validator.", isValid);
-
-
-    }
-
-    class MockProtocolRole extends ProtocolRole {
-
-        String protocolName = this.getClass().getSimpleName();
-
-        @Override
-        public String getRoleName() {
-            return protocolName;
-        }
-
-        public void setProtocolName(String protocolName) {
-            this.protocolName = protocolName;
-        }
-
-        @Override
-        public String getDescription() {
-            return null;
-        }
-
-        @Override
-        public String[] getEventTopics() {
-            return null;
-        }
-
-        @Override
-        public String[] getStreamTopics() {
-            return null;
-        }
 
 
     }

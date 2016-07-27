@@ -40,5 +40,7 @@ public abstract class EventAction extends ZirkAction {
         return serializedEvent;
     }
 
-    public String getMessageId() { return messageId; }
+    public String getMessageId() {
+        return messageId;
+    }
 }

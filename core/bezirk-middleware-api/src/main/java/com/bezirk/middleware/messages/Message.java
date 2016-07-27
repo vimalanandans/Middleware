@@ -1,18 +1,8 @@
 package com.bezirk.middleware.messages;
 
-import com.bezirk.middleware.BezirkListener;
+import com.bezirk.middleware.serialization.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-
-import java.lang.reflect.Type;
 
 /**
  * Base class for all message types Zirks may exchange using the Bezirk middleware. This class
@@ -22,6 +12,12 @@ import java.lang.reflect.Type;
 public abstract class Message {
     private static final Gson gson;
 
+    static {
+        final GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeHierarchyAdapter(Message.class, new InterfaceAdapter<Message>());
+        gson = gsonBuilder.create();
+    }
+
     /**
      * Hint about how the sender expects the recipient(s) to handle the message. This is typically
      * set by the concrete implementation class's constructor.
@@ -30,12 +26,11 @@ public abstract class Message {
      * @see Message.Flag
      */
     public final Flag flag;
-
     /**
      * The pub-sub topic for this message. Topics are defined by
-     * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles}. A Zirk subscribes to
+     * {@link com.bezirk.middleware.messages.MessageSet MessageSets}. A Zirk subscribes to
      * certain topics by using
-     * {@link com.bezirk.middleware.Bezirk#subscribe(ProtocolRole, BezirkListener)} to
+     * {@link com.bezirk.middleware.Bezirk#subscribe(MessageSet)} to
      * subscribe to a role. When the Bezirk middleware receives a message, it forwards that
      * message on to any registered Zirk that is subscribed to the role defining the topic.
      * The concrete implementation of a message specifies the topic, which should usually be the
@@ -49,11 +44,10 @@ public abstract class Message {
      * </pre>
      */
     public final String topic;
-
     /**
      * Intended to help Zirks match messages with {@link #flag flags} set to {@link Message.Flag#REQUEST}
      * with their corresponding {@link Message.Flag#REPLY reply} when the reply is received by a
-     * {@link BezirkListener}. The middleware does not use this property internally.
+     * listener. The middleware does not use this property internally.
      * The Zirk sending the request should set this ID, and the responding Zirk should echo it in
      * the corresponding reply.
      * <p>
@@ -61,12 +55,6 @@ public abstract class Message {
      * </p>
      */
     public String msgId;
-
-    static {
-        final GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Message.class, new MessageAdapter());
-        gson = gsonBuilder.create();
-    }
 
     public Message(Flag flag, String topic) {
         this.flag = flag;
@@ -115,35 +103,5 @@ public abstract class Message {
          * Indicate to the recipient(s) that the message is a reply to a <code>REQUEST</code>.
          */
         REPLY
-    }
-
-    private static class MessageAdapter implements JsonSerializer<Message>, JsonDeserializer<Message> {
-        private static final Gson gson;
-
-        static {
-            gson = new Gson();
-        }
-
-        @Override
-        public JsonElement serialize(Message src, Type typeOfSrc, JsonSerializationContext context) {
-            JsonObject result = new JsonObject();
-            result.add("type", new JsonPrimitive(src.getClass().getName()));
-            result.add("properties", gson.toJsonTree(src, src.getClass()));
-            return result;
-        }
-
-        @Override
-        public Message deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
-            JsonObject jsonObject = json.getAsJsonObject();
-            String type = jsonObject.get("type").getAsString();
-            JsonElement element = jsonObject.get("properties");
-
-            try {
-                return (Message) gson.fromJson(element, Class.forName(type));
-            } catch (ClassNotFoundException cnfe) {
-                throw new JsonParseException("Unknown element type: " + type, cnfe);
-            }
-        }
     }
 }
