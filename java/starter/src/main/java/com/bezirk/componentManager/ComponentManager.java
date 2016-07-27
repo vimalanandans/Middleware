@@ -11,13 +11,14 @@ import com.bezirk.networking.NetworkManager;
 import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.starter.NetworkUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+
+import ch.qos.logback.classic.Level;
 
 /**
  * This class manages Bezirk middleware component injection & lifecycle.
@@ -34,7 +35,6 @@ public class ComponentManager {
     private ProxyServer proxyServer;
     private Device device;
     private NetworkManager networkManager;
-    private NetworkUtil networkUtil;
     private LifecycleManager lifecycleManager;
 
     public ComponentManager(ProxyServer proxyServer) {
@@ -46,19 +46,10 @@ public class ComponentManager {
         this.lifecycleManager = new LifecycleManager();
         this.lifecycleManager.addObserver(new LifeCycleObserver()); //sample observer, does nothing
         // other observers are added here
+        ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+        root.setLevel(Level.DEBUG);
 
-
-        //TODO move Network utilities to Comms component and keep it internal to comms or define it as a component within bezirk
         networkManager = new JavaNetworkManager();
-        this.networkUtil = new NetworkUtil();
-        NetworkInterface intf = null;
-        try {
-            intf = networkUtil.fetchNetworkInterface();
-        } catch (Exception e) {
-            logger.error("Error in fetching interface name", e);
-            System.exit(0);
-        }
-
 
         try {
             this.registryStorage = new RegistryStorage(new DatabaseConnectionForJava("."), "0.0.4");
@@ -70,7 +61,7 @@ public class ComponentManager {
 
         this.pubSubBroker = new PubSubBroker(registryStorage, device, networkManager);
         this.proxyServer.setPubSubBrokerService(pubSubBroker);
-        this.comms = new ZyreCommsManager(null, networkManager.getIpForInterface(intf), pubSubBroker, null, null, null, networkManager);
+        this.comms = new ZyreCommsManager(null, networkManager.getInetAddress(), pubSubBroker, null, null, null, networkManager);
 
         this.lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
     }

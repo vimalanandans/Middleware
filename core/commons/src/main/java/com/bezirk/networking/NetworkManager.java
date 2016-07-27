@@ -20,7 +20,7 @@ public abstract class NetworkManager {
     private NetworkInterface curInterface = null;
 
     public List<IntfInetPair> getIntfInetPair() {
-        ArrayList<IntfInetPair> list = new ArrayList<IntfInetPair>();
+        ArrayList<IntfInetPair> list = new ArrayList<>();
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface intf = en.nextElement();
@@ -56,8 +56,6 @@ public abstract class NetworkManager {
                             return inetAddress;
                         }
                     }
-                } else {
-                    logger.debug("Interface does not match");
                 }
             }
         } catch (Exception ex) {
@@ -113,21 +111,15 @@ public abstract class NetworkManager {
         return sep;
     }
 
-    /**
-     * get the device ip address detail
-     */
     public String getDeviceIp() {
         return getLocalInet().getHostAddress();
     }
 
-    /**
-     * Get the stored interface name
-     */
     public abstract String getStoredInterfaceName();
 
-    /**
-     * Set the stored interface name
-     */
     public abstract void setStoredInterfaceName(String interfaceName);
+
+    public abstract InetAddress getInetAddress();
+
 
 }

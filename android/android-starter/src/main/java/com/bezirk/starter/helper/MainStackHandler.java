@@ -167,8 +167,8 @@ public final class MainStackHandler implements StackHandler {
                     /*************************************************************
                      * Step 7 : Initialize BezirkCommsManager                       *
                      *************************************************************/
-                    InetAddress inetAddress = fetchInetAddress(service);
-                    comms = bezirkStartStackHelper.initializeComms(inetAddress, pubSubBroker, errNotificationCallback, networkManager);
+
+                    comms = bezirkStartStackHelper.initializeComms(networkManager.getInetAddress(), pubSubBroker, errNotificationCallback, networkManager);
                     if (!ValidatorUtility.isObjectNotNull(comms)) {
                         logger.error("Unable to initialize comms layer. Shutting down bezirk.");
                         service.stopSelf();
