@@ -1,16 +1,7 @@
 /**
  * Global project version change history
- * Currently the project alpha version is incremented every time there is a change in any of the middleware artifacts to maintain consistency.
- * 3.0.0-alpha+001 development mode enabled for CMU Iot group (Rishabh)
- * 3.0.0-alpha+002 added policy classes for protocols-penguin (Rishabh)
- * 3.0.0-alpha+003 PreferencesAPI implementation for using sphere configuration (Rishabh)
- * 3.0.0-alpha+004 Removing use of comms.properties & upadevice.properties (Rishabh)
- * 3.0.0-alpha+005 Changing sphere key lengths to prevent adding Unlimited Strength Jurisdiction Policy (Rishabh)
- * 3.0.0-alpha+006 Logging enable/disable using jvm/system property, removing Factory.getInstance(BezirkConfig) (Rishabh)
- * 3.0.0-alpha+007 Enabling development sphere by default and removing system.out.println for evasive events in zyre (Rishabh)
- * 3.0.0-alpha+008 Displaying ethernet configuration for multiple interfaces, issue #77 (Rishabh)
- * 3.0.0-alpha+009 Freezing major api changes & Nits before Mexico Hackathon. (Michael/Rishabh)
- * 3.0.0-alpha+010 Bug with android proxy and unwanted swing thread in java. (Michael/Rishabh)
+ * Currently the project alpha version is incremented every time there is a change in any of the middleware artifact to maintain consistency.
+ * 3.0.0-alpha-mvp+001 alpha mvp for internal testing with fixed API nits
  */
 buildscript {
     repositories {
@@ -30,9 +21,6 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:${project.androidGradleToolsVersion}"
         classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '4.1.0')
-    }
-    ext {
-        local = true //change to false for compiling project artifacts from remote maven
     }
 }
 
@@ -63,19 +51,4 @@ allprojects {
         sourceCompatibility = "1.7"
         targetCompatibility = "1.7"
     }
-}
-
-/**
- * Build java distribution. Jars contained in the zip are used to run PC services.
- * Eg. http://52.18.79.103:8090/rishabh.gulati/HelloWorld
- **/
-task javaBuildDist(type: Zip) {
-    baseName = 'bezirk-java-dist'
-    version = project.version
-    into 'jars'
-    from { project(':core:bezirk-middleware-api').configurations.runtime }
-    from { project(':java:libraries:bezirk-factory').configurations.runtime }
-    from { project(':core:bezirk-middleware-api').jar }
-    from { project(':java:libraries:bezirk-factory').jar }
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
