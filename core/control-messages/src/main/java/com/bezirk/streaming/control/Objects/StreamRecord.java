@@ -27,6 +27,7 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
     private BezirkZirkEndPoint recipientSEP;    // Used for Local streaming.
     private String serializedStream;                // USed for Local Zirk to Zirk Streaming
     private String streamTopic;                    // USed for Local Zirk to Zirk Streaming
+    private String streamRequestKey;            // sream request key is the unique identifier for the streaming.
 
     /* Streaming Status indicates the status of the Streams.
      * PENDING -  indicates the waiting to know the response
@@ -164,4 +165,11 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
         isEncryptedStream = encryptedStream;
     }
 
+    public String getStreamRequestKey() {
+        return streamRequestKey;
+    }
+
+    public void setStreamRequestKey(String streamRequestKey) {
+        this.streamRequestKey = streamRequestKey;
+    }
 }

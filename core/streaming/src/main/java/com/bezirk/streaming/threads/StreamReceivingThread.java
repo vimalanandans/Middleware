@@ -9,6 +9,7 @@ import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
+import com.bezirk.streaming.StreamManager;
 import com.bezirk.streaming.port.StreamPortFactory;
 import com.bezirk.util.ValidatorUtility;
 
@@ -56,6 +57,8 @@ public class StreamReceivingThread implements Runnable {
     private final PubSubEventReceiver sadlReceiver;
     private final SphereSecurity sphereSecurity;
     private final String downloadPath;
+    private final String streamRequestKey;
+    private StreamManager streamManager = null;
 
     /**
      * Constructor that is called during starting the thread
@@ -64,7 +67,7 @@ public class StreamReceivingThread implements Runnable {
      */
     public StreamReceivingThread(int port,String downloadPath,
                                  StreamRequest streamRequest, PortFactory portFactory,
-                                 PubSubEventReceiver sadlReceiver, SphereSecurity sphereSecurity) {
+                                 PubSubEventReceiver sadlReceiver, SphereSecurity sphereSecurity, StreamManager streamManager) {
         super();
         this.sphere = streamRequest.getSphereId();
         this.port = port;
@@ -79,6 +82,8 @@ public class StreamReceivingThread implements Runnable {
         this.portFactory = portFactory;
         this.sadlReceiver = sadlReceiver;
         this.sphereSecurity = sphereSecurity;
+        this.streamManager = streamManager;
+        this.streamRequestKey = streamRequest.getUniqueKey();
     }
 
     @Override
@@ -144,12 +149,12 @@ public class StreamReceivingThread implements Runnable {
                 }
             }
 
-            closeResources(socket, receivingSocket, fileOutputStream, inputStream);
+            closeResources(socket, receivingSocket, fileOutputStream, inputStream, streamRequestKey);
         }
     }
 
     private void closeResources(ServerSocket socket, Socket receivingSocket,
-                                FileOutputStream fileOutputStream, DataInputStream inputStream) {
+                                FileOutputStream fileOutputStream, DataInputStream inputStream, String streamRequestKey) {
         try {
             if (ValidatorUtility.isObjectNotNull(inputStream)) {
                 inputStream.close();
@@ -165,6 +170,9 @@ public class StreamReceivingThread implements Runnable {
             if (ValidatorUtility.isObjectNotNull(socket)) {                                              // If SocketTimeout Exception occurs, socket==null
                 socket.close();
             }
+
+            //Punith clean the active streamMap
+            streamManager.removeRefFromActiveStream(streamRequestKey);
         } catch (IOException e) {
 
             logger.error("Exception in closing resources.", e);

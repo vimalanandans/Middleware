@@ -1,18 +1,11 @@
 package com.bezirk.streaming;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.control.messages.ControlMessage;
-import com.bezirk.control.messages.Ledger;
-import com.bezirk.control.messages.streaming.StreamRequest;
-import com.bezirk.control.messages.streaming.StreamResponse;
-import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.port.StreamPortFactory;
-import com.bezirk.streaming.rtc.Signaling;
-import com.bezirk.streaming.rtc.SignalingFactory;
 import com.bezirk.streaming.store.StreamStore;
 import com.bezirk.streaming.threads.StreamQueueProcessor;
 import com.bezirk.util.ValidatorUtility;
@@ -20,11 +13,17 @@ import com.bezirk.util.ValidatorUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 /**
  * StreamManager manages all queues,sockets and threads related to streaming. It also
  * includes the StreamControlReceiver which process the stream request and stream responses.
  */
-public class StreamManager implements Streaming {
+public class StreamManager implements Streaming, ActiveStream {
     private static final Logger logger = LoggerFactory.getLogger(StreamManager.class);
 
     /** Streaming specific constants*/
@@ -33,11 +32,11 @@ public class StreamManager implements Streaming {
     static int STREAM_END_PORT = 6330;
     static int STREAM_PARALLEL_MAX = 5;
     static int STREAM_RETRY_COUNT = 5;
+    static final int THREAD_SIZE = 10;
 
     private final StreamCtrlReceiver ctrlReceiver = new StreamCtrlReceiver();
     private MessageQueue streamingMessageQueue = null;
-    private StreamQueueProcessor streamQueueProcessor = null;
-    private Thread sStreamingThread = null;
+    private StreamQueueProcessor sendStreamQueueProcessor = null;
     private BezirkStreamHandler bezirkStreamHandler = null;
     private PortFactory portFactory;
     private String downloadPath = null;
@@ -46,9 +45,18 @@ public class StreamManager implements Streaming {
 
     /***This has to be dependency injected.**/
     private Comms comms = null;
-    private SphereSecurity sphereForSadl = null;
+    private SphereSecurity sphereSecurity = null;
     private PubSubEventReceiver sadlReceiver = null;
     /***************/
+
+    // creates thread pool with one thead
+    private ExecutorService streamQueueExecutor = null;
+
+    // ExecutorService for sending stream
+    private ExecutorService streamProcessExecutor = null;
+
+    //running stream map is used to end the future task when cient wants to intrupt them.
+    private Map<String, Future> activeStreamMap = new HashMap<String, Future>();
 
 
     public StreamManager(Comms comms, PubSubEventReceiver sadlReceiver, String downloadPath) {
@@ -57,7 +65,15 @@ public class StreamManager implements Streaming {
                 && ValidatorUtility.isObjectNotNull(sadlReceiver)) {
             this.comms = comms;
             this.sadlReceiver = sadlReceiver;
-            bezirkStreamHandler = new BezirkStreamHandler(downloadPath);
+
+            // ExecutorService for processing the straem massage queue.
+            streamQueueExecutor = Executors.newSingleThreadExecutor();
+
+            // ExecutorService for sending stream
+            streamProcessExecutor = Executors.newFixedThreadPool(THREAD_SIZE);
+
+            bezirkStreamHandler = new BezirkStreamHandler(downloadPath, streamProcessExecutor,this);
+
         } else {
             logger.error("Unable to initialize StreamManager. Please ensure ControlSenderQueue, " +
                     "CommsMessageDispatcher and BezirkCallback are initialized.");
@@ -92,8 +108,8 @@ public class StreamManager implements Streaming {
 
             streamStore = new StreamStore();
 
-            streamQueueProcessor = new StreamQueueProcessor(
-                    streamingMessageQueue, sadlReceiver);
+            sendStreamQueueProcessor = new StreamQueueProcessor(
+                    streamingMessageQueue, sadlReceiver, streamProcessExecutor, this);
 
 
             portFactory = new StreamPortFactory(
@@ -121,17 +137,7 @@ public class StreamManager implements Streaming {
                         ctrlReceiver);
             }
 
-
-            //This has to be changed to Executors.. With a a thread submit with future.
-            sStreamingThread = new Thread(streamQueueProcessor);
-
-            if (sStreamingThread == null) {
-                logger.error("unable to start the streaming thread ");
-                return false;
-
-            } else {
-                sStreamingThread.start();
-            }
+            streamQueueExecutor.execute(sendStreamQueueProcessor);
 
         } catch (Exception e) {
             logger.error("Exception in initializing the streams in stream manager. ", e);
@@ -144,33 +150,70 @@ public class StreamManager implements Streaming {
     @Override
     public boolean endStreams() {
 
-        if (sStreamingThread == null) {
-
-            return false;
-
+        boolean endStatus = false;
+        if (streamQueueExecutor == null) {
+            endStatus  =  false;
         } else {
-            sStreamingThread.interrupt();
-            return true;
+            if(!streamQueueExecutor.isTerminated()) {
+                streamQueueExecutor.shutdownNow();
+            }
 
+            if(!streamProcessExecutor.isTerminated()) {
+                streamProcessExecutor.shutdownNow();
+            }
+
+            endStatus = true;
         }
+
+        return endStatus;
     }
 
     /**
      * We can here interrupt a single streaming thread...
-     * @param streamId
+     * @param streamKey
      * @return
      */
     @Override
-    public boolean interruptStream(String streamId) {
+    public boolean interruptStream(String streamKey) {
+        Future futureTask = activeStreamMap.get(streamKey);
+        if(futureTask != null && (!futureTask.isCancelled() || futureTask.isDone())){
+            futureTask.cancel(true);
+        }
         return false;
     }
 
     @Override
     public void setSphereSecurityForEncryption(SphereSecurity sphereSecurity) {
 
-        this.sphereForSadl = sphereSecurity;
-        this.streamQueueProcessor.setSphereSecurity(sphereForSadl);
+        this.sphereSecurity = sphereSecurity;
+        this.sendStreamQueueProcessor.setSphereSecurity(this.sphereSecurity);
     }
 
+
+    @Override
+    public boolean addRefToActiveStream(String streamRequestKey, Future streamFutureTaskRef) {
+        activeStreamMap.put(streamRequestKey, streamFutureTaskRef);
+        return true;
+    }
+
+    @Override
+    public boolean removeRefFromActiveStream(String streamRequestKey) {
+        activeStreamMap.remove(streamRequestKey);
+        return true;
+    }
+
+}
+
+/**
+ * This will be a package protected interface to add a reference of future
+ *
+ * Created by PIK6KOR on 7/28/2016.
+ */
+
+interface ActiveStream{
+
+    boolean addRefToActiveStream(String streamRequestKey, Future streamFutureTaskRef);
+
+    boolean removeRefFromActiveStream(String streamRequestKey);
 
 }

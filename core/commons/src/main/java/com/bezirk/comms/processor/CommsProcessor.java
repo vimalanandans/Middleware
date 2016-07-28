@@ -182,14 +182,18 @@ public abstract class CommsProcessor implements Comms {
 					return bridgeControlMessage(getDeviceId(),message);
 				}
 				else */
-                {
-                    WireMessage wireMessage = prepareWireMessage(message.getMessage().getSphereId(), data);
-
-                    wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_CTRL);
-
-                    byte[] wireByteMessage = wireMessage.serialize();
-                    ret = sendToAll(wireByteMessage, false);
+                if (ControlMessage.Discriminator.StreamRequest == message.getMessage().getDiscriminator()) {
+                    return sendStream(message.getMessage().getUniqueKey());
                 }
+
+
+                WireMessage wireMessage = prepareWireMessage(message.getMessage().getSphereId(), data);
+
+                wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_CTRL);
+
+                byte[] wireByteMessage = wireMessage.serialize();
+                ret = sendToAll(wireByteMessage, false);
+
 
             } else {
                 logger.debug("unknown control message");

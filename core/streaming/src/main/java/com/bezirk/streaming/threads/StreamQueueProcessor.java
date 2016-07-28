@@ -9,6 +9,7 @@ import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
 import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
+import com.bezirk.streaming.StreamManager;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.streaming.control.Objects.StreamRecord.StreamingStatus;
 import com.bezirk.util.ValidatorUtility;
@@ -19,6 +20,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 /**
  * This Thread is a blocking and will be iterating on the message queue } to process the {@link StreamRecord}. It checks the {@link StreamingStatus} of the
@@ -39,9 +42,15 @@ public class StreamQueueProcessor implements Runnable {
 
     private SphereSecurity sphereSecurity;
 
-    public StreamQueueProcessor(MessageQueue msgQueue, PubSubEventReceiver sadlReceiver) {
+    private ExecutorService sendStreamExecutor;
+
+    private StreamManager streamManager;
+
+    public StreamQueueProcessor(MessageQueue msgQueue, PubSubEventReceiver sadlReceiver, ExecutorService sendStreamExecutor, StreamManager streamManager) {
         this.sadlReceiver = sadlReceiver;
         this.msgQueue = msgQueue;
+        this.sendStreamExecutor = sendStreamExecutor;
+        this.streamManager = streamManager;
 
     }
 
@@ -94,6 +103,8 @@ public class StreamQueueProcessor implements Runnable {
                     processStreamBusyMessage(bezirkCallbackPresent, streamRecord);
                 }
                 msgQueue.removeFromQueue(streamRecord);
+
+                //punith.. remove from active stream map
             }
         }
     }
@@ -113,8 +124,9 @@ public class StreamQueueProcessor implements Runnable {
 
     private void processStreamReadyMessage(StreamRecord streamRecord) {
         if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {
-
-            new Thread(new StreamSendingThread(streamRecord, sadlReceiver, sphereSecurity)).start();                       // spawn the thread
+            StreamSendingThread streamSendingThread = new StreamSendingThread(streamRecord, sadlReceiver, sphereSecurity);
+            Future streamSendingFuture  = sendStreamExecutor.submit(new Thread(streamSendingThread));
+            streamManager.addRefToActiveStream(streamRecord.getStreamRequestKey(), streamSendingFuture);
         } else {
             logger.error("SphereForSadl is not initialized.");
         }

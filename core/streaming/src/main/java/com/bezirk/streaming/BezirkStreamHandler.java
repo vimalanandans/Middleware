@@ -15,6 +15,9 @@ import com.bezrik.network.NetworkUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
 /**
  * This handler handles the StreamRequests and Responses and places them in
  * appropriate processing threads.
@@ -23,10 +26,14 @@ final class BezirkStreamHandler {
     private static final Logger logger = LoggerFactory
             .getLogger(BezirkStreamHandler.class);
 
-    String downloadPath;
+    private String downloadPath;
+    private ExecutorService receiveStreamExecutor;
+    private StreamManager streamManager = null;
 
-    BezirkStreamHandler(String downloadPath){
+    BezirkStreamHandler(String downloadPath, ExecutorService receiveStreamExecutor, StreamManager streamManager){
         this.downloadPath = downloadPath;
+        this.receiveStreamExecutor = receiveStreamExecutor;
+        this.streamManager = streamManager;
     }
 
     /**
@@ -52,9 +59,11 @@ final class BezirkStreamHandler {
                 status = StreamRecord.StreamingStatus.BUSY;
             } else {
                 status = StreamRecord.StreamingStatus.READY;
-                new Thread(new StreamReceivingThread(assignedPort, downloadPath,
-                        streamRequest, portFactory, sadlReceiver, sphereSecurity))
-                        .start();
+
+                StreamReceivingThread streamReceivingThread =new StreamReceivingThread(assignedPort, downloadPath,
+                        streamRequest, portFactory, sadlReceiver, sphereSecurity, streamManager);
+                Future receiveStreamFuture  = receiveStreamExecutor.submit(new Thread(streamReceivingThread));
+                streamManager.addRefToActiveStream(streamRequest.getUniqueKey(), receiveStreamFuture);
             }
         }
 

@@ -254,7 +254,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":" + streamId;
             final StreamDescriptor streamDescriptor = new Gson().fromJson(serializedString, StreamDescriptor.class);
 
-            final StreamRecord streamRecord = prepareStreamRecord(receiver, serializedString, file, streamId, senderSEP, streamDescriptor);
+            final StreamRecord streamRecord = prepareStreamRecord(receiver, serializedString, file, streamId, senderSEP, streamDescriptor, streamRequestKey);
 
             boolean streamStoreStatus = comms.registerStreamBook(streamRequestKey, streamRecord);
             if (!streamStoreStatus) {
@@ -270,7 +270,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
 
-    StreamRecord prepareStreamRecord(BezirkZirkEndPoint receiver, String serializedStream, File file, short streamId, BezirkZirkEndPoint senderSEP, StreamDescriptor streamDescriptor) {
+    StreamRecord prepareStreamRecord(BezirkZirkEndPoint receiver, String serializedStream, File file, short streamId, BezirkZirkEndPoint senderSEP, StreamDescriptor streamDescriptor, String streamRequestKey) {
         final StreamRecord streamRecord = new StreamRecord();
         streamRecord.setLocalStreamId(streamId);
         streamRecord.setSenderSEP(senderSEP);
@@ -286,6 +286,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         streamRecord.setRecipientSEP(receiver);
         streamRecord.setSerializedStream(serializedStream);
         streamRecord.setStreamTopic(streamDescriptor.topic);
+        streamRecord.setStreamRequestKey(streamRequestKey);
         return streamRecord;
     }
 
