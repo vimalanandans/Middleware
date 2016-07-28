@@ -16,9 +16,6 @@ import com.bezirk.pubsubbroker.PubSubBroker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-
 import ch.qos.logback.classic.Level;
 
 /**
@@ -63,18 +60,20 @@ public class ComponentManager {
         this.device = new JavaDevice();
         this.comms = new ZyreCommsManager(null, null, networkManager);
         this.pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
-        this.proxyServer.setPubSubBrokerService(pubSubBroker);
 
+        this.proxyServer.setPubSubBrokerService(pubSubBroker);
 
         this.lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
     }
 
     public void start() {
-        comms.startComms();
+        this.lifecycleManager.setState(LifecycleManager.LifecycleState.STARTED);
+        comms.startComms(); //this should be called by comms directly when observing for lifecycle events
     }
 
     public void stop() {
-        comms.closeComms();
+        this.lifecycleManager.setState(LifecycleManager.LifecycleState.DESTROYED);
+        comms.closeComms(); //this should be called by comms directly when observing for lifecycle events
     }
 
     //TODO: Remove this dependency for proxy client by providing a persistance implementation
