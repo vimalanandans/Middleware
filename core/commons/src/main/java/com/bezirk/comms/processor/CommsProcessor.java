@@ -98,7 +98,7 @@ public abstract class CommsProcessor implements Comms {
         executor = Executors.newFixedThreadPool(THREAD_SIZE);
 
         if (bezirkStreamManager != null) {
-            bezirkStreamManager.startStreams(this);
+            bezirkStreamManager.startStreams();
         }
 
 

@@ -35,25 +35,25 @@ public class StreamManager implements Streaming {
     static int STREAM_RETRY_COUNT = 5;
 
     private final StreamCtrlReceiver ctrlReceiver = new StreamCtrlReceiver();
-    private SphereSecurity sphereForSadl = null;
     private MessageQueue streamingMessageQueue = null;
     private StreamQueueProcessor streamQueueProcessor = null;
     private Thread sStreamingThread = null;
     private BezirkStreamHandler bezirkStreamHandler = null;
     private PortFactory portFactory;
-    //private CommsMessageDispatcher msgDispatcher;
-    private Comms comms = null;
-
     private String downloadPath = null;
-
     private StreamStore streamStore = null;
 
+
+    /***This has to be dependency injected.**/
+    private Comms comms = null;
+    private SphereSecurity sphereForSadl = null;
     private PubSubEventReceiver sadlReceiver = null;
+    /***************/
+
 
     public StreamManager(Comms comms, PubSubEventReceiver sadlReceiver, String downloadPath) {
 
         if (ValidatorUtility.isObjectNotNull(comms)
-
                 && ValidatorUtility.isObjectNotNull(sadlReceiver)) {
             this.comms = comms;
             this.sadlReceiver = sadlReceiver;
@@ -64,24 +64,6 @@ public class StreamManager implements Streaming {
         }
 
         this.downloadPath = downloadPath;
-    }
-
-    /**
-     * This is the message queue for stream requests on the receiver side
-     *
-     * @return MessageQueue
-     */
-    public MessageQueue getStreamingMessageQueue() {
-        return streamingMessageQueue;
-    }
-
-    /**
-     * This is the message queue for stream requests on the sender side
-     *
-     * @param streamingMessageQueue
-     */
-    public void setStreamingMessageQueue(MessageQueue streamingMessageQueue) {
-        this.streamingMessageQueue = streamingMessageQueue;
     }
 
     @Override
@@ -102,7 +84,7 @@ public class StreamManager implements Streaming {
     }
 
     @Override
-    public boolean startStreams(Comms comms) {
+    public boolean startStreams() {
 
         try {
 
