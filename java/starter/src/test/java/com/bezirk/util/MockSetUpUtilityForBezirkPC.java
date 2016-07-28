@@ -74,29 +74,29 @@ public class MockSetUpUtilityForBezirkPC {
         cryptoEngine = new CryptoEngine(sphereRegistry);
         pubSubBrokerStorage = (PubSubBrokerStorage) regPersistence;
         setUpUpaDevice();
-        pubSubBroker = new PubSubBroker(pubSubBrokerStorage,upaDevice, networkManager);
+
         //sphereConfig = new SphereProperties();
         sphereConfig = new JavaPrefs();
         sphereConfig.init();
 
 
         comms = new MockComms();
-        Streaming streamManager = new StreamManager(comms,pubSubBroker,getStreamDownloadPath(), networkManager);
-        comms.initComms(null, inetAddr, null,streamManager);
+        Streaming streamManager = new StreamManager(comms, pubSubBroker, getStreamDownloadPath(), networkManager);
+        //comms.initComms(null, inetAddr, null, streamManager);
 
         comms.registerNotification(Mockito.mock(CommsNotification.class));
         comms.startComms();
+        pubSubBroker = new PubSubBroker(pubSubBrokerStorage, upaDevice, networkManager, comms, new MockCallback(), null, null);
 
-
-       // SphereServiceManager bezirkSphere = new SphereServiceManager(cryptoEngine, upaDevice, sphereRegistry);
+        // SphereServiceManager bezirkSphere = new SphereServiceManager(cryptoEngine, upaDevice, sphereRegistry);
         SphereListener sphereListener = Mockito.mock(SphereListener.class);
         //bezirkSphere.initSphere(spherePersistence, comms, sphereListener, sphereConfig);
 
         //pubSubBroker.initPubSubBroker(comms,new MockCallback(),bezirkSphere,bezirkSphere);
-        pubSubBroker.initPubSubBroker(comms,new MockCallback(),null ,null);
-        }
-    String getStreamDownloadPath()
-    {
+        //pubSubBroker.initPubSubBroker(comms, new MockCallback(), null, null);
+    }
+
+    String getStreamDownloadPath() {
         String downloadPath;
         // port factory is part of comms manager
         // CommsConfigurations.portFactory = new
@@ -104,7 +104,7 @@ public class MockSetUpUtilityForBezirkPC {
         // CommsConfigurations.ENDING_PORT_FOR_STREAMING); // initialize the
         // StreamPortFactory
 
-        downloadPath= File.separator+ new String ("downloads")+File.separator;
+        downloadPath = File.separator + new String("downloads") + File.separator;
         final File createDownloadFolder = new File(
                 downloadPath);
         if (!createDownloadFolder.exists()) {

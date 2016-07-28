@@ -116,10 +116,10 @@ public class MockComms implements Comms {
         return false;
     }
 
-    @Override
-    public boolean initComms(CommsProperties commsProperties, InetAddress addr, SphereSecurity sphereSecurity, Streaming streaming) {
-        return false;
-    }
+//    @Override
+//    public boolean initComms(CommsProperties commsProperties, InetAddress addr, SphereSecurity sphereSecurity, Streaming streaming) {
+//        return false;
+//    }
 
 
 

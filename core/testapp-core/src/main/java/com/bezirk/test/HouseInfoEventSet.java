@@ -1,4 +1,4 @@
-package com.bezirk.android;
+package com.bezirk.test;
 
 import com.bezirk.middleware.messages.EventSet;
 

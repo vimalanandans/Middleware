@@ -1,38 +1,18 @@
-package com.bezirk.android;
+package com.bezirk.test;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
-
-import com.bezirk.android.publisher.R;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
-import com.bezirk.middleware.proxy.android.Factory;
-import com.bezirk.test.AirQualityUpdateEvent;
-import com.bezirk.test.HouseInfoEventSet;
-import com.bezirk.test.UpdateAcceptedEvent;
+import com.bezirk.middleware.proxy.Factory;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-//import com.bezirk.examples.protocols.parametricUI.NoticeUIshowText;
+public class Publisher {
 
-public class MainActivity extends AppCompatActivity {
-
-    private TextView tv;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        tv = (TextView) findViewById(R.id.tv);
-        senderZirk();
-    }
-
-    private void senderZirk() {
-        final Bezirk bezirk = Factory.registerZirk(this, "Sender Zirk");
+    public static void main(String[] args) {
+        final Bezirk bezirk = Factory.registerZirk("Publisher Zirk Java");
 
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
 
@@ -41,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
-                    tv.append("\nReceived UpdateAcceptedEvent with test field: " + acceptedEventUpdate.getTestField());
+                    System.out.println("\nReceived UpdateAcceptedEvent with test field: " + acceptedEventUpdate.getTestField());
                 }
             }
         });

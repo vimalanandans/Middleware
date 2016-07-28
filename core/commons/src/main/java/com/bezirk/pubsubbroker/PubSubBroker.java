@@ -59,27 +59,35 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     MessageHandler msgHandler;
 
-    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager) {
+    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager, Comms comms, MessageHandler msgHandler,
+                        SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
         this.device = device;
         this.networkManager = networkManager;
         loadSadlRegistry();
+
+        this.comms = comms;
+        // register event processor
+        this.comms.registerEventMessageReceiver(this);
+        this.sphereServiceAccess = sphereServiceAccess;
+        this.sphereSecurity = sphereSecurity;
+        this.msgHandler = msgHandler;
     }
 
 
     /**
      * initialize the object references for future use
      */
-    public void initPubSubBroker(Comms comms, MessageHandler msgHandler,
-                                 SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity) {
-        this.comms = comms;
-        // register event processor
-        comms.registerEventMessageReceiver(this);
-        this.sphereServiceAccess = sphereServiceAccess;
-        this.sphereSecurity = sphereSecurity;
-        this.msgHandler = msgHandler;
-
-    }
+//    public void initPubSubBroker(Comms comms, MessageHandler msgHandler,
+//                                 SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity) {
+//        this.comms = comms;
+//        // register event processor
+//        comms.registerEventMessageReceiver(this);
+//        this.sphereServiceAccess = sphereServiceAccess;
+//        this.sphereSecurity = sphereSecurity;
+//        this.msgHandler = msgHandler;
+//
+//    }
 
     /* (non-Javadoc)
      * @see com.bezirk.api.sadl.PubSubBrokerServiceTrigger#registerZirk(com.bezirk.api.addressing.ZirkId)

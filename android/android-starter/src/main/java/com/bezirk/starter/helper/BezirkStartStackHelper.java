@@ -16,6 +16,7 @@ import com.bezirk.persistence.DatabaseConnectionForAndroid;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.starter.MainService;
 import com.bezirk.streaming.StreamManager;
+import com.bezirk.streaming.Streaming;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -91,7 +92,7 @@ class BezirkStartStackHelper {
     }
 
 
-    Comms initializeComms(InetAddress inetAddress, PubSubBroker pubSubBroker, CommsNotification errNotificationCallback, NetworkManager networkManager) {
+    Comms initializeComms(CommsNotification errNotificationCallback, NetworkManager networkManager, Streaming streaming) {
         // Instantiate pipeManager before SenderThread so that it is ready to start sending over pipes
         // PipeManager pipeComms = PipeCommsFactory.createPipeComms();
 
@@ -103,7 +104,7 @@ class BezirkStartStackHelper {
         if (commsFactory.getActiveComms() == CommsFeature.COMMS_ZYRE_JNI) {
             String arch = System.getProperty("os.arch");
             logger.info("phone arch " + arch);
-            comms = new ZyreCommsManager(networkManager);
+            comms = new ZyreCommsManager(networkManager, errNotificationCallback, streaming);
         } else {
             //rest of the comms are returned from factory
             /** Initialize the comms. */
@@ -115,13 +116,13 @@ class BezirkStartStackHelper {
         //proxy.setComms(comms);
 
         //init the error notification
-        comms.registerNotification(errNotificationCallback);
+        //comms.registerNotification(errNotificationCallback);
 
         /** initialize the streaming */
         // StreamManager streaming = new StreamManager(comms, pubSubBroker,getStreamDownloadPath());
         /** initialize the communications */
         //  comms.initComms(null, inetAddress, pubSubBroker, null, streaming);
-        comms.initComms(null, inetAddress,  null, null);
+        //comms.initComms(null, inetAddress,  null, null);
 
 
         return comms;

@@ -70,43 +70,45 @@ public abstract class CommsProcessor implements Comms {
     private Streaming bezirkStreamManager = null;
     private final NetworkManager networkManager;
 
-    public CommsProcessor(NetworkManager networkManager) {
-        this.networkManager = networkManager;
-    }
-
-    public CommsProcessor(CommsProperties commsProperties, InetAddress addr, SphereSecurity sphereSecurity,
-                          Streaming streaming, CommsNotification commsNotification, NetworkManager networkManager) {
+    public CommsProcessor(NetworkManager networkManager, CommsNotification commsNotification, Streaming streaming) {
         this.notification = commsNotification;
         this.networkManager = networkManager;
-        msgDispatcher = new CommsMessageDispatcher();
-
+        this.msgDispatcher = new CommsMessageDispatcher();
         if (streaming != null) {
-
             bezirkStreamManager = streaming;
-
             bezirkStreamManager.initStreams(this);
-
         }
-
     }
 
-    @Override
-    public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                              SphereSecurity sphereSecurity, Streaming streaming) {
+//    public CommsProcessor(CommsProperties commsProperties, InetAddress addr, SphereSecurity sphereSecurity,
+//                          Streaming streaming, CommsNotification commsNotification, NetworkManager networkManager) {
+//        this.notification = commsNotification;
+//        this.networkManager = networkManager;
+//        msgDispatcher = new CommsMessageDispatcher();
+//
+//        if (streaming != null) {
+//            bezirkStreamManager = streaming;
+//            bezirkStreamManager.initStreams(this);
+//        }
+//    }
 
-
-        msgDispatcher = new CommsMessageDispatcher();
-
-        if (streaming != null) {
-
-            bezirkStreamManager = streaming;
-
-            bezirkStreamManager.initStreams(this);
-
-        }
-
-        return true;
-    }
+//    @Override
+//    public boolean initComms(CommsProperties commsProperties, InetAddress addr,
+//                              SphereSecurity sphereSecurity, Streaming streaming) {
+//
+//
+//        msgDispatcher = new CommsMessageDispatcher();
+//
+//        if (streaming != null) {
+//
+//            bezirkStreamManager = streaming;
+//
+//            bezirkStreamManager.initStreams(this);
+//
+//        }
+//
+//        return true;
+//    }
 
     @Override
     public boolean startComms() {

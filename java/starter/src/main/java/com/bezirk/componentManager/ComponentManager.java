@@ -9,6 +9,7 @@ import com.bezirk.device.JavaDevice;
 import com.bezirk.networking.JavaNetworkManager;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.persistence.DatabaseConnectionForJava;
+import com.bezirk.proxy.MessageHandler;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.pubsubbroker.PubSubBroker;
 
@@ -33,12 +34,14 @@ public class ComponentManager {
     private PubSubBroker pubSubBroker;
     private RegistryStorage registryStorage;
     private ProxyServer proxyServer;
+    private MessageHandler messageHandler;
     private Device device;
     private NetworkManager networkManager;
     private LifecycleManager lifecycleManager;
 
-    public ComponentManager(ProxyServer proxyServer) {
+    public ComponentManager(ProxyServer proxyServer, MessageHandler messageHandler) {
         this.proxyServer = proxyServer;
+        this.messageHandler = messageHandler;
         create();
     }
 
@@ -58,11 +61,9 @@ public class ComponentManager {
         }
 
         this.device = new JavaDevice();
-
-        this.pubSubBroker = new PubSubBroker(registryStorage, device, networkManager);
+        this.comms = new ZyreCommsManager(null, null, networkManager);
+        this.pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
         this.proxyServer.setPubSubBrokerService(pubSubBroker);
-
-        this.comms = new ZyreCommsManager(null, networkManager.getInetAddress(), null, null, null, networkManager);
 
 
         this.lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);

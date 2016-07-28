@@ -158,21 +158,15 @@ public final class MainStackHandler implements StackHandler {
                      *************************************************************/
                     //Device bezirkDevice = deviceHelper.setBezirkDevice(preferences, service);
                     Device bezirkDevice = new AndroidDevice();
-                    /*************************************************************
-                     * Step 6 : Initialize PubSubBroker and set sadl for proxy *
-                     *************************************************************/
-                    PubSubBroker pubSubBroker = new PubSubBroker(registryPersistence, bezirkDevice, networkManager);
-                    proxy.setPubSubBrokerService(pubSubBroker);
 
-                    /*************************************************************
-                     * Step 7 : Initialize BezirkCommsManager                       *
-                     *************************************************************/
-
-                    comms = bezirkStartStackHelper.initializeComms(networkManager.getInetAddress(), pubSubBroker, errNotificationCallback, networkManager);
+                    comms = bezirkStartStackHelper.initializeComms(errNotificationCallback, networkManager, null);
                     if (!ValidatorUtility.isObjectNotNull(comms)) {
                         logger.error("Unable to initialize comms layer. Shutting down bezirk.");
                         service.stopSelf();
                     }
+
+                    PubSubBroker pubSubBroker = new PubSubBroker(registryPersistence, bezirkDevice, networkManager, comms, serviceMessageHandler, null, null);
+                    proxy.setPubSubBrokerService(pubSubBroker);
 
 
                     /*************************************************************
@@ -194,7 +188,7 @@ public final class MainStackHandler implements StackHandler {
                     //pubSubBroker.initPubSubBroker(comms, serviceMessageHandler, sphereProcessorForMainService.getSphereServiceAccess(),
                     //      sphereProcessorForMainService.getSphereSecurity());
                     // making sphere object reference null
-                    pubSubBroker.initPubSubBroker(comms, serviceMessageHandler, null, null);
+                    //pubSubBroker.initPubSubBroker(comms, serviceMessageHandler, null, null);
 
                     // set proxy handler
                     AndroidProxyServer proxyServer = (AndroidProxyServer) proxy;

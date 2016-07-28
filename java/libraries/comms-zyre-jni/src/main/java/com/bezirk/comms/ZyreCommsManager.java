@@ -5,6 +5,7 @@ import com.bezirk.comms.processor.CommsProcessor;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
+import com.bezirk.streaming.Streaming;
 
 import java.net.InetAddress;
 
@@ -16,14 +17,11 @@ import java.net.InetAddress;
 public class ZyreCommsManager extends CommsProcessor {
     private ZyreCommsJni comms = null;
 
-    public ZyreCommsManager(CommsProperties commsProperties, InetAddress addr,
-                            SphereSecurity security, com.bezirk.streaming.Streaming streaming, CommsNotification commsNotification, NetworkManager networkManager) {
-        super(commsProperties, addr,  security, streaming, commsNotification, networkManager);
+    public ZyreCommsManager(Streaming streaming, CommsNotification commsNotification, NetworkManager networkManager) {
+        super(networkManager, commsNotification, streaming);
         /*init zyre and internals of comms */
         if (comms == null) {
-
             comms = new ZyreCommsJni(this);
-
             comms.initZyre();
         }
 

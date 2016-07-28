@@ -52,12 +52,13 @@ public class ProxyClient implements Bezirk {
     private ZirkId zirkId;
 
     public ProxyClient() {
-        ComponentManager componentManager = new ComponentManager(proxy);
-        componentManager.start();
+
         //MainService mainService = new MainService(proxy, null);
         final BroadcastReceiver brForService = new ZirkMessageReceiver(
                 eventMap, eventListenerMap, streamMap, streamListenerMap);
         ServiceMessageHandler bezirkPcCallback = new ServiceMessageHandler(brForService);
+        ComponentManager componentManager = new ComponentManager(proxy, bezirkPcCallback);
+        componentManager.start();
         //mainService.startStack(bezirkPcCallback);
         proxyPersistence = componentManager.getBezirkProxyPersistence();
         try {

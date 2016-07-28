@@ -57,9 +57,9 @@ public interface Comms {
      * Initialize the communications
      * creates queues, threads, sockets
      **/
-    boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                      SphereSecurity sphereSecurity,
-                      com.bezirk.streaming.Streaming streaming);
+//    boolean initComms(CommsProperties commsProperties, InetAddress addr,
+//                      SphereSecurity sphereSecurity,
+//                      com.bezirk.streaming.Streaming streaming);
 
     boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
 
