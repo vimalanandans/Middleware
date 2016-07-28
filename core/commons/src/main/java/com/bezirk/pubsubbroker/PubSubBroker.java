@@ -274,15 +274,15 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         final StreamRecord streamRecord = new StreamRecord();
         streamRecord.setLocalStreamId(streamId);
         streamRecord.setSenderSEP(senderSEP);
-        streamRecord.setReliable(false);
-        streamRecord.setIncremental(false);
-        streamRecord.setEncrypted(streamDescriptor.isEncrypted());
+        //streamRecord.setReliable(false);
+        //streamRecord.setIncremental(false);
+        streamRecord.setEncryptedStream(streamDescriptor.isEncrypted());
         streamRecord.setSphere(null);
         streamRecord.setStreamStatus(StreamRecord.StreamingStatus.PENDING);
         streamRecord.setRecipientIP(receiver.device);
         streamRecord.setRecipientPort(0);
         streamRecord.setFile(file);
-        streamRecord.setPipedInputStream(null);
+        //streamRecord.setPipedInputStream(null);
         streamRecord.setRecipientSEP(receiver);
         streamRecord.setSerializedStream(serializedStream);
         streamRecord.setStreamTopic(streamDescriptor.topic);
@@ -324,7 +324,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         String streamTopic = streamRecord.getStreamTopic();
         short streamId = streamRecord.getLocalStreamId();
         final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedStream, streamTopic, tempFile.getName(),
-                streamRecord.isEncrypted(), streamRecord.isIncremental(), streamRecord.isReliable(), streamId);
+                streamRecord.isEncryptedStream(), streamId);
         tcMessage.setSphereId(sphereName);
         tcMessage.setMessage(request);
         tcMessage.setSerializedMessage(new Gson().toJson(request));

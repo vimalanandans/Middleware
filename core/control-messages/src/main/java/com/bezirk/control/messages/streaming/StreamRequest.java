@@ -52,15 +52,15 @@ public class StreamRequest extends UnicastControlMessage {
 
     public StreamRequest(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereName,
                          String key, Location location, String serialzedString, String streamLabel, String fileName, boolean isEncrypted,
-                         boolean isIncremental, boolean reliable, short localStreamId) {
+                         short localStreamId) {
         super(sender, recipient, sphereName, discriminator, false, key);
         this.location = location;
         this.serialzedString = serialzedString;
         this.streamLabel = streamLabel;
         this.fileName = fileName;
         this.isEncrypted = isEncrypted;
-        this.isIncremental = isIncremental;
-        this.reliable = reliable;
+        /*this.isIncremental = isIncremental;
+        this.reliable = reliable;*/
         this.localStreamId = localStreamId;
     }
 }

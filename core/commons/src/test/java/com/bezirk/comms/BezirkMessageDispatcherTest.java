@@ -112,7 +112,7 @@ public class BezirkMessageDispatcherTest {
 
         assertTrue("Response is not recieved by mock receiver.", responseReceived);
 
-        ControlMessage streamRequest = new StreamRequest(null, recipient, null, null, null, null, null, null, true, true, true, (short) 0);
+        ControlMessage streamRequest = new StreamRequest(null, recipient, null, null, null, null, null, null, true, (short) 0);
         tcMessage.setMessage(streamRequest);
         commsMessageDispatcher.dispatchControlMessages(tcMessage);
 

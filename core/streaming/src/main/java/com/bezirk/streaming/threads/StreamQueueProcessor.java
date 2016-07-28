@@ -112,20 +112,11 @@ public class StreamQueueProcessor implements Runnable {
     }
 
     private void processStreamReadyMessage(StreamRecord streamRecord) {
-        if (streamRecord.isIncremental()
-                || streamRecord.isReliable()) {
+        if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {
 
-            logger.debug("Bezirk Supports only RELIABLE-COMPLETE..as of now..");
-
+            new Thread(new StreamSendingThread(streamRecord, sadlReceiver, sphereSecurity)).start();                       // spawn the thread
         } else {
-
-            if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {
-
-                new Thread(new StreamSendingThread(streamRecord, sadlReceiver, sphereSecurity)).start();                       // spawn the thread
-            } else {
-
-                logger.error("SphereForSadl is not initialized.");
-            }
+            logger.error("SphereForSadl is not initialized.");
         }
     }
 

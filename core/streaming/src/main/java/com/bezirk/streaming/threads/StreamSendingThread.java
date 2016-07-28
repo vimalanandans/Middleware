@@ -46,7 +46,7 @@ public class StreamSendingThread implements Runnable {
         this.recipientIP = streamRecord.getRecipientIP();
         this.port = streamRecord.getRecipientPort();
         this.file = streamRecord.getFile();
-        this.isEncrypted = streamRecord.isEncrypted();
+        this.isEncrypted = streamRecord.isEncryptedStream();
         this.localStreamId = streamRecord.getLocalStreamId();
         this.senderServiceID = streamRecord.getSenderSEP().zirkId;
         this.sadlReceiver = sadlReceiver;
