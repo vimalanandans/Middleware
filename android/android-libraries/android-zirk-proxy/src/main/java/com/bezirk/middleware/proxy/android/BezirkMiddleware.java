@@ -1,8 +1,11 @@
-package com.bezirk.middleware.proxy;
+package com.bezirk.middleware.proxy.android;
+
+import android.content.Context;
 
 import com.bezirk.middleware.Bezirk;
+import com.bezirk.proxy.api.impl.ZirkId;
 
-public abstract class Factory {
+public abstract class BezirkMiddleware {
     /**
      * Register a Zirk with the Bezirk middleware. This makes the Zirk available to the user in
      * Bezirk configuration interfaces, thus allowing her to place it in a sphere to interact with
@@ -14,10 +17,10 @@ public abstract class Factory {
      * @return an instance of the Bezirk API for the newly registered Zirk, or <code>null</code> if
      * a Zirk with the name <code>zirkName</code> is already registered.
      */
-    public static Bezirk registerZirk(String zirkName) {
-        synchronized (Factory.class) {
-            ProxyClient proxyClient = new ProxyClient();
-            return proxyClient.registerZirk(zirkName) ? proxyClient : null;
+    public static Bezirk registerZirk(Context context, String zirkName) {
+        synchronized (BezirkMiddleware.class) {
+            ZirkId zirkId = ProxyClient.registerZirk(context, zirkName);
+            return zirkId == null ? null : new ProxyClient(context, zirkId);
         }
     }
 }

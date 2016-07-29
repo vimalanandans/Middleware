@@ -6,7 +6,6 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
-import com.bezirk.middleware.messages.Message.Flag;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -82,7 +81,7 @@ public class MulticastEventLocalTest {
     @After
     public void destroyMockservices() {
 
-        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.registerZirk("XXX");
+        Bezirk bezirk = BezirkMiddleware.registerZirk("XXX");
         bezirk.unregisterZirk();
         bezirk.unregisterZirk();
         bezirk.unregisterZirk();
@@ -100,7 +99,7 @@ public class MulticastEventLocalTest {
          * Setup the Zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
+            bezirk = BezirkMiddleware.registerZirk(zirkName);
             eventSet = new MulticastMockMessageSet();
             bezirk.subscribe(eventSet);
         }
@@ -153,7 +152,7 @@ public class MulticastEventLocalTest {
          * Setup the zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
+            bezirk = BezirkMiddleware.registerZirk(zirkName);
             MulticastMockMessageSet events = new MulticastMockMessageSet();
 
             events.setEventReceiver(new EventSet.EventReceiver() {
@@ -183,7 +182,7 @@ public class MulticastEventLocalTest {
          * Setup the zirk
          */
         private final void setupMockService() {
-            bezirk = Factory.registerZirk(zirkName);
+            bezirk = BezirkMiddleware.registerZirk(zirkName);
 
             MulticastMockMessageSet events = new MulticastMockMessageSet();
 

@@ -49,7 +49,7 @@ public class StreamLocalTest {
 
     @After
     public void destroySetUp() {
-        Bezirk bezirk = com.bezirk.middleware.proxy.Factory.registerZirk("XXX");
+        Bezirk bezirk = BezirkMiddleware.registerZirk("XXX");
         bezirk.unregisterZirk();
         bezirk.unregisterZirk();
     }
@@ -66,7 +66,7 @@ public class StreamLocalTest {
          * Setup the zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
+            bezirk = BezirkMiddleware.registerZirk(zirkName);
             messagetSet = new StreamLocalDummyMessageSet();
             bezirk.subscribe(messagetSet);
 
@@ -108,7 +108,7 @@ public class StreamLocalTest {
          * Setup the zirk
          */
         private final void setupMockService() {
-            bezirk = com.bezirk.middleware.proxy.Factory.registerZirk(zirkName);
+            bezirk = BezirkMiddleware.registerZirk(zirkName);
             StreamLocalMockServiceMessageSet streams = new StreamLocalMockServiceMessageSet();
 
             streams.setStreamReceiver(new StreamSet.StreamReceiver<File>() {

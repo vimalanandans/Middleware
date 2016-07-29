@@ -37,8 +37,8 @@ public class RegistrationUnregistrationTest {
         final String zirkName = "MOCK_ZIRK_A";
         Bezirk bezirk = null;
 
-        assertNotNull("Failed to register Zirk", com.bezirk.middleware.proxy.Factory.registerZirk(zirkName));
-        assertNull("Was able to register Zirk name twice.",com.bezirk.middleware.proxy.Factory.registerZirk(zirkName));
+        assertNotNull("Failed to register Zirk", BezirkMiddleware.registerZirk(zirkName));
+        assertNull("Was able to register Zirk name twice.", BezirkMiddleware.registerZirk(zirkName));
 
         // unRegister
         bezirk.unregisterZirk();

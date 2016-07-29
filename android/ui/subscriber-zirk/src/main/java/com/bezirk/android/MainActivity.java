@@ -9,7 +9,7 @@ import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
-import com.bezirk.middleware.proxy.android.Factory;
+import com.bezirk.middleware.proxy.android.BezirkMiddleware;
 import com.bezirk.test.AirQualityUpdateEvent;
 import com.bezirk.test.HouseInfoEventSet;
 import com.bezirk.test.UpdateAcceptedEvent;
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void receiverZirk() {
-        final Bezirk bezirk = Factory.registerZirk(this, "Receiver Zirk");
+        final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Receiver Zirk");
 
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
 

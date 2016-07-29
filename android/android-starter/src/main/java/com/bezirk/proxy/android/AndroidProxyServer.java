@@ -11,6 +11,7 @@ import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.proxy.ProxyServer;
+import com.bezirk.proxy.MessageHandler;
 
 public class AndroidProxyServer extends ProxyServer {
     private static final String TAG = AndroidProxyServer.class.getName();
