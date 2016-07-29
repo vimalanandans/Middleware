@@ -23,14 +23,6 @@ public final class ActionProcessor {
     private static final int START_CODE = 100;
     private static final int STOP_CODE = 101;
 
-    /**
-     * Process BezirkAction based on action type.
-     *
-     * @param intent
-     * @param service
-     * @param ProxyService
-     * @param mainStackHandler
-     */
     public void processBezirkAction(Intent intent, MainService service, AndroidProxyServer ProxyService, MainStackHandler mainStackHandler) {
         BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
 

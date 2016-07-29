@@ -192,7 +192,6 @@ public final class MainStackHandler implements StackHandler {
 
                     // set proxy handler
                     AndroidProxyServer proxyServer = (AndroidProxyServer) proxy;
-                    proxyServer.setMessageHandler(serviceMessageHandler);
                     /*************************************************************
                      * Step 9 : Start CommsConfigurations after sphere initialization       *
                      *************************************************************/

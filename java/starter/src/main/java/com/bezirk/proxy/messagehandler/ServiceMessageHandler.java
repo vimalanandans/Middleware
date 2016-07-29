@@ -37,13 +37,4 @@ public final class ServiceMessageHandler implements com.bezirk.proxy.MessageHand
             logger.debug(RECEIVER_NULL_ERROR);
         }
     }
-
-    @Override
-    public void onStreamStatus(StreamStatusAction streamStatusAction) {
-        if (ValidatorUtility.isObjectNotNull(brForService)) {
-            brForService.onReceive(streamStatusAction);
-        } else {
-            logger.debug(RECEIVER_NULL_ERROR);
-        }
-    }
 }

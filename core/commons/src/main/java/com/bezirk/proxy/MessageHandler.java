@@ -5,7 +5,6 @@ package com.bezirk.proxy;
 
 import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.actions.UnicastEventAction;
-import com.bezirk.actions.StreamStatusAction;
 
 /**
  * Platform independent API used to give MessageHandler to the ProxyForBezirk Library.
@@ -31,5 +30,5 @@ public interface MessageHandler {
      *
      * @param streamStatusAction callbackMessage that will be fired.
      */
-    void onStreamStatus(StreamStatusAction streamStatusAction);
+    //void onStreamStatus(StreamStatusAction streamStatusAction);
 }

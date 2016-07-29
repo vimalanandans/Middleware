@@ -89,29 +89,29 @@ public class ValidatorUtilityTest {
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         StreamRequest request = new StreamRequest(sender, recipient, sphereId,
-                null, null, null, "testFile", true, true, true, (short) 3);
+                null, null, null, "testFile", true, true, true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(sender, recipient, sphereId,
-                null, null, "testString", null, true, true, true, (short) 3);
+                null, null, "testString", null, true, true, true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(sender, recipient, null,
-                null, null, "testString", "testFile", true, true, true, (short) 3);
+                null, null, "testString", "testFile", true, true, true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(null, recipient, sphereId,
-                null, null, "testString", "testFile", true, true, true, (short) 3);
+                null, null, "testString", "testFile", true, true, true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         BezirkZirkEndPoint recepient = new BezirkZirkEndPoint(new ZirkId("test"));
         recepient.device = "";
         request = new StreamRequest(sender, recepient, sphereId,
-                null, null, "testString", "testFile", true, true, true, (short) 3);
+                null, null, "testString", "testFile", true, true, true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 

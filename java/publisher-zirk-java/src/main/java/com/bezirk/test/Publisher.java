@@ -4,7 +4,7 @@ import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
-import com.bezirk.middleware.proxy.Factory;
+import com.bezirk.middleware.proxy.BezirkMiddleware;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,7 +12,7 @@ import java.util.TimerTask;
 public class Publisher {
 
     public static void main(String[] args) {
-        final Bezirk bezirk = Factory.registerZirk("Publisher Zirk Java");
+        final Bezirk bezirk = BezirkMiddleware.registerZirk("Publisher Zirk Java");
 
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
 

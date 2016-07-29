@@ -26,7 +26,7 @@ dependencies {
     //compile 'com.android.support:appcompat-v7:23.4.0'
     compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
     compile 'com.android.support:design:23.1.1'
-    compile project(':android:android-libraries:proxy')
+    compile project(':android:android-libraries:android-zirk-proxy')
     compile project(':core:testapp-core')
     //compile project(':core:protocols:parametricUI-protocols')
     //compile fileTree(dir: 'libs', include: ['*.jar'])

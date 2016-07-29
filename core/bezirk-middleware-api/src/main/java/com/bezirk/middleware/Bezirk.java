@@ -34,11 +34,11 @@ import java.io.PipedOutputStream;
  * <br>
  * <pre>
  * import com.bezirk.middleware.Bezirk;
- * import com.bezirk.middleware.proxy.Factory;
+ * import com.bezirk.middleware.proxy.BezirkMiddleware;
  *
  * // ...
  *
- *          Bezirk bezirk = Factory.registerZirk("Zirk Name Here");
+ *          Bezirk bezirk = BezirkMiddleware.registerZirk("Zirk Name Here");
  *
  * // ...
  *

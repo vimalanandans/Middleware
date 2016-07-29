@@ -4,12 +4,12 @@ import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
-import com.bezirk.middleware.proxy.Factory;
+import com.bezirk.middleware.proxy.BezirkMiddleware;
 
 public class Subscriber {
 
     public static void main(String[] args) {
-        final Bezirk bezirk = Factory.registerZirk("Subscriber Zirk Java");
+        final Bezirk bezirk = BezirkMiddleware.registerZirk("Subscriber Zirk Java");
 
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
 

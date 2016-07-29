@@ -13,7 +13,6 @@ import java.io.PipedInputStream;
  * This class is used as Record for BookKeeping the Streams that has been being pushed by the Services.
  */
 public class StreamRecord extends com.bezirk.control.messages.Ledger {
-    public short localStreamId;
     public BezirkZirkEndPoint senderSEP;
     public boolean isIncremental;                // used for sending the data, set by the sender
     public boolean isReliable;                    // used for sending the data, set by the sender

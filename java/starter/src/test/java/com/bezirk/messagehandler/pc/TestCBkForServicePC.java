@@ -5,12 +5,10 @@ import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.Message;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.proxy.messagehandler.ServiceMessageHandler;
-import com.bezirk.actions.StreamStatusAction;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -25,7 +23,6 @@ public class TestCBkForServicePC {
     private final ServiceMessageHandler cBkForServicePC = new ServiceMessageHandler(BRForService);
     private boolean receivedEvent = false;
     private boolean receivedUnicastStream = false;
-    private boolean receivedStreamStatus = false;
 
     @Test
     public void testFireEventCallback() {
@@ -38,18 +35,10 @@ public class TestCBkForServicePC {
 
     @Test
     public void testFireUnicastStreamCallback() {
-        ReceiveFileStreamAction unicastStreamCallbackMessage = new ReceiveFileStreamAction(new ZirkId("TEST"), null, null, (short) 0, null);
+        ReceiveFileStreamAction unicastStreamCallbackMessage = new ReceiveFileStreamAction(new ZirkId("TEST"), null, null, null);
         cBkForServicePC.onIncomingStream(unicastStreamCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire Unicast stream.", receivedUnicastStream);
-    }
-
-    @Test
-    public void testFireStreamStatusCallback() {
-        StreamStatusAction streamStatusCallbackMessage = new StreamStatusAction(new ZirkId("TEST"), 0, (short) 0);
-        cBkForServicePC.onStreamStatus(streamStatusCallbackMessage);
-
-        assertTrue("Callback Zirk is unable to fire stream status.", receivedStreamStatus);
     }
 
     class BRForServiceMock implements BroadcastReceiver {
@@ -59,8 +48,6 @@ public class TestCBkForServicePC {
                 receivedEvent = true;
             } else if (BezirkAction.ACTION_ZIRK_RECEIVE_STREAM.equals(callbackMessage.getAction())) {
                 receivedUnicastStream = true;
-            } else if (BezirkAction.ACTION_ZIRK_RECEIVE_STREAM_STATUS.equals(callbackMessage.getAction())) {
-                receivedStreamStatus = true;
             }
         }
     }

@@ -4,7 +4,7 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.ZirkId;
 
 /**
- * Platform independent API's used by SADL for validating the responses by the control channel.
+ * Platform independent API's used by PubSubBroker for validating the responses by the control channel.
  */
 public interface PubSubBrokerControlReceiver {
 

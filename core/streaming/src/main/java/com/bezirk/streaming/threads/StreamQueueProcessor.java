@@ -3,7 +3,6 @@
  */
 package com.bezirk.streaming.threads;
 
-import com.bezirk.actions.StreamStatusAction;
 import com.bezirk.streaming.MessageQueue;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.actions.ReceiveFileStreamAction;
@@ -68,7 +67,7 @@ public class StreamQueueProcessor implements Runnable {
                 running = false;
                 continue;
             }
-            List<Ledger> streamQueue = new CopyOnWriteArrayList<Ledger>(
+            List<Ledger> streamQueue = new CopyOnWriteArrayList<>(
                     msgQueue.getQueue()); // pop the StreamDescriptor record
             Iterator<Ledger> it = streamQueue.iterator();
             if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {
@@ -103,12 +102,12 @@ public class StreamQueueProcessor implements Runnable {
 
         logger.debug("The Recipient is Busy, Giving Callback to the Zirk");
 
-        StreamStatusAction streamStatusAction = new StreamStatusAction(
+    /*    StreamStatusAction streamStatusAction = new StreamStatusAction(
                 streamRecord.senderSEP.zirkId, 0, streamRecord.localStreamId);
 
         if (bezirkCallbackPresent) {
             sadlReceiver.processStreamStatus(streamStatusAction);
-        }
+        }*/
     }
 
     private void processStreamReadyMessage(StreamRecord streamRecord) {
@@ -127,18 +126,18 @@ public class StreamQueueProcessor implements Runnable {
     private void processLocalStreamMessage(boolean bezirkCallbackPresent,
                                            StreamRecord streamRecord) {
         // GIVE THE CALLBACK AS SUCCESS FOR THE SENDER
-        StreamStatusAction streamStatusAction = new StreamStatusAction(
+      /*  StreamStatusAction streamStatusAction = new StreamStatusAction(
                 streamRecord.senderSEP.zirkId, 1, streamRecord.localStreamId);
         if (bezirkCallbackPresent) {
 
             sadlReceiver.processStreamStatus(streamStatusAction);
 
-        }
+        }*/
         // GIVE CALLBACK FOR RECIPIENT
         ReceiveFileStreamAction uStreamCallbackMsg = new ReceiveFileStreamAction(
                 streamRecord.recipientSEP.zirkId,
                 streamRecord.serializedStream, streamRecord.file,
-                streamRecord.localStreamId, streamRecord.senderSEP);
+                streamRecord.senderSEP);
 
         if (bezirkCallbackPresent) {
             sadlReceiver.processNewStream(uStreamCallbackMsg);
