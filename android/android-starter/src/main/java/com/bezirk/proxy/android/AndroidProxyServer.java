@@ -13,7 +13,6 @@ import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.MessageHandler;
-import com.bezirk.actions.StreamStatusAction;
 import com.google.gson.Gson;
 
 public class AndroidProxyServer extends ProxyServer {
@@ -78,12 +77,7 @@ public class AndroidProxyServer extends ProxyServer {
 
         short sendStreamStatus = super.sendStream(streamAction);
 
-        if (sendStreamStatus != -1) {
-            StreamStatusAction streamStatusCallbackMessage = new StreamStatusAction(
-                    gson.fromJson(streamAction.getDescriptor().toJson(), ZirkId.class),
-                    0, streamAction.getStreamId());
-            messageHandler.onStreamStatus(streamStatusCallbackMessage);
-        }
+        // TODO: Communicate stream status
     }
 
     public void setLocation(Intent intent) {

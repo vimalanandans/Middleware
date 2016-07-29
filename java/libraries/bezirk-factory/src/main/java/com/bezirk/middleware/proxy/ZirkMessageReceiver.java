@@ -1,7 +1,6 @@
 package com.bezirk.middleware.proxy;
 
 import com.bezirk.actions.ReceiveFileStreamAction;
-import com.bezirk.actions.StreamStatusAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
 import com.bezirk.middleware.messages.Event;
@@ -65,14 +64,6 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
                     ReceiveFileStreamAction strmMsg = (ReceiveFileStreamAction) incomingMessage;
                     handlerStreamUnicastCallback(strmMsg);
                     break;
-                case ACTION_ZIRK_RECEIVE_STREAM_STATUS:
-                    if (!(incomingMessage instanceof StreamStatusAction)) {
-                        throw new AssertionError("incomingMessage is not an instance of StreamStatusAction");
-                    }
-
-                    StreamStatusAction streamStatusCallbackMessage = (StreamStatusAction) incomingMessage;
-                    handleStreamStatusCallback(streamStatusCallbackMessage);
-                    break;
                 default:
                     logger.error("Unimplemented action: {}" + incomingMessage.getAction());
             }
@@ -120,28 +111,13 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
                 StreamDescriptor.class);
         String streamName = streamDescriptor.getClass().getName();
 
-        if (checkDuplicateStream(incomingStream.getSender().zirkId.getZirkId(), incomingStream.getLocalStreamId())) {
-            if (streamListenerMap.containsKey(streamName)) {
-                for (StreamSet.StreamReceiver listener : streamListenerMap.get(streamName)) {
-                    listener.receiveStream(streamDescriptor, incomingStream.getFile(), incomingStream.getSender());
-                }
-            } else {
-                logger.error("StreamListenerMap does not have a mapped StreamDescriptor");
+        if (streamListenerMap.containsKey(streamName)) {
+            for (StreamSet.StreamReceiver listener : streamListenerMap.get(streamName)) {
+                listener.receiveStream(streamDescriptor, incomingStream.getFile(), incomingStream.getSender());
             }
         } else {
-            logger.error("Duplicate StreamDescriptor Request Received");
+            logger.error("StreamListenerMap does not have a mapped StreamDescriptor");
         }
-    }
-
-    /**
-     * Handles the StreamDescriptor Status callback and gives the callback to the zirk. This is called from
-     * platform specific BezirkCallback Implementation.
-     *
-     * @param streamStatusCallbackMessage StreamStatusCallback that will be invoked for the services.
-     */
-    private void handleStreamStatusCallback(StreamStatusAction streamStatusCallbackMessage) {
-        throw new UnsupportedOperationException("Passing a stream's status to a stream status " +
-                "listener is currently unsupported.");
     }
 
     /**

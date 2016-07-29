@@ -42,17 +42,14 @@ public class ProxyClient implements Bezirk {
     private final Map<ZirkId, Set<StreamSet.StreamReceiver>> streamMap = new HashMap<>();
     private final Map<String, Set<EventSet.EventReceiver>> eventListenerMap = new HashMap<>();
     private final Map<String, Set<StreamSet.StreamReceiver>> streamListenerMap = new HashMap<>();
-    private final Map<String, String> activeStreams = new HashMap<>();
     private final ProxyServer proxy = new ProxyServer();
     private final ProxyPersistence proxyPersistence;
 
-    private short streamFactory = 0;
     private ProxyRegistry proxyRegistry = null;
 
     private ZirkId zirkId;
 
     public ProxyClient() {
-
         //MainService mainService = new MainService(proxy, null);
         final BroadcastReceiver brForService = new ZirkMessageReceiver(
                 eventMap, eventListenerMap, streamMap, streamListenerMap);
@@ -205,9 +202,7 @@ public class ProxyClient implements Bezirk {
 
     @Override
     public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file) {
-        short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
-        activeStreams.put(zirkId.getZirkId() + streamId, streamDescriptor.getClass().getName());
-        proxy.sendStream(new SendFileStreamAction(zirkId, recipient, streamDescriptor, streamId, file));
+        proxy.sendStream(new SendFileStreamAction(zirkId, recipient, streamDescriptor, file));
     }
 
     @Override

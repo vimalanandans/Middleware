@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.bezirk.actions.ReceiveFileStreamAction;
-import com.bezirk.actions.StreamStatusAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
 import com.bezirk.middleware.messages.Event;
@@ -48,9 +47,6 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
                 break;
             case ACTION_ZIRK_RECEIVE_STREAM:
                 processStreamUnicast((ReceiveFileStreamAction) message);
-                break;
-            case ACTION_ZIRK_RECEIVE_STREAM_STATUS:
-                processStreamStatus((StreamStatusAction) message);
                 break;
             default:
                 Log.e(TAG, "Unimplemented action: " + message.getAction());
@@ -143,26 +139,14 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
             Log.e(TAG, "Unicast StreamDescriptor has some null quantities");
             return;
         }
-        final short streamId = streamMessage.getLocalStreamId();
 
-        if (checkDuplicateStream(senderSep.zirkId.getZirkId(), streamId)) {
+        boolean isStreamReceived = receiveStream(streamMsg, senderSep,
+                file.getPath(), ProxyClient.streamListenerMap);
 
-            boolean isStreamReceived = receiveStream(streamMsg, senderSep,
-                    file.getPath(), ProxyClient.streamListenerMap);
+        if (!isStreamReceived) {
 
-            if (!isStreamReceived) {
-
-                Log.e(TAG, " StreamListenerMap doesn't have a mapped StreamDescriptor");
-            }
-
-        } else {
-            Log.e(TAG, "Duplicate StreamDescriptor Request Received");
+            Log.e(TAG, " StreamListenerMap doesn't have a mapped StreamDescriptor");
         }
-    }
-
-    private void processStreamStatus(StreamStatusAction statusMessage) {
-        throw new UnsupportedOperationException("Passing a stream's status to a stream status " +
-                "listener is currently unsupported.");
     }
 
     private boolean checkDuplicateMsg(final String sid, final String messageId) {

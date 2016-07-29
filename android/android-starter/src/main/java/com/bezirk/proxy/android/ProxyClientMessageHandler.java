@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.proxy.MessageHandler;
-import com.bezirk.actions.StreamStatusAction;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -53,17 +52,6 @@ public class ProxyClientMessageHandler implements MessageHandler {
             fireIntentToService(fireIntent);
         } catch (Exception e) {
             logger.error("Cannot give callback as all the fields are not set", e);
-        }
-    }
-
-    @Override
-    public void onStreamStatus(StreamStatusAction streamStatusAction) {
-        try {
-            final Intent fireIntent = new Intent();
-            fireIntent.putExtra("message", streamStatusAction);
-            fireIntentToService(fireIntent);
-        } catch (Exception e) {
-            logger.error("Callback cannot be given to the services as there is some exception in the Firing the Intent", e);
         }
     }
 

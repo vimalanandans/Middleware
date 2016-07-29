@@ -1,8 +1,6 @@
 package com.bezirk.pubsubbroker;
 
 import com.bezirk.actions.ReceiveFileStreamAction;
-import com.bezirk.actions.StreamStatusAction;
-import com.bezirk.control.messages.EventLedger;
 
 /**
  * Platform independent API's used by the pubsuber for handling incoming event pub sub Reception.
@@ -34,12 +32,6 @@ public interface PubSubEventReceiver {
 	 */
     // Not used anymore
 	/*public Set<ZirkId> checkMulticastEvent(final String topic, final Location location);*/
-
-
-    /**
-     * notify the stream status
-     */
-    boolean processStreamStatus(StreamStatusAction streamStatusNotification);
 
     /**
      * notify the stream data

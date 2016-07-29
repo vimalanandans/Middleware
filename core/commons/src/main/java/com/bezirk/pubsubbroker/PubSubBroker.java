@@ -2,7 +2,6 @@ package com.bezirk.pubsubbroker;
 
 import com.bezirk.actions.BezirkAction;
 import com.bezirk.actions.ReceiveFileStreamAction;
-import com.bezirk.actions.StreamStatusAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.processor.EventMsgReceiver;
@@ -41,10 +40,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * This class implements the PubSubBrokerServiceTrigger, PubSubBrokerServiceInfo Interfaces. This class is used by ProxyForServices (by casting PubSubBrokerServiceTrigger)
+ * This class implements the PubSubBrokerZirkServicer, PubSubBrokerServiceInfo Interfaces. This class is used by ProxyForServices (by casting PubSubBrokerZirkServicer)
  * EventSender/ EventReceiver/ ControlSender/ ControlReceiver by casting PubSubBrokerServiceInfo.
  */
-public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerServiceInfo, PubSubBrokerControlReceiver, PubSubEventReceiver, EventMsgReceiver {
+public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServiceInfo, PubSubBrokerControlReceiver, PubSubEventReceiver, EventMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(PubSubBroker.class);
 
     private static final String SPHERE_NULL_NAME = "SPHERE_NONE";
@@ -91,10 +90,10 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 //    }
 
     /* (non-Javadoc)
-     * @see com.bezirk.api.sadl.PubSubBrokerServiceTrigger#registerZirk(com.bezirk.api.addressing.ZirkId)
+     * @see com.bezirk.api.sadl.PubSubBrokerZirkServicer#registerZirk(com.bezirk.api.addressing.ZirkId)
      */
     @Override
-    public Boolean registerService(final ZirkId zirkId, final String zirkName) {
+    public boolean registerZirk(final ZirkId zirkId, final String zirkName) {
 
         // Step 1: Register with PubSubBroker
         boolean isPubSubPassed = registerService(zirkId);
@@ -114,7 +113,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             } else {
                 // unregister the PubSubBroker due to failure in sphere
                 logger.error("sphere Registration Failed. unregistring PubSubBroker");
-                unregisterService(zirkId);
+                unregisterZirk(zirkId);
             }
         }
         return isPubSubPassed;
@@ -138,10 +137,10 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     /* (non-Javadoc)
-     * @see PubSubBrokerServiceTrigger#subscribe(com.bezirk.api.addressing.ZirkId, MessageSet)
+     * @see PubSubBrokerZirkServicer#subscribe(com.bezirk.api.addressing.ZirkId, MessageSet)
      */
     @Override
-    public Boolean subscribeService(final ZirkId zirkId, final MessageSet messageSet) {
+    public boolean subscribe(final ZirkId zirkId, final MessageSet messageSet) {
         if (!isZirkRegistered(zirkId)) {
             logger.info("Zirk tried to subscribe without Registration");
             return false;
@@ -155,7 +154,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public Boolean unsubscribe(final ZirkId zirkId, final MessageSet messageSet) {
+    public boolean unsubscribe(final ZirkId zirkId, final MessageSet messageSet) {
         if (pubSubBrokerRegistry.unsubscribe(zirkId, messageSet)) {
             persistSadlRegistry();
             return true;
@@ -164,7 +163,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     @Override
-    public Boolean unregisterService(final ZirkId zirkId) {
+    public boolean unregisterZirk(final ZirkId zirkId) {
         if (!ValidatorUtility.checkBezirkZirkId(zirkId)) {
             logger.error("Invalid UnRegistration, Validation failed");
             return false;
@@ -178,7 +177,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
 
     @Override
-    public Boolean setLocation(final ZirkId zirkId, final Location location) {
+    public boolean setLocation(final ZirkId zirkId, final Location location) {
         if (pubSubBrokerRegistry.setLocation(zirkId, location)) {
             persistSadlRegistry();
             return true;
@@ -279,7 +278,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         return true;
     }
 
-    public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId) {
+    public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file) {
 
         final Iterable<String> listOfSphere;
 
@@ -298,10 +297,10 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         try {
             final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(senderId);
-            final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":" + streamId;
+            final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId();
             final StreamDescriptor streamDescriptor = new Gson().fromJson(serializedString, StreamDescriptor.class);
 
-            final StreamRecord streamRecord = prepareStreamRecord(receiver, serializedString, file, streamId, senderSEP, streamDescriptor);
+            final StreamRecord streamRecord = prepareStreamRecord(receiver, serializedString, file, senderSEP, streamDescriptor);
 
             boolean streamStoreStatus = comms.registerStreamBook(streamRequestKey, streamRecord);
             if (!streamStoreStatus) {
@@ -317,9 +316,9 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
 
-    StreamRecord prepareStreamRecord(BezirkZirkEndPoint receiver, String serializedStream, File file, short streamId, BezirkZirkEndPoint senderSEP, StreamDescriptor streamDescriptor) {
+    StreamRecord prepareStreamRecord(BezirkZirkEndPoint receiver, String serializedStream, File file,
+                                     BezirkZirkEndPoint senderSEP, StreamDescriptor streamDescriptor) {
         final StreamRecord streamRecord = new StreamRecord();
-        streamRecord.localStreamId = streamId;
         streamRecord.senderSEP = senderSEP;
         streamRecord.isReliable = false;
         streamRecord.isIncremental = false;
@@ -374,9 +373,8 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         BezirkZirkEndPoint senderSEP = streamRecord.senderSEP;
         BezirkZirkEndPoint receiver = streamRecord.recipientSEP;
         String serializedStream = streamRecord.serializedStream;
-        short streamId = streamRecord.localStreamId;
         final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedStream, tempFile.getName(),
-                streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.isReliable, streamId);
+                streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.isReliable);
         tcMessage.setSphereId(sphereName);
         tcMessage.setMessage(request);
         tcMessage.setSerializedMessage(new Gson().toJson(request));
@@ -526,11 +524,11 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         }
     }
 
-    @Override
+   /* @Override
     public boolean processStreamStatus(StreamStatusAction streamStatusNotification) {
         msgHandler.onStreamStatus(streamStatusNotification);
         return true;
-    }
+    }*/
 
     @Override
     public boolean processNewStream(ReceiveFileStreamAction streamData) {

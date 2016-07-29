@@ -11,16 +11,14 @@ public final class ReceiveFileStreamAction extends ZirkAction {
      * Path to downloaded file.
      */
     private final File file;
-    private final short localStreamId;
     private final BezirkZirkEndPoint sender;
 
     public ReceiveFileStreamAction(ZirkId recipientId, String serializedStream,
-                                   File file, short localStreamId, BezirkZirkEndPoint sender) {
+                                   File file, BezirkZirkEndPoint sender) {
         super(recipientId);
 
         this.serializedStream = serializedStream;
         this.file = file;
-        this.localStreamId = localStreamId;
         this.sender = sender;
     }
 
@@ -30,10 +28,6 @@ public final class ReceiveFileStreamAction extends ZirkAction {
 
     public File getFile() {
         return file;
-    }
-
-    public short getLocalStreamId() {
-        return localStreamId;
     }
 
     public BezirkZirkEndPoint getSender() {
