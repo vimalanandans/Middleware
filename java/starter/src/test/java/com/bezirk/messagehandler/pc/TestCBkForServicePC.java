@@ -33,13 +33,13 @@ public class TestCBkForServicePC {
         assertTrue("Callback Zirk is unable to fire eventCallback. ", receivedEvent);
     }
 
-    @Test
-    public void testFireUnicastStreamCallback() {
-        ReceiveFileStreamAction unicastStreamCallbackMessage = new ReceiveFileStreamAction(new ZirkId("TEST"), null, null, null);
-        cBkForServicePC.onIncomingStream(unicastStreamCallbackMessage);
-
-        assertTrue("Callback Zirk is unable to fire Unicast stream.", receivedUnicastStream);
-    }
+//    @Test
+//    public void testFireUnicastStreamCallback() {
+//        ReceiveFileStreamAction unicastStreamCallbackMessage = new ReceiveFileStreamAction(new ZirkId("TEST"), null, null, null);
+//        cBkForServicePC.onIncomingStream(unicastStreamCallbackMessage);
+//
+//        assertTrue("Callback Zirk is unable to fire Unicast stream.", receivedUnicastStream);
+//    }
 
     class BRForServiceMock implements BroadcastReceiver {
         @Override
