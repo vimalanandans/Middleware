@@ -32,9 +32,9 @@
              android:screenOrientation="portrait">
 
          </activity>
-         -->s
+         -->
         <service
-            android:name="com.bezirk.starter.MainService"
+            android:name="com.bezirk.componentManager.ComponentManager"
             android:exported="true"></service>
 
         <!--<receiver android:name="com.bosch.upa.uhu.sphere.juggler.SphereScanner" >
