@@ -211,25 +211,27 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
         while (sphereIterator.hasNext()) {
 
-            final EventLedger ecMessage = new EventLedger();
-            ecMessage.setIsMulticast(true);
-            ecMessage.setSerializedMessage(serializedEventMsg);
-            ecMessage.setIsLocal(true);
+            final EventLedger eventLedger = new EventLedger();
+            eventLedger.setIsMulticast(true);
+            eventLedger.setSerializedMessage(serializedEventMsg);
             final MulticastHeader mHeader = new MulticastHeader();
             mHeader.setRecipientSelector(recipientSelector);
             mHeader.setSenderSEP(senderSEP);
             mHeader.setUniqueMsgId(uniqueMsgId.toString());
             mHeader.setSphereName(sphereIterator.next());
             mHeader.setEventName(eventName);
-            ecMessage.setHeader(mHeader);
-            ecMessage.setSerializedHeader(mHeader.serialize());
+            eventLedger.setHeader(mHeader);
+            eventLedger.setSerializedHeader(mHeader.serialize());
 
             if (ValidatorUtility.isObjectNotNull(comms)) {
-                comms.sendMessage(ecMessage);
+                comms.sendMessage(eventLedger);
             } else {
                 logger.error("Comms manager not initialized");
                 return false;
             }
+
+            sendMessageToLocal(eventLedger);
+
         }
         return true;
     }
@@ -257,26 +259,34 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         //final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
 
         while (sphereIterator.hasNext()) {
-            final EventLedger ecMessage = new EventLedger();
-            ecMessage.setIsMulticast(false);
-            ecMessage.setSerializedMessage(serializedEventMsg);
-            ecMessage.setIsLocal(recipient.device.equals(senderSEP.device));
+            final EventLedger eventLedger = new EventLedger();
+            eventLedger.setIsMulticast(false);
+            eventLedger.setSerializedMessage(serializedEventMsg);
             final UnicastHeader uHeader = new UnicastHeader();
             uHeader.setRecipient(recipient);
             uHeader.setSenderSEP(senderSEP);
             uHeader.setUniqueMsgId(uniqueMsgId.toString());
             uHeader.setSphereName(sphereIterator.next());
             uHeader.setEventName(eventName);
-            ecMessage.setHeader(uHeader);
-            ecMessage.setSerializedHeader(uHeader.serialize());
+            eventLedger.setHeader(uHeader);
+            eventLedger.setSerializedHeader(uHeader.serialize());
+
             if (ValidatorUtility.isObjectNotNull(comms)) {
-                comms.sendMessage(ecMessage);
+                comms.sendMessage(eventLedger);
             } else {
                 logger.error("Comms manager not initialized");
                 return false;
             }
+
+            sendMessageToLocal(eventLedger);
         }
         return true;
+    }
+
+    /** send the event messages to local zirks */
+    void sendMessageToLocal(EventLedger eventLedger)
+    {
+        processEvent(eventLedger);
     }
 
     public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file, short streamId) {
@@ -403,17 +413,18 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         return pubSubBrokerRegistry.isStreamTopicRegistered(streamName, serviceId);
     }
 
+    /** called on incoming message and loop back message*/
     @Override
     public boolean processEvent(final EventLedger eLedger) {
 
         Set<ZirkId> serviceList = getAssociatedServiceList(eLedger);
 
         if (null == serviceList || serviceList.isEmpty()) {
-            logger.debug("No services are present to respond to the request");
+            //logger.debug("No services are present to respond to the request");
             return false;
         }
 
-        if (!eLedger.getIsLocal() && !decryptMsg(eLedger)) {
+        if (!decryptMsg(eLedger)) {
             return false;
         }
 
@@ -452,13 +463,6 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
     }
 
     private Set<ZirkId> getAssociatedServiceList(final EventLedger eLedger) {
-        String eventName;
-       /* if (eLedger.getSerializedMessage() == null || eLedger.getSerializedMessage().isEmpty()) {
-            eventName = "";
-        } else {
-            JsonObject eventJson = new JsonParser().parse(eLedger.getSerializedMessage()).getAsJsonObject();
-            eventName = eventJson.get("type").getAsString();
-        }*/
 
         Set<ZirkId> serviceList = null;
         if (eLedger.getIsMulticast()) {
@@ -485,16 +489,22 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             // Decrypt the event message
             decryptedEventMsg = sphereSecurity.decryptSphereContent(
                     eLedger.getHeader().getSphereName(), eLedger.getEncryptedMessage());
+
+            if (!ValidatorUtility.checkForString(decryptedEventMsg)) {
+                logger.debug("Decryption Failed: sphereId-" + eLedger.getHeader().getSphereName() + " may not exist");
+                return false;
+            }
+
         } else { // no sphere object hence
-            decryptedEventMsg = new String(eLedger.getEncryptedMessage());
+            if(eLedger.getEncryptedMessage() == null) //if it is local message
+                decryptedEventMsg = new String(eLedger.getSerializedMessage());
+            else
+                decryptedEventMsg = new String(eLedger.getEncryptedMessage());
         }
 
 
-        if (!ValidatorUtility.checkForString(decryptedEventMsg)) {
-            logger.debug("Header Decryption Failed: sphereId-" + eLedger.getHeader().getSphereName() + " may not exist");
 
-            return false;
-        }
+
         eLedger.setSerializedMessage(decryptedEventMsg);
         return true;
     }
