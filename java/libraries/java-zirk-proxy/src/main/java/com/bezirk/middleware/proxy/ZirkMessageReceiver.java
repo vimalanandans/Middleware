@@ -45,28 +45,18 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
 
     @Override
     public void onReceive(ZirkAction incomingMessage) {
-        if (eventMap.containsKey(incomingMessage.getZirkId()) ||
-                streamMap.containsKey(incomingMessage.getZirkId())) {
-            switch (incomingMessage.getAction()) {
-                case ACTION_ZIRK_RECEIVE_EVENT:
-                    if (!(incomingMessage instanceof UnicastEventAction)) {
-                        throw new AssertionError("incomingMessage is not an instance of UnicastEventAction");
-                    }
+        if (!eventMap.containsKey(incomingMessage.getZirkId()) &&
+                !streamMap.containsKey(incomingMessage.getZirkId())) return;
 
-                    UnicastEventAction eventCallbackMessage = (UnicastEventAction) incomingMessage;
-                    handleEventCallback(eventCallbackMessage);
-                    break;
-                case ACTION_ZIRK_RECEIVE_STREAM:
-                    if (!(incomingMessage instanceof ReceiveFileStreamAction)) {
-                        throw new AssertionError("incomingMessage is not an instance of ReceiveFileStreamAction");
-                    }
-
-                    ReceiveFileStreamAction strmMsg = (ReceiveFileStreamAction) incomingMessage;
-                    handlerStreamUnicastCallback(strmMsg);
-                    break;
-                default:
-                    logger.error("Unimplemented action: {}" + incomingMessage.getAction());
-            }
+        switch (incomingMessage.getAction()) {
+            case ACTION_ZIRK_RECEIVE_EVENT:
+                processEvent((UnicastEventAction) incomingMessage);
+                break;
+            case ACTION_ZIRK_RECEIVE_STREAM:
+                processStream((ReceiveFileStreamAction) incomingMessage);
+                break;
+            default:
+                logger.error("Unimplemented action: {}", incomingMessage.getAction());
         }
     }
 
@@ -76,22 +66,24 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      *
      * @param incomingEvent new event to send up to Zirks registered to receive it
      */
-    private void handleEventCallback(UnicastEventAction incomingEvent) {
-        Event event = Event.fromJson(incomingEvent.getSerializedEvent(), Event.class);
-        String eventName = event.getClass().getName();
+    private void processEvent(UnicastEventAction incomingEvent) {
+        final Event event = Event.fromJson(incomingEvent.getSerializedEvent(), Event.class);
+        final String eventName = event.getClass().getName();
 
-        BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
+        final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
 
-        logger.debug("About to callback zid:" + incomingEvent.getZirkId().getZirkId() + " for id:" + incomingEvent.getMessageId());
+        logger.debug("About to callback zid: {} for id: {}", incomingEvent.getZirkId().getZirkId(),
+                incomingEvent.getMessageId());
 
         //Make a combined zid for sender and recipient
-        String combinedSid = endpoint.zirkId.getZirkId() + ":" + incomingEvent.getZirkId().getZirkId();
+        final String combinedSid = endpoint.zirkId.getZirkId() + ":" + incomingEvent.getZirkId().getZirkId();
         if (checkDuplicateMsg(combinedSid, incomingEvent.getMessageId())) {
-            Set<EventSet.EventReceiver> tempListenersEventMap = eventMap.get(incomingEvent.getZirkId());
-            Set<EventSet.EventReceiver> tempListenersMessageMap = eventListenerMap.get(eventName);
-            if (tempListenersEventMap != null && tempListenersMessageMap != null) {
-                for (EventSet.EventReceiver invokingListener : tempListenersEventMap) {
-                    if (tempListenersMessageMap.contains(invokingListener)) {
+            final Set<EventSet.EventReceiver> tempEventSet = eventMap.get(incomingEvent.getZirkId());
+            final Set<EventSet.EventReceiver> tempMessageSet = eventListenerMap.get(eventName);
+
+            if (tempEventSet != null && tempMessageSet != null) {
+                for (EventSet.EventReceiver invokingListener : tempEventSet) {
+                    if (tempMessageSet.contains(invokingListener)) {
                         invokingListener.receiveEvent(event, endpoint);
                     }
                 }
@@ -106,10 +98,10 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      *
      * @param incomingStream streamMessage that will be given back to the services.
      */
-    private void handlerStreamUnicastCallback(ReceiveFileStreamAction incomingStream) {
-        StreamDescriptor streamDescriptor = StreamDescriptor.fromJson(incomingStream.getSerializedStream(),
+    private void processStream(ReceiveFileStreamAction incomingStream) {
+        final StreamDescriptor streamDescriptor = StreamDescriptor.fromJson(incomingStream.getSerializedStream(),
                 StreamDescriptor.class);
-        String streamName = streamDescriptor.getClass().getName();
+        final String streamName = streamDescriptor.getClass().getName();
 
         if (streamListenerMap.containsKey(streamName)) {
             for (StreamSet.StreamReceiver listener : streamListenerMap.get(streamName)) {
@@ -120,9 +112,28 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
         }
     }
 
-    /**
-     * This method is used to check if the stream is a duplicate
-     */
+    private boolean checkDuplicateMsg(final String sid, final String messageId) {
+        final String key = sid + ":" + messageId;
+        final Long currentTime = new Date().getTime();
+        if (duplicateMsgMap.containsKey(key)) {
+            if (currentTime - duplicateMsgMap.get(key) > TIME_DURATION) {
+                duplicateMsgMap.remove(key);
+                duplicateMsgMap.put(key, currentTime);
+                return true;
+            } else
+                return false;
+        } else {
+            duplicateMsgMap.put(key, currentTime);
+
+            if (duplicateMsgMap.size() < MAX_MAP_SIZE) {
+                return true;
+            } else {
+                duplicateMsgMap.remove(duplicateMsgMap.keySet().iterator().next());
+                return true;
+            }
+        }
+    }
+
     private boolean checkDuplicateStream(final String sid, final int streamId) {
         final String key = sid + ":" + streamId;
         final Long currentTime = new Date().getTime();
@@ -131,43 +142,15 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
                 duplicateStreamMap.remove(key);
                 duplicateStreamMap.put(key, currentTime);
                 return true;
-            } else {
-
+            } else
                 return false;
-            }
         } else {
+            duplicateStreamMap.put(key, currentTime);
+
             if (duplicateStreamMap.size() < MAX_MAP_SIZE) {
-                duplicateStreamMap.put(key, currentTime);
                 return true;
             } else {
                 duplicateStreamMap.remove(duplicateStreamMap.keySet().iterator().next());
-                duplicateStreamMap.put(key, currentTime);
-                return true;
-            }
-        }
-    }
-
-    /**
-     * This method is used to check if the Event is a duplicate
-     */
-    private synchronized boolean checkDuplicateMsg(final String sid, final String messageId) {
-        final String key = sid + ":" + messageId;
-        final Long currentTime = new Date().getTime();
-        if (duplicateMsgMap.containsKey(key)) {
-            if (currentTime - duplicateMsgMap.get(key) > TIME_DURATION) {
-                duplicateMsgMap.remove(key);
-                duplicateMsgMap.put(key, currentTime);
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            if (duplicateMsgMap.size() < MAX_MAP_SIZE) {
-                duplicateMsgMap.put(key, currentTime);
-                return true;
-            } else {
-                duplicateMsgMap.remove(duplicateMsgMap.keySet().iterator().next());
-                duplicateMsgMap.put(key, currentTime);
                 return true;
             }
         }

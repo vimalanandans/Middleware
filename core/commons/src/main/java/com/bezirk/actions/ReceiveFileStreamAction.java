@@ -17,6 +17,18 @@ public final class ReceiveFileStreamAction extends ZirkAction {
                                    File file, BezirkZirkEndPoint sender) {
         super(recipientId);
 
+        if (serializedStream == null) {
+            throw new IllegalArgumentException("serializedStream cannot be null");
+        }
+
+        if (file == null) {
+            throw new IllegalArgumentException("file cannot be null");
+        }
+
+        if (sender == null) {
+            throw new IllegalArgumentException("sender cannot be null");
+        }
+
         this.serializedStream = serializedStream;
         this.file = file;
         this.sender = sender;

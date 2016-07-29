@@ -29,37 +29,28 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
     private static final int MAX_MAP_SIZE = 50;
     private static final Map<String, Long> duplicateMsgMap = new ConcurrentHashMap<>();
     private static final Map<String, Long> duplicateStreamMap = new ConcurrentHashMap<>();
-    private final String TAG = ZirkMessageReceiver.class.getSimpleName();
+    private final String TAG = ZirkMessageReceiver.class.getName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
         ZirkAction message = (ZirkAction) intent.getSerializableExtra("message");
 
         if (isValidRequest(message.getZirkId())) {
-            processReceivedIntent(message);
-        }
-    }
-
-    private void processReceivedIntent(ZirkAction message) {
-        switch (message.getAction()) {
-            case ACTION_ZIRK_RECEIVE_EVENT:
-                processEvent((UnicastEventAction) message);
-                break;
-            case ACTION_ZIRK_RECEIVE_STREAM:
-                processStreamUnicast((ReceiveFileStreamAction) message);
-                break;
-            default:
-                Log.e(TAG, "Unimplemented action: " + message.getAction());
+            switch (message.getAction()) {
+                case ACTION_ZIRK_RECEIVE_EVENT:
+                    processEvent((UnicastEventAction) message);
+                    break;
+                case ACTION_ZIRK_RECEIVE_STREAM:
+                    processStream((ReceiveFileStreamAction) message);
+                    break;
+                default:
+                    Log.e(TAG, "Unimplemented action: " + message.getAction());
+            }
         }
     }
 
     private boolean isValidRequest(ZirkId receivedZirkId) {
-        if (null == receivedZirkId) {
-            Log.e(TAG, "ZirkId is malfunctioning");
-            return false;
-        }
-
-        if (null == ProxyClient.context) {
+        if (ProxyClient.context == null) {
             Log.e(TAG, "Application is not started");
             return false;
         }
@@ -68,37 +59,28 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
             Log.e(TAG, "Intent is not for this Service");
             return false;
         }
+
         return true;
     }
 
     private void processEvent(UnicastEventAction eventMessage) {
         final String serializedEvent = eventMessage.getSerializedEvent();
         final BezirkZirkEndPoint eventSender = (BezirkZirkEndPoint) eventMessage.getEndpoint();
-
-        if (serializedEvent == null) {
-            Log.e(TAG, "Received a null event or event topic");
-            return;
-        }
-
         final String messageId = eventMessage.getMessageId();
-        //Check for duplicate message
+
         if (checkDuplicateMsg(eventSender.zirkId.getZirkId(), messageId)) {
-            boolean isEventReceived = receiveEvent(serializedEvent, eventSender,
-                    ProxyClient.eventListenerMap);
-            if (isEventReceived) {
-                return;
+            if (!receiveEvent(serializedEvent, eventSender, ProxyClient.eventListenerMap)) {
+                Log.e(TAG, "Event Topic Malfunctioning");
             }
         } else {
             Log.e(TAG, "Duplicate Message, Dropping message");
-            return;
         }
-        Log.e(TAG, "Event Topic Malfunctioning");
     }
 
     private boolean receiveEvent(String message, BezirkZirkEndPoint sourceEndpoint,
                                  Map<String, List<EventSet.EventReceiver>> listenerMap) {
-        Event event = Message.fromJson(message, Event.class);
-        String eventName = event.getClass().getName();
+        final Event event = Message.fromJson(message, Event.class);
+        final String eventName = event.getClass().getName();
 
         if (listenerMap.containsKey(eventName)) {
             final List<EventSet.EventReceiver> messageListeners = listenerMap.get(eventName);
@@ -112,10 +94,22 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         return false;
     }
 
+    private void processStream(ReceiveFileStreamAction streamMessage) {
+        final String streamMsg = streamMessage.getSerializedStream();
+        final File file = streamMessage.getFile();
+        final BezirkZirkEndPoint senderSep = streamMessage.getSender();
+
+        Log.v(TAG, " " + streamMsg + "+" + file + "-" + senderSep);
+
+        if (!receiveStream(streamMsg, senderSep, file.getPath(), ProxyClient.streamListenerMap)) {
+            Log.e(TAG, " StreamListenerMap doesn't have a mapped StreamDescriptor");
+        }
+    }
+
     private boolean receiveStream(String message, BezirkZirkEndPoint sourceEndpoint,
                                   String filePath, Map<String, List<StreamSet.StreamReceiver>> listenerMap) {
-        StreamDescriptor streamDescriptor = Message.fromJson(message, StreamDescriptor.class);
-        String streamName = streamDescriptor.getClass().getName();
+        final StreamDescriptor streamDescriptor = Message.fromJson(message, StreamDescriptor.class);
+        final String streamName = streamDescriptor.getClass().getName();
 
         if (listenerMap.containsKey(streamName)) {
             final List<StreamSet.StreamReceiver> messageListeners = listenerMap.get(streamName);
@@ -129,26 +123,6 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         return false;
     }
 
-    private void processStreamUnicast(ReceiveFileStreamAction streamMessage) {
-        final String streamMsg = streamMessage.getSerializedStream();
-        final File file = streamMessage.getFile();
-        final BezirkZirkEndPoint senderSep = streamMessage.getSender();
-        Log.d(TAG, " " + streamMsg + "+" + file + "-" + senderSep);
-
-        if (streamMsg == null || file == null || senderSep == null) {
-            Log.e(TAG, "Unicast StreamDescriptor has some null quantities");
-            return;
-        }
-
-        boolean isStreamReceived = receiveStream(streamMsg, senderSep,
-                file.getPath(), ProxyClient.streamListenerMap);
-
-        if (!isStreamReceived) {
-
-            Log.e(TAG, " StreamListenerMap doesn't have a mapped StreamDescriptor");
-        }
-    }
-
     private boolean checkDuplicateMsg(final String sid, final String messageId) {
         final String key = sid + ":" + messageId;
         final Long currentTime = new Date().getTime();
@@ -160,12 +134,12 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
             } else
                 return false;
         } else {
+            duplicateMsgMap.put(key, currentTime);
+
             if (duplicateMsgMap.size() < MAX_MAP_SIZE) {
-                duplicateMsgMap.put(key, currentTime);
                 return true;
             } else {
                 duplicateMsgMap.remove(duplicateMsgMap.keySet().iterator().next());
-                duplicateMsgMap.put(key, currentTime);
                 return true;
             }
         }
@@ -182,35 +156,26 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
             } else
                 return false;
         } else {
+            duplicateStreamMap.put(key, currentTime);
+
             if (duplicateStreamMap.size() < MAX_MAP_SIZE) {
-                duplicateStreamMap.put(key, currentTime);
                 return true;
             } else {
                 duplicateStreamMap.remove(duplicateStreamMap.keySet().iterator().next());
-                duplicateStreamMap.put(key, currentTime);
                 return true;
             }
         }
     }
 
-    /**
-     * This methods checks if the passed zirkId belongs to the current application.
-     * <p>
-     * Note: An application can have multiple serviceIds
-     * </p>
-     *
-     * @param serviceId
-     * @return
-     */
-    private boolean isRequestForCurrentApp(final String serviceId) {
+    private boolean isRequestForCurrentApp(final String zirkId) {
         SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(ProxyClient.context);
         Map<String, ?> keys = shrdPref.getAll();
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
-            //find and delete the entry corresponding to this zirkId
-            if (entry.getValue().toString().equalsIgnoreCase(serviceId)) {
+            if (entry.getValue().toString().equalsIgnoreCase(zirkId)) {
                 return true;
             }
         }
+
         return false;
     }
 }
