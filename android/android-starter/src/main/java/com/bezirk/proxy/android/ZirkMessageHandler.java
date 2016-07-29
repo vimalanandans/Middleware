@@ -22,24 +22,16 @@ public class ZirkMessageHandler implements MessageHandler {
 
     @Override
     public void onIncomingEvent(UnicastEventAction eventIncomingMessage) {
-        try {
-            final Intent intent = new Intent();
-            intent.putExtra("message", eventIncomingMessage);
-            sendZirkIntent(intent);
-        } catch (Exception e) {
-            logger.error("Cannot send intent to the services as the ppd intent is not valid.", e);
-        }
+        final Intent intent = new Intent();
+        intent.putExtra("message", eventIncomingMessage);
+        sendZirkIntent(intent);
     }
 
     @Override
     public void onIncomingStream(ReceiveFileStreamAction receiveFileStreamAction) {
-        try {
-            final Intent intent = new Intent();
-            intent.putExtra("message", receiveFileStreamAction);
-            sendZirkIntent(intent);
-        } catch (Exception e) {
-            logger.error("Cannot give callback as all the fields are not set", e);
-        }
+        final Intent intent = new Intent();
+        intent.putExtra("message", receiveFileStreamAction);
+        sendZirkIntent(intent);
     }
 
     private void sendZirkIntent(Intent intent) {
@@ -48,17 +40,17 @@ public class ZirkMessageHandler implements MessageHandler {
         if (null != applicationContext) {
             applicationContext.sendBroadcast(intent);
         } else {
-            logger.error("Application Context is null, cant fire the  broadcast Intent intent!");
+            logger.error("Cannot send Zirk intent because applicationContext is null");
         }
     }
 
     private void sentZirkSphereIntent(Intent intent) {
         intent.setAction("SphereScanReceiver");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (null != applicationContext) {
+        if (applicationContext != null) {
             applicationContext.sendBroadcast(intent);
         } else {
-            logger.error("Application Context is null, cant fire the  broadcast Intent intent!");
+            logger.error("Cannot send Zirk intent because applicationContext is null");
         }
     }
 }
