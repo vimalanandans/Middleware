@@ -18,7 +18,7 @@ import com.bezirk.networking.IntfInetPair;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.android.AndroidProxyServer;
-import com.bezirk.proxy.android.ProxyClientMessageHandler;
+import com.bezirk.proxy.android.ZirkMessageHandler;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubBroker;
@@ -141,7 +141,7 @@ public final class MainStackHandler implements StackHandler {
                      * Step 2 : Set Android callback zirk                     *
                      *************************************************************/
                     // bezirkStartStackHelper.setAndroidMessageHandler(service);
-                    ProxyClientMessageHandler serviceMessageHandler = new ProxyClientMessageHandler(service.getApplicationContext());
+                    ZirkMessageHandler serviceMessageHandler = new ZirkMessageHandler(service.getApplicationContext());
 
                     /*************************************************************
                      * Step 3 :  Initialize network manager

@@ -22,7 +22,7 @@ import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
-import com.bezirk.proxy.messagehandler.ServiceMessageHandler;
+import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,7 @@ public class ProxyClient implements Bezirk {
         //MainService mainService = new MainService(proxy, null);
         final BroadcastReceiver brForService = new ZirkMessageReceiver(
                 eventMap, eventListenerMap, streamMap, streamListenerMap);
-        ServiceMessageHandler bezirkPcCallback = new ServiceMessageHandler(brForService);
+        ZirkMessageHandler bezirkPcCallback = new ZirkMessageHandler(brForService);
         ComponentManager componentManager = new ComponentManager(proxy, bezirkPcCallback);
         componentManager.start();
         //mainService.startStack(bezirkPcCallback);
