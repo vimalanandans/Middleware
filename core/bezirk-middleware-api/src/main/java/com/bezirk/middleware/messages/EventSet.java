@@ -10,6 +10,7 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 public class EventSet extends MessageSet {
     private EventReceiver receiver;
 
+    @SafeVarargs
     public EventSet(Class<? extends Event>... e) {
         super(e);
     }

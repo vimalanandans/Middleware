@@ -13,6 +13,7 @@ import java.io.PipedOutputStream;
 public class StreamSet extends MessageSet {
     private StreamReceiver receiver;
 
+    @SafeVarargs
     public StreamSet(Class<? extends StreamDescriptor>... s) {
         super(s);
     }
