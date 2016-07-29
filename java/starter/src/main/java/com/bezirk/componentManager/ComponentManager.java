@@ -35,6 +35,8 @@ public class ComponentManager {
     private Device device;
     private NetworkManager networkManager;
     private LifecycleManager lifecycleManager;
+    private static final String DB_VERSION = "0.0.4";
+    private static final String DB_FILE_LOCATION = ".";
 
     public ComponentManager(ProxyServer proxyServer, MessageHandler messageHandler) {
         this.proxyServer = proxyServer;
@@ -52,7 +54,7 @@ public class ComponentManager {
         networkManager = new JavaNetworkManager();
 
         try {
-            this.registryStorage = new RegistryStorage(new DatabaseConnectionForJava("."), "0.0.4");
+            this.registryStorage = new RegistryStorage(new DatabaseConnectionForJava(DB_FILE_LOCATION), DB_VERSION);
         } catch (Exception e) {
             e.printStackTrace();
         }

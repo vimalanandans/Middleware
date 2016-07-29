@@ -41,7 +41,7 @@ public final class ProxyClient implements Bezirk {
 
     private static final String TAG = ProxyClient.class.getSimpleName();
     private static final String COMPONENT_NAME = "com.bezirk.controlui";
-    private static final String SERVICE_PKG_NAME = "com.bezirk.starter.MainService";
+    private static final String SERVICE_PKG_NAME = "com.bezirk.componentManager.ComponentManager";
     private static final ComponentName RECEIVING_COMPONENT = new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME);
 
     protected static Context context;

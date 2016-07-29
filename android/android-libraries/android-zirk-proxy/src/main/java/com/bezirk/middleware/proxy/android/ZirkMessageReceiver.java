@@ -18,7 +18,6 @@ import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 
-import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -64,63 +63,36 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
     }
 
     private void processEvent(UnicastEventAction eventMessage) {
-        final String serializedEvent = eventMessage.getSerializedEvent();
-        final BezirkZirkEndPoint eventSender = (BezirkZirkEndPoint) eventMessage.getEndpoint();
+        final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) eventMessage.getEndpoint();
         final String messageId = eventMessage.getMessageId();
 
-        if (checkDuplicateMsg(eventSender.zirkId.getZirkId(), messageId)) {
-            if (!receiveEvent(serializedEvent, eventSender, ProxyClient.eventListenerMap)) {
-                Log.e(TAG, "Event Topic Malfunctioning");
+        if (checkDuplicateMsg(endpoint.zirkId.getZirkId(), messageId)) {
+            final Event event = Message.fromJson(eventMessage.getSerializedEvent(), Event.class);
+            final String eventName = event.getClass().getName();
+
+            if (ProxyClient.eventListenerMap.containsKey(eventName)) {
+                final List<EventSet.EventReceiver> messageListeners = ProxyClient.eventListenerMap.get(eventName);
+                for (EventSet.EventReceiver listener : messageListeners) {
+                    listener.receiveEvent(event, endpoint);
+                }
             }
         } else {
             Log.e(TAG, "Duplicate Message, Dropping message");
         }
     }
 
-    private boolean receiveEvent(String message, BezirkZirkEndPoint sourceEndpoint,
-                                 Map<String, List<EventSet.EventReceiver>> listenerMap) {
-        final Event event = Message.fromJson(message, Event.class);
-        final String eventName = event.getClass().getName();
-
-        if (listenerMap.containsKey(eventName)) {
-            final List<EventSet.EventReceiver> messageListeners = listenerMap.get(eventName);
-            for (EventSet.EventReceiver listener : messageListeners) {
-                listener.receiveEvent(event, sourceEndpoint);
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
     private void processStream(ReceiveFileStreamAction streamMessage) {
-        final String streamMsg = streamMessage.getSerializedStream();
-        final File file = streamMessage.getFile();
-        final BezirkZirkEndPoint senderSep = streamMessage.getSender();
-
-        Log.v(TAG, " " + streamMsg + "+" + file + "-" + senderSep);
-
-        if (!receiveStream(streamMsg, senderSep, file.getPath(), ProxyClient.streamListenerMap)) {
-            Log.e(TAG, " StreamListenerMap doesn't have a mapped StreamDescriptor");
-        }
-    }
-
-    private boolean receiveStream(String message, BezirkZirkEndPoint sourceEndpoint,
-                                  String filePath, Map<String, List<StreamSet.StreamReceiver>> listenerMap) {
-        final StreamDescriptor streamDescriptor = Message.fromJson(message, StreamDescriptor.class);
+        final StreamDescriptor streamDescriptor =
+                Message.fromJson(streamMessage.getSerializedStream(), StreamDescriptor.class);
         final String streamName = streamDescriptor.getClass().getName();
 
-        if (listenerMap.containsKey(streamName)) {
-            final List<StreamSet.StreamReceiver> messageListeners = listenerMap.get(streamName);
+        if (ProxyClient.streamListenerMap.containsKey(streamName)) {
+            final List<StreamSet.StreamReceiver> messageListeners = ProxyClient.streamListenerMap.get(streamName);
             for (StreamSet.StreamReceiver listener : messageListeners) {
-                listener.receiveStream(streamDescriptor, new File(filePath), sourceEndpoint);
+                listener.receiveStream(streamDescriptor, streamMessage.getFile(),
+                        streamMessage.getSender());
             }
-
-            return true;
         }
-
-        return false;
     }
 
     private boolean checkDuplicateMsg(final String sid, final String messageId) {

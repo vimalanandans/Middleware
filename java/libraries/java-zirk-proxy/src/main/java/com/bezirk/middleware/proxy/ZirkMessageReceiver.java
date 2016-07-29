@@ -72,9 +72,6 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
 
         final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
 
-        logger.debug("About to callback zid: {} for id: {}", incomingEvent.getZirkId().getZirkId(),
-                incomingEvent.getMessageId());
-
         //Make a combined zid for sender and recipient
         final String combinedSid = endpoint.zirkId.getZirkId() + ":" + incomingEvent.getZirkId().getZirkId();
         if (checkDuplicateMsg(combinedSid, incomingEvent.getMessageId())) {
@@ -107,8 +104,6 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
             for (StreamSet.StreamReceiver listener : streamListenerMap.get(streamName)) {
                 listener.receiveStream(streamDescriptor, incomingStream.getFile(), incomingStream.getSender());
             }
-        } else {
-            logger.error("StreamListenerMap does not have a mapped StreamDescriptor");
         }
     }
 
