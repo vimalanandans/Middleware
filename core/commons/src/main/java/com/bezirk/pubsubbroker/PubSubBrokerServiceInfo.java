@@ -6,11 +6,11 @@ import java.util.Set;
 
 
 /**
- * Platform independent API's used by SADL for different Map look-up and validating the requests.
+ * Platform independent API's used by PubSubBroker for different Map look-up and validating the requests.
  */
 public interface PubSubBrokerServiceInfo {
     /**
-     * Checks if the zirk is registered with SADL.
+     * Checks if the zirk is registered with PubSubBroker.
      *
      * @param zirkId ZirkId of the Zirk that has to be checked
      * @return true if successful, false otherwise

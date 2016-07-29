@@ -16,7 +16,7 @@ import com.bezirk.networking.AndroidNetworkManager;
 import com.bezirk.persistence.DatabaseConnectionForAndroid;
 import com.bezirk.proxy.MessageHandler;
 import com.bezirk.proxy.android.AndroidProxyServer;
-import com.bezirk.proxy.android.ProxyClientMessageHandler;
+import com.bezirk.proxy.android.ZirkMessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.starter.helper.ActionProcessor;
 
@@ -59,7 +59,7 @@ public class ComponentManager extends Service {
         lifecycleManager.addObserver(networkManager);
 
         //proxy client
-        messageHandler = new ProxyClientMessageHandler(this);
+        messageHandler = new ZirkMessageHandler(this);
 
         //data storage
         try {
@@ -80,7 +80,7 @@ public class ComponentManager extends Service {
         // TODO fix construction of proxy server
         proxyServer = new AndroidProxyServer();
         proxyServer.setPubSubBrokerService(pubSubBroker);
-        proxyServer.setMessageHandler(messageHandler);
+        //proxyServer.setMessageHandler(messageHandler);
     }
 
     @Override

@@ -7,9 +7,8 @@ import com.bezirk.proxy.api.impl.ZirkId;
 public abstract class StreamAction extends ZirkAction {
     private final ZirkEndPoint recipient;
     private final StreamDescriptor descriptor;
-    private final short streamId;
 
-    public StreamAction(ZirkId zirkId, ZirkEndPoint recipient, StreamDescriptor descriptor, short streamId) {
+    public StreamAction(ZirkId zirkId, ZirkEndPoint recipient, StreamDescriptor descriptor) {
         super(zirkId);
 
         if (recipient == null) {
@@ -23,7 +22,6 @@ public abstract class StreamAction extends ZirkAction {
 
         this.recipient = recipient;
         this.descriptor = descriptor;
-        this.streamId = streamId;
     }
 
     public ZirkEndPoint getRecipient() {
@@ -32,9 +30,5 @@ public abstract class StreamAction extends ZirkAction {
 
     public StreamDescriptor getDescriptor() {
         return descriptor;
-    }
-
-    public short getStreamId() {
-        return streamId;
     }
 }

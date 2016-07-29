@@ -20,8 +20,8 @@ public class UnicastEventAction extends EventAction {
     }
 
     public UnicastEventAction(BezirkAction action, ZirkId zirkId, ZirkEndPoint endpoint,
-                             String serializedEvent, String messageId) {
-        super(zirkId, serializedEvent, messageId);
+                             String serializedEvent, String messageId, String eventName) {
+        super(zirkId, serializedEvent, messageId, eventName);
 
         if (endpoint == null) {
             throw new IllegalArgumentException("endpoint must not be null");

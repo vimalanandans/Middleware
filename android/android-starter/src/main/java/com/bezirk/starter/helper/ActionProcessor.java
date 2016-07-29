@@ -28,6 +28,7 @@ public final class ActionProcessor {
      * @param ProxyService
      */
     public void processBezirkAction(Intent intent, AndroidProxyServer ProxyService, ComponentManager.LifeCycleCallbacks lifeCycleCallbacks) {
+
         BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
 
         if (ValidatorUtility.isObjectNotNull(intentAction)) {

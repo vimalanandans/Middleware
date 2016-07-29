@@ -51,7 +51,6 @@ public class StreamReceivingThread implements Runnable {
     private final BezirkZirkEndPoint recipient;
     private final BezirkZirkEndPoint sender;
     private final String serializedMsg;
-    private final short streamId;
     private final PortFactory portFactory;
     private final PubSubEventReceiver sadlReceiver;
     private final SphereSecurity sphereSecurity;
@@ -75,7 +74,6 @@ public class StreamReceivingThread implements Runnable {
         this.recipient = streamRequest.getRecipient();
         this.sender = streamRequest.getSender();
         this.serializedMsg = streamRequest.serialzedString;
-        this.streamId = streamRequest.localStreamId;
         this.portFactory = portFactory;
         this.sadlReceiver = sadlReceiver;
         this.sphereSecurity = sphereSecurity;
@@ -172,7 +170,7 @@ public class StreamReceivingThread implements Runnable {
         if (portReleased) {
             ReceiveFileStreamAction uStreamCallbackMsg = new ReceiveFileStreamAction(
                     recipient.zirkId, serializedMsg,
-                    tempFile, streamId, sender);
+                    tempFile, sender);
             if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {
 
                 sadlReceiver.processNewStream(uStreamCallbackMsg);

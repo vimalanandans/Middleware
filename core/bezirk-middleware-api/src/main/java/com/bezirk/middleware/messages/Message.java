@@ -62,23 +62,4 @@ public abstract class Message {
     public String toJson() {
         return gson.toJson(this);
     }
-
-    /**
-     * Provides the message's recipient(s) with an indication of the intent of the
-     * message and their duty to reply.
-     */
-    public enum Flag {
-        /**
-         * Indicate to the recipient(s) that the message does not require a reply.
-         */
-        NOTICE,
-        /**
-         * Indicate to the recipient(s) that the message expects a reply.
-         */
-        REQUEST,
-        /**
-         * Indicate to the recipient(s) that the message is a reply to a <code>REQUEST</code>.
-         */
-        REPLY
-    }
 }

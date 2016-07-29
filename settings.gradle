@@ -13,7 +13,7 @@ include ':core:comms:comms-factory'
 include ':core:testapp-core'
 
 /*--------------------java--------------------*/
-include ':java:libraries:bezirk-factory'
+include ':java:libraries:java-zirk-proxy'
 include ':java:libraries:comms-zyre-jni'
 include ':java:starter'
 include ':java:publisher-zirk-java'
@@ -24,6 +24,6 @@ include ':android:android-starter'
 include ':android:ui:bezirk-test-ui'
 include ':android:ui:subscriber-zirk'
 include ':android:ui:publisher-zirk'
-include ':android:android-libraries:proxy'
+include ':android:android-libraries:android-zirk-proxy'
 include ':android:android-libraries:android-comms-zyre-jni'
 
