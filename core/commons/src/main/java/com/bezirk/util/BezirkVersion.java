@@ -73,7 +73,7 @@ public class BezirkVersion {
      * this method returns list of versions. Useful to display to user
      */
     static public Map<String, String> getAllVersion() {
-        Map<String, String> versions = new HashMap<String, String>();
+        Map<String, String> versions = new HashMap<>();
 
         versions.put("BEZIRK_VERSION", BEZIRK_VERSION);
 

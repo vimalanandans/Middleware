@@ -23,11 +23,11 @@ public class CommsMessageDispatcher implements MessageDispatcher {
 
     private EventMsgReceiver eventReceiver = null;
 
-    RemoteLog msgLog = null;
+    private RemoteLog msgLog = null;
 
     // Map of control receivers
-    Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
-            new HashMap<ControlMessage.Discriminator, CtrlMsgReceiver>();
+    private Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
+            new HashMap<>();
 
     public CommsMessageDispatcher() {
 

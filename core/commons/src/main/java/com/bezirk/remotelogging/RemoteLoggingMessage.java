@@ -27,10 +27,6 @@ public class RemoteLoggingMessage {
      */
     public String uniqueMsgId = null;
     /**
-     * Topic of the message i,e is sent
-     */
-    public String topic = null;
-    /**
      * Type of a Message (EVENT-SEND, EVENT-RECEIVE, CONTROL-MESSAGE-SEND, CONTROL-MESSAGE-RECEIVE)
      */
     public String typeOfMessage = null;
@@ -64,7 +60,6 @@ public class RemoteLoggingMessage {
         this.sender = sender;
         this.recipient = recipient;
         this.uniqueMsgId = uniqueMsgId;
-        this.topic = topic;
         this.typeOfMessage = typeOfMessage;
         this.version = version;
     }

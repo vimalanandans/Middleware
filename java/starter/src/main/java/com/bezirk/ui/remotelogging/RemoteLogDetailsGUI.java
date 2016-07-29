@@ -213,8 +213,7 @@ public class RemoteLogDetailsGUI extends JFrame {
                         getSphereNameFromSphereId(bezirkLogMessage.sphereName),
                         sdf.format(Long.valueOf(bezirkLogMessage.timeStamp)),
                         bezirkLogMessage.sender,
-                        getDeviceNameFromDeviceId(bezirkLogMessage.recipient),
-                        bezirkLogMessage.topic, 0});
+                        getDeviceNameFromDeviceId(bezirkLogMessage.recipient), 0});
             } catch (Exception e) {
                 logger.error("Error in updating the table", e);
             }

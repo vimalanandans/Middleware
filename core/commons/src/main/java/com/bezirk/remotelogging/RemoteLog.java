@@ -22,7 +22,7 @@ public interface RemoteLog {
 
     /** Start Logging . By component manager */
 
-    public boolean startLoggingService( final RemoteLoggingMessageNotification platformSpecificHandler) ;
+    boolean startLoggingService(final RemoteLoggingMessageNotification platformSpecificHandler) ;
 
     /** Start Logging . By component manager */
     boolean stopLoggingService();

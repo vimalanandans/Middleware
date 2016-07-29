@@ -15,7 +15,6 @@ import com.bezirk.datastorage.PubSubBrokerStorage;
 import com.bezirk.device.Device;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.RecipientSelector;
-import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.networking.NetworkManager;
@@ -28,8 +27,6 @@ import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.ValidatorUtility;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -457,10 +454,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
     // true - valid service in sphere
     private boolean isServiceInSphere(ZirkId service, String sphereId) {
-        if (sphereServiceAccess != null) {
-            return sphereServiceAccess.isServiceInSphere(service, sphereId);
-        }
-        return true; // if no valid sphere reference
+        return sphereServiceAccess == null || sphereServiceAccess.isServiceInSphere(service, sphereId);
     }
 
     private Set<ZirkId> getAssociatedServiceList(final EventLedger eLedger) {
@@ -498,7 +492,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
         } else { // no sphere object hence
             if(eLedger.getEncryptedMessage() == null) //if it is local message
-                decryptedEventMsg = new String(eLedger.getSerializedMessage());
+                decryptedEventMsg = eLedger.getSerializedMessage();
             else
                 decryptedEventMsg = new String(eLedger.getEncryptedMessage());
         }
