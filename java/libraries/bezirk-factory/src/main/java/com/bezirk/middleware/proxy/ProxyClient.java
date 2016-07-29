@@ -20,7 +20,6 @@ import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.proxy.ProxyServer;
-import com.bezirk.proxy.ServiceRegistrationUtil;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.proxy.messagehandler.ServiceMessageHandler;
@@ -34,6 +33,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class ProxyClient implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(ProxyClient.class);
@@ -72,8 +72,8 @@ public class ProxyClient implements Bezirk {
     public boolean registerZirk(String zirkName) {
         String zirkIdAsString = proxyRegistry.getBezirkServiceId(zirkName);
 
-        if (null == zirkIdAsString) {
-            zirkIdAsString = ServiceRegistrationUtil.generateUniqueServiceID() + ":" + zirkName;
+        if (zirkIdAsString == null) {
+            zirkIdAsString = UUID.randomUUID().toString();
             proxyRegistry.updateBezirkZirkId(zirkName, zirkIdAsString);
             try {
                 proxyPersistence.persistBezirkProxyRegistry();
