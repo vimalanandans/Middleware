@@ -200,7 +200,7 @@ public class Hashids {
         if (!hexa.matches("^[0-9a-fA-F]+$"))
             return "";
 
-        List<Long> matched = new ArrayList<Long>();
+        List<Long> matched = new ArrayList<>();
         Matcher matcher = Pattern.compile("[\\w\\W]{1,12}").matcher(hexa);
 
         while (matcher.find())
@@ -291,7 +291,7 @@ public class Hashids {
     }
 
     private long[] _decode(String hash, String alphabet) {
-        ArrayList<Long> ret = new ArrayList<Long>();
+        ArrayList<Long> ret = new ArrayList<>();
 
         int i = 0;
         String regexp = "[" + this.guards + "]";

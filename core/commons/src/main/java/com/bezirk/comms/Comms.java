@@ -7,8 +7,6 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
-import java.net.InetAddress;
-
 /**
  * This class is created to de-couple from the rest of bezirk (spheres / sadl / stream)
  * <p>

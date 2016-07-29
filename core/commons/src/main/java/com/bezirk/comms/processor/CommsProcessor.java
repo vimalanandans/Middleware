@@ -5,7 +5,6 @@ import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsFeature;
 import com.bezirk.comms.CommsMessageDispatcher;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
@@ -18,7 +17,6 @@ import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.Streaming;
 import com.bezirk.streaming.control.Objects.StreamRecord;
@@ -28,7 +26,6 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -57,7 +54,7 @@ public abstract class CommsProcessor implements Comms {
     SphereSecurity sphereSecurity = null; // nullable object
 
     //generic notifications
-    List ICommsNotification = new ArrayList<CommsNotification>();
+    List ICommsNotification = new ArrayList<>();
     /**
      * Version Callback that will be used to inform the platforms when there is mismatch in versions.
      * This parameter will be injected in all the components that will be checking for versions to

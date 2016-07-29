@@ -6,7 +6,7 @@ import com.bezirk.proxy.api.impl.ZirkId;
 /**
  * Platform independent API's used by PubSubBroker for validating the responses by the control channel.
  */
-public interface PubSubBrokerControlReceiver {
+interface PubSubBrokerControlReceiver {
 
     /**
      * Checks if the StreamDescriptor is registered by the Zirk zirkId to streamTopic.

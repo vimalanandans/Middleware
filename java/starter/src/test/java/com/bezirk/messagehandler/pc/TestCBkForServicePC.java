@@ -8,7 +8,7 @@ import com.bezirk.middleware.messages.Event;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
-import com.bezirk.proxy.messagehandler.ServiceMessageHandler;
+import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ public class TestCBkForServicePC {
     private static final Logger logger = LoggerFactory.getLogger(TestCBkForServicePC.class);
 
     private final BroadcastReceiver BRForService = new BRForServiceMock();
-    private final ServiceMessageHandler cBkForServicePC = new ServiceMessageHandler(BRForService);
+    private final ZirkMessageHandler cBkForServicePC = new ZirkMessageHandler(BRForService);
     private boolean receivedEvent = false;
     private boolean receivedUnicastStream = false;
 
