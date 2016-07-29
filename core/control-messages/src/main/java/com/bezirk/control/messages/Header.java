@@ -11,14 +11,16 @@ public class Header {
     private String sphereName = null; //Don't touch
     private BezirkZirkEndPoint senderSEP = null; // Change to ZirkEndPoint sender
     private String uniqueMsgId = null;
+    private String eventName = null;
 
     public Header() {
     }
 
-    public Header(String sphereName, BezirkZirkEndPoint senderSEP, String uniqueMsgId) {
+    public Header(String sphereName, BezirkZirkEndPoint senderSEP, String uniqueMsgId, String eventName) {
         this.sphereName = sphereName;
         this.senderSEP = senderSEP;
         this.uniqueMsgId = uniqueMsgId;
+        this.eventName = eventName;
     }
 
     /**
@@ -55,6 +57,11 @@ public class Header {
     public BezirkZirkEndPoint getSenderSEP() {
         return senderSEP;
     }
+
+    public  String getEventName(){return eventName;}
+
+    public  void setEventName(String eventName){this.eventName = eventName;}
+
 
     /**
      * @param senderSEP the senderId of the message. Usually there is a function that retrieves
