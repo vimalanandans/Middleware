@@ -1,11 +1,14 @@
 package com.bezirk.messagehandler.pc;
 
+import com.bezirk.actions.BezirkAction;
+import com.bezirk.actions.ReceiveFileStreamAction;
+import com.bezirk.actions.UnicastEventAction;
+import com.bezirk.actions.ZirkAction;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
-import com.bezirk.proxy.messagehandler.ServiceMessageHandler;
-import com.bezirk.proxy.messagehandler.EventIncomingMessage;
-import com.bezirk.proxy.messagehandler.ServiceIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -17,48 +20,34 @@ public class TestCBkForServicePC {
     private static final Logger logger = LoggerFactory.getLogger(TestCBkForServicePC.class);
 
     private final BroadcastReceiver BRForService = new BRForServiceMock();
-    private final ServiceMessageHandler cBkForServicePC = new ServiceMessageHandler(BRForService);
+    private final ZirkMessageHandler cBkForServicePC = new ZirkMessageHandler(BRForService);
     private boolean receivedEvent = false;
     private boolean receivedUnicastStream = false;
-    private boolean receivedStreamStatus = false;
 
     @Test
     public void testFireEventCallback() {
-        EventIncomingMessage eventCallbackMessage = new EventIncomingMessage(null, null, null, null, null);
+        UnicastEventAction eventCallbackMessage = new UnicastEventAction(BezirkAction.ACTION_ZIRK_RECEIVE_EVENT,
+                new ZirkId("TEST"), new BezirkZirkEndPoint(new ZirkId("TEST 2")), new Event());
         cBkForServicePC.onIncomingEvent(eventCallbackMessage);
 
         assertTrue("Callback Zirk is unable to fire eventCallback. ", receivedEvent);
     }
 
-    @Test
-    public void testFireUnicastStreamCallback() {
-        StreamIncomingMessage unicastStreamCallbackMessage = new StreamIncomingMessage(null, null, null, null, (short) 0, null);
-        cBkForServicePC.onIncomingStream(unicastStreamCallbackMessage);
-
-        assertTrue("Callback Zirk is unable to fire Unicast stream.", receivedUnicastStream);
-    }
-
-    @Test
-    public void testFireStreamStatusCallback() {
-        StreamStatusMessage streamStatusCallbackMessage = new StreamStatusMessage(null, 0, (short) 0);
-        cBkForServicePC.onStreamStatus(streamStatusCallbackMessage);
-
-        assertTrue("Callback Zirk is unable to fire stream status.", receivedStreamStatus);
-    }
-
-    private enum CallBackDiscriminator {
-        EVENT, STREAM_UNICAST, STREAM_STATUS
-    }
+//    @Test
+//    public void testFireUnicastStreamCallback() {
+//        ReceiveFileStreamAction unicastStreamCallbackMessage = new ReceiveFileStreamAction(new ZirkId("TEST"), null, null, null);
+//        cBkForServicePC.onIncomingStream(unicastStreamCallbackMessage);
+//
+//        assertTrue("Callback Zirk is unable to fire Unicast stream.", receivedUnicastStream);
+//    }
 
     class BRForServiceMock implements BroadcastReceiver {
         @Override
-        public void onReceive(ServiceIncomingMessage callbackMessage) {
-            if (callbackMessage.getCallbackType().equalsIgnoreCase(CallBackDiscriminator.EVENT.name())) {
+        public void onReceive(ZirkAction callbackMessage) {
+            if (BezirkAction.ACTION_ZIRK_RECEIVE_EVENT.equals(callbackMessage.getAction())) {
                 receivedEvent = true;
-            } else if (callbackMessage.getCallbackType().equalsIgnoreCase(CallBackDiscriminator.STREAM_UNICAST.name())) {
+            } else if (BezirkAction.ACTION_ZIRK_RECEIVE_STREAM.equals(callbackMessage.getAction())) {
                 receivedUnicastStream = true;
-            } else if (callbackMessage.getCallbackType().equalsIgnoreCase(CallBackDiscriminator.STREAM_STATUS.name())) {
-                receivedStreamStatus = true;
             }
         }
     }

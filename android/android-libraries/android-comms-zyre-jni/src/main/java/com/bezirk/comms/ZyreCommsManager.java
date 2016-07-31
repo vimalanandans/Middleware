@@ -1,14 +1,15 @@
 package com.bezirk.comms;
 
-import com.bezirk.pipe.PipeManager;
 import com.bezirk.comms.processor.CommsProcessor;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.pubsubbroker.PubSubBroker;
-//import com.bezirk.rest.BezirkRestCommsManager;
 import com.bezirk.sphere.api.SphereSecurity;
-import com.bezirk.sphere.api.SphereServiceAccess;
+import com.bezirk.streaming.Streaming;
 import com.bezirk.util.ValidatorUtility;
 
 import java.net.InetAddress;
+
+//import com.bezirk.rest.BezirkRestCommsManager;
 
 /**
  * vimal : Bezirk Communication manager for zyre - jni
@@ -18,29 +19,25 @@ import java.net.InetAddress;
 public class ZyreCommsManager extends CommsProcessor {
 
     private ZyreCommsJni comms;
-
     private boolean delayedInit;
-
     private String zyreGroup;
 
-    public ZyreCommsManager() {
+    public ZyreCommsManager(NetworkManager networkManager, CommsNotification commsNotification, Streaming streaming) {
+        super(networkManager, commsNotification, streaming);
         //default constructor
     }
 
-    public ZyreCommsManager(String zyreGroup) {
-        this.zyreGroup = zyreGroup;
-    }
+//    public ZyreCommsManager(String zyreGroup) {
+//        this.zyreGroup = zyreGroup;
+//    }
 
-    @Override
-    public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             PubSubBroker broker, SphereSecurity sphereServiceAccess, com.bezirk.streaming.Streaming streaming) {
-        /*init zyre and internals of comms */
-        if (comms == null) {
-            return super.initComms(commsProperties, addr, broker, sphereServiceAccess, streaming);
-        }
-
-        return false;
-    }
+//    @Override
+//    public boolean initComms(CommsProperties commsProperties, InetAddress addr,
+//                             SphereSecurity sphereServiceAccess, com.bezirk.streaming.Streaming streaming) {
+//        /*init zyre and internals of comms */
+//        return comms == null && super.initComms(commsProperties, addr, sphereServiceAccess, streaming);
+//
+//    }
 
     @Override
     public boolean startComms() {
@@ -65,7 +62,7 @@ public class ZyreCommsManager extends CommsProcessor {
 
             // removed the architectured refactoring code
             // set the comms u have selected, this will be a bridge for Commons code and Android.
-           // BezirkRestCommsManager.getInstance().setBezirkComms(this);
+            // BezirkRestCommsManager.getInstance().setBezirkComms(this);
 
             // call the base methods
             return super.startComms();

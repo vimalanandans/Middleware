@@ -2,26 +2,25 @@ package com.bezirk.util;
 
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.datastorage.PubSubBrokerStorage;
-import com.bezirk.datastorage.RegistryStorage;
-import com.bezirk.device.Device;
-import com.bezirk.device.DeviceType;
-import com.bezirk.devices.DeviceInterface;
 import com.bezirk.datastorage.PersistenceConstants;
 import com.bezirk.datastorage.PersistenceRegistry;
-import com.bezirk.persistence.DatabaseConnectionForJava;
+import com.bezirk.datastorage.PubSubBrokerStorage;
+import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
+import com.bezirk.device.Device;
+import com.bezirk.device.JavaDevice;
+import com.bezirk.networking.JavaNetworkManager;
+import com.bezirk.networking.NetworkManager;
+import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.DevMode;
-import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.api.SphereConfig;
-import com.bezirk.sphere.impl.SphereServiceManager;
+import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.impl.JavaPrefs;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.streaming.StreamManager;
 import com.bezirk.streaming.Streaming;
-import com.bezrik.network.NetworkUtilities;
 import com.j256.ormlite.table.TableUtils;
 
 import org.mockito.Mockito;
@@ -58,10 +57,11 @@ public class MockSetUpUtilityForBezirkPC {
     SphereConfig sphereConfig;
     private DatabaseConnectionForJava dbConnection;
     private RegistryStorage regPersistence;
+    NetworkManager networkManager;
 
     public void setUPTestEnv() throws IOException, SQLException,
             Exception {
-
+        networkManager = new JavaNetworkManager();
         dbConnection = new DatabaseConnectionForJava(DBPath);
         regPersistence = new RegistryStorage(
                 dbConnection, DBVersion);
@@ -74,28 +74,29 @@ public class MockSetUpUtilityForBezirkPC {
         cryptoEngine = new CryptoEngine(sphereRegistry);
         pubSubBrokerStorage = (PubSubBrokerStorage) regPersistence;
         setUpUpaDevice();
-        pubSubBroker = new PubSubBroker(pubSubBrokerStorage,upaDevice);
+
         //sphereConfig = new SphereProperties();
         sphereConfig = new JavaPrefs();
         sphereConfig.init();
 
 
         comms = new MockComms();
-        Streaming streamManager = new StreamManager(comms,pubSubBroker,getStreamDownloadPath());
-        comms.initComms(null, inetAddr, pubSubBroker, null,streamManager);
+        Streaming streamManager = new StreamManager(comms, pubSubBroker, getStreamDownloadPath(), networkManager);
+        //comms.initComms(null, inetAddr, null, streamManager);
 
         comms.registerNotification(Mockito.mock(CommsNotification.class));
         comms.startComms();
+        pubSubBroker = new PubSubBroker(pubSubBrokerStorage, upaDevice, networkManager, comms, new MockCallback(), null, null);
 
-
-        SphereServiceManager bezirkSphere = new SphereServiceManager(cryptoEngine, upaDevice, sphereRegistry);
+        // SphereServiceManager bezirkSphere = new SphereServiceManager(cryptoEngine, upaDevice, sphereRegistry);
         SphereListener sphereListener = Mockito.mock(SphereListener.class);
-        bezirkSphere.initSphere(spherePersistence, comms, sphereListener, sphereConfig);
+        //bezirkSphere.initSphere(spherePersistence, comms, sphereListener, sphereConfig);
 
-        pubSubBroker.initPubSubBroker(comms,new MockCallback(),bezirkSphere,bezirkSphere);
-        }
-    String getStreamDownloadPath()
-    {
+        //pubSubBroker.initPubSubBroker(comms,new MockCallback(),bezirkSphere,bezirkSphere);
+        //pubSubBroker.initPubSubBroker(comms, new MockCallback(), null, null);
+    }
+
+    String getStreamDownloadPath() {
         String downloadPath;
         // port factory is part of comms manager
         // CommsConfigurations.portFactory = new
@@ -103,7 +104,7 @@ public class MockSetUpUtilityForBezirkPC {
         // CommsConfigurations.ENDING_PORT_FOR_STREAMING); // initialize the
         // StreamPortFactory
 
-        downloadPath= File.separator+ new String ("downloads")+File.separator;
+        downloadPath = File.separator + new String("downloads") + File.separator;
         final File createDownloadFolder = new File(
                 downloadPath);
         if (!createDownloadFolder.exists()) {
@@ -119,10 +120,7 @@ public class MockSetUpUtilityForBezirkPC {
      * @throws UnknownHostException
      */
     private void setUpUpaDevice() throws UnknownHostException {
-        upaDevice = new Device();
-        String deviceIdString = InetAddress.getLocalHost().getHostName();
-        upaDevice.initDevice(deviceIdString,
-                DeviceType.BEZIRK_DEVICE_TYPE_PC);
+        upaDevice = new JavaDevice();
 
     }
 
@@ -159,7 +157,7 @@ public class MockSetUpUtilityForBezirkPC {
             NetworkInterface intf = getInterface();
             if (ValidatorUtility.isObjectNotNull(intf)) {
 
-                return NetworkUtilities.getIpForInterface(intf);
+                return networkManager.getIpForInterface(intf);
 
             }
 
@@ -185,7 +183,7 @@ public class MockSetUpUtilityForBezirkPC {
         return pubSubBroker;
     }
 
-    public DeviceInterface getUpaDevice() {
+    public Device getUpaDevice() {
 
         return upaDevice;
     }

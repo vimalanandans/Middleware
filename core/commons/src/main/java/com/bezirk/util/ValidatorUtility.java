@@ -1,9 +1,7 @@
 package com.bezirk.util;
 
 import com.bezirk.control.messages.Header;
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.streaming.StreamRequest;
-import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
 
@@ -47,16 +45,6 @@ public final class ValidatorUtility {
     }
 
     /**
-     * Checks for the Validity of ProtocolRole.
-     *
-     * @param role protocolRole that should be validated
-     * @return true if valid, false otherwise
-     */
-    public static boolean checkProtocolRole(final ProtocolRole role) {
-        return !(null == role || !checkForString(role.getRoleName()));
-    }
-
-    /**
      * Checks for Validity of String for Not null and not empty
      *
      * @param stringValues - string to be validated
@@ -77,13 +65,8 @@ public final class ValidatorUtility {
     }
 
     public static boolean checkHeader(final Header mHeader) {
-        return !(!checkForString(mHeader.getSphereName(), mHeader.getTopic()) ||
+        return !(!checkForString(mHeader.getSphereName()) ||
                 !checkBezirkZirkEndPoint(mHeader.getSenderSEP()));
-
-    }
-
-    public static boolean checkDiscoveryRequest(DiscoveryRequest request) {
-        return !(!checkForString(request.getSphereId()) || request.getMessageId() == -1 || !checkBezirkZirkEndPoint(request.getSender()));
 
     }
 

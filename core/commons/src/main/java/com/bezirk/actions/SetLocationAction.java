@@ -19,4 +19,9 @@ public class SetLocationAction extends ZirkAction {
     public Location getLocation() {
         return location;
     }
+
+    @Override
+    public BezirkAction getAction() {
+        return BezirkAction.ACTION_BEZIRK_SET_LOCATION;
+    }
 }

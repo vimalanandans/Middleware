@@ -2,6 +2,11 @@ package com.bezirk.streaming;
 
 import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlMessage;
+import com.bezirk.control.messages.Ledger;
+import com.bezirk.control.messages.streaming.StreamRequest;
+import com.bezirk.control.messages.streaming.StreamResponse;
+import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
@@ -59,7 +64,7 @@ public class StreamManager implements Streaming, ActiveStream {
     private Map<String, Future> activeStreamMap = new HashMap<String, Future>();
 
 
-    public StreamManager(Comms comms, PubSubEventReceiver sadlReceiver, String downloadPath) {
+    public StreamManager(Comms comms, PubSubEventReceiver sadlReceiver, String downloadPath, NetworkManager networkManager) {
 
         if (ValidatorUtility.isObjectNotNull(comms)
                 && ValidatorUtility.isObjectNotNull(sadlReceiver)) {
@@ -71,9 +76,7 @@ public class StreamManager implements Streaming, ActiveStream {
 
             // ExecutorService for sending stream
             streamProcessExecutor = Executors.newFixedThreadPool(THREAD_SIZE);
-
-            bezirkStreamHandler = new BezirkStreamHandler(downloadPath, streamProcessExecutor,this);
-
+            bezirkStreamHandler = new BezirkStreamHandler(downloadPath, streamProcessExecutor,this, networkManager);
         } else {
             logger.error("Unable to initialize StreamManager. Please ensure ControlSenderQueue, " +
                     "CommsMessageDispatcher and BezirkCallback are initialized.");
@@ -209,7 +212,6 @@ public class StreamManager implements Streaming, ActiveStream {
  *
  * Created by PIK6KOR on 7/28/2016.
  */
-
 interface ActiveStream{
 
     boolean addRefToActiveStream(String streamRequestKey, Future streamFutureTaskRef);

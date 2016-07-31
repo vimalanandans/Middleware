@@ -107,7 +107,7 @@ public class EventSenderThread implements Runnable {
             }
             return false;
         }
-        logger.info("SADL failed to send the Msg, May be the msg is local");
+        logger.info("PubSubBroker failed to send the Msg, May be the msg is local");
         return false;
     }
 

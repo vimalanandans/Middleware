@@ -27,10 +27,6 @@ public class RemoteLoggingMessage {
      */
     public String uniqueMsgId = null;
     /**
-     * Topic of the message i,e is sent
-     */
-    public String topic = null;
-    /**
      * Type of a Message (EVENT-SEND, EVENT-RECEIVE, CONTROL-MESSAGE-SEND, CONTROL-MESSAGE-RECEIVE)
      */
     public String typeOfMessage = null;
@@ -52,12 +48,11 @@ public class RemoteLoggingMessage {
      * @param sender        Sender IP
      * @param recipient     Recipient Ip, null in case of multicast
      * @param uniqueMsgId   MsgId of the message that is sent or received
-     * @param topic         topic of the Message, discriminator in case of Control Message
      * @param typeOfMessage one of (EVENT-SEND, EVENT-RECEIVE, CONTROL-MESSAGE-SEND, CONTROL-MESSAGE-RECEIVE)
      * @param version       Version of the Logging Message
      */
     public RemoteLoggingMessage(String sphereName, String timeStamp,
-                                String sender, String recipient, String uniqueMsgId, String topic,
+                                String sender, String recipient, String uniqueMsgId,
                                 String typeOfMessage, String version) {
         super();
         this.sphereName = sphereName;
@@ -65,7 +60,6 @@ public class RemoteLoggingMessage {
         this.sender = sender;
         this.recipient = recipient;
         this.uniqueMsgId = uniqueMsgId;
-        this.topic = topic;
         this.typeOfMessage = typeOfMessage;
         this.version = version;
     }

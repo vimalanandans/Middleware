@@ -4,19 +4,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bezirk.actions.BezirkAction;
-import com.bezirk.middleware.objects.BezirkZirkInfo;
+import com.bezirk.componentManager.ComponentManager;
 import com.bezirk.sphere.api.DevMode;
-import com.bezirk.sphere.api.SphereAPI;
-import com.bezirk.starter.MainService;
-import com.bezirk.starter.MainStackPreferences;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -36,12 +31,10 @@ class DeviceControlActivityHelper {
 
     private final DeviceControlActivity deviceControlActivity;
     private final Context context;
-    private final MainStackPreferences preferences;
 
     DeviceControlActivityHelper(DeviceControlActivity deviceControlActivity, Context context) {
         this.deviceControlActivity = deviceControlActivity;
         this.context = context;
-        this.preferences = deviceControlActivity.preferences;
     }
 
     /**
@@ -82,7 +75,7 @@ class DeviceControlActivityHelper {
         }
 
         if (ValidatorUtility.isObjectNotNull(actions)) {
-            Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
+            Intent intent = new Intent(deviceControlActivity.getApplicationContext(), ComponentManager.class);
             intent.setAction(actions);
             deviceControlActivity.startService(intent);
         }
@@ -112,7 +105,7 @@ class DeviceControlActivityHelper {
      */
     private void clearDataBase() {
         String actions = BezirkAction.ACTION_CLEAR_PERSISTENCE.getName();
-        Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
+        Intent intent = new Intent(deviceControlActivity.getApplicationContext(), ComponentManager.class);
 
         intent.setAction(actions);
         deviceControlActivity.startService(intent);
@@ -124,10 +117,10 @@ class DeviceControlActivityHelper {
     void setDeviceType(String deviceType) {
         logger.info("device type changed to " + deviceType);
         // store the device type
-        preferences.putString(MainStackPreferences.DEVICE_TYPE_TAG_PREFERENCE, deviceType);
+        //preferences.putString(MainStackPreferences.DEVICE_TYPE_TAG_PREFERENCE, deviceType);
 
         String actions = BezirkAction.ACTION_CHANGE_DEVICE_TYPE.getName();
-        Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
+        Intent intent = new Intent(deviceControlActivity.getApplicationContext(), ComponentManager.class);
 
         intent.setAction(actions);
         deviceControlActivity.startService(intent);
@@ -141,10 +134,10 @@ class DeviceControlActivityHelper {
         logger.info("device name changed to " + deviceName);
 
         // store the device name
-        preferences.putString(MainStackPreferences.DEVICE_NAME_TAG_PREFERENCE, deviceName);
+        //preferences.putString(MainStackPreferences.DEVICE_NAME_TAG_PREFERENCE, deviceName);
 
         String actions = BezirkAction.ACTION_CHANGE_DEVICE_NAME.getName();
-        Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
+        Intent intent = new Intent(deviceControlActivity.getApplicationContext(), ComponentManager.class);
 
         intent.setAction(actions);
         deviceControlActivity.startService(intent);
@@ -158,10 +151,10 @@ class DeviceControlActivityHelper {
         logger.info("default sphere name changed to " + sphereName);
 
         // store the device name
-        preferences.putString(MainStackPreferences.DEFAULT_SPHERE_NAME_TAG_PREFERENCE, sphereName);
+        //preferences.putString(MainStackPreferences.DEFAULT_SPHERE_NAME_TAG_PREFERENCE, sphereName);
 
         String actions = BezirkAction.ACTION_CHANGE_SPHERE_NAME.getName();
-        Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
+        Intent intent = new Intent(deviceControlActivity.getApplicationContext(), ComponentManager.class);
 
         intent.setAction(actions);
         deviceControlActivity.startService(intent);
@@ -216,65 +209,65 @@ class DeviceControlActivityHelper {
 
     // prompt for confirmation box
     private void promptClearConfirmation(final String titleText, final String confirmText, final int resultId) {
-// get prompts.xml view
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptsView = layoutInflater.inflate(R.layout.prompt_confirm, null);
-        SphereAPI sphereAPI = MainService.getSphereHandle();
-        final List<BezirkZirkInfo> bezirkZirkInfos = sphereAPI.getServiceInfo();
-        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(deviceControlActivity.getApplicationContext());
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                context);
-
-        // set prompts.xml to alertdialog builder
-        alertDialogBuilder.setView(promptsView);
-
-        // set the title
-        final TextView userInputTitle = (TextView) promptsView
-                .findViewById(R.id.promptConfirmTextDialog);
-
-        userInputTitle.setText(titleText);
-
-        final TextView confirmTextView = (TextView) promptsView
-                .findViewById(R.id.promptConfirmTextDialog);
-        userInputTitle.setText(confirmText);
-        // set dialog message
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("Yes",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int clickId) {
-                                // get user input and set it to result
-                                String data = confirmTextView.getText().toString();
-                                logger.info("clear database confirmed " + data);
-                                onPromptTextResult(resultId, data);
-                                if (ValidatorUtility.isObjectNotNull(bezirkZirkInfos) && !bezirkZirkInfos.isEmpty()) {
-                                    for (BezirkZirkInfo info : bezirkZirkInfos) {
-                                        if (sharedPrefs.getAll().containsKey(info.getZirkId())) {
-                                            sharedPrefs.edit().remove(info.getZirkId()).apply();
-                                        }
-                                    }
-                                }
-                            }
-                        })
-                .setNegativeButton("No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int clickId) {
-                                dialog.cancel();
-                            }
-                        });
-
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
+//// get prompts.xml view
+//        LayoutInflater layoutInflater = LayoutInflater.from(context);
+//        View promptsView = layoutInflater.inflate(R.layout.prompt_confirm, null);
+//        SphereAPI sphereAPI = ComponentManager.getSphereHandle();
+//        final List<BezirkZirkInfo> bezirkZirkInfos = sphereAPI.getServiceInfo();
+//        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(deviceControlActivity.getApplicationContext());
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+//                context);
+//
+//        // set prompts.xml to alertdialog builder
+//        alertDialogBuilder.setView(promptsView);
+//
+//        // set the title
+//        final TextView userInputTitle = (TextView) promptsView
+//                .findViewById(R.id.promptConfirmTextDialog);
+//
+//        userInputTitle.setText(titleText);
+//
+//        final TextView confirmTextView = (TextView) promptsView
+//                .findViewById(R.id.promptConfirmTextDialog);
+//        userInputTitle.setText(confirmText);
+//        // set dialog message
+//        alertDialogBuilder
+//                .setCancelable(false)
+//                .setPositiveButton("Yes",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int clickId) {
+//                                // get user input and set it to result
+//                                String data = confirmTextView.getText().toString();
+//                                logger.info("clear database confirmed " + data);
+//                                onPromptTextResult(resultId, data);
+//                                if (ValidatorUtility.isObjectNotNull(bezirkZirkInfos) && !bezirkZirkInfos.isEmpty()) {
+//                                    for (BezirkZirkInfo info : bezirkZirkInfos) {
+//                                        if (sharedPrefs.getAll().containsKey(info.getZirkId())) {
+//                                            sharedPrefs.edit().remove(info.getZirkId()).apply();
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        })
+//                .setNegativeButton("No",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int clickId) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//
+//        // create alert dialog
+//        AlertDialog alertDialog = alertDialogBuilder.create();
+//
+//        // show it
+//        alertDialog.show();
     }
 
     /**
      * Get status of development mode by sending an broadcast intent
      */
     void getStatus() {
-        Intent devIntent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
+        Intent devIntent = new Intent(deviceControlActivity.getApplicationContext(), ComponentManager.class);
         devIntent.setAction(BezirkAction.ACTION_DEV_MODE_STATUS.getName());
         deviceControlActivity.startService(devIntent);
     }

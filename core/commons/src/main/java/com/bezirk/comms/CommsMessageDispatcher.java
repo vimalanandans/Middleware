@@ -1,11 +1,11 @@
 package com.bezirk.comms;
 
+import com.bezirk.comms.processor.EventMsgReceiver;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.remotelogging.RemoteLog;
 
-import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -21,16 +21,20 @@ import java.util.Map;
 public class CommsMessageDispatcher implements MessageDispatcher {
     private static final Logger logger = LoggerFactory.getLogger(CommsMessageDispatcher.class);
 
-    private final PubSubEventReceiver pubSubEventReceiver;
+    private EventMsgReceiver eventReceiver = null;
 
-    RemoteLog msgLog = null;
+    private RemoteLog msgLog = null;
 
     // Map of control receivers
-    Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
-            new HashMap<ControlMessage.Discriminator, CtrlMsgReceiver>();
+    private Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
+            new HashMap<>();
 
-    public CommsMessageDispatcher(PubSubEventReceiver pubSubEventReceiver) {
-        this.pubSubEventReceiver = pubSubEventReceiver;
+    public CommsMessageDispatcher() {
+
+    }
+
+    public void registerEventMessageReceiver(EventMsgReceiver eventReceiver){
+        this.eventReceiver = eventReceiver;
     }
 
     /**
@@ -51,10 +55,10 @@ public class CommsMessageDispatcher implements MessageDispatcher {
     // if needed extend similar mechanism to control message dispatching
     @Override
     public boolean dispatchServiceMessages(EventLedger eLedger) {
-        if (ValidatorUtility.isObjectNotNull(pubSubEventReceiver)) {
-            return pubSubEventReceiver.processEvent(eLedger);
+        if (ValidatorUtility.isObjectNotNull(eventReceiver)) {
+            return eventReceiver.processEvent(eLedger);
         } else {
-            logger.error("no valid zirk message receivers ");
+            logger.error("No Zirk event message receivers registered");
         }
         return false;
     }

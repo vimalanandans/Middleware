@@ -17,7 +17,6 @@ public class EventLedger extends Ledger {
     private byte[] dataOnWire;
     private long lastSent;
     private Integer numOfSends = 0;
-    private Boolean isLocal = true;
     private com.bezirk.control.messages.Header header;
     //	private Payload payload;
     private Boolean isMulticast = false;
@@ -97,15 +96,6 @@ public class EventLedger extends Ledger {
      */
     public void setNumOfSends(Integer numOfSends) {
         this.numOfSends = numOfSends;
-    }
-
-
-    public Boolean getIsLocal() {
-        return isLocal;
-    }
-
-    public void setIsLocal(Boolean isLocal) {
-        this.isLocal = isLocal;
     }
 
     /**

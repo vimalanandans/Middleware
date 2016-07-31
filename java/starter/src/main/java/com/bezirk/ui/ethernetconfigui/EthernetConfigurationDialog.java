@@ -1,6 +1,6 @@
 package com.bezirk.ui.ethernetconfigui;
 
-import com.bezrik.network.IntfInetPair;
+import com.bezirk.networking.IntfInetPair;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,7 +17,7 @@ public class EthernetConfigurationDialog {
     }
 
     public String showDialog() {
-        final List<String> temp = new ArrayList<String>();
+        final List<String> temp = new ArrayList<>();
         IntfInetPair pair;
         while (iterator.hasNext()) {
             pair = iterator.next();

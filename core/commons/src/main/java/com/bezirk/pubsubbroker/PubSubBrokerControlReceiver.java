@@ -1,24 +1,21 @@
 package com.bezirk.pubsubbroker;
 
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.messages.ProtocolRole;
 import com.bezirk.proxy.api.impl.ZirkId;
 
-import java.util.Set;
-
 /**
- * Platform independent API's used by SADL for validating the responses by the control channel.
+ * Platform independent API's used by PubSubBroker for validating the responses by the control channel.
  */
-public interface PubSubBrokerControlReceiver {
+interface PubSubBrokerControlReceiver {
 
     /**
      * Checks if the StreamDescriptor is registered by the Zirk zirkId to streamTopic.
      *
-     * @param streamTopic - StreamDescriptor Topic of the stream Descriptor
-     * @param serviceId   - ZirkId of the Zirk
+     * @param streamName - StreamDescriptor name of the stream Descriptor
+     * @param serviceId  - ZirkId of the Zirk
      * @return true if registered, false otherwise.
      */
-    Boolean isStreamTopicRegistered(final String streamTopic, final ZirkId serviceId);
+    boolean isStreamTopicRegistered(final String streamName, final ZirkId serviceId);
 
     /**
      * Returns the Location of the Zirk.

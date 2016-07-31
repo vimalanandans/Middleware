@@ -2,27 +2,20 @@ package com.bezirk.starter;
 
 import com.bezirk.comms.Comms;
 import com.bezirk.datastorage.RegistryStorage;
-import com.bezirk.device.Device;
-import com.bezirk.device.DeviceType;
-import com.bezirk.devices.DeviceForPC;
-import com.bezirk.devices.DeviceInterface;
-import com.bezirk.middleware.addressing.Location;
-import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
+import com.bezirk.device.Device;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.pipe.PipeManager;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereConfig;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.impl.BezirkQRCode;
-import com.bezirk.sphere.impl.PCSphereServiceManager;
 import com.bezirk.sphere.impl.JavaPrefs;
+import com.bezirk.sphere.impl.PCSphereServiceManager;
 import com.bezirk.sphere.security.CryptoEngine;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /**
  * This is a helper class for zirk startup which handles the sphere
@@ -40,21 +33,20 @@ final class ServiceStarterHelper {
      * @param registryPersistence
      * @param comms
      */
-    SphereAPI initSphere(final DeviceInterface bezirkDevice,
-                         final RegistryStorage registryPersistence, final Comms comms) {
+    SphereAPI initSphere(final Device bezirkDevice,
+                         final RegistryStorage registryPersistence, final Comms comms, final NetworkManager networkManager) {
 
         // init the actual
-        final SpherePersistence spherePersistence = registryPersistence;
         SphereRegistry sphereRegistry = null;
         try {
-            sphereRegistry = spherePersistence.loadSphereRegistry();
+            sphereRegistry = registryPersistence.loadSphereRegistry();
         } catch (Exception e) {
             logger.error("Error in loading sphere Registry", e);
         }
 
         final CryptoEngine cryptoEngine = new CryptoEngine(sphereRegistry);
         SphereAPI sphereForPC = new PCSphereServiceManager(cryptoEngine, bezirkDevice,
-                sphereRegistry);
+                sphereRegistry, networkManager);
 
         // BezirkSphereForAndroid implements the listener, hence set the
         // listener object as same.
@@ -67,8 +59,6 @@ final class ServiceStarterHelper {
         bezirkSphereForPC.initSphere(registryPersistence, comms, sphereConfig);
 
 
-
-
         com.bezirk.sphere.SphereManager.setBezirkQRCode((BezirkQRCode) sphereForPC);
 
         final SphereSecurity sphereForSadl = (SphereSecurity) sphereForPC;
@@ -76,7 +66,7 @@ final class ServiceStarterHelper {
 
         try {
 
-            final Comms bezirkComms = (Comms) comms;
+            final Comms bezirkComms = comms;
             bezirkComms.setSphereSecurity(sphereForSadl);
 
         } catch (Exception e) {
@@ -90,55 +80,6 @@ final class ServiceStarterHelper {
         return sphereForPC;
     }
 
-    /**
-     * Loads the default location for UPA device from the properties.
-     */
-    private Location loadLocation() {
-        return DeviceForPC.deviceLocation;
-    }
-
-    /**
-     * Initializes the Device and configures the location
-     *
-     * @param bezirkConfig
-     * @return
-     */
-    Device configureBezirkDevice(final BezirkConfig bezirkConfig) {
-        final Device bezirkDevice = new Device();
-
-        String deviceIdString = null;
-
-        try {
-            deviceIdString = InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            logger.error("Exception in fetching hostname.", e);
-        }
-
-        if (bezirkConfig.isDisplayEnabled()) {
-            bezirkDevice.initDevice(deviceIdString,
-                    DeviceType.BEZIRK_DEVICE_TYPE_PC);
-        } else {
-            bezirkDevice.initDevice(deviceIdString,
-                    DeviceType.BEZIRK_DEVICE_TYPE_EMBEDDED_KIT);
-        }
-
-
-        // Load Location
-        final Location deviceLocation = loadLocation();
-        bezirkDevice.setDeviceLocation(deviceLocation);
-
-        return bezirkDevice;
-    }
-
-    /**
-     * deinitialize the sphere
-     */
-    boolean deinitSphere(final MainService service) {
-        // clear the reference
-        service.sphereManager = null;
-
-        return true;
-    }
 
     PipeManager createPipeManager() {
         return null;

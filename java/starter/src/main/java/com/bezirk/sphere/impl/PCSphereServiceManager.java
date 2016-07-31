@@ -1,11 +1,12 @@
 package com.bezirk.sphere.impl;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.devices.DeviceInterface;
 import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
-import com.bezirk.sphere.api.SphereListener;
+import com.bezirk.device.Device;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.sphere.api.SphereConfig;
+import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.security.CryptoEngine;
 import com.bezirk.util.ValidatorUtility;
 import com.google.zxing.common.BitMatrix;
@@ -26,8 +27,8 @@ public class PCSphereServiceManager extends SphereServiceManager implements Bezi
     private final SphereUI sphereUI;
 
     public PCSphereServiceManager(CryptoEngine cryptoEngine,
-                                  DeviceInterface upaDevice, SphereRegistry sphereRegistry) {
-        super(cryptoEngine, upaDevice, sphereRegistry);
+                                  Device upaDevice, SphereRegistry sphereRegistry, NetworkManager networkManager) {
+        super(cryptoEngine, upaDevice, sphereRegistry, networkManager);
         sphereUI = new SphereUI();
     }
 

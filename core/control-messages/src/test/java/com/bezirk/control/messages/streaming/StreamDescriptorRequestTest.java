@@ -88,7 +88,7 @@ public class StreamDescriptorRequestTest {
     @Test
     public void testStreamRequest() {
 
-        com.bezirk.control.messages.streaming.StreamRequest streamRequest = new com.bezirk.control.messages.streaming.StreamRequest(sender, recipient, sphereName, key, location, "TESTSTREAM", "TEST", null, true, localStreamId);
+        com.bezirk.control.messages.streaming.StreamRequest streamRequest = new com.bezirk.control.messages.streaming.StreamRequest(sender, recipient, sphereName, key, location, "TESTSTREAM", "TEST", true);
         assertEquals("StreamRequest is not having discriminator set properly.", Discriminator.StreamRequest, streamRequest.getDiscriminator());
 
     }

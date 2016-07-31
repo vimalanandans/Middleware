@@ -1,12 +1,10 @@
 package com.bezirk.pubsubbroker;
 
-import com.bezirk.control.messages.EventLedger;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.actions.ReceiveFileStreamAction;
 
 /**
- * Platform independent API's used by the SADL for handling incoming event pub sub Reception.
- * Also get the stream messages. todo rename the class to ISadleCommsMessageReceiver
+ * Platform independent API's used by the pubsuber for handling incoming event pub sub Reception.
+ * Also get the stream messages.
  */
 public interface PubSubEventReceiver {
 
@@ -17,7 +15,7 @@ public interface PubSubEventReceiver {
      * @param eLedger - zirkId of the recipient
      * @return true if the event is processed
      */
-    boolean processEvent(final EventLedger eLedger);
+   // boolean processEvent(final EventLedger eLedger); // moved this functionalites to EventMsgReceiver
     /**
      * Checks if the recipient has subscribed for this topic. O
      * @param topic - Topic of the incoming Event
@@ -26,7 +24,7 @@ public interface PubSubEventReceiver {
      */
     // Not used anymore
     /*public boolean checkUnicastEvent(final String topic, final ZirkId recipient);
-	/**
+    /**
 	 * Checks if Event has any subscribers and returns the list. If location is null, default location is considered and matched.
 	 * @param topic - Topic of the incoming Event
 	 * @param location - Location of the intended Zirk
@@ -35,15 +33,9 @@ public interface PubSubEventReceiver {
     // Not used anymore
 	/*public Set<ZirkId> checkMulticastEvent(final String topic, final Location location);*/
 
-
-    /**
-     * notify the stream status
-     */
-    boolean processStreamStatus(StreamStatusMessage streamStatusNotification);
-
     /**
      * notify the stream data
      */
-    boolean processNewStream(StreamIncomingMessage streamCallbackMessage);
+    boolean processNewStream(ReceiveFileStreamAction streamCallbackMessage);
 
 }

@@ -1,12 +1,10 @@
 package com.bezirk.util;
 
 import com.bezirk.control.messages.Header;
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.control.messages.streaming.StreamRequest;
-import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezrik.network.NetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,16 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
+import java.net.UnknownHostException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author ajc6kor
- */
 public class ValidatorUtilityTest {
     private static final Logger logger = LoggerFactory.getLogger(ValidatorUtilityTest.class);
 
@@ -38,38 +31,13 @@ public class ValidatorUtilityTest {
 
     @BeforeClass
     public static void setUpBeforeClass() {
-
-        inetAddr = getInetAddress();
+        try {
+            inetAddr = InetAddress.getByName("127.0.0.1");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         recipient.device = inetAddr.getHostAddress();
         sender.device = inetAddr.getHostAddress();
-    }
-
-    private static InetAddress getInetAddress() {
-        try {
-
-            for (Enumeration<NetworkInterface> en = NetworkInterface
-                    .getNetworkInterfaces(); en.hasMoreElements(); ) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf
-                        .getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
-
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress()
-                            && !inetAddress.isLinkLocalAddress()
-                            && inetAddress.isSiteLocalAddress()) {
-
-                        inetAddr = NetworkUtilities.getIpForInterface(intf);
-                        return inetAddr;
-                    }
-
-                }
-            }
-        } catch (SocketException e) {
-
-            logger.error("Unable to fetch network interface");
-
-        }
-        return null;
     }
 
     @Test
@@ -115,44 +83,34 @@ public class ValidatorUtilityTest {
     public void testCheckStreamRequest() {
 
 		/*-------------- Positive cases --------------*/
-        StreamRequest request = new StreamRequest(sender, recipient, sphereId,
-                null, null, "testString", "testLabel", "testFile", true, (short) 3);
-        isValid = ValidatorUtility.checkStreamRequest(request);
-        assertTrue("Valid streamRequest is considered invalid by validator.", isValid);
-
 		/*-------------- Negative cases --------------*/
         isValid = ValidatorUtility.checkStreamRequest(null);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
-        request = new StreamRequest(sender, recipient, sphereId,
-                null, null, null, "testLabel", "testFile", true, (short) 3);
+        StreamRequest request = new StreamRequest(sender, recipient, sphereId,
+                null, null, null, "testFile", true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(sender, recipient, sphereId,
-                null, null, "testString", "testLabel", null, true, (short) 3);
-        isValid = ValidatorUtility.checkStreamRequest(request);
-        assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
-
-        request = new StreamRequest(sender, recipient, sphereId,
-                null, null, "testString", null, "testFile", true, (short) 3);
+                null, null, "testString", null, true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(sender, recipient, null,
-                null, null, "testString", "testLabel", "testFile", true, (short) 3);
+                null, null, "testString", "testFile", true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(null, recipient, sphereId,
-                null, null, "testString", "testLabel", "testFile", true, (short) 3);
+                null, null, "testString", "testFile", true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         BezirkZirkEndPoint recepient = new BezirkZirkEndPoint(new ZirkId("test"));
         recepient.device = "";
         request = new StreamRequest(sender, recepient, sphereId,
-                null, null, "testString", "testLabel", "testFile", true, (short) 3);
+                null, null, "testString", "testFile", true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
@@ -175,95 +133,21 @@ public class ValidatorUtilityTest {
     }
 
     @Test
-    public void testCheckProtocolRole() {
-
-		/*-------------- Positive cases --------------*/
-        MockProtocolRole pRole = new MockProtocolRole();
-        isValid = ValidatorUtility.checkProtocolRole(pRole);
-        assertTrue("Valid protocolrole is considered invalie by validator.", isValid);
-
-		/*-------------- Negative cases --------------*/
-        isValid = ValidatorUtility.checkProtocolRole(null);
-        assertFalse("Null protocolrole is considered valid by validator.", isValid);
-
-        pRole.setProtocolName(null);
-        isValid = ValidatorUtility.checkProtocolRole(pRole);
-        assertFalse("Null protocolrole is considered valid by validator.", isValid);
-
-    }
-
-    @Test
     public void testCheckHeader() {
 
 		/*-------------- Positive cases --------------*/
-        Header mHeader = new Header(sphereId, sender, "12", "test");
+        Header mHeader = new Header(sphereId, sender, "12","TestEventName");
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertTrue("Valid header is considered invalid by validator.", isValid);
 
 		/*-------------- Negative cases --------------*/
-        mHeader = new Header(null, sender, "12", "test");
+        mHeader = new Header(null, sender, "12","TestEventName");
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertFalse("Invalid header is considered valid by validator.", isValid);
 
-        mHeader = new Header(sphereId, sender, "12", null);
+        mHeader = new Header(sphereId, null, "12","TestEventName");
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertFalse("Invalid header is considered valid by validator.", isValid);
-
-        mHeader = new Header(sphereId, null, "12", "test");
-        isValid = ValidatorUtility.checkHeader(mHeader);
-        assertFalse("Invalid header is considered valid by validator.", isValid);
-
-
-    }
-
-    @Test
-    public void testCheckDiscoveryRequest() {
-
-		/*-------------- Positive cases --------------*/
-        DiscoveryRequest discoveryRequest = new DiscoveryRequest(sphereId, sender, null, null, 2, 90000, 3);
-        isValid = ValidatorUtility.checkDiscoveryRequest(discoveryRequest);
-        assertTrue("Valid discoveryRequest is considered invalid by validator.", isValid);
-
-
-		/*-------------- Negative cases --------------*/
-        discoveryRequest = new DiscoveryRequest(null, sender, null, null, 2, 60000, 3);
-        isValid = ValidatorUtility.checkDiscoveryRequest(discoveryRequest);
-        assertFalse("Invalid discoveryRequest is considered valid by validator.", isValid);
-
-        BezirkZirkEndPoint sep = new BezirkZirkEndPoint(zirkId);
-        discoveryRequest = new DiscoveryRequest(sphereId, sep, null, null, 2, 60000, 3);
-        isValid = ValidatorUtility.checkDiscoveryRequest(discoveryRequest);
-        assertFalse("Invalid discoveryRequest is considered valid by validator.", isValid);
-
-    }
-
-    class MockProtocolRole extends ProtocolRole {
-
-        String protocolName = this.getClass().getSimpleName();
-
-        @Override
-        public String getRoleName() {
-            return protocolName;
-        }
-
-        public void setProtocolName(String protocolName) {
-            this.protocolName = protocolName;
-        }
-
-        @Override
-        public String getDescription() {
-            return null;
-        }
-
-        @Override
-        public String[] getEventTopics() {
-            return null;
-        }
-
-        @Override
-        public String[] getStreamTopics() {
-            return null;
-        }
 
 
     }

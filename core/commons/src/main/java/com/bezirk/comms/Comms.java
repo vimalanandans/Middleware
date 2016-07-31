@@ -1,15 +1,11 @@
 package com.bezirk.comms;
 
+import com.bezirk.comms.processor.EventMsgReceiver;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
 
-import com.bezirk.pipe.PipeManager;
-import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.SphereSecurity;
-import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.streaming.control.Objects.StreamRecord;
-
-import java.net.InetAddress;
 
 /**
  * This class is created to de-couple from the rest of bezirk (spheres / sadl / stream)
@@ -59,11 +55,14 @@ public interface Comms {
      * Initialize the communications
      * creates queues, threads, sockets
      **/
-    boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                      PubSubBroker pubSubBroker, SphereSecurity sphereSecurity,
-                      com.bezirk.streaming.Streaming streaming);
+//    boolean initComms(CommsProperties commsProperties, InetAddress addr,
+//                      SphereSecurity sphereSecurity,
+//                      com.bezirk.streaming.Streaming streaming);
 
     boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
+
+    /* register event message receiver */
+    boolean registerEventMessageReceiver(EventMsgReceiver receiver);
 
     /**
      * Set the sphere for sadl. for late initialization

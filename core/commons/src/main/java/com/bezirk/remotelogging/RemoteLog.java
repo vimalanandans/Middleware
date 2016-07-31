@@ -4,7 +4,7 @@ import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
-import com.bezirk.devices.DeviceInterface;
+import com.bezirk.device.Device;
 
 
 /**
@@ -22,13 +22,13 @@ public interface RemoteLog {
 
     /** Start Logging . By component manager */
 
-    public boolean startLoggingService( final RemoteLoggingMessageNotification platformSpecificHandler) ;
+    boolean startLoggingService(final RemoteLoggingMessageNotification platformSpecificHandler) ;
 
     /** Start Logging . By component manager */
     boolean stopLoggingService();
 
     /** initialize the remote logging module. */
-    boolean initRemoteLogger(Comms comms, DeviceInterface deviceInterface);
+    boolean initRemoteLogger(Comms comms, Device device);
 
     /** set logger to enable or disable **/
     boolean setLogger(boolean enable, String[] sphereName);

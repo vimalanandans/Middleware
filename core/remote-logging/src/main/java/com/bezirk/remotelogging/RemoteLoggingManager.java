@@ -7,7 +7,8 @@ import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
-import com.bezirk.devices.DeviceInterface;
+import com.bezirk.device.Device;
+import com.bezirk.networking.NetworkManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,11 +38,13 @@ public final class RemoteLoggingManager implements RemoteLog {
 
     private final Date currentDate = new Date();
 
-    DeviceInterface deviceInterface ;
+    Device device;
+
+    private final NetworkManager networkManager;
 
 
-    public RemoteLoggingManager() {
-        // TODO Auto-generated constructor stub
+    public RemoteLoggingManager(NetworkManager networkManager) {
+        this.networkManager = networkManager;
     }
 
 
@@ -53,11 +56,11 @@ public final class RemoteLoggingManager implements RemoteLog {
 
 
     @Override
-    public boolean  initRemoteLogger(Comms comms, DeviceInterface deviceInterface) {
+    public boolean initRemoteLogger(Comms comms, Device device) {
         // register the logging zirk message
         comms.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage, ctrlReceiver);
         this.comms = comms;
-        this.deviceInterface = deviceInterface;
+        this.device = device;
         return true;
     }
 
@@ -72,7 +75,7 @@ public final class RemoteLoggingManager implements RemoteLog {
         }
 
         ServiceActivatorDeactivator.sendLoggingServiceMsgToClients(comms,
-                sphereNameList, loggingSpheres, enable);
+                sphereNameList, loggingSpheres, enable, networkManager);
         return true;
     }
 
@@ -84,18 +87,16 @@ public final class RemoteLoggingManager implements RemoteLog {
     @Override
     public boolean sendRemoteLogMessage(ControlLedger tcMessage) {
 
-        if(FilterLogMessages.checkSphere(tcMessage.getSphereId()))
-        {
+        if (FilterLogMessages.checkSphere(tcMessage.getSphereId())) {
 
             try {
                 LoggingQueueManager.loadLogSenderQueue(
                         new RemoteLoggingMessage(
                                 tcMessage.getSphereId(),
                                 String.valueOf(currentDate.getTime()),
-                                deviceInterface.getDeviceName(),
+                                device.getDeviceName(),
                                 Util.CONTROL_RECEIVER_VALUE,
                                 tcMessage.getMessage().getUniqueKey(),
-                                tcMessage.getMessage().getDiscriminator().name(),
                                 Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
                                 Util.LOGGING_VERSION).serialize());
             } catch (InterruptedException e) {
@@ -110,17 +111,15 @@ public final class RemoteLoggingManager implements RemoteLog {
 
     @Override
     public boolean sendRemoteLogMessage(ControlMessage msg) {
-        if(FilterLogMessages.checkSphere(msg.getSphereId()))
-        {
+        if (FilterLogMessages.checkSphere(msg.getSphereId())) {
             try {
                 LoggingQueueManager.loadLogSenderQueue(
                         new RemoteLoggingMessage(
                                 msg.getSphereId(),
                                 String.valueOf(currentDate.getTime()),
-                                deviceInterface.getDeviceName(),
+                                device.getDeviceName(),
                                 Util.CONTROL_RECEIVER_VALUE,
                                 msg.getUniqueKey(),
-                                msg.getDiscriminator().name(),
                                 Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
                                 Util.LOGGING_VERSION).serialize());
             } catch (InterruptedException e) {
@@ -136,8 +135,8 @@ public final class RemoteLoggingManager implements RemoteLog {
     public boolean sendRemoteLogMessage(EventLedger eLedger) {
         try {
             LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(eLedger.getHeader().getSphereName(),
-                    String.valueOf(currentDate.getTime()), deviceInterface.getDeviceName(),
-                    Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(), eLedger.getHeader().getTopic(),
+                    String.valueOf(currentDate.getTime()), device.getDeviceName(),
+                    Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(),
                     Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
@@ -152,7 +151,7 @@ public final class RemoteLoggingManager implements RemoteLog {
      * TODO: test the below logic
      * */
     public boolean isRemoteMessageValid(RemoteLoggingMessage logMessage) {
-        if(logMessage.typeOfMessage
+        if (logMessage.typeOfMessage
                 .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name())
                 || logMessage.typeOfMessage
                 .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND.name())) {
@@ -174,7 +173,7 @@ public final class RemoteLoggingManager implements RemoteLog {
                         final LoggingServiceMessage loggingServiceMsg = ControlMessage.deserialize(serializedMsg, LoggingServiceMessage.class);
 
                         if (null == logServiceMsgHandler) {
-                            logServiceMsgHandler = new ServiceMessageHandler();
+                            logServiceMsgHandler = new ServiceMessageHandler(networkManager);
                         }
                         logServiceMsgHandler.handleLogServiceMessage(loggingServiceMsg);
                     } catch (Exception e) {

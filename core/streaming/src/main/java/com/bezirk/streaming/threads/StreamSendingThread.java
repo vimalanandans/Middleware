@@ -3,7 +3,6 @@
  */
 package com.bezirk.streaming.threads;
 
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
@@ -29,8 +28,7 @@ public class StreamSendingThread implements Runnable {
             .getLogger(StreamSendingThread.class);
     private static final int BUFFER_SIZE = 1024;                      // size of the buffer
     private final boolean isEncrypted;
-    private final short localStreamId;
-    private final ZirkId senderServiceID;
+    private final ZirkId senderZirkID;
     private final String recipientIP;                                 // recipient
     private final int port;                                           // the port that the recipient is listening
     private final File file;                                    // path to the file that has to be sent
@@ -47,8 +45,8 @@ public class StreamSendingThread implements Runnable {
         this.port = streamRecord.getRecipientPort();
         this.file = streamRecord.getFile();
         this.isEncrypted = streamRecord.isEncryptedStream();
-        this.localStreamId = streamRecord.getLocalStreamId();
-        this.senderServiceID = streamRecord.getSenderSEP().zirkId;
+        //this.localStreamId = streamRecord.getLocalStreamId();
+        this.senderZirkID = streamRecord.getSenderSEP().zirkId;
         this.sadlReceiver = sadlReceiver;
         this.sphereSecurity = sphereSecurity;
     }
@@ -58,20 +56,19 @@ public class StreamSendingThread implements Runnable {
         client = null;
         FileInputStream fileInputStream = null;
         DataOutputStream dataOutputStream = null;
-        int sentStatus = 1;
         try {
             logger.debug("Thread started to send the data");
             fileInputStream = new FileInputStream(file);                              // open the file
             client = new Socket(recipientIP, port);                                       // open the socket
             dataOutputStream = new DataOutputStream(client.getOutputStream());
-            if (isEncrypted) {
+
+            if (isEncrypted && sphereSecurity != null ) // encrypted and valid sphere security object
+            {
                 logger.debug("---------- Secure Data transfer requested! -------------");
-                if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {
+
                     sphereSecurity.encryptSphereContent(fileInputStream, dataOutputStream, sphere);
                     logger.debug("---------- Secure Data transfer Completed! -------------");
-                } else {
-                    logger.error("SphereForSadl is not initialized. Unable to process secure streaming request.");
-                }
+
             } else {
                 int noOfBytesReadFromTheFile;
                 final byte[] buffer = new byte[BUFFER_SIZE];
@@ -82,30 +79,13 @@ public class StreamSendingThread implements Runnable {
             }
         } catch (FileNotFoundException e) {
             logger.debug("Error in Sending stream : " + file.getPath(), e);
-            sentStatus = 0;
         } catch (UnknownHostException e) {
             logger.debug("Error in Opening socket to host : " + recipientIP + " , port : " + port, e);
-            sentStatus = 0;
         } catch (IOException e) {
             logger.debug("Error in Sending Thread", e);
-            sentStatus = 0;
         } finally {
             closeResources(fileInputStream, dataOutputStream);
         }
-
-        StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
-                senderServiceID, sentStatus, localStreamId);
-        if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {
-
-            sadlReceiver.processStreamStatus(streamStatusMessage);
-
-        } else {
-
-            logger.error("BezirkCallback is not provided. Unable to send stream callback.");
-        }
-
-        /*// GIVE THE CALLBACK TO THE SERVICE - available in commit 7694fb63003 */
-
     }
 
     private void closeResources(FileInputStream fileInputStream,

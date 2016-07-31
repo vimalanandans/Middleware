@@ -5,8 +5,7 @@ package com.bezirk.streaming.threads;
 
 import com.bezirk.streaming.MessageQueue;
 import com.bezirk.control.messages.Ledger;
-import com.bezirk.proxy.messagehandler.StreamIncomingMessage;
-import com.bezirk.proxy.messagehandler.StreamStatusMessage;
+import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.StreamManager;
@@ -77,7 +76,7 @@ public class StreamQueueProcessor implements Runnable {
                 running = false;
                 continue;
             }
-            List<Ledger> streamQueue = new CopyOnWriteArrayList<Ledger>(
+            List<Ledger> streamQueue = new CopyOnWriteArrayList<>(
                     msgQueue.getQueue()); // pop the StreamDescriptor record
             Iterator<Ledger> it = streamQueue.iterator();
             if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {
@@ -114,12 +113,12 @@ public class StreamQueueProcessor implements Runnable {
 
         logger.debug("The Recipient is Busy, Giving Callback to the Zirk");
 
-        StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
-                streamRecord.getSenderSEP().zirkId, 0, streamRecord.getLocalStreamId());
+    /*    StreamStatusAction streamStatusAction = new StreamStatusAction(
+                streamRecord.senderSEP.zirkId, 0, streamRecord.localStreamId);
 
         if (bezirkCallbackPresent) {
-            sadlReceiver.processStreamStatus(streamStatusMessage);
-        }
+            sadlReceiver.processStreamStatus(streamStatusAction);
+        }*/
     }
 
     private void processStreamReadyMessage(StreamRecord streamRecord) {
@@ -134,23 +133,26 @@ public class StreamQueueProcessor implements Runnable {
 
     private void processLocalStreamMessage(boolean bezirkCallbackPresent,
                                            StreamRecord streamRecord) {
+
+        //Punith compare this with the MVP branch, doubt.
+
         // GIVE THE CALLBACK AS SUCCESS FOR THE SENDER
-        StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
+        /*StreamStatusMessage streamStatusMessage = new StreamStatusMessage(
                 streamRecord.getSenderSEP().zirkId, 1, streamRecord.getLocalStreamId());
         if (bezirkCallbackPresent) {
 
-            sadlReceiver.processStreamStatus(streamStatusMessage);
+            sadlReceiver.processStreamStatus(streamStatusAction);
 
-        }
+        }*/
         // GIVE CALLBACK FOR RECIPIENT
-        StreamIncomingMessage uStreamCallbackMsg = new StreamIncomingMessage(
+        /*StreamIncomingMessage uStreamCallbackMsg = new StreamIncomingMessage(
                 streamRecord.getRecipientSEP().zirkId, streamRecord.getStreamTopic(),
                 streamRecord.getSerializedStream(), streamRecord.getFile(),
                 streamRecord.getLocalStreamId(), streamRecord.getSenderSEP());
-
         if (bezirkCallbackPresent) {
             sadlReceiver.processNewStream(uStreamCallbackMsg);
         }
+        */
     }
 
 }

@@ -18,4 +18,9 @@ public class RegisterZirkAction extends ZirkAction {
     public String getZirkName() {
         return zirkName;
     }
+
+    @Override
+    public BezirkAction getAction() {
+        return BezirkAction.ACTION_BEZIRK_REGISTER;
+    }
 }

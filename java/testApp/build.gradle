@@ -1,12 +1,13 @@
 apply plugin: 'application'
 
-mainClassName = "test.SimpleTest"
+mainClassName = "com.bezirk.test.Subscriber"
 
 dependencies {
     compile project(':core:bezirk-middleware-api')
     compile project(':core:bezirk')
     compile project(':core:commons')
     compile project(':java:libraries:bezirk-factory')
+    compile project(':core:testapp-core')
 //    compile project(':core:protocols:parametricUI-protocols')
 
     testCompile 'junit:junit:4.12'
@@ -29,3 +30,36 @@ run {
      */
     systemProperties System.getProperties()
 }
+
+//apply plugin: 'java'
+//
+//dependencies {
+//    compile project(':core:bezirk-middleware-api')
+//    compile project(':core:bezirk')
+//    compile project(':core:commons')
+//    compile project(':java:libraries:bezirk-factory')
+//    compile project(':core:testapp-core')
+//}
+// Automatically add the temporary directory where Bezirk dumps the ZeroMQ dependencies
+// to java.library.path
+//applicationDefaultJvmArgs = ["-Djava.library.path=" + System.getProperty("java.library.path") +
+//                                     File.pathSeparator + System.getProperty("java.io.tmpdir") +
+//                                     "lib-zeromq-bin" + File.separator]
+
+//task pub(type: JavaExec) {
+//    jvmArgs "-Djava.library.path=" + System.getProperty("java.library.path") +
+//            File.pathSeparator + System.getProperty("java.io.tmpdir") +
+//            "lib-zeromq-bin" + File.separator
+//    main = "com.bezirk.test.Publisher"
+//    classpath = sourceSets.main.runtimeClasspath
+//    systemProperties System.getProperties() //used to pass properties to bezirk
+//}
+//
+//task sub(type: JavaExec) {
+//    jvmArgs "-Djava.library.path=" + System.getProperty("java.library.path") +
+//            File.pathSeparator + System.getProperty("java.io.tmpdir") +
+//            "lib-zeromq-bin" + File.separator
+//    main = "com.bezirk.test.Subscriber"
+//    classpath = sourceSets.main.runtimeClasspath
+//    systemProperties System.getProperties() //used to pass properties to bezirk
+//}

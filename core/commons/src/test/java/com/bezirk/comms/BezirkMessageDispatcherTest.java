@@ -2,36 +2,28 @@ package com.bezirk.comms;
 
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
-import com.bezirk.control.messages.discovery.DiscoveryResponse;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.device.Device;
-import com.bezirk.device.DeviceType;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezrik.network.NetworkUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * This testcase tests the working of message dispatcher. A mock receiver is registered for different control messages with the message dispatcher.
  * Tests verifies that the control messages are properly routed to the receiver based on the discriminators registered wth message dispatcher.
- *
- * @author ajc6kor
  */
 public class BezirkMessageDispatcherTest {
 
@@ -39,7 +31,6 @@ public class BezirkMessageDispatcherTest {
     private static final ZirkId serviceId = new ZirkId("ServiceA");
     private static final BezirkZirkEndPoint recipient = new BezirkZirkEndPoint(serviceId);
     private static InetAddress inetAddr;
-
     boolean requestReceived = false;
     boolean responseReceived = false;
     boolean unKnownMessageReceived = false;
@@ -48,71 +39,49 @@ public class BezirkMessageDispatcherTest {
     public static void setUpBeforeClass() {
 
         logger.info("***** Setting up BezirkMessageDispatcherTest TestCase *****");
-        inetAddr = getInetAddress();
-        recipient.device = inetAddr.getHostAddress();
+//        inetAddr = getInetAddress();
+//        recipient.device = inetAddr.getHostAddress();
     }
 
-    private static InetAddress getInetAddress() {
-        try {
-
-            for (Enumeration<NetworkInterface> en = NetworkInterface
-                    .getNetworkInterfaces(); en.hasMoreElements(); ) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf
-                        .getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
-
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress()
-                            && !inetAddress.isLinkLocalAddress()
-                            && inetAddress.isSiteLocalAddress()) {
-
-                        inetAddr = NetworkUtilities.getIpForInterface(intf);
-                        return inetAddr;
-                    }
-
-                }
-            }
-        } catch (SocketException e) {
-            logger.error("Unable to fetch network interface");
-        }
-        return null;
-    }
+//    private static InetAddress getInetAddress() {
+//        try {
+//
+//            for (Enumeration<NetworkInterface> en = NetworkInterface
+//                    .getNetworkInterfaces(); en.hasMoreElements(); ) {
+//                NetworkInterface intf = en.nextElement();
+//                for (Enumeration<InetAddress> enumIpAddr = intf
+//                        .getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+//
+//                    InetAddress inetAddress = enumIpAddr.nextElement();
+//                    if (!inetAddress.isLoopbackAddress()
+//                            && !inetAddress.isLinkLocalAddress()
+//                            && inetAddress.isSiteLocalAddress()) {
+//
+//                        inetAddr = NetworkManager.getIpForInterface(intf);
+//                        return inetAddr;
+//                    }
+//
+//                }
+//            }
+//        } catch (SocketException e) {
+//            logger.error("Unable to fetch network interface");
+//        }
+//        return null;
+//    }
 
 
     @Test
     public void test() {
-        Device device = new Device();
-        String deviceIdString = null;
-        try {
-            deviceIdString = InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        device .initDevice(deviceIdString,
-                DeviceType.BEZIRK_DEVICE_TYPE_PC);
-        PubSubEventReceiver bezirkSadlManager = new PubSubBroker(null,device);
-        CommsMessageDispatcher commsMessageDispatcher = new CommsMessageDispatcher(bezirkSadlManager);
+        Device device = Mockito.mock(Device.class);
+        NetworkManager networkManager = Mockito.mock(NetworkManager.class);
+        //PubSubEventReceiver bezirkSadlManager = new PubSubBroker(null,device, networkManager);
+        CommsMessageDispatcher commsMessageDispatcher = new CommsMessageDispatcher();
 
         CtrlMsgReceiver receiver = new MockReceiver();
         commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, receiver);
 
         ControlLedger tcMessage = new ControlLedger();
-        BezirkZirkEndPoint sender = new BezirkZirkEndPoint("DeviceA", new ZirkId("MockServiceA"));
-        ControlMessage discoveryRequest = new DiscoveryRequest(null, sender, null, null, 0, 0, 0);
-        tcMessage.setMessage(discoveryRequest);
-        commsMessageDispatcher.dispatchControlMessages(tcMessage);
-
-        assertTrue("Request is not recieved by mock receiver.", requestReceived);
-
-        commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryResponse, receiver);
-
-        ControlMessage discoveryResponse = new DiscoveryResponse(recipient, null, null, 0);
-        tcMessage.setMessage(discoveryResponse);
-        commsMessageDispatcher.dispatchControlMessages(tcMessage);
-
-        assertTrue("Response is not recieved by mock receiver.", responseReceived);
-
-        ControlMessage streamRequest = new StreamRequest(null, recipient, null, null, null, null, null, null, true, (short) 0);
+        ControlMessage streamRequest = new StreamRequest(null, recipient, null, null, null, null, null, true, true, true);
         tcMessage.setMessage(streamRequest);
         commsMessageDispatcher.dispatchControlMessages(tcMessage);
 

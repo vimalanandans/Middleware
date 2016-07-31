@@ -28,7 +28,7 @@ public class ZyreCommsJni extends Thread {
 
     CommsProcessor commsProcessor;
     private Zyre zyre;
-    private Map<String, List<String>> peers = new HashMap<String, List<String>>();
+    private Map<String, List<String>> peers = new HashMap<>();
     private String group = BEZIRK_GROUP;
 
     public ZyreCommsJni(CommsProcessor commsProcessor) {
@@ -235,7 +235,7 @@ public class ZyreCommsJni extends Thread {
         final String MSG_DELIM = "\\|";  // separates each part of the message
         final String KV_DELIM = "::";    // separates keys from values
         final int NUM_PARTS = 4;
-        HashMap<String, String> result = new HashMap<String, String>();
+        HashMap<String, String> result = new HashMap<>();
         List<String> pairs = Arrays.asList(msg.split(MSG_DELIM, NUM_PARTS));
 
         if (pairs.size() != NUM_PARTS) {
@@ -256,7 +256,7 @@ public class ZyreCommsJni extends Thread {
         }
 
         if (result.get("event") == null) {
-            return new HashMap<String, String>();
+            return new HashMap<>();
         }
 
         return result;
@@ -312,7 +312,7 @@ public class ZyreCommsJni extends Thread {
     private boolean addPeer(String group, String zyreDeviceId) {
         List<String> deviceList = peers.get(group);
         if (deviceList == null) {
-            deviceList = new ArrayList<String>();
+            deviceList = new ArrayList<>();
             peers.put(group, deviceList);
         }
 
@@ -340,13 +340,8 @@ public class ZyreCommsJni extends Thread {
         peers.get(group);
         List<String> deviceList = peers.get(group);
 
-        if (deviceList == null) {
-            return false;
-        }
-
-        return deviceList.remove(zyreDeviceId);
+        return deviceList != null && deviceList.remove(zyreDeviceId);
     }
-
 
     public String getGroup() {
         return group;

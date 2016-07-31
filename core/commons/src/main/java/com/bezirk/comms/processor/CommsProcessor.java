@@ -1,15 +1,11 @@
 package com.bezirk.comms.processor;
 
 
-
 import com.bezirk.comms.Comms;
+import com.bezirk.comms.CommsFeature;
 import com.bezirk.comms.CommsMessageDispatcher;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.sphere.api.SphereSecurity;
-import com.bezirk.streaming.Streaming;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
@@ -19,24 +15,23 @@ import com.bezirk.control.messages.MulticastControlMessage;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.control.messages.UnicastHeader;
-import com.bezirk.comms.CommsFeature;
-
-
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-//import com.bezirk.sphere.security.UPABlockCipherService;
+import com.bezirk.sphere.api.SphereSecurity;
+import com.bezirk.streaming.Streaming;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.TextCompressor;
-import com.bezrik.network.NetworkUtilities;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+//import com.bezirk.sphere.security.UPABlockCipherService;
 
 /**
  * Created by Vimal on 11/19/2015.
@@ -49,17 +44,17 @@ public abstract class CommsProcessor implements Comms {
 
     // thread pool size
     private static final int THREAD_SIZE = 4;
-  //  private final UPABlockCipherService cipherService = new UPABlockCipherService();
+    //  private final UPABlockCipherService cipherService = new UPABlockCipherService();
 
     CommsMessageDispatcher msgDispatcher = null;
 
     //LogServiceMessageHandler logServiceMsgHandler = null;
-    PubSubBroker pubSubBroker = null;
 
-    SphereSecurity sphereSecurity = null;
+
+    SphereSecurity sphereSecurity = null; // nullable object
 
     //generic notifications
-    List ICommsNotification = new ArrayList<CommsNotification>();
+    List ICommsNotification = new ArrayList<>();
     /**
      * Version Callback that will be used to inform the platforms when there is mismatch in versions.
      * This parameter will be injected in all the components that will be checking for versions to
@@ -70,24 +65,16 @@ public abstract class CommsProcessor implements Comms {
     //private final byte[] testKey = {'B','E','Z','I','R','K','_','G','R','O','U','P','N','E','W','1'};
     private ExecutorService executor;
     private Streaming bezirkStreamManager = null;
+    private final NetworkManager networkManager;
 
-    @Override
-    public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             PubSubBroker pubSubBroker, SphereSecurity sphereSecurity, Streaming streaming) {
-
-        this.pubSubBroker = pubSubBroker;
-
-        msgDispatcher = new CommsMessageDispatcher(pubSubBroker);
-
+    public CommsProcessor(NetworkManager networkManager, CommsNotification commsNotification, Streaming streaming) {
+        this.notification = commsNotification;
+        this.networkManager = networkManager;
+        this.msgDispatcher = new CommsMessageDispatcher();
         if (streaming != null) {
-
             bezirkStreamManager = streaming;
-
             //bezirkStreamManager.initStreams(this);
-
         }
-
-        return true;
     }
 
     @Override
@@ -100,7 +87,6 @@ public abstract class CommsProcessor implements Comms {
         if (bezirkStreamManager != null) {
             bezirkStreamManager.startStreams();
         }
-
 
 
         return true;
@@ -150,8 +136,6 @@ public abstract class CommsProcessor implements Comms {
             return false;
         }
         // FIXME: Bridge the local message. look udp sendControlMessage
-
-
     }
 
     /**
@@ -169,31 +153,15 @@ public abstract class CommsProcessor implements Comms {
                 byte[] wireByteMessage = wireMessage.serialize();
                 ret = sendToAll(wireByteMessage, false);
 
-                // bridge local
-                bridgeControlMessage(getDeviceId(), message);
+                // bridge local. // NOT NEEDED anymore . if needed for streaming local,
+                //  pubsubbroker has to do.
+                //bridgeControlMessage(getDeviceId(), message);
 
             } else if (message.getMessage() instanceof UnicastControlMessage) {
-               /* UnicastControlMessage uMsg = (UnicastControlMessage) message.getMessage();
 
-				 String recipient = uMsg.getRecipient().device;
-
-				if(isLocalMessage(recipient))
-                {
-					return bridgeControlMessage(getDeviceId(),message);
-				}
-				else */
-                if (ControlMessage.Discriminator.StreamRequest == message.getMessage().getDiscriminator()) {
-                    return sendStream(message.getMessage().getUniqueKey());
-                }
-
-
-                WireMessage wireMessage = prepareWireMessage(message.getMessage().getSphereId(), data);
-
-                wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_CTRL);
-
-                byte[] wireByteMessage = wireMessage.serialize();
-                ret = sendToAll(wireByteMessage, false);
-
+                    WireMessage wireMessage = prepareWireMessage(message.getMessage().getSphereId(), data);
+                    byte[] wireByteMessage = wireMessage.serialize();
+                    ret = sendToAll(wireByteMessage, false);
 
             } else {
                 logger.debug("unknown control message");
@@ -270,7 +238,7 @@ public abstract class CommsProcessor implements Comms {
      */
     private byte[] compressMsg(final String data) {
         final byte[] temp = data.getBytes();
-        logger.info("Before Compression Msg byte length: {}", temp.length);
+        //logger.info("Before Compression Msg byte length: {}", temp.length);
 
         final long compStartTime = System.currentTimeMillis();
         final byte[] wireData = TextCompressor.compress(temp);
@@ -279,7 +247,7 @@ public abstract class CommsProcessor implements Comms {
         logger.info("Compression Took {} milliseconds", compEndTime - compStartTime);
 
         //After Compression Byte Length is
-        logger.info("After Compression Msg byte length: {}", wireData.length);
+        //logger.info("After Compression Msg byte length: {}", wireData.length);
         return wireData;
     }
 
@@ -290,26 +258,26 @@ public abstract class CommsProcessor implements Comms {
      * @return
      */
     private byte[] encryptMsg(String sphereId, byte[] msgData) {
-        logger.info("Before Encryption Msg byte length : " + msgData.length);
+        //logger.info("Before Encryption Msg byte length : " + msgData.length);
         long startTime = System.nanoTime();
 
         //Encrypt the data.. To test the local encryption
         //msg = cipherService.encrypt(msgData, testKey).getBytes();
         // temp fix of sending the byte stream
         String msgDataString = new String(msgData);
-        byte[] msg ;
+        byte[] msg;
 
-        if(sphereSecurity != null)
+        if (sphereSecurity != null)
             msg = sphereSecurity.encryptSphereContent(sphereId, msgDataString);
         else // No encryption when there is no interface
             msg = msgData;
 
         long endTime = System.nanoTime();
-        logger.info("Encryption Took " + (endTime - startTime) + " nano seconds");
+        //logger.info("Encryption Took " + (endTime - startTime) + " nano seconds");
 
         //After Encryption Byte Length
         if (msg != null) {
-            logger.info("After Encryption Msg byte length : " + msg.length);
+            //logger.info("After Encryption Msg byte length : " + msg.length);
         }
 
         return msg;
@@ -330,9 +298,9 @@ public abstract class CommsProcessor implements Comms {
         if ((msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED_COMPRESSED)
                 || (msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED)) {
 
-            String data ;
+            String data;
 
-            if(sphereSecurity != null)
+            if (sphereSecurity != null)
                 data = sphereSecurity.decryptSphereContent(sphereId, msgData);
             else // No decryption when there is no interface
                 data = new String(msgData);
@@ -378,22 +346,11 @@ public abstract class CommsProcessor implements Comms {
                 ret = sendToAll(wireByteMessage, false);
 
 
-                // also send it locally
-                processWireMessage(getDeviceId(), ledger);
-
             } else {
 
                 UnicastHeader uHeader = (UnicastHeader) ledger.getHeader();
                 String recipient = uHeader.getRecipient().device;
 
-                //FIXME: since current zyre-jni doesn't support the self device identification
-                // we are sending the unicast always loop back
-                /*if(isLocalMessage(recipient)) {
-                    // if it is unicast and targeted to same device. sent it only to local
-					return processWireMessage(recipient,ledger);
-				}
-				else*/
-                {
 
                     //TODO: for event message decrypt the header here
                     // if the intended zirk is available in sadl message is decrypted
@@ -417,9 +374,6 @@ public abstract class CommsProcessor implements Comms {
                     byte[] wireByteMessage = wireMessage.serialize();
                     ret = sendToOne(wireByteMessage, recipient, false);
 
-                    // FIXME : since we don't know the zyre-jni device id. we are sending now.
-                    processWireMessage(recipient, ledger);
-                }
             }
         }
         return ret;
@@ -495,21 +449,21 @@ public abstract class CommsProcessor implements Comms {
     }
 
     /**
-     * handle the wire message - loop back
+     * handle the wire message - loop back. Not used anymore. Pubsubbroker handles this.
      */
-    public boolean processWireMessage(String deviceId, Ledger ledger) {
-        // start thread pool
-        if ((executor != null) && !executor.isShutdown()) {
-
-            ProcessIncomingMessage inMsg = new ProcessIncomingMessage(/*this, */deviceId, ledger);
-
-            executor.execute(inMsg);
-        } else {
-            logger.error("thread pool is not active.");
-        }
-
-        return true;
-    }
+//    public boolean processWireMessage(String deviceId, Ledger ledger) {
+//        // start thread pool
+//        if ((executor != null) && !executor.isShutdown()) {
+//
+//            ProcessIncomingMessage inMsg = new ProcessIncomingMessage(/*this, */deviceId, ledger);
+//
+//            executor.execute(inMsg);
+//        } else {
+//            logger.error("thread pool is not active.");
+//        }
+//
+//        return true;
+//    }
 
     private boolean processCtrl(String deviceId, WireMessage wireMessage) {
 
@@ -594,7 +548,7 @@ public abstract class CommsProcessor implements Comms {
     //enable the above code later. Quickfix network device id is taken as local ip as of now
     // for zyre this needs to return from actual comms
     public String getDeviceId() {
-        return NetworkUtilities.getDeviceIp();
+        return networkManager.getDeviceIp();
     }
 
     //public abstract String getDeviceId();
@@ -603,7 +557,7 @@ public abstract class CommsProcessor implements Comms {
     // for zyre this needs to return from actual comms
     public boolean isLocalMessage(String deviceId) {
 
-        return deviceId.equals(NetworkUtilities.getDeviceIp());
+        return deviceId.equals(networkManager.getDeviceIp());
     }
 
     //public abstract String isLocalMessage();
@@ -633,9 +587,6 @@ public abstract class CommsProcessor implements Comms {
 
         EventLedger eventLedger = new EventLedger();
         //eventLedger
-
-        if (!isLocalMessage(deviceId))
-            eventLedger.setIsLocal(false);
 
         // fixme: check the version
         // setting sphere id instead of name
@@ -732,20 +683,30 @@ public abstract class CommsProcessor implements Comms {
     /**
      * Bridges the request locally to dispatcher or StreamingQueue
      */
-    private boolean bridgeControlMessage(String deviceId, final ControlLedger tcMessage) {
-
-        if (ControlMessage.Discriminator.StreamRequest == tcMessage.getMessage().getDiscriminator()) {
-            return sendStream(tcMessage.getMessage().getUniqueKey());
-        } else {
-            return processWireMessage(deviceId, tcMessage);
-        }
-    }
+//    private boolean bridgeControlMessage(String deviceId, final ControlLedger tcMessage) {
+//
+//        if (ControlMessage.Discriminator.StreamRequest == tcMessage.getMessage().getDiscriminator()) {
+//            return sendStream(tcMessage.getMessage().getUniqueKey());
+//        } else {
+//            return processWireMessage(deviceId, tcMessage);
+//        }
+//    }
 
     @Override
     public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver) {
 
         return msgDispatcher.registerControlMessageReceiver(id, receiver);
 
+    }
+
+    /* register event message receiver */
+    @Override
+    public boolean registerEventMessageReceiver(EventMsgReceiver receiver)
+    {
+
+        msgDispatcher.registerEventMessageReceiver(receiver);
+
+        return true;
     }
 
     @Override

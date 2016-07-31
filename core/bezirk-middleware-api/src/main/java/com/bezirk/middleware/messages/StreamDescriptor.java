@@ -39,7 +39,6 @@ public abstract class StreamDescriptor extends Message {
      *                      for transmission.
      */
     public StreamDescriptor(boolean isIncremental, boolean isEncrypted) {
-        super(Flag.NOTICE, "TEMP_DUMMY");
         incremental = isIncremental;
         encrypted = isEncrypted;
     }

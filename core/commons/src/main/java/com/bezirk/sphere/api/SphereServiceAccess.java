@@ -3,7 +3,6 @@
  */
 package com.bezirk.sphere.api;
 
-import com.bezirk.control.messages.discovery.DiscoveryRequest;
 import com.bezirk.proxy.api.impl.ZirkId;
 
 /**
@@ -54,13 +53,6 @@ public interface SphereServiceAccess {
      * otherwise
      */
     String getServiceName(ZirkId serviceId);
-
-    /**
-     * This method handles processing the sphere related discovery request
-     *
-     * @param discoveryRequest
-     */
-    void processSphereDiscoveryRequest(DiscoveryRequest discoveryRequest);
 
     /**
      * @param deviceId the deviceId whose Device Name needs to be known

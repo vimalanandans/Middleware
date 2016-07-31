@@ -1,75 +1,88 @@
 package com.bezirk.actions;
 
-import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.EventSet;
+import com.bezirk.middleware.messages.MessageSet;
+import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+
+import java.lang.reflect.Type;
 
 public class SubscriptionAction extends ZirkAction {
-    private final String role;
+    private static final Gson gson;
 
-    public SubscriptionAction(ZirkId zirkId, ProtocolRole role) {
+    static {
+        final GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeHierarchyAdapter(MessageSet.class, new MessageSetAdapter());
+        gson = gsonBuilder.create();
+    }
+
+    private final BezirkAction action;
+    private final String serializedMessageSet;
+
+    public SubscriptionAction(BezirkAction action, ZirkId zirkId, MessageSet messageSet) {
         super(zirkId);
 
-        // Role can be null for unsubscribing from all roles
-        if (role != null &&
-                role.getEventTopics() != null && role.getStreamTopics() != null &&
-                role.getEventTopics().length == 0 && role.getStreamTopics().length == 0) {
-            throw new IllegalArgumentException("Role must be non-null and must subscribe to at " +
+        // MessageSet can be null for unsubscribing from all messages
+        if (messageSet != null && messageSet.getMessages().isEmpty()) {
+            throw new IllegalArgumentException("messageSet must be non-null and must subscribe to at " +
                     "least one event or stream");
         }
 
-        this.role = new SubscribedRole(role).toJson();
+        this.action = action;
+        serializedMessageSet = gson.toJson(messageSet);
     }
 
-    public ProtocolRole getRole() {
-        return SubscribedRole.fromJson(role);
+    public MessageSet getMessageSet() {
+        return gson.fromJson(serializedMessageSet, MessageSet.class);
     }
 
-    private static class SubscribedRole extends ProtocolRole {
-        private static final Gson gson = new Gson();
+    public BezirkAction getAction() {
+        return action;
+    }
 
-        private String protocolName;
-        private String protocolDesc;
-        private String[] eventTopics;
-        private String[] streamTopics;
+    public static class MessageSetAdapter implements JsonSerializer<MessageSet>,
+            JsonDeserializer<MessageSet> {
+        private final Gson gson = new Gson();
 
-        public SubscribedRole() {
-            //Empty constructor required for gson.fromJson
-        }
+        @Override
+        public JsonElement serialize(MessageSet src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject result = new JsonObject();
 
-        public SubscribedRole(ProtocolRole pRole) {
-            protocolName = pRole.getRoleName();
-            protocolDesc = pRole.getDescription();
-            eventTopics = pRole.getEventTopics();
-            streamTopics = pRole.getStreamTopics();
-        }
+            if (src instanceof EventSet) {
+                result.add("type", new JsonPrimitive(EventSet.class.getName()));
+            } else if (src instanceof StreamSet) {
+                result.add("type", new JsonPrimitive(StreamSet.class.getName()));
+            } else {
+                throw new AssertionError("Unknown MessageSet type: " +
+                        src.getClass().getSimpleName());
+            }
 
-        public static ProtocolRole fromJson(String json) {
-            return gson.fromJson(json, SubscribedRole.class);
-        }
-
-        public String toJson() {
-            return gson.toJson(this);
+            result.add("properties", gson.toJsonTree(src, src.getClass()));
+            return result;
         }
 
         @Override
-        public String getRoleName() {
-            return protocolName;
-        }
+        public MessageSet deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            JsonObject jsonObject = json.getAsJsonObject();
+            String type = jsonObject.get("type").getAsString();
+            JsonElement element = jsonObject.get("properties");
 
-        @Override
-        public String getDescription() {
-            return protocolDesc;
-        }
-
-        @Override
-        public String[] getEventTopics() {
-            return eventTopics == null ? null : eventTopics.clone();
-        }
-
-        @Override
-        public String[] getStreamTopics() {
-            return streamTopics == null ? null : streamTopics.clone();
+            try {
+                return (MessageSet) gson.fromJson(element, Class.forName(type));
+            } catch (ClassNotFoundException cnfe) {
+                throw new JsonParseException("Unknown element type: " + type, cnfe);
+            }
         }
     }
 }

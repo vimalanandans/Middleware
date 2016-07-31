@@ -2,7 +2,7 @@
 //
 //import com.bezirk.comms.Comms;
 //import com.bezirk.comms.BezirkCommsPC;
-//import com.bezrik.network.IntfInetPair;
+//import com.bezirk.networking.IntfInetPair;
 //import com.bezrik.network.BezirkNetworkUtilities;
 //
 //import org.junit.Test;
