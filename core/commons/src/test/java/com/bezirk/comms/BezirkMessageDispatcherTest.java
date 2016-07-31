@@ -81,7 +81,7 @@ public class BezirkMessageDispatcherTest {
         commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, receiver);
 
         ControlLedger tcMessage = new ControlLedger();
-        ControlMessage streamRequest = new StreamRequest(null, recipient, null, null, null, null, null, true, true, true);
+        ControlMessage streamRequest = new StreamRequest(null, recipient, null, null, null, null, null, true);
         tcMessage.setMessage(streamRequest);
         commsMessageDispatcher.dispatchControlMessages(tcMessage);
 
