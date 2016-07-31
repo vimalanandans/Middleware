@@ -179,7 +179,7 @@ public class StreamManager implements Streaming, ActiveStream {
         if(futureTask != null && (!futureTask.isCancelled() || futureTask.isDone())){
             futureTask.cancel(true);
         }
-        return false;
+        return true;
     }
 
     @Override

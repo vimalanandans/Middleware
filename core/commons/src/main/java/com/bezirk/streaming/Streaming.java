@@ -27,7 +27,7 @@ public interface Streaming {
     /**
      * Interrupt a single streaming thread
      */
-    boolean interruptStream(final String streamId);
+    boolean interruptStream(final String streamKey);
 
     /**
      * send the stream message based on streamId
