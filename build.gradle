@@ -4,6 +4,7 @@
  * 3.0.0-alpha-mvp+001 alpha mvp for internal testing with fixed API nits
  * 3.0.0-alpha-mvp+002 java-android tested zirks for mvp working
  * 3.0.0-alpha-mvp+003 cleaned up android stack version(all happy paths working)
+ * 3.0.0-alpha-mvp+004 ethernet pop-up text change, (not published yet-Rishabh)
  */
 buildscript {
     repositories {
@@ -31,7 +32,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha-mvp+003"
+    version = "3.0.0-alpha-mvp+004"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
