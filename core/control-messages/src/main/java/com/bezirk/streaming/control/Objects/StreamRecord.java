@@ -16,7 +16,7 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
     //private short localStreamId;
     private BezirkZirkEndPoint senderSEP;
     private boolean isEncryptedStream;                    // if the DataSend needs to be encrypted
-    private String sphere;                        // used for sending the data , set by the sender
+    private String sphereId;                        // used for sending the data , set by the sender
     private StreamingStatus streamStatus;        // changed after receiving the Response
     private String recipientIP;                    // recipient IP, set by the proxy after getting the stream Response
     private int recipientPort;                    // recipient Port,set by the proxy after getting the stream Response
@@ -41,12 +41,12 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
         this.senderSEP = senderSEP;
     }
 
-    public String getSphere() {
-        return sphere;
+    public String getSphereId() {
+        return sphereId;
     }
 
-    public void setSphere(String sphere) {
-        this.sphere = sphere;
+    public void setSphereId(String sphereId) {
+        this.sphereId = sphereId;
     }
 
     public StreamingStatus getStreamStatus() {

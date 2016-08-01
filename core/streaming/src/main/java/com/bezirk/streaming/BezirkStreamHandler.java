@@ -103,7 +103,7 @@ final class BezirkStreamHandler {
             logger.debug("No StreamRecord for this Response or the StreamDescriptor is already addressed");
             return false;
         }
-        streamRecord.setSphere(streamResponse.getSphereId());
+        streamRecord.setSphereId(streamResponse.getSphereId());
         streamRecord.setStreamStatus(streamResponse.status);
 
         streamRecord.setRecipientIP(streamResponse.streamIp);
