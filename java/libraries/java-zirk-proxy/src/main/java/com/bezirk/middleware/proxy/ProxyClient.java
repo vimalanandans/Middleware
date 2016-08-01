@@ -201,8 +201,8 @@ public class ProxyClient implements Bezirk {
     }
 
     @Override
-    public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file) {
-        proxy.sendStream(new SendFileStreamAction(zirkId, recipient, streamDescriptor, file));
+    public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor) {
+        proxy.sendStream(new SendFileStreamAction(zirkId, recipient, streamDescriptor));
     }
 
     @Override

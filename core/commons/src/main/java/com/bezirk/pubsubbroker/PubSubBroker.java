@@ -2,6 +2,7 @@ package com.bezirk.pubsubbroker;
 
 import com.bezirk.actions.BezirkAction;
 import com.bezirk.actions.ReceiveFileStreamAction;
+import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.processor.EventMsgReceiver;
@@ -287,13 +288,13 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     }
 
 
-    public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file) {
+    public short sendStream(SendFileStreamAction streamAction) {
 
 
         final Iterable<String> listOfSphere;
 
         if (sphereServiceAccess != null) {
-            listOfSphere = sphereServiceAccess.getSphereMembership(senderId);
+            listOfSphere = sphereServiceAccess.getSphereMembership(streamAction.getZirkId());
         } else {
             Set<String> spheres = new HashSet<>();
             spheres.add(SPHERE_NULL_NAME);
@@ -301,22 +302,22 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         }
 
         if (null == listOfSphere) {
-            logger.error("Zirk Not Registered with any sphere: " + senderId);
+            logger.error("Zirk Not Registered with any sphere: " + streamAction.getZirkId());
             return (short) -1;
         }
         final Iterator<String> sphereIterator = listOfSphere.iterator();
         try {
-            final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(senderId);
+            final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(streamAction.getZirkId());
             final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId();
-            final StreamDescriptor streamDescriptor = new Gson().fromJson(serializedString, StreamDescriptor.class);
-            final StreamRecord streamRecord = prepareStreamRecord(receiver, serializedString, file, senderSEP, streamDescriptor,streamRequestKey);
+            //final StreamDescriptor streamDescriptor = new Gson().fromJson(streamAction.getDescriptor().toJson(), StreamDescriptor.class);
+            final StreamRecord streamRecord = prepareStreamRecord(streamAction, senderSEP, /*streamDescriptor,*/streamRequestKey);
 
             boolean streamStoreStatus = comms.registerStreamBook(streamRequestKey, streamRecord);
             if (!streamStoreStatus) {
                 logger.error("Cannot Register StreamDescriptor, CtrlMsgId is already present in StreamBook");
                 return (short) -1;
             }
-            sendStreamToSpheres(sphereIterator, streamRequestKey, streamRecord, file, comms);
+            sendStreamToSpheres(sphereIterator, streamRequestKey, streamRecord, streamAction.getFile(), comms);
         } catch (Exception e) {
             logger.error("Cant get the SEP of the sender", e);
             return (short) -1;
@@ -325,21 +326,18 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     }
 
 
-    StreamRecord prepareStreamRecord(BezirkZirkEndPoint receiver, String serializedStream, File file, BezirkZirkEndPoint senderSEP, StreamDescriptor streamDescriptor, String streamRequestKey) {
+    StreamRecord prepareStreamRecord(SendFileStreamAction streamAction, BezirkZirkEndPoint senderSEP, /*StreamDescriptor streamDescriptor, */String streamRequestKey) {
         final StreamRecord streamRecord = new StreamRecord();
-        //streamRecord.setLocalStreamId(streamId);
+        final BezirkZirkEndPoint receiver = (BezirkZirkEndPoint) streamAction.getRecipient();
         streamRecord.setSenderSEP(senderSEP);
-        //streamRecord.setReliable(false);
-        //streamRecord.setIncremental(false);
-        streamRecord.setEncryptedStream(streamDescriptor.isEncrypted());
+        streamRecord.setEncryptedStream(streamAction.getDescriptor().isEncrypted());
         streamRecord.setSphere(null);
         streamRecord.setStreamStatus(StreamRecord.StreamingStatus.PENDING);
         streamRecord.setRecipientIP(receiver.device);
         streamRecord.setRecipientPort(0);
-        streamRecord.setFile(file);
-        //streamRecord.setPipedInputStream(null);
+        streamRecord.setFile(streamAction.getFile());
         streamRecord.setRecipientSEP(receiver);
-        streamRecord.setSerializedStream(serializedStream);
+        streamRecord.setSerializedStream(streamAction.getDescriptor().toJson());
         //streamRecord.setStreamTopic(streamDescriptor.topic);
         streamRecord.setStreamRequestKey(streamRequestKey);
         return streamRecord;

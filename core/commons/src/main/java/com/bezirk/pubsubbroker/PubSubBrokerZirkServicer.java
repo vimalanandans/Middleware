@@ -1,5 +1,6 @@
 package com.bezirk.pubsubbroker;
 
+import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.messages.MessageSet;
@@ -27,5 +28,5 @@ public interface PubSubBrokerZirkServicer {
 
     boolean sendUnicastEvent(ZirkId zirkId, BezirkZirkEndPoint recipient, String serializedEventMsg, String eventName);
 
-    short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file);
+    short sendStream(SendFileStreamAction streamAction);
 }
