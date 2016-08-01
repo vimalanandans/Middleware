@@ -47,7 +47,7 @@ public interface Comms {
      */
     boolean sendStream(String uniqueKey);
 
-    boolean registerStreamBook(String key, StreamRecord sRecord);
+    boolean storeStreamRecord(StreamRecord sRecord);
 
     boolean registerNotification(CommsNotification notification);
 

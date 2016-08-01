@@ -305,19 +305,19 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             logger.error("Zirk Not Registered with any sphere: " + streamAction.getZirkId());
             return (short) -1;
         }
-        final Iterator<String> sphereIterator = listOfSphere.iterator();
         try {
-            final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(streamAction.getZirkId());
-            final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId();
-            //final StreamDescriptor streamDescriptor = new Gson().fromJson(streamAction.getDescriptor().toJson(), StreamDescriptor.class);
-            final StreamRecord streamRecord = prepareStreamRecord(streamAction, senderSEP, /*streamDescriptor,*/streamRequestKey);
 
-            boolean streamStoreStatus = comms.registerStreamBook(streamRequestKey, streamRecord);
+            //StreamRecord is the object which is saved in the streamStore of Streaming module and sent to receiver as a Control Messgae
+            final StreamRecord streamRecord = prepareStreamRecord(streamAction /*,senderSEP,streamDescriptor,streamRequestKey */);
+
+            boolean streamStoreStatus = comms.storeStreamRecord(streamRecord);
             if (!streamStoreStatus) {
                 logger.error("Cannot Register StreamDescriptor, CtrlMsgId is already present in StreamBook");
                 return (short) -1;
             }
-            sendStreamToSpheres(sphereIterator, streamRequestKey, streamRecord, streamAction.getFile(), comms);
+
+            //send the message to receiver
+            sendStreamToSpheres(listOfSphere, /*streamRequestKey,*/ streamRecord /*, streamAction.getFile(), comms*/);
         } catch (Exception e) {
             logger.error("Cant get the SEP of the sender", e);
             return (short) -1;
@@ -326,12 +326,16 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     }
 
 
-    StreamRecord prepareStreamRecord(SendFileStreamAction streamAction, BezirkZirkEndPoint senderSEP, /*StreamDescriptor streamDescriptor, */String streamRequestKey) {
+    StreamRecord prepareStreamRecord(SendFileStreamAction streamAction/*, BezirkZirkEndPoint senderSEP, StreamDescriptor streamDescriptor, String streamRequestKey*/) {
         final StreamRecord streamRecord = new StreamRecord();
         final BezirkZirkEndPoint receiver = (BezirkZirkEndPoint) streamAction.getRecipient();
+        final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(streamAction.getZirkId());
+        final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId();
+        //final StreamDescriptor streamDescriptor = new Gson().fromJson(streamAction.getDescriptor().toJson(), StreamDescriptor.class);
+
         streamRecord.setSenderSEP(senderSEP);
         streamRecord.setEncryptedStream(streamAction.getDescriptor().isEncrypted());
-        streamRecord.setSphere(null);
+        //streamRecord.setSphere(null);
         streamRecord.setStreamStatus(StreamRecord.StreamingStatus.PENDING);
         streamRecord.setRecipientIP(receiver.device);
         streamRecord.setRecipientPort(0);
@@ -362,9 +366,11 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         return sphereId;
     }
 
-    void sendStreamToSpheres(Iterator<String> sphereIterator, String streamRequestKey, StreamRecord streamRecord, File tempFile, Comms comms) {
+    void sendStreamToSpheres(Iterable<String> listOfSphere, /*String streamRequestKey,*/ StreamRecord streamRecord/*, File tempFile, Comms comms*/) {
+        final Iterator<String> sphereIterator = listOfSphere.iterator();
         while (sphereIterator.hasNext()) {
-            final ControlLedger tcMessage = prepareMessage(sphereIterator, streamRequestKey, streamRecord, tempFile);
+            final String sphereName = sphereIterator.next();
+            final ControlLedger tcMessage = prepareMessage(sphereName, streamRecord/*streamRequestKey, streamRecord, streamRecord.getFile()*/);
             if (ValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(tcMessage);
             } else {
@@ -374,18 +380,18 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     }
 
 
-    private ControlLedger prepareMessage(Iterator<String> sphereIterator, String streamRequestKey, StreamRecord streamRecord, File tempFile) {
-
-        final String sphereName = sphereIterator.next();
+    private ControlLedger prepareMessage(String sphereName, StreamRecord streamRecord/*String streamRequestKey, StreamRecord streamRecord, File tempFile*/) {
         final ControlLedger tcMessage = new ControlLedger();
         tcMessage.setSphereId(sphereName);
         BezirkZirkEndPoint senderSEP = streamRecord.getSenderSEP();
         BezirkZirkEndPoint receiver = streamRecord.getRecipientSEP();
         String serializedStream = streamRecord.getSerializedStream();
-        String streamTopic = streamRecord.getStreamTopic();
-        short streamId = streamRecord.getLocalStreamId();
-        final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedStream, tempFile.getName(),
-                streamRecord.isEncryptedStream());
+
+        /*String streamTopic = streamRecord.getStreamTopic();
+        short streamId = streamRecord.getLocalStreamId();*/
+
+        final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRecord.getStreamRequestKey(), null,
+                serializedStream, streamRecord.getFile().getName(), streamRecord.isEncryptedStream());
         tcMessage.setSphereId(sphereName);
         tcMessage.setMessage(request);
         tcMessage.setSerializedMessage(new Gson().toJson(request));

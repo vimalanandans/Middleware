@@ -98,8 +98,8 @@ public class StreamManager implements Streaming, ActiveStream {
     }
 
     @Override
-    public boolean addStreamRecordToStreamStore(String streamId, StreamRecord sRecord) {
-        return streamStore.registerStreamBook(streamId, sRecord);
+    public boolean storeStreamRecord(StreamRecord sRecord) {
+        return streamStore.storeStreamRecord(sRecord);
     }
 
     @Override

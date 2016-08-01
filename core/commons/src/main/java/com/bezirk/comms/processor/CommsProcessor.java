@@ -655,11 +655,11 @@ public abstract class CommsProcessor implements Comms {
     }
 
     @Override
-    public boolean registerStreamBook(String key, StreamRecord sRecord) {
+    public boolean storeStreamRecord(StreamRecord sRecord) {
 
         if (bezirkStreamManager != null) {
 
-            return bezirkStreamManager.addStreamRecordToStreamStore(key, sRecord);
+            return bezirkStreamManager.storeStreamRecord(sRecord);
 
         } else {
 

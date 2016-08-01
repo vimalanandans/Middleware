@@ -104,7 +104,7 @@ public class MockComms implements Comms {
     }
 
     @Override
-    public boolean registerStreamBook(String key, StreamRecord sRecord) {
+    public boolean storeStreamRecord(StreamRecord sRecord) {
         // TODO Auto-generated method stub
         return true;
     }
