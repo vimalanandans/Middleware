@@ -80,7 +80,8 @@ public class ComponentManager extends Service {
         // TODO fix construction of proxy server
         proxyServer = new AndroidProxyServer();
         proxyServer.setPubSubBrokerService(pubSubBroker);
-        //proxyServer.setMessageHandler(messageHandler);
+
+        lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
     }
 
     @Override
