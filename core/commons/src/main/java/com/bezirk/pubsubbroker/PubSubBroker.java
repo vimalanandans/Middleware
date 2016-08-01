@@ -378,15 +378,15 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     }
 
 
+    /**
+     * prepare the control ledger message for the streaming.
+     * @param sphereId
+     * @param streamRecord
+     * @return
+     */
     private ControlLedger prepareMessage(String sphereId, StreamRecord streamRecord/*String streamRequestKey, StreamRecord streamRecord, File tempFile*/) {
         final ControlLedger tcMessage = new ControlLedger();
         tcMessage.setSphereId(sphereId);
-        BezirkZirkEndPoint senderSEP = streamRecord.getSenderSEP();
-        BezirkZirkEndPoint receiver = streamRecord.getRecipientSEP();
-        String serializedStream = streamRecord.getSerializedStream();
-
-        /*String streamTopic = streamRecord.getStreamTopic();
-        short streamId = streamRecord.getLocalStreamId();*/
 
         final StreamRequest request = new StreamRequest(sphereId, streamRecord, null);
         tcMessage.setSphereId(sphereId);

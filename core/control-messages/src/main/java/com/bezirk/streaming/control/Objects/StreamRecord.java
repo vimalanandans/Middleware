@@ -13,18 +13,16 @@ import java.io.PipedInputStream;
  * This class is used as Record for BookKeeping the Streams that has been being pushed by the Services.
  */
 public class StreamRecord extends com.bezirk.control.messages.Ledger {
-    private short localStreamId;
+    //private short localStreamId;
     private BezirkZirkEndPoint senderSEP;
     private boolean isEncryptedStream;                    // if the DataSend needs to be encrypted
     private String sphere;                        // used for sending the data , set by the sender
     private StreamingStatus streamStatus;        // changed after receiving the Response
     private String recipientIP;                    // recipient IP, set by the proxy after getting the stream Response
     private int recipientPort;                    // recipient Port,set by the proxy after getting the stream Response
-    //private PipedInputStream pipedInputStream;    // set if it is unreliable
     private File file;                        // path to the file
     private BezirkZirkEndPoint recipientSEP;    // Used for Local streaming.
     private String serializedStream;                // USed for Local Zirk to Zirk Streaming
-    private String streamTopic;                    // USed for Local Zirk to Zirk Streaming
     private String streamRequestKey;            // sream request key is the unique identifier for the streaming.
 
     /* Streaming Status indicates the status of the Streams.
@@ -35,14 +33,6 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
         PENDING, READY, ADDRESSED, BUSY, LOCAL
     }
 
-    public short getLocalStreamId() {
-        return localStreamId;
-    }
-
-    public void setLocalStreamId(short localStreamId) {
-        this.localStreamId = localStreamId;
-    }
-
     public BezirkZirkEndPoint getSenderSEP() {
         return senderSEP;
     }
@@ -50,30 +40,6 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
     public void setSenderSEP(BezirkZirkEndPoint senderSEP) {
         this.senderSEP = senderSEP;
     }
-
-    /*public boolean isIncremental() {
-        return isIncremental;
-    }
-
-    public void setIncremental(boolean incremental) {
-        isIncremental = incremental;
-    }
-    */
-    /*public boolean isReliable() {
-        return isReliable;
-    }
-
-    public void setReliable(boolean reliable) {
-        isReliable = reliable;
-    }*/
-
-    /*public boolean isEncrypted() {
-        return isEncrypted;
-    }
-
-    public void setEncrypted(boolean encrypted) {
-        isEncrypted = encrypted;
-    }*/
 
     public String getSphere() {
         return sphere;
@@ -107,14 +73,6 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
         this.recipientPort = recipientPort;
     }
 
-    /*public PipedInputStream getPipedInputStream() {
-        return pipedInputStream;
-    }
-
-    public void setPipedInputStream(PipedInputStream pipedInputStream) {
-        this.pipedInputStream = pipedInputStream;
-    }*/
-
     public File getFile() {
         return file;
     }
@@ -138,22 +96,6 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
     public void setSerializedStream(String serializedStream) {
         this.serializedStream = serializedStream;
     }
-
-    public String getStreamTopic() {
-        return streamTopic;
-    }
-
-    public void setStreamTopic(String streamTopic) {
-        this.streamTopic = streamTopic;
-    }
-
-    /*public boolean isRealTimeStream() {
-        return isRealTimeStream;
-    }
-
-    public void setRealTimeStream(boolean realTimeStream) {
-        isRealTimeStream = realTimeStream;
-    }*/
 
     public boolean isEncryptedStream() {
         return isEncryptedStream;
