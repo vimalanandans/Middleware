@@ -2,69 +2,29 @@ package com.bezirk.comms;
 
 import com.bezirk.comms.processor.CommsProcessor;
 import com.bezirk.networking.NetworkManager;
-import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.Streaming;
 import com.bezirk.util.ValidatorUtility;
 
-import java.net.InetAddress;
-
-//import com.bezirk.rest.BezirkRestCommsManager;
-
 /**
- * vimal : Bezirk Communication manager for zyre - jni
- * this extends zyre specific comms all the queue, sockets, receiver threads etc etc
+ * Bezirk Communication manager for android zyre - jni
  */
-
 public class ZyreCommsManager extends CommsProcessor {
-
     private ZyreCommsJni comms;
     private boolean delayedInit;
-    private String zyreGroup;
 
     public ZyreCommsManager(NetworkManager networkManager, CommsNotification commsNotification, Streaming streaming) {
         super(networkManager, commsNotification, streaming);
-        //default constructor
+        if (comms == null) {
+            comms = new ZyreCommsJni(this);
+        }
     }
-
-//    public ZyreCommsManager(String zyreGroup) {
-//        this.zyreGroup = zyreGroup;
-//    }
-
-//    @Override
-//    public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-//                             SphereSecurity sphereServiceAccess, com.bezirk.streaming.Streaming streaming) {
-//        /*init zyre and internals of comms */
-//        return comms == null && super.initComms(commsProperties, addr, sphereServiceAccess, streaming);
-//
-//    }
 
     @Override
     public boolean startComms() {
-
-        if (ValidatorUtility.isObjectNotNull(zyreGroup)) {
-            // you can join the zyre group you specify here..
-            comms = new ZyreCommsJni(this, zyreGroup);
-        } else {
-            comms = new ZyreCommsJni(this);
-        }
-
-
         if (comms != null) {
-
-            //Initialize a new Zyre context
             comms.initZyre(delayedInit);
-
             delayedInit = true;
-
-            //Start the Zyre comms thread
             comms.startZyre();
-
-            // removed the architectured refactoring code
-            // set the comms u have selected, this will be a bridge for Commons code and Android.
-            // BezirkRestCommsManager.getInstance().setBezirkComms(this);
-
-            // call the base methods
             return super.startComms();
         }
         return false;
@@ -72,13 +32,9 @@ public class ZyreCommsManager extends CommsProcessor {
 
     @Override
     public boolean stopComms() {
-
         if (comms != null) {
-            // close zyre
             comms.stopZyre();
-            // close the comms process comms
         }
-
         return super.stopComms();
     }
 
@@ -86,29 +42,27 @@ public class ZyreCommsManager extends CommsProcessor {
     public boolean closeComms() {
         if (comms != null) {
             comms.closeComms();
-
         }
         return super.closeComms();
     }
 
-
-    /**
-     * send to all : Multicast message
-     */
     @Override
     public boolean sendToAll(byte[] msg, boolean isEvent) {
-
-        return comms.sendToAllZyre(msg);
+        if (comms != null) {
+            return comms.sendToAllZyre(msg);
+        }
+        return false;
     }
 
     /**
-     * send to one : Unicast message
      * nodeId = device id
      */
     @Override
     public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent) {
-        return comms.sendToOneZyre(msg, nodeId);
-
+        if (comms != null) {
+            return comms.sendToOneZyre(msg, nodeId);
+        }
+        return false;
     }
 
     /**
@@ -116,21 +70,12 @@ public class ZyreCommsManager extends CommsProcessor {
      */
     @Override
     public boolean restartComms() {
-        //Adding comments for testing
         if (comms != null && comms.getZyre() != null) {
-            //stopComms(); // should not be done as it will stop the streaming threads.
             comms.stopZyre();
-
         }
-
         comms = new ZyreCommsJni(this);
-
-        //Initialize a new Zyre Context
         comms.initZyre(delayedInit);
-
-        //Start the Zyre comms thread
         comms.startZyre();
-
         return true;
     }
 
