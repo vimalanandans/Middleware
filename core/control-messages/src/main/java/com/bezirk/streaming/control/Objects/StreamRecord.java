@@ -15,8 +15,6 @@ import java.io.PipedInputStream;
 public class StreamRecord extends com.bezirk.control.messages.Ledger {
     private short localStreamId;
     private BezirkZirkEndPoint senderSEP;
-    //private boolean isRealTimeStream;                // used to notify that this is a realtime processed streaming.
-    //private boolean isReliable;                    // used for sending the data, set by the sender
     private boolean isEncryptedStream;                    // if the DataSend needs to be encrypted
     private String sphere;                        // used for sending the data , set by the sender
     private StreamingStatus streamStatus;        // changed after receiving the Response
