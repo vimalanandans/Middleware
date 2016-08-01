@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class ProxyClient implements Bezirk {
     protected static final Map<String, List<EventSet.EventReceiver>> eventListenerMap = new ConcurrentHashMap<>();
     protected static final Map<String, List<StreamSet.StreamReceiver>> streamListenerMap = new ConcurrentHashMap<>();
-    protected static final Map<Short, String> activeStreams = new ConcurrentHashMap<>();
+    //protected static final Map<Short, String> activeStreams = new ConcurrentHashMap<>();
 
     private static final String TAG = ProxyClient.class.getSimpleName();
     private static final String COMPONENT_NAME = "com.bezirk.controlui";
@@ -205,7 +205,8 @@ public final class ProxyClient implements Bezirk {
     public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
 
-        activeStreams.put(streamId, streamDescriptor.getClass().getName());
+        // There is no reference.. Not required
+        // activeStreams.put(streamId, streamDescriptor.getClass().getName());
 
         sendBezirkIntent(new SendFileStreamAction(zirkId, recipient, streamDescriptor));
     }
