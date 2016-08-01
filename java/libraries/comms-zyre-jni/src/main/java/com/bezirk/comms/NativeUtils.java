@@ -113,7 +113,7 @@ public class NativeUtils {
      * Puts library to temp dir and loads to memory
      * // refer http://stackoverflow.com/questions/1611357/how-to-make-a-jar-file-that-includes-dll-files
      */
-    private static void loadLibJar(String path, String name) throws IOException {
+   /* private static void loadLibJar(String path, String name) throws IOException {
 
         name = NativeLibraryUtil.getPlatformLibraryName(name);
 
@@ -147,7 +147,7 @@ public class NativeUtils {
             throw new IOException("Failed to load required DLL", e);
         }
 
-    }
+    }*/
 
     private static void deleteOldFiles() {
         final File tmpDirectory = new File(JAVA_TMPDIR + LIB_BIN);

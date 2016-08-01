@@ -29,7 +29,7 @@ public class ZyreCommsJni extends Thread {
     private static boolean isZyreReady;
     private final ConcurrentMap<String, List<String>> peers = new ConcurrentHashMap<>();
     private final ZyreCommsHelper zyreCommsHelper;
-    private final int numberOfEventThreads = 100;
+    private static final int NUMBER_OF_EVENT_THREADS = 100;
     final CommsProcessor commsProcessor;
 
     final int delayedInitTime = 5000; //in ms
@@ -68,7 +68,7 @@ public class ZyreCommsJni extends Thread {
 
             //initialize the executor.
             if (eventExecutor == null || eventExecutor.isShutdown() || eventExecutor.isTerminated()) {
-                eventExecutor = Executors.newFixedThreadPool(numberOfEventThreads);
+                eventExecutor = Executors.newFixedThreadPool(NUMBER_OF_EVENT_THREADS);
             }
 
             // delaying since zyre for android doesn't connect as fast as wifi available
