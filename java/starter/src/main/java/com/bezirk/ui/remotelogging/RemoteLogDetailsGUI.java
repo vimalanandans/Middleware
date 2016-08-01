@@ -263,14 +263,14 @@ public class RemoteLogDetailsGUI extends JFrame {
      */
     private String getSphereNameFromSphereId(final String sphereId) {
         final StringBuilder tempSphereName = new StringBuilder();
-        try {
-           /* commented for the MVP refactoring. inject the sphere API to get access
+        /*try {
+           // commented for the MVP refactoring. inject the sphere API to get access
             tempSphereName.append(BezirkCompManager.getSphereUI()
-                    .getSphere(sphereId).getSphereName());*/
+                    .getSphere(sphereId).getSphereName());
         } catch (NullPointerException ne) {
             logger.error("Error in fetching sphereName from sphere UI", ne);
             tempSphereName.append("Un-defined");
-        }
+        }*/
         return tempSphereName.toString();
     }
 }

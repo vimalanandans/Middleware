@@ -61,7 +61,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         this.pubSubBrokerStorage = pubSubBrokerStorage;
         this.device = device;
         this.networkManager = networkManager;
-        loadSadlRegistry();
+        loadRegistry();
 
         this.comms = comms;
         // register event processor
@@ -127,7 +127,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             return false;
         }
         if (pubSubBrokerRegistry.registerZirk(serviceId)) {
-            persistSadlRegistry();
+            persistRegistry();
             return true;
         }
         return false;
@@ -144,7 +144,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         }
 
         if (pubSubBrokerRegistry.subscribe(zirkId, messageSet)) {
-            persistSadlRegistry();
+            persistRegistry();
             return true;
         }
         return false;
@@ -153,7 +153,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     @Override
     public boolean unsubscribe(final ZirkId zirkId, final MessageSet messageSet) {
         if (pubSubBrokerRegistry.unsubscribe(zirkId, messageSet)) {
-            persistSadlRegistry();
+            persistRegistry();
             return true;
         }
         return false;
@@ -166,7 +166,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             return false;
         }
         if (pubSubBrokerRegistry.unregisterZirk(zirkId)) {
-            persistSadlRegistry();
+            persistRegistry();
             return true;
         }
         return false;
@@ -176,7 +176,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     @Override
     public boolean setLocation(final ZirkId zirkId, final Location location) {
         if (pubSubBrokerRegistry.setLocation(zirkId, location)) {
-            persistSadlRegistry();
+            persistRegistry();
             return true;
         }
         return false;
@@ -344,24 +344,24 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         return streamRecord;
     }
 
-    String getSphereId(BezirkZirkEndPoint receiver, Iterator<String> sphereIterator) {
-
-        String sphereId = null;
-
-        while (sphereIterator.hasNext()) {
-
-            sphereId = sphereIterator.next();
-
-            if (sphereServiceAccess != null && // valid object, but no service
-                    sphereServiceAccess.isServiceInSphere(receiver.getBezirkZirkId(), sphereId)) {
-                logger.debug("Found the sphere:" + sphereId);
-                break;
-            } else { // not valid sphere object return the first one
-                break;
-            }
-        }
-        return sphereId;
-    }
+//    String getSphereId(BezirkZirkEndPoint receiver, Iterator<String> sphereIterator) {
+//
+//        String sphereId = null;
+//
+//        while (sphereIterator.hasNext()) {
+//
+//            sphereId = sphereIterator.next();
+//
+//            if (sphereServiceAccess != null && // valid object, but no service
+//                    sphereServiceAccess.isServiceInSphere(receiver.getBezirkZirkId(), sphereId)) {
+//                logger.debug("Found the sphere:" + sphereId);
+//                break;
+//            } else { // not valid sphere object return the first one
+//                break;
+//            }
+//        }
+//        return sphereId;
+//    }
 
     void sendStreamToSpheres(Iterator<String> sphereIterator, String streamRequestKey, StreamRecord streamRecord, File tempFile, Comms comms) {
         while (sphereIterator.hasNext()) {
@@ -523,11 +523,11 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         return pubSubBrokerRegistry.getRegisteredZirks();
     }
 
-    private void loadSadlRegistry() {
+    private void loadRegistry() {
         try {
             pubSubBrokerRegistry = pubSubBrokerStorage.loadPubSubBrokerRegistry();
         } catch (Exception e) {
-            logger.error("Error in loading sadl registry from persistence \n", e);
+            logger.error("Error in loading registry from persistence \n", e);
         }
     }
 
@@ -543,7 +543,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         return true;
     }
 
-    private void persistSadlRegistry() {
+    private void persistRegistry() {
         try {
             pubSubBrokerStorage.persistPubSubBrokerRegistry();
         } catch (Exception e) {
