@@ -125,7 +125,8 @@ public class StreamManager implements Streaming, ActiveStream {
 
             } else {
 
-                ctrlReceiver.initStreamCtrlReceiver();
+                ctrlReceiver.initStreamCtrlReceiver(bezirkStreamHandler, portFactory, comms,
+                        streamStore, sadlReceiver, sphereSecurity, streamingMessageQueue);
 
                 comms.registerControlMessageReceiver(
                         ControlMessage.Discriminator.StreamRequest,

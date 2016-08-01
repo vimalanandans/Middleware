@@ -28,20 +28,21 @@ public class StreamCtrlReceiver implements CtrlMsgReceiver {
     private Comms comms = null;
     private StreamStore streamStore = null;
     private PubSubEventReceiver sadlReceiver = null;
-    private SphereSecurity sphereForSadl = null;
+    private SphereSecurity sphereSecurity = null;
     private MessageQueue streamingMessageQueue = null;
 
 
     /**
      * Initialize the stream ctrl receivers.
      */
-    public void initStreamCtrlReceiver(){
+    public void initStreamCtrlReceiver(BezirkStreamHandler bezirkStreamHandler, PortFactory portFactory, Comms comms,
+                                       StreamStore streamStore, PubSubEventReceiver sadlReceiver, SphereSecurity sphereSecurity, MessageQueue streamingMessageQueue ){
         this.bezirkStreamHandler = bezirkStreamHandler;
         this.portFactory = portFactory;
         this.comms = comms;
         this.streamStore = streamStore;
         this.sadlReceiver = sadlReceiver;
-        this.sphereForSadl = sphereForSadl;
+        this.sphereSecurity = sphereSecurity;
         this.streamingMessageQueue = streamingMessageQueue;
     }
 
@@ -92,7 +93,7 @@ public class StreamCtrlReceiver implements CtrlMsgReceiver {
                     serializedMsg, StreamRequest.class);
             bezirkStreamHandler.handleStreamRequest(streamRequest,
                     comms, portFactory,
-                    streamStore, sadlReceiver, sphereForSadl);
+                    streamStore, sadlReceiver, sphereSecurity);
 
         } catch (Exception e) {
             logger.error(

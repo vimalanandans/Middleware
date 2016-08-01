@@ -7,6 +7,7 @@ import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.streaming.control.Objects.StreamRecord;
 
 /**
  * This Message is internally sent by the Bezirk for hand shaking with the recipient.
@@ -46,12 +47,11 @@ public class StreamRequest extends UnicastControlMessage {
      */
     public boolean reliable = true;
 
-    public StreamRequest(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereName,
-                         String key, Location location, String serialzedString, String fileName, boolean isEncrypted) {
-        super(sender, recipient, sphereName, discriminator, false, key);
+    public StreamRequest(String sphereId, StreamRecord streamRecord, Location location) {
+        super(streamRecord.getSenderSEP(), streamRecord.getRecipientSEP(), sphereId, discriminator, false, streamRecord.getStreamRequestKey());
         this.location = location;
-        this.serialzedString = serialzedString;
-        this.fileName = fileName;
-        this.isEncrypted = isEncrypted;
+        this.serialzedString = streamRecord.getSerializedStream();
+        this.fileName = streamRecord.getFile().getName();
+        this.isEncrypted = streamRecord.isEncryptedStream();
     }
 }
