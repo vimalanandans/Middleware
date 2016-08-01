@@ -29,7 +29,7 @@ public class ComponentManager extends Service {
     //private final Context context;
     private ActionProcessor actionProcessor;
     private AndroidProxyServer proxyServer;
-    private Comms comms;
+    private ZyreCommsManager comms;
     private AndroidNetworkManager networkManager;
     private RegistryStorage registryStorage;
     private MessageHandler messageHandler;
@@ -73,6 +73,7 @@ public class ComponentManager extends Service {
 
         //comms
         comms = new ZyreCommsManager(networkManager, null, null);
+        lifecycleManager.addObserver(comms);
 
         //pubsub Broker
         PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
@@ -92,19 +93,22 @@ public class ComponentManager extends Service {
                 @Override
                 public void start() {
                     logger.info("LifeCycleCallbacks:start");
-                    comms.startComms();
+                    lifecycleManager.setState(LifecycleManager.LifecycleState.STARTED);
+                    //comms.startComms();
                 }
 
                 @Override
                 public void stop() {
                     logger.info("LifeCycleCallbacks:stop");
-                    comms.stopComms();
+                    lifecycleManager.setState(LifecycleManager.LifecycleState.STOPPED);
+                    //comms.stopComms();
                 }
 
                 @Override
                 public void destroy() {
                     logger.info("LifeCycleCallbacks:destroy");
-                    comms.closeComms();
+                    lifecycleManager.setState(LifecycleManager.LifecycleState.DESTROYED);
+                    //comms.closeComms();
                 }
 
                 @Override

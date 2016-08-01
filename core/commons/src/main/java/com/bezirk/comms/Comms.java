@@ -17,25 +17,25 @@ import com.bezirk.streaming.control.Objects.StreamRecord;
  */
 public interface Comms {
 
-    /**
-     * start the communication
-     */
-    boolean startComms();
-
-    /**
-     * stop the communication
-     */
-    boolean stopComms();
-
-    /**
-     * close the communication
-     */
-    boolean closeComms();
-
-    /**
-     * restart the underlying comms
-     */
-    boolean restartComms();
+//    /**
+//     * start the communication
+//     */
+//    boolean startComms();
+//
+//    /**
+//     * stop the communication
+//     */
+//    boolean stopComms();
+//
+//    /**
+//     * close the communication
+//     */
+//    boolean closeComms();
+//
+//    /**
+//     * restart the underlying comms
+//     */
+//    boolean restartComms();
 
     /**
      * send the control or event message depends of ledger type

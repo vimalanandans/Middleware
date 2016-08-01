@@ -27,7 +27,7 @@ import ch.qos.logback.classic.Level;
 public class ComponentManager {
 
     private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
-    private Comms comms;
+    private ZyreCommsManager comms;
     private PubSubBroker pubSubBroker;
     private RegistryStorage registryStorage;
     private ProxyServer proxyServer;
@@ -45,8 +45,8 @@ public class ComponentManager {
     }
 
     public void create() {
-        this.lifecycleManager = new LifecycleManager();
-        this.lifecycleManager.addObserver(new LifeCycleObserver()); //sample observer, does nothing
+        lifecycleManager = new LifecycleManager();
+        lifecycleManager.addObserver(new LifeCycleObserver()); //sample observer, does nothing
         // other observers are added here
         ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
         root.setLevel(Level.DEBUG);
@@ -59,23 +59,24 @@ public class ComponentManager {
             e.printStackTrace();
         }
 
-        this.device = new JavaDevice();
-        this.comms = new ZyreCommsManager(null, null, networkManager);
-        this.pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
+        device = new JavaDevice();
+        comms = new ZyreCommsManager(null, null, networkManager);
+        lifecycleManager.addObserver(comms);
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
 
-        this.proxyServer.setPubSubBrokerService(pubSubBroker);
+        proxyServer.setPubSubBrokerService(pubSubBroker);
 
-        this.lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
+        lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
     }
 
     public void start() {
         this.lifecycleManager.setState(LifecycleManager.LifecycleState.STARTED);
-        comms.startComms(); //this should be called by comms directly when observing for lifecycle events
+        //comms.startComms(); //this should be called by comms directly when observing for lifecycle events
     }
 
     public void stop() {
         this.lifecycleManager.setState(LifecycleManager.LifecycleState.DESTROYED);
-        comms.closeComms(); //this should be called by comms directly when observing for lifecycle events
+        //comms.closeComms(); //this should be called by comms directly when observing for lifecycle events
     }
 
     //TODO: Remove this dependency for proxy client by providing a persistance implementation

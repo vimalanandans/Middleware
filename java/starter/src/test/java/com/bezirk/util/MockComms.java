@@ -53,24 +53,10 @@ public class MockComms implements Comms {
         this.streamList = streamList;
     }
 
-    @Override
-    public boolean startComms() {
+    public MockComms() {
         ctrlList = new ArrayList<>();
         eventList = new ArrayList<>();
         streamList = new ArrayList<>();
-        return true;
-    }
-
-    @Override
-    public boolean stopComms() {
-        // TODO Auto-generated method stub
-        return true;
-    }
-
-    @Override
-    public boolean closeComms() {
-        // TODO Auto-generated method stub
-        return true;
     }
 
     @Override
@@ -122,8 +108,6 @@ public class MockComms implements Comms {
 //    }
 
 
-
-
     @Override
     public boolean registerControlMessageReceiver(Discriminator id,
                                                   CtrlMsgReceiver receiver) {
@@ -150,10 +134,5 @@ public class MockComms implements Comms {
 
     }
 
-    @Override
-    public boolean restartComms() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
 }

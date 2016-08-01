@@ -32,7 +32,7 @@ import java.util.Observable;
  */
 public class LifecycleManager extends Observable {
 
-    public enum LifecycleState {CREATED, STARTED, DESTROYED}
+    public enum LifecycleState {CREATED, STARTED, STOPPED, DESTROYED}
 
     private LifecycleState state;
 
