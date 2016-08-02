@@ -45,38 +45,48 @@ public class ComponentManager {
     }
 
     public void create() {
+        //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         lifecycleManager = new LifecycleManager();
-        lifecycleManager.addObserver(new LifeCycleObserver()); //sample observer, does nothing
-        // other observers are added here
+
+        //change log level
         ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
         root.setLevel(Level.DEBUG);
 
+        //initialize network manager for handling network management and getting network addressing information
         networkManager = new JavaNetworkManager();
 
+        //initialize data-storage for storing detailed component information like maps, objects
         try {
             this.registryStorage = new RegistryStorage(new DatabaseConnectionForJava(DB_FILE_LOCATION), DB_VERSION);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        //java device for getting information like deviceId, deviceName, etc
         device = new JavaDevice();
+
+        //initialize comms for communicating between devices over the wifi-network using zyre.
         comms = new ZyreCommsManager(null, null, networkManager);
-        lifecycleManager.addObserver(comms);
+
+        //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
         pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
 
+        // TODO initialize in constructor instead.
         proxyServer.setPubSubBrokerService(pubSubBroker);
 
+        // add components as observers of bezirk lifecycle events.
+        lifecycleManager.addObserver(comms);
+
+        // this state is set only when the bezirk service is created the first time
         lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
     }
 
     public void start() {
         this.lifecycleManager.setState(LifecycleManager.LifecycleState.STARTED);
-        //comms.startComms(); //this should be called by comms directly when observing for lifecycle events
     }
 
     public void stop() {
         this.lifecycleManager.setState(LifecycleManager.LifecycleState.DESTROYED);
-        //comms.closeComms(); //this should be called by comms directly when observing for lifecycle events
     }
 
     //TODO: Remove this dependency for proxy client by providing a persistance implementation

@@ -556,7 +556,9 @@ public abstract class CommsProcessor implements Comms, Observer {
         msgLedger.setMsg(new String(wireMessage.getMsg()));
 
         // for diag the message is not compressed
-        notification.diagMsg(msgLedger);
+        if (notification != null) {
+            notification.diagMsg(msgLedger);
+        }
 
         return true;
 
@@ -734,7 +736,9 @@ public abstract class CommsProcessor implements Comms, Observer {
                 String mismatchedVersion = WireMessage.getVersion(msg);
                 /*logger.error("Unknown message received. Bezirk version > "+ BezirkVersion.getWireVersion() +
                         " . Incoming msg version > " + mismatchedVersion);*/
-                notification.versionMismatch(mismatchedVersion);
+                if (notification != null) {
+                    notification.versionMismatch(mismatchedVersion);
+                }
                 return;
             }
 

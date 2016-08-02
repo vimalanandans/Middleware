@@ -1,5 +1,8 @@
 package com.bezirk.componentManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Observable;
 
 /**
@@ -32,18 +35,63 @@ import java.util.Observable;
  */
 public class LifecycleManager extends Observable {
 
+    private static final Logger logger = LoggerFactory.getLogger(LifecycleManager.class);
+
     public enum LifecycleState {CREATED, STARTED, STOPPED, DESTROYED}
 
-    private LifecycleState state;
+    private LifecycleState currentState; //stores the current state of bezirk service
 
+    /**
+     * Set state of the bezirk service if the transition to the state is valid
+     *
+     * @param state
+     * @see #validateStateTransition(LifecycleState, LifecycleState...)
+     */
     void setState(LifecycleState state) {
-        this.state = state;
+        if (currentState == null) {
+            validateStateTransition(state, LifecycleState.CREATED);
+        } else {
+            switch (currentState) {
+                case CREATED:
+                    validateStateTransition(state, LifecycleState.STARTED);
+                    break;
+                case STARTED:
+                    validateStateTransition(state, LifecycleState.STOPPED);
+                    break;
+                case STOPPED:
+                    validateStateTransition(state, LifecycleState.STARTED, LifecycleState.DESTROYED);
+                    break;
+                case DESTROYED:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Validate transition from one {@link LifecycleState} state to another.
+     *
+     * @param requestedState           state to which the transition needs to be made
+     * @param possibleStateTransitions possible states to transition to based on the {@link #currentState}
+     */
+    private void validateStateTransition(LifecycleState requestedState, LifecycleState... possibleStateTransitions) {
+        for (LifecycleState possibleStateTransition : possibleStateTransitions) {
+            if (requestedState == possibleStateTransition) {
+                changeAndNotify(requestedState);
+                return;
+            }
+        }
+        logger.debug("Current State '" + currentState + "' Requested State '" + requestedState + "'received");
+    }
+
+    private void changeAndNotify(LifecycleState state) {
+        this.currentState = state;
         setChanged();
         notifyObservers();
+        logger.debug("Current state changed to '" + state + "'. Notifying observers");
     }
 
     public LifecycleState getState() {
-        return state;
+        return currentState;
     }
 
 }
