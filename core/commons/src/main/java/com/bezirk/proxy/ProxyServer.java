@@ -10,7 +10,11 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubBrokerZirkServicer;
 
 public class ProxyServer {
-    private PubSubBrokerZirkServicer pubSubBrokerService;
+    private final PubSubBrokerZirkServicer pubSubBrokerService;
+
+    public ProxyServer(PubSubBrokerZirkServicer pubSubBrokerService) {
+        this.pubSubBrokerService = pubSubBrokerService;
+    }
 
     public void registerZirk(RegisterZirkAction registerZirkAction) {
         pubSubBrokerService.registerZirk(registerZirkAction.getZirkId(), registerZirkAction.getZirkName());
@@ -47,9 +51,5 @@ public class ProxyServer {
 
     public boolean unregister(RegisterZirkAction registerZirkAction) {
         return pubSubBrokerService.unregisterZirk(registerZirkAction.getZirkId());
-    }
-
-    public void setPubSubBrokerService(PubSubBrokerZirkServicer pubSubBrokerService) {
-        this.pubSubBrokerService = pubSubBrokerService;
     }
 }

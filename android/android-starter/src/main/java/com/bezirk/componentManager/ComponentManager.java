@@ -78,8 +78,7 @@ public class ComponentManager extends Service {
         PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
 
         // TODO fix construction of proxy server
-        proxyServer = new AndroidProxyServer();
-        proxyServer.setPubSubBrokerService(pubSubBroker);
+        proxyServer = new AndroidProxyServer(pubSubBroker);
 
         lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
     }

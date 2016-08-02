@@ -7,9 +7,14 @@ import com.bezirk.actions.SendMulticastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.actions.UnicastEventAction;
+import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.componentManager.ComponentManager;
 import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.ProxyRegistry;
+import com.bezirk.datastorage.PubSubBrokerStorage;
+import com.bezirk.datastorage.RegistryStorage;
+import com.bezirk.device.Device;
+import com.bezirk.device.JavaDevice;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.RecipientSelector;
@@ -19,10 +24,14 @@ import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.middleware.messages.StreamSet;
+import com.bezirk.networking.JavaNetworkManager;
+import com.bezirk.networking.NetworkManager;
+import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.proxy.messagehandler.ZirkMessageHandler;
+import com.bezirk.pubsubbroker.PubSubBroker;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,12 +47,15 @@ import java.util.UUID;
 public class ProxyClient implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(ProxyClient.class);
 
+    private static final String DB_VERSION = "0.0.4";
+    private static final String DB_FILE_LOCATION = ".";
+
     private final Map<ZirkId, Set<EventSet.EventReceiver>> eventMap = new HashMap<>();
     private final Map<ZirkId, Set<StreamSet.StreamReceiver>> streamMap = new HashMap<>();
     private final Map<String, Set<EventSet.EventReceiver>> eventListenerMap = new HashMap<>();
     private final Map<String, Set<StreamSet.StreamReceiver>> streamListenerMap = new HashMap<>();
-    private final ProxyServer proxy = new ProxyServer();
-    private final ProxyPersistence proxyPersistence;
+    private final ProxyServer proxy;
+    private ProxyPersistence proxyPersistence;
 
     private ProxyRegistry proxyRegistry = null;
 
@@ -53,11 +65,25 @@ public class ProxyClient implements Bezirk {
         //MainService mainService = new MainService(proxy, null);
         final BroadcastReceiver brForService = new ZirkMessageReceiver(
                 eventMap, eventListenerMap, streamMap, streamListenerMap);
-        ZirkMessageHandler bezirkPcCallback = new ZirkMessageHandler(brForService);
-        ComponentManager componentManager = new ComponentManager(proxy, bezirkPcCallback);
+        ZirkMessageHandler messageHandler = new ZirkMessageHandler(brForService);
+
+        final NetworkManager networkManager = new JavaNetworkManager();
+        final Device device = new JavaDevice();
+        final ZyreCommsManager comms = new ZyreCommsManager(null, null, networkManager);
+
+        try {
+            proxyPersistence = new RegistryStorage(new DatabaseConnectionForJava(DB_FILE_LOCATION), DB_VERSION);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        PubSubBroker pubSubBroker = new PubSubBroker((PubSubBrokerStorage) proxyPersistence, device, networkManager, comms,
+                messageHandler, null, null);
+        proxy = new ProxyServer(pubSubBroker);
+
+        ComponentManager componentManager = new ComponentManager(comms);
         componentManager.start();
-        //mainService.startStack(bezirkPcCallback);
-        proxyPersistence = componentManager.getBezirkProxyPersistence();
+        //mainService.startStack(messageHandler);
         try {
             proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
         } catch (Exception e) {

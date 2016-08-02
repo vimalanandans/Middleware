@@ -1,16 +1,6 @@
 package com.bezirk.componentManager;
 
 import com.bezirk.comms.ZyreCommsManager;
-import com.bezirk.datastorage.ProxyPersistence;
-import com.bezirk.datastorage.RegistryStorage;
-import com.bezirk.device.Device;
-import com.bezirk.device.JavaDevice;
-import com.bezirk.networking.JavaNetworkManager;
-import com.bezirk.networking.NetworkManager;
-import com.bezirk.persistence.DatabaseConnectionForJava;
-import com.bezirk.proxy.MessageHandler;
-import com.bezirk.proxy.ProxyServer;
-import com.bezirk.pubsubbroker.PubSubBroker;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,22 +14,12 @@ import ch.qos.logback.classic.Level;
  * To manage circular dependencies in the current code structure, init/setters might be needed.
  */
 public class ComponentManager {
-
     private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
-    private ZyreCommsManager comms;
-    private PubSubBroker pubSubBroker;
-    private RegistryStorage registryStorage;
-    private ProxyServer proxyServer;
-    private MessageHandler messageHandler;
-    private Device device;
-    private NetworkManager networkManager;
     private LifecycleManager lifecycleManager;
-    private static final String DB_VERSION = "0.0.4";
-    private static final String DB_FILE_LOCATION = ".";
+    private final ZyreCommsManager comms;
 
-    public ComponentManager(ProxyServer proxyServer, MessageHandler messageHandler) {
-        this.proxyServer = proxyServer;
-        this.messageHandler = messageHandler;
+    public ComponentManager(ZyreCommsManager comms) {
+        this.comms = comms;
         create();
     }
 
@@ -50,20 +30,7 @@ public class ComponentManager {
         ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
         root.setLevel(Level.DEBUG);
 
-        networkManager = new JavaNetworkManager();
-
-        try {
-            this.registryStorage = new RegistryStorage(new DatabaseConnectionForJava(DB_FILE_LOCATION), DB_VERSION);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        device = new JavaDevice();
-        comms = new ZyreCommsManager(null, null, networkManager);
         lifecycleManager.addObserver(comms);
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
-
-        proxyServer.setPubSubBrokerService(pubSubBroker);
 
         lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
     }
@@ -77,10 +44,4 @@ public class ComponentManager {
         this.lifecycleManager.setState(LifecycleManager.LifecycleState.DESTROYED);
         //comms.closeComms(); //this should be called by comms directly when observing for lifecycle events
     }
-
-    //TODO: Remove this dependency for proxy client by providing a persistance implementation
-    public ProxyPersistence getBezirkProxyPersistence() {
-        return registryStorage;
-    }
-
 }
