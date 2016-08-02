@@ -4,7 +4,6 @@ import com.bezirk.comms.processor.CommsProcessor;
 import com.bezirk.componentManager.LifecycleManager;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.streaming.Streaming;
-import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
