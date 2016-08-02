@@ -46,7 +46,7 @@
 //    }
 //
 //    @Override
-//    public String getSphereName() {
+//    public String getSphereId() {
 //        return sphereName;
 //    }
 //

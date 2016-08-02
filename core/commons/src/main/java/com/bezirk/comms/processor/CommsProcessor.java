@@ -9,6 +9,7 @@ import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
+import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.control.messages.MulticastControlMessage;
@@ -131,22 +132,33 @@ public abstract class CommsProcessor implements Comms {
         else if (message instanceof EventLedger)
             return this.sendEventLedger((EventLedger) message);
         else if (message instanceof MessageLedger)
-            return sendMessageLedger((MessageLedger) message);
+            return this.sendMessageLedger((MessageLedger) message);
         else // stream ledger // hopefully there are no other types
             return this.sendStreamMessage(message);
 
     }
 
+    @Override
+    public boolean sendControlMessage(ControlMessage message)
+    {
+        ControlLedger ledger = new ControlLedger();
+        ledger.setMessage(message);
+        ledger.setSphereId(message.getSphereId());
+        ledger.setSerializedMessage(ledger.getMessage().serialize());
+
+        return sendControlLedger(ledger);
+    }
+
     /**
      * Send the control message
      */
-    public boolean sendControlLedger(ControlLedger message) {
+    public boolean sendControlLedger(ControlLedger ledger) {
         boolean ret = false;
-        String data = message.getSerializedMessage();
+        String data = ledger.getSerializedMessage();
         if (data != null) {
-            if (message.getMessage() instanceof MulticastControlMessage) {
+            if (ledger.getMessage() instanceof MulticastControlMessage) {
 
-                WireMessage wireMessage = prepareWireMessage(message.getMessage().getSphereId(), data);
+                WireMessage wireMessage = prepareWireMessage(ledger.getMessage().getSphereId(), data);
 
                 wireMessage.setMsgType(WireMessage.WireMsgType.MSG_MULTICAST_CTRL);
                 byte[] wireByteMessage = wireMessage.serialize();
@@ -156,9 +168,9 @@ public abstract class CommsProcessor implements Comms {
                 //  pubsubbroker has to do.
                 //bridgeControlMessage(getDeviceId(), message);
 
-            } else if (message.getMessage() instanceof UnicastControlMessage) {
+            } else if (ledger.getMessage() instanceof UnicastControlMessage) {
 
-                    WireMessage wireMessage = prepareWireMessage(message.getMessage().getSphereId(), data);
+                    WireMessage wireMessage = prepareWireMessage(ledger.getMessage().getSphereId(), data);
 
                     wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_CTRL);
 
@@ -326,16 +338,17 @@ public abstract class CommsProcessor implements Comms {
     /**
      * Send the event message
      */
+    @Override
     public boolean sendEventLedger(EventLedger ledger) {
         boolean ret = false;
         String data = ledger.getSerializedMessage();
 
         if (data != null) {
-            if (ledger.getIsMulticast()) {
+            if (ledger.getHeader() instanceof MulticastHeader) {
 
                 //TODO: for event message decrypt the header here
                 // if the intended zirk is available in sadl message is decrypted
-                WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereName(), data);
+                WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
 
                 // encrypt the header
 
@@ -357,7 +370,7 @@ public abstract class CommsProcessor implements Comms {
 
                     //TODO: for event message decrypt the header here
                     // if the intended zirk is available in sadl message is decrypted
-                    WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereName(), data);
+                    WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
 
                     // encrypt the header
 
@@ -593,16 +606,16 @@ public abstract class CommsProcessor implements Comms {
 
         // fixme: check the version
         // setting sphere id instead of name
-        eventLedger.getHeader().setSphereName(wireMessage.getSphereId());
+        //eventLedger.getHeader().setSphereId(wireMessage.getSphereId());
 
         if (setEventHeader(eventLedger, wireMessage)) {
 
             // override sender zirk end point device id with local id
-            eventLedger.getHeader().getSenderSEP().device = deviceId;
+            eventLedger.getHeader().getSender().device = deviceId;
 
             eventLedger.setEncryptedMessage(wireMessage.getMsg());
 
-            // sadl encrypts the data
+            // pubsubbroker encrypts the data
             // FIXME: in case of compressed message sadl has to decompress
             // at the moment sadl is generic for udp and other comms, hence make changes there
 
@@ -623,11 +636,13 @@ public abstract class CommsProcessor implements Comms {
         if (data == null) // header decrypt failed. unknown sphere id
             return false;
 
-        String header = new String(data);
+        String headerData = new String(data);
+
+//        Header header = Header.fromJson(headerData,Header.class);
 
         if (wireMessage.isMulticast()) {
 
-            MulticastHeader mHeader = new Gson().fromJson(header, MulticastHeader.class);
+            MulticastHeader mHeader = new Gson().fromJson(headerData, MulticastHeader.class);
 
             eLedger.setHeader(mHeader);
 
@@ -635,13 +650,15 @@ public abstract class CommsProcessor implements Comms {
 
         } else {
 
-            UnicastHeader uHeader = new Gson().fromJson(header, UnicastHeader.class);
+            UnicastHeader uHeader = new Gson().fromJson(headerData, UnicastHeader.class);
 
             eLedger.setHeader(uHeader);
 
             eLedger.setIsMulticast(false);
 
         }
+
+
         return true;
     }
 

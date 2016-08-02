@@ -98,6 +98,16 @@ public class MockComms implements Comms {
     }
 
     @Override
+    public boolean sendEventLedger(EventLedger ledger) {
+        return false;
+    }
+
+    @Override
+    public boolean sendControlMessage(ControlMessage message) {
+        return false;
+    }
+
+    @Override
     public boolean sendStream(String uniqueKey) {
         // TODO Auto-generated method stub
         return true;

@@ -60,9 +60,9 @@ public class MulticastHeaderTest {
         /*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
 		 * device null condition should be checked separately before device equals in BezirkServiceEndpoint equals api.
 		 * 
-		assertEquals("DataOnWire not equal to the set value.",sender, multicastHeader.getSenderSEP());
+		assertEquals("DataOnWire not equal to the set value.",sender, multicastHeader.getSender());
 		*/
-        assertEquals("SphereName not equal to the set value.", sphereName, multicastHeader.getSphereName());
+        assertEquals("SphereName not equal to the set value.", sphereName, multicastHeader.getSphereId());
         assertEquals("MessageID not equal to the set value.", messageId, multicastHeader.getUniqueMsgId());
 
 
@@ -71,8 +71,8 @@ public class MulticastHeaderTest {
     private com.bezirk.control.messages.MulticastHeader prepareMulticastHeader() {
         com.bezirk.control.messages.MulticastHeader multicastHeader = new com.bezirk.control.messages.MulticastHeader();
         multicastHeader.setRecipientSelector(RECIPIENT_SELECTOR);
-        multicastHeader.setSenderSEP(sender);
-        multicastHeader.setSphereName(sphereName);
+        multicastHeader.setSender(sender);
+        multicastHeader.setSphereId(sphereName);
         multicastHeader.setUniqueMsgId(messageId);
         return multicastHeader;
     }

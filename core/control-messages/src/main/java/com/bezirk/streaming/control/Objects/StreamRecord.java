@@ -3,6 +3,7 @@
  */
 package com.bezirk.streaming.control.Objects;
 
+import com.bezirk.control.messages.Ledger;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 import java.io.File;
@@ -12,7 +13,7 @@ import java.io.PipedInputStream;
 /**
  * This class is used as Record for BookKeeping the Streams that has been being pushed by the Services.
  */
-public class StreamRecord extends com.bezirk.control.messages.Ledger {
+public class StreamRecord implements Ledger {
     public BezirkZirkEndPoint senderSEP;
     public boolean isIncremental;                // used for sending the data, set by the sender
     public boolean isReliable;                    // used for sending the data, set by the sender

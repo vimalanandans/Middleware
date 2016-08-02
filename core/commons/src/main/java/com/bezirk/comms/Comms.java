@@ -5,7 +5,6 @@ import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.Ledger;
 
-import com.bezirk.middleware.messages.Message;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
@@ -55,8 +54,15 @@ public interface Comms {
     @Deprecated // Use sendEventLedger, or sendControlLedger
     boolean sendMessage(Ledger message);
 
-
+    /**
+     * Send event ledger
+     * */
     boolean sendEventLedger(EventLedger ledger);
+
+    /**
+     * Send event ledger
+     * */
+    boolean sendControlMessage(ControlMessage message);
 
     /**
      * send the stream message based on unique key
