@@ -1,6 +1,5 @@
 package com.bezirk.componentManager;
 
-import com.bezirk.comms.Comms;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.RegistryStorage;

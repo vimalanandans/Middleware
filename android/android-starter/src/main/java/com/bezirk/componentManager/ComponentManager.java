@@ -7,7 +7,6 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 
-import com.bezirk.comms.Comms;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.AndroidDevice;

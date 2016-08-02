@@ -1,16 +1,11 @@
 package com.bezirk.comms;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.scijava.nativelib.NativeLibraryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zyre.Zyre;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.net.URL;
