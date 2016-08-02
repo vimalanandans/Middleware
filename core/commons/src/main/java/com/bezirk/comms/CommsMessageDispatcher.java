@@ -104,6 +104,7 @@ public class CommsMessageDispatcher implements MessageDispatcher {
      */
     @Override
     public boolean dispatchControlMessages(ControlLedger tcMessage) {
+        //FIXME : setIsMessageFromHost is never called. validate and remove the below
         if (tcMessage.getIsMessageFromHost()) { //If the msg is local : set serialized msg
             tcMessage.setSerializedMessage(tcMessage.getMessage().serialize());
         }

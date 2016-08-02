@@ -460,6 +460,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     private Set<ZirkId> getAssociatedServiceList(final EventLedger eLedger) {
 
         Set<ZirkId> serviceList = null;
+
         if (eLedger.getIsMulticast()) {
             MulticastHeader mHeader = (MulticastHeader) eLedger.getHeader();
             Location targetLocation = mHeader.getRecipientSelector() == null ? null : mHeader.getRecipientSelector().getLocation();

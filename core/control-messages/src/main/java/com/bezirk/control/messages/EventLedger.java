@@ -13,11 +13,11 @@ public class EventLedger extends Ledger {
     private byte[] encryptedMessage;
     private String serializedHeader;
     private byte[] encryptedHeader;
-    private byte[] checksum;
+/*    private byte[] checksum;
     private byte[] dataOnWire;
     private long lastSent;
     private Integer numOfSends = 0;
-    private com.bezirk.control.messages.Header header;
+  */  private com.bezirk.control.messages.Header header;
     //	private Payload payload;
     private Boolean isMulticast = false;
 
@@ -73,31 +73,31 @@ public class EventLedger extends Ledger {
      *
      * @return the timestamp in milliseconds (as Long) which represents the time at which the message was sent last
      */
-    public long getLastSent() {
-        return lastSent;
-    }
-
+//    public long getLastSent() {
+//        return lastSent;
+//    }
+//
     /**
      * @param lastSent the timestamp in milliseconds which is set every time a message is sent. The lastSent timestamp is overwritten which each send on retransmit
      */
-    public void setLastSent(long lastSent) {
-        this.lastSent = lastSent;
-    }
-
+//    public void setLastSent(long lastSent) {
+//        this.lastSent = lastSent;
+//    }
+//
     /**
      * @return The number of times a message is sent
      */
-    public Integer getNumOfSends() {
-        return numOfSends;
-    }
-
+//    public Integer getNumOfSends() {
+//        return numOfSends;
+//    }
+//
     /**
      * @param numOfSends This is incremented every time the message is sent
      */
-    public void setNumOfSends(Integer numOfSends) {
-        this.numOfSends = numOfSends;
-    }
-
+//    public void setNumOfSends(Integer numOfSends) {
+//        this.numOfSends = numOfSends;
+//    }
+//
     /**
      * @return The header of the message on the wire
      * @see com.bezirk.control.messages.Header
@@ -117,16 +117,16 @@ public class EventLedger extends Ledger {
     /**
      * @return the data that is to go on the wire
      */
-    public byte[] getDataOnWire() {
-        return dataOnWire == null ? null : dataOnWire.clone();
-    }
-
+//    public byte[] getDataOnWire() {
+//        return dataOnWire == null ? null : dataOnWire.clone();
+//    }
+//
     /**
      * @param dataOnWire this is only set when the message is sent the first time
      */
-    public void setDataOnWire(byte[] dataOnWire) {
-        this.dataOnWire = dataOnWire == null ? null : dataOnWire.clone();
-    }
+//    public void setDataOnWire(byte[] dataOnWire) {
+//        this.dataOnWire = dataOnWire == null ? null : dataOnWire.clone();
+//    }
 //	/**
 //	 *
 //	 * @return the payload that goes on the wire
@@ -180,13 +180,13 @@ public class EventLedger extends Ledger {
         this.serializedHeader = serializedHeader;
     }
 
-    public byte[] getChecksum() {
-        return checksum == null ? null : checksum.clone();
-    }
-
-    public void setChecksum(byte[] checksum) {
-        this.checksum = checksum == null ? null : checksum.clone();
-    }
+//    public byte[] getChecksum() {
+//        return checksum == null ? null : checksum.clone();
+//    }
+//
+//    public void setChecksum(byte[] checksum) {
+//        this.checksum = checksum == null ? null : checksum.clone();
+//    }
 
 
 }

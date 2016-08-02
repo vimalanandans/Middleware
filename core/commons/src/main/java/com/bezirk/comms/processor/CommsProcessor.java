@@ -40,6 +40,7 @@ import java.util.concurrent.Executors;
  */
 
 public abstract class CommsProcessor implements Comms {
+
     private static final Logger logger = LoggerFactory.getLogger(CommsProcessor.class);
 
     // thread pool size
@@ -126,9 +127,9 @@ public abstract class CommsProcessor implements Comms {
     public boolean sendMessage(Ledger message) {
         // send as it is
         if (message instanceof ControlLedger)
-            return this.sendControlMessage((ControlLedger) message);
+            return this.sendControlLedger((ControlLedger) message);
         else if (message instanceof EventLedger)
-            return this.sendEventMessage((EventLedger) message);
+            return this.sendEventLedger((EventLedger) message);
         else if (message instanceof MessageLedger)
             return sendMessageLedger((MessageLedger) message);
         else // stream ledger // hopefully there are no other types
@@ -139,7 +140,7 @@ public abstract class CommsProcessor implements Comms {
     /**
      * Send the control message
      */
-    public boolean sendControlMessage(ControlLedger message) {
+    public boolean sendControlLedger(ControlLedger message) {
         boolean ret = false;
         String data = message.getSerializedMessage();
         if (data != null) {
@@ -325,7 +326,7 @@ public abstract class CommsProcessor implements Comms {
     /**
      * Send the event message
      */
-    public boolean sendEventMessage(EventLedger ledger) {
+    public boolean sendEventLedger(EventLedger ledger) {
         boolean ret = false;
         String data = ledger.getSerializedMessage();
 
