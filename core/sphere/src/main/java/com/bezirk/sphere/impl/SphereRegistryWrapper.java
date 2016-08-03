@@ -190,7 +190,7 @@ public class SphereRegistryWrapper {
                 ArrayList<BezirkDeviceInfo> devices = (devicesIterable != null)
                         ? (ArrayList<BezirkDeviceInfo>) devicesIterable : null;
 
-                sphereInfo = new BezirkSphereInfo(sphereId, sphere.getSphereName(), sphere.getSphereType(), devices, null);
+                sphereInfo = new BezirkSphereInfo(sphereId, sphere.getSphereName(), sphere.getSphereType(), devices);
 
                 if (sphere instanceof OwnerSphere) {
                     sphereInfo.setThisDeviceOwnsSphere(true);

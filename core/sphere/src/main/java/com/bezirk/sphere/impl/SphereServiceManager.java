@@ -5,7 +5,6 @@ import com.bezirk.datastorage.SpherePersistence;
 import com.bezirk.datastorage.SphereRegistry;
 import com.bezirk.device.Device;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
-import com.bezirk.middleware.objects.BezirkPipeInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.networking.NetworkManager;
@@ -181,12 +180,6 @@ public class SphereServiceManager
 
     @Override
     public Iterable<BezirkDeviceInfo> getDevicesOnSphere(String sphereId) {
-        // TODO implement
-        return null;
-    }
-
-    @Override
-    public Iterable<BezirkPipeInfo> getPipesOnSphere(String sphereId) {
         // TODO implement
         return null;
     }
