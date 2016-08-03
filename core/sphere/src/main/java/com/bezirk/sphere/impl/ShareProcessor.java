@@ -28,11 +28,11 @@ import java.util.Map;
 public class ShareProcessor {
     private static final Logger logger = LoggerFactory.getLogger(ShareProcessor.class);
     private static final String SHARE_FAILURE_MSG = "Share Failed";
-    private CryptoInternals crypto;
-    private Device device;
-    private CommsUtility comms;
-    private SphereRegistryWrapper sphereRegistryWrapper;
-    private NetworkManager networkManager;
+    private final CryptoInternals crypto;
+    private final Device device;
+    private final CommsUtility comms;
+    private final SphereRegistryWrapper sphereRegistryWrapper;
+    private final NetworkManager networkManager;
 
     public ShareProcessor(CryptoInternals crypto, Device device, CommsUtility comms,
                           SphereRegistryWrapper sphereRegistryWrapper, NetworkManager networkManager) {
@@ -262,7 +262,7 @@ public class ShareProcessor {
                 new DeviceInformation(sphereExchangeData.getDeviceName(), sphereExchangeData.getDeviceType()));
 
         // add sphere
-        HashSet<String> ownerDevices = new HashSet<String>();
+        HashSet<String> ownerDevices = new HashSet<>();
         ownerDevices.add(sphereExchangeData.getDeviceID());
 
         Sphere sphere = new MemberSphere(sphereExchangeData.getSphereName(), sphereExchangeData.getSphereType(),
@@ -340,7 +340,7 @@ public class ShareProcessor {
 
             // TODO: Improve persistence knowledge from registry
 
-            // store the shortid as sphere id
+            // store the shortId as sphere id
             crypto.addMemberKeys(inviterShortCode, sphereKeys);
             // don't persist or remove it later
             return true;

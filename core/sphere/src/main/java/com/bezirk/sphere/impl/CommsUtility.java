@@ -10,13 +10,10 @@ import com.bezirk.control.messages.ControlMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author rishabh
- */
 public final class CommsUtility {
     private static final Logger logger = LoggerFactory.getLogger(CommsUtility.class);
 
-    private Comms comms;
+    private final Comms comms;
 
     public CommsUtility(Comms comms) {
         this.comms = comms;
