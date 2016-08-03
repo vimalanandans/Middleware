@@ -1,12 +1,12 @@
 apply plugin: 'application'
 
-mainClassName = "com.bezirk.test.Subscriber"
+mainClassName = "com.bezirk.test.Main"
 
 dependencies {
     compile project(':core:bezirk-middleware-api')
     compile project(':core:bezirk')
     compile project(':core:commons')
-    compile project(':java:libraries:bezirk-factory')
+    compile project(':java:libraries:java-zirk-proxy')
     compile project(':core:testapp-core')
 //    compile project(':core:protocols:parametricUI-protocols')
 
@@ -50,8 +50,8 @@ run {
 //    jvmArgs "-Djava.library.path=" + System.getProperty("java.library.path") +
 //            File.pathSeparator + System.getProperty("java.io.tmpdir") +
 //            "lib-zeromq-bin" + File.separator
-//    main = "com.bezirk.test.Publisher"
-//    classpath = sourceSets.main.runtimeClasspath
+//    Main = "com.bezirk.test.Publisher"
+//    classpath = sourceSets.Main.runtimeClasspath
 //    systemProperties System.getProperties() //used to pass properties to bezirk
 //}
 //
@@ -59,7 +59,7 @@ run {
 //    jvmArgs "-Djava.library.path=" + System.getProperty("java.library.path") +
 //            File.pathSeparator + System.getProperty("java.io.tmpdir") +
 //            "lib-zeromq-bin" + File.separator
-//    main = "com.bezirk.test.Subscriber"
-//    classpath = sourceSets.main.runtimeClasspath
+//    Main = "com.bezirk.test.Subscriber"
+//    classpath = sourceSets.Main.runtimeClasspath
 //    systemProperties System.getProperties() //used to pass properties to bezirk
 //}

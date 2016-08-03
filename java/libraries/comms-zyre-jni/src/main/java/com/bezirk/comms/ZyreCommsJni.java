@@ -109,7 +109,7 @@ public class ZyreCommsJni extends Thread {
 
             zyre.shout(getGroup(), data);
 
-            logger.debug("Multicast size : >> " + data.length());//+ " data >> " + data);
+           // logger.debug("Multicast size : >> " + data.length());//+ " data >> " + data);
 
             return true;
         }
@@ -199,7 +199,7 @@ public class ZyreCommsJni extends Thread {
         if ((incoming == null) || incoming.isEmpty())
             return eventMap;
 
-        //logger.info("IN Size << " + incoming.length());//+" data << " +incoming);
+        //logger.debug("IN Size << " + incoming.length());//+" data << " +incoming);
 
         if (incoming == null) {// Interrupted
             logger.warn("Interrupted during recv()");
@@ -207,7 +207,7 @@ public class ZyreCommsJni extends Thread {
         }
 
         if (Thread.interrupted()) {
-            logger.info("RecvThread exiting");
+            logger.debug("RecvThread exiting");
             return eventMap;
         }
 
@@ -217,7 +217,7 @@ public class ZyreCommsJni extends Thread {
         eventMap = parseMsg(incoming);
 
         if (eventMap.isEmpty() || eventMap.get("event") == null) {
-            logger.info("event map has bytes. parse special : experimental ");
+            logger.debug("event map has bytes. parse special : experimental ");
             //  return parseMsgExt(incoming);// to be fixed
             return eventMap;
         }
@@ -270,38 +270,34 @@ public class ZyreCommsJni extends Thread {
     }
 
     private void handleEnter(String zyreDeviceId) {
-        logger.info("peer (" + zyreDeviceId + ") entered network");
+        logger.debug("peer (" + zyreDeviceId + ") entered network");
     }
 
     private void handleWhisper(String zyreDeviceId, String payload) {
 
-        //logger.info("peer (" + zyreDeviceId + ") Whisper to  " + zyreDeviceId + ": " + payload);
-        logger.info("data size > " + payload.length());
+        //logger.debug("peer (" + zyreDeviceId + ") Whisper to  " + zyreDeviceId + ": " + payload);
+        //logger.debug("data size > " + payload.length());
 
         commsProcessor.processWireMessage(zyreDeviceId, payload);
     }
 
     private void handleShout(String zyreDeviceId, String group, String payload) {
-
-
-        //logger.info("peer (" + zyreDeviceId + ") shouted to group " + group + ": " + payload);
-        logger.info("data size > " + payload.length());
-
+        //logger.debug("peer (" + zyreDeviceId + ") shouted to group " + group + ": " + payload);
+        //logger.debug("data size > " + payload.length());
 
         commsProcessor.processWireMessage(zyreDeviceId, payload);
-
 
     }
 
 
     private void handleJoin(String zyreDeviceId, String group) {
         addPeer(group, zyreDeviceId);
-        logger.info("peer (" + zyreDeviceId + ") joined: " + group);
+        logger.debug("peer (" + zyreDeviceId + ") joined: " + group);
     }
 
     private void handleLeave(String zyreDeviceId, String group) {
         boolean success = removePeer(group, zyreDeviceId);
-        logger.info("peer (" + zyreDeviceId + ") left " + group + ":" + success);
+        logger.debug("peer (" + zyreDeviceId + ") left " + group + ":" + success);
     }
 
     private void handleExit(String zyreDeviceId) {

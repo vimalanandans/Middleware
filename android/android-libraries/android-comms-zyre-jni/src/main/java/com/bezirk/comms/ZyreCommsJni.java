@@ -92,7 +92,7 @@ public class ZyreCommsJni extends Thread {
     private void delayZyreCreation() {
         //adding the sleep as this will take time till new Zyre context is init
         try {
-            logger.info("zyre init : waiting for " + delayedInitTime + " before init");
+            logger.debug("zyre init : waiting for " + delayedInitTime + " before init");
             Thread.sleep(delayedInitTime + 1000L);
             isZyreReady = true;
             logger.debug("Zyre Initialization is Complete..!!!");
@@ -181,8 +181,8 @@ public class ZyreCommsJni extends Thread {
                             logger.debug("Sleeping for few seconds as Zyre is not yet initialized!!!!");
                         }
                         zyre.shout(getGroup(), data);
-                        logger.debug("Shouted message to group : >> " + getGroup());
-                        logger.debug("Multi-cast size : >> " + data.length());
+                        //logger.debug("Shouted message to group : >> " + getGroup());
+                        //logger.debug("Multi-cast size : >> " + data.length());
                     } catch (Exception e) {
                         logger.error(TAG, "An Error has occurred during Zyre Shout!!!", e);
                     }
@@ -221,7 +221,7 @@ public class ZyreCommsJni extends Thread {
                         //send to the specific node
                         zyre.whisper(nodeId, data);
 
-                        logger.debug("Unicast size : >> " + data.length() + " data >> " + data);
+                        //logger.debug("Unicast size : >> " + data.length() + " data >> " + data);
                     } catch (Exception e) {
                         logger.error(TAG, "An Error has occurred during Zyre Shout!!!", e);
                     }

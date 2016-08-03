@@ -38,25 +38,20 @@ import java.util.UUID;
 public class ProxyClient implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(ProxyClient.class);
 
-    private final Map<ZirkId, Set<EventSet.EventReceiver>> eventMap = new HashMap<>();
-    private final Map<ZirkId, Set<StreamSet.StreamReceiver>> streamMap = new HashMap<>();
-    private final Map<String, Set<EventSet.EventReceiver>> eventListenerMap = new HashMap<>();
-    private final Map<String, Set<StreamSet.StreamReceiver>> streamListenerMap = new HashMap<>();
-    private final ProxyServer proxy = new ProxyServer();
-    private final ProxyPersistence proxyPersistence;
+    private static final Map<ZirkId, Set<EventSet.EventReceiver>> eventMap = new HashMap<>();
+    private static final Map<ZirkId, Set<StreamSet.StreamReceiver>> streamMap = new HashMap<>();
+    private static final Map<String, Set<EventSet.EventReceiver>> eventListenerMap = new HashMap<>();
+    private static final Map<String, Set<StreamSet.StreamReceiver>> streamListenerMap = new HashMap<>();
+    private static final BroadcastReceiver brForService = new ZirkMessageReceiver(
+            eventMap, eventListenerMap, streamMap, streamListenerMap);
+    private static final ZirkMessageHandler bezirkPcCallback = new ZirkMessageHandler(brForService);
+    private static final ProxyServer proxy = new ProxyServer();
+    private static final ComponentManager componentManager = new ComponentManager(proxy, bezirkPcCallback);
+    private static final ProxyPersistence proxyPersistence;
+    private static ProxyRegistry proxyRegistry = null;
 
-    private ProxyRegistry proxyRegistry = null;
-
-    private ZirkId zirkId;
-
-    public ProxyClient() {
-        //MainService mainService = new MainService(proxy, null);
-        final BroadcastReceiver brForService = new ZirkMessageReceiver(
-                eventMap, eventListenerMap, streamMap, streamListenerMap);
-        ZirkMessageHandler bezirkPcCallback = new ZirkMessageHandler(brForService);
-        ComponentManager componentManager = new ComponentManager(proxy, bezirkPcCallback);
+    static {
         componentManager.start();
-        //mainService.startStack(bezirkPcCallback);
         proxyPersistence = componentManager.getBezirkProxyPersistence();
         try {
             proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
@@ -64,6 +59,11 @@ public class ProxyClient implements Bezirk {
             logger.error("Error loading ProxyRegistry", e);
             System.exit(-1);
         }
+    }
+
+    private ZirkId zirkId;
+
+    public ProxyClient() {
     }
 
     public boolean registerZirk(String zirkName) {

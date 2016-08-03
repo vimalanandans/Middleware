@@ -17,8 +17,6 @@ import com.bezirk.test.UpdateAcceptedEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//import com.bezirk.examples.protocols.parametricUI.NoticeUIshowText;
-
 public class MainActivity extends AppCompatActivity {
 
     private TextView tv;

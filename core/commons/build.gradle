@@ -8,29 +8,20 @@ jar {
 dependencies {
     testCompile project(':core:bezirk-middleware-api')
     compile project(':core:control-messages')
-    //compile project(':core:pipes') // refactoring pipes
     compile 'org.slf4j:slf4j-api:1.7.6'
 
     // orm db files
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-jdbc:4.48'
 
-    compile 'org.jasypt:jasypt:1.9.2'
+   // compile 'org.jasypt:jasypt:1.9.2'
 
-    compile 'com.google.zxing:core:2.3.0' // remove it
+   compile 'com.google.zxing:core:2.3.0'
 
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.xerial:sqlite-jdbc:3.7.2'
     testCompile 'org.mockito:mockito-all:1.10.19'
-
-
-    /*
-    // TODO: decide if we want to use spock.  If so, uncomment the following lines.
-	// mandatory dependencies for using Spock
-	compile "org.codehaus.groovy:groovy-all:2.3.6"
-	testCompile "org.spockframework:spock-core:1.0-groovy-2.3-SNAPSHOT"
-    */
 }
 
 /*
@@ -38,14 +29,13 @@ dependencies {
 * This file is created during running of testcase.
 */
 test.doFirst {
-    project.delete 'uhu_database.sqlite'
+    project.delete 'mw_database.sqlite'
 }
 
 test.doLast {
-    project.delete 'uhu_database.sqlite'
+    project.delete 'mw_database.sqlite'
 }
 
-//@vijet - Script to generate the version.properties file containing the values from  * @modifed Vijet Badigannavar Added a parameter to the constructMsg() and modified to give the callback
 //if version mismatch occures
 //build.doLast {
 //    println 'Writing the version file'

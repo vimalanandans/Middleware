@@ -1,14 +1,20 @@
 package com.bezirk.comms;
 
 import com.bezirk.comms.processor.CommsProcessor;
+import com.bezirk.componentManager.LifecycleManager;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.streaming.Streaming;
-import com.bezirk.util.ValidatorUtility;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Observable;
 
 /**
  * Bezirk Communication manager for android zyre - jni
  */
 public class ZyreCommsManager extends CommsProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(ZyreCommsManager.class);
     private ZyreCommsJni comms;
     private boolean delayedInit;
 
@@ -17,33 +23,6 @@ public class ZyreCommsManager extends CommsProcessor {
         if (comms == null) {
             comms = new ZyreCommsJni(this);
         }
-    }
-
-    @Override
-    public boolean startComms() {
-        if (comms != null) {
-            comms.initZyre(delayedInit);
-            delayedInit = true;
-            comms.startZyre();
-            return super.startComms();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean stopComms() {
-        if (comms != null) {
-            comms.stopZyre();
-        }
-        return super.stopComms();
-    }
-
-    @Override
-    public boolean closeComms() {
-        if (comms != null) {
-            comms.closeComms();
-        }
-        return super.closeComms();
     }
 
     @Override
@@ -65,18 +44,41 @@ public class ZyreCommsManager extends CommsProcessor {
         return false;
     }
 
-    /**
-     * Create a new Zyre context, required during wifi reset.
-     */
     @Override
-    public boolean restartComms() {
-        if (comms != null && comms.getZyre() != null) {
-            comms.stopZyre();
-        }
-        comms = new ZyreCommsJni(this);
-        comms.initZyre(delayedInit);
-        comms.startZyre();
-        return true;
-    }
+    public void update(Observable observable, Object data) {
+        LifecycleManager lifecycleManager = (LifecycleManager) observable;
+        switch (lifecycleManager.getState()) {
+            case STARTED:
+                logger.debug("Starting comms");
+                if (comms != null) {
+                    comms.initZyre(delayedInit);
+                    delayedInit = true;
+                    comms.startZyre();
+                    super.startComms();
+                }
+                break;
+//            case RESTARTED:
+//                if (comms != null && comms.getZyre() != null) {
+//                    comms.stopZyre();
+//                }
+//                comms = new ZyreCommsJni(this);
+//                comms.initZyre(delayedInit);
+//                comms.startZyre();
+//                break;
+            case STOPPED:
+                logger.debug("Stopping comms");
+                if (comms != null) {
+                    comms.stopZyre();
+                }
+                super.stopComms();
+                break;
+            case DESTROYED:
+                logger.debug("Destroying comms");
+                if (comms != null) {
+                    comms.closeComms();
+                }
+                break;
 
+        }
+    }
 }

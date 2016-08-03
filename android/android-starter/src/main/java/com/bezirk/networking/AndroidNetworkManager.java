@@ -94,7 +94,7 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
     }
 
     private void registerWifiBroadcastReceiver() {
-        logger.trace("Registering WifiBroadcastReceiver");
+        logger.debug("Registering WifiBroadcastReceiver");
         //register to the broadcast receiver even if wifi sate is off, so that after wifi on, it will be detected.
         IntentFilter connectedFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         connectedFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
@@ -107,7 +107,7 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
     }
 
     private void unRegisterWifiBroadcastReceiver() {
-        logger.trace("Un-registering WifiBroadcastReceiver");
+        logger.debug("Un-registering WifiBroadcastReceiver");
         context.unregisterReceiver(networkBroadCastReceiver);
     }
 

@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -40,7 +41,7 @@ import java.util.concurrent.Executors;
  * new comms implementations shall use this as base class
  */
 
-public abstract class CommsProcessor implements Comms {
+public abstract class CommsProcessor implements Comms, Observer {
 
     private static final Logger logger = LoggerFactory.getLogger(CommsProcessor.class);
 
@@ -79,50 +80,28 @@ public abstract class CommsProcessor implements Comms {
         }
     }
 
-    @Override
-    public boolean startComms() {
-
-        // create thread pool. every start creates new thread pool.
-        // old ones are cleared with stopComms
+    /**
+     * Create thread pool.
+     */
+    public void startComms() {
         executor = Executors.newFixedThreadPool(THREAD_SIZE);
-
         if (bezirkStreamManager != null) {
             bezirkStreamManager.startStreams();
         }
-
-
-        return true;
     }
 
-    @Override
-    public boolean stopComms() {
-
+    /**
+     * Shutdown thread pool.
+     */
+    public void stopComms() {
         if (executor != null) {
             executor.shutdown();
-            // will shutdown eventually
-            // if any problem persists wait for some time (less then 200ms) using awaitTermination
-            // and then shutdownNow
         }
-
-
         if (bezirkStreamManager != null) {
             bezirkStreamManager.endStreams();
         }
 
-
-        return true;
     }
-
-    @Override
-    public boolean closeComms() {
-        /* in stop we end streams already, so skip the below
-        if (bezirkStreamManager != null) {
-            bezirkStreamManager.endStreams();
-        } */
-
-        return true;
-    }
-
 
     @Override
     public boolean sendMessage(Ledger message) {
@@ -170,12 +149,12 @@ public abstract class CommsProcessor implements Comms {
 
             } else if (ledger.getMessage() instanceof UnicastControlMessage) {
 
-                    WireMessage wireMessage = prepareWireMessage(ledger.getMessage().getSphereId(), data);
+                WireMessage wireMessage = prepareWireMessage(ledger.getMessage().getSphereId(), data);
 
-                    wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_CTRL);
+                wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_CTRL);
 
-                    byte[] wireByteMessage = wireMessage.serialize();
-                    ret = sendToAll(wireByteMessage, false);
+                byte[] wireByteMessage = wireMessage.serialize();
+                ret = sendToAll(wireByteMessage, false);
 
 
             } else {
@@ -367,28 +346,27 @@ public abstract class CommsProcessor implements Comms {
                 UnicastHeader uHeader = (UnicastHeader) ledger.getHeader();
                 String recipient = uHeader.getRecipient().device;
 
+                //TODO: for event message decrypt the header here
+                // if the intended zirk is available in sadl message is decrypted
+                WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
 
-                    //TODO: for event message decrypt the header here
-                    // if the intended zirk is available in sadl message is decrypted
-                    WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
+                // encrypt the header
 
-                    // encrypt the header
+                byte[] headerData = encryptMsg(wireMessage.getSphereId(), ledger.getSerializedHeader().getBytes());
 
-                    byte[] headerData = encryptMsg(wireMessage.getSphereId(), ledger.getSerializedHeader().getBytes());
+                wireMessage.setHeaderMsg(headerData);
 
-                    wireMessage.setHeaderMsg(headerData);
-
-                    wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_EVENT);
+                wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_EVENT);
 
 
-                    if (null == uHeader || uHeader.getRecipient() == null
-                            || uHeader.getRecipient().device == null || uHeader.getRecipient().device.length() == 0) {
-                        logger.error(" Message not of accepted type");
-                        return ret;
-                    }
+                if (null == uHeader || uHeader.getRecipient() == null
+                        || uHeader.getRecipient().device == null || uHeader.getRecipient().device.length() == 0) {
+                    logger.error(" Message not of accepted type");
+                    return ret;
+                }
 
-                    byte[] wireByteMessage = wireMessage.serialize();
-                    ret = sendToOne(wireByteMessage, recipient, false);
+                byte[] wireByteMessage = wireMessage.serialize();
+                ret = sendToOne(wireByteMessage, recipient, false);
 
             }
         }
@@ -480,7 +458,6 @@ public abstract class CommsProcessor implements Comms {
 //
 //        return true;
 //    }
-
     private boolean processCtrl(String deviceId, WireMessage wireMessage) {
 
         // fixme: check the version
@@ -592,7 +569,9 @@ public abstract class CommsProcessor implements Comms {
         msgLedger.setMsg(new String(wireMessage.getMsg()));
 
         // for diag the message is not compressed
-        notification.diagMsg(msgLedger);
+        if (notification != null) {
+            notification.diagMsg(msgLedger);
+        }
 
         return true;
 
@@ -711,7 +690,6 @@ public abstract class CommsProcessor implements Comms {
 //            return processWireMessage(deviceId, tcMessage);
 //        }
 //    }
-
     @Override
     public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver) {
 
@@ -721,8 +699,7 @@ public abstract class CommsProcessor implements Comms {
 
     /* register event message receiver */
     @Override
-    public boolean registerEventMessageReceiver(EventMsgReceiver receiver)
-    {
+    public boolean registerEventMessageReceiver(EventMsgReceiver receiver) {
 
         msgDispatcher.registerEventMessageReceiver(receiver);
 
@@ -776,7 +753,9 @@ public abstract class CommsProcessor implements Comms {
                 String mismatchedVersion = WireMessage.getVersion(msg);
                 /*logger.error("Unknown message received. Bezirk version > "+ BezirkVersion.getWireVersion() +
                         " . Incoming msg version > " + mismatchedVersion);*/
-                notification.versionMismatch(mismatchedVersion);
+                if (notification != null) {
+                    notification.versionMismatch(mismatchedVersion);
+                }
                 return;
             }
 

@@ -18,6 +18,7 @@ include ':java:libraries:comms-zyre-jni'
 include ':java:starter'
 include ':java:publisher-zirk-java'
 include ':java:subscriber-zirk-java'
+include ':java:testApp'
 
 /*--------------------android--------------------*/
 include ':android:android-starter'

@@ -71,10 +71,10 @@ public final class ActionProcessor {
                 lifeCycleCallbacks.stop();
                 break;
             case ACTION_REBOOT:
-                lifeCycleCallbacks.reboot();
+                logger.debug("Not handling Reboot");
                 break;
             case ACTION_CLEAR_PERSISTENCE:
-                lifeCycleCallbacks.clearDB();
+                logger.debug("Not handling clear persistance");
                 break;
             default:
                 if (logger.isWarnEnabled())
