@@ -6,7 +6,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
  * This is generic ledger which works only between comms without encryption.
  * this is meant for comms layer diagnostic tests / performance tests etc.
  */
-public class MessageLedger extends Ledger /*implements Serializable*/ {
+public class MessageLedger implements Ledger /*implements Serializable*/ {
 
     String MsgType; // Generic Message type
     BezirkZirkEndPoint sender;

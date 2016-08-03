@@ -201,26 +201,26 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         }
 
         final Iterator<String> sphereIterator = listOfSphere.iterator();
-        final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(zirkId);
-        final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
+        final BezirkZirkEndPoint sender = networkManager.getServiceEndPoint(zirkId);
+        final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(sender));
 
 
         while (sphereIterator.hasNext()) {
 
             final EventLedger eventLedger = new EventLedger();
-            eventLedger.setIsMulticast(true);
             eventLedger.setSerializedMessage(serializedEventMsg);
             final MulticastHeader mHeader = new MulticastHeader();
             mHeader.setRecipientSelector(recipientSelector);
-            mHeader.setSenderSEP(senderSEP);
+            mHeader.setSender(sender);
             mHeader.setUniqueMsgId(uniqueMsgId.toString());
-            mHeader.setSphereName(sphereIterator.next());
+            mHeader.setSphereId(sphereIterator.next());
             mHeader.setEventName(eventName);
             eventLedger.setHeader(mHeader);
+            eventLedger.setIsMulticast(true);
             eventLedger.setSerializedHeader(mHeader.serialize());
 
             if (ValidatorUtility.isObjectNotNull(comms)) {
-                comms.sendMessage(eventLedger);
+                comms.sendEventLedger(eventLedger);
             } else {
                 logger.error("Comms manager not initialized");
                 return false;
@@ -250,25 +250,26 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         }
 
         final Iterator<String> sphereIterator = listOfSphere.iterator();
-        final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(zirkId);
-        final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(senderSEP));
+        final BezirkZirkEndPoint sender = networkManager.getServiceEndPoint(zirkId);
+        final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(sender));
         //final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
 
         while (sphereIterator.hasNext()) {
             final EventLedger eventLedger = new EventLedger();
-            eventLedger.setIsMulticast(false);
+
             eventLedger.setSerializedMessage(serializedEventMsg);
             final UnicastHeader uHeader = new UnicastHeader();
             uHeader.setRecipient(recipient);
-            uHeader.setSenderSEP(senderSEP);
+            uHeader.setSender(sender);
             uHeader.setUniqueMsgId(uniqueMsgId.toString());
-            uHeader.setSphereName(sphereIterator.next());
+            uHeader.setSphereId(sphereIterator.next());
             uHeader.setEventName(eventName);
             eventLedger.setHeader(uHeader);
+            eventLedger.setIsMulticast(false);
             eventLedger.setSerializedHeader(uHeader.serialize());
 
             if (ValidatorUtility.isObjectNotNull(comms)) {
-                comms.sendMessage(eventLedger);
+                comms.sendEventLedger(eventLedger);
             } else {
                 logger.error("Comms manager not initialized");
                 return false;
@@ -441,9 +442,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         // check if the zirk exists in that sphere then give callback
         for (ZirkId serviceId : invokeList) {
 
-            if (isServiceInSphere(serviceId, eLedger.getHeader().getSphereName())) {
+            if (isServiceInSphere(serviceId, eLedger.getHeader().getSphereId())) {
                 UnicastEventAction eventMessage = new UnicastEventAction(BezirkAction.ACTION_ZIRK_RECEIVE_EVENT,
-                        serviceId, eLedger.getHeader().getSenderSEP(), eLedger.getSerializedMessage(),
+                        serviceId, eLedger.getHeader().getSender(), eLedger.getSerializedMessage(),
                         eLedger.getHeader().getUniqueMsgId(),eLedger.getHeader().getEventName() );
                 msgHandler.onIncomingEvent(eventMessage);
             } else {
@@ -460,7 +461,8 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     private Set<ZirkId> getAssociatedServiceList(final EventLedger eLedger) {
 
         Set<ZirkId> serviceList = null;
-        if (eLedger.getIsMulticast()) {
+
+        if (eLedger.getHeader() instanceof MulticastHeader) {
             MulticastHeader mHeader = (MulticastHeader) eLedger.getHeader();
             Location targetLocation = mHeader.getRecipientSelector() == null ? null : mHeader.getRecipientSelector().getLocation();
             serviceList = this.checkMulticastEvent(mHeader.getEventName(), targetLocation);
@@ -483,10 +485,10 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         if (sphereSecurity != null) {
             // Decrypt the event message
             decryptedEventMsg = sphereSecurity.decryptSphereContent(
-                    eLedger.getHeader().getSphereName(), eLedger.getEncryptedMessage());
+                    eLedger.getHeader().getSphereId(), eLedger.getEncryptedMessage());
 
             if (!ValidatorUtility.checkForString(decryptedEventMsg)) {
-                logger.debug("Decryption Failed: sphereId-" + eLedger.getHeader().getSphereName() + " may not exist");
+                logger.debug("Decryption Failed: sphereId-" + eLedger.getHeader().getSphereId() + " may not exist");
                 return false;
             }
 

@@ -20,15 +20,11 @@ public final class CommsUtility {
     }
 
     public boolean sendMessage(ControlMessage controlMessage) {
-        final ControlLedger transControlMessage = new ControlLedger();
-        transControlMessage.setMessage(controlMessage);
-        transControlMessage.setSphereId(controlMessage.getSphereId());
-        transControlMessage.setSerializedMessage(transControlMessage.getMessage().serialize());
 
         // send the message
         if (comms != null) {
             logger.debug("Sending message: " + controlMessage.getDiscriminator());
-            return comms.sendMessage(transControlMessage);
+            return comms.sendControlMessage(controlMessage);
         }
         logger.error("Failed to send message: " + controlMessage.getDiscriminator());
         return false;

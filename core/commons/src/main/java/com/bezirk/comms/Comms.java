@@ -2,6 +2,7 @@ package com.bezirk.comms;
 
 import com.bezirk.comms.processor.EventMsgReceiver;
 import com.bezirk.control.messages.ControlMessage;
+import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.Ledger;
 
 import com.bezirk.sphere.api.SphereSecurity;
@@ -38,9 +39,30 @@ public interface Comms {
 //    boolean restartComms();
 
     /**
+     * Set the sphere for sadl. for late initialization
+     */
+    void setSphereSecurity(final SphereSecurity sphereSecurity);
+
+    /**
+     * TODO: Split the interface for controlling comms component as CommsCtrl
+     * and below access related as Comms
+     * */
+
+    /**
      * send the control or event message depends of ledger type
      */
+    @Deprecated // Use sendEventLedger, or sendControlLedger
     boolean sendMessage(Ledger message);
+
+    /**
+     * Send event ledger
+     * */
+    boolean sendEventLedger(EventLedger ledger);
+
+    /**
+     * Send event ledger
+     * */
+    boolean sendControlMessage(ControlMessage message);
 
     /**
      * send the stream message based on unique key
@@ -64,10 +86,7 @@ public interface Comms {
     /* register event message receiver */
     boolean registerEventMessageReceiver(EventMsgReceiver receiver);
 
-    /**
-     * Set the sphere for sadl. for late initialization
-     */
-    void setSphereSecurity(final SphereSecurity sphereSecurity);
+
 
 }
 

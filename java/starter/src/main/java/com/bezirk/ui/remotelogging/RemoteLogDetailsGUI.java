@@ -266,7 +266,7 @@ public class RemoteLogDetailsGUI extends JFrame {
         /*try {
            // commented for the MVP refactoring. inject the sphere API to get access
             tempSphereName.append(BezirkCompManager.getSphereUI()
-                    .getSphere(sphereId).getSphereName());
+                    .getSphere(sphereId).getSphereId());
         } catch (NullPointerException ne) {
             logger.error("Error in fetching sphereName from sphere UI", ne);
             tempSphereName.append("Un-defined");

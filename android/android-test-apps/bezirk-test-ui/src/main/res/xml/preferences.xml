@@ -101,7 +101,7 @@
         <!-- Development sphere information-->
 
         <!-- #Creating your development sphere:
-        Provide your own sphereName and sphereId
+        Provide your own sphereId and sphereId
         Provide your own 24-Character sphere key
         Ensure that all details are different from default values
         If the development mode is set to false, then the development sphere information is ignored.-->

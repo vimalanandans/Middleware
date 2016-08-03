@@ -134,7 +134,7 @@ public final class RemoteLoggingManager implements RemoteLog {
     @Override
     public boolean sendRemoteLogMessage(EventLedger eLedger) {
         try {
-            LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(eLedger.getHeader().getSphereName(),
+            LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(eLedger.getHeader().getSphereId(),
                     String.valueOf(currentDate.getTime()), device.getDeviceName(),
                     Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(),
                     Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());

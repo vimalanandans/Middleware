@@ -9,7 +9,7 @@ dependencies {
     compile project(':core:control-messages')
     compile project(':core:commons')
     //compile project(':core:comms:streaming')
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.google.code.gson:gson:2.7'
     compile 'org.slf4j:slf4j-api:1.7.6'
 }
 

@@ -149,7 +149,7 @@ public class SphereRegistryWrapper {
     // crypto.addMemberKeys(sphereConfig.getSphereId(), keys);
     //
     // // create the sphere
-    // MemberSphere sphere = new MemberSphere(sphereConfig.getSphereName(),
+    // MemberSphere sphere = new MemberSphere(sphereConfig.getSphereId(),
     // "Development",
     // new HashSet<String>(Arrays.asList(DEVELOPMENT_DEVICE_ID)),
     // new LinkedHashMap<String, ArrayList<ZirkId>>(), false);
@@ -1329,7 +1329,7 @@ public class SphereRegistryWrapper {
         // crypto.addMemberKeys(sphereConfig.getSphereId(), keys);
         //
         // // create the sphere
-        // MemberSphere sphere = new MemberSphere(sphereConfig.getSphereName(),
+        // MemberSphere sphere = new MemberSphere(sphereConfig.getSphereId(),
         // "Development",
         // new HashSet<String>(Arrays.asList(DEVELOPMENT_DEVICE_ID)),
         // new LinkedHashMap<String, ArrayList<ZirkId>>(), false);
