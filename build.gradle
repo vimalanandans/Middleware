@@ -34,7 +34,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha-mvp+005"
+    version = "3.0.0-alpha-mvp+006"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"

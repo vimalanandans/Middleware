@@ -10,13 +10,8 @@ dependencies {
     compile project(':core:control-messages')
     compile 'org.slf4j:slf4j-api:1.7.6'
 
-    // orm db files
-    compile 'com.j256.ormlite:ormlite-core:4.48'
-    compile 'com.j256.ormlite:ormlite-jdbc:4.48'
 
-   // compile 'org.jasypt:jasypt:1.9.2'
-
-   compile 'com.google.zxing:core:2.3.0'
+   compile 'com.google.zxing:core:3.2.0'
 
 
     testCompile 'junit:junit:4.12'

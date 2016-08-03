@@ -30,7 +30,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
 
     compile 'org.slf4j:slf4j-api:1.7.6'
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.google.code.gson:gson:2.7'
 
     // created using ndk build
     compile 'org.zyre:zyre-jni:0.2@aar'

@@ -5,7 +5,7 @@ apply plugin: 'java'
 //apply from: "${rootDir}/gradle-plugins/script/artifactory-publishing-java.gradle"
 
 dependencies {
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.google.code.gson:gson:2.7'
     testCompile 'junit:junit:4.12'
 }
 
