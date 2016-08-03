@@ -12,13 +12,10 @@ import com.bezirk.sphere.messages.ShareResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by Vimal on 5/19/2015. control message handler for sphere
- */
 public class SphereCtrlMsgReceiver implements CtrlMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(SphereCtrlMsgReceiver.class);
 
-    SphereMessages sphereMessages = null;
+    private SphereMessages sphereMessages = null;
 
     SphereCtrlMsgReceiver(SphereMessages sphereMessages) {
         this.sphereMessages = sphereMessages;

@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.bezirk.sphere.impl;
 
 import com.bezirk.comms.Comms;
@@ -34,33 +31,33 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-/**
- * @author rishabh
- */
 public class SphereServiceManager
         implements SphereAPI, SphereServiceAccess, SphereSecurity, SphereMessages, DevMode {
 
     private static final Logger logger = LoggerFactory.getLogger(SphereServiceManager.class);
-    private CryptoEngine cryptoEngine = null;
-    private Device upaDevice = null;
-    private SphereRegistry registry = null;
+
+    private final CryptoEngine cryptoEngine;
+    private final Device device;
+    private SphereRegistry registry;
+    private final NetworkManager networkManager;
+    private final SphereCtrlMsgReceiver ctrlMsgReceiver;
+
     private SphereListener sphereListener;
     private SphereConfig sphereConfig = null;
-    private SphereCtrlMsgReceiver ctrlMsgReceiver = null;
     private ShareProcessor shareProcessor = null;
     private CatchProcessor catchProcessor = null;
     private SphereRegistryWrapper sphereRegistryWrapper = null;
-    private NetworkManager networkManager = null;
 
-    public SphereServiceManager(CryptoEngine cryptoEngine, Device upaDevice, SphereRegistry sphereRegistry, NetworkManager networkManager) {
-
-        if (cryptoEngine == null || upaDevice == null || sphereRegistry == null || networkManager == null) {
-            logger.error("Exiting SphereServiceManager setup. A parameter to the constructor is null");
-            return;
+    public SphereServiceManager(CryptoEngine cryptoEngine, Device device, SphereRegistry sphereRegistry, NetworkManager networkManager) {
+        if (cryptoEngine == null || device == null || sphereRegistry == null || networkManager == null) {
+            logger.error("Cannot initialize SphereServiceManager. A parameter to the constructor is null. " +
+                    "cryptoEngine = {}, device = {}, sphereRegistry = {}, networkManager = {}",
+                    cryptoEngine, device, sphereRegistry, networkManager);
+            throw new IllegalArgumentException("SphereServiceManager parameters cannot be null.");
         }
 
         this.cryptoEngine = cryptoEngine;
-        this.upaDevice = upaDevice;
+        this.device = device;
         this.registry = sphereRegistry;
         this.networkManager = networkManager;
         this.ctrlMsgReceiver = new SphereCtrlMsgReceiver(this);
@@ -84,6 +81,7 @@ public class SphereServiceManager
         this.sphereConfig = sphereConfig;
 
         try {
+            // TODO: Why is this also set in the ctor?
             registry = spherePersistence.loadSphereRegistry();
             logger.info("sphere Registry loaded successfully");
         } catch (Exception e) {
@@ -91,12 +89,12 @@ public class SphereServiceManager
             return false;
         }
 
-        this.sphereRegistryWrapper = new SphereRegistryWrapper(this.registry, spherePersistence, upaDevice, cryptoEngine, sphereListener, sphereConfig);
+        this.sphereRegistryWrapper = new SphereRegistryWrapper(this.registry, spherePersistence, device, cryptoEngine, sphereListener, sphereConfig);
         this.sphereRegistryWrapper.init();
         CommsUtility comms = new CommsUtility(bezirkComms);
-        shareProcessor = new ShareProcessor(cryptoEngine, upaDevice, comms,
+        shareProcessor = new ShareProcessor(cryptoEngine, device, comms,
                 sphereRegistryWrapper, networkManager);
-        catchProcessor = new CatchProcessor(cryptoEngine, upaDevice, comms,
+        catchProcessor = new CatchProcessor(cryptoEngine, device, comms,
                 sphereRegistryWrapper, networkManager);
 
         ctrlMsgReceiver.initControlMessageListener(bezirkComms);

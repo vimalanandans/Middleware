@@ -77,7 +77,7 @@
 //
 //        BezirkId bezirkId = new BezirkId();
 //
-//        String hexValue = bezirkId.convertStringtoHex(testString);
+//        String hexValue = bezirkId.toHex(testString);
 //
 //        assertEquals("String cannot be retrieved from Hex format.", testString, bezirkId.convertHexToString(hexValue));
 //

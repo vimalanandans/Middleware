@@ -1,7 +1,4 @@
 package com.bezirk.sphere.impl;
-/**
- * Added by Vimal
- */
 
 import com.bezirk.util.Hashids;
 
@@ -10,9 +7,7 @@ import java.security.SecureRandom;
 import java.util.UUID;
 
 public class BezirkId {
-
-    //final String hashCharName = "0123456789abcdef";
-    SecureRandom rand = new SecureRandom();
+    private final SecureRandom rand = new SecureRandom();
 
     /** get Unique ID from UUID */
     public String getId() {
@@ -22,7 +17,6 @@ public class BezirkId {
     /** get short id. *** it is not Not Unique**** */
     public String getShortId() {
         return getHashId().encode(rand.nextInt(Integer.MAX_VALUE));
-
     }
 
     /** get short id - by strings hash code (uuid). not unique id*/
@@ -36,7 +30,7 @@ public class BezirkId {
     public String getShortIdByName(String name) {
         Hashids hashids = getHashId();
         // encode the hash code of the string and create the short id
-        return hashids.encodeHex(convertStringtoHex(name));
+        return hashids.encodeHex(toHex(name));
     }
 
     private long getUnsignedLong(int x) {
@@ -84,10 +78,8 @@ public class BezirkId {
         return ;
     }*/
 
-    /** convert string to hex string */
-    //http://stackoverflow.com/questions/923863/converting-a-string-to-hexadecimal-in-java
-    public String convertStringtoHex(String arg) {
-        return String.format("%x", new BigInteger(1, arg.getBytes(/*YOUR_CHARSET?*/)));
+    private String toHex(String arg) {
+        return String.format("%x", new BigInteger(1, arg.getBytes()));
     }
 
 

@@ -18,7 +18,7 @@ public interface CryptoInternals {
     boolean generateKeys(String sphereId);
 
     /**
-     * create secret key basedon passcode
+     * create secret key based on passcode
      */
     byte[] generateKey(String code);
 
