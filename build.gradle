@@ -6,7 +6,8 @@
  * 3.0.0-alpha-mvp+003 cleaned up android stack version(all happy paths working)
  * 3.0.0-alpha-mvp+004 ethernet pop-up text change, android 4.4 - 6.0 compatible.
  * 3.0.0-alpha-mvp+005 lifecycle manager state transitions, proxy client change for java, comms notification null check,
- *                     testapp for java with 2 zirks together, tested with publisher-zirk-android, subscriber-zirk-android, testapp, java-8 lambda fix.(yet to publish)
+ *                     testapp for java with 2 zirks together, tested with publisher-zirk-android, subscriber-zirk-android, testapp, java-8 lambda fix.
+ * 3.0.0-alpha-mvp+006 sticky bezirk service, start/stop lifecycle handling for comms (yet to publish)
  */
 buildscript {
     repositories {
@@ -34,7 +35,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha-mvp+005"
+    version = "3.0.0-alpha-mvp+006"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
