@@ -83,11 +83,12 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
         LifecycleManager lifecycleManager = (LifecycleManager) observable;
         switch (lifecycleManager.getState()) {
             case CREATED:
-                registerWifiBroadcastReceiver();
+                //registerWifiBroadcastReceiver();
                 break;
             case STARTED:
+                registerWifiBroadcastReceiver();
                 break;
-            case DESTROYED:
+            case STOPPED:
                 unRegisterWifiBroadcastReceiver();
                 break;
         }

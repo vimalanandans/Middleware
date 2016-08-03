@@ -44,6 +44,7 @@ public class ZyreCommsManager extends CommsProcessor {
         return false;
     }
 
+    //TODO: manage lifecycle of comms based on bezirk-lifecycle events appropriately
     @Override
     public void update(Observable o, Object arg) {
         LifecycleManager lifecycleManager = (LifecycleManager) o;
@@ -61,15 +62,16 @@ public class ZyreCommsManager extends CommsProcessor {
                 logger.debug("Stopping comms");
                 if (comms != null) {
                     comms.stopZyre();
+                    comms.closeComms();
                 }
                 super.stopComms();
                 break;
-            case DESTROYED:
-                logger.debug("Destroying comms");
-                if (comms != null) {
-                    comms.closeComms();
-                }
-                break;
+//            case DESTROYED:
+//                logger.debug("Destroying comms");
+//                if (comms != null) {
+//                    comms.closeComms();
+//                }
+//                break;
         }
     }
 }

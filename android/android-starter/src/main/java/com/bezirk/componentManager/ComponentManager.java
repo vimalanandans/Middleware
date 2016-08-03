@@ -1,12 +1,18 @@
 package com.bezirk.componentManager;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 
+import com.bezirk.R;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.AndroidDevice;
@@ -37,6 +43,10 @@ public class ComponentManager extends Service {
     private PubSubBroker pubSubBroker;
     private static final String DB_VERSION = "0.0.4";
     private LifecycleManager.LifecycleState currentState;
+
+    int FOREGROUND_ID = 1336;
+//                    service.startForeground(FOREGROUND_ID,
+//                            service.buildForegroundNotification("Bezirk ON"));
 
     public ComponentManager() {
     }
@@ -104,13 +114,14 @@ public class ComponentManager extends Service {
                     logger.debug("LifeCycleCallbacks:start");
                     lifecycleManager.setState(LifecycleManager.LifecycleState.STARTED);
                     //comms.startComms();
+                    startForeground(FOREGROUND_ID, buildForegroundNotification("Bezirk ON"));
                 }
 
                 @Override
                 public void stop() {
                     logger.debug("LifeCycleCallbacks:stop");
                     lifecycleManager.setState(LifecycleManager.LifecycleState.STOPPED);
-                    //comms.stopComms();
+                    stopSelf();
                 }
 
                 @Override
@@ -142,5 +153,42 @@ public class ComponentManager extends Service {
         void stop();
 
         void destroy();
+    }
+
+    public Notification buildForegroundNotification(String filename) {
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this);
+
+        Intent notificationIntent;
+        PackageManager manager = getPackageManager();
+
+        notificationIntent = manager.getLaunchIntentForPackage(getApplicationContext().getPackageName());
+
+        if (notificationIntent == null) {
+            notificationIntent = new Intent(Intent.ACTION_MAIN);
+        }
+
+        notificationIntent.setAction(Intent.ACTION_MAIN);
+
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+
+        notification.setOngoing(true);
+
+        notification.setContentIntent(pendingIntent);
+        BitmapFactory.decodeResource(getResources(), R.drawable.upa_notification_s);
+        notification.setContentTitle(getString(R.string.app_name))
+                .setContentText(filename)
+                /** Changed notification icon to white color. */
+
+                //.setLargeIcon(bm)
+                .setSmallIcon(R.drawable.upa_notification_s)
+                .setTicker(getString(R.string.app_name)
+                );
+
+        return notification.build();
     }
 }
