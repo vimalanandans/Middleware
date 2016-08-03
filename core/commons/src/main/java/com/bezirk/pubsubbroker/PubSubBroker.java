@@ -6,12 +6,10 @@ import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.processor.EventMsgReceiver;
-import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.GenerateMsgId;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
-import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.datastorage.PubSubBrokerStorage;
 import com.bezirk.device.Device;
 import com.bezirk.middleware.addressing.Location;
@@ -24,9 +22,7 @@ import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.remotelogging.RemoteLog;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereServiceAccess;
-import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.ValidatorUtility;
-import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -301,44 +297,19 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             logger.error("Zirk Not Registered with any sphere: " + streamAction.getZirkId());
             return (short) -1;
         }
-        try {
-            //prepare StreamRecord is the object which is saved in the streamStore of Streaming module and sent to receiver as a Control Messgae
-            final StreamRecord streamRecord = prepareStreamRecord(streamAction);
 
-            //store the StreamRecord in the StreamStore.
-            boolean streamStoreStatus = comms.storeStreamRecord(streamRecord);
-            if (!streamStoreStatus) {
-                logger.error("Cannot Register StreamDescriptor, CtrlMsgId is already present in StreamBook");
-                return (short) -1;
-            }
+        /*
+        * process the stream record which will
+        *store the streamrecord in the stream store and sends the stream message to receiver.*/
+        boolean status = comms.processStreamRecord(streamAction,listOfSphere);
 
-            //Send the send the message to receiver
-            sendStreamMessageToReceivers(listOfSphere, streamRecord);
-        } catch (Exception e) {
-            logger.error("Cant get the SEP of the sender", e);
-            return (short) -1;
+        if(!status){
+            return (short) 1;
         }
+
         return (short) 1;
     }
 
-
-    StreamRecord prepareStreamRecord(SendFileStreamAction streamAction) {
-        final StreamRecord streamRecord = new StreamRecord();
-        final BezirkZirkEndPoint receiver = (BezirkZirkEndPoint) streamAction.getRecipient();
-        final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(streamAction.getZirkId());
-        final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId();
-
-        streamRecord.setSenderSEP(senderSEP);
-        streamRecord.setEncryptedStream(streamAction.getDescriptor().isEncrypted());
-        streamRecord.setStreamStatus(StreamRecord.StreamingStatus.PENDING);
-        streamRecord.setRecipientIP(receiver.device);
-        streamRecord.setRecipientPort(0);
-        streamRecord.setFile(streamAction.getFile());
-        streamRecord.setRecipientSEP(receiver);
-        streamRecord.setSerializedStream(streamAction.getDescriptor().toJson());
-        streamRecord.setStreamRequestKey(streamRequestKey);
-        return streamRecord;
-    }
 
     String getSphereId(BezirkZirkEndPoint receiver, Iterator<String> sphereIterator) {
 
@@ -357,43 +328,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             }
         }
         return sphereId;
-    }
-
-    /**
-     * sends the stream message to the receivers based on the sphere list and stream record recipient endpoint
-     * @param listOfSphere
-     * @param streamRecord
-     */
-    void sendStreamMessageToReceivers(Iterable<String> listOfSphere, StreamRecord streamRecord) {
-        final Iterator<String> sphereIterator = listOfSphere.iterator();
-        while (sphereIterator.hasNext()) {
-            final String sphereId = sphereIterator.next();
-            final ControlLedger tcMessage = prepareMessage(sphereId, streamRecord);
-            if (ValidatorUtility.isObjectNotNull(comms)) {
-                comms.sendMessage(tcMessage);
-            } else {
-                logger.error("Comms manager not initialized");
-            }
-        }
-    }
-
-
-    /**
-     * prepare the control ledger message for the streaming.
-     * @param sphereId
-     * @param streamRecord
-     * @return
-     */
-    private ControlLedger prepareMessage(String sphereId, StreamRecord streamRecord) {
-        final ControlLedger tcMessage = new ControlLedger();
-        tcMessage.setSphereId(sphereId);
-
-        final StreamRequest request = new StreamRequest(sphereId, streamRecord, null);
-        tcMessage.setSphereId(sphereId);
-        tcMessage.setMessage(request);
-        tcMessage.setSerializedMessage(new Gson().toJson(request));
-
-        return tcMessage;
     }
 
     @Override

@@ -1,12 +1,13 @@
 package com.bezirk.streaming;
 
+import com.bezirk.actions.SendFileStreamAction;
+import com.bezirk.actions.StreamAction;
 import com.bezirk.comms.Comms;
+import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
-import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.streaming.StreamRequest;
-import com.bezirk.control.messages.streaming.StreamResponse;
-import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
 import com.bezirk.networking.NetworkManager;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
@@ -14,11 +15,14 @@ import com.bezirk.streaming.port.StreamPortFactory;
 import com.bezirk.streaming.store.StreamStore;
 import com.bezirk.streaming.threads.StreamQueueProcessor;
 import com.bezirk.util.ValidatorUtility;
+import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -63,6 +67,8 @@ public class StreamManager implements Streaming, ActiveStream {
     //running stream map is used to end the future task when cient wants to intrupt them.
     private Map<String, Future> activeStreamMap = new HashMap<String, Future>();
 
+    private NetworkManager networkManager = null;
+
 
     public StreamManager(Comms comms, PubSubEventReceiver sadlReceiver, String downloadPath, NetworkManager networkManager) {
 
@@ -70,6 +76,7 @@ public class StreamManager implements Streaming, ActiveStream {
                 && ValidatorUtility.isObjectNotNull(sadlReceiver)) {
             this.comms = comms;
             this.sadlReceiver = sadlReceiver;
+            this.networkManager = networkManager;
 
             // ExecutorService for processing the straem massage queue.
             streamQueueExecutor = Executors.newSingleThreadExecutor();
@@ -91,15 +98,87 @@ public class StreamManager implements Streaming, ActiveStream {
         if (null == tempStreamRecord) {
             return false;
         }
-        tempStreamRecord.setStreamStatus(StreamRecord.StreamingStatus.LOCAL);
+        tempStreamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.LOCAL);
         streamingMessageQueue.addToQueue(tempStreamRecord);
         return true;
 
     }
 
     @Override
-    public boolean storeStreamRecord(StreamRecord sRecord) {
-        return streamStore.storeStreamRecord(sRecord);
+    public boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList) {
+
+        try {
+            //prepare StreamRecord is the object which is saved in the streamStore of Streaming module and sent to receiver as a Control Messgae
+            final StreamRecord streamRecord = prepareStreamRecord(streamAction);
+
+            //store the StreamRecord in the StreamStore.
+            boolean streamStoreStatus = streamStore.storeStreamRecord(streamRecord);
+            if (!streamStoreStatus) {
+                logger.error("Cannot Register StreamDescriptor, CtrlMsgId is already present in StreamBook");
+                return false;
+            }
+
+            //Send the send the message to receiver
+            sendStreamMessageToReceivers(sphereList, streamRecord);
+        } catch (Exception e) {
+            logger.error("Cant get the SEP of the sender", e);
+            return false;
+        }
+
+        return true;
+    }
+
+    StreamRecord prepareStreamRecord(SendFileStreamAction streamAction) {
+        final StreamRecord streamRecord = new StreamRecord();
+        final BezirkZirkEndPoint receiver = (BezirkZirkEndPoint) streamAction.getRecipient();
+        final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(streamAction.getZirkId());
+        final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId();
+
+        streamRecord.setSenderSEP(senderSEP);
+        streamRecord.setEncryptedStream(streamAction.getDescriptor().isEncrypted());
+        streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.PENDING);
+        streamRecord.setRecipientIP(receiver.device);
+        streamRecord.setRecipientPort(0);
+        streamRecord.setFile(streamAction.getFile());
+        streamRecord.setRecipientSEP(receiver);
+        streamRecord.setSerializedStream(streamAction.getDescriptor().toJson());
+        streamRecord.setStreamRequestKey(streamRequestKey);
+        return streamRecord;
+    }
+
+    /**
+     * sends the stream message to the receivers based on the sphere list and stream record recipient endpoint
+     * @param listOfSphere
+     * @param streamRecord
+     */
+    void sendStreamMessageToReceivers(Iterable<String> listOfSphere, StreamRecord streamRecord) {
+        final Iterator<String> sphereIterator = listOfSphere.iterator();
+        while (sphereIterator.hasNext()) {
+            final String sphereId = sphereIterator.next();
+            final ControlLedger tcMessage = prepareMessage(sphereId, streamRecord);
+            if (ValidatorUtility.isObjectNotNull(comms)) {
+                comms.sendMessage(tcMessage);
+            } else {
+                logger.error("Comms manager not initialized");
+            }
+        }
+    }
+
+    /**
+     * prepare the control ledger message for the streaming.
+     * @param sphereId
+     * @param streamRecord
+     * @return
+     */
+    private ControlLedger prepareMessage(String sphereId, StreamRecord streamRecord) {
+        final ControlLedger tcMessage = new ControlLedger();
+        tcMessage.setSphereId(sphereId);
+
+        final StreamRequest request = new StreamRequest(sphereId, streamRecord, null);
+        tcMessage.setMessage(request);
+        tcMessage.setSerializedMessage(new Gson().toJson(request));
+
+        return tcMessage;
     }
 
     @Override

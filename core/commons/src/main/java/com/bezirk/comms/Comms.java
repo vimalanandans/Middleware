@@ -1,11 +1,14 @@
 package com.bezirk.comms;
 
+import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.comms.processor.EventMsgReceiver;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
 
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
+
+import java.util.List;
 
 /**
  * This class is created to de-couple from the rest of bezirk (spheres / sadl / stream)
@@ -47,7 +50,7 @@ public interface Comms {
      */
     boolean sendStream(String uniqueKey);
 
-    boolean storeStreamRecord(StreamRecord sRecord);
+    boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList);
 
     boolean registerNotification(CommsNotification notification);
 

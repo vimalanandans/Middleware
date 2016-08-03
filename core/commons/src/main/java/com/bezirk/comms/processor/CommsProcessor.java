@@ -1,6 +1,7 @@
 package com.bezirk.comms.processor;
 
 
+import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsFeature;
 import com.bezirk.comms.CommsMessageDispatcher;
@@ -19,7 +20,6 @@ import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.Streaming;
-import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.TextCompressor;
 import com.google.gson.Gson;
 
@@ -655,11 +655,11 @@ public abstract class CommsProcessor implements Comms {
     }
 
     @Override
-    public boolean storeStreamRecord(StreamRecord sRecord) {
+    public boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList) {
 
         if (bezirkStreamManager != null) {
 
-            return bezirkStreamManager.storeStreamRecord(sRecord);
+            return bezirkStreamManager.processStreamRecord(streamAction, sphereList);
 
         } else {
 

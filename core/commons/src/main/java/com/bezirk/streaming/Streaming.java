@@ -1,9 +1,12 @@
 package com.bezirk.streaming;
 
+import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
+
+import java.util.List;
 
 
 /**
@@ -37,7 +40,7 @@ public interface Streaming {
     /**
      * Registers the stream record within stream store
      */
-    boolean storeStreamRecord(final StreamRecord sRecord);
+    boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList);
 
     /**
      * set Sphere Security. this is used for the late initalization, when a new Sphere is created. Sphere security object is updated

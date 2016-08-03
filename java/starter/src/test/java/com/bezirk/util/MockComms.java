@@ -1,5 +1,6 @@
 package com.bezirk.util;
 
+import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsProperties;
 import com.bezirk.comms.CommsNotification;
@@ -104,7 +105,7 @@ public class MockComms implements Comms {
     }
 
     @Override
-    public boolean storeStreamRecord(StreamRecord sRecord) {
+    public boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList) {
         // TODO Auto-generated method stub
         return true;
     }
