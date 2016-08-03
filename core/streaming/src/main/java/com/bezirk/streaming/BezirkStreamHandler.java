@@ -50,7 +50,7 @@ final class BezirkStreamHandler {
                                 final PubSubEventReceiver sadlReceiver, final SphereSecurity sphereSecurity) {
 
         // Check if the request is duplicate
-        StreamRecord.StreamingStatus status = StreamRecord.StreamingStatus.ADDRESSED;
+        StreamRecord.StreamRecordStatus status = StreamRecord.StreamRecordStatus.ADDRESSED;
         int assignedPort;
 
         if (streamStore.checkStreamRequestForDuplicate(streamRequest.getUniqueKey())) {
@@ -58,9 +58,9 @@ final class BezirkStreamHandler {
         } else {
             assignedPort = portFactory.getPort(streamRequest.getUniqueKey());
             if (-1 == assignedPort) {
-                status = StreamRecord.StreamingStatus.BUSY;
+                status = StreamRecord.StreamRecordStatus.BUSY;
             } else {
-                status = StreamRecord.StreamingStatus.READY;
+                status = StreamRecord.StreamRecordStatus.READY;
 
                 StreamReceivingThread streamReceivingThread =new StreamReceivingThread(assignedPort, downloadPath,
                         streamRequest, portFactory, sadlReceiver, sphereSecurity, streamManager);
@@ -104,7 +104,7 @@ final class BezirkStreamHandler {
             return false;
         }
         streamRecord.setSphereId(streamResponse.getSphereId());
-        streamRecord.setStreamStatus(streamResponse.status);
+        streamRecord.setStreamRecordStatus(streamResponse.status);
 
         streamRecord.setRecipientIP(streamResponse.streamIp);
 

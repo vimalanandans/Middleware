@@ -5,12 +5,11 @@ package com.bezirk.streaming.threads;
 
 import com.bezirk.streaming.MessageQueue;
 import com.bezirk.control.messages.Ledger;
-import com.bezirk.actions.ReceiveFileStreamAction;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.StreamManager;
 import com.bezirk.streaming.control.Objects.StreamRecord;
-import com.bezirk.streaming.control.Objects.StreamRecord.StreamingStatus;
+import com.bezirk.streaming.control.Objects.StreamRecord.StreamRecordStatus;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -23,9 +22,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 /**
- * This Thread is a blocking and will be iterating on the message queue } to process the {@link StreamRecord}. It checks the {@link StreamingStatus} of the
- * {@link StreamRecord} and if it is {@link StreamingStatus#READY} it will process further else just remove from the queue.  If the {@link StreamingStatus} of the {@link StreamRecord} is
- * {@link StreamingStatus#READY} it spawns a {@link StreamSendingThread} and removes the {@link StreamRecord} from the  queue}
+ * This Thread is a blocking and will be iterating on the message queue } to process the {@link StreamRecord}. It checks the {@link StreamRecordStatus} of the
+ * {@link StreamRecord} and if it is {@link StreamRecordStatus#READY} it will process further else just remove from the queue.  If the {@link StreamRecordStatus} of the {@link StreamRecord} is
+ * {@link StreamRecordStatus#READY} it spawns a {@link StreamSendingThread} and removes the {@link StreamRecord} from the  queue}
  * <p>
  * TODO : onError has to be discussed!
  * </p>
@@ -59,8 +58,8 @@ public class StreamQueueProcessor implements Runnable {
 
     /**
      * This thread is blocking and will be notified when there are any {@link StreamRecord} in the queue. It pops the {@link StreamRecord} from the queue
-     * and checks  {@link StreamingStatus} of the {@link StreamRecord}.If {@link StreamingStatus} is {@link StreamingStatus#READY} , it spawns a  {@link StreamSendingThread}.
-     * If {@link StreamingStatus} is {@link StreamingStatus#BUSY} then a notification has to be given back to the zirk via onError() ( yet to be implemented ).
+     * and checks  {@link StreamRecordStatus} of the {@link StreamRecord}.If {@link StreamRecordStatus} is {@link StreamRecordStatus#READY} , it spawns a  {@link StreamSendingThread}.
+     * If {@link StreamRecordStatus} is {@link StreamRecordStatus#BUSY} then a notification has to be given back to the zirk via onError() ( yet to be implemented ).
      * The {@link StreamRecord} is removed from the stream queue}
      *
      * @see java.lang.Runnable#run()
@@ -91,14 +90,14 @@ public class StreamQueueProcessor implements Runnable {
             while (it.hasNext()) {
                 StreamRecord streamRecord = (StreamRecord) it.next();
 
-                if (StreamingStatus.LOCAL == streamRecord.getStreamStatus()) {
+                if (StreamRecordStatus.LOCAL == streamRecord.getStreamRecordStatus()) {
                     processLocalStreamMessage(bezirkCallbackPresent, streamRecord);
 
-                } else if (StreamingStatus.ADDRESSED == streamRecord.getStreamStatus()) {
+                } else if (StreamRecordStatus.ADDRESSED == streamRecord.getStreamRecordStatus()) {
                     logger.debug("StreamDescriptor Request is already Addressed.");
-                } else if (streamRecord.getStreamStatus()== StreamingStatus.READY) {
+                } else if (streamRecord.getStreamRecordStatus()== StreamRecordStatus.READY) {
                     processStreamReadyMessage(streamRecord);
-                } else if (streamRecord.getStreamStatus() == StreamingStatus.BUSY) {
+                } else if (streamRecord.getStreamRecordStatus() == StreamRecordStatus.BUSY) {
                     processStreamBusyMessage(bezirkCallbackPresent, streamRecord);
                 }
                 msgQueue.removeFromQueue(streamRecord);

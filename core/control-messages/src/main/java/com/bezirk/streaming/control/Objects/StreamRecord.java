@@ -6,7 +6,6 @@ package com.bezirk.streaming.control.Objects;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 import java.io.File;
-import java.io.PipedInputStream;
 
 
 /**
@@ -17,7 +16,7 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
     private BezirkZirkEndPoint senderSEP;
     private boolean isEncryptedStream;                    // if the DataSend needs to be encrypted
     private String sphereId;                        // used for sending the data , set by the sender
-    private StreamingStatus streamStatus;        // changed after receiving the Response
+    private StreamRecordStatus streamRecordStatus;        // changed after receiving the Response
     private String recipientIP;                    // recipient IP, set by the proxy after getting the stream Response
     private int recipientPort;                    // recipient Port,set by the proxy after getting the stream Response
     private File file;                        // path to the file
@@ -29,7 +28,7 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
      * PENDING -  indicates the waiting to know the response
      * READY   -  indicating the recipient has agreed to receive the stream
      * BUSY    -  indicating the receipient is busy and the data cannot be streamed*/
-    public enum StreamingStatus {
+    public enum StreamRecordStatus {
         PENDING, READY, ADDRESSED, BUSY, LOCAL
     }
 
@@ -49,12 +48,12 @@ public class StreamRecord extends com.bezirk.control.messages.Ledger {
         this.sphereId = sphereId;
     }
 
-    public StreamingStatus getStreamStatus() {
-        return streamStatus;
+    public StreamRecordStatus getStreamRecordStatus() {
+        return streamRecordStatus;
     }
 
-    public void setStreamStatus(StreamingStatus streamStatus) {
-        this.streamStatus = streamStatus;
+    public void setStreamRecordStatus(StreamRecordStatus streamRecordStatus) {
+        this.streamRecordStatus = streamRecordStatus;
     }
 
     public String getRecipientIP() {
