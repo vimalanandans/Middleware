@@ -1,9 +1,16 @@
-# Bezirk-UI Android
+# Android test applications
 
-## Bezirk Control UI
-bezirk-control-ui is the main ui which uses below libraries
+## Testing Bezirk as a standalone application in Android
 
-* bezirk-sphere-pipe-ui : bezirk sphere-pipe management ui library
-* bezirk-android : bezirk-android zirk library
+### bezirk-test-ui application
+This android application is used to test various interactions between zirks & bezirk, when bezirk android stack is running as a standalone application.
 
-Note: until bezirk-ui becomes stable bezirk-android shall be switched back to old ui
+### publisher-zirk & subscriber-zirk applications
+Test basic features of the bezirk middleware api, i.e zirk-registration, publishing event(s), subscribing for event(s) when publisher and subscriber are running as separate apps on 1(or more) andorid devices.
+
+## Testing Bezirk as library
+Coming soon ...
+
+
+
+
