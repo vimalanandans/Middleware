@@ -10,8 +10,8 @@ import java.io.FileNotFoundException;
 public class SendFileStreamAction extends StreamAction {
     private final File file;
 
-    public SendFileStreamAction(ZirkId zirkId, ZirkEndPoint recipient, StreamDescriptor descriptor) {
-        super(zirkId, recipient, descriptor);
+    public SendFileStreamAction(ZirkId zirkId, ZirkEndPoint recipient, StreamDescriptor descriptor, short streamId) {
+        super(zirkId, recipient, descriptor, streamId);
 
         if (descriptor == null || descriptor.getFile() == null) {
             throw new IllegalArgumentException("Cannot send a null file");

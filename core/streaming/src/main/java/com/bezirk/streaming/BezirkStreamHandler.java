@@ -47,12 +47,13 @@ final class BezirkStreamHandler {
      */
     boolean handleStreamRequest(final StreamRequest streamRequest, final Comms comms,
                                 final PortFactory portFactory, final StreamStore streamStore,
-                                final PubSubEventReceiver sadlReceiver, final SphereSecurity sphereSecurity) {
+                                final PubSubEventReceiver pubSubReceiver, final SphereSecurity sphereSecurity) {
 
         // Check if the request is duplicate
         StreamRecord.StreamRecordStatus status = StreamRecord.StreamRecordStatus.ADDRESSED;
         int assignedPort;
 
+        //fixme this has to be handled by streamiD or the streamKey.. This has to be the uniqueKey with streamId also appended. and make a syncronized block too
         if (streamStore.checkStreamRequestForDuplicate(streamRequest.getUniqueKey())) {
             assignedPort = streamStore.getAssignedPort(streamRequest.getUniqueKey());
         } else {
@@ -63,7 +64,7 @@ final class BezirkStreamHandler {
                 status = StreamRecord.StreamRecordStatus.READY;
 
                 StreamReceivingThread streamReceivingThread =new StreamReceivingThread(assignedPort, downloadPath,
-                        streamRequest, portFactory, sadlReceiver, sphereSecurity, streamManager);
+                        streamRequest, portFactory, pubSubReceiver, sphereSecurity, streamManager);
                 Future receiveStreamFuture  = receiveStreamExecutor.submit(new Thread(streamReceivingThread));
                 streamManager.addRefToActiveStream(streamRequest.getUniqueKey(), receiveStreamFuture);
             }

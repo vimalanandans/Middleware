@@ -132,7 +132,7 @@ public class StreamManager implements Streaming, ActiveStream {
         final StreamRecord streamRecord = new StreamRecord();
         final BezirkZirkEndPoint receiver = (BezirkZirkEndPoint) streamAction.getRecipient();
         final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(streamAction.getZirkId());
-        final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId();
+        final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":"+ streamAction.getStreamId();
 
         streamRecord.setSenderSEP(senderSEP);
         streamRecord.setEncryptedStream(streamAction.getDescriptor().isEncrypted());
@@ -143,6 +143,7 @@ public class StreamManager implements Streaming, ActiveStream {
         streamRecord.setRecipientSEP(receiver);
         streamRecord.setSerializedStream(streamAction.getDescriptor().toJson());
         streamRecord.setStreamRequestKey(streamRequestKey);
+        //streamRecord.setStreamId(streamAction.getStreamId());
         return streamRecord;
     }
 
@@ -157,6 +158,8 @@ public class StreamManager implements Streaming, ActiveStream {
             final String sphereId = sphereIterator.next();
             final ControlLedger tcMessage = prepareMessage(sphereId, streamRecord);
             if (ValidatorUtility.isObjectNotNull(comms)) {
+
+                // FIXME: 8/4/2016 This has to return the status... fix this.
                 comms.sendMessage(tcMessage);
             } else {
                 logger.error("Comms manager not initialized");

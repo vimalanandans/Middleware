@@ -282,9 +282,15 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     }
 
 
+    /**
+     * sends the stream request to comms module and then to streaming module.
+     * @param streamAction
+     * @return
+     */
     public short sendStream(SendFileStreamAction streamAction) {
         final Iterable<String> listOfSphere;
 
+        //know the spheres the zirk belongs to. We will send the stream control message to all registered spheres
         if (sphereServiceAccess != null) {
             listOfSphere = sphereServiceAccess.getSphereMembership(streamAction.getZirkId());
         } else {

@@ -12,17 +12,35 @@ import java.io.File;
  * This class is used as Record for BookKeeping the Streams that has been being pushed by the Services.
  */
 public class StreamRecord extends com.bezirk.control.messages.Ledger {
-    //private short localStreamId;
+    //flag for
     private BezirkZirkEndPoint senderSEP;
-    private boolean isEncryptedStream;                    // if the DataSend needs to be encrypted
-    private String sphereId;                        // used for sending the data , set by the sender
-    private StreamRecordStatus streamRecordStatus;        // changed after receiving the Response
-    private String recipientIP;                    // recipient IP, set by the proxy after getting the stream Response
-    private int recipientPort;                    // recipient Port,set by the proxy after getting the stream Response
-    private File file;                        // path to the file
-    private BezirkZirkEndPoint recipientSEP;    // Used for Local streaming.
-    private String serializedStream;                // USed for Local Zirk to Zirk Streaming
-    private String streamRequestKey;            // sream request key is the unique identifier for the streaming.
+
+    //flag to see id the DataSend needs to be encrypted
+    private boolean isEncryptedStream;
+
+    //sphereId the stream record belongs to.
+    private String sphereId;
+
+    // changed after receiving the Response, this will be in PENDING status in the stream store.
+    private StreamRecordStatus streamRecordStatus;
+
+    // recipient IP, set by the proxy after getting the stream Response
+    private String recipientIP;
+
+    // recipient Port,set by the proxy after getting the stream Response
+    private int recipientPort;
+
+    //path to the file
+    private File file;
+
+    //The receipient zirk end point
+    private BezirkZirkEndPoint recipientSEP;
+
+    //This is the seal
+    private String serializedStream;
+
+    // stream request key is the unique identifier for the streaming.
+    private String streamRequestKey;
 
     /* Streaming Status indicates the status of the Streams.
      * PENDING -  indicates the waiting to know the response
