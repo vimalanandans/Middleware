@@ -189,6 +189,11 @@ public class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
+        if (event instanceof IdentifiedEvent) {
+            BezirkIdentityManager identityManager = (BezirkIdentityManager) proxy.getIdentityManager();
+            identityManager.setMessageIdentity((IdentifiedEvent) event);
+        }
+
         proxy.sendMulticastEvent(new SendMulticastEventAction(zirkId, recipient, event));
     }
 
