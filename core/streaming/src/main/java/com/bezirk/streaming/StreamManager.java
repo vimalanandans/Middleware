@@ -132,6 +132,8 @@ public class StreamManager implements Streaming, ActiveStream {
         final StreamRecord streamRecord = new StreamRecord();
         final BezirkZirkEndPoint receiver = (BezirkZirkEndPoint) streamAction.getRecipient();
         final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(streamAction.getZirkId());
+        
+        //// FIXME: 8/4/2016 Punith.. device and ZirkID. is it required ??
         final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":"+ streamAction.getStreamId();
 
         streamRecord.setSenderSEP(senderSEP);

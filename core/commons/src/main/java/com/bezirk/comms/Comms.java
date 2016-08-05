@@ -50,8 +50,19 @@ public interface Comms {
      */
     boolean sendStream(String uniqueKey);
 
+    /**
+     * fixme write this
+     * @param streamAction
+     * @param sphereList
+     * @return
+     */
     boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList);
 
+    /**
+     *
+     * @param notification
+     * @return
+     */
     boolean registerNotification(CommsNotification notification);
 
     /**

@@ -306,7 +306,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
         /*
         * process the stream record which will
-        *store the streamrecord in the stream store and sends the stream message to receiver.*/
+        *store the streamrecord in the stream store and sends the stream message to receivers.*/
         boolean status = comms.processStreamRecord(streamAction,listOfSphere);
 
         if(!status){

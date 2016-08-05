@@ -11,6 +11,8 @@ import java.io.File;
 /**
  * This class is used as Record for BookKeeping the Streams that has been being pushed by the Services.
  */
+
+// FIXME: 8/4/2016 Punith :: Remove StreamRecord as a Ledger.. It can be a Control message.. Look at the receiver!!!!
 public class StreamRecord extends com.bezirk.control.messages.Ledger {
     //flag for
     private BezirkZirkEndPoint senderSEP;
