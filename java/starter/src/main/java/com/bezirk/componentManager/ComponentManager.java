@@ -6,15 +6,21 @@ import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.Device;
 import com.bezirk.device.JavaDevice;
+import com.bezirk.identity.BezirkAlias;
+import com.bezirk.identity.BezirkIdentityManager;
+import com.bezirk.middleware.identity.Alias;
 import com.bezirk.networking.JavaNetworkManager;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.proxy.MessageHandler;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.pubsubbroker.PubSubBroker;
+import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.prefs.Preferences;
 
 import ch.qos.logback.classic.Level;
 
@@ -25,8 +31,10 @@ import ch.qos.logback.classic.Level;
  * To manage circular dependencies in the current code structure, init/setters might be needed.
  */
 public class ComponentManager {
-
     private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
+
+    private static final String ALIAS_KEY = "aliasName";
+
     private ZyreCommsManager comms;
     private PubSubBroker pubSubBroker;
     private RegistryStorage registryStorage;
@@ -38,8 +46,7 @@ public class ComponentManager {
     private static final String DB_VERSION = "0.0.4";
     private static final String DB_FILE_LOCATION = ".";
 
-    public ComponentManager(ProxyServer proxyServer, MessageHandler messageHandler) {
-        this.proxyServer = proxyServer;
+    public ComponentManager(MessageHandler messageHandler) {
         this.messageHandler = messageHandler;
         create();
     }
@@ -71,6 +78,28 @@ public class ComponentManager {
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
         pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
 
+        //initialize the identity manager
+        final Preferences preferences = Preferences.userNodeForPackage(BezirkIdentityManager.class);
+        final BezirkIdentityManager identityManager = new BezirkIdentityManager();
+        final String aliasString = preferences.get(ALIAS_KEY, null);
+        final Gson gson = new Gson();
+        final Alias identity;
+
+        if (aliasString == null) {
+            identity = identityManager.createIdentity(System.getProperty("user.name"));
+            identityManager.setIdentity(identity);
+
+            preferences.put(ALIAS_KEY, gson.toJson(identity));
+        } else {
+            logger.debug("Reusing identity {}", aliasString);
+            identity = (Alias) gson.fromJson(aliasString, BezirkAlias.class);
+        }
+
+        identityManager.setIdentity(identity);
+
+        //initialize proxyServer responsible for managing incoming events from zirks
+        proxyServer = new ProxyServer(identityManager);
+
         // TODO initialize in constructor instead.
         proxyServer.setPubSubBrokerService(pubSubBroker);
 
@@ -87,6 +116,10 @@ public class ComponentManager {
 
     public void stop() {
         this.lifecycleManager.setState(LifecycleManager.LifecycleState.DESTROYED);
+    }
+
+    public ProxyServer getProxyServer() {
+        return proxyServer;
     }
 
     //TODO: Remove this dependency for proxy client by providing a persistance implementation

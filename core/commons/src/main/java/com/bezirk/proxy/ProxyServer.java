@@ -6,11 +6,17 @@ import com.bezirk.actions.SendMulticastEventAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
+import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubBrokerZirkServicer;
 
 public class ProxyServer {
     private PubSubBrokerZirkServicer pubSubBrokerService;
+    private final IdentityManager identityManager;
+
+    public ProxyServer(IdentityManager identityManager) {
+        this.identityManager = identityManager;
+    }
 
     public void registerZirk(RegisterZirkAction registerZirkAction) {
         pubSubBrokerService.registerZirk(registerZirkAction.getZirkId(), registerZirkAction.getZirkName());
@@ -41,12 +47,15 @@ public class ProxyServer {
     }
 
     public boolean unsubscribe(SubscriptionAction subscriptionAction) {
-
         return pubSubBrokerService.unsubscribe(subscriptionAction.getZirkId(), subscriptionAction.getMessageSet());
     }
 
     public boolean unregister(RegisterZirkAction registerZirkAction) {
         return pubSubBrokerService.unregisterZirk(registerZirkAction.getZirkId());
+    }
+
+    public IdentityManager getIdentityManager() {
+        return identityManager;
     }
 
     public void setPubSubBrokerService(PubSubBrokerZirkServicer pubSubBrokerService) {

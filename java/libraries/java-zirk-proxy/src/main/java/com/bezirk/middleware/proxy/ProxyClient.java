@@ -10,12 +10,15 @@ import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.componentManager.ComponentManager;
 import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.ProxyRegistry;
+import com.bezirk.identity.BezirkIdentityManager;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
+import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.middleware.messages.StreamSet;
@@ -45,13 +48,14 @@ public class ProxyClient implements Bezirk {
     private static final BroadcastReceiver brForService = new ZirkMessageReceiver(
             eventMap, eventListenerMap, streamMap, streamListenerMap);
     private static final ZirkMessageHandler bezirkPcCallback = new ZirkMessageHandler(brForService);
-    private static final ProxyServer proxy = new ProxyServer();
-    private static final ComponentManager componentManager = new ComponentManager(proxy, bezirkPcCallback);
+    private static final ComponentManager componentManager = new ComponentManager(bezirkPcCallback);
+    private static final ProxyServer proxy;
     private static final ProxyPersistence proxyPersistence;
     private static ProxyRegistry proxyRegistry = null;
 
     static {
         componentManager.start();
+        proxy = componentManager.getProxyServer();
         proxyPersistence = componentManager.getBezirkProxyPersistence();
         try {
             proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
@@ -190,6 +194,11 @@ public class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
+        if (event instanceof IdentifiedEvent) {
+            BezirkIdentityManager identityManager = (BezirkIdentityManager) proxy.getIdentityManager();
+            identityManager.setMessageIdentity((IdentifiedEvent) event);
+        }
+
         proxy.sendUnicastEvent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
                 zirkId, recipient, event));
     }
@@ -208,5 +217,10 @@ public class ProxyClient implements Bezirk {
     @Override
     public void setLocation(Location location) {
         proxy.setLocation(new SetLocationAction(zirkId, location));
+    }
+
+    @Override
+    public IdentityManager getIdentityManager() {
+        return proxy.getIdentityManager();
     }
 }

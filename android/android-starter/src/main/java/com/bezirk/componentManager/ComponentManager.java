@@ -17,6 +17,9 @@ import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.AndroidDevice;
 import com.bezirk.device.Device;
+import com.bezirk.identity.BezirkAlias;
+import com.bezirk.identity.BezirkIdentityManager;
+import com.bezirk.middleware.identity.Alias;
 import com.bezirk.networking.AndroidNetworkManager;
 import com.bezirk.persistence.DatabaseConnectionForAndroid;
 import com.bezirk.proxy.MessageHandler;
@@ -24,12 +27,16 @@ import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.proxy.android.ZirkMessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.starter.helper.ActionProcessor;
+import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ComponentManager extends Service {
     private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
+
+    private static final String ALIAS_KEY = "aliasName";
+
     private SharedPreferences preferences;
     //private final Context context;
     private ActionProcessor actionProcessor;
@@ -89,8 +96,27 @@ public class ComponentManager extends Service {
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
         pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
 
+        //initialize the identity manager
+        final BezirkIdentityManager identityManager = new BezirkIdentityManager();
+        final String aliasString = preferences.getString(ALIAS_KEY, null);
+        final Gson gson = new Gson();
+        final Alias identity;
+
+        if (aliasString == null) {
+            identity = identityManager.createIdentity("BezirkUser");
+            identityManager.setIdentity(identity);
+
+            SharedPreferences.Editor preferencesEditor = preferences.edit();
+            preferencesEditor.putString(ALIAS_KEY, gson.toJson(identity));
+            preferencesEditor.commit();
+        } else {
+            identity = (Alias) gson.fromJson(aliasString, BezirkAlias.class);
+        }
+
+        identityManager.setIdentity(identity);
+
         //initialize proxyServer responsible for managing incoming events from zirks
-        proxyServer = new AndroidProxyServer();
+        proxyServer = new AndroidProxyServer(identityManager);
 
         // TODO initialize in constructor instead.
         proxyServer.setPubSubBrokerService(pubSubBroker);

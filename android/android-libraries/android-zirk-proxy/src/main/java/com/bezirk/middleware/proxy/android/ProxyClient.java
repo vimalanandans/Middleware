@@ -19,6 +19,7 @@ import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.MessageSet;
@@ -213,5 +214,11 @@ public final class ProxyClient implements Bezirk {
     @Override
     public void setLocation(Location location) {
         sendBezirkIntent(new SetLocationAction(zirkId, location));
+    }
+
+    @Override
+    public IdentityManager getIdentityManager() {
+        // TODO: implement me
+        throw new UnsupportedOperationException("getIdentityManager is currently unimplemented");
     }
 }

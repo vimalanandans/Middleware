@@ -4,7 +4,7 @@ import com.bezirk.middleware.identity.Alias;
 
 import java.util.Arrays;
 
-public class BezirkAlias {
+public class BezirkAlias implements Alias {
     private final String name;
     private final byte[] hash;
 
@@ -22,8 +22,10 @@ public class BezirkAlias {
         System.arraycopy(hash, 0, this.hash, 0, hash.length );
     }
 
+    @Override
     public String getName() { return name; }
 
+    @Override
     public byte[] getHash() { return hash; }
 
     @Override
