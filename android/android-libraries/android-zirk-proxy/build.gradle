@@ -35,5 +35,7 @@ dependencies {
     compile project(':core:bezirk-middleware-api')
     compile project(':core:bezirk')
     compile project(':core:commons')
+
+    compile project(':android:android-starter')
 //    }
 }

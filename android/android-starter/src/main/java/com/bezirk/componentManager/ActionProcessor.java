@@ -1,9 +1,8 @@
-package com.bezirk.starter.helper;
+package com.bezirk.componentManager;
 
 import android.content.Intent;
 
 import com.bezirk.actions.BezirkAction;
-import com.bezirk.componentManager.ComponentManager;
 import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.util.ValidatorUtility;
 

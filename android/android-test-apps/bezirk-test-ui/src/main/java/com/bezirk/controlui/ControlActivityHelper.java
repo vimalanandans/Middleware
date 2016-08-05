@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.componentManager.ComponentManager;
+import com.bezirk.componentManager.AppManager;
 import com.bezirk.util.BezirkVersion;
 import com.bezirk.util.ValidatorUtility;
 
@@ -188,10 +188,13 @@ class ControlActivityHelper {
         //Intialize preferences
         PreferenceManager.setDefaultValues(activity, R.xml.preferences, false);
 
-        //Start Bezirk
+     /*   //Start Bezirk
         Intent serviceIntent = new Intent(activity.getApplicationContext(), ComponentManager.class);
         serviceIntent.setAction("START_BEZIRK");
         activity.startService(serviceIntent);
+     */
+        AppManager bezirkApp = AppManager.getAppManager();
+        bezirkApp.startBezirk(activity, true, activity.getPackageName());
 
         // register a broadcast receiver
         controlActivity.registerReceiver(systemStatusBroadcastReceiver, new IntentFilter(BR_SYSTEM_STATUS_ACTION));
