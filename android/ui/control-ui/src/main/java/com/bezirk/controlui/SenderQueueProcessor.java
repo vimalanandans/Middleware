@@ -1,4 +1,4 @@
-package com.bezirk.remotelogging;
+package com.bezirk.controlui;
 
 
 import org.slf4j.Logger;

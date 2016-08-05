@@ -8,13 +8,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.bezirk.sphere.api.BezirkSphereAPI;
-import com.bezirk.sphere.api.BezirkSphereType;
+import com.bezirk.sphere.api.SphereAPI;
+import com.bezirk.sphere.api.SphereType;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.PipeListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.starter.MainService;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import bezirk.zbarscanner.ScannerActivity;
 
@@ -113,19 +113,19 @@ public class DeviceListActivityHelper {
     }
 
     void setImageSourceForSphereType(ImageView img, SphereListItem entry) {
-        if (entry.getmSphere().getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME)) {
+        if (entry.getmSphere().getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_HOME)) {
             img.setImageResource(R.drawable.ic_home_sphere);
-        } else if (entry.getmSphere().getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT)) {
+        } else if (entry.getmSphere().getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_DEFAULT)) {
             img.setImageResource(R.drawable.ic_default_sphere);
-        } else if (entry.getmSphere().getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_CAR)) {
+        } else if (entry.getmSphere().getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_CAR)) {
             img.setImageResource(R.drawable.ic_car_sphere);
-        } else if (entry.getmSphere().getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_OFFICE)) {
+        } else if (entry.getmSphere().getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_OFFICE)) {
             img.setImageResource(R.drawable.ic_office_sphere);
-        } else if (entry.getmSphere().getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME_CONTROL)) {
+        } else if (entry.getmSphere().getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_HOME_CONTROL)) {
             img.setImageResource(R.drawable.ic_home_control_sphere);
-        } else if (entry.getmSphere().getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME_ENTERTAINMENT)) {
+        } else if (entry.getmSphere().getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_HOME_ENTERTAINMENT)) {
             img.setImageResource(R.drawable.ic_home_entertainment_sphere);
-        } else if (entry.getmSphere().getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME_SECURITY)) {
+        } else if (entry.getmSphere().getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_HOME_SECURITY)) {
             img.setImageResource(R.drawable.ic_home_security_sphere);
         } else {
             // do nothing
@@ -153,8 +153,8 @@ public class DeviceListActivityHelper {
 
     boolean processQRcode(String data, String scanType, String sphereID) {
         boolean qrProcessStatus = false;
-        BezirkSphereAPI api = MainService.getSphereHandle();
-        if (BezirkValidatorUtility.isObjectNotNull(api)) {
+        SphereAPI api = MainService.getSphereHandle();
+        if (ValidatorUtility.isObjectNotNull(api)) {
             if (scanType.equals(DeviceListActivity.CATCH)) {
                 Log.d(TAG, "processing as catch");
                 qrProcessStatus = api.processCatchQRCodeRequest(data, sphereID);

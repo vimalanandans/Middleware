@@ -1,11 +1,11 @@
-package com.bezirk.remotelogging;
+package com.bezirk.controlui;
 
 /**
  * Utility class for Logging Module defining all the constants.
  */
 public final class Util {
 
-    private  Util(){
+    private Util(){
 
     }
     /**

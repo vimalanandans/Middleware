@@ -9,7 +9,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,15 +21,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.BezirkCompManager;
-import com.bezirk.comms.BezirkCommunications;
+import com.bezirk.comms.CommsProperties;
 import com.bezirk.controlui.R;
+import com.bezirk.device.Device;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.starter.MainService;
-import com.bezirk.util.BezirkValidatorUtility;
-import com.bezrik.network.BezirkNetworkUtilities;
+import com.bezirk.util.ValidatorUtility;
 import com.google.gson.Gson;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -44,12 +48,31 @@ import java.util.Set;
  * The configuration about the port that is used for sending and receiving can be configured from
  * the alert dialog.
  */
-public class CommsTestActivity extends ActionBarActivity {
-
+public class CommsTestActivity extends AppCompatActivity{
+    public static final Logger logger = LoggerFactory.getLogger(CommsTestActivity.class);
     private static final String TAG = CommsTestActivity.class.getSimpleName();
+    NetworkManager networkManager;
+    /*AndroidDevice androidDevice = new AndroidDevice();
+    Device device=androidDevice;*/
+    //Device device;
+    Object d;
+    String deviceIs;
+    public CommsTestActivity(){
+        try{
+            Field f = Device.class.getDeclaredField("deviceName"); //NoSuchFieldException
+            f.setAccessible(true);
+            deviceIs = (String)f.get("deviceName");
+        }
+        catch(NoSuchFieldException e){
+            logger.error("No such field present");
+        }
+        catch(Exception e1){
+            logger.error("catch Exception");
+        }
+    }
 
-    private final String myAddress = BezirkNetworkUtilities.getDeviceIp(),
-            name = BezirkCompManager.getUpaDevice().getDeviceName(), ctrlMCastAddress = "224.5.5.5",
+    private final String myAddress = networkManager.getDeviceIp(),
+            name = deviceIs, ctrlMCastAddress = "224.5.5.5",
             BR_COMMS_DIAG_ACTION = "ACTION_DIAG_PING", BR_COMMS_DIAG_RESPONSE = "com.bezirk.comms.diag";
 
     // till the code is going to be compleltey refactored
@@ -500,7 +523,7 @@ public class CommsTestActivity extends ActionBarActivity {
             textView.setLayoutParams(mTextViewListItem.getLayoutParams());
             textView.setTextColor(mTextViewListItem.getCurrentTextColor());
             textView.setPadding(mTextViewListItem.getPaddingLeft(), mTextViewListItem.getPaddingRight(), mTextViewListItem.getPaddingTop(), mTextViewListItem.getPaddingBottom());
-            textView.setText(count + ". " + info);
+            textView.setText(count + "build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.2.1/res " + info);
             linearLayout.addView(textView);
             count++;
         }
@@ -549,7 +572,7 @@ public class CommsTestActivity extends ActionBarActivity {
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!BezirkValidatorUtility.checkForString(mSendingPort.getText().toString(), mReceivingPort.getText().toString(),
+                if (!ValidatorUtility.checkForString(mSendingPort.getText().toString(), mReceivingPort.getText().toString(),
                         uSendingPort.getText().toString(), uReceivingPort.getText().toString(), timeInterval.getText().toString())) {
                     printToast("INVALID CONFIG");
                     return;
@@ -630,13 +653,14 @@ public class CommsTestActivity extends ActionBarActivity {
         boolean isRunning;
         private MulticastSocket multicastSocket;
         private InetAddress myAddress;
-
+        NetworkManager networkManager;
         public MulticastReceiver(String ctrlMCastAddr) {
             try {
                 multicastSocket = new MulticastSocket(multicastReceivingPort);
                 multicastSocket.joinGroup(InetAddress.getByName(ctrlMCastAddr));
                 isRunning = true;
-                myAddress = BezirkNetworkUtilities.getLocalInet();
+
+                myAddress = networkManager.getLocalInet();
                 if (myAddress == null) {
                     printToast("ERROR IN STARTING RECEIVER");
                 }
@@ -714,13 +738,13 @@ public class CommsTestActivity extends ActionBarActivity {
     private class UnicastReceiver extends Thread {
         boolean isUnicastReceiverRunning;
         private DatagramSocket unicastListenerSocket;
-
+        NetworkManager networkManager;
         public UnicastReceiver() {
             NetworkInterface intf;
             InetAddress addr = null;
             try {
-                intf = NetworkInterface.getByName(BezirkCommunications.getINTERFACE_NAME());
-                addr = BezirkValidatorUtility.isObjectNotNull(intf) ? BezirkNetworkUtilities.getIpForInterface(intf) : null;
+                intf = NetworkInterface.getByName(CommsProperties.getINTERFACE_NAME());
+                addr = ValidatorUtility.isObjectNotNull(intf) ? networkManager.getIpForInterface(intf) : null;
                 if (addr == null) {
                     printToast("ERROR IN STARTING UNICAST LISTENER");
                 }

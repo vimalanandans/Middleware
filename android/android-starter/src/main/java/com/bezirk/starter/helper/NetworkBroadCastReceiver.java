@@ -81,7 +81,9 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
     }
 
     private void handleConnectedState(Context context, WifiInfo wifiInfo) {
+        logger.debug("In NetworkBroadCastReceiver");
         if (MainStackHandler.getBezirkComms() == null && mainService != null) {
+            logger.debug("getBezirkComms and main service is not null");
                 /*it is observed in few devices that, after receiving completed supplicant state the wifi manager will not retrieve the connection correctly.
                 Hence making this separated thread sleep for 3 sec and then starting the stack.*/
             try {
@@ -96,6 +98,7 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
         } else if (bezirkWifiManager.getConnectedWifiSSID() == null || !bezirkWifiManager.getConnectedWifiSSID().equals(wifiInfo.getSSID())) {
             //restart comms
             String message = "Bezirk has been reconfigured to Wifi Access Point! " + wifiInfo.getSSID();
+            logger.debug("message is ",message);
             new RestartCommsAsyncTask(context, message, stackHandler).execute();
         }
         bezirkWifiManager.setConnectedWifiSSID(wifiInfo.getSSID());

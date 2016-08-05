@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.SphereListActivity;
@@ -75,7 +75,7 @@ public class DeviceListFragment extends ListFragment {
         */
         String sphereID = getActivity().getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
 
-        BezirkSphereAPI api = MainService.getSphereHandle();
+        SphereAPI api = MainService.getSphereHandle();
 
         if (api != null) {
 

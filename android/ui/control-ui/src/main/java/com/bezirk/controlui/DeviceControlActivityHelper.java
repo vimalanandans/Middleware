@@ -11,13 +11,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bezirk.actions.BezirkActions;
+
 import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.sphere.api.BezirkDevMode;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.BezirkPreferences;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.starter.MainStackPreferences;
+import com.bezirk.util.ValidatorUtility;
+import com.bezirk.actions.BezirkAction;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ class DeviceControlActivityHelper {
 
     private final DeviceControlActivity deviceControlActivity;
     private final Context context;
-    private final BezirkPreferences preferences;
+    private final MainStackPreferences preferences;
 
     DeviceControlActivityHelper(DeviceControlActivity deviceControlActivity, Context context) {
         this.deviceControlActivity = deviceControlActivity;
@@ -66,7 +66,7 @@ class DeviceControlActivityHelper {
                 promptSettingTextChange(listData.get(position).getTitleText(), RESULT_SPHERE_NAME_CHANGE);
                 break;
             case R.drawable.ic_action_sphere_type: // set default sphere name
-                actions = BezirkActions.ACTION_CHANGE_SPHERE_TYPE;
+                actions = BezirkAction.ACTION_CHANGE_SPHERE_TYPE.getName();
                 break;
             case R.drawable.ic_delete_database:
                 promptClearConfirmation(listData.get(position).getTitleText(), "Do you want to Clear the sphere data ?",
@@ -81,7 +81,7 @@ class DeviceControlActivityHelper {
                 return;
         }
 
-        if (BezirkValidatorUtility.isObjectNotNull(actions)) {
+        if (ValidatorUtility.isObjectNotNull(actions)) {
             Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
             intent.setAction(actions);
             deviceControlActivity.startService(intent);
@@ -111,7 +111,7 @@ class DeviceControlActivityHelper {
      * clear the device database
      */
     private void clearDataBase() {
-        String actions = BezirkActions.ACTION_CLEAR_PERSISTENCE;
+        String actions = BezirkAction.ACTION_CLEAR_PERSISTENCE.getName();
         Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
 
         intent.setAction(actions);
@@ -126,7 +126,7 @@ class DeviceControlActivityHelper {
         // store the device type
         preferences.putString(preferences.DEVICE_TYPE_TAG_PREFERENCE, deviceType);
 
-        String actions = BezirkActions.ACTION_CHANGE_DEVICE_TYPE;
+        String actions = BezirkAction.ACTION_CHANGE_DEVICE_TYPE.getName();
         Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
 
         intent.setAction(actions);
@@ -143,7 +143,7 @@ class DeviceControlActivityHelper {
         // store the device name
         preferences.putString(preferences.DEVICE_NAME_TAG_PREFERENCE, deviceName);
 
-        String actions = BezirkActions.ACTION_CHANGE_DEVICE_NAME;
+        String actions = BezirkAction.ACTION_CHANGE_DEVICE_NAME.getName();
         Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
 
         intent.setAction(actions);
@@ -160,7 +160,7 @@ class DeviceControlActivityHelper {
         // store the device name
         preferences.putString(preferences.DEFAULT_SPHERE_NAME_TAG_PREFERENCE, sphereName);
 
-        String actions = BezirkActions.ACTION_CHANGE_SPHERE_NAME;
+        String actions = BezirkAction.ACTION_CHANGE_SPHERE_NAME.getName();
         Intent intent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
 
         intent.setAction(actions);
@@ -219,7 +219,7 @@ class DeviceControlActivityHelper {
 // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptsView = layoutInflater.inflate(R.layout.prompt_confirm, null);
-        BezirkSphereAPI sphereAPI = MainService.getSphereHandle();
+        SphereAPI sphereAPI = MainService.getSphereHandle();
         final List<BezirkZirkInfo> bezirkZirkInfos = sphereAPI.getServiceInfo();
         final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(deviceControlActivity.getApplicationContext());
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -247,7 +247,7 @@ class DeviceControlActivityHelper {
                                 String data = confirmTextView.getText().toString();
                                 logger.info("clear database confirmed " + data);
                                 onPromptTextResult(resultId, data);
-                                if (BezirkValidatorUtility.isObjectNotNull(bezirkZirkInfos) && !bezirkZirkInfos.isEmpty()) {
+                                if (ValidatorUtility.isObjectNotNull(bezirkZirkInfos) && !bezirkZirkInfos.isEmpty()) {
                                     for (BezirkZirkInfo info : bezirkZirkInfos) {
                                         if (sharedPrefs.getAll().containsKey(info.getZirkId())) {
                                             sharedPrefs.edit().remove(info.getZirkId()).apply();
@@ -275,7 +275,7 @@ class DeviceControlActivityHelper {
      */
     void getStatus() {
         Intent devIntent = new Intent(deviceControlActivity.getApplicationContext(), MainService.class);
-        devIntent.setAction(BezirkActions.ACTION_DEV_MODE_STATUS);
+        devIntent.setAction(BezirkAction.ACTION_DEV_MODE_STATUS.getName());
         deviceControlActivity.startService(devIntent);
     }
 
@@ -284,13 +284,21 @@ class DeviceControlActivityHelper {
      *
      * @param mode
      */
-    void updateList(BezirkDevMode.Mode mode, List<DataModel> listData) {
+    void updateList(BezirkAction.ActionType mode, List<DataModel> listData) {
+        if(mode == null)
+            return;
+
         logger.debug("mode received: " + mode);
+
+
         boolean switchState = false;
         switch (mode) {
-            case ON:
-                switchState = true;
-                break;
+            case DEVICE_ACTION:
+                if(BezirkAction.ACTION_DEV_MODE_ON.getName()=="ACTION_DEV_MODE_ON"){
+                    switchState = true;
+                    break;
+                }
+
             default:
         }
         listData.add(new DataModel(R.drawable.ic_action_dev_mode, "Developer Mode",

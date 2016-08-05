@@ -22,6 +22,7 @@ public class MainStackPreferences {
     private SharedPreferences preferences;
 
     public MainStackPreferences(Context context) {
+        logger.debug("Inside MainStackPreferences constructor");
         if (context != null) {
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
             Map<String, ?> keys = preferences.getAll();
@@ -30,6 +31,8 @@ public class MainStackPreferences {
                 logger.debug("map values " + entry.getKey() + ": " +
                         entry.getValue().toString());
             }
+        }else{
+            logger.debug("context is null in MainStackPreferences");
         }
 
     }
@@ -50,7 +53,15 @@ public class MainStackPreferences {
 
     /* check if a preference is present*/
     public boolean contains(String key) {
-        return preferences.contains(key);
+        if(null!=preferences){
+            logger.debug("preferences is not null");
+            return preferences.contains(key);
+        }
+        else{
+            logger.debug("preferences is null");
+            return false;
+        }
+
     }
 
     /**

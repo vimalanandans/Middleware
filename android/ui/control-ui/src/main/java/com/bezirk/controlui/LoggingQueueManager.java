@@ -1,4 +1,4 @@
-package com.bezirk.remotelogging;
+package com.bezirk.controlui;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;

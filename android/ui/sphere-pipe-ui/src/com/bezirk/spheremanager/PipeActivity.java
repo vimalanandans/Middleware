@@ -17,17 +17,17 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bezirk.BezirkCompManager;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
+import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.SelectSphereListAdapter;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.starter.MainService;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.starter.SphereServiceAccessStub;
+import com.bezirk.util.ValidatorUtility;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -37,12 +37,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.bezirk.actions.BezirkActions.KEY_PIPE_NAME;
-import static com.bezirk.actions.BezirkActions.KEY_PIPE_REQ_ID;
-import static com.bezirk.actions.BezirkActions.KEY_PIPE_SPHEREID;
-import static com.bezirk.actions.BezirkActions.KEY_SENDER_ZIRK_ID;
-import static com.bezirk.util.BezirkValidatorUtility.checkForString;
-import static com.bezirk.util.BezirkValidatorUtility.checkBezirkZirkId;
+import static com.bezirk.actions.BezirkAction.KEY_PIPE_NAME;
+import static com.bezirk.actions.BezirkAction.KEY_PIPE_REQ_ID;
+import static com.bezirk.actions.BezirkAction.KEY_PIPE_SPHEREID;
+import static com.bezirk.actions.BezirkAction.KEY_SENDER_ZIRK_ID;
+import static com.bezirk.util.ValidatorUtility.checkForString;
+import static com.bezirk.util.ValidatorUtility.checkBezirkZirkId;
 
 public class PipeActivity extends Activity {
     private static final Logger logger = LoggerFactory.getLogger(PipeActivity.class);
@@ -60,9 +60,9 @@ public class PipeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Intent rxIntent = getIntent();
-        final String pipeName = rxIntent.getStringExtra(KEY_PIPE_NAME);
-        final String serviceIdAsString = rxIntent.getStringExtra(KEY_SENDER_ZIRK_ID);
-        final String reqId = rxIntent.getStringExtra(KEY_PIPE_REQ_ID);
+        final String pipeName = rxIntent.getStringExtra(KEY_PIPE_NAME.getName());
+        final String serviceIdAsString = rxIntent.getStringExtra(KEY_SENDER_ZIRK_ID.getName());
+        final String reqId = rxIntent.getStringExtra(KEY_PIPE_REQ_ID.getName());
 
         /*
          * Validate rxIntent data
@@ -79,8 +79,9 @@ public class PipeActivity extends Activity {
             logger.error("Intent not valid because there was a failure validating zirkId");
             return;
         }
-
-        final String serviceName = BezirkCompManager.getSphereForPubSubBroker().getZirkName(serviceId);
+        SphereServiceAccess sphereServiceAccess = new SphereServiceAccessStub();
+        final String serviceName =sphereServiceAccess.getServiceName(serviceId);
+       // final String serviceName = BezirkCompManager.getSphereForPubSubBroker().getZirkName(serviceId);
 
         //callingActivity = getCallingActivity().getClassName();
         LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext()
@@ -94,7 +95,7 @@ public class PipeActivity extends Activity {
                 .findViewById(R.id.sphere_list_for_adding);
 
 
-        BezirkSphereAPI api = MainService.getSphereHandle();
+        SphereAPI api = MainService.getSphereHandle();
 
         List<AbstractSphereListItem> sphereList = new ArrayList<AbstractSphereListItem>();
 
@@ -118,9 +119,9 @@ public class PipeActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                BezirkSphereAPI api = MainService.getSphereHandle();
+                SphereAPI api = MainService.getSphereHandle();
 
-                if (BezirkValidatorUtility.isObjectNotNull(api)) {
+                if (ValidatorUtility.isObjectNotNull(api)) {
 
                     List<BezirkSphereInfo> sphereInfoList = (List) api.getSpheres();
                     if (sphereInfoList != null) {
@@ -163,10 +164,10 @@ public class PipeActivity extends Activity {
                             PipePolicyActivity.class);
                     addPipeIntent.putExtra(DeviceListFragment.ARG_ITEM_ID,
                             entry.getId());
-                    addPipeIntent.putExtra(KEY_PIPE_NAME, pipeName);
-                    addPipeIntent.putExtra(KEY_SENDER_ZIRK_ID, serviceIdAsString);
-                    addPipeIntent.putExtra(KEY_PIPE_REQ_ID, reqId);
-                    addPipeIntent.putExtra(KEY_PIPE_SPHEREID, sphereId);
+                    addPipeIntent.putExtra(KEY_PIPE_NAME.getName(), pipeName);
+                    addPipeIntent.putExtra(KEY_SENDER_ZIRK_ID.getName(), serviceIdAsString);
+                    addPipeIntent.putExtra(KEY_PIPE_REQ_ID.getName(), reqId);
+                    addPipeIntent.putExtra(KEY_PIPE_SPHEREID.getName(), sphereId);
                     startActivity(addPipeIntent);
                 } else {
                     Toast.makeText(getApplicationContext(),

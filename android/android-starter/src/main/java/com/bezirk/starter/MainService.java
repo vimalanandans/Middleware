@@ -21,10 +21,9 @@ import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.remotelogging.RemoteLog;
 import com.bezirk.sphere.api.SphereAPI;
-import com.bezirk.starter.helper.NetworkBroadCastReceiver;
 import com.bezirk.starter.helper.ActionProcessor;
-
 import com.bezirk.starter.helper.MainStackHandler;
+import com.bezirk.starter.helper.NetworkBroadCastReceiver;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,15 +44,15 @@ public class MainService extends Service implements NotificationCallback {
         return MainStackHandler.isStackStarted();
     }
 
-    final RemoteLog remoteLoggingManager = null;
+    final static RemoteLog remoteLoggingManager = null;
     /**
      * get the sphere object handle.
      */
-    public  boolean sendLoggingServiceMsgToClients(final String[] selSpheres,
+    public  static boolean sendLoggingServiceMsgToClients(final String[] selSpheres,
                                                          final String[] tempLoggingSphereList, boolean isActivate) {
         if(remoteLoggingManager != null)
         {
-            remoteLoggingManager.setLogger(isActivate,tempLoggingSphereList);
+            remoteLoggingManager.enableLogging(isActivate,tempLoggingSphereList);
             return true;
         }
         return false;
@@ -97,8 +96,10 @@ public class MainService extends Service implements NotificationCallback {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        logger.debug("inside onStartCommand of MainService");
         super.onStartCommand(intent, flags, startId);
         if (intent != null) {
+            logger.debug("Intent of mainService is not null");
             actionProcessor.processBezirkAction(intent, this, (AndroidProxyServer)proxyService, mainStackHandler);
         }
 

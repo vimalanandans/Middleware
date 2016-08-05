@@ -20,14 +20,14 @@ import android.widget.Toast;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallbacks;
 import com.bezirk.spheremanager.ui.DialogAddSphereFragment;
 import com.bezirk.spheremanager.ui.DialogServiceListFragment;
 import com.bezirk.spheremanager.ui.SphereListFragment;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.BezirkActionCommands;
+import com.bezirk.starter.ActionCommands;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -158,7 +158,7 @@ public class SphereListActivity extends FragmentActivity implements
         super.onResume();
         // register the intent to receive the Bezirk sphere Results
         IntentFilter filter = new IntentFilter();
-        filter.addAction(BezirkActionCommands.SPHERE_NOTIFICATION_ACTION);
+        filter.addAction(ActionCommands.SPHERE_NOTIFICATION_ACTION);
         registerReceiver(sphereIntentReceiver, filter);
     }
 
@@ -224,7 +224,7 @@ public class SphereListActivity extends FragmentActivity implements
     }
 
     private class CreateSphereAsyncTask extends AsyncTask<String, Void, String> {
-        final BezirkSphereAPI sphereAPI = MainService.getSphereHandle();
+        final SphereAPI sphereAPI = MainService.getSphereHandle();
         final List<BezirkZirkInfo> servicesToBeAdded = new ArrayList<BezirkZirkInfo>();
         String sphereId = null;
 
@@ -304,13 +304,13 @@ public class SphereListActivity extends FragmentActivity implements
 
             Log.i(TAG, "Received Intent for Device control >" + intent.getAction());
 
-            String command = intent.getStringExtra(BezirkActionCommands.BEZIRK_ACTION_COMMANDS);
+            String command = intent.getStringExtra(ActionCommands.BEZIRK_ACTION_COMMANDS);
 
             Log.i(TAG, "Command > " + command);
 
 
-            if (command.equals(BezirkActionCommands.CMD_SPHERE_DISCOVERY_STATUS)) {
-                boolean Status = intent.getBooleanExtra(BezirkActionCommands.BEZIRK_ACTION_COMMAND_STATUS, false);
+            if (command.equals(ActionCommands.CMD_SPHERE_DISCOVERY_STATUS)) {
+                boolean Status = intent.getBooleanExtra(ActionCommands.BEZIRK_ACTION_COMMAND_STATUS, false);
 
                 if (Status) // when status is true
                 {
@@ -321,11 +321,11 @@ public class SphereListActivity extends FragmentActivity implements
                     Toast.makeText(parent, "FAILED : " + command, Toast.LENGTH_SHORT).show();
                 }
 
-            } else if (command.equals(BezirkActionCommands.CMD_SPHERE_CATCH_STATUS) ||
-                    command.equals(BezirkActionCommands.CMD_SPHERE_SHARE_STATUS)) {
+            } else if (command.equals(ActionCommands.CMD_SPHERE_CATCH_STATUS) ||
+                    command.equals(ActionCommands.CMD_SPHERE_SHARE_STATUS)) {
 
-                String Status = intent.getStringExtra(BezirkActionCommands.BEZIRK_ACTION_COMMAND_STATUS);
-                String message = intent.getStringExtra(BezirkActionCommands.BEZIRK_ACTION_COMMAND_MESSAGE);
+                String Status = intent.getStringExtra(ActionCommands.BEZIRK_ACTION_COMMAND_STATUS);
+                String message = intent.getStringExtra(ActionCommands.BEZIRK_ACTION_COMMAND_MESSAGE);
                 Toast.makeText(parent, message, Toast.LENGTH_LONG).show();
             }
 

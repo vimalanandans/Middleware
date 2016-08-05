@@ -1,5 +1,7 @@
-package com.bezirk.remotelogging;
+package com.bezirk.controlui;
 
+import com.bezirk.remotelogging.RemoteLoggingMessage;
+import com.bezirk.remotelogging.RemoteLoggingMessageNotification;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;

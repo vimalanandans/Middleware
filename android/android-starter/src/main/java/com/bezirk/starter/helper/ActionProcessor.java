@@ -32,9 +32,11 @@ public final class ActionProcessor {
      * @param mainStackHandler
      */
     public void processBezirkAction(Intent intent, MainService service, AndroidProxyServer ProxyService, MainStackHandler mainStackHandler) {
+        logger.debug("Inside processBezirkAction of ActionProcessor");
         BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
 
         if (ValidatorUtility.isObjectNotNull(intentAction)) {
+            logger.debug("intentAction is not null");
             if (logger.isDebugEnabled())
                 logger.debug("Received intent, action: {}", intentAction.getName());
 
@@ -65,6 +67,7 @@ public final class ActionProcessor {
     }
 
     private void processBezirkStackAction(MainService service, Intent intent, BezirkAction intentAction, MainStackHandler mainStackHandler) {
+        logger.debug("in ActionProcessor");
         switch (intentAction) {
             case ACTION_START_BEZIRK:
                 mainStackHandler.startStack(service);

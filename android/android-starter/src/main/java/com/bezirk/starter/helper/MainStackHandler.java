@@ -27,6 +27,7 @@ import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.starter.BezirkWifiManager;
 import com.bezirk.starter.MainService;
+import com.bezirk.starter.MainStackPreferences;
 import com.bezirk.starter.StackHandler;
 import com.bezirk.util.ValidatorUtility;
 
@@ -53,7 +54,10 @@ public final class MainStackHandler implements StackHandler {
      */
     private static Comms comms;
 
-    //  private final SphereHandler sphereProcessorForMainService = new SphereHandler();
+      private final SphereHandler sphereProcessorForMainService = new SphereHandler();
+      Context context;
+
+      private final MainStackPreferences mainStackPreferences = new MainStackPreferences(context);
 
     //private final DeviceHelper deviceHelper = new DeviceHelper();
 
@@ -105,6 +109,7 @@ public final class MainStackHandler implements StackHandler {
      */
     @Override
     public void startStack(MainService service) {
+        logger.debug("in MainStackhandler");
         synchronized (this) {
 
             WifiManager wifi;
@@ -178,8 +183,8 @@ public final class MainStackHandler implements StackHandler {
                     /*************************************************************
                      * Step 8 : Initialize SphereServiceManager                             *
                      *************************************************************/
-                   /* if (ValidatorUtility.isObjectNotNull(bezirkDevice)
-                            && !sphereProcessorForMainService.initSphere(bezirkDevice, service, registryPersistence, preferences)) {
+                    if (ValidatorUtility.isObjectNotNull(bezirkDevice)
+                            && !sphereProcessorForMainService.initSphere(bezirkDevice, service, registryPersistence,mainStackPreferences, networkManager)) {
                         // at the moment the init sphere fails due to persistence. hence delete it
                         // quickfix.delete the database
                         logger.error("delete DB");
@@ -188,7 +193,7 @@ public final class MainStackHandler implements StackHandler {
                         logger.error("Shutting down the bezirk");
                         // don't proceed further without initiating the sphere
                         return;
-                    }*/
+                    }
 
                     // init the comms manager for sadl
                     //pubSubBroker.initPubSubBroker(comms, serviceMessageHandler, sphereProcessorForMainService.getSphereServiceAccess(),

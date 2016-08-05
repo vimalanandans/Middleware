@@ -406,8 +406,8 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             return false;
         }
 
-        if ((remoteLog != null) && remoteLog.isEnabled()) {
-            remoteLog.sendRemoteLogMessage(eLedger);
+        if ((remoteLog != null) && remoteLog.isRemoteLoggingEnabled()) {
+            remoteLog.sendRemoteLogLedgerMessage(eLedger);
         }
 
         // give a callback to appropriate zirk..

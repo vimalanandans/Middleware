@@ -18,7 +18,6 @@ import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.Streaming;
 import com.bezirk.streaming.control.Objects.StreamRecord;
@@ -772,7 +771,13 @@ public abstract class CommsProcessor implements Comms {
 
     @Override
     public void setSphereSecurity(SphereSecurity sphereSecurity) {
-        bezirkStreamManager.setSphereSecurity(sphereSecurity);
+        if(null!=bezirkStreamManager){
+            logger.debug("bezirkStreamManager is not null");
+            bezirkStreamManager.setSphereSecurity(sphereSecurity);
+        }else{
+            logger.debug("bezirkStreamManager is null");
+        }
+
     }
 
     /**

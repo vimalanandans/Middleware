@@ -1,4 +1,4 @@
-package com.bezirk.remotelogging;
+package com.bezirk.controlui;
 
 
 import com.bezirk.comms.Comms;
@@ -10,6 +10,9 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.device.Device;
 import com.bezirk.networking.NetworkManager;
+import com.bezirk.remotelogging.RemoteLog;
+import com.bezirk.remotelogging.RemoteLoggingMessage;
+import com.bezirk.remotelogging.RemoteLoggingMessageNotification;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +44,9 @@ public  class RemoteLoggingManager implements RemoteLog {
     private final Date currentDate = new Date();
 
     Device device;
-
+    public RemoteLoggingManager(){
+        networkManager = null;
+    }
     private final NetworkManager networkManager;
 
     private boolean sendLoggingeMsgToClients=false;
@@ -49,6 +54,7 @@ public  class RemoteLoggingManager implements RemoteLog {
     public RemoteLoggingManager(NetworkManager networkManager) {
         this.networkManager = networkManager;
     }
+
 
 
     ServiceMessageHandler logServiceMsgHandler = null;

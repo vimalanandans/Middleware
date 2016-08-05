@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.bezirk.controlui.R;
-import com.bezirk.remotelogging.manager.BezirkLoggingManager;
+import com.bezirk.controlui.RemoteLoggingManager;
 import com.bezirk.starter.MainService;
 
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class LogDataActivity extends Activity {
     /**
      * BezirkLoggingManager that manages the LoggingService
      */
-    BezirkLoggingManager mBezirkLoggingManager;
+    RemoteLoggingManager remoteLoggingManager;
 
     private LogDataActivityHelper logDataActivityHelper;
 
@@ -77,9 +77,9 @@ public class LogDataActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        if (mBezirkLoggingManager != null) {
+        if (remoteLoggingManager != null) {
             try {
-                mBezirkLoggingManager.stopLoggingService();
+                remoteLoggingManager.stopRemoteLoggingService();
                 new ShutDownLoggingServiceTask().execute(selSpheres);
                 logDataActivityHelper.printToast("STOPPING LOG SERVICE ABRUPTLY...");
                 logDataActivityHelper.mHandler = null;

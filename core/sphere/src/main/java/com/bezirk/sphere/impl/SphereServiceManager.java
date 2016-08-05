@@ -65,6 +65,9 @@ public class SphereServiceManager
         this.networkManager = networkManager;
         this.ctrlMsgReceiver = new SphereCtrlMsgReceiver(this);
     }
+    public SphereServiceManager(){
+
+    }
 
     /* Initialize bezirk sphere */
     public boolean initSphere(SpherePersistence spherePersistence, Comms bezirkComms,
@@ -92,6 +95,11 @@ public class SphereServiceManager
         }
 
         this.sphereRegistryWrapper = new SphereRegistryWrapper(this.registry, spherePersistence, upaDevice, cryptoEngine, sphereListener, sphereConfig);
+        if(null!=sphereRegistryWrapper){
+            logger.debug("sphereRegistryWrapper value is not null");
+        }else{
+            logger.debug("sphereRegistryWrapper value is  null");
+        }
         this.sphereRegistryWrapper.init();
         CommsUtility comms = new CommsUtility(bezirkComms);
         shareProcessor = new ShareProcessor(cryptoEngine, upaDevice, comms,
@@ -168,11 +176,20 @@ public class SphereServiceManager
 
     @Override
     public Iterable<BezirkSphereInfo> getSpheres() {
-        return sphereRegistryWrapper.getSpheres();
+        if(null!=sphereRegistryWrapper) {
+            logger.debug("sphereRegistryWrapper is not null");
+            return sphereRegistryWrapper.getSpheres();
+        }
+        else{
+            logger.debug("sphereRegistryWrapper is null");
+            return null;
+        }
+
     }
 
     @Override
     public BezirkSphereInfo getSphere(String sphereId) {
+        logger.debug("sphere id "+sphereId);
         return sphereRegistryWrapper.getSphereInfo(sphereId);
     }
 

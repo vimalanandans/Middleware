@@ -12,27 +12,27 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.bezirk.BezirkCompManager;
+import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
+//import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.proxy.api.impl.ZirkId;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.PolicyListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.starter.MainService;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.starter.SphereServiceAccessStub;
+import com.bezirk.util.ValidatorUtility;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.bezirk.actions.BezirkActions.KEY_PIPE_NAME;
-import static com.bezirk.actions.BezirkActions.KEY_PIPE_REQ_ID;
-import static com.bezirk.actions.BezirkActions.KEY_PIPE_SPHEREID;
-import static com.bezirk.actions.BezirkActions.KEY_SENDER_ZIRK_ID;
-import static com.bezirk.util.BezirkValidatorUtility.checkBezirkZirkId;
+import static com.bezirk.actions.BezirkAction.KEY_PIPE_NAME;
+import static com.bezirk.actions.BezirkAction.KEY_PIPE_REQ_ID;
+import static com.bezirk.actions.BezirkAction.KEY_PIPE_SPHEREID;
+import static com.bezirk.actions.BezirkAction.KEY_SENDER_ZIRK_ID;
+import static com.bezirk.util.ValidatorUtility.checkBezirkZirkId;
 
 public class PipePolicyActivity extends FragmentActivity implements OnClickListener {
     private static final Logger logger = LoggerFactory.getLogger(PipePolicyActivity.class);
@@ -44,18 +44,18 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent rxIntent = this.getIntent();
-        final String pipeName = rxIntent.getStringExtra(KEY_PIPE_NAME);
-        final String serviceIdAsString = rxIntent.getStringExtra(KEY_SENDER_ZIRK_ID);
-        final String pipeReqId = rxIntent.getStringExtra(KEY_PIPE_REQ_ID);
-        final String sphereId = rxIntent.getStringExtra(KEY_PIPE_SPHEREID);
+        final String pipeName = rxIntent.getStringExtra(KEY_PIPE_NAME.getName());
+        final String serviceIdAsString = rxIntent.getStringExtra(KEY_SENDER_ZIRK_ID.getName());
+        final String pipeReqId = rxIntent.getStringExtra(KEY_PIPE_REQ_ID.getName());
+        final String sphereId = rxIntent.getStringExtra(KEY_PIPE_SPHEREID.getName());
 
         ZirkId serviceId = serviceIdFromString(serviceIdAsString);
         if (serviceId == null) {
             logger.error("Intent not valid because there was a failure validating zirkId");
             return;
         }
-
-        final String serviceName = BezirkCompManager.getSphereForPubSubBroker().getZirkName(serviceId);
+        SphereServiceAccess sphereServiceAccess = new SphereServiceAccessStub();
+        final String serviceName =sphereServiceAccess.getServiceName(serviceId);
 
         LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -76,9 +76,9 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
 
         SphereListItem sphere = null;
 
-        BezirkSphereAPI api = MainService.getSphereHandle();
+        SphereAPI api = MainService.getSphereHandle();
 
-        if (BezirkValidatorUtility.isObjectNotNull(api)) {
+        if (ValidatorUtility.isObjectNotNull(api)) {
             BezirkSphereInfo sphereInfo = api.getSphere(sphereID);
             if (sphereInfo != null) {
                 sphere = new SphereListItem(sphereInfo);

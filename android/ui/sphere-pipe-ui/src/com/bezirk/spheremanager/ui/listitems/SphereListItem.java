@@ -9,7 +9,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.sphere.api.BezirkSphereType;
+import com.bezirk.sphere.api.SphereType;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.SphereListAdapter.ListItems;
 
@@ -49,19 +49,19 @@ public class SphereListItem implements AbstractSphereListItem {
         ImageView img = (ImageView) view.findViewById(R.id.sphere_icon);
 
         // TODO move this to a utility class
-        if (mSphere.getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME)) {
+        if (mSphere.getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_HOME)) {
             img.setImageResource(R.drawable.ic_home_sphere);
-        } else if (mSphere.getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_DEFAULT)) {
+        } else if (mSphere.getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_DEFAULT)) {
             img.setImageResource(R.drawable.ic_default_sphere);
-        } else if (mSphere.getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_CAR)) {
+        } else if (mSphere.getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_CAR)) {
             img.setImageResource(R.drawable.ic_car_sphere);
-        } else if (mSphere.getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_OFFICE)) {
+        } else if (mSphere.getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_OFFICE)) {
             img.setImageResource(R.drawable.ic_office_sphere);
-        } else if (mSphere.getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME_CONTROL)) {
+        } else if (mSphere.getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_HOME_CONTROL)) {
             img.setImageResource(R.drawable.ic_home_control_sphere);
-        } else if (mSphere.getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME_ENTERTAINMENT)) {
+        } else if (mSphere.getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_HOME_ENTERTAINMENT)) {
             img.setImageResource(R.drawable.ic_home_entertainment_sphere);
-        } else if (mSphere.getSphereType().equals(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME_SECURITY)) {
+        } else if (mSphere.getSphereType().equals(SphereType.BEZIRK_SPHERE_TYPE_HOME_SECURITY)) {
             img.setImageResource(R.drawable.ic_home_security_sphere);
         } else {
             // do nothing

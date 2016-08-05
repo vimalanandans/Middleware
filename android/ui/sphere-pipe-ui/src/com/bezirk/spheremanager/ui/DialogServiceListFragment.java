@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.bezirk.middleware.objects.BezirkZirkInfo;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.R;
 import com.bezirk.starter.MainService;
@@ -26,7 +26,7 @@ import java.util.Map;
 
 public class DialogServiceListFragment extends DialogFragment {
 
-    final BezirkSphereAPI sphereAPI = MainService.getSphereHandle();
+    final SphereAPI sphereAPI = MainService.getSphereHandle();
     final List<BezirkZirkInfo> servicesToBeAdded = new ArrayList<BezirkZirkInfo>();
     ListView listView;
     Button addBtn, cancelBtn;

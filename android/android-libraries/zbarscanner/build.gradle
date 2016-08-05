@@ -6,6 +6,9 @@ android {
     sourceSets {
         main.jniLibs.srcDirs = ['libs']
     }
+    lintOptions {
+        abortOnError false
+    }
     compileSdkVersion project.androidCompileSdkVersion.toInteger()
     buildToolsVersion project.androidBuildToolsVersion
 

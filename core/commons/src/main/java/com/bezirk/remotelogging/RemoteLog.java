@@ -1,10 +1,7 @@
 package com.bezirk.remotelogging;
 
-import com.bezirk.comms.Comms;
-import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
-import com.bezirk.control.messages.EventLedger;
-import com.bezirk.device.Device;
+import com.bezirk.control.messages.Ledger;
 
 
 /**
@@ -18,32 +15,37 @@ public interface RemoteLog {
      * Constant label for ALL_SPHERES logging.
      * TODO : Used in GUI selection display and internal modules. Review it
      */
+    /**  Remove this and Add this constant in RemoteLoggingConfig */
     String ALL_SPHERES = "ALL-SPHERES";
 
     /** Start Logging . By component manager */
 
-    public boolean startLoggingService( final RemoteLoggingMessageNotification platformSpecificHandler) ;
+    boolean startRemoteLoggingService( final int loggingPort,final RemoteLoggingMessageNotification platformSpecificHandler) ;
 
     /** Start Logging . By component manager */
-    boolean stopLoggingService();
+    boolean stopRemoteLoggingService();
 
-    /** initialize the remote logging module. */
-    boolean initRemoteLogger(Comms comms, Device device);
+    /** Removing this method as currently sadl consumes all the zirk message. hence no registration*/
+   // boolean initRemoteLogger(Comms comms, Device device);
 
     /** set logger to enable or disable **/
-    boolean setLogger(boolean enable, String[] sphereName);
+    boolean enableLogging(boolean enableRemoteLogging, String[] sphereName);
 
-    /** is logging enabled. returns true if it is enabled */
-    boolean isEnabled();
+    /** check whether the remoteLogging is enabled or not */
+    boolean isRemoteLoggingEnabled();
+
+    /** send the control ledger or event ledger to logging */
+    boolean sendRemoteLogLedgerMessage(Ledger ledger) ;
 
     /** send the control ledger to logging */
-    boolean sendRemoteLogMessage(ControlLedger tcMessage) ;
+    //boolean sendRemoteLogMessage(ControlLedger tcMessage) ;
 
     /** send the control message to logging */
-    boolean sendRemoteLogMessage(ControlMessage msg) ;
+    boolean sendRemoteLogControlMessage(ControlMessage msg) ;
 
     /** send the event message to logging */
-    boolean sendRemoteLogMessage(EventLedger eLedger) ;
+   // boolean sendRemoteLogMessage(EventLedger eLedger) ;
 
-    boolean isRemoteMessageValid(RemoteLoggingMessage logMessage);
+    /** Not required this method  */
+    //boolean isRemoteMessageValid(RemoteLoggingMessage logMessage);
 }

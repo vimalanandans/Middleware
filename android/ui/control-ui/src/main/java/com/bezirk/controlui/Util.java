@@ -1,11 +1,11 @@
-package com.bezirk.remotelogging;
+package com.bezirk.controlui;
 
 /**
  * Utility class for Logging Module defining all the constants.
  */
 public final class Util {
 
-    private  Util(){
+    private Util(){
 
     }
     /**
@@ -15,7 +15,7 @@ public final class Util {
     /**
      * Constant label for ALL_SPHERES logging
      */
-    //public static final String ALL_SPHERE = "ALL-SPHERES";
+    public static final String ALL_SPHERE = "ALL-SPHERES";
     /**
      * Value for the Control ReceiverField that is sent on the wire.
      */

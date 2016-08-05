@@ -37,9 +37,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.bezirk.controlui.DeviceControlActivity"
-            android:label="@string/title_activity_device_control"></activity>
-        <activity
             android:name="com.bezirk.controlui.RestConfigActivity"
             android:label="Rest configurations"></activity>
         <activity
@@ -73,9 +70,6 @@
         <activity
             android:name="com.bezirk.controlui.commstest.CommsTestActivity"
             android:label="@string/title_activity_comms_test"></activity>
-        <activity
-            android:name="com.bezirk.controlui.DiagnosisActivity"
-            android:label="@string/title_activity_diagnosis"></activity>
     </application>
 
 </manifest>

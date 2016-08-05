@@ -1,7 +1,7 @@
 /**
  * @author Vijet Badigannavar(bvijet@in.bosch.com)
  */
-package com.bezirk.remotelogging;
+package com.bezirk.controlui;
 
 import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.ControlLedger;

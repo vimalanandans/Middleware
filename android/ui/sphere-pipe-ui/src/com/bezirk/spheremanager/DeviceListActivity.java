@@ -20,20 +20,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallbacks;
 import com.bezirk.spheremanager.ui.DialogServiceListFragment;
 import com.bezirk.spheremanager.ui.PipeListFragment.ShowPipesCallbacks;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
+import com.bezirk.starter.ActionCommands;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.BezirkActionCommands;
-import com.bezirk.util.BezirkValidatorUtility;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.bezirk.util.ValidatorUtility;
 
 import bezirk.zbarscanner.ScannerActivity;
 
@@ -70,12 +66,12 @@ public class DeviceListActivity extends FragmentActivity implements
 
         sphereID = getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
 
-        BezirkSphereAPI api = MainService.getSphereHandle();
+        SphereAPI api = MainService.getSphereHandle();
 
-        if (BezirkValidatorUtility.isObjectNotNull(api)) {
+        if (ValidatorUtility.isObjectNotNull(api)) {
 
             BezirkSphereInfo sphereInfo = api.getSphere(sphereID);
-            if (BezirkValidatorUtility.isObjectNotNull(sphereInfo)) {
+            if (ValidatorUtility.isObjectNotNull(sphereInfo)) {
                 entry = new SphereListItem(sphereInfo);
             } else {
                 Log.e(TAG, "sphere contains : " + sphereID + " not found");
@@ -134,7 +130,7 @@ public class DeviceListActivity extends FragmentActivity implements
 
         IntentFilter filter = new IntentFilter();
 
-        filter.addAction(BezirkActionCommands.SPHERE_NOTIFICATION_ACTION);
+        filter.addAction(ActionCommands.SPHERE_NOTIFICATION_ACTION);
 
         registerReceiver(sphereIntentReceiver, filter);
     }
@@ -178,7 +174,7 @@ public class DeviceListActivity extends FragmentActivity implements
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.sphere_detail_actions, menu);
 
-        if (BezirkValidatorUtility.isObjectNotNull(entry)) {
+        if (ValidatorUtility.isObjectNotNull(entry)) {
             // disable the menu items for member sphere
             if (!entry.getmSphere().isThisDeviceOwnsSphere()) {
                 MenuItem item = menu.findItem(R.id.action_scan_qr_service_share);
@@ -212,6 +208,7 @@ public class DeviceListActivity extends FragmentActivity implements
 
         int itemId = item.getItemId();
 
+
         if (itemId == android.R.id.home) {
             NavUtils.navigateUpTo(this, new Intent(this,
                     SphereListActivity.class));
@@ -226,7 +223,9 @@ public class DeviceListActivity extends FragmentActivity implements
             deviceListActivityHelper.shareSphere();
             return true;
         } else if (itemId == R.id.action_discover_sphere_details) {
-            BezirkCompManager.getSphereUI().discoverSphere(getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID));
+            //SphereAPI sphereAPI= new SphereServiceManager();
+           // sphereAPI.
+            //sphereAPI.discoverSphere(getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID));
             return true;
         } else if (itemId == R.id.action_add_device_services_to_sphere) {
             addLocalServicesToSphere();
@@ -240,7 +239,7 @@ public class DeviceListActivity extends FragmentActivity implements
     /* add the local services to the sphere
     * */
     void addLocalServicesToSphere() {
-        if (BezirkValidatorUtility.isObjectNotNull(MainService.getSphereHandle().getServiceInfo())) {
+        if (ValidatorUtility.isObjectNotNull(MainService.getSphereHandle().getServiceInfo())) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             DialogServiceListFragment dialogServiceListFragment = new DialogServiceListFragment();
             dialogServiceListFragment.setSphereId(sphereID);
@@ -276,15 +275,15 @@ public class DeviceListActivity extends FragmentActivity implements
 
 /*        PipeRegistry pipeRegistry = MainService.getPipeRegistryHandle();
 
-        if (BezirkValidatorUtility.isObjectNotNull(pipeRegistry)) {
+        if (ValidatorUtility.isObjectNotNull(pipeRegistry)) {
 
             List<PipeRecord> pipeRecords = new ArrayList<PipeRecord>(pipeRegistry.allPipes());
 
-            if (BezirkValidatorUtility.isObjectNotNull(pipeRecords) && BezirkValidatorUtility.isObjectNotNull(pipeRecords.get(position))) {
+            if (ValidatorUtility.isObjectNotNull(pipeRecords) && ValidatorUtility.isObjectNotNull(pipeRecords.get(position))) {
 
                 PipeRecord pipeRecord = pipeRecords.get(position);
 
-                if (BezirkValidatorUtility.isObjectNotNull(pipeRecord.getPassword())) {
+                if (ValidatorUtility.isObjectNotNull(pipeRecord.getPassword())) {
 
                     Intent pipeManagementIntent = new Intent(getApplicationContext(), UpdateUserCredentialsActivity.class);
                     pipeManagementIntent.putExtra("pipeId", position);
@@ -325,10 +324,10 @@ public class DeviceListActivity extends FragmentActivity implements
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "Received Intent for Device control >" + intent.getAction());
-            String command = intent.getStringExtra(BezirkActionCommands.BEZIRK_ACTION_COMMANDS);
+            String command = intent.getStringExtra(ActionCommands.BEZIRK_ACTION_COMMANDS);
             Log.i(TAG, "Command > " + command);
-            if (command.equals(BezirkActionCommands.CMD_SPHERE_DISCOVERY_STATUS)) {
-                boolean Status = intent.getBooleanExtra(BezirkActionCommands.BEZIRK_ACTION_COMMAND_STATUS, false);
+            if (command.equals(ActionCommands.CMD_SPHERE_DISCOVERY_STATUS)) {
+                boolean Status = intent.getBooleanExtra(ActionCommands.BEZIRK_ACTION_COMMAND_STATUS, false);
                 if (Status) { // when status is true
                     if (deviceListActivityHelper != null) {
                         deviceListActivityHelper.updateContainer(entry);
@@ -337,9 +336,9 @@ public class DeviceListActivity extends FragmentActivity implements
                     Toast.makeText(parent, "FAILED : " + command, Toast.LENGTH_SHORT).show();
                 }
 
-            } else if (command.equals(BezirkActionCommands.CMD_SPHERE_CATCH_STATUS) ||
-                    command.equals(BezirkActionCommands.CMD_SPHERE_SHARE_STATUS)) {
-                String message = intent.getStringExtra(BezirkActionCommands.BEZIRK_ACTION_COMMAND_MESSAGE);
+            } else if (command.equals(ActionCommands.CMD_SPHERE_CATCH_STATUS) ||
+                    command.equals(ActionCommands.CMD_SPHERE_SHARE_STATUS)) {
+                String message = intent.getStringExtra(ActionCommands.BEZIRK_ACTION_COMMAND_MESSAGE);
                 Toast.makeText(parent, message, Toast.LENGTH_LONG).show();
             }
         }

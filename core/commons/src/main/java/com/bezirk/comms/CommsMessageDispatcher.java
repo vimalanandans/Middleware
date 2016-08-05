@@ -75,9 +75,9 @@ public class CommsMessageDispatcher implements MessageDispatcher {
 
         if(msgLog != null)
         {
-            if(msgLog.isEnabled())
+            if(msgLog.isRemoteLoggingEnabled())
             {
-                msgLog.sendRemoteLogMessage(ctrlMsg);
+                msgLog.sendRemoteLogControlMessage(ctrlMsg);
             }
         }
 
@@ -112,8 +112,8 @@ public class CommsMessageDispatcher implements MessageDispatcher {
 
         if(msgLog != null)
         {
-            if(msgLog.isEnabled()) {
-                msgLog.sendRemoteLogMessage(tcMessage);
+            if(msgLog.isRemoteLoggingEnabled()) {
+                msgLog.sendRemoteLogLedgerMessage(tcMessage);
             }
         }
 

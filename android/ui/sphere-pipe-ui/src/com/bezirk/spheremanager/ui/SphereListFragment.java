@@ -10,7 +10,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
@@ -78,7 +78,7 @@ public class SphereListFragment extends ListFragment {
     /*	setListAdapter(new SphereListAdapter(getActivity()
 				.getApplicationContext(), DummyContent.ITEMS));*/
 
-        BezirkSphereAPI api = MainService.getSphereHandle();
+        SphereAPI api = MainService.getSphereHandle();
         if (api != null) {
             Iterator<BezirkSphereInfo> sphereInfo = api.getSpheres().iterator();
 
@@ -164,7 +164,7 @@ public class SphereListFragment extends ListFragment {
      */
     String getSphereId(int position) {
         String itemID = "";
-        BezirkSphereAPI api = MainService.getSphereHandle();
+        SphereAPI api = MainService.getSphereHandle();
 
         if (api != null) {
             List<BezirkSphereInfo> sphereList = (List) api.getSpheres();
