@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.bezirk.android.publisher.R;
+import com.bezirk.componentManager.AppManager;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
@@ -30,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void senderZirk() {
+
+        // Start Bezirk as part of the publisher
+        AppManager.getAppManager().startBezirk(this,true,"Publisher");
+
         final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Sender Zirk");
 
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
