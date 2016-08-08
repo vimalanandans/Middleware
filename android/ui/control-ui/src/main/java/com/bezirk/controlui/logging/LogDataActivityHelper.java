@@ -10,6 +10,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bezirk.controlui.FileCreationHelper;
 import com.bezirk.controlui.R;
 import com.bezirk.controlui.RemoteLoggingManager;
 import com.bezirk.controlui.ServiceActivatorDeactivator;
@@ -25,6 +27,7 @@ import com.bezirk.starter.SphereServiceAccessStub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
@@ -68,8 +71,11 @@ class LogDataActivityHelper {
      */
     private final RemoteLoggingMessageNotification loggingHandler = new RemoteLoggingMessageNotification() {
         @Override
-        public void handleLogMessage(RemoteLoggingMessage bezirkLogMessage) {
+        public void handleLogMessage(RemoteLoggingMessage bezirkLogMessage) throws IOException {
+            logger.debug("inside handleLog message of LogDataActivity Helper");
             Message msg = mHandler.obtainMessage();
+            FileCreationHelper fileCreationHelper = new FileCreationHelper();
+            fileCreationHelper.fileCreationOnTimeStamp(bezirkLogMessage);
             msg.obj = bezirkLogMessage;
             mHandler.sendMessage(msg);
         }

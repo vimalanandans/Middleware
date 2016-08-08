@@ -361,7 +361,9 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
 
     @Override
     public void handleLogMessage(RemoteLoggingMessage logMessage) {
+        logger.debug("inside handleLog message of RemoteLogSphereSelectGUI ");
         if (null != remoteLogDetails && msgLog != null) {
+            logger.debug("remoteLogDetails and msgLog are not null");
            // if (msgLog.isRemoteMessageValid(logMessage)) {
                 remoteLogDetails.updateTable(logMessage);
            // }

@@ -49,9 +49,11 @@ public class RemoteLoggingService extends Thread {
     public void run() {
         logger.info("Logging Zirk is being Started...");
         try {
+            logger.debug("isRunning value is "+isRunning);
             while (isRunning) {
                 Socket clientSocket = serverSocket.accept();
                 String serializedLoggerMessage = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())).readLine();
+                logger.debug("serializedLoggerMessage is "+serializedLoggerMessage);
                 LoggingQueueManager.loadLogReceiverQueue(serializedLoggerMessage);
             }
         } catch (IOException e) {

@@ -42,10 +42,14 @@ public class ReceiverQueueProcessor implements Runnable {
         try {
             while (isRunning) {
                 StringBuilder logMsgString = LoggingQueueManager.fetchFromLogReceiverQueue();
-
+                logger.debug("logMsgString is "+logMsgString);
                 try {
                     RemoteLoggingMessage logMsg = gson.fromJson(logMsgString.toString(), RemoteLoggingMessage.class);
+                    //call back on the basis of checking the logging version
+                    logger.debug("Util.LOGGING_VERSION is "+Util.LOGGING_VERSION);
+                    logger.debug("logmsg version is "+logMsg.version);
                     if (Util.LOGGING_VERSION.equals(logMsg.version)) {
+                        logger.debug("Versions are equal");
                         platformSpecificLogger.handleLogMessage(logMsg);
                     } else {
                         logger.error("LOGGING VERSION MISMATCH!!" + "Received LOG MSG VERSION = " + logMsg.version +
