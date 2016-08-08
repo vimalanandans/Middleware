@@ -58,9 +58,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void onClearTestClick(View view) {
+    public void onClearClick(View view) {
 
-            tv.setText("");
+        tv.setText("");
+        AppManager.getAppManager().stopBezirk(this);
 
     }
 
@@ -76,23 +77,30 @@ public class MainActivity extends AppCompatActivity {
                     AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
                     BezirkZirkEndPoint endPoint = (BezirkZirkEndPoint)sender;
 
-                    tv.append("\n"+endPoint.getBezirkZirkId().getZirkId().toString()+" >> Received air quality update: " + aqUpdate.toString());
+                    updateDisplay("\n"+endPoint.device+" >> Received air quality update: " + aqUpdate.toString());
                     //do something in response to this event
                     if (aqUpdate.humidity > 0.7) {
-                        tv.append("\nHumidity is high - recommend turning on the dehumidifier.");
+                        updateDisplay("\nHumidity is high - recommend turning on the dehumidifier.");
                         bezirk.sendEvent(sender, new UpdateAcceptedEvent("Got the value for humidity " + aqUpdate.humidity));
                     }
                     if (aqUpdate.dustLevel > 20) {
-                        tv.append("\nDust level is high - recommend running the vacuum.");
+                        updateDisplay("\nDust level is high - recommend running the vacuum.");
                     }
                     if (aqUpdate.pollenLevel > 500) {
-                        tv.append("\nPollen level is high - recommend closing the windows and running the air filter.");
+                        updateDisplay("\nPollen level is high - recommend closing the windows and running the air filter.");
                     }
                 }
             }
         });
 
         bezirk.subscribe(houseEvents);
+    }
+
+    private void updateDisplay(String display)
+    {
+        display = display + tv.getText();
+        tv.setText(display);
+
     }
 
     private void senderZirk() {
@@ -109,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
                     BezirkZirkEndPoint endPoint = (BezirkZirkEndPoint)sender;
 
-                    tv.append("\nReceived from >> " + endPoint.getBezirkZirkId().getZirkId().toString() +
+                    updateDisplay("\nReceived from >> " + endPoint.device +
                             " >> UpdateAcceptedEvent with test field: " + acceptedEventUpdate.getTestField());
                 }
             }
@@ -129,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 airQualityUpdateEvent.pollenLevel = pollenLevel++;
 
                 bezirk.sendEvent(airQualityUpdateEvent);
-                //tv.append("Published air quality update: " + airQualityUpdateEvent.toString());
+                //updateDisplay("Published air quality update: " + airQualityUpdateEvent.toString());
             }
         }, 0, 5000);
     }

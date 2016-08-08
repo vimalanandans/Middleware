@@ -43,15 +43,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Clear Test"
-            android:onClick="onClearTestClick"
+            android:text="Clear "
+            android:onClick="onClearClick"
             android:id="@+id/ClearTestButton" />
     </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sender Zirk"
-        android:maxLines = "2543"
+        android:maxLines = "2500"
         android:scrollbars = "vertical"
         android:id="@+id/tv" />
     </LinearLayout>
