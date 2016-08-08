@@ -27,7 +27,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.tv);
+        receiverZirk();
         senderZirk();
+    }
+
+
+    private void receiverZirk() {
+        final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Receiver Zirk");
+
+        HouseInfoEventSet houseEvents = new HouseInfoEventSet();
+
+        houseEvents.setEventReceiver(new EventSet.EventReceiver() {
+            @Override
+            public void receiveEvent(Event event, ZirkEndPoint sender) {
+                if (event instanceof AirQualityUpdateEvent) {
+                    AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
+                    tv.append("\nReceived air quality update: " + aqUpdate.toString());
+                    //do something in response to this event
+                    if (aqUpdate.humidity > 0.7) {
+                        tv.append("\nHumidity is high - recommend turning on the dehumidifier.");
+                        bezirk.sendEvent(sender, new UpdateAcceptedEvent("Got the value for humidity " + aqUpdate.humidity));
+                    }
+                    if (aqUpdate.dustLevel > 20) {
+                        tv.append("\nDust level is high - recommend running the vacuum.");
+                    }
+                    if (aqUpdate.pollenLevel > 500) {
+                        tv.append("\nPollen level is high - recommend closing the windows and running the air filter.");
+                    }
+                }
+            }
+        });
+
+        bezirk.subscribe(houseEvents);
     }
 
     private void senderZirk() {
