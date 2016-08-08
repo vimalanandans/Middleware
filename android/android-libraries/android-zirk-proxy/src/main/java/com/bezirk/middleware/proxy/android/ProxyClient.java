@@ -36,22 +36,33 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class ProxyClient implements Bezirk {
+    private static final String TAG = ProxyClient.class.getName();
+
     protected static final Map<String, List<EventSet.EventReceiver>> eventListenerMap = new ConcurrentHashMap<>();
     protected static final Map<String, List<StreamSet.StreamReceiver>> streamListenerMap = new ConcurrentHashMap<>();
     protected static final Map<Short, String> activeStreams = new ConcurrentHashMap<>();
 
-    private static final String TAG = ProxyClient.class.getSimpleName();
     private static final String COMPONENT_NAME = "com.bezirk.controlui";
     private static final String SERVICE_PKG_NAME = "com.bezirk.componentManager.ComponentManager";
     private static final ComponentName RECEIVING_COMPONENT = new ComponentName(COMPONENT_NAME, SERVICE_PKG_NAME);
 
     protected static Context context;
     private final ZirkId zirkId;
+    private final IdentityManager identityManager;
     private short streamFactory;
 
     public ProxyClient(Context context, ZirkId zirkId) {
         ProxyClient.context = context;
+
+        // Bind to remote identity management service
+        Intent intent = new Intent();
+        intent.setComponent(RECEIVING_COMPONENT);
+        boolean boundService = context.bindService(intent,
+                ClientIdentityManagerAdapter.remoteConnection, Context.BIND_AUTO_CREATE);
+        Log.d(TAG, "Binding to identity management service status: "+ boundService);
+
         this.zirkId = zirkId;
+        this.identityManager = new ClientIdentityManagerAdapter();
     }
 
     private static boolean sendBezirkIntent(ZirkAction action) {
@@ -218,7 +229,6 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public IdentityManager getIdentityManager() {
-        // TODO: implement me
-        throw new UnsupportedOperationException("getIdentityManager is currently unimplemented");
+        return identityManager;
     }
 }

@@ -10,15 +10,17 @@ import com.bezirk.actions.SendMulticastEventAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
+import com.bezirk.identity.BezirkIdentityManager;
 import com.bezirk.middleware.identity.IdentityManager;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.IdentifiedEvent;
+import com.bezirk.middleware.messages.Message;
 import com.bezirk.proxy.ProxyServer;
 
 public class AndroidProxyServer extends ProxyServer {
     private static final String TAG = AndroidProxyServer.class.getName();
 
-    public AndroidProxyServer(IdentityManager identityManager) {
-        super(identityManager);
-    }
+    public AndroidProxyServer(IdentityManager identityManager) { super(identityManager); }
 
     public void registerZirk(Intent intent) {
         final RegisterZirkAction registrationAction = (RegisterZirkAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_REGISTER.getName());

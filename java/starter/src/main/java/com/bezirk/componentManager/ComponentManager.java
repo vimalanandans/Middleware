@@ -91,8 +91,8 @@ public class ComponentManager {
 
             preferences.put(ALIAS_KEY, gson.toJson(identity));
         } else {
-            logger.debug("Reusing identity {}", aliasString);
-            identity = (Alias) gson.fromJson(aliasString, BezirkAlias.class);
+            if (logger.isDebugEnabled()) logger.debug("Reusing identity {}", aliasString);
+            identity = gson.fromJson(aliasString, BezirkAlias.class);
         }
 
         identityManager.setIdentity(identity);

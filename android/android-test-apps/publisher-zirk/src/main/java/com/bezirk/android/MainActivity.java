@@ -39,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
-                    tv.append("\nReceived UpdateAcceptedEvent with test field: " + acceptedEventUpdate.getTestField());
+                    tv.append("\nReceived UpdateAcceptedEvent with test field: " + acceptedEventUpdate.getTestField() +
+                            ", isMiddlewareUser: " +
+                            bezirk.getIdentityManager().isMiddlewareUser(acceptedEventUpdate.getAlias()));
                 }
             }
         });
