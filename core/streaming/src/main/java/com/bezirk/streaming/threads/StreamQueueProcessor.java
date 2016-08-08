@@ -3,6 +3,7 @@
  */
 package com.bezirk.streaming.threads;
 
+import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.streaming.MessageQueue;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
@@ -75,9 +76,9 @@ public class StreamQueueProcessor implements Runnable {
                 running = false;
                 continue;
             }
-            List<Ledger> streamQueue = new CopyOnWriteArrayList<>(
+            List<ControlMessage> streamQueue = new CopyOnWriteArrayList<>(
                     msgQueue.getQueue()); // pop the StreamDescriptor record
-            Iterator<Ledger> it = streamQueue.iterator();
+            Iterator<ControlMessage> it = streamQueue.iterator();
             if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {
 
                 bezirkCallbackPresent = true;
