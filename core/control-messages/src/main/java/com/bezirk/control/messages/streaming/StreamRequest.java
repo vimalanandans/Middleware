@@ -48,7 +48,7 @@ public class StreamRequest extends UnicastControlMessage {
     public boolean reliable = true;
 
     public StreamRequest(String sphereId, StreamRecord streamRecord, Location location) {
-        super(streamRecord.getSenderSEP(), streamRecord.getRecipientSEP(), sphereId, discriminator, false, streamRecord.getStreamRequestKey());
+        super(streamRecord.getSender(), streamRecord.getRecipientSEP(), sphereId, discriminator, false, streamRecord.getUniqueKey());
         this.location = location;
         this.serialzedString = streamRecord.getSerializedStream();
         this.fileName = streamRecord.getFile().getName();

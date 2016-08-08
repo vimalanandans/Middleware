@@ -133,11 +133,11 @@ public class StreamStore {
      */
     public final boolean storeStreamRecord(StreamRecord sRecord) {
         synchronized (this) {
-            if (streamBook.containsKey(sRecord.getStreamRequestKey())) {
+            if (streamBook.containsKey(sRecord.getUniqueKey())) {
                 logger.error("Cannot register stream");
                 return false;
             } else {
-                streamBook.put(sRecord.getStreamRequestKey(), sRecord);
+                streamBook.put(sRecord.getUniqueKey(), sRecord);
                 return true;
             }
         }

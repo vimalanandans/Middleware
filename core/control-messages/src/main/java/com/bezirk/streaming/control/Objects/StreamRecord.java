@@ -5,6 +5,7 @@ package com.bezirk.streaming.control.Objects;
 
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
+import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 import java.io.File;
@@ -15,15 +16,10 @@ import java.io.File;
  */
 
 // FIXME: 8/4/2016 Punith :: Remove StreamRecord as a Ledger.. It can be a Control message.. Look at the properties.. you may have to remove few!!!!
-public class StreamRecord extends ControlMessage {
-    //flag for
-    private BezirkZirkEndPoint senderSEP;
+public class StreamRecord extends UnicastControlMessage {
 
     //flag to see id the DataSend needs to be encrypted
     private boolean isEncryptedStream;
-
-    //sphereId the stream record belongs to.
-    private String sphereId;
 
     // changed after receiving the Response, this will be in PENDING status in the stream store.
     private StreamRecordStatus streamRecordStatus;
@@ -43,9 +39,6 @@ public class StreamRecord extends ControlMessage {
     //This is the seal
     private String serializedStream;
 
-    // stream request key is the unique identifier for the streaming.
-    private String streamRequestKey;
-
     /* Streaming Status indicates the status of the Streams.
      * PENDING -  indicates the waiting to know the response
      * READY   -  indicating the recipient has agreed to receive the stream
@@ -54,20 +47,26 @@ public class StreamRecord extends ControlMessage {
         PENDING, READY, ADDRESSED, BUSY, LOCAL
     }
 
-    public BezirkZirkEndPoint getSenderSEP() {
-        return senderSEP;
+    /**
+     * Empty Constructor
+     */
+    public StreamRecord(){
+        //empty constructor
     }
 
-    public void setSenderSEP(BezirkZirkEndPoint senderSEP) {
-        this.senderSEP = senderSEP;
-    }
 
-    public String getSphereId() {
-        return sphereId;
-    }
-
-    public void setSphereId(String sphereId) {
-        this.sphereId = sphereId;
+    /**
+     * Constructor with args
+     * @param sender
+     * @param recipient
+     * @param sphereId
+     * @param discriminator
+     * @param retransmit
+     * @param key
+     */
+    public StreamRecord(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereId,
+                        Discriminator discriminator, Boolean retransmit, String key){
+        super(sender, recipient, sphereId, discriminator,false, key);
     }
 
     public StreamRecordStatus getStreamRecordStatus() {
@@ -126,11 +125,4 @@ public class StreamRecord extends ControlMessage {
         isEncryptedStream = encryptedStream;
     }
 
-    public String getStreamRequestKey() {
-        return streamRequestKey;
-    }
-
-    public void setStreamRequestKey(String streamRequestKey) {
-        this.streamRequestKey = streamRequestKey;
-    }
 }

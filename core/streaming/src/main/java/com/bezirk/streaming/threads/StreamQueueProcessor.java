@@ -125,7 +125,7 @@ public class StreamQueueProcessor implements Runnable {
         if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {
             StreamSendingThread streamSendingThread = new StreamSendingThread(streamRecord, sadlReceiver, sphereSecurity);
             Future streamSendingFuture  = sendStreamExecutor.submit(new Thread(streamSendingThread));
-            streamManager.addRefToActiveStream(streamRecord.getStreamRequestKey(), streamSendingFuture);
+            streamManager.addRefToActiveStream(streamRecord.getUniqueKey(), streamSendingFuture);
         } else {
             logger.error("SphereForSadl is not initialized.");
         }

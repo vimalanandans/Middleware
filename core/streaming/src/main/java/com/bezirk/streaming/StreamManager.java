@@ -129,23 +129,19 @@ public class StreamManager implements Streaming, ActiveStream {
     }
 
     StreamRecord prepareStreamRecord(SendFileStreamAction streamAction) {
-        final StreamRecord streamRecord = new StreamRecord();
-        final BezirkZirkEndPoint receiver = (BezirkZirkEndPoint) streamAction.getRecipient();
+
         final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(streamAction.getZirkId());
-        
+        final BezirkZirkEndPoint receiver = (BezirkZirkEndPoint) streamAction.getRecipient();
         //// FIXME: 8/4/2016 Punith.. device and ZirkID. is it required ??
         final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":"+ streamAction.getStreamId();
+        final StreamRecord streamRecord = new StreamRecord(senderSEP, receiver, null, ControlMessage.Discriminator.StreamRequest, false ,streamRequestKey);
 
-        streamRecord.setSenderSEP(senderSEP);
         streamRecord.setEncryptedStream(streamAction.getDescriptor().isEncrypted());
         streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.PENDING);
         streamRecord.setRecipientIP(receiver.device);
         streamRecord.setRecipientPort(0);
         streamRecord.setFile(streamAction.getFile());
-        streamRecord.setRecipientSEP(receiver);
         streamRecord.setSerializedStream(streamAction.getDescriptor().toJson());
-        streamRecord.setStreamRequestKey(streamRequestKey);
-        //streamRecord.setStreamId(streamAction.getStreamId());
         return streamRecord;
     }
 
