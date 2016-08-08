@@ -8,10 +8,51 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.bezirk.android.MainActivity">
+    <LinearLayout
+        android:id="@+id/ButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical" >
+    <LinearLayout
+        android:id="@+id/TitleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:weightSum="3"
+        android:orientation="horizontal" >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start as Integrated App"
+            android:gravity="center"
+            android:onClick="OnIntegratedApp"
+            android:id="@+id/StartIntegratedButton" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="Start As Standalone App"
+            android:onClick="OnStandaloneApp"
+            android:id="@+id/StartStandaloneAppButton" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Clear Test"
+            android:onClick="onClearTestClick"
+            android:id="@+id/ClearTestButton" />
+    </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sender Zirk"
+        android:maxLines = "2543"
+        android:scrollbars = "vertical"
         android:id="@+id/tv" />
+    </LinearLayout>
 </RelativeLayout>

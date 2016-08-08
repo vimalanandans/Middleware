@@ -2,6 +2,9 @@ package com.bezirk.android;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.bezirk.android.publisher.R;
@@ -11,6 +14,7 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.proxy.android.BezirkMiddleware;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.test.AirQualityUpdateEvent;
 import com.bezirk.test.HouseInfoEventSet;
 import com.bezirk.test.UpdateAcceptedEvent;
@@ -27,10 +31,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.tv);
-        receiverZirk();
-        senderZirk();
+
     }
 
+    public void OnIntegratedApp(View view) {
+
+        tv.setText("Publisher + Subscriber Integrated with Bezirk");
+        tv.setMovementMethod(new ScrollingMovementMethod());
+
+        // Start Bezirk as part of the publisher
+        AppManager.getAppManager().startBezirk(this,true,"Integrated Bezirk");
+
+        senderZirk();
+
+        receiverZirk();
+
+
+    }
+
+    public void OnStandaloneApp(View view) {
+
+        tv.setText("Publisher running standalone");
+
+        senderZirk();
+
+    }
+
+
+    public void onClearTestClick(View view) {
+
+            tv.setText("");
+
+    }
 
     private void receiverZirk() {
         final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Receiver Zirk");
@@ -42,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof AirQualityUpdateEvent) {
                     AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
-                    tv.append("\nReceived air quality update: " + aqUpdate.toString());
+                    BezirkZirkEndPoint endPoint = (BezirkZirkEndPoint)sender;
+
+                    tv.append("\n"+endPoint.getBezirkZirkId().getZirkId().toString()+" >> Received air quality update: " + aqUpdate.toString());
                     //do something in response to this event
                     if (aqUpdate.humidity > 0.7) {
                         tv.append("\nHumidity is high - recommend turning on the dehumidifier.");
@@ -63,8 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void senderZirk() {
 
-        // Start Bezirk as part of the publisher
-        AppManager.getAppManager().startBezirk(this,true,"Publisher");
 
         final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Sender Zirk");
 
@@ -75,7 +107,10 @@ public class MainActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
-                    tv.append("\nReceived UpdateAcceptedEvent with test field: " + acceptedEventUpdate.getTestField());
+                    BezirkZirkEndPoint endPoint = (BezirkZirkEndPoint)sender;
+
+                    tv.append("\nReceived from >> " + endPoint.getBezirkZirkId().getZirkId().toString() +
+                            " >> UpdateAcceptedEvent with test field: " + acceptedEventUpdate.getTestField());
                 }
             }
         });
