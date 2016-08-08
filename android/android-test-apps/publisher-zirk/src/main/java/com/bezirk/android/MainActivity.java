@@ -1,7 +1,10 @@
 package com.bezirk.android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bezirk.android.publisher.R;
@@ -27,6 +30,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.tv);
         senderZirk();
+
+        Button testStreaming = (Button)findViewById(R.id.testStreamingButton);
+
+        testStreaming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),StreamingActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void senderZirk() {
