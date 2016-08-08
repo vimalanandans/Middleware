@@ -10,20 +10,17 @@ public class BezirkSphereInfo {
     private final String sphereName;
     private final String sphereType;
     private final ArrayList<BezirkDeviceInfo> deviceList;
-    private final ArrayList<BezirkPipeInfo> pipeList;
     // is this device is wons this sphere.
     // This is used only in local device. hence tostring doesn't have
     private boolean isThisDeviceOwnsSphere;
 
     public BezirkSphereInfo(final String sphereID, final String sphereName,
                             final String sphereType,
-                            final ArrayList<BezirkDeviceInfo> deviceList,
-                            final ArrayList<BezirkPipeInfo> pipeList) {
+                            final ArrayList<BezirkDeviceInfo> deviceList) {
         this.sphereID = sphereID;
         this.sphereType = sphereType;
         this.sphereName = sphereName;
         this.deviceList = deviceList;
-        this.pipeList = pipeList;
     }
 
     /**
@@ -36,7 +33,6 @@ public class BezirkSphereInfo {
         this.sphereType = other.sphereType;
         this.sphereName = other.sphereName;
         this.deviceList = other.deviceList;
-        this.pipeList = other.pipeList;
     }
 
 
@@ -79,21 +75,14 @@ public class BezirkSphereInfo {
         return deviceList;
     }
 
-    /**
-     * @return the pipeList
-     */
-    public final ArrayList<BezirkPipeInfo> getPipeList() {
-        return pipeList;
-    }
-
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         return "BezirkSphereInfo [sphereID=" + sphereID + ",\nsphereName="
-                + sphereName + ",\nsphereType=" + sphereType + ",\ndeviceList=" + deviceList + ",\npipeList="
-                + pipeList + "]";
+                + sphereName + ",\nsphereType=" + sphereType + ",\ndeviceList=" + deviceList +
+                "]";
     }
 
 

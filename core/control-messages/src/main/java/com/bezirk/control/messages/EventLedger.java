@@ -1,29 +1,19 @@
 package com.bezirk.control.messages;
 
 /**
- * EventControlMessage is used by Sending and Receiving threads for book-keeping
- * and encryption purposes
- */
-public class EventLedger extends Ledger {
-    //*** The Following Fields alone are to be In the Control Message
-    // Payload has been removed
-    // Other Changes are in the Header
-    //***
+ * Event Ledger to hold event message and header
+ * */
+public class EventLedger implements Ledger {
     private String serializedMessage;
     private byte[] encryptedMessage;
     private String serializedHeader;
     private byte[] encryptedHeader;
-    private byte[] checksum;
-    private byte[] dataOnWire;
-    private long lastSent;
-    private Integer numOfSends = 0;
-    private com.bezirk.control.messages.Header header;
-    //	private Payload payload;
+    private Header header;
     private Boolean isMulticast = false;
 
 
     public EventLedger() {
-        header = new com.bezirk.control.messages.Header();
+      //  header = new Header();
     }
 
     /**
@@ -68,41 +58,12 @@ public class EventLedger extends Ledger {
         this.encryptedHeader = encryptedHeader == null ? null : encryptedHeader.clone();
     }
 
-    /**
-     * This method is used by the SenderThread to check for time between retransmits.	 *
-     *
-     * @return the timestamp in milliseconds (as Long) which represents the time at which the message was sent last
-     */
-    public long getLastSent() {
-        return lastSent;
-    }
-
-    /**
-     * @param lastSent the timestamp in milliseconds which is set every time a message is sent. The lastSent timestamp is overwritten which each send on retransmit
-     */
-    public void setLastSent(long lastSent) {
-        this.lastSent = lastSent;
-    }
-
-    /**
-     * @return The number of times a message is sent
-     */
-    public Integer getNumOfSends() {
-        return numOfSends;
-    }
-
-    /**
-     * @param numOfSends This is incremented every time the message is sent
-     */
-    public void setNumOfSends(Integer numOfSends) {
-        this.numOfSends = numOfSends;
-    }
 
     /**
      * @return The header of the message on the wire
      * @see com.bezirk.control.messages.Header
      */
-    public com.bezirk.control.messages.Header getHeader() {
+    public Header getHeader() {
         return header;
     }
 
@@ -110,39 +71,10 @@ public class EventLedger extends Ledger {
      * @param header The header of the message on the wire
      * @see com.bezirk.control.messages.Header
      */
-    public void setHeader(com.bezirk.control.messages.Header header) {
+    public void setHeader(Header header) {
         this.header = header;
     }
 
-    /**
-     * @return the data that is to go on the wire
-     */
-    public byte[] getDataOnWire() {
-        return dataOnWire == null ? null : dataOnWire.clone();
-    }
-
-    /**
-     * @param dataOnWire this is only set when the message is sent the first time
-     */
-    public void setDataOnWire(byte[] dataOnWire) {
-        this.dataOnWire = dataOnWire == null ? null : dataOnWire.clone();
-    }
-//	/**
-//	 *
-//	 * @return the payload that goes on the wire
-//	 * @see Payload
-//	 */
-//	public Payload getPayload() {
-//		return payload;
-//	}
-//	/**
-//	 *
-//	 * @param payload the payload that goes on the wire
-//	 * @see Payload
-//	 */
-//	public void setPayload(Payload payload) {
-//		this.payload = payload;
-//	}
 
     /**
      * @return true is message is a multicast
@@ -157,20 +89,7 @@ public class EventLedger extends Ledger {
     public void setIsMulticast(Boolean isMulticast) {
         this.isMulticast = isMulticast;
     }
-//	/**
-//	 * 
-//	 * @return true if message is local to the device
-//	 */
-//	public Boolean getIsLocal() {
-//		return isLocal;
-//	}
-//	/**
-//	 * 
-//	 * @param isLocal true means the message is local to the device
-//	 */
-//	public void setIsLocal(Boolean isLocal) {
-//		this.isLocal = isLocal;
-//	}
+
 
     public String getSerializedHeader() {
         return serializedHeader;
@@ -180,13 +99,6 @@ public class EventLedger extends Ledger {
         this.serializedHeader = serializedHeader;
     }
 
-    public byte[] getChecksum() {
-        return checksum == null ? null : checksum.clone();
-    }
-
-    public void setChecksum(byte[] checksum) {
-        this.checksum = checksum == null ? null : checksum.clone();
-    }
 
 
 }

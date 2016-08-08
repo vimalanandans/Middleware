@@ -11,7 +11,7 @@ import java.io.PipedOutputStream;
  * to a small set of ad hoc streams. See {@link MessageSet} for examples.
  */
 public class StreamSet extends MessageSet {
-    private StreamReceiver receiver;
+    private transient StreamReceiver receiver;
 
     @SafeVarargs
     public StreamSet(Class<? extends StreamDescriptor>... s) {

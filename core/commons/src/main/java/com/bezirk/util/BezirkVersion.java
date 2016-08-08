@@ -25,7 +25,7 @@ public class BezirkVersion {
 
     // Wire Message Version. increment it where there is a change in
     // wire message format (which would lead to crash while decoding)
-    private static final String WIRE_MESSAGE_VERSION = "0.1";
+    private static final String WIRE_MESSAGE_VERSION = "0.2";
 
     // DB Version for storing database
     // sphere / sadl registry changes.

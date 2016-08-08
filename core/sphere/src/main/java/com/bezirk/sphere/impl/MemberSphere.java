@@ -78,9 +78,7 @@ public final class MemberSphere extends Sphere implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         MemberSphere other = (MemberSphere) obj;
-        if (temporarySphere != other.temporarySphere)
-            return false;
-        return true;
+        return temporarySphere == other.temporarySphere;
     }
 
 }

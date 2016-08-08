@@ -85,7 +85,8 @@ public class MockSetUpUtilityForBezirkPC {
         //comms.initComms(null, inetAddr, null, streamManager);
 
         comms.registerNotification(Mockito.mock(CommsNotification.class));
-        comms.startComms();
+        //comms.startComms();
+
         pubSubBroker = new PubSubBroker(pubSubBrokerStorage, upaDevice, networkManager, comms, new MockCallback(), null, null);
 
         // SphereServiceManager bezirkSphere = new SphereServiceManager(cryptoEngine, upaDevice, sphereRegistry);
@@ -191,8 +192,6 @@ public class MockSetUpUtilityForBezirkPC {
 
     public void destroyTestSetUp() throws SQLException,
             IOException, Exception {
-        comms.stopComms();
-        comms.closeComms();
         regPersistence.clearPersistence();
 
 

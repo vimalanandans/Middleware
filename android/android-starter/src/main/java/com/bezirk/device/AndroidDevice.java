@@ -16,11 +16,11 @@ public class AndroidDevice extends Device {
         super(deviceId, deviceName, deviceType, deviceLocation);
     }
 
-    private static final String defaultDeviceId() {
+    private static String defaultDeviceId() {
         return UUID.randomUUID().toString();
     }
 
-    private static final String defaultDeviceName() {
+    private static String defaultDeviceName() {
         String modelNumber = Build.MODEL;
         String manufacturerName = Build.MANUFACTURER;
         if (null != modelNumber && !modelNumber.isEmpty() && null != manufacturerName && !manufacturerName.isEmpty()) {
@@ -29,11 +29,11 @@ public class AndroidDevice extends Device {
         return AndroidDevice.class.getSimpleName() + UUID.randomUUID().toString().substring(0, 5);
     }
 
-    private static final DeviceType defaultDeviceType() {
+    private static  DeviceType defaultDeviceType() {
         return DeviceType.SMARTPHONE;
     }
 
-    private static final Location defaultDeviceLocation() {
+    private static  Location defaultDeviceLocation() {
         return new Location(null, null, null);
     }
 

@@ -3,6 +3,7 @@ package com.bezirk.comms;
 import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.comms.processor.EventMsgReceiver;
 import com.bezirk.control.messages.ControlMessage;
+import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.Ledger;
 
 import com.bezirk.sphere.api.SphereSecurity;
@@ -20,30 +21,51 @@ import java.util.List;
  */
 public interface Comms {
 
-    /**
-     * start the communication
-     */
-    boolean startComms();
+//    /**
+//     * start the communication
+//     */
+//    boolean startComms();
+//
+//    /**
+//     * stop the communication
+//     */
+//    boolean stopComms();
+//
+//    /**
+//     * close the communication
+//     */
+//    boolean closeComms();
+//
+//    /**
+//     * restart the underlying comms
+//     */
+//    boolean restartComms();
 
     /**
-     * stop the communication
+     * Set the sphere for sadl. for late initialization
      */
-    boolean stopComms();
+    void setSphereSecurity(final SphereSecurity sphereSecurity);
 
     /**
-     * close the communication
-     */
-    boolean closeComms();
-
-    /**
-     * restart the underlying comms
-     */
-    boolean restartComms();
+     * TODO: Split the interface for controlling comms component as CommsCtrl
+     * and below access related as Comms
+     * */
 
     /**
      * send the control or event message depends of ledger type
      */
+    @Deprecated // Use sendEventLedger, or sendControlLedger
     boolean sendMessage(Ledger message);
+
+    /**
+     * Send event ledger
+     * */
+    boolean sendEventLedger(EventLedger ledger);
+
+    /**
+     * Send event ledger
+     * */
+    boolean sendControlMessage(ControlMessage message);
 
     /**
      * send the stream message based on unique key
@@ -78,10 +100,7 @@ public interface Comms {
     /* register event message receiver */
     boolean registerEventMessageReceiver(EventMsgReceiver receiver);
 
-    /**
-     * Set the sphere for sadl. for late initialization
-     */
-    void setSphereSecurity(final SphereSecurity sphereSecurity);
+
 
 }
 

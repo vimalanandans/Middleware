@@ -4,7 +4,7 @@ import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 public class UnicastControlMessage extends ControlMessage {
 
-    private Boolean isLocal = false;
+   // private Boolean isLocal = false;
     private BezirkZirkEndPoint recipient;
 
     /**
@@ -53,10 +53,10 @@ public class UnicastControlMessage extends ControlMessage {
      * Previous implementation was coupled with the network information of the device to figure out if the message is local. Networking and control messages need to be de-coupled.
      * @return
      */
-    @Deprecated
-    public Boolean getIsLocal() {
-        return isLocal;
-    }
+   // @Deprecated
+//    public Boolean getIsLocal() {
+//        return isLocal;
+//    }
 
     public BezirkZirkEndPoint getRecipient() {
         return recipient;

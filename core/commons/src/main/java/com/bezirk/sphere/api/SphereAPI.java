@@ -1,7 +1,6 @@
 package com.bezirk.sphere.api;
 
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
-import com.bezirk.middleware.objects.BezirkPipeInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.proxy.api.impl.ZirkId;
@@ -66,17 +65,6 @@ public interface SphereAPI {
      */
     @Deprecated
     Iterable<BezirkDeviceInfo> getDevicesOnSphere(String sphereId);
-
-    /**
-     * Get all the pipes visible/authorized to this device bezirk *
-     *
-     * @return : Iterable pipe info
-     * @deprecated : {@link BezirkPipeInfo} is available inside
-     * {@link BezirkZirkInfo} which can be retrieved using
-     * {@link #getSpheres()}
-     */
-    @Deprecated
-    Iterable<BezirkPipeInfo> getPipesOnSphere(String sphereId);
 
     /**
      * Get all devices known to this Bezirk apart from the one's that are a part of
@@ -146,17 +134,6 @@ public interface SphereAPI {
      * Listener
      */
     boolean expelDeviceFromSphere(String deviceId, String sphereId);
-
-    /**
-     * TODO Discover sphere (needs feedback how many discovered, how many
-     * cached(may be when it is cached))
-     */
-
-    /**
-     * Adds device information received from operations like invite-join
-     *
-     * @param deviceInformation
-     */
 
     /**
      * Provides the BitMatrix for generating platform specific QR codes
