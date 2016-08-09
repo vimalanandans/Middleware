@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bezirk.android.publisher.R;
+import com.bezirk.componentManager.AppManager;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
