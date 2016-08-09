@@ -21,7 +21,7 @@ public abstract class StreamAction extends ZirkAction {
                     "a file");
         }
 
-        if(streamId <= 0 ){
+        if(streamId < 0 ){
             throw new IllegalArgumentException("Invalid streamId specified streamId is" +streamId
                     +" stream id is Invalid" );
         }

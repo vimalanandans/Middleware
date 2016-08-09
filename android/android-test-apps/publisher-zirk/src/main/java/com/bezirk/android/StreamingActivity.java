@@ -1,15 +1,18 @@
 
 package com.bezirk.android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,17 +21,15 @@ import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
-import com.bezirk.middleware.messages.StreamDescriptor;
-import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.middleware.proxy.android.BezirkMiddleware;
-import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.test.streaming.StreamPublishEvent;
 import com.bezirk.test.streaming.StreamPublisherEventSet;
 import com.bezirk.test.streaming.StreamReceiveEvent;
-import com.bezirk.test.streaming.StreamReceiverEventSet;
 import com.bezirk.test.streaming.StreamSend;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StreamingActivity extends AppCompatActivity {
 
@@ -36,9 +37,10 @@ public class StreamingActivity extends AppCompatActivity {
     public static final int RESULT_LOAD_VIDEO = 222;
     private String filePath;
     private Button send,discover;
-    private ZirkEndPoint recipientEndpoint;
-    private TextView discoverdTextView;
-
+    private ListView listView;
+    final List<StreamDataModel> list = new ArrayList();
+    private StreamAdapter arrayAdapter ;
+    private static ZirkEndPoint recipientEndpoint;
     //checkBox to see if the Encryption is enabled!!!
 
     //bezirk Instance
@@ -51,13 +53,27 @@ public class StreamingActivity extends AppCompatActivity {
         mTextViewFilePath = (TextView)findViewById(R.id.choosenFile);
         send = (Button)findViewById(R.id.sendButton);
         discover = (Button)findViewById(R.id.discoverRecipientButton);
-        discoverdTextView = (TextView) findViewById(R.id.discoveredRecipient);
 
+
+        listView = (ListView) findViewById(R.id.discoveredlist);
+        arrayAdapter = new StreamAdapter(getApplicationContext(),android.R.layout.simple_list_item_1,android.R.id.text1,list);
+        listView.setAdapter(arrayAdapter);
+
+        //On item click
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                StreamDataModel dataModel = list.get(position);
+                recipientEndpoint = dataModel.getReceiverEndpoint();
+            }
+        });
+
+
+        //on send click
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //create a bezirk event and send the file.
-                //Toast.makeText(getApplicationContext(), "file path is "+filePath, Toast.LENGTH_SHORT).show();
+                //create a bezirk Sream descriptor and send the file.
 
                 //pick this value from the checkbox
                 boolean isEncrypted  = false;
@@ -73,6 +89,8 @@ public class StreamingActivity extends AppCompatActivity {
             }
         });
 
+
+        //on discover click
         discover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,21 +103,20 @@ public class StreamingActivity extends AppCompatActivity {
 
 
                 //prep the StreamReceiverEventSet and multicast to identify the receivers.
-                StreamPublisherEventSet streamPublisherEventSet = new StreamPublisherEventSet();
+                final StreamPublisherEventSet streamPublisherEventSet = new StreamPublisherEventSet();
 
                 streamPublisherEventSet.setEventReceiver(new EventSet.EventReceiver() {
                     @Override
                     public void receiveEvent(Event event, ZirkEndPoint sender) {
                        //got a response from the receiver
-                        if(event instanceof StreamReceiveEvent) {
+                        if(event instanceof StreamPublishEvent) {
                             StreamPublishEvent streamPublishEvent = (StreamPublishEvent)event;
 
-                            //set the receiver endpoint
-                            recipientEndpoint = sender;
-
                             //show the receiverID to UI
-                            discoverdTextView.setText(streamPublishEvent.getSubscriberId());
-
+                            StreamDataModel streamDataModel = new StreamDataModel(streamPublishEvent.getSubscriberId(), sender);
+                            list.clear();
+                            list.add(streamDataModel);
+                            arrayAdapter.notifyDataSetChanged();
                        }
                     }
                 });
@@ -135,31 +152,30 @@ public class StreamingActivity extends AppCompatActivity {
         }
 
     }
+
+    class StreamDataModel{
+        private String subscriberId;
+        private ZirkEndPoint receiverEndpoint;
+
+        public StreamDataModel(String subscriberId, ZirkEndPoint receiverEndpoint){
+            this.subscriberId = subscriberId;
+            this.receiverEndpoint = receiverEndpoint;
+        }
+
+        public String getSubscriberId() {
+            return subscriberId;
+        }
+
+        public ZirkEndPoint getReceiverEndpoint() {
+            return receiverEndpoint;
+        }
+    }
+
+
+    class StreamAdapter extends  ArrayAdapter<StreamDataModel>{
+
+        public StreamAdapter(Context context, int resource, int textViewResourceId, List<StreamDataModel> objects) {
+            super(context, resource, textViewResourceId, objects);
+        }
+    }
 }
-
-
-
-
-
-//TO be deleted
-
-
-/*//prep the StreamReceiverEventSet and multicast to identify the receivers.
-                StreamReceiverEventSet receiverEventSet = new StreamReceiverEventSet();
-
-                receiverEventSet.setEventReceiver(new EventSet.EventReceiver() {
-                    @Override
-                    public void receiveEvent(Event event, ZirkEndPoint sender) {
-                       //got a response from the receiver
-                        if(event instanceof StreamReceiveEvent) {
-                            StreamReceiveEvent streamReceiveEvent = (StreamReceiveEvent)event;
-
-                            //set the receiver endpoint
-                            recipientEndpoint = sender;
-
-                            //show the receiverID to UI
-                            discoverdTextView.setText(streamReceiveEvent.getMessageId());
-
-                       }
-                    }
-                });*/

@@ -22,14 +22,17 @@ android {
 }
 
 dependencies {
-    testCompile 'junit:junit:4.12'
     //compile 'com.android.support:appcompat-v7:23.4.0'
     compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
-    compile 'com.android.support:design:23.1.1'
     compile project(':android:android-libraries:android-zirk-proxy')
     compile project(':core:testapp-core')
     //compile project(':core:protocols:parametricUI-protocols')
     //compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('libs/HouseInfoRole.jar')
     //compile fileTree(dir:'libs', include:'HouseInfoEventSet.jar')
+    compile 'com.android.support:design:23.4.0'
+
+    //fixme Punith: commented the constraint layout
+    //compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha6'
+    testCompile 'junit:junit:4.12'
 }

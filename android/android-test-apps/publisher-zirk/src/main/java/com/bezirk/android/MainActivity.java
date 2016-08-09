@@ -28,12 +28,23 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     private TextView tv;
+    private Button testStreaming;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.tv);
+
+        testStreaming = (Button)findViewById(R.id.testStreamingButton);
+
+        testStreaming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),StreamingActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -53,20 +64,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnStandaloneApp(View view) {
-
         tv.setText("Publisher running standalone");
-
         senderZirk();
-
-        Button testStreaming = (Button)findViewById(R.id.testStreamingButton);
-
-        testStreaming.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),StreamingActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
 

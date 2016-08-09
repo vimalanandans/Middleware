@@ -39,4 +39,11 @@
         android:scrollbars = "vertical"
         android:id="@+id/tv" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/testStreamingButton"
+        android:layout_alignParentBottom="true"
+        android:text="Test Streaming"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
