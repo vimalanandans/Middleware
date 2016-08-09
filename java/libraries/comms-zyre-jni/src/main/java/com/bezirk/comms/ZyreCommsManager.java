@@ -6,6 +6,9 @@ import com.bezirk.networking.NetworkManager;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.InetAddress;
 
 /**
@@ -14,6 +17,8 @@ import java.net.InetAddress;
  */
 
 public class ZyreCommsManager extends CommsProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(ZyreCommsManager.class);
+
     private ZyreCommsJni comms = null;
 
     public ZyreCommsManager(CommsProperties commsProperties, InetAddress addr,
@@ -85,7 +90,7 @@ public class ZyreCommsManager extends CommsProcessor {
      */
     @Override
     public boolean sendToAll(byte[] msg, boolean isEvent) {
-
+        logger.debug("send to all");
         return comms.sendToAllZyre(msg, isEvent);
     }
 

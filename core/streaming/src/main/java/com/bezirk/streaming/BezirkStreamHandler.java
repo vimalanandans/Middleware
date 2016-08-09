@@ -67,7 +67,7 @@ final class BezirkStreamHandler {
 
         //send device Ip
         String streamIp = networkManager.getLocalInet().getHostAddress();
-
+        logger.debug("streamIp is "+streamIp);
         StreamResponse streamResponse = new StreamResponse(
                 streamRequest.getRecipient(), streamRequest.getSender(),
                 streamRequest.getSphereId(), streamRequest.getUniqueKey(), status, streamIp, assignedPort);

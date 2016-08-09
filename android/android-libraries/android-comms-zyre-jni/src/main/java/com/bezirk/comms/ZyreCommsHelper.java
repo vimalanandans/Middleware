@@ -30,6 +30,9 @@ class ZyreCommsHelper {
 
     void processEvent(String eventType, String peer, String peerGroup, String payload) {
         // A Zyre-enabled device enters the network
+        logger.debug("eventType is "+eventType);
+        logger.debug("peer is "+peer);
+        logger.debug("payload is "+payload);
         if (eventType.equals("ENTER")) {
             logger.info("peer (" + peer + ") entered network");
 

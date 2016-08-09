@@ -104,7 +104,7 @@ public class ZyreCommsJni extends Thread {
     public boolean sendToAllZyre(byte[] msg, boolean isEvent) {
         // in zyre we are sending ctrl and event in same. isEvent is ignored
         String data = new String(msg);
-
+        logger.debug("data in sendtoAllzyre "+data);
         if (zyre != null) {
 
             zyre.shout(getGroup(), data);
@@ -112,6 +112,8 @@ public class ZyreCommsJni extends Thread {
             logger.debug("Multicast size : >> " + data.length());//+ " data >> " + data);
 
             return true;
+        }else{
+            logger.debug("zyre is null");
         }
 
         return false;
@@ -196,7 +198,7 @@ public class ZyreCommsJni extends Thread {
 
         HashMap<String, String> eventMap = new HashMap<>();
 
-        if ((incoming == null) || incoming.isEmpty())
+        if ((incoming == null) || incoming.equals(""))
             return eventMap;
 
         //logger.info("IN Size << " + incoming.length());//+" data << " +incoming);
