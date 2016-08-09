@@ -2,14 +2,18 @@ package com.bezirk.android;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
+import android.view.View;
 import android.widget.TextView;
 
 import com.bezirk.android.subscriber.R;
+import com.bezirk.componentManager.AppManager;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.proxy.android.BezirkMiddleware;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.test.AirQualityUpdateEvent;
 import com.bezirk.test.HouseInfoEventSet;
 import com.bezirk.test.UpdateAcceptedEvent;
@@ -23,7 +27,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.tv);
+        tv.setMovementMethod(new ScrollingMovementMethod());
         receiverZirk();
+    }
+
+    public void onClearClick(View view) {
+        tv.setText("");
     }
 
     private void receiverZirk() {
@@ -36,22 +45,31 @@ public class MainActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof AirQualityUpdateEvent) {
                     AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
-                    tv.append("\nReceived air quality update: " + aqUpdate.toString());
+                    BezirkZirkEndPoint endPoint = (BezirkZirkEndPoint)sender;
+
+                    updateDisplay("\n"+endPoint.device+" >> Received air quality update: " + aqUpdate.toString());
                     //do something in response to this event
                     if (aqUpdate.humidity > 0.7) {
-                        tv.append("\nHumidity is high - recommend turning on the dehumidifier.");
+                        updateDisplay("\nHumidity is high - recommend turning on the dehumidifier.");
                         bezirk.sendEvent(sender, new UpdateAcceptedEvent("Got the value for humidity " + aqUpdate.humidity));
                     }
                     if (aqUpdate.dustLevel > 20) {
-                        tv.append("\nDust level is high - recommend running the vacuum.");
+                        updateDisplay("\nDust level is high - recommend running the vacuum.");
                     }
                     if (aqUpdate.pollenLevel > 500) {
-                        tv.append("\nPollen level is high - recommend closing the windows and running the air filter.");
+                        updateDisplay("\nPollen level is high - recommend closing the windows and running the air filter.");
                     }
                 }
             }
         });
 
         bezirk.subscribe(houseEvents);
+    }
+
+    private void updateDisplay(String display)
+    {
+        display = display + tv.getText();
+        tv.setText(display);
+
     }
 }
