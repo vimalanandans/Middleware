@@ -15,6 +15,7 @@ import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
+import com.bezirk.componentManager.AppManager;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.RecipientSelector;
@@ -72,7 +73,12 @@ public final class ProxyClient implements Bezirk {
 
     private static boolean sendBezirkIntent(Context context, ZirkAction action) {
         final Intent intent = new Intent();
-        intent.setComponent(RECEIVING_COMPONENT);
+
+        // get the component name from the app manager. in case of single app it is the same which
+        // is created during app manager create. else it returns the default
+        ComponentName name = new ComponentName(AppManager.getAppManager().getComponentName(), SERVICE_PKG_NAME);
+        intent.setComponent(name );
+
         final String actionName = action.getAction().getName();
         intent.setAction(actionName);
         intent.putExtra(actionName, action);

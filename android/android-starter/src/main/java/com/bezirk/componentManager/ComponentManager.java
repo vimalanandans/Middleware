@@ -14,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.bezirk.R;
+import com.bezirk.actions.BezirkAction;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.AndroidDevice;
@@ -27,7 +28,6 @@ import com.bezirk.proxy.android.ServerIdentityManagerAdapter;
 import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.proxy.android.ZirkMessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.starter.helper.ActionProcessor;
 import com.google.gson.Gson;
 
 public class ComponentManager extends Service {
@@ -132,7 +132,7 @@ public class ComponentManager extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         if (intent != null) {
             actionProcessor.processBezirkAction(intent, proxyServer, new LifeCycleCallbacks() {
@@ -141,7 +141,16 @@ public class ComponentManager extends Service {
                     Log.d(TAG, "LifeCycleCallbacks:start");
                     lifecycleManager.setState(LifecycleManager.LifecycleState.STARTED);
                     //comms.startComms();
-                    startForeground(FOREGROUND_ID, buildForegroundNotification("Bezirk ON"));
+
+                    boolean sticky = false;
+                    String appName ;
+
+                    sticky = intent.getBooleanExtra(AppManager.STICKY_TAG,sticky );
+                    appName = intent.getStringExtra(AppManager.APPLICATION_NAME_TAG);
+
+                    /** start only if it is sticky */
+                    if(sticky)
+                        startForeground(FOREGROUND_ID, buildForegroundNotification(appName , appName+" ON",R.drawable.bezirk_icon_s));
                 }
 
                 @Override
@@ -182,7 +191,7 @@ public class ComponentManager extends Service {
         void destroy();
     }
 
-    public Notification buildForegroundNotification(String filename) {
+    public Notification buildForegroundNotification(String appName,String status, int icon) {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this);
 
         Intent notificationIntent;
@@ -206,14 +215,14 @@ public class ComponentManager extends Service {
         notification.setOngoing(true);
 
         notification.setContentIntent(pendingIntent);
-        BitmapFactory.decodeResource(getResources(), R.drawable.upa_notification_s);
-        notification.setContentTitle(getString(R.string.app_name))
-                .setContentText(filename)
+        //BitmapFactory.decodeResource(getResources(), R.drawable.upa_notification_s);
+        notification.setContentTitle(appName)
+                .setContentText(status)
                 /** Changed notification icon to white color. */
 
                 //.setLargeIcon(bm)
-                .setSmallIcon(R.drawable.upa_notification_s)
-                .setTicker(getString(R.string.app_name)
+                .setSmallIcon(icon)
+                .setTicker(appName
                 );
 
         return notification.build();

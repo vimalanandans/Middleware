@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.componentManager.ComponentManager;
+import com.bezirk.componentManager.AppManager;
 import com.bezirk.util.BezirkVersion;
 import com.bezirk.util.ValidatorUtility;
 
@@ -163,7 +163,7 @@ class ControlActivityHelper {
         final TextView aboutVersionText = (TextView) dialog.findViewById(R.id.about_version_text);
 
         String appName = controlActivity.getString(R.string.app_name);
-        String aboutText = appName + " v" + BezirkVersion.BEZIRK_VERSION + ", Jan 2016, " + controlActivity.getString(R.string.about_copyright_text);
+        String aboutText = appName + " v" + BezirkVersion.BEZIRK_VERSION + ", Aug 2016, " + controlActivity.getString(R.string.about_copyright_text);
         aboutVersionText.setText(aboutText);
         //aboutVersionText.setText("UPA v"+ BezirkVersion.BEZIRK_VERSION + ", July 2015, � Bosch");
 
@@ -188,10 +188,13 @@ class ControlActivityHelper {
         //Intialize preferences
         PreferenceManager.setDefaultValues(activity, R.xml.preferences, false);
 
-        //Start Bezirk
+     /*   //Start Bezirk
         Intent serviceIntent = new Intent(activity.getApplicationContext(), ComponentManager.class);
         serviceIntent.setAction("START_BEZIRK");
         activity.startService(serviceIntent);
+     */
+        AppManager bezirkApp = AppManager.getAppManager();
+        bezirkApp.startBezirk(activity, true, "Bezirk");
 
         // register a broadcast receiver
         controlActivity.registerReceiver(systemStatusBroadcastReceiver, new IntentFilter(BR_SYSTEM_STATUS_ACTION));

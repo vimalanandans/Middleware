@@ -35,6 +35,7 @@ dependencies {
     compile project(':core:bezirk-middleware-api')
     compile project(':core:bezirk')
     compile project(':core:commons')
+    compile project(':android:android-starter')
 
     compile 'com.google.code.gson:gson:2.7'
 //    }
