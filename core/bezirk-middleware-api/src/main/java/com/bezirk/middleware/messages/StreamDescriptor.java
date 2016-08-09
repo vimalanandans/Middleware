@@ -91,15 +91,6 @@ public abstract class StreamDescriptor extends Message {
     }
 
     /**
-     * The file whose contents will be sent using the <code>stream</code>
-     *
-     * @param file
-     */
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    /**
      * returns the file whose contents will be sent using the <code>stream</code>
      * @return
      */
