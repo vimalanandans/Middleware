@@ -2,7 +2,6 @@ package com.bezirk.identity;
 
 import com.bezirk.middleware.identity.Alias;
 import com.bezirk.middleware.identity.IdentityManager;
-import com.bezirk.middleware.messages.IdentifiedEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +43,7 @@ public class BezirkIdentityManager implements IdentityProvisioner, IdentityManag
             return null;
         }
 
-        return (Alias) new BezirkAlias(name, aliasHash);
+        return new Alias(name, aliasHash);
     }
 
     @Override
@@ -53,12 +52,12 @@ public class BezirkIdentityManager implements IdentityProvisioner, IdentityManag
     }
 
     @Override
-    public void setMessageIdentity(IdentifiedEvent event) {
-        event.setAlias(currentIdentity);
+    public Alias getAlias() {
+        return new Alias(currentIdentity.getName(), currentIdentity.getHash());
     }
 
     @Override
     public boolean isMiddlewareUser(Alias alias) {
-        return alias.equals(currentIdentity);
+        return currentIdentity != null && currentIdentity.equals(alias);
     }
 }

@@ -6,6 +6,7 @@ import com.bezirk.actions.SendMulticastEventAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
+import com.bezirk.identity.IdentityProvisioner;
 import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubBrokerZirkServicer;
@@ -22,18 +23,24 @@ public class ProxyServer {
         pubSubBrokerService.registerZirk(registerZirkAction.getZirkId(), registerZirkAction.getZirkName());
     }
 
-    public void subscribeService(SubscriptionAction subscriptionAction) {
+    public void subscribe(SubscriptionAction subscriptionAction) {
         pubSubBrokerService.subscribe(subscriptionAction.getZirkId(), subscriptionAction.getMessageSet());
     }
 
-    public void sendMulticastEvent(SendMulticastEventAction eventAction) {
-        pubSubBrokerService.sendMulticastEvent(eventAction.getZirkId(), eventAction.getRecipientSelector(),
-                eventAction.getSerializedEvent(),eventAction.getEventName());
+    public void sendEvent(SendMulticastEventAction eventAction) {
+        if (eventAction.isIdentified()) {
+            eventAction.setAlias(((IdentityProvisioner) identityManager).getAlias());
+        }
+
+        pubSubBrokerService.sendMulticastEvent(eventAction);
     }
 
-    public void sendUnicastEvent(UnicastEventAction eventAction) {
-        pubSubBrokerService.sendUnicastEvent(eventAction.getZirkId(), (BezirkZirkEndPoint) eventAction.getEndpoint(),
-                eventAction.getSerializedEvent(),eventAction.getEventName());
+    public void sendEvent(UnicastEventAction eventAction) {
+        if (eventAction.isIdentified()) {
+            eventAction.setAlias(((IdentityProvisioner) identityManager).getAlias());
+        }
+
+        pubSubBrokerService.sendUnicastEvent(eventAction);
     }
 
     public short sendStream(SendFileStreamAction streamAction) {

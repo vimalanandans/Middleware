@@ -16,6 +16,8 @@ import com.bezirk.control.messages.MulticastControlMessage;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.control.messages.UnicastHeader;
+import com.bezirk.middleware.identity.Alias;
+import com.bezirk.middleware.serialization.InterfaceAdapter;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.sphere.api.SphereSecurity;
@@ -23,6 +25,7 @@ import com.bezirk.streaming.Streaming;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.TextCompressor;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -619,9 +622,11 @@ public abstract class CommsProcessor implements Comms, Observer {
 
 //        Header header = Header.fromJson(headerData,Header.class);
 
+        final Gson gson = new Gson();
+
         if (wireMessage.isMulticast()) {
 
-            MulticastHeader mHeader = new Gson().fromJson(headerData, MulticastHeader.class);
+            MulticastHeader mHeader = gson.fromJson(headerData, MulticastHeader.class);
 
             eLedger.setHeader(mHeader);
 
@@ -629,7 +634,7 @@ public abstract class CommsProcessor implements Comms, Observer {
 
         } else {
 
-            UnicastHeader uHeader = new Gson().fromJson(headerData, UnicastHeader.class);
+            UnicastHeader uHeader = gson.fromJson(headerData, UnicastHeader.class);
 
             eLedger.setHeader(uHeader);
 

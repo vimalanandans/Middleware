@@ -22,6 +22,7 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
+import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.middleware.messages.StreamSet;
@@ -197,15 +198,14 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
-        sendBezirkIntent(new SendMulticastEventAction(zirkId, recipient, event));
+        sendBezirkIntent(new SendMulticastEventAction(zirkId, recipient, event,
+                (event instanceof IdentifiedEvent)));
     }
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
-        Log.d(TAG, "Zirk sending event: " + event.getClass().getName());
-
         sendBezirkIntent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
-                zirkId, recipient, event));
+                zirkId, recipient, event, (event instanceof IdentifiedEvent)));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.bezirk.control.messages;
 
+import com.bezirk.middleware.identity.Alias;
+
 /**
  * Event Ledger to hold event message and header
  * */
@@ -98,7 +100,4 @@ public class EventLedger implements Ledger {
     public void setSerializedHeader(String serializedHeader) {
         this.serializedHeader = serializedHeader;
     }
-
-
-
 }

@@ -18,7 +18,6 @@ import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.AndroidDevice;
 import com.bezirk.device.Device;
-import com.bezirk.identity.BezirkAlias;
 import com.bezirk.identity.BezirkIdentityManager;
 import com.bezirk.middleware.identity.Alias;
 import com.bezirk.networking.AndroidNetworkManager;
@@ -30,9 +29,6 @@ import com.bezirk.proxy.android.ZirkMessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.starter.helper.ActionProcessor;
 import com.google.gson.Gson;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ComponentManager extends Service {
     private static final String TAG = ComponentManager.class.getName();
@@ -115,7 +111,7 @@ public class ComponentManager extends Service {
             preferencesEditor.commit();
         } else {
             Log.d(TAG, "Reusing identity" + aliasString);
-            identity = gson.fromJson(aliasString, BezirkAlias.class);
+            identity = gson.fromJson(aliasString, Alias.class);
         }
 
         identityManager.setIdentity(identity);

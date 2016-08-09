@@ -10,11 +10,7 @@ import com.bezirk.actions.SendMulticastEventAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
-import com.bezirk.identity.BezirkIdentityManager;
 import com.bezirk.middleware.identity.IdentityManager;
-import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.IdentifiedEvent;
-import com.bezirk.middleware.messages.Message;
 import com.bezirk.proxy.ProxyServer;
 
 public class AndroidProxyServer extends ProxyServer {
@@ -36,7 +32,7 @@ public class AndroidProxyServer extends ProxyServer {
 
         final SubscriptionAction subscriptionAction = (SubscriptionAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_SUBSCRIBE.getName());
 
-        super.subscribeService(subscriptionAction);
+        super.subscribe(subscriptionAction);
     }
 
     public void unsubscribeService(Intent intent) {
@@ -56,7 +52,7 @@ public class AndroidProxyServer extends ProxyServer {
 
         SendMulticastEventAction eventAction = (SendMulticastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_MULTICAST_EVENT.getName());
 
-        super.sendMulticastEvent(eventAction);
+        super.sendEvent(eventAction);
     }
 
     public void sendUnicastEvent(Intent intent) {
@@ -64,7 +60,7 @@ public class AndroidProxyServer extends ProxyServer {
 
         UnicastEventAction eventAction = (UnicastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName());
 
-        super.sendUnicastEvent(eventAction);
+        super.sendEvent(eventAction);
     }
 
     public void sendUnicastStream(Intent intent) {

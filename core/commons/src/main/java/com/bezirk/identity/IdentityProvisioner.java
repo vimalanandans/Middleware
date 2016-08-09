@@ -27,9 +27,8 @@ public interface IdentityProvisioner {
     void setIdentity(Alias identity);
 
     /**
-     * Attach the middleware instance's current identity to an outgoing identified message.
-     *
-     * @param event the outgoing message that needs an identity attached
+     * Get the current alias set for the middleware so that it can be added to a message
+     * by the Zirk proxy server.
      */
-    void setMessageIdentity(IdentifiedEvent event);
+    Alias getAlias();
 }

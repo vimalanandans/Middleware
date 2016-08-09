@@ -10,7 +10,6 @@ import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.componentManager.ComponentManager;
 import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.ProxyRegistry;
-import com.bezirk.identity.BezirkIdentityManager;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.RecipientSelector;
@@ -116,7 +115,7 @@ public class ProxyClient implements Bezirk {
                     messageSet.getClass().getSimpleName());
         }
 
-        proxy.subscribeService(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE, zirkId,
+        proxy.subscribe(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE, zirkId,
                 messageSet));
     }
 
@@ -189,23 +188,14 @@ public class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
-        if (event instanceof IdentifiedEvent) {
-            BezirkIdentityManager identityManager = (BezirkIdentityManager) proxy.getIdentityManager();
-            identityManager.setMessageIdentity((IdentifiedEvent) event);
-        }
-
-        proxy.sendMulticastEvent(new SendMulticastEventAction(zirkId, recipient, event));
+        proxy.sendEvent(new SendMulticastEventAction(zirkId, recipient, event,
+                (event instanceof IdentifiedEvent)));
     }
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
-        if (event instanceof IdentifiedEvent) {
-            BezirkIdentityManager identityManager = (BezirkIdentityManager) proxy.getIdentityManager();
-            identityManager.setMessageIdentity((IdentifiedEvent) event);
-        }
-
-        proxy.sendUnicastEvent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
-                zirkId, recipient, event));
+        proxy.sendEvent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
+                zirkId, recipient, event, (event instanceof IdentifiedEvent)));
     }
 
     @Override

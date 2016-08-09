@@ -6,7 +6,6 @@ import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.Device;
 import com.bezirk.device.JavaDevice;
-import com.bezirk.identity.BezirkAlias;
 import com.bezirk.identity.BezirkIdentityManager;
 import com.bezirk.middleware.identity.Alias;
 import com.bezirk.networking.JavaNetworkManager;
@@ -92,7 +91,7 @@ public class ComponentManager {
             preferences.put(ALIAS_KEY, gson.toJson(identity));
         } else {
             if (logger.isDebugEnabled()) logger.debug("Reusing identity {}", aliasString);
-            identity = gson.fromJson(aliasString, BezirkAlias.class);
+            identity = gson.fromJson(aliasString, Alias.class);
         }
 
         identityManager.setIdentity(identity);
