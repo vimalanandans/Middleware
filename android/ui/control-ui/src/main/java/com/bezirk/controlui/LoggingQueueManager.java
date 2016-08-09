@@ -1,5 +1,8 @@
 package com.bezirk.controlui;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
@@ -10,6 +13,7 @@ import java.util.concurrent.SynchronousQueue;
  */
 @SuppressWarnings("PMD")// inorder to avoid the synchronized
 public final class LoggingQueueManager {
+    private static final Logger logger = LoggerFactory.getLogger(LoggingQueueManager.class);
     /**
      * Blocking Queue that is used to queue logger messages at the logging client.
      */
@@ -60,6 +64,7 @@ public final class LoggingQueueManager {
      * @throws InterruptedException if multiple threads try to access the queue.
      */
     public static void loadLogReceiverQueue(String serializedLogMsg) throws InterruptedException {
+
         if (logReceiverQueue == null) {
             logReceiverQueue = new SynchronousQueue<String>();
         }

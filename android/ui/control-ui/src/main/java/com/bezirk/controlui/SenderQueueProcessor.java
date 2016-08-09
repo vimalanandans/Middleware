@@ -75,6 +75,7 @@ public class SenderQueueProcessor implements Runnable {
      * @throws Exception if Logging Zirk is down and unable to connect
      */
     public void startProcessing() throws Exception {
+        logger.debug("startProcessing senderqueueprocessor");
         isRunning = true;
         SenderQueueProcessor senderQueueProcessor = new SenderQueueProcessor(remoteServiceIP,remoteServicePort);
         Thread t = new Thread(senderQueueProcessor);

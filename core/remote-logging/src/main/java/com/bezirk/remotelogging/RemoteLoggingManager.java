@@ -10,6 +10,8 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.device.Device;
 import com.bezirk.networking.NetworkManager;
+import com.bezirk.comms.processor.CommsProcessor;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,13 +44,17 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     Device device;
 
-    private final NetworkManager networkManager;
+    public RemoteLoggingManager(){
+
+    }
+    private  NetworkManager networkManager=null;
 
     private boolean sendLoggingeMsgToClients=false;
 
     public RemoteLoggingManager(NetworkManager networkManager) {
         this.networkManager = networkManager;
     }
+
 
 
     ServiceMessageHandler logServiceMsgHandler = null;
@@ -69,6 +75,23 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     @Override
     public boolean enableLogging(boolean enable, String[] sphereNameList) {
+        logger.debug("enable logging in remotelogging");
+        comms = new CommsProcessor(networkManager) {
+            @Override
+            public boolean sendToAll(byte[] msg, boolean isEvent) {
+                return false;
+            }
+
+            @Override
+            public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent) {
+                return false;
+            }
+
+            @Override
+            public boolean restartComms() {
+                return false;
+            }
+        };
         String[] loggingSpheres;
         if (RemoteLoggingConfig.ALL_SPHERES.equals(sphereNameList)) {
             loggingSpheres = new String[1];
@@ -76,7 +99,13 @@ public  class RemoteLoggingManager implements RemoteLog {
         } else {
             loggingSpheres = sphereNameList;
         }
-
+       /* AndroidNetworkManager androidNetworkManager = new AndroidNetworkManager();*/
+        if(null!=comms){
+            logger.debug("comms not null in remotelogging manager ");
+        }
+        else{
+            logger.debug("comms  null in remotelogging manager ");
+        }
         sendLoggingeMsgToClients = ServiceActivatorDeactivator.sendLoggingServiceMsgToClients(comms,
                 sphereNameList, loggingSpheres, enable, networkManager);
         return sendLoggingeMsgToClients;

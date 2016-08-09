@@ -56,7 +56,6 @@ public final class MainStackHandler implements StackHandler {
 
       private final SphereHandler sphereProcessorForMainService = new SphereHandler();
       Context context;
-
       private final MainStackPreferences mainStackPreferences = new MainStackPreferences(context);
 
     //private final DeviceHelper deviceHelper = new DeviceHelper();
@@ -109,10 +108,11 @@ public final class MainStackHandler implements StackHandler {
      */
     @Override
     public void startStack(MainService service) {
-        logger.debug("in MainStackhandler");
+            logger.debug("in MainStackhandler ");
         synchronized (this) {
 
             WifiManager wifi;
+            logger.debug("MainStackHandler.isStackStarted is "+MainStackHandler.isStackStarted());
             if (!MainStackHandler.isStackStarted()) {
                 // Need to acquire wifi zirk as every time u start the stack, pick the new connected wifi access point information.
                 wifi = (WifiManager) service.getSystemService(Context.WIFI_SERVICE);
@@ -174,6 +174,7 @@ public final class MainStackHandler implements StackHandler {
                      *************************************************************/
 
                     comms = bezirkStartStackHelper.initializeComms(networkManager.getInetAddress(), pubSubBroker, errNotificationCallback, networkManager);
+                    logger.debug("Initialize BezirkCommsManager ");
                     if (!ValidatorUtility.isObjectNotNull(comms)) {
                         logger.error("Unable to initialize comms layer. Shutting down bezirk.");
                         service.stopSelf();

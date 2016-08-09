@@ -3,6 +3,7 @@ package com.bezirk.controlui;
 
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CtrlMsgReceiver;
+import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
@@ -44,11 +45,11 @@ public  class RemoteLoggingManager implements RemoteLog {
     private final Date currentDate = new Date();
 
     Device device;
+
+     NetworkManager networkManager;
     public RemoteLoggingManager(){
         networkManager = null;
     }
-    private final NetworkManager networkManager;
-
     private boolean sendLoggingeMsgToClients=false;
 
     public RemoteLoggingManager(NetworkManager networkManager) {
@@ -75,6 +76,9 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     @Override
     public boolean enableLogging(boolean enable, String[] sphereNameList) {
+        logger.debug("enableLogging method in control ui");
+        ZyreCommsManager zyreCommsManager = new ZyreCommsManager(networkManager);
+        comms=zyreCommsManager;
         String[] loggingSpheres;
         if (RemoteLoggingConfig.ALL_SPHERES.equals(sphereNameList)) {
             loggingSpheres = new String[1];
@@ -251,7 +255,9 @@ public  class RemoteLoggingManager implements RemoteLog {
      */
     @Override
     public boolean startRemoteLoggingService(final int loggingPort,final RemoteLoggingMessageNotification platformSpecificHandler) {
+        logger.debug("loggingPort is "+loggingPort);
         if (remoteLoggingService == null && platformSpecificHandler != null) {
+            logger.debug("remoteLoggingService and platformSpecificHandler is not null ");
             remoteLoggingService = new RemoteLoggingService(ServiceActivatorDeactivator.REMOTE_LOGGING_PORT);
             receiverQueueProcessor = new ReceiverQueueProcessor(platformSpecificHandler);
             try {
@@ -265,6 +271,8 @@ public  class RemoteLoggingManager implements RemoteLog {
             }
 
             return true;
+        }else{
+            logger.debug("any one of them is null");
         }
         //throw new Exception("Tried to start LoggingService again, that is already started or Handler is null");
         return false;

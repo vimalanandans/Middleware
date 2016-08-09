@@ -112,10 +112,18 @@ public abstract class CommsProcessor implements Comms {
 
         // create thread pool. every start creates new thread pool.
         // old ones are cleared with stopComms
+        logger.debug("create threadpool");
         executor = Executors.newFixedThreadPool(THREAD_SIZE);
-
+        if(null!=executor){
+            logger.debug("executor not null");
+        }else{
+            logger.debug("executor is null");
+        }
         if (bezirkStreamManager != null) {
+            logger.debug("bezirkStreamManager not null");
             bezirkStreamManager.startStreams();
+        }else{
+            logger.debug("bezirkStreamManager is null");
         }
 
 
@@ -155,14 +163,21 @@ public abstract class CommsProcessor implements Comms {
     @Override
     public boolean sendMessage(Ledger message) {
         // send as it is
-        if (message instanceof ControlLedger)
+        if (message instanceof ControlLedger) {
+            logger.debug("instance of controlLedger");
             return this.sendControlMessage((ControlLedger) message);
-        else if (message instanceof EventLedger)
+        }
+        else if (message instanceof EventLedger){
             return this.sendEventMessage((EventLedger) message);
-        else if (message instanceof MessageLedger)
+        }
+        else if (message instanceof MessageLedger){
             return sendMessageLedger((MessageLedger) message);
-        else // stream ledger // hopefully there are no other types
+        }
+        else{
+            // stream ledger // hopefully there are no other types
             return this.sendStreamMessage(message);
+        }
+
 
         // FIXME: Bridge the local message. look udp sendControlMessage
 
@@ -175,9 +190,10 @@ public abstract class CommsProcessor implements Comms {
     public boolean sendControlMessage(ControlLedger message) {
         boolean ret = false;
         String data = message.getSerializedMessage();
+        logger.debug("data is "+data);
         if (data != null) {
             if (message.getMessage() instanceof MulticastControlMessage) {
-
+                logger.debug("message.getMessage() instanceof MulticastControlMessage");
                 WireMessage wireMessage = prepareWireMessage(message.getMessage().getSphereId(), data);
 
                 wireMessage.setMsgType(WireMessage.WireMsgType.MSG_MULTICAST_CTRL);
@@ -209,6 +225,8 @@ public abstract class CommsProcessor implements Comms {
             } else {
                 logger.debug("unknown control message");
             }
+        }else{
+            logger.debug("data is null");
         }
 
 
@@ -222,6 +240,8 @@ public abstract class CommsProcessor implements Comms {
      * @return
      */
     private WireMessage prepareWireMessage(String sphereId, String data) {
+        logger.debug("sphereId is "+sphereId);
+        logger.debug("data is "+data);
         WireMessage wireMessage = new WireMessage();
         wireMessage.setSphereId(sphereId);
         byte[] wireData = null;
@@ -232,6 +252,7 @@ public abstract class CommsProcessor implements Comms {
          * ##########
          */
         if (CommsFeature.WIRE_MSG_COMPRESSION.isActive()) {
+            logger.debug("CommsFeature.WIRE_MSG_COMPRESSION.isActive ");
             wireData = compressMsg(data);
             wireMessage.setWireMsgStatus(WireMessage.WireMsgStatus.MSG_COMPRESSED);
         }
@@ -493,6 +514,7 @@ public abstract class CommsProcessor implements Comms {
      */
     public boolean processWireMessage(String deviceId, String msg) {
         // start thread pool
+        logger.debug("processWireMessage thread pool");
         if ((executor != null) && !executor.isShutdown()) {
 
             ProcessIncomingMessage inMsg = new ProcessIncomingMessage(/*this, */deviceId, msg);
@@ -510,13 +532,19 @@ public abstract class CommsProcessor implements Comms {
      */
     public boolean processWireMessage(String deviceId, Ledger ledger) {
         // start thread pool
+        //logger.debug("executor.isShutdown() is "+executor.isShutdown());
+        if(null!=executor){
+            logger.debug("exe not null");
+        }else{
+            logger.debug("exe is null");
+        }
         if ((executor != null) && !executor.isShutdown()) {
 
             ProcessIncomingMessage inMsg = new ProcessIncomingMessage(/*this, */deviceId, ledger);
 
             executor.execute(inMsg);
         } else {
-            logger.error("thread pool is not active.");
+            logger.error("thread pool is not active in -------");
         }
 
         return true;
@@ -549,9 +577,11 @@ public abstract class CommsProcessor implements Comms {
     //send the message to intended modules
     boolean dispatchMessage(Ledger ledger) {
         if (ledger instanceof ControlLedger) {
+            logger.debug("ledger is instanceof ControlLedger");
             ControlLedger ctrlLedger = (ControlLedger) ledger;
             msgDispatcher.dispatchControlMessages(ctrlLedger.getMessage(), ctrlLedger.getSerializedMessage());
         } else if (ledger instanceof EventLedger) {
+            logger.debug("ledger is instanceof EventLedger");
             EventLedger eventLedger = (EventLedger) ledger;
             msgDispatcher.dispatchServiceMessages(eventLedger);
         } else {

@@ -59,7 +59,7 @@ public final class SphereHandler {
      * create and initialise the sphere
      */
     boolean initSphere(Device bezirkDevice, MainService service, SpherePersistence spherePersistence, MainStackPreferences preferences, NetworkManager networkManager) {
-
+        logger.debug("initsphere sphereHandler");
         /** start the sphere related init*/
         if (sphereForAndroid == null) {
             // init the actual

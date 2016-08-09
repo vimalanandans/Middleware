@@ -24,6 +24,7 @@ public class MainStackPreferences {
     public MainStackPreferences(Context context) {
         logger.debug("Inside MainStackPreferences constructor");
         if (context != null) {
+            logger.debug("context is not null");
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
             Map<String, ?> keys = preferences.getAll();
 
@@ -41,7 +42,15 @@ public class MainStackPreferences {
      * return the preference for BezirkComm
      */
     public SharedPreferences getSharedPreferences() {
-        return preferences;
+        if(null!=preferences){
+            logger.debug("preferences is not null in MainStackPreferences");
+            return preferences;
+        }
+        else{
+            logger.debug("preferences is  null in MainStackPreferences");
+            return null;
+        }
+
     }
 
     /**

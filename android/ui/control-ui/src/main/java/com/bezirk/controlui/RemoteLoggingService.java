@@ -47,10 +47,12 @@ public class RemoteLoggingService extends Thread {
 
     @Override
     public void run() {
-        logger.info("Logging Zirk is being Started...");
+        logger.info("Logging Zirk is being Started in control ui");
         try {
             logger.debug("isRunning value is "+isRunning);
             while (isRunning) {
+                logger.debug("inside while");
+                //
                 Socket clientSocket = serverSocket.accept();
                 String serializedLoggerMessage = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())).readLine();
                 logger.debug("serializedLoggerMessage is "+serializedLoggerMessage);
@@ -77,8 +79,10 @@ public class RemoteLoggingService extends Thread {
      * @throws IOException if socket is unavailable.
      */
     public void startRemoteLoggingService() throws IOException {
+        logger.debug("startRemoteLoggingService in RemoteLoggingService");
         isRunning = true;
         serverSocket = new ServerSocket(listeningPort);
+        logger.debug("listeningPort in RemoteLoggingService is "+listeningPort);
         this.start();
     }
 

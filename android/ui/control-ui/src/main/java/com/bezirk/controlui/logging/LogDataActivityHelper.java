@@ -2,6 +2,7 @@ package com.bezirk.controlui.logging;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -22,6 +23,7 @@ import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.sphere.impl.SphereServiceManager;
 import com.bezirk.starter.MainService;
+import com.bezirk.starter.MainStackPreferences;
 import com.bezirk.starter.SphereServiceAccessStub;
 
 import org.slf4j.Logger;
@@ -96,7 +98,7 @@ class LogDataActivityHelper {
         @Override
         public boolean handleMessage(final Message msg) {
             RemoteLoggingMessage logMsg = (RemoteLoggingMessage) msg.obj;
-
+            logger.debug("handler callback");
             if (!logDataActivity.isDeveloperModeEnabled && (logMsg.typeOfMessage.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name()) ||
                     logMsg.typeOfMessage.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND.name()))) {
                 return true;
@@ -165,6 +167,7 @@ class LogDataActivityHelper {
      */
     void startLogService() {
         try {
+            logger.debug("start log service");
             logDataActivity.remoteLoggingManager = new RemoteLoggingManager();
             logDataActivity.remoteLoggingManager.startRemoteLoggingService(ServiceActivatorDeactivator.REMOTE_LOGGING_PORT, loggingHandler);
         } catch (Exception e) {
@@ -175,17 +178,19 @@ class LogDataActivityHelper {
     /**
      * Send the LogServiceMsg across all the spheres.
      */
-    void sendLogServiceMsg(final String[] selectedSphereList, boolean isAnySphereSelectedFlag) {
+    void sendLogServiceMsg(final String[] selectedSphereList, boolean isAnySphereSelectedFlag, MainStackPreferences preferences) {
         final String[] tempLoggingSphereList;
+        logger.debug("isAnySphereSelectedFlag is "+isAnySphereSelectedFlag);
         if (isAnySphereSelectedFlag) {
             tempLoggingSphereList = ANY_SPHERE_VALUE;
         } else {
             tempLoggingSphereList = selectedSphereList;
         }
         logDataActivity.selSpheres = selectedSphereList.clone();
-
+        logger.debug("tempLoggingSphereList length is "+tempLoggingSphereList.length);
         // it is not a good idea to access the main zirk directly. the best way to do is via IBinder
-        MainService.sendLoggingServiceMsgToClients(logDataActivity.selSpheres, tempLoggingSphereList, true);
+        MainService mainService = new MainService();
+        mainService.sendLoggingServiceMsgToClients(logDataActivity.selSpheres, tempLoggingSphereList, true,preferences);
 
     }
 
@@ -258,6 +263,7 @@ class LogDataActivityHelper {
      */
     SphereServiceAccess sphereServiceAccess  = new SphereServiceAccessStub();
     String getDeviceNameFromDeviceId(final String deviceId) {
+        logger.debug("deviceId value in Logdataactivityhelper  "+deviceId);
         if (deviceId == null)
             return RECIPIENT_MULTICAST_VALUE;
         String tempDeviceName = sphereServiceAccess.getDeviceNameFromSphere(deviceId);

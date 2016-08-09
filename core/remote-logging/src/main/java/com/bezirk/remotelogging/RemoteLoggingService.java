@@ -47,7 +47,7 @@ public class RemoteLoggingService extends Thread {
 
     @Override
     public void run() {
-        logger.info("Logging Zirk is being Started...");
+        logger.info("Logging Zirk is being Started in remote logging");
         try {
             while (isRunning) {
                 Socket clientSocket = serverSocket.accept();

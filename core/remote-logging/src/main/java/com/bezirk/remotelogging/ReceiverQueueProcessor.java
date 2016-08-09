@@ -64,6 +64,7 @@ public class ReceiverQueueProcessor implements Runnable {
      * @throws Exception if platform specific logger is not set
      */
     public void startProcessing() throws Exception {
+        logger.debug("startProcessing of Receiverqueueprocessor");
         if (null == platformSpecificLogger) {
             throw new Exception("BezirkLogger is not set");
         }

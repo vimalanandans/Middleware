@@ -13,14 +13,20 @@ public class AndroidNetworkManager extends NetworkManager {
     private static final Logger logger = LoggerFactory.getLogger(AndroidNetworkManager.class);
     private static final String DEFAULT_ANDROID_INTERFACE = "wlan0";
     private final SharedPreferences preferences;
-
     public AndroidNetworkManager(SharedPreferences preferences) {
         this.preferences = preferences;
     }
 
     @Override
     public String getStoredInterfaceName() {
-        return preferences.getString(NETWORK_INTERFACE_NAME_KEY, DEFAULT_ANDROID_INTERFACE);
+        if(null!=preferences){
+            logger.debug("preferences is not null");
+            return preferences.getString(NETWORK_INTERFACE_NAME_KEY, DEFAULT_ANDROID_INTERFACE);
+        }else{
+            logger.debug("preferrences is null");
+            return null;
+        }
+
     }
 
     @Override
@@ -32,6 +38,7 @@ public class AndroidNetworkManager extends NetworkManager {
 
     @Override
     public InetAddress getInetAddress() {
+        logger.debug("getInetAddress of AndroidNetworkManager");
         try {
             NetworkInterface networkInterface = NetworkInterface.getByName(getStoredInterfaceName());
             if (null != networkInterface) {

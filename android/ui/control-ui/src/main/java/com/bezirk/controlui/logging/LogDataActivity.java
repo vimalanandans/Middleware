@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.bezirk.controlui.R;
 import com.bezirk.controlui.RemoteLoggingManager;
 import com.bezirk.starter.MainService;
+import com.bezirk.starter.MainStackPreferences;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,16 +40,20 @@ public class LogDataActivity extends Activity {
     RemoteLoggingManager remoteLoggingManager;
 
     private LogDataActivityHelper logDataActivityHelper;
+    MainStackPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        logger.debug("onCreate called");
         super.onCreate(savedInstanceState);
         logDataActivityHelper = new LogDataActivityHelper(this);
         setContentView(R.layout.activity_log_data);
+        preferences = new MainStackPreferences(this);
         logDataActivityHelper.startLogService();
         Intent receivedIntent = getIntent();
         isDeveloperModeEnabled = receivedIntent.getBooleanExtra("isDeveloperModeEnabled", false);
-        logDataActivityHelper.sendLogServiceMsg(receivedIntent.getStringArrayExtra("selectedSphereList"), receivedIntent.getBooleanExtra("isAnySphereFlag", false));
+        logger.debug("isDeveloperModeEnabled is "+isDeveloperModeEnabled);
+        logDataActivityHelper.sendLogServiceMsg(receivedIntent.getStringArrayExtra("selectedSphereList"), receivedIntent.getBooleanExtra("isAnySphereFlag", false),preferences);
         logDataActivityHelper.init();
     }
 
@@ -103,7 +108,8 @@ public class LogDataActivity extends Activity {
         protected Void doInBackground(String[]... params) {
             spheres = params[0];
             // it is not a good idea to access the main zirk directly. the best way to do is via IBinder
-            MainService.sendLoggingServiceMsgToClients(selSpheres, spheres, false);
+            MainService mainService = new MainService();
+            mainService.sendLoggingServiceMsgToClients(selSpheres, spheres, false,preferences);
             return null;
         }
     }

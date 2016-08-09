@@ -33,6 +33,7 @@ public class LoggingClient {
      * @param port     - Port at which the logging Zirk is listening
      */
     public void startClient(String remoteIP, int port) throws Exception {
+        logger.debug("startClient of LoggingClient");
         this.serviceIP = remoteIP;
         this.servicePort = port;
         senderQueueProcessor = new SenderQueueProcessor(this.serviceIP, this.servicePort);

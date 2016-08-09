@@ -39,6 +39,7 @@ public class ReceiverQueueProcessor implements Runnable {
 
     @Override
     public void run() {
+        logger.debug("iSrunning in run "+isRunning);
         try {
             while (isRunning) {
                 StringBuilder logMsgString = LoggingQueueManager.fetchFromLogReceiverQueue();
@@ -70,6 +71,7 @@ public class ReceiverQueueProcessor implements Runnable {
      * @throws Exception if platform specific logger is not set
      */
     public void startProcessing() throws Exception {
+        logger.debug("startProcessing ReceiverQueueProcessor");
         if (null == platformSpecificLogger) {
             throw new Exception("BezirkLogger is not set");
         }

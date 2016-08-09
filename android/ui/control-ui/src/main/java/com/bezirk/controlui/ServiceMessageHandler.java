@@ -51,6 +51,7 @@ public final class ServiceMessageHandler {
      * @param loggingServiceMsg
      */
     public void handleLogServiceMessage(final LoggingServiceMessage loggingServiceMsg) {
+        logger.debug("handleLogServiceMessage of ServiceMessageHandler");
         if (checkLoggingServiceMessage(loggingServiceMsg)) {
             if (loggingServiceMsg.isLoggingStatus()) {//Start or Update the client
                 if (null == loggingManager) {

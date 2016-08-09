@@ -29,6 +29,7 @@ public final class ServiceActivatorDeactivator {
     }
 
     public static boolean sendLoggingServiceMsgToClients(Comms comms, final String[] sphereList, final String[] selectedLogSpheres, final boolean isActivate, final NetworkManager networkManager) {
+        logger.debug("inside sendLoggingServiceMsgToClients");
         final ZirkId myId = new ZirkId("BEZIRK-REMOTE-LOGGING-SERVICE");
         final BezirkZirkEndPoint sep = networkManager.getServiceEndPoint(myId);
         boolean sendLogMessageToClient=false;
@@ -43,7 +44,7 @@ public final class ServiceActivatorDeactivator {
             }else{
                 sendLogMessageToClient=false;
             }
-            comms.sendMessage(controlLedger);
+
 
         }
         return sendLogMessageToClient;

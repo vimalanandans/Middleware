@@ -25,11 +25,9 @@ public final class ServiceActivatorDeactivator {
     // Move to the remote logging component manager
     public static int REMOTE_LOGGING_PORT = 7777;
 
-    private ServiceActivatorDeactivator() {
-    }
-
     public static boolean sendLoggingServiceMsgToClients(Comms comms, final String[] sphereList, final String[] selectedLogSpheres, final boolean isActivate, final NetworkManager networkManager) {
         final ZirkId myId = new ZirkId("BEZIRK-REMOTE-LOGGING-SERVICE");
+        logger.debug("inside serviceactivator of remotelogging ");
         final BezirkZirkEndPoint sep = networkManager.getServiceEndPoint(myId);
         boolean sendLogMessageToClient=false;
         for (String sphereId : sphereList) {
@@ -43,7 +41,14 @@ public final class ServiceActivatorDeactivator {
             }else{
                 sendLogMessageToClient=false;
             }
-            comms.sendMessage(controlLedger);
+            logger.debug("sendLogMessageToClient value is "+sendLogMessageToClient);
+            if(null!=comms){
+                logger.debug("comms is not null");
+                comms.sendMessage(controlLedger);
+            }else{
+                logger.debug("comms is null");
+            }
+
 
         }
         return sendLogMessageToClient;

@@ -39,6 +39,7 @@ public class DeviceControlActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        logger.debug("oncreate DeviceControlActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_control);
 

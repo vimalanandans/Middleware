@@ -179,7 +179,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     @Override
     public boolean sendMulticastEvent(ZirkId zirkId, RecipientSelector recipientSelector, String serializedEventMsg) {
-
+        logger.debug("sendMulticastEvent method of PubSubBroker");
         final Iterable<String> listOfSphere;
 
         if (sphereServiceAccess != null) {
@@ -201,7 +201,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
         //final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
 
         while (sphereIterator.hasNext()) {
-
+            logger.debug("sphereIterator.hasNext() true");
             final EventLedger ecMessage = new EventLedger();
             ecMessage.setIsMulticast(true);
             ecMessage.setSerializedMessage(serializedEventMsg);
@@ -215,6 +215,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
             ecMessage.setSerializedHeader(mHeader.serialize());
 
             if (ValidatorUtility.isObjectNotNull(comms)) {
+                logger.debug("ValidatorUtility.isObjectNotNull(comms) not null");
                 comms.sendMessage(ecMessage);
             } else {
                 logger.error("Comms manager not initialized");
@@ -394,7 +395,7 @@ public class PubSubBroker implements PubSubBrokerServiceTrigger, PubSubBrokerSer
 
     @Override
     public boolean processEvent(final EventLedger eLedger) {
-
+        logger.debug("process event in pubsub broker");
         Set<ZirkId> serviceList = getAssociatedServiceList(eLedger);
 
         if (null == serviceList || serviceList.isEmpty()) {

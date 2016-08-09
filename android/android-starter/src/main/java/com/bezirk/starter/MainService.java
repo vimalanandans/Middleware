@@ -5,25 +5,34 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
 import com.bezirk.R;
 import com.bezirk.comms.CommsNotification;
+import com.bezirk.networking.AndroidNetworkManager;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.remotelogging.RemoteLog;
+//import com.bezirk.remotelogging.RemoteLoggingManager;
+import com.bezirk.remotelogging.RemoteLoggingManager;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.starter.helper.ActionProcessor;
 import com.bezirk.starter.helper.MainStackHandler;
 import com.bezirk.starter.helper.NetworkBroadCastReceiver;
+
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +40,9 @@ import org.slf4j.LoggerFactory;
 
 public class MainService extends Service implements NotificationCallback {
     private static final Logger logger = LoggerFactory.getLogger(MainService.class);
-
-    private final ActionProcessor actionProcessor = new ActionProcessor();
+     Context context ;
+     //MainStackPreferences mainStackPreferences=null;
+     private final ActionProcessor actionProcessor = new ActionProcessor();
     //private final PipeActionParser pipeActionParser = new PipeActionParser();
     private ProxyServer proxyService;
     private MainStackHandler mainStackHandler;
@@ -44,16 +54,30 @@ public class MainService extends Service implements NotificationCallback {
         return MainStackHandler.isStackStarted();
     }
 
-    final static RemoteLog remoteLoggingManager = null;
+     static RemoteLog remoteLoggingManager = null ;
+
+    public MainService(){
+       // mainStackPreferences = new MainStackPreferences(getBaseContext());
+    }
+
     /**
      * get the sphere object handle.
      */
-    public  static boolean sendLoggingServiceMsgToClients(final String[] selSpheres,
-                                                         final String[] tempLoggingSphereList, boolean isActivate) {
+    public   boolean sendLoggingServiceMsgToClients(final String[] selSpheres,
+                                                         final String[] tempLoggingSphereList, boolean isActivate,MainStackPreferences preferences) {
+        logger.debug("isActivate is "+isActivate);
+
+        SharedPreferences preferencesValue=preferences.getSharedPreferences();
+        NetworkManager  networkManager  = new AndroidNetworkManager(preferencesValue);
+        //networkManager.getInetAddress();
+        final  RemoteLog remoteLoggingManager  = new RemoteLoggingManager(networkManager);
         if(remoteLoggingManager != null)
         {
+            logger.debug("remoteLoggingManager is not null");
             remoteLoggingManager.enableLogging(isActivate,tempLoggingSphereList);
             return true;
+        }else{
+            logger.debug("remoteLoggingManager is null");
         }
         return false;
     }

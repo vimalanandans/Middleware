@@ -66,18 +66,22 @@ public abstract class NetworkManager {
 
 
     public InetAddress getLocalInet() {
+        getInetAddress();
         if (curInterface == null) {
             logger.error("Input interface is null");
             return null;
         }
+        InetAddress inetAddress = null;
         for (Enumeration<InetAddress> enumIpAddr = curInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
-            InetAddress inetAddress = enumIpAddr.nextElement();
+            logger.debug("enumIpAddr");
+             inetAddress = enumIpAddr.nextElement();
+            logger.debug("inetaddress is "+inetAddress.getHostAddress());
             if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-                //logger.info("IP address determined: " + inetAddress.getHostAddress());
+                logger.info("IP address determined: " + inetAddress.getHostAddress());
                 return inetAddress;
             }
         }
-        return null;
+        return inetAddress;
     }
 
 
@@ -106,12 +110,14 @@ public abstract class NetworkManager {
     }
 
     public BezirkZirkEndPoint getServiceEndPoint(ZirkId zirkId) {
+        logger.debug("getServiceEndPoint");
         BezirkZirkEndPoint sep = new BezirkZirkEndPoint(zirkId);
         sep.device = getLocalInet().getHostAddress();
         return sep;
     }
 
     public String getDeviceIp() {
+        logger.debug("getDeviceIp");
         return getLocalInet().getHostAddress();
     }
 
