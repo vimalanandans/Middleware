@@ -1,7 +1,6 @@
 package com.bezirk.identity;
 
 import com.bezirk.middleware.identity.Alias;
-import com.bezirk.middleware.messages.IdentifiedEvent;
 
 /**
  * Internal API for creating and managing identities. This interface must not be exposed to

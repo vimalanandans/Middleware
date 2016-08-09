@@ -3,7 +3,6 @@ package com.bezirk.pubsubbroker;
 import com.bezirk.actions.SendMulticastEventAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
