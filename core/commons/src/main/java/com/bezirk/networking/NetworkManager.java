@@ -19,21 +19,21 @@ public abstract class NetworkManager {
 
     private NetworkInterface curInterface = null;
 
-    public List<IntfInetPair> getIntfInetPair() {
-        ArrayList<IntfInetPair> list = new ArrayList<>();
+    public List<InterfaceInetPair> getIntfInetPair() {
+        ArrayList<InterfaceInetPair> list = new ArrayList<>();
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface intf = en.nextElement();
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() /*&& inetAddress.isSiteLocalAddress()*/) {
-                        list.add(new IntfInetPair(intf, inetAddress));
+                        list.add(new InterfaceInetPair(intf, inetAddress));
                     }
 
                 }
             }
         } catch (Exception ex) {
-            logger.error("Error occurred while getting IntfInetPair \n", ex);
+            logger.error("Error occurred while getting InterfaceInetPair \n", ex);
         }
         return list;
     }

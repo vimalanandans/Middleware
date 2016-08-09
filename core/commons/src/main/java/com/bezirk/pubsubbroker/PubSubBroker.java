@@ -117,16 +117,16 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     }
 
 
-    public Boolean registerService(final ZirkId serviceId) {
-        if (!ValidatorUtility.checkBezirkZirkId(serviceId)) {
+    public Boolean registerService(final ZirkId zirkId) {
+        if (!ValidatorUtility.checkBezirkZirkId(zirkId)) {
             logger.error("Invalid ZirkId");
             return false;
         }
-        if (isZirkRegistered(serviceId)) {
-            logger.info(serviceId + " Zirk is already registered");
+        if (isZirkRegistered(zirkId)) {
+            logger.info(zirkId + " Zirk is already registered");
             return false;
         }
-        if (pubSubBrokerRegistry.registerZirk(serviceId)) {
+        if (pubSubBrokerRegistry.registerZirk(zirkId)) {
             persistRegistry();
             return true;
         }
@@ -302,8 +302,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
 
     public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file) {
-
-
         final Iterable<String> listOfSphere;
 
         if (sphereServiceAccess != null) {
@@ -341,9 +339,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
 
     StreamRecord prepareStreamRecord(BezirkZirkEndPoint receiver, String serializedStream, File file,
-                                     BezirkZirkEndPoint senderSEP, StreamDescriptor streamDescriptor) {
+                                     BezirkZirkEndPoint senderZEP, StreamDescriptor streamDescriptor) {
         final StreamRecord streamRecord = new StreamRecord();
-        streamRecord.senderSEP = senderSEP;
+        streamRecord.senderSEP = senderZEP;
         streamRecord.isReliable = false;
         streamRecord.isIncremental = false;
         streamRecord.isEncrypted = streamDescriptor.isEncrypted();
@@ -415,14 +413,14 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     }
 
     @Override
-    public Location getLocationForService(ZirkId serviceId) {
-        return pubSubBrokerRegistry.getLocationForZirk(serviceId, device);
+    public Location getLocationForZirk(ZirkId zirkId) {
+        return pubSubBrokerRegistry.getLocationForZirk(zirkId, device);
     }
 
 
     @Override
-    public boolean isStreamTopicRegistered(String streamName, ZirkId serviceId) {
-        return pubSubBrokerRegistry.isStreamTopicRegistered(streamName, serviceId);
+    public boolean isStreamTopicRegistered(String streamName, ZirkId zirkId) {
+        return pubSubBrokerRegistry.isStreamTopicRegistered(streamName, zirkId);
     }
 
     /** called on incoming message and loop back message*/
@@ -471,9 +469,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         }
     }
 
-    // true - valid service in sphere
-    private boolean isServiceInSphere(ZirkId service, String sphereId) {
-        return sphereServiceAccess == null || sphereServiceAccess.isServiceInSphere(service, sphereId);
+    // true - valid zirk in sphere
+    private boolean isServiceInSphere(ZirkId zirkId, String sphereId) {
+        return sphereServiceAccess == null || sphereServiceAccess.isServiceInSphere(zirkId, sphereId);
     }
 
     private Set<ZirkId> getAssociatedZirkList(final EventLedger eLedger) {

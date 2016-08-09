@@ -74,7 +74,7 @@ public class JavaNetworkManager extends NetworkManager {
 
             if (null == networkInterface) {
                 logger.debug("Configured interface '" + interfaceName + "' could not be resolved. Detecting another interface ...");
-                final List<IntfInetPair> interfaces = getIntfInetPair();
+                final List<InterfaceInetPair> interfaces = getIntfInetPair();
                 final int numInf = interfaces.size();
 
                 switch (numInf) {
@@ -82,7 +82,7 @@ public class JavaNetworkManager extends NetworkManager {
                         logger.error("Non-loopback interface not found, Bezirk will not be able to send messages to other devices.");
                         return null;
                     case 1: //only 1 interface found
-                        networkInterface = interfaces.get(0).getIntf();
+                        networkInterface = interfaces.get(0).getNetworkInterface();
                         logger.debug("Interface selected '" + networkInterface.getName() + "'");
                         break;
                     default:
@@ -114,7 +114,7 @@ public class JavaNetworkManager extends NetworkManager {
      */
     private String promptUserForInterface() {
         String interfaceName;
-        final Iterator<IntfInetPair> itr = getIntfInetPair().iterator();
+        final Iterator<InterfaceInetPair> itr = getIntfInetPair().iterator();
         final EthernetConfigurationDialog ethConfigDialog = new EthernetConfigurationDialog(
                 itr);
         interfaceName = ethConfigDialog.showDialog();
@@ -122,18 +122,18 @@ public class JavaNetworkManager extends NetworkManager {
     }
 
     private class EthernetConfigurationDialog {
-        private final Iterator<IntfInetPair> iterator;
+        private final Iterator<InterfaceInetPair> iterator;
 
-        public EthernetConfigurationDialog(Iterator<IntfInetPair> iterator) {
+        public EthernetConfigurationDialog(Iterator<InterfaceInetPair> iterator) {
             this.iterator = iterator;
         }
 
         public String showDialog() {
             final List<String> temp = new ArrayList<>();
-            IntfInetPair pair;
+            InterfaceInetPair pair;
             while (iterator.hasNext()) {
                 pair = iterator.next();
-                temp.add(pair.getIntf().getName());
+                temp.add(pair.getNetworkInterface().getName());
             }
             final String[] interfaceNames = temp.toArray(new String[temp.size()]);
             return (String) JOptionPane.showInputDialog(null,
