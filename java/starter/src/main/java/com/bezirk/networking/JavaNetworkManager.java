@@ -74,7 +74,7 @@ public class JavaNetworkManager extends NetworkManager {
 
             if (null == networkInterface) {
                 logger.debug("Configured interface '" + interfaceName + "' could not be resolved. Detecting another interface ...");
-                final List<InterfaceInetPair> interfaces = getIntfInetPair();
+                final List<InterfaceInetPair> interfaces = getInterfaceInetPair();
                 final int numInf = interfaces.size();
 
                 switch (numInf) {
@@ -114,7 +114,7 @@ public class JavaNetworkManager extends NetworkManager {
      */
     private String promptUserForInterface() {
         String interfaceName;
-        final Iterator<InterfaceInetPair> itr = getIntfInetPair().iterator();
+        final Iterator<InterfaceInetPair> itr = getInterfaceInetPair().iterator();
         final EthernetConfigurationDialog ethConfigDialog = new EthernetConfigurationDialog(
                 itr);
         interfaceName = ethConfigDialog.showDialog();

@@ -19,15 +19,15 @@ public abstract class NetworkManager {
 
     private NetworkInterface curInterface = null;
 
-    public List<InterfaceInetPair> getIntfInetPair() {
+    public List<InterfaceInetPair> getInterfaceInetPair() {
         ArrayList<InterfaceInetPair> list = new ArrayList<>();
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                NetworkInterface networkInterface = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = networkInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() /*&& inetAddress.isSiteLocalAddress()*/) {
-                        list.add(new InterfaceInetPair(intf, inetAddress));
+                        list.add(new InterfaceInetPair(networkInterface, inetAddress));
                     }
 
                 }
@@ -88,12 +88,12 @@ public abstract class NetworkManager {
     public byte[] getLocalMACAddress() {
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                NetworkInterface networkInterface = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = networkInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
                         //                        Log.i(TAG,"MAC address determined: " + Hex.encodeToString(intf.getHardwareAddress()));
-                        return intf.getHardwareAddress();
+                        return networkInterface.getHardwareAddress();
                     }
 
                 }

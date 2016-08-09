@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Vimal on 5/18/2015.
  * Dispatches the incoming events to respective registered listener
  */
 public class CommsMessageDispatcher implements MessageDispatcher {

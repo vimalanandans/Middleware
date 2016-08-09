@@ -46,7 +46,7 @@
 //			if(addr == null){
 //				logger.error("Failure to resolve ip - Check interface in comms.properties ");
 //				logger.error("Possible interface/ ip pairs are: ");
-//				Iterator<InterfaceInetPair> itr = BezirkNetworkUtilities.getIntfInetPair().iterator();
+//				Iterator<InterfaceInetPair> itr = BezirkNetworkUtilities.getInterfaceInetPair().iterator();
 //				while(itr.hasNext()){
 //					InterfaceInetPair pair = itr.next();
 //					logger.error("Interface: "+pair.getNetworkInterface().getName()+" IP:"+pair.getInet().getHostAddress());

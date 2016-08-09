@@ -6,7 +6,6 @@ import com.bezirk.control.messages.EventLedger;
 
 
 /**
- * Created by Vimal on 5/19/2015.
  * Interface for Comms layer to dispatch to respective component
  */
 public interface MessageDispatcher {
@@ -16,7 +15,7 @@ public interface MessageDispatcher {
      */
     boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
 
-    // currently sadl consumes all the zirk message. hence no registration
+    // currently PubSubBroker consumes all the zirk message. hence no registration
     // if needed extend similar mechanism to control message dispatching
 
 
