@@ -20,6 +20,7 @@ package com.bezirk.middleware;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.messages.StreamDescriptor;
@@ -141,4 +142,13 @@ public interface Bezirk {
      * @param location the physical location of the Thing <code>Zirk</code> controls
      */
     void setLocation(Location location);
+
+    /**
+     * Return the identity manager for the Bezirk middleware. This is used by Zirks that make use
+     * of {@link com.bezirk.middleware.messages.IdentifiedEvent identified messages} to manage
+     * identities.
+     *
+     * @return the identity manager for this instance of the middleware
+     */
+    IdentityManager getIdentityManager();
 }

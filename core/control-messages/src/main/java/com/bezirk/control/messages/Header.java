@@ -1,5 +1,6 @@
 package com.bezirk.control.messages;
 
+import com.bezirk.middleware.identity.Alias;
 import com.bezirk.middleware.serialization.InterfaceAdapter;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.google.gson.Gson;
@@ -14,6 +15,8 @@ public class Header {
     private BezirkZirkEndPoint sender = null; // Change to ZirkEndPoint sender
     private String uniqueMsgId = null;
     private String eventName = null;
+    private boolean isIdentified = false;
+    private String serializedAlias;
 
     private static final Gson gson;
 
@@ -79,6 +82,22 @@ public class Header {
      */
     public void setSender(BezirkZirkEndPoint sender) {
         this.sender = sender;
+    }
+
+    public void setIsIdentified(boolean isIdentified) {
+        this.isIdentified = isIdentified;
+    }
+
+    public boolean isIdentified() {
+        return isIdentified;
+    }
+
+    public void setAlias(Alias alias) {
+        this.serializedAlias = gson.toJson(alias);
+    }
+
+    public Alias getAlias() {
+        return gson.fromJson(serializedAlias, Alias.class);
     }
 
     public String serialize() {

@@ -21,7 +21,9 @@ public class Publisher {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
-                    System.out.println("\nReceived UpdateAcceptedEvent with test field: " + acceptedEventUpdate.getTestField());
+                    System.out.format("Received UpdateAcceptedEvent with test field: %s, isMiddlewareUser: %s%n%n",
+                            acceptedEventUpdate.getTestField(),
+                            bezirk.getIdentityManager().isMiddlewareUser(acceptedEventUpdate.getAlias()));
                 }
             }
         });

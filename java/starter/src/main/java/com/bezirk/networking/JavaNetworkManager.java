@@ -18,15 +18,12 @@ import javax.swing.JOptionPane;
 
 public class JavaNetworkManager extends NetworkManager {
     private static final Logger logger = LoggerFactory.getLogger(JavaNetworkManager.class);
-    private Preferences preferences;
+    private final Preferences preferences;
 
     public JavaNetworkManager() {
-        init();
-    }
+        this.preferences = Preferences.userNodeForPackage(JavaNetworkManager.class);
 
-    void init() {
         try {
-            preferences = Preferences.userNodeForPackage(JavaNetworkManager.class);
             logger.debug("Network preferences initialized successfully");
             logger.debug(NETWORK_INTERFACE_NAME_KEY + " --> " + getStoredInterfaceName());
         } catch (Exception e) {

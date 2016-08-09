@@ -2,6 +2,7 @@ package com.bezirk.pubsubbroker;
 
 import com.bezirk.actions.BezirkAction;
 import com.bezirk.actions.ReceiveFileStreamAction;
+import com.bezirk.actions.SendMulticastEventAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.processor.EventMsgReceiver;
@@ -14,7 +15,6 @@ import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.datastorage.PubSubBrokerStorage;
 import com.bezirk.device.Device;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.networking.NetworkManager;
@@ -182,9 +182,8 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         return false;
     }
 
-    @Override
-    public boolean sendMulticastEvent(ZirkId zirkId, RecipientSelector recipientSelector, String serializedEventMsg, String eventName ) {
-
+    public boolean sendMulticastEvent(SendMulticastEventAction multicastEventAction) {
+        final ZirkId zirkId = multicastEventAction.getZirkId();
         final Iterable<String> listOfSphere;
 
         if (sphereServiceAccess != null) {
@@ -208,13 +207,19 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         while (sphereIterator.hasNext()) {
 
             final EventLedger eventLedger = new EventLedger();
-            eventLedger.setSerializedMessage(serializedEventMsg);
+            eventLedger.setSerializedMessage(multicastEventAction.getSerializedEvent());
             final MulticastHeader mHeader = new MulticastHeader();
-            mHeader.setRecipientSelector(recipientSelector);
+            mHeader.setRecipientSelector(multicastEventAction.getRecipientSelector());
             mHeader.setSender(sender);
             mHeader.setUniqueMsgId(uniqueMsgId.toString());
             mHeader.setSphereId(sphereIterator.next());
-            mHeader.setEventName(eventName);
+            mHeader.setEventName(multicastEventAction.getEventName());
+            mHeader.setIsIdentified(multicastEventAction.isIdentified());
+
+            if (multicastEventAction.isIdentified()) {
+                mHeader.setAlias(multicastEventAction.getAlias());
+            }
+
             eventLedger.setHeader(mHeader);
             eventLedger.setIsMulticast(true);
             eventLedger.setSerializedHeader(mHeader.serialize());
@@ -229,11 +234,13 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             sendMessageToLocal(eventLedger);
 
         }
+
         return true;
     }
 
     @Override
-    public boolean sendUnicastEvent(ZirkId zirkId, BezirkZirkEndPoint recipient, String serializedEventMsg, String eventName) {
+    public boolean sendUnicastEvent(UnicastEventAction unicastEventAction) {
+        final ZirkId zirkId = unicastEventAction.getZirkId();
         final Iterable<String> listOfSphere;
 
         if (sphereServiceAccess != null) {
@@ -257,13 +264,19 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         while (sphereIterator.hasNext()) {
             final EventLedger eventLedger = new EventLedger();
 
-            eventLedger.setSerializedMessage(serializedEventMsg);
+            eventLedger.setSerializedMessage(unicastEventAction.getSerializedEvent());
             final UnicastHeader uHeader = new UnicastHeader();
-            uHeader.setRecipient(recipient);
+            uHeader.setRecipient((BezirkZirkEndPoint) unicastEventAction.getEndpoint());
             uHeader.setSender(sender);
             uHeader.setUniqueMsgId(uniqueMsgId.toString());
             uHeader.setSphereId(sphereIterator.next());
-            uHeader.setEventName(eventName);
+            uHeader.setEventName(unicastEventAction.getEventName());
+            uHeader.setIsIdentified(unicastEventAction.isIdentified());
+
+            if (unicastEventAction.isIdentified()) {
+                uHeader.setAlias(unicastEventAction.getAlias());
+            }
+
             eventLedger.setHeader(uHeader);
             eventLedger.setIsMulticast(false);
             eventLedger.setSerializedHeader(uHeader.serialize());
@@ -415,10 +428,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     /** called on incoming message and loop back message*/
     @Override
     public boolean processEvent(final EventLedger eLedger) {
+        Set<ZirkId> zirkList = getAssociatedZirkList(eLedger);
 
-        Set<ZirkId> serviceList = getAssociatedServiceList(eLedger);
-
-        if (null == serviceList || serviceList.isEmpty()) {
+        if (null == zirkList || zirkList.isEmpty()) {
             //logger.debug("No services are present to respond to the request");
             return false;
         }
@@ -432,7 +444,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         }
 
         // give a callback to appropriate zirk..
-        triggerMessageHandler(eLedger, serviceList);
+        triggerMessageHandler(eLedger, zirkList);
 
         return true;
     }
@@ -440,12 +452,18 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     private void triggerMessageHandler(final EventLedger eLedger,
                                        Set<ZirkId> invokeList) {
         // check if the zirk exists in that sphere then give callback
-        for (ZirkId serviceId : invokeList) {
+        for (ZirkId zirkId : invokeList) {
 
-            if (isServiceInSphere(serviceId, eLedger.getHeader().getSphereId())) {
+            if (isServiceInSphere(zirkId, eLedger.getHeader().getSphereId())) {
                 UnicastEventAction eventMessage = new UnicastEventAction(BezirkAction.ACTION_ZIRK_RECEIVE_EVENT,
-                        serviceId, eLedger.getHeader().getSender(), eLedger.getSerializedMessage(),
-                        eLedger.getHeader().getUniqueMsgId(),eLedger.getHeader().getEventName() );
+                        zirkId, eLedger.getHeader().getSender(), eLedger.getSerializedMessage(),
+                        eLedger.getHeader().getUniqueMsgId(),eLedger.getHeader().getEventName(),
+                        eLedger.getHeader().isIdentified());
+
+                if (eLedger.getHeader().isIdentified()) {
+                    eventMessage.setAlias(eLedger.getHeader().getAlias());
+                }
+
                 msgHandler.onIncomingEvent(eventMessage);
             } else {
                 logger.debug("Unknown Zirk ID!!!!!");
@@ -458,22 +476,22 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         return sphereServiceAccess == null || sphereServiceAccess.isServiceInSphere(service, sphereId);
     }
 
-    private Set<ZirkId> getAssociatedServiceList(final EventLedger eLedger) {
+    private Set<ZirkId> getAssociatedZirkList(final EventLedger eLedger) {
 
-        Set<ZirkId> serviceList = null;
+        Set<ZirkId> zirkList = null;
 
         if (eLedger.getHeader() instanceof MulticastHeader) {
             MulticastHeader mHeader = (MulticastHeader) eLedger.getHeader();
             Location targetLocation = mHeader.getRecipientSelector() == null ? null : mHeader.getRecipientSelector().getLocation();
-            serviceList = this.checkMulticastEvent(mHeader.getEventName(), targetLocation);
+            zirkList = this.checkMulticastEvent(mHeader.getEventName(), targetLocation);
         } else {
             UnicastHeader uHeader = (UnicastHeader) eLedger.getHeader();
             if (this.checkUnicastEvent(uHeader.getEventName(), uHeader.getRecipient().zirkId)) {
-                serviceList = new HashSet<>();
-                serviceList.add(uHeader.getRecipient().zirkId);
+                zirkList = new HashSet<>();
+                zirkList.add(uHeader.getRecipient().zirkId);
             }
         }
-        return serviceList;
+        return zirkList;
     }
 
     /**

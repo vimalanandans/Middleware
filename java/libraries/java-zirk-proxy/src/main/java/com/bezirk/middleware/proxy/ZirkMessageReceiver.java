@@ -5,6 +5,7 @@ import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
+import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
@@ -69,6 +70,10 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
     private void processEvent(UnicastEventAction incomingEvent) {
         final Event event = Event.fromJson(incomingEvent.getSerializedEvent(), Event.class);
         final String eventName = event.getClass().getName();
+
+        if (incomingEvent.isIdentified()) {
+            ((IdentifiedEvent) event).setAlias(incomingEvent.getAlias());
+        }
 
         final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
 
