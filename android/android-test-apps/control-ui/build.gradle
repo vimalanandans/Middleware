@@ -39,7 +39,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
     compile project(':core:commons')
     compile project(':android:android-starter')
-    //compile project(':android:android-test-apps:sphere-pipe-ui')
+    compile project(':android:android-test-apps:sphere-pipe-ui')
     compile project(':android:android-libraries:android-comms-zyre-jni')
     compile 'org.bouncycastle:bcprov-jdk15on:1.49'
     compile 'org.apache.shiro:shiro-core:1.2.4'

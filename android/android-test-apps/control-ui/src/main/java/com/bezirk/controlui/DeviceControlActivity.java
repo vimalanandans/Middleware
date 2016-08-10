@@ -160,7 +160,7 @@ public class DeviceControlActivity extends AppCompatActivity
         if (ValidatorUtility.isObjectNotNull(listData) && !listData.isEmpty()) {
             DataModel dataModel = listData.get(position);
             if (ValidatorUtility.isObjectNotNull(dataModel)) {
-                intent = new Intent(context, MainService.class);
+                intent =  new Intent(context, MainService.class);
                 switch (dataModel.getImageId()) {
                     case R.drawable.upa_control: // Bezirk On/OFF
                         action = checkStatus ? BezirkAction.ACTION_START_BEZIRK.getName() : BezirkAction.ACTION_STOP_BEZIRK.getName();

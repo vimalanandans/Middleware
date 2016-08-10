@@ -24,7 +24,7 @@ import com.bezirk.spheremanager.ui.ShowCertFragment;
 import com.bezirk.spheremanager.ui.ShowCertFragment.ShowCertFragmentCallbacks;
 import com.bezirk.spheremanager.ui.UpdateUserCredentialsFragment;
 import com.bezirk.spheremanager.ui.UpdateUserCredentialsFragment.UpdateUserCredentialsFragmentCallbacks;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 import java.util.ArrayList;
 

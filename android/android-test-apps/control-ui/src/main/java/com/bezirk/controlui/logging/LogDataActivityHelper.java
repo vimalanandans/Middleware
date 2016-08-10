@@ -14,15 +14,16 @@ import android.widget.Toast;
 
 import com.bezirk.controlui.FileCreationHelper;
 import com.bezirk.controlui.R;
-import com.bezirk.controlui.RemoteLoggingManager;
-import com.bezirk.controlui.ServiceActivatorDeactivator;
+import com.bezirk.remotelogging.RemoteLoggingManager;
+import com.bezirk.remotelogging.ServiceActivatorDeactivator;
 import com.bezirk.controlui.Util;
+import com.bezirk.remotelogging.RemoteLoggingManager;
 import com.bezirk.remotelogging.RemoteLoggingMessage;
 import com.bezirk.remotelogging.RemoteLoggingMessageNotification;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.sphere.impl.SphereServiceManager;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 import com.bezirk.starter.MainStackPreferences;
 import com.bezirk.starter.SphereServiceAccessStub;
 
@@ -169,7 +170,7 @@ class LogDataActivityHelper {
         try {
             logger.debug("start log service");
             logDataActivity.remoteLoggingManager = new RemoteLoggingManager();
-            logDataActivity.remoteLoggingManager.startRemoteLoggingService(ServiceActivatorDeactivator.REMOTE_LOGGING_PORT, loggingHandler);
+            logDataActivity.remoteLoggingManager.startLoggingService(loggingHandler);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

@@ -13,7 +13,7 @@ import com.bezirk.sphere.api.SphereType;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.PipeListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 import com.bezirk.util.ValidatorUtility;
 
 import bezirk.zbarscanner.ScannerActivity;

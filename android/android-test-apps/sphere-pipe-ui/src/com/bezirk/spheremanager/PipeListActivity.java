@@ -13,7 +13,7 @@ import android.view.View;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.PipeListFragment;
 import com.bezirk.spheremanager.ui.PipeListFragment.ShowPipesCallbacks;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 import java.util.ArrayList;
 

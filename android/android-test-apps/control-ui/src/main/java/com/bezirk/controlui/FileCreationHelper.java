@@ -1,5 +1,6 @@
 package com.bezirk.controlui;
 
+import com.bezirk.remotelogging.ReceiverQueueProcessor;
 import com.bezirk.remotelogging.RemoteLoggingMessage;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereServiceAccess;
@@ -33,7 +34,7 @@ public class FileCreationHelper {
         File file = new File(dateFormat.format(date) + ".txt") ;
         BufferedWriter out = new BufferedWriter(new FileWriter(file));
         out.write(getSphereNameFromSphereId(remoteLogMessage.sphereName) +" " +sdf.format(Long.valueOf(remoteLogMessage.timeStamp)) +
-                " "+remoteLogMessage.sender + " "+getDeviceNameFromDeviceId(remoteLogMessage.recipient)+ " "+remoteLogMessage.topic);
+                " "+remoteLogMessage.sender + " "+getDeviceNameFromDeviceId(remoteLogMessage.recipient));
         out.close();
     }
     private String getSphereNameFromSphereId(final String sphereId) {

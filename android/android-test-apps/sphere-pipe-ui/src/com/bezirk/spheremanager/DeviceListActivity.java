@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bezirk.componentManager.ComponentManager;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
@@ -28,7 +29,7 @@ import com.bezirk.spheremanager.ui.DialogServiceListFragment;
 import com.bezirk.spheremanager.ui.PipeListFragment.ShowPipesCallbacks;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.starter.ActionCommands;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 import com.bezirk.util.ValidatorUtility;
 
 import bezirk.zbarscanner.ScannerActivity;
@@ -58,6 +59,7 @@ public class DeviceListActivity extends FragmentActivity implements
 
     private SphereIntentReceiver sphereIntentReceiver;
     private DeviceListActivityHelper deviceListActivityHelper;
+     ComponentManager componentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +67,8 @@ public class DeviceListActivity extends FragmentActivity implements
         deviceListActivityHelper = new DeviceListActivityHelper(this);
 
         sphereID = getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
-
-        SphereAPI api = MainService.getSphereHandle();
+        Intent intent = new Intent(DeviceListActivity.this,ComponentManager.class);
+        SphereAPI api =  componentManager.getSe
 
         if (ValidatorUtility.isObjectNotNull(api)) {
 

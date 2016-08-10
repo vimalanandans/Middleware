@@ -17,7 +17,7 @@ import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.SphereListActivity;
 import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 /**
  * A fragment representing a single sphere detail screen. This fragment is

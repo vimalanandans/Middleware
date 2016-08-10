@@ -31,8 +31,8 @@ include ':android:android-test-apps:bezirk-test-ui'
 include ':android:android-test-apps:subscriber-zirk'
 include ':android:android-test-apps:publisher-zirk'
 include ':android:android-test-apps:control-ui'
+include ':android:android-test-apps:sphere-pipe-ui'
 include ':android:android-libraries:android-zirk-proxy'
-
-
+include ':android:android-libraries:zbarscanner'
 include ':android:android-libraries:android-comms-zyre-jni'
 

@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.bezirk.controlui.R;
-import com.bezirk.controlui.RemoteLoggingManager;
+import com.bezirk.remotelogging.RemoteLoggingManager;
 import com.bezirk.starter.MainService;
 import com.bezirk.starter.MainStackPreferences;
 

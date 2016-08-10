@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -30,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 public class ComponentManager extends Service {
     private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
+    private IBinder iBinder =  new BinderService();
     private SharedPreferences preferences;
     //private final Context context;
     private ActionProcessor actionProcessor;
@@ -150,10 +152,9 @@ public class ComponentManager extends Service {
         super.onDestroy();
     }
 
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return iBinder;
     }
 
     public interface LifeCycleCallbacks {
@@ -199,5 +200,10 @@ public class ComponentManager extends Service {
                 );
 
         return notification.build();
+    }
+    public class BinderService extends Binder{
+        ComponentManager getService(){
+            return ComponentManager.this;
+        }
     }
 }

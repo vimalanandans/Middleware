@@ -14,7 +14,7 @@ import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 import java.util.ArrayList;
 import java.util.List;
