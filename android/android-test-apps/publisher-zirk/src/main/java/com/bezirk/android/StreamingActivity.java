@@ -21,6 +21,7 @@ import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
+import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.middleware.proxy.android.BezirkMiddleware;
 import com.bezirk.test.streaming.StreamPublishEvent;
 import com.bezirk.test.streaming.StreamPublisherEventSet;
@@ -81,8 +82,10 @@ public class StreamingActivity extends AppCompatActivity {
                 //if file prepsent
                 if(filePath != null){
                     File file = new File(filePath);
-                    StreamSend streamSend = new StreamSend(false,isEncrypted,file);
-                    bezirk.sendStream(recipientEndpoint, streamSend);
+                    //StreamSend streamSend = new StreamSend(false,isEncrypted,file);
+
+                    StreamDescriptor streamDescriptor = new StreamDescriptor(false, false, file);
+                    bezirk.sendStream(recipientEndpoint, streamDescriptor);
                 }else{
                     Toast.makeText(getApplicationContext(), "file path is null.. Select the File and send", Toast.LENGTH_SHORT).show();
                 }

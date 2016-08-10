@@ -5,14 +5,19 @@ import com.bezirk.middleware.serialization.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.Serializable;
+
 /**
  * Base class for all message types Zirks may exchange using the Bezirk middleware. This class
  * implements the serialization routines required to toJson/fromJson a message for
  * transfer/reception.
  */
-public abstract class Message {
+public abstract class Message implements Serializable {
     private static final Gson gson;
     private String msgId;
+
+    //defualt value
+    private static final long serialVersionUID = 1L;
 
     static {
         final GsonBuilder gsonBuilder = new GsonBuilder();
