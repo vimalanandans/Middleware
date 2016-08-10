@@ -5,7 +5,6 @@ import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.datastorage.SphereRegistry;
 import com.bezirk.device.Device;
 import com.bezirk.networking.NetworkManager;
-import com.bezirk.pipe.PipeManager;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereConfig;
 import com.bezirk.sphere.api.SphereSecurity;
@@ -20,8 +19,6 @@ import org.slf4j.LoggerFactory;
 /**
  * This is a helper class for zirk startup which handles the sphere
  * initialization and device configuration.
- *
- * @author ajc6kor
  */
 final class ServiceStarterHelper {
     private static final Logger logger = LoggerFactory.getLogger(ServiceStarterHelper.class);
@@ -78,11 +75,6 @@ final class ServiceStarterHelper {
         }
 
         return sphereForPC;
-    }
-
-
-    PipeManager createPipeManager() {
-        return null;
     }
 
     /**

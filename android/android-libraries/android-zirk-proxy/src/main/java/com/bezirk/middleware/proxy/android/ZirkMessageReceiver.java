@@ -12,6 +12,7 @@ import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
+import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.middleware.messages.StreamSet;
@@ -62,13 +63,17 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         return true;
     }
 
-    private void processEvent(UnicastEventAction eventMessage) {
-        final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) eventMessage.getEndpoint();
-        final String messageId = eventMessage.getMessageId();
+    private void processEvent(UnicastEventAction incomingEvent) {
+        final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
+        final String messageId = incomingEvent.getMessageId();
 
         if (checkDuplicateMsg(endpoint.zirkId.getZirkId(), messageId)) {
-            final Event event = Message.fromJson(eventMessage.getSerializedEvent(), Event.class);
+            final Event event = Message.fromJson(incomingEvent.getSerializedEvent(), Event.class);
             final String eventName = event.getClass().getName();
+
+            if (incomingEvent.isIdentified()) {
+                ((IdentifiedEvent) event).setAlias(incomingEvent.getAlias());
+            }
 
             if (ProxyClient.eventListenerMap.containsKey(eventName)) {
                 final List<EventSet.EventReceiver> messageListeners = ProxyClient.eventListenerMap.get(eventName);

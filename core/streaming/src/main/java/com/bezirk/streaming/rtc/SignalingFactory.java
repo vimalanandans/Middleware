@@ -135,7 +135,7 @@ public final class SignalingFactory {
         Object newInstance = null;
         try {
             Constructor<?> ctor = getClass(className).getConstructor(Comms.class);
-            newInstance = ctor.newInstance(new Object[]{comms});
+            newInstance = ctor.newInstance(comms);
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
             logger.error("New Instance creation failed. \n", e);
         }

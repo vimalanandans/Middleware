@@ -345,9 +345,6 @@
 //            return false;
 //        }
 //        */
-//      /*  final PipeManager pipeManager = serviceStarterHelper
-//                .createPipeManager();
-//*/
 //        final InetAddress addr = NetworkManager.getIpForInterface(intf);
 //
 //        /*

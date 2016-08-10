@@ -1,6 +1,7 @@
 package com.bezirk.middleware.serialization;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -13,7 +14,19 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 
 public class InterfaceAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
-    private static final Gson gson = new Gson();
+    private final Gson gson;
+
+    public InterfaceAdapter() {
+        gson = new Gson();
+    }
+
+    public InterfaceAdapter(Class type, Object chainedAdapter) {
+        final GsonBuilder gsonBuilder = new GsonBuilder();
+
+        gsonBuilder.registerTypeHierarchyAdapter(type, chainedAdapter);
+
+        gson = gsonBuilder.create();
+    }
 
     @Override
     public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {
