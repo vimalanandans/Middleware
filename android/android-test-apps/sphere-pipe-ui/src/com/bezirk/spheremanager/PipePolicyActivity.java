@@ -20,8 +20,8 @@ import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.PolicyListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
-import com.bezirk.starter.MainService;
-import com.bezirk.starter.SphereServiceAccessStub;
+//import com.bezirk.starter.MainService;
+//import com.bezirk.starter.SphereServiceAccessStub;
 import com.bezirk.util.ValidatorUtility;
 import com.google.gson.Gson;
 
@@ -54,8 +54,8 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
             logger.error("Intent not valid because there was a failure validating zirkId");
             return;
         }
-        SphereServiceAccess sphereServiceAccess = new SphereServiceAccessStub();
-        final String serviceName =sphereServiceAccess.getServiceName(serviceId);
+       // SphereServiceAccess sphereServiceAccess = new SphereServiceAccessStub();
+       // final String serviceName =sphereServiceAccess.getServiceName(serviceId);
 
         LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -66,7 +66,7 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
         TextView service_name = (TextView) view
                 .findViewById(R.id.name_of_service);
 //		service_name.setText("www.bosch.com");
-        service_name.setText(serviceName);
+        //service_name.setText(serviceName);
 
 
         //SphereListItem sphere = (SphereListItem) DummyContent.ITEM_MAP
@@ -76,8 +76,8 @@ public class PipePolicyActivity extends FragmentActivity implements OnClickListe
 
         SphereListItem sphere = null;
 
-        SphereAPI api = MainService.getSphereHandle();
-
+        //SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api=null;
         if (ValidatorUtility.isObjectNotNull(api)) {
             BezirkSphereInfo sphereInfo = api.getSphere(sphereID);
             if (sphereInfo != null) {

@@ -14,7 +14,7 @@ import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -78,7 +78,8 @@ public class SphereListFragment extends ListFragment {
     /*	setListAdapter(new SphereListAdapter(getActivity()
 				.getApplicationContext(), DummyContent.ITEMS));*/
 
-        SphereAPI api = MainService.getSphereHandle();
+        //SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api=null;
         if (api != null) {
             Iterator<BezirkSphereInfo> sphereInfo = api.getSpheres().iterator();
 
@@ -164,7 +165,8 @@ public class SphereListFragment extends ListFragment {
      */
     String getSphereId(int position) {
         String itemID = "";
-        SphereAPI api = MainService.getSphereHandle();
+        //SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api=null;
 
         if (api != null) {
             List<BezirkSphereInfo> sphereList = (List) api.getSpheres();

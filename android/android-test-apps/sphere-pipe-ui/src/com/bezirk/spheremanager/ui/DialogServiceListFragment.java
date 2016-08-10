@@ -26,7 +26,8 @@ import java.util.Map;
 
 public class DialogServiceListFragment extends DialogFragment {
 
-    final SphereAPI sphereAPI = MainService.getSphereHandle();
+    //final SphereAPI sphereAPI = MainService.getSphereHandle();
+    final SphereAPI sphereAPI=null;
     final List<BezirkZirkInfo> servicesToBeAdded = new ArrayList<BezirkZirkInfo>();
     ListView listView;
     Button addBtn, cancelBtn;

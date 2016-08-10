@@ -153,7 +153,8 @@ public class DeviceListActivityHelper {
 
     boolean processQRcode(String data, String scanType, String sphereID) {
         boolean qrProcessStatus = false;
-        SphereAPI api = MainService.getSphereHandle();
+        //SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api=null;
         if (ValidatorUtility.isObjectNotNull(api)) {
             if (scanType.equals(DeviceListActivity.CATCH)) {
                 Log.d(TAG, "processing as catch");

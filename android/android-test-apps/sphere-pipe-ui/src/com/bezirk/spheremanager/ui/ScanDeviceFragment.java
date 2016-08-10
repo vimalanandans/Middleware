@@ -24,7 +24,7 @@ import com.bezirk.spheremanager.SphereListActivity;
 import com.bezirk.spheremanager.ui.SphereListFragment.Callbacks;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -109,7 +109,8 @@ public class ScanDeviceFragment extends Fragment {
                 .getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID));*/
         String sphereID = getActivity().getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
 
-        final SphereAPI api = MainService.getSphereHandle();
+        //final SphereAPI api = MainService.getSphereHandle();
+        final SphereAPI api=null;
 
         List<AbstractSphereListItem> sphereItemList = new ArrayList<AbstractSphereListItem>();
 

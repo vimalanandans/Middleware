@@ -28,7 +28,7 @@ import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallback
 import com.bezirk.spheremanager.ui.DialogServiceListFragment;
 import com.bezirk.spheremanager.ui.PipeListFragment.ShowPipesCallbacks;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
-import com.bezirk.starter.ActionCommands;
+//import com.bezirk.starter.ActionCommands;
 //import com.bezirk.starter.MainService;
 import com.bezirk.util.ValidatorUtility;
 
@@ -67,9 +67,9 @@ public class DeviceListActivity extends FragmentActivity implements
         deviceListActivityHelper = new DeviceListActivityHelper(this);
 
         sphereID = getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
-        Intent intent = new Intent(DeviceListActivity.this,ComponentManager.class);
-        SphereAPI api =  componentManager.getSe
-
+        //Intent intent;
+        //intent = new Intent(this,ComponentManager.class);
+        SphereAPI api =null;
         if (ValidatorUtility.isObjectNotNull(api)) {
 
             BezirkSphereInfo sphereInfo = api.getSphere(sphereID);
@@ -132,7 +132,7 @@ public class DeviceListActivity extends FragmentActivity implements
 
         IntentFilter filter = new IntentFilter();
 
-        filter.addAction(ActionCommands.SPHERE_NOTIFICATION_ACTION);
+        //filter.addAction(ActionCommands.SPHERE_NOTIFICATION_ACTION);
 
         registerReceiver(sphereIntentReceiver, filter);
     }
@@ -241,15 +241,15 @@ public class DeviceListActivity extends FragmentActivity implements
     /* add the local services to the sphere
     * */
     void addLocalServicesToSphere() {
-        if (ValidatorUtility.isObjectNotNull(MainService.getSphereHandle().getServiceInfo())) {
+       // if (ValidatorUtility.isObjectNotNull(MainService.getSphereHandle().getServiceInfo())) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             DialogServiceListFragment dialogServiceListFragment = new DialogServiceListFragment();
             dialogServiceListFragment.setSphereId(sphereID);
             dialogServiceListFragment.setTitle("Add services to sphere");
             dialogServiceListFragment.show(fragmentManager, "Dialog Zirk List");
-        } else {
+        //} else {
             Toast.makeText(getApplicationContext(), "No services in the device", Toast.LENGTH_SHORT).show();
-        }
+       // }
     }
 
     @Override
@@ -326,9 +326,9 @@ public class DeviceListActivity extends FragmentActivity implements
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "Received Intent for Device control >" + intent.getAction());
-            String command = intent.getStringExtra(ActionCommands.BEZIRK_ACTION_COMMANDS);
-            Log.i(TAG, "Command > " + command);
-            if (command.equals(ActionCommands.CMD_SPHERE_DISCOVERY_STATUS)) {
+            //String command = intent.getStringExtra(ActionCommands.BEZIRK_ACTION_COMMANDS);
+           // Log.i(TAG, "Command > " + command);
+        /*    if (command.equals(ActionCommands.CMD_SPHERE_DISCOVERY_STATUS)) {
                 boolean Status = intent.getBooleanExtra(ActionCommands.BEZIRK_ACTION_COMMAND_STATUS, false);
                 if (Status) { // when status is true
                     if (deviceListActivityHelper != null) {
@@ -342,7 +342,7 @@ public class DeviceListActivity extends FragmentActivity implements
                     command.equals(ActionCommands.CMD_SPHERE_SHARE_STATUS)) {
                 String message = intent.getStringExtra(ActionCommands.BEZIRK_ACTION_COMMAND_MESSAGE);
                 Toast.makeText(parent, message, Toast.LENGTH_LONG).show();
-            }
+            }*/
         }
     }
 }

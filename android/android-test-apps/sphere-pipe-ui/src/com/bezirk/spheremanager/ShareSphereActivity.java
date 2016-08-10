@@ -31,7 +31,7 @@ import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.QRCode;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -78,8 +78,8 @@ public class ShareSphereActivity extends ActionBarActivity {
         final ActionBar actionBar = getActionBar();
         sphereID = getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
 
-        SphereAPI api = MainService.getSphereHandle();
-
+        //SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api=null;
         if (api != null) {
             sphereInfo = api.getSphere(sphereID);
         } else {

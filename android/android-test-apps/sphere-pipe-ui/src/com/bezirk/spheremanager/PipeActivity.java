@@ -25,8 +25,8 @@ import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.SelectSphereListAdapter;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
-import com.bezirk.starter.MainService;
-import com.bezirk.starter.SphereServiceAccessStub;
+//import com.bezirk.starter.MainService;
+//import com.bezirk.starter.SphereServiceAccessStub;
 import com.bezirk.util.ValidatorUtility;
 import com.google.gson.Gson;
 
@@ -79,8 +79,8 @@ public class PipeActivity extends Activity {
             logger.error("Intent not valid because there was a failure validating zirkId");
             return;
         }
-        SphereServiceAccess sphereServiceAccess = new SphereServiceAccessStub();
-        final String serviceName =sphereServiceAccess.getServiceName(serviceId);
+        //SphereServiceAccess sphereServiceAccess = new SphereServiceAccessStub();
+        //final String serviceName =sphereServiceAccess.getServiceName(serviceId);
        // final String serviceName = BezirkCompManager.getSphereForPubSubBroker().getZirkName(serviceId);
 
         //callingActivity = getCallingActivity().getClassName();
@@ -90,13 +90,13 @@ public class PipeActivity extends Activity {
 
         //Change Text for First Pipe Screen here
         TextView textPipe = (TextView) view.findViewById(R.id.text_pipe);
-        textPipe.setText("Zirk " + serviceName + " has requested for pipe: " + pipeName);
+       // textPipe.setText("Zirk " + serviceName + " has requested for pipe: " + pipeName);
         ListView sphereListView = (ListView) view
                 .findViewById(R.id.sphere_list_for_adding);
 
 
-        SphereAPI api = MainService.getSphereHandle();
-
+       // SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api=null;
         List<AbstractSphereListItem> sphereList = new ArrayList<AbstractSphereListItem>();
 
         if (api != null) {
@@ -119,8 +119,8 @@ public class PipeActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                SphereAPI api = MainService.getSphereHandle();
-
+                //SphereAPI api = MainService.getSphereHandle();
+                SphereAPI api=null;
                 if (ValidatorUtility.isObjectNotNull(api)) {
 
                     List<BezirkSphereInfo> sphereInfoList = (List) api.getSpheres();

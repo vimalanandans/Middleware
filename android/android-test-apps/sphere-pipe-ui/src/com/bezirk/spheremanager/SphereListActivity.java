@@ -26,8 +26,8 @@ import com.bezirk.spheremanager.ui.DeviceListFragment.DeviceListFragmentCallback
 import com.bezirk.spheremanager.ui.DialogAddSphereFragment;
 import com.bezirk.spheremanager.ui.DialogServiceListFragment;
 import com.bezirk.spheremanager.ui.SphereListFragment;
-import com.bezirk.starter.MainService;
-import com.bezirk.starter.ActionCommands;
+//import com.bezirk.starter.MainService;
+//import com.bezirk.starter.ActionCommands;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -158,7 +158,7 @@ public class SphereListActivity extends FragmentActivity implements
         super.onResume();
         // register the intent to receive the Bezirk sphere Results
         IntentFilter filter = new IntentFilter();
-        filter.addAction(ActionCommands.SPHERE_NOTIFICATION_ACTION);
+        //filter.addAction(ActionCommands.SPHERE_NOTIFICATION_ACTION);
         registerReceiver(sphereIntentReceiver, filter);
     }
 
@@ -191,10 +191,10 @@ public class SphereListActivity extends FragmentActivity implements
         menu.setHeaderTitle("sphere Actions");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.sphere_actions, menu);
-        final List<BezirkZirkInfo> serviceInfo = MainService.getSphereHandle().getServiceInfo();
+        /*final List<BezirkZirkInfo> serviceInfo = MainService.getSphereHandle().getServiceInfo();
         if (serviceInfo == null) {
             menu.getItem(0).setEnabled(false);
-        }
+        }*/
     }
 
     @Override
@@ -202,12 +202,12 @@ public class SphereListActivity extends FragmentActivity implements
         FragmentManager fragmentManager = getSupportFragmentManager();
         DialogServiceListFragment dialogServiceListFragment = new DialogServiceListFragment();
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Iterator<BezirkSphereInfo> itr = MainService.getSphereHandle().getSpheres().iterator();
+       // Iterator<BezirkSphereInfo> itr = MainService.getSphereHandle().getSpheres().iterator();
 
         ArrayList<String> arrayList = new ArrayList<String>();
-        while (itr.hasNext()) {
+       /* while (itr.hasNext()) {
             arrayList.add(itr.next().getSphereID());
-        }
+        }*/
         if (item.getTitle().equals("Add services to sphere")) {
             String sphereId = arrayList.get(menuInfo.position);
             dialogServiceListFragment.setSphereId(sphereId);
@@ -224,7 +224,8 @@ public class SphereListActivity extends FragmentActivity implements
     }
 
     private class CreateSphereAsyncTask extends AsyncTask<String, Void, String> {
-        final SphereAPI sphereAPI = MainService.getSphereHandle();
+        //final SphereAPI sphereAPI = MainService.getSphereHandle();
+        SphereAPI sphereAPI=null;
         final List<BezirkZirkInfo> servicesToBeAdded = new ArrayList<BezirkZirkInfo>();
         String sphereId = null;
 
@@ -304,7 +305,7 @@ public class SphereListActivity extends FragmentActivity implements
 
             Log.i(TAG, "Received Intent for Device control >" + intent.getAction());
 
-            String command = intent.getStringExtra(ActionCommands.BEZIRK_ACTION_COMMANDS);
+    /*        String command = intent.getStringExtra(ActionCommands.BEZIRK_ACTION_COMMANDS);
 
             Log.i(TAG, "Command > " + command);
 
@@ -327,7 +328,7 @@ public class SphereListActivity extends FragmentActivity implements
                 String Status = intent.getStringExtra(ActionCommands.BEZIRK_ACTION_COMMAND_STATUS);
                 String message = intent.getStringExtra(ActionCommands.BEZIRK_ACTION_COMMAND_MESSAGE);
                 Toast.makeText(parent, message, Toast.LENGTH_LONG).show();
-            }
+            }*/
 
 
         }

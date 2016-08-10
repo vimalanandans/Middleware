@@ -23,7 +23,7 @@ import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.SelectSphereListAdapter;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 import com.bezirk.util.ValidatorUtility;
 
 import java.util.ArrayList;
@@ -49,8 +49,8 @@ public class NewPipeActivity extends Activity {
         View view = (View) layoutInflater.inflate(R.layout.activity_new_pipe_smartphone, null);
 
         //Change Text for First Pipe Screen here
-        SphereAPI api = MainService.getSphereHandle();
-
+       // SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api = null;
         if (ValidatorUtility.isObjectNotNull(api)) {
 
             Iterator<BezirkSphereInfo> sphereInfo = api.getSpheres().iterator();

@@ -190,7 +190,7 @@ public class ComponentManager extends Service {
     @NonNull
     @Override
     public IBinder onBind(Intent intent) {
-        return (IBinder) new ServerIdentityManagerAdapter(identityManager);
+        return  new ServerIdentityManagerAdapter(identityManager);
 
     }
 

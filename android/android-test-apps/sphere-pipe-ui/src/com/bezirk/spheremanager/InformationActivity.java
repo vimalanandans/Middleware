@@ -23,7 +23,6 @@ import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.InformationListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
-import com.bezirk.starter.MainService;
 import com.bezirk.util.ValidatorUtility;
 
 public class InformationActivity extends FragmentActivity {
@@ -47,7 +46,8 @@ public class InformationActivity extends FragmentActivity {
                 .get(sphereID);*/
         SphereListItem sphere = null;
 
-        SphereAPI api = MainService.getSphereHandle();
+       // SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api=null;
 
         if (ValidatorUtility.isObjectNotNull(api)) {
             BezirkSphereInfo sphereInfo = api.getSphere(sphereID);
