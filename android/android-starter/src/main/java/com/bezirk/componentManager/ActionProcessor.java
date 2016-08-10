@@ -38,6 +38,7 @@ public final class ActionProcessor {
 
             switch (actionType) {
                 case BEZIRK_STACK_ACTION:
+
                     processBezirkStackAction(intent, intentAction, lifeCycleCallbacks);
                     break;
                 case DEVICE_ACTION:
