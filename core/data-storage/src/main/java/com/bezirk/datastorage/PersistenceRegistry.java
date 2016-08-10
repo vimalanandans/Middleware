@@ -12,7 +12,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * Database entity mapped to the RDBMS table. This class holds all the data structures that needs to be
  * persisted.
  */
-@DatabaseTable(tableName = "uhuregistry")
+@DatabaseTable(tableName = "registry")
 public class PersistenceRegistry {
     @DatabaseField(id = true, columnName = PersistenceConstants.COLUMN_0)
     private int id;

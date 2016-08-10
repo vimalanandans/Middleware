@@ -11,20 +11,10 @@ import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.proxy.ProxyServer;
-import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.proxy.MessageHandler;
-import com.bezirk.actions.StreamStatusAction;
-import com.google.gson.Gson;
 
 public class AndroidProxyServer extends ProxyServer {
     private static final String TAG = AndroidProxyServer.class.getName();
-
-    private static final Gson gson = new Gson();
-    private MessageHandler messageHandler;
-
-    public void setMessageHandler(MessageHandler messageHandler) {
-        this.messageHandler = messageHandler;
-    }
 
     public void registerZirk(Intent intent) {
         final RegisterZirkAction registrationAction = (RegisterZirkAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_REGISTER.getName());
@@ -78,12 +68,7 @@ public class AndroidProxyServer extends ProxyServer {
 
         short sendStreamStatus = super.sendStream(streamAction);
 
-        if (sendStreamStatus != -1) {
-            StreamStatusAction streamStatusCallbackMessage = new StreamStatusAction(
-                    gson.fromJson(streamAction.getDescriptor().toJson(), ZirkId.class),
-                    0, streamAction.getStreamId());
-            messageHandler.onStreamStatus(streamStatusCallbackMessage);
-        }
+        // TODO: Communicate stream status
     }
 
     public void setLocation(Intent intent) {

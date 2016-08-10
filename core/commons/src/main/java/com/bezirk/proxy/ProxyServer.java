@@ -7,33 +7,33 @@ import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.pubsubbroker.PubSubBrokerServiceTrigger;
+import com.bezirk.pubsubbroker.PubSubBrokerZirkServicer;
 
 public class ProxyServer {
-    private PubSubBrokerServiceTrigger pubSubBrokerService;
+    private PubSubBrokerZirkServicer pubSubBrokerService;
 
     public void registerZirk(RegisterZirkAction registerZirkAction) {
-        pubSubBrokerService.registerService(registerZirkAction.getZirkId(), registerZirkAction.getZirkName());
+        pubSubBrokerService.registerZirk(registerZirkAction.getZirkId(), registerZirkAction.getZirkName());
     }
 
     public void subscribeService(SubscriptionAction subscriptionAction) {
-        pubSubBrokerService.subscribeService(subscriptionAction.getZirkId(), subscriptionAction.getMessageSet());
+        pubSubBrokerService.subscribe(subscriptionAction.getZirkId(), subscriptionAction.getMessageSet());
     }
 
     public void sendMulticastEvent(SendMulticastEventAction eventAction) {
         pubSubBrokerService.sendMulticastEvent(eventAction.getZirkId(), eventAction.getRecipientSelector(),
-                eventAction.getSerializedEvent());
+                eventAction.getSerializedEvent(),eventAction.getEventName());
     }
 
     public void sendUnicastEvent(UnicastEventAction eventAction) {
         pubSubBrokerService.sendUnicastEvent(eventAction.getZirkId(), (BezirkZirkEndPoint) eventAction.getEndpoint(),
-                eventAction.getSerializedEvent());
+                eventAction.getSerializedEvent(),eventAction.getEventName());
     }
 
     public short sendStream(SendFileStreamAction streamAction) {
         return pubSubBrokerService.sendStream(streamAction.getZirkId(),
                 (BezirkZirkEndPoint) streamAction.getRecipient(), streamAction.getDescriptor().toJson(),
-                streamAction.getFile(), streamAction.getStreamId());
+                streamAction.getFile());
     }
 
     public void setLocation(SetLocationAction locationAction) {
@@ -46,10 +46,10 @@ public class ProxyServer {
     }
 
     public boolean unregister(RegisterZirkAction registerZirkAction) {
-        return pubSubBrokerService.unregisterService(registerZirkAction.getZirkId());
+        return pubSubBrokerService.unregisterZirk(registerZirkAction.getZirkId());
     }
 
-    public void setPubSubBrokerService(PubSubBrokerServiceTrigger pubSubBrokerService) {
+    public void setPubSubBrokerService(PubSubBrokerZirkServicer pubSubBrokerService) {
         this.pubSubBrokerService = pubSubBrokerService;
     }
 }

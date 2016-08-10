@@ -89,29 +89,29 @@ public class ValidatorUtilityTest {
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         StreamRequest request = new StreamRequest(sender, recipient, sphereId,
-                null, null, null, "testFile", true, true, true, (short) 3);
+                null, null, null, "testFile", true, true, true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(sender, recipient, sphereId,
-                null, null, "testString", null, true, true, true, (short) 3);
+                null, null, "testString", null, true, true, true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(sender, recipient, null,
-                null, null, "testString", "testFile", true, true, true, (short) 3);
+                null, null, "testString", "testFile", true, true, true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         request = new StreamRequest(null, recipient, sphereId,
-                null, null, "testString", "testFile", true, true, true, (short) 3);
+                null, null, "testString", "testFile", true, true, true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         BezirkZirkEndPoint recepient = new BezirkZirkEndPoint(new ZirkId("test"));
         recepient.device = "";
         request = new StreamRequest(sender, recepient, sphereId,
-                null, null, "testString", "testFile", true, true, true, (short) 3);
+                null, null, "testString", "testFile", true, true, true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
@@ -137,16 +137,16 @@ public class ValidatorUtilityTest {
     public void testCheckHeader() {
 
 		/*-------------- Positive cases --------------*/
-        Header mHeader = new Header(sphereId, sender, "12");
+        Header mHeader = new Header(sphereId, sender, "12","TestEventName");
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertTrue("Valid header is considered invalid by validator.", isValid);
 
 		/*-------------- Negative cases --------------*/
-        mHeader = new Header(null, sender, "12");
+        mHeader = new Header(null, sender, "12","TestEventName");
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertFalse("Invalid header is considered valid by validator.", isValid);
 
-        mHeader = new Header(sphereId, null, "12");
+        mHeader = new Header(sphereId, null, "12","TestEventName");
         isValid = ValidatorUtility.checkHeader(mHeader);
         assertFalse("Invalid header is considered valid by validator.", isValid);
 

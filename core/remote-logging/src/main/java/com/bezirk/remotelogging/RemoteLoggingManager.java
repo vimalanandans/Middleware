@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Observable;
 
 /**
  * Logging Manager class that starts/stops LoggingServices and LoggingClient.
@@ -76,7 +77,12 @@ public  class RemoteLoggingManager implements RemoteLog {
     @Override
     public boolean enableLogging(boolean enable, String[] sphereNameList) {
         logger.debug("enable logging in remotelogging");
-        comms = new CommsProcessor(networkManager) {
+  /*      comms = new CommsProcessor(networkManager) {
+            @Override
+            public void update(Observable o, Object arg) {
+
+            }
+
             @Override
             public boolean sendToAll(byte[] msg, boolean isEvent) {
                 return false;
@@ -87,11 +93,8 @@ public  class RemoteLoggingManager implements RemoteLog {
                 return false;
             }
 
-            @Override
-            public boolean restartComms() {
-                return false;
-            }
-        };
+
+        };*/
         String[] loggingSpheres;
         if (RemoteLoggingConfig.ALL_SPHERES.equals(sphereNameList)) {
             loggingSpheres = new String[1];
@@ -127,7 +130,7 @@ public  class RemoteLoggingManager implements RemoteLog {
         boolean returnValue=true;
         if(ledger instanceof EventLedger){
             try {
-                LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(((EventLedger) ledger).getHeader().getSphereName(),
+                LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(((EventLedger) ledger).getHeader().getSphereId(),
                         String.valueOf(currentDate.getTime()), device.getDeviceName(),
                         Util.CONTROL_RECEIVER_VALUE, ((EventLedger) ledger).getHeader().getUniqueMsgId(),
                         Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
@@ -212,7 +215,7 @@ public  class RemoteLoggingManager implements RemoteLog {
    /* @Override
     public boolean sendRemoteLogMessage(EventLedger eLedger) {
         try {
-            LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(eLedger.getHeader().getSphereName(),
+            LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(eLedger.getHeader().getSphereId(),
                     String.valueOf(currentDate.getTime()), device.getDeviceName(),
                     Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(),
                     Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
@@ -273,7 +276,7 @@ public  class RemoteLoggingManager implements RemoteLog {
      * @throws Exception if handler is null, or something goes wrong while processing.
      */
     @Override
-    public boolean startRemoteLoggingService(final int loggingPort,final RemoteLoggingMessageNotification platformSpecificHandler) {
+    public boolean startLoggingService(final RemoteLoggingMessageNotification platformSpecificHandler) {
         if (remoteLoggingService == null && platformSpecificHandler != null) {
             remoteLoggingService = new RemoteLoggingService(ServiceActivatorDeactivator.REMOTE_LOGGING_PORT);
             receiverQueueProcessor = new ReceiverQueueProcessor(platformSpecificHandler);

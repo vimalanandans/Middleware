@@ -34,24 +34,24 @@ class ZyreCommsHelper {
         logger.debug("peer is "+peer);
         logger.debug("payload is "+payload);
         if (eventType.equals("ENTER")) {
-            logger.info("peer (" + peer + ") entered network");
+            logger.debug("peer (" + peer + ") entered network");
 
         } else if (eventType.equals("WHISPER")) {
-            logger.info("data size > " + payload.length());
+           // logger.debug("data size > " + payload.length());
             commsProcessor.processWireMessage(peer, payload);
 
         } else if (eventType.equals("SHOUT")) {
-            logger.info("data size > " + payload.length());
+            //logger.debug("data size > " + payload.length());
             commsProcessor.processWireMessage(peer, payload);
 
         } else if (eventType.equals("JOIN")) {
             addPeer(peerGroup, peer);
-            logger.info("peer (" + peer + ") joined: " + peerGroup);
+            logger.debug("peer (" + peer + ") joined: " + peerGroup);
             logKnownDevices();
 
         } else if (eventType.equals("LEAVE")) {
             boolean success = removePeer(peerGroup, peer);
-            logger.info("peer (" + peer + ") left " + peerGroup + ":" + success);
+            logger.debug("peer (" + peer + ") left " + peerGroup + ":" + success);
             logKnownDevices();
 
         } else if (eventType.equals("EXIT")) {
@@ -77,14 +77,14 @@ class ZyreCommsHelper {
 
         if (Thread.interrupted()) {
             logger.warn("Interrupted during recv()");
-            logger.info("RecvThread exiting");
+            logger.debug("RecvThread exiting");
             return eventMap;
         }
         // Convert the incoming string into a Map
         eventMap = parseMsg(incoming);
 
         if (eventMap.isEmpty() || eventMap.get("event") == null) {
-            logger.info("event map has bytes. parse special : experimental ");
+            logger.debug("event map has bytes. parse special : experimental ");
             //  return parseMsgExt(incoming);// to be fixed
             return eventMap;
         }

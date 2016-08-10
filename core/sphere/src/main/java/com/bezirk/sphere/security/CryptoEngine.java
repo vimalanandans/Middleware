@@ -51,12 +51,9 @@ public final class CryptoEngine implements CryptoInternals {
      * @return <code>true</code> if the keys were generated and stored successfully
      */
     public final boolean generateKeys(String sphereId) {
-
-        boolean success = false;
-
         if (registry == null) {
             logger.error(REGISTRY_ERROR);
-            return success;
+            return false;
         }
 
         if (sphereId != null && !registry.isKeymapExist(sphereId)) {
@@ -69,16 +66,17 @@ public final class CryptoEngine implements CryptoInternals {
                         pair.getPrivate().getEncoded(), pair.getPublic().getEncoded());
                 registry.putSphereKeys(sphereId, sKeys);
                 logger.debug("sphere keys successfully added for sphereId : " + sphereId);
-                success = true;
             } catch (NoSuchAlgorithmException e) {
                 logger.error("Problem adding sphere keys for sphereId : " + sphereId, e);
+                return false;
             }
         }
-        return success;
+
+        return true;
     }
 
     /**
-     * create secret key basedon passcode
+     * create secret key based on passcode
      */
     public byte[] generateKey(String code) {
 
@@ -130,12 +128,9 @@ public final class CryptoEngine implements CryptoInternals {
      * @return <code>true</code> if the keys were generated and stored successfully
      */
     public final boolean generateKeys(String sphereId, boolean fromSphereId) {
-
-        boolean success = false;
-
         if (registry == null) {
             logger.error(REGISTRY_ERROR);
-            return success;
+            return false;
         }
 
         if (sphereId != null && !registry.isKeymapExist(sphereId)) {
@@ -161,10 +156,10 @@ public final class CryptoEngine implements CryptoInternals {
 
             logger.debug("sphere keys successfully added for sphereId : " + sphereId);
 
-            success = true;
+            return true;
 
         }
-        return success;
+        return false;
     }
 
     public final void addMemberKeys(String sphereId, SphereKeys sphereKeys) {

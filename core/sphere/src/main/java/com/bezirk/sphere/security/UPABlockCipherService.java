@@ -17,13 +17,13 @@ public class UPABlockCipherService extends DefaultBlockCipherService {
     private static final String ENCRYPTION_ALGORITHM = "AES";
     private static final OperationMode operationMode = OperationMode.GCM;
     private static final PaddingScheme paddingScheme = PaddingScheme.NONE;
-    public final static String UPA_SERV__RUNTIME_ENV__JAVA = "Java Platform API Specification";
+    public final static String BEZIRK__RUNTIME_ENV__JAVA = "Java Platform API Specification";
     // Bouncy Castle Provider registered?
     private static boolean bouncyRegistered = false;
 
     public UPABlockCipherService() {
         super(ENCRYPTION_ALGORITHM);
-        if (!bouncyRegistered && getCurrentOSPlatform().equals(UPA_SERV__RUNTIME_ENV__JAVA))
+        if (!bouncyRegistered && getCurrentOSPlatform().equals(BEZIRK__RUNTIME_ENV__JAVA))
             registerBouncy();
         setMode(operationMode);
         setPaddingScheme(paddingScheme);

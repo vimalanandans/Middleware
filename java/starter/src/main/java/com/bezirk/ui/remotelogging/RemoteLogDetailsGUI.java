@@ -216,8 +216,7 @@ public class RemoteLogDetailsGUI extends JFrame {
                         getSphereNameFromSphereId(bezirkLogMessage.sphereName),
                         sdf.format(Long.valueOf(bezirkLogMessage.timeStamp)),
                         bezirkLogMessage.sender,
-                        getDeviceNameFromDeviceId(bezirkLogMessage.recipient),
-                        bezirkLogMessage.topic, 0});
+                        getDeviceNameFromDeviceId(bezirkLogMessage.recipient), 0});
             } catch (Exception e) {
                 logger.error("Error in updating the table", e);
             }
@@ -264,6 +263,7 @@ public class RemoteLogDetailsGUI extends JFrame {
      */
     private String getSphereNameFromSphereId(final String sphereId) {
         final StringBuilder tempSphereName = new StringBuilder();
+
         SphereAPI sphereAPI=new SphereServiceManager();
         try {
             if(null!=sphereAPI){
@@ -272,6 +272,7 @@ public class RemoteLogDetailsGUI extends JFrame {
             }else{
                 logger.debug("sphereAPI is null in RemoteLogDetailsGUI");
             }
+
         } catch (NullPointerException ne) {
             logger.error("Error in fetching sphereName from RemoteLogDetailsGUI", ne);
             tempSphereName.append("Un-defined");

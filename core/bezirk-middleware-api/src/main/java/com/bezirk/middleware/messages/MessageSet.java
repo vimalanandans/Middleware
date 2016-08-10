@@ -71,6 +71,7 @@ import java.util.Set;
 public abstract class MessageSet implements Serializable {
     private final Set<String> messageClassList = new HashSet<>();
 
+    @SafeVarargs
     public MessageSet(Class<? extends Message>... m) {
         for (Class<? extends Message> messageClass : m) {
             messageClassList.add(messageClass.getName());

@@ -1,0 +1,54 @@
+apply plugin: 'com.android.application'
+apply from: "${rootDir}/android/include/publish-android-apk.gradle"
+
+android {
+    compileSdkVersion project.androidCompileSdkVersion.toInteger()
+    buildToolsVersion project.androidBuildToolsVersion
+
+    defaultConfig {
+        minSdkVersion project.androidMinSdkVersion.toInteger()
+        targetSdkVersion project.androidTargetSdkVersion.toInteger()
+        versionCode project.androidVersionCode.toInteger()
+        versionName project.androidVersionName
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'LICENSE.txt'
+    }
+    // used because http-comms uses org.apache.httpcomponents:httpclient:4.5, which legacy
+    //  useLibrary 'org.apache.http.legacy'
+}
+
+dependencies {
+    compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
+
+    compile project(':core')
+    compile project(':core:commons')
+
+    compile project(':android:android-starter')
+    compile project(':android:android-libraries:android-comms-zyre-jni')
+
+    compile 'org.bouncycastle:bcprov-jdk15on:1.49'
+    compile 'org.apache.shiro:shiro-core:1.2.4'
+    compile 'com.google.zxing:core:3.2.0'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.github.tony19:logback-android-classic:1.1.1-2'
+    compile 'org.slf4j:slf4j-api:1.7.6'
+    compile 'org.sqldroid:sqldroid:1.0.3'
+}

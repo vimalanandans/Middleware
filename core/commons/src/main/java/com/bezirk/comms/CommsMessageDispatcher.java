@@ -23,11 +23,11 @@ public class CommsMessageDispatcher implements MessageDispatcher {
 
     private EventMsgReceiver eventReceiver = null;
 
-    RemoteLog msgLog = null;
+    private RemoteLog msgLog = null;
 
     // Map of control receivers
-    Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
-            new HashMap<ControlMessage.Discriminator, CtrlMsgReceiver>();
+    private Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
+            new HashMap<>();
 
     public CommsMessageDispatcher() {
 
@@ -104,6 +104,7 @@ public class CommsMessageDispatcher implements MessageDispatcher {
      */
     @Override
     public boolean dispatchControlMessages(ControlLedger tcMessage) {
+        //FIXME : setIsMessageFromHost is never called. validate and remove the below
         if (tcMessage.getIsMessageFromHost()) { //If the msg is local : set serialized msg
             tcMessage.setSerializedMessage(tcMessage.getMessage().serialize());
         }

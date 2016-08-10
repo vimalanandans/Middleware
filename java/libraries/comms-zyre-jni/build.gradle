@@ -65,7 +65,7 @@ dependencies {
     // test
     testCompile 'junit:junit:4.12'
 
-    compile "com.google.code.gson:gson:2.2.4"
+    compile "com.google.code.gson:gson:2.7"
 /*    if (project.local == "false") {
         compile "com.bezirk:bezirk-api:${version}"
         compile "com.bezirk:bezirk:${version}"

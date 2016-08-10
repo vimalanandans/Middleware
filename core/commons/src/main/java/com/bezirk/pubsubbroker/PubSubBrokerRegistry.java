@@ -128,7 +128,7 @@ public class PubSubBrokerRegistry implements Serializable {
         zid.add(zirkId);
         // Update the location!
         setLocation(zirkId, defaultLocation);
-        logger.info(zirkId + " is registered successfully");
+        logger.debug(zirkId + " is registered successfully");
         return true;
     }
 
@@ -195,7 +195,7 @@ public class PubSubBrokerRegistry implements Serializable {
             final Set<ZirkId> zirkIdSet = subscriptionMap.get(messageSet);
 
             if (!zirkIdSet.remove(zirkId)) {
-                logger.info("Zirk is Trying to unsubscribe that it has not subscribed to");
+                logger.debug("Zirk is Trying to unsubscribe that it has not subscribed to");
                 return false;
             }
             // Remove from Protocol map
@@ -231,7 +231,7 @@ public class PubSubBrokerRegistry implements Serializable {
             zid.remove(zirkId);
             return true;
         }
-        logger.info("Zirk tried to Unregister that does not exist");
+        logger.debug("Zirk tried to Unregister that does not exist");
         return false;
     }
 
@@ -247,7 +247,7 @@ public class PubSubBrokerRegistry implements Serializable {
             locationMap.put(zirkId, location);
             return true;
         }
-        logger.info("Tried to update the location for the Zirk that is not subscribed");
+        logger.debug("Tried to update the location for the Zirk that is not subscribed");
         return false;
     }
 
@@ -349,7 +349,7 @@ public class PubSubBrokerRegistry implements Serializable {
     public Set<ZirkId> checkMulticastEvent(String eventName, Location location, Device device) {
         Set<ZirkId> zirks = null;
 
-        if (eventMap.containsKey(eventName)) {
+                                                                                                                                                                                                                                                                                                                                                                                   if (eventMap.containsKey(eventName)) {
             if (null == location) {
                 return new HashSet<>(eventMap.get(eventName));
             }

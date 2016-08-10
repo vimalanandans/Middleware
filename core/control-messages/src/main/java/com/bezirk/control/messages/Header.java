@@ -1,24 +1,36 @@
 package com.bezirk.control.messages;
 
+import com.bezirk.middleware.serialization.InterfaceAdapter;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Header contains information needed by comms to route messages
  */
 public class Header {
     // Open Fields
-    private String sphereName = null; //Don't touch
-    private BezirkZirkEndPoint senderSEP = null; // Change to ZirkEndPoint sender
+    private String sphereId = null; //Don't touch
+    private BezirkZirkEndPoint sender = null; // Change to ZirkEndPoint sender
     private String uniqueMsgId = null;
+    private String eventName = null;
+
+    private static final Gson gson;
+
+    static {
+        final GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeHierarchyAdapter(Header.class, new InterfaceAdapter<Header>());
+        gson = gsonBuilder.create();
+    }
 
     public Header() {
     }
 
-    public Header(String sphereName, BezirkZirkEndPoint senderSEP, String uniqueMsgId) {
-        this.sphereName = sphereName;
-        this.senderSEP = senderSEP;
+    public Header(String sphereId, BezirkZirkEndPoint sender, String uniqueMsgId, String eventName) {
+        this.sphereId = sphereId;
+        this.sender = sender;
         this.uniqueMsgId = uniqueMsgId;
+        this.eventName = eventName;
     }
 
     /**
@@ -38,36 +50,43 @@ public class Header {
     /**
      * @return the name of the sphere
      */
-    public String getSphereName() {
-        return sphereName;
+    public String getSphereId() {
+        return sphereId;
     }
 
     /**
-     * @param sphereName the name of the sphere
+     * @param sphereId the name of the sphere
      */
-    public void setSphereName(String sphereName) {
-        this.sphereName = sphereName;
+    public void setSphereId(String sphereId) {
+        this.sphereId = sphereId;
     }
 
     /**
      * @return the senderId of the message
      */
-    public BezirkZirkEndPoint getSenderSEP() {
-        return senderSEP;
+    public BezirkZirkEndPoint getSender() {
+        return sender;
     }
 
+    public  String getEventName(){return eventName;}
+
+    public  void setEventName(String eventName){this.eventName = eventName;}
+
+
     /**
-     * @param senderSEP the senderId of the message. Usually there is a function that retrieves
+     * @param sender the senderId of the message. Usually there is a function that retrieves
      *                  the hostId and this is used to set the senderId
      */
-    public void setSenderSEP(BezirkZirkEndPoint senderSEP) {
-        this.senderSEP = senderSEP;
+    public void setSender(BezirkZirkEndPoint sender) {
+        this.sender = sender;
     }
 
     public String serialize() {
         Gson gson = new Gson();
         return gson.toJson(this);
     }
-
+    public static <C> C fromJson(String json, Class<C> objectType) {
+        return gson.fromJson(json, objectType);
+    }
 
 }

@@ -53,24 +53,10 @@ public class MockComms implements Comms {
         this.streamList = streamList;
     }
 
-    @Override
-    public boolean startComms() {
+    public MockComms() {
         ctrlList = new ArrayList<>();
         eventList = new ArrayList<>();
         streamList = new ArrayList<>();
-        return true;
-    }
-
-    @Override
-    public boolean stopComms() {
-        // TODO Auto-generated method stub
-        return true;
-    }
-
-    @Override
-    public boolean closeComms() {
-        // TODO Auto-generated method stub
-        return true;
     }
 
     @Override
@@ -98,6 +84,16 @@ public class MockComms implements Comms {
     }
 
     @Override
+    public boolean sendEventLedger(EventLedger ledger) {
+        return false;
+    }
+
+    @Override
+    public boolean sendControlMessage(ControlMessage message) {
+        return false;
+    }
+
+    @Override
     public boolean sendStream(String uniqueKey) {
         // TODO Auto-generated method stub
         return true;
@@ -116,12 +112,10 @@ public class MockComms implements Comms {
         return false;
     }
 
-    @Override
-    public boolean initComms(CommsProperties commsProperties, InetAddress addr, SphereSecurity sphereSecurity, Streaming streaming) {
-        return false;
-    }
-
-
+//    @Override
+//    public boolean initComms(CommsProperties commsProperties, InetAddress addr, SphereSecurity sphereSecurity, Streaming streaming) {
+//        return false;
+//    }
 
 
     @Override
@@ -150,10 +144,5 @@ public class MockComms implements Comms {
 
     }
 
-    @Override
-    public boolean restartComms() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
 }

@@ -68,8 +68,7 @@ public abstract class NetworkManager {
     public InetAddress getLocalInet() {
         getInetAddress();
         if (curInterface == null) {
-            logger.error("Input interface is null");
-            return null;
+            getInetAddress();
         }
         InetAddress inetAddress = null;
         for (Enumeration<InetAddress> enumIpAddr = curInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {

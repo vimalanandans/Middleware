@@ -7,7 +7,7 @@ jar {
 }
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.6'
-    compile "com.google.code.gson:gson:2.2.4"
+    compile "com.google.code.gson:gson:2.7"
     compile project(':core:commons')
     testCompile 'junit:junit:4.12'
 }

@@ -160,7 +160,7 @@ public class CatchProcessor {
             sphereRegistryWrapper.addDevice(inviterBezirkDeviceInfo.getDeviceId(),
                     new DeviceInformation(inviterBezirkDeviceInfo.getDeviceName(), inviterBezirkDeviceInfo.getDeviceType()));
 
-            // add the zirk name and zirk id to spheremembership map
+            // add the zirk name and zirk id to sphereMembership map
             if (sphereRegistryWrapper.addMemberServices(inviterBezirkDeviceInfo, catcherSphereId,
                     inviterBezirkDeviceInfo.getDeviceId())) {
                 for (BezirkZirkInfo service : inviterBezirkDeviceInfo.getZirkList()) {
@@ -250,7 +250,7 @@ public class CatchProcessor {
                 new DeviceInformation(sphereExchangeData.getDeviceName(), sphereExchangeData.getDeviceType()));
 
         // add sphere
-        HashSet<String> ownerDevices = new HashSet<String>();
+        HashSet<String> ownerDevices = new HashSet<>();
         ownerDevices.add(sphereExchangeData.getDeviceID());
 
         Sphere sphere = new MemberSphere(sphereExchangeData.getSphereName(), sphereExchangeData.getSphereType(),
@@ -314,7 +314,7 @@ public class CatchProcessor {
 
             // TODO: Improve persistence knowledge from registry
 
-            // store the shortid as sphere id
+            // store the shortId as sphere id
             crypto.addMemberKeys(inviterShortCode, sphereKeys);
             // don't persist or remove it later
             return true;
@@ -331,11 +331,10 @@ public class CatchProcessor {
      * @return - CatchRequest object if catcherSphereId and inviterShortCode are valid.
      */
     private CatchRequest prepareRequest(String catcherSphereId, String inviterShortCode) {
-        CatchRequest sphereCatchRequest = null;
         String sphereExchangeData = sphereRegistryWrapper.getShareCodeString(catcherSphereId);
         if (sphereExchangeData == null) {
             logger.error("Catch request not prepared for " + catcherSphereId);
-            return sphereCatchRequest;
+            return null;
         }
 
         // TODO: What if there are no services in the device performing the
@@ -359,13 +358,11 @@ public class CatchProcessor {
                         deviceInformation.getDeviceName(), deviceInformation.getDeviceType(), null, false,
                         (List<BezirkZirkInfo>) sphereRegistryWrapper.getBezirkServiceInfo(services));
 
-                sphereCatchRequest = new CatchRequest(networkManager.getServiceEndPoint(null), inviterShortCode,
+                return new CatchRequest(networkManager.getServiceEndPoint(null), inviterShortCode,
                         catcherSphereId, catcherBezirkDeviceInfo, sphereExchangeData);
-
-                return sphereCatchRequest;
             }
         }
-        return sphereCatchRequest;
+        return null;
     }
 
     /**
@@ -453,7 +450,7 @@ public class CatchProcessor {
 
                 // add remote device services also to new catchSphereId
                 // add the caught zirk name and zirk id to
-                // spheremembership map
+                // sphereMembership map
                 if (sphereRegistryWrapper.addMemberServices(catcherBezirkDeviceInfo, catcherSphereId, catcherDeviceId)) {
                     // get all the device info of caught zirk
                     for (BezirkZirkInfo serviceInfoList : catcherBezirkDeviceInfo.getZirkList()) {
@@ -488,7 +485,7 @@ public class CatchProcessor {
                 logger.error("Response creation failed at add services to sphere");
             }
         }
-        logger.error("Response creation failed. clear data base manuall ");
+        logger.error("Response creation failed. clear data base manually ");
         return null;
     }
 

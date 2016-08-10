@@ -8,8 +8,9 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
  * to a small set of ad hoc events. See {@link MessageSet} for examples.
  */
 public class EventSet extends MessageSet {
-    private EventReceiver receiver;
+    private transient EventReceiver receiver;
 
+    @SafeVarargs
     public EventSet(Class<? extends Event>... e) {
         super(e);
     }
@@ -22,7 +23,6 @@ public class EventSet extends MessageSet {
      */
     public EventReceiver getEventReceiver() {
         return receiver;
-        //return gson.fromJson(serializedReceiver, EventReceiver.class);
     }
 
     /**
