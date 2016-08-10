@@ -21,6 +21,13 @@ public class AppManager {
         return app;
     }
 
+    /**
+     * To start the middleware android service as part of the app scope
+     * @param cntx - contect of the application / activity
+     * @param sticky - To retain the middleware as a background service
+     * @param AppName - Name of the background service display in the pull up menu
+     * @return - Return true on success
+     */
     public boolean startBezirk(Context cntx, boolean sticky, String AppName)
     {
         //Start Bezirk
@@ -37,10 +44,20 @@ public class AppManager {
         return true;
     }
 
+    /**
+     * get the component package name to fire the intent
+     * @return - package name of the component
+     */
+
     public String getComponentName(){
         return COMPONENT_NAME;
     }
 
+    /**
+     * To stop the middleware background service
+     * @param cntx - Context of the application / activiy
+     * @return - Return true on success
+     */
     public boolean stopBezirk(Context cntx)
     {
         //Start Bezirk

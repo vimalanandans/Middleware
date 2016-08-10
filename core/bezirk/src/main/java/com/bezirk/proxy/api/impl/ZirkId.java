@@ -1,20 +1,23 @@
 package com.bezirk.proxy.api.impl;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 public final class ZirkId implements Serializable {
     private final String zirkId;
     private String bezirkEventId;
 
-    public ZirkId(String zirkId) {
+    public ZirkId(@NotNull String zirkId) {
         this.zirkId = zirkId;
     }
 
-    public ZirkId(String zirkId, String bezirkEventId) {
+    public ZirkId(@NotNull String zirkId, String bezirkEventId) {
         this.zirkId = zirkId;
         this.bezirkEventId = bezirkEventId;
     }
 
+    @NotNull
     public String getZirkId() {
         return zirkId;
     }

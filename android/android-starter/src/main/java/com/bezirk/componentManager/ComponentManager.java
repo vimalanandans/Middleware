@@ -9,8 +9,9 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.bezirk.R;
 import com.bezirk.actions.BezirkAction;
@@ -18,21 +19,26 @@ import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.AndroidDevice;
 import com.bezirk.device.Device;
+import com.bezirk.identity.BezirkIdentityManager;
+import com.bezirk.middleware.identity.Alias;
 import com.bezirk.networking.AndroidNetworkManager;
 import com.bezirk.persistence.DatabaseConnectionForAndroid;
 import com.bezirk.proxy.MessageHandler;
+import com.bezirk.proxy.android.ServerIdentityManagerAdapter;
 import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.proxy.android.ZirkMessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.gson.Gson;
 
 public class ComponentManager extends Service {
-    private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
+    private static final String TAG = ComponentManager.class.getName();
+
+    private static final String ALIAS_KEY = "aliasName";
+
     private SharedPreferences preferences;
     //private final Context context;
     private ActionProcessor actionProcessor;
+    private BezirkIdentityManager identityManager;
     private AndroidProxyServer proxyServer;
     private ZyreCommsManager comms;
     private AndroidNetworkManager networkManager;
@@ -55,7 +61,7 @@ public class ComponentManager extends Service {
     public void onCreate() {
         super.onCreate();
 
-        logger.debug("Creating Bezirk Service");
+        Log.d(TAG, "Creating Bezirk Service");
 
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         lifecycleManager = new LifecycleManager();
@@ -76,7 +82,7 @@ public class ComponentManager extends Service {
         try {
             registryStorage = new RegistryStorage(new DatabaseConnectionForAndroid(this), DB_VERSION);
         } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
+            Log.e(TAG, e1.getMessage(), e1);
         }
 
         //android device for getting information like deviceId, deviceName, etc
@@ -85,12 +91,33 @@ public class ComponentManager extends Service {
         //initialize comms for communicating between devices over the wifi-network using zyre.
         comms = new ZyreCommsManager(networkManager, null, null);
 
-
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
         pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
 
+        //initialize the identity manager
+        identityManager = new BezirkIdentityManager();
+        final String aliasString = preferences.getString(ALIAS_KEY, null);
+        final Gson gson = new Gson();
+        final Alias identity;
+
+        if (aliasString == null) {
+            identity = identityManager.createIdentity("BezirkUser");
+            identityManager.setIdentity(identity);
+
+            Log.v(TAG, "Created new Bezirk identity");
+
+            SharedPreferences.Editor preferencesEditor = preferences.edit();
+            preferencesEditor.putString(ALIAS_KEY, gson.toJson(identity));
+            preferencesEditor.commit();
+        } else {
+            Log.d(TAG, "Reusing identity" + aliasString);
+            identity = gson.fromJson(aliasString, Alias.class);
+        }
+
+        identityManager.setIdentity(identity);
+
         //initialize proxyServer responsible for managing incoming events from zirks
-        proxyServer = new AndroidProxyServer();
+        proxyServer = new AndroidProxyServer(identityManager);
 
         // TODO initialize in constructor instead.
         proxyServer.setPubSubBrokerService(pubSubBroker);
@@ -111,7 +138,7 @@ public class ComponentManager extends Service {
             actionProcessor.processBezirkAction(intent, proxyServer, new LifeCycleCallbacks() {
                 @Override
                 public void start() {
-                    logger.debug("LifeCycleCallbacks:start");
+                    Log.d(TAG, "LifeCycleCallbacks:start");
                     lifecycleManager.setState(LifecycleManager.LifecycleState.STARTED);
                     //comms.startComms();
 
@@ -128,14 +155,14 @@ public class ComponentManager extends Service {
 
                 @Override
                 public void stop() {
-                    logger.debug("LifeCycleCallbacks:stop");
+                    Log.d(TAG, "LifeCycleCallbacks:stop");
                     lifecycleManager.setState(LifecycleManager.LifecycleState.STOPPED);
                     stopSelf();
                 }
 
                 @Override
                 public void destroy() {
-                    logger.debug("LifeCycleCallbacks:destroy");
+                    Log.d(TAG, "LifeCycleCallbacks:destroy");
                     lifecycleManager.setState(LifecycleManager.LifecycleState.DESTROYED);
                     //comms.closeComms();
                 }
@@ -150,10 +177,10 @@ public class ComponentManager extends Service {
         super.onDestroy();
     }
 
-    @Nullable
+    @NonNull
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return new ServerIdentityManagerAdapter(identityManager);
     }
 
     public interface LifeCycleCallbacks {

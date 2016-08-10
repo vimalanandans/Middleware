@@ -7,7 +7,7 @@ import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.impl.SphereServiceManager;
 import com.bezirk.ui.util.TestUIMouseListener;
 import com.bezirk.util.BezirkVersion;
-import com.bezirk.networking.IntfInetPair;
+import com.bezirk.networking.InterfaceInetPair;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -179,13 +179,13 @@ public class SphereManagementGUI extends JFrame {
     }
 
     private void selectInterface() {
-        final Iterator<IntfInetPair> itr = networkManager.getIntfInetPair()
+        final Iterator<InterfaceInetPair> itr = networkManager.getInterfaceInetPair()
                 .iterator();
         final List<String> temp = new ArrayList<>();
-        IntfInetPair pair;
+        InterfaceInetPair pair;
         while (itr.hasNext()) {
             pair = itr.next();
-            temp.add(pair.getIntf().getName());
+            temp.add(pair.getNetworkInterface().getName());
         }
         logger.debug(temp.toString());
         final String[] interfaceName = temp.toArray(new String[temp.size()]);

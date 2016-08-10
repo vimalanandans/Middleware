@@ -88,7 +88,6 @@ public class PubSubBrokerRegistry implements Serializable {
     }
 
     private boolean checkMaps(PubSubBrokerRegistry other) {
-
         List<String> mapList = Arrays.asList("eventMap", "locationMap",
                 "protocolDescMap", "subscriptionMap", "streamMap");
 
@@ -349,7 +348,7 @@ public class PubSubBrokerRegistry implements Serializable {
     public Set<ZirkId> checkMulticastEvent(String eventName, Location location, Device device) {
         Set<ZirkId> zirks = null;
 
-                                                                                                                                                                                                                                                                                                                                                                                   if (eventMap.containsKey(eventName)) {
+        if (eventMap.containsKey(eventName)) {
             if (null == location) {
                 return new HashSet<>(eventMap.get(eventName));
             }

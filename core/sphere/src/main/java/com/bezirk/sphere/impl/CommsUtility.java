@@ -4,7 +4,6 @@
 package com.bezirk.sphere.impl;
 
 import com.bezirk.comms.Comms;
-import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 
 import org.slf4j.Logger;

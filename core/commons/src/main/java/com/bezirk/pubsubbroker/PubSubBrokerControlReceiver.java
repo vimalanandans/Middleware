@@ -23,5 +23,5 @@ interface PubSubBrokerControlReceiver {
      * @param serviceId ZirkId of the Zirk whose location needs to be known
      * @return Location if exists, null if the zirk is not registered
      */
-    Location getLocationForService(final ZirkId serviceId);
+    Location getLocationForZirk(final ZirkId serviceId);
 }
