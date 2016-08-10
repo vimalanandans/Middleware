@@ -145,7 +145,7 @@ public interface Bezirk {
 
     /**
      * Return the identity manager for the Bezirk middleware. This is used by Zirks that make use
-     * of {@link com.bezirk.middleware.messages.IdentifiedEvent identified messages} to manage
+     * of {@link com.bezirk.middleware.messages.IdentifiedEvent identified messages} and to manage
      * identities.
      *
      * @return the identity manager for this instance of the middleware
