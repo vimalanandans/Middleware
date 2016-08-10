@@ -9,7 +9,7 @@ import com.bezirk.middleware.proxy.BezirkMiddleware;
 public class Subscriber {
 
     public static void main(String[] args) {
-        final Bezirk bezirk = BezirkMiddleware.registerZirk("Subscriber Zirk Java");
+        final Bezirk bezirk = BezirkMiddleware.registerZirk("Subscriber Zirk Java", "Group A");
 
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
 

@@ -194,7 +194,7 @@ class ControlActivityHelper {
         activity.startService(serviceIntent);
      */
         AppManager bezirkApp = AppManager.getAppManager();
-        bezirkApp.startBezirk(activity, true, "Bezirk");
+        bezirkApp.startBezirk(activity, true, "Bezirk",null);
 
         // register a broadcast receiver
         controlActivity.registerReceiver(systemStatusBroadcastReceiver, new IntentFilter(BR_SYSTEM_STATUS_ACTION));
