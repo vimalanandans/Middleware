@@ -10,7 +10,6 @@ import com.bezirk.comms.CtrlMsgReceiver;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
-import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.MessageLedger;
 import com.bezirk.control.messages.MulticastControlMessage;
@@ -660,9 +659,11 @@ public abstract class CommsProcessor implements Comms, Observer {
 
 //        Header header = Header.fromJson(headerData,Header.class);
 
+        final Gson gson = new Gson();
+
         if (wireMessage.isMulticast()) {
 
-            MulticastHeader mHeader = new Gson().fromJson(headerData, MulticastHeader.class);
+            MulticastHeader mHeader = gson.fromJson(headerData, MulticastHeader.class);
 
             eLedger.setHeader(mHeader);
 
@@ -670,7 +671,7 @@ public abstract class CommsProcessor implements Comms, Observer {
 
         } else {
 
-            UnicastHeader uHeader = new Gson().fromJson(headerData, UnicastHeader.class);
+            UnicastHeader uHeader = gson.fromJson(headerData, UnicastHeader.class);
 
             eLedger.setHeader(uHeader);
 

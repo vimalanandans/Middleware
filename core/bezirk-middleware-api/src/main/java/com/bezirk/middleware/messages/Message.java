@@ -1,5 +1,6 @@
 package com.bezirk.middleware.messages;
 
+import com.bezirk.middleware.identity.Alias;
 import com.bezirk.middleware.serialization.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,10 +16,10 @@ public abstract class Message {
 
     static {
         final GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeHierarchyAdapter(Message.class, new InterfaceAdapter<Message>());
+        gsonBuilder.registerTypeHierarchyAdapter(Message.class,
+                new InterfaceAdapter<Message>(Alias.class, new InterfaceAdapter<Alias>()));
         gson = gsonBuilder.create();
     }
-
 
     /**
      * Get the ID of this message to identify the conversations it is apart of.

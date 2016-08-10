@@ -98,7 +98,4 @@ public class EventLedger implements Ledger {
     public void setSerializedHeader(String serializedHeader) {
         this.serializedHeader = serializedHeader;
     }
-
-
-
 }

@@ -2,6 +2,7 @@ rootProject.name = 'Middleware'
 
 /*--------------------core--------------------*/
 include ':core:bezirk-middleware-api'
+include ':core:identity-management'
 include ':core:bezirk'
 include ':core:control-messages'
 include ':core:commons'

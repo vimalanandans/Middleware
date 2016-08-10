@@ -1,7 +1,8 @@
 package com.bezirk.pubsubbroker;
 
+import com.bezirk.actions.SendMulticastEventAction;
+import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
@@ -23,9 +24,9 @@ public interface PubSubBrokerZirkServicer {
 
     boolean setLocation(final ZirkId zirkId, final Location location);
 
-    boolean sendMulticastEvent(ZirkId zirkId, RecipientSelector recipientSelector, String serializedEventMsg, String eventName);
+    boolean sendMulticastEvent(SendMulticastEventAction multicastEventAction);
 
-    boolean sendUnicastEvent(ZirkId zirkId, BezirkZirkEndPoint recipient, String serializedEventMsg, String eventName);
+    boolean sendUnicastEvent(UnicastEventAction unicastEventAction);
 
     short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file);
 }

@@ -115,10 +115,12 @@ public class MainActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
-                    BezirkZirkEndPoint endPoint = (BezirkZirkEndPoint)sender;
+                    BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint)sender;
 
-                    updateDisplay("\nReceived from >> " + endPoint.device +
-                            " >> UpdateAcceptedEvent with test field: " + acceptedEventUpdate.getTestField());
+                    tv.append("\nReceived from >> " + endpoint.device +
+                            " UpdateAcceptedEvent with test field: " + acceptedEventUpdate.getTestField() +
+                            ", isMiddlewareUser: " +
+                            bezirk.getIdentityManager().isMiddlewareUser(acceptedEventUpdate.getAlias()));
                 }
             }
         });

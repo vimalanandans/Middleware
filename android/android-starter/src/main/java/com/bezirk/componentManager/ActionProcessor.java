@@ -51,7 +51,7 @@ public final class ActionProcessor {
                     processSendActions(intentAction, intent, ProxyService);
                     break;
                 case ZIRK_ACTION:
-                    processServiceActions(intentAction, intent, ProxyService);
+                    processZirkActions(intentAction, intent, ProxyService);
                     break;
                 default:
                     logger.warn("Received unknown intent action: " + intentAction.getName());
@@ -120,7 +120,7 @@ public final class ActionProcessor {
 //                MainStackHandler.getDevMode().getStatus();
 //    }
 
-    private void processServiceActions(BezirkAction intentAction, Intent intent, AndroidProxyServer ProxyService) {
+    private void processZirkActions(BezirkAction intentAction, Intent intent, AndroidProxyServer ProxyService) {
         switch (intentAction) {
             case ACTION_BEZIRK_REGISTER:
                 ProxyService.registerZirk(intent);
