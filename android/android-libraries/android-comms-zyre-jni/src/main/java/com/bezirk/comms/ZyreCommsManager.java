@@ -18,10 +18,17 @@ public class ZyreCommsManager extends CommsProcessor {
     private ZyreCommsJni comms;
     private boolean delayedInit;
 
-    public ZyreCommsManager(NetworkManager networkManager, CommsNotification commsNotification, Streaming streaming) {
+    /**
+     *
+     * @param networkManager - Network manager to get TCP/IP related device configurations
+     * @param groupName - Name to channel your application
+     * @param commsNotification
+     * @param streaming
+     */
+    public ZyreCommsManager(NetworkManager networkManager, String groupName, CommsNotification commsNotification, Streaming streaming) {
         super(networkManager, commsNotification, streaming);
         if (comms == null) {
-            comms = new ZyreCommsJni(this);
+            comms = new ZyreCommsJni(this, groupName);
         }
     }
 

@@ -47,10 +47,6 @@ allprojects {
         mavenCentral()
         maven {
             url "${artifactRepoBase}/libs-release-local/"
-            credentials {
-                username "${artifactory_user}"
-                password "${artifactory_password}"
-            }
         }
     }
 

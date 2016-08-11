@@ -44,12 +44,12 @@ public class ComponentManager {
     private static final String DB_VERSION = "0.0.4";
     private static final String DB_FILE_LOCATION = ".";
 
-    public ComponentManager(MessageHandler messageHandler) {
+    public ComponentManager(MessageHandler messageHandler, String messageGroupName) {
         this.messageHandler = messageHandler;
-        create();
+        create(messageGroupName);
     }
 
-    public void create() {
+    public void create(String messageGroupName) {
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         lifecycleManager = new LifecycleManager();
 
@@ -71,7 +71,7 @@ public class ComponentManager {
         device = new JavaDevice();
 
         //initialize comms for communicating between devices over the wifi-network using zyre.
-        comms = new ZyreCommsManager(null, null, networkManager);
+        comms = new ZyreCommsManager(networkManager, messageGroupName, null,null );
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
         pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);

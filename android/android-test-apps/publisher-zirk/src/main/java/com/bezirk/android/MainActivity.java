@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         tv.setMovementMethod(new ScrollingMovementMethod());
 
         // Start Bezirk as part of the publisher
-        AppManager.getAppManager().startBezirk(this,true,"Integrated Bezirk");
+        AppManager.getAppManager().startBezirk(this,true,"Integrated Bezirk",null);
 
         senderZirk();
 
