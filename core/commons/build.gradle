@@ -15,6 +15,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.xerial:sqlite-jdbc:3.7.2'
     testCompile 'org.mockito:mockito-all:1.10.19'
+    //compile project(path: ':core:remote-logging')
 }
 
 /*

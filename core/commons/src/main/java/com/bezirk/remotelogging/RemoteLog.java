@@ -15,13 +15,13 @@ public interface RemoteLog {
      * Constant label for ALL_SPHERES logging.
      * TODO : Used in GUI selection display and internal modules. Review it
      */
-    /**  Remove this and Add this constant in RemoteLoggingConfig */
+
     String ALL_SPHERES = "ALL-SPHERES";
 
     /** Start Logging . By component manager */
 
 
-    boolean startLoggingService(final RemoteLoggingMessageNotification platformSpecificHandler) ;
+    boolean startRemoteLoggingService(final RemoteLoggingMessageNotification platformSpecificHandler) ;
 
 
     /** Start Logging . By component manager */

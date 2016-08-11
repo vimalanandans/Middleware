@@ -96,9 +96,9 @@ public  class RemoteLoggingManager implements RemoteLog {
 
         };*/
         String[] loggingSpheres;
-        if (RemoteLoggingConfig.ALL_SPHERES.equals(sphereNameList)) {
+        if (RemoteLog.ALL_SPHERES.equals(sphereNameList)) {
             loggingSpheres = new String[1];
-            loggingSpheres[0] = RemoteLoggingConfig.ALL_SPHERES;
+            loggingSpheres[0] = RemoteLog.ALL_SPHERES;
         } else {
             loggingSpheres = sphereNameList;
         }
@@ -276,7 +276,7 @@ public  class RemoteLoggingManager implements RemoteLog {
      * @throws Exception if handler is null, or something goes wrong while processing.
      */
     @Override
-    public boolean startLoggingService(final RemoteLoggingMessageNotification platformSpecificHandler) {
+    public boolean startRemoteLoggingService(final RemoteLoggingMessageNotification platformSpecificHandler) {
         if (remoteLoggingService == null && platformSpecificHandler != null) {
             remoteLoggingService = new RemoteLoggingService(ServiceActivatorDeactivator.REMOTE_LOGGING_PORT);
             receiverQueueProcessor = new ReceiverQueueProcessor(platformSpecificHandler);

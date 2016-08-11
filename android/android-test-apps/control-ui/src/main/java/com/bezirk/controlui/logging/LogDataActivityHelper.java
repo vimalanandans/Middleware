@@ -170,7 +170,7 @@ class LogDataActivityHelper {
         try {
             logger.debug("start log service");
             logDataActivity.remoteLoggingManager = new RemoteLoggingManager();
-            logDataActivity.remoteLoggingManager.startLoggingService(loggingHandler);
+            logDataActivity.remoteLoggingManager.startRemoteLoggingService(loggingHandler);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

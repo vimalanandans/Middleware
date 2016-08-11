@@ -31,7 +31,7 @@ public class FileCreationHelper {
         logger.debug("create file with timestamp and store the remotelogging message");
         Date date = new Date() ;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
-        File file = new File(dateFormat.format(date) + ".txt") ;
+        File file = new File("C:/Users/psg6kor/DesktopdateFormat.format(date) + ".txt"") ;
         BufferedWriter out = new BufferedWriter(new FileWriter(file));
         out.write(getSphereNameFromSphereId(remoteLogMessage.sphereName) +" " +sdf.format(Long.valueOf(remoteLogMessage.timeStamp)) +
                 " "+remoteLogMessage.sender + " "+getDeviceNameFromDeviceId(remoteLogMessage.recipient));
