@@ -47,26 +47,31 @@ public class ProxyClient implements Bezirk {
     private static final BroadcastReceiver brForService = new ZirkMessageReceiver(
             eventMap, eventListenerMap, streamMap, streamListenerMap);
     private static final ZirkMessageHandler bezirkPcCallback = new ZirkMessageHandler(brForService);
-    private static final ComponentManager componentManager = new ComponentManager(bezirkPcCallback);
-    private static final ProxyServer proxy;
-    private static final ProxyPersistence proxyPersistence;
+    private static  ComponentManager componentManager = null;
+    private static ProxyServer proxy;
+    private static ProxyPersistence proxyPersistence;
     private static ProxyRegistry proxyRegistry = null;
 
-    static {
-        componentManager.start();
-        proxy = componentManager.getProxyServer();
-        proxyPersistence = componentManager.getBezirkProxyPersistence();
-        try {
-            proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
-        } catch (Exception e) {
-            logger.error("Error loading ProxyRegistry", e);
-            System.exit(-1);
+    static void createMiddleware(String messageGroup) {
+        if(componentManager == null) {
+            componentManager = new ComponentManager(bezirkPcCallback, messageGroup);
+            componentManager.start();
+            proxy = componentManager.getProxyServer();
+            proxyPersistence = componentManager.getBezirkProxyPersistence();
+            try {
+                proxyRegistry = proxyPersistence.loadBezirkProxyRegistry();
+            } catch (Exception e) {
+                logger.error("Error loading ProxyRegistry", e);
+                System.exit(-1);
+            }
         }
+
     }
 
     private ZirkId zirkId;
 
-    public ProxyClient() {
+    public ProxyClient(String messageGroup) {
+        createMiddleware(messageGroup);
     }
 
     public boolean registerZirk(String zirkName) {

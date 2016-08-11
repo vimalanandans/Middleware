@@ -17,6 +17,7 @@ import com.bezirk.middleware.identity.Alias;
  *     // Receiving Zirk
  *     carObservations.setEventListener((event) -> {
  *         if (event instanceof HvacObservation) {
+ *             // HvacObservation is an IdentifiedEvent
  *             HvacObservation o = (HvacObservation) event;
  *             Alias a = o.getAlias();
  *

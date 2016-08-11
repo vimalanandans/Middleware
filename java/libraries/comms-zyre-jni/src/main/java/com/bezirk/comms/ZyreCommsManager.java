@@ -17,10 +17,10 @@ public class ZyreCommsManager extends CommsProcessor {
     private static final Logger logger = LoggerFactory.getLogger(ZyreCommsManager.class);
     private ZyreCommsJni comms = null;
 
-    public ZyreCommsManager(Streaming streaming, CommsNotification commsNotification, NetworkManager networkManager) {
+    public ZyreCommsManager(NetworkManager networkManager, String groupName, CommsNotification commsNotification, Streaming streaming) {
         super(networkManager, commsNotification, streaming);
         if (comms == null) {
-            comms = new ZyreCommsJni(this);
+            comms = new ZyreCommsJni(this,groupName);
             comms.initZyre(); //TODO: Not sure if this needs to be done here or when starting comms
         }
     }
