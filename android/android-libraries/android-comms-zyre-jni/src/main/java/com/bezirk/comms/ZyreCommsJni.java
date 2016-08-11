@@ -48,7 +48,10 @@ public class ZyreCommsJni extends Thread {
 
     public ZyreCommsJni(CommsProcessor commsProcessor, String zyreGroup) {
         this.commsProcessor = commsProcessor;
-        this.group = zyreGroup;
+
+        if(group != null) // on valid group name replace the default group name
+            this.group = zyreGroup;
+
         zyreCommsHelper = new ZyreCommsHelper(peers, commsProcessor);
 
     }

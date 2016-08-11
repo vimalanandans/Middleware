@@ -10,7 +10,7 @@ public abstract class ZirkAction implements Serializable {
     private final ZirkId zirkId;
 
     public ZirkAction(@NotNull ZirkId zirkId) {
-        if (!zirkId.getZirkId().isEmpty()) {
+        if (zirkId.getZirkId().isEmpty()) {
             throw new IllegalArgumentException("zirkId must be set to a non-empty ID");
         }
 
