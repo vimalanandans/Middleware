@@ -68,7 +68,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         final String messageId = incomingEvent.getMessageId();
 
         if (checkDuplicateMsg(endpoint.zirkId.getZirkId(), messageId)) {
-            final Event event = Message.fromJson(incomingEvent.getSerializedEvent(), Event.class);
+            final Event event = (Event) Message.fromJson(incomingEvent.getSerializedEvent());
             final String eventName = event.getClass().getName();
 
             if (incomingEvent.isIdentified()) {
@@ -88,7 +88,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
 
     private void processStream(ReceiveFileStreamAction streamMessage) {
         final StreamDescriptor streamDescriptor =
-                Message.fromJson(streamMessage.getSerializedStream(), StreamDescriptor.class);
+                (StreamDescriptor) Message.fromJson(streamMessage.getSerializedStream());
         final String streamName = streamDescriptor.getClass().getName();
 
         if (ProxyClient.streamListenerMap.containsKey(streamName)) {

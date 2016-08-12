@@ -21,36 +21,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:weightSum="3"
-        android:orientation="horizontal" >
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Start as Integrated App"
-            android:gravity="center"
-            android:onClick="OnIntegratedApp"
-            android:id="@+id/StartIntegratedButton" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:text="Start As Standalone App"
-            android:onClick="OnStandaloneApp"
-            android:id="@+id/StartStandaloneAppButton" />
+        android:orientation="vertical" >
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Clear "
+            android:text="Clear Messages"
             android:onClick="onClearClick"
             android:id="@+id/ClearTestButton" />
     </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sender Zirk"
+        android:text="Publisher Zirk"
         android:maxLines = "2500"
         android:scrollbars = "vertical"
         android:id="@+id/tv" />

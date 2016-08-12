@@ -1,9 +1,17 @@
 package com.bezirk.middleware.messages;
 
-import com.bezirk.middleware.identity.Alias;
-import com.bezirk.middleware.serialization.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+
+import java.lang.reflect.Type;
 
 import java.io.Serializable;
 
@@ -21,14 +29,39 @@ public abstract class Message implements Serializable {
 
     static {
         final GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeHierarchyAdapter(Message.class,
-                new InterfaceAdapter<Message>(Alias.class, new InterfaceAdapter<Alias>()));
+        gsonBuilder.registerTypeAdapter(Message.class,
+                new InterfaceAdapter<Message>());
+        gson = gsonBuilder.create();
+    }
+
+    /**
+     * This method should be only used if the Zirk needs to provide a custom Gson adapter via the <code>gsonBuilder</code>for deserializing its events.
+     * This is especially useful if the event has abstract type(s) as its instance variables which need to be serialized.
+     * It can be achieved by supplying the builder with Gson's RuntimeTypeAdapterFactory.
+     * For an interface <code>Interface</code> with implementations as <code>Implementation1</code> & <code>Implementation1</code>, the builder would look something like this:
+     * <p/>
+     * <pre>
+     *     {@code
+     *     GsonBuilder builder = new GsonBuilder();
+     *     RuntimeTypeAdapterFactory<Interface> interfaceAdapter = RuntimeTypeAdapterFactory.of(Interface.class);
+     *     qualityAdapter.registerSubtype(Implementation1.class).registerSubtype(Implementation2.class);
+     *     builder.registerTypeAdapterFactory(interfaceAdapter);
+     *
+     *     Message.setGsonBuilder(builder); //ensure the builder is set before sending/receiving bezirk events
+     *     }
+     * </pre>
+     *
+     * @param gsonBuilder
+     */
+    public static void setGsonBuilder(GsonBuilder gsonBuilder) {
+        gsonBuilder.registerTypeAdapter(Message.class,
+                new InterfaceAdapter<Message>());
         gson = gsonBuilder.create();
     }
 
     /**
      * Get the ID of this message to identify the conversations it is apart of.
-     *
+     * <p/>
      * The message ID is intended to help Zirks match messages that are making a request with their
      * reply when the reply is received. The middleware does not use this property internally. The
      * Zirk sending the request should set this ID, and the responding Zirk should echo it in the
@@ -45,18 +78,15 @@ public abstract class Message implements Serializable {
     }
 
     /**
-     * Deserialize the <code>json</code> string to create an object of type <code>objectType</code>.
+     * Deserialize the <code>json</code> string to create an object of type <code>Message</code>.
      * This method is used by the Middleware to prepare a message for the appropriate
      * <code>BezirkListener</code> callback when a message is received.
      *
-     * @param <C>        the type of the object represented by <code>json</code>, set by
-     *                   <code>objectType</code>
-     * @param json       the JSON String that is to be deserialized
-     * @param objectType the type of the object represented by <code>json</code>
-     * @return an object of type <code>objectType</code> deserialized from <code>json</code>
+     * @param json the JSON String that is to be deserialized
+     * @return an object of type <code>Message</code> deserialized from <code>json</code>
      */
-    public static <C> C fromJson(String json, Class<C> objectType) {
-        return gson.fromJson(json, objectType);
+    public static Message fromJson(String json) {
+        return gson.fromJson(json, Message.class);
     }
 
     /**
@@ -66,6 +96,31 @@ public abstract class Message implements Serializable {
      * @return JSON representation of the message
      */
     public String toJson() {
-        return gson.toJson(this);
+        return gson.toJson(this, Message.class);
+    }
+
+    private static class InterfaceAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
+
+        @Override
+        public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject result = new JsonObject();
+            result.add("type", new JsonPrimitive(src.getClass().getName()));
+            result.add("properties", gson.toJsonTree(src, src.getClass()));
+            return result;
+        }
+
+        @Override
+        public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            JsonObject jsonObject = json.getAsJsonObject();
+            String type = jsonObject.get("type").getAsString();
+            JsonElement element = jsonObject.get("properties");
+
+            try {
+                return (T) gson.fromJson(element, Class.forName(type));
+            } catch (ClassNotFoundException cnfe) {
+                throw new JsonParseException("Unknown element type: " + type, cnfe);
+            }
+        }
     }
 }
