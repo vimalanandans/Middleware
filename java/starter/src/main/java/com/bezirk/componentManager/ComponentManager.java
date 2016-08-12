@@ -53,9 +53,10 @@ public class ComponentManager {
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         lifecycleManager = new LifecycleManager();
 
-        //change log level
-        ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
-        root.setLevel(Level.DEBUG);
+        if (Configuration.isLoggingEnabled()) {
+            ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+            root.setLevel(Level.DEBUG);
+        }
 
         //initialize network manager for handling network management and getting network addressing information
         networkManager = new JavaNetworkManager();

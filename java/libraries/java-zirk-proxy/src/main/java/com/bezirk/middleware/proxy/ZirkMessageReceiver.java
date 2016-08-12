@@ -68,7 +68,7 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      * @param incomingEvent new event to send up to Zirks registered to receive it
      */
     private void processEvent(UnicastEventAction incomingEvent) {
-        final Event event = Event.fromJson(incomingEvent.getSerializedEvent(), Event.class);
+        final Event event = (Event) Event.fromJson(incomingEvent.getSerializedEvent());
         final String eventName = event.getClass().getName();
 
         if (incomingEvent.isIdentified()) {
@@ -101,8 +101,7 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      * @param incomingStream streamMessage that will be given back to the services.
      */
     private void processStream(ReceiveFileStreamAction incomingStream) {
-        final StreamDescriptor streamDescriptor = StreamDescriptor.fromJson(incomingStream.getSerializedStream(),
-                StreamDescriptor.class);
+        final StreamDescriptor streamDescriptor = (StreamDescriptor) StreamDescriptor.fromJson(incomingStream.getSerializedStream());
         final String streamName = streamDescriptor.getClass().getName();
 
         if (streamListenerMap.containsKey(streamName)) {
