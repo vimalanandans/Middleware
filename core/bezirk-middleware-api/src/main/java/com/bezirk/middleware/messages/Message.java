@@ -21,7 +21,7 @@ import java.io.Serializable;
  * transfer/reception.
  */
 public abstract class Message implements Serializable {
-    private static final Gson gson;
+    private static Gson gson;
     private String msgId;
 
     //defualt value
