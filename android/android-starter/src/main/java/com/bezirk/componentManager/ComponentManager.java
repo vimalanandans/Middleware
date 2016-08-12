@@ -69,7 +69,7 @@ public class ComponentManager extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        logger.debug("onCreate of component Manager");
         Log.d(TAG, "Creating Bezirk Service");
 
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
@@ -142,8 +142,10 @@ public class ComponentManager extends Service {
 
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
+        logger.debug("onStartCommand of ComponentManager");
         super.onStartCommand(intent, flags, startId);
         if (intent != null) {
+            logger.debug("Intent not null");
             actionProcessor.processBezirkAction(intent, proxyServer, new LifeCycleCallbacks() {
                 @Override
                 public void start() {
@@ -155,7 +157,9 @@ public class ComponentManager extends Service {
                     String appName ;
 
                     sticky = intent.getBooleanExtra(AppManager.STICKY_TAG,sticky );
+                    logger.debug("sticky is "+sticky);
                     appName = intent.getStringExtra(AppManager.APPLICATION_NAME_TAG);
+                    logger.debug("appName is "+appName);
 
                     /** start only if it is sticky */
                     if(sticky)

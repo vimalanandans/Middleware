@@ -38,7 +38,7 @@ public final class ActionProcessor {
                 logger.debug("Received intent, action: {}", intentAction.getName());
 
             BezirkAction.ActionType actionType = intentAction.getType();
-
+            logger.debug("actionType is "+actionType);
             switch (actionType) {
                 case BEZIRK_STACK_ACTION:
 

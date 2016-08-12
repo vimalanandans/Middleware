@@ -49,7 +49,8 @@ public class ZyreCommsJni extends Thread {
     public ZyreCommsJni(CommsProcessor commsProcessor, String zyreGroup) {
         this.commsProcessor = commsProcessor;
 
-        if(group != null) // on valid group name replace the default group name
+        //if(group != null) // on valid group name replace the default group name
+
             this.group = zyreGroup;
 
         zyreCommsHelper = new ZyreCommsHelper(peers, commsProcessor);
@@ -71,6 +72,7 @@ public class ZyreCommsJni extends Thread {
 
             //initialize the executor.
             if (eventExecutor == null || eventExecutor.isShutdown() || eventExecutor.isTerminated()) {
+                logger.debug("initialize the executor");
                 eventExecutor = Executors.newFixedThreadPool(NUMBER_OF_EVENT_THREADS);
             }
 
@@ -120,17 +122,19 @@ public class ZyreCommsJni extends Thread {
      * start the zyre
      */
     public boolean startZyre() {
-
+        logger.debug("start Zyre");
         if (ValidatorUtility.isObjectNotNull(zyre)) {
-
+            ZyreCommsJni zyreCommsJni = new ZyreCommsJni(commsProcessor,"New Grouppp");
+            logger.debug("this.group val is "+this.group);
             // join the group
-            zyre.join(getGroup());
+            zyre.join("New Grouppp");
 
             //update flag
             listenToEventsFlag = true;
 
             try {
                 // start the receiver
+                logger.debug("start the receiver");
                 this.start();
             } catch (Exception e) {
                 logger.error("Exception while starting the thread", e);
@@ -183,7 +187,8 @@ public class ZyreCommsJni extends Thread {
                             Thread.sleep(delayedInitTime + 1000L);
                             logger.debug("Sleeping for few seconds as Zyre is not yet initialized!!!!");
                         }
-                        zyre.shout(getGroup(), data);
+                        logger.debug("data in zyreCommsJni is  "+data);
+                        zyre.shout("New Grouppp", data);
                         //logger.debug("Shouted message to group : >> " + getGroup());
                         //logger.debug("Multi-cast size : >> " + data.length());
                     } catch (Exception e) {
@@ -222,6 +227,7 @@ public class ZyreCommsJni extends Thread {
                             logger.debug("Sleeping for few seconds as Zyre is not yet initialized!!!!");
                         }
                         //send to the specific node
+                        logger.debug("nodeId is "+nodeId);
                         zyre.whisper(nodeId, data);
 
                         //logger.debug("Unicast size : >> " + data.length() + " data >> " + data);
@@ -241,6 +247,7 @@ public class ZyreCommsJni extends Thread {
 
     @Override
     public void run() {
+        logger.debug("insider run");
         if (group == null) {
             logger.error("group not set");
             return;
@@ -249,7 +256,7 @@ public class ZyreCommsJni extends Thread {
             logger.error("Zyre not set");
             return;
         }
-
+        logger.debug("listenToEventsFlag is "+listenToEventsFlag);
         while (listenToEventsFlag) {
 
             Map<String, String> eventMap = zyreCommsHelper.receive(zyre);

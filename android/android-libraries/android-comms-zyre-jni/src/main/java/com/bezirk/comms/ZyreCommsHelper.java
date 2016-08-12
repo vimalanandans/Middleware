@@ -69,7 +69,7 @@ class ZyreCommsHelper {
      */
     Map<String, String> receive(Zyre zyre) {
         String incoming = zyre.recv();
-
+        logger.debug("incoming is "+incoming);
         ConcurrentMap<String, String> eventMap = new ConcurrentHashMap<>();
 
         if ((incoming == null) || incoming.isEmpty())

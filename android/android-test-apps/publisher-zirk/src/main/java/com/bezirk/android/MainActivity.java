@@ -19,11 +19,14 @@ import com.bezirk.test.AirQualityUpdateEvent;
 import com.bezirk.test.HouseInfoEventSet;
 import com.bezirk.test.UpdateAcceptedEvent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final Logger logger = LoggerFactory.getLogger(MainActivity.class);
     private TextView tv;
 
     @Override
@@ -31,11 +34,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.tv);
-
+        logger.debug("MainActivity oncreate");
+       // OnIntegratedApp(tv);
+        OnStandaloneApp(tv);
     }
 
     public void OnIntegratedApp(View view) {
-
+        logger.debug("Inside OnIntegratedApp");
         tv.setText("Publisher + Subscriber Integrated with Bezirk");
         tv.setMovementMethod(new ScrollingMovementMethod());
 
@@ -105,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void senderZirk() {
 
-
+        logger.debug("inside senderZirk");
         final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Sender Zirk");
 
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
@@ -114,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
+                    logger.debug("event is an instanceof UpdateAcceptedEvent");
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
                     BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint)sender;
 

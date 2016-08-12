@@ -59,6 +59,7 @@ public class ZyreCommsManager extends CommsProcessor {
             case STARTED:
                 logger.debug("Starting comms");
                 if (comms != null) {
+                    logger.debug("comms not null in zyreCommsManager");
                     comms.initZyre(delayedInit);
                     delayedInit = true;
                     comms.startZyre();

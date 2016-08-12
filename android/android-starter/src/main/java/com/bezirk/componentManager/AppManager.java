@@ -5,12 +5,15 @@ import android.content.Intent;
 
 import com.bezirk.actions.BezirkAction;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * App manager helps to manage the apps. Used by Apps to instantiate the bezirk service
  *  Draft version. TODO convert the intent extra fields to data class
  */
 public class AppManager {
-
+    private static final Logger logger = LoggerFactory.getLogger(AppManager.class);
     static  AppManager app = new AppManager();
     private String COMPONENT_NAME = "com.bezirk.controlui";
     static String APPLICATION_NAME_TAG = "AppName";
@@ -33,15 +36,17 @@ public class AppManager {
     public boolean startBezirk(Context context, boolean backgroundService, String appName, String messageGroupName)
     {
         //Start Bezirk
+        logger.debug("Start bezirk inside AppManager class");
         Intent serviceIntent = new Intent(context, ComponentManager.class);
 
         /* set the context while starting the app*/
         COMPONENT_NAME = context.getPackageName();
-
+        logger.debug("COMPONENT_NAME value is "+COMPONENT_NAME);
         serviceIntent.setAction(BezirkAction.ACTION_START_BEZIRK.getName());
         serviceIntent.putExtra(STICKY_TAG, backgroundService);
         serviceIntent.putExtra(APPLICATION_NAME_TAG, appName);
         //serviceIntent.putExtra(MSG_GROUP_NAME_TAG,messageGroupName);
+        logger.debug("before starting the service");
         context.startService(serviceIntent);
 
         return true;

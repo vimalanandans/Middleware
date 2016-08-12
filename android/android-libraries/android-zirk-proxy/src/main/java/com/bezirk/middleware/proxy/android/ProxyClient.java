@@ -114,11 +114,11 @@ public final class ProxyClient implements Bezirk {
         final ZirkId zirkId = new ZirkId(zirkIdAsString);
 
         if (sendBezirkIntent(context, new RegisterZirkAction(zirkId, zirkName))) {
-            Log.d(TAG, "Registered Zirk: " + zirkName);
+            Log.d(TAG, "Registered Zirk is : " + zirkName);
             return zirkId;
         }
 
-        return null;
+        return zirkId;
     }
 
     @Override

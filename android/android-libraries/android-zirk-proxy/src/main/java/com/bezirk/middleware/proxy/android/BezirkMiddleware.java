@@ -9,7 +9,11 @@ import com.bezirk.componentManager.ComponentManager;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.proxy.api.impl.ZirkId;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class BezirkMiddleware {
+    public static final Logger logger = LoggerFactory.getLogger(BezirkMiddleware.class);
     /**
      * Register a Zirk with the Bezirk middleware. This makes the Zirk available to the user in
      * Bezirk configuration interfaces, thus allowing her to place it in a sphere to interact with
@@ -22,6 +26,7 @@ public abstract class BezirkMiddleware {
      * a Zirk with the name <code>zirkName</code> is already registered.
      */
     public static Bezirk registerZirk(Context context, String zirkName) {
+        logger.debug("register bezirk");
         synchronized (BezirkMiddleware.class) {
             ZirkId zirkId = ProxyClient.registerZirk(context, zirkName);
             return zirkId == null ? null : new ProxyClient(context, zirkId);
