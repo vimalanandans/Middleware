@@ -10,6 +10,7 @@
  * 3.0.0-alpha-mvp+006 sticky bezirk service, start/stop lifecycle handling for comms, cleanup comms message,
  *                      increment comms version, upgrade gson, zxing libraries, cleanup info traces
  * 3.0.0-alpha-mvp+007 logging enabled/disabled, setGsonBuilder for Message, logback log message suppressing and more ...
+ * 3.0.0-alpha-mvp+008 logback filter removed
  */
 buildscript {
     repositories {
@@ -37,7 +38,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha-mvp+007"
+    version = "3.0.0-alpha-mvp+008"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
