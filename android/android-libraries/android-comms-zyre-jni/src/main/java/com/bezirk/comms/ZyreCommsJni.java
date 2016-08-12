@@ -34,14 +34,12 @@ public class ZyreCommsJni extends Thread {
 
     final int delayedInitTime = 5000; //in ms
     private Zyre zyre;
-    private String group;
+    private String group = BEZIRK_GROUP;
     private boolean listenToEventsFlag;
     private ExecutorService eventExecutor;
 
     public ZyreCommsJni(CommsProcessor commsProcessor) {
         this.commsProcessor = commsProcessor;
-        //setting to the default group
-        this.group = BEZIRK_GROUP;
 
         zyreCommsHelper = new ZyreCommsHelper(peers, commsProcessor);
     }
@@ -49,9 +47,10 @@ public class ZyreCommsJni extends Thread {
     public ZyreCommsJni(CommsProcessor commsProcessor, String zyreGroup) {
         this.commsProcessor = commsProcessor;
 
-        //if(group != null) // on valid group name replace the default group name
+        if (zyreGroup != null) {// on valid group name replace the default group name
 
             this.group = zyreGroup;
+        }
 
         zyreCommsHelper = new ZyreCommsHelper(peers, commsProcessor);
 
@@ -127,7 +126,10 @@ public class ZyreCommsJni extends Thread {
             ZyreCommsJni zyreCommsJni = new ZyreCommsJni(commsProcessor,"New Grouppp");
             logger.debug("this.group val is "+this.group);
             // join the group
-            zyre.join("New Grouppp");
+
+            //zyre.join("New Grouppp");
+            System.out.println("group: " + getGroup());
+            zyre.join(getGroup());
 
             //update flag
             listenToEventsFlag = true;
