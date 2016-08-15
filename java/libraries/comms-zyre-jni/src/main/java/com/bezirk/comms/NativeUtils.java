@@ -36,16 +36,16 @@ public class NativeUtils {
     public static final Logger logger = LoggerFactory.getLogger(NativeUtils.class);
 
     private static final String LIB_BIN = "lib-zeromq-bin";
-    private static final String JAVA_TMPDIR = System.getProperty("java.io.tmpdir");
+    private static final String TMPDIR = System.getProperty("java.io.tmpdir");
     private static final String RES_PATH = "META-INF/lib/";
 
     public static void loadNativeBinaries() {
         loadLibraries();
     }
 
-    private static void loadLibrary(String name) {
+    private static void loadLibrary(String library) {
         try {
-            System.loadLibrary(name);
+            System.load(library);
         } catch (UnsatisfiedLinkError e) {
             logger.error("Unable to load zyre libraries. \n" +
                     "Please refer http://developer.bezirk.com/documentation/installation_setup.php");
@@ -53,7 +53,7 @@ public class NativeUtils {
     }
 
     private static void deleteOldFiles() {
-        final File tmpDirectory = new File(JAVA_TMPDIR + LIB_BIN);
+        final File tmpDirectory = new File(TMPDIR + LIB_BIN);
         final File[] files = tmpDirectory.listFiles();
         if (files == null) return;
         for (final File file : files) {
@@ -67,20 +67,28 @@ public class NativeUtils {
         copyLibs();
 
         // Must be ArrayList because the order the libraries are loaded in matters
-        final List<String> libraries = new ArrayList<>();
+        final List<String> libraries = new ArrayList<>(
+                Arrays.asList("libsodium", "libzmq", "czmq", "zyre", "zyre-jni"));
+
+        final String prefix;
+        final String extension;
 
         if (NativeLibraryUtil.getArchitecture() == NativeLibraryUtil.Architecture.WINDOWS_64 ||
                 NativeLibraryUtil.getArchitecture() == NativeLibraryUtil.Architecture.WINDOWS_32) {
-            libraries.addAll(Arrays.asList("libsodium", "libzmq"));
+            prefix = "";
+            extension = ".dll";
+        } else if (NativeLibraryUtil.getArchitecture() == NativeLibraryUtil.Architecture.OSX_64 ||
+                NativeLibraryUtil.getArchitecture() == NativeLibraryUtil.Architecture.OSX_32) {
+            prefix = "lib";
+            extension = ".dylib";
         } else {
-            libraries.addAll(Arrays.asList("sodium", "zmq"));
+            prefix = "lib";
+            extension = ".so";
         }
-
-        libraries.addAll(Arrays.asList("czmq", "zyre", "zyre-jni"));
-
         try {
             for (String library : libraries) {
-                loadLibrary(library);
+                if (!prefix.isEmpty() && !library.startsWith(prefix)) library = prefix + library;
+                loadLibrary(TMPDIR + File.separator + LIB_BIN + File.separator + library + extension);
             }
         } catch (UnsatisfiedLinkError e) {
             logger.info("java.library.path > " + System.getProperty("java.library.path"), e);
@@ -96,7 +104,7 @@ public class NativeUtils {
             return;
         }
 
-        final File fileOut = new File(JAVA_TMPDIR + File.separator + LIB_BIN + File.separator);
+        final File fileOut = new File(TMPDIR + File.separator + LIB_BIN + File.separator);
 
         if (fileOut.exists()) {
             logger.info("Zyre binaries already exits in {}, delete this folder for new Bezirk " +
