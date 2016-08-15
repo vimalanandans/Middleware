@@ -11,6 +11,7 @@
  *                      increment comms version, upgrade gson, zxing libraries, cleanup info traces
  * 3.0.0-alpha-mvp+007 logging enabled/disabled, setGsonBuilder for Message, logback log message suppressing and more ...
  * 3.0.0-alpha-mvp+008 logback filter removed
+ * 3.0.0-alpha-mvp+009 zyre NativeUtils library fetching fix without path setting
  */
 buildscript {
     repositories {
@@ -38,7 +39,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha-mvp+008"
+    version = "3.0.0-alpha-mvp+009"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
