@@ -40,6 +40,15 @@ artifactory {
     }
 }
 
+//for suppressing doclint issues when publishing with java8
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
 task sourceJar(type: Jar) {
     classifier 'sources'
     from sourceSets.main.allSource
