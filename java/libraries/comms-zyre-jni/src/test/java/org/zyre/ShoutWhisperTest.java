@@ -32,7 +32,7 @@ public class ShoutWhisperTest {
 
     @Test
     public void test() throws Exception {
-        NativeUtils.loadLibs();
+        NativeUtils.loadNativeBinaries();
 
         reqThread = new Requester();
 

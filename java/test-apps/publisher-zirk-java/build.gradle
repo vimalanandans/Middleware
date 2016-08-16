@@ -7,16 +7,8 @@ dependencies {
     compile project(':core:bezirk')
     compile project(':java:libraries:java-zirk-proxy')
     compile project(':core:testapp-core')
-//    compile project(':core:protocols:parametricUI-protocols')
-
     testCompile 'junit:junit:4.12'
 }
-
-// Automatically add the temporary directory where Bezirk dumps the ZeroMQ dependencies
-// to java.library.path
-applicationDefaultJvmArgs = ["-Djava.library.path=" + System.getProperty("java.library.path") +
-                                     File.pathSeparator + System.getProperty("java.io.tmpdir") +
-                                     "lib-zeromq-bin" + File.separator]
 
 run {
     /**
