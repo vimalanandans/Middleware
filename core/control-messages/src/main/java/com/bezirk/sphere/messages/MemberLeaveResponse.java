@@ -21,14 +21,6 @@ public class MemberLeaveResponse extends UnicastControlMessage {
 
     /**
      * Used for sending unicast response back to the requesting member
-     *
-     * @param sphereID
-     * @param requestId
-     * @param signatureVerified
-     * @param removedSuccessfully
-     * @param recipient
-     * @param serviceId
-     * @param sphere_Name
      */
     public MemberLeaveResponse(String sphereID, int requestId, boolean signatureVerified, boolean removedSuccessfully, BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, ZirkId serviceId, String sphere_Name, String key) {
 

@@ -304,9 +304,6 @@ public class ShareProcessor {
 
     /**
      * Validates the qrcode string/short code
-     *
-     * @param inviterShareCode
-     * @return
      */
     private String validateCodeString(String inviterShareCode) {
         /**
@@ -350,10 +347,6 @@ public class ShareProcessor {
 
     /**
      * Generate the share request to be sent to the device sharing its sphere
-     *
-     * @param sharerSphereId
-     * @param inviterShortCode
-     * @return
      */
     private ShareRequest prepareRequest(String sharerSphereId, String inviterShortCode) {
         ShareRequest shareRequest = null;
@@ -385,9 +378,6 @@ public class ShareProcessor {
 
     /**
      * Validate the Share request: shortCode, sphereExchangeData, bezirkDeviceInfo
-     *
-     * @param shareRequest
-     * @return
      */
     private boolean validateRequest(ShareRequest shareRequest) {
         if (shareRequest == null) {
@@ -431,7 +421,6 @@ public class ShareProcessor {
      * Validate the Share response: SphereExchangeData, BezirkDeviceInfo,
      * sharerSphereId
      *
-     * @param - shareResponse
      * @return - True if response if valid, else, False.
      */
     private boolean validateResponse(ShareResponse shareResponse) {

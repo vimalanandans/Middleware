@@ -54,15 +54,11 @@ public final class SignalingFactory {
     /**
      * Checks whether the class exists during runtime
      *
-     * @param className
      * @return true if found
      * false otherwise
      */
     public static boolean checkClassExists(final String className) {
-
-
         return getClass(className) != null;
-
     }
 
     /**
@@ -111,7 +107,6 @@ public final class SignalingFactory {
     /**
      * Get the new object instance of the class of type className
      *
-     * @param className
      * @return new instance if class found and instantiation successful else null
      */
     private static Object getNewInstance(final String className) {

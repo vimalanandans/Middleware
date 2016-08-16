@@ -51,8 +51,6 @@ public class CatchProcessor {
      *
      * @param catchCode can be in the form of qr-code or a 7-digit[may change later]
      *                  code
-     * @param sphereId
-     * @return
      */
     public boolean processCatchCode(String catchCode, String sphereId) {
         // sphereId in which the services need to be caught
@@ -124,9 +122,6 @@ public class CatchProcessor {
 
     /**
      * Process the catch response received from sphere/device being caught
-     *
-     * @param catchResponse
-     * @return
      */
     public boolean processResponse(CatchResponse catchResponse) {
         if (catchResponse == null) {
@@ -180,9 +175,6 @@ public class CatchProcessor {
 
     /**
      * Process catch request received from the catcher device
-     *
-     * @param catchRequest
-     * @return
      */
     public boolean processRequest(CatchRequest catchRequest) {
         /************************************************************************
@@ -278,9 +270,6 @@ public class CatchProcessor {
 
     /**
      * Validates the qrcode string/short code
-     *
-     * @param inviterCatchCode
-     * @return
      */
     private String validateCodeString(String inviterCatchCode) {
         /**
@@ -300,9 +289,6 @@ public class CatchProcessor {
 
     /**
      * Add keys for the short code
-     *
-     * @param inviterShortCode
-     * @return
      */
     private boolean addCatchCode(String inviterShortCode) {
         // create key from the short id
@@ -367,9 +353,6 @@ public class CatchProcessor {
 
     /**
      * Validate the Catch request: shortCode, sphereExchangeData, bezirkDeviceInfo
-     *
-     * @param catchRequest
-     * @return
      */
     private boolean validateRequest(CatchRequest catchRequest) {
         if (catchRequest == null) {
@@ -408,7 +391,6 @@ public class CatchProcessor {
      * @param sphereExchangeData      - has to be non-null
      * @param catcherBezirkDeviceInfo - has to be non-null
      * @param inviterShortCode        - has to be non-null
-     * @param -                       catcherSphereId
      * @return - CatchResponse object if all parameters are valid.
      * <br>- Exception if sphereExchangeData or catcherBezirkDeviceInfo are null
      * <br>- null if catcherSphereId is null.

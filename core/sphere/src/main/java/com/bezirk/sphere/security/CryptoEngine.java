@@ -345,8 +345,6 @@ public final class CryptoEngine implements CryptoInternals {
     /**
      * Provides the key details which can be used for sharing a sphere with
      * other devices Eq. using QR code
-     *
-     * @return
      */
     public SphereVitals getSphereVitals(String sphereId) {
 
