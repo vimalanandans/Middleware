@@ -185,6 +185,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
     @Override
     public boolean sendMulticastEvent(SendMulticastEventAction multicastEventAction) {
+        logger.debug("sendMulticastEvent method in PubSubBroker");
         final ZirkId zirkId = multicastEventAction.getZirkId();
         final Iterable<String> listOfSphere;
 
@@ -208,9 +209,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
         while (sphereIterator.hasNext()) {
 
-
+            logger.debug("Iterating over sphere");
             final EventLedger eventLedger = new EventLedger();
-
+            logger.debug("multicastEventAction.getSerializedEvent() is "+multicastEventAction.getSerializedEvent());
             eventLedger.setSerializedMessage(multicastEventAction.getSerializedEvent());
 
             final MulticastHeader mHeader = new MulticastHeader();
@@ -222,6 +223,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             mHeader.setIsIdentified(multicastEventAction.isIdentified());
 
             if (multicastEventAction.isIdentified()) {
+                logger.debug("(multicastEventAction.isIdentified() is true in PubSubbroker");
                 mHeader.setAlias(multicastEventAction.getAlias());
             }
 
@@ -230,7 +232,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             eventLedger.setSerializedHeader(mHeader.serialize());
 
             if (ValidatorUtility.isObjectNotNull(comms)) {
-
+                logger.debug("comms not null in PubSubBroker class");
                 comms.sendEventLedger(eventLedger);
 
             } else {

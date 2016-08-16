@@ -30,9 +30,10 @@ class ZyreCommsHelper {
 
     void processEvent(String eventType, String peer, String peerGroup, String payload) {
         // A Zyre-enabled device enters the network
-        logger.debug("eventType is "+eventType);
-        logger.debug("peer is "+peer);
-        logger.debug("payload is "+payload);
+        logger.debug("eventType in ZyreCommsHelper "+eventType);
+        logger.debug("peer in ZyreCommsHelper "+peer);
+        logger.debug("payload in ZyreCommsHelper "+payload);
+        logger.debug("peergroup in ZyreCommsHelper "+peerGroup);
         if (eventType.equals("ENTER")) {
             logger.debug("peer (" + peer + ") entered network");
 
@@ -65,9 +66,10 @@ class ZyreCommsHelper {
     }
 
     /**
-     * handling the revieve
+     * handling the receive
      */
     Map<String, String> receive(Zyre zyre) {
+        logger.debug("receive in ZyreCommHelper");
         String incoming = zyre.recv();
         logger.debug("incoming is "+incoming);
         ConcurrentMap<String, String> eventMap = new ConcurrentHashMap<>();

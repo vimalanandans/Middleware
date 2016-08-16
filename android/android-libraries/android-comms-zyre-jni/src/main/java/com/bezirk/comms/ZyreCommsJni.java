@@ -176,7 +176,7 @@ public class ZyreCommsJni extends Thread {
     public boolean sendToAllZyre(byte[] msg) {
         // in zyre we are sending ctrl and event in same. isEvent is ignored
         final String data = new String(msg);
-
+        logger.debug("data in zyre "+data);
         if (ValidatorUtility.isObjectNotNull(zyre)) {
 
             //creating a new thread as we have a delayed ms wait if zyre was not initialized and this wait cannot happen on the main thread..
@@ -190,7 +190,8 @@ public class ZyreCommsJni extends Thread {
                             logger.debug("Sleeping for few seconds as Zyre is not yet initialized!!!!");
                         }
                         logger.debug("data in zyreCommsJni is  "+data);
-                        zyre.shout("New Grouppp", data);
+                        logger.debug("getGroup at shout "+getGroup());
+                        zyre.shout(getGroup(), data);
                         //logger.debug("Shouted message to group : >> " + getGroup());
                         //logger.debug("Multi-cast size : >> " + data.length());
                     } catch (Exception e) {
@@ -199,6 +200,7 @@ public class ZyreCommsJni extends Thread {
                 }
             });
             if (!eventExecutor.isShutdown()) {
+                logger.debug("eventExecutor is not shutdown");
                 eventExecutor.execute(eventThread);
             }
             return true;
@@ -260,16 +262,20 @@ public class ZyreCommsJni extends Thread {
         }
         logger.debug("listenToEventsFlag is "+listenToEventsFlag);
         while (listenToEventsFlag) {
-
+            logger.debug("inside while of ZyreCommsJni");
             Map<String, String> eventMap = zyreCommsHelper.receive(zyre);
 
             if (eventMap.isEmpty())
                 return;
 
             String eventType = eventMap.get("event");
+            logger.debug("Eventtype is "+eventType);
             String peer = eventMap.get("peer");
+            logger.debug("peer is "+peer);
             String peerGroup = eventMap.get("group");
+            logger.debug("peerGroup is "+peerGroup);
             String payload = eventMap.get("message");
+            logger.debug("payload is "+payload);
             zyreCommsHelper.processEvent(eventType, peer, peerGroup, payload);
 
 

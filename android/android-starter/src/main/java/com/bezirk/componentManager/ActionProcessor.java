@@ -143,7 +143,7 @@ public final class ActionProcessor {
     }
 
     private void processSendActions(BezirkAction intentAction, Intent intent, AndroidProxyServer ProxyService) {
-
+        logger.debug("intentAction in ActionProcessor is "+intentAction);
         switch (intentAction) {
             case ACTION_ZIRK_SEND_MULTICAST_EVENT:
                 ProxyService.sendMulticastEvent(intent);

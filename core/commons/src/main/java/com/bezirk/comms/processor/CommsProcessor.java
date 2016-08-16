@@ -165,7 +165,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         String data = ledger.getSerializedMessage();
         if (data != null) {
             if (ledger.getMessage() instanceof MulticastControlMessage) {
-
+                logger.debug("ledger.getMessage() is an instanceof MulticastControlMessage");
                 WireMessage wireMessage = prepareWireMessage(ledger.getMessage().getSphereId(), data);
 
 
@@ -178,7 +178,7 @@ public abstract class CommsProcessor implements Comms, Observer {
                 //bridgeControlMessage(getDeviceId(), message);
 
             } else if (ledger.getMessage() instanceof UnicastControlMessage) {
-
+                logger.debug("ledger.getMessage() is an instanceof UnicastControlMessage");
                 WireMessage wireMessage = prepareWireMessage(ledger.getMessage().getSphereId(), data);
 
                 wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_CTRL);
@@ -359,7 +359,7 @@ public abstract class CommsProcessor implements Comms, Observer {
 
         if (data != null) {
             if (ledger.getHeader() instanceof MulticastHeader) {
-
+                logger.debug("EventLedger : ledger.getHeader() instanceof MulticastHeader");
                 //TODO: for event message decrypt the header here
                 // if the intended zirk is available in sadl message is decrypted
                 WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
@@ -380,7 +380,7 @@ public abstract class CommsProcessor implements Comms, Observer {
 
                 UnicastHeader uHeader = (UnicastHeader) ledger.getHeader();
                 String recipient = uHeader.getRecipient().device;
-
+                logger.debug("EventLedger : ledger.getHeader() instanceof UnicastHeader");
                 //TODO: for event message decrypt the header here
                 // if the intended zirk is available in sadl message is decrypted
                 WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
@@ -467,7 +467,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         // start thread pool
         logger.debug("processWireMessage thread pool");
         if ((executor != null) && !executor.isShutdown()) {
-
+            logger.debug("executor ");
             ProcessIncomingMessage inMsg = new ProcessIncomingMessage(/*this, */deviceId, msg);
 
             executor.execute(inMsg);
@@ -793,6 +793,7 @@ public abstract class CommsProcessor implements Comms, Observer {
             if (ledger != null) {
                 // ledger is not null. means this is not loop back
                 // dispatch it directly
+                logger.debug("ledger is not null");
                 dispatchMessage(ledger);
                 return;
             }

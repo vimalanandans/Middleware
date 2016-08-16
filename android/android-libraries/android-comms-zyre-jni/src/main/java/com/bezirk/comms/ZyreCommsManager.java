@@ -34,7 +34,9 @@ public class ZyreCommsManager extends CommsProcessor {
 
     @Override
     public boolean sendToAll(byte[] msg, boolean isEvent) {
+        logger.debug("send to all");
         if (comms != null) {
+            logger.debug("comms not null in ZyreCommsManager");
             return comms.sendToAllZyre(msg);
         }
         return false;
