@@ -23,7 +23,7 @@ public class PingPongEncTest {
     public static final String GROUP = "global";
 
     static {
-        NativeUtils.loadLibs();
+        NativeUtils.loadNativeBinaries();
 
     }
 

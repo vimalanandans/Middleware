@@ -1,7 +1,6 @@
 package com.bezirk.comms;
 
 /**
- * Created by vnd2kor on 2/5/2016.
  * refer http://stackoverflow.com/questions/1386809/copy-directory-from-a-jar-file
  */
 

@@ -22,7 +22,7 @@ public class ZyreCommsJni extends Thread {
     public static final String BEZIRK_GROUP = "BEZIRK_GROUP";
 
     static {
-        NativeUtils.loadLibs();
+        NativeUtils.loadNativeBinaries();
 
     }
 

@@ -33,20 +33,21 @@ public abstract class Message {
      * This method should be only used if the Zirk needs to provide a custom Gson adapter via the <code>gsonBuilder</code>for deserializing its events.
      * This is especially useful if the event has abstract type(s) as its instance variables which need to be serialized.
      * It can be achieved by supplying the builder with Gson's RuntimeTypeAdapterFactory.
-     * For an interface <code>Interface</code> with implementations as <code>Implementation1</code> & <code>Implementation1</code>, the builder would look something like this:
-     * <p/>
+     * For an interface <code>Interface</code> with implementations as <code>Implementation1</code> and <code>Implementation1</code>, the builder would look something like this:
      * <pre>
-     *     {@code
+     *
+     *     //create gson builder
      *     GsonBuilder builder = new GsonBuilder();
-     *     RuntimeTypeAdapterFactory<Interface> interfaceAdapter = RuntimeTypeAdapterFactory.of(Interface.class);
+     *     RuntimeTypeAdapterFactory &lt;Interface&gt; interfaceAdapter = RuntimeTypeAdapterFactory.of(Interface.class);
      *     qualityAdapter.registerSubtype(Implementation1.class).registerSubtype(Implementation2.class);
      *     builder.registerTypeAdapterFactory(interfaceAdapter);
      *
+     *     //set builder
      *     Message.setGsonBuilder(builder); //ensure the builder is set before sending/receiving bezirk events
-     *     }
+     *
      * </pre>
      *
-     * @param gsonBuilder
+     * @param gsonBuilder gson builder with registered adapter
      */
     public static void setGsonBuilder(GsonBuilder gsonBuilder) {
         gsonBuilder.registerTypeAdapter(Message.class,
@@ -56,7 +57,7 @@ public abstract class Message {
 
     /**
      * Get the ID of this message to identify the conversations it is apart of.
-     * <p/>
+     * <p>
      * The message ID is intended to help Zirks match messages that are making a request with their
      * reply when the reply is received. The middleware does not use this property internally. The
      * Zirk sending the request should set this ID, and the responding Zirk should echo it in the

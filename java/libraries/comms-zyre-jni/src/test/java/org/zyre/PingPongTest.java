@@ -27,7 +27,7 @@ public class PingPongTest {
 
     @Test
     public void test() throws Exception {
-        NativeUtils.loadLibs();
+        NativeUtils.loadNativeBinaries();
 
         reqThread = new Requester();
         respThread = new Responder();

@@ -8,17 +8,9 @@ dependencies {
     compile project(':core:commons')
     compile project(':java:libraries:java-zirk-proxy')
     compile project(':core:testapp-core')
-//    compile project(':core:protocols:parametricUI-protocols')
 
     testCompile 'junit:junit:4.12'
 }
-
-// Automatically add the temporary directory where Bezirk dumps the ZeroMQ dependencies
-// to java.library.path
-applicationDefaultJvmArgs = ["-Djava.library.path=" + System.getProperty("java.library.path") +
-                                     File.pathSeparator + System.getProperty("java.io.tmpdir") +
-                                     "lib-zeromq-bin" + File.separator]
-
 
 run {
     /**
@@ -30,36 +22,3 @@ run {
      */
     systemProperties System.getProperties()
 }
-
-//apply plugin: 'java'
-//
-//dependencies {
-//    compile project(':core:bezirk-middleware-api')
-//    compile project(':core:bezirk')
-//    compile project(':core:commons')
-//    compile project(':java:libraries:bezirk-factory')
-//    compile project(':core:testapp-core')
-//}
-// Automatically add the temporary directory where Bezirk dumps the ZeroMQ dependencies
-// to java.library.path
-//applicationDefaultJvmArgs = ["-Djava.library.path=" + System.getProperty("java.library.path") +
-//                                     File.pathSeparator + System.getProperty("java.io.tmpdir") +
-//                                     "lib-zeromq-bin" + File.separator]
-
-//task pub(type: JavaExec) {
-//    jvmArgs "-Djava.library.path=" + System.getProperty("java.library.path") +
-//            File.pathSeparator + System.getProperty("java.io.tmpdir") +
-//            "lib-zeromq-bin" + File.separator
-//    Main = "com.bezirk.test.Publisher"
-//    classpath = sourceSets.Main.runtimeClasspath
-//    systemProperties System.getProperties() //used to pass properties to bezirk
-//}
-//
-//task sub(type: JavaExec) {
-//    jvmArgs "-Djava.library.path=" + System.getProperty("java.library.path") +
-//            File.pathSeparator + System.getProperty("java.io.tmpdir") +
-//            "lib-zeromq-bin" + File.separator
-//    Main = "com.bezirk.test.Subscriber"
-//    classpath = sourceSets.Main.runtimeClasspath
-//    systemProperties System.getProperties() //used to pass properties to bezirk
-//}
