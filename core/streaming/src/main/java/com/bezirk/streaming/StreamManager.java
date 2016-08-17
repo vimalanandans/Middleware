@@ -55,7 +55,7 @@ public class StreamManager implements Streaming, ActiveStream {
     /***This has to be dependency injected.**/
     private Comms comms = null;
     private SphereSecurity sphereSecurity = null;
-    private PubSubEventReceiver sadlReceiver = null;
+    /*private PubSubEventReceiver sadlReceiver = null;*/
     /***************/
 
     // creates thread pool with one thead
@@ -70,12 +70,12 @@ public class StreamManager implements Streaming, ActiveStream {
     private NetworkManager networkManager = null;
 
 
-    public StreamManager(Comms comms, PubSubEventReceiver sadlReceiver, String downloadPath, NetworkManager networkManager) {
+    public StreamManager(Comms comms, /*PubSubEventReceiver sadlReceiver, */String downloadPath, NetworkManager networkManager) {
 
-        if (ValidatorUtility.isObjectNotNull(comms)
-                && ValidatorUtility.isObjectNotNull(sadlReceiver)) {
+        if (ValidatorUtility.isObjectNotNull(comms)/*
+                && ValidatorUtility.isObjectNotNull(sadlReceiver)*/) {
             this.comms = comms;
-            this.sadlReceiver = sadlReceiver;
+            /*this.sadlReceiver = sadlReceiver;*/
             this.networkManager = networkManager;
 
             // ExecutorService for processing the straem massage queue.

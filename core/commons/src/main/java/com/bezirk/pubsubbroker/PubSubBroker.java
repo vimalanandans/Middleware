@@ -22,6 +22,7 @@ import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.remotelogging.RemoteLog;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereServiceAccess;
+import com.bezirk.streaming.Streaming;
 import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -52,7 +53,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     MessageHandler msgHandler;
 
     public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager, Comms comms, MessageHandler msgHandler,
-                        SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity) {
+                        SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity, Streaming streamManger) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
         this.device = device;
         this.networkManager = networkManager;
