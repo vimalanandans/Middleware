@@ -8,6 +8,7 @@ import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
@@ -50,6 +51,9 @@ public class StreamManager implements Streaming, ActiveStream {
     private PortFactory portFactory;
     private String downloadPath = null;
     private StreamStore streamStore = null;
+
+
+    private PubSubBroker sadlReceiver;
 
 
     /***This has to be dependency injected.**/
@@ -286,6 +290,14 @@ public class StreamManager implements Streaming, ActiveStream {
         return true;
     }
 
+
+    /*
+            This has to be removed!!!!!!
+         */
+    @Override
+    public void setSadlReceiver(PubSubBroker sadlReceiver) {
+        this.sadlReceiver = sadlReceiver;
+    }
 }
 
 /**

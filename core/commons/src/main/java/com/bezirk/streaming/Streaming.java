@@ -3,6 +3,7 @@ package com.bezirk.streaming;
 import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.Ledger;
+import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
@@ -46,4 +47,8 @@ public interface Streaming {
      * set Sphere Security. this is used for the late initalization, when a new Sphere is created. Sphere security object is updated
      */
     void setSphereSecurityForEncryption(SphereSecurity sphereSecurity);
+
+
+    //// FIXME: 8/17/2016 This has to be removed!!!
+    void setSadlReceiver(PubSubBroker pubSubBroker);
 }
