@@ -50,6 +50,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     private final NetworkManager networkManager;
     private final Device device;
     RemoteLog remoteLog = null;
+    Streaming streamManger;
 
     MessageHandler msgHandler;
 
@@ -66,6 +67,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         this.sphereServiceAccess = sphereServiceAccess;
         this.sphereSecurity = sphereSecurity;
         this.msgHandler = msgHandler;
+        this.streamManger = streamManger;
     }
 
 
@@ -323,8 +325,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         /*
         * process the stream record which will
         *store the streamrecord in the stream store and sends the stream message to receivers.*/
-        boolean status = comms.processStreamRecord(streamAction,listOfSphere);
 
+        //boolean status = comms.processStreamRecord(streamAction,listOfSphere);
+        boolean status = streamManger.processStreamRecord(streamAction,listOfSphere);
         if(!status){
             return (short) 1;
         }

@@ -95,7 +95,7 @@ public class ComponentManager extends Service {
         comms = new ZyreCommsManager(networkManager, null,null, null);
 
         //streaming manager
-        Streaming streaming  = new StreamManager(comms, downloadPath, networkManager);
+        Streaming streaming = new StreamManager(comms, downloadPath, networkManager);
 
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device

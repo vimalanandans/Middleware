@@ -21,7 +21,7 @@ public interface Streaming {
      * This will initialize the streaming queue, streaming thread,stream store and register the receivers with the message dispatcher.
      * and Start the streaming thread
      */
-    boolean startStreams();
+    //boolean startStreams();
 
     /**
      * Interrupt all the streaming threads, shutdown streaming module.

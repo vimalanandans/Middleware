@@ -81,13 +81,13 @@ public class MockSetUpUtilityForBezirkPC {
 
 
         comms = new MockComms();
-        Streaming streamManager = new StreamManager(comms, pubSubBroker, getStreamDownloadPath(), networkManager);
+        Streaming streamManager = new StreamManager(comms, /*pubSubBroker,*/ getStreamDownloadPath(), networkManager);
         //comms.initComms(null, inetAddr, null, streamManager);
 
         comms.registerNotification(Mockito.mock(CommsNotification.class));
         //comms.startComms();
 
-        pubSubBroker = new PubSubBroker(pubSubBrokerStorage, upaDevice, networkManager, comms, new MockCallback(), null, null);
+        pubSubBroker = new PubSubBroker(pubSubBrokerStorage, upaDevice, networkManager, comms, new MockCallback(), null, null, streamManager);
 
         // SphereServiceManager bezirkSphere = new SphereServiceManager(cryptoEngine, upaDevice, sphereRegistry);
         SphereListener sphereListener = Mockito.mock(SphereListener.class);

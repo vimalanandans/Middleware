@@ -88,12 +88,15 @@ public class StreamManager implements Streaming, ActiveStream {
             // ExecutorService for sending stream
             streamProcessExecutor = Executors.newFixedThreadPool(THREAD_SIZE);
             bezirkStreamHandler = new BezirkStreamHandler(downloadPath, streamProcessExecutor,this, networkManager);
+            this.downloadPath = downloadPath;
+
+            startStreams();
         } else {
             logger.error("Unable to initialize StreamManager. Please ensure ControlSenderQueue, " +
                     "CommsMessageDispatcher and BezirkCallback are initialized.");
         }
 
-        this.downloadPath = downloadPath;
+
     }
 
     @Override
@@ -132,7 +135,12 @@ public class StreamManager implements Streaming, ActiveStream {
         return true;
     }
 
-    StreamRecord prepareStreamRecord(SendFileStreamAction streamAction) {
+    /**
+     * prepare the stream record from the StreamAction, StreamRecord will be saved in the Local device StreamStore book.
+     * @param streamAction
+     * @return
+     */
+    private StreamRecord prepareStreamRecord(SendFileStreamAction streamAction) {
 
         final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(streamAction.getZirkId());
         final BezirkZirkEndPoint receiver = (BezirkZirkEndPoint) streamAction.getRecipient();
@@ -186,8 +194,11 @@ public class StreamManager implements Streaming, ActiveStream {
         return tcMessage;
     }
 
-    @Override
-    public boolean startStreams() {
+
+    /**
+     * This will initialize the streaming module!!!
+     */
+    public void startStreams() {
 
         try {
 
@@ -205,7 +216,7 @@ public class StreamManager implements Streaming, ActiveStream {
             if (comms == null) {
 
                 logger.error("Unable to register message receivers as comms is not initialized.");
-                return false;
+                return;
 
             } else {
 
@@ -229,9 +240,7 @@ public class StreamManager implements Streaming, ActiveStream {
 
         } catch (Exception e) {
             logger.error("Exception in initializing the streams in stream manager. ", e);
-            return false;
         }
-        return true;
 
     }
 

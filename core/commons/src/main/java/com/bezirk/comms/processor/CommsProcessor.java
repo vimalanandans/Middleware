@@ -84,9 +84,12 @@ public abstract class CommsProcessor implements Comms, Observer {
      */
     public void startComms() {
         executor = Executors.newFixedThreadPool(THREAD_SIZE);
+        /*
+        not required anymore!!
+
         if (bezirkStreamManager != null) {
             bezirkStreamManager.startStreams();
-        }
+        }*/
     }
 
     /**
