@@ -1,5 +1,6 @@
 apply plugin: 'android-library'
-apply from: "${rootDir}/android/include/publish-android-library.gradle"
+apply from: "${rootDir}/android/include/artifactory-aar-publish.gradle"
+
 
 android {
     compileSdkVersion project.androidCompileSdkVersion.toInteger()
@@ -20,10 +21,6 @@ android {
     lintOptions {
         abortOnError false
     }
-    /* compileOptions {
-         sourceCompatibility JavaVersion.VERSION_1_8
-         targetCompatibility JavaVersion.VERSION_1_8
-     }*/
 }
 
 dependencies {
@@ -32,11 +29,8 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.6'
     compile 'com.google.code.gson:gson:2.7'
 
-    // created using ndk build
-    compile 'org.zyre:zyre-jni:0.2@aar'
-
+    compile(group: 'org.zyre', name: 'zyre-jni', version: '0.2', ext: 'aar')
     compile project(':core:bezirk-middleware-api')
     compile project(':core:bezirk')
     compile project(':core:commons')
-//    }
 }

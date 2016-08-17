@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
-apply from: "${rootDir}/android/include/publish-android-library.gradle"
-
-
+apply from: "${rootDir}/android/include/artifactory-aar-publish.gradle"
 
 android {
     compileSdkVersion project.androidCompileSdkVersion.toInteger()
@@ -31,12 +29,10 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
+    compile 'com.google.code.gson:gson:2.7'
 
     compile project(':core:bezirk-middleware-api')
     compile project(':core:bezirk')
     compile project(':core:commons')
     compile project(':android:android-starter')
-
-    compile 'com.google.code.gson:gson:2.7'
-//    }
 }
