@@ -27,10 +27,7 @@ public class ZyreCommsManager extends CommsProcessor {
 
     @Override
     public boolean sendToAll(byte[] msg, boolean isEvent) {
-        if (comms != null) {
-            return comms.sendToAllZyre(msg, isEvent);
-        }
-        return false;
+        return comms != null && comms.sendToAllZyre(msg, isEvent);
     }
 
     /**
@@ -38,10 +35,7 @@ public class ZyreCommsManager extends CommsProcessor {
      */
     @Override
     public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent) {
-        if (comms != null) {
-            return comms.sendToAllZyre(msg, isEvent);
-        }
-        return false;
+        return comms != null && comms.sendToAllZyre(msg, isEvent);
     }
 
     //TODO: manage lifecycle of comms based on bezirk-lifecycle events appropriately

@@ -22,8 +22,6 @@ public class ZyreCommsManager extends CommsProcessor {
      *
      * @param networkManager - Network manager to get TCP/IP related device configurations
      * @param groupName - Name to channel your application
-     * @param commsNotification
-     * @param streaming
      */
     public ZyreCommsManager(NetworkManager networkManager, String groupName, CommsNotification commsNotification, Streaming streaming) {
         super(networkManager, commsNotification, streaming);
@@ -34,10 +32,7 @@ public class ZyreCommsManager extends CommsProcessor {
 
     @Override
     public boolean sendToAll(byte[] msg, boolean isEvent) {
-        if (comms != null) {
-            return comms.sendToAllZyre(msg);
-        }
-        return false;
+        return comms != null && comms.sendToAllZyre(msg);
     }
 
     /**
@@ -45,10 +40,7 @@ public class ZyreCommsManager extends CommsProcessor {
      */
     @Override
     public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent) {
-        if (comms != null) {
-            return comms.sendToOneZyre(msg, nodeId);
-        }
-        return false;
+        return comms != null && comms.sendToOneZyre(msg, nodeId);
     }
 
     //TODO: manage lifecycle of comms based on bezirk-lifecycle events appropriately

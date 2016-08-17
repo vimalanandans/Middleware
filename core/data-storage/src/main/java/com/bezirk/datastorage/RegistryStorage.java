@@ -5,9 +5,6 @@ package com.bezirk.datastorage;
 
 import com.bezirk.pubsubbroker.PubSubBrokerRegistry;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 /**
  * This common Registry class for the Bezirk platform. It implements all the interfaces for different modules
  * of the Bezirk that needs to be persisted. The different layers will get the corresponding interfaces through
@@ -15,7 +12,7 @@ import java.sql.SQLException;
  */
 public class RegistryStorage extends DatabaseHelper implements PubSubBrokerStorage, SpherePersistence, ProxyPersistence {
 
-    public RegistryStorage(DatabaseConnection dbConnection, String DBVersion) throws NullPointerException, SQLException, IOException, Exception {
+    public RegistryStorage(DatabaseConnection dbConnection, String DBVersion) throws Exception {
         super(dbConnection);
         checkDatabase(DBVersion);
     }
@@ -63,7 +60,7 @@ public class RegistryStorage extends DatabaseHelper implements PubSubBrokerStora
     /* (non-Javadoc)
      * @see DatabaseHelper#clearPersistence()
      */
-    public void clearPersistence() throws NullPointerException, SQLException, IOException, Exception {
+    public void clearPersistence() throws Exception {
         super.clearPersistence();
     }
 }

@@ -25,10 +25,6 @@ final class ServiceStarterHelper {
 
     /**
      * create and initialise the sphere
-     *
-     * @param bezirkDevice
-     * @param registryPersistence
-     * @param comms
      */
     SphereAPI initSphere(final Device bezirkDevice,
                          final RegistryStorage registryPersistence, final Comms comms, final NetworkManager networkManager) {
