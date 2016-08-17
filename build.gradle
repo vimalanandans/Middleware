@@ -13,7 +13,8 @@
  * 3.0.0-alpha-mvp+008 logback filter removed
  * 3.0.0-alpha-mvp+009 zyre NativeUtils library fetching fix without path setting
  * 3.0.0-alpha-mvp+010 testing new publishing strategy for proxy
- * 3.0.0-alpha-mvp+011
+ * 3.0.0-alpha-mvp+011 fixed resolution of artifacts from a single dependency
+ * 3.0.0-alpha-mvp+012 Android proxy without Identity Management
  */
 buildscript {
     repositories {
@@ -41,7 +42,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha-mvp+011"
+    version = "3.0.0-alpha-mvp+012"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"

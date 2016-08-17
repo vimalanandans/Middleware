@@ -59,9 +59,9 @@ public final class ProxyClient implements Bezirk {
         // Bind to remote identity management service
         Intent intent = new Intent();
         intent.setComponent(RECEIVING_COMPONENT);
-        boolean boundService = context.bindService(intent,
-                ClientIdentityManagerAdapter.remoteConnection, Context.BIND_AUTO_CREATE);
-        Log.d(TAG, "Binding to identity management service status: "+ boundService);
+//        boolean boundService = context.bindService(intent,
+//                ClientIdentityManagerAdapter.remoteConnection, Context.BIND_AUTO_CREATE);
+        //Log.d(TAG, "Binding to identity management service status: "+ boundService);
 
         this.zirkId = zirkId;
         this.identityManager = new ClientIdentityManagerAdapter();
