@@ -16,10 +16,6 @@ public class BezirkSphereLeave extends com.bezirk.control.messages.UnicastContro
 
     /**
      * Used for sending leave request to a member
-     *
-     * @param sphereID
-     * @param serviceId
-     * @param recipient
      */
     public BezirkSphereLeave(String sphereID, ZirkId serviceId, BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient) {
         super(sender, recipient, sphereID, discriminator, true);

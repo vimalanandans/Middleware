@@ -18,15 +18,11 @@ public interface SphereUtils {
      * Checks if the zirk is a local zirk
      *
      * @param deviceId : zirk owner deviceId
-     * @return
      */
     boolean isServiceLocal(String deviceId);
 
     /**
      * Validates the services passed by checking the registry
-     *
-     * @param serviceIds
-     * @return
      */
     boolean validateServices(Iterable<ZirkId> serviceIds);
 

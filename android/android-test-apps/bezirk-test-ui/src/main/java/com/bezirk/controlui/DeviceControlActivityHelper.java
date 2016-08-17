@@ -274,8 +274,6 @@ class DeviceControlActivityHelper {
 
     /**
      * Update/add the development mode information to the list
-     *
-     * @param mode
      */
     void updateList(DevMode.Mode mode, List<DataModel> listData) {
         if(mode == null)
