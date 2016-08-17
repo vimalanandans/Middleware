@@ -69,8 +69,6 @@ public abstract class Zirk implements Serializable {
     /**
      * Provides the information regarding a zirk which can be shared Ex. in
      * control messages
-     *
-     * @return
      */
     public ServiceVitals getServiceVitals() {
         return null;

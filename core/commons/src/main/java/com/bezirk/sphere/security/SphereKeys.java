@@ -104,11 +104,7 @@ public final class SphereKeys implements Serializable {
         SphereKeys other = (SphereKeys) obj;
         if (!Arrays.equals(ownerPrivateKeyBytes, other.ownerPrivateKeyBytes))
             return false;
-        if (!Arrays.equals(ownerPublicKeyBytes, other.ownerPublicKeyBytes))
-            return false;
-        if (!Arrays.equals(sphereKey, other.sphereKey))
-            return false;
-        return true;
+        return Arrays.equals(ownerPublicKeyBytes, other.ownerPublicKeyBytes) && Arrays.equals(sphereKey, other.sphereKey);
     }
 
 }

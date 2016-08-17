@@ -2,6 +2,7 @@ package com.bezirk.sphere.impl;
 
 import com.bezirk.util.Hashids;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.UUID;
@@ -79,7 +80,11 @@ public class BezirkId {
     }*/
 
     private String toHex(String arg) {
-        return String.format("%x", new BigInteger(1, arg.getBytes()));
+        try {
+            return String.format("%x", new BigInteger(1, arg.getBytes("UTF-8")));
+        } catch (UnsupportedEncodingException e) {
+            throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+        }
     }
 
 

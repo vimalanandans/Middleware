@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -533,8 +534,13 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         } else { // no sphere object hence
             if(eLedger.getEncryptedMessage() == null) //if it is local message
                 decryptedEventMsg = eLedger.getSerializedMessage();
-            else
-                decryptedEventMsg = new String(eLedger.getEncryptedMessage());
+            else {
+                try {
+                    decryptedEventMsg = new String(eLedger.getEncryptedMessage(), "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+                }
+            }
         }
 
 

@@ -47,17 +47,6 @@ public class UnicastControlMessage extends ControlMessage {
         this.recipient = recipient;
     }
 
-    /**
-     * Always returns false.
-     *
-     * Previous implementation was coupled with the network information of the device to figure out if the message is local. Networking and control messages need to be de-coupled.
-     * @return
-     */
-   // @Deprecated
-//    public Boolean getIsLocal() {
-//        return isLocal;
-//    }
-
     public BezirkZirkEndPoint getRecipient() {
         return recipient;
     }

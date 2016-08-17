@@ -1,11 +1,8 @@
 package com.bezirk.middleware.proxy.android;
 
 import android.content.Context;
-import android.content.Intent;
 
-import com.bezirk.actions.BezirkAction;
 import com.bezirk.componentManager.AppManager;
-import com.bezirk.componentManager.ComponentManager;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.proxy.api.impl.ZirkId;
 

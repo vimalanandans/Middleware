@@ -22,9 +22,6 @@ public final class ActionProcessor {
 
     /**
      * Process BezirkAction based on action type.
-     *
-     * @param intent
-     * @param ProxyService
      */
 
     public void processBezirkAction(Intent intent, AndroidProxyServer ProxyService, ComponentManager.LifeCycleCallbacks lifeCycleCallbacks) {

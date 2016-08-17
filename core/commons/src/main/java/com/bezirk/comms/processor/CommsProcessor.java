@@ -27,7 +27,11 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import java.net.InetAddress;
+
+import java.io.UnsupportedEncodingException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
@@ -37,7 +41,6 @@ import java.util.concurrent.Executors;
 //import com.bezirk.sphere.security.UPABlockCipherService;
 
 /**
- * Created by Vimal on 11/19/2015.
  * This handles generic comms processing
  * new comms implementations shall use this as base class
  */
@@ -201,9 +204,6 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     /**
      * prepares the WireMessage and returns it based on encryption and compression settings
-     *
-     * @param data
-     * @return
      */
     private WireMessage prepareWireMessage(String sphereId, String data) {
         logger.debug("sphereId is "+sphereId);
@@ -262,12 +262,15 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     /**
      * This wil compress the msg data
-     *
-     * @param data
-     * @return
      */
     private byte[] compressMsg(final String data) {
-        final byte[] temp = data.getBytes();
+        final byte[] temp;
+        try {
+            temp = data.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+        }
+
         //logger.info("Before Compression Msg byte length: {}", temp.length);
 
         final long compStartTime = System.currentTimeMillis();
@@ -283,31 +286,29 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     /**
      * Encrypts the String msg (testing with local testKey)
-     *
-     * @param - data
-     * @return
      */
     private byte[] encryptMsg(String sphereId, byte[] msgData) {
-        //logger.info("Before Encryption Msg byte length : " + msgData.length);
-        long startTime = System.nanoTime();
+        long startTime = 0;
+
+        if (logger.isTraceEnabled()) {
+            logger.trace("Before Encryption Msg byte length: {}", msgData.length);
+            startTime = System.nanoTime();
+        }
 
         //Encrypt the data.. To test the local encryption
         //msg = cipherService.encrypt(msgData, testKey).getBytes();
         // temp fix of sending the byte stream
-        String msgDataString = new String(msgData);
-        byte[] msg;
+        final String msgDataString = new String(msgData);
+        final byte[] msg;
 
         if (sphereSecurity != null)
             msg = sphereSecurity.encryptSphereContent(sphereId, msgDataString);
         else // No encryption when there is no interface
             msg = msgData;
 
-        long endTime = System.nanoTime();
-        //logger.info("Encryption Took " + (endTime - startTime) + " nano seconds");
-
-        //After Encryption Byte Length
-        if (msg != null) {
-            //logger.info("After Encryption Msg byte length : " + msg.length);
+        if (logger.isTraceEnabled()) {
+            logger.trace("Encryption took {} nano seconds", System.nanoTime() - startTime);
+            logger.trace("After Encryption Msg byte length: {}", msg.length);
         }
 
         return msg;
@@ -317,9 +318,6 @@ public abstract class CommsProcessor implements Comms, Observer {
      * Encrypts the String msg
      * if not enabled, puts the incoming message to outgoing
      * return null means, encryption failed
-     *
-     * @param - data
-     * @return
      */
     private byte[] decryptMsg(String sphereId, WireMessage.WireMsgStatus msgStatus, byte[] msgData) {
 
@@ -330,17 +328,21 @@ public abstract class CommsProcessor implements Comms, Observer {
 
             String data;
 
-            if (sphereSecurity != null)
-                data = sphereSecurity.decryptSphereContent(sphereId, msgData);
-            else // No decryption when there is no interface
-                data = new String(msgData);
+            try {
+                if (sphereSecurity != null)
+                    data = sphereSecurity.decryptSphereContent(sphereId, msgData);
+                else // No decryption when there is no interface
+                    data = new String(msgData, "UTF-8");
 
-            if (data != null) {
-                msg = data.getBytes();
-                //logger.info("decrypted size >> " + message.length);
-            } else {
-                logger.info("unable to decrypt msg for sphere id >> " + sphereId);
-
+                if (data != null) {
+                    msg = data.getBytes("UTF-8");
+                    //logger.info("decrypted size >> " + message.length);
+                } else {
+                    if (logger.isInfoEnabled())
+                        logger.info("unable to decrypt msg for sphere id >> {}", sphereId);
+                }
+            } catch (UnsupportedEncodingException e) {
+                throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
             }
         } else // encryption not enabled . send back same data
         {
@@ -355,58 +357,70 @@ public abstract class CommsProcessor implements Comms, Observer {
      */
     @Override
     public boolean sendEventLedger(EventLedger ledger) {
-        boolean ret = false;
-        String data = ledger.getSerializedMessage();
-
-        if (data != null) {
-            if (ledger.getHeader() instanceof MulticastHeader) {
-                logger.debug("EventLedger : ledger.getHeader() instanceof MulticastHeader");
-                //TODO: for event message decrypt the header here
-                // if the intended zirk is available in sadl message is decrypted
-                WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
-
-                // encrypt the header
-
-                byte[] headerData = encryptMsg(wireMessage.getSphereId(), ledger.getSerializedHeader().getBytes());
-
-                wireMessage.setHeaderMsg(headerData);
-
-                wireMessage.setMsgType(WireMessage.WireMsgType.MSG_MULTICAST_EVENT);
-
-                byte[] wireByteMessage = wireMessage.serialize();
-                ret = sendToAll(wireByteMessage, false);
+        final String data = ledger.getSerializedMessage();
 
 
-            } else {
+        if (data == null) return false;
 
-                UnicastHeader uHeader = (UnicastHeader) ledger.getHeader();
+
+        if (ledger.getHeader() instanceof MulticastHeader) {
+
+            //TODO: for event message decrypt the header here
+            // if the intended zirk is available in sadl message is decrypted
+            WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
+
+            // encrypt the header
+
+            byte[] header;
+
+            try {
+                header = ledger.getSerializedHeader().getBytes("UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+            }
+
+            byte[] headerData = encryptMsg(wireMessage.getSphereId(), header);
+
+                /*UnicastHeader uHeader = (UnicastHeader) ledger.getHeader();
                 String recipient = uHeader.getRecipient().device;
                 logger.debug("EventLedger : ledger.getHeader() instanceof UnicastHeader");
                 //TODO: for event message decrypt the header here
                 // if the intended zirk is available in sadl message is decrypted
-                WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
+                WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);*/
 
-                // encrypt the header
+            wireMessage.setHeaderMsg(headerData);
 
-                byte[] headerData = encryptMsg(wireMessage.getSphereId(), ledger.getSerializedHeader().getBytes());
-
-                wireMessage.setHeaderMsg(headerData);
-
-                wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_EVENT);
+            wireMessage.setMsgType(WireMessage.WireMsgType.MSG_MULTICAST_EVENT);
 
 
-                if (null == uHeader || uHeader.getRecipient() == null
-                        || uHeader.getRecipient().device == null || uHeader.getRecipient().device.length() == 0) {
-                    logger.error(" Message not of accepted type");
-                    return ret;
-                }
+            byte[] wireByteMessage = wireMessage.serialize();
+            return sendToAll(wireByteMessage, false);
+        } else {
+            UnicastHeader uHeader = (UnicastHeader) ledger.getHeader();
+            String recipient = uHeader.getRecipient().device;
 
-                byte[] wireByteMessage = wireMessage.serialize();
-                ret = sendToOne(wireByteMessage, recipient, false);
+            //TODO: for event message decrypt the header here
+            // if the intended zirk is available in sadl message is decrypted
+            WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
 
+            // encrypt the header
+
+            byte[] headerData = encryptMsg(wireMessage.getSphereId(), ledger.getSerializedHeader().getBytes());
+
+            wireMessage.setHeaderMsg(headerData);
+
+            wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_EVENT);
+
+
+            if (null == uHeader || uHeader.getRecipient() == null
+                    || uHeader.getRecipient().device == null || uHeader.getRecipient().device.length() == 0) {
+                logger.error("Message not of accepted type");
+                return false;
             }
+
+            byte[] wireByteMessage = wireMessage.serialize();
+            return sendToOne(wireByteMessage, recipient, false);
         }
-        return ret;
     }
 
     /**
@@ -433,7 +447,11 @@ public abstract class CommsProcessor implements Comms, Observer {
         // configure raw msg event
         wireMessage.setMsgType(WireMessage.WireMsgType.MSG_EVENT);
 
-        wireMessage.setMsg(message.getMsg().getBytes());
+        try {
+            wireMessage.setMsg(message.getMsg().getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+        }
 
         wireMessage.setSphereId("COMMS_DIAG");
 
@@ -503,7 +521,13 @@ public abstract class CommsProcessor implements Comms, Observer {
         byte[] msg = parseCtrlMessage(wireMessage);
 
         if (msg != null) {
-            String processedMsg = new String(msg);
+            String processedMsg;
+
+            try {
+                processedMsg = new String(msg, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+            }
             //logger.info("Ctrl Msg size "+data.length());
             ControlMessage ctrl = ControlMessage.deserialize(processedMsg, ControlMessage.class);
 
@@ -540,10 +564,6 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     /**
      * Process wiremessage which will decompress and decrypt based on the wire message.
-     *
-     * @param wireMessage
-     * @param -           message
-     * @return
      */
     private byte[] parseCtrlMessage(WireMessage wireMessage) {
         //process wiremessage to decrypt
@@ -570,8 +590,14 @@ public abstract class CommsProcessor implements Comms, Observer {
             byte[] temp = message;
             String processedMsg = TextCompressor.decompress(temp);
 
-            if ((processedMsg != null) && processedMsg.length()==0)
-                message = processedMsg.getBytes();
+
+            if ((processedMsg != null) && !processedMsg.isEmpty())
+                try {
+                    message = processedMsg.getBytes("UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+                }
+
 
         }
 
@@ -607,7 +633,11 @@ public abstract class CommsProcessor implements Comms, Observer {
         BezirkZirkEndPoint endPoint = new BezirkZirkEndPoint(deviceId, null);
         msgLedger.setSender(endPoint);
 
-        msgLedger.setMsg(new String(wireMessage.getMsg()));
+        try {
+            msgLedger.setMsg(new String(wireMessage.getMsg(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+        }
 
         // for diag the message is not compressed
         if (notification != null) {
@@ -651,12 +681,18 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     private boolean setEventHeader(EventLedger eLedger, WireMessage wireMessage) {
         // decrypt the header
-        byte[] data = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getHeaderMsg());
+        final byte[] data = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getHeaderMsg());
 
         if (data == null) // header decrypt failed. unknown sphere id
             return false;
 
-        String headerData = new String(data);
+        final String headerData;
+
+        try {
+            headerData = new String(data, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+        }
 
 //        Header header = Header.fromJson(headerData,Header.class);
 

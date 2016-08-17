@@ -121,7 +121,7 @@ public class JavaNetworkManager extends NetworkManager {
         return interfaceName;
     }
 
-    private class EthernetConfigurationDialog {
+    private static class EthernetConfigurationDialog {
         private final Iterator<InterfaceInetPair> iterator;
 
         public EthernetConfigurationDialog(Iterator<InterfaceInetPair> iterator) {

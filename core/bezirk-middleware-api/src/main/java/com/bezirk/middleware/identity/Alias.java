@@ -42,7 +42,11 @@ public class Alias implements Serializable {
      *
      * @return the unique identifier for this alias
      */
-    public byte[] getHash() { return hash; }
+    public byte[] getHash() {
+        byte[] hash = new byte[this.hash.length];
+        System.arraycopy(this.hash, 0, hash, 0, this.hash.length);
+        return hash;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -179,8 +179,8 @@ public class DeviceControlActivity extends AppCompatActivity
     /**
      * Broadcast event receiver for results
      */
-    private class DeviceIntentReceiver extends BroadcastReceiver {
-        private final String TAG = "DeviceIntentReceiver";
+    private static class DeviceIntentReceiver extends BroadcastReceiver {
+        private static final String TAG = "DeviceIntentReceiver";
 
         @Override
         public void onReceive(Context context, Intent intent) {

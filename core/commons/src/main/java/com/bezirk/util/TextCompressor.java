@@ -17,9 +17,6 @@ public class TextCompressor {
 
     /**
      * Uses a gzip compression to compress the String, a better option for a lengthier string. But the smaller string will have a space overhead. and returns a compressed byte[]
-     *
-     * @param str
-     * @return
      */
     public static byte[] compress(byte[] str) {
         ByteArrayOutputStream obj = new ByteArrayOutputStream();
@@ -39,9 +36,6 @@ public class TextCompressor {
 
     /**
      * decompress the byte[] to the String format.
-     *
-     * @param str
-     * @return
      */
     public static String decompress(byte[] str) {
         if (str == null || str.length == 0) {
@@ -67,16 +61,13 @@ public class TextCompressor {
 
     /**
      * compresses the input byte[] using deflater feature.
-     *
-     * @param bytes
-     * @return
      */
     public static byte[] compressByteArrayUsingDeflater(byte[] bytes) {
         Deflater dfl = new Deflater();
         dfl.setLevel(Deflater.BEST_COMPRESSION);
         dfl.setInput(bytes);
         dfl.finish();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] tmp = new byte[4 * 1024];
         try {
             while (!dfl.finished()) {
@@ -87,7 +78,7 @@ public class TextCompressor {
             logger.error("Exception while compress Byte ArrayUsingDeflater", ex);
         } finally {
             try {
-                if (baos != null) baos.close();
+                baos.close();
             } catch (Exception ex) {
                 logger.error("Exception while closing ByteArrayOutputStream", ex);
             }

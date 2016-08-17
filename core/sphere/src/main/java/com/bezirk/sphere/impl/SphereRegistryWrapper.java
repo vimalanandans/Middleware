@@ -281,7 +281,6 @@ public class SphereRegistryWrapper {
      * sphereId as a reference. <br>
      * Also includes cleaning the sphereKeys associated with this sphere.
      *
-     * @param sphereId
      * @return true if the sphere was deleted successfully
      */
     public boolean deleteSphere(String sphereId) {
@@ -894,7 +893,6 @@ public class SphereRegistryWrapper {
      * Add the services present in the default sphere to the sphere Id passed.
      *
      * @param sphereId of the sphere to be added in the sphere set of the services
-     * @return
      */
     public boolean addLocalServicesToSphere(String sphereId) {
         String defaultSphereId = getDefaultSphereId();
@@ -1139,9 +1137,6 @@ public class SphereRegistryWrapper {
 
     /**
      * Get the short QR code
-     *
-     * @param sphereId
-     * @return
      */
 
     public String getShareCode(String sphereId) {
@@ -1158,9 +1153,6 @@ public class SphereRegistryWrapper {
 
     /**
      * Get QR code with complete information
-     *
-     * @param sphereId
-     * @return
      */
 
     public String getShareCodeString(String sphereId) {
@@ -1205,10 +1197,6 @@ public class SphereRegistryWrapper {
 
     /**
      * Update listener if initialized, with status for corresponding operations
-     *
-     * @param operation
-     * @param status
-     * @param message
      */
     public void updateListener(Operation operation, Status status, String message) {
         if (sphereListener != null) {

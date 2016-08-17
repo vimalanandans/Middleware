@@ -26,7 +26,7 @@ public class ZyreCommsJni extends Thread {
 
     public static final String TAG = ZyreCommsJni.class.getSimpleName();
     public static final String BEZIRK_GROUP = "BEZIRK_GROUP";
-    private static boolean isZyreReady;
+    private boolean isZyreReady;
     private final ConcurrentMap<String, List<String>> peers = new ConcurrentHashMap<>();
     private final ZyreCommsHelper zyreCommsHelper;
     private static final int NUMBER_OF_EVENT_THREADS = 100;
