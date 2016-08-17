@@ -41,9 +41,6 @@ final class BezirkStreamHandler {
     /**
      * The assumption is that the ControlReceiverThread has already checked for
      * validity of StreamRequest.
-     *
-     * @param streamRequest
-     * @return
      */
     boolean handleStreamRequest(final StreamRequest streamRequest, final Comms comms,
                                 final PortFactory portFactory, final StreamStore streamStore,

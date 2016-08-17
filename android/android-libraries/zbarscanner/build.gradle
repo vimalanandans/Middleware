@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
-
-apply from: "${rootDir}/android/include/publish-android-library.gradle"
+apply from: "${rootDir}/gradle-plugins/artifactory-aar-publish.gradle"
 
 android {
     sourceSets {

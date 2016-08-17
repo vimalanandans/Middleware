@@ -12,7 +12,7 @@ import java.util.TimerTask;
 public class Publisher {
 
     public static void main(String[] args) {
-        final Bezirk bezirk = BezirkMiddleware.registerZirk("Publisher Zirk Java", "Group A");
+        final Bezirk bezirk = BezirkMiddleware.registerZirk("Publisher Zirk Java");
 
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
 

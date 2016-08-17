@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zyre.Zyre;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class ZyreCommsJni extends Thread {
     public static final String BEZIRK_GROUP = "BEZIRK_GROUP";
 
     static {
-        NativeUtils.loadLibs();
+        NativeUtils.loadNativeBinaries();
 
     }
 
@@ -112,7 +113,13 @@ public class ZyreCommsJni extends Thread {
     // send zyre whisper
     public boolean sendToAllZyre(byte[] msg, boolean isEvent) {
         // in zyre we are sending ctrl and event in same. isEvent is ignored
-        String data = new String(msg);
+        final String data;
+
+        try {
+            data = new String(msg, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw (AssertionError) new AssertionError("UTF-8 is not available on this system").initCause(e);
+        }
 
         if (zyre != null) {
 
@@ -128,9 +135,14 @@ public class ZyreCommsJni extends Thread {
 
     // send zyre whisper
     public boolean sendToOneZyre(byte[] msg, String nodeId, boolean isEvent) {
+        final String data;
 
-        // in zyre we are sending ctrl and event in same. isEvent is ignored
-        String data = new String(msg);
+        try {
+            data = new String(msg, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw (AssertionError) new AssertionError("UTF-8 is not available on this system").initCause(e);
+        }
+
         if (zyre != null) {
             //send to the specific node
             zyre.whisper(nodeId, data);
@@ -166,33 +178,36 @@ public class ZyreCommsJni extends Thread {
             String payload = eventMap.get("message");
 
             // A Zyre-enabled device enters the network
-            if (eventType.equals("ENTER")) {
-                handleEnter(peer);
-            }
-            // Message sent to a particular device
-            else if (eventType.equals("WHISPER")) {
-                handleWhisper(peer, payload);
-            }
-            // Message sent to all members of a group
-            else if (eventType.equals("SHOUT")) {
-                handleShout(peer, group, payload);
-            }
-            // A device joins a group
-            else if (eventType.equals("JOIN")) {
-                handleJoin(peer, group);
-                logKnownDevices();
-            }
-            // A device explicitly leaves a group
-            else if (eventType.equals("LEAVE")) {
-                handleLeave(peer, group);
-                logKnownDevices();
-            }
-            // A device exits the network
-            else if (eventType.equals("EXIT")) {
-                handleExit(peer);
-                logKnownDevices();
-            } else {
-                logger.debug("unknown event: " + eventType);
+            switch (eventType) {
+                case "ENTER":
+                    handleEnter(peer);
+                    break;
+                // Message sent to a particular device
+                case "WHISPER":
+                    handleWhisper(peer, payload);
+                    break;
+                // Message sent to all members of a group
+                case "SHOUT":
+                    handleShout(peer, group, payload);
+                    break;
+                // A device joins a group
+                case "JOIN":
+                    handleJoin(peer, group);
+                    logKnownDevices();
+                    break;
+                // A device explicitly leaves a group
+                case "LEAVE":
+                    handleLeave(peer, group);
+                    logKnownDevices();
+                    break;
+                // A device exits the network
+                case "EXIT":
+                    handleExit(peer);
+                    logKnownDevices();
+                    break;
+                default:
+                    logger.debug("unknown event: " + eventType);
+                    break;
             }
         }
     }
@@ -207,13 +222,6 @@ public class ZyreCommsJni extends Thread {
 
         if ((incoming == null) || incoming.isEmpty())
             return eventMap;
-
-        //logger.debug("IN Size << " + incoming.length());//+" data << " +incoming);
-
-        if (incoming == null) {// Interrupted
-            logger.warn("Interrupted during recv()");
-            return eventMap;
-        }
 
         if (Thread.interrupted()) {
             logger.debug("RecvThread exiting");
@@ -253,13 +261,11 @@ public class ZyreCommsJni extends Thread {
         }
 
         for (String pair : pairs) {
-            List<String> kv = Arrays.asList(pair.split("::", 2));
-            if (kv.size() == 0) {
-                // key and value are empty - do nothing
-            } else if (kv.size() == 1) {
+            List<String> kv = Arrays.asList(pair.split(KV_DELIM, 2));
+            if (kv.size() == 1) {
                 // value is null
                 result.put(kv.get(0), null);
-            } else {
+            } else if (kv.size() > 1) {
                 result.put(kv.get(0), kv.get(1));
             }
         }
@@ -273,8 +279,9 @@ public class ZyreCommsJni extends Thread {
 
 
     private void logKnownDevices() {
-        for (String group : peers.keySet()) {
-            logger.debug("devices in " + group + " : " + peers.get(group));
+        for (Map.Entry<String, List<String>> entry : peers.entrySet()) {
+            if (logger.isDebugEnabled()) logger.debug("devices in {} : {} ", entry.getKey(),
+                    entry.getValue());
         }
     }
 
@@ -342,7 +349,6 @@ public class ZyreCommsJni extends Thread {
     }
 
     private boolean removePeer(String group, String zyreDeviceId) {
-        peers.get(group);
         List<String> deviceList = peers.get(group);
 
         return deviceList != null && deviceList.remove(zyreDeviceId);

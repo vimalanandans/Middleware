@@ -1,0 +1,27 @@
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        bezirkPublication(MavenPublication) {
+            artifact "${project.buildDir}/outputs/apk/${project.name}-debug.apk"
+            artifact "${project.buildDir}/outputs/apk/${project.name}-release-unsigned.apk"
+        }
+    }
+}
+
+artifactory {
+    contextUrl = 'https://bezirk.artifactoryonline.com/bezirk'
+    publish {
+        repository {
+            repoKey = 'libs-release-local' // The Artifactory repository key to publish to
+            username = "${artifactory_user}" // The publisher user name
+            password = "${artifactory_password}" // The publisher password
+        }
+        defaults {
+            publications('bezirkPublication')
+            publishArtifacts = true
+            publishPom = true
+        }
+    }
+}

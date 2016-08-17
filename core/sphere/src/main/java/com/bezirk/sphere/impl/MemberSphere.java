@@ -43,8 +43,6 @@ public final class MemberSphere extends Sphere implements Serializable {
 
     /**
      * Creates the sphere with passed sphereName
-     *
-     * @param sphereName
      */
     private void createSphere(String sphereName, String sphereType, Set<String> ownerDevices,
                               LinkedHashMap<String, ArrayList<ZirkId>> deviceServices) {

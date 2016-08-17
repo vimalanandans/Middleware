@@ -50,7 +50,7 @@ public class DatabaseHelper {
      * @throws IOException          if connection to the database is not successful.
      * @throws Exception
      */
-    protected void updateRegistry(String columnName) throws NullPointerException, SQLException, IOException, Exception {
+    protected void updateRegistry(String columnName) throws Exception {
         UpdateBuilder<PersistenceRegistry, Integer> updateDb = dbConnection.getPersistenceDAO().updateBuilder();
         switch (columnName) {
             case PersistenceConstants.COLUMN_1:
@@ -84,7 +84,7 @@ public class DatabaseHelper {
      * @throws SQLException         something goes wrong while storing
      * @throws IOException          if connection to the database is not successful.
      */
-    protected void loadRegistry() throws NullPointerException, IOException, Exception {
+    protected void loadRegistry() throws Exception {
         QueryBuilder<PersistenceRegistry, Integer> queryBuilder = dbConnection.getPersistenceDAO().queryBuilder();
         PersistenceRegistry tempRegistry = queryBuilder.queryForFirst();
         pubSubBrokerRegistry = tempRegistry.getPubSubBrokerRegistry();
@@ -103,7 +103,7 @@ public class DatabaseHelper {
      * @throws IOException          if connection to the database is not successful.
      * @throws Exception
      */
-    protected boolean checkDatabase(final String DB_VERSION) throws NullPointerException, SQLException, IOException, Exception {
+    protected boolean checkDatabase(final String DB_VERSION) throws Exception {
         if (!PersistenceConstants.DB_VERSION.equals(DB_VERSION)) {
             dropTable();
         }
@@ -122,7 +122,7 @@ public class DatabaseHelper {
      * @throws IOException          if connection to the database is not successful.
      * @throws Exception
      */
-    private void dropTable() throws NullPointerException, SQLException, IOException, Exception {
+    private void dropTable() throws Exception {
         if (dbConnection != null) {
             TableUtils.dropTable(dbConnection.getDatabaseConnection(), PersistenceRegistry.class, true);
         }
@@ -131,7 +131,7 @@ public class DatabaseHelper {
     /**
      * Insert the only row into the database
      */
-    private void insertInitialRow() throws NullPointerException, SQLException, IOException, Exception {
+    private void insertInitialRow() throws Exception {
         dbConnection.getPersistenceDAO().createOrUpdate(new PersistenceRegistry(1, new PubSubBrokerRegistry(), new SphereRegistry(), new ProxyRegistry()));
     }
 
@@ -165,7 +165,7 @@ public class DatabaseHelper {
     /**
      * Clear the maps of the all the registry
      */
-    protected void clearPersistence() throws NullPointerException, SQLException, IOException, Exception {
+    protected void clearPersistence() throws Exception {
         pubSubBrokerRegistry.clearRegistry();
         sphereRegistry.clearRegistry();
         proxyRegistry.clearRegistry();
