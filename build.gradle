@@ -16,7 +16,9 @@
 buildscript {
     repositories {
         mavenCentral()
-        jcenter() //used for jfrog
+        jcenter {
+            url "http://jcenter.bintray.com/"
+        }//used for jfrog
     }
     ext {
         androidGradleToolsVersion = "2.1.0"
