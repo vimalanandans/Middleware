@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply from: "${rootDir}/android/include/artifactory-apk-publish.gradle"
+apply from: "${rootDir}/gradle-plugins/artifactory-apk-publish.gradle"
 
 android {
     compileSdkVersion project.androidCompileSdkVersion.toInteger()

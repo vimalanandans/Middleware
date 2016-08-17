@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply from: "${rootDir}/android/include/artifactory-aar-publish.gradle"
+apply from: "${rootDir}/gradle-plugins/artifactory-aar-publish.gradle"
 repositories {
     flatDir {
         dirs 'lib'
