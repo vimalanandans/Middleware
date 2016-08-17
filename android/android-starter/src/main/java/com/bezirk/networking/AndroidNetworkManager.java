@@ -57,7 +57,7 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
     @Override
     public String getStoredInterfaceName() {
         if(null!=preferences){
-            logger.debug("preferences is not null");
+            logger.debug("preferences is not null in Android network manager");
             return preferences.getString(NETWORK_INTERFACE_NAME_KEY, DEFAULT_ANDROID_INTERFACE);
         }else{
             logger.debug("preferrences is null");

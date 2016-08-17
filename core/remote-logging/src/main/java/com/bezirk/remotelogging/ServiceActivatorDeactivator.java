@@ -44,7 +44,8 @@ public final class ServiceActivatorDeactivator {
             logger.debug("sendLogMessageToClient value is "+sendLogMessageToClient);
             if(null!=comms){
                 logger.debug("comms is not null");
-                comms.sendMessage(controlLedger);
+                comms.sendControlLedger(controlLedger);
+                //comms.sendMessage(controlLedger);
             }else{
                 logger.debug("comms is null");
             }

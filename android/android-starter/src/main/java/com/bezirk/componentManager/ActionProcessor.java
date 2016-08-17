@@ -33,7 +33,7 @@ public final class ActionProcessor {
         BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
 
         if (ValidatorUtility.isObjectNotNull(intentAction)) {
-            logger.debug("intentAction is not null");
+            logger.debug("intentAction is not null in Actionprocessor");
             if (logger.isDebugEnabled())
                 logger.debug("Received intent, action: {}", intentAction.getName());
 

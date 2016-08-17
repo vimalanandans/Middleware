@@ -80,6 +80,7 @@ public final class ProxyClient implements Bezirk {
         intent.setComponent(name );
 
         final String actionName = action.getAction().getName();
+        Log.d(TAG,"actionName in ProxyClient is "+actionName);
         intent.setAction(actionName);
         intent.putExtra(actionName, action);
 
@@ -101,7 +102,14 @@ public final class ProxyClient implements Bezirk {
         Log.d(TAG, "Registering Zirk: " + zirkName);
 
         final SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(context);
+        if(null!=shrdPref){
+            Log.d(TAG,"shrdPref is not null");
+        }
+        else{
+            Log.d(TAG,"shredPref is null");
+        }
         String zirkIdAsString = shrdPref.getString(zirkName, null);
+        Log.d(TAG,"zirkIdAsString is "+zirkIdAsString);
         if (null == zirkIdAsString) {
             zirkIdAsString = UUID.randomUUID().toString();
             Log.d(TAG, "ZirkId-> " + zirkIdAsString);
@@ -141,13 +149,17 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void subscribe(final MessageSet messageSet) {
+        Log.d(TAG,"subscribe method of ProxyClient");
         if (messageSet instanceof EventSet) {
+            Log.d(TAG,"messageSet instanceof EventSet in ProxyClient");
             EventSet.EventReceiver listener = ((EventSet) messageSet).getEventReceiver();
             addMessagesToMap(messageSet, eventListenerMap, listener);
         } else if (messageSet instanceof StreamSet) {
+            Log.d(TAG,"messageSet instanceof StreamSet in ProxyClient");
             StreamSet.StreamReceiver listener = ((StreamSet) messageSet).getStreamReceiver();
             addMessagesToMap(messageSet, streamListenerMap, listener);
         } else {
+            Log.d(TAG,"messageSet is unKnown:  in ProxyClient");
             throw new AssertionError("Unknown MessageSet type: " +
                     messageSet.getClass().getSimpleName());
         }

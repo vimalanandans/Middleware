@@ -200,7 +200,7 @@ public class ZyreCommsJni extends Thread {
                 }
             });
             if (!eventExecutor.isShutdown()) {
-                logger.debug("eventExecutor is not shutdown");
+                logger.debug("eventExecutor is not shutdown:");
                 eventExecutor.execute(eventThread);
             }
             return true;

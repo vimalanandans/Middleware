@@ -187,11 +187,14 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     public boolean sendMulticastEvent(SendMulticastEventAction multicastEventAction) {
         logger.debug("sendMulticastEvent method in PubSubBroker");
         final ZirkId zirkId = multicastEventAction.getZirkId();
+        logger.debug("zirk id is "+zirkId.getZirkId());
         final Iterable<String> listOfSphere;
 
         if (sphereServiceAccess != null) {
+            logger.debug("sphereServiceAccess is not null");
             listOfSphere = sphereServiceAccess.getSphereMembership(zirkId);
         } else {
+            logger.debug("sphereServiceAccess is  null");
             Set<String> spheres = new HashSet<>();
             spheres.add(SPHERE_NULL_NAME);
             listOfSphere = spheres;
@@ -239,7 +242,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
                 logger.error("Comms manager not initialized");
                 return false;
             }
-
+            logger.debug("before calling sendMessageToLocal method and pass param eventLedger....");
             sendMessageToLocal(eventLedger);
 
         }
@@ -306,6 +309,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     /** send the event messages to local zirks */
     void sendMessageToLocal(EventLedger eventLedger)
     {
+        logger.debug("in method sendMessageToLocal");
         processEvent(eventLedger);
     }
 
@@ -388,7 +392,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         while (sphereIterator.hasNext()) {
             final ControlLedger tcMessage = prepareMessage(sphereIterator, streamRequestKey, streamRecord, tempFile);
             if (ValidatorUtility.isObjectNotNull(comms)) {
-                comms.sendMessage(tcMessage);
+                comms.sendControlLedger(tcMessage);
+                //sendMessage Deprecated
+                //comms.sendMessage(tcMessage);
             } else {
                 logger.error("Comms manager not initialized");
             }
@@ -435,7 +441,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     /** called on incoming message and loop back message*/
     @Override
     public boolean processEvent(final EventLedger eLedger) {
-
+        logger.debug("processEvent method");
         Set<ZirkId> zirkList = getAssociatedZirkList(eLedger);
 
         if (null == zirkList || zirkList.isEmpty()) {
@@ -447,7 +453,12 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         if (!decryptMsg(eLedger)) {
             return false;
         }
-
+        logger.debug("remoteLog.isRemoteLoggingEnabled() is  "+remoteLog.isRemoteLoggingEnabled());
+        if(null!=remoteLog){
+            logger.debug("remoteLog is not null in PubSubBroker");
+        }else{
+            logger.debug("remoteLog is  null in PubSubBroker");
+        }
         if ((remoteLog != null) && remoteLog.isRemoteLoggingEnabled()) {
             remoteLog.sendRemoteLogLedgerMessage(eLedger);
         }

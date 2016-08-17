@@ -39,14 +39,9 @@ public abstract class NetworkManager {
     }
 
     public InetAddress getIpForInterface(NetworkInterface intf) {
-        if (intf == null) {
-            logger.debug("Input interface is null");
-            return null;
-        }
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface curIntf = en.nextElement();
-
                 if (intf.getDisplayName().equals(curIntf.getDisplayName())) {
                     for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                         InetAddress inetAddress = enumIpAddr.nextElement();
@@ -68,6 +63,7 @@ public abstract class NetworkManager {
     public InetAddress getLocalInet() {
         getInetAddress();
         if (curInterface == null) {
+            logger.debug("curInterface is null");
             getInetAddress();
         }
         InetAddress inetAddress = null;
@@ -109,7 +105,7 @@ public abstract class NetworkManager {
     }
 
     public BezirkZirkEndPoint getServiceEndPoint(ZirkId zirkId) {
-        logger.debug("getServiceEndPoint");
+        logger.debug("getServiceEndPoint zirkid "+zirkId.getZirkId());
         BezirkZirkEndPoint sep = new BezirkZirkEndPoint(zirkId);
         sep.device = getLocalInet().getHostAddress();
         return sep;

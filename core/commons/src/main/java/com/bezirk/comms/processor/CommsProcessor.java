@@ -159,6 +159,7 @@ public abstract class CommsProcessor implements Comms, Observer {
     /**
      * Send the control message
      */
+    @Override
     public boolean sendControlLedger(ControlLedger ledger) {
         boolean ret = false;
 

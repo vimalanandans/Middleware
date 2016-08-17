@@ -1,6 +1,7 @@
 package com.bezirk.comms;
 
 import com.bezirk.comms.processor.EventMsgReceiver;
+import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.Ledger;
@@ -57,7 +58,9 @@ public interface Comms {
     /**
      * Send event ledger
      * */
-    boolean sendEventLedger(EventLedger ledger);
+    boolean sendEventLedger(EventLedger eventLedger);
+
+    boolean sendControlLedger(ControlLedger controlLedger);
 
     /**
      * Send event ledger

@@ -106,6 +106,7 @@ public class ComponentManager extends Service {
         //initialize the identity manager
         identityManager = new BezirkIdentityManager();
         final String aliasString = preferences.getString(ALIAS_KEY, null);
+        logger.debug("aliasString is "+aliasString);
         final Gson gson = new Gson();
         final Alias identity;
 
@@ -149,7 +150,8 @@ public class ComponentManager extends Service {
             actionProcessor.processBezirkAction(intent, proxyServer, new LifeCycleCallbacks() {
                 @Override
                 public void start() {
-                    Log.d(TAG, "LifeCycleCallbacks:start");
+                    logger.debug("LifeCycleCallbacks:start");
+                    //Log.d(TAG, "LifeCycleCallbacks:start");
                     lifecycleManager.setState(LifecycleManager.LifecycleState.STARTED);
                     //comms.startComms();
 
@@ -211,10 +213,11 @@ public class ComponentManager extends Service {
 
         Intent notificationIntent;
         PackageManager manager = getPackageManager();
-
+        logger.debug("getApplicationContext().getPackageName() is "+getApplicationContext().getPackageName());
         notificationIntent = manager.getLaunchIntentForPackage(getApplicationContext().getPackageName());
 
         if (notificationIntent == null) {
+            logger.debug("NotificationIntent is null");
             notificationIntent = new Intent(Intent.ACTION_MAIN);
         }
 
