@@ -99,7 +99,7 @@ public class StreamManager implements Streaming, ActiveStream {
 
     }
 
-    @Override
+    /*@Override
     public boolean sendStream(String streamId) {
         StreamRecord tempStreamRecord = streamStore.popStreamRecord(streamId);
         if (null == tempStreamRecord) {
@@ -109,7 +109,7 @@ public class StreamManager implements Streaming, ActiveStream {
         streamingMessageQueue.addToQueue(tempStreamRecord);
         return true;
 
-    }
+    }*/
 
     @Override
     public boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList) {
@@ -125,8 +125,18 @@ public class StreamManager implements Streaming, ActiveStream {
                 return false;
             }
 
-            //Send the send the message to receiver
+            /*if(local zirk streaming is true!!!){
+                //Add the stream record to the Streaming message queue if its for local streaming and give a callback to the localZirk.
+                streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.LOCAL);
+                streamingMessageQueue.addToQueue(streamRecord);
+            }else{
+                //Send the send the message to receiver
+                sendStreamMessageToReceivers(sphereList, streamRecord);
+            }*/
+
+            //remove once the above condition is met.
             sendStreamMessageToReceivers(sphereList, streamRecord);
+
         } catch (Exception e) {
             logger.error("Cant get the SEP of the sender", e);
             return false;
@@ -221,7 +231,7 @@ public class StreamManager implements Streaming, ActiveStream {
             } else {
 
                 ctrlReceiver.initStreamCtrlReceiver(bezirkStreamHandler, portFactory, comms,
-                        streamStore, sadlReceiver, sphereSecurity, streamingMessageQueue);
+                        streamStore, sadlReceiver, /*sphereSecurity,*/ streamingMessageQueue);
 
                 comms.registerControlMessageReceiver(
                         ControlMessage.Discriminator.StreamRequest,
@@ -279,12 +289,12 @@ public class StreamManager implements Streaming, ActiveStream {
         return true;
     }
 
-    @Override
+    /*@Override
     public void setSphereSecurityForEncryption(SphereSecurity sphereSecurity) {
 
         this.sphereSecurity = sphereSecurity;
         this.sendStreamQueueProcessor.setSphereSecurity(this.sphereSecurity);
-    }
+    }*/
 
 
     @Override
@@ -300,9 +310,10 @@ public class StreamManager implements Streaming, ActiveStream {
     }
 
 
-    /*
-            This has to be removed!!!!!!
-         */
+    /**
+     * THis has to be removed.... Not good practice.. Added just for quick fix: Punith
+     * @param sadlReceiver
+     */
     @Override
     public void setSadlReceiver(PubSubBroker sadlReceiver) {
         this.sadlReceiver = sadlReceiver;

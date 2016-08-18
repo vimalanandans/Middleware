@@ -7,7 +7,6 @@ import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.control.messages.streaming.StreamResponse;
 import com.bezirk.control.messages.streaming.rtc.RTCControlMessage;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
-import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.rtc.Signaling;
 import com.bezirk.streaming.rtc.SignalingFactory;
 import com.bezirk.streaming.store.StreamStore;
@@ -27,8 +26,8 @@ public class StreamCtrlReceiver implements CtrlMsgReceiver {
     private PortFactory portFactory;
     private Comms comms = null;
     private StreamStore streamStore = null;
-    private PubSubEventReceiver sadlReceiver = null;
-    private SphereSecurity sphereSecurity = null;
+    private PubSubEventReceiver pubSubReceiver = null;
+    /*private SphereSecurity sphereSecurity = null;*/
     private MessageQueue streamingMessageQueue = null;
 
 
@@ -36,13 +35,13 @@ public class StreamCtrlReceiver implements CtrlMsgReceiver {
      * Initialize the stream ctrl receivers.
      */
     public void initStreamCtrlReceiver(BezirkStreamHandler bezirkStreamHandler, PortFactory portFactory, Comms comms,
-                                       StreamStore streamStore, PubSubEventReceiver sadlReceiver, SphereSecurity sphereSecurity, MessageQueue streamingMessageQueue ){
+                                       StreamStore streamStore, PubSubEventReceiver pubSubReceiver, /*SphereSecurity sphereSecurity,*/ MessageQueue streamingMessageQueue ){
         this.bezirkStreamHandler = bezirkStreamHandler;
         this.portFactory = portFactory;
         this.comms = comms;
         this.streamStore = streamStore;
-        this.sadlReceiver = sadlReceiver;
-        this.sphereSecurity = sphereSecurity;
+        this.pubSubReceiver = pubSubReceiver;
+        /*this.sphereSecurity = sphereSecurity;*/
         this.streamingMessageQueue = streamingMessageQueue;
     }
 
@@ -93,7 +92,7 @@ public class StreamCtrlReceiver implements CtrlMsgReceiver {
                     serializedMsg, StreamRequest.class);
             bezirkStreamHandler.handleStreamRequest(streamRequest,
                     comms, portFactory,
-                    streamStore, sadlReceiver, sphereSecurity);
+                    streamStore, pubSubReceiver/*, sphereSecurity*/);
 
         } catch (Exception e) {
             logger.error(

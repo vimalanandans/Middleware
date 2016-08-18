@@ -44,7 +44,7 @@ final class BezirkStreamHandler {
      */
     boolean handleStreamRequest(final StreamRequest streamRequest, final Comms comms,
                                 final PortFactory portFactory, final StreamStore streamStore,
-                                final PubSubEventReceiver pubSubReceiver, final SphereSecurity sphereSecurity) {
+                                final PubSubEventReceiver pubSubReceiver/*, final SphereSecurity sphereSecurity*/) {
 
         // Check if the request is duplicate
         StreamRecord.StreamRecordStatus status = StreamRecord.StreamRecordStatus.ADDRESSED;
@@ -61,7 +61,7 @@ final class BezirkStreamHandler {
                 status = StreamRecord.StreamRecordStatus.READY;
 
                 StreamReceivingThread streamReceivingThread =new StreamReceivingThread(assignedPort, downloadPath,
-                        streamRequest, portFactory, pubSubReceiver, sphereSecurity, streamManager);
+                        streamRequest, portFactory, pubSubReceiver, /*sphereSecurity,*/ streamManager);
                 Future receiveStreamFuture  = receiveStreamExecutor.submit(new Thread(streamReceivingThread));
                 streamManager.addRefToActiveStream(streamRequest.getUniqueKey(), receiveStreamFuture);
             }

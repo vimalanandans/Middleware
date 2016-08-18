@@ -43,8 +43,8 @@ public interface Comms {
 
     /**
      * Set the sphere for sadl. for late initialization
-     */
-    void setSphereSecurity(final SphereSecurity sphereSecurity);
+     *//*
+    void setSphereSecurity(final SphereSecurity sphereSecurity);*/
 
     /**
      * TODO: Split the interface for controlling comms component as CommsCtrl
@@ -69,8 +69,8 @@ public interface Comms {
 
     /**
      * send the stream message based on unique key
-     */
-    boolean sendStream(String uniqueKey);
+     *//*
+    boolean sendStream(String uniqueKey);*/
 
     /**
      * fixme write this

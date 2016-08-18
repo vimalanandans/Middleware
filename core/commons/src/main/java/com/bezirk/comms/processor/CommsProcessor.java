@@ -663,11 +663,10 @@ public abstract class CommsProcessor implements Comms, Observer {
 
         }
 
-
         return true;
     }
 
-    @Override
+   /* @Override
     public boolean sendStream(String uniqueKey) {
         if (bezirkStreamManager != null) {
             logger.info("sending stream >" + uniqueKey);
@@ -677,7 +676,7 @@ public abstract class CommsProcessor implements Comms, Observer {
             logger.error("BezirkStreamManager is not initialized.");
             return false;
         }
-    }
+    }*/
 
     @Override
     public boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList) {
@@ -732,10 +731,10 @@ public abstract class CommsProcessor implements Comms, Observer {
         return true;
     }
 
-    @Override
+    /*@Override
     public void setSphereSecurity(SphereSecurity sphereSecurity) {
         bezirkStreamManager.setSphereSecurityForEncryption(sphereSecurity);
-    }
+    }*/
 
     /**
      * process the incoming message via thread pool for better throughput

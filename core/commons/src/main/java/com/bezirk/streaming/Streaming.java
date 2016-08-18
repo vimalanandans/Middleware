@@ -35,18 +35,13 @@ public interface Streaming {
 
     /**
      * send the stream message based on streamId
-     */
-    boolean sendStream(final String streamId);
+     *//*
+    boolean sendStream(final String streamId);*/
 
     /**
      * Registers the stream record within stream store
      */
     boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList);
-
-    /**
-     * set Sphere Security. this is used for the late initalization, when a new Sphere is created. Sphere security object is updated
-     */
-    void setSphereSecurityForEncryption(SphereSecurity sphereSecurity);
 
 
     //// FIXME: 8/17/2016 This has to be removed!!!

@@ -4,7 +4,6 @@
 package com.bezirk.streaming.threads;
 
 import com.bezirk.actions.ReceiveFileStreamAction;
-import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.PortFactory;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
@@ -53,8 +52,8 @@ public class StreamReceivingThread implements Runnable {
     private final BezirkZirkEndPoint sender;
     private final String serializedMsg;
     private final PortFactory portFactory;
-    private final PubSubEventReceiver sadlReceiver;
-    private final SphereSecurity sphereSecurity;
+    private final PubSubEventReceiver pubSubReceiver;
+    /*private final SphereSecurity sphereSecurity;*/
     private final String downloadPath;
     private final String streamRequestKey;
     private StreamManager streamManager = null;
@@ -66,7 +65,7 @@ public class StreamReceivingThread implements Runnable {
      */
     public StreamReceivingThread(int port,String downloadPath,
                                  StreamRequest streamRequest, PortFactory portFactory,
-                                 PubSubEventReceiver sadlReceiver, SphereSecurity sphereSecurity, StreamManager streamManager) {
+                                 PubSubEventReceiver pubSubEventReceiver, /*SphereSecurity sphereSecurity,*/ StreamManager streamManager) {
         super();
         this.sphere = streamRequest.getSphereId();
         this.port = port;
@@ -78,8 +77,8 @@ public class StreamReceivingThread implements Runnable {
         this.sender = streamRequest.getSender();
         this.serializedMsg = streamRequest.serialzedString;
         this.portFactory = portFactory;
-        this.sadlReceiver = sadlReceiver;
-        this.sphereSecurity = sphereSecurity;
+        this.pubSubReceiver = pubSubEventReceiver;
+        /*this.sphereSecurity = sphereSecurity;*/
         this.streamManager = streamManager;
         this.streamRequestKey = streamRequest.getUniqueKey();
     }
@@ -105,9 +104,11 @@ public class StreamReceivingThread implements Runnable {
             fileOutputStream = new FileOutputStream(tempFile);
             inputStream = new DataInputStream(receivingSocket.getInputStream());
 
-            if (isEncrypted  && sphereSecurity != null) {
+            //When the sphere security is impleted, this will be encrypt the stream byte content
+            if (isEncrypted  /*&& sphereSecurity != null*/) {
                 // message is encrypted and sphere security object is not null
-                sphereSecurity.decryptSphereContent(inputStream, fileOutputStream, sphere);
+
+                //sphereSecurity.decryptSphereContent(inputStream, fileOutputStream, sphere);
                 logger.debug("---------- Secure Data transfer Completed! -------------");
 
             } else {
@@ -179,9 +180,9 @@ public class StreamReceivingThread implements Runnable {
             ReceiveFileStreamAction uStreamCallbackMsg = new ReceiveFileStreamAction(
                     recipient.zirkId, serializedMsg,
                     tempFile, sender);
-            if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {
+            if (ValidatorUtility.isObjectNotNull(pubSubReceiver)) {
 
-                sadlReceiver.processNewStream(uStreamCallbackMsg);
+                pubSubReceiver.processNewStream(uStreamCallbackMsg);
 
             } else {
 

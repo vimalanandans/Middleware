@@ -39,7 +39,7 @@ public class StreamQueueProcessor implements Runnable {
 
     private final PubSubEventReceiver sadlReceiver;
 
-    private SphereSecurity sphereSecurity;
+    //private SphereSecurity sphereSecurity;
 
     private ExecutorService sendStreamExecutor;
 
@@ -53,9 +53,9 @@ public class StreamQueueProcessor implements Runnable {
 
     }
 
-    public void setSphereSecurity(SphereSecurity sphereSecurity) {
+    /*public void setSphereSecurity(SphereSecurity sphereSecurity) {
         this.sphereSecurity = sphereSecurity;
-    }
+    }*/
 
     /**
      * This thread is blocking and will be notified when there are any {@link StreamRecord} in the queue. It pops the {@link StreamRecord} from the queue
@@ -122,13 +122,15 @@ public class StreamQueueProcessor implements Runnable {
     }
 
     private void processStreamReadyMessage(StreamRecord streamRecord) {
-        if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {
-            StreamSendingThread streamSendingThread = new StreamSendingThread(streamRecord, sadlReceiver, sphereSecurity);
+
+        //// FIXME: 8/18/2016 Punith: As
+        /*if (ValidatorUtility.isObjectNotNull(sphereSecurity)) {*/
+            StreamSendingThread streamSendingThread = new StreamSendingThread(streamRecord, sadlReceiver/*, sphereSecurity*/);
             Future streamSendingFuture  = sendStreamExecutor.submit(new Thread(streamSendingThread));
             streamManager.addRefToActiveStream(streamRecord.getUniqueKey(), streamSendingFuture);
-        } else {
+        /*} else {
             logger.error("SphereForSadl is not initialized.");
-        }
+        }*/
     }
 
     private void processLocalStreamMessage(boolean bezirkCallbackPresent,

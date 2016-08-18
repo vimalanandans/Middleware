@@ -88,11 +88,11 @@ public class MockComms implements Comms {
         return false;
     }
 
-    @Override
+    /*@Override
     public boolean sendStream(String uniqueKey) {
         // TODO Auto-generated method stub
         return true;
-    }
+    }*/
 
     @Override
     public boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList) {
@@ -125,10 +125,10 @@ public class MockComms implements Comms {
         return false;
     }
 
-    @Override
+    /*@Override
     public void setSphereSecurity(SphereSecurity sphereSecurity) {
 
-    }
+    }*/
 
 
     public void clearQueues() {
