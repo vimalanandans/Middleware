@@ -50,9 +50,6 @@ public class ComponentManager extends Service {
     private static final String DB_VERSION = "0.0.4";
     private LifecycleManager.LifecycleState currentState;
 
-    //download path
-    private final static String downloadPath = "";
-
     int FOREGROUND_ID = 1336;
 //                    service.startForeground(FOREGROUND_ID,
 //                            service.buildForegroundNotification("Bezirk ON"));
@@ -95,7 +92,7 @@ public class ComponentManager extends Service {
         comms = new ZyreCommsManager(networkManager, null,null, null);
 
         //streaming manager
-        Streaming streaming = new StreamManager(comms, downloadPath, networkManager);
+        Streaming streaming = new StreamManager(comms, networkManager);
 
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device

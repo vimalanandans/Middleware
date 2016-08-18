@@ -49,7 +49,6 @@ public class StreamManager implements Streaming, ActiveStream {
     private StreamQueueProcessor sendStreamQueueProcessor = null;
     private BezirkStreamHandler bezirkStreamHandler = null;
     private PortFactory portFactory;
-    private String downloadPath = null;
     private StreamStore streamStore = null;
 
 
@@ -74,7 +73,7 @@ public class StreamManager implements Streaming, ActiveStream {
     private NetworkManager networkManager = null;
 
 
-    public StreamManager(Comms comms, /*PubSubEventReceiver sadlReceiver, */String downloadPath, NetworkManager networkManager) {
+    public StreamManager(Comms comms, /*PubSubEventReceiver sadlReceiver, String downloadPath, */ NetworkManager networkManager) {
 
         if (ValidatorUtility.isObjectNotNull(comms)/*
                 && ValidatorUtility.isObjectNotNull(sadlReceiver)*/) {
@@ -87,8 +86,7 @@ public class StreamManager implements Streaming, ActiveStream {
 
             // ExecutorService for sending stream
             streamProcessExecutor = Executors.newFixedThreadPool(THREAD_SIZE);
-            bezirkStreamHandler = new BezirkStreamHandler(downloadPath, streamProcessExecutor,this, networkManager);
-            this.downloadPath = downloadPath;
+            bezirkStreamHandler = new BezirkStreamHandler(streamProcessExecutor,this, networkManager);
 
             startStreams();
         } else {

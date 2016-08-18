@@ -54,7 +54,7 @@ public class StreamReceivingThread implements Runnable {
     private final PortFactory portFactory;
     private final PubSubEventReceiver pubSubReceiver;
     /*private final SphereSecurity sphereSecurity;*/
-    private final String downloadPath;
+    private final String downloadPath = File.separator + new String("downloads") + File.separator;
     private final String streamRequestKey;
     private StreamManager streamManager = null;
 
@@ -63,13 +63,13 @@ public class StreamReceivingThread implements Runnable {
      *
      * @param  port   - port that this thread is listening to receive the data. { This port is got from StreamPortFactory }
      */
-    public StreamReceivingThread(int port,String downloadPath,
+    public StreamReceivingThread(int port,/*String downloadPath,*/
                                  StreamRequest streamRequest, PortFactory portFactory,
                                  PubSubEventReceiver pubSubEventReceiver, /*SphereSecurity sphereSecurity,*/ StreamManager streamManager) {
         super();
         this.sphere = streamRequest.getSphereId();
         this.port = port;
-        this.downloadPath = downloadPath;
+        /*this.downloadPath = downloadPath;*/
         this.streamLabel = streamRequest.streamLabel;
         this.fileName = streamRequest.fileName;
         this.isEncrypted = streamRequest.isEncrypted;

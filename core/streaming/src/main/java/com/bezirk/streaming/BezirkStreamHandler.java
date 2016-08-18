@@ -26,13 +26,13 @@ final class BezirkStreamHandler {
     private static final Logger logger = LoggerFactory
             .getLogger(BezirkStreamHandler.class);
 
-    private String downloadPath;
+    /*private String downloadPath;*/
     private ExecutorService receiveStreamExecutor;
     private StreamManager streamManager = null;
     private final NetworkManager networkManager;
 
-    BezirkStreamHandler(String downloadPath, ExecutorService receiveStreamExecutor, StreamManager streamManager, NetworkManager networkManager){
-        this.downloadPath = downloadPath;
+    BezirkStreamHandler(/*String downloadPath,*/ ExecutorService receiveStreamExecutor, StreamManager streamManager, NetworkManager networkManager){
+       /* this.downloadPath = downloadPath;*/
         this.receiveStreamExecutor = receiveStreamExecutor;
         this.streamManager = streamManager;
         this.networkManager = networkManager;
@@ -60,7 +60,7 @@ final class BezirkStreamHandler {
             } else {
                 status = StreamRecord.StreamRecordStatus.READY;
 
-                StreamReceivingThread streamReceivingThread =new StreamReceivingThread(assignedPort, downloadPath,
+                StreamReceivingThread streamReceivingThread =new StreamReceivingThread(assignedPort, /*downloadPath,*/
                         streamRequest, portFactory, pubSubReceiver, /*sphereSecurity,*/ streamManager);
                 Future receiveStreamFuture  = receiveStreamExecutor.submit(new Thread(streamReceivingThread));
                 streamManager.addRefToActiveStream(streamRequest.getUniqueKey(), receiveStreamFuture);
