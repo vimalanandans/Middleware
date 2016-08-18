@@ -54,7 +54,6 @@ public class StreamReceivingThread implements Runnable {
     private final PortFactory portFactory;
     private final PubSubEventReceiver pubSubReceiver;
     /*private final SphereSecurity sphereSecurity;*/
-    private final String downloadPath = File.separator + new String("downloads") + File.separator;
     private final String streamRequestKey;
     private StreamManager streamManager = null;
 
@@ -96,15 +95,15 @@ public class StreamReceivingThread implements Runnable {
 
         try {
             logger.debug("Thread started to listen at port to receive Data..");
-            socket = new ServerSocket(port);                                      // listen at the Port
+            socket = new ServerSocket(port); // listen at the Port
             socket.setSoTimeout(CONNECTION_TIMEOUT_TIME);
             receivingSocket = socket.accept();
 
-            tempFile = new File(downloadPath + fileName);
+            tempFile = new File(getStreamDownloadPath() + fileName);
             fileOutputStream = new FileOutputStream(tempFile);
             inputStream = new DataInputStream(receivingSocket.getInputStream());
 
-            //When the sphere security is impleted, this will be encrypt the stream byte content
+            //When the sphere security is implemented, this will be encrypt the stream byte content
             if (isEncrypted  /*&& sphereSecurity != null*/) {
                 // message is encrypted and sphere security object is not null
 
@@ -119,7 +118,7 @@ public class StreamReceivingThread implements Runnable {
                 }
             }
             logger.debug("--- File Received--- & saved at "
-                    + downloadPath + fileName);
+                    + getStreamDownloadPath() + fileName);
 
             notifyStreamFile(tempFile, portFactory.releasePort(port));
             streamErrored = false;
@@ -191,6 +190,26 @@ public class StreamReceivingThread implements Runnable {
         } else {
             logger.error("Error releasing the Port");
         }
+    }
+
+
+    /**
+     * creates the folder if not existing and cretes the file
+     * @return
+     */
+    private String getStreamDownloadPath(){
+        String downloadPath;
+        ///storage/emulated/0/
+        downloadPath= File.separator+"storage/emulated/0/" + "downloads" + File.separator;
+        final File createDownloadFolder = new File(
+                downloadPath);
+        if (!createDownloadFolder.exists()) {
+            if (!createDownloadFolder.mkdir()) {
+                logger.error("Failed to create download direction: {}",
+                        createDownloadFolder.getAbsolutePath());
+            }
+        }
+        return downloadPath;
     }
 
 }

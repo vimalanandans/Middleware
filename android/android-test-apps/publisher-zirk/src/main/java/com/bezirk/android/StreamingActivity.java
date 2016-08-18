@@ -172,6 +172,11 @@ public class StreamingActivity extends AppCompatActivity {
         public ZirkEndPoint getReceiverEndpoint() {
             return receiverEndpoint;
         }
+
+        @Override
+        public String toString() {
+            return subscriberId;
+        }
     }
 
 
