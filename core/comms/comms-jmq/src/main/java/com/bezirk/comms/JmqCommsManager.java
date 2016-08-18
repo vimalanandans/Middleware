@@ -84,9 +84,15 @@ public class JmqCommsManager extends CommsProcessor implements MessageReceiver {
     @Override
     public boolean processIncomingMessage(String nodeId, byte[] data) {
 
-        logger.info(" Data in >> "+nodeId + " >> "+ data);
+        //logger.info(" Data in >> "+nodeId + " >> "+ new String (data));
         processWireMessage(nodeId, new String (data));
         return true;
+    }
+
+    @Override
+    public String getNodeId()
+    {
+        return comms.getNodeId().toString();
     }
 }
 

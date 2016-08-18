@@ -104,6 +104,7 @@ public abstract class NetworkManager {
         return null;
     }
 
+    @Deprecated // create using new BezirkZirkEndPoint(comms.getNodeId(), zirkId)
     public BezirkZirkEndPoint getServiceEndPoint(ZirkId zirkId) {
         BezirkZirkEndPoint sep = new BezirkZirkEndPoint(zirkId);
         sep.device = getLocalInet().getHostAddress();

@@ -73,6 +73,9 @@ public interface Comms {
 
     boolean registerNotification(CommsNotification notification);
 
+    /** this is on each comms instance returns its own created id */
+    String getNodeId();
+
     /**
      * Initialize the communications
      * creates queues, threads, sockets

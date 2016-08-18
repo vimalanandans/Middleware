@@ -1,37 +1,51 @@
 package com.bezirk.comms;
 
-import org.zeromq.ZContext;
-import org.zeromq.ZFrame;
-import org.zeromq.ZMQ;
-import org.zeromq.ZMsg;
+import java.util.UUID;
 
 /**
  * Jp2p Peer-2-Peer communication layer using jeromq. inspired from zyre, but tailored implementation
  */
-public class Jp2p {
+public class Jp2p  {
 
-    Node selfNode;
-    Peers peers ;
-    NodeDiscovery nodeDiscovery;
-    ReceiverTask receiverTask;
+    private Node selfNode;
+    private Peers peers ;
+    private NodeDiscovery nodeDiscovery;
+    private Receiver receiver;
 
-    MessageReceiver receiver = null;
+    private MessageReceiver msgReceiver = null;
 
-    public Jp2p(MessageReceiver receiver)
+
+    public Jp2p(MessageReceiver msgReceiver)
     {
-        receiverTask = new ReceiverTask();
-        new Thread(receiverTask).start();
-        selfNode = new Node(receiverTask.getPort());
+        this.msgReceiver = msgReceiver;
+
+        receiver = new Receiver(this);
+
+        Thread thread = new Thread(receiver);
+        thread.start();
+
+        // to make sure the port is ready and bind by that that time
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        selfNode = new Node(receiver.getPort());
+
+
         peers = new Peers(selfNode);
-        nodeDiscovery = new NodeDiscovery(selfNode,peers);
-        this.receiver = receiver;
+
+        nodeDiscovery = new NodeDiscovery(selfNode, peers);
+
     }
+
+
 
     public boolean processIncomingMessage(String nodeId, byte[] data){
 
         if(receiver != null) {
             //System.out.println("Received : "+nodeId + " data > " + data);
-            receiver.processIncomingMessage(nodeId, data);
+            msgReceiver.processIncomingMessage(nodeId, data);
         }
         return true;
     }
@@ -41,10 +55,6 @@ public class Jp2p {
         return true;
     }
 
-    public boolean start()
-    {
-        return true;
-    }
     public boolean stop()
     {
         return true;
@@ -65,78 +75,13 @@ public class Jp2p {
     }
 
 
-    public class ReceiverTask implements Runnable {
-
-        int port;
-        ZContext ctx = new ZContext();
-
-        //  Frontend socket talks to clients over TCP
-        ZMQ.Socket frontend = ctx.createSocket(ZMQ.ROUTER);
-
-        //  Backend socket talks to workers over inproc
-        ZMQ.Socket backend = ctx.createSocket(ZMQ.DEALER);
-
-        public int getPort() {
-            return port;
-        }
-
-        public ReceiverTask(){
-
-            port = frontend.bindToRandomPort ("tcp://*", 0xc000, 0xffff);
-
-            if(port == 0) {
-                System.out.println(" communication incoming port is null, unable to start ");
-            }
-
-          //  System.out.println(" Server Port >> "+port);
-
-
-            backend.bind("inproc://backend");
-
-        }
-        public void run() {
-
-
-            //  Launch pool of worker threads, precise number is not critical
-            for (int threadNbr = 0; threadNbr < 5; threadNbr++)
-                new Thread(new ReceiverWorker(ctx)).start();
-
-            //  Connect backend to frontend via a proxy
-            ZMQ.proxy(frontend, backend, null);
-
-            ctx.destroy();
-        }
+    public UUID getNodeId()
+    {
+        return selfNode.getUuid();
     }
 
-    //Each worker task works on one request at a time and sends a random number
-    //of replies back, with random delays between replies:
-
-    private class ReceiverWorker implements Runnable {
-        private ZContext ctx;
-
-        public ReceiverWorker(ZContext ctx) {
-            this.ctx = ctx;
-        }
-
-        public void run() {
-            ZMQ.Socket worker = ctx.createSocket(ZMQ.DEALER);
-
-            worker.connect("inproc://backend");
-
-            while (!Thread.currentThread().isInterrupted()) {
-                //  The DEALER socket gives us the address envelope and message
-                ZMsg msg = ZMsg.recvMsg(worker);
-
-                ZFrame address = msg.pop();
-                ZFrame content = msg.pop();
-
-                processIncomingMessage(new String (address.getData()),content.getData());
-
-            }
-            ctx.destroy();
-        }
-    }
-
+    public boolean start()
+    {return true;}
 
 
 
