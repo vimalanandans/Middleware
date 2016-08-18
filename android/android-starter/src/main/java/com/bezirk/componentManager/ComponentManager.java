@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.bezirk.R;
+import com.bezirk.comms.JmqCommsManager;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.AndroidDevice;
@@ -38,7 +39,8 @@ public class ComponentManager extends Service {
     private ActionProcessor actionProcessor;
     private BezirkIdentityManager identityManager;
     private AndroidProxyServer proxyServer;
-    private ZyreCommsManager comms;
+    //private ZyreCommsManager comms;
+    private JmqCommsManager comms;
     private AndroidNetworkManager networkManager;
     private RegistryStorage registryStorage;
     private MessageHandler messageHandler;
@@ -87,9 +89,12 @@ public class ComponentManager extends Service {
         device = new AndroidDevice();
 
         //initialize comms for communicating between devices over the wifi-network using zyre.
-        comms = new ZyreCommsManager(networkManager, null,null, null);
+       // comms = new ZyreCommsManager(networkManager, null,null, null);
+        // testing the comms comms-jmq
+        comms = new JmqCommsManager(networkManager, null,null, null);
 
-        //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
+        //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present)
+        // & dispatching messages to other zirks within the same device or another device
         pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
 
         //initialize the identity manager

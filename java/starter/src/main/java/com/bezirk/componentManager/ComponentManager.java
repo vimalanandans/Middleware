@@ -1,5 +1,6 @@
 package com.bezirk.componentManager;
 
+import com.bezirk.comms.JmqCommsManager;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.RegistryStorage;
@@ -33,7 +34,8 @@ public class ComponentManager {
 
     private static final String ALIAS_KEY = "aliasName";
 
-    private ZyreCommsManager comms;
+    //private ZyreCommsManager comms;
+    private JmqCommsManager comms;
     private PubSubBroker pubSubBroker;
     private RegistryStorage registryStorage;
     private ProxyServer proxyServer;
@@ -72,7 +74,7 @@ public class ComponentManager {
         device = new JavaDevice();
 
         //initialize comms for communicating between devices over the wifi-network using zyre.
-        comms = new ZyreCommsManager(networkManager, messageGroupName, null,null );
+        comms = new JmqCommsManager(networkManager, messageGroupName, null,null );
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
         pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
