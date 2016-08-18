@@ -4,6 +4,7 @@ import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
@@ -17,11 +18,6 @@ import java.util.List;
  */
 public interface Streaming {
 
-    /**
-     * This will initialize the streaming queue, streaming thread,stream store and register the receivers with the message dispatcher.
-     * and Start the streaming thread
-     */
-    //boolean startStreams();
 
     /**
      * Interrupt all the streaming threads, shutdown streaming module.
@@ -34,16 +30,13 @@ public interface Streaming {
     boolean interruptStream(final String streamKey);
 
     /**
-     * send the stream message based on streamId
-     *//*
-    boolean sendStream(final String streamId);*/
-
-    /**
      * Registers the stream record within stream store
      */
     boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList);
 
-
-    //// FIXME: 8/17/2016 This has to be removed!!!
-    void setSadlReceiver(PubSubBroker pubSubBroker);
+    /**
+     * set the pubSub Event receiver, this is required by the streaming module to give callbacks to respective Zirks
+     * @param pubSubEventReceiver
+     */
+    void setEventReceiver(PubSubEventReceiver pubSubEventReceiver);
 }

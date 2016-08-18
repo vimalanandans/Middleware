@@ -52,7 +52,7 @@ public class StreamManager implements Streaming, ActiveStream {
     private StreamStore streamStore = null;
 
 
-    private PubSubBroker sadlReceiver;
+    private PubSubEventReceiver pubSubEventReceiver;
 
 
     /***This has to be dependency injected.**/
@@ -215,7 +215,7 @@ public class StreamManager implements Streaming, ActiveStream {
             streamStore = new StreamStore();
 
             sendStreamQueueProcessor = new StreamQueueProcessor(
-                    streamingMessageQueue, sadlReceiver, streamProcessExecutor, this);
+                    streamingMessageQueue, pubSubEventReceiver, streamProcessExecutor, this);
 
 
             portFactory = new StreamPortFactory(
@@ -229,7 +229,7 @@ public class StreamManager implements Streaming, ActiveStream {
             } else {
 
                 ctrlReceiver.initStreamCtrlReceiver(bezirkStreamHandler, portFactory, comms,
-                        streamStore, sadlReceiver, /*sphereSecurity,*/ streamingMessageQueue);
+                        streamStore, pubSubEventReceiver, /*sphereSecurity,*/ streamingMessageQueue);
 
                 comms.registerControlMessageReceiver(
                         ControlMessage.Discriminator.StreamRequest,
@@ -310,11 +310,11 @@ public class StreamManager implements Streaming, ActiveStream {
 
     /**
      * THis has to be removed.... Not good practice.. Added just for quick fix: Punith
-     * @param sadlReceiver
+     * @param pubSubEventReceiver
      */
     @Override
-    public void setSadlReceiver(PubSubBroker sadlReceiver) {
-        this.sadlReceiver = sadlReceiver;
+    public void setEventReceiver(PubSubEventReceiver pubSubEventReceiver) {
+        this.pubSubEventReceiver = pubSubEventReceiver;
     }
 }
 

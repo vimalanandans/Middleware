@@ -98,9 +98,6 @@ public class ComponentManager extends Service {
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
         pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null, streaming);
 
-        //// FIXME: 8/17/2016 Punith: this line has to be removed. Not a good practice.
-        streaming.setSadlReceiver(pubSubBroker);
-
         //initialize the identity manager
         identityManager = new BezirkIdentityManager();
         final String aliasString = preferences.getString(ALIAS_KEY, null);

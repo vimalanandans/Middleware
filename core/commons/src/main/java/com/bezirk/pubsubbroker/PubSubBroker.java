@@ -68,6 +68,10 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         this.sphereSecurity = sphereSecurity;
         this.msgHandler = msgHandler;
         this.streamManger = streamManger;
+
+        if(streamManger != null) {
+            streamManger.setEventReceiver(this);
+        }
     }
 
 
@@ -308,28 +312,32 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     public short sendStream(SendFileStreamAction streamAction) {
         final Iterable<String> listOfSphere;
 
-        //know the spheres the zirk belongs to. We will send the stream control message to all registered spheres
-        if (sphereServiceAccess != null) {
-            listOfSphere = sphereServiceAccess.getSphereMembership(streamAction.getZirkId());
-        } else {
-            Set<String> spheres = new HashSet<>();
-            spheres.add(SPHERE_NULL_NAME);
-            listOfSphere = spheres;
-        }
+        if(streamManger != null) {
+            //know the spheres the zirk belongs to. We will send the stream control message to all registered spheres
+            if (sphereServiceAccess != null) {
+                listOfSphere = sphereServiceAccess.getSphereMembership(streamAction.getZirkId());
+            } else {
+                Set<String> spheres = new HashSet<>();
+                spheres.add(SPHERE_NULL_NAME);
+                listOfSphere = spheres;
+            }
 
-        if (null == listOfSphere) {
-            logger.error("Zirk Not Registered with any sphere: " + streamAction.getZirkId());
-            return (short) -1;
-        }
+            if (null == listOfSphere) {
+                logger.error("Zirk Not Registered with any sphere: " + streamAction.getZirkId());
+                return (short) -1;
+            }
 
-        /*
-        * process the stream record which will
-        *store the streamrecord in the stream store and sends the stream message to receivers.*/
+            /*
+            * process the stream record which will
+            *store the streamrecord in the stream store and sends the stream message to receivers.*/
 
-        //boolean status = comms.processStreamRecord(streamAction,listOfSphere);
-        boolean status = streamManger.processStreamRecord(streamAction,listOfSphere);
-        if(!status){
-            return (short) 1;
+            //boolean status = comms.processStreamRecord(streamAction,listOfSphere);
+            boolean status = streamManger.processStreamRecord(streamAction, listOfSphere);
+            if (!status) {
+                return (short) 1;
+            }
+        }else{
+            logger.error("Streaming manager is not initialized!!!");
         }
 
         return (short) 1;
