@@ -46,6 +46,7 @@ public final class ActionProcessor {
                     //processDeviceActions(intentAction, service);
                     break;
                 case SEND_ACTION:
+                    logger.debug("processBezirkAction method");
                     processSendActions(intentAction, intent, ProxyService);
                     break;
                 case ZIRK_ACTION:
@@ -143,6 +144,7 @@ public final class ActionProcessor {
         logger.debug("intentAction in ActionProcessor is "+intentAction);
         switch (intentAction) {
             case ACTION_ZIRK_SEND_MULTICAST_EVENT:
+                logger.debug("In ACTION_ZIRK_SEND_MULTICAST_EVENT");
                 ProxyService.sendMulticastEvent(intent);
                 break;
             case ACTION_ZIRK_SEND_UNICAST_EVENT:
