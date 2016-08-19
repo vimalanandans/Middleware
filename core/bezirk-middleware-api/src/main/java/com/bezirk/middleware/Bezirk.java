@@ -106,7 +106,7 @@ public interface Bezirk {
      * Publish a {@link StreamDescriptor} with one specific recipient. The
      * channel's properties are described by <code>stream</code>. The transmitted data is supplied by
      * writes to <code>dataStream</code>. To send a file use
-     * {@link #sendStream(ZirkEndPoint, StreamDescriptor, File)}. Streams sent using this
+     * {@link #sendStream(ZirkEndPoint, StreamDescriptor)}. Streams sent using this
      * method are assumed to be incremental (see {@link StreamDescriptor#isIncremental()}).
      *
      * @param recipient  intended recipient, as extracted from a received message
@@ -127,9 +127,8 @@ public interface Bezirk {
      *
      * @param recipient intended recipient, as extracted from a received message
      * @param streamDescriptor    communication channel's descriptor
-     * @param file      the file whose contents will be sent using the <code>stream</code>
      */
-    void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file);
+    void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor);
 
     /**
      * Inform the Bezirk middleware of the Zirk's {@link com.bezirk.middleware.addressing.Location}.

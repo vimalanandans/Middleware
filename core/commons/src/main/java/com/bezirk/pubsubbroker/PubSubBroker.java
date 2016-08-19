@@ -2,21 +2,19 @@ package com.bezirk.pubsubbroker;
 
 import com.bezirk.actions.BezirkAction;
 import com.bezirk.actions.ReceiveFileStreamAction;
+import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.actions.SendMulticastEventAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.processor.EventMsgReceiver;
-import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.GenerateMsgId;
 import com.bezirk.control.messages.MulticastHeader;
 import com.bezirk.control.messages.UnicastHeader;
-import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.datastorage.PubSubBrokerStorage;
 import com.bezirk.device.Device;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.MessageSet;
-import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.MessageHandler;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
@@ -24,14 +22,12 @@ import com.bezirk.proxy.api.impl.ZirkId;
 import com.bezirk.remotelogging.RemoteLog;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereServiceAccess;
-import com.bezirk.streaming.control.Objects.StreamRecord;
+import com.bezirk.streaming.Streaming;
 import com.bezirk.util.ValidatorUtility;
-import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -54,11 +50,12 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     private final NetworkManager networkManager;
     private final Device device;
     RemoteLog remoteLog = null;
+    Streaming streamManger;
 
     MessageHandler msgHandler;
 
     public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager, Comms comms, MessageHandler msgHandler,
-                        SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity) {
+                        SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity, Streaming streamManger) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
         this.device = device;
         this.networkManager = networkManager;
@@ -70,6 +67,11 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         this.sphereServiceAccess = sphereServiceAccess;
         this.sphereSecurity = sphereSecurity;
         this.msgHandler = msgHandler;
+        this.streamManger = streamManger;
+
+        if(streamManger != null) {
+            streamManger.setEventReceiver(this);
+        }
     }
 
 
@@ -302,108 +304,45 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     }
 
 
-    public short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file) {
+    /**
+     * sends the stream request to comms module and then to streaming module.
+     * @param streamAction
+     * @return
+     */
+    public short sendStream(SendFileStreamAction streamAction) {
         final Iterable<String> listOfSphere;
 
-        if (sphereServiceAccess != null) {
-            listOfSphere = sphereServiceAccess.getSphereMembership(senderId);
-        } else {
-            Set<String> spheres = new HashSet<>();
-            spheres.add(SPHERE_NULL_NAME);
-            listOfSphere = spheres;
-        }
+        if(streamManger != null) {
+            //know the spheres the zirk belongs to. We will send the stream control message to all registered spheres
+            if (sphereServiceAccess != null) {
+                listOfSphere = sphereServiceAccess.getSphereMembership(streamAction.getZirkId());
+            } else {
+                Set<String> spheres = new HashSet<>();
+                spheres.add(SPHERE_NULL_NAME);
+                listOfSphere = spheres;
+            }
 
-        if (null == listOfSphere) {
-            logger.error("Zirk Not Registered with any sphere: " + senderId);
-            return (short) -1;
-        }
-        final Iterator<String> sphereIterator = listOfSphere.iterator();
-        try {
-            final BezirkZirkEndPoint senderSEP = networkManager.getServiceEndPoint(senderId);
-            final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId();
-            final StreamDescriptor streamDescriptor = new Gson().fromJson(serializedString, StreamDescriptor.class);
-
-            final StreamRecord streamRecord = prepareStreamRecord(receiver, serializedString, file, senderSEP, streamDescriptor);
-
-            boolean streamStoreStatus = comms.registerStreamBook(streamRequestKey, streamRecord);
-            if (!streamStoreStatus) {
-                logger.error("Cannot Register StreamDescriptor, CtrlMsgId is already present in StreamBook");
+            if (null == listOfSphere) {
+                logger.error("Zirk Not Registered with any sphere: " + streamAction.getZirkId());
                 return (short) -1;
             }
-            sendStreamToSpheres(sphereIterator, streamRequestKey, streamRecord, file, comms);
-        } catch (Exception e) {
-            logger.error("Cant get the SEP of the sender", e);
-            return (short) -1;
+
+            /*
+            * process the stream record which will
+            *store the streamrecord in the stream store and sends the stream message to receivers.*/
+
+            //boolean status = comms.processStreamRecord(streamAction,listOfSphere);
+            boolean status = streamManger.processStreamRecord(streamAction, listOfSphere);
+            if (!status) {
+                return (short) 1;
+            }
+        }else{
+            logger.error("Streaming manager is not initialized!!!");
         }
+
         return (short) 1;
     }
 
-
-    StreamRecord prepareStreamRecord(BezirkZirkEndPoint receiver, String serializedStream, File file,
-                                     BezirkZirkEndPoint senderZEP, StreamDescriptor streamDescriptor) {
-        final StreamRecord streamRecord = new StreamRecord();
-        streamRecord.senderSEP = senderZEP;
-        streamRecord.isReliable = false;
-        streamRecord.isIncremental = false;
-        streamRecord.isEncrypted = streamDescriptor.isEncrypted();
-        streamRecord.sphere = null;
-        streamRecord.streamStatus = StreamRecord.StreamingStatus.PENDING;
-        streamRecord.recipientIP = receiver.device;
-        streamRecord.recipientPort = 0;
-        streamRecord.file = file;
-        streamRecord.pipedInputStream = null;
-        streamRecord.recipientSEP = receiver;
-        streamRecord.serializedStream = serializedStream;
-        return streamRecord;
-    }
-
-//    String getSphereId(BezirkZirkEndPoint receiver, Iterator<String> sphereIterator) {
-//
-//        String sphereId = null;
-//
-//        while (sphereIterator.hasNext()) {
-//
-//            sphereId = sphereIterator.next();
-//
-//            if (sphereServiceAccess != null && // valid object, but no service
-//                    sphereServiceAccess.isServiceInSphere(receiver.getBezirkZirkId(), sphereId)) {
-//                logger.debug("Found the sphere:" + sphereId);
-//                break;
-//            } else { // not valid sphere object return the first one
-//                break;
-//            }
-//        }
-//        return sphereId;
-//    }
-
-    void sendStreamToSpheres(Iterator<String> sphereIterator, String streamRequestKey, StreamRecord streamRecord, File tempFile, Comms comms) {
-        while (sphereIterator.hasNext()) {
-            final ControlLedger tcMessage = prepareMessage(sphereIterator, streamRequestKey, streamRecord, tempFile);
-            if (ValidatorUtility.isObjectNotNull(comms)) {
-                comms.sendMessage(tcMessage);
-            } else {
-                logger.error("Comms manager not initialized");
-            }
-        }
-    }
-
-
-    private ControlLedger prepareMessage(Iterator<String> sphereIterator, String streamRequestKey, StreamRecord streamRecord, File tempFile) {
-
-        final String sphereName = sphereIterator.next();
-        final ControlLedger tcMessage = new ControlLedger();
-        tcMessage.setSphereId(sphereName);
-        BezirkZirkEndPoint senderSEP = streamRecord.senderSEP;
-        BezirkZirkEndPoint receiver = streamRecord.recipientSEP;
-        String serializedStream = streamRecord.serializedStream;
-        final StreamRequest request = new StreamRequest(senderSEP, receiver, sphereName, streamRequestKey, null, serializedStream, tempFile.getName(),
-                streamRecord.isEncrypted, streamRecord.isIncremental, streamRecord.isReliable);
-        tcMessage.setSphereId(sphereName);
-        tcMessage.setMessage(request);
-        tcMessage.setSerializedMessage(new Gson().toJson(request));
-
-        return tcMessage;
-    }
 
     @Override
     public Boolean isZirkRegistered(ZirkId zirkId) {

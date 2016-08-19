@@ -121,6 +121,10 @@ public class ControlMessage {
         return sender;
     }
 
+    public void setSphereId(String sphereId) {
+        this.sphereId = sphereId;
+    }
+
     /**
      * @return Json representation of the message as a String.
      */

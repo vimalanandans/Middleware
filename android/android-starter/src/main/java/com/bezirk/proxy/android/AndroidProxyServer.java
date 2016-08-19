@@ -66,9 +66,9 @@ public class AndroidProxyServer extends ProxyServer {
     public void sendUnicastStream(Intent intent) {
         Log.v(TAG, "Stream to unicast from Zirk");
 
-        SendFileStreamAction streamAction = (SendFileStreamAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName());
+        SendFileStreamAction streamAction = (SendFileStreamAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM.getName());
 
-        short sendStreamStatus = super.sendStream(streamAction);
+        super.sendStream(streamAction);
 
         // TODO: Communicate stream status
     }
