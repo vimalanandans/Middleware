@@ -1,6 +1,7 @@
 package com.bezirk.comms.processor;
 
 
+import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsFeature;
 import com.bezirk.comms.CommsMessageDispatcher;
@@ -19,7 +20,6 @@ import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.Streaming;
-import com.bezirk.streaming.control.Objects.StreamRecord;
 import com.bezirk.util.TextCompressor;
 import com.google.gson.Gson;
 
@@ -75,7 +75,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         this.msgDispatcher = new CommsMessageDispatcher();
         if (streaming != null) {
             bezirkStreamManager = streaming;
-            bezirkStreamManager.initStreams(this);
+            //bezirkStreamManager.initStreams(this);
         }
     }
 
@@ -84,9 +84,12 @@ public abstract class CommsProcessor implements Comms, Observer {
      */
     public void startComms() {
         executor = Executors.newFixedThreadPool(THREAD_SIZE);
+        /*
+        not required anymore!!
+
         if (bezirkStreamManager != null) {
             bezirkStreamManager.startStreams();
-        }
+        }*/
     }
 
     /**
@@ -111,9 +114,11 @@ public abstract class CommsProcessor implements Comms, Observer {
             return this.sendEventLedger((EventLedger) message);
         else if (message instanceof MessageLedger)
             return this.sendMessageLedger((MessageLedger) message);
-        else // stream ledger // hopefully there are no other types
-            return this.sendStreamMessage(message);
-
+        else { // stream ledger // hopefully there are no other types
+            //return this.sendStreamMessage(message);
+            return false;
+        }
+        // FIXME: Bridge the local message. look udp sendControlMessage
     }
 
     @Override
@@ -154,7 +159,6 @@ public abstract class CommsProcessor implements Comms, Observer {
 
                 byte[] wireByteMessage = wireMessage.serialize();
                 ret = sendToAll(wireByteMessage, false);
-
 
             } else {
                 logger.debug("unknown control message");
@@ -376,7 +380,7 @@ public abstract class CommsProcessor implements Comms, Observer {
     /**
      * send the stream data
      */
-    public boolean sendStreamMessage(Ledger message) {
+    /*public boolean sendStreamMessage(Ledger message) {
         if (bezirkStreamManager != null) {
 
             bezirkStreamManager.sendStreamMessage(message);
@@ -387,7 +391,7 @@ public abstract class CommsProcessor implements Comms, Observer {
             return false;
         }
 
-    }
+    }*/
 
     /**
      * send the raw message to comms
@@ -634,11 +638,10 @@ public abstract class CommsProcessor implements Comms, Observer {
 
         }
 
-
         return true;
     }
 
-    @Override
+   /* @Override
     public boolean sendStream(String uniqueKey) {
         if (bezirkStreamManager != null) {
             logger.info("sending stream >" + uniqueKey);
@@ -648,14 +651,14 @@ public abstract class CommsProcessor implements Comms, Observer {
             logger.error("BezirkStreamManager is not initialized.");
             return false;
         }
-    }
+    }*/
 
     @Override
-    public boolean registerStreamBook(String key, StreamRecord sRecord) {
+    public boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList) {
 
         if (bezirkStreamManager != null) {
 
-            return bezirkStreamManager.registerStreamBook(key, sRecord);
+            return bezirkStreamManager.processStreamRecord(streamAction, sphereList);
 
         } else {
 
@@ -703,10 +706,10 @@ public abstract class CommsProcessor implements Comms, Observer {
         return true;
     }
 
-    @Override
+    /*@Override
     public void setSphereSecurity(SphereSecurity sphereSecurity) {
-        bezirkStreamManager.setSphereSecurity(sphereSecurity);
-    }
+        bezirkStreamManager.setSphereSecurityForEncryption(sphereSecurity);
+    }*/
 
     /**
      * process the incoming message via thread pool for better throughput

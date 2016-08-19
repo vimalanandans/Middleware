@@ -18,7 +18,7 @@ public class StreamResponse extends com.bezirk.control.messages.UnicastControlMe
     /**
      * Status of the Recipient. PENDING or READY or ADDRESSED or BUSY
      */
-    public StreamRecord.StreamingStatus status;
+    public StreamRecord.StreamRecordStatus status;
 
     /**
      * The ip at which the recipient is listening. zirk end point is generic. may or maynot contain ip address
@@ -36,7 +36,7 @@ public class StreamResponse extends com.bezirk.control.messages.UnicastControlMe
     public String sReqKey;
 
     public StreamResponse(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereName, String strmKey,
-                          StreamRecord.StreamingStatus status, String streamIp, int streamPort) {
+                          StreamRecord.StreamRecordStatus status, String streamIp, int streamPort) {
         super(sender, recipient, sphereName, discriminator, false, strmKey);
         this.status = status;
         this.streamIp = streamIp;

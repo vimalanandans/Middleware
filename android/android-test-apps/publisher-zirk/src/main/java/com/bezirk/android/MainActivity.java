@@ -1,11 +1,17 @@
 package com.bezirk.android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.bezirk.android.publisher.R;
+import com.bezirk.componentManager.AppManager;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
@@ -22,12 +28,38 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     private TextView tv;
+    private Button testStreaming;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.tv);
+
+        testStreaming = (Button)findViewById(R.id.testStreamingButton);
+
+        testStreaming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),StreamingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    public void OnIntegratedApp(View view) {
+
+        tv.setText("Publisher + Subscriber Integrated with Bezirk");
+        tv.setMovementMethod(new ScrollingMovementMethod());
+
+        // Start Bezirk as part of the publisher
+        AppManager.getAppManager().startBezirk(this,true,"Integrated Bezirk",null);
+        senderZirk();
+    }
+
+    public void OnStandaloneApp(View view) {
+        tv.setText("Publisher running standalone");
         senderZirk();
     }
 

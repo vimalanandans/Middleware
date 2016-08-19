@@ -27,6 +27,8 @@ import com.bezirk.proxy.android.ServerIdentityManagerAdapter;
 import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.proxy.android.ZirkMessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.streaming.StreamManager;
+import com.bezirk.streaming.Streaming;
 import com.google.gson.Gson;
 
 public class ComponentManager extends Service {
@@ -39,8 +41,8 @@ public class ComponentManager extends Service {
     private ActionProcessor actionProcessor;
     private BezirkIdentityManager identityManager;
     private AndroidProxyServer proxyServer;
-    //private ZyreCommsManager comms;
-    private JmqCommsManager comms;
+    private ZyreCommsManager comms;
+    //private JmqCommsManager comms;
     private AndroidNetworkManager networkManager;
     private RegistryStorage registryStorage;
     private MessageHandler messageHandler;
@@ -89,13 +91,16 @@ public class ComponentManager extends Service {
         device = new AndroidDevice();
 
         //initialize comms for communicating between devices over the wifi-network using zyre.
-       // comms = new ZyreCommsManager(networkManager, null,null, null);
+        comms = new ZyreCommsManager(networkManager, null,null, null);
         // testing the comms comms-jmq
-        comms = new JmqCommsManager(networkManager, null,null, null);
+        //comms = new JmqCommsManager(networkManager, null,null, null);
 
-        //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present)
-        // & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
+        //streaming manager
+        Streaming streaming = new StreamManager(comms, networkManager);
+
+
+        //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null, streaming);
 
         //initialize the identity manager
         identityManager = new BezirkIdentityManager();

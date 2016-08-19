@@ -1,5 +1,6 @@
 package com.bezirk.util;
 
+import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CtrlMsgReceiver;
@@ -87,14 +88,14 @@ public class MockComms implements Comms {
         return false;
     }
 
-    @Override
+    /*@Override
     public boolean sendStream(String uniqueKey) {
         // TODO Auto-generated method stub
         return true;
-    }
+    }*/
 
     @Override
-    public boolean registerStreamBook(String key, StreamRecord sRecord) {
+    public boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList) {
         // TODO Auto-generated method stub
         return true;
     }
@@ -129,10 +130,10 @@ public class MockComms implements Comms {
         return false;
     }
 
-    @Override
+    /*@Override
     public void setSphereSecurity(SphereSecurity sphereSecurity) {
 
-    }
+    }*/
 
 
     public void clearQueues() {

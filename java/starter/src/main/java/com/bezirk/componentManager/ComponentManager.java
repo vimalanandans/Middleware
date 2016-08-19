@@ -14,6 +14,8 @@ import com.bezirk.persistence.DatabaseConnectionForJava;
 import com.bezirk.proxy.MessageHandler;
 import com.bezirk.proxy.ProxyServer;
 import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.streaming.StreamManager;
+import com.bezirk.streaming.Streaming;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -34,8 +36,8 @@ public class ComponentManager {
 
     private static final String ALIAS_KEY = "aliasName";
 
-    //private ZyreCommsManager comms;
-    private JmqCommsManager comms;
+    private ZyreCommsManager comms;
+    //private JmqCommsManager comms;
     private PubSubBroker pubSubBroker;
     private RegistryStorage registryStorage;
     private ProxyServer proxyServer;
@@ -45,6 +47,8 @@ public class ComponentManager {
     private LifecycleManager lifecycleManager;
     private static final String DB_VERSION = "0.0.4";
     private static final String DB_FILE_LOCATION = ".";
+    //download path
+    private final static String downloadPath = "";
 
     public ComponentManager(MessageHandler messageHandler, String messageGroupName) {
         this.messageHandler = messageHandler;
@@ -74,10 +78,15 @@ public class ComponentManager {
         device = new JavaDevice();
 
         //initialize comms for communicating between devices over the wifi-network using zyre.
-        comms = new JmqCommsManager(networkManager, messageGroupName, null,null );
+        comms = new ZyreCommsManager(networkManager, messageGroupName, null,null );
+        // to test the Jmq comms
+        //comms = new JmqCommsManager(networkManager, messageGroupName, null,null );
+
+        //streaming manager
+        Streaming streaming  = new StreamManager(comms, /*downloadPath,*/ networkManager);
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null,streaming);
 
         //initialize the identity manager
         final Preferences preferences = Preferences.userNodeForPackage(BezirkIdentityManager.class);

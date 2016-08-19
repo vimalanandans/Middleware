@@ -1,5 +1,6 @@
 package com.bezirk.comms;
 
+import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.comms.processor.EventMsgReceiver;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
@@ -7,6 +8,8 @@ import com.bezirk.control.messages.Ledger;
 
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
+
+import java.util.List;
 
 /**
  * This class is created to de-couple from the rest of bezirk (spheres / sadl / stream)
@@ -40,8 +43,8 @@ public interface Comms {
 
     /**
      * Set the sphere for sadl. for late initialization
-     */
-    void setSphereSecurity(final SphereSecurity sphereSecurity);
+     *//*
+    void setSphereSecurity(final SphereSecurity sphereSecurity);*/
 
     /**
      * TODO: Split the interface for controlling comms component as CommsCtrl
@@ -66,11 +69,22 @@ public interface Comms {
 
     /**
      * send the stream message based on unique key
+     *//*
+    boolean sendStream(String uniqueKey);*/
+
+    /**
+     * fixme write this
+     * @param streamAction
+     * @param sphereList
+     * @return
      */
-    boolean sendStream(String uniqueKey);
+    boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList);
 
-    boolean registerStreamBook(String key, StreamRecord sRecord);
-
+    /**
+     *
+     * @param notification
+     * @return
+     */
     boolean registerNotification(CommsNotification notification);
 
     /** this is on each comms instance returns its own created id */

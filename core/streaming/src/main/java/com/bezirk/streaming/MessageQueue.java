@@ -4,6 +4,7 @@
 package com.bezirk.streaming;
 
 
+import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.Ledger;
 
 import org.slf4j.Logger;
@@ -23,13 +24,13 @@ import java.util.ArrayList;
 public class MessageQueue {
     private static final Logger logger = LoggerFactory.getLogger(MessageQueue.class);
     private final static int MaxSize = 1000;
-    private final ArrayList<Ledger> queue = new ArrayList<Ledger>();
+    private final ArrayList<ControlMessage> queue = new ArrayList<ControlMessage>();
 
     /**
      * @param message to be added to the queue
      * @see Ledger
      */
-    public void addToQueue(Ledger message) {
+    public void addToQueue(ControlMessage message) {
         synchronized (this) {
             // wait if the queue is full
             while (queue.size() == MaxSize) {
@@ -59,7 +60,7 @@ public class MessageQueue {
      * @param message to be removed
      * @see Ledger
      */
-    public void removeFromQueue(Ledger message) {
+    public void removeFromQueue(ControlMessage message) {
         synchronized (this) {
             if (queue.isEmpty()) {
                 return;
@@ -79,7 +80,7 @@ public class MessageQueue {
      * @return the MessageQueue which contains messages of type PackagedMessage
      * @see Ledger
      */
-    public ArrayList<Ledger> getQueue() {
+    public ArrayList<ControlMessage> getQueue() {
         synchronized (this) {
             while (queue.isEmpty()) {
                 try {

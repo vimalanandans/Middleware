@@ -4,11 +4,11 @@
 package com.bezirk.streaming.threads;
 
 import com.bezirk.actions.ReceiveFileStreamAction;
-import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.PortFactory;
 import com.bezirk.control.messages.streaming.StreamRequest;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.pubsubbroker.PubSubEventReceiver;
+import com.bezirk.streaming.StreamManager;
 import com.bezirk.streaming.port.StreamPortFactory;
 import com.bezirk.util.ValidatorUtility;
 
@@ -26,7 +26,7 @@ import java.net.SocketException;
 
 /**
  * This thread is used by the recipient that is interested in receiving the StreamDescriptor. This Thread opens socket at port ({@link StreamPortFactory#getPort(String)} and
- * waits for the sender to connect. Once the Sender gets connected, a file will be created at and will read
+ * waits for the sender to connect. Once the Sender gets connected, a file will be created at {} and will read
  * data at a time. After the data transfer it will release the port through
  * {@link StreamPortFactory#releasePort(int)}. From the {@link #streamLabel}, it will query the BezirkSadl
  * to get all the Zirk Identities via
@@ -52,22 +52,23 @@ public class StreamReceivingThread implements Runnable {
     private final BezirkZirkEndPoint sender;
     private final String serializedMsg;
     private final PortFactory portFactory;
-    private final PubSubEventReceiver sadlReceiver;
-    private final SphereSecurity sphereSecurity;
-    private final String downloadPath;
+    private final PubSubEventReceiver pubSubReceiver;
+    /*private final SphereSecurity sphereSecurity;*/
+    private final String streamRequestKey;
+    private StreamManager streamManager = null;
 
     /**
      * Constructor that is called during starting the thread
      *
      * @param  port   - port that this thread is listening to receive the data. { This port is got from StreamPortFactory }
      */
-    public StreamReceivingThread(int port,String downloadPath,
+    public StreamReceivingThread(int port,/*String downloadPath,*/
                                  StreamRequest streamRequest, PortFactory portFactory,
-                                 PubSubEventReceiver sadlReceiver, SphereSecurity sphereSecurity) {
+                                 PubSubEventReceiver pubSubEventReceiver, /*SphereSecurity sphereSecurity,*/ StreamManager streamManager) {
         super();
         this.sphere = streamRequest.getSphereId();
         this.port = port;
-        this.downloadPath = downloadPath;
+        /*this.downloadPath = downloadPath;*/
         this.streamLabel = streamRequest.streamLabel;
         this.fileName = streamRequest.fileName;
         this.isEncrypted = streamRequest.isEncrypted;
@@ -75,8 +76,10 @@ public class StreamReceivingThread implements Runnable {
         this.sender = streamRequest.getSender();
         this.serializedMsg = streamRequest.serialzedString;
         this.portFactory = portFactory;
-        this.sadlReceiver = sadlReceiver;
-        this.sphereSecurity = sphereSecurity;
+        this.pubSubReceiver = pubSubEventReceiver;
+        /*this.sphereSecurity = sphereSecurity;*/
+        this.streamManager = streamManager;
+        this.streamRequestKey = streamRequest.getUniqueKey();
     }
 
     @Override
@@ -92,17 +95,19 @@ public class StreamReceivingThread implements Runnable {
 
         try {
             logger.debug("Thread started to listen at port to receive Data..");
-            socket = new ServerSocket(port);                                      // listen at the Port
+            socket = new ServerSocket(port); // listen at the Port
             socket.setSoTimeout(CONNECTION_TIMEOUT_TIME);
             receivingSocket = socket.accept();
 
-            tempFile = new File(downloadPath + fileName);
+            tempFile = new File(getStreamDownloadPath() + fileName);
             fileOutputStream = new FileOutputStream(tempFile);
             inputStream = new DataInputStream(receivingSocket.getInputStream());
 
-            if (isEncrypted  && sphereSecurity != null) {
+            //When the sphere security is implemented, this will be encrypt the stream byte content
+            if (isEncrypted  /*&& sphereSecurity != null*/) {
                 // message is encrypted and sphere security object is not null
-                sphereSecurity.decryptSphereContent(inputStream, fileOutputStream, sphere);
+
+                //sphereSecurity.decryptSphereContent(inputStream, fileOutputStream, sphere);
                 logger.debug("---------- Secure Data transfer Completed! -------------");
 
             } else {
@@ -113,7 +118,7 @@ public class StreamReceivingThread implements Runnable {
                 }
             }
             logger.debug("--- File Received--- & saved at "
-                    + downloadPath + fileName);
+                    + getStreamDownloadPath() + fileName);
 
             notifyStreamFile(tempFile, portFactory.releasePort(port));
             streamErrored = false;
@@ -139,12 +144,12 @@ public class StreamReceivingThread implements Runnable {
                 }
             }
 
-            closeResources(socket, receivingSocket, fileOutputStream, inputStream);
+            closeResources(socket, receivingSocket, fileOutputStream, inputStream, streamRequestKey);
         }
     }
 
     private void closeResources(ServerSocket socket, Socket receivingSocket,
-                                FileOutputStream fileOutputStream, DataInputStream inputStream) {
+                                FileOutputStream fileOutputStream, DataInputStream inputStream, String streamRequestKey) {
         try {
             if (ValidatorUtility.isObjectNotNull(inputStream)) {
                 inputStream.close();
@@ -160,6 +165,9 @@ public class StreamReceivingThread implements Runnable {
             if (ValidatorUtility.isObjectNotNull(socket)) {                                              // If SocketTimeout Exception occurs, socket==null
                 socket.close();
             }
+
+            //Punith clean the active streamMap
+            streamManager.removeRefFromActiveStream(streamRequestKey);
         } catch (IOException e) {
 
             logger.error("Exception in closing resources.", e);
@@ -171,9 +179,9 @@ public class StreamReceivingThread implements Runnable {
             ReceiveFileStreamAction uStreamCallbackMsg = new ReceiveFileStreamAction(
                     recipient.zirkId, serializedMsg,
                     tempFile, sender);
-            if (ValidatorUtility.isObjectNotNull(sadlReceiver)) {
+            if (ValidatorUtility.isObjectNotNull(pubSubReceiver)) {
 
-                sadlReceiver.processNewStream(uStreamCallbackMsg);
+                pubSubReceiver.processNewStream(uStreamCallbackMsg);
 
             } else {
 
@@ -182,6 +190,26 @@ public class StreamReceivingThread implements Runnable {
         } else {
             logger.error("Error releasing the Port");
         }
+    }
+
+
+    /**
+     * creates the folder if not existing and cretes the file
+     * @return
+     */
+    private String getStreamDownloadPath(){
+        String downloadPath;
+        ///storage/emulated/0/
+        downloadPath= File.separator+"storage/emulated/0/" + "downloads" + File.separator;
+        final File createDownloadFolder = new File(
+                downloadPath);
+        if (!createDownloadFolder.exists()) {
+            if (!createDownloadFolder.mkdir()) {
+                logger.error("Failed to create download direction: {}",
+                        createDownloadFolder.getAbsolutePath());
+            }
+        }
+        return downloadPath;
     }
 
 }

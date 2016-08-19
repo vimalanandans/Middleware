@@ -34,20 +34,20 @@ public class StreamSendingThread implements Runnable {
     private final File file;                                    // path to the file that has to be sent
     private final String sphere;
     private final PubSubEventReceiver sadlReceiver;
-    private final SphereSecurity sphereSecurity;
+    /*private final SphereSecurity sphereSecurity;*/
     private Socket client;
 
     public StreamSendingThread(StreamRecord streamRecord,
-                               PubSubEventReceiver sadlReceiver, SphereSecurity sphereSecurity) {
+                               PubSubEventReceiver sadlReceiver/*, SphereSecurity sphereSecurity*/) {
         super();
-        this.sphere = streamRecord.sphere;
-        this.recipientIP = streamRecord.recipientIP;
-        this.port = streamRecord.recipientPort;
-        this.file = streamRecord.file;
-        this.isEncrypted = streamRecord.isEncrypted;
-        this.senderZirkID = streamRecord.senderSEP.zirkId;
+        this.sphere = streamRecord.getSphereId();
+        this.recipientIP = streamRecord.getRecipientIP();
+        this.port = streamRecord.getRecipientPort();
+        this.file = streamRecord.getFile();
+        this.isEncrypted = streamRecord.isEncryptedStream();
+        this.senderZirkID = streamRecord.getSender().zirkId;
         this.sadlReceiver = sadlReceiver;
-        this.sphereSecurity = sphereSecurity;
+        /*this.sphereSecurity = sphereSecurity;*/
     }
 
     @Override
@@ -61,11 +61,12 @@ public class StreamSendingThread implements Runnable {
             client = new Socket(recipientIP, port);                                       // open the socket
             dataOutputStream = new DataOutputStream(client.getOutputStream());
 
-            if (isEncrypted && sphereSecurity != null ) // encrypted and valid sphere security object
+            //If sphere security is enabled, the contents will be encrpted.
+            if (isEncrypted /*&& sphereSecurity != null*/ ) // encrypted and valid sphere security object
             {
                 logger.debug("---------- Secure Data transfer requested! -------------");
 
-                    sphereSecurity.encryptSphereContent(fileInputStream, dataOutputStream, sphere);
+                    /*sphereSecurity.encryptSphereContent(fileInputStream, dataOutputStream, sphere);*/
                     logger.debug("---------- Secure Data transfer Completed! -------------");
 
             } else {
