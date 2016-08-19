@@ -91,7 +91,7 @@ public class StreamLocalTest {
     private final class StreamLocalMockRequestStreamDescriptor extends StreamDescriptor {
 
         private StreamLocalMockRequestStreamDescriptor() {
-            super(false, true);
+            super(false, true, sendFile);
         }
 
 

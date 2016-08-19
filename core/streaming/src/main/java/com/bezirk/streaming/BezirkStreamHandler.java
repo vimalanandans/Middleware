@@ -15,6 +15,9 @@ import com.bezirk.util.ValidatorUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
 /**
  * This handler handles the StreamRequests and Responses and places them in
  * appropriate processing threads.
@@ -23,11 +26,15 @@ final class BezirkStreamHandler {
     private static final Logger logger = LoggerFactory
             .getLogger(BezirkStreamHandler.class);
 
-    String downloadPath;
+    /*private String downloadPath;*/
+    private ExecutorService receiveStreamExecutor;
+    private StreamManager streamManager = null;
     private final NetworkManager networkManager;
 
-    BezirkStreamHandler(String downloadPath, NetworkManager networkManager) {
-        this.downloadPath = downloadPath;
+    BezirkStreamHandler(/*String downloadPath,*/ ExecutorService receiveStreamExecutor, StreamManager streamManager, NetworkManager networkManager){
+       /* this.downloadPath = downloadPath;*/
+        this.receiveStreamExecutor = receiveStreamExecutor;
+        this.streamManager = streamManager;
         this.networkManager = networkManager;
     }
 
@@ -37,23 +44,26 @@ final class BezirkStreamHandler {
      */
     boolean handleStreamRequest(final StreamRequest streamRequest, final Comms comms,
                                 final PortFactory portFactory, final StreamStore streamStore,
-                                final PubSubEventReceiver sadlReceiver, final SphereSecurity sphereSecurity) {
+                                final PubSubEventReceiver pubSubReceiver/*, final SphereSecurity sphereSecurity*/) {
 
         // Check if the request is duplicate
-        StreamRecord.StreamingStatus status = StreamRecord.StreamingStatus.ADDRESSED;
+        StreamRecord.StreamRecordStatus status = StreamRecord.StreamRecordStatus.ADDRESSED;
         int assignedPort;
 
+        //fixme this has to be handled by streamiD or the streamKey.. This has to be the uniqueKey with streamId also appended. and make a syncronized block too
         if (streamStore.checkStreamRequestForDuplicate(streamRequest.getUniqueKey())) {
             assignedPort = streamStore.getAssignedPort(streamRequest.getUniqueKey());
         } else {
             assignedPort = portFactory.getPort(streamRequest.getUniqueKey());
             if (-1 == assignedPort) {
-                status = StreamRecord.StreamingStatus.BUSY;
+                status = StreamRecord.StreamRecordStatus.BUSY;
             } else {
-                status = StreamRecord.StreamingStatus.READY;
-                new Thread(new StreamReceivingThread(assignedPort, downloadPath,
-                        streamRequest, portFactory, sadlReceiver, sphereSecurity))
-                        .start();
+                status = StreamRecord.StreamRecordStatus.READY;
+
+                StreamReceivingThread streamReceivingThread =new StreamReceivingThread(assignedPort, /*downloadPath,*/
+                        streamRequest, portFactory, pubSubReceiver, /*sphereSecurity,*/ streamManager);
+                Future receiveStreamFuture  = receiveStreamExecutor.submit(new Thread(streamReceivingThread));
+                streamManager.addRefToActiveStream(streamRequest.getUniqueKey(), receiveStreamFuture);
             }
         }
 
@@ -91,12 +101,12 @@ final class BezirkStreamHandler {
             logger.debug("No StreamRecord for this Response or the StreamDescriptor is already addressed");
             return false;
         }
-        streamRecord.sphere = streamResponse.getSphereId();
-        streamRecord.streamStatus = streamResponse.status;
+        streamRecord.setSphereId(streamResponse.getSphereId());
+        streamRecord.setStreamRecordStatus(streamResponse.status);
 
-        streamRecord.recipientIP = streamResponse.streamIp;
+        streamRecord.setRecipientIP(streamResponse.streamIp);
 
-        logger.info("recipient key = " + streamResponse.getUniqueKey() + " rec IP = " + streamRecord.recipientIP + "sender device " + streamResponse.getSender().device);
+        logger.info("recipient key = " + streamResponse.getUniqueKey() + " rec IP = " + streamRecord.getRecipientIP() + "sender device " + streamResponse.getSender().device);
         //quickfix to test: remove it later.
         /*List quickFix_keys = Arrays.asList(streamResponse.getUniqueKey().split(":"));
 
@@ -106,7 +116,7 @@ final class BezirkStreamHandler {
         }*/
 
 
-        streamRecord.recipientPort = streamResponse.streamPort;
+        streamRecord.setRecipientPort(streamResponse.streamPort);
 
         if (ValidatorUtility.isObjectNotNull(streamQueue)) {
             streamQueue.addToQueue(streamRecord);

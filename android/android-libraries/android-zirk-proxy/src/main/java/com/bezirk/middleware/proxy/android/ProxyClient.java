@@ -42,7 +42,6 @@ public final class ProxyClient implements Bezirk {
 
     protected static final Map<String, List<EventSet.EventReceiver>> eventListenerMap = new ConcurrentHashMap<>();
     protected static final Map<String, List<StreamSet.StreamReceiver>> streamListenerMap = new ConcurrentHashMap<>();
-    protected static final Map<Short, String> activeStreams = new ConcurrentHashMap<>();
 
     private static final String COMPONENT_NAME = "com.bezirk.controlui";
     private static final String SERVICE_PKG_NAME = "com.bezirk.componentManager.ComponentManager";
@@ -59,9 +58,9 @@ public final class ProxyClient implements Bezirk {
         // Bind to remote identity management service
         Intent intent = new Intent();
         intent.setComponent(RECEIVING_COMPONENT);
-        boolean boundService = context.bindService(intent,
-                ClientIdentityManagerAdapter.remoteConnection, Context.BIND_AUTO_CREATE);
-        Log.d(TAG, "Binding to identity management service status: "+ boundService);
+//        boolean boundService = context.bindService(intent,
+//                ClientIdentityManagerAdapter.remoteConnection, Context.BIND_AUTO_CREATE);
+        //Log.d(TAG, "Binding to identity management service status: "+ boundService);
 
         this.zirkId = zirkId;
         this.identityManager = new ClientIdentityManagerAdapter();
@@ -239,12 +238,10 @@ public final class ProxyClient implements Bezirk {
     }
 
     @Override
-    public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file) {
+    public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
 
-        activeStreams.put(streamId, streamDescriptor.getClass().getName());
-
-        sendBezirkIntent(new SendFileStreamAction(zirkId, recipient, streamDescriptor, file));
+        sendBezirkIntent(new SendFileStreamAction(zirkId, recipient, streamDescriptor, streamId));
     }
 
     @Override

@@ -60,7 +60,7 @@ final class ServiceStarterHelper {
         try {
 
             final Comms bezirkComms = comms;
-            bezirkComms.setSphereSecurity(sphereForSadl);
+            /*bezirkComms.setSphereSecurity(sphereForSadl);*/
 
         } catch (Exception e) {
 

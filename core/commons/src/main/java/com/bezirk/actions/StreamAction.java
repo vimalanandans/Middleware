@@ -7,8 +7,9 @@ import com.bezirk.proxy.api.impl.ZirkId;
 public abstract class StreamAction extends ZirkAction {
     private final ZirkEndPoint recipient;
     private final StreamDescriptor descriptor;
+    private final short streamId;
 
-    public StreamAction(ZirkId zirkId, ZirkEndPoint recipient, StreamDescriptor descriptor) {
+    public StreamAction(ZirkId zirkId, ZirkEndPoint recipient, StreamDescriptor descriptor, short streamId) {
         super(zirkId);
 
         if (recipient == null) {
@@ -20,8 +21,14 @@ public abstract class StreamAction extends ZirkAction {
                     "a file");
         }
 
+        if(streamId < 0 ){
+            throw new IllegalArgumentException("Invalid streamId specified streamId is" +streamId
+                    +" stream id is Invalid" );
+        }
+
         this.recipient = recipient;
         this.descriptor = descriptor;
+        this.streamId = streamId;
     }
 
     public ZirkEndPoint getRecipient() {
@@ -30,5 +37,9 @@ public abstract class StreamAction extends ZirkAction {
 
     public StreamDescriptor getDescriptor() {
         return descriptor;
+    }
+
+    public short getStreamId() {
+        return streamId;
     }
 }

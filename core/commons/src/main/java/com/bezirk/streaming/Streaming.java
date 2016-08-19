@@ -1,56 +1,42 @@
 package com.bezirk.streaming;
 
+import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.comms.Comms;
 import com.bezirk.control.messages.Ledger;
+import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
+
+import java.util.List;
 
 
 /**
  * This interface is introduced to separate the streaming functionalities from BezirkCommsManager.
  *
- * @author ajc6kor
+ * @author pik6kor
  */
 public interface Streaming {
 
 
     /**
-     * Initialize the streaming queue, streaming thread,stream store and register the receivers with the message dispatcher.
-     */
-    boolean initStreams(Comms comms);
-
-      /**
-     * Start the streaming thread
-     */
-    boolean startStreams();
-
-    /**
-     * Interrupt the streaming thread
+     * Interrupt all the streaming threads, shutdown streaming module.
      */
     boolean endStreams();
 
     /**
-     * send the stream message based on unique key
+     * Interrupt a single streaming thread
      */
-    boolean sendStream(final String uniqueKey);
+    boolean interruptStream(final String streamKey);
 
     /**
-     * send the stream message
+     * Registers the stream record within stream store
      */
-    boolean sendStreamMessage(final Ledger message);
+    boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList);
 
     /**
-     * Retrieve the portfactory instance
+     * set the pubSub Event receiver, this is required by the streaming module to give callbacks to respective Zirks
+     * @param pubSubEventReceiver
      */
-   // public PortFactory getPortFactory();
-
-    /**
-     * Registers the stream record with stream store
-     */
-    boolean registerStreamBook(final String key, final StreamRecord sRecord);
-
-    /**
-     * Set the sphere for sadl
-     */
-    void setSphereSecurity(SphereSecurity sphereSecurity);
+    void setEventReceiver(PubSubEventReceiver pubSubEventReceiver);
 }

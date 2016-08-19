@@ -51,6 +51,7 @@ public class ProxyClient implements Bezirk {
     private static ProxyServer proxy;
     private static ProxyPersistence proxyPersistence;
     private static ProxyRegistry proxyRegistry = null;
+    private short streamFactory;
 
     static void createMiddleware(String messageGroup) {
         if(componentManager == null) {
@@ -210,8 +211,9 @@ public class ProxyClient implements Bezirk {
     }
 
     @Override
-    public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, File file) {
-        proxy.sendStream(new SendFileStreamAction(zirkId, recipient, streamDescriptor, file));
+    public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor) {
+        short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
+        proxy.sendStream(new SendFileStreamAction(zirkId, recipient, streamDescriptor,streamId));
     }
 
     @Override

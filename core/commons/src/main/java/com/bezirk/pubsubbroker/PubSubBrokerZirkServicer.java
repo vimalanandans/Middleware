@@ -1,13 +1,11 @@
 package com.bezirk.pubsubbroker;
 
+import com.bezirk.actions.SendFileStreamAction;
 import com.bezirk.actions.SendMulticastEventAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.MessageSet;
-import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-
-import java.io.File;
 
 /**
  * Exposes the internal version of the Zirk API as implemented by the PubSubBroker for use
@@ -28,5 +26,5 @@ public interface PubSubBrokerZirkServicer {
 
     boolean sendUnicastEvent(UnicastEventAction unicastEventAction);
 
-    short sendStream(ZirkId senderId, BezirkZirkEndPoint receiver, String serializedString, File file);
+    short sendStream(SendFileStreamAction streamAction);
 }

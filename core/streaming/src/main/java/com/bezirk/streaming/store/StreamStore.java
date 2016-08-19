@@ -131,13 +131,13 @@ public class StreamStore {
      * @return the status of Registration. if the key is new returns true. If
      * the key is duplicate returns false
      */
-    public final boolean registerStreamBook(String key, StreamRecord sRecord) {
+    public final boolean storeStreamRecord(StreamRecord sRecord) {
         synchronized (this) {
-            if (streamBook.containsKey(key)) {
+            if (streamBook.containsKey(sRecord.getUniqueKey())) {
                 logger.error("Cannot register stream");
                 return false;
             } else {
-                streamBook.put(key, sRecord);
+                streamBook.put(sRecord.getUniqueKey(), sRecord);
                 return true;
             }
         }
