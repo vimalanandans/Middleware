@@ -69,8 +69,6 @@ public class AndroidProxyServer extends ProxyServer {
         SendFileStreamAction streamAction = (SendFileStreamAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM.getName());
 
         super.sendStream(streamAction);
-
-        // TODO: Communicate stream status
     }
 
     public void setLocation(Intent intent) {

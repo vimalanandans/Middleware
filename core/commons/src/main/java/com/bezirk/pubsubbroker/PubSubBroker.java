@@ -71,6 +71,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
         if(streamManger != null) {
             streamManger.setEventReceiver(this);
+
+            //Initialize the Streaming module
+            streamManger.startStreams();
         }
     }
 
@@ -338,6 +341,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             }
         }else{
             logger.error("Streaming manager is not initialized!!!");
+            return (short) -1;
         }
 
         return (short) 1;

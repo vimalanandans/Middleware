@@ -88,7 +88,7 @@ public class StreamManager implements Streaming, ActiveStream {
             streamProcessExecutor = Executors.newFixedThreadPool(THREAD_SIZE);
             bezirkStreamHandler = new BezirkStreamHandler(streamProcessExecutor,this, networkManager);
 
-            startStreams();
+            //startStreams();
         } else {
             logger.error("Unable to initialize StreamManager. Please ensure ControlSenderQueue, " +
                     "CommsMessageDispatcher and BezirkCallback are initialized.");
@@ -176,8 +176,6 @@ public class StreamManager implements Streaming, ActiveStream {
             final String sphereId = sphereIterator.next();
             final ControlLedger tcMessage = prepareMessage(sphereId, streamRecord);
             if (ValidatorUtility.isObjectNotNull(comms)) {
-
-                // FIXME: 8/4/2016 This has to return the status... fix this.
                 comms.sendMessage(tcMessage);
             } else {
                 logger.error("Comms manager not initialized");
@@ -206,7 +204,7 @@ public class StreamManager implements Streaming, ActiveStream {
     /**
      * This will initialize the streaming module!!!
      */
-    public void startStreams() {
+    public boolean startStreams() {
 
         try {
 
@@ -224,7 +222,7 @@ public class StreamManager implements Streaming, ActiveStream {
             if (comms == null) {
 
                 logger.error("Unable to register message receivers as comms is not initialized.");
-                return;
+                return false;
 
             } else {
 
@@ -249,6 +247,7 @@ public class StreamManager implements Streaming, ActiveStream {
         } catch (Exception e) {
             logger.error("Exception in initializing the streams in stream manager. ", e);
         }
+        return true;
 
     }
 
@@ -319,7 +318,7 @@ public class StreamManager implements Streaming, ActiveStream {
 }
 
 /**
- * This will be a package protected interface to add a reference of future
+ * This will be a package protected interface to add a reference of future task
  *
  * Created by PIK6KOR on 7/28/2016.
  */

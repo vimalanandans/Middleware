@@ -14,7 +14,7 @@ import java.io.File;
  * @see Message
  * @see Event
  */
-public class StreamDescriptor extends Message {
+public abstract class StreamDescriptor extends Message {
     /**
      * Subclass sets to <code>true</code> if the payload can be processed incrementally (e.g. a
      * music stream) or <code>false</code> if all data elements must be received before processing
