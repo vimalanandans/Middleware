@@ -27,10 +27,18 @@ import com.bezirk.proxy.android.ServerIdentityManagerAdapter;
 import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.proxy.android.ZirkMessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.remotelogging.FileCreationHelper;
+import com.bezirk.remotelogging.ReceiverQueueProcessor;
+import com.bezirk.remotelogging.RemoteLoggingManager;
+import com.bezirk.remotelogging.RemoteLog;
+import com.bezirk.remotelogging.RemoteLoggingMessage;
+import com.bezirk.remotelogging.RemoteLoggingMessageNotification;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 public class ComponentManager extends Service {
 
@@ -54,6 +62,10 @@ public class ComponentManager extends Service {
     private LifecycleManager lifecycleManager;
     private Device device;
     private PubSubBroker pubSubBroker;
+    private RemoteLog remoteLog;
+    private RemoteLoggingMessageNotification remoteLoggingMessageNotification;
+    private ReceiverQueueProcessor receiverQueueProcessor;
+    private RemoteLoggingMessage remoteLoggingMessage;
     private static final String DB_VERSION = "0.0.4";
     private LifecycleManager.LifecycleState currentState;
 
@@ -98,8 +110,21 @@ public class ComponentManager extends Service {
         //initialize comms for communicating between devices over the wifi-network using zyre.
         comms = new ZyreCommsManager(networkManager, null,null, null);
 
+        //initialize remoteLogging for logging the messages
+        remoteLog = new RemoteLoggingManager();
+
+        remoteLoggingMessage = new RemoteLoggingMessage();
+        remoteLoggingMessageNotification = new FileCreationHelper();
+
+        receiverQueueProcessor = new ReceiverQueueProcessor(remoteLoggingMessageNotification);
+
+       /* try {
+            remoteLoggingMessageNotification.handleLogMessage(remoteLoggingMessage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null,remoteLog,remoteLoggingMessage,remoteLoggingMessageNotification);
 
         //initialize the identity manager
         identityManager = new BezirkIdentityManager();

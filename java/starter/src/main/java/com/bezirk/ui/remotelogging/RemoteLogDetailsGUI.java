@@ -2,10 +2,10 @@ package com.bezirk.ui.remotelogging;
 
 import com.bezirk.comms.Comms;
 import com.bezirk.remotelogging.RemoteLoggingMessage;
-import com.bezirk.remotelogging.RemoteLog;
 import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.sphere.impl.SphereServiceManager;
+import com.bezirk.remotelogging.RemoteLog;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

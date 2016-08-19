@@ -1,5 +1,8 @@
 package com.bezirk.remotelogging;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
@@ -10,6 +13,7 @@ import java.util.concurrent.SynchronousQueue;
  */
 @SuppressWarnings("PMD")// inorder to avoid the synchronized
 public final class LoggingQueueManager {
+    private static final Logger logger = LoggerFactory.getLogger(LoggingQueueManager.class);
     /**
      * Blocking Queue that is used to queue logger messages at the logging client.
      */
@@ -34,9 +38,11 @@ public final class LoggingQueueManager {
      * @throws InterruptedException if multiple threads try to access the queue.
      */
     public static void loadLogSenderQueue(String serializedLogMsg) throws InterruptedException {
+        logger.debug("loadLogSenderQueue of loggingQueueManager");
         if (logSenderQueue == null) {
             logSenderQueue = new SynchronousQueue<String>();
         }
+        logger.debug("serializedLogMsg is "+serializedLogMsg);
         logSenderQueue.put(serializedLogMsg);
     }
 

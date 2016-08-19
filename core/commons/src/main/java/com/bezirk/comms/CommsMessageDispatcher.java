@@ -54,6 +54,7 @@ public class CommsMessageDispatcher implements MessageDispatcher {
     // if needed extend similar mechanism to control message dispatching
     @Override
     public boolean dispatchServiceMessages(EventLedger eLedger) {
+        logger.debug("dispatchServiceMessage Method");
         if (ValidatorUtility.isObjectNotNull(eventReceiver)) {
             return eventReceiver.processEvent(eLedger);
         } else {

@@ -68,15 +68,19 @@ public final class ProxyClient implements Bezirk {
     }
 
     private static boolean sendBezirkIntent(ZirkAction action) {
+        Log.d(TAG,"sendBezirkIntent one....");
         return sendBezirkIntent(context, action);
     }
 
     private static boolean sendBezirkIntent(Context context, ZirkAction action) {
+        Log.d(TAG,"sendBezirkIntent two....");
         final Intent intent = new Intent();
 
         // get the component name from the app manager. in case of single app it is the same which
         // is created during app manager create. else it returns the default
+        Log.d(TAG,"AppManager.getAppManager().getComponentName()  in proxyClient is "+AppManager.getAppManager().getComponentName());
         ComponentName name = new ComponentName(AppManager.getAppManager().getComponentName(), SERVICE_PKG_NAME);
+        Log.d(TAG,"component name is "+name);
         intent.setComponent(name );
 
         final String actionName = action.getAction().getName();
@@ -99,7 +103,7 @@ public final class ProxyClient implements Bezirk {
             throw new IllegalArgumentException("Cannot register a Zirk with a null name");
         }
 
-        Log.d(TAG, "Registering Zirk: " + zirkName);
+        Log.d(TAG, "Registering Zirk is: " + zirkName);
 
         final SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(context);
         if(null!=shrdPref){
@@ -211,17 +215,20 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(Event event) {
+        Log.d(TAG,"sendEvent One....");
         sendEvent(new RecipientSelector(new Location("null/null/null")), event);
     }
 
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
+        Log.d(TAG,"sendEvent Two....");
         sendBezirkIntent(new SendMulticastEventAction(zirkId, recipient, event,
                 (event instanceof IdentifiedEvent)));
     }
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
+        Log.d(TAG,"sendEvent Three....");
         sendBezirkIntent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
                 zirkId, recipient, event, (event instanceof IdentifiedEvent)));
     }

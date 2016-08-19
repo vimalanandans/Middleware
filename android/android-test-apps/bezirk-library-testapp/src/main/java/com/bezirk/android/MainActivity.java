@@ -72,13 +72,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void receiverZirk() {
         final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Receiver Zirk");
-
+        logger.debug("Inside receiverZirk......");
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
 
         houseEvents.setEventReceiver(new EventSet.EventReceiver() {
             @Override
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof AirQualityUpdateEvent) {
+                    logger.debug("event instanceof AirQualityUpdateEvent");
                     AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
                     BezirkZirkEndPoint endPoint = (BezirkZirkEndPoint)sender;
 
@@ -110,14 +111,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void senderZirk() {
 
-
+        logger.debug("Inside Sender ZIRK..................");
         final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Sender Zirk");
-
+        logger.debug("bezirk....................... ");
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
-
+        logger.debug("houseEvents......");
         houseEvents.setEventReceiver(new EventSet.EventReceiver() {
             @Override
             public void receiveEvent(Event event, ZirkEndPoint sender) {
+                logger.debug("inside receiveevent of main activity");
                 if (event instanceof UpdateAcceptedEvent) {
                     logger.debug("event is instance of event instanceof UpdateAcceptedEvent in MainActivity");
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
@@ -143,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 airQualityUpdateEvent.humidity = 0.8;
                 airQualityUpdateEvent.dustLevel = 30;
                 airQualityUpdateEvent.pollenLevel = pollenLevel++;
-
+                logger.debug("inside run of main activity");
                 bezirk.sendEvent(airQualityUpdateEvent);
                 //updateDisplay("Published air quality update: " + airQualityUpdateEvent.toString());
             }

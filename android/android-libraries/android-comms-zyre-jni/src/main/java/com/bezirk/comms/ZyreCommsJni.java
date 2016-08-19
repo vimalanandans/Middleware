@@ -123,7 +123,7 @@ public class ZyreCommsJni extends Thread {
     public boolean startZyre() {
         logger.debug("start Zyre");
         if (ValidatorUtility.isObjectNotNull(zyre)) {
-            ZyreCommsJni zyreCommsJni = new ZyreCommsJni(commsProcessor,"New Grouppp");
+            ZyreCommsJni zyreCommsJni = new ZyreCommsJni(commsProcessor,getGroup());
             logger.debug("this.group val is "+this.group);
             // join the group
 

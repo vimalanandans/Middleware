@@ -21,7 +21,11 @@ import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.MessageHandler;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
+//import com.bezirk.remotelogging.RemoteLog;
+//import com.bezirk.remotelogging.RemoteLoggingManager;
 import com.bezirk.remotelogging.RemoteLog;
+import com.bezirk.remotelogging.RemoteLoggingMessage;
+import com.bezirk.remotelogging.RemoteLoggingMessageNotification;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.streaming.control.Objects.StreamRecord;
@@ -32,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -53,12 +58,14 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     protected SphereSecurity sphereSecurity = null; // Nullable object
     private final NetworkManager networkManager;
     private final Device device;
-    RemoteLog remoteLog = null;
+    RemoteLog remoteLog;
+    RemoteLoggingMessage remoteLoggingMessage;
+    RemoteLoggingMessageNotification remoteLoggingMessageNotification;
 
     MessageHandler msgHandler;
 
     public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager, Comms comms, MessageHandler msgHandler,
-                        SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity) {
+                        SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity,RemoteLog remoteLogging,RemoteLoggingMessage remoteLoggingMessage,RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
         this.device = device;
         this.networkManager = networkManager;
@@ -70,6 +77,10 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         this.sphereServiceAccess = sphereServiceAccess;
         this.sphereSecurity = sphereSecurity;
         this.msgHandler = msgHandler;
+        this.remoteLog = remoteLogging;
+        this.remoteLoggingMessage= remoteLoggingMessage;
+        this.remoteLoggingMessageNotification = remoteLoggingMessageNotification;
+
     }
 
 
@@ -119,6 +130,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
 
     public Boolean registerService(final ZirkId zirkId) {
+        logger.debug("zirkId in register service is "+zirkId);
         if (!ValidatorUtility.checkBezirkZirkId(zirkId)) {
             logger.error("Invalid ZirkId");
             return false;
@@ -128,6 +140,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             return false;
         }
         if (pubSubBrokerRegistry.registerZirk(zirkId)) {
+            logger.debug("pubSubBrokerRegistry.registerZirk(zirkId)");
             persistRegistry();
             return true;
         }
@@ -230,8 +243,13 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
                 logger.debug("(multicastEventAction.isIdentified() is true in PubSubbroker");
                 mHeader.setAlias(multicastEventAction.getAlias());
             }
-
-            eventLedger.setHeader(mHeader);
+            if(null!=mHeader){
+                logger.debug("mHeader is not null");
+                eventLedger.setHeader(mHeader);
+            }
+            else{
+                logger.debug("mHeader is null");
+            }
             eventLedger.setIsMulticast(true);
             eventLedger.setSerializedHeader(mHeader.serialize());
 
@@ -454,15 +472,29 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         if (!decryptMsg(eLedger)) {
             return false;
         }
-        logger.debug("remoteLog.isRemoteLoggingEnabled() is  "+remoteLog.isRemoteLoggingEnabled());
         if(null!=remoteLog){
             logger.debug("remoteLog is not null in PubSubBroker");
-        }else{
-            logger.debug("remoteLog is  null in PubSubBroker");
+           // if( ){
+             //   logger.debug("isRemoteLoggingEnabled is true");
+            boolean remoteLogging = remoteLog.sendRemoteLogLedgerMessage(eLedger);
+            logger.debug("remoteLogging is "+remoteLogging);
+            if(remoteLogging){
+                try {
+                    logger.debug("start logging");
+                    remoteLoggingMessageNotification.handleLogMessage(remoteLoggingMessage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            //}
+        //}else{
+          //  logger.debug("remoteLog is  null in PubSubBroker");
         }
-        if ((remoteLog != null) && remoteLog.isRemoteLoggingEnabled()) {
+        /*if ((remoteLog != null) && remoteLog.isRemoteLoggingEnabled()) {
             remoteLog.sendRemoteLogLedgerMessage(eLedger);
-        }
+        }*/
 
         // give a callback to appropriate zirk..
         triggerMessageHandler(eLedger, zirkList);
@@ -473,6 +505,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     private void triggerMessageHandler(final EventLedger eLedger,
                                        Set<ZirkId> invokeList) {
         // check if the zirk exists in that sphere then give callback
+        logger.debug("triggerMessageHandler method call");
         for (ZirkId zirkId : invokeList) {
 
             if (isServiceInSphere(zirkId, eLedger.getHeader().getSphereId())) {

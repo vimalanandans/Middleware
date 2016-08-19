@@ -10,15 +10,12 @@ import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.device.Device;
 import com.bezirk.networking.NetworkManager;
-import com.bezirk.comms.processor.CommsProcessor;
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.Observable;
 
 /**
  * Logging Manager class that starts/stops LoggingServices and LoggingClient.
@@ -127,11 +124,30 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     @Override
     public boolean sendRemoteLogLedgerMessage(Ledger ledger) {
+        logger.debug("sendRemoteLogLedgerMessage method in common/RemoteLoggingManager");
         boolean returnValue=true;
         if(ledger instanceof EventLedger){
             try {
-                LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(((EventLedger) ledger).getHeader().getSphereId(),
+                if((null!=((EventLedger) ledger).getHeader())){
+                    logger.debug("Header is set "+((EventLedger) ledger).getHeader().toString());
+                    if(null!=((EventLedger) ledger).getHeader().getSphereId()){
+                        logger.debug("sphere id is "+((EventLedger) ledger).getHeader().getSphereId());
+                    }
+                }
+                logger.debug("getSphereId is "+((EventLedger) ledger).getHeader().getSphereId());
+                logger.debug("String.valueOf(currentDate.getTime() is "+String.valueOf(currentDate.getTime()));
+               // logger.debug(" device.getDeviceName() is "+ device.getDeviceName());
+                logger.debug("Util.CONTROL_RECEIVER_VALUE is "+Util.CONTROL_RECEIVER_VALUE);
+                logger.debug("((EventLedger) ledger).getHeader().getUniqueMsgId() is "+((EventLedger) ledger).getHeader().getUniqueMsgId());
+                logger.debug("Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name() is "+Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name());
+                logger.debug("Util.LOGGING_VERSION).serialize() is "+Util.LOGGING_VERSION);
+               /* LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(((EventLedger) ledger).getHeader().getSphereId(),
                         String.valueOf(currentDate.getTime()), device.getDeviceName(),
+                        Util.CONTROL_RECEIVER_VALUE, ((EventLedger) ledger).getHeader().getUniqueMsgId(),
+                        Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());*/
+
+                LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(((EventLedger) ledger).getHeader().getSphereId(),
+                        String.valueOf(currentDate.getTime()),
                         Util.CONTROL_RECEIVER_VALUE, ((EventLedger) ledger).getHeader().getUniqueMsgId(),
                         Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
             } catch (InterruptedException e) {
@@ -148,7 +164,6 @@ public  class RemoteLoggingManager implements RemoteLog {
                             new RemoteLoggingMessage(
                                     ((ControlLedger) ledger).getSphereId(),
                                     String.valueOf(currentDate.getTime()),
-                                    device.getDeviceName(),
                                     Util.CONTROL_RECEIVER_VALUE,
                                     ((ControlLedger) ledger).getMessage().getUniqueKey(),
                                     Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
@@ -162,6 +177,7 @@ public  class RemoteLoggingManager implements RemoteLog {
             }
             return false;
         }
+        logger.debug("return value is........  "+returnValue);
         return returnValue;
     }
 
@@ -198,7 +214,6 @@ public  class RemoteLoggingManager implements RemoteLog {
                         new RemoteLoggingMessage(
                                 msg.getSphereId(),
                                 String.valueOf(currentDate.getTime()),
-                                device.getDeviceName(),
                                 Util.CONTROL_RECEIVER_VALUE,
                                 msg.getUniqueKey(),
                                 Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),

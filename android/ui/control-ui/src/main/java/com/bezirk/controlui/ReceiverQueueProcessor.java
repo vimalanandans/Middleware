@@ -43,7 +43,7 @@ public class ReceiverQueueProcessor implements Runnable {
         try {
             while (isRunning) {
                 StringBuilder logMsgString = LoggingQueueManager.fetchFromLogReceiverQueue();
-                logger.debug("logMsgString is "+logMsgString);
+                logger.debug("logMsgString in ReceiverQueueProcessor is "+logMsgString);
                 try {
                     RemoteLoggingMessage logMsg = gson.fromJson(logMsgString.toString(), RemoteLoggingMessage.class);
                     //call back on the basis of checking the logging version

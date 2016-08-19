@@ -137,12 +137,18 @@ public abstract class CommsProcessor implements Comms, Observer {
     public boolean sendMessage(Ledger message) {
         // send as it is
 
-        if (message instanceof ControlLedger)
+        if (message instanceof ControlLedger){
+            logger.debug("message instanceof ControlLedger in SendMessage");
             return this.sendControlLedger((ControlLedger) message);
-        else if (message instanceof EventLedger)
+        }
+        else if (message instanceof EventLedger){
+            logger.debug("message instanceof EventLedger in SendMessage");
             return this.sendEventLedger((EventLedger) message);
-        else if (message instanceof MessageLedger)
+        }
+        else if (message instanceof MessageLedger){
+            logger.debug("message instanceof MessageLedger in SendMessage");
             return this.sendMessageLedger((MessageLedger) message);
+        }
         else // stream ledger // hopefully there are no other types
             return this.sendStreamMessage(message);
 
@@ -358,13 +364,13 @@ public abstract class CommsProcessor implements Comms, Observer {
     @Override
     public boolean sendEventLedger(EventLedger ledger) {
         final String data = ledger.getSerializedMessage();
-
+        logger.debug("data in sendEventLedger "+data);
 
         if (data == null) return false;
 
 
         if (ledger.getHeader() instanceof MulticastHeader) {
-
+            logger.debug("ledger.getHeader() instanceof MulticastHeader");
             //TODO: for event message decrypt the header here
             // if the intended zirk is available in sadl message is decrypted
             WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
@@ -650,6 +656,7 @@ public abstract class CommsProcessor implements Comms, Observer {
     }
 
     private boolean processEvent(String deviceId, WireMessage wireMessage) {
+        logger.debug("processEvent method device Id is "+deviceId);
 
         EventLedger eventLedger = new EventLedger();
         //eventLedger
@@ -680,6 +687,7 @@ public abstract class CommsProcessor implements Comms, Observer {
     }
 
     private boolean setEventHeader(EventLedger eLedger, WireMessage wireMessage) {
+        logger.debug("set event header in commsProcessor");
         // decrypt the header
         final byte[] data = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getHeaderMsg());
 
@@ -699,7 +707,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         final Gson gson = new Gson();
 
         if (wireMessage.isMulticast()) {
-
+            logger.debug("Multicast header");
             MulticastHeader mHeader = gson.fromJson(headerData, MulticastHeader.class);
 
             eLedger.setHeader(mHeader);
