@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion project.androidCompileSdkVersion.toInteger()
+    buildToolsVersion project.androidBuildToolsVersion
+    lintOptions {
+        abortOnError false
+    }
+    defaultConfig {
+        applicationId "com.bezirk.android.subscriber"
+        minSdkVersion project.androidMinSdkVersion.toInteger()
+        targetSdkVersion project.androidTargetSdkVersion.toInteger()
+        versionCode project.androidVersionCode.toInteger()
+        versionName project.androidVersionName
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    //compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
+    compile 'com.android.support:design:23.1.1'
+    compile project(':android:android-libraries:android-zirk-proxy')
+    compile project(':core:testapp-core')
+    //compile project(':core:protocols:parametricUI-protocols')
+    //compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('libs/HouseInfoRole.jar')
+    //compile fileTree(dir:'libs', include:'HouseInfoEventSet.jar')
+    compile 'com.android.support:design:23.4.0'
+
+    //fixme Punith: commented the constraint layout
+    //compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha6'
+    testCompile 'junit:junit:4.12'
+}

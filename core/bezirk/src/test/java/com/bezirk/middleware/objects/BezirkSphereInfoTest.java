@@ -23,13 +23,11 @@ public class BezirkSphereInfoTest {
         String sphereName = "HomeSphere";
         String sphereType = "OwnerSphere";
         ArrayList<BezirkDeviceInfo> deviceList = getDeviceList();
-        ArrayList<BezirkPipeInfo> pipeList = getPipeList();
         BezirkSphereInfo bezirkSphereInfo = new BezirkSphereInfo(sphereID, sphereName,
-                sphereType, deviceList, pipeList);
+                sphereType, deviceList);
         bezirkSphereInfo.setThisDeviceOwnsSphere(true);
 
         assertEquals("DeviceList is not equal to the set value.", deviceList, bezirkSphereInfo.getDeviceList());
-        assertEquals("PipeList is not equal to the set value.", pipeList, bezirkSphereInfo.getPipeList());
         assertEquals("SphereID is not equal to the set value.", sphereID, bezirkSphereInfo.getSphereID());
         assertEquals("SphereName is not equal to the set value.", sphereName, bezirkSphereInfo.getSphereName());
         assertEquals("SphereType is not equal to the set value.", sphereType, bezirkSphereInfo.getSphereType());
@@ -37,24 +35,9 @@ public class BezirkSphereInfoTest {
 
         sphereName = "TestSphere";
         BezirkSphereInfo bezirkSphereInfoTemp = new BezirkSphereInfo(sphereID, sphereName,
-                sphereType, deviceList, pipeList);
+                sphereType, deviceList);
         assertFalse("Different bezirkSphereInfo has same string representation.", bezirkSphereInfo.toString().equalsIgnoreCase(bezirkSphereInfoTemp.toString()));
     }
-
-
-    private ArrayList<BezirkPipeInfo> getPipeList() {
-
-        String pipeId = "Pipe24";
-        String pipeName = "TestPipe";
-        String pipeURL = "http://test.com";
-        BezirkPipeInfo bezirkPipeInfo = new BezirkPipeInfo(pipeId, pipeName, pipeURL);
-
-        ArrayList<BezirkPipeInfo> pipeList = new ArrayList<BezirkPipeInfo>();
-        pipeList.add(bezirkPipeInfo);
-
-        return pipeList;
-    }
-
 
     private ArrayList<BezirkDeviceInfo> getDeviceList() {
         String deviceId = "Device123";

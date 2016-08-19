@@ -1,8 +1,8 @@
 //package com.bezirk.network.test;
 //
-//import com.bezirk.comms.BezirkComms;
+//import com.bezirk.comms.Comms;
 //import com.bezirk.comms.BezirkCommsPC;
-//import com.bezirk.network.BezirkNetworkUtilities;
+//import com.bezrik.network.BezirkNetworkUtilities;
 //
 //import org.junit.After;
 //import org.junit.Before;
@@ -36,9 +36,9 @@
 //		BezirkCommsPC.init();
 //
 //		try {
-//			eMSocket = new MulticastSocket(BezirkComms.getMULTICAST_PORT());
+//			eMSocket = new MulticastSocket(Comms.getMULTICAST_PORT());
 //
-//			InetAddress addr = BezirkNetworkUtilities.getIpForInterface(NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME()));
+//			InetAddress addr = BezirkNetworkUtilities.getIpForInterface(NetworkInterface.getByName(Comms.getINTERFACE_NAME()));
 //
 //			assertNotNull("Could not compute Ip for NetworkInterface - Check Interface Name in comms.properties", addr);
 //			eMSocket.setInterface(addr);
@@ -70,8 +70,8 @@
 //		try {
 //			DatagramSocket clientSocket = new DatagramSocket();
 //
-//			ipAddress = InetAddress.getByName(BezirkComms.getMULTICAST_ADDRESS());
-//			sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, BezirkComms.getMULTICAST_PORT());
+//			ipAddress = InetAddress.getByName(Comms.getMULTICAST_ADDRESS());
+//			sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, Comms.getMULTICAST_PORT());
 //
 //			clientSocket.send(sendPacket);
 //			clientSocket.close();

@@ -1,6 +1,6 @@
 package com.bezirk.sphere.impl;
 
-import com.bezirk.sphere.api.BezirkDevMode;
+import com.bezirk.sphere.api.DevMode;
 import com.bezirk.sphere.api.SpherePrefs;
 
 import org.slf4j.Logger;
@@ -29,8 +29,8 @@ public class JavaPrefs extends SpherePrefs {
     }
 
     @Override
-    public BezirkDevMode.Mode getMode() {
-        return preferences.getBoolean(SpherePrefs.DEVELOPMENT_SPHERE_MODE_KEY, SpherePrefs.DEVELOPMENT_SPHERE_MODE_DEFAULT_VALUE) ? BezirkDevMode.Mode.ON : BezirkDevMode.Mode.OFF;
+    public DevMode.Mode getMode() {
+        return preferences.getBoolean(SpherePrefs.DEVELOPMENT_SPHERE_MODE_KEY, SpherePrefs.DEVELOPMENT_SPHERE_MODE_DEFAULT_VALUE) ? DevMode.Mode.ON : DevMode.Mode.OFF;
     }
 
     @Override
@@ -72,8 +72,8 @@ public class JavaPrefs extends SpherePrefs {
     }
 
     @Override
-    public boolean setMode(BezirkDevMode.Mode mode) {
-        if (mode == BezirkDevMode.Mode.ON) {
+    public boolean setMode(DevMode.Mode mode) {
+        if (mode == DevMode.Mode.ON) {
             try {
                 preferences.putBoolean(SpherePrefs.DEVELOPMENT_SPHERE_MODE_KEY, true);
                 preferences.sync();

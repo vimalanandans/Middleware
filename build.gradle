@@ -1,21 +1,20 @@
 /**
  * Global project version change history
- * Currently the project alpha version is incremented every time there is a change in any of the middleware artifacts to maintain consistency.
- * 3.0.0-alpha+001 development mode enabled for CMU Iot group (Rishabh)
- * 3.0.0-alpha+002 added policy classes for protocols-penguin (Rishabh)
- * 3.0.0-alpha+003 PreferencesAPI implementation for using sphere configuration (Rishabh)
- * 3.0.0-alpha+004 Removing use of comms.properties & upadevice.properties (Rishabh)
- * 3.0.0-alpha+005 Changing sphere key lengths to prevent adding Unlimited Strength Jurisdiction Policy (Rishabh)
- * 3.0.0-alpha+006 Logging enable/disable using jvm/system property, removing Factory.getInstance(BezirkConfig) (Rishabh)
- * 3.0.0-alpha+007 Enabling development sphere by default and removing system.out.println for evasive events in zyre (Rishabh)
- * 3.0.0-alpha+008 Displaying ethernet configuration for multiple interfaces, issue #77 (Rishabh)
- * 3.0.0-alpha+009 Freezing major api changes & Nits before Mexico Hackathon. (Michael/Rishabh)
- * 3.0.0-alpha+010 Bug with android proxy and unwanted swing thread in java. (Michael/Rishabh)
- * 3.0.0-alpha+011 Fixes issue #91 (first event duplication)(Rishabh)
- * 3.0.0-alpha+012 Changing text display for issue #59 (bezirk ethernet configuration), testApp Pub/Sub testing through different applications until 2-zirk registration issue is resolved (Rishabh)
- * 3.0.0-alpha+013 bezrik -> bezirk for network-util package fix (Rishabh)
- * 3.0.0-alpha+014 android send/receive messages, serialization-deserialization & bug fixes for UI (Rishabh)
- * 3.0.0-alpha+015 Bezirk-Java: issue #98 and #97, issue with loading features.properties and failre to startup Bezirk-PC
+ * Currently the project alpha version is incremented every time there is a change in any of the middleware artifact to maintain consistency.
+ * 3.0.0-alpha-mvp+001 alpha mvp for internal testing with fixed API nits
+ * 3.0.0-alpha-mvp+002 java-android tested zirks for mvp working
+ * 3.0.0-alpha-mvp+003 cleaned up android stack version(all happy paths working)
+ * 3.0.0-alpha-mvp+004 ethernet pop-up text change, android 4.4 - 6.0 compatible.
+ * 3.0.0-alpha-mvp+005 lifecycle manager state transitions, proxy client change for java, comms notification null check,
+ *                     testapp for java with 2 zirks together, tested with publisher-zirk-android, subscriber-zirk-android, testapp, java-8 lambda fix.
+ * 3.0.0-alpha-mvp+006 sticky bezirk service, start/stop lifecycle handling for comms, cleanup comms message,
+ *                      increment comms version, upgrade gson, zxing libraries, cleanup info traces
+ * 3.0.0-alpha-mvp+007 logging enabled/disabled, setGsonBuilder for Message, logback log message suppressing and more ...
+ * 3.0.0-alpha-mvp+008 logback filter removed
+ * 3.0.0-alpha-mvp+009 zyre NativeUtils library fetching fix without path setting
+ * 3.0.0-alpha-mvp+010 testing new publishing strategy for proxy
+ * 3.0.0-alpha-mvp+011 fixed resolution of artifacts from a single dependency
+ * 3.0.0-alpha-mvp+012 Android proxy without Identity Management
  */
 buildscript {
     repositories {
@@ -36,9 +35,6 @@ buildscript {
         classpath "com.android.tools.build:gradle:${project.androidGradleToolsVersion}"
         classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '4.1.0')
     }
-    ext {
-        local = true //change to false for compiling project artifacts from remote maven
-    }
 }
 
 allprojects {
@@ -46,7 +42,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha+015"
+    version = "3.0.0-alpha-mvp+012"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
@@ -57,25 +53,11 @@ allprojects {
         mavenCentral()
         maven {
             url "${artifactRepoBase}/libs-release-local/"
-            credentials {
-                username "${artifactory_user}"
-                password "${artifactory_password}"
-            }
         }
     }
-}
 
-/**
- * Build java distribution. Jars contained in the zip are used to run PC services.
- * Eg. http://52.18.79.103:8090/rishabh.gulati/HelloWorld
- **/
-task javaBuildDist(type: Zip) {
-    baseName = 'bezirk-java-dist'
-    version = project.version
-    into 'jars'
-    from { project(':core:bezirk-middleware-api').configurations.runtime }
-    from { project(':java:libraries:bezirk-factory').configurations.runtime }
-    from { project(':core:bezirk-middleware-api').jar }
-    from { project(':java:libraries:bezirk-factory').jar }
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = "1.7"
+        targetCompatibility = "1.7"
+    }
 }

@@ -1,9 +1,9 @@
 //package com.bezirk.network.test;
 //
-//import com.bezirk.comms.BezirkComms;
+//import com.bezirk.comms.Comms;
 //import com.bezirk.comms.BezirkCommsPC;
-//import com.bezirk.network.IntfInetPair;
-//import com.bezirk.network.BezirkNetworkUtilities;
+//import com.bezirk.networking.InterfaceInetPair;
+//import com.bezrik.network.BezirkNetworkUtilities;
 //
 //import org.junit.Test;
 //import org.slf4j.Logger;
@@ -42,14 +42,14 @@
 //		InetAddress addr;
 //		try {
 //			BezirkCommsPC.init();
-//			addr = BezirkNetworkUtilities.getIpForInterface(NetworkInterface.getByName(BezirkComms.getINTERFACE_NAME()));
+//			addr = BezirkNetworkUtilities.getIpForInterface(NetworkInterface.getByName(Comms.getINTERFACE_NAME()));
 //			if(addr == null){
 //				logger.error("Failure to resolve ip - Check interface in comms.properties ");
 //				logger.error("Possible interface/ ip pairs are: ");
-//				Iterator<IntfInetPair> itr = BezirkNetworkUtilities.getIntfInetPair().iterator();
+//				Iterator<InterfaceInetPair> itr = BezirkNetworkUtilities.getInterfaceInetPair().iterator();
 //				while(itr.hasNext()){
-//					IntfInetPair pair = itr.next();
-//					logger.error("Interface: "+pair.getIntf().getName()+" IP:"+pair.getInet().getHostAddress());
+//					InterfaceInetPair pair = itr.next();
+//					logger.error("Interface: "+pair.getNetworkInterface().getName()+" IP:"+pair.getInet().getHostAddress());
 //				}
 //				fail("Cannot resolve Ip");
 //			}

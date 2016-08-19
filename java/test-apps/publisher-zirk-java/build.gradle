@@ -1,0 +1,22 @@
+apply plugin: 'application'
+
+mainClassName = "com.bezirk.test.Publisher"
+
+dependencies {
+    compile project(':core:bezirk-middleware-api')
+    compile project(':core:bezirk')
+    compile project(':java:libraries:java-zirk-proxy')
+    compile project(':core:testapp-core')
+    testCompile 'junit:junit:4.12'
+}
+
+run {
+    /**
+     * Pass all the system properties to the JVM process spawned for running this application
+     * @see <a href="https://docs.gradle.org/current/userguide/application_plugin.html#N15E7">gradle application plugin</a>
+     *
+     * Required for passing configurations like "displayEnabled" to bezirk while running the application.
+     * Ex. gradlew -DdisplayEnabled=true run
+     */
+    systemProperties System.getProperties()
+}

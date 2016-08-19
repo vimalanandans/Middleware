@@ -51,14 +51,14 @@ public class ControlLedgerTest {
 
         com.bezirk.control.messages.ControlLedger ctrlLedger = prepareControlLedger();
 
-        assertArrayEquals("CheckSum not equal to the set value.", checksum, ctrlLedger.getChecksum());
-        assertArrayEquals("DataOnWire not equal to the set value.", dataOnWire, ctrlLedger.getDataOnWire());
+        //assertArrayEquals("CheckSum not equal to the set value.", checksum, ctrlLedger.getChecksum());
+        //assertArrayEquals("DataOnWire not equal to the set value.", dataOnWire, ctrlLedger.getDataOnWire());
         assertArrayEquals("EncryptedMessage not equal to the set value.", encryptedMessage, ctrlLedger.getEncryptedMessage());
         assertEquals("IsMessageFromHost not equal to the set value.", isMessageFromHost, ctrlLedger.getIsMessageFromHost());
-        assertEquals("LastSent not equal to the set value.", lastSent, ctrlLedger.getLastSent());
-        assertEquals("NumOfSends not equal to the set value.", numOfSends, ctrlLedger.getNumOfSends());
+        //assertEquals("LastSent not equal to the set value.", lastSent, ctrlLedger.getLastSent());
+        //assertEquals("NumOfSends not equal to the set value.", numOfSends, ctrlLedger.getNumOfSends());
         assertEquals("Message not equal to the set value.", message, ctrlLedger.getMessage());
-        assertArrayEquals("SendData not equal to the set value.", sendData, ctrlLedger.getSendData());
+        //assertArrayEquals("SendData not equal to the set value.", sendData, ctrlLedger.getSendData());
         assertEquals("SerializedMessage not equal to the set value.", serializedMessage, ctrlLedger.getSerializedMessage());
         assertEquals("SphereID not equal to the set value.", sphereId, ctrlLedger.getSphereId());
 
@@ -67,14 +67,14 @@ public class ControlLedgerTest {
 
     private com.bezirk.control.messages.ControlLedger prepareControlLedger() {
         com.bezirk.control.messages.ControlLedger ctrlLedger = new com.bezirk.control.messages.ControlLedger();
-        ctrlLedger.setChecksum(checksum);
-        ctrlLedger.setDataOnWire(dataOnWire);
+        //ctrlLedger.setChecksum(checksum);
+        //ctrlLedger.setDataOnWire(dataOnWire);
         ctrlLedger.setEncryptedMessage(encryptedMessage);
         ctrlLedger.setIsMessageFromHost(isMessageFromHost);
-        ctrlLedger.setLastSent(lastSent);
-        ctrlLedger.setNumOfSends(numOfSends);
+        //ctrlLedger.setLastSent(lastSent);
+        //ctrlLedger.setNumOfSends(numOfSends);
         ctrlLedger.setMessage(message);
-        ctrlLedger.setSendData(sendData);
+       // ctrlLedger.setSendData(sendData);
         ctrlLedger.setSerializedMessage(serializedMessage);
         ctrlLedger.setSphereId(sphereId);
         return ctrlLedger;

@@ -1,24 +1,22 @@
 package com.bezirk.util;
 
-import com.bezirk.comms.BezirkComms;
-import com.bezirk.comms.CommsProperties;
+import com.bezirk.actions.SendFileStreamAction;
+import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.CtrlMsgReceiver;
+import com.bezirk.comms.processor.EventMsgReceiver;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.streaming.StreamRequest;
-import com.bezirk.pipe.core.PipeManager;
-import com.bezirk.sadl.BezirkSadlManager;
-import com.bezirk.sphere.api.BezirkSphereForSadl;
+import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.streaming.control.Objects.StreamRecord;
 
-import java.net.InetAddress;
 import java.util.ArrayList;
 
-public class MockComms implements BezirkComms {
+public class MockComms implements Comms {
 
     private ArrayList<ControlLedger> ctrlList;
 
@@ -50,24 +48,10 @@ public class MockComms implements BezirkComms {
         this.streamList = streamList;
     }
 
-    @Override
-    public boolean startComms() {
+    public MockComms() {
         ctrlList = new ArrayList<>();
         eventList = new ArrayList<>();
         streamList = new ArrayList<>();
-        return true;
-    }
-
-    @Override
-    public boolean stopComms() {
-        // TODO Auto-generated method stub
-        return true;
-    }
-
-    @Override
-    public boolean closeComms() {
-        // TODO Auto-generated method stub
-        return true;
     }
 
     @Override
@@ -95,13 +79,23 @@ public class MockComms implements BezirkComms {
     }
 
     @Override
-    public boolean sendStream(String uniqueKey) {
-        // TODO Auto-generated method stub
-        return true;
+    public boolean sendEventLedger(EventLedger ledger) {
+        return false;
     }
 
     @Override
-    public boolean registerStreamBook(String key, StreamRecord sRecord) {
+    public boolean sendControlMessage(ControlMessage message) {
+        return false;
+    }
+
+    /*@Override
+    public boolean sendStream(String uniqueKey) {
+        // TODO Auto-generated method stub
+        return true;
+    }*/
+
+    @Override
+    public boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList) {
         // TODO Auto-generated method stub
         return true;
     }
@@ -113,12 +107,11 @@ public class MockComms implements BezirkComms {
         return false;
     }
 
-    @Override
-    public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             BezirkSadlManager sadl, PipeManager pipe) {
-        // TODO Auto-generated method stub
-        return true;
-    }
+//    @Override
+//    public boolean initComms(CommsProperties commsProperties, InetAddress addr, SphereSecurity sphereSecurity, Streaming streaming) {
+//        return false;
+//    }
+
 
     @Override
     public boolean registerControlMessageReceiver(Discriminator id,
@@ -128,10 +121,15 @@ public class MockComms implements BezirkComms {
     }
 
     @Override
-    public void setSphereForSadl(BezirkSphereForSadl bezirkSphere) {
-        // TODO Auto-generated method stub
-
+    public boolean registerEventMessageReceiver(EventMsgReceiver receiver) {
+        return false;
     }
+
+    /*@Override
+    public void setSphereSecurity(SphereSecurity sphereSecurity) {
+
+    }*/
+
 
     public void clearQueues() {
 
@@ -141,10 +139,5 @@ public class MockComms implements BezirkComms {
 
     }
 
-    @Override
-    public boolean restartComms() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
 }

@@ -1,8 +1,7 @@
 description "Bezirk-core: common-modules across platforms"
 subprojects {
     apply plugin: 'java'
-    //apply from: "${rootDir}/gradle-plugins/script/artifactory-publishing-java.gradle"
-    sourceCompatibility = 1.7
+    //apply from: "${rootDir}/gradle-plugins/artifactory-jar-publish.gradle"
 }
 
 buildscript {

@@ -1,7 +1,6 @@
 package com.bezirk.comms;
 
 /**
- * Created by vnd2kor on 2/5/2016.
  * refer http://stackoverflow.com/questions/1386809/copy-directory-from-a-jar-file
  */
 
@@ -111,7 +110,7 @@ public class ResourceUtils {
         try {
             final byte[] buf = new byte[1024];
 
-            int len = 0;
+            int len;
             while ((len = is.read(buf)) > 0) {
                 os.write(buf, 0, len);
             }

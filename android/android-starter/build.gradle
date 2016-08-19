@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-
+apply from: "${rootDir}/gradle-plugins/artifactory-aar-publish.gradle"
 repositories {
     flatDir {
         dirs 'lib'
@@ -29,53 +29,30 @@ android {
 
 dependencies {
     compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
-
-    // fixme : the actual package is com.bezirk.comms.udp.*
-    // but include path is showing as com.bezirk:udp:* (comms is missing)
-
-    /*   if (project.local == "false") {
-           compile "com.bezirk:bezirk-api:${version}"
-           compile "com.bezirk:control-messages:${version}"
-           compile "com.bezirk:commons:${version}"
-           compile "com.bezirk:http-comms:${version}"
-
-           compile "com.bezirk:comms-udp:${version}"
-           compile "com.bezirk:comms-factory:${version}"
-           compile "com.bezirk:actions:${version}"
-           compile("com.bezirk:pipes:${version}")
-
-
-       } else {
-   */
-    compile project(':core:bezirk-middleware-api')
-    compile project(':core:bezirk')
-    compile project(':core:control-messages')
-    compile project(':core:commons')
-    //compile project(':core:comms:http-comms')
-    compile project(':core:comms:comms-udp')
-    compile project(':core:comms:comms-factory')
-    compile project(':core:actions')
-    compile project(':core:pipes')
-    // }
-
-    compile project(':android:android-libraries:android-comms-zyre-jni')
-
     compile 'org.bouncycastle:bcprov-jdk15on:1.49' //Check if this works
     compile 'org.apache.shiro:shiro-core:1.2.4'
-    compile 'com.google.zxing:core:2.3.0'
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.google.zxing:core:3.2.0'
+    compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.tony19:logback-android-classic:1.1.1-2'
     compile 'org.slf4j:slf4j-api:1.7.6'
     compile 'org.sqldroid:sqldroid:1.0.3'
     compile "com.j256.ormlite:ormlite-core:4.48"
     compile "com.j256.ormlite:ormlite-android:4.48"
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.0.31-beta'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    // FIXME orm lite creating problem with sqldroid
-    // compile 'com.j256.ormlite:ormlite-android:4.48'
-    // compile 'org.xerial:sqlite-jdbc:3.8.7'
+    compile project(':core:bezirk-middleware-api')
+    compile project(':core:bezirk')
+    compile project(':core:control-messages')
+    compile project(':core:commons')
+    compile project(':core:identity-management')
+    compile project(':core:sphere')
+    compile project(':core:data-storage')
+    compile project(':core:streaming')
+    compile project(':core:comms:comms-factory')
+    compile project(':android:android-libraries:android-comms-zyre-jni')
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.0.31-beta'
 }
 

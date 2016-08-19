@@ -2,7 +2,9 @@ package com.bezirk.proxy.api.impl;
 
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 
-public class BezirkZirkEndPoint implements ZirkEndPoint {
+import java.io.Serializable;
+
+public class BezirkZirkEndPoint implements ZirkEndPoint, Serializable {
     public String device;
     public final ZirkId zirkId;
 

@@ -1,9 +1,9 @@
 package com.bezirk.comms;
 
 import com.bezirk.comms.thread.JyreReceiverThread;
-import com.bezirk.pipe.core.PipeManager;
+import com.bezirk.pipe.PipeManager;
 import com.bezirk.processor.CommsProcessor;
-import com.bezirk.sadl.BezirkSadlManager;
+import com.bezirk.pubsubbroker.BezirkSadlManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

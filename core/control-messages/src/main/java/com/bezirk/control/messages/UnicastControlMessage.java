@@ -1,11 +1,10 @@
 package com.bezirk.control.messages;
 
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.network.BezirkNetworkUtilities;
 
 public class UnicastControlMessage extends ControlMessage {
 
-    private Boolean isLocal = false;
+   // private Boolean isLocal = false;
     private BezirkZirkEndPoint recipient;
 
     /**
@@ -30,12 +29,6 @@ public class UnicastControlMessage extends ControlMessage {
                                  Discriminator discriminator, Boolean retransmit, String key) {
         super(sender, sphereId, discriminator, retransmit, key);
         this.recipient = recipient;
-        //Check if msg is local
-        // device is generic may (udp) or may not (zyre) contain the ip. check generic means
-        if (recipient.device.equals(BezirkNetworkUtilities.getLocalInet().getHostAddress())) {
-
-            this.isLocal = true;
-        }
     }
 
     /**
@@ -52,14 +45,6 @@ public class UnicastControlMessage extends ControlMessage {
                                  Discriminator discriminator, Boolean retransmit) {
         super(sender, sphereId, discriminator, retransmit);
         this.recipient = recipient;
-        //Check if msg is local
-        if (recipient.device.equals(BezirkNetworkUtilities.getLocalInet().getHostAddress())) {
-            this.isLocal = true;
-        }
-    }
-
-    public Boolean getIsLocal() {
-        return isLocal;
     }
 
     public BezirkZirkEndPoint getRecipient() {

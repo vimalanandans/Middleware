@@ -1,7 +1,5 @@
 package com.bezirk.comms;
 
-import com.bezirk.features.CommsFeature;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,9 +11,9 @@ public class CommsFactory {
 
     CommsFeature activeComms = CommsFeature.COMMS_BEZIRK;
 
-    public BezirkComms getComms() {
+    public Comms getComms() {
 
-        BezirkComms bezirkComms = null;
+        Comms comms = null;
 
         getActiveComms();
 
@@ -24,14 +22,14 @@ public class CommsFactory {
         switch (activeComms) {
             default:
             case COMMS_BEZIRK:
-                bezirkComms = new BezirkCommsManager();
-                logger.debug("udp comms is created. ");
+                //comms = new BezirkCommsManager();
+                logger.debug("udp comms is not supported. ");
                 break;
             case COMMS_ZYRE_JNI:
                 logger.error("comms are injected by each platform, common won't do anything");
                 break;
             case COMMS_JYRE:
-                //bezirkComms =  new JyreCommsProcessor();
+                //comms =  new JyreCommsProcessor();
                 logger.error("Jyre comms is not created. ");
                 break;
             case COMMS_ZYRE:
@@ -39,7 +37,7 @@ public class CommsFactory {
                 break;
         }
 
-        return bezirkComms;
+        return comms;
     }
 
     /**

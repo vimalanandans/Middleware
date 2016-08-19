@@ -1,96 +1,71 @@
 package com.bezirk.comms;
 
+import com.bezirk.comms.processor.CommsProcessor;
+import com.bezirk.componentManager.LifecycleManager;
+import com.bezirk.networking.NetworkManager;
+import com.bezirk.streaming.Streaming;
 
-import com.bezirk.pipe.core.PipeManager;
-import com.bezirk.processor.CommsProcessor;
-import com.bezirk.sadl.BezirkSadlManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.net.InetAddress;
+import java.util.Observable;
 
 /**
- * vimal : Bezirk Communication manager for zyre - jni
- * this extends zyre specific comms all the queue, sockets, receiver threads etc etc
+ * Bezirk Communication manager for java zyre - jni
  */
-
 public class ZyreCommsManager extends CommsProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(ZyreCommsManager.class);
     private ZyreCommsJni comms = null;
 
-    @Override
-    public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             BezirkSadlManager sadl, PipeManager pipe) {
-        /*init zyre and internals of comms */
+    public ZyreCommsManager(NetworkManager networkManager, String groupName, CommsNotification commsNotification, Streaming streaming) {
+        super(networkManager, commsNotification, streaming);
         if (comms == null) {
-
-            comms = new ZyreCommsJni(this);
-
-            comms.initZyre();
-
-            return super.initComms(commsProperties, addr, sadl, pipe);
+            comms = new ZyreCommsJni(this,groupName);
+            comms.initZyre(); //TODO: Not sure if this needs to be done here or when starting comms
         }
-
-        return false;
     }
 
-    @Override
-    public boolean startComms() {
-
-        if (comms != null) {
-
-            comms.startZyre();
-
-            // call the base methods
-            return super.startComms();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean stopComms() {
-
-        if (comms != null) {
-            // close zyre
-            comms.stopZyre();
-            // close the comms process comms
-        }
-
-        return super.stopComms();
-    }
-
-    @Override
-    public boolean closeComms() {
-        if (comms != null) {
-            comms.closeComms();
-
-        }
-        return super.closeComms();
-    }
-
-
-    /**
-     * send to all : Multicast message
-     */
     @Override
     public boolean sendToAll(byte[] msg, boolean isEvent) {
-
-        return comms.sendToAllZyre(msg, isEvent);
+        return comms != null && comms.sendToAllZyre(msg, isEvent);
     }
 
     /**
-     * send to one : Unicast message
      * nodeId = device id
      */
     @Override
     public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent) {
-        return comms.sendToAllZyre(msg, isEvent);
-
+        return comms != null && comms.sendToAllZyre(msg, isEvent);
     }
 
-    /**
-     * Create a new Zyre context, required during wifi reset.
-     */
+    //TODO: manage lifecycle of comms based on bezirk-lifecycle events appropriately
     @Override
-    public boolean restartComms() {
-        return false;
+    public void update(Observable o, Object arg) {
+        LifecycleManager lifecycleManager = (LifecycleManager) o;
+        switch (lifecycleManager.getState()) {
+            case STARTED:
+                logger.debug("Starting comms");
+                if (comms != null) {
+                    comms.startZyre();
+                    super.startComms();
+                }
+                break;
+//            case RESTARTED:
+//                break;
+            case STOPPED:
+                logger.debug("Stopping comms");
+                if (comms != null) {
+                    comms.stopZyre();
+                    comms.closeComms();
+                }
+                super.stopComms();
+                break;
+//            case DESTROYED:
+//                logger.debug("Destroying comms");
+//                if (comms != null) {
+//                    comms.closeComms();
+//                }
+//                break;
+        }
     }
-
 }

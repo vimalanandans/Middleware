@@ -3,35 +3,126 @@
  */
 package com.bezirk.streaming.control.Objects;
 
+import com.bezirk.control.messages.ControlMessage;
+import com.bezirk.control.messages.Ledger;
+import com.bezirk.control.messages.UnicastControlMessage;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 
 import java.io.File;
-import java.io.PipedInputStream;
 
 
 /**
  * This class is used as Record for BookKeeping the Streams that has been being pushed by the Services.
  */
-public class StreamRecord extends com.bezirk.control.messages.Ledger {
-    public short localStreamId;
-    public BezirkZirkEndPoint senderSEP;
-    public boolean isIncremental;                // used for sending the data, set by the sender
-    public boolean isReliable;                    // used for sending the data, set by the sender
-    public boolean isEncrypted;                    // if the DataSend needs to be encrypted
-    public String sphere;                        // used for sending the data , set by the sender
-    public StreamingStatus streamStatus;        // changed after receiving the Response
-    public String recipientIP;                    // recipient IP, set by the proxy after getting the stream Response
-    public int recipientPort;                    // recipient Port,set by the proxy after getting the stream Response
-    public PipedInputStream pipedInputStream;    // set if it is unreliable
-    public File file;                        // path to the file
-    public BezirkZirkEndPoint recipientSEP;    // Used for Local streaming.
-    public String serializedStream;                // USed for Local Streaming
-    public String streamTopic;                    // USed for Local Streaming
+
+// FIXME: 8/4/2016 Punith :: Remove StreamRecord as a Ledger.. It can be a Control message.. Look at the properties.. you may have to remove few!!!!
+public class StreamRecord extends UnicastControlMessage {
+
+    //flag to see id the DataSend needs to be encrypted
+    private boolean isEncryptedStream;
+
+    // changed after receiving the Response, this will be in PENDING status in the stream store.
+    private StreamRecordStatus streamRecordStatus;
+
+    // recipient IP, set by the proxy after getting the stream Response
+    private String recipientIP;
+
+    // recipient Port,set by the proxy after getting the stream Response
+    private int recipientPort;
+
+    //path to the file
+    private File file;
+
+    //The receipient zirk end point
+    private BezirkZirkEndPoint recipientSEP;
+
+    //This is the seal
+    private String serializedStream;
+
     /* Streaming Status indicates the status of the Streams.
      * PENDING -  indicates the waiting to know the response
      * READY   -  indicating the recipient has agreed to receive the stream
      * BUSY    -  indicating the receipient is busy and the data cannot be streamed*/
-    public enum StreamingStatus {
+    public enum StreamRecordStatus {
         PENDING, READY, ADDRESSED, BUSY, LOCAL
     }
+
+    /**
+     * Empty Constructor
+     */
+    public StreamRecord(){
+        //empty constructor
+    }
+
+
+    /**
+     * Constructor with args
+     * @param sender
+     * @param recipient
+     * @param sphereId
+     * @param discriminator
+     * @param retransmit
+     * @param key
+     */
+    public StreamRecord(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereId,
+                        Discriminator discriminator, Boolean retransmit, String key){
+        super(sender, recipient, sphereId, discriminator,false, key);
+    }
+
+    public StreamRecordStatus getStreamRecordStatus() {
+        return streamRecordStatus;
+    }
+
+    public void setStreamRecordStatus(StreamRecordStatus streamRecordStatus) {
+        this.streamRecordStatus = streamRecordStatus;
+    }
+
+    public String getRecipientIP() {
+        return recipientIP;
+    }
+
+    public void setRecipientIP(String recipientIP) {
+        this.recipientIP = recipientIP;
+    }
+
+    public int getRecipientPort() {
+        return recipientPort;
+    }
+
+    public void setRecipientPort(int recipientPort) {
+        this.recipientPort = recipientPort;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public BezirkZirkEndPoint getRecipientSEP() {
+        return recipientSEP;
+    }
+
+    public void setRecipientSEP(BezirkZirkEndPoint recipientSEP) {
+        this.recipientSEP = recipientSEP;
+    }
+
+    public String getSerializedStream() {
+        return serializedStream;
+    }
+
+    public void setSerializedStream(String serializedStream) {
+        this.serializedStream = serializedStream;
+    }
+
+    public boolean isEncryptedStream() {
+        return isEncryptedStream;
+    }
+
+    public void setEncryptedStream(boolean encryptedStream) {
+        isEncryptedStream = encryptedStream;
+    }
+
 }

@@ -2,7 +2,7 @@ package com.bezirk.comms;
 
 import android.util.Log;
 
-import com.bezirk.processor.CommsProcessor;
+import com.bezirk.comms.processor.CommsProcessor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,24 +31,24 @@ class ZyreCommsHelper {
     void processEvent(String eventType, String peer, String peerGroup, String payload) {
         // A Zyre-enabled device enters the network
         if (eventType.equals("ENTER")) {
-            logger.info("peer (" + peer + ") entered network");
+            logger.debug("peer (" + peer + ") entered network");
 
         } else if (eventType.equals("WHISPER")) {
-            logger.info("data size > " + payload.length());
+           // logger.debug("data size > " + payload.length());
             commsProcessor.processWireMessage(peer, payload);
 
         } else if (eventType.equals("SHOUT")) {
-            logger.info("data size > " + payload.length());
+            //logger.debug("data size > " + payload.length());
             commsProcessor.processWireMessage(peer, payload);
 
         } else if (eventType.equals("JOIN")) {
             addPeer(peerGroup, peer);
-            logger.info("peer (" + peer + ") joined: " + peerGroup);
+            logger.debug("peer (" + peer + ") joined: " + peerGroup);
             logKnownDevices();
 
         } else if (eventType.equals("LEAVE")) {
             boolean success = removePeer(peerGroup, peer);
-            logger.info("peer (" + peer + ") left " + peerGroup + ":" + success);
+            logger.debug("peer (" + peer + ") left " + peerGroup + ":" + success);
             logKnownDevices();
 
         } else if (eventType.equals("EXIT")) {
@@ -67,21 +67,21 @@ class ZyreCommsHelper {
     Map<String, String> receive(Zyre zyre) {
         String incoming = zyre.recv();
 
-        ConcurrentMap<String, String> eventMap = new ConcurrentHashMap<String, String>();
+        ConcurrentMap<String, String> eventMap = new ConcurrentHashMap<>();
 
         if ((incoming == null) || incoming.isEmpty())
             return eventMap;
 
         if (Thread.interrupted()) {
             logger.warn("Interrupted during recv()");
-            logger.info("RecvThread exiting");
+            logger.debug("RecvThread exiting");
             return eventMap;
         }
         // Convert the incoming string into a Map
         eventMap = parseMsg(incoming);
 
         if (eventMap.isEmpty() || eventMap.get("event") == null) {
-            logger.info("event map has bytes. parse special : experimental ");
+            logger.debug("event map has bytes. parse special : experimental ");
             //  return parseMsgExt(incoming);// to be fixed
             return eventMap;
         }
@@ -97,7 +97,7 @@ class ZyreCommsHelper {
 
         String MSG_DELIM = "\\|";  // separates each part of the message
         int NUM_PARTS = 4;
-        ConcurrentMap<String, String> result = new ConcurrentHashMap<String, String>();
+        ConcurrentMap<String, String> result = new ConcurrentHashMap<>();
         List<String> pairs = Arrays.asList(msg.split(MSG_DELIM, NUM_PARTS));
 
         if (pairs.size() != NUM_PARTS) {
@@ -121,7 +121,7 @@ class ZyreCommsHelper {
         }
 
         if (result.get("event") == null) {
-            return new ConcurrentHashMap<String, String>();
+            return new ConcurrentHashMap<>();
         }
 
         return result;
@@ -136,7 +136,7 @@ class ZyreCommsHelper {
     boolean addPeer(String group, String zyreDeviceId) {
         List<String> deviceList = peers.get(group);
         if (deviceList == null) {
-            deviceList = new ArrayList<String>();
+            deviceList = new ArrayList<>();
             peers.put(group, deviceList);
         }
         return deviceList.add(zyreDeviceId);
@@ -163,11 +163,8 @@ class ZyreCommsHelper {
         peers.get(group);
         List<String> deviceList = peers.get(group);
 
-        if (deviceList == null) {
-            return false;
-        }
+        return deviceList != null && deviceList.remove(zyreDeviceId);
 
-        return deviceList.remove(zyreDeviceId);
     }
 
 }

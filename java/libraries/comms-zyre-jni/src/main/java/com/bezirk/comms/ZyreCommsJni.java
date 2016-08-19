@@ -1,11 +1,12 @@
 package com.bezirk.comms;
 
-import com.bezirk.processor.CommsProcessor;
+import com.bezirk.comms.processor.CommsProcessor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zyre.Zyre;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,13 +23,13 @@ public class ZyreCommsJni extends Thread {
     public static final String BEZIRK_GROUP = "BEZIRK_GROUP";
 
     static {
-        NativeUtils.loadLibs();
+        NativeUtils.loadNativeBinaries();
 
     }
 
     CommsProcessor commsProcessor;
     private Zyre zyre;
-    private Map<String, List<String>> peers = new HashMap<String, List<String>>();
+    private Map<String, List<String>> peers = new HashMap<>();
     private String group = BEZIRK_GROUP;
 
     public ZyreCommsJni(CommsProcessor commsProcessor) {
@@ -37,20 +38,31 @@ public class ZyreCommsJni extends Thread {
 
     }
 
+    public ZyreCommsJni(CommsProcessor commsProcessor, String group) {
+
+        this.commsProcessor = commsProcessor;
+
+        if(group != null) // on valid group name replace the default group name
+            this.group = group;
+
+    }
+
     /**
      * initialize the zyre
      */
     public boolean initZyre() {
 
-        zyre = new Zyre();
-        /*try{
+        //zyre = new Zyre();
+        try{
             zyre = new Zyre();
 		}
 		catch (UnsatisfiedLinkError e) {
 
-			logger.error("Unable to load zyre comms. ", e);
+			//logger.error("Unable to load zyre comms. ", e);
+            logger.error("Unable to load zyre libraries. \n" +
+                "Please refer http://developer.bezirk.com/documentation/installation_setup.php");
             return false;
-        }*/
+        }
         // create the zyre
         zyre.create();
 
@@ -101,13 +113,19 @@ public class ZyreCommsJni extends Thread {
     // send zyre whisper
     public boolean sendToAllZyre(byte[] msg, boolean isEvent) {
         // in zyre we are sending ctrl and event in same. isEvent is ignored
-        String data = new String(msg);
+        final String data;
+
+        try {
+            data = new String(msg, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw (AssertionError) new AssertionError("UTF-8 is not available on this system").initCause(e);
+        }
 
         if (zyre != null) {
 
             zyre.shout(getGroup(), data);
 
-            logger.debug("Multicast size : >> " + data.length());//+ " data >> " + data);
+           // logger.debug("Multicast size : >> " + data.length());//+ " data >> " + data);
 
             return true;
         }
@@ -117,9 +135,14 @@ public class ZyreCommsJni extends Thread {
 
     // send zyre whisper
     public boolean sendToOneZyre(byte[] msg, String nodeId, boolean isEvent) {
+        final String data;
 
-        // in zyre we are sending ctrl and event in same. isEvent is ignored
-        String data = new String(msg);
+        try {
+            data = new String(msg, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw (AssertionError) new AssertionError("UTF-8 is not available on this system").initCause(e);
+        }
+
         if (zyre != null) {
             //send to the specific node
             zyre.whisper(nodeId, data);
@@ -155,33 +178,36 @@ public class ZyreCommsJni extends Thread {
             String payload = eventMap.get("message");
 
             // A Zyre-enabled device enters the network
-            if (eventType.equals("ENTER")) {
-                handleEnter(peer);
-            }
-            // Message sent to a particular device
-            else if (eventType.equals("WHISPER")) {
-                handleWhisper(peer, payload);
-            }
-            // Message sent to all members of a group
-            else if (eventType.equals("SHOUT")) {
-                handleShout(peer, group, payload);
-            }
-            // A device joins a group
-            else if (eventType.equals("JOIN")) {
-                handleJoin(peer, group);
-                logKnownDevices();
-            }
-            // A device explicitly leaves a group
-            else if (eventType.equals("LEAVE")) {
-                handleLeave(peer, group);
-                logKnownDevices();
-            }
-            // A device exits the network
-            else if (eventType.equals("EXIT")) {
-                handleExit(peer);
-                logKnownDevices();
-            } else {
-                logger.debug("unknown event: " + eventType);
+            switch (eventType) {
+                case "ENTER":
+                    handleEnter(peer);
+                    break;
+                // Message sent to a particular device
+                case "WHISPER":
+                    handleWhisper(peer, payload);
+                    break;
+                // Message sent to all members of a group
+                case "SHOUT":
+                    handleShout(peer, group, payload);
+                    break;
+                // A device joins a group
+                case "JOIN":
+                    handleJoin(peer, group);
+                    logKnownDevices();
+                    break;
+                // A device explicitly leaves a group
+                case "LEAVE":
+                    handleLeave(peer, group);
+                    logKnownDevices();
+                    break;
+                // A device exits the network
+                case "EXIT":
+                    handleExit(peer);
+                    logKnownDevices();
+                    break;
+                default:
+                    logger.debug("unknown event: " + eventType);
+                    break;
             }
         }
     }
@@ -197,15 +223,8 @@ public class ZyreCommsJni extends Thread {
         if ((incoming == null) || incoming.isEmpty())
             return eventMap;
 
-        //logger.info("IN Size << " + incoming.length());//+" data << " +incoming);
-
-        if (incoming == null) {// Interrupted
-            logger.warn("Interrupted during recv()");
-            return eventMap;
-        }
-
         if (Thread.interrupted()) {
-            logger.info("RecvThread exiting");
+            logger.debug("RecvThread exiting");
             return eventMap;
         }
 
@@ -215,7 +234,7 @@ public class ZyreCommsJni extends Thread {
         eventMap = parseMsg(incoming);
 
         if (eventMap.isEmpty() || eventMap.get("event") == null) {
-            logger.info("event map has bytes. parse special : experimental ");
+            logger.debug("event map has bytes. parse special : experimental ");
             //  return parseMsgExt(incoming);// to be fixed
             return eventMap;
         }
@@ -233,7 +252,7 @@ public class ZyreCommsJni extends Thread {
         final String MSG_DELIM = "\\|";  // separates each part of the message
         final String KV_DELIM = "::";    // separates keys from values
         final int NUM_PARTS = 4;
-        HashMap<String, String> result = new HashMap<String, String>();
+        HashMap<String, String> result = new HashMap<>();
         List<String> pairs = Arrays.asList(msg.split(MSG_DELIM, NUM_PARTS));
 
         if (pairs.size() != NUM_PARTS) {
@@ -242,19 +261,17 @@ public class ZyreCommsJni extends Thread {
         }
 
         for (String pair : pairs) {
-            List<String> kv = Arrays.asList(pair.split("::", 2));
-            if (kv.size() == 0) {
-                // key and value are empty - do nothing
-            } else if (kv.size() == 1) {
+            List<String> kv = Arrays.asList(pair.split(KV_DELIM, 2));
+            if (kv.size() == 1) {
                 // value is null
                 result.put(kv.get(0), null);
-            } else {
+            } else if (kv.size() > 1) {
                 result.put(kv.get(0), kv.get(1));
             }
         }
 
         if (result.get("event") == null) {
-            return new HashMap<String, String>();
+            return new HashMap<>();
         }
 
         return result;
@@ -262,44 +279,41 @@ public class ZyreCommsJni extends Thread {
 
 
     private void logKnownDevices() {
-        for (String group : peers.keySet()) {
-            logger.debug("devices in " + group + " : " + peers.get(group));
+        for (Map.Entry<String, List<String>> entry : peers.entrySet()) {
+            if (logger.isDebugEnabled()) logger.debug("devices in {} : {} ", entry.getKey(),
+                    entry.getValue());
         }
     }
 
     private void handleEnter(String zyreDeviceId) {
-        logger.info("peer (" + zyreDeviceId + ") entered network");
+        logger.debug("peer (" + zyreDeviceId + ") entered network");
     }
 
     private void handleWhisper(String zyreDeviceId, String payload) {
 
-        //logger.info("peer (" + zyreDeviceId + ") Whisper to  " + zyreDeviceId + ": " + payload);
-        logger.info("data size > " + payload.length());
+        //logger.debug("peer (" + zyreDeviceId + ") Whisper to  " + zyreDeviceId + ": " + payload);
+        //logger.debug("data size > " + payload.length());
 
         commsProcessor.processWireMessage(zyreDeviceId, payload);
     }
 
     private void handleShout(String zyreDeviceId, String group, String payload) {
-
-
-        //logger.info("peer (" + zyreDeviceId + ") shouted to group " + group + ": " + payload);
-        logger.info("data size > " + payload.length());
-
+        //logger.debug("peer (" + zyreDeviceId + ") shouted to group " + group + ": " + payload);
+        //logger.debug("data size > " + payload.length());
 
         commsProcessor.processWireMessage(zyreDeviceId, payload);
-
 
     }
 
 
     private void handleJoin(String zyreDeviceId, String group) {
         addPeer(group, zyreDeviceId);
-        logger.info("peer (" + zyreDeviceId + ") joined: " + group);
+        logger.debug("peer (" + zyreDeviceId + ") joined: " + group);
     }
 
     private void handleLeave(String zyreDeviceId, String group) {
         boolean success = removePeer(group, zyreDeviceId);
-        logger.info("peer (" + zyreDeviceId + ") left " + group + ":" + success);
+        logger.debug("peer (" + zyreDeviceId + ") left " + group + ":" + success);
     }
 
     private void handleExit(String zyreDeviceId) {
@@ -310,7 +324,7 @@ public class ZyreCommsJni extends Thread {
     private boolean addPeer(String group, String zyreDeviceId) {
         List<String> deviceList = peers.get(group);
         if (deviceList == null) {
-            deviceList = new ArrayList<String>();
+            deviceList = new ArrayList<>();
             peers.put(group, deviceList);
         }
 
@@ -335,16 +349,10 @@ public class ZyreCommsJni extends Thread {
     }
 
     private boolean removePeer(String group, String zyreDeviceId) {
-        peers.get(group);
         List<String> deviceList = peers.get(group);
 
-        if (deviceList == null) {
-            return false;
-        }
-
-        return deviceList.remove(zyreDeviceId);
+        return deviceList != null && deviceList.remove(zyreDeviceId);
     }
-
 
     public String getGroup() {
         return group;

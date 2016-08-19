@@ -12,7 +12,7 @@ import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.Header;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.MulticastHeader;
-import com.bezirk.pipe.core.PipeManager;
+import com.bezirk.pipe.PipeManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,7 +107,7 @@ public class EventSenderThread implements Runnable {
             }
             return false;
         }
-        logger.info("SADL failed to send the Msg, May be the msg is local");
+        logger.info("PubSubBroker failed to send the Msg, May be the msg is local");
         return false;
     }
 

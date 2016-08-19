@@ -1,22 +1,25 @@
 package com.bezirk.proxy.api.impl;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 public final class ZirkId implements Serializable {
-    private final String xirkId;
+    private final String zirkId;
     private String bezirkEventId;
 
-    public ZirkId(String zirkId) {
-        this.xirkId = zirkId;
+    public ZirkId(@NotNull String zirkId) {
+        this.zirkId = zirkId;
     }
 
-    public ZirkId(String zirkId, String bezirkEventId) {
-        this.xirkId = zirkId;
+    public ZirkId(@NotNull String zirkId, String bezirkEventId) {
+        this.zirkId = zirkId;
         this.bezirkEventId = bezirkEventId;
     }
 
+    @NotNull
     public String getZirkId() {
-        return xirkId;
+        return zirkId;
     }
 
     public String getBezirkEventId() {
@@ -26,7 +29,7 @@ public final class ZirkId implements Serializable {
     @Override
     public String toString() {
         return "ZirkId{" +
-                "xirkId='" + xirkId + '\'' +
+                "zirkId='" + zirkId + '\'' +
                 "bezirkEventId='" + bezirkEventId + '\'' +
                 '}';
     }
@@ -38,7 +41,7 @@ public final class ZirkId implements Serializable {
         result = prime * result
                 + ((bezirkEventId == null) ? 0 : bezirkEventId.hashCode());
         result = prime * result
-                + ((xirkId == null) ? 0 : xirkId.hashCode());
+                + ((zirkId == null) ? 0 : zirkId.hashCode());
         return result;
     }
 
@@ -56,10 +59,10 @@ public final class ZirkId implements Serializable {
                 return false;
         } else if (!bezirkEventId.equals(other.bezirkEventId))
             return false;
-        if (xirkId == null) {
-            if (other.xirkId != null)
+        if (zirkId == null) {
+            if (other.zirkId != null)
                 return false;
-        } else if (!xirkId.equals(other.xirkId))
+        } else if (!zirkId.equals(other.zirkId))
             return false;
         return true;
     }

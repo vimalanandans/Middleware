@@ -5,7 +5,7 @@ import com.bezirk.comms.BezirkCommunications;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.comms.udp.validation.MessageValidators;
 import com.bezirk.control.messages.EventLedger;
-import com.bezirk.network.BezirkNetworkUtilities;
+import com.bezrik.network.BezirkNetworkUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

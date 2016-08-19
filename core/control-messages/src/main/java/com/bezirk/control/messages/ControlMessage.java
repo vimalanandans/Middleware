@@ -11,8 +11,9 @@ public class ControlMessage {
     private Integer messageId = -1; //message Id check if used
     private Discriminator discriminator;
     private String uniqueKey = "";
-    private Boolean retransmit = true;
+   // private Boolean retransmit = true;
     private BezirkZirkEndPoint sender;
+
     public ControlMessage() {
         // Empty Constructor required for gson.fromJson
     }
@@ -33,7 +34,7 @@ public class ControlMessage {
         this.messageId = GenerateMsgId.generateCtrlId();
         this.discriminator = discriminator;
         this.uniqueKey = key;
-        this.retransmit = retransmit;
+     //   this.retransmit = retransmit;
     }
 
     /**
@@ -50,7 +51,7 @@ public class ControlMessage {
         this.sphereId = sphereId;
         this.messageId = GenerateMsgId.generateCtrlId();
         this.discriminator = discriminator;
-        this.retransmit = retransmit;
+    //    this.retransmit = retransmit;
         //Auto-Generate Unique Key
         this.uniqueKey = sender.device + ":" + sphereId + ":" + this.messageId;
     }
@@ -72,9 +73,9 @@ public class ControlMessage {
      *
      * @return true if msg is to be retransmitted
      */
-    public Boolean getRetransmit() {
-        return retransmit;
-    }
+//    public Boolean getRetransmit() {
+//        return retransmit;
+//    }
 
     /**
      * For requests: this key must be used to Hash Requests that are pending and also to map duplicates
@@ -118,6 +119,10 @@ public class ControlMessage {
      */
     public BezirkZirkEndPoint getSender() {
         return sender;
+    }
+
+    public void setSphereId(String sphereId) {
+        this.sphereId = sphereId;
     }
 
     /**

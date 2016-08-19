@@ -1,6 +1,6 @@
 package com.bezirk.comms;
 
-import com.bezirk.processor.WireMessage;
+import com.bezirk.comms.processor.WireMessage;
 
 import org.junit.Test;
 

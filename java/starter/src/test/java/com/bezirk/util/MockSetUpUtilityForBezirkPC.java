@@ -1,34 +1,33 @@
 package com.bezirk.util;
 
-import com.bezirk.commons.BezirkCompManager;
-import com.bezirk.comms.BezirkComms;
-import com.bezirk.comms.BezirkCommsPC;
+import com.bezirk.comms.Comms;
 import com.bezirk.comms.CommsNotification;
-import com.bezirk.device.BezirkDevice;
-import com.bezirk.device.BezirkDeviceType;
-import com.bezirk.devices.BezirkDeviceInterface;
-import com.bezirk.persistence.BezirkRegistry;
-import com.bezirk.persistence.DBConstants;
+import com.bezirk.datastorage.PersistenceConstants;
+import com.bezirk.datastorage.PersistenceRegistry;
+import com.bezirk.datastorage.PubSubBrokerStorage;
+import com.bezirk.datastorage.RegistryStorage;
+import com.bezirk.datastorage.SpherePersistence;
+import com.bezirk.datastorage.SphereRegistry;
+import com.bezirk.device.Device;
+import com.bezirk.device.JavaDevice;
+import com.bezirk.networking.JavaNetworkManager;
+import com.bezirk.networking.NetworkManager;
 import com.bezirk.persistence.DatabaseConnectionForJava;
-import com.bezirk.persistence.RegistryPersistence;
-import com.bezirk.persistence.SadlPersistence;
-import com.bezirk.persistence.SpherePersistence;
-import com.bezirk.persistence.SphereRegistry;
-import com.bezirk.sadl.BezirkSadlManager;
-import com.bezirk.sphere.api.BezirkDevMode;
-import com.bezirk.sphere.api.BezirkSphereListener;
-import com.bezirk.sphere.api.BezirkSphereRegistration;
-import com.bezirk.sphere.api.ISphereConfig;
-import com.bezirk.sphere.impl.BezirkSphere;
+import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.sphere.api.DevMode;
+import com.bezirk.sphere.api.SphereConfig;
+import com.bezirk.sphere.api.SphereListener;
 import com.bezirk.sphere.impl.JavaPrefs;
 import com.bezirk.sphere.security.CryptoEngine;
-import com.bezirk.network.BezirkNetworkUtilities;
+import com.bezirk.streaming.StreamManager;
+import com.bezirk.streaming.Streaming;
 import com.j256.ormlite.table.TableUtils;
 
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -46,64 +45,84 @@ public class MockSetUpUtilityForBezirkPC {
     private final static Logger logger = LoggerFactory.getLogger(MockSetUpUtilityForBezirkPC.class);
 
     private static final String DBPath = "./";
-    private static final String DBVersion = DBConstants.DB_VERSION;
+    private static final String DBVersion = PersistenceConstants.DB_VERSION;
     private static InetAddress inetAddr;
-    BezirkSadlManager bezirkSadlManager = null;
-    SadlPersistence sadlPersistence;
+    PubSubBroker pubSubBroker = null;
+    PubSubBrokerStorage pubSubBrokerStorage;
     SpherePersistence spherePersistence;
-    BezirkDevice upaDevice;
+    Device upaDevice;
     CryptoEngine cryptoEngine;
     SphereRegistry sphereRegistry;
-    BezirkComms bezirkComms;
-    ISphereConfig sphereConfig;
+    Comms comms;
+    SphereConfig sphereConfig;
     private DatabaseConnectionForJava dbConnection;
-    private RegistryPersistence regPersistence;
+    private RegistryStorage regPersistence;
+    NetworkManager networkManager;
 
     public void setUPTestEnv() throws IOException, SQLException,
             Exception {
-
+        networkManager = new JavaNetworkManager();
         dbConnection = new DatabaseConnectionForJava(DBPath);
-        regPersistence = new RegistryPersistence(
+        regPersistence = new RegistryStorage(
                 dbConnection, DBVersion);
 
         inetAddr = getInetAddress();
-        BezirkCommsPC.init();
+
 
         spherePersistence = (SpherePersistence) regPersistence;
         sphereRegistry = new SphereRegistry();
         cryptoEngine = new CryptoEngine(sphereRegistry);
-        sadlPersistence = (SadlPersistence) regPersistence;
-        bezirkSadlManager = new BezirkSadlManager(sadlPersistence);
+        pubSubBrokerStorage = (PubSubBrokerStorage) regPersistence;
+        setUpUpaDevice();
+
         //sphereConfig = new SphereProperties();
         sphereConfig = new JavaPrefs();
         sphereConfig.init();
 
 
-        bezirkComms = new MockComms();
-        bezirkComms.initComms(null, inetAddr, bezirkSadlManager, null);
-        bezirkSadlManager.initSadlManager(bezirkComms);
-        bezirkComms.registerNotification(Mockito.mock(CommsNotification.class));
-        bezirkComms.startComms();
+        comms = new MockComms();
+        Streaming streamManager = new StreamManager(comms, /*pubSubBroker, getStreamDownloadPath(), */ networkManager);
+        //comms.initComms(null, inetAddr, null, streamManager);
 
-        setUpUpaDevice();
-        BezirkSphere bezirkSphere = new BezirkSphere(cryptoEngine, upaDevice, sphereRegistry);
-        BezirkSphereListener sphereListener = Mockito.mock(BezirkSphereListener.class);
-        bezirkSphere.initSphere(spherePersistence, bezirkComms, sphereListener, sphereConfig);
-        BezirkCompManager.setSphereRegistration((BezirkSphereRegistration) bezirkSphere);
-        BezirkCompManager.setSphereForSadl(bezirkSphere);
-        BezirkCompManager.setplatformSpecificCallback(new MockCallbackZirk());
+        comms.registerNotification(Mockito.mock(CommsNotification.class));
+        //comms.startComms();
+
+        pubSubBroker = new PubSubBroker(pubSubBrokerStorage, upaDevice, networkManager, comms, new MockCallback(), null, null, streamManager);
+
+        // SphereServiceManager bezirkSphere = new SphereServiceManager(cryptoEngine, upaDevice, sphereRegistry);
+        SphereListener sphereListener = Mockito.mock(SphereListener.class);
+        //bezirkSphere.initSphere(spherePersistence, comms, sphereListener, sphereConfig);
+
+        //pubSubBroker.initPubSubBroker(comms,new MockCallback(),bezirkSphere,bezirkSphere);
+        //pubSubBroker.initPubSubBroker(comms, new MockCallback(), null, null);
     }
 
+    String getStreamDownloadPath() {
+        String downloadPath;
+        // port factory is part of comms manager
+        // CommsConfigurations.portFactory = new
+        // StreamPortFactory(CommsConfigurations.STARTING_PORT_FOR_STREAMING,
+        // CommsConfigurations.ENDING_PORT_FOR_STREAMING); // initialize the
+        // StreamPortFactory
+
+        downloadPath = File.separator + new String("downloads") + File.separator;
+        final File createDownloadFolder = new File(
+                downloadPath);
+        if (!createDownloadFolder.exists()) {
+            if (!createDownloadFolder.mkdir()) {
+                logger.error("Failed to create download direction: {}",
+                        createDownloadFolder.getAbsolutePath());
+            }
+        }
+        return downloadPath;
+    }
 
     /**
      * @throws UnknownHostException
      */
     private void setUpUpaDevice() throws UnknownHostException {
-        upaDevice = new BezirkDevice();
-        String deviceIdString = InetAddress.getLocalHost().getHostName();
-        upaDevice.initDevice(deviceIdString,
-                BezirkDeviceType.BEZIRK_DEVICE_TYPE_PC);
-        BezirkCompManager.setUpaDevice(upaDevice);
+        upaDevice = new JavaDevice();
+
     }
 
     public NetworkInterface getInterface() {
@@ -137,9 +156,9 @@ public class MockSetUpUtilityForBezirkPC {
         try {
 
             NetworkInterface intf = getInterface();
-            if (BezirkValidatorUtility.isObjectNotNull(intf)) {
+            if (ValidatorUtility.isObjectNotNull(intf)) {
 
-                return BezirkNetworkUtilities.getIpForInterface(intf);
+                return networkManager.getIpForInterface(intf);
 
             }
 
@@ -151,21 +170,21 @@ public class MockSetUpUtilityForBezirkPC {
         return null;
     }
 
-    public RegistryPersistence getRegistryPersistence() {
+    public RegistryStorage getRegistryPersistence() {
 
         return regPersistence;
     }
 
-    public BezirkComms getBezirkComms() {
+    public Comms getComms() {
 
-        return bezirkComms;
+        return comms;
     }
 
-    public BezirkSadlManager getBezirkSadlManager() throws UnknownHostException {
-        return bezirkSadlManager;
+    public PubSubBroker getPubSubBroker() throws UnknownHostException {
+        return pubSubBroker;
     }
 
-    public BezirkDeviceInterface getUpaDevice() {
+    public Device getUpaDevice() {
 
         return upaDevice;
     }
@@ -173,17 +192,11 @@ public class MockSetUpUtilityForBezirkPC {
 
     public void destroyTestSetUp() throws SQLException,
             IOException, Exception {
-        bezirkComms.stopComms();
-        bezirkComms.closeComms();
         regPersistence.clearPersistence();
 
-        BezirkCompManager.setSphereRegistration(null);
-        BezirkCompManager.setSphereForSadl(null);
-        BezirkCompManager.setplatformSpecificCallback(null);
-        BezirkCompManager.setUpaDevice(null);
 
         TableUtils.dropTable(dbConnection.getDatabaseConnection(),
-                BezirkRegistry.class, true);
+                PersistenceRegistry.class, true);
     }
 
     /**
@@ -192,6 +205,6 @@ public class MockSetUpUtilityForBezirkPC {
      * @return 2 if development sphere is on, 1 otherwise.
      */
     public int getTotalSpheres() {
-        return (sphereConfig.getMode().equals(BezirkDevMode.Mode.ON)) ? 2 : 1;
+        return (sphereConfig.getMode().equals(DevMode.Mode.ON)) ? 2 : 1;
     }
 }
