@@ -38,11 +38,11 @@ class ZyreCommsHelper {
             logger.debug("peer (" + peer + ") entered network");
 
         } else if (eventType.equals("WHISPER")) {
-           // logger.debug("data size > " + payload.length());
+            logger.debug("Whisper -> data size > " + payload.length());
             commsProcessor.processWireMessage(peer, payload);
 
         } else if (eventType.equals("SHOUT")) {
-            //logger.debug("data size > " + payload.length());
+            logger.debug("Shout -> data size > " + payload.length());
             commsProcessor.processWireMessage(peer, payload);
 
         } else if (eventType.equals("JOIN")) {

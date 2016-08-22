@@ -45,7 +45,7 @@ public interface RemoteLog {
     /** send the control message to logging */
     boolean sendRemoteLogControlMessage(ControlMessage msg) ;
 
-    boolean enableRemoteLogging(boolean enableForAllSphere);
+    boolean enableRemoteLoggingForAllSpheres();
 
     /** send the event message to logging */
    // boolean sendRemoteLogMessage(EventLedger eLedger) ;

@@ -23,6 +23,16 @@ import java.util.Date;
  */
 public  class RemoteLoggingManager implements RemoteLog {
 
+    private boolean remoteLoggingForAllSpheres = false;
+
+    public boolean isRemoteLoggingForAllSpheres() {
+        return remoteLoggingForAllSpheres;
+    }
+
+    public void setRemoteLoggingForAllSpheres(boolean remoteLoggingForAllSpheres) {
+        this.remoteLoggingForAllSpheres = remoteLoggingForAllSpheres;
+    }
+
     /**
      * RemoteLoggingService
      */
@@ -111,8 +121,11 @@ public  class RemoteLoggingManager implements RemoteLog {
         return sendLoggingeMsgToClients;
     }
     @Override
-    public boolean enableRemoteLogging(boolean enableForAllSphere) {
-      return true;
+    public boolean enableRemoteLoggingForAllSpheres()
+    {
+     boolean remoteLogValue = isRemoteLoggingForAllSpheres();
+        logger.debug("remoteLogValue is "+remoteLogValue);
+        return  remoteLogValue;
     }
     @Override
     public boolean isRemoteLoggingEnabled() {

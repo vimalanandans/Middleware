@@ -60,7 +60,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     RemoteLoggingMessageNotification remoteLoggingMessageNotification;
     Streaming streamManger;
     MessageHandler msgHandler;
-    private boolean checkEnableForAllSphere = false;
+    private boolean checkEnableValueForAllSphere = false;
 
     public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager, Comms comms, MessageHandler msgHandler,
                         SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity, Streaming streamManger,RemoteLog remoteLogging,RemoteLoggingMessage remoteLoggingMessage,RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
@@ -425,9 +425,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         }
         if(null!=remoteLog){
             logger.debug("remoteLog is not null in PubSubBroker");
-
-            checkEnableForAllSphere =  remoteLog.enableRemoteLogging(checkEnableForAllSphere);
-            if(checkEnableForAllSphere){
+            checkEnableValueForAllSphere =  remoteLog.enableRemoteLoggingForAllSpheres();
+            logger.debug("checkEnableForAllSphere in PubSubBroker is "+checkEnableValueForAllSphere);
+            if(checkEnableValueForAllSphere){
                 boolean remoteLogging = remoteLog.sendRemoteLogLedgerMessage(eLedger);
                 logger.debug("remoteLogging is "+remoteLogging);
 
