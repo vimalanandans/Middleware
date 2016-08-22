@@ -11,7 +11,10 @@ import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.middleware.identity.IdentityManager;
+import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.proxy.ProxyServer;
+
+import java.io.File;
 
 public class AndroidProxyServer extends ProxyServer {
     private static final String TAG = AndroidProxyServer.class.getName();
@@ -67,6 +70,13 @@ public class AndroidProxyServer extends ProxyServer {
         Log.v(TAG, "Stream to unicast from Zirk");
 
         SendFileStreamAction streamAction = (SendFileStreamAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM.getName());
+
+        Boolean isEncrypt = (Boolean)intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_ENCRYPT.getName());
+        Boolean isincremental= (Boolean)intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_INCREMENTAL.getName());
+        File file = (File)intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_FILE.getName());
+
+        StreamDescriptor streamDescriptor  = new StreamDescriptor(isincremental, isEncrypt, file, streamAction.getStreamActionName());
+        streamAction.setDescriptor(streamDescriptor);
 
         super.sendStream(streamAction);
     }

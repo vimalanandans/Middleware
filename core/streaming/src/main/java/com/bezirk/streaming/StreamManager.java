@@ -156,11 +156,11 @@ public class StreamManager implements Streaming, ActiveStream {
         final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":"+ streamAction.getStreamId();
         final StreamRecord streamRecord = new StreamRecord(senderSEP, receiver, null, ControlMessage.Discriminator.StreamRequest, false ,streamRequestKey);
 
-        streamRecord.setEncryptedStream(streamAction.getDescriptor().isEncrypted());
+        streamRecord.setEncryptedStream(streamAction.isEncrypted());
         streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.PENDING);
         streamRecord.setRecipientIP(receiver.device);
         streamRecord.setRecipientPort(0);
-        streamRecord.setFile(streamAction.getFile());
+        streamRecord.setFile(streamAction.getDescriptor().getFile());
         streamRecord.setSerializedStream(streamAction.getDescriptor().toJson());
         return streamRecord;
     }

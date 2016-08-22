@@ -13,6 +13,6 @@ public class StreamSend extends StreamDescriptor {
     private File file;*/
 
     public StreamSend(boolean isIncremental, boolean isEncrypted, File file) {
-        super(isIncremental, isEncrypted, file);
+        super(isIncremental, isEncrypted, file, StreamSend.class.getCanonicalName());
     }
 }

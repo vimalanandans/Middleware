@@ -2,6 +2,7 @@ package com.bezirk.android;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.bezirk.android.subscriber.R;
 import com.bezirk.middleware.Bezirk;
@@ -34,11 +35,10 @@ public class StreameReceiverActivity extends AppCompatActivity {
         receiverStreamSet.setStreamReceiver(new StreamSet.StreamReceiver() {
             @Override
             public void receiveStream(StreamDescriptor streamDescriptor, Object streamContents, ZirkEndPoint sender) {
-                if(streamDescriptor instanceof StreamSend){
+                if(streamDescriptor.getStreamActionName().equals(StreamSend.class.getCanonicalName())){
 
                     //reply to the sender StreamPublishEvent
-                    StreamPublishEvent streamPublishEvent = new StreamPublishEvent("stream");
-                    bezirk.sendEvent(sender,streamPublishEvent);
+                    Toast.makeText(getApplicationContext(), "Received file with path "+streamDescriptor.getFile().getPath(),Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -83,9 +83,10 @@ public class StreamingActivity extends AppCompatActivity {
                 if(filePath != null){
                     File file = new File(filePath);
                     StreamSend streamSend = new StreamSend(false,isEncrypted,file);
+                    bezirk.sendStream(recipientEndpoint, streamSend);
 
                     //StreamDescriptor streamDescriptor = new StreamDescriptor(false, false, file);
-                    bezirk.sendStream(recipientEndpoint, streamSend);
+                    //bezirk.sendStream(recipientEndpoint, streamDescriptor);
 
                 }else{
                     Toast.makeText(getApplicationContext(), "file path is null.. Select the File and send", Toast.LENGTH_SHORT).show();

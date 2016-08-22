@@ -89,7 +89,8 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
     private void processStream(ReceiveFileStreamAction streamMessage) {
         final StreamDescriptor streamDescriptor =
                 (StreamDescriptor) Message.fromJson(streamMessage.getSerializedStream());
-        final String streamName = streamDescriptor.getClass().getName();
+        //final String streamName = streamDescriptor.getClass().getName();
+        final String streamName = streamDescriptor.getStreamActionName();
 
         if (ProxyClient.streamListenerMap.containsKey(streamName)) {
             final List<StreamSet.StreamReceiver> messageListeners = ProxyClient.streamListenerMap.get(streamName);
