@@ -7,12 +7,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bezirk.android.bezirkAsALibrary.R;
-import com.bezirk.componentManager.AppManager;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.proxy.android.BezirkMiddleware;
+import com.bezirk.proxy.Config;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.test.AirQualityUpdateEvent;
 import com.bezirk.test.HouseInfoEventSet;
@@ -34,18 +34,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnIntegratedApp(View view) {
-
         tv.setText("Publisher + Subscriber Integrated with Bezirk");
         tv.setMovementMethod(new ScrollingMovementMethod());
 
-        // Start Bezirk as part of the publisher
-        AppManager.getAppManager().startBezirk(this,true,"Integrated Bezirk",null);
+        Config config = new Config();
+        config.setAppName("Integrated Bezirk");
+        BezirkMiddleware.setConfig(config);
+
+        BezirkMiddleware.initialize(this);
 
         senderZirk();
-
         receiverZirk();
-
-
     }
 
     public void OnStandaloneApp(View view) {
@@ -60,12 +59,13 @@ public class MainActivity extends AppCompatActivity {
     public void onClearClick(View view) {
 
         tv.setText("");
-        AppManager.getAppManager().stopBezirk(this);
+        //AppManager.getAppManager().stopBezirk(this);
+        BezirkMiddleware.stop();
 
     }
 
     private void receiverZirk() {
-        final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Receiver Zirk");
+        final Bezirk bezirk = BezirkMiddleware.registerZirk("Receiver Zirk");
 
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
 
@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof AirQualityUpdateEvent) {
                     AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
-                    BezirkZirkEndPoint endPoint = (BezirkZirkEndPoint)sender;
+                    BezirkZirkEndPoint endPoint = (BezirkZirkEndPoint) sender;
 
-                    updateDisplay("\n"+endPoint.device+" >> Received air quality update: " + aqUpdate.toString());
+                    updateDisplay("\n" + endPoint.device + " >> Received air quality update: " + aqUpdate.toString());
                     //do something in response to this event
                     if (aqUpdate.humidity > 0.7) {
                         updateDisplay("\nHumidity is high - recommend turning on the dehumidifier.");
@@ -95,8 +95,7 @@ public class MainActivity extends AppCompatActivity {
         bezirk.subscribe(houseEvents);
     }
 
-    private void updateDisplay(String display)
-    {
+    private void updateDisplay(String display) {
         display = display + tv.getText();
         tv.setText(display);
 
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     private void senderZirk() {
 
 
-        final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Sender Zirk");
+        final Bezirk bezirk = BezirkMiddleware.registerZirk("Sender Zirk");
 
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
 
@@ -114,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
-                    BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint)sender;
+                    BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) sender;
 
                     tv.append("\nReceived from >> " + endpoint.device +
                             " UpdateAcceptedEvent with test field: " + acceptedEventUpdate.getTestField() +
@@ -141,5 +140,11 @@ public class MainActivity extends AppCompatActivity {
                 //updateDisplay("Published air quality update: " + airQualityUpdateEvent.toString());
             }
         }, 0, 5000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BezirkMiddleware.stop();
     }
 }

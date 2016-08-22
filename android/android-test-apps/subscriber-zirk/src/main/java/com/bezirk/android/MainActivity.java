@@ -12,6 +12,7 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.proxy.android.BezirkMiddleware;
+import com.bezirk.proxy.Config;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.test.AirQualityUpdateEvent;
 import com.bezirk.test.HouseInfoEventSet;
@@ -35,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void receiverZirk() {
-        final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Receiver Zirk");
+
+        //BezirkMiddleware.initialize(this);
+        final Bezirk bezirk = BezirkMiddleware.registerZirk(getApplicationContext(), "Subscriber Zirk");
 
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
 
@@ -44,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof AirQualityUpdateEvent) {
                     AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
-                    BezirkZirkEndPoint endPoint = (BezirkZirkEndPoint)sender;
+                    BezirkZirkEndPoint endPoint = (BezirkZirkEndPoint) sender;
 
-                    updateDisplay("\n"+endPoint.device+" >> Received air quality update: " + aqUpdate.toString());
+                    updateDisplay("\n" + endPoint.device + " >> Received air quality update: " + aqUpdate.toString());
                     //do something in response to this event
                     if (aqUpdate.humidity > 0.7) {
                         updateDisplay("\nHumidity is high - recommend turning on the dehumidifier.");
@@ -65,10 +68,15 @@ public class MainActivity extends AppCompatActivity {
         bezirk.subscribe(houseEvents);
     }
 
-    private void updateDisplay(String display)
-    {
+    private void updateDisplay(String display) {
         display = display + tv.getText();
         tv.setText(display);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BezirkMiddleware.stop();
     }
 }

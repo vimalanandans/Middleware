@@ -29,6 +29,8 @@ import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.proxy.api.impl.ZirkId;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.PipedOutputStream;
 import java.util.ArrayList;
@@ -53,47 +55,44 @@ public final class ProxyClient implements Bezirk {
     private final IdentityManager identityManager;
     private short streamFactory;
 
-    public ProxyClient(Context context, ZirkId zirkId) {
-        ProxyClient.context = context;
+    public ProxyClient(ZirkId zirkId) {
+        //ProxyClient.context = context;
 
         // Bind to remote identity management service
-        Intent intent = new Intent();
-        intent.setComponent(RECEIVING_COMPONENT);
+//        Intent intent = new Intent();
+//        intent.setComponent(RECEIVING_COMPONENT);
 //        boolean boundService = context.bindService(intent,
 //                ClientIdentityManagerAdapter.remoteConnection, Context.BIND_AUTO_CREATE);
-        //Log.d(TAG, "Binding to identity management service status: "+ boundService);
+//        Log.d(TAG, "Binding to identity management service status: "+ boundService);
 
         this.zirkId = zirkId;
         this.identityManager = new ClientIdentityManagerAdapter();
     }
 
-    private static boolean sendBezirkIntent(ZirkAction action) {
-        return sendBezirkIntent(context, action);
-    }
+//    private static boolean sendBezirkIntent(ZirkAction action) {
+//        final Intent intent = new Intent();
+//
+//        // get the component name from the app manager. in case of single app it is the same which
+//        // is created during app manager create. else it returns the default
+//        ComponentName name = new ComponentName(context.getPackageName(), SERVICE_PKG_NAME);
+//        intent.setComponent(name );
+//
+//        final String actionName = action.getAction().getName();
+//        intent.setAction(actionName);
+//        intent.putExtra(actionName, action);
+//
+//        if (context.startService(intent) == null) {
+//            Log.e(TAG, "Failed to send intent for action: " + actionName +
+//                    ". Is the middleware running?");
+//
+//            return false;
+//        }
+//
+//        return true;
+//    }
 
-    private static boolean sendBezirkIntent(Context context, ZirkAction action) {
-        final Intent intent = new Intent();
-
-        // get the component name from the app manager. in case of single app it is the same which
-        // is created during app manager create. else it returns the default
-        ComponentName name = new ComponentName(AppManager.getAppManager().getComponentName(), SERVICE_PKG_NAME);
-        intent.setComponent(name );
-
-        final String actionName = action.getAction().getName();
-        intent.setAction(actionName);
-        intent.putExtra(actionName, action);
-
-        if (context.startService(intent) == null) {
-            Log.e(TAG, "Failed to send intent for action: " + actionName +
-                    ". Is the middleware running?");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    public static ZirkId registerZirk(Context context, final String zirkName) {
+    public static ZirkId registerZirk(@NotNull final Context context, final String zirkName) {
+        ProxyClient.context = context;
         if (zirkName == null) {
             throw new IllegalArgumentException("Cannot register a Zirk with a null name");
         }
@@ -113,7 +112,7 @@ public final class ProxyClient implements Bezirk {
 
         final ZirkId zirkId = new ZirkId(zirkIdAsString);
 
-        if (sendBezirkIntent(context, new RegisterZirkAction(zirkId, zirkName))) {
+        if (ServiceManager.sendBezirkIntent(new RegisterZirkAction(zirkId, zirkName))) {
             Log.d(TAG, "Registered Zirk: " + zirkName);
             return zirkId;
         }
@@ -152,7 +151,7 @@ public final class ProxyClient implements Bezirk {
                     messageSet.getClass().getSimpleName());
         }
 
-        sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE, zirkId, messageSet));
+        ServiceManager.sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE, zirkId, messageSet));
     }
 
     private void addMessagesToMap(MessageSet messageSet, Map<String,
@@ -193,7 +192,7 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public boolean unsubscribe(final MessageSet messageSet) {
-        return sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId,
+        return ServiceManager.sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId,
                 messageSet));
     }
 
@@ -204,13 +203,13 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
-        sendBezirkIntent(new SendMulticastEventAction(zirkId, recipient, event,
+        ServiceManager.sendBezirkIntent(new SendMulticastEventAction(zirkId, recipient, event,
                 (event instanceof IdentifiedEvent)));
     }
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
-        sendBezirkIntent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
+        ServiceManager.sendBezirkIntent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
                 zirkId, recipient, event, (event instanceof IdentifiedEvent)));
     }
 
@@ -225,12 +224,12 @@ public final class ProxyClient implements Bezirk {
 
         activeStreams.put(streamId, streamDescriptor.getClass().getName());
 
-        sendBezirkIntent(new SendFileStreamAction(zirkId, recipient, streamDescriptor, file));
+        ServiceManager.sendBezirkIntent(new SendFileStreamAction(zirkId, recipient, streamDescriptor, file));
     }
 
     @Override
     public void setLocation(Location location) {
-        sendBezirkIntent(new SetLocationAction(zirkId, location));
+        ServiceManager.sendBezirkIntent(new SetLocationAction(zirkId, location));
     }
 
     @Override

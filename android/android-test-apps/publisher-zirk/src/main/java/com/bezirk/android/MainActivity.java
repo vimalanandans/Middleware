@@ -11,6 +11,8 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.proxy.android.BezirkMiddleware;
+import com.bezirk.middleware.proxy.android.ServiceManager;
+import com.bezirk.proxy.Config;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.test.AirQualityUpdateEvent;
 import com.bezirk.test.HouseInfoEventSet;
@@ -36,8 +38,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void senderZirk() {
-        final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Sender Zirk");
 
+        //BezirkMiddleware.initialize(this);
+        //final Bezirk bezirk = BezirkMiddleware.registerZirk("Publisher Zirk");
+
+        final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Publisher Zirk");
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
 
         houseEvents.setEventReceiver(new EventSet.EventReceiver() {
@@ -72,5 +77,11 @@ public class MainActivity extends AppCompatActivity {
                 //updateDisplay("Published air quality update: " + airQualityUpdateEvent.toString());
             }
         }, 0, 5000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BezirkMiddleware.stop();
     }
 }

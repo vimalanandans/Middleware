@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.componentManager.AppManager;
+import com.bezirk.middleware.proxy.android.BezirkMiddleware;
 import com.bezirk.util.BezirkVersion;
 import com.bezirk.util.ValidatorUtility;
 
@@ -98,7 +98,7 @@ class ControlActivityHelper {
                 controlActivity.startActivity(intent);
                 break;
             case 1: // Spheres
-               // intent = new Intent(controlActivity, SphereListActivity.class);
+                // intent = new Intent(controlActivity, SphereListActivity.class);
                 //controlActivity.startActivity(intent);
                 break;
             case 2:
@@ -193,9 +193,9 @@ class ControlActivityHelper {
         serviceIntent.setAction("START_BEZIRK");
         activity.startService(serviceIntent);
      */
-        AppManager bezirkApp = AppManager.getAppManager();
-        bezirkApp.startBezirk(activity, true, "Bezirk",null);
-
+        //AppManager bezirkApp = AppManager.getAppManager();
+        //bezirkApp.startBezirk(activity, true, "Bezirk",null);
+        BezirkMiddleware.initialize(activity);
         // register a broadcast receiver
         controlActivity.registerReceiver(systemStatusBroadcastReceiver, new IntentFilter(BR_SYSTEM_STATUS_ACTION));
     }

@@ -3,6 +3,8 @@ package com.bezirk.componentManager;
 import android.content.Intent;
 
 import com.bezirk.actions.BezirkAction;
+import com.bezirk.actions.StartServiceAction;
+import com.bezirk.actions.StopServiceAction;
 import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.util.ValidatorUtility;
 
@@ -23,7 +25,7 @@ public final class ActionProcessor {
     /**
      * Process BezirkAction based on action type.
      */
-    public void processBezirkAction(Intent intent, AndroidProxyServer ProxyService, ComponentManager.LifeCycleCallbacks lifeCycleCallbacks) {
+    public void processBezirkAction(Intent intent, AndroidProxyServer ProxyService, LifeCycleCallbacks lifeCycleCallbacks) {
 
         BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
 
@@ -35,7 +37,6 @@ public final class ActionProcessor {
 
             switch (actionType) {
                 case BEZIRK_STACK_ACTION:
-
                     processBezirkStackAction(intent, intentAction, lifeCycleCallbacks);
                     break;
                 case DEVICE_ACTION:
@@ -59,13 +60,15 @@ public final class ActionProcessor {
 
     }
 
-    private void processBezirkStackAction(Intent intent, BezirkAction intentAction, ComponentManager.LifeCycleCallbacks lifeCycleCallbacks) {
+    private void processBezirkStackAction(Intent intent, BezirkAction intentAction, LifeCycleCallbacks lifeCycleCallbacks) {
         switch (intentAction) {
             case ACTION_START_BEZIRK:
-                lifeCycleCallbacks.start();
+                StartServiceAction startServiceAction = (StartServiceAction) intent.getSerializableExtra(BezirkAction.ACTION_START_BEZIRK.getName());
+                lifeCycleCallbacks.start(startServiceAction);
                 break;
             case ACTION_STOP_BEZIRK:
-                lifeCycleCallbacks.stop();
+                StopServiceAction stopServiceAction = (StopServiceAction) intent.getSerializableExtra(BezirkAction.ACTION_START_BEZIRK.getName());
+                lifeCycleCallbacks.stop(stopServiceAction);
                 break;
             case ACTION_REBOOT:
                 logger.debug("Not handling Reboot");

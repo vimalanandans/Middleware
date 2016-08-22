@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bezirk.middleware.proxy.android.BezirkMiddleware;
+
 
 public class ControlActivity extends AppCompatActivity {
 
@@ -65,6 +67,7 @@ public class ControlActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(controlActivityHelper.systemStatusBroadcastReceiver);
+        BezirkMiddleware.stop();
     }
 
 }

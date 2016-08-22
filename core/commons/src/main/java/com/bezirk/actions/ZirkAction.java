@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public abstract class ZirkAction implements Serializable {
+public abstract class ZirkAction extends Action {
     private final ZirkId zirkId;
 
     public ZirkAction(@NotNull ZirkId zirkId) {
@@ -22,5 +22,5 @@ public abstract class ZirkAction implements Serializable {
         return zirkId;
     }
 
-    public abstract BezirkAction getAction();
+
 }
