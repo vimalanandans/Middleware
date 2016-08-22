@@ -450,22 +450,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         return true;
     }
 
-    /**
-     * handle the wire message - loop back. Not used anymore. Pubsubbroker handles this.
-     */
-//    public boolean processWireMessage(String deviceId, Ledger ledger) {
-//        // start thread pool
-//        if ((executor != null) && !executor.isShutdown()) {
-//
-//            ProcessIncomingMessage inMsg = new ProcessIncomingMessage(/*this, */deviceId, ledger);
-//
-//            executor.execute(inMsg);
-//        } else {
-//            logger.error("thread pool is not active.");
-//        }
-//
-//        return true;
-//    }
+
     private boolean processCtrl(String deviceId, WireMessage wireMessage) {
 
         // fixme: check the version
@@ -554,20 +539,10 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     //enable the above code later. Quickfix network device id is taken as local ip as of now
     // for zyre this needs to return from actual comms
-    public String getDeviceId() {
+    public String getNodeId() {
         return networkManager.getDeviceIp();
     }
 
-    //public abstract String getDeviceId();
-
-    //enable the above code later. Quickfix network device id is taken as local ip as of now
-    // for zyre this needs to return from actual comms
-    public boolean isLocalMessage(String deviceId) {
-
-        return deviceId.equals(networkManager.getDeviceIp());
-    }
-
-    //public abstract String isLocalMessage();
 
     private boolean processMessageEvent(String deviceId, WireMessage wireMessage) {
 

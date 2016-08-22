@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.bezirk.R;
+import com.bezirk.comms.JmqCommsManager;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.datastorage.RegistryStorage;
 import com.bezirk.device.AndroidDevice;
@@ -41,6 +42,7 @@ public class ComponentManager extends Service {
     private BezirkIdentityManager identityManager;
     private AndroidProxyServer proxyServer;
     private ZyreCommsManager comms;
+    //private JmqCommsManager comms;
     private AndroidNetworkManager networkManager;
     private RegistryStorage registryStorage;
     private MessageHandler messageHandler;
@@ -90,6 +92,8 @@ public class ComponentManager extends Service {
 
         //initialize comms for communicating between devices over the wifi-network using zyre.
         comms = new ZyreCommsManager(networkManager, null,null, null);
+        // testing the comms comms-jmq
+        //comms = new JmqCommsManager(networkManager, null,null, null);
 
         //streaming manager
         Streaming streaming = new StreamManager(comms, networkManager);
