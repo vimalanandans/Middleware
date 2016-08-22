@@ -10,7 +10,6 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.bezirk.R;
 import com.bezirk.actions.BezirkAction;
@@ -26,8 +25,8 @@ import com.bezirk.networking.AndroidNetworkManager;
 import com.bezirk.persistence.DatabaseConnectionForAndroid;
 import com.bezirk.proxy.Config;
 import com.bezirk.proxy.MessageHandler;
-import com.bezirk.proxy.android.ServerIdentityManagerAdapter;
 import com.bezirk.proxy.android.AndroidProxyServer;
+import com.bezirk.proxy.android.ServerIdentityManagerAdapter;
 import com.bezirk.proxy.android.ZirkMessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
 import com.bezirk.streaming.StreamManager;
@@ -47,6 +46,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private BezirkIdentityManager identityManager;
     private AndroidProxyServer proxyServer;
     private ZyreCommsManager comms;
+    //private JmqCommsManager comms;
     private AndroidNetworkManager networkManager;
     private RegistryStorage registryStorage;
     private MessageHandler messageHandler;
@@ -199,6 +199,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
 
         //initialize comms for communicating between devices over the wifi-network using zyre.
         comms = new ZyreCommsManager(networkManager, null, null, null);
+        // testing the comms comms-jmq
+        //comms = new JmqCommsManager(networkManager, null,null, null);
 
         //streaming manager
         Streaming streaming = new StreamManager(comms, networkManager);

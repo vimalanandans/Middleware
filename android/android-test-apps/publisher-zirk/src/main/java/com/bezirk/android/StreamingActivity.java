@@ -82,10 +82,12 @@ public class StreamingActivity extends AppCompatActivity {
                 //if file prepsent
                 if(filePath != null){
                     File file = new File(filePath);
-                    //StreamSend streamSend = new StreamSend(false,isEncrypted,file);
+                    StreamSend streamSend = new StreamSend(false,isEncrypted,file);
+                    bezirk.sendStream(recipientEndpoint, streamSend);
 
-                    StreamDescriptor streamDescriptor = new StreamDescriptor(false, false, file);
-                    bezirk.sendStream(recipientEndpoint, streamDescriptor);
+                    //StreamDescriptor streamDescriptor = new StreamDescriptor(false, false, file);
+                    //bezirk.sendStream(recipientEndpoint, streamDescriptor);
+
                 }else{
                     Toast.makeText(getApplicationContext(), "file path is null.. Select the File and send", Toast.LENGTH_SHORT).show();
                 }
@@ -186,4 +188,16 @@ public class StreamingActivity extends AppCompatActivity {
             super(context, resource, textViewResourceId, objects);
         }
     }
+
+
+    /*class MyStreamDescriptor extends  StreamDescriptor{
+        private File file;
+        private boolean isIncremental;
+        private boolean isEncrypted;
+
+        public MyStreamDescriptor(boolean isIncremental, boolean isEncrypted, File file){
+            super(isIncremental, isEncrypted, file);
+        }
+
+    }*/
 }

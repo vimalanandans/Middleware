@@ -71,6 +71,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
         if(streamManger != null) {
             streamManger.setEventReceiver(this);
+
+            //Initialize the Streaming module
+            streamManger.startStreams();
         }
     }
 
@@ -203,7 +206,14 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         }
 
         final Iterator<String> sphereIterator = listOfSphere.iterator();
-        final BezirkZirkEndPoint sender = networkManager.getServiceEndPoint(zirkId);
+        final BezirkZirkEndPoint sender ;
+
+        if(comms != null)
+            sender = new BezirkZirkEndPoint(comms.getNodeId(),zirkId);
+        else
+            sender = networkManager.getServiceEndPoint(zirkId);
+        // sender = new BezirkZirkEndPoint(zirkId);
+
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(sender));
 
 
@@ -260,7 +270,14 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         }
 
         final Iterator<String> sphereIterator = listOfSphere.iterator();
-        final BezirkZirkEndPoint sender = networkManager.getServiceEndPoint(zirkId);
+        final BezirkZirkEndPoint sender;
+
+        if(comms != null)
+            sender = new BezirkZirkEndPoint(comms.getNodeId(),zirkId);
+        else
+            sender = networkManager.getServiceEndPoint(zirkId);
+           // sender = new BezirkZirkEndPoint(zirkId);
+
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(sender));
         //final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
 
@@ -338,6 +355,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             }
         }else{
             logger.error("Streaming manager is not initialized!!!");
+            return (short) -1;
         }
 
         return (short) 1;

@@ -38,32 +38,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.tv);
 
-        testStreaming = (Button)findViewById(R.id.testStreamingButton);
+        testStreaming = (Button) findViewById(R.id.testStreamingButton);
 
         testStreaming.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),StreamingActivity.class);
+                Intent intent = new Intent(getApplicationContext(), StreamingActivity.class);
                 startActivity(intent);
             }
         });
 
-    }
-
-    public void OnIntegratedApp(View view) {
-
-        tv.setText("Publisher + Subscriber Integrated with Bezirk");
-        tv.setMovementMethod(new ScrollingMovementMethod());
-
-        // Start Bezirk as part of the publisher
-        AppManager.getAppManager().startBezirk(this,true,"Integrated Bezirk",null);
         senderZirk();
+
     }
 
-    public void OnStandaloneApp(View view) {
-        tv.setText("Publisher running standalone");
-        senderZirk();
-    }
 
     public void onClearClick(View view) {
         tv.setText("");
@@ -71,10 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void senderZirk() {
 
-        //BezirkMiddleware.initialize(this);
-        //final Bezirk bezirk = BezirkMiddleware.registerZirk("Publisher Zirk");
+        BezirkMiddleware.initialize(this);
+        final Bezirk bezirk = BezirkMiddleware.registerZirk("Publisher Zirk");
 
-        final Bezirk bezirk = BezirkMiddleware.registerZirk(this, "Publisher Zirk");
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
 
         houseEvents.setEventReceiver(new EventSet.EventReceiver() {

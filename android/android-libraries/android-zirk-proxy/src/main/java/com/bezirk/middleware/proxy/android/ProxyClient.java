@@ -55,7 +55,6 @@ public final class ProxyClient implements Bezirk {
     private short streamFactory;
 
     public ProxyClient(ZirkId zirkId) {
-        //ProxyClient.context = context;
 
         // Bind to remote identity management service
 //        Intent intent = new Intent();
@@ -68,30 +67,9 @@ public final class ProxyClient implements Bezirk {
         this.identityManager = new ClientIdentityManagerAdapter();
     }
 
-//    private static boolean sendBezirkIntent(ZirkAction action) {
-//        final Intent intent = new Intent();
-//
-//        // get the component name from the app manager. in case of single app it is the same which
-//        // is created during app manager create. else it returns the default
-//        ComponentName name = new ComponentName(context.getPackageName(), SERVICE_PKG_NAME);
-//        intent.setComponent(name );
-//
-//        final String actionName = action.getAction().getName();
-//        intent.setAction(actionName);
-//        intent.putExtra(actionName, action);
-//
-//        if (context.startService(intent) == null) {
-//            Log.e(TAG, "Failed to send intent for action: " + actionName +
-//                    ". Is the middleware running?");
-//
-//            return false;
-//        }
-//
-//        return true;
-//    }
-
     public static ZirkId registerZirk(@NotNull final Context context, final String zirkName) {
         ProxyClient.context = context;
+
         if (zirkName == null) {
             throw new IllegalArgumentException("Cannot register a Zirk with a null name");
         }
@@ -222,7 +200,9 @@ public final class ProxyClient implements Bezirk {
     public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
 
-        ServiceManager.sendBezirkIntent(new SendFileStreamAction(zirkId, recipient, streamDescriptor, streamId));
+        //sendBezirkIntent(new SendFileStreamAction(zirkId, recipient, /*streamDescriptor,*/ streamId));
+        sendBezirkStreamIntent(context, new SendFileStreamAction(zirkId, recipient, /*streamDescriptor,*/ streamId, streamDescriptor.getClass().getName()), streamDescriptor);
+
     }
 
     @Override
@@ -233,5 +213,44 @@ public final class ProxyClient implements Bezirk {
     @Override
     public IdentityManager getIdentityManager() {
         return identityManager;
+    }
+
+    /**
+     * For Bezirk Stream Intent
+     *
+     * @param context
+     * @param action
+     * @return
+     */
+    private static boolean sendBezirkStreamIntent(Context context, ZirkAction action, StreamDescriptor streamDescriptor) {
+        if (streamDescriptor != null && action != null) {
+            final Intent intent = new Intent();
+
+            // get the component name from the app manager. in case of single app it is the same which
+            // is created during app manager create. else it returns the default
+            ComponentName name = new ComponentName(AppManager.getAppManager().getComponentName(), SERVICE_PKG_NAME);
+            intent.setComponent(name);
+
+            final String actionName = action.getAction().getName();
+            intent.setAction(actionName);
+            intent.putExtra(actionName, action);
+
+
+            //pass the stream descriptor intent
+            intent.putExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_ENCRYPT.getName(), streamDescriptor.isEncrypted());
+            intent.putExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_INCREMENTAL.getName(), streamDescriptor.isIncremental());
+            intent.putExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_FILE.getName(), streamDescriptor.getFile());
+
+            if (context.startService(intent) == null) {
+                Log.e(TAG, "Failed to send intent for action: " + actionName +
+                        ". Is the middleware running?");
+
+                return false;
+            }
+        } else {
+            Log.e(TAG, "Failed to get either StreamDescriptor and ZirkAction!!!");
+            return false;
+        }
+        return true;
     }
 }

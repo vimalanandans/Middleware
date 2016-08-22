@@ -7,7 +7,7 @@ import com.bezirk.middleware.messages.StreamSet;
  */
 
 //StreamSet
-class ReceiverStreamSet extends StreamSet {
+public class ReceiverStreamSet extends StreamSet {
     public ReceiverStreamSet(){
         super(StreamSend.class);
     }

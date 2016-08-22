@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         testStreamingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),StreameReceiverActivity.class);
+                Intent intent = new Intent(getApplicationContext(), StreameReceiverActivity.class);
                 startActivity(intent);
             }
         });
@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void receiverZirk() {
 
-        //BezirkMiddleware.initialize(this);
-        final Bezirk bezirk = BezirkMiddleware.registerZirk(getApplicationContext(), "Subscriber Zirk");
+        BezirkMiddleware.initialize(this);
+        final Bezirk bezirk = BezirkMiddleware.registerZirk("Subscriber Zirk");
 
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
 

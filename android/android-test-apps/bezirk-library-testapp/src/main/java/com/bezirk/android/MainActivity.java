@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public void OnStandaloneApp(View view) {
 
         tv.setText("Publisher running standalone");
-
+        BezirkMiddleware.initialize(this);
         senderZirk();
 
     }

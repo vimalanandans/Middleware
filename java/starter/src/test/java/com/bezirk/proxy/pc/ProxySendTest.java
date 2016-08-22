@@ -70,7 +70,7 @@ public class ProxySendTest {
 
         public MockRequestStreamDescriptor(boolean incremental, boolean encrypted) {
             //Need to change the File argument as required!!, just made it as null as a quick // FIXME: 8/1/2016
-            super(incremental, encrypted, null);
+            super(incremental, encrypted, null, "Test");
         }
     }
 }
