@@ -60,6 +60,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     RemoteLoggingMessageNotification remoteLoggingMessageNotification;
     Streaming streamManger;
     MessageHandler msgHandler;
+    private boolean checkEnableForAllSphere = false;
 
     public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager, Comms comms, MessageHandler msgHandler,
                         SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity, Streaming streamManger,RemoteLog remoteLogging,RemoteLoggingMessage remoteLoggingMessage,RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
@@ -424,11 +425,12 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         }
         if(null!=remoteLog){
             logger.debug("remoteLog is not null in PubSubBroker");
-           // if( ){
-             //   logger.debug("isRemoteLoggingEnabled is true");
-            boolean remoteLogging = remoteLog.sendRemoteLogLedgerMessage(eLedger);
-            logger.debug("remoteLogging is "+remoteLogging);
-            if(remoteLogging){
+
+            checkEnableForAllSphere =  remoteLog.enableRemoteLogging(checkEnableForAllSphere);
+            if(checkEnableForAllSphere){
+                boolean remoteLogging = remoteLog.sendRemoteLogLedgerMessage(eLedger);
+                logger.debug("remoteLogging is "+remoteLogging);
+
                 try {
                     logger.debug("start logging");
                     remoteLoggingMessageNotification.handleLogMessage(remoteLoggingMessage);
@@ -436,8 +438,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
                     e.printStackTrace();
                 }
             }
-
-
             //}
         //}else{
           //  logger.debug("remoteLog is  null in PubSubBroker");

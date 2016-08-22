@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.tv);
-
+        OnIntegratedApp(tv);
     }
 
     public void OnIntegratedApp(View view) {

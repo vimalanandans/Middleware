@@ -48,6 +48,8 @@ public class LifecycleManager extends Observable {
      * @see #validateStateTransition(LifecycleState, LifecycleState...)
      */
     void setState(LifecycleState state) {
+        logger.debug("current state is "+currentState);
+        logger.debug("state is "+state);
         if (currentState == null) {
             validateStateTransition(state, LifecycleState.CREATED);
         } else {
@@ -84,6 +86,7 @@ public class LifecycleManager extends Observable {
     }
 
     private void changeAndNotify(LifecycleState state) {
+        logger.debug("changeAndNotify called");
         this.currentState = state;
         setChanged();
         notifyObservers();

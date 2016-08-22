@@ -110,7 +110,10 @@ public  class RemoteLoggingManager implements RemoteLog {
                 sphereNameList, loggingSpheres, enable, networkManager);
         return sendLoggingeMsgToClients;
     }
-
+    @Override
+    public boolean enableRemoteLogging(boolean enableForAllSphere) {
+      return true;
+    }
     @Override
     public boolean isRemoteLoggingEnabled() {
         if(sendLoggingeMsgToClients==true){
