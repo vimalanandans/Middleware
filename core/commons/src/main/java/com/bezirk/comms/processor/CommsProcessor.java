@@ -619,20 +619,10 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     //enable the above code later. Quickfix network device id is taken as local ip as of now
     // for zyre this needs to return from actual comms
-    public String getDeviceId() {
+    public String getNodeId() {
         return networkManager.getDeviceIp();
     }
 
-    //public abstract String getDeviceId();
-
-    //enable the above code later. Quickfix network device id is taken as local ip as of now
-    // for zyre this needs to return from actual comms
-    public boolean isLocalMessage(String deviceId) {
-
-        return deviceId.equals(networkManager.getDeviceIp());
-    }
-
-    //public abstract String isLocalMessage();
 
     private boolean processMessageEvent(String deviceId, WireMessage wireMessage) {
 

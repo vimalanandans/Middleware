@@ -14,6 +14,7 @@ include ':core:streaming'
 //include ':core:comms:comms-udp'
 
 include ':core:comms:comms-factory'
+include ':core:comms:comms-jmq'
 include ':core:testapp-core'
 
 /*--------------------java--------------------*/

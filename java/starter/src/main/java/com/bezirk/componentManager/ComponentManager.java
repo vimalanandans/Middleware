@@ -1,5 +1,6 @@
 package com.bezirk.componentManager;
 
+import com.bezirk.comms.JmqCommsManager;
 import com.bezirk.comms.ZyreCommsManager;
 import com.bezirk.datastorage.ProxyPersistence;
 import com.bezirk.datastorage.RegistryStorage;
@@ -36,6 +37,7 @@ public class ComponentManager {
     private static final String ALIAS_KEY = "aliasName";
 
     private ZyreCommsManager comms;
+    //private JmqCommsManager comms;
     private PubSubBroker pubSubBroker;
     private RegistryStorage registryStorage;
     private ProxyServer proxyServer;
@@ -77,6 +79,8 @@ public class ComponentManager {
 
         //initialize comms for communicating between devices over the wifi-network using zyre.
         comms = new ZyreCommsManager(networkManager, messageGroupName, null,null );
+        // to test the Jmq comms
+        //comms = new JmqCommsManager(networkManager, messageGroupName, null,null );
 
         //streaming manager
         Streaming streaming  = new StreamManager(comms, /*downloadPath,*/ networkManager);

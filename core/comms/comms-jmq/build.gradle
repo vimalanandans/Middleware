@@ -1,0 +1,18 @@
+apply plugin: 'java'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
+    }
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.zeromq/jeromq
+    compile(group: 'org.zeromq', name: 'jeromq', version: '0.3.6.1')
+
+    compile project(':core:commons')
+
+//    compile project(':core:comms:comms-udp')
+    //compile project(':core:comms:comms-jyre')
+    compile 'org.slf4j:slf4j-api:1.7.6'
+}
+

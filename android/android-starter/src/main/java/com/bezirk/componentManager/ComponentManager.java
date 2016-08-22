@@ -58,6 +58,7 @@ public class ComponentManager extends Service {
     private BezirkIdentityManager identityManager;
     private AndroidProxyServer proxyServer;
     private ZyreCommsManager comms;
+    //private JmqCommsManager comms;
     private AndroidNetworkManager networkManager;
     private RegistryStorage registryStorage;
     private MessageHandler messageHandler;
@@ -111,6 +112,8 @@ public class ComponentManager extends Service {
 
         //initialize comms for communicating between devices over the wifi-network using zyre.
         comms = new ZyreCommsManager(networkManager, null,null, null);
+        // testing the comms comms-jmq
+        //comms = new JmqCommsManager(networkManager, null,null, null);
 
         //initialize remoteLogging for logging the messages
         remoteLog = new RemoteLoggingManager();
