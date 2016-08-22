@@ -30,6 +30,8 @@ import com.bezirk.proxy.android.ServerIdentityManagerAdapter;
 import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.proxy.android.ZirkMessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
+import com.bezirk.streaming.StreamManager;
+import com.bezirk.streaming.Streaming;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -198,8 +200,12 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         //initialize comms for communicating between devices over the wifi-network using zyre.
         comms = new ZyreCommsManager(networkManager, null, null, null);
 
+        //streaming manager
+        Streaming streaming = new StreamManager(comms, networkManager);
+
+
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null);
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null, streaming);
 
         //initialize the identity manager
         identityManager = new BezirkIdentityManager();

@@ -46,9 +46,7 @@ public class ProxyServer {
     }
 
     public short sendStream(@NotNull SendFileStreamAction streamAction) {
-        return pubSubBrokerService.sendStream(streamAction.getZirkId(),
-                (BezirkZirkEndPoint) streamAction.getRecipient(), streamAction.getDescriptor().toJson(),
-                streamAction.getFile());
+        return pubSubBrokerService.sendStream(streamAction);
     }
 
     public void setLocation(@NotNull SetLocationAction locationAction) {

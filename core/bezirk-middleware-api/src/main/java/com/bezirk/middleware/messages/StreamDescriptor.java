@@ -1,5 +1,7 @@
 package com.bezirk.middleware.messages;
 
+import java.io.File;
+
 /**
  * Base class for non-trivial Bezirk messages and data transfers. A stream represents a set of data
  * elements such as multiple messages or picture and music data. This class is extended by protocol
@@ -12,7 +14,7 @@ package com.bezirk.middleware.messages;
  * @see Message
  * @see Event
  */
-public abstract class StreamDescriptor extends Message {
+public class StreamDescriptor extends Message {
     /**
      * Subclass sets to <code>true</code> if the payload can be processed incrementally (e.g. a
      * music stream) or <code>false</code> if all data elements must be received before processing
@@ -26,6 +28,12 @@ public abstract class StreamDescriptor extends Message {
      * protocol designer does not believe the stream will always require confidentiality.
      */
     private final boolean encrypted;
+
+    /*
+     * The file whose contents will be sent using the <code>stream</code>
+     */
+    private File file;
+
     private StateListener stateListener = null;
 
     /**
@@ -38,9 +46,10 @@ public abstract class StreamDescriptor extends Message {
      * @param isEncrypted   <code>true</code> if the contents of the stream must be encrypted
      *                      for transmission.
      */
-    public StreamDescriptor(boolean isIncremental, boolean isEncrypted) {
-        incremental = isIncremental;
-        encrypted = isEncrypted;
+    public StreamDescriptor(boolean isIncremental, boolean isEncrypted, File file) {
+        this.incremental = isIncremental;
+        this.encrypted = isEncrypted;
+        this.file = file;
     }
 
     /**
@@ -79,6 +88,14 @@ public abstract class StreamDescriptor extends Message {
      */
     public void setStateListener(StateListener stateListener) {
         this.stateListener = stateListener;
+    }
+
+    /**
+     * returns the file whose contents will be sent using the <code>stream</code>
+     * @return
+     */
+    public File getFile() {
+        return file;
     }
 
     /**

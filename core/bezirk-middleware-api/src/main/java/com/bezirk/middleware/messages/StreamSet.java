@@ -88,7 +88,7 @@ public class StreamSet extends MessageSet {
      *            typically <code>java.io.InputStream</code> when a stream is sent with
      *            {@link com.bezirk.middleware.Bezirk#sendStream(ZirkEndPoint, StreamDescriptor, PipedOutputStream)}
      *            and <code>java.io.File</code> when a stream is sent with
-     *            {@link com.bezirk.middleware.Bezirk#sendStream(ZirkEndPoint, StreamDescriptor, File)}.
+     *            {@link com.bezirk.middleware.Bezirk#sendStream(ZirkEndPoint, StreamDescriptor)}.
      */
     public interface StreamReceiver<T> {
         void receiveStream(StreamDescriptor streamDescriptor, T streamContents, ZirkEndPoint sender);
