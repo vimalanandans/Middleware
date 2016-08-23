@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     //do something in response to this event
                     if (aqUpdate.humidity > 0.7) {
                         updateDisplay("\nHumidity is high - recommend turning on the dehumidifier.");
-                        bezirk.sendEvent(sender, new UpdateAcceptedEvent("Got the value for humidity " + aqUpdate.humidity));
+                        bezirk.sendEvent(sender, new UpdateAcceptedEvent("","Got the value for humidity " + aqUpdate.humidity));
                     }
                     if (aqUpdate.dustLevel > 20) {
                         updateDisplay("\nDust level is high - recommend running the vacuum.");

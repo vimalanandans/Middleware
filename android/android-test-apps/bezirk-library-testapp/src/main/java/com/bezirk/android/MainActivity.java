@@ -65,34 +65,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void receiverZirk() {
-        final Bezirk bezirk = BezirkMiddleware.registerZirk("Receiver Zirk");
-
-        HouseInfoEventSet houseEvents = new HouseInfoEventSet();
-
-        houseEvents.setEventReceiver(new EventSet.EventReceiver() {
-            @Override
-            public void receiveEvent(Event event, ZirkEndPoint sender) {
-                if (event instanceof AirQualityUpdateEvent) {
-                    AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
-                    BezirkZirkEndPoint endPoint = (BezirkZirkEndPoint) sender;
-
-                    updateDisplay("\n" + endPoint.device + " >> Received air quality update: " + aqUpdate.toString());
-                    //do something in response to this event
-                    if (aqUpdate.humidity > 0.7) {
-                        updateDisplay("\nHumidity is high - recommend turning on the dehumidifier.");
-                        bezirk.sendEvent(sender, new UpdateAcceptedEvent("Got the value for humidity " + aqUpdate.humidity));
-                    }
-                    if (aqUpdate.dustLevel > 20) {
-                        updateDisplay("\nDust level is high - recommend running the vacuum.");
-                    }
-                    if (aqUpdate.pollenLevel > 500) {
-                        updateDisplay("\nPollen level is high - recommend closing the windows and running the air filter.");
-                    }
-                }
-            }
-        });
-
-        bezirk.subscribe(houseEvents);
+//        final Bezirk bezirk = BezirkMiddleware.registerZirk("Receiver Zirk");
+//
+//        HouseInfoEventSet houseEvents = new HouseInfoEventSet();
+//
+//        houseEvents.setEventReceiver(new EventSet.EventReceiver() {
+//            @Override
+//            public void receiveEvent(Event event, ZirkEndPoint sender) {
+//                if (event instanceof AirQualityUpdateEvent) {
+//                    AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
+//                    BezirkZirkEndPoint endPoint = (BezirkZirkEndPoint) sender;
+//
+//                    updateDisplay("\n" + endPoint.device + " >> Received air quality update: " + aqUpdate.toString());
+//                    //do something in response to this event
+//                    if (aqUpdate.humidity > 0.7) {
+//                        updateDisplay("\nHumidity is high - recommend turning on the dehumidifier.");
+//                        bezirk.sendEvent(sender, new UpdateAcceptedEvent("Got the value for humidity " + aqUpdate.humidity));
+//                    }
+//                    if (aqUpdate.dustLevel > 20) {
+//                        updateDisplay("\nDust level is high - recommend running the vacuum.");
+//                    }
+//                    if (aqUpdate.pollenLevel > 500) {
+//                        updateDisplay("\nPollen level is high - recommend closing the windows and running the air filter.");
+//                    }
+//                }
+//            }
+//        });
+//
+//        bezirk.subscribe(houseEvents);
     }
 
     private void updateDisplay(String display) {

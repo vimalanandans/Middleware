@@ -22,7 +22,7 @@ public class Subscriber {
                     //do something in response to this event
                     if (aqUpdate.humidity > 0.7) {
                         System.out.println("\nHumidity is high - recommend turning on the dehumidifier.");
-                        bezirk.sendEvent(sender, new UpdateAcceptedEvent("Got the value for humidity " + aqUpdate.humidity));
+                        bezirk.sendEvent(sender, new UpdateAcceptedEvent("", "Got the value for humidity " + aqUpdate.humidity));
                     }
                     if (aqUpdate.dustLevel > 20) {
                         System.out.println("\nDust level is high - recommend running the vacuum.");
