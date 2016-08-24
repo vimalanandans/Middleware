@@ -8,8 +8,10 @@ import com.bezirk.control.messages.ControlMessage;
 import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
-import com.bezirk.device.Device;
+
 import com.bezirk.networking.NetworkManager;
+import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,8 @@ import java.util.Date;
  */
 public  class RemoteLoggingManager implements RemoteLog {
 
+    public static int REMOTE_LOGGING_PORT = 7777;
+
     private boolean remoteLoggingForAllSpheres = false;
 
     public boolean isRemoteLoggingForAllSpheres() {
@@ -32,8 +36,6 @@ public  class RemoteLoggingManager implements RemoteLog {
     public void setRemoteLoggingForAllSpheres(boolean remoteLoggingForAllSpheres) {
         this.remoteLoggingForAllSpheres = remoteLoggingForAllSpheres;
     }
-
-
     /**
      * RemoteLoggingService
      */
@@ -57,18 +59,18 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     private boolean sendLoggingeMsgToClients = false;
 
+    ServiceMessageHandler logServiceMsgHandler = null;
+
+    Comms comms;
+
+    CommCtrlReceiver ctrlReceiver ;
+
+
     public RemoteLoggingManager(NetworkManager networkManager, RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
         this.networkManager = networkManager;
         this.remoteLoggingMessageNotification = remoteLoggingMessageNotification;
+        CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver(this);
     }
-
-
-
-    ServiceMessageHandler logServiceMsgHandler = null;
-    Comms comms;
-
-    //private BezirkCallback bezirkCallback = null;
-    CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver(RemoteLoggingManager);
 
 
     @Override
@@ -84,13 +86,13 @@ public  class RemoteLoggingManager implements RemoteLog {
             loggingSpheres = sphereNameList;
         }
 
-        /* AndroidNetworkManager androidNetworkManager = new AndroidNetworkManager();*/
-
-        sendLoggingeMsgToClients = ServiceActivatorDeactivator.sendLoggingServiceMsgToClients(comms,
-                sphereNameList, loggingSpheres, enable, networkManager);
+        // Send the logging enable to all the other nodes
+        sendLoggingeMsgToClients = sendLoggingServiceMsgToClients(comms,
+                sphereNameList, loggingSpheres, enable);
 
         return sendLoggingeMsgToClients;
     }
+
     @Override
     public boolean enableRemoteLoggingForAllSpheres()
     {
@@ -98,16 +100,44 @@ public  class RemoteLoggingManager implements RemoteLog {
         logger.debug("remoteLogValue is "+remoteLogValue);
         return  remoteLogValue;
     }
+
     @Override
     public boolean isRemoteLoggingEnabled() {
-        if(sendLoggingeMsgToClients==true){
-            return true;
-        }else{
-            return false;
-        }
-
+        return sendLoggingeMsgToClients;
     }
+    public boolean sendLoggingServiceMsgToClients(Comms comms, final String[] sphereList,
+                    final String[] selectedLogSpheres, final boolean isActivate) {
 
+        final ZirkId myId = new ZirkId("BEZIRK-REMOTE-LOGGING-SERVICE");
+
+        final BezirkZirkEndPoint sep = new BezirkZirkEndPoint(comms.getNodeId(),myId);
+
+        boolean sendLogMessageToClient = false;
+
+
+        for (String sphereId : sphereList) {
+
+            final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep,
+                    sphereId, comms.getNodeId(), REMOTE_LOGGING_PORT, selectedLogSpheres, isActivate);
+
+            if(null != sphereId &&
+                    null != loggingServiceActivateRequest &&
+                    null != loggingServiceActivateRequest.serialize()){
+                sendLogMessageToClient = true;
+            }else{
+                sendLogMessageToClient = false;
+                logger.error("unable to send the logging message to sphere id " + sphereId );
+            }
+
+            if(null != comms){
+                comms.sendControlMessage(loggingServiceActivateRequest);
+            }else{
+                logger.debug("comms is null");
+            }
+
+        }
+        return sendLogMessageToClient;
+    }
 
     @Override
     public boolean sendRemoteLogLedgerMessage(Ledger ledger) {
@@ -202,9 +232,14 @@ public  class RemoteLoggingManager implements RemoteLog {
     }
 
 
-
-
     class CommCtrlReceiver implements CtrlMsgReceiver {
+
+        RemoteLoggingManager loggingManager = null;
+
+        public CommCtrlReceiver(RemoteLoggingManager loggingManager)
+        {
+            this.loggingManager = loggingManager;
+        }
         @Override
         // FIXME : remove the below Log related quickfix, by moving the implementation to respective module
         public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
@@ -216,7 +251,7 @@ public  class RemoteLoggingManager implements RemoteLog {
                         final LoggingServiceMessage loggingServiceMsg = ControlMessage.deserialize(serializedMsg, LoggingServiceMessage.class);
 
                         if (null == logServiceMsgHandler) {
-                            logServiceMsgHandler = new ServiceMessageHandler(networkManager, );
+                            logServiceMsgHandler = new ServiceMessageHandler(loggingManager);
                         }
                         logServiceMsgHandler.handleLogServiceMessage(loggingServiceMsg);
                     } catch (Exception e) {
@@ -240,7 +275,7 @@ public  class RemoteLoggingManager implements RemoteLog {
     @Override
     public boolean startRemoteLoggingService(final RemoteLoggingMessageNotification platformSpecificHandler) {
         if (remoteLoggingService == null && platformSpecificHandler != null) {
-            remoteLoggingService = new RemoteLoggingService(ServiceActivatorDeactivator.REMOTE_LOGGING_PORT);
+            remoteLoggingService = new RemoteLoggingService(REMOTE_LOGGING_PORT);
             receiverQueueProcessor = new ReceiverQueueProcessor(platformSpecificHandler);
             try {
                 remoteLoggingService.startRemoteLoggingService();

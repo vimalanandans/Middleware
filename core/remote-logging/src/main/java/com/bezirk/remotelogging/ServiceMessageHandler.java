@@ -23,10 +23,9 @@ public final class ServiceMessageHandler {
      * Logging Manager to start/ stop the logging client
      */
     private RemoteLoggingManager loggingManager = null;
-    private final NetworkManager networkManager;
 
-    public ServiceMessageHandler(NetworkManager networkManager) {
-        this.networkManager = networkManager;
+    public ServiceMessageHandler(RemoteLoggingManager loggingManager) {
+        this.loggingManager = loggingManager;
     }
 
     public static boolean checkLoggingServiceMessage(final LoggingServiceMessage logServiceMsg) {
@@ -52,11 +51,9 @@ public final class ServiceMessageHandler {
      */
     public void handleLogServiceMessage(final LoggingServiceMessage loggingServiceMsg) {
         if (checkLoggingServiceMessage(loggingServiceMsg)) {
-            if (loggingServiceMsg.isLoggingStatus()) {//Start or Update the client
-                if (null == loggingManager) {
-                    loggingManager = new RemoteLoggingManager(networkManager, null);
-                }
-                try {
+            if (loggingServiceMsg.isLoggingStatus()) {
+                //Start or Update the client
+            try {
                     loggingManager.startLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(), loggingServiceMsg.getRemoteLoggingServicePort());
                 } catch (Exception e) {
                     logger.error("Error occurred while logging client", e);
@@ -64,7 +61,7 @@ public final class ServiceMessageHandler {
                 FilterLogMessages.setLoggingSphereList(Arrays.asList(loggingServiceMsg.getSphereList()));
                 //LoggingStatus.setLoggingEnabled(loggingServiceMsg.isLoggingStatus());
             } else {
-                if (ValidatorUtility.isObjectNotNull(loggingManager)) {
+
                     try {
                         loggingManager.stopLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(), loggingServiceMsg.getRemoteLoggingServicePort());
                         loggingManager = null;
@@ -72,10 +69,6 @@ public final class ServiceMessageHandler {
                     } catch (Exception e) {
                         logger.error("Error occurred while stopping client", e);
                     }
-
-                } else {
-                    logger.debug("Tried to stop the logging client that's not started");
-                }
             }
             //LoggingStatus.setLoggingEnabled(loggingServiceMsg.isLoggingStatus());
         } else {

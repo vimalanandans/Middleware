@@ -158,7 +158,7 @@ public abstract class CommsProcessor implements Comms, Observer {
             //return this.sendStreamMessage(message);
             return false;
         }
-        // FIXME: Bridge the local message. look udp sendControlMessage
+
     }
 
     @Override
@@ -218,8 +218,6 @@ public abstract class CommsProcessor implements Comms, Observer {
      * prepares the WireMessage and returns it based on encryption and compression settings
      */
     private WireMessage prepareWireMessage(String sphereId, String data) {
-        logger.debug("sphereId is "+sphereId);
-        logger.debug("data is "+data);
         WireMessage wireMessage = new WireMessage();
         wireMessage.setSphereId(sphereId);
         byte[] wireData = null;
@@ -230,7 +228,7 @@ public abstract class CommsProcessor implements Comms, Observer {
          * ##########
          */
         if (CommsFeature.WIRE_MSG_COMPRESSION.isActive()) {
-            logger.debug("CommsFeature.WIRE_MSG_COMPRESSION.isActive ");
+
             wireData = compressMsg(data);
             wireMessage.setWireMsgStatus(WireMessage.WireMsgStatus.MSG_COMPRESSED);
         }

@@ -19,37 +19,38 @@ import org.slf4j.LoggerFactory;
  * Control Sender Queue.
  */
 
+@Deprecated
 public final class ServiceActivatorDeactivator {
     private static final Logger logger = LoggerFactory.getLogger(ServiceActivatorDeactivator.class);
 
     // Move to the remote logging component manager
     public static int REMOTE_LOGGING_PORT = 7777;
 
-    public static boolean sendLoggingServiceMsgToClients(Comms comms, final String[] sphereList, final String[] selectedLogSpheres, final boolean isActivate, final NetworkManager networkManager) {
+    public boolean sendLoggingServiceMsgToClients(Comms comms, final String[] sphereList, final String[] selectedLogSpheres, final boolean isActivate) {
+
         final ZirkId myId = new ZirkId("BEZIRK-REMOTE-LOGGING-SERVICE");
-        logger.debug("inside serviceactivator of remotelogging ");
-        final BezirkZirkEndPoint sep = networkManager.getServiceEndPoint(myId);
-        boolean sendLogMessageToClient=false;
+
+        final BezirkZirkEndPoint sep = new BezirkZirkEndPoint(comms.getNodeId(),myId);
+
+        boolean sendLogMessageToClient = false;
+
         for (String sphereId : sphereList) {
-            final ControlLedger controlLedger = new ControlLedger();
-            final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep, sphereId, networkManager.getDeviceIp(), REMOTE_LOGGING_PORT, selectedLogSpheres, isActivate);
-            controlLedger.setSphereId(sphereId);
-            controlLedger.setMessage(loggingServiceActivateRequest);
-            controlLedger.setSerializedMessage(controlLedger.getMessage().serialize());
-            if(null!=sphereId && null!=loggingServiceActivateRequest && null!=controlLedger.getMessage().serialize()){
-                sendLogMessageToClient=true;
+
+            final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep, sphereId, comms.getNodeId(), REMOTE_LOGGING_PORT, selectedLogSpheres, isActivate);
+
+            if(null != sphereId &&
+                    null != loggingServiceActivateRequest &&
+                    null != loggingServiceActivateRequest.serialize()){
+                sendLogMessageToClient = true;
             }else{
-                sendLogMessageToClient=false;
+                sendLogMessageToClient = false;
             }
-            logger.debug("sendLogMessageToClient value is "+sendLogMessageToClient);
-            if(null!=comms){
-                logger.debug("comms is not null");
-                comms.sendControlLedger(controlLedger);
-                //comms.sendMessage(controlLedger);
+
+            if(null != comms){
+                comms.sendControlMessage(loggingServiceActivateRequest);
             }else{
                 logger.debug("comms is null");
             }
-
 
         }
         return sendLogMessageToClient;
