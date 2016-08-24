@@ -19,11 +19,7 @@ import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.MessageHandler;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
-//import com.bezirk.remotelogging.RemoteLog;
-//import com.bezirk.remotelogging.RemoteLoggingManager;
 import com.bezirk.remotelogging.RemoteLog;
-import com.bezirk.remotelogging.RemoteLoggingMessage;
-import com.bezirk.remotelogging.RemoteLoggingMessageNotification;
 import com.bezirk.sphere.api.SphereSecurity;
 import com.bezirk.sphere.api.SphereServiceAccess;
 import com.bezirk.streaming.Streaming;
@@ -54,16 +50,14 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     protected SphereServiceAccess sphereServiceAccess = null; // Nullable object
     protected SphereSecurity sphereSecurity = null; // Nullable object
     private  NetworkManager networkManager=null;
-    private  Device device=null;
-    RemoteLog remoteLog;
-    RemoteLoggingMessage remoteLoggingMessage;
-    RemoteLoggingMessageNotification remoteLoggingMessageNotification;
-    Streaming streamManger;
-    MessageHandler msgHandler;
+    private  Device device = null;
+    private  RemoteLog remoteLog ;
+    private  Streaming streamManger;
+    private  MessageHandler msgHandler;
     private boolean checkEnableValueForAllSphere = false;
 
     public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager, Comms comms, MessageHandler msgHandler,
-                        SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity, Streaming streamManger,RemoteLog remoteLogging,RemoteLoggingMessage remoteLoggingMessage,RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
+                        SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity, Streaming streamManger,RemoteLog remoteLogging) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
         this.device = device;
         this.networkManager = networkManager;
@@ -76,8 +70,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         this.sphereSecurity = sphereSecurity;
         this.msgHandler = msgHandler;
         this.remoteLog = remoteLogging;
-        this.remoteLoggingMessage= remoteLoggingMessage;
-        this.remoteLoggingMessageNotification = remoteLoggingMessageNotification;
 
         this.streamManger = streamManger;
 
@@ -378,22 +370,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             * process the stream record which will
             *store the streamrecord in the stream store and sends the stream message to receivers.*/
 
-/*<<<<<<< HEAD
-    void sendStreamToSpheres(Iterator<String> sphereIterator, String streamRequestKey, StreamRecord streamRecord, File tempFile, Comms comms) {
-        while (sphereIterator.hasNext()) {
-            final ControlLedger tcMessage = prepareMessage(sphereIterator, streamRequestKey, streamRecord, tempFile);
-            if (ValidatorUtility.isObjectNotNull(comms)) {
-                comms.sendControlLedger(tcMessage);
-                //sendMessage Deprecated
-                //comms.sendMessage(tcMessage);
-            } else {
-                logger.error("Comms manager not initialized");
-=======*/
-            //boolean status = comms.processStreamRecord(streamAction,listOfSphere);
             boolean status = streamManger.processStreamRecord(streamAction, listOfSphere);
             if (!status) {
                 return (short) 1;
-//>>>>>>> midw_mvp
             }
         }else{
             logger.error("Streaming manager is not initialized!!!");
@@ -437,28 +416,11 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         if (!decryptMsg(eLedger)) {
             return false;
         }
-        if(null!=remoteLog){
-            logger.debug("remoteLog is not null in PubSubBroker");
-            checkEnableValueForAllSphere =  remoteLog.enableRemoteLoggingForAllSpheres();
-            logger.debug("checkEnableForAllSphere in PubSubBroker is "+checkEnableValueForAllSphere);
-            if(checkEnableValueForAllSphere){
-                boolean remoteLogging = remoteLog.sendRemoteLogLedgerMessage(eLedger);
-                logger.debug("remoteLogging is "+remoteLogging);
 
-                try {
-                    logger.debug("start logging");
-                    remoteLoggingMessageNotification.handleLogMessage(remoteLoggingMessage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            //}
-        //}else{
-          //  logger.debug("remoteLog is  null in PubSubBroker");
-        }
-        /*if ((remoteLog != null) && remoteLog.isRemoteLoggingEnabled()) {
+        if(null != remoteLog) {
+
             remoteLog.sendRemoteLogLedgerMessage(eLedger);
-        }*/
+        }
 
         // give a callback to appropriate zirk..
         triggerMessageHandler(eLedger, zirkList);

@@ -54,7 +54,7 @@ public final class ServiceMessageHandler {
         if (checkLoggingServiceMessage(loggingServiceMsg)) {
             if (loggingServiceMsg.isLoggingStatus()) {//Start or Update the client
                 if (null == loggingManager) {
-                    loggingManager = new RemoteLoggingManager(networkManager);
+                    loggingManager = new RemoteLoggingManager(networkManager, null);
                 }
                 try {
                     loggingManager.startLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(), loggingServiceMsg.getRemoteLoggingServicePort());

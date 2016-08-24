@@ -33,6 +33,7 @@ public  class RemoteLoggingManager implements RemoteLog {
         this.remoteLoggingForAllSpheres = remoteLoggingForAllSpheres;
     }
 
+
     /**
      * RemoteLoggingService
      */
@@ -50,17 +51,15 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     private final Date currentDate = new Date();
 
-    Device device;
+    private RemoteLoggingMessageNotification remoteLoggingMessageNotification = null;
 
-    public RemoteLoggingManager(){
+    private  NetworkManager networkManager = null;
 
-    }
-    private  NetworkManager networkManager=null;
+    private boolean sendLoggingeMsgToClients = false;
 
-    private boolean sendLoggingeMsgToClients=false;
-
-    public RemoteLoggingManager(NetworkManager networkManager) {
+    public RemoteLoggingManager(NetworkManager networkManager, RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
         this.networkManager = networkManager;
+        this.remoteLoggingMessageNotification = remoteLoggingMessageNotification;
     }
 
 
@@ -69,55 +68,27 @@ public  class RemoteLoggingManager implements RemoteLog {
     Comms comms;
 
     //private BezirkCallback bezirkCallback = null;
-    CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver();
+    CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver(RemoteLoggingManager);
 
-
-    /*@Override
-    public boolean initRemoteLogger(Comms comms, Device device) {
-        // register the logging zirk message
-        comms.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage, ctrlReceiver);
-        this.comms = comms;
-        this.device = device;
-        return true;
-    }*/
 
     @Override
     public boolean enableLogging(boolean enable, String[] sphereNameList) {
         logger.debug("enable logging in remotelogging");
-  /*      comms = new CommsProcessor(networkManager) {
-            @Override
-            public void update(Observable o, Object arg) {
 
-            }
-
-            @Override
-            public boolean sendToAll(byte[] msg, boolean isEvent) {
-                return false;
-            }
-
-            @Override
-            public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent) {
-                return false;
-            }
-
-
-        };*/
         String[] loggingSpheres;
+
         if (RemoteLog.ALL_SPHERES.equals(sphereNameList)) {
             loggingSpheres = new String[1];
             loggingSpheres[0] = RemoteLog.ALL_SPHERES;
         } else {
             loggingSpheres = sphereNameList;
         }
-       /* AndroidNetworkManager androidNetworkManager = new AndroidNetworkManager();*/
-        if(null!=comms){
-            logger.debug("comms not null in remotelogging manager ");
-        }
-        else{
-            logger.debug("comms  null in remotelogging manager ");
-        }
+
+        /* AndroidNetworkManager androidNetworkManager = new AndroidNetworkManager();*/
+
         sendLoggingeMsgToClients = ServiceActivatorDeactivator.sendLoggingServiceMsgToClients(comms,
                 sphereNameList, loggingSpheres, enable, networkManager);
+
         return sendLoggingeMsgToClients;
     }
     @Override
@@ -140,87 +111,74 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     @Override
     public boolean sendRemoteLogLedgerMessage(Ledger ledger) {
+
         logger.debug("sendRemoteLogLedgerMessage method in common/RemoteLoggingManager");
-        boolean returnValue=true;
+
+        boolean returnValue = false;
+
+        boolean isEnabled =  isRemoteLoggingEnabled();
+
+        logger.debug("checkEnableForAllSphere in PubSubBroker is " + isEnabled);
+
+        RemoteLoggingMessage remoteLoggingMessage = null;
+
         if(ledger instanceof EventLedger){
-            try {
                 if((null!=((EventLedger) ledger).getHeader())){
                     logger.debug("Header is set "+((EventLedger) ledger).getHeader().toString());
                     if(null!=((EventLedger) ledger).getHeader().getSphereId()){
                         logger.debug("sphere id is "+((EventLedger) ledger).getHeader().getSphereId());
                     }
                 }
-                logger.debug("getSphereId is "+((EventLedger) ledger).getHeader().getSphereId());
+                /*logger.debug("getSphereId is "+((EventLedger) ledger).getHeader().getSphereId());
                 logger.debug("String.valueOf(currentDate.getTime() is "+String.valueOf(currentDate.getTime()));
                // logger.debug(" device.getDeviceName() is "+ device.getDeviceName());
                 logger.debug("Util.CONTROL_RECEIVER_VALUE is "+Util.CONTROL_RECEIVER_VALUE);
                 logger.debug("((EventLedger) ledger).getHeader().getUniqueMsgId() is "+((EventLedger) ledger).getHeader().getUniqueMsgId());
                 logger.debug("Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name() is "+Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name());
-                logger.debug("Util.LOGGING_VERSION).serialize() is "+Util.LOGGING_VERSION);
-               /* LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(((EventLedger) ledger).getHeader().getSphereId(),
-                        String.valueOf(currentDate.getTime()), device.getDeviceName(),
-                        Util.CONTROL_RECEIVER_VALUE, ((EventLedger) ledger).getHeader().getUniqueMsgId(),
-                        Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());*/
+                logger.debug("Util.LOGGING_VERSION).serialize() is "+Util.LOGGING_VERSION);*/
 
-                LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(((EventLedger) ledger).getHeader().getSphereId(),
-                        String.valueOf(currentDate.getTime()),
-                        Util.CONTROL_RECEIVER_VALUE, ((EventLedger) ledger).getHeader().getUniqueMsgId(),
-                        Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
+            remoteLoggingMessage = new RemoteLoggingMessage(((EventLedger) ledger).getHeader().getSphereId(),
+                    String.valueOf(currentDate.getTime()),
+                    Util.CONTROL_RECEIVER_VALUE, ((EventLedger) ledger).getHeader().getUniqueMsgId(),
+                    Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION);
+
+            try {
+
+                LoggingQueueManager.loadLogSenderQueue(remoteLoggingMessage.serialize());
+
+                returnValue = true;
+
             } catch (InterruptedException e) {
                 logger.error(e.getMessage());
-                return false;
             }
-            return returnValue;
         }else if(ledger instanceof ControlLedger){
             if(FilterLogMessages.checkSphere(((ControlLedger) ledger).getSphereId()))
             {
-
+                remoteLoggingMessage = new RemoteLoggingMessage(
+                        ((ControlLedger) ledger).getSphereId(),
+                        String.valueOf(currentDate.getTime()),
+                        Util.CONTROL_RECEIVER_VALUE,
+                        ((ControlLedger) ledger).getMessage().getUniqueKey(),
+                        Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
+                        Util.LOGGING_VERSION);
                 try {
-                    LoggingQueueManager.loadLogSenderQueue(
-                            new RemoteLoggingMessage(
-                                    ((ControlLedger) ledger).getSphereId(),
-                                    String.valueOf(currentDate.getTime()),
-                                    Util.CONTROL_RECEIVER_VALUE,
-                                    ((ControlLedger) ledger).getMessage().getUniqueKey(),
-                                    Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
-                                    Util.LOGGING_VERSION).serialize());
+                    LoggingQueueManager.loadLogSenderQueue(remoteLoggingMessage.serialize());
+                    returnValue = true;
                 } catch (InterruptedException e) {
                     logger.error(e.getMessage());
-                    return false;
                 }
-
-                return returnValue;
             }
-            return false;
         }
-        logger.debug("return value is........  "+returnValue);
+
+        if(returnValue && remoteLoggingMessage != null && remoteLoggingMessageNotification != null)
+        {
+            remoteLoggingMessageNotification.handleLogMessage(remoteLoggingMessage);
+        }
+
         return returnValue;
     }
 
-    /*@Override
-    public boolean sendRemoteLogMessage(ControlLedger tcMessage) {
 
-        if (FilterLogMessages.checkSphere(tcMessage.getSphereId())) {
-
-            try {
-                LoggingQueueManager.loadLogSenderQueue(
-                        new RemoteLoggingMessage(
-                                tcMessage.getSphereId(),
-                                String.valueOf(currentDate.getTime()),
-                                device.getDeviceName(),
-                                Util.CONTROL_RECEIVER_VALUE,
-                                tcMessage.getMessage().getUniqueKey(),
-                                Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
-                                Util.LOGGING_VERSION).serialize());
-            } catch (InterruptedException e) {
-                logger.error(e.getMessage());
-                return false;
-            }
-
-            return true;
-        }
-        return false;
-    }*/
 
     @Override
     public boolean sendRemoteLogControlMessage(ControlMessage msg) {
@@ -243,34 +201,7 @@ public  class RemoteLoggingManager implements RemoteLog {
         return false;
     }
 
-   /* @Override
-    public boolean sendRemoteLogMessage(EventLedger eLedger) {
-        try {
-            LoggingQueueManager.loadLogSenderQueue(new RemoteLoggingMessage(eLedger.getHeader().getSphereId(),
-                    String.valueOf(currentDate.getTime()), device.getDeviceName(),
-                    Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(),
-                    Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
-            return false;
-        }
-        return true;
-    }*/
 
-
-   /* @Override
-    *//**
-     * TODO: test the below logic
-     * *//*
-    public boolean isRemoteMessageValid(RemoteLoggingMessage logMessage) {
-        if (logMessage.typeOfMessage
-                .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name())
-                || logMessage.typeOfMessage
-                .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND.name())) {
-            return false;
-        }
-        return false;
-    }*/
 
 
     class CommCtrlReceiver implements CtrlMsgReceiver {
@@ -279,13 +210,13 @@ public  class RemoteLoggingManager implements RemoteLog {
         public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
             switch (id) {
                 case LoggingServiceMessage:
-                    //logger.debug("<<<<<<<<  LOGGING MESSAGE RECEIVED FROM LOGGING SERVICE  >>>>>>>>>");
+
                     logger.debug("ReceivedLogMessage-> " + serializedMsg);
                     try {
                         final LoggingServiceMessage loggingServiceMsg = ControlMessage.deserialize(serializedMsg, LoggingServiceMessage.class);
 
                         if (null == logServiceMsgHandler) {
-                            logServiceMsgHandler = new ServiceMessageHandler(networkManager);
+                            logServiceMsgHandler = new ServiceMessageHandler(networkManager, );
                         }
                         logServiceMsgHandler.handleLogServiceMessage(loggingServiceMsg);
                     } catch (Exception e) {

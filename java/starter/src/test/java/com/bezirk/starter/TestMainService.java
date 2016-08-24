@@ -48,7 +48,7 @@
 //    @Test
 //    public void testStartStack() {
 //        ProxyServer proxyServer = new ProxyServer();
-//        BezirkConfig bezirkConfigRef = new BezirkConfig();
+//        DataPathConfig bezirkConfigRef = new DataPathConfig();
 //        //bezirkConfigRef.setDisplayEnable("false");
 //        /** DisplayEnable - true  */
 //        //System.setProperty("displayEnable", "true");
@@ -80,7 +80,7 @@
 //    @Test
 //    public void testStopStack() {
 //        ProxyServer proxyServer = new ProxyServer();
-//        BezirkConfig bezirkConfigRef = new BezirkConfig();
+//        DataPathConfig bezirkConfigRef = new DataPathConfig();
 //        //bezirkConfigRef.setDisplayEnable("false");
 //        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyServer, bezirkConfigRef);
 //        MessageHandler testMock = Mockito.mock(MessageHandler.class);
@@ -97,7 +97,7 @@
 //    @Test
 //    public void testReboot() {
 //        ProxyServer proxyServer = new ProxyServer();
-//        BezirkConfig bezirkConfigRef = new BezirkConfig();
+//        DataPathConfig bezirkConfigRef = new DataPathConfig();
 //        //bezirkConfigRef.setDisplayEnable("false");
 //        com.bezirk.starter.MainService mainService = new com.bezirk.starter.MainService(proxyServer, bezirkConfigRef);
 //        mainService.startStack(Mockito.mock(MessageHandler.class));

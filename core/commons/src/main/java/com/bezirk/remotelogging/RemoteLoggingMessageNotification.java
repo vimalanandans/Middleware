@@ -12,5 +12,5 @@ public interface RemoteLoggingMessageNotification {
      *
      * @param bezirkLogMessage RemoteLogMessage containing the Logging information.
      */
-    void handleLogMessage(RemoteLoggingMessage bezirkLogMessage) throws IOException;
+    void handleLogMessage(RemoteLoggingMessage bezirkLogMessage) ;
 }

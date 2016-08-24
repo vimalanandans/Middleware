@@ -87,7 +87,7 @@ public class MockSetUpUtilityForBezirkPC {
         comms.registerNotification(Mockito.mock(CommsNotification.class));
         //comms.startComms();
 
-        pubSubBroker = new PubSubBroker(pubSubBrokerStorage, upaDevice, networkManager, comms, new MockCallback(), null, null, streamManager);
+        pubSubBroker = new PubSubBroker(pubSubBrokerStorage, upaDevice, networkManager, comms, new MockCallback(), null, null, streamManager, null);
 
         // SphereServiceManager bezirkSphere = new SphereServiceManager(cryptoEngine, upaDevice, sphereRegistry);
         SphereListener sphereListener = Mockito.mock(SphereListener.class);

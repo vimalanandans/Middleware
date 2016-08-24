@@ -47,7 +47,7 @@
 //    /**
 //     * List of configurations
 //     */
-//    BezirkConfig bezirkConfig;
+//    DataPathConfig bezirkConfig;
 //    // Booleans to start and stop stack gracefully
 //    private Boolean startedStack = false;
 //    private Boolean stoppedStack = false;
@@ -110,7 +110,7 @@
 //     * @param bezirkConfigRef
 //     */
 //    public MainService(final ProxyServer proxyServer,
-//                       final BezirkConfig bezirkConfigRef) {
+//                       final DataPathConfig bezirkConfigRef) {
 //
 //        this.proxyServer = proxyServer;
 //
@@ -119,7 +119,7 @@
 //        /** get the config */
 //        if (bezirkConfig == null) {
 //            logger.debug("unable to find the bezirk config. using default values. check bezirk.xml");
-//            this.bezirkConfig = new BezirkConfig();
+//            this.bezirkConfig = new DataPathConfig();
 //        }
 //
 //    }

@@ -86,7 +86,7 @@ public class ComponentManager {
         Streaming streaming  = new StreamManager(comms, /*downloadPath,*/ networkManager);
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null,streaming);
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null,streaming, null);
 
         //initialize the identity manager
         final Preferences preferences = Preferences.userNodeForPackage(BezirkIdentityManager.class);

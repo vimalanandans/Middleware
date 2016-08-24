@@ -57,8 +57,11 @@ public class RemoteLoggingActivity extends AppCompatActivity implements View.OnC
 
         }
         boolean remoteLogValue = sharedPreferences.getBoolean("isRemoteLoginEnabled",true);
+
         remoteLog = new RemoteLoggingManager();
+
         remoteLog.setRemoteLoggingForAllSpheres(remoteLogValue);
+
         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
         startActivity(intent);
     }

@@ -27,7 +27,7 @@ import com.bezirk.proxy.android.ServerIdentityManagerAdapter;
 import com.bezirk.proxy.android.AndroidProxyServer;
 import com.bezirk.proxy.android.ZirkMessageHandler;
 import com.bezirk.pubsubbroker.PubSubBroker;
-import com.bezirk.remotelogging.FileCreationHelper;
+import com.bezirk.remotelogging.FileLogger;
 import com.bezirk.remotelogging.ReceiverQueueProcessor;
 import com.bezirk.remotelogging.RemoteLoggingManager;
 import com.bezirk.remotelogging.RemoteLog;
@@ -39,8 +39,6 @@ import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 public class ComponentManager extends Service {
 
@@ -116,22 +114,12 @@ public class ComponentManager extends Service {
         //comms = new JmqCommsManager(networkManager, null,null, null);
 
         //initialize remoteLogging for logging the messages
-        remoteLog = new RemoteLoggingManager();
+        remoteLog = new RemoteLoggingManager(networkManager, null);
 
-        remoteLoggingMessage = new RemoteLoggingMessage();
-        remoteLoggingMessageNotification = new FileCreationHelper();
-
-        receiverQueueProcessor = new ReceiverQueueProcessor(remoteLoggingMessageNotification);
-
-       /* try {
-            remoteLoggingMessageNotification.handleLogMessage(remoteLoggingMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
         //streaming manager
         Streaming streaming = new StreamManager(comms, networkManager);
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null,streaming,remoteLog,remoteLoggingMessage,remoteLoggingMessageNotification);
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null,streaming, remoteLog);
 
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
