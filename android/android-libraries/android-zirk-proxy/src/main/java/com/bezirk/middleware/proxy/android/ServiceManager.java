@@ -19,7 +19,7 @@ public final class ServiceManager {
     private static final String COMPONENT_NAME = "com.bezirk.controlui";
     private static final String SERVICE_PKG_NAME = "com.bezirk.componentManager.ComponentManager";
     private static boolean localBezirkService = true; //true if bezirk service is running locally inside the same application, false otherwise
-    private static ComponentName componentName;
+    static ComponentName componentName;
     private static boolean started = false;
     private static Context context;
 

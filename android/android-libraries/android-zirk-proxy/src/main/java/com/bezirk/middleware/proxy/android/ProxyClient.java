@@ -15,7 +15,6 @@ import com.bezirk.actions.SetLocationAction;
 import com.bezirk.actions.SubscriptionAction;
 import com.bezirk.actions.UnicastEventAction;
 import com.bezirk.actions.ZirkAction;
-import com.bezirk.componentManager.AppManager;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.RecipientSelector;
@@ -31,7 +30,6 @@ import com.bezirk.proxy.api.impl.ZirkId;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -228,8 +226,8 @@ public final class ProxyClient implements Bezirk {
 
             // get the component name from the app manager. in case of single app it is the same which
             // is created during app manager create. else it returns the default
-            ComponentName name = new ComponentName(AppManager.getAppManager().getComponentName(), SERVICE_PKG_NAME);
-            intent.setComponent(name);
+            //ComponentName name = new ComponentName(AppManager.getAppManager().getComponentName(), SERVICE_PKG_NAME);
+            intent.setComponent(ServiceManager.componentName);
 
             final String actionName = action.getAction().getName();
             intent.setAction(actionName);
