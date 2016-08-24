@@ -6,7 +6,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
-import com.bezirk.android.bezirkAsALibrary.R;
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
@@ -67,7 +66,7 @@ public class AutoTestActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof AirQualityUpdateEvent) {
                     AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
-                    subscriberTextView.append(aqUpdate.toString()+"\n");
+                    subscriberTextView.append(aqUpdate.toString() + "\n");
                     bezirk.sendEvent(sender, new UpdateAcceptedEvent(SUBSCRIBER_ID, "pollen level:" + aqUpdate.pollenLevel));
                 }
             }
@@ -83,7 +82,7 @@ public class AutoTestActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
-                    publisherTextView.append(acceptedEventUpdate.toString()+"\n");
+                    publisherTextView.append(acceptedEventUpdate.toString() + "\n");
                     if (++noOfResponsesReceived == noOfMessageRounds) {
                         resultTextView.append(RESULT_MESSAGE);
                     }
