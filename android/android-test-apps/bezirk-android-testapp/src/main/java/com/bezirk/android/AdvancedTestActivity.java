@@ -23,8 +23,8 @@ import java.util.TimerTask;
 public class AdvancedTestActivity extends AppCompatActivity {
 
     private static final String LAUNCH_MESSAGE = "For Testing inter-app communication/inter-platform communication.\nLaunch Publisher/Subscriber Zirk.\nIf bezirk is installed in the device, the instance is reused.\nElse, local bezirk service is created.";
-    private static final String PUBLISHER_ID = "Test:Publisher";
-    private static final String SUBSCRIBER_ID = "Test:Subscriber";
+    private static final String PUBLISHER_ID = "Android:AdvancedTest:Publisher";
+    private static final String SUBSCRIBER_ID = "Android:AdvancedTest:Subscriber";
     private TextView zirkLauncherTextView;
     private TextView messagesTextView;
     private Button publisherButton;

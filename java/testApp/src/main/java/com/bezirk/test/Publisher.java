@@ -11,17 +11,17 @@ import java.util.TimerTask;
 
 public class Publisher {
 
+    private static final String PUBLISHER_ID = "Java:Publisher";
+
     public Publisher() {
-        final Bezirk bezirk = BezirkMiddleware.registerZirk("Publisher Zirk Java");
-
+        final Bezirk bezirk = BezirkMiddleware.registerZirk(PUBLISHER_ID);
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
-
         houseEvents.setEventReceiver(new EventSet.EventReceiver() {
             @Override
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
-                    System.out.println("\nReceived UpdateAcceptedEvent with test field: " + acceptedEventUpdate.getTestField());
+                    System.out.println(acceptedEventUpdate.toString());
                 }
             }
         });
@@ -34,14 +34,13 @@ public class Publisher {
 
             @Override
             public void run() {
+
                 AirQualityUpdateEvent airQualityUpdateEvent = new AirQualityUpdateEvent();
-                airQualityUpdateEvent.humidity = 0.8;
-                airQualityUpdateEvent.dustLevel = 30;
+                airQualityUpdateEvent.sender = PUBLISHER_ID;
                 airQualityUpdateEvent.pollenLevel = pollenLevel++;
 
                 bezirk.sendEvent(airQualityUpdateEvent);
-                //tv.append("Published air quality update: " + airQualityUpdateEvent.toString());
             }
-        }, 0, 5000);
+        }, 500, 5000);
     }
 }

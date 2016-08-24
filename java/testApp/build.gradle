@@ -5,7 +5,7 @@ mainClassName = "com.bezirk.test.Main"
 dependencies {
     compile project(':core:bezirk-middleware-api')
     compile project(':core:bezirk')
-    compile project(':core:commons')
+    //compile project(':core:commons')
     compile project(':java:libraries:java-zirk-proxy')
     compile project(':core:testapp-core')
 
@@ -13,6 +13,7 @@ dependencies {
 }
 
 run {
+    standardInput = System.in
     /**
      * Pass all the system properties to the JVM process spawned for running this application
      * @see <a href="https://docs.gradle.org/current/userguide/application_plugin.html#N15E7">gradle application plugin</a>

@@ -21,6 +21,6 @@ public class UpdateAcceptedEvent extends IdentifiedEvent {
         return "UpdateAcceptedEvent{" +
                 "sender='" + sender + '\'' +
                 ", testField='" + testField + '\'' +
-                "} " + super.toString();
+                "} ";
     }
 }

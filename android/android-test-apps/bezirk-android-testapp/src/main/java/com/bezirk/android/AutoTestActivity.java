@@ -24,8 +24,8 @@ public class AutoTestActivity extends AppCompatActivity {
     private TextView subscriberTextView;
     private TextView resultTextView;
 
-    private static final String PUBLISHER_ID = "AutoTest:Publisher";
-    private static final String SUBSCRIBER_ID = "AutoTest:Subscriber";
+    private static final String PUBLISHER_ID = "Android:AutoTest:Publisher";
+    private static final String SUBSCRIBER_ID = "Android:AutoTest:Subscriber";
     private static final String RESULT_MESSAGE = "Test finished successfully";
 
 
@@ -107,7 +107,7 @@ public class AutoTestActivity extends AppCompatActivity {
 
                 bezirk.sendEvent(airQualityUpdateEvent);
             }
-        }, 0, 1000);
+        }, 0, 300);
     }
 
     @Override

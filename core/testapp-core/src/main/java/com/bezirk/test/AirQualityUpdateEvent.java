@@ -14,6 +14,6 @@ public class AirQualityUpdateEvent extends Event {
         return "AirQualityUpdateEvent{" +
                 "sender='" + sender + '\'' +
                 ", pollenLevel=" + pollenLevel +
-                "} " + super.toString();
+                "} ";
     }
 }
