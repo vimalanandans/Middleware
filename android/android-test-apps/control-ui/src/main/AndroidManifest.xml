@@ -19,7 +19,7 @@
         tools:replace="icon, label, theme">
 
         <activity
-            android:name="com.bezirk.controlui.ControlActivity"
+            android:name="com.bezirk.middleware.android.ControlActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name">
             <intent-filter>
@@ -29,13 +29,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.bezirk.controlui.DeviceControlActivity"
+            android:name="com.bezirk.middleware.android.DeviceControlActivity"
             android:label="@string/title_activity_device_control"></activity>
         <activity
             android:name="com.bezirk.controlui.RestConfigActivity"
             android:label="Rest configurations"></activity>
         <activity
-            android:name="com.bezirk.controlui.DeviceTypeSelection"
+            android:name="com.bezirk.middleware.android.DeviceTypeSelection"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Device Type Selection"></activity>
 

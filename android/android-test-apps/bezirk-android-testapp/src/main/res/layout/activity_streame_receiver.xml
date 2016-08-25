@@ -5,7 +5,7 @@
     android:id="@+id/activity_streame_receiver"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.bezirk.android.StreameReceiverActivity">
+    tools:context="com.bezirk.middleware.android.StreameReceiverActivity">
 
     <TextView
         android:text="Streaming Initialized"

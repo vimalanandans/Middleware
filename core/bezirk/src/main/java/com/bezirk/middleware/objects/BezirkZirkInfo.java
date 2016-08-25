@@ -3,7 +3,7 @@
  */
 package com.bezirk.middleware.objects;
 
-import com.bezirk.proxy.api.impl.ZirkId;
+import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 /**
  * @author Rishabh Gulati

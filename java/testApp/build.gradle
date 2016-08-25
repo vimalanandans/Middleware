@@ -1,6 +1,6 @@
 apply plugin: 'application'
 
-mainClassName = "com.bezirk.test.Main"
+mainClassName = "com.bezirk.middleware.java.Main"
 
 dependencies {
     compile project(':core:bezirk-middleware-api')
