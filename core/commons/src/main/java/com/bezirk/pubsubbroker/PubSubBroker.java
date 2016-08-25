@@ -419,7 +419,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
         if(null != remoteLog) {
 
-            remoteLog.sendRemoteLogLedgerMessage(eLedger);
+            remoteLog.sendRemoteLogToServer(eLedger);
         }
 
         // give a callback to appropriate zirk..

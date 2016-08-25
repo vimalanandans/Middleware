@@ -1,5 +1,10 @@
 package com.bezirk.remotelogging;
 
+import com.bezirk.control.messages.ControlLedger;
+import com.bezirk.control.messages.ControlMessage;
+import com.bezirk.control.messages.EventLedger;
+import com.bezirk.control.messages.Ledger;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Date;
 
 /**
  * This is an Bezirk logging Zirk. All Platforms have to use this zirk to enable
@@ -38,12 +44,15 @@ public class RemoteLoggingService extends Thread {
 
     ReceiverQueueProcessor receiverQueueProcessor;
 
+    RemoteLoggingMessageNotification remoteLoggingMessageNotification = null;
+
+    private final Date currentDate = new Date();
     /**
      * setup the port.
      *
      */
     public RemoteLoggingService(RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
-        receiverQueueProcessor = new ReceiverQueueProcessor(remoteLoggingMessageNotification);
+        this.remoteLoggingMessageNotification = remoteLoggingMessageNotification;
     }
 
     @Override
@@ -53,7 +62,7 @@ public class RemoteLoggingService extends Thread {
             while (isRunning) {
                 Socket clientSocket = serverSocket.accept();
                 String serializedLoggerMessage = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())).readLine();
-                LoggingQueueManager.loadLogReceiverQueue(serializedLoggerMessage);
+                receiverQueueProcessor.processLogInMessage(serializedLoggerMessage);
             }
         } catch (IOException e) {
             logger.error("Some exception occurred", e);
@@ -90,6 +99,7 @@ public class RemoteLoggingService extends Thread {
             return false;
         }
 
+        receiverQueueProcessor = new ReceiverQueueProcessor(remoteLoggingMessageNotification);
         isRunning = receiverQueueProcessor.startProcessing();
 
         logger.info("remote logging server started on "+ listeningPort);

@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class FileLogger implements  RemoteLoggingMessageNotification {
+public class FileLogger {
 
     private static final Logger logger = LoggerFactory.getLogger(ReceiverQueueProcessor.class);
     private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS", Locale.GERMANY);
@@ -37,7 +37,6 @@ public class FileLogger implements  RemoteLoggingMessageNotification {
 
     }
 
-    @Override
     public void handleLogMessage(RemoteLoggingMessage remoteLogMessage){
 
         try {

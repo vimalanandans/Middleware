@@ -3,24 +3,22 @@ package com.bezirk.remotelogging;
 
 import com.bezirk.comms.Comms;
 import com.bezirk.comms.CtrlMsgReceiver;
-import com.bezirk.control.messages.ControlLedger;
 import com.bezirk.control.messages.ControlMessage;
-import com.bezirk.control.messages.EventLedger;
 import com.bezirk.control.messages.Ledger;
 import com.bezirk.control.messages.logging.LoggingServiceMessage;
 
 import com.bezirk.networking.NetworkManager;
 import com.bezirk.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.proxy.api.impl.ZirkId;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.Date;
+import java.util.Arrays;
 
 /**
- * Logging Manager class that starts/stops LoggingServices and LoggingClient.
+ * Logging Manager class that starts/stops LoggingServices and RemoteLoggingClient.
  * The platforms need to instantiate this manager and can start stop the zirk.
  */
 public  class RemoteLoggingManager implements RemoteLog {
@@ -31,11 +29,13 @@ public  class RemoteLoggingManager implements RemoteLog {
     /**
      * Logging Client
      */
-    private LoggingClient logClient = null;
+    private RemoteLoggingClient remoteLoggingClient = null;
+
+
 
     private static final Logger logger = LoggerFactory.getLogger(RemoteLoggingManager.class);
 
-    private final Date currentDate = new Date();
+
 
     private RemoteLoggingMessageNotification remoteLoggingMessageNotification = null;
 
@@ -43,7 +43,8 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     private boolean enableLogging = false;
 
-    ServiceMessageHandler logServiceMsgHandler = null;
+    private boolean enableControl = false;
+
 
     Comms comms;
 
@@ -71,11 +72,13 @@ public  class RemoteLoggingManager implements RemoteLog {
      * @return
      */
     @Override
-    public boolean enableLogging(boolean enable, String[] sphereNameList) {
+    public boolean enableLogging(boolean enable, boolean enableControl, String[] sphereNameList) {
 
         boolean bReturn ;
 
         this.enableLogging = enable;
+
+        this.enableControl = enableControl;
 
         String[] loggingSpheres;
 
@@ -149,94 +152,19 @@ public  class RemoteLoggingManager implements RemoteLog {
     }
 
     @Override
-    public boolean sendRemoteLogLedgerMessage(Ledger ledger) {
+    public boolean sendRemoteLogToServer(Ledger ledger) {
 
         logger.debug("sendRemoteLogLedgerMessage method in common/RemoteLoggingManager");
 
-        boolean returnValue = false;
-
-        RemoteLoggingMessage remoteLoggingMessage = null;
-
-        if(ledger instanceof EventLedger){
-                if((null!=((EventLedger) ledger).getHeader())){
-                    logger.debug("Header is set "+((EventLedger) ledger).getHeader().toString());
-                    if(null!=((EventLedger) ledger).getHeader().getSphereId()){
-                        logger.debug("sphere id is "+((EventLedger) ledger).getHeader().getSphereId());
-                    }
-                }
-                /*logger.debug("getSphereId is "+((EventLedger) ledger).getHeader().getSphereId());
-                logger.debug("String.valueOf(currentDate.getTime() is "+String.valueOf(currentDate.getTime()));
-               // logger.debug(" device.getDeviceName() is "+ device.getDeviceName());
-                logger.debug("Util.CONTROL_RECEIVER_VALUE is "+Util.CONTROL_RECEIVER_VALUE);
-                logger.debug("((EventLedger) ledger).getHeader().getUniqueMsgId() is "+((EventLedger) ledger).getHeader().getUniqueMsgId());
-                logger.debug("Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name() is "+Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name());
-                logger.debug("Util.LOGGING_VERSION).serialize() is "+Util.LOGGING_VERSION);*/
-
-            remoteLoggingMessage = new RemoteLoggingMessage(((EventLedger) ledger).getHeader().getSphereId(),
-                    String.valueOf(currentDate.getTime()),
-                    Util.CONTROL_RECEIVER_VALUE, ((EventLedger) ledger).getHeader().getUniqueMsgId(),
-                    Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION);
-
-            try {
-
-                LoggingQueueManager.loadLogSenderQueue(remoteLoggingMessage.serialize());
-
-                returnValue = true;
-
-            } catch (InterruptedException e) {
-                logger.error(e.getMessage());
-            }
-        }else if(ledger instanceof ControlLedger){
-            if(FilterLogMessages.checkSphere(((ControlLedger) ledger).getSphereId()))
-            {
-                remoteLoggingMessage = new RemoteLoggingMessage(
-                        ((ControlLedger) ledger).getSphereId(),
-                        String.valueOf(currentDate.getTime()),
-                        Util.CONTROL_RECEIVER_VALUE,
-                        ((ControlLedger) ledger).getMessage().getUniqueKey(),
-                        Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
-                        Util.LOGGING_VERSION);
-                try {
-                    LoggingQueueManager.loadLogSenderQueue(remoteLoggingMessage.serialize());
-                    returnValue = true;
-                } catch (InterruptedException e) {
-                    logger.error(e.getMessage());
-                }
-            }
-        }
-
-        if(returnValue && remoteLoggingMessage != null && remoteLoggingMessageNotification != null)
-        {
-            remoteLoggingMessageNotification.handleLogMessage(remoteLoggingMessage);
-        }
-
-        return returnValue;
+        return remoteLoggingClient.processLogInMessage(ledger);
     }
-
-
-
     @Override
-    public boolean sendRemoteLogControlMessage(ControlMessage msg) {
-        if (FilterLogMessages.checkSphere(msg.getSphereId())) {
-            try {
-                LoggingQueueManager.loadLogSenderQueue(
-                        new RemoteLoggingMessage(
-                                msg.getSphereId(),
-                                String.valueOf(currentDate.getTime()),
-                                Util.CONTROL_RECEIVER_VALUE,
-                                msg.getUniqueKey(),
-                                Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
-                                Util.LOGGING_VERSION).serialize());
-            } catch (InterruptedException e) {
-                logger.error(e.getMessage());
-                return false;
-            }
-            return true;
-        }
-        return false;
+    public boolean sendRemoteLogToServer(ControlMessage message)
+    {
+        return remoteLoggingClient.processLogInMessage(message);
     }
 
-
+    /** to recieve the logging request*/
     class CommCtrlReceiver implements CtrlMsgReceiver {
 
         RemoteLoggingManager loggingManager = null;
@@ -246,26 +174,20 @@ public  class RemoteLoggingManager implements RemoteLog {
             this.loggingManager = loggingManager;
         }
         @Override
-        // FIXME : remove the below Log related quickfix, by moving the implementation to respective module
         public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
             switch (id) {
-                case LoggingServiceMessage:
+            case LoggingServiceMessage:
 
-                    logger.debug("ReceivedLogMessage-> " + serializedMsg);
-                    try {
-                        final LoggingServiceMessage loggingServiceMsg = ControlMessage.deserialize(serializedMsg, LoggingServiceMessage.class);
+                logger.debug("ReceivedLogMessage-> " + serializedMsg);
 
-                        if (null == logServiceMsgHandler) {
-                            logServiceMsgHandler = new ServiceMessageHandler(loggingManager);
-                        }
-                        logServiceMsgHandler.handleLogServiceMessage(loggingServiceMsg);
-                    } catch (Exception e) {
-                        logger.error("Error in Deserializing LogServiceMessage", e);
-                    }
-                    break;
-                default:
-                    logger.error("Unknown control message > " + id);
-                    return false;
+                final LoggingServiceMessage loggingServiceMsg = ControlMessage.deserialize(serializedMsg, LoggingServiceMessage.class);
+
+                handleLogRequest(loggingServiceMsg);
+
+                break;
+            default:
+                logger.error("Unknown control message > " + id);
+                return false;
             }
             return true;
         }
@@ -278,7 +200,6 @@ public  class RemoteLoggingManager implements RemoteLog {
         if (remoteLoggingService == null ) {
             remoteLoggingService = new RemoteLoggingService(remoteLoggingMessageNotification);
         }
-
         return  remoteLoggingService.startRemoteLoggingService();
     }
 
@@ -303,19 +224,53 @@ public  class RemoteLoggingManager implements RemoteLog {
     }
 
     /**
+     * Handles the LogServiceMessage.
+     * It will start/ stop the logging client accordingly based on the status received on the LoggingServiceMessage
+     *
+     * @param loggingServiceMsg
+     */
+    public void handleLogRequest(final LoggingServiceMessage loggingServiceMsg) {
+
+        if (loggingServiceMsg.isLoggingStatus()) {
+            //Start or Update the client
+            try {
+                startLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(),
+                        loggingServiceMsg.getRemoteLoggingServicePort());
+            } catch (Exception e) {
+                logger.error("Error occurred while logging client", e);
+            }
+            Util.setLoggingSphereList(Arrays.asList(loggingServiceMsg.getSphereList()));
+        } else {
+
+            try {
+                stopLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(),
+                        loggingServiceMsg.getRemoteLoggingServicePort());
+            } catch (Exception e) {
+                logger.error("Error occurred while stopping client", e);
+            }
+        }
+
+    }
+
+    /**
      * Starts the logging Client
      *
      * @param remoteIP   Ip of the remote logging zirk
      * @param remotePort port of the remote logging zirk
      * @throws Exception if parameters are wrong or zirk is not available.
      */
-    public void startLoggingClient(String remoteIP, int remotePort) throws Exception {
-        if (logClient == null) {
-            logClient = new LoggingClient();
-            logClient.startClient(remoteIP, remotePort);
-            return;
+    public boolean startLoggingClient(String remoteIP, int remotePort) throws Exception {
+
+        if(ValidatorUtility.checkForString(remoteIP) || remotePort == 0 ){
+            logger.debug("invalid remote ip :" + remoteIP + " or remoteport " + remotePort);
+            return false;
         }
-        logClient.updateClient(remoteIP, remotePort);
+
+        if (remoteLoggingClient == null) {
+            remoteLoggingClient = new RemoteLoggingClient();
+            return remoteLoggingClient.startClient(remoteIP, remotePort);
+        } // incase if already running
+        return remoteLoggingClient.updateClient(remoteIP, remotePort);
     }
 
     /**
@@ -325,10 +280,15 @@ public  class RemoteLoggingManager implements RemoteLog {
      * @param remotePort Port of the remote zirk that is shutting
      * @throws Exception if tried to stop the client that is not started
      */
-    public void stopLoggingClient(String remoteIP, int remotePort) throws Exception {
-        if (logClient != null) {
-            logClient.stopClient(remoteIP, remotePort);
-            logClient = null;
+    public boolean  stopLoggingClient(String remoteIP, int remotePort) throws Exception {
+        if(ValidatorUtility.checkForString(remoteIP) || remotePort == 0 ){
+            logger.debug("invalid remote ip :" + remoteIP + " or remoteport " + remotePort);
+            return false;
         }
+        if (remoteLoggingClient != null) {
+            remoteLoggingClient.stopClient(remoteIP, remotePort);
+            remoteLoggingClient = null;
+        }
+        return true;
     }
 }

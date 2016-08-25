@@ -18,18 +18,19 @@ public interface RemoteLog {
     /**
      * set logger to enable or disable the remote logging
      * This starts the logging server and trigger other nodes client to listen to
+     * enable the control logging for middleware message analysing purpose.
+     * enableRemoteLogging must be true
      * **/
-    boolean enableLogging(boolean enableRemoteLogging, String[] sphereName);
+    boolean enableLogging(boolean enableRemoteLogging, boolean enableControl, String[] sphereName);
 
     /** check whether the remoteLogging is enabled or not */
     boolean isRemoteLoggingEnabled();
 
-    /** send the control ledger or event ledger to logging */
-    boolean sendRemoteLogLedgerMessage(Ledger ledger) ;
 
-    /** send the control ledger to logging */
-    //boolean sendRemoteLogMessage(ControlLedger tcMessage) ;
+    /** to send the incoming event message for logging */
+    boolean sendRemoteLogToServer(Ledger ledger) ;
 
-    /** send the control message to logging */
-    boolean sendRemoteLogControlMessage(ControlMessage msg) ;
+    /** to send the incoming control message for logging */
+    boolean sendRemoteLogToServer(ControlMessage message) ;
+
 }
