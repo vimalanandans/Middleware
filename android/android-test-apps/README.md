@@ -1,15 +1,11 @@
 # Android test applications
 
-## Testing Bezirk as a standalone application in Android
+### bezirk-android-ui application
+This android application is used to run standalone bezirk service.
 
-### bezirk-test-ui application
-This android application is used to test various interactions between zirks & bezirk, when bezirk android stack is running as a standalone application.
+### bezirk-android-testapp application
+Test features of the BezirkMiddleware & Bezirk api, i.e zirk-registration, publishing event(s), subscribing for event(s), initializing & stopping Bezirk.
 
-### publisher-zirk & subscriber-zirk applications
-Test basic features of the bezirk middleware api, i.e zirk-registration, publishing event(s), subscribing for event(s) when publisher and subscriber are running as separate apps on 1(or more) andorid devices.
-
-## bezirk-library-testapp
-Test bezirk as a library with publisher and subscriber zirks running in the same app (along with the bezirk stack)
 
 
 

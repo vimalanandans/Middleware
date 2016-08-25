@@ -33,6 +33,7 @@
  * 3.0.0-alpha-mvp+012 Android proxy without Identity Management
  *
  * 3.0.0-alpha+016 Merge of MVP changes to master
+ * 3.0.0-alpha+017 Packaging name changes for android, java and core modules. BezirkMiddleware new api features.
  */
 buildscript {
     repositories {
@@ -60,7 +61,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha+016"
+    version = "3.0.0-alpha+017"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
