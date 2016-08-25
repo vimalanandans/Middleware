@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 public final class ServiceManager {
     private static final Logger logger = LoggerFactory.getLogger(ServiceManager.class);
     private static final String COMPONENT_NAME = "com.bezirk.middleware.android.ui";
-    private static final String SERVICE_PKG_NAME = "ComponentManager";
+    private static final String SERVICE_PKG_NAME = "com.bezirk.middleware.android.ComponentManager";
     private static boolean localBezirkService = true; //true if bezirk service is running locally inside the same application, false otherwise
     static ComponentName componentName;
     private static boolean started = false;
