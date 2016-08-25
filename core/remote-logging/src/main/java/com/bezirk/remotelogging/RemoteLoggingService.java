@@ -24,9 +24,9 @@ public class RemoteLoggingService extends Thread {
      */
     private static final Logger logger = LoggerFactory.getLogger(RemoteLoggingService.class);
     /**
-     * TCP listening Port for the zirk
+     * TCP listening Port for the zirk. allocated automatically
      */
-    private final int listeningPort;
+    private int listeningPort = 0;
     /**
      * Flag to start stop the Zirk
      */
@@ -36,13 +36,14 @@ public class RemoteLoggingService extends Thread {
      */
     private ServerSocket serverSocket = null;
 
+    ReceiverQueueProcessor receiverQueueProcessor;
+
     /**
      * setup the port.
      *
-     * @param port at which the Zirk is listening for the clients to connect.
      */
-    public RemoteLoggingService(final int port) {
-        this.listeningPort = port;
+    public RemoteLoggingService(RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
+        receiverQueueProcessor = new ReceiverQueueProcessor(remoteLoggingMessageNotification);
     }
 
     @Override
@@ -69,15 +70,56 @@ public class RemoteLoggingService extends Thread {
         }
     }
 
+    public int getPort()
+    {
+        return listeningPort;
+    }
+
     /**
      * Starts the Logging Zirk
      *
      * @throws IOException if socket is unavailable.
      */
-    public void startRemoteLoggingService() throws IOException {
+    public boolean startRemoteLoggingService() {
+
+        // find a free port first
+        listeningPort  = startServer(listeningPort);
+        if(listeningPort == 0)
+        {
+            logger.error("unable to allocate the free port for remote logging server");
+            return false;
+        }
+
+        isRunning = receiverQueueProcessor.startProcessing();
+
+        logger.info("remote logging server started on "+ listeningPort);
         isRunning = true;
-        serverSocket = new ServerSocket(listeningPort);
         this.start();
+        return true;
+    }
+
+    /***
+     * Start the server and return the port
+     * @param portNumber
+     * @return
+     */
+    int startServer(int portNumber)
+    {
+
+        try {
+            serverSocket = new ServerSocket(portNumber);
+            serverSocket.setReuseAddress(true);
+            portNumber = serverSocket.getLocalPort();
+        } catch (IOException e) {
+        } finally {
+            if (serverSocket != null) {
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        return portNumber;
     }
 
     /**
@@ -86,6 +128,8 @@ public class RemoteLoggingService extends Thread {
      * @throws Exception if there is an error while closing the server socket
      */
     public void stopRemoteLoggingService() throws Exception {
+        receiverQueueProcessor.stopProcessing();
+        receiverQueueProcessor = null;
         isRunning = false;
         serverSocket.close();
     }

@@ -234,12 +234,12 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
             logger.error("Error in sphere select GUI init. ", e);
         }
 
-        try {
+      /*  try {
             remoteLog = new RemoteLoggingManager(networkManager);
             remoteLog.startRemoteLoggingService(this);
         } catch (Exception e) {
             logger.error("Error in sphere Select GUI init.", e);
-        }
+        }*/
     }
 
     /**

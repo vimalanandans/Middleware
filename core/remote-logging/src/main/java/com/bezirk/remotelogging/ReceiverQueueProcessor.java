@@ -61,18 +61,18 @@ public class ReceiverQueueProcessor implements Runnable {
     /**
      * Starts Processing the LogReceiverQueue
      *
-     * @throws Exception if platform specific logger is not set
      */
-    public void startProcessing() throws Exception {
+    public boolean startProcessing() {
         logger.debug("startProcessing of Receiverqueueprocessor");
         if (null == platformSpecificLogger) {
-            throw new Exception("BezirkLogger is not set");
+            return false;
         }
         gson = new Gson();
-        isRunning = true;
         ReceiverQueueProcessor receiverQueueProcessor = new ReceiverQueueProcessor(platformSpecificLogger);
         Thread t = new Thread(receiverQueueProcessor);
         t.start();
+        isRunning = true;
+        return isRunning;
     }
 
     /**

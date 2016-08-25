@@ -24,26 +24,10 @@ import java.util.Date;
  * The platforms need to instantiate this manager and can start stop the zirk.
  */
 public  class RemoteLoggingManager implements RemoteLog {
-
-    public static int REMOTE_LOGGING_PORT = 7777;
-
-    private boolean remoteLoggingForAllSpheres = false;
-
-    public boolean isRemoteLoggingForAllSpheres() {
-        return remoteLoggingForAllSpheres;
-    }
-
-    public void setRemoteLoggingForAllSpheres(boolean remoteLoggingForAllSpheres) {
-        this.remoteLoggingForAllSpheres = remoteLoggingForAllSpheres;
-    }
     /**
      * RemoteLoggingService
      */
     private RemoteLoggingService remoteLoggingService = null;
-    /**
-     * LogReceiverProcessor used by the Logging Zirk
-     */
-    private ReceiverQueueProcessor receiverQueueProcessor = null;
     /**
      * Logging Client
      */
@@ -57,7 +41,7 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     private  NetworkManager networkManager = null;
 
-    private boolean sendLoggingeMsgToClients = false;
+    private boolean enableLogging = false;
 
     ServiceMessageHandler logServiceMsgHandler = null;
 
@@ -66,66 +50,91 @@ public  class RemoteLoggingManager implements RemoteLog {
     CommCtrlReceiver ctrlReceiver ;
 
 
-    public RemoteLoggingManager(NetworkManager networkManager, RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
+    public RemoteLoggingManager(Comms comms, NetworkManager networkManager, RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
+
         this.networkManager = networkManager;
+
         this.remoteLoggingMessageNotification = remoteLoggingMessageNotification;
-        CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver(this);
+
+        this.comms = comms;
+
+        ctrlReceiver = new CommCtrlReceiver(this);
+
+        comms.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage,ctrlReceiver);
     }
 
 
+    /**
+     *
+     * @param enable - True - enable, False - disable
+     * @param sphereNameList - sphere name list. Null or RemoteLog.ALL_SPHERES means all sphere
+     * @return
+     */
     @Override
     public boolean enableLogging(boolean enable, String[] sphereNameList) {
-        logger.debug("enable logging in remotelogging");
+
+        boolean bReturn ;
+
+        this.enableLogging = enable;
 
         String[] loggingSpheres;
 
-        if (RemoteLog.ALL_SPHERES.equals(sphereNameList)) {
+        if(enable)
+        {
+            bReturn = startRemoteLoggingService();
+        }else
+        {
+            bReturn = stopRemoteLoggingService();
+        }
+
+        if(sphereNameList == null)
+        {
+            loggingSpheres = new String[1];
+            loggingSpheres[0] = RemoteLog.ALL_SPHERES;
+        }else if (RemoteLog.ALL_SPHERES.equals(sphereNameList)) {
             loggingSpheres = new String[1];
             loggingSpheres[0] = RemoteLog.ALL_SPHERES;
         } else {
             loggingSpheres = sphereNameList;
         }
 
-        // Send the logging enable to all the other nodes
-        sendLoggingeMsgToClients = sendLoggingServiceMsgToClients(comms,
-                sphereNameList, loggingSpheres, enable);
+        if(bReturn) {
+            // Send the logging enable/disable to all the other nodes
+            bReturn = bReturn & sendLoggingServiceMsgToClients(comms,
+                    sphereNameList, loggingSpheres, enable);
+        }
 
-        return sendLoggingeMsgToClients;
+
+        return bReturn;
     }
 
-    @Override
-    public boolean enableRemoteLoggingForAllSpheres()
-    {
-     boolean remoteLogValue = isRemoteLoggingForAllSpheres();
-        logger.debug("remoteLogValue is "+remoteLogValue);
-        return  remoteLogValue;
-    }
 
     @Override
     public boolean isRemoteLoggingEnabled() {
-        return sendLoggingeMsgToClients;
+        return enableLogging;
     }
-    public boolean sendLoggingServiceMsgToClients(Comms comms, final String[] sphereList,
+
+    private boolean sendLoggingServiceMsgToClients(Comms comms, final String[] sphereList,
                     final String[] selectedLogSpheres, final boolean isActivate) {
 
         final ZirkId myId = new ZirkId("BEZIRK-REMOTE-LOGGING-SERVICE");
 
         final BezirkZirkEndPoint sep = new BezirkZirkEndPoint(comms.getNodeId(),myId);
 
-        boolean sendLogMessageToClient = false;
+        boolean sendStatus = false;
 
 
         for (String sphereId : sphereList) {
 
             final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep,
-                    sphereId, comms.getNodeId(), REMOTE_LOGGING_PORT, selectedLogSpheres, isActivate);
+                    sphereId, networkManager.getDeviceIp(), remoteLoggingService.getPort(), selectedLogSpheres, isActivate);
 
             if(null != sphereId &&
                     null != loggingServiceActivateRequest &&
                     null != loggingServiceActivateRequest.serialize()){
-                sendLogMessageToClient = true;
+                sendStatus = true;
             }else{
-                sendLogMessageToClient = false;
+                sendStatus = false;
                 logger.error("unable to send the logging message to sphere id " + sphereId );
             }
 
@@ -136,7 +145,7 @@ public  class RemoteLoggingManager implements RemoteLog {
             }
 
         }
-        return sendLogMessageToClient;
+        return sendStatus;
     }
 
     @Override
@@ -145,10 +154,6 @@ public  class RemoteLoggingManager implements RemoteLog {
         logger.debug("sendRemoteLogLedgerMessage method in common/RemoteLoggingManager");
 
         boolean returnValue = false;
-
-        boolean isEnabled =  isRemoteLoggingEnabled();
-
-        logger.debug("checkEnableForAllSphere in PubSubBroker is " + isEnabled);
 
         RemoteLoggingMessage remoteLoggingMessage = null;
 
@@ -267,50 +272,30 @@ public  class RemoteLoggingManager implements RemoteLog {
     }
 
     /**
-     * Starts the Logging Zirk
-     *
-     * @param platformSpecificHandler handler to give callback once the zirk receives the request
-     * @throws Exception if handler is null, or something goes wrong while processing.
+     * Starts the Logging service to cature the log messages
      */
-    @Override
-    public boolean startRemoteLoggingService(final RemoteLoggingMessageNotification platformSpecificHandler) {
-        if (remoteLoggingService == null && platformSpecificHandler != null) {
-            remoteLoggingService = new RemoteLoggingService(REMOTE_LOGGING_PORT);
-            receiverQueueProcessor = new ReceiverQueueProcessor(platformSpecificHandler);
-            try {
-                remoteLoggingService.startRemoteLoggingService();
-                receiverQueueProcessor.startProcessing();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return true;
+    private boolean startRemoteLoggingService() {
+        if (remoteLoggingService == null ) {
+            remoteLoggingService = new RemoteLoggingService(remoteLoggingMessageNotification);
         }
-        //throw new Exception("Tried to start LoggingService again, that is already started or Handler is null");
-        return false;
+
+        return  remoteLoggingService.startRemoteLoggingService();
     }
 
     /**
      * Stops the logging Zirk
      *
-     * @throws Exception if logging zirk is tried to stop that is not started
      */
-    @Override
-    public boolean stopRemoteLoggingService() {
+    private boolean stopRemoteLoggingService() {
         if (remoteLoggingService != null) {
             try {
-                receiverQueueProcessor.stopProcessing();
                 remoteLoggingService.stopRemoteLoggingService();
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
-
             remoteLoggingService = null;
-            receiverQueueProcessor = null;
+
             return true;
         }
         //throw new Exception("Logging zirk tried to stop that is not started");
