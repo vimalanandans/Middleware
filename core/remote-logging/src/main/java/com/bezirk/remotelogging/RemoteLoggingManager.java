@@ -23,19 +23,15 @@ import java.util.Arrays;
  */
 public  class RemoteLoggingManager implements RemoteLog {
     /**
-     * RemoteLoggingService
+     * RemoteLoggingServer
      */
-    private RemoteLoggingService remoteLoggingService = null;
+    private RemoteLoggingServer remoteLoggingServer = null;
     /**
      * Logging Client
      */
     private RemoteLoggingClient remoteLoggingClient = null;
 
-
-
     private static final Logger logger = LoggerFactory.getLogger(RemoteLoggingManager.class);
-
-
 
     private RemoteLoggingMessageNotification remoteLoggingMessageNotification = null;
 
@@ -45,10 +41,12 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     private boolean enableControl = false;
 
+    private boolean enableFileLogging = false;
+
 
     Comms comms;
 
-    CommCtrlReceiver ctrlReceiver ;
+    LogCtrlMessageReceiver ctrlReceiver ;
 
 
     public RemoteLoggingManager(Comms comms, NetworkManager networkManager, RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
@@ -59,7 +57,9 @@ public  class RemoteLoggingManager implements RemoteLog {
 
         this.comms = comms;
 
-        ctrlReceiver = new CommCtrlReceiver(this);
+        ctrlReceiver = new LogCtrlMessageReceiver(this);
+
+        remoteLoggingClient = new RemoteLoggingClient();
 
         comms.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage,ctrlReceiver);
     }
@@ -68,17 +68,21 @@ public  class RemoteLoggingManager implements RemoteLog {
     /**
      *
      * @param enable - True - enable, False - disable
+     * @param enableControl - True enable logging control messages
+     * @param enableFileLogging - enable control messages
      * @param sphereNameList - sphere name list. Null or RemoteLog.ALL_SPHERES means all sphere
      * @return
      */
     @Override
-    public boolean enableLogging(boolean enable, boolean enableControl, String[] sphereNameList) {
+    public boolean enableLogging(boolean enable, boolean enableControl, boolean enableFileLogging, String[] sphereNameList) {
 
         boolean bReturn ;
 
         this.enableLogging = enable;
 
         this.enableControl = enableControl;
+
+        this.enableFileLogging = enableFileLogging;
 
         String[] loggingSpheres;
 
@@ -130,7 +134,7 @@ public  class RemoteLoggingManager implements RemoteLog {
         for (String sphereId : sphereList) {
 
             final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep,
-                    sphereId, networkManager.getDeviceIp(), remoteLoggingService.getPort(), selectedLogSpheres, isActivate);
+                    sphereId, networkManager.getDeviceIp(), remoteLoggingServer.getPort(), selectedLogSpheres, isActivate);
 
             if(null != sphereId &&
                     null != loggingServiceActivateRequest &&
@@ -165,11 +169,11 @@ public  class RemoteLoggingManager implements RemoteLog {
     }
 
     /** to recieve the logging request*/
-    class CommCtrlReceiver implements CtrlMsgReceiver {
+    class LogCtrlMessageReceiver implements CtrlMsgReceiver {
 
         RemoteLoggingManager loggingManager = null;
 
-        public CommCtrlReceiver(RemoteLoggingManager loggingManager)
+        public LogCtrlMessageReceiver(RemoteLoggingManager loggingManager)
         {
             this.loggingManager = loggingManager;
         }
@@ -197,10 +201,10 @@ public  class RemoteLoggingManager implements RemoteLog {
      * Starts the Logging service to cature the log messages
      */
     private boolean startRemoteLoggingService() {
-        if (remoteLoggingService == null ) {
-            remoteLoggingService = new RemoteLoggingService(remoteLoggingMessageNotification);
+        if (remoteLoggingServer == null ) {
+            remoteLoggingServer = new RemoteLoggingServer(remoteLoggingMessageNotification, enableFileLogging);
         }
-        return  remoteLoggingService.startRemoteLoggingService();
+        return  remoteLoggingServer.startRemoteLoggingService();
     }
 
     /**
@@ -208,14 +212,14 @@ public  class RemoteLoggingManager implements RemoteLog {
      *
      */
     private boolean stopRemoteLoggingService() {
-        if (remoteLoggingService != null) {
+        if (remoteLoggingServer != null) {
             try {
-                remoteLoggingService.stopRemoteLoggingService();
+                remoteLoggingServer.stopRemoteLoggingService();
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
-            remoteLoggingService = null;
+            remoteLoggingServer = null;
 
             return true;
         }
@@ -266,8 +270,9 @@ public  class RemoteLoggingManager implements RemoteLog {
             return false;
         }
 
-        if (remoteLoggingClient == null) {
-            remoteLoggingClient = new RemoteLoggingClient(comms.getNodeId());
+
+
+        if(!remoteLoggingClient.isRunning()){
             return remoteLoggingClient.startClient(remoteIP, remotePort);
         } // incase if already running
         return remoteLoggingClient.updateClient(remoteIP, remotePort);
@@ -285,10 +290,10 @@ public  class RemoteLoggingManager implements RemoteLog {
             logger.debug("invalid remote ip :" + remoteIP + " or remoteport " + remotePort);
             return false;
         }
-        if (remoteLoggingClient != null) {
-            remoteLoggingClient.stopClient(remoteIP, remotePort);
-            remoteLoggingClient = null;
-        }
+
+        remoteLoggingClient.stopClient(remoteIP, remotePort);
+
+
         return true;
     }
 }

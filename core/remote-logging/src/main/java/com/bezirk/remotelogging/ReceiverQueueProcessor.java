@@ -29,10 +29,13 @@ public class ReceiverQueueProcessor implements Runnable {
      */
     private Gson gson = null;
 
+    FileLogger fileLogger = null;
+
+
     /**
      * Blocking Queue that is used to queue logger messages at the Logging Zirk.
      *
-     * @see RemoteLoggingService
+     * @see RemoteLoggingServer
      */
     private BlockingQueue<String> logReceiverQueue = null;
 
@@ -42,8 +45,13 @@ public class ReceiverQueueProcessor implements Runnable {
      *
      * @param logger platform Specific Logger that is used to update the UI.
      */
-    public ReceiverQueueProcessor(RemoteLoggingMessageNotification logger) {
+    public ReceiverQueueProcessor(RemoteLoggingMessageNotification logger, boolean enableFileLogging) {
         this.platformSpecificLogger = logger;
+
+        if(enableFileLogging == true)
+        {
+            fileLogger = new FileLogger();
+        }
         gson = new Gson();
     }
 
@@ -51,12 +59,18 @@ public class ReceiverQueueProcessor implements Runnable {
     public void run() {
         try {
             while (isRunning) {
+                // read the blocked queue to fetch the incoming message
                 StringBuilder logMsgString = getLogIncomingMessage();
 
                 try {
                     RemoteLoggingMessage logMsg = gson.fromJson(logMsgString.toString(), RemoteLoggingMessage.class);
                     if (Util.LOGGING_VERSION.equals(logMsg.version)) {
                         platformSpecificLogger.handleLogMessage(logMsg);
+
+                        // log into file
+                        if(fileLogger != null)
+                            fileLogger.handleLogMessage(logMsg);
+
                     } else {
                         logger.error("LOGGING VERSION MISMATCH!!" + "Received LOG MSG VERSION = " + logMsg.version +
                                 " CURRENT LOGGING VERSION: " + Util.LOGGING_VERSION);

@@ -1,14 +1,10 @@
 package com.bezirk.remotelogging;
 
-import com.bezirk.control.messages.ControlLedger;
-import com.bezirk.control.messages.ControlMessage;
-import com.bezirk.control.messages.EventLedger;
-import com.bezirk.control.messages.Ledger;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
@@ -22,13 +18,13 @@ import java.util.Date;
  * The logging client send the serialized Logging Message. The Zirk accepts the connection and
  * loads the serialized message into ReceiverQueue.
  */
-public class RemoteLoggingService extends Thread {
+public class RemoteLoggingServer extends Thread {
 
 
     /**
      * private logger for the class
      */
-    private static final Logger logger = LoggerFactory.getLogger(RemoteLoggingService.class);
+    private static final Logger logger = LoggerFactory.getLogger(RemoteLoggingServer.class);
     /**
      * TCP listening Port for the zirk. allocated automatically
      */
@@ -42,17 +38,21 @@ public class RemoteLoggingService extends Thread {
      */
     private ServerSocket serverSocket = null;
 
-    ReceiverQueueProcessor receiverQueueProcessor;
+    private ReceiverQueueProcessor receiverQueueProcessor;
 
-    RemoteLoggingMessageNotification remoteLoggingMessageNotification = null;
+    private RemoteLoggingMessageNotification remoteLoggingMessageNotification = null;
+
+    private boolean enableFileLogging;
 
     private final Date currentDate = new Date();
     /**
      * setup the port.
      *
      */
-    public RemoteLoggingService(RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
+    public RemoteLoggingServer(RemoteLoggingMessageNotification remoteLoggingMessageNotification, boolean enableFileLogging) {
         this.remoteLoggingMessageNotification = remoteLoggingMessageNotification;
+
+      this.enableFileLogging = enableFileLogging;
     }
 
     @Override
@@ -79,6 +79,8 @@ public class RemoteLoggingService extends Thread {
         }
     }
 
+
+
     public int getPort()
     {
         return listeningPort;
@@ -99,7 +101,9 @@ public class RemoteLoggingService extends Thread {
             return false;
         }
 
-        receiverQueueProcessor = new ReceiverQueueProcessor(remoteLoggingMessageNotification);
+
+
+        receiverQueueProcessor = new ReceiverQueueProcessor(remoteLoggingMessageNotification, enableFileLogging);
         isRunning = receiverQueueProcessor.startProcessing();
 
         logger.info("remote logging server started on "+ listeningPort);

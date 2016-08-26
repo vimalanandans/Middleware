@@ -28,8 +28,6 @@ public class RemoteLoggingClient {
      * Remote Logging Zirk Port
      */
     private int servicePort = -1;
-
-    private String deviceId;
     /**
      * Processor for LogSenderQueue
      */
@@ -37,9 +35,17 @@ public class RemoteLoggingClient {
 
     private final Date currentDate = new Date();
 
-    RemoteLoggingClient(String deviceId)
+    RemoteLoggingClient()
     {
-        this.deviceId = deviceId;
+
+    }
+
+    /** cehck the client is already running */
+    public boolean isRunning()
+    {
+        if(senderQueueProcessor != null)
+            return true;
+        return false;
     }
     /**
      * Starts the client and the logger sender Processor.
@@ -94,9 +100,10 @@ public class RemoteLoggingClient {
 
     /** to send the incoming control message for logging */
     public boolean processLogInMessage(ControlMessage message) {
+
         boolean returnValue = false;
 
-        if (Util.checkSphere(message.getSphereId())) {
+        if (Util.checkSphere(message.getSphereId()) ) {
 
             RemoteLoggingMessage remoteLoggingMessage = new RemoteLoggingMessage(
                     message.getSphereId(),
