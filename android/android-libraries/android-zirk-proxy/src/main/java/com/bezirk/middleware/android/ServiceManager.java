@@ -44,7 +44,6 @@ public final class ServiceManager {
         } else {
             logger.debug("Custom configuration passed when initializing bezirk, creating custom bezirk service");
         }
-        logger.debug("Current package name: " + context.getPackageName());
         componentName = new ComponentName((localBezirkService) ? context.getPackageName() : COMPONENT_NAME, SERVICE_PKG_NAME);
 
         if (sendBezirkIntent(new StartServiceAction(config))) {
