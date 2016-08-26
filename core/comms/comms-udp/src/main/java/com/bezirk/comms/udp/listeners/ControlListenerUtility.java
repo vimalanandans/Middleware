@@ -1,6 +1,6 @@
 package com.bezirk.comms.udp.listeners;
 
-import com.bezirk.checksum.DuplicateMessageManager;
+import com.bezirk.middleware.core.checksum.DuplicateMessageManager;
 import com.bezirk.commons.BezirkVersion;
 import com.bezirk.comms.CommsNotification;
 import com.bezirk.control.messages.ControlLedger;

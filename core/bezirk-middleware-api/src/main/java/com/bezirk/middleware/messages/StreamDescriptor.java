@@ -37,6 +37,11 @@ public class StreamDescriptor extends Message {
     private StateListener stateListener = null;
 
     /**
+     * streamActionNAme
+     */
+    private String streamActionName = null;
+
+    /**
      * The concrete implementation of a <code>StreamDescriptor</code> must specify the stream's topic.
      * Message topics are documented in {@link Message}.
      *
@@ -46,11 +51,14 @@ public class StreamDescriptor extends Message {
      * @param isEncrypted   <code>true</code> if the contents of the stream must be encrypted
      *                      for transmission.
      */
-    public StreamDescriptor(boolean isIncremental, boolean isEncrypted, File file) {
+    public StreamDescriptor(boolean isIncremental, boolean isEncrypted, File file, String streamActionName) {
         this.incremental = isIncremental;
         this.encrypted = isEncrypted;
         this.file = file;
+        this.streamActionName = streamActionName;
     }
+
+
 
     /**
      * Returns <code>true</code> if the payload can be processed as data elements arrive.
@@ -96,6 +104,22 @@ public class StreamDescriptor extends Message {
      */
     public File getFile() {
         return file;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getStreamActionName() {
+        return streamActionName;
+    }
+
+    /**
+     *
+     * @param streamActionName
+     */
+    public void setStreamActionName(String streamActionName) {
+        this.streamActionName = streamActionName;
     }
 
     /**

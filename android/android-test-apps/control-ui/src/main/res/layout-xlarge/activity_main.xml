@@ -3,7 +3,7 @@
     android:id="@+id/parentlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.bezirk.controlui.ControlActivity">
+    tools:context="com.bezirk.middleware.android.ControlActivity">
     <!--    layout-large is currently same. this shall be different later-->
 
     <!--    <TextView

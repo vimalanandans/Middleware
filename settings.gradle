@@ -21,17 +21,12 @@ include ':core:testapp-core'
 include ':java:libraries:java-zirk-proxy'
 include ':java:libraries:comms-zyre-jni'
 include ':java:starter'
-include ':java:test-apps:publisher-zirk-java'
-include ':java:test-apps:subscriber-zirk-java'
-include ':java:test-apps:testApp'
+include ':java:testApp'
 
 /*--------------------android--------------------*/
 include ':android:android-starter'
-
-include ':android:android-test-apps:bezirk-test-ui'
-include ':android:android-test-apps:subscriber-zirk'
-include ':android:android-test-apps:publisher-zirk'
-include ':android:android-test-apps:bezirk-library-testapp'
+include ':android:android-test-apps:bezirk-android-ui'
+include ':android:android-test-apps:bezirk-android-testapp'
 include ':android:android-libraries:android-zirk-proxy'
 include ':android:android-libraries:android-comms-zyre-jni'
 

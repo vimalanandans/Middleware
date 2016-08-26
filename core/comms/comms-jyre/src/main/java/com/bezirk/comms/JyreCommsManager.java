@@ -3,7 +3,7 @@ package com.bezirk.comms;
 import com.bezirk.comms.thread.JyreReceiverThread;
 import com.bezirk.control.messages.ControlMessage.Discriminator;
 import com.bezirk.control.messages.Ledger;
-import com.bezirk.messagehandler.ServiceMessageHandler;
+import com.bezirk.middleware.java.messagehandler.ServiceMessageHandler;
 import com.bezirk.pipe.PipeManager;
 import com.bezirk.pubsubbroker.BezirkSadlManager;
 import com.bezirk.sphere.api.BezirkSphereForSadl;

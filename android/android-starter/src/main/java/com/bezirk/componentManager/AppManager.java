@@ -3,7 +3,8 @@ package com.bezirk.componentManager;
 import android.content.Context;
 import android.content.Intent;
 
-import com.bezirk.actions.BezirkAction;
+import com.bezirk.middleware.android.ComponentManager;
+import com.bezirk.middleware.core.actions.BezirkAction;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

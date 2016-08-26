@@ -1,6 +1,6 @@
 package com.bezirk.comms.udp.sender;
 
-import com.bezirk.checksum.BezirkCheckSum;
+import com.bezirk.middleware.core.checksum.BezirkCheckSum;
 import com.bezirk.commons.BezirkCompManager;
 import com.bezirk.commons.BezirkVersion;
 import com.bezirk.comms.BezirkCommunications;
