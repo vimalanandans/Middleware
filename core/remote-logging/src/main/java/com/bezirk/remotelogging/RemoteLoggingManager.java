@@ -267,7 +267,7 @@ public  class RemoteLoggingManager implements RemoteLog {
         }
 
         if (remoteLoggingClient == null) {
-            remoteLoggingClient = new RemoteLoggingClient();
+            remoteLoggingClient = new RemoteLoggingClient(comms.getNodeId());
             return remoteLoggingClient.startClient(remoteIP, remotePort);
         } // incase if already running
         return remoteLoggingClient.updateClient(remoteIP, remotePort);
