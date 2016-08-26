@@ -114,7 +114,7 @@ public class ComponentManager extends Service {
         //comms = new JmqCommsManager(networkManager, null,null, null);
 
         //initialize remoteLogging for logging the messages
-        remoteLog = new RemoteLoggingManager(networkManager, null);
+        remoteLog = new RemoteLoggingManager(comms, networkManager, null);
 
         //streaming manager
         Streaming streaming = new StreamManager(comms, networkManager);

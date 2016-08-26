@@ -8,6 +8,7 @@ import com.bezirk.remotelogging.RemoteLoggingMessage;
 import com.bezirk.remotelogging.RemoteLoggingMessageNotification;
 
 import com.bezirk.remotelogging.RemoteLog;
+import com.sun.org.apache.regexp.internal.RE;
 
 
 import org.slf4j.Logger;
@@ -349,7 +350,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
     public void shutGUI() {
         if (this != null) {
             try {
-                remoteLog.stopRemoteLoggingService();
+                remoteLog.enableLogging(false,false,false, null);
             } catch (Exception e) {
                 logger.error("Error in stopping logging zirk. ", e);
             }

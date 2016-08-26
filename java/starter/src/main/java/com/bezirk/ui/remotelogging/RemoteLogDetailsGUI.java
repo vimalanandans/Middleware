@@ -196,7 +196,7 @@ public class RemoteLogDetailsGUI extends JFrame {
 
     private void sendLoggingServiceMsg(boolean isActivateLogging) {
 
-        msgLog.enableLogging(isActivateLogging,selectedSpheres);
+        msgLog.enableLogging(isActivateLogging,false,true,selectedSpheres);
 
     }
 
