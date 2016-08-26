@@ -109,7 +109,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         }
 
         Config config = startServiceAction.getConfig();
-        startForeground(FOREGROUND_ID, buildForegroundNotification(config.getAppName(), config.getAppName() + " ON", R.drawable.bezirk_icon_s));
+        startForeground(FOREGROUND_ID, buildForegroundNotification(config.getAppName(), config.getAppName() + " ON", R.drawable.bezirk_notification_icon));
 
         logger.debug("LifeCycleCallbacks:start");
         //TODO add start implementations for modules
