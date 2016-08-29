@@ -35,6 +35,7 @@
  * 3.0.0-alpha+016 Merge of MVP changes to master
  * 3.0.0-alpha+017 Packaging name changes for android, java and core modules. BezirkMiddleware new api features.
  * 3.0.0-alpha+018 removing unnecessary resources from android projects. Should fix duplicate ic_launcher issue when using bezirk aar in android.
+ * 3.0.0-alpha+019 cleaning lintOptions in android projects. Should fix InvalidPackage lint issue for zirk developers using android aar.
  */
 buildscript {
     repositories {
@@ -44,7 +45,7 @@ buildscript {
     ext {
         androidGradleToolsVersion = "2.1.0"
         androidBuildToolsVersion = "23.0.3"
-        androidSupportLibraryVersion = "23.2.1"
+        androidSupportLibraryVersion = "24.2.0"
         androidCompileSdkVersion = "23"
         androidMinSdkVersion = "16"
         androidTargetSdkVersion = "23"
@@ -62,7 +63,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha+018"
+    version = "3.0.0-alpha+019"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
