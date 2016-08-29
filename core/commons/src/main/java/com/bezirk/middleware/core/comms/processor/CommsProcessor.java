@@ -24,9 +24,6 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import java.net.InetAddress;
-
 import java.io.UnsupportedEncodingException;
 
 import java.util.ArrayList;
@@ -81,31 +78,10 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
         }
     }
 
-
-
-    public boolean initComms(CommsProperties commsProperties, InetAddress addr,
-                             SphereSecurity sphereSecurity, Streaming streaming) {
-
-
-        msgDispatcher = new CommsMessageDispatcher();
-
-        if (streaming != null) {
-
-            bezirkStreamManager = streaming;
-
-           // bezirkStreamManager.initStreams(this);
-
-        }
-
-        return true;
-    }
-
-
-    public boolean startComms() {
-
-        // create thread pool. every start creates new thread pool.
-        // old ones are cleared with stopComms
-        logger.debug("create threadpool");
+    /**
+     * Create thread pool.
+     */
+    public void startComms() {
         executor = Executors.newFixedThreadPool(THREAD_SIZE);
         /*
         not required anymore!!
@@ -118,7 +94,6 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
         }
         return true;
         }*/
-        return true;
     }
 
 
@@ -138,19 +113,12 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
     @Override
     public boolean sendMessage(Ledger message) {
         // send as it is
-
-        if (message instanceof ControlLedger){
-            logger.debug("message instanceof ControlLedger in SendMessage");
+        if (message instanceof ControlLedger)
             return this.sendControlLedger((ControlLedger) message);
-        }
-        else if (message instanceof EventLedger){
-            logger.debug("message instanceof EventLedger in SendMessage");
+        else if (message instanceof EventLedger)
             return this.sendEventLedger((EventLedger) message);
-        }
-        else if (message instanceof MessageLedger){
-            logger.debug("message instanceof MessageLedger in SendMessage");
+        else if (message instanceof MessageLedger)
             return this.sendMessageLedger((MessageLedger) message);
-        }
         else { // stream ledger // hopefully there are no other types
             //return this.sendStreamMessage(message);
             return false;
@@ -179,7 +147,6 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
         String data = ledger.getSerializedMessage();
         if (data != null) {
             if (ledger.getMessage() instanceof MulticastControlMessage) {
-                logger.debug("ledger.getMessage() is an instanceof MulticastControlMessage");
                 WireMessage wireMessage = prepareWireMessage(ledger.getMessage().getSphereId(), data);
 
 
@@ -192,7 +159,6 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
                 //bridgeControlMessage(getDeviceId(), message);
 
             } else if (ledger.getMessage() instanceof UnicastControlMessage) {
-                logger.debug("ledger.getMessage() is an instanceof UnicastControlMessage");
                 WireMessage wireMessage = prepareWireMessage(ledger.getMessage().getSphereId(), data);
 
                 wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_CTRL);
@@ -203,8 +169,6 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
             } else {
                 logger.debug("unknown control message");
             }
-        }else{
-            logger.debug("data is null");
         }
 
 
@@ -364,13 +328,11 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
     @Override
     public boolean sendEventLedger(EventLedger ledger) {
         final String data = ledger.getSerializedMessage();
-        logger.debug("data in sendEventLedger "+data);
 
         if (data == null) return false;
 
 
         if (ledger.getHeader() instanceof MulticastHeader) {
-            logger.debug("ledger.getHeader() instanceof MulticastHeader");
             //TODO: for event message decrypt the header here
             // if the intended zirk is available in sadl message is decrypted
             WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
@@ -386,13 +348,6 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
             }
 
             byte[] headerData = encryptMsg(wireMessage.getSphereId(), header);
-
-                /*UnicastHeader uHeader = (UnicastHeader) ledger.getHeader();
-                String recipient = uHeader.getRecipient().device;
-                logger.debug("EventLedger : ledger.getHeader() instanceof UnicastHeader");
-                //TODO: for event message decrypt the header here
-                // if the intended zirk is available in sadl message is decrypted
-                WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);*/
 
             wireMessage.setHeaderMsg(headerData);
 
@@ -490,9 +445,7 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
      */
     public boolean processWireMessage(String deviceId, String msg) {
         // start thread pool
-        logger.debug("processWireMessage thread pool");
         if ((executor != null) && !executor.isShutdown()) {
-            logger.debug("executor ");
             ProcessIncomingMessage inMsg = new ProcessIncomingMessage(/*this, */deviceId, msg);
 
             executor.execute(inMsg);
@@ -554,11 +507,9 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
     //send the message to intended modules
     boolean dispatchMessage(Ledger ledger) {
         if (ledger instanceof ControlLedger) {
-            logger.debug("ledger is instanceof ControlLedger");
             ControlLedger ctrlLedger = (ControlLedger) ledger;
             msgDispatcher.dispatchControlMessages(ctrlLedger.getMessage(), ctrlLedger.getSerializedMessage());
         } else if (ledger instanceof EventLedger) {
-            logger.debug("ledger is instanceof EventLedger");
             EventLedger eventLedger = (EventLedger) ledger;
             msgDispatcher.dispatchServiceMessages(eventLedger);
         } else {
@@ -646,7 +597,6 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
     }
 
     private boolean processEvent(String deviceId, WireMessage wireMessage) {
-        logger.debug("processEvent method device Id is "+deviceId);
 
         EventLedger eventLedger = new EventLedger();
         //eventLedger
@@ -677,7 +627,6 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
     }
 
     private boolean setEventHeader(EventLedger eLedger, WireMessage wireMessage) {
-        logger.debug("set event header in commsProcessor");
         // decrypt the header
         final byte[] data = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getHeaderMsg());
 
@@ -697,7 +646,6 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
         final Gson gson = new Gson();
 
         if (wireMessage.isMulticast()) {
-            logger.debug("Multicast header");
             MulticastHeader mHeader = gson.fromJson(headerData, MulticastHeader.class);
 
             eLedger.setHeader(mHeader);
@@ -829,7 +777,6 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
             if (ledger != null) {
                 // ledger is not null. means this is not loop back
                 // dispatch it directly
-                logger.debug("ledger is not null");
                 dispatchMessage(ledger);
                 return;
             }

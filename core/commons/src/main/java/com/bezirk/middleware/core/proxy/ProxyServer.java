@@ -11,11 +11,8 @@ import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBrokerZirkServicer;
 
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ProxyServer {
-    private static final Logger logger = LoggerFactory.getLogger(ProxyServer.class);
     private PubSubBrokerZirkServicer pubSubBrokerService;
     private final IdentityManager identityManager;
 
@@ -32,9 +29,7 @@ public class ProxyServer {
     }
 
     public void sendEvent(@NotNull SendMulticastEventAction eventAction) {
-        logger.debug("sendEvent method in ProxyServer");
         if (eventAction.isIdentified()) {
-            logger.debug("eventaction true");
             eventAction.setAlias(((IdentityProvisioner) identityManager).getAlias());
         }
 

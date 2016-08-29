@@ -39,6 +39,10 @@ public abstract class NetworkManager {
     }
 
     public InetAddress getIpForInterface(NetworkInterface intf) {
+        if (intf == null) {
+            logger.debug("Input interface is null");
+            return null;
+        }
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface curIntf = en.nextElement();
@@ -61,22 +65,17 @@ public abstract class NetworkManager {
 
 
     public InetAddress getLocalInet() {
-        getInetAddress();
         if (curInterface == null) {
-            logger.debug("curInterface is null");
             getInetAddress();
         }
-        InetAddress inetAddress = null;
         for (Enumeration<InetAddress> enumIpAddr = curInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
-            logger.debug("enumIpAddr");
-             inetAddress = enumIpAddr.nextElement();
-            logger.debug("inetaddress is "+inetAddress.getHostAddress());
+            InetAddress inetAddress = enumIpAddr.nextElement();
             if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-                logger.info("IP address determined: " + inetAddress.getHostAddress());
+                //logger.info("IP address determined: " + inetAddress.getHostAddress());
                 return inetAddress;
             }
         }
-        return inetAddress;
+        return null;
     }
 
 
@@ -106,14 +105,12 @@ public abstract class NetworkManager {
 
     @Deprecated // create using new BezirkZirkEndPoint(comms.getNodeId(), zirkId)
     public BezirkZirkEndPoint getServiceEndPoint(ZirkId zirkId) {
-        logger.debug("getServiceEndPoint zirkid "+zirkId.getZirkId());
         BezirkZirkEndPoint sep = new BezirkZirkEndPoint(zirkId);
         sep.device = getLocalInet().getHostAddress();
         return sep;
     }
 
     public String getDeviceIp() {
-        logger.debug("getDeviceIp");
         return getLocalInet().getHostAddress();
     }
 

@@ -28,8 +28,6 @@ import com.bezirk.middleware.core.util.ValidatorUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -42,19 +40,19 @@ import java.util.Set;
 public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServiceInfo, PubSubBrokerControlReceiver, PubSubEventReceiver, EventMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(PubSubBroker.class);
 
-    private static final String SPHERE_NULL_NAME = "SPHERE_NONE";
+    public static final String SPHERE_NULL_NAME = "SPHERE_NONE";
 
     protected PubSubBrokerStorage pubSubBrokerStorage = null;
     protected PubSubBrokerRegistry pubSubBrokerRegistry = null;
     protected Comms comms = null;
     protected SphereServiceAccess sphereServiceAccess = null; // Nullable object
     protected SphereSecurity sphereSecurity = null; // Nullable object
-    private  NetworkManager networkManager=null;
+    private  NetworkManager networkManager = null;
     private  Device device = null;
     private  RemoteLog remoteLog ;
     private  Streaming streamManger;
     private  MessageHandler msgHandler;
-    private boolean checkEnableValueForAllSphere = false;
+
 
     public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager, Comms comms, MessageHandler msgHandler,
                         SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity, Streaming streamManger,RemoteLog remoteLogging) {
@@ -129,7 +127,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
 
     public Boolean registerService(final ZirkId zirkId) {
-        logger.debug("zirkId in register service is "+zirkId);
         if (!ValidatorUtility.checkBezirkZirkId(zirkId)) {
             logger.error("Invalid ZirkId");
             return false;
@@ -139,7 +136,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             return false;
         }
         if (pubSubBrokerRegistry.registerZirk(zirkId)) {
-            logger.debug("pubSubBrokerRegistry.registerZirk(zirkId)");
             persistRegistry();
             return true;
         }
@@ -198,16 +194,12 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
     @Override
     public boolean sendMulticastEvent(SendMulticastEventAction multicastEventAction) {
-        logger.debug("sendMulticastEvent method in PubSubBroker");
         final ZirkId zirkId = multicastEventAction.getZirkId();
-        logger.debug("zirk id is "+zirkId.getZirkId());
         final Iterable<String> listOfSphere;
 
         if (sphereServiceAccess != null) {
-            logger.debug("sphereServiceAccess is not null");
             listOfSphere = sphereServiceAccess.getSphereMembership(zirkId);
         } else {
-            logger.debug("sphereServiceAccess is  null");
             Set<String> spheres = new HashSet<>();
             spheres.add(SPHERE_NULL_NAME);
             listOfSphere = spheres;
@@ -232,9 +224,8 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
         while (sphereIterator.hasNext()) {
 
-            logger.debug("Iterating over sphere");
             final EventLedger eventLedger = new EventLedger();
-            logger.debug("multicastEventAction.getSerializedEvent() is "+multicastEventAction.getSerializedEvent());
+
             eventLedger.setSerializedMessage(multicastEventAction.getSerializedEvent());
 
             final MulticastHeader mHeader = new MulticastHeader();
@@ -246,28 +237,20 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             mHeader.setIsIdentified(multicastEventAction.isIdentified());
 
             if (multicastEventAction.isIdentified()) {
-                logger.debug("(multicastEventAction.isIdentified() is true in PubSubbroker");
                 mHeader.setAlias(multicastEventAction.getAlias());
             }
-            if(null!=mHeader){
-                logger.debug("mHeader is not null");
-                eventLedger.setHeader(mHeader);
-            }
-            else{
-                logger.debug("mHeader is null");
-            }
+
+            eventLedger.setHeader(mHeader);
             eventLedger.setIsMulticast(true);
             eventLedger.setSerializedHeader(mHeader.serialize());
 
             if (ValidatorUtility.isObjectNotNull(comms)) {
-                logger.debug("comms not null in PubSubBroker class");
                 comms.sendEventLedger(eventLedger);
 
             } else {
-                logger.error("Comms manager not initialized");
                 return false;
             }
-            logger.debug("before calling sendMessageToLocal method and pass param eventLedger....");
+
             sendMessageToLocal(eventLedger);
 
         }
@@ -341,7 +324,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     /** send the event messages to local zirks */
     void sendMessageToLocal(EventLedger eventLedger)
     {
-        logger.debug("in method sendMessageToLocal");
         processEvent(eventLedger);
     }
 
@@ -408,7 +390,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     /** called on incoming message and loop back message*/
     @Override
     public boolean processEvent(final EventLedger eLedger) {
-        logger.debug("processEvent method");
+
         Set<ZirkId> zirkList = getAssociatedZirkList(eLedger);
 
         if (null == zirkList || zirkList.isEmpty()) {
@@ -435,7 +417,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     private void triggerMessageHandler(final EventLedger eLedger,
                                        Set<ZirkId> invokeList) {
         // check if the zirk exists in that sphere then give callback
-        logger.debug("triggerMessageHandler method call");
         for (ZirkId zirkId : invokeList) {
 
             if (isServiceInSphere(zirkId, eLedger.getHeader().getSphereId())) {

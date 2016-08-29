@@ -52,7 +52,7 @@ public class RemoteLoggingMessage {
      * @param version       Version of the Logging Message
      */
     public RemoteLoggingMessage(String sphereName, String timeStamp,
-                                String recipient, String uniqueMsgId,
+                                String sender, String recipient, String uniqueMsgId,
                                 String typeOfMessage, String version) {
         super();
         this.sphereName = sphereName;

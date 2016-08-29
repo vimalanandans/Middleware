@@ -4,6 +4,7 @@ import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.EventLedger;
 import com.bezirk.middleware.core.control.messages.Ledger;
+import com.bezirk.middleware.core.networking.NetworkManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,9 @@ public class RemoteLoggingClient {
      * Remote Logging Zirk Port
      */
     private int servicePort = -1;
+
+    /**/
+    NetworkManager networkManager;
     /**
      * Processor for LogSenderQueue
      */
@@ -35,9 +39,9 @@ public class RemoteLoggingClient {
 
     private final Date currentDate = new Date();
 
-    RemoteLoggingClient()
+    RemoteLoggingClient(NetworkManager networkManager)
     {
-
+        this.networkManager = networkManager;
     }
 
     /** cehck the client is already running */
@@ -108,6 +112,7 @@ public class RemoteLoggingClient {
             RemoteLoggingMessage remoteLoggingMessage = new RemoteLoggingMessage(
                     message.getSphereId(),
                     String.valueOf(currentDate.getTime()),
+                    networkManager.getDeviceIp(),
                     Util.CONTROL_RECEIVER_VALUE,
                     message.getUniqueKey(),
                     Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
@@ -127,7 +132,12 @@ public class RemoteLoggingClient {
 
     /** to send the incoming event message for logging */
     public boolean processLogInMessage(Ledger ledger) {
+
         boolean returnValue = false;
+
+        if(isRunning() == false)
+            return returnValue;
+
         RemoteLoggingMessage remoteLoggingMessage = null;
 
         if(ledger instanceof EventLedger){
@@ -139,7 +149,7 @@ public class RemoteLoggingClient {
             }
 
             remoteLoggingMessage = new RemoteLoggingMessage(((EventLedger) ledger).getHeader().getSphereId(),
-                    String.valueOf(currentDate.getTime()),
+                    String.valueOf(currentDate.getTime()),networkManager.getDeviceIp(),
                     Util.CONTROL_RECEIVER_VALUE, ((EventLedger) ledger).getHeader().getUniqueMsgId(),
                     Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION);
 
@@ -158,6 +168,7 @@ public class RemoteLoggingClient {
                 remoteLoggingMessage = new RemoteLoggingMessage(
                         ((ControlLedger) ledger).getSphereId(),
                         String.valueOf(currentDate.getTime()),
+                        networkManager.getDeviceIp(),
                         Util.CONTROL_RECEIVER_VALUE,
                         ((ControlLedger) ledger).getMessage().getUniqueKey(),
                         Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),

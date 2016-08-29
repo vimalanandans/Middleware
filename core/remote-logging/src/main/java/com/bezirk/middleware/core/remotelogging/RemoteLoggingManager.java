@@ -8,6 +8,7 @@ import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.Ledger;
 import com.bezirk.middleware.core.control.messages.logging.LoggingServiceMessage;
 import com.bezirk.middleware.core.networking.NetworkManager;
+import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.middleware.core.util.ValidatorUtility;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
@@ -16,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Logging Manager class that starts/stops LoggingServices and RemoteLoggingClient.
@@ -59,7 +62,7 @@ public  class RemoteLoggingManager implements RemoteLog {
 
         ctrlReceiver = new LogCtrlMessageReceiver(this);
 
-        remoteLoggingClient = new RemoteLoggingClient();
+        remoteLoggingClient = new RemoteLoggingClient(networkManager);
 
         comms.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage,ctrlReceiver);
     }
@@ -98,9 +101,18 @@ public  class RemoteLoggingManager implements RemoteLog {
         {
             loggingSpheres = new String[1];
             loggingSpheres[0] = RemoteLog.ALL_SPHERES;
+            // this sphere list goes to comms. Rather than access the global
+            String [] spheres = new String[1];
+            spheres[0] = PubSubBroker.SPHERE_NULL_NAME;
+            sphereNameList = spheres;
         }else if (RemoteLog.ALL_SPHERES.equals(sphereNameList)) {
             loggingSpheres = new String[1];
             loggingSpheres[0] = RemoteLog.ALL_SPHERES;
+            // this sphere list goes to comms. Rather than access the global
+            String [] spheres = new String[1];
+            spheres[0] = PubSubBroker.SPHERE_NULL_NAME;
+            sphereNameList = spheres;
+
         } else {
             loggingSpheres = sphereNameList;
         }
@@ -157,8 +169,6 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     @Override
     public boolean sendRemoteLogToServer(Ledger ledger) {
-
-        logger.debug("sendRemoteLogLedgerMessage method in common/RemoteLoggingManager");
 
         return remoteLoggingClient.processLogInMessage(ledger);
     }

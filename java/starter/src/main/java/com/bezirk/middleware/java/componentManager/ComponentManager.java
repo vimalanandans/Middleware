@@ -1,5 +1,7 @@
 package com.bezirk.middleware.java.componentManager;
 
+import com.bezirk.middleware.core.remotelogging.RemoteLog;
+import com.bezirk.middleware.core.remotelogging.RemoteLoggingManager;
 import com.bezirk.middleware.java.comms.ZyreCommsManager;
 import com.bezirk.middleware.core.datastorage.ProxyPersistence;
 import com.bezirk.middleware.core.datastorage.RegistryStorage;
@@ -43,6 +45,7 @@ public class ComponentManager {
     private MessageHandler messageHandler;
     private Device device;
     private NetworkManager networkManager;
+    private RemoteLog remoteLog;
     private com.bezirk.middleware.core.componentManager.LifecycleManager lifecycleManager;
     private static final String DB_VERSION = "0.0.4";
     private static final String DB_FILE_LOCATION = ".";
@@ -84,8 +87,15 @@ public class ComponentManager {
         //streaming manager
         Streaming streaming  = new StreamManager(comms, /*downloadPath,*/ networkManager);
 
+        //initialize remoteLogging for logging the messages
+        remoteLog = new RemoteLoggingManager(comms, networkManager, null);
+
+        if (Configuration.isRemoteLoggingEnabled()) {
+            remoteLog.enableLogging(true, false, true, null);
+        }
+
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null,streaming, null);
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null,streaming, remoteLog);
 
         //initialize the identity manager
         final Preferences preferences = Preferences.userNodeForPackage(BezirkIdentityManager.class);

@@ -3,7 +3,7 @@ package com.bezirk.middleware.core.remotelogging;
 import com.bezirk.middleware.core.sphere.api.SphereAPI;
 import com.bezirk.middleware.core.sphere.api.SphereServiceAccess;
 import com.bezirk.middleware.core.sphere.impl.SphereServiceManager;
-import com.bezirk.util.DataPathConfig;
+import com.bezirk.middleware.core.util.DataPathConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
