@@ -19,46 +19,6 @@ public abstract class BezirkMiddleware {
     private static ServiceManager serviceManager;
 
     /**
-     * Register a Zirk with the Bezirk middleware. This makes the Zirk available to the user in
-     * Bezirk configuration interfaces, thus allowing her to place it in a sphere to interact with
-     * other Zirks. This method returns an instance of the Bezirk API for the newly registered
-     * Zirk.
-     *
-     * @param zirkName the name of the Zirk being registered, as defined by the Zirk
-     *                 developer/vendor
-     * @return an instance of the Bezirk API for the newly registered Zirk, or <code>null</code> if
-     * a Zirk with the name <code>zirkName</code> is already registered.
-     * @see #initialize(Context)
-     */
-    public static synchronized Bezirk registerZirk(final String zirkName) {
-        if (serviceManager == null || !serviceManager.isStarted()) {
-            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk service using BezirkMiddleware.start(Context)");
-        }
-        ZirkId zirkId = ProxyClient.registerZirk(context, zirkName, intentSender);
-        return zirkId == null ? null : new ProxyClient(zirkId);
-    }
-
-    /**
-     * Register a Zirk with the Bezirk middleware. This makes the Zirk available to the user in
-     * Bezirk configuration interfaces, thus allowing her to place it in a sphere to interact with
-     * other Zirks. This method returns an instance of the Bezirk API for the newly registered
-     * Zirk.
-     *
-     * @param zirkName the name of the Zirk being registered, as defined by the Zirk
-     *                 developer/vendor
-     * @return an instance of the Bezirk API for the newly registered Zirk, or <code>null</code> if
-     * a Zirk with the name <code>zirkName</code> is already registered.
-     * @see #initialize(Context)
-     * @deprecated registration of Zirk(s) now requires {@link BezirkMiddleware} to be initialized using {@link BezirkMiddleware#initialize(Context)}. Once initialized use {@link #registerZirk(String)} to register a Zirk with the middleware.
-     */
-    @Deprecated
-    public static synchronized Bezirk registerZirk(final Context context, final String zirkName) {
-        initialize(context);
-        return registerZirk(zirkName);
-    }
-
-
-    /**
      * Start the bezirk service. This allows Zirk(s) to be registered with the bezirk service and allows them to communicate with other Zirk(s).
      * <p>
      * Service is started using default configurations {@link Config} unless configurations are supplied explicitly using {@link #initialize(Context, Config)}. Bezirk service runs as a background Android service unless explicitly stopped by the application using {@link #stop()} or by Android OS.
@@ -95,8 +55,46 @@ public abstract class BezirkMiddleware {
 
         intentSender = new IntentSender(context);
         serviceManager = new ServiceManager(intentSender);
-        //ServiceManager.start(context, (config != null) ? config : new Config());
         serviceManager.start((config == null) ? new Config() : config);
+    }
+
+    /**
+     * Register a Zirk with the Bezirk middleware. This makes the Zirk available to the user in
+     * Bezirk configuration interfaces, thus allowing her to place it in a sphere to interact with
+     * other Zirks. This method returns an instance of the Bezirk API for the newly registered
+     * Zirk.
+     *
+     * @param zirkName the name of the Zirk being registered, as defined by the Zirk
+     *                 developer/vendor
+     * @return an instance of the Bezirk API for the newly registered Zirk, or <code>null</code> if
+     * a Zirk with the name <code>zirkName</code> is already registered.
+     * @see #initialize(Context)
+     */
+    public static synchronized Bezirk registerZirk(@NotNull final String zirkName) {
+        if (serviceManager == null || !serviceManager.isStarted()) {
+            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk service using BezirkMiddleware.start(Context)");
+        }
+        ZirkId zirkId = ProxyClient.registerZirk(context, zirkName, intentSender);
+        return zirkId == null ? null : new ProxyClient(zirkId);
+    }
+
+    /**
+     * Register a Zirk with the Bezirk middleware. This makes the Zirk available to the user in
+     * Bezirk configuration interfaces, thus allowing her to place it in a sphere to interact with
+     * other Zirks. This method returns an instance of the Bezirk API for the newly registered
+     * Zirk.
+     *
+     * @param zirkName the name of the Zirk being registered, as defined by the Zirk
+     *                 developer/vendor
+     * @return an instance of the Bezirk API for the newly registered Zirk, or <code>null</code> if
+     * a Zirk with the name <code>zirkName</code> is already registered.
+     * @see #initialize(Context)
+     * @deprecated registration of Zirk(s) now requires {@link BezirkMiddleware} to be initialized using {@link BezirkMiddleware#initialize(Context)}. Once initialized use {@link #registerZirk(String)} to register a Zirk with the middleware.
+     */
+    @Deprecated
+    public static synchronized Bezirk registerZirk(final Context context, final String zirkName) {
+        initialize(context);
+        return registerZirk(zirkName);
     }
 
     /**

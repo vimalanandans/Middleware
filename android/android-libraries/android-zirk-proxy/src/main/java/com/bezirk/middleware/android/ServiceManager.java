@@ -17,14 +17,7 @@ public final class ServiceManager {
         this.intentSender = intentSender;
     }
 
-    /**
-     * Start the bezirk service based on the configuration passed
-     * <ul>
-     * <li>If <code>config</code> is <code>null</code>, initialize a default configuration</li>
-     * <li>If <code>config</code> is not <code>null</code>, Bezirk service is created for the current application, even if an existing bezirk service is running in the device.</li>
-     * </ul>
-     */
-    void start(final Config config) {
+    void start(@NotNull final Config config) {
         if (intentSender.sendBezirkIntent(new StartServiceAction(config))) {
             logger.info("Bezirk is starting");
             started = true;
