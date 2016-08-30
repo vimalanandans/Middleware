@@ -51,6 +51,7 @@ public final class ProxyClient implements Bezirk {
     private final ZirkId zirkId;
     private final IdentityManager identityManager;
     private short streamFactory;
+    private static IntentSender intentSender;
 
     public ProxyClient(ZirkId zirkId) {
 
@@ -65,8 +66,9 @@ public final class ProxyClient implements Bezirk {
         this.identityManager = new ClientIdentityManagerAdapter();
     }
 
-    public static ZirkId registerZirk(@NotNull final Context context, final String zirkName) {
+    public static ZirkId registerZirk(@NotNull final Context context, final String zirkName, final IntentSender intentSender) {
         ProxyClient.context = context;
+        ProxyClient.intentSender = intentSender;
 
         if (zirkName == null) {
             throw new IllegalArgumentException("Cannot register a Zirk with a null name");
@@ -87,7 +89,7 @@ public final class ProxyClient implements Bezirk {
 
         final ZirkId zirkId = new ZirkId(zirkIdAsString);
 
-        if (ServiceManager.sendBezirkIntent(new RegisterZirkAction(zirkId, zirkName))) {
+        if (intentSender.sendBezirkIntent(new RegisterZirkAction(zirkId, zirkName))) {
             Log.d(TAG, "Registered Zirk: " + zirkName);
             return zirkId;
         }
@@ -126,7 +128,7 @@ public final class ProxyClient implements Bezirk {
                     messageSet.getClass().getSimpleName());
         }
 
-        ServiceManager.sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE, zirkId, messageSet));
+        intentSender.sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE, zirkId, messageSet));
     }
 
     private void addMessagesToMap(MessageSet messageSet, Map<String,
@@ -167,7 +169,7 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public boolean unsubscribe(final MessageSet messageSet) {
-        return ServiceManager.sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId,
+        return intentSender.sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId,
                 messageSet));
     }
 
@@ -178,13 +180,13 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
-        ServiceManager.sendBezirkIntent(new SendMulticastEventAction(zirkId, recipient, event,
+        intentSender.sendBezirkIntent(new SendMulticastEventAction(zirkId, recipient, event,
                 (event instanceof IdentifiedEvent)));
     }
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
-        ServiceManager.sendBezirkIntent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
+        intentSender.sendBezirkIntent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
                 zirkId, recipient, event, (event instanceof IdentifiedEvent)));
     }
 
@@ -199,13 +201,13 @@ public final class ProxyClient implements Bezirk {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
 
         //sendBezirkIntent(new SendFileStreamAction(zirkId, recipient, /*streamDescriptor,*/ streamId));
-        sendBezirkStreamIntent(context, new SendFileStreamAction(zirkId, recipient, /*streamDescriptor,*/ streamId, streamDescriptor.getClass().getName()), streamDescriptor);
+        intentSender.sendBezirkStreamIntent(context, new SendFileStreamAction(zirkId, recipient, /*streamDescriptor,*/ streamId, streamDescriptor.getClass().getName()), streamDescriptor);
 
     }
 
     @Override
     public void setLocation(Location location) {
-        ServiceManager.sendBezirkIntent(new SetLocationAction(zirkId, location));
+        intentSender.sendBezirkIntent(new SetLocationAction(zirkId, location));
     }
 
     @Override
@@ -213,42 +215,42 @@ public final class ProxyClient implements Bezirk {
         return identityManager;
     }
 
-    /**
-     * For Bezirk Stream Intent
-     *
-     * @param context
-     * @param action
-     * @return
-     */
-    private static boolean sendBezirkStreamIntent(Context context, ZirkAction action, StreamDescriptor streamDescriptor) {
-        if (streamDescriptor != null && action != null) {
-            final Intent intent = new Intent();
-
-            // get the component name from the app manager. in case of single app it is the same which
-            // is created during app manager create. else it returns the default
-            //ComponentName name = new ComponentName(AppManager.getAppManager().getComponentName(), SERVICE_PKG_NAME);
-            intent.setComponent(ServiceManager.componentName);
-
-            final String actionName = action.getAction().getName();
-            intent.setAction(actionName);
-            intent.putExtra(actionName, action);
-
-
-            //pass the stream descriptor intent
-            intent.putExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_ENCRYPT.getName(), streamDescriptor.isEncrypted());
-            intent.putExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_INCREMENTAL.getName(), streamDescriptor.isIncremental());
-            intent.putExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_FILE.getName(), streamDescriptor.getFile());
-
-            if (context.startService(intent) == null) {
-                Log.e(TAG, "Failed to send intent for action: " + actionName +
-                        ". Is the middleware running?");
-
-                return false;
-            }
-        } else {
-            Log.e(TAG, "Failed to get either StreamDescriptor and ZirkAction!!!");
-            return false;
-        }
-        return true;
-    }
+//    /**
+//     * For Bezirk Stream Intent
+//     *
+//     * @param context
+//     * @param action
+//     * @return
+//     */
+//    private static boolean sendBezirkStreamIntent(Context context, ZirkAction action, StreamDescriptor streamDescriptor) {
+//        if (streamDescriptor != null && action != null) {
+//            final Intent intent = new Intent();
+//
+//            // get the component name from the app manager. in case of single app it is the same which
+//            // is created during app manager create. else it returns the default
+//            //ComponentName name = new ComponentName(AppManager.getAppManager().getComponentName(), SERVICE_PKG_NAME);
+//            intent.setComponent(ServiceManager.componentName);
+//
+//            final String actionName = action.getAction().getName();
+//            intent.setAction(actionName);
+//            intent.putExtra(actionName, action);
+//
+//
+//            //pass the stream descriptor intent
+//            intent.putExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_ENCRYPT.getName(), streamDescriptor.isEncrypted());
+//            intent.putExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_INCREMENTAL.getName(), streamDescriptor.isIncremental());
+//            intent.putExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_FILE.getName(), streamDescriptor.getFile());
+//
+//            if (context.startService(intent) == null) {
+//                Log.e(TAG, "Failed to send intent for action: " + actionName +
+//                        ". Is the middleware running?");
+//
+//                return false;
+//            }
+//        } else {
+//            Log.e(TAG, "Failed to get either StreamDescriptor and ZirkAction!!!");
+//            return false;
+//        }
+//        return true;
+//    }
 }

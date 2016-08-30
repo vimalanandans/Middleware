@@ -1,17 +1,22 @@
 package com.bezirk.middleware.android;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.core.proxy.Config;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BezirkMiddleware {
-
-    private static Config config;
+    private static final Logger logger = LoggerFactory.getLogger(BezirkMiddleware.class);
     private static Context context;
+    private static boolean localBezirkService;
+    private static IntentSender intentSender;
+    private static ServiceManager serviceManager;
 
     /**
      * Register a Zirk with the Bezirk middleware. This makes the Zirk available to the user in
@@ -26,10 +31,10 @@ public abstract class BezirkMiddleware {
      * @see #initialize(Context)
      */
     public static synchronized Bezirk registerZirk(final String zirkName) {
-        if (!ServiceManager.isStarted()) {
-            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk service using BezirkMiddleware.initialize(Context)");
+        if (serviceManager == null || !serviceManager.isStarted()) {
+            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk service using BezirkMiddleware.start(Context)");
         }
-        ZirkId zirkId = ProxyClient.registerZirk(context, zirkName);
+        ZirkId zirkId = ProxyClient.registerZirk(context, zirkName, intentSender);
         return zirkId == null ? null : new ProxyClient(zirkId);
     }
 
@@ -52,39 +57,61 @@ public abstract class BezirkMiddleware {
         return registerZirk(zirkName);
     }
 
+
     /**
-     * Provide custom configuration for your application before starting the bezirk service {@link #initialize(Context)}.
+     * Start the bezirk service. This allows Zirk(s) to be registered with the bezirk service and allows them to communicate with other Zirk(s).
+     * <p>
+     * Service is started using default configurations {@link Config} unless configurations are supplied explicitly using {@link #initialize(Context, Config)}. Bezirk service runs as a background Android service unless explicitly stopped by the application using {@link #stop()} or by Android OS.
+     * </p>
      *
-     * @param config custom configurations to be used by bezirk service
+     * @see #initialize(Context, Config)
+     * @see #stop()
      */
-    public static synchronized void setConfig(final Config config) {
-        BezirkMiddleware.config = config;
+    public static synchronized void initialize(@NotNull final Context context) {
+        initialize(context, null);
     }
 
     /**
      * Start the bezirk service. This allows Zirk(s) to be registered with the bezirk service and allows them to communicate with other Zirk(s).
      * <p>
-     * Service is started using default configurations {@link Config} unless configurations are supplied using {@link #setConfig(Config)}. Bezirk service runs a background Android service unless explicitly stopped by the application using {@link #stop()} or by Android OS.
+     * Service is started using the supplied <code>Config</code>. Bezirk service runs as a background Android service unless explicitly stopped by the application using {@link #stop()} or by Android OS.
      * </p>
      *
-     * @see #setConfig(Config)
+     * @param config custom configurations to be used by bezirk service
+     *               <ul>
+     *               <li>If <code>config</code> is <code>null</code>, a default configuration is used</li>
+     *               <li>If <code>config</code> is not <code>null</code>, Bezirk service is created for the current application, even if an existing bezirk service is running in the device.</li>
+     *               </ul>
      * @see #stop()
      */
-    public static synchronized void initialize(@NotNull final Context context) {
+    public static synchronized void initialize(@NotNull final Context context, final Config config) {
         BezirkMiddleware.context = context;
+
+        if (config == null) {
+            localBezirkService = (IntentSender.isBezirkAvailableOnDevice(context)) ? false : true;
+        } else {
+            logger.debug("Custom configuration passed when initializing bezirk, creating custom bezirk service. Is bezirk service local: " + localBezirkService);
+        }
+
+        intentSender = new IntentSender(context);
+        serviceManager = new ServiceManager(intentSender);
         //ServiceManager.start(context, (config != null) ? config : new Config());
-        ServiceManager.initialize(context, config);
+        serviceManager.start((config == null) ? new Config() : config);
     }
 
     /**
      * Stop the bezirk service.
      * <p>
-     * Once the bezirk is stopped, Zirk(s) cannot register with the bezirk service and all communications between registered Zirks would stop.
+     * Once bezirk is stopped, Zirk(s) cannot register with the bezirk service and all communications between registered Zirks would stop.
      * </p>
      */
     public static synchronized void stop() {
-        ServiceManager.stop();
+        serviceManager.stop();
         context = null;
+    }
+
+    static boolean isLocalBezirkService() {
+        return localBezirkService;
     }
 
 }
