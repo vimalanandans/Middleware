@@ -46,7 +46,6 @@ public abstract class NetworkManager {
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface curIntf = en.nextElement();
-
                 if (intf.getDisplayName().equals(curIntf.getDisplayName())) {
                     for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                         InetAddress inetAddress = enumIpAddr.nextElement();

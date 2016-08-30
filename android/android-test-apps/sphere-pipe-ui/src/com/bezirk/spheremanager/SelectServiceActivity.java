@@ -20,11 +20,11 @@ import android.widget.Toast;
 import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.SelectServiceFragment;
 import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 import java.util.List;
 
@@ -58,8 +58,8 @@ public class SelectServiceActivity extends FragmentActivity implements
         ///SphereListItem sphere = (SphereListItem) DummyContent.ITEM_MAP.get(sphereID);
         BezirkSphereInfo sphereInfo = null;
 
-        BezirkSphereAPI api = MainService.getSphereHandle();
-
+       // SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api=null;
         if (api != null) {
             sphereInfo = api.getSphere(sphereID);
         } else {
@@ -292,7 +292,8 @@ public class SelectServiceActivity extends FragmentActivity implements
             String lastEntry = "";
             boolean foundSphere = false;
 
-            BezirkSphereAPI api = MainService.getSphereHandle();
+            //SphereAPI api = MainService.getSphereHandle();
+            SphereAPI api=null;
             if (api == null) {
                 Log.e(TAG, "MainService is not available");
                 return;

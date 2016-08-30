@@ -2,12 +2,17 @@ package com.bezirk.middleware.messages;
 
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 
+import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
+
 /**
  * Class used to create a set of {@link Event events} to subscribe to. Extend this set to design an
  * interface declaring the events to subscribe to, otherwise directly instantiate it to subscribe
  * to a small set of ad hoc events. See {@link MessageSet} for examples.
  */
 public class EventSet extends MessageSet {
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(EventSet.class);
     private transient EventReceiver receiver;
 
     @SafeVarargs
@@ -50,6 +55,7 @@ public class EventSet extends MessageSet {
      *                 <code>null</code> to remove an existing listener
      */
     public void setEventReceiver(EventReceiver receiver) {
+            logger.debug("Inside setEventReceiver method");
         this.receiver = receiver;
     }
 

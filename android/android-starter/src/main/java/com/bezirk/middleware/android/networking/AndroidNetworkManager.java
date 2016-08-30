@@ -23,12 +23,14 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
     private static final Logger logger = LoggerFactory.getLogger(AndroidNetworkManager.class);
     private static final String DEFAULT_ANDROID_INTERFACE = "wlan0";
     private final SharedPreferences preferences;
+
     private final Context context; //for registering the receiver
     private final NetworkBroadCastReceiver networkBroadCastReceiver;
     private final WifiManager wifiManager;
     private String connectedWifiSSID;
 
     public AndroidNetworkManager(SharedPreferences preferences, Context context) {
+
         this.preferences = preferences;
         this.context = context;
         this.wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
@@ -55,7 +57,14 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
 
     @Override
     public String getStoredInterfaceName() {
-        return preferences.getString(NETWORK_INTERFACE_NAME_KEY, DEFAULT_ANDROID_INTERFACE);
+        if(null!=preferences){
+            logger.debug("preferences is not null in Android network manager");
+            return preferences.getString(NETWORK_INTERFACE_NAME_KEY, DEFAULT_ANDROID_INTERFACE);
+        }else{
+            logger.debug("preferrences is null");
+            return null;
+        }
+
     }
 
     @Override
@@ -67,6 +76,7 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
 
     @Override
     public InetAddress getInetAddress() {
+        logger.debug("getInetAddress of AndroidNetworkManager");
         try {
             NetworkInterface networkInterface = NetworkInterface.getByName(getStoredInterfaceName());
             if (null != networkInterface) {

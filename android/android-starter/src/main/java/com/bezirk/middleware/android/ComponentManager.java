@@ -6,10 +6,12 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+
 
 
 import com.bezirk.middleware.core.actions.BezirkAction;
@@ -22,6 +24,8 @@ import com.bezirk.middleware.core.datastorage.RegistryStorage;
 import com.bezirk.middleware.android.device.AndroidDevice;
 import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.core.identity.BezirkIdentityManager;
+import com.bezirk.middleware.core.remotelogging.RemoteLog;
+import com.bezirk.middleware.core.remotelogging.RemoteLoggingManager;
 import com.bezirk.middleware.identity.Alias;
 import com.bezirk.middleware.android.networking.AndroidNetworkManager;
 import com.bezirk.middleware.android.persistence.DatabaseConnectionForAndroid;
@@ -42,6 +46,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
     private static final String ALIAS_KEY = "aliasName";
 
+
     private SharedPreferences preferences;
     //private final Context context;
     private ActionProcessor actionProcessor;
@@ -55,6 +60,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private LifecycleManager lifecycleManager;
     private Device device;
     private PubSubBroker pubSubBroker;
+    private RemoteLog remoteLog = null;
     private static final String DB_VERSION = "0.0.4";
     private LifecycleManager.LifecycleState currentState;
 
@@ -65,6 +71,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     @Override
     public void onCreate() {
         super.onCreate();
+
     }
 
     @Override
@@ -174,6 +181,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private final void create() {
         logger.debug("Creating Bezirk Service");
 
+
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         lifecycleManager = new LifecycleManager();
 
@@ -204,16 +212,22 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         // testing the comms comms-jmq
         //comms = new JmqCommsManager(networkManager, null,null, null);
 
+        //initialize remoteLogging for logging the messages
+       // remoteLog = new RemoteLoggingManager(comms, networkManager, null);
+
         //streaming manager
         Streaming streaming = new StreamManager(comms, networkManager);
+        //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null,streaming, remoteLog);
 
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null, streaming);
+        //pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null, streaming);
 
         //initialize the identity manager
         identityManager = new BezirkIdentityManager();
         final String aliasString = preferences.getString(ALIAS_KEY, null);
+        logger.debug("aliasString is "+aliasString);
         final Gson gson = new Gson();
         final Alias identity;
 
@@ -248,4 +262,5 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
         currentState = LifecycleManager.LifecycleState.CREATED;
     }
+
 }

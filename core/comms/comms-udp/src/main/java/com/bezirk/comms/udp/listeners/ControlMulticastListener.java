@@ -7,6 +7,7 @@ import com.bezirk.comms.udp.validation.MessageValidators;
 import com.bezirk.control.messages.ControlLedger;
 import com.bezrik.network.BezirkNetworkUtilities;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +45,7 @@ public class ControlMulticastListener implements Runnable {
         try {
             multicastSocket.joinGroup(InetAddress.getByName(BezirkCommunications.getCTRL_MULTICAST_ADDRESS()));
             running = true;
+
             myAddress = BezirkNetworkUtilities.getLocalInet();
             if (myAddress == null) {
                 logger.error("Cannot resolve Ip: About to stop thread");

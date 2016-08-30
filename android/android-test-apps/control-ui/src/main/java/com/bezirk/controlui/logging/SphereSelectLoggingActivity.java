@@ -14,10 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.BezirkCompManager;
 import com.bezirk.controlui.R;
+import com.bezirk.controlui.Util;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.remotelogging.util.Util;
+import com.bezirk.sphere.api.SphereAPI;
+import com.bezirk.sphere.impl.SphereServiceManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,14 +84,14 @@ public class SphereSelectLoggingActivity extends ActionBarActivity {
                 @Override
                 public void run() {
                     if (checkBox.isChecked()) {//when ticked
-                        if (checkBox.getText().equals(Util.ANY_SPHERE)) {
+                        if (checkBox.getText().equals(Util.ALL_SPHERE)) {
                             enableDisableSphereList(false);
                             selectedSpheres.clear();
                             selectedSpheres.addAll(sphereList);
                         }
                         selectedSpheres.add(checkBoxText);
                     } else {// when unticked
-                        if (checkBox.getText().equals(Util.ANY_SPHERE)) {
+                        if (checkBox.getText().equals(Util.ALL_SPHERE)) {
                             enableDisableSphereList(true);
                             selectedSpheres.clear();
                         }
@@ -128,7 +129,7 @@ public class SphereSelectLoggingActivity extends ActionBarActivity {
                 @Override
                 public void run() {
                     mCheckBoxSpheres = new CheckBox[sphereList.size() + 1];
-                    mCheckBoxSpheres[0] = getCheckBox(Util.ANY_SPHERE);
+                    mCheckBoxSpheres[0] = getCheckBox(Util.ALL_SPHERE);
                     mLinearLayoutSphereList.addView(mCheckBoxSpheres[0]);
                     for (int i = 0; i < sphereList.size(); i++) {
                         mCheckBoxSpheres[i + 1] = getCheckBox(sphereList.get(i));
@@ -184,9 +185,9 @@ public class SphereSelectLoggingActivity extends ActionBarActivity {
             return;
         }
         boolean isAnySphereFlag = false;
-        if (selectedSpheres.contains(Util.ANY_SPHERE)) {
+        if (selectedSpheres.contains(Util.ALL_SPHERE)) {
             isAnySphereFlag = true;
-            selectedSpheres.remove(Util.ANY_SPHERE);
+            selectedSpheres.remove(Util.ALL_SPHERE);
         }
         String[] tempSphereList = new String[selectedSpheres.size()];
         for (int i = 0; i < tempSphereList.length; i++) {
@@ -273,11 +274,25 @@ public class SphereSelectLoggingActivity extends ActionBarActivity {
 
         @Override
         protected Integer doInBackground(Void... params) {
+            logger.debug("logging in background");
+            SphereAPI sphereAPI = new SphereServiceManager();
             try {
-                Iterator<BezirkSphereInfo> sphereInfoIterator = BezirkCompManager.getSphereUI().getSpheres().iterator();
-                while (sphereInfoIterator.hasNext()) {
-                    sphereList.add(sphereInfoIterator.next().getSphereID());
+                if(null!=sphereAPI){
+                    logger.debug("sphereAPI is not null");
+                    if(null!=sphereAPI.getSpheres()){
+                        logger.debug("sphereAPI.getSpheres() is not null");
+                        Iterator<BezirkSphereInfo> sphereInfoIterator = sphereAPI.getSpheres().iterator();
+                        while (sphereInfoIterator.hasNext()) {
+                            sphereList.add(sphereInfoIterator.next().getSphereID());
+                        }
+                    }else{
+                        logger.debug("sphereAPI.getSpheres() is null");
+                    }
+
+                }else{
+                    logger.debug("sphereAPI is null");
                 }
+
             } catch (Exception ex) {
                 logger.error(ex.getMessage(), ex);
                 return FETCH_ERROR;

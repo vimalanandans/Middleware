@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity ;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,12 +13,11 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 
-import com.bezirk.actions.BezirkActions;
-import com.bezirk.sphere.api.BezirkDevMode;
+import com.bezirk.actions.BezirkAction;
+import com.bezirk.starter.ActionCommands;
 import com.bezirk.starter.MainService;
-import com.bezirk.starter.BezirkActionCommands;
-import com.bezirk.starter.BezirkPreferences;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.starter.MainStackPreferences;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,24 +26,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DeviceControlActivity extends ActionBarActivity
+public class DeviceControlActivity extends AppCompatActivity
         implements GenericListItemView.ItemToggleListener {
     final Context context = this;
     private static final Logger logger = LoggerFactory.getLogger(DeviceControlActivity.class);
     // UI Create
     List<DataModel> listData = new ArrayList<DataModel>();
-    BezirkPreferences preferences;
+    MainStackPreferences preferences;
     private GenericListItemView adapter;
     private DeviceControlActivityHelper deviceControlActivityHelper;
     private DeviceIntentReceiver deviceIntentReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        logger.debug("oncreate DeviceControlActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_control);
 
         // preference for storing the settings
-        preferences = new BezirkPreferences(this);
+        preferences = new MainStackPreferences(this);
         deviceControlActivityHelper = new DeviceControlActivityHelper(this, context);
 
         /** set up the device list
@@ -157,18 +157,18 @@ public class DeviceControlActivity extends ActionBarActivity
         Intent intent;
         String action;
         // we selecting based on image id hence list must have image id and it has to be unique
-        if (BezirkValidatorUtility.isObjectNotNull(listData) && !listData.isEmpty()) {
+        if (ValidatorUtility.isObjectNotNull(listData) && !listData.isEmpty()) {
             DataModel dataModel = listData.get(position);
-            if (BezirkValidatorUtility.isObjectNotNull(dataModel)) {
-                intent = new Intent(context, MainService.class);
+            if (ValidatorUtility.isObjectNotNull(dataModel)) {
+                intent =  new Intent(context, MainService.class);
                 switch (dataModel.getImageId()) {
                     case R.drawable.upa_control: // Bezirk On/OFF
-                        action = checkStatus ? BezirkActions.ACTION_START_BEZIRK : BezirkActions.ACTION_STOP_BEZIRK;
+                        action = checkStatus ? BezirkAction.ACTION_START_BEZIRK.getName() : BezirkAction.ACTION_STOP_BEZIRK.getName();
                         intent.setAction(action);
                         startService(intent);
                         break;
                     case R.drawable.ic_action_dev_mode: //dev mode on/off
-                        action = checkStatus ? BezirkActions.ACTION_DEV_MODE_ON : BezirkActions.ACTION_DEV_MODE_OFF;
+                        action = checkStatus ? BezirkAction.ACTION_DEV_MODE_ON.getName() : BezirkAction.ACTION_DEV_MODE_OFF.getName();
                         intent.setAction(action);
                         startService(intent);
                         break;
@@ -192,8 +192,8 @@ public class DeviceControlActivity extends ActionBarActivity
             Log.d(TAG, "Received Intent for Device control >" + intent.getAction());
             Log.d(TAG, "Command >" + intent.getStringExtra("Command"));
 
-            if (intent.getStringExtra("Command").equalsIgnoreCase(BezirkActionCommands.CMD_DEV_MODE_STATUS)) {
-                deviceControlActivityHelper.updateList((BezirkDevMode.Mode) intent.getSerializableExtra("Mode"), listData);
+            if (intent.getStringExtra("Command").equalsIgnoreCase(ActionCommands.CMD_DEV_MODE_STATUS)) {
+                deviceControlActivityHelper.updateList((BezirkAction.ActionType) intent.getSerializableExtra("Mode"), listData);
             }
         }
     }

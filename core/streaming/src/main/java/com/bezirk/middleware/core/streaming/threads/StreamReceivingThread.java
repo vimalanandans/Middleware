@@ -198,6 +198,7 @@ public class StreamReceivingThread implements Runnable {
      * @return
      */
     private String getStreamDownloadPath(){
+
         String downloadPath;
         ///storage/emulated/0/
         downloadPath= File.separator+"storage/emulated/0/" + "downloads" + File.separator;

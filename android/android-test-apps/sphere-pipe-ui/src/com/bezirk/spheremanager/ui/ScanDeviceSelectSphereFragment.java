@@ -12,13 +12,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.SphereListActivity;
 import com.bezirk.spheremanager.ui.listitems.AbstractSphereListItem;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -87,7 +87,8 @@ public class ScanDeviceSelectSphereFragment extends Fragment {
 
         //SphereListAdapter sla = new SphereListAdapter(getActivity()
         //		.getApplicationContext(), DummyContent.ITEMS);
-        BezirkSphereAPI api = MainService.getSphereHandle();
+        //SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api=null;
 
         List<AbstractSphereListItem> sphereItemList = new ArrayList<AbstractSphereListItem>();
 
@@ -98,7 +99,7 @@ public class ScanDeviceSelectSphereFragment extends Fragment {
                 sphereItemList.add(new SphereListItem(sphereInfo.next()));
 
         } else {
-            Log.e(TAG, "MainService is not available");
+            //Log.e(TAG, "MainService");
         }
 
         final SphereListAdapter sla;
@@ -127,7 +128,8 @@ public class ScanDeviceSelectSphereFragment extends Fragment {
 
     String getSphereId(int position) {
         String itemID = "";
-        BezirkSphereAPI api = MainService.getSphereHandle();
+        //SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api=null;
 
         if (api != null) {
             List<BezirkSphereInfo> sphereList = (List) api.getSpheres();
@@ -136,13 +138,13 @@ public class ScanDeviceSelectSphereFragment extends Fragment {
                 if (sphereInfo != null) {
                     itemID = sphereInfo.getSphereID();
                 } else {
-                    Log.e(TAG, "Unable to get the sphere id from position" + String.valueOf(position));
+                    //Log.e(TAG, "Unable to get the sphere id from position" + String.valueOf(position));
                 }
             } else {
-                Log.e(TAG, "Unable to get the sphere list");
+               // Log.e(TAG, "Unable to get the sphere list");
             }
         } else {
-            Log.e(TAG, "MainService is not available");
+            //Log.e(TAG, "MainService is not available");
         }
 
         return itemID;
@@ -151,7 +153,7 @@ public class ScanDeviceSelectSphereFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.v(TAG, "onViewCreated");
+        //Log.v(TAG, "onViewCreated");
 
     }
 

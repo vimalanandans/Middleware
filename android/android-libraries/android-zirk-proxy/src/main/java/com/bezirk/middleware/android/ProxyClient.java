@@ -66,6 +66,7 @@ public final class ProxyClient implements Bezirk {
         this.identityManager = new ClientIdentityManagerAdapter();
     }
 
+
     public static ZirkId registerZirk(@NotNull final Context context, final String zirkName, final IntentSender intentSender) {
         ProxyClient.context = context;
         ProxyClient.intentSender = intentSender;
@@ -74,10 +75,17 @@ public final class ProxyClient implements Bezirk {
             throw new IllegalArgumentException("Cannot register a Zirk with a null name");
         }
 
-        Log.d(TAG, "Registering Zirk: " + zirkName);
+        Log.d(TAG, "Registering Zirk is: " + zirkName);
 
         final SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(context);
+        if(null!=shrdPref){
+            Log.d(TAG,"shrdPref is not null");
+        }
+        else{
+            Log.d(TAG,"shredPref is null");
+        }
         String zirkIdAsString = shrdPref.getString(zirkName, null);
+        Log.d(TAG,"zirkIdAsString is "+zirkIdAsString);
         if (null == zirkIdAsString) {
             zirkIdAsString = UUID.randomUUID().toString();
             Log.d(TAG, "ZirkId-> " + zirkIdAsString);
@@ -94,7 +102,7 @@ public final class ProxyClient implements Bezirk {
             return zirkId;
         }
 
-        return null;
+        return zirkId;
     }
 
     @Override
@@ -117,13 +125,17 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void subscribe(final MessageSet messageSet) {
+        Log.d(TAG,"subscribe method of ProxyClient");
         if (messageSet instanceof EventSet) {
+            Log.d(TAG,"messageSet instanceof EventSet in ProxyClient");
             EventSet.EventReceiver listener = ((EventSet) messageSet).getEventReceiver();
             addMessagesToMap(messageSet, eventListenerMap, listener);
         } else if (messageSet instanceof StreamSet) {
+            Log.d(TAG,"messageSet instanceof StreamSet in ProxyClient");
             StreamSet.StreamReceiver listener = ((StreamSet) messageSet).getStreamReceiver();
             addMessagesToMap(messageSet, streamListenerMap, listener);
         } else {
+            Log.d(TAG,"messageSet is unKnown:  in ProxyClient");
             throw new AssertionError("Unknown MessageSet type: " +
                     messageSet.getClass().getSimpleName());
         }
@@ -175,6 +187,7 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(Event event) {
+        Log.d(TAG,"sendEvent One....");
         sendEvent(new RecipientSelector(new Location("null/null/null")), event);
     }
 

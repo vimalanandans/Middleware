@@ -16,13 +16,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.bezirk.spheremanager.R;
+//import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.DialogDeleteFragment;
 import com.bezirk.spheremanager.ui.PolicyListFragment;
 import com.bezirk.spheremanager.ui.SphereListOfOnePipeFragment;
 import com.bezirk.spheremanager.ui.SphereListOfOnePipeFragment.SphereListOfOnePipeFragmentCallbacks;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 import java.util.ArrayList;
 

@@ -2,15 +2,15 @@ package com.bezirk.controlui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.bezirk.actions.BezirkActions;
-import com.bezirk.BezirkCompManager;
+import com.bezirk.actions.BezirkAction;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-//import com.bezirk.rest.BezirkRestCommsManager;
+import com.bezirk.sphere.api.SphereAPI;
+import com.bezirk.sphere.impl.SphereServiceManager;
 import com.bezirk.starter.MainService;
 
 import java.util.ArrayList;
@@ -19,7 +19,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RestConfigActivity extends ActionBarActivity implements DialogSphereList.OnSphereSelectCallback, GenericListItemView.ItemToggleListener {
+//import com.bezirk.rest.BezirkRestCommsManager;
+
+public class RestConfigActivity extends AppCompatActivity implements DialogSphereList.OnSphereSelectCallback, GenericListItemView.ItemToggleListener {
    // comms-Rest is not used.
     // BezirkRestCommsManager restCommsManager = BezirkRestCommsManager.getInstance();
     private ListView restConfigList = null;
@@ -56,7 +58,8 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
     public void onSphereSelectCallback(int position) {
 
         Map<String, String> sphereList = new LinkedHashMap();
-        Iterator<BezirkSphereInfo> sphereInfoIterator = BezirkCompManager.getSphereUI().getSpheres().iterator();
+        SphereAPI sphereAPI = new SphereServiceManager();
+        Iterator<BezirkSphereInfo> sphereInfoIterator = sphereAPI.getSpheres().iterator();
         while (sphereInfoIterator.hasNext()) {
             BezirkSphereInfo bezirkSphereInfo = sphereInfoIterator.next();
             sphereList.put(bezirkSphereInfo.getSphereID(), bezirkSphereInfo.getSphereName());
@@ -80,7 +83,8 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
         List<String> sphereList = new ArrayList();
 
         sphereList.clear();
-        Iterator<BezirkSphereInfo> sphereInfoIterator = BezirkCompManager.getSphereUI().getSpheres().iterator();
+        SphereAPI sphereAPI = new SphereServiceManager();
+        Iterator<BezirkSphereInfo> sphereInfoIterator = sphereAPI.getSpheres().iterator();
         while (sphereInfoIterator.hasNext()) {
             sphereList.add(sphereInfoIterator.next().getSphereName());
         }
@@ -96,10 +100,10 @@ public class RestConfigActivity extends ActionBarActivity implements DialogSpher
         Intent intent = new Intent(this, MainService.class);
 
         if (checkStatus) {
-            action = BezirkActions.ACTION_REST_START_BEZIRK;
+            action = BezirkAction.ACTION_REST_START_BEZIRK.getName();
 //            restCommsManager.setStarted(true);
         } else {
-            action = BezirkActions.ACTION_REST_STOP_BEZIRK;
+            action = BezirkAction.ACTION_REST_STOP_BEZIRK.getName();
 //            restCommsManager.setStarted(false);
         }
         intent.setAction(action);

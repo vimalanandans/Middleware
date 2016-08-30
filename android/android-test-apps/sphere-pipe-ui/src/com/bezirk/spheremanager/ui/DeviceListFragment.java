@@ -12,12 +12,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.DeviceListActivity;
-import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.SphereListActivity;
 import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 /**
  * A fragment representing a single sphere detail screen. This fragment is
@@ -75,8 +74,8 @@ public class DeviceListFragment extends ListFragment {
         */
         String sphereID = getActivity().getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
 
-        BezirkSphereAPI api = MainService.getSphereHandle();
-
+        //SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api=null;
         if (api != null) {
 
             BezirkSphereInfo sphereInfo = api.getSphere(sphereID);

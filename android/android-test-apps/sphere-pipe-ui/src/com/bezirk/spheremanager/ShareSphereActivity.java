@@ -28,10 +28,10 @@ import android.widget.Toast;
 
 import com.bezirk.util.BezirkVersion;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.sphere.api.BezirkSphereAPI;
-import com.bezirk.sphere.impl.BezirkQRCode;
+import com.bezirk.sphere.api.SphereAPI;
+import com.bezirk.sphere.QRCode;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -78,8 +78,8 @@ public class ShareSphereActivity extends ActionBarActivity {
         final ActionBar actionBar = getActionBar();
         sphereID = getIntent().getStringExtra(DeviceListFragment.ARG_ITEM_ID);
 
-        BezirkSphereAPI api = MainService.getSphereHandle();
-
+        //SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api=null;
         if (api != null) {
             sphereInfo = api.getSphere(sphereID);
         } else {
@@ -108,7 +108,7 @@ public class ShareSphereActivity extends ActionBarActivity {
             imageHeight = screenWidth;
         }
 
-        qrCodeBitmap = ((BezirkQRCode) api).getQRCode(sphereID, imageWidth, imageHeight);
+        qrCodeBitmap = ((QRCode) api).getQRCode(sphereID, imageWidth, imageHeight);
 
         mImageViewQRCode.post(new Runnable() {
             @Override

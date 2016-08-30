@@ -12,7 +12,8 @@ import com.bezirk.control.messages.UnicastHeader;
 import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
 import com.bezirk.remotelogging.queues.LoggingQueueManager;
 import com.bezirk.remotelogging.spherefilter.FilterLogMessages;
-import com.bezirk.remotelogging.status.LoggingStatus;
+import com.bezirk.remotelogging.LoggingStatus;
+import com.bezirk.remotelogging.RemoteLoggingManager;
 import com.bezirk.remotelogging.util.Util;
 
 import org.slf4j.Logger;
@@ -123,7 +124,7 @@ public class BezirkCommsSend {
             isSent = sendUnicast(dataOnWire, recipient, true);
         }
 
-        if (isSent && LoggingStatus.isLoggingEnabled() && tcMessage.getNumOfSends() == 1 && FilterLogMessages.checkSphere(tcMessage.getHeader().getSphereName())) {
+        if (isSent && RemoteLoggingManager.isRemoteLoggingEnabled() && tcMessage.getNumOfSends() == 1 && FilterLogMessages.checkSphere(tcMessage.getHeader().getSphereName())) {
             sendEventLogMessage(tcMessage, recipient);
         }
         return isSent;
@@ -273,7 +274,7 @@ public class BezirkCommsSend {
             isSent = BezirkCommsSend.sendUnicast(tcMsg.getDataOnWire(), recipient, false);
         }
 
-        if (isSent && LoggingStatus.isLoggingEnabled() && tcMsg.getNumOfSends() == 1) {
+        if (isSent && RemoteLoggingManager.isRemoteLoggingEnabled() && tcMsg.getNumOfSends() == 1) {
             sendControlLogMessage(tcMsg, recipient);
         }
 

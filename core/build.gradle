@@ -3,7 +3,6 @@ subprojects {
     apply plugin: 'java'
     //apply from: "${rootDir}/gradle-plugins/artifactory-jar-publish.gradle"
 }
-
 buildscript {
     repositories {
         mavenCentral()
@@ -15,4 +14,3 @@ buildscript {
         classpath files("gradle-plugins/jar/report-stats-plugin-0.2.jar")
     }
 }
-

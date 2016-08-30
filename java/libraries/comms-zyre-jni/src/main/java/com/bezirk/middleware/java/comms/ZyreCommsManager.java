@@ -7,8 +7,8 @@ import com.bezirk.middleware.core.streaming.Streaming;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.Observable;
+
 
 /**
  * Bezirk Communication manager for java zyre - jni
@@ -29,6 +29,39 @@ public class ZyreCommsManager extends CommsProcessor {
     public boolean sendToAll(byte[] msg, boolean isEvent) {
         return comms != null && comms.sendToAllZyre(msg, isEvent);
     }
+
+
+ /*   @Override
+    public boolean stopComms() {
+
+        if (comms != null) {
+            // close zyre
+            comms.stopZyre();
+            // close the comms process comms
+        }
+
+        return super.stopComms();
+    }
+
+    @Override
+    public boolean closeComms() {
+        if (comms != null) {
+            comms.closeComms();
+
+        }
+        return super.closeComms();
+    }
+
+
+    *//**
+     * send to all : Multicast message
+     *//*
+    @Override
+    public boolean sendToAll(byte[] msg, boolean isEvent) {
+        logger.debug("send to all");
+        return comms.sendToAllZyre(msg, isEvent);
+    }*/
+
 
     /**
      * nodeId = device id

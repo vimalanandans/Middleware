@@ -69,7 +69,9 @@ public class SphereRegistryWrapper {
     public SphereRegistryWrapper(SphereRegistry registry, SpherePersistence spherePersistence,
                                  Device device, com.bezirk.middleware.core.sphere.api.CryptoInternals crypto, SphereListener sphereListener,
                                  SphereConfig sphereConfig) {
+
         if (null == registry || null == spherePersistence || null == device || null == crypto
+
                 || null == sphereConfig) {
             throw new IllegalArgumentException("Parameters should be not null");
         }
@@ -92,6 +94,7 @@ public class SphereRegistryWrapper {
      * Handle initialization of development sphere and default sphere
      */
     public void init() {
+        logger.debug("init method called");
         initDefaultSphere();
         if (sphereConfig.getMode() == Mode.ON) {
             logger.info("Development Mode Configured as ON");
@@ -216,13 +219,17 @@ public class SphereRegistryWrapper {
         Set<String> sphereIds = getSphereIds();
 
         if (sphereIds != null && !sphereIds.isEmpty()) {
+
             spheres = new ArrayList<>();
+
             for (String sphereId : sphereIds) {
                 BezirkSphereInfo spInfo = getSphereInfo(sphereId);
                 if (spInfo != null) {
                     spheres.add(spInfo);
                 }
             }
+        }else{
+            logger.debug("sphereIds is null");
         }
         return spheres;
     }
@@ -362,7 +369,9 @@ public class SphereRegistryWrapper {
      * otherwise.
      */
     public boolean createDefaultSphere(String defaultSphereName) {
+        logger.debug("defaultSphereName is "+defaultSphereName);
         String defaultSphereId = getDefaultSphereId();
+        logger.debug("defaultSphereId is "+defaultSphereId);
         if (null == defaultSphereId) {
             createSphere(defaultSphereName, SphereType.BEZIRK_SPHERE_TYPE_DEFAULT, null);
             return true;
@@ -374,7 +383,9 @@ public class SphereRegistryWrapper {
                 logger.debug("Change in default sphere name from > " + defaultSphere.getSphereName() + " to >"
                         + defaultSphereName);
                 defaultSphere.setSphereName(defaultSphereName);
+
             }
+
         }
         return true;
     }

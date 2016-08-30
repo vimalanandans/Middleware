@@ -7,12 +7,12 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.bezirk.middleware.addressing.PipePolicy;
-import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
+//import com.bezirk.pipe.policy.ext.BezirkPipePolicy;
 import com.bezirk.spheremanager.DeviceListActivity;
 import com.bezirk.spheremanager.SphereListActivity;
 import com.bezirk.spheremanager.ui.listitems.AbstractPolicyListItem;
 import com.bezirk.spheremanager.ui.listitems.ProtocolItem;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 import java.util.ArrayList;
 import java.util.List;

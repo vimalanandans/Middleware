@@ -40,22 +40,22 @@ import java.util.Set;
 public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServiceInfo, PubSubBrokerControlReceiver, PubSubEventReceiver, EventMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(PubSubBroker.class);
 
-    private static final String SPHERE_NULL_NAME = "SPHERE_NONE";
+    public static final String SPHERE_NULL_NAME = "SPHERE_NONE";
 
     protected PubSubBrokerStorage pubSubBrokerStorage = null;
     protected PubSubBrokerRegistry pubSubBrokerRegistry = null;
     protected Comms comms = null;
     protected SphereServiceAccess sphereServiceAccess = null; // Nullable object
     protected SphereSecurity sphereSecurity = null; // Nullable object
-    private final NetworkManager networkManager;
-    private final Device device;
-    RemoteLog remoteLog = null;
-    Streaming streamManger;
+    private  NetworkManager networkManager = null;
+    private  Device device = null;
+    private  RemoteLog remoteLog ;
+    private  Streaming streamManger;
+    private  MessageHandler msgHandler;
 
-    MessageHandler msgHandler;
 
     public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager, Comms comms, MessageHandler msgHandler,
-                        SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity, Streaming streamManger) {
+                        SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity, Streaming streamManger,RemoteLog remoteLogging) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
         this.device = device;
         this.networkManager = networkManager;
@@ -67,6 +67,8 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         this.sphereServiceAccess = sphereServiceAccess;
         this.sphereSecurity = sphereSecurity;
         this.msgHandler = msgHandler;
+        this.remoteLog = remoteLogging;
+
         this.streamManger = streamManger;
 
         if(streamManger != null) {
@@ -75,6 +77,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             //Initialize the Streaming module
             streamManger.startStreams();
         }
+
     }
 
 
@@ -188,6 +191,8 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         return false;
     }
 
+
+    @Override
     public boolean sendMulticastEvent(SendMulticastEventAction multicastEventAction) {
         final ZirkId zirkId = multicastEventAction.getZirkId();
         final Iterable<String> listOfSphere;
@@ -220,7 +225,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         while (sphereIterator.hasNext()) {
 
             final EventLedger eventLedger = new EventLedger();
+
             eventLedger.setSerializedMessage(multicastEventAction.getSerializedEvent());
+
             final MulticastHeader mHeader = new MulticastHeader();
             mHeader.setRecipientSelector(multicastEventAction.getRecipientSelector());
             mHeader.setSender(sender);
@@ -239,8 +246,8 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
             if (ValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendEventLedger(eventLedger);
+
             } else {
-                logger.error("Comms manager not initialized");
                 return false;
             }
 
@@ -348,7 +355,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             * process the stream record which will
             *store the streamrecord in the stream store and sends the stream message to receivers.*/
 
-            //boolean status = comms.processStreamRecord(streamAction,listOfSphere);
             boolean status = streamManger.processStreamRecord(streamAction, listOfSphere);
             if (!status) {
                 return (short) 1;
@@ -384,9 +390,11 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     /** called on incoming message and loop back message*/
     @Override
     public boolean processEvent(final EventLedger eLedger) {
+
         Set<ZirkId> zirkList = getAssociatedZirkList(eLedger);
 
         if (null == zirkList || zirkList.isEmpty()) {
+
             //logger.debug("No services are present to respond to the request");
             return false;
         }
@@ -395,8 +403,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             return false;
         }
 
-        if ((remoteLog != null) && remoteLog.isEnabled()) {
-            remoteLog.sendRemoteLogMessage(eLedger);
+        if(null != remoteLog) {
+
+            remoteLog.sendRemoteLogToServer(eLedger);
         }
 
         // give a callback to appropriate zirk..

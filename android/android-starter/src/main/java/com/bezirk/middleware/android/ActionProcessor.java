@@ -28,14 +28,16 @@ public final class ActionProcessor {
      */
     public void processBezirkAction(Intent intent, AndroidProxyServer ProxyService, LifeCycleCallbacks lifeCycleCallbacks) {
 
+
         BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
 
         if (ValidatorUtility.isObjectNotNull(intentAction)) {
+            logger.debug("intentAction is not null in Actionprocessor");
             if (logger.isDebugEnabled())
                 logger.debug("Received intent, action: {}", intentAction.getName());
 
             BezirkAction.ActionType actionType = intentAction.getType();
-
+            logger.debug("actionType is "+actionType);
             switch (actionType) {
                 case BEZIRK_STACK_ACTION:
                     processBezirkStackAction(intent, intentAction, lifeCycleCallbacks);
@@ -45,6 +47,7 @@ public final class ActionProcessor {
                     //processDeviceActions(intentAction, service);
                     break;
                 case SEND_ACTION:
+                    logger.debug("processBezirkAction method");
                     processSendActions(intentAction, intent, ProxyService);
                     break;
                 case ZIRK_ACTION:
@@ -139,9 +142,10 @@ public final class ActionProcessor {
     }
 
     private void processSendActions(BezirkAction intentAction, Intent intent, AndroidProxyServer ProxyService) {
-
+        logger.debug("intentAction in ActionProcessor is "+intentAction);
         switch (intentAction) {
             case ACTION_ZIRK_SEND_MULTICAST_EVENT:
+                logger.debug("In ACTION_ZIRK_SEND_MULTICAST_EVENT");
                 ProxyService.sendMulticastEvent(intent);
                 break;
             case ACTION_ZIRK_SEND_UNICAST_EVENT:

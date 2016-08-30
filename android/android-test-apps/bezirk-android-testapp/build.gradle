@@ -28,4 +28,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile project(':android:android-libraries:android-zirk-proxy')
     compile project(':core:testapp-core')
+    compile project(':core:remote-logging')
 }

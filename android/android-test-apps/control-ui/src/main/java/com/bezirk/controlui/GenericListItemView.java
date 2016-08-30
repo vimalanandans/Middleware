@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 //import com.bezirk.rest.BezirkRestCommsManager;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 import java.util.List;
 
@@ -58,7 +58,7 @@ public class GenericListItemView extends ArrayAdapter<DataModel> {
         /* On / off button */
         if (data.get(position).isToggleButtonEnable()) {
             final ToggleButton toggle = (ToggleButton) rowView.findViewById(R.id.listToggleButton);
-            if (BezirkValidatorUtility.isObjectNotNull(toggle)) {
+            if (ValidatorUtility.isObjectNotNull(toggle)) {
                 toggle.setVisibility(View.VISIBLE);
                // data.get(position).setToggleButtonState(BezirkRestCommsManager.getInstance().isStarted());
                 data.get(position).setToggleButtonState(false);

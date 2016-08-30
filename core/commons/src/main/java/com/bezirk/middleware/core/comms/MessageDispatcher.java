@@ -24,10 +24,6 @@ public interface MessageDispatcher {
      */
     boolean dispatchServiceMessages(EventLedger eLedger);
 
-    /**
-     * dispatch the control message using ledger
-     */
-    boolean dispatchControlMessages(ControlLedger tcMessage);
 
     /**
      * dispatch the control message using ControlMessage and msg

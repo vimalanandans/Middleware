@@ -3,7 +3,6 @@ package com.bezirk.middleware.java.ui.remotelogging;
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.core.networking.NetworkManager;
-import com.bezirk.middleware.core.remotelogging.RemoteLoggingManager;
 import com.bezirk.middleware.core.remotelogging.RemoteLoggingMessage;
 import com.bezirk.middleware.core.remotelogging.RemoteLoggingMessageNotification;
 
@@ -234,12 +233,12 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
             logger.error("Error in sphere select GUI init. ", e);
         }
 
-        try {
+      /*  try {
             remoteLog = new RemoteLoggingManager(networkManager);
-            remoteLog.startLoggingService(this);
+            remoteLog.startRemoteLoggingService(this);
         } catch (Exception e) {
             logger.error("Error in sphere Select GUI init.", e);
-        }
+        }*/
     }
 
     /**
@@ -349,7 +348,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
     public void shutGUI() {
         if (this != null) {
             try {
-                remoteLog.stopLoggingService();
+                remoteLog.enableLogging(false,false,false, null);
             } catch (Exception e) {
                 logger.error("Error in stopping logging zirk. ", e);
             }
@@ -359,10 +358,12 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
 
     @Override
     public void handleLogMessage(RemoteLoggingMessage logMessage) {
+        logger.debug("inside handleLog message of RemoteLogSphereSelectGUI ");
         if (null != remoteLogDetails && msgLog != null) {
-            if (msgLog.isRemoteMessageValid(logMessage)) {
+            logger.debug("remoteLogDetails and msgLog are not null");
+           // if (msgLog.isRemoteMessageValid(logMessage)) {
                 remoteLogDetails.updateTable(logMessage);
-            }
+           // }
         }
     }
 

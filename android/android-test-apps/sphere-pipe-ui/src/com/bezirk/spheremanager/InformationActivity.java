@@ -19,12 +19,11 @@ import android.widget.TextView;
 import com.bezirk.device.BezirkDeviceType;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
-import com.bezirk.sphere.api.BezirkSphereAPI;
+import com.bezirk.sphere.api.SphereAPI;
 import com.bezirk.spheremanager.ui.DeviceListFragment;
 import com.bezirk.spheremanager.ui.InformationListFragment;
 import com.bezirk.spheremanager.ui.listitems.SphereListItem;
-import com.bezirk.starter.MainService;
-import com.bezirk.util.BezirkValidatorUtility;
+import com.bezirk.util.ValidatorUtility;
 
 public class InformationActivity extends FragmentActivity {
 
@@ -47,11 +46,12 @@ public class InformationActivity extends FragmentActivity {
                 .get(sphereID);*/
         SphereListItem sphere = null;
 
-        BezirkSphereAPI api = MainService.getSphereHandle();
+       // SphereAPI api = MainService.getSphereHandle();
+        SphereAPI api=null;
 
-        if (BezirkValidatorUtility.isObjectNotNull(api)) {
+        if (ValidatorUtility.isObjectNotNull(api)) {
             BezirkSphereInfo sphereInfo = api.getSphere(sphereID);
-            if (BezirkValidatorUtility.isObjectNotNull(sphereInfo)) {
+            if (ValidatorUtility.isObjectNotNull(sphereInfo)) {
                 sphere = new SphereListItem(sphereInfo);
             } else {
                 Log.e(TAG, "sphere contains : " + sphereID + " not found");

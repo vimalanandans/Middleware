@@ -1,240 +1,270 @@
 package com.bezirk.middleware.core.remotelogging;
 
 
+
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.comms.CtrlMsgReceiver;
-import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
-import com.bezirk.middleware.core.control.messages.EventLedger;
+import com.bezirk.middleware.core.control.messages.Ledger;
 import com.bezirk.middleware.core.control.messages.logging.LoggingServiceMessage;
-import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.core.networking.NetworkManager;
+import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
+import com.bezirk.middleware.core.util.ValidatorUtility;
+import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.Date;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Logging Manager class that starts/stops LoggingServices and LoggingClient.
+ * Logging Manager class that starts/stops LoggingServices and RemoteLoggingClient.
  * The platforms need to instantiate this manager and can start stop the zirk.
  */
-public final class RemoteLoggingManager implements com.bezirk.middleware.core.remotelogging.RemoteLog {
+public  class RemoteLoggingManager implements RemoteLog {
     /**
-     * RemoteLoggingService
+     * RemoteLoggingServer
      */
-    private com.bezirk.middleware.core.remotelogging.RemoteLoggingService remoteLoggingService = null;
-    /**
-     * LogReceiverProcessor used by the Logging Zirk
-     */
-    private ReceiverQueueProcessor receiverQueueProcessor = null;
+    private RemoteLoggingServer remoteLoggingServer = null;
     /**
      * Logging Client
      */
-    private com.bezirk.middleware.core.remotelogging.LoggingClient logClient = null;
+    private RemoteLoggingClient remoteLoggingClient = null;
 
     private static final Logger logger = LoggerFactory.getLogger(RemoteLoggingManager.class);
 
-    private final Date currentDate = new Date();
+    private RemoteLoggingMessageNotification remoteLoggingMessageNotification = null;
 
-    Device device;
+    private NetworkManager networkManager = null;
 
-    private final NetworkManager networkManager;
+    private boolean enableLogging = false;
+
+    private boolean enableControl = false;
+
+    private boolean enableFileLogging = false;
 
 
-    public RemoteLoggingManager(NetworkManager networkManager) {
-        this.networkManager = networkManager;
-    }
-
-
-    com.bezirk.middleware.core.remotelogging.ServiceMessageHandler logServiceMsgHandler = null;
     Comms comms;
 
-    //private BezirkCallback bezirkCallback = null;
-    CommCtrlReceiver ctrlReceiver = new CommCtrlReceiver();
+    LogCtrlMessageReceiver ctrlReceiver ;
 
 
-    @Override
-    public boolean initRemoteLogger(Comms comms, Device device) {
-        // register the logging zirk message
-        comms.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage, ctrlReceiver);
+    public RemoteLoggingManager(Comms comms, NetworkManager networkManager, RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
+
+        this.networkManager = networkManager;
+
+        this.remoteLoggingMessageNotification = remoteLoggingMessageNotification;
+
         this.comms = comms;
-        this.device = device;
-        return true;
+
+        ctrlReceiver = new LogCtrlMessageReceiver(this);
+
+        remoteLoggingClient = new RemoteLoggingClient(networkManager);
+
+        comms.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage,ctrlReceiver);
     }
 
+
+    /**
+     *
+     * @param enable - True - enable, False - disable
+     * @param enableControl - True enable logging control messages
+     * @param enableFileLogging - enable control messages
+     * @param sphereNameList - sphere name list. Null or RemoteLog.ALL_SPHERES means all sphere
+     * @return
+     */
     @Override
-    public boolean setLogger(boolean enable, String[] sphereNameList) {
+    public boolean enableLogging(boolean enable, boolean enableControl, boolean enableFileLogging, String[] sphereNameList) {
+
+        boolean bReturn ;
+
+        this.enableLogging = enable;
+
+        this.enableControl = enableControl;
+
+        this.enableFileLogging = enableFileLogging;
+
         String[] loggingSpheres;
-        if (com.bezirk.middleware.core.remotelogging.RemoteLog.ALL_SPHERES.equals(sphereNameList)) {
+
+        if(enable)
+        {
+            bReturn = startRemoteLoggingService();
+        }else
+        {
+            bReturn = stopRemoteLoggingService();
+        }
+
+        if(sphereNameList == null)
+        {
             loggingSpheres = new String[1];
             loggingSpheres[0] = RemoteLog.ALL_SPHERES;
+            // this sphere list goes to comms. Rather than access the global
+            String [] spheres = new String[1];
+            spheres[0] = PubSubBroker.SPHERE_NULL_NAME;
+            sphereNameList = spheres;
+        }else if (RemoteLog.ALL_SPHERES.equals(sphereNameList)) {
+            loggingSpheres = new String[1];
+            loggingSpheres[0] = RemoteLog.ALL_SPHERES;
+            // this sphere list goes to comms. Rather than access the global
+            String [] spheres = new String[1];
+            spheres[0] = PubSubBroker.SPHERE_NULL_NAME;
+            sphereNameList = spheres;
+
         } else {
             loggingSpheres = sphereNameList;
         }
 
-        ServiceActivatorDeactivator.sendLoggingServiceMsgToClients(comms,
-                sphereNameList, loggingSpheres, enable, networkManager);
-        return true;
+        if(bReturn) {
+            // Send the logging enable/disable to all the other nodes
+            bReturn = bReturn & sendLoggingServiceMsgToClients(comms,
+                    sphereNameList, loggingSpheres, enable);
+        }
+
+
+        return bReturn;
     }
 
+
     @Override
-    public boolean isEnabled() {
-        return true;
+    public boolean isRemoteLoggingEnabled() {
+        return enableLogging;
     }
 
-    @Override
-    public boolean sendRemoteLogMessage(ControlLedger tcMessage) {
+    private boolean sendLoggingServiceMsgToClients(Comms comms, final String[] sphereList,
+                    final String[] selectedLogSpheres, final boolean isActivate) {
 
-        if (FilterLogMessages.checkSphere(tcMessage.getSphereId())) {
+        final ZirkId myId = new ZirkId("BEZIRK-REMOTE-LOGGING-SERVICE");
 
-            try {
-                com.bezirk.middleware.core.remotelogging.LoggingQueueManager.loadLogSenderQueue(
-                        new com.bezirk.middleware.core.remotelogging.RemoteLoggingMessage(
-                                tcMessage.getSphereId(),
-                                String.valueOf(currentDate.getTime()),
-                                device.getDeviceName(),
-                                Util.CONTROL_RECEIVER_VALUE,
-                                tcMessage.getMessage().getUniqueKey(),
-                                Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
-                                Util.LOGGING_VERSION).serialize());
-            } catch (InterruptedException e) {
-                logger.error(e.getMessage());
-                return false;
+        final BezirkZirkEndPoint sep = new BezirkZirkEndPoint(comms.getNodeId(),myId);
+
+        boolean sendStatus = false;
+
+
+        for (String sphereId : sphereList) {
+
+            final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep,
+                    sphereId, networkManager.getDeviceIp(), remoteLoggingServer.getPort(), selectedLogSpheres, isActivate);
+
+            if(null != sphereId &&
+                    null != loggingServiceActivateRequest &&
+                    null != loggingServiceActivateRequest.serialize()){
+                sendStatus = true;
+            }else{
+                sendStatus = false;
+                logger.error("unable to send the logging message to sphere id " + sphereId );
             }
 
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean sendRemoteLogMessage(ControlMessage msg) {
-        if (FilterLogMessages.checkSphere(msg.getSphereId())) {
-            try {
-                com.bezirk.middleware.core.remotelogging.LoggingQueueManager.loadLogSenderQueue(
-                        new com.bezirk.middleware.core.remotelogging.RemoteLoggingMessage(
-                                msg.getSphereId(),
-                                String.valueOf(currentDate.getTime()),
-                                device.getDeviceName(),
-                                Util.CONTROL_RECEIVER_VALUE,
-                                msg.getUniqueKey(),
-                                Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
-                                Util.LOGGING_VERSION).serialize());
-            } catch (InterruptedException e) {
-                logger.error(e.getMessage());
-                return false;
+            if(null != comms){
+                comms.sendControlMessage(loggingServiceActivateRequest);
+            }else{
+                logger.debug("comms is null");
             }
-            return true;
+
         }
-        return false;
+        return sendStatus;
     }
 
     @Override
-    public boolean sendRemoteLogMessage(EventLedger eLedger) {
-        try {
-            com.bezirk.middleware.core.remotelogging.LoggingQueueManager.loadLogSenderQueue(new com.bezirk.middleware.core.remotelogging.RemoteLoggingMessage(eLedger.getHeader().getSphereId(),
-                    String.valueOf(currentDate.getTime()), device.getDeviceName(),
-                    Util.CONTROL_RECEIVER_VALUE, eLedger.getHeader().getUniqueMsgId(),
-                    Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION).serialize());
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
-            return false;
-        }
-        return true;
+    public boolean sendRemoteLogToServer(Ledger ledger) {
+
+        return remoteLoggingClient.processLogInMessage(ledger);
     }
-
-
     @Override
-    /**
-     * TODO: test the below logic
-     * */
-    public boolean isRemoteMessageValid(com.bezirk.middleware.core.remotelogging.RemoteLoggingMessage logMessage) {
-        if (logMessage.typeOfMessage
-                .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name())
-                || logMessage.typeOfMessage
-                .equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND.name())) {
-            return false;
-        }
-        return false;
+    public boolean sendRemoteLogToServer(ControlMessage message)
+    {
+        return remoteLoggingClient.processLogInMessage(message);
     }
 
+    /** to recieve the logging request*/
+    class LogCtrlMessageReceiver implements CtrlMsgReceiver {
 
-    class CommCtrlReceiver implements CtrlMsgReceiver {
+        RemoteLoggingManager loggingManager = null;
+
+
+        public LogCtrlMessageReceiver(RemoteLoggingManager loggingManager)
+        {
+            this.loggingManager = loggingManager;
+        }
         @Override
-        // FIXME : remove the below Log related quickfix, by moving the implementation to respective module
         public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
             switch (id) {
-                case LoggingServiceMessage:
-                    //logger.debug("<<<<<<<<  LOGGING MESSAGE RECEIVED FROM LOGGING SERVICE  >>>>>>>>>");
-                    logger.debug("ReceivedLogMessage-> " + serializedMsg);
-                    try {
-                        final LoggingServiceMessage loggingServiceMsg = ControlMessage.deserialize(serializedMsg, LoggingServiceMessage.class);
+            case LoggingServiceMessage:
 
-                        if (null == logServiceMsgHandler) {
-                            logServiceMsgHandler = new com.bezirk.middleware.core.remotelogging.ServiceMessageHandler(networkManager);
-                        }
-                        logServiceMsgHandler.handleLogServiceMessage(loggingServiceMsg);
-                    } catch (Exception e) {
-                        logger.error("Error in Deserializing LogServiceMessage", e);
-                    }
-                    break;
-                default:
-                    logger.error("Unknown control message > " + id);
-                    return false;
+                logger.debug("ReceivedLogMessage-> " + serializedMsg);
+
+                final LoggingServiceMessage loggingServiceMsg = ControlMessage.deserialize(serializedMsg, LoggingServiceMessage.class);
+
+                handleLogRequest(loggingServiceMsg);
+
+                break;
+            default:
+                logger.error("Unknown control message > " + id);
+                return false;
             }
             return true;
         }
     }
 
     /**
-     * Starts the Logging Zirk
-     *
-     * @param platformSpecificHandler handler to give callback once the zirk receives the request
-     * @throws Exception if handler is null, or something goes wrong while processing.
+     * Starts the Logging service to cature the log messages
      */
-    public boolean startLoggingService(final RemoteLoggingMessageNotification platformSpecificHandler) {
-        if (remoteLoggingService == null && platformSpecificHandler != null) {
-            remoteLoggingService = new com.bezirk.middleware.core.remotelogging.RemoteLoggingService(ServiceActivatorDeactivator.REMOTE_LOGGING_PORT);
-            receiverQueueProcessor = new ReceiverQueueProcessor(platformSpecificHandler);
-            try {
-                remoteLoggingService.startLoggingService();
-                receiverQueueProcessor.startProcessing();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return true;
+    private boolean startRemoteLoggingService() {
+        if (remoteLoggingServer == null ) {
+            remoteLoggingServer = new RemoteLoggingServer(remoteLoggingMessageNotification, enableFileLogging);
         }
-        //throw new Exception("Tried to start LoggingService again, that is already started or Handler is null");
-        return false;
+        return  remoteLoggingServer.startRemoteLoggingService();
     }
 
     /**
      * Stops the logging Zirk
      *
-     * @throws Exception if logging zirk is tried to stop that is not started
      */
-    public boolean stopLoggingService() {
-        if (remoteLoggingService != null) {
+    private boolean stopRemoteLoggingService() {
+        if (remoteLoggingServer != null) {
             try {
-                receiverQueueProcessor.stopProcessing();
-                remoteLoggingService.stopLoggingService();
+                remoteLoggingServer.stopRemoteLoggingService();
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
+            remoteLoggingServer = null;
 
-            remoteLoggingService = null;
-            receiverQueueProcessor = null;
             return true;
         }
         //throw new Exception("Logging zirk tried to stop that is not started");
         return false;
+    }
+
+    /**
+     * Handles the LogServiceMessage.
+     * It will start/ stop the logging client accordingly based on the status received on the LoggingServiceMessage
+     *
+     * @param loggingServiceMsg
+     */
+    public void handleLogRequest(final LoggingServiceMessage loggingServiceMsg) {
+
+        if (loggingServiceMsg.isLoggingStatus()) {
+            //Start or Update the client
+            try {
+                startLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(),
+                        loggingServiceMsg.getRemoteLoggingServicePort());
+            } catch (Exception e) {
+                logger.error("Error occurred while logging client", e);
+            }
+            Util.setLoggingSphereList(Arrays.asList(loggingServiceMsg.getSphereList()));
+        } else {
+
+            try {
+                stopLoggingClient(loggingServiceMsg.getRemoteLoggingServiceIP(),
+                        loggingServiceMsg.getRemoteLoggingServicePort());
+            } catch (Exception e) {
+                logger.error("Error occurred while stopping client", e);
+            }
+        }
+
     }
 
     /**
@@ -244,13 +274,19 @@ public final class RemoteLoggingManager implements com.bezirk.middleware.core.re
      * @param remotePort port of the remote logging zirk
      * @throws Exception if parameters are wrong or zirk is not available.
      */
-    public void startLoggingClient(String remoteIP, int remotePort) throws Exception {
-        if (logClient == null) {
-            logClient = new com.bezirk.middleware.core.remotelogging.LoggingClient();
-            logClient.startClient(remoteIP, remotePort);
-            return;
+    public boolean startLoggingClient(String remoteIP, int remotePort) throws Exception {
+
+        if(ValidatorUtility.checkForString(remoteIP) || remotePort == 0 ){
+            logger.debug("invalid remote ip :" + remoteIP + " or remoteport " + remotePort);
+            return false;
         }
-        logClient.updateClient(remoteIP, remotePort);
+
+
+
+        if(!remoteLoggingClient.isRunning()){
+            return remoteLoggingClient.startClient(remoteIP, remotePort);
+        } // incase if already running
+        return remoteLoggingClient.updateClient(remoteIP, remotePort);
     }
 
     /**
@@ -260,10 +296,15 @@ public final class RemoteLoggingManager implements com.bezirk.middleware.core.re
      * @param remotePort Port of the remote zirk that is shutting
      * @throws Exception if tried to stop the client that is not started
      */
-    public void stopLoggingClient(String remoteIP, int remotePort) throws Exception {
-        if (logClient != null) {
-            logClient.stopClient(remoteIP, remotePort);
-            logClient = null;
+    public boolean  stopLoggingClient(String remoteIP, int remotePort) throws Exception {
+        if(ValidatorUtility.checkForString(remoteIP) || remotePort == 0 ){
+            logger.debug("invalid remote ip :" + remoteIP + " or remoteport " + remotePort);
+            return false;
         }
+
+        remoteLoggingClient.stopClient(remoteIP, remotePort);
+
+
+        return true;
     }
 }

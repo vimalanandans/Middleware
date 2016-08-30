@@ -21,6 +21,7 @@ public final class CommsUtility {
     public boolean sendMessage(ControlMessage controlMessage) {
 
         // send the message
+        logger.debug("Inside sendMessage");
         if (comms != null) {
             logger.debug("Sending message: " + controlMessage.getDiscriminator());
             return comms.sendControlMessage(controlMessage);

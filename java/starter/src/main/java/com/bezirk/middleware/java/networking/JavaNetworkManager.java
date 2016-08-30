@@ -85,7 +85,8 @@ public class JavaNetworkManager extends NetworkManager {
                         return null;
                     case 1: //only 1 interface found
                         networkInterface = interfaces.get(0).getNetworkInterface();
-                        logger.debug("Interface selected '" + networkInterface.getName() + "'");
+                        logger.debug("Interface auto selected '" + networkInterface.getName() + "'");
+                        setStoredInterfaceName(networkInterface.getName());
                         break;
                     default:
                         logger.debug(numInf + " interfaces detected, prompting user to choose");
@@ -93,6 +94,7 @@ public class JavaNetworkManager extends NetworkManager {
                         if (ValidatorUtility.checkForString(intfName)) {
                             networkInterface = NetworkInterface.getByName(intfName);
                             logger.debug("Interface selected '" + intfName + "'");
+                            setStoredInterfaceName(networkInterface.getName());
                         } else {
                             logger.error("Interface not selected! Bezirk is shutting down. . .");
                             System.exit(0);
