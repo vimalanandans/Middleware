@@ -183,6 +183,7 @@ public  class RemoteLoggingManager implements RemoteLog {
 
         RemoteLoggingManager loggingManager = null;
 
+
         public LogCtrlMessageReceiver(RemoteLoggingManager loggingManager)
         {
             this.loggingManager = loggingManager;
