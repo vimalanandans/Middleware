@@ -60,7 +60,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private LifecycleManager lifecycleManager;
     private Device device;
     private PubSubBroker pubSubBroker;
-    private RemoteLog remoteLog;
+    private RemoteLog remoteLog = null;
     private static final String DB_VERSION = "0.0.4";
     private LifecycleManager.LifecycleState currentState;
 
@@ -213,7 +213,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         //comms = new JmqCommsManager(networkManager, null,null, null);
 
         //initialize remoteLogging for logging the messages
-        remoteLog = new RemoteLoggingManager(comms, networkManager, null);
+       // remoteLog = new RemoteLoggingManager(comms, networkManager, null);
 
         //streaming manager
         Streaming streaming = new StreamManager(comms, networkManager);

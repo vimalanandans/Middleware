@@ -30,24 +30,17 @@ class ZyreCommsHelper {
 
     void processEvent(String eventType, String peer, String peerGroup, String payload) {
         // A Zyre-enabled device enters the network
-        logger.debug("eventType in ZyreCommsHelper "+eventType);
-        logger.debug("peer in ZyreCommsHelper "+peer);
-        logger.debug("payload in ZyreCommsHelper "+payload);
-        logger.debug("peergroup in ZyreCommsHelper "+peerGroup);
         if (eventType.equals("ENTER")) {
             logger.debug("peer (" + peer + ") entered network");
 
         } else if (eventType.equals("WHISPER")) {
-            logger.debug("Whisper -> data size > " + payload.length());
             commsProcessor.processWireMessage(peer, payload);
 
         } else if (eventType.equals("SHOUT")) {
-            logger.debug("Shout -> data size > " + payload.length());
             commsProcessor.processWireMessage(peer, payload);
 
         } else if (eventType.equals("JOIN")) {
             addPeer(peerGroup, peer);
-            logger.debug("peer (" + peer + ") joined: " + peerGroup);
             logKnownDevices();
 
         } else if (eventType.equals("LEAVE")) {
@@ -69,9 +62,7 @@ class ZyreCommsHelper {
      * handling the receive
      */
     Map<String, String> receive(Zyre zyre) {
-        logger.debug("receive in ZyreCommHelper");
         String incoming = zyre.recv();
-        logger.debug("incoming is "+incoming);
         ConcurrentMap<String, String> eventMap = new ConcurrentHashMap<>();
 
         if ((incoming == null) || incoming.isEmpty())
@@ -86,7 +77,6 @@ class ZyreCommsHelper {
         eventMap = parseMsg(incoming);
 
         if (eventMap.isEmpty() || eventMap.get("event") == null) {
-            logger.debug("event map has bytes. parse special : experimental ");
             //  return parseMsgExt(incoming);// to be fixed
             return eventMap;
         }
