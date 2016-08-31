@@ -6,37 +6,33 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
-
-
-import com.bezirk.middleware.core.actions.BezirkAction;
-import com.bezirk.middleware.core.actions.StartServiceAction;
-import com.bezirk.middleware.core.actions.StopServiceAction;
 import com.bezirk.middleware.android.comms.ZyreCommsManager;
-import com.bezirk.middleware.core.componentManager.LifeCycleCallbacks;
-import com.bezirk.middleware.core.componentManager.LifecycleManager;
-import com.bezirk.middleware.core.datastorage.RegistryStorage;
 import com.bezirk.middleware.android.device.AndroidDevice;
-import com.bezirk.middleware.core.device.Device;
-import com.bezirk.middleware.core.identity.BezirkIdentityManager;
-import com.bezirk.middleware.core.remotelogging.RemoteLog;
-import com.bezirk.middleware.core.remotelogging.RemoteLoggingManager;
-import com.bezirk.middleware.identity.Alias;
 import com.bezirk.middleware.android.networking.AndroidNetworkManager;
 import com.bezirk.middleware.android.persistence.DatabaseConnectionForAndroid;
-import com.bezirk.middleware.core.proxy.Config;
-import com.bezirk.middleware.core.proxy.MessageHandler;
 import com.bezirk.middleware.android.proxy.android.AndroidProxyServer;
 import com.bezirk.middleware.android.proxy.android.ServerIdentityManagerAdapter;
 import com.bezirk.middleware.android.proxy.android.ZirkMessageHandler;
+import com.bezirk.middleware.core.actions.BezirkAction;
+import com.bezirk.middleware.core.actions.StartServiceAction;
+import com.bezirk.middleware.core.actions.StopServiceAction;
+import com.bezirk.middleware.core.componentManager.LifeCycleCallbacks;
+import com.bezirk.middleware.core.componentManager.LifecycleManager;
+import com.bezirk.middleware.core.datastorage.RegistryStorage;
+import com.bezirk.middleware.core.device.Device;
+import com.bezirk.middleware.core.identity.BezirkIdentityManager;
+import com.bezirk.middleware.core.proxy.Config;
+import com.bezirk.middleware.core.proxy.MessageHandler;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
+import com.bezirk.middleware.core.remotelogging.RemoteLog;
 import com.bezirk.middleware.core.streaming.StreamManager;
 import com.bezirk.middleware.core.streaming.Streaming;
+import com.bezirk.middleware.identity.Alias;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
