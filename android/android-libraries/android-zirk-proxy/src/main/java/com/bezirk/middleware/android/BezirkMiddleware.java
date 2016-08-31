@@ -19,9 +19,10 @@ public abstract class BezirkMiddleware {
     private static ServiceManager serviceManager;
 
     /**
-     * Start the bezirk service. This allows Zirk(s) to be registered with the bezirk service and allows them to communicate with other Zirk(s).
+     * Initializes and starts the bezirk {@link android.app.Service}.
      * <p>
-     * Service is started using default configurations {@link Config} unless configurations are supplied explicitly using {@link #initialize(Context, Config)}. Bezirk service runs as a background Android service unless explicitly stopped by the application using {@link #stop()} or by Android OS.
+     * Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}.
+     * {@link BezirkMiddleware} is started using default configurations {@link Config} unless configurations are supplied explicitly using {@link #initialize(Context, Config)}. Bezirk service runs as a background Android service unless explicitly stopped by the application using {@link #stop()} or by Android OS.
      * </p>
      *
      * @see #initialize(Context, Config)
@@ -32,15 +33,15 @@ public abstract class BezirkMiddleware {
     }
 
     /**
-     * Start the bezirk service. This allows Zirk(s) to be registered with the bezirk service and allows them to communicate with other Zirk(s).
+     * Initializes and starts the bezirk {@link android.app.Service}.
      * <p>
-     * Service is started using the supplied <code>Config</code>. Bezirk service runs as a background Android service unless explicitly stopped by the application using {@link #stop()} or by Android OS.
+     * Service is started using the supplied <code>config</code>. Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}. Bezirk service runs as a background Android service unless explicitly stopped by the application using {@link #stop()} or by Android OS.
      * </p>
      *
      * @param config custom configurations to be used by bezirk service
      *               <ul>
-     *               <li>If <code>config</code> is <code>null</code>, a default configuration is used</li>
-     *               <li>If <code>config</code> is not <code>null</code>, Bezirk service is created for the current application, even if an existing bezirk service is running in the device.</li>
+     *               <li>If <code>null</code>, a default configuration is used</li>
+     *               <li>If not <code>null</code>, Bezirk service is created for the current application, even if an existing bezirk service(inside the Bezirk Application) is running in the device.</li>
      *               </ul>
      * @see #stop()
      */
@@ -98,7 +99,7 @@ public abstract class BezirkMiddleware {
     }
 
     /**
-     * Stop the bezirk service.
+     * Stops the bezirk {@link android.app.Service}.
      * <p>
      * Once bezirk is stopped, Zirk(s) cannot register with the bezirk service and all communications between registered Zirks would stop.
      * </p>
