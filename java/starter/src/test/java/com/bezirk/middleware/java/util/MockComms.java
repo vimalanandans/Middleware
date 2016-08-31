@@ -82,6 +82,11 @@ public class MockComms implements Comms {
     }
 
     @Override
+    public boolean sendControlLedger(ControlLedger controlLedger) {
+        return false;
+    }
+
+    @Override
     public boolean sendControlMessage(ControlMessage message) {
         return false;
     }

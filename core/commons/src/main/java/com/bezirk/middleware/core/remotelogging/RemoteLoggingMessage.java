@@ -45,7 +45,7 @@ public class RemoteLoggingMessage {
      *
      * @param sphereName    Name of the sphere
      * @param timeStamp     timeStamp of the Message
-     * @param sender        Sender IP
+    // * @param sender        Sender IP
      * @param recipient     Recipient Ip, null in case of multicast
      * @param uniqueMsgId   MsgId of the message that is sent or received
      * @param typeOfMessage one of (EVENT-SEND, EVENT-RECEIVE, CONTROL-MESSAGE-SEND, CONTROL-MESSAGE-RECEIVE)

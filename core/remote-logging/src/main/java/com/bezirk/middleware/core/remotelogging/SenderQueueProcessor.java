@@ -7,13 +7,15 @@ import org.slf4j.LoggerFactory;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * Processes the LogSenderQueue. It makes a blocking call on the Log sender Queue and waits for the queue to be updated.
  * It retrieve the String from the LogSenderQueue and pushes the message onto the Logging Zirk
  * and removes it from the queue.
  */
-public class SenderQueueProcessor extends Thread {
+public class SenderQueueProcessor implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(SenderQueueProcessor.class);
     /**
      * Logging Zirk IP. This will set based on the LoggingMessage from the Logging zirk.
@@ -28,6 +30,13 @@ public class SenderQueueProcessor extends Thread {
      */
     private boolean isRunning = false;
 
+    Socket logClientSocket = null;
+
+    /**
+     * Blocking Queue that is used to queue logger messages at the logging client.
+     */
+    private static BlockingQueue<String> logSenderQueue = null;
+
     /**
      * Setup the Logging Zirk Parameters
      *
@@ -37,18 +46,17 @@ public class SenderQueueProcessor extends Thread {
     public SenderQueueProcessor(String remoteServiceIP, int remotePort) {
         this.remoteServiceIP = remoteServiceIP;
         this.remoteServicePort = remotePort;
+
     }
 
     @Override
     public void run() {
         while (isRunning) {
-
             try {
-                StringBuilder logMsgString = LoggingQueueManager.fetchFromLogSenderQueue();
-                Socket bezirkClient = null;
+                StringBuilder logMsgString = getLogOutgoingMessage();
+
                 try {
-                    bezirkClient = new Socket(remoteServiceIP, remoteServicePort);
-                    DataOutputStream clientOutputStream = new DataOutputStream(bezirkClient.getOutputStream());
+                    DataOutputStream clientOutputStream = new DataOutputStream(logClientSocket.getOutputStream());
                     clientOutputStream.writeBytes(logMsgString.toString());
                     clientOutputStream.flush();
                     clientOutputStream.close();
@@ -56,8 +64,8 @@ public class SenderQueueProcessor extends Thread {
                     logger.error("Some Error occurred :", e);
                 } finally {
                     try {
-                        if (bezirkClient != null) {
-                            bezirkClient.close();
+                        if (logClientSocket != null) {
+                            logClientSocket.close();
                         }
                     } catch (IOException e) {
                         logger.error("Errors occurred in closing bezirkClient \n", e);
@@ -74,9 +82,18 @@ public class SenderQueueProcessor extends Thread {
      *
      * @throws Exception if Logging Zirk is down and unable to connect
      */
-    public void startProcessing() throws Exception {
+    public boolean startProcessing() throws Exception {
         isRunning = true;
-        this.start();
+        try {
+            logClientSocket = new Socket(remoteServiceIP, remoteServicePort);
+        }catch  (IOException e){
+            logger.error("logging client create fail. ip : "+ remoteServiceIP + " port "
+                    + String.valueOf(remoteServicePort) + " " +e);
+            return false;
+        }
+        Thread t = new Thread(this);
+        t.start();
+        return true;
     }
 
     /**
@@ -84,7 +101,48 @@ public class SenderQueueProcessor extends Thread {
      *
      * @throws Exception interrupted Exception if something goes down while stopping the thread.
      */
-    public void stopProcessing() throws Exception {
+    public boolean stopProcessing() throws Exception {
+        clearQueue();
+        if (logClientSocket != null) {
+            logClientSocket.close();
+        }
         isRunning = false;
+        return isRunning;
+    }
+    /**
+     * loads the serialized RemoteLogMessage into LogSenderQueue
+     *
+     * @param serializedLogMsg serialized Log Message
+     * @throws InterruptedException if multiple threads try to access the queue.
+     */
+    public void processLogOutMessage(String serializedLogMsg) throws InterruptedException {
+        if (logSenderQueue == null) {
+            logSenderQueue = new SynchronousQueue<String>();
+        }
+        logSenderQueue.put(serializedLogMsg);
+    }
+
+    /**
+     * Waits on the logSenderQueue to retrieve the logger Message
+     *
+     * @return String representation of the RemoteLogMessage
+     * @throws InterruptedException if multiple threads try to access the queue.
+     */
+    private  StringBuilder getLogOutgoingMessage() throws InterruptedException {
+        if (logSenderQueue == null) {
+            logSenderQueue = new SynchronousQueue<String>();
+        }
+        return new StringBuilder(logSenderQueue.take());
+    }
+
+    /**
+     * clears the logSenderQueue
+     */
+    void clearQueue()
+    {
+        if (logSenderQueue == null) {
+            logSenderQueue = new SynchronousQueue<String>();
+        }
+        logSenderQueue.clear();
     }
 }

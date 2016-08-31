@@ -84,6 +84,7 @@ public class LifecycleManager extends Observable {
     }
 
     private void changeAndNotify(LifecycleState state) {
+        logger.debug("changeAndNotify called");
         this.currentState = state;
         setChanged();
         notifyObservers();

@@ -2,6 +2,9 @@ package com.bezirk.middleware.core.comms.processor;
 
 
 import com.bezirk.middleware.core.actions.SendFileStreamAction;
+import com.bezirk.middleware.core.comms.CommsFeature;
+import com.bezirk.middleware.core.comms.CommsMessageDispatcher;
+import com.bezirk.middleware.core.comms.CommsProperties;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.EventLedger;
@@ -22,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
@@ -83,9 +87,15 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
         not required anymore!!
 
         if (bezirkStreamManager != null) {
+            logger.debug("bezirkStreamManager not null");
             bezirkStreamManager.startStreams();
+        } else {
+            logger.debug("bezirkStreamManager is null");
+        }
+        return true;
         }*/
     }
+
 
     /**
      * Shutdown thread pool.
@@ -113,7 +123,7 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
             //return this.sendStreamMessage(message);
             return false;
         }
-        // FIXME: Bridge the local message. look udp sendControlMessage
+
     }
 
     @Override
@@ -130,13 +140,15 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
     /**
      * Send the control message
      */
+    @Override
     public boolean sendControlLedger(ControlLedger ledger) {
         boolean ret = false;
+
         String data = ledger.getSerializedMessage();
         if (data != null) {
             if (ledger.getMessage() instanceof MulticastControlMessage) {
-
                 WireMessage wireMessage = prepareWireMessage(ledger.getMessage().getSphereId(), data);
+
 
                 wireMessage.setMsgType(WireMessage.WireMsgType.MSG_MULTICAST_CTRL);
                 byte[] wireByteMessage = wireMessage.serialize();
@@ -147,7 +159,6 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
                 //bridgeControlMessage(getDeviceId(), message);
 
             } else if (ledger.getMessage() instanceof UnicastControlMessage) {
-
                 WireMessage wireMessage = prepareWireMessage(ledger.getMessage().getSphereId(), data);
 
                 wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_CTRL);
@@ -177,7 +188,7 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
          * Step 1 :Compression :  Do the compression if message compression is enabled
          * ##########
          */
-        if (com.bezirk.middleware.core.comms.CommsFeature.WIRE_MSG_COMPRESSION.isActive()) {
+        if (CommsFeature.WIRE_MSG_COMPRESSION.isActive()) {
             wireData = compressMsg(data);
             wireMessage.setWireMsgStatus(WireMessage.WireMsgStatus.MSG_COMPRESSED);
         }
@@ -187,7 +198,7 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
          * Step 2 :Encryption :  perform encryption if it is enabled.
          * ##########
          */
-        if (com.bezirk.middleware.core.comms.CommsFeature.WIRE_MSG_ENCRYPTION.isActive()) {
+        if (CommsFeature.WIRE_MSG_ENCRYPTION.isActive()) {
 
             if (wireData != null) {
                 //means compression has happened, now encrypt the content
@@ -320,8 +331,8 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
 
         if (data == null) return false;
 
-        if (ledger.getHeader() instanceof MulticastHeader) {
 
+        if (ledger.getHeader() instanceof MulticastHeader) {
             //TODO: for event message decrypt the header here
             // if the intended zirk is available in sadl message is decrypted
             WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
@@ -341,6 +352,7 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
             wireMessage.setHeaderMsg(headerData);
 
             wireMessage.setMsgType(WireMessage.WireMsgType.MSG_MULTICAST_EVENT);
+
 
             byte[] wireByteMessage = wireMessage.serialize();
             return sendToAll(wireByteMessage, false);
@@ -434,7 +446,6 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
     public boolean processWireMessage(String deviceId, String msg) {
         // start thread pool
         if ((executor != null) && !executor.isShutdown()) {
-
             ProcessIncomingMessage inMsg = new ProcessIncomingMessage(/*this, */deviceId, msg);
 
             executor.execute(inMsg);
@@ -445,6 +456,23 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
         return true;
     }
 
+    /**
+     * handle the wire message - loop back. Not used anymore. Pubsubbroker handles this.
+     */
+
+//    public boolean processWireMessage(String deviceId, Ledger ledger) {
+//        // start thread pool
+//        if ((executor != null) && !executor.isShutdown()) {
+//
+//            ProcessIncomingMessage inMsg = new ProcessIncomingMessage(/*this, */deviceId, ledger);
+//
+//            executor.execute(inMsg);
+//        } else {
+//            logger.error("thread pool is not active.");
+//        }
+//
+//        return true;
+//    }
 
     private boolean processCtrl(String deviceId, WireMessage wireMessage) {
 
@@ -519,12 +547,14 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
             byte[] temp = message;
             String processedMsg = TextCompressor.decompress(temp);
 
+
             if ((processedMsg != null) && !processedMsg.isEmpty())
                 try {
                     message = processedMsg.getBytes("UTF-8");
                 } catch (UnsupportedEncodingException e) {
                     throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
                 }
+
 
         }
 
@@ -616,7 +646,6 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
         final Gson gson = new Gson();
 
         if (wireMessage.isMulticast()) {
-
             MulticastHeader mHeader = gson.fromJson(headerData, MulticastHeader.class);
 
             eLedger.setHeader(mHeader);
@@ -703,6 +732,14 @@ public abstract class CommsProcessor implements com.bezirk.middleware.core.comms
 
     /*@Override
     public void setSphereSecurity(SphereSecurity sphereSecurity) {
+        if(null!=bezirkStreamManager){
+            logger.debug("bezirkStreamManager is not null");
+            bezirkStreamManager.setSphereSecurity(sphereSecurity);
+        }else{
+            logger.debug("bezirkStreamManager is null");
+        }
+
+    }
         bezirkStreamManager.setSphereSecurityForEncryption(sphereSecurity);
     }*/
 

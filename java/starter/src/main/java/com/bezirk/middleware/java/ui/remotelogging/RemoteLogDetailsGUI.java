@@ -3,6 +3,9 @@ package com.bezirk.middleware.java.ui.remotelogging;
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.remotelogging.RemoteLoggingMessage;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
+import com.bezirk.middleware.core.sphere.api.SphereAPI;
+import com.bezirk.middleware.core.sphere.api.SphereServiceAccess;
+import com.bezirk.middleware.core.sphere.impl.SphereServiceManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -193,7 +196,7 @@ public class RemoteLogDetailsGUI extends JFrame {
 
     private void sendLoggingServiceMsg(boolean isActivateLogging) {
 
-        msgLog.setLogger(isActivateLogging,selectedSpheres);
+        msgLog.enableLogging(isActivateLogging,false,true,selectedSpheres);
 
     }
 
@@ -206,7 +209,7 @@ public class RemoteLogDetailsGUI extends JFrame {
 
         final StringBuilder tempMapKey = new StringBuilder();
         tempMapKey.append(bezirkLogMessage.uniqueMsgId).append(':').append(bezirkLogMessage.sphereName);
-
+        logger.debug("tempMapKeyis "+tempMapKey);
         if (checkEntry(tempMapKey.toString())) {
             try {
                 model.addRow(new Object[]{
@@ -247,11 +250,8 @@ public class RemoteLogDetailsGUI extends JFrame {
 
             return RECIPIENT_MULTICAST_VALUE;
         }
-        // Fixme : tempDeviceName get the device name from SphereServiceAccess
-        //      object to access the info
-        final String tempDeviceName = null;
-        // final String tempDeviceName = BezirkCompManager.getSphereForPubSubBroker() \
-       //         .getDeviceNameFromSphere(deviceId);
+        SphereServiceAccess sphereServiceAccess = new SphereServiceManager();
+        final String tempDeviceName = sphereServiceAccess.getDeviceNameFromSphere(deviceId);
         return (null == tempDeviceName) ? deviceId : tempDeviceName;
     }
 
@@ -263,14 +263,20 @@ public class RemoteLogDetailsGUI extends JFrame {
      */
     private String getSphereNameFromSphereId(final String sphereId) {
         final StringBuilder tempSphereName = new StringBuilder();
-        /*try {
-           // commented for the MVP refactoring. inject the sphere API to get access
-            tempSphereName.append(BezirkCompManager.getSphereUI()
-                    .getSphere(sphereId).getSphereId());
+
+        SphereAPI sphereAPI=new SphereServiceManager();
+        try {
+            if(null!=sphereAPI){
+                logger.debug("sphereAPI is not null in RemoteLogDetailsGUI");
+                tempSphereName.append(sphereAPI.getSphere(sphereId).getSphereName());
+            }else{
+                logger.debug("sphereAPI is null in RemoteLogDetailsGUI");
+            }
+
         } catch (NullPointerException ne) {
-            logger.error("Error in fetching sphereName from sphere UI", ne);
+            logger.error("Error in fetching sphereName from RemoteLogDetailsGUI", ne);
             tempSphereName.append("Un-defined");
-        }*/
+        }
         return tempSphereName.toString();
     }
 }

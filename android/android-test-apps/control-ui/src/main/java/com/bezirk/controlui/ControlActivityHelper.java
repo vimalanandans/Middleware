@@ -20,8 +20,8 @@ import android.widget.Toast;
 import com.bezirk.util.BezirkVersion;
 import com.bezirk.comms.CommsFeature;
 import com.bezirk.spheremanager.SphereListActivity;
-import com.bezirk.starter.MainService;
-import com.bezirk.util.BezirkValidatorUtility;
+//import com.bezirk.starter.MainService;
+import com.bezirk.util.ValidatorUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,7 +134,7 @@ class ControlActivityHelper {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if (BezirkValidatorUtility.isObjectNotNull(mAlertDialog)) {
+                if (ValidatorUtility.isObjectNotNull(mAlertDialog)) {
                     mAlertDialog.cancel();
                     mAlertDialog = null;
                 }
@@ -142,7 +142,7 @@ class ControlActivityHelper {
         });
 
         bezirkVersion.setText("Expected Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
-        if (BezirkValidatorUtility.isObjectNotNull(receivedBezirkVersion)) {
+        if (ValidatorUtility.isObjectNotNull(receivedBezirkVersion)) {
             bezirkExpectedVersionStatus.setText("Received Bezirk-Version: " + receivedBezirkVersion);
         } else {
             bezirkExpectedVersionStatus.setText("Received Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);

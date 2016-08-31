@@ -11,9 +11,9 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bezirk.spheremanager.R;
+//import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.listitems.SwipeDetector;
-import com.bezirk.starter.MainService;
+//import com.bezirk.starter.MainService;
 
 import java.util.ArrayList;
 import java.util.Iterator;

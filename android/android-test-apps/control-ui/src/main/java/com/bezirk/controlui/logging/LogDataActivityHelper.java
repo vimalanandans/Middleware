@@ -2,6 +2,7 @@ package com.bezirk.controlui.logging;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -11,18 +12,25 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.BezirkCompManager;
-import com.bezirk.comms.BezirkCommunications;
+import com.bezirk.controlui.FileCreationHelper;
 import com.bezirk.controlui.R;
-import com.bezirk.remotelogging.loginterface.BezirkLogging;
-import com.bezirk.remotelogging.manager.BezirkLoggingManager;
-import com.bezirk.remotelogging.messages.BezirkLoggingMessage;
-import com.bezirk.remotelogging.util.Util;
-import com.bezirk.starter.MainService;
+import com.bezirk.remotelogging.RemoteLoggingManager;
+import com.bezirk.remotelogging.ServiceActivatorDeactivator;
+import com.bezirk.controlui.Util;
+import com.bezirk.remotelogging.RemoteLoggingManager;
+import com.bezirk.remotelogging.RemoteLoggingMessage;
+import com.bezirk.remotelogging.RemoteLoggingMessageNotification;
+import com.bezirk.sphere.api.SphereAPI;
+import com.bezirk.sphere.api.SphereServiceAccess;
+import com.bezirk.sphere.impl.SphereServiceManager;
+//import com.bezirk.starter.MainService;
+import com.bezirk.starter.MainStackPreferences;
+import com.bezirk.starter.SphereServiceAccessStub;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,7 +41,7 @@ class LogDataActivityHelper {
     /**
      * ANY_SPHERE label
      */
-    private final String[] ANY_SPHERE_VALUE = {Util.ANY_SPHERE};
+    private final String[] ANY_SPHERE_VALUE = {Util.ALL_SPHERE};
     /**
      * To print the timestamp of the recieved msg
      */
@@ -60,13 +68,17 @@ class LogDataActivityHelper {
      * UI Handler
      */
     Handler mHandler;
+
     /**
-     * BezirkLogging Implementation to handle the logmessage. It receives the logger message and gives it to the handler to update the UI.
+     * RemoteLoggingMessageNotification  Implementation to handle the logmessage. It receives the logger message and gives it to the handler to update the UI.
      */
-    private final BezirkLogging loggingHandler = new BezirkLogging() {
+    private final RemoteLoggingMessageNotification loggingHandler = new RemoteLoggingMessageNotification() {
         @Override
-        public void handleLogMessage(BezirkLoggingMessage bezirkLogMessage) {
+        public void handleLogMessage(RemoteLoggingMessage bezirkLogMessage) throws IOException {
+            logger.debug("inside handleLog message of LogDataActivity Helper");
             Message msg = mHandler.obtainMessage();
+            FileCreationHelper fileCreationHelper = new FileCreationHelper();
+            fileCreationHelper.fileCreationOnTimeStamp(bezirkLogMessage);
             msg.obj = bezirkLogMessage;
             mHandler.sendMessage(msg);
         }
@@ -86,8 +98,8 @@ class LogDataActivityHelper {
 
         @Override
         public boolean handleMessage(final Message msg) {
-            BezirkLoggingMessage logMsg = (BezirkLoggingMessage) msg.obj;
-
+            RemoteLoggingMessage logMsg = (RemoteLoggingMessage) msg.obj;
+            logger.debug("handler callback");
             if (!logDataActivity.isDeveloperModeEnabled && (logMsg.typeOfMessage.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name()) ||
                     logMsg.typeOfMessage.equals(Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_SEND.name()))) {
                 return true;
@@ -156,8 +168,9 @@ class LogDataActivityHelper {
      */
     void startLogService() {
         try {
-            logDataActivity.mBezirkLoggingManager = new BezirkLoggingManager();
-            logDataActivity.mBezirkLoggingManager.startLoggingService(BezirkCommunications.getREMOTE_LOGGING_PORT(), loggingHandler);
+            logger.debug("start log service");
+            logDataActivity.remoteLoggingManager = new RemoteLoggingManager();
+            logDataActivity.remoteLoggingManager.startRemoteLoggingService(loggingHandler);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
@@ -166,24 +179,26 @@ class LogDataActivityHelper {
     /**
      * Send the LogServiceMsg across all the spheres.
      */
-    void sendLogServiceMsg(final String[] selectedSphereList, boolean isAnySphereSelectedFlag) {
+    void sendLogServiceMsg(final String[] selectedSphereList, boolean isAnySphereSelectedFlag, MainStackPreferences preferences) {
         final String[] tempLoggingSphereList;
+        logger.debug("isAnySphereSelectedFlag is "+isAnySphereSelectedFlag);
         if (isAnySphereSelectedFlag) {
             tempLoggingSphereList = ANY_SPHERE_VALUE;
         } else {
             tempLoggingSphereList = selectedSphereList;
         }
         logDataActivity.selSpheres = selectedSphereList.clone();
-
+        logger.debug("tempLoggingSphereList length is "+tempLoggingSphereList.length);
         // it is not a good idea to access the main zirk directly. the best way to do is via IBinder
-        MainService.sendLoggingServiceMsgToClients(logDataActivity.selSpheres, tempLoggingSphereList, true);
+        MainService mainService = new MainService();
+        mainService.sendLoggingServiceMsgToClients(logDataActivity.selSpheres, tempLoggingSphereList, true,preferences);
 
     }
 
     /**
      * Returns the Table Row setup with all the contents with properties to be displayed
      */
-    TableRow getLogTableRow(final BezirkLoggingMessage logMsg) {
+    TableRow getLogTableRow(final RemoteLoggingMessage logMsg) {
         final TableRow.LayoutParams tableRowLayoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
         final TableRow.LayoutParams tableLayoutLayoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
         tableLayoutLayoutParams.gravity = Gravity.CENTER;
@@ -247,10 +262,12 @@ class LogDataActivityHelper {
      * @param deviceId Device Id whose name is to be fetched
      * @return DeviceName if exists, null otherwise
      */
+    SphereServiceAccess sphereServiceAccess  = new SphereServiceAccessStub();
     String getDeviceNameFromDeviceId(final String deviceId) {
+        logger.debug("deviceId value in Logdataactivityhelper  "+deviceId);
         if (deviceId == null)
             return RECIPIENT_MULTICAST_VALUE;
-        String tempDeviceName = BezirkCompManager.getSphereForPubSubBroker().getDeviceNameFromSphere(deviceId);
+        String tempDeviceName = sphereServiceAccess.getDeviceNameFromSphere(deviceId);
         return (null == tempDeviceName) ? deviceId : tempDeviceName;
     }
 
@@ -281,8 +298,8 @@ class LogDataActivityHelper {
             public void onClick(DialogInterface dialog, int which) {
                 mHandler = null;
                 try {
-                    logDataActivity.mBezirkLoggingManager.stopLoggingService();
-                    logDataActivity.mBezirkLoggingManager = null;
+                    logDataActivity.remoteLoggingManager.stopRemoteLoggingService();
+                    logDataActivity.remoteLoggingManager = null;
                     logDataActivity.new ShutDownLoggingServiceTask().execute(logDataActivity.selSpheres);
                     printToast("STOPPING LOG SERVICE...");
                     logDataActivity.onDestroy();
@@ -309,10 +326,11 @@ class LogDataActivityHelper {
      * @param sphereId SPhereId of the sphere
      * @return sphere Name associated with the sphere Id.
      */
+    SphereAPI sphereAPI = new SphereServiceManager();
     String getSphereNameFromSphereId(final String sphereId) {
         StringBuilder tempSphereName = new StringBuilder();
         try {
-            tempSphereName.append(BezirkCompManager.getSphereUI().getSphere(sphereId).getSphereName());
+            tempSphereName.append(sphereAPI.getSphere(sphereId).getSphereName());
         } catch (NullPointerException ne) {
             logger.error("Error in fetching sphereName from sphere UI", ne);
             tempSphereName.append("Un-defined");

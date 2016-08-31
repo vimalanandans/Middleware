@@ -2,7 +2,7 @@ package com.bezirk.controlui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeviceTypeSelection extends ActionBarActivity {
+public class DeviceTypeSelection extends AppCompatActivity {
     private static final Logger logger = LoggerFactory.getLogger(DeviceTypeSelection.class);
 
     public static final int RESULT_DEVICE_ITEM_SELECT = 0x100;

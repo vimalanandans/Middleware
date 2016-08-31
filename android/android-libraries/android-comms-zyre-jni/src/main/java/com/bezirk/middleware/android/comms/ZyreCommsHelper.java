@@ -34,16 +34,13 @@ class ZyreCommsHelper {
             logger.debug("peer (" + peer + ") entered network");
 
         } else if (eventType.equals("WHISPER")) {
-           // logger.debug("data size > " + payload.length());
             commsProcessor.processWireMessage(peer, payload);
 
         } else if (eventType.equals("SHOUT")) {
-            //logger.debug("data size > " + payload.length());
             commsProcessor.processWireMessage(peer, payload);
 
         } else if (eventType.equals("JOIN")) {
             addPeer(peerGroup, peer);
-            logger.debug("peer (" + peer + ") joined: " + peerGroup);
             logKnownDevices();
 
         } else if (eventType.equals("LEAVE")) {
@@ -62,11 +59,10 @@ class ZyreCommsHelper {
     }
 
     /**
-     * handling the revieve
+     * handling the receive
      */
     Map<String, String> receive(Zyre zyre) {
         String incoming = zyre.recv();
-
         ConcurrentMap<String, String> eventMap = new ConcurrentHashMap<>();
 
         if ((incoming == null) || incoming.isEmpty())
@@ -81,7 +77,6 @@ class ZyreCommsHelper {
         eventMap = parseMsg(incoming);
 
         if (eventMap.isEmpty() || eventMap.get("event") == null) {
-            logger.debug("event map has bytes. parse special : experimental ");
             //  return parseMsgExt(incoming);// to be fixed
             return eventMap;
         }

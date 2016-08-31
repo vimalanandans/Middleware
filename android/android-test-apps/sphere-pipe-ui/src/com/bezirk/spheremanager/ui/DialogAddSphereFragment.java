@@ -16,7 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bezirk.sphere.api.BezirkSphereType;
+import com.bezirk.sphere.api.SphereType;
 import com.bezirk.spheremanager.R;
 
 import java.util.ArrayList;
@@ -104,11 +104,11 @@ public class DialogAddSphereFragment extends DialogFragment {
 
         // sphere type list data
         // Don't add the default sphere here. default sphere is added by stack itself
-        sphereTypeList.add(new SphereTypeModel(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME, R.drawable.ic_home_sphere));
-        sphereTypeList.add(new SphereTypeModel(BezirkSphereType.BEZIRK_SPHERE_TYPE_CAR, R.drawable.ic_car_sphere));
-        sphereTypeList.add(new SphereTypeModel(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME_ENTERTAINMENT, R.drawable.ic_home_entertainment_sphere));
-        sphereTypeList.add(new SphereTypeModel(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME_CONTROL, R.drawable.ic_home_control_sphere));
-        sphereTypeList.add(new SphereTypeModel(BezirkSphereType.BEZIRK_SPHERE_TYPE_HOME_SECURITY, R.drawable.ic_home_security_sphere));
+        sphereTypeList.add(new SphereTypeModel(SphereType.BEZIRK_SPHERE_TYPE_HOME, R.drawable.ic_home_sphere));
+        sphereTypeList.add(new SphereTypeModel(SphereType.BEZIRK_SPHERE_TYPE_CAR, R.drawable.ic_car_sphere));
+        sphereTypeList.add(new SphereTypeModel(SphereType.BEZIRK_SPHERE_TYPE_HOME_ENTERTAINMENT, R.drawable.ic_home_entertainment_sphere));
+        sphereTypeList.add(new SphereTypeModel(SphereType.BEZIRK_SPHERE_TYPE_HOME_CONTROL, R.drawable.ic_home_control_sphere));
+        sphereTypeList.add(new SphereTypeModel(SphereType.BEZIRK_SPHERE_TYPE_HOME_SECURITY, R.drawable.ic_home_security_sphere));
 
         // create sphere type list spinner
 

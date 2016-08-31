@@ -4,6 +4,7 @@ import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.datastorage.SpherePersistence;
 import com.bezirk.middleware.core.datastorage.SphereRegistry;
 import com.bezirk.middleware.core.device.Device;
+import com.bezirk.middleware.core.sphere.security.CryptoEngine;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.objects.BezirkZirkInfo;
@@ -34,11 +35,11 @@ public class SphereServiceManager
 
     private static final Logger logger = LoggerFactory.getLogger(SphereServiceManager.class);
 
-    private final com.bezirk.middleware.core.sphere.security.CryptoEngine cryptoEngine;
-    private final Device device;
-    private SphereRegistry registry;
-    private final NetworkManager networkManager;
-    private final SphereCtrlMsgReceiver ctrlMsgReceiver;
+    private CryptoEngine cryptoEngine = null;
+    private  Device device = null;
+    private SphereRegistry registry = null;
+    private  NetworkManager networkManager = null;
+    private  SphereCtrlMsgReceiver ctrlMsgReceiver = null;
 
     private SphereListener sphereListener;
     private SphereConfig sphereConfig = null;
@@ -59,6 +60,9 @@ public class SphereServiceManager
         this.registry = sphereRegistry;
         this.networkManager = networkManager;
         this.ctrlMsgReceiver = new SphereCtrlMsgReceiver(this);
+    }
+    public SphereServiceManager(){
+
     }
 
     /* Initialize bezirk sphere */
@@ -87,7 +91,9 @@ public class SphereServiceManager
             return false;
         }
 
+
         this.sphereRegistryWrapper = new SphereRegistryWrapper(this.registry, spherePersistence, device, cryptoEngine, sphereListener, sphereConfig);
+
         this.sphereRegistryWrapper.init();
         CommsUtility comms = new CommsUtility(bezirkComms);
         shareProcessor = new ShareProcessor(cryptoEngine, device, comms,
@@ -164,11 +170,20 @@ public class SphereServiceManager
 
     @Override
     public Iterable<BezirkSphereInfo> getSpheres() {
-        return sphereRegistryWrapper.getSpheres();
+        if(null!=sphereRegistryWrapper) {
+            logger.debug("sphereRegistryWrapper is not null");
+            return sphereRegistryWrapper.getSpheres();
+        }
+        else{
+            logger.debug("sphereRegistryWrapper is null");
+            return null;
+        }
+
     }
 
     @Override
     public BezirkSphereInfo getSphere(String sphereId) {
+        logger.debug("sphere id "+sphereId);
         return sphereRegistryWrapper.getSphereInfo(sphereId);
     }
 

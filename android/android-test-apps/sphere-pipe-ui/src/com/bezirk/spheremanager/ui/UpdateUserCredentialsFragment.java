@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.bezirk.spheremanager.R;
 import com.bezirk.spheremanager.ui.SphereListFragment.Callbacks;
-import com.bezirk.starter.MainService;
 
 import java.util.ArrayList;
 

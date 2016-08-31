@@ -73,9 +73,9 @@ public class CommsMessageDispatcher implements MessageDispatcher {
 
         if(msgLog != null)
         {
-            if(msgLog.isEnabled())
+            if(msgLog.isRemoteLoggingEnabled())
             {
-                msgLog.sendRemoteLogMessage(ctrlMsg);
+                msgLog.sendRemoteLogToServer(ctrlMsg);
             }
         }
 
@@ -97,43 +97,6 @@ public class CommsMessageDispatcher implements MessageDispatcher {
         return true;
     }
 
-    /**
-     * dispatch the control message
-     */
-    @Override
-    public boolean dispatchControlMessages(ControlLedger tcMessage) {
-        //FIXME : setIsMessageFromHost is never called. validate and remove the below
-        if (tcMessage.getIsMessageFromHost()) { //If the msg is local : set serialized msg
-            tcMessage.setSerializedMessage(tcMessage.getMessage().serialize());
-        }
-        ControlMessage msg = tcMessage.getMessage();
-        logger.debug("Message decrypted with Discriminator : " + msg.getDiscriminator());
-
-        if(msgLog != null)
-        {
-            if(msgLog.isEnabled()) {
-                msgLog.sendRemoteLogMessage(tcMessage);
-            }
-        }
-
-        ControlMessage.Discriminator id = msg.getDiscriminator();
-
-        //get the registered receiver
-        CtrlMsgReceiver ctrlReceiver = ctrlReceivers.get(id);
-
-        if (ValidatorUtility.isObjectNotNull(ctrlReceiver)) {
-            // invoke the listener
-            if (!ctrlReceiver.processControlMessage(id, tcMessage.getSerializedMessage())) {
-                logger.debug("Receiver not processing id > " + id);
-            }
-
-        } else {
-
-            logger.error("New Message / not registered ? No receiver to process id > " + id);
-        }
-
-        return true;
-    }
 
 
 

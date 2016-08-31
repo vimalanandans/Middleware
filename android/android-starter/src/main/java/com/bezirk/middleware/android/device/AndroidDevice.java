@@ -1,16 +1,17 @@
 package com.bezirk.middleware.android.device;
 
+import android.os.Build;
+
 import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.addressing.Location;
 
 import java.util.UUID;
 
-import android.os.Build;
-
 public class AndroidDevice extends Device {
 
     public AndroidDevice() {
         super(defaultDeviceId(), defaultDeviceName(), defaultDeviceType(), defaultDeviceLocation());
+
     }
 
     public AndroidDevice(String deviceId, String deviceName, DeviceType deviceType, Location deviceLocation) {

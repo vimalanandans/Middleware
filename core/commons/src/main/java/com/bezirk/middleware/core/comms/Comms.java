@@ -2,6 +2,7 @@ package com.bezirk.middleware.core.comms;
 
 import com.bezirk.middleware.core.actions.SendFileStreamAction;
 import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
+import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.EventLedger;
 import com.bezirk.middleware.core.control.messages.Ledger;
@@ -55,7 +56,9 @@ public interface Comms {
     /**
      * Send event ledger
      * */
-    boolean sendEventLedger(EventLedger ledger);
+    boolean sendEventLedger(EventLedger eventLedger);
+
+    boolean sendControlLedger(ControlLedger controlLedger);
 
     /**
      * Send event ledger
