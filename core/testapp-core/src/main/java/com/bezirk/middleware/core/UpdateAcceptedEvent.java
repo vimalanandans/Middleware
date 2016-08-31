@@ -16,6 +16,10 @@ public class UpdateAcceptedEvent extends IdentifiedEvent {
         return testField;
     }
 
+    public String getSender() {
+        return sender;
+    }
+
     @Override
     public String toString() {
         return "UpdateAcceptedEvent{" +

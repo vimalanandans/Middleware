@@ -6,6 +6,7 @@ import com.bezirk.middleware.core.actions.SendMulticastEventAction;
 import com.bezirk.middleware.core.actions.SetLocationAction;
 import com.bezirk.middleware.core.actions.SubscriptionAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
+import com.bezirk.middleware.core.proxy.Config;
 import com.bezirk.middleware.java.componentManager.ComponentManager;
 import com.bezirk.middleware.core.datastorage.ProxyPersistence;
 import com.bezirk.middleware.core.datastorage.ProxyRegistry;
@@ -25,6 +26,7 @@ import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.bezirk.middleware.java.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.middleware.java.proxy.messagehandler.ZirkMessageHandler;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,15 +47,18 @@ public class ProxyClient implements Bezirk {
     private static final BroadcastReceiver brForService = new ZirkMessageReceiver(
             eventMap, eventListenerMap, streamMap, streamListenerMap);
     private static final ZirkMessageHandler bezirkPcCallback = new ZirkMessageHandler(brForService);
-    private static  ComponentManager componentManager = null;
+    private static ComponentManager componentManager = null;
     private static ProxyServer proxy;
     private static ProxyPersistence proxyPersistence;
-    private static ProxyRegistry proxyRegistry = null;
+    private static ProxyRegistry proxyRegistry;
     private short streamFactory;
+    private static boolean started = false;
 
-    static void createMiddleware(String messageGroup) {
-        if(componentManager == null) {
-            componentManager = new ComponentManager(bezirkPcCallback, messageGroup);
+    private ZirkId zirkId;
+
+    static void start(@NotNull final Config config) {
+        if (componentManager == null) {
+            componentManager = new ComponentManager(bezirkPcCallback, config);
             componentManager.start();
             proxy = componentManager.getProxyServer();
             proxyPersistence = componentManager.getBezirkProxyPersistence();
@@ -63,14 +68,18 @@ public class ProxyClient implements Bezirk {
                 logger.error("Error loading ProxyRegistry", e);
                 System.exit(-1);
             }
+            started = true;
         }
-
     }
 
-    private ZirkId zirkId;
+    static void stop() {
+        if (started) {
+            componentManager.stop();
+        }
+    }
 
-    public ProxyClient(String messageGroup) {
-        createMiddleware(messageGroup);
+    static boolean isStarted() {
+        return started;
     }
 
     public boolean registerZirk(String zirkName) {
@@ -223,4 +232,5 @@ public class ProxyClient implements Bezirk {
     public IdentityManager getIdentityManager() {
         return proxy.getIdentityManager();
     }
+
 }

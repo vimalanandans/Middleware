@@ -10,7 +10,7 @@ import com.bezirk.middleware.core.HouseInfoEventSet;
 import com.bezirk.middleware.core.UpdateAcceptedEvent;
 
 public class Subscriber {
-    private static final String SUBSCRIBER_ID = "Java:Subscriber";
+    private static final String SUBSCRIBER_ID = Main.getHostName() + ":Java:Subscriber";
 
     public Subscriber() {
         final Bezirk bezirk = BezirkMiddleware.registerZirk(SUBSCRIBER_ID);

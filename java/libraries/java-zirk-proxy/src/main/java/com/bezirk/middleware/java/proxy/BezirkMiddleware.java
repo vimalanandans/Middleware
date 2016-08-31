@@ -8,33 +8,36 @@ import org.jetbrains.annotations.NotNull;
 public abstract class BezirkMiddleware {
 
     /**
-     * Start the bezirk service. This allows Zirk(s) to be registered with the bezirk service and allows them to communicate with other Zirk(s).
+     * Initializes and starts the bezirk service.
      * <p>
-     * Service is started using default configurations {@link Config} unless configurations are supplied explicitly using {@link #initialize(Config)}. Bezirk service runs as a background Android service unless explicitly stopped by the application using {@link #stop()} or by Android OS.
+     * Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}.
+     * {@link BezirkMiddleware} is started using default configurations {@link Config} unless configurations are supplied explicitly using {@link #initialize(Config)}.
      * </p>
      *
      * @see #initialize(Config)
      * @see #stop()
      */
-    public static synchronized void initialize() {
+    public static void initialize() {
         initialize(null);
     }
 
     /**
-     * Start the bezirk service. This allows Zirk(s) to be registered with the bezirk service and allows them to communicate with other Zirk(s).
+     * Initializes and starts the bezirk service.
      * <p>
-     * Service is started using the supplied <code>Config</code>. Bezirk service runs as a background Android service unless explicitly stopped by the application using {@link #stop()} or by Android OS.
+     * Service is started using the supplied <code>config</code>. Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}.
      * </p>
      *
      * @param config custom configurations to be used by bezirk service
      *               <ul>
-     *               <li>If <code>config</code> is <code>null</code>, a default configuration is used</li>
-     *               <li>If <code>config</code> is not <code>null</code>, Bezirk service is created for the current application, even if an existing bezirk service is running in the device.</li>
+     *               <li>If <code>null</code>, a default configuration is used</li>
+     *               <li>If not <code>null</code>, Bezirk service is created for the current application, even if an existing bezirk service(inside the Bezirk Application) is running in the device.</li>
      *               </ul>
      * @see #stop()
      */
-    public static synchronized void initialize(final Config config) {
-        //TODO
+    public static void initialize(final Config config) {
+        synchronized (BezirkMiddleware.class) {
+            ProxyClient.start((config == null) ? new Config() : config);
+        }
     }
 
     /**
@@ -49,8 +52,11 @@ public abstract class BezirkMiddleware {
      * a Zirk with the name <code>zirkName</code> is already registered.
      */
     public static Bezirk registerZirk(@NotNull String zirkName) {
+        if (!ProxyClient.isStarted()) {
+            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk service using BezirkMiddleware.start(Context)");
+        }
         synchronized (BezirkMiddleware.class) {
-            ProxyClient proxyClient = new ProxyClient(null);
+            ProxyClient proxyClient = new ProxyClient();
             return proxyClient.registerZirk(zirkName) ? proxyClient : null;
         }
     }
@@ -66,13 +72,11 @@ public abstract class BezirkMiddleware {
      * @param groupName group name to avoid message collision
      * @return an instance of the Bezirk API for the newly registered Zirk, or <code>null</code> if
      * a Zirk with the name <code>zirkName</code> is already registered.
+     * @deprecated groupName is passed using the configuration object, i.e. {@link Config}. Set the groupName using {@link Config#setGroupName(String)}. Then, initialize the <code>BezirkMiddleware</code> using {@link #initialize(Config)}.
      */
     @Deprecated
     public static Bezirk registerZirk(String zirkName, String groupName) {
-        synchronized (BezirkMiddleware.class) {
-            ProxyClient proxyClient = new ProxyClient(groupName);
-            return proxyClient.registerZirk(zirkName) ? proxyClient : null;
-        }
+        return registerZirk(zirkName);
     }
 
     /**
@@ -82,7 +86,7 @@ public abstract class BezirkMiddleware {
      * </p>
      */
     public static synchronized void stop() {
-        //TODO
+        ProxyClient.stop();
     }
 
 }

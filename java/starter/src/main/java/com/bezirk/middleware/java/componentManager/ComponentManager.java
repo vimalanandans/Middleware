@@ -1,5 +1,6 @@
 package com.bezirk.middleware.java.componentManager;
 
+import com.bezirk.middleware.core.proxy.Config;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
 import com.bezirk.middleware.core.remotelogging.RemoteLoggingManager;
 import com.bezirk.middleware.java.comms.ZyreCommsManager;
@@ -19,6 +20,7 @@ import com.bezirk.middleware.core.streaming.StreamManager;
 import com.bezirk.middleware.core.streaming.Streaming;
 import com.google.gson.Gson;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +44,8 @@ public class ComponentManager {
     private PubSubBroker pubSubBroker;
     private RegistryStorage registryStorage;
     private ProxyServer proxyServer;
-    private MessageHandler messageHandler;
+    private final MessageHandler messageHandler;
+    private final Config config;
     private Device device;
     private NetworkManager networkManager;
     private RemoteLog remoteLog;
@@ -52,12 +55,13 @@ public class ComponentManager {
     //download path
     private final static String downloadPath = "";
 
-    public ComponentManager(MessageHandler messageHandler, String messageGroupName) {
+    public ComponentManager(@NotNull final MessageHandler messageHandler, @NotNull final Config config) {
         this.messageHandler = messageHandler;
-        create(messageGroupName);
+        this.config = config;
+        create();
     }
 
-    public void create(String messageGroupName) {
+    public void create() {
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         lifecycleManager = new com.bezirk.middleware.core.componentManager.LifecycleManager();
 
@@ -80,12 +84,12 @@ public class ComponentManager {
         device = new JavaDevice();
 
         //initialize comms for communicating between devices over the wifi-network using zyre.
-        comms = new ZyreCommsManager(networkManager, messageGroupName, null,null );
+        comms = new ZyreCommsManager(networkManager, config.getGroupName(), null, null);
         // to test the Jmq comms
         //comms = new JmqCommsManager(networkManager, messageGroupName, null,null );
 
         //streaming manager
-        Streaming streaming  = new StreamManager(comms, /*downloadPath,*/ networkManager);
+        Streaming streaming = new StreamManager(comms, /*downloadPath,*/ networkManager);
 
         //initialize remoteLogging for logging the messages
         remoteLog = new RemoteLoggingManager(comms, networkManager, null);
@@ -95,7 +99,7 @@ public class ComponentManager {
         }
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null,streaming, remoteLog);
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null, streaming, remoteLog);
 
         //initialize the identity manager
         final Preferences preferences = Preferences.userNodeForPackage(BezirkIdentityManager.class);

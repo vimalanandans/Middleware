@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.widget.TextView;
+
 import com.bezirk.middleware.android.testApp.R;
 
 import com.bezirk.middleware.Bezirk;
@@ -14,6 +16,7 @@ import com.bezirk.middleware.core.HouseInfoEventSet;
 import com.bezirk.middleware.core.UpdateAcceptedEvent;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
+import com.jaredrummler.android.device.DeviceName;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,8 +27,9 @@ public class AutoTestActivity extends AppCompatActivity {
     private TextView subscriberTextView;
     private TextView resultTextView;
 
-    private static final String PUBLISHER_ID = "Android:AutoTest:Publisher";
-    private static final String SUBSCRIBER_ID = "Android:AutoTest:Subscriber";
+    private static final String deviceName = DeviceName.getDeviceName();
+    private static final String PUBLISHER_ID = deviceName + ":AutoTest:Publisher";
+    private static final String SUBSCRIBER_ID = deviceName + ":AutoTest:Subscriber";
     private static final String RESULT_MESSAGE = "Test finished successfully";
 
 
@@ -82,9 +86,11 @@ public class AutoTestActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
-                    publisherTextView.append(acceptedEventUpdate.toString() + "\n");
-                    if (++noOfResponsesReceived == noOfMessageRounds) {
-                        resultTextView.append(RESULT_MESSAGE);
+                    if (acceptedEventUpdate.getSender().equalsIgnoreCase(SUBSCRIBER_ID)) {
+                        publisherTextView.append(acceptedEventUpdate.toString() + "\n");
+                        if (++noOfResponsesReceived == noOfMessageRounds) {
+                            resultTextView.append(RESULT_MESSAGE);
+                        }
                     }
                 }
             }

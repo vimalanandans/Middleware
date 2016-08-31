@@ -16,6 +16,7 @@ import com.bezirk.middleware.core.UpdateAcceptedEvent;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.android.testApp.R;
+import com.jaredrummler.android.device.DeviceName;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,8 +24,9 @@ import java.util.TimerTask;
 public class AdvancedTestActivity extends AppCompatActivity {
 
     private static final String LAUNCH_MESSAGE = "For Testing inter-app communication/inter-platform communication.\nLaunch Publisher/Subscriber Zirk.\nIf bezirk is installed in the device, the instance is reused.\nElse, local bezirk service is created.";
-    private static final String PUBLISHER_ID = "Android:AdvancedTest:Publisher";
-    private static final String SUBSCRIBER_ID = "Android:AdvancedTest:Subscriber";
+    private static final String deviceName = DeviceName.getDeviceName();
+    private static final String PUBLISHER_ID = deviceName + ":AdvTest:Publisher";
+    private static final String SUBSCRIBER_ID = deviceName + ":AdvTest:Subscriber";
     private TextView zirkLauncherTextView;
     private TextView messagesTextView;
     private Button publisherButton;
@@ -109,7 +111,7 @@ public class AdvancedTestActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof AirQualityUpdateEvent) {
                     AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
-                    messagesTextView.append(aqUpdate.toString()+"\n");
+                    messagesTextView.append(aqUpdate.toString() + "\n");
                     bezirk.sendEvent(sender, new UpdateAcceptedEvent(SUBSCRIBER_ID, "pollen level:" + aqUpdate.pollenLevel));
                 }
             }
@@ -126,7 +128,7 @@ public class AdvancedTestActivity extends AppCompatActivity {
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
-                    messagesTextView.append(acceptedEventUpdate.toString()+"\n");
+                    messagesTextView.append(acceptedEventUpdate.toString() + "\n");
                 }
             }
         });
