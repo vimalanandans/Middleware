@@ -18,11 +18,10 @@ public class JmqCommsManager extends CommsProcessor implements MessageReceiver {
     private Jp2p comms;
 
     /**
-     *
      * @param networkManager - Network manager to get TCP/IP related device configurations
-     * @param groupName - Name to channel your application
+     * @param groupName      - Name to channel your application
      */
-    public JmqCommsManager(NetworkManager networkManager, String groupName, com.bezirk.middleware.core.comms.CommsNotification commsNotification, Streaming streaming) {
+    public JmqCommsManager(NetworkManager networkManager, String groupName, CommsNotification commsNotification, Streaming streaming) {
         super(networkManager, commsNotification, streaming);
         if (comms == null) {
             comms = new Jp2p(this);
@@ -39,7 +38,7 @@ public class JmqCommsManager extends CommsProcessor implements MessageReceiver {
      */
     @Override
     public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent) {
-        return comms != null && comms.whisper(nodeId,msg);
+        return comms != null && comms.whisper(nodeId, msg);
     }
 
     //TODO: manage lifecycle of comms based on bezirk-lifecycle events appropriately
@@ -85,13 +84,12 @@ public class JmqCommsManager extends CommsProcessor implements MessageReceiver {
     public boolean processIncomingMessage(String nodeId, byte[] data) {
 
         //logger.info(" Data in >> "+nodeId + " >> "+ new String (data));
-        processWireMessage(nodeId, new String (data));
+        processWireMessage(nodeId, new String(data));
         return true;
     }
 
     @Override
-    public String getNodeId()
-    {
+    public String getNodeId() {
         return comms.getNodeId().toString();
     }
 }

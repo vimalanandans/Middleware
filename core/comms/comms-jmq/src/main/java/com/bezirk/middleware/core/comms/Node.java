@@ -1,29 +1,19 @@
 package com.bezirk.middleware.core.comms;
 
 import java.net.InetAddress;
-import java.util.Random;
 import java.util.UUID;
 
-/**
- * representation of the current Node
- */
 public class Node {
-    UUID uuid;
-    InetAddress sender;
-    int port;
+    private UUID uuid;
+    private InetAddress sender;
+    private int port;
 
-    public InetAddress getSender() {
-        return sender;
-    }
-
-    public Node(int port)
-    {
-        uuid = UUID.randomUUID();
+    public Node(final int port) {
+        this.uuid = UUID.randomUUID();
         this.port = port;
-
     }
-    public Node(UUID uuid, InetAddress sender, int port)
-    {
+
+    public Node(final UUID uuid, final InetAddress sender, final int port) {
         this.uuid = uuid;
         this.port = port;
         this.sender = sender;
@@ -33,15 +23,12 @@ public class Node {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-
     public int getPort() {
         return port;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public InetAddress getSender() {
+        return sender;
     }
 }
+

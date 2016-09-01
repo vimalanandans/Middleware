@@ -5,21 +5,17 @@ import java.util.UUID;
 /**
  * Jp2p Peer-2-Peer communication layer using jeromq. inspired from zyre, but tailored implementation
  */
-public class Jp2p  {
+public class Jp2p {
 
-    private com.bezirk.middleware.core.comms.Node selfNode;
-    private Peers peers ;
-    private com.bezirk.middleware.core.comms.NodeDiscovery nodeDiscovery;
-    private Receiver receiver;
+    private final Node selfNode;
+    private final Peers peers;
+    private final NodeDiscovery nodeDiscovery;
+    private final Receiver receiver;
+    private final MessageReceiver msgReceiver;
 
-    private MessageReceiver msgReceiver = null;
-
-
-    public Jp2p(MessageReceiver msgReceiver)
-    {
+    public Jp2p(final MessageReceiver msgReceiver) {
         this.msgReceiver = msgReceiver;
-
-        receiver = new Receiver(this);
+        this.receiver = new Receiver(this);
 
         Thread thread = new Thread(receiver);
         thread.start();
@@ -30,59 +26,53 @@ public class Jp2p  {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        selfNode = new com.bezirk.middleware.core.comms.Node(receiver.getPort());
+        selfNode = new Node(receiver.getPort());
 
 
         peers = new Peers(selfNode);
 
-        nodeDiscovery = new com.bezirk.middleware.core.comms.NodeDiscovery(selfNode, peers);
+        nodeDiscovery = new NodeDiscovery(selfNode, peers);
 
     }
 
 
+    public boolean processIncomingMessage(String nodeId, byte[] data) {
 
-    public boolean processIncomingMessage(String nodeId, byte[] data){
-
-        if(receiver != null) {
+        if (receiver != null) {
             //System.out.println("Received : "+nodeId + " data > " + data);
             msgReceiver.processIncomingMessage(nodeId, data);
         }
         return true;
     }
 
-    public boolean init()
-    {
+    public boolean init() {
         return true;
     }
 
-    public boolean stop()
-    {
-        return true;
-    }
-    public boolean close()
-    {
+    public boolean stop() {
         return true;
     }
 
-    public boolean shout(byte[] data)
-    {
+    public boolean close() {
+        return true;
+    }
+
+    public boolean shout(byte[] data) {
         return peers.shout(data);
     }
 
-    public boolean whisper(String recipient, byte[] data)
-    {
+    public boolean whisper(String recipient, byte[] data) {
         return peers.whisper(recipient, data);
     }
 
 
-    public UUID getNodeId()
-    {
+    public UUID getNodeId() {
         return selfNode.getUuid();
     }
 
-    public boolean start()
-    {return true;}
-
+    public boolean start() {
+        return true;
+    }
 
 
 }

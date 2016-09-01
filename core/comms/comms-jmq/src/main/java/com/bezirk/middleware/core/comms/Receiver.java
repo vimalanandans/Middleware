@@ -8,20 +8,21 @@ import org.zeromq.ZMsg;
 /**
  * Receiver to get all incoming data
  */
-public class Receiver implements Runnable{
+public class Receiver implements Runnable {
 
-    private Jp2p jp2p;
-    int port;
-    ZContext ctx = new ZContext();
-
+    private final Jp2p jp2p;
+    private final ZContext ctx;
     //  Frontend socket talks to clients over TCP
-    ZMQ.Socket frontend = ctx.createSocket(ZMQ.ROUTER);
-
+    private final ZMQ.Socket frontend;
     //  Backend socket talks to workers over inproc
-    ZMQ.Socket backend = ctx.createSocket(ZMQ.DEALER);
+    private final ZMQ.Socket backend;
+    private int port;
 
     public Receiver(Jp2p jp2p) {
         this.jp2p = jp2p;
+        this.ctx = new ZContext();
+        this.frontend = ctx.createSocket(ZMQ.ROUTER);
+        this.backend = ctx.createSocket(ZMQ.DEALER);
     }
 
     public int getPort() {
@@ -52,34 +53,28 @@ public class Receiver implements Runnable{
         ctx.destroy();
     }
 
-
-
-
-
-    //Each worker task works on one request at a time and sends a random number
-    //of replies back, with random delays between replies:
+    /*Each worker task works on one request at a time and sends a random number
+    of replies back, with random delays between replies*/
 
     private class ReceiverWorker implements Runnable {
-        private ZContext ctx;
+        private final ZContext ctx;
 
-        public ReceiverWorker(ZContext ctx) {
+        public ReceiverWorker(final ZContext ctx) {
             this.ctx = ctx;
         }
 
         public void run() {
             ZMQ.Socket worker = ctx.createSocket(ZMQ.DEALER);
-
             worker.connect("inproc://backend");
 
             while (!Thread.currentThread().isInterrupted()) {
-                //  The DEALER socket gives us the address envelope and message
+                //The DEALER socket gives us the address envelope and message
                 ZMsg msg = ZMsg.recvMsg(worker);
 
                 ZFrame address = msg.pop();
                 ZFrame content = msg.pop();
 
                 jp2p.processIncomingMessage(new String(address.getData()), content.getData());
-
             }
             ctx.destroy();
         }
