@@ -27,10 +27,7 @@ public class Jp2p {
             e.printStackTrace();
         }
         selfNode = new Node(receiver.getPort());
-
-
         peers = new Peers(selfNode);
-
         nodeDiscovery = new NodeDiscovery(selfNode, peers);
 
     }

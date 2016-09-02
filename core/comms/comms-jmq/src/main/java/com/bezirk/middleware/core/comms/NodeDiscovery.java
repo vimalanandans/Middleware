@@ -16,13 +16,13 @@ public class NodeDiscovery {
     private final Node node;
     private final Peers peers;
 
-    public NodeDiscovery(Node node, Peers peers) {
+    public NodeDiscovery(final Node node, final Peers peers) {
         this.node = node;
         this.peers = peers;
         start();
     }
 
-    private void processBeacon(InetAddress sender, byte[] beacon) {
+    private void processBeacon(final InetAddress sender, final byte[] beacon) {
         String beaconString = new String(beacon);
         String[] data = beaconString.split(SEPERATOR);
 

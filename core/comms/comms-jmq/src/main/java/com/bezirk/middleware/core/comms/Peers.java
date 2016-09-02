@@ -5,61 +5,54 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * peer selfNode list
- */
 public class Peers {
 
-    Node selfNode;
-
-    Map<UUID, com.bezirk.middleware.core.comms.Peer> peersMap = new ConcurrentHashMap <UUID, com.bezirk.middleware.core.comms.Peer> ();
+    private final Node selfNode;
+    private final Map<UUID, Peer> peersMap;
     // TODO : Avoid concurrentHashMap, impacts performance
     // used by the beacon and sender
 
-    public Peers(Node selfNode)
-    {
+    public Peers(final Node selfNode) {
         this.selfNode = selfNode;
+        this.peersMap = new ConcurrentHashMap<>();
     }
-    /** on beagans heartbeat */
-    public void validatePeer(UUID uuid, InetAddress sender, int port)
-    {
-        if(peersMap.containsKey(uuid)) {
+
+    public void validatePeer(UUID uuid, InetAddress sender, int port) {
+        //System.out.println("Peer found " + uuid);
+        if (peersMap.containsKey(uuid)) {
+            System.out.println("Peer exist in map " + uuid + " number of peers " + peersMap.size());
             //valid peer.
             // TODO add other validations and cleanup
-        }
-        else{
+        } else {
             //new peer
             createNewPeer(uuid, sender, port);
         }
     }
 
-    public void createNewPeer(UUID uuid, InetAddress sender, int port){
-
-        com.bezirk.middleware.core.comms.Peer peer = new com.bezirk.middleware.core.comms.Peer(new Node(uuid, sender, port));
+    public void createNewPeer(UUID uuid, InetAddress sender, int port) {
+        Peer peer = new Peer(new Node(uuid, sender, port));
         peer.connect(selfNode);
-        peersMap.put(uuid, peer );
-
-
-        System.out.println("new peer >> "+uuid + " port " + port + " added ");
+        peersMap.put(uuid, peer);
+        System.out.println("Peer with " + uuid + " added with port " + port);
     }
 
-    /** send to all*/
-    public boolean shout(final byte[] data)
-    {
-        for (com.bezirk.middleware.core.comms.Peer peer : peersMap.values ()) {
+    /**
+     * send to all
+     */
+    public boolean shout(final byte[] data) {
+        for (Peer peer : peersMap.values()) {
             peer.send(data);
             //  System.out.println(" shout to "+peer.selfNode.getUuid()+" port > " +peer.selfNode.getPort());
         }
-
         return false;
     }
 
-    /** send to one*/
-    public  boolean whisper(String receiver, byte[] data)
-    {
+    /**
+     * send to one
+     */
+    public boolean whisper(String receiver, byte[] data) {
         UUID uuid = UUID.fromString(receiver);
-        if(peersMap.containsKey(uuid))
-        {
+        if (peersMap.containsKey(uuid)) {
             peersMap.get(uuid).send(data);
             return true;
         }
