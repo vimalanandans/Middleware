@@ -20,7 +20,7 @@ public class Peers {
     public void validatePeer(UUID uuid, InetAddress sender, int port) {
         //System.out.println("Peer found " + uuid);
         if (peersMap.containsKey(uuid)) {
-            System.out.println("Peer exist in map " + uuid + " number of peers " + peersMap.size());
+            //System.out.println("Peer exist in map " + uuid + " number of peers " + peersMap.size());
             //valid peer.
             // TODO add other validations and cleanup
         } else {
@@ -33,7 +33,7 @@ public class Peers {
         Peer peer = new Peer(new Node(uuid, sender, port));
         peer.connect(selfNode);
         peersMap.put(uuid, peer);
-        System.out.println("Peer with " + uuid + " added with port " + port);
+        System.out.println("Current Node id " + selfNode.getUuid().toString() + "::Peer with " + uuid + " added with port " + port);
     }
 
     /**

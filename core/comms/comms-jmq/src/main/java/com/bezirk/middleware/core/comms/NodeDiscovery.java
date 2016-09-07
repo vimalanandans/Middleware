@@ -33,6 +33,7 @@ public class NodeDiscovery {
             UUID uuid = new UUID(msb, lsb);
             int port = Integer.parseInt(data[3]);
             peers.validatePeer(uuid, sender, port);
+
         }
     }
 
@@ -47,7 +48,9 @@ public class NodeDiscovery {
             public void onBeacon(InetAddress sender, byte[] beacon) {
                 // ignore self id
                 if (!Arrays.equals(beacon, beaconData.getBytes())) {
-                    processBeacon(sender, beacon);
+                    //synchronized (this) {
+                        processBeacon(sender, beacon);
+                    //}
                 }
             }
         });

@@ -13,7 +13,7 @@ import java.util.Observable;
 /**
  * Bezirk Communication manager for android zyre - jni
  */
-public class JmqCommsManager extends CommsProcessor implements MessageReceiver {
+public class JmqCommsManager extends CommsProcessor implements OnMessageReceivedListener {
     private static final Logger logger = LoggerFactory.getLogger(JmqCommsManager.class);
     private Jp2p comms;
 
@@ -47,43 +47,25 @@ public class JmqCommsManager extends CommsProcessor implements MessageReceiver {
         LifecycleManager lifecycleManager = (LifecycleManager) observable;
         switch (lifecycleManager.getState()) {
             case STARTED:
-                logger.debug("Starting comms");
                 if (comms != null) {
-                    comms.init();
-
+                    logger.debug("Starting comms");
                     comms.start();
                     super.startComms();
                 }
                 break;
-//            case RESTARTED:
-//                if (comms != null && comms.getZyre() != null) {
-//                    comms.stopZyre();
-//                }
-//                comms = new ZyreCommsJni(this);
-//                comms.initZyre(delayedInit);
-//                comms.startZyre();
-//                break;
             case STOPPED:
-                logger.debug("Stopping comms");
                 if (comms != null) {
+                    logger.debug("Stopping comms");
                     comms.stop();
-                    comms.close();
+                    super.stopComms();
                 }
-                super.stopComms();
-//            case DESTROYED:
-//                logger.debug("Destroying comms");
-//                if (comms != null) {
-//                    comms.closeComms();
-//                }
-//                break;
 
         }
     }
 
     @Override
     public boolean processIncomingMessage(String nodeId, byte[] data) {
-
-        //logger.info(" Data in >> "+nodeId + " >> "+ new String (data));
+        logger.debug("Msg from node " + nodeId + ", msg " + new String(data));
         processWireMessage(nodeId, new String(data));
         return true;
     }

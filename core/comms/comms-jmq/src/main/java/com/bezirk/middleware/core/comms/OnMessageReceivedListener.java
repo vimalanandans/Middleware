@@ -1,8 +1,5 @@
 package com.bezirk.middleware.core.comms;
 
-/**
- * Interface to return the incoming message
- */
-public interface MessageReceiver {
+public interface OnMessageReceivedListener {
     boolean processIncomingMessage(String nodeId, byte[] data);
 }
