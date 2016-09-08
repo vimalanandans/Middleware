@@ -1,5 +1,7 @@
 package com.bezirk.middleware.core.comms;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
 
@@ -7,6 +9,7 @@ import org.zeromq.ZMQ;
  * A single Peer Node and its relevant operations
  */
 public class Peer {
+    private static final Logger logger = LoggerFactory.getLogger(Peer.class);
     private final Node node;
     private ZMQ.Socket client;
 
@@ -25,7 +28,12 @@ public class Peer {
     }
 
     public void send(byte[] data) {
+        if (client == null) {
+            logger.debug("client socket not initialized, not sending message");
+            return;
+        }
         client.send(data);
+
     }
 
 }

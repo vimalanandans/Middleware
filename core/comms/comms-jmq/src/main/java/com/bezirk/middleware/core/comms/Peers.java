@@ -1,12 +1,18 @@
 package com.bezirk.middleware.core.comms;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.InetAddress;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Peers {
+import zmq.ZError;
 
+public class Peers {
+    private static final Logger logger = LoggerFactory.getLogger(Peers.class);
     private final Node selfNode;
     private final Map<UUID, Peer> peersMap;
     // TODO : Avoid concurrentHashMap, impacts performance
@@ -14,10 +20,10 @@ public class Peers {
 
     public Peers(final Node selfNode) {
         this.selfNode = selfNode;
-        this.peersMap = new ConcurrentHashMap<>();
+        this.peersMap = new HashMap<>();
     }
 
-    public void validatePeer(UUID uuid, InetAddress sender, int port) {
+    public synchronized void validatePeer(UUID uuid, InetAddress sender, int port) {
         //System.out.println("Peer found " + uuid);
         if (peersMap.containsKey(uuid)) {
             //System.out.println("Peer exist in map " + uuid + " number of peers " + peersMap.size());
@@ -31,9 +37,9 @@ public class Peers {
 
     public void createNewPeer(UUID uuid, InetAddress sender, int port) {
         Peer peer = new Peer(new Node(uuid, sender, port));
-        peer.connect(selfNode);
         peersMap.put(uuid, peer);
-        System.out.println("Current Node id " + selfNode.getUuid().toString() + "::Peer with " + uuid + " added with port " + port);
+        peer.connect(selfNode);
+        //System.out.println("Current Node id " + selfNode.getUuid().toString() + "::Peer with " + uuid + " added with port " + port);
     }
 
     /**
@@ -41,10 +47,14 @@ public class Peers {
      */
     public boolean shout(final byte[] data) {
         for (Peer peer : peersMap.values()) {
-            peer.send(data);
+            try {
+                peer.send(data);
+            } catch (ZError.IOException e) {
+                logger.error("ZError.IOException");
+            }
             //  System.out.println(" shout to "+peer.selfNode.getUuid()+" port > " +peer.selfNode.getPort());
         }
-        return false;
+        return true;
     }
 
     /**

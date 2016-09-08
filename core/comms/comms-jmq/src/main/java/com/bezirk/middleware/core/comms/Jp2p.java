@@ -47,7 +47,7 @@ public class Jp2p {
         logger.debug("Stopping Jp2p");
         nodeDiscovery.stop();
         zmqReceiver.stop();
-        logger.debug("stopped");
+        logger.debug("Stopped Jp2p");
         return true;
     }
 
@@ -60,7 +60,7 @@ public class Jp2p {
     }
 
     public UUID getNodeId() {
-        return selfNode.getUuid();
+        return (selfNode != null) ? selfNode.getUuid() : null;
     }
 
 }

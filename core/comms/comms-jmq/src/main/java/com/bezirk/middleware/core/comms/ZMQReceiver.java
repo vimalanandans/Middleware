@@ -35,7 +35,7 @@ public class ZMQReceiver implements Runnable {
 
         port = frontend.bindToRandomPort("tcp://*", 0xc000, 0xffff);
 
-        System.out.println("tcp port: " + port);
+        logger.debug("tcp port: " + port);
         if (port == 0) {
             logger.debug("Incoming port is null, unable to start receiver");
             ctx.destroy();
@@ -83,7 +83,6 @@ public class ZMQReceiver implements Runnable {
         }
 
         public void run() {
-            //System.out.println("Thread"+myNumber);
             ZMQ.Socket worker = ctx.createSocket(ZMQ.DEALER);
             worker.connect("inproc://backend");
 
@@ -93,13 +92,7 @@ public class ZMQReceiver implements Runnable {
 
                 ZFrame address = msg.pop();
                 ZFrame content = msg.pop();
-
-                //long startTime = System.currentTimeMillis();
-                //synchronized (jp2p) {
-                    jp2p.processIncomingMessage(new String(address.getData()), content.getData());
-                //}
-                //long endTime = System.currentTimeMillis();
-                //System.out.println("time taken " + (endTime - startTime));
+                jp2p.processIncomingMessage(new String(address.getData()), content.getData());
             }
             ctx.destroy();
         }

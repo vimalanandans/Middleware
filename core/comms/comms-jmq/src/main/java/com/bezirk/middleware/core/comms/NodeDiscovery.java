@@ -48,9 +48,9 @@ public class NodeDiscovery {
             public void onBeacon(InetAddress sender, byte[] beacon) {
                 // ignore self id
                 if (!Arrays.equals(beacon, beaconData.getBytes())) {
-                    //synchronized (this) {
-                        processBeacon(sender, beacon);
-                    //}
+
+                    processBeacon(sender, beacon);
+
                 }
             }
         });

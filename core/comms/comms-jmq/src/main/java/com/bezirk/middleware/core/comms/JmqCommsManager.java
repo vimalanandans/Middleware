@@ -58,6 +58,7 @@ public class JmqCommsManager extends CommsProcessor implements OnMessageReceived
                     logger.debug("Stopping comms");
                     comms.stop();
                     super.stopComms();
+                    comms = null;
                 }
 
         }
