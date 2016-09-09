@@ -13,16 +13,15 @@ import java.util.Observable;
 /**
  * Bezirk Communication manager for android zyre - jni
  */
-public class JmqCommsManager extends CommsProcessor implements MessageReceiver {
+public class JmqCommsManager extends CommsProcessor implements OnMessageReceivedListener {
     private static final Logger logger = LoggerFactory.getLogger(JmqCommsManager.class);
     private Jp2p comms;
 
     /**
-     *
      * @param networkManager - Network manager to get TCP/IP related device configurations
-     * @param groupName - Name to channel your application
+     * @param groupName      - Name to channel your application
      */
-    public JmqCommsManager(NetworkManager networkManager, String groupName, com.bezirk.middleware.core.comms.CommsNotification commsNotification, Streaming streaming) {
+    public JmqCommsManager(NetworkManager networkManager, String groupName, CommsNotification commsNotification, Streaming streaming) {
         super(networkManager, commsNotification, streaming);
         if (comms == null) {
             comms = new Jp2p(this);
@@ -39,7 +38,7 @@ public class JmqCommsManager extends CommsProcessor implements MessageReceiver {
      */
     @Override
     public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent) {
-        return comms != null && comms.whisper(nodeId,msg);
+        return comms != null && comms.whisper(nodeId, msg);
     }
 
     //TODO: manage lifecycle of comms based on bezirk-lifecycle events appropriately
@@ -48,51 +47,33 @@ public class JmqCommsManager extends CommsProcessor implements MessageReceiver {
         LifecycleManager lifecycleManager = (LifecycleManager) observable;
         switch (lifecycleManager.getState()) {
             case STARTED:
-                logger.debug("Starting comms");
                 if (comms != null) {
-                    comms.init();
-
+                    logger.debug("Starting comms");
                     comms.start();
                     super.startComms();
                 }
                 break;
-//            case RESTARTED:
-//                if (comms != null && comms.getZyre() != null) {
-//                    comms.stopZyre();
-//                }
-//                comms = new ZyreCommsJni(this);
-//                comms.initZyre(delayedInit);
-//                comms.startZyre();
-//                break;
             case STOPPED:
-                logger.debug("Stopping comms");
                 if (comms != null) {
+                    logger.debug("Stopping comms");
                     comms.stop();
-                    comms.close();
+                    super.stopComms();
+                    comms = null;
                 }
-                super.stopComms();
-//            case DESTROYED:
-//                logger.debug("Destroying comms");
-//                if (comms != null) {
-//                    comms.closeComms();
-//                }
-//                break;
 
         }
     }
 
     @Override
     public boolean processIncomingMessage(String nodeId, byte[] data) {
-
-        //logger.info(" Data in >> "+nodeId + " >> "+ new String (data));
-        processWireMessage(nodeId, new String (data));
+        logger.debug("Msg from node " + nodeId + ", msg " + new String(data));
+        processWireMessage(nodeId, new String(data));
         return true;
     }
 
     @Override
-    public String getNodeId()
-    {
-        return comms.getNodeId().toString();
+    public String getNodeId() {
+        return (comms != null) ? comms.getNodeId().toString() : null;
     }
 }
 

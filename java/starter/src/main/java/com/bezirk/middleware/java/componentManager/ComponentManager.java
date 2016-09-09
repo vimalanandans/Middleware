@@ -1,25 +1,23 @@
 package com.bezirk.middleware.java.componentManager;
 
-import com.bezirk.middleware.core.identity.IdentityProvisioner;
-import com.bezirk.middleware.core.proxy.Config;
-import com.bezirk.middleware.core.remotelogging.RemoteLog;
-import com.bezirk.middleware.core.remotelogging.RemoteLoggingManager;
-import com.bezirk.middleware.identity.IdentityManager;
-import com.bezirk.middleware.java.comms.ZyreCommsManager;
+import com.bezirk.middleware.core.comms.JmqCommsManager;
 import com.bezirk.middleware.core.datastorage.ProxyPersistence;
 import com.bezirk.middleware.core.datastorage.RegistryStorage;
 import com.bezirk.middleware.core.device.Device;
-import com.bezirk.middleware.java.device.JavaDevice;
 import com.bezirk.middleware.core.identity.BezirkIdentityManager;
-import com.bezirk.middleware.identity.Alias;
-import com.bezirk.middleware.java.networking.JavaNetworkManager;
 import com.bezirk.middleware.core.networking.NetworkManager;
-import com.bezirk.middleware.java.persistence.DatabaseConnectionForJava;
+import com.bezirk.middleware.core.proxy.Config;
 import com.bezirk.middleware.core.proxy.MessageHandler;
 import com.bezirk.middleware.core.proxy.ProxyServer;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
+import com.bezirk.middleware.core.remotelogging.RemoteLog;
+import com.bezirk.middleware.core.remotelogging.RemoteLoggingManager;
 import com.bezirk.middleware.core.streaming.StreamManager;
 import com.bezirk.middleware.core.streaming.Streaming;
+import com.bezirk.middleware.identity.Alias;
+import com.bezirk.middleware.java.device.JavaDevice;
+import com.bezirk.middleware.java.networking.JavaNetworkManager;
+import com.bezirk.middleware.java.persistence.DatabaseConnectionForJava;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,8 +39,8 @@ public class ComponentManager {
 
     private static final String ALIAS_KEY = "aliasName";
 
-    private ZyreCommsManager comms;
-    //private JmqCommsManager comms;
+    //private ZyreCommsManager comms;
+    private JmqCommsManager comms;
     private PubSubBroker pubSubBroker;
     private RegistryStorage registryStorage;
     private ProxyServer proxyServer;
@@ -87,9 +85,10 @@ public class ComponentManager {
         device = new JavaDevice();
 
         //initialize comms for communicating between devices over the wifi-network using zyre.
-        comms = new ZyreCommsManager(networkManager, config.getGroupName(), null, null);
-        // to test the Jmq comms
-        //comms = new JmqCommsManager(networkManager, messageGroupName, null,null );
+        //comms = new ZyreCommsManager(networkManager, config.getGroupName(), null, null);
+
+        // the Jmq comms
+        comms = new JmqCommsManager(networkManager, config.getGroupName(), null,null );
 
         //streaming manager
         Streaming streaming = new StreamManager(comms, /*downloadPath,*/ networkManager);

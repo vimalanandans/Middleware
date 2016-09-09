@@ -1,6 +1,8 @@
 package com.bezirk.middleware.android;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
@@ -27,6 +29,7 @@ public class AdvancedTestActivity extends AppCompatActivity {
     private static final String deviceName = DeviceName.getDeviceName();
     private static final String PUBLISHER_ID = deviceName + ":AdvTest:Publisher";
     private static final String SUBSCRIBER_ID = deviceName + ":AdvTest:Subscriber";
+    //private final int noOfMessageRounds = 1000; //Number of messages to be published [and get the response back for]
     private TextView zirkLauncherTextView;
     private TextView messagesTextView;
     private Button publisherButton;
@@ -38,6 +41,7 @@ public class AdvancedTestActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advanced_test);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -142,7 +146,6 @@ public class AdvancedTestActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-
                 AirQualityUpdateEvent airQualityUpdateEvent = new AirQualityUpdateEvent();
                 airQualityUpdateEvent.sender = PUBLISHER_ID;
                 airQualityUpdateEvent.pollenLevel = pollenLevel++;
@@ -162,4 +165,6 @@ public class AdvancedTestActivity extends AppCompatActivity {
         super.onDestroy();
         BezirkMiddleware.stop();
     }
+
+
 }

@@ -1,28 +1,25 @@
 package com.bezirk.middleware.core.comms;
 
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.UUID;
 
 /**
  * Jp2p Peer-2-Peer communication layer using jeromq. inspired from zyre, but tailored implementation
  */
-public class Jp2p  {
+public class Jp2p {
+    private static final Logger logger = LoggerFactory.getLogger(Jp2p.class);
+    private final Node selfNode;
+    private final Peers peers;
+    private final NodeDiscovery nodeDiscovery;
+    private final ZMQReceiver zmqReceiver;
+    private final OnMessageReceivedListener onMessageReceivedListener;
 
-    private com.bezirk.middleware.core.comms.Node selfNode;
-    private Peers peers ;
-    private com.bezirk.middleware.core.comms.NodeDiscovery nodeDiscovery;
-    private Receiver receiver;
-
-    private MessageReceiver msgReceiver = null;
-
-
-    public Jp2p(MessageReceiver msgReceiver)
-    {
-        this.msgReceiver = msgReceiver;
-
-        receiver = new Receiver(this);
-
-        Thread thread = new Thread(receiver);
-        thread.start();
+    public Jp2p(@NotNull final OnMessageReceivedListener onMessageReceivedListener) {
+        this.onMessageReceivedListener = onMessageReceivedListener;
+        this.zmqReceiver = new ZMQReceiver(this);
 
         // to make sure the port is ready and bind by that that time
         try {
@@ -30,59 +27,42 @@ public class Jp2p  {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        selfNode = new com.bezirk.middleware.core.comms.Node(receiver.getPort());
-
-
+        selfNode = new Node(zmqReceiver.getPort());
         peers = new Peers(selfNode);
-
-        nodeDiscovery = new com.bezirk.middleware.core.comms.NodeDiscovery(selfNode, peers);
-
+        nodeDiscovery = new NodeDiscovery(selfNode, peers);
     }
 
-
-
-    public boolean processIncomingMessage(String nodeId, byte[] data){
-
-        if(receiver != null) {
-            //System.out.println("Received : "+nodeId + " data > " + data);
-            msgReceiver.processIncomingMessage(nodeId, data);
-        }
+    public boolean processIncomingMessage(final String nodeId, final byte[] data) {
+        onMessageReceivedListener.processIncomingMessage(nodeId, data);
         return true;
     }
 
-    public boolean init()
-    {
+    public boolean start() {
+        peers.start();
+        new Thread(zmqReceiver).start();
+        nodeDiscovery.start();
         return true;
     }
 
-    public boolean stop()
-    {
-        return true;
-    }
-    public boolean close()
-    {
+    public boolean stop() {
+        logger.debug("Stopping Jp2p");
+        peers.stop();
+        nodeDiscovery.stop();
+        zmqReceiver.stop();
+        logger.debug("Stopped Jp2p");
         return true;
     }
 
-    public boolean shout(byte[] data)
-    {
+    public boolean shout(final byte[] data) {
         return peers.shout(data);
     }
 
-    public boolean whisper(String recipient, byte[] data)
-    {
+    public boolean whisper(final String recipient, final byte[] data) {
         return peers.whisper(recipient, data);
     }
 
-
-    public UUID getNodeId()
-    {
-        return selfNode.getUuid();
+    public UUID getNodeId() {
+        return (selfNode != null) ? selfNode.getUuid() : null;
     }
-
-    public boolean start()
-    {return true;}
-
-
 
 }

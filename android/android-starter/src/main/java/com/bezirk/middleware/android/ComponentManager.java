@@ -11,7 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
-import com.bezirk.middleware.android.comms.ZyreCommsManager;
+//import com.bezirk.middleware.android.comms.ZyreCommsManager;
 import com.bezirk.middleware.android.device.AndroidDevice;
 import com.bezirk.middleware.android.networking.AndroidNetworkManager;
 import com.bezirk.middleware.android.persistence.DatabaseConnectionForAndroid;
@@ -21,6 +21,7 @@ import com.bezirk.middleware.android.proxy.android.ZirkMessageHandler;
 import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.StartServiceAction;
 import com.bezirk.middleware.core.actions.StopServiceAction;
+import com.bezirk.middleware.core.comms.JmqCommsManager;
 import com.bezirk.middleware.core.componentManager.LifeCycleCallbacks;
 import com.bezirk.middleware.core.componentManager.LifecycleManager;
 import com.bezirk.middleware.core.datastorage.RegistryStorage;
@@ -48,8 +49,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private ActionProcessor actionProcessor;
     private BezirkIdentityManager identityManager;
     private AndroidProxyServer proxyServer;
-    private ZyreCommsManager comms;
-    //private JmqCommsManager comms;
+    //private ZyreCommsManager comms;
+    private JmqCommsManager comms;
     private AndroidNetworkManager networkManager;
     private RegistryStorage registryStorage;
     private MessageHandler messageHandler;
@@ -206,12 +207,12 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         device = new AndroidDevice();
 
         //initialize comms for communicating between devices over the wifi-network using zyre.
-        comms = new ZyreCommsManager(networkManager, null, null, null);
+        //comms = new ZyreCommsManager(networkManager, null, null, null);
         // testing the comms comms-jmq
-        //comms = new JmqCommsManager(networkManager, null,null, null);
+        comms = new JmqCommsManager(networkManager, null, null, null);
 
         //initialize remoteLogging for logging the messages
-       // remoteLog = new RemoteLoggingManager(comms, networkManager, null);
+        // remoteLog = new RemoteLoggingManager(comms, networkManager, null);
 
         initializeIdentityManager();
 
