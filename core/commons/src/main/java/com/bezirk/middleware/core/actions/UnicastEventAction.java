@@ -10,6 +10,7 @@ public class UnicastEventAction extends EventAction {
     private final ZirkEndPoint endpoint;
     private boolean isIdentified = false;
     private Alias alias;
+    private boolean isMiddlewareUser = false;
 
     public UnicastEventAction(BezirkAction action, ZirkId zirkId, ZirkEndPoint endpoint, Event event) {
         super(zirkId, event);
@@ -29,8 +30,16 @@ public class UnicastEventAction extends EventAction {
         this.isIdentified = isIdentified;
     }
 
+    public boolean isMiddlewareUser() {
+        return isMiddlewareUser;
+    }
+
+    public void setMiddlewareUser(boolean middlewareUser) {
+        isMiddlewareUser = middlewareUser;
+    }
+
     public UnicastEventAction(BezirkAction action, ZirkId zirkId, ZirkEndPoint endpoint,
-                             String serializedEvent, String messageId, String eventName) {
+                              String serializedEvent, String messageId, String eventName) {
         super(zirkId, serializedEvent, messageId, eventName);
 
         if (endpoint == null) {

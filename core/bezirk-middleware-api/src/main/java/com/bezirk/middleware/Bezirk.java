@@ -149,5 +149,6 @@ public interface Bezirk {
      *
      * @return the identity manager for this instance of the middleware
      */
+    @Deprecated
     IdentityManager getIdentityManager();
 }
