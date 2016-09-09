@@ -217,10 +217,4 @@ public final class ProxyClient implements Bezirk {
     public void setLocation(Location location) {
         intentSender.sendBezirkIntent(new SetLocationAction(zirkId, location));
     }
-
-    @Override
-    public IdentityManager getIdentityManager() {
-        return identityManager;
-    }
-
 }

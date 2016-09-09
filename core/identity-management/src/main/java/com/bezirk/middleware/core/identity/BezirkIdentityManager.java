@@ -18,24 +18,19 @@ public class BezirkIdentityManager implements com.bezirk.middleware.core.identit
 
     private static final String IDENTITY_HASH_ALGORITHM = "SHA-256";
     private static final String DEFAULT_USER_ID = "BezirkUser";
-
-    private Alias currentIdentity;
     private final Gson gson = new Gson();
+    private Alias currentIdentity;
 
-    public boolean createAndSetIdentity(String serializedAlias)
-    {
-        Alias alias;
+    public boolean createAndSetIdentity(String serializedAlias) {
+        final Alias alias;
 
-
-        if(serializedAlias == null)
-        {
+        if (serializedAlias == null) {
             alias = createIdentity(DEFAULT_USER_ID);
-        }else{
+        } else {
             alias = gson.fromJson(serializedAlias, Alias.class);
         }
 
-        if(alias != null)
-        {
+        if (alias != null) {
             setIdentity(alias);
             return true;
         }
@@ -44,9 +39,9 @@ public class BezirkIdentityManager implements com.bezirk.middleware.core.identit
 
     /**
      * Get the deserialized string
-     * */
+     */
     public String getAliasString() {
-        if(currentIdentity != null)
+        if (currentIdentity != null)
             return gson.toJson(currentIdentity);
         return null;
     }
