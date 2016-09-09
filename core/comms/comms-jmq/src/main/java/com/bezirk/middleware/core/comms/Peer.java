@@ -25,6 +25,7 @@ public class Peer {
         this.node = node;
     }
 
+
     public void connect(Node selfNode) {
         ZContext ctx = new ZContext();
         client = ctx.createSocket(ZMQ.DEALER);
@@ -40,15 +41,7 @@ public class Peer {
             logger.debug("client socket not initialized, not sending message");
             return;
         }
-
-        //fire and forget, use the future return value in case required
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return client.send(data);
-            }
-        });
+        client.send(data);
     }
 
 }

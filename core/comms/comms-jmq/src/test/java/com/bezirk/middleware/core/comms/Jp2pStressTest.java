@@ -13,7 +13,7 @@ import ch.qos.logback.classic.Level;
 
 public class Jp2pStressTest {
     private static final Logger logger = LoggerFactory.getLogger(Jp2pStressTest.class);
-    private static final int TEST_RUNTIME = 1000;
+    private static final int TEST_RUNTIME = 120000;
     private long testStartTime;
     private long testStopTime;
     private static int numberOfNodes;
@@ -22,7 +22,7 @@ public class Jp2pStressTest {
 
     static class TestJp2p implements Runnable {
         private static final Logger logger = LoggerFactory.getLogger(TestJp2p.class);
-        private static final int MAX_MESSAGES_TO_SHOUT = 20000; //max messages that can be shouted from a node
+        private static final int MAX_MESSAGES_TO_SHOUT = 20000000; //max messages that can be shouted from a node
         private static final int SLEEP_BETWEEN_EACH_MESSAGE = 2; //in milliseconds
         private static final String AT_NODE_TEXT = "At Node : ";
         private static final String FROM_NODE_TEXT = " From Node : ";
@@ -87,6 +87,10 @@ public class Jp2pStressTest {
 
     @org.junit.Test
     public void test() {
+
+//        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+//        System.out.println(threadSet.size());
+
         ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
         root.setLevel(Level.INFO); //change log level here
 
