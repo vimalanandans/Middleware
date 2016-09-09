@@ -73,6 +73,7 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
 
         if (incomingEvent.isIdentified()) {
             ((IdentifiedEvent) event).setAlias(incomingEvent.getAlias());
+            ((IdentifiedEvent) event).setMiddlewareUser(incomingEvent.isMiddlewareUser());
         }
 
         final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
