@@ -219,8 +219,9 @@ public final class ProxyClient implements Bezirk {
     }
 
     @Override
+    @Deprecated
     public IdentityManager getIdentityManager() {
-        return identityManager;
+        return null;
     }
 
 }
