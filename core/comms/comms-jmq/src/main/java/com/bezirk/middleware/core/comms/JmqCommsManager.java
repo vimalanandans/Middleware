@@ -73,7 +73,7 @@ public class JmqCommsManager extends CommsProcessor implements OnMessageReceived
 
     @Override
     public String getNodeId() {
-        return comms.getNodeId().toString();
+        return (comms != null) ? comms.getNodeId().toString() : null;
     }
 }
 

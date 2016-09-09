@@ -9,9 +9,14 @@ import org.zeromq.ZMsg;
 
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Receiver to get all incoming data
@@ -24,7 +29,7 @@ public class ZMQReceiver implements Runnable {
     private final ZMQ.Socket frontend;
     //  Backend socket talks to workers over inproc
     private final ZMQ.Socket backend;
-    private final int port;
+    private int port;
     private boolean stopped = false;
 
     public ZMQReceiver(Jp2p jp2p) {
@@ -33,7 +38,23 @@ public class ZMQReceiver implements Runnable {
         this.frontend = ctx.createSocket(ZMQ.ROUTER);
         this.backend = ctx.createSocket(ZMQ.DEALER);
 
-        port = frontend.bindToRandomPort("tcp://*", 0xc000, 0xffff);
+        //initialize port in a separate thread to prevent NetworkOnMainThread issue on android
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<Integer> future = executor.submit(new Callable<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                return frontend.bindToRandomPort("tcp://*", 0xc000, 0xffff);
+            }
+        });
+        try {
+            port = future.get(50, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
 
         logger.debug("tcp port: " + port);
         if (port == 0) {

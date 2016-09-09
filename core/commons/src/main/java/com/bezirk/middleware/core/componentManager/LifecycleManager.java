@@ -25,6 +25,7 @@ import java.util.Observable;
  *          switch (lifecycleManager.getState()) {
  *               case CREATED: //do something when application is created
  *               case STARTED: //do something when application is started
+ *               case STOPPED: //do something when application is stopped
  *               case DESTROYED: //do something when application is destroyed
  *           }
  *      }

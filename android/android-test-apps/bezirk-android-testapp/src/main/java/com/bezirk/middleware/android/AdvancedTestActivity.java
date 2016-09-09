@@ -42,11 +42,6 @@ public class AdvancedTestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //Temporary for testing jp2p solution
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        //Temporary for testing jp2p solution
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advanced_test);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

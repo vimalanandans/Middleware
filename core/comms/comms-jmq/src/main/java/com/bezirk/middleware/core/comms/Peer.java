@@ -5,6 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 /**
  * A single Peer Node and its relevant operations
  */
@@ -27,13 +35,20 @@ public class Peer {
         client.connect("tcp:/" + node.getSender() + ":" + node.getPort());
     }
 
-    public void send(byte[] data) {
+    public void send(final byte[] data) {
         if (client == null) {
             logger.debug("client socket not initialized, not sending message");
             return;
         }
-        client.send(data);
 
+        //fire and forget, use the future return value in case required
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return client.send(data);
+            }
+        });
     }
 
 }

@@ -32,7 +32,6 @@ public class AutoTestActivity extends AppCompatActivity {
     private static final String SUBSCRIBER_ID = deviceName + ":AutoTest:Subscriber";
     private static final String RESULT_MESSAGE = "Test finished successfully";
 
-
     private final int noOfMessageRounds = 10; //Number of messages to be published [and get the response back for]
 
     private int noOfResponsesReceived; //number of unicast responses received by the publisher
@@ -113,7 +112,7 @@ public class AutoTestActivity extends AppCompatActivity {
 
                 bezirk.sendEvent(airQualityUpdateEvent);
             }
-        }, 0, 300);
+        }, 0, 30);
     }
 
     @Override
