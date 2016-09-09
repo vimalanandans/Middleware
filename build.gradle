@@ -37,6 +37,7 @@
  * 3.0.0-alpha+018 removing unnecessary resources from android projects. Should fix duplicate ic_launcher issue when using bezirk aar in android.
  * 3.0.0-alpha+019 cleaning lintOptions in android projects. Should fix InvalidPackage lint issue for zirk developers using android aar.
  * 3.0.0-alpha+020 jp2p usage of comms for android. Used for party.
+ * 3.0.0-alpha+021 https://github.com/Bezirk-Bosch/Middleware/milestone/3
  */
 buildscript {
     repositories {
@@ -66,7 +67,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.bezirk'
-    version = "3.0.0-alpha+020"
+    version = "3.0.0-alpha+021"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
