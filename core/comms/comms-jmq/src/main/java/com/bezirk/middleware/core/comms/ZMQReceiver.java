@@ -48,6 +48,7 @@ public class ZMQReceiver implements Runnable {
         });
         try {
             port = future.get(50, TimeUnit.MILLISECONDS);
+            executor.shutdownNow();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
