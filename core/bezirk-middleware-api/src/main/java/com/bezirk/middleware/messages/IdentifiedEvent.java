@@ -40,10 +40,17 @@ public class IdentifiedEvent extends Event {
 
     private boolean isMiddlewareUser;
 
+    /**
+     * check is this identified message belon to this middleware
+     * */
     public boolean isMiddlewareUser() {
         return isMiddlewareUser;
     }
 
+    /**
+     * set by the middleware to inform zirk is this identified incoming message belong to this middleware
+     * Zirk setting
+     * */
     public void setMiddlewareUser(boolean middlewareUser) {
         isMiddlewareUser = middlewareUser;
     }
