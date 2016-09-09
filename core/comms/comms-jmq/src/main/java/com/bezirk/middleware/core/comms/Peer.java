@@ -41,7 +41,13 @@ public class Peer {
             logger.debug("client socket not initialized, not sending message");
             return;
         }
-        client.send(data);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                client.send(data);
+            }
+        }).start();
+
     }
 
 }

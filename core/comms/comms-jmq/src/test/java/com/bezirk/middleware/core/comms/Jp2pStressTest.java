@@ -13,7 +13,7 @@ import ch.qos.logback.classic.Level;
 
 public class Jp2pStressTest {
     private static final Logger logger = LoggerFactory.getLogger(Jp2pStressTest.class);
-    private static final int TEST_RUNTIME = 120000;
+    private static final int TEST_RUNTIME = 5000;
     private long testStartTime;
     private long testStopTime;
     private static int numberOfNodes;
@@ -57,6 +57,7 @@ public class Jp2pStressTest {
                     }
                 } catch (InterruptedException e) {
                     addResult(jp2p.getNodeId().toString(), peerInfoMap.entrySet());
+                    jp2p.stop();
                 }
             }
 
@@ -65,7 +66,11 @@ public class Jp2pStressTest {
         private class Listener implements OnMessageReceivedListener {
             @Override
             public synchronized boolean processIncomingMessage(String nodeId, byte[] data) {
-                currentMsgData = Integer.parseInt(new String(data));
+                try {
+                    currentMsgData = Integer.parseInt(new String(data));
+                } catch (NumberFormatException e) {
+                    logger.debug("Other messages being received");
+                }
                 logger.trace(atNodeText + FROM_NODE_TEXT + nodeId + DATA_RECEIVED_TEXT + currentMsgData);
                 if (!peerInfoMap.containsKey(nodeId)) {
                     peerInfoMap.put(nodeId, new PeerData(currentMsgData));

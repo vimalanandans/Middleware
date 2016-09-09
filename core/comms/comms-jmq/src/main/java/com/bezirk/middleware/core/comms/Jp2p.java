@@ -38,6 +38,7 @@ public class Jp2p {
     }
 
     public boolean start() {
+        peers.start();
         new Thread(zmqReceiver).start();
         nodeDiscovery.start();
         return true;
@@ -45,6 +46,7 @@ public class Jp2p {
 
     public boolean stop() {
         logger.debug("Stopping Jp2p");
+        peers.stop();
         nodeDiscovery.stop();
         zmqReceiver.stop();
         logger.debug("Stopped Jp2p");
