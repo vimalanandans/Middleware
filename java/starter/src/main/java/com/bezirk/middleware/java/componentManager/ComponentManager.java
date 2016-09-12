@@ -108,8 +108,6 @@ public class ComponentManager {
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
         pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms,  messageHandler, identityManager, null, null, streaming, remoteLog);
 
-        Application.launch(QRCodeGenerator.class, gson.toJson(identity));
-
         //initialize proxyServer responsible for managing incoming events from zirks
         proxyServer = new ProxyServer(identityManager);
 
@@ -140,7 +138,7 @@ public class ComponentManager {
             if (logger.isDebugEnabled()) logger.debug("Reusing identity {}", aliasString);
             identityManager.createAndSetIdentity(aliasString);
         }
-
+        Application.launch(QRCodeGenerator.class, new Gson().toJson(identityManager.getAlias()));
 
     }
 
