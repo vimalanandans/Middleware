@@ -14,6 +14,8 @@ import com.bezirk.middleware.core.control.messages.UnicastHeader;
 import com.bezirk.middleware.core.datastorage.PubSubBrokerStorage;
 import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.core.identity.IdentityProvisioner;
+import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.core.networking.NetworkManager;
 import com.bezirk.middleware.core.proxy.MessageHandler;
@@ -52,9 +54,10 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     private  RemoteLog remoteLog ;
     private  Streaming streamManger;
     private  MessageHandler msgHandler;
+    private IdentityManager identityManager;
 
 
-    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager, Comms comms, MessageHandler msgHandler,
+    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager, Comms comms, MessageHandler msgHandler, IdentityManager identityManager,
                         SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity, Streaming streamManger,RemoteLog remoteLogging) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
         this.device = device;
@@ -64,6 +67,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         this.comms = comms;
         // register event processor
         this.comms.registerEventMessageReceiver(this);
+        this.identityManager = identityManager;
         this.sphereServiceAccess = sphereServiceAccess;
         this.sphereSecurity = sphereSecurity;
         this.msgHandler = msgHandler;
@@ -427,6 +431,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
                 if (eLedger.getHeader().isIdentified()) {
                     eventMessage.setAlias(eLedger.getHeader().getAlias());
+
+                    if(identityManager.isMiddlewareUser(eLedger.getHeader().getAlias()))
+                        eventMessage.setMiddlewareUser(true);
                 }
 
                 msgHandler.onIncomingEvent(eventMessage);

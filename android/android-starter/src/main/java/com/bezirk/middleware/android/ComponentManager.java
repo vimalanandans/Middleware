@@ -11,12 +11,10 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
-//import com.bezirk.middleware.android.comms.ZyreCommsManager;
 import com.bezirk.middleware.android.device.AndroidDevice;
 import com.bezirk.middleware.android.networking.AndroidNetworkManager;
 import com.bezirk.middleware.android.persistence.DatabaseConnectionForAndroid;
 import com.bezirk.middleware.android.proxy.android.AndroidProxyServer;
-import com.bezirk.middleware.android.proxy.android.ServerIdentityManagerAdapter;
 import com.bezirk.middleware.android.proxy.android.ZirkMessageHandler;
 import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.StartServiceAction;
@@ -38,6 +36,8 @@ import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+//import com.bezirk.middleware.android.comms.ZyreCommsManager;
 
 public final class ComponentManager extends Service implements LifeCycleCallbacks {
     private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
@@ -102,7 +102,9 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     @NonNull
     @Override
     public IBinder onBind(Intent intent) {
-        return new ServerIdentityManagerAdapter(identityManager);
+
+        throw new UnsupportedOperationException("ibinder is not supperted");
+        //return null;
     }
 
     @Override
@@ -218,15 +220,19 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         //initialize remoteLogging for logging the messages
         // remoteLog = new RemoteLoggingManager(comms, networkManager, null);
 
+        initializeIdentityManager();
+
         //streaming manager
         Streaming streaming = new StreamManager(comms, networkManager);
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null, streaming, remoteLog);
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, identityManager, null, null, streaming, remoteLog);
 
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
         //pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null, streaming);
 
+
+        //TODO cleanup identity manager initialization
         //initialize the identity manager
         identityManager = new BezirkIdentityManager();
         final String aliasString = preferences.getString(ALIAS_KEY, null);
@@ -275,6 +281,29 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         //TODO add create implementations for modules
         lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
         currentState = LifecycleManager.LifecycleState.CREATED;
+    }
+
+    void initializeIdentityManager() {
+        //initialize the identity manager
+        identityManager = new BezirkIdentityManager();
+        final String aliasString = preferences.getString(ALIAS_KEY, null);
+        logger.debug("aliasString is " + aliasString);
+
+
+        if (aliasString == null) {
+            identityManager.createAndSetIdentity(aliasString);
+
+            logger.trace("Created new Bezirk identity");
+
+            SharedPreferences.Editor preferencesEditor = preferences.edit();
+            preferencesEditor.putString(ALIAS_KEY, identityManager.getAliasString());
+            preferencesEditor.commit();
+        } else {
+            logger.debug("Reusing identity" + aliasString);
+
+            identityManager.createAndSetIdentity(aliasString);
+        }
+
     }
 
 }

@@ -38,6 +38,25 @@ import com.bezirk.middleware.identity.Alias;
 public class IdentifiedEvent extends Event {
     private Alias alias;
 
+    private boolean isMiddlewareUser;
+
+    /**
+     * check is this identified message belon to this middleware
+     * */
+    public boolean isMiddlewareUser() {
+        return isMiddlewareUser;
+    }
+
+    /**
+     * set by the middleware to inform zirk is this identified incoming message belong to this middleware
+     * Zirk setting
+     * */
+    public void setMiddlewareUser(boolean middlewareUser) {
+        isMiddlewareUser = middlewareUser;
+    }
+
+
+
     /**
      * Return the alias for the middleware user this event is about.
      *

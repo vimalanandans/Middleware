@@ -51,6 +51,7 @@ public class ComponentManager {
     private Device device;
     private NetworkManager networkManager;
     private RemoteLog remoteLog;
+    private BezirkIdentityManager identityManager;
     private com.bezirk.middleware.core.componentManager.LifecycleManager lifecycleManager;
     private static final String DB_VERSION = "0.0.4";
     private static final String DB_FILE_LOCATION = ".";
@@ -101,27 +102,11 @@ public class ComponentManager {
             remoteLog.enableLogging(true, false, true, null);
         }
 
-        //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null, streaming, remoteLog);
-
         //initialize the identity manager
-        final Preferences preferences = Preferences.userNodeForPackage(BezirkIdentityManager.class);
-        final BezirkIdentityManager identityManager = new BezirkIdentityManager();
-        final String aliasString = preferences.get(ALIAS_KEY, null);
-        final Gson gson = new Gson();
-        final Alias identity;
+        initializeIdentityManager();
 
-        if (aliasString == null) {
-            identity = identityManager.createIdentity(System.getProperty("user.name"));
-            identityManager.setIdentity(identity);
-
-            preferences.put(ALIAS_KEY, gson.toJson(identity));
-        } else {
-            if (logger.isDebugEnabled()) logger.debug("Reusing identity {}", aliasString);
-            identity = gson.fromJson(aliasString, Alias.class);
-        }
-
-        identityManager.setIdentity(identity);
+        //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms,  messageHandler, identityManager, null, null, streaming, remoteLog);
 
         Application.launch(QRCodeGenerator.class, gson.toJson(identity));
 
@@ -136,6 +121,27 @@ public class ComponentManager {
 
         // this state is set only when the bezirk service is created the first time
         lifecycleManager.setState(com.bezirk.middleware.core.componentManager.LifecycleManager.LifecycleState.CREATED);
+    }
+
+    void initializeIdentityManager() {
+
+        final Preferences preferences = Preferences.userNodeForPackage(BezirkIdentityManager.class);
+        identityManager = new BezirkIdentityManager();
+        final String aliasString = preferences.get(ALIAS_KEY, null);
+
+
+        if (aliasString == null) {
+            final Alias identity;
+            identity = identityManager.createIdentity(System.getProperty("user.name"));
+            identityManager.setIdentity(identity);
+
+            preferences.put(ALIAS_KEY, identityManager.getAliasString());
+        } else {
+            if (logger.isDebugEnabled()) logger.debug("Reusing identity {}", aliasString);
+            identityManager.createAndSetIdentity(aliasString);
+        }
+
+
     }
 
     public void start() {

@@ -5,6 +5,7 @@ import com.bezirk.middleware.identity.Alias;
 import com.bezirk.middleware.identity.IdentityManager;
 import com.google.gson.Gson;
 
+@Deprecated
 public class ServerIdentityManagerAdapter extends RemoteIdentityManager.Stub {
     private static final Gson gson = new Gson();
 
