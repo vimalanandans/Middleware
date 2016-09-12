@@ -18,6 +18,7 @@ import com.bezirk.middleware.identity.Alias;
 import com.bezirk.middleware.java.device.JavaDevice;
 import com.bezirk.middleware.java.networking.JavaNetworkManager;
 import com.bezirk.middleware.java.persistence.DatabaseConnectionForJava;
+import com.bezirk.middleware.java.ui.QRCodeGenerator;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import java.util.prefs.Preferences;
 
 import ch.qos.logback.classic.Level;
+import javafx.application.Application;
 
 /**
  * This class manages Bezirk middleware component injection & lifecycle.
@@ -120,6 +122,8 @@ public class ComponentManager {
         }
 
         identityManager.setIdentity(identity);
+
+        Application.launch(QRCodeGenerator.class, gson.toJson(identity));
 
         //initialize proxyServer responsible for managing incoming events from zirks
         proxyServer = new ProxyServer(identityManager);

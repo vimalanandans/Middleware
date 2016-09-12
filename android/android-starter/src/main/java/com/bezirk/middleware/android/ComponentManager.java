@@ -60,6 +60,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private RemoteLog remoteLog = null;
     private static final String DB_VERSION = "0.0.4";
     private LifecycleManager.LifecycleState currentState;
+    private String identityString;
 
     int FOREGROUND_ID = 1336;
 //                    service.startForeground(FOREGROUND_ID,
@@ -109,7 +110,12 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         //start bezirk is called for the first time
         if (currentState == null) {
             //create bezirk
+            if (startServiceAction.getIdentity() != null) {
+                this.identityString = startServiceAction.getIdentity();
+                logger.debug("Received identityString in component manager: " + identityString);
+            }
             create();
+
         }
 
         Config config = startServiceAction.getConfig();
@@ -225,21 +231,32 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         identityManager = new BezirkIdentityManager();
         final String aliasString = preferences.getString(ALIAS_KEY, null);
         logger.debug("aliasString is " + aliasString);
+        logger.debug("identityString received is " + identityString);
         final Gson gson = new Gson();
         final Alias identity;
 
-        if (aliasString == null) {
-            identity = identityManager.createIdentity("BezirkUser");
-            identityManager.setIdentity(identity);
-
-            logger.trace("Created new Bezirk identity");
+        if (identityString != null) {
+            logger.debug("Using received identity" + identityString);
+            identity = gson.fromJson(aliasString, Alias.class);
+            logger.trace("Setting Bezirk identity in preferences");
 
             SharedPreferences.Editor preferencesEditor = preferences.edit();
             preferencesEditor.putString(ALIAS_KEY, gson.toJson(identity));
             preferencesEditor.commit();
         } else {
-            logger.debug("Reusing identity" + aliasString);
-            identity = gson.fromJson(aliasString, Alias.class);
+            if (aliasString == null) {
+                identity = identityManager.createIdentity("BezirkUser");
+                identityManager.setIdentity(identity);
+
+                logger.trace("Created new Bezirk identity");
+
+                SharedPreferences.Editor preferencesEditor = preferences.edit();
+                preferencesEditor.putString(ALIAS_KEY, gson.toJson(identity));
+                preferencesEditor.commit();
+            } else {
+                logger.debug("Reusing identity" + aliasString);
+                identity = gson.fromJson(aliasString, Alias.class);
+            }
         }
 
         identityManager.setIdentity(identity);

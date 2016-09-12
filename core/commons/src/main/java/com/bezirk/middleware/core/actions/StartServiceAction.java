@@ -5,20 +5,34 @@ import com.bezirk.middleware.core.proxy.Config;
 public class StartServiceAction extends ServiceAction {
 
     private final Config config;
+    private final String identity;
 
-    public StartServiceAction(Config config) {
+    public StartServiceAction(final Config config) {
         if (config == null) {
             throw new IllegalArgumentException("Configuration cannot be null");
         }
         this.config = config;
+        this.identity = null;
+    }
+
+    public StartServiceAction(final Config config, final String identity) {
+        if (config == null || identity == null) {
+            throw new IllegalArgumentException("Configuration and Identity cannot be null");
+        }
+        this.config = config;
+        this.identity = identity;
     }
 
     public Config getConfig() {
         return config;
     }
 
+    public String getIdentity() {
+        return identity;
+    }
+
     @Override
-    public com.bezirk.middleware.core.actions.BezirkAction getAction() {
-        return com.bezirk.middleware.core.actions.BezirkAction.ACTION_START_BEZIRK;
+    public BezirkAction getAction() {
+        return BezirkAction.ACTION_START_BEZIRK;
     }
 }
