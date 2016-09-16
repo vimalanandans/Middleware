@@ -50,7 +50,8 @@ public class AdvancedTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_advanced_test);
+        //setContentView(R.layout.activity_advanced_test);
+        setContentView(R.layout.activity_advanced_test_table);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -117,6 +118,7 @@ public class AdvancedTestActivity extends AppCompatActivity {
                 if (event instanceof AirQualityUpdateEvent) {
                     AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
                     messagesTextView.append(aqUpdate.toString() + "\n");
+                    scroll();
                     subscriberBezirk.sendEvent(sender, new UpdateAcceptedEvent(SUBSCRIBER_ID, "pollen level:" + aqUpdate.pollenLevel));
                 }
             }
@@ -134,6 +136,7 @@ public class AdvancedTestActivity extends AppCompatActivity {
                 if (event instanceof UpdateAcceptedEvent) {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
                     messagesTextView.append(acceptedEventUpdate.toString() + "\n");
+                    scroll();
                 }
             }
         });
@@ -153,7 +156,7 @@ public class AdvancedTestActivity extends AppCompatActivity {
 
                 publisherBezirk.sendEvent(airQualityUpdateEvent);
             }
-        }, 0, 5000);
+        }, 0, 500);
     }
 
     @Override
@@ -180,7 +183,11 @@ public class AdvancedTestActivity extends AppCompatActivity {
         if (publisherBezirk != null && houseInfoEventSetForPublisher != null) {
             publisherBezirk.unsubscribe(houseInfoEventSetForPublisher);
         }
-        BezirkMiddleware.stop();
+        try {
+            BezirkMiddleware.stop();
+        } catch (IllegalStateException e) {
+
+        }
         setTitle(R.string.title_activity_advanced_test);
         Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
         for (Thread t : threadSet) {
@@ -188,5 +195,12 @@ public class AdvancedTestActivity extends AppCompatActivity {
         }
     }
 
-
+    private void scroll() {
+        final int scrollAmount = messagesTextView.getLayout().getLineTop(messagesTextView.getLineCount()) - messagesTextView.getHeight();
+        // if there is no need to scroll, scrollAmount will be <=0
+        if (scrollAmount > 0)
+            messagesTextView.scrollTo(0, scrollAmount);
+        else
+            messagesTextView.scrollTo(0, 0);
+    }
 }

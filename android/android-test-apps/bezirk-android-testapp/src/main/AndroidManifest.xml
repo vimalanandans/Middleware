@@ -20,6 +20,7 @@
         <activity
             android:name="com.bezirk.middleware.android.HomeActivity"
             android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +32,7 @@
             android:name="com.bezirk.middleware.android.AutoTestActivity"
             android:label="@string/title_activity_auto_test"
             android:parentActivityName="com.bezirk.middleware.android.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -40,6 +42,7 @@
             android:name="com.bezirk.middleware.android.AdvancedTestActivity"
             android:label="@string/title_activity_advanced_test"
             android:parentActivityName="com.bezirk.middleware.android.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -50,6 +53,7 @@
             android:name="com.bezirk.middleware.android.StreamingTestActivity"
             android:label="@string/title_activity_streaming_test"
             android:parentActivityName="com.bezirk.middleware.android.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

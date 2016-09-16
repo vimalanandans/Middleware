@@ -100,7 +100,6 @@ public class AutoTestActivity extends AppCompatActivity {
         });
 
         publisherBezirk.subscribe(houseInfoEventSetForPublisher);
-        publisherBezirk.subscribe(houseInfoEventSetForPublisher);
 
         //publish messages periodically
         new Timer().scheduleAtFixedRate(new TimerTask() {
