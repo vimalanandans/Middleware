@@ -1,6 +1,6 @@
 package com.bezirk.middleware.core.comms;
 
-import com.bezirk.middleware.core.componentManager.LifecycleManager;
+import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
 import com.bezirk.middleware.core.networking.NetworkManager;
 
 import org.mockito.Mockito;
@@ -18,11 +18,10 @@ public class CommsManagerTest {
         NetworkManager networkManager = Mockito.mock(NetworkManager.class);
 
         for (int i = 0; i < 2; i++) {
-            LifecycleManager lifecycleManager = new LifecycleManager();
+            LifeCycleObservable lifeCycleObservable = new LifeCycleObservable();
             JmqCommsManager commsManager = new JmqCommsManager(networkManager, null, null, null);
-            lifecycleManager.addObserver(commsManager);
-            lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
-            lifecycleManager.setState(LifecycleManager.LifecycleState.STARTED);
+            lifeCycleObservable.addObserver(commsManager);
+            lifeCycleObservable.transition(LifeCycleObservable.Transition.START);
             //wait for comms to finish start before sending message
             try {
                 Thread.sleep(10);
@@ -30,7 +29,7 @@ public class CommsManagerTest {
                 e.printStackTrace();
             }
             assertTrue(commsManager.sendToAll("a".getBytes(), true));
-            lifecycleManager.setState(LifecycleManager.LifecycleState.STOPPED);
+            lifeCycleObservable.transition(LifeCycleObservable.Transition.STOP);
             assertFalse(commsManager.sendToAll("a".getBytes(), true));
         }
     }

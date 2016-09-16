@@ -8,5 +8,5 @@ public interface LifeCycleCallbacks {
 
     void stop(StopServiceAction stopServiceAction);
 
-    void destroy();
+    //void destroy();
 }

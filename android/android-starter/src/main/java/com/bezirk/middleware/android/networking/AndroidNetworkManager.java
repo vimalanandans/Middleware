@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
-import com.bezirk.middleware.core.componentManager.LifecycleManager;
+import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
 import com.bezirk.middleware.core.networking.NetworkManager;
 
 import org.slf4j.Logger;
@@ -57,10 +57,10 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
 
     @Override
     public String getStoredInterfaceName() {
-        if(null!=preferences){
+        if (null != preferences) {
             logger.debug("preferences is not null in Android network manager");
             return preferences.getString(NETWORK_INTERFACE_NAME_KEY, DEFAULT_ANDROID_INTERFACE);
-        }else{
+        } else {
             logger.debug("preferrences is null");
             return null;
         }
@@ -91,12 +91,9 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
 
     @Override
     public void update(Observable observable, Object data) {
-        LifecycleManager lifecycleManager = (LifecycleManager) observable;
-        switch (lifecycleManager.getState()) {
-            case CREATED:
-                //registerWifiBroadcastReceiver();
-                break;
-            case STARTED:
+        LifeCycleObservable lifeCycleObservable = (LifeCycleObservable) observable;
+        switch (lifeCycleObservable.getState()) {
+            case RUNNING:
                 registerWifiBroadcastReceiver();
                 break;
             case STOPPED:

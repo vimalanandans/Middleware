@@ -1,7 +1,7 @@
 package com.bezirk.middleware.android.comms;
 
 import com.bezirk.middleware.core.comms.processor.CommsProcessor;
-import com.bezirk.middleware.core.componentManager.LifecycleManager;
+import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
 import com.bezirk.middleware.core.networking.NetworkManager;
 import com.bezirk.middleware.core.streaming.Streaming;
 
@@ -19,9 +19,8 @@ public class ZyreCommsManager extends CommsProcessor {
     private boolean delayedInit;
 
     /**
-     *
      * @param networkManager - Network manager to get TCP/IP related device configurations
-     * @param groupName - Name to channel your application
+     * @param groupName      - Name to channel your application
      */
     public ZyreCommsManager(NetworkManager networkManager, String groupName, com.bezirk.middleware.core.comms.CommsNotification commsNotification, Streaming streaming) {
         super(networkManager, commsNotification, streaming);
@@ -52,9 +51,9 @@ public class ZyreCommsManager extends CommsProcessor {
     //TODO: manage lifecycle of comms based on bezirk-lifecycle events appropriately
     @Override
     public void update(Observable observable, Object data) {
-        LifecycleManager lifecycleManager = (LifecycleManager) observable;
-        switch (lifecycleManager.getState()) {
-            case STARTED:
+        LifeCycleObservable lifeCycleObservable = (LifeCycleObservable) observable;
+        switch (lifeCycleObservable.getState()) {
+            case RUNNING:
                 logger.debug("Starting comms");
                 if (comms != null) {
                     logger.debug("comms not null in zyreCommsManager");
@@ -64,14 +63,6 @@ public class ZyreCommsManager extends CommsProcessor {
                     super.startComms();
                 }
                 break;
-//            case RESTARTED:
-//                if (comms != null && comms.getZyre() != null) {
-//                    comms.stopZyre();
-//                }
-//                comms = new ZyreCommsJni(this);
-//                comms.initZyre(delayedInit);
-//                comms.startZyre();
-//                break;
             case STOPPED:
                 logger.debug("Stopping comms");
                 if (comms != null) {
@@ -79,13 +70,6 @@ public class ZyreCommsManager extends CommsProcessor {
                     comms.closeComms();
                 }
                 super.stopComms();
-//            case DESTROYED:
-//                logger.debug("Destroying comms");
-//                if (comms != null) {
-//                    comms.closeComms();
-//                }
-//                break;
-
         }
     }
 }

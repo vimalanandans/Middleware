@@ -8,9 +8,9 @@ public class RegisterZirkAction extends ZirkAction {
     public RegisterZirkAction(ZirkId zirkId, String zirkName) {
         super(zirkId);
 
-        if (zirkName == null || zirkName.isEmpty()) {
-            throw new IllegalArgumentException("zirkName must be set to a non-empty string.");
-        }
+//        if (zirkName == null || zirkName.isEmpty()) {
+//            throw new IllegalArgumentException("zirkName must be set to a non-empty string.");
+//        }
 
         this.zirkName = zirkName;
     }

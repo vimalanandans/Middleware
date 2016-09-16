@@ -1,6 +1,7 @@
 package com.bezirk.middleware.java.componentManager;
 
 import com.bezirk.middleware.core.comms.JmqCommsManager;
+import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
 import com.bezirk.middleware.core.datastorage.ProxyPersistence;
 import com.bezirk.middleware.core.datastorage.RegistryStorage;
 import com.bezirk.middleware.core.device.Device;
@@ -52,7 +53,8 @@ public class ComponentManager {
     private NetworkManager networkManager;
     private RemoteLog remoteLog;
     private BezirkIdentityManager identityManager;
-    private com.bezirk.middleware.core.componentManager.LifecycleManager lifecycleManager;
+    private LifeCycleObservable lifecyleObservable;
+
     private static final String DB_VERSION = "0.0.4";
     private static final String DB_FILE_LOCATION = ".";
     //download path
@@ -66,7 +68,7 @@ public class ComponentManager {
 
     public void create() {
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
-        lifecycleManager = new com.bezirk.middleware.core.componentManager.LifecycleManager();
+        lifecyleObservable = new LifeCycleObservable();
 
         if (Configuration.isLoggingEnabled()) {
             ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
@@ -90,7 +92,7 @@ public class ComponentManager {
         //comms = new ZyreCommsManager(networkManager, config.getGroupName(), null, null);
 
         // the Jmq comms
-        comms = new JmqCommsManager(networkManager, config.getGroupName(), null,null );
+        comms = new JmqCommsManager(networkManager, config.getGroupName(), null, null);
 
         //streaming manager
         Streaming streaming = new StreamManager(comms, /*downloadPath,*/ networkManager);
@@ -106,7 +108,7 @@ public class ComponentManager {
         initializeIdentityManager();
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms,  messageHandler, identityManager, null, null, streaming, remoteLog);
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, identityManager, null, null, streaming, remoteLog);
 
         //initialize proxyServer responsible for managing incoming events from zirks
         proxyServer = new ProxyServer(identityManager);
@@ -115,10 +117,10 @@ public class ComponentManager {
         proxyServer.setPubSubBrokerService(pubSubBroker);
 
         // add components as observers of bezirk lifecycle events.
-        lifecycleManager.addObserver(comms);
+        lifecyleObservable.addObserver(comms);
 
         // this state is set only when the bezirk service is created the first time
-        lifecycleManager.setState(com.bezirk.middleware.core.componentManager.LifecycleManager.LifecycleState.CREATED);
+        //lifecyleObservable.setState(com.bezirk.middleware.core.componentManager.LifecycleManager.LifecycleState.CREATED);
     }
 
     void initializeIdentityManager() {
@@ -143,11 +145,13 @@ public class ComponentManager {
     }
 
     public void start() {
-        this.lifecycleManager.setState(com.bezirk.middleware.core.componentManager.LifecycleManager.LifecycleState.STARTED);
+        //this.lifecyleObservable.setState(com.bezirk.middleware.core.componentManager.LifecycleManager.LifecycleState.STARTED);
+        lifecyleObservable.transition(LifeCycleObservable.Transition.START);
     }
 
     public void stop() {
-        this.lifecycleManager.setState(com.bezirk.middleware.core.componentManager.LifecycleManager.LifecycleState.DESTROYED);
+        //this.lifecyleObservable.setState(com.bezirk.middleware.core.componentManager.LifecycleManager.LifecycleState.DESTROYED);
+        lifecyleObservable.transition(LifeCycleObservable.Transition.STOP);
     }
 
     public ProxyServer getProxyServer() {

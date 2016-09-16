@@ -21,7 +21,7 @@ import com.bezirk.middleware.core.actions.StartServiceAction;
 import com.bezirk.middleware.core.actions.StopServiceAction;
 import com.bezirk.middleware.core.comms.JmqCommsManager;
 import com.bezirk.middleware.core.componentManager.LifeCycleCallbacks;
-import com.bezirk.middleware.core.componentManager.LifecycleManager;
+import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
 import com.bezirk.middleware.core.datastorage.RegistryStorage;
 import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.core.identity.BezirkIdentityManager;
@@ -54,12 +54,13 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private AndroidNetworkManager networkManager;
     private RegistryStorage registryStorage;
     private MessageHandler messageHandler;
-    private LifecycleManager lifecycleManager;
+    private LifeCycleObservable lifecyleObservable;
+
     private Device device;
     private PubSubBroker pubSubBroker;
     private RemoteLog remoteLog = null;
     private static final String DB_VERSION = "0.0.4";
-    private LifecycleManager.LifecycleState currentState;
+    private LifeCycleObservable.State currentState;
     private String identityString;
 
     int FOREGROUND_ID = 1336;
@@ -125,26 +126,30 @@ public final class ComponentManager extends Service implements LifeCycleCallback
 
         logger.debug("LifeCycleCallbacks:start");
         //TODO add start implementations for modules
-        currentState = LifecycleManager.LifecycleState.CREATED;
-        lifecycleManager.setState(LifecycleManager.LifecycleState.STARTED);
+        //currentState = LifecycleManager.LifecycleState.CREATED;
+        //lifecyleObservable.setState(LifecycleManager.LifecycleState.STARTED);
+        lifecyleObservable.transition(LifeCycleObservable.Transition.START);
+        currentState = lifecyleObservable.getState();
     }
 
     @Override
     public void stop(StopServiceAction stopServiceAction) {
         logger.debug("LifeCycleCallbacks:stop");
         //TODO add stop implementations for modules
-        currentState = LifecycleManager.LifecycleState.STOPPED;
-        lifecycleManager.setState(LifecycleManager.LifecycleState.STOPPED);
+        //currentState = LifecycleManager.LifecycleState.STOPPED;
+        //lifecyleObservable.setState(LifecycleManager.LifecycleState.STOPPED);
+        lifecyleObservable.transition(LifeCycleObservable.Transition.STOP);
+        currentState = lifecyleObservable.getState();
         stopSelf();
     }
 
-    @Override
-    public void destroy() {
-        logger.debug("LifeCycleCallbacks:destroy");
-        //TODO add destroy implementations for modules
-        currentState = LifecycleManager.LifecycleState.DESTROYED;
-        lifecycleManager.setState(LifecycleManager.LifecycleState.DESTROYED);
-    }
+//    @Override
+//    public void destroy() {
+//        logger.debug("LifeCycleCallbacks:destroy");
+//        //TODO add destroy implementations for modules
+//        currentState = LifecycleManager.LifecycleState.DESTROYED;
+//        lifecyleObservable.setState(LifecycleManager.LifecycleState.DESTROYED);
+//    }
 
     public final Notification buildForegroundNotification(String appName, String status, int icon) {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this);
@@ -188,7 +193,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
 
 
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
-        lifecycleManager = new LifecycleManager();
+        //lifecyleObservable = new LifecycleManager();
+        lifecyleObservable = new LifeCycleObservable();
 
         //initialize android shared preferences for storing user preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -274,13 +280,13 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         proxyServer.setPubSubBrokerService(pubSubBroker);
 
         // add components as observers of bezirk lifecycle events.
-        lifecycleManager.addObserver(comms);
-        lifecycleManager.addObserver(networkManager);
+        lifecyleObservable.addObserver(comms);
+        lifecyleObservable.addObserver(networkManager);
 
         // this state is set only when the bezirk service is created the first time
         //TODO add create implementations for modules
-        lifecycleManager.setState(LifecycleManager.LifecycleState.CREATED);
-        currentState = LifecycleManager.LifecycleState.CREATED;
+        //lifecyleObservable.setState(LifecycleManager.LifecycleState.CREATED);
+        //currentState = LifecycleManager.LifecycleState.CREATED;
     }
 
     void initializeIdentityManager() {
