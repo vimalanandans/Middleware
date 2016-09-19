@@ -1,9 +1,12 @@
 description = "Bezirk-java: modules that run within a jvm and use Plain-Old-Java"
 
 subprojects {
+
     apply plugin: 'java'
     //apply from: "${rootDir}/gradle-plugins/artifactory-jar-publish.gradle"
+	
     sourceCompatibility = 1.7
+	apply from: "${rootDir}/gradle-plugins/scripts/build-dist.gradle"
 }
 
 buildscript {

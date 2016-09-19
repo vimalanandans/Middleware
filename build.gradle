@@ -66,7 +66,7 @@ buildscript {
 allprojects {
     apply plugin: 'idea'
     apply plugin: 'maven'
-
+    apply plugin: 'distribution'
     group = 'com.bezirk'
     version = "3.0.0-alpha+022"
 
@@ -85,5 +85,34 @@ allprojects {
     tasks.withType(JavaCompile) {
         sourceCompatibility = "1.7"
         targetCompatibility = "1.7"
+    }
+}
+
+/**
+ * Clean up directories that are staged dynamically
+ *
+ * IMPORTANT NOTE: only the directories listed here should be
+ * deleted. Directories not listed here in dist/
+ * should not be deleted because they are maintained manually.
+ */
+clean {
+    // remove data dir - data files are pulled from each project dynamically
+    delete "${rootDir}/unpacked"
+}
+/*
+ * ---------------------------------------------------------------
+ * Copy from files staged to dist/ into the Middleware/build/distributions/Middleware-3.0.0-alpha+022.zip file
+ * ---------------------------------------------------------------
+ */
+
+/** Copy needed files into zipped distribution */
+distributions {
+    main {
+        contents {
+            from {
+                'build/dist'
+            }
+			into '/'
+        }
     }
 }
