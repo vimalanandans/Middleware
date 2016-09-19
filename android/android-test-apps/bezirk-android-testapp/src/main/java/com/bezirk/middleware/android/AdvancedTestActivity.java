@@ -109,7 +109,7 @@ public class AdvancedTestActivity extends AppCompatActivity {
     }
 
     private void subscriberZirk() {
-        BezirkMiddleware.initialize(this);
+        //BezirkMiddleware.initialize(this);
         subscriberBezirk = BezirkMiddleware.registerZirk(SUBSCRIBER_ID);
         houseInfoEventSetForSubscriber = new HouseInfoEventSet();
         houseInfoEventSetForSubscriber.setEventReceiver(new EventSet.EventReceiver() {
@@ -127,7 +127,7 @@ public class AdvancedTestActivity extends AppCompatActivity {
     }
 
     private void publisherZirk() {
-        BezirkMiddleware.initialize(this);
+        //BezirkMiddleware.initialize(this);
         publisherBezirk = BezirkMiddleware.registerZirk(PUBLISHER_ID);
         houseInfoEventSetForPublisher = new HouseInfoEventSet();
         houseInfoEventSetForPublisher.setEventReceiver(new EventSet.EventReceiver() {
@@ -183,16 +183,16 @@ public class AdvancedTestActivity extends AppCompatActivity {
         if (publisherBezirk != null && houseInfoEventSetForPublisher != null) {
             publisherBezirk.unsubscribe(houseInfoEventSetForPublisher);
         }
-        try {
-            BezirkMiddleware.stop();
-        } catch (IllegalStateException e) {
-
-        }
+//        try {
+//            BezirkMiddleware.stop();
+//        } catch (IllegalStateException e) {
+//
+//        }
         setTitle(R.string.title_activity_advanced_test);
         Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-        for (Thread t : threadSet) {
-            Log.d("Threads", t.getName() + " " + t.getId() + " " + t.getThreadGroup() + " " + t.getState());
-        }
+//        for (Thread t : threadSet) {
+//            Log.d("Threads", t.getName() + " " + t.getId() + " " + t.getThreadGroup() + " " + t.getState());
+//        }
     }
 
     private void scroll() {

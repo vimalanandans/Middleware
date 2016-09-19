@@ -60,7 +60,7 @@ public class AutoTestActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        BezirkMiddleware.initialize(this);
+        //BezirkMiddleware.initialize(this);
         subscriberZirk();
         publisherZirk();
     }
@@ -126,6 +126,6 @@ public class AutoTestActivity extends AppCompatActivity {
         publisherBezirk.unsubscribe(houseInfoEventSetForPublisher);
         //publisherBezirk.unregisterZirk();
         //subscriberBezirk.unregisterZirk();
-        BezirkMiddleware.stop();
+        //BezirkMiddleware.stop();
     }
 }
