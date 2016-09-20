@@ -95,10 +95,10 @@ allprojects {
  * deleted. Directories not listed here in dist/
  * should not be deleted because they are maintained manually.
  */
-clean {
+/*clean {
     // remove data dir - data files are pulled from each project dynamically
     delete "${rootDir}/unpacked"
-}
+}*/
 /*
  * ---------------------------------------------------------------
  * Copy from files staged to dist/ into the Middleware/build/distributions/Middleware-3.0.0-alpha+022.zip file

@@ -20,7 +20,7 @@ repositories {
 task stageDistFiles(type: Copy) {
 	def artifactZipBase ="${project.name}/build/distributions/${artifactBase}.zip"
     def zipFile = file("../${artifactZipBase}")
-    def outputDir = file("${rootDir}/unpacked/dist")
+    def outputDir = file("${rootDir}/build/distJars")
     
     from zipTree(zipFile)
     into outputDir
@@ -29,7 +29,7 @@ task stageDistFiles(type: Copy) {
 // Collect all distribution files from each Middleware/java service and stage into Middleware/build/dist
 task stageDistFilesCopy(type: Copy)  {
     dependsOn {[stageDistFiles]}
-    def outputDir = "${rootDir}/unpacked/dist"
+    def outputDir = "${rootDir}/build/distJars"
     def outputJarDir = file("${rootDir}/build/dist")
 
     from "$outputDir/$artifactBase/lib"
