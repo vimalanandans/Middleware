@@ -156,7 +156,7 @@ public class AdvancedTestActivity extends AppCompatActivity {
 
                 publisherBezirk.sendEvent(airQualityUpdateEvent);
             }
-        }, 0, 500);
+        }, 0, 1500);
     }
 
     @Override
@@ -167,7 +167,6 @@ public class AdvancedTestActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //BezirkMiddleware.stop();
         cleanUp();
     }
 
@@ -183,21 +182,11 @@ public class AdvancedTestActivity extends AppCompatActivity {
         if (publisherBezirk != null && houseInfoEventSetForPublisher != null) {
             publisherBezirk.unsubscribe(houseInfoEventSetForPublisher);
         }
-//        try {
-//            BezirkMiddleware.stop();
-//        } catch (IllegalStateException e) {
-//
-//        }
         setTitle(R.string.title_activity_advanced_test);
-        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-//        for (Thread t : threadSet) {
-//            Log.d("Threads", t.getName() + " " + t.getId() + " " + t.getThreadGroup() + " " + t.getState());
-//        }
     }
 
     private void scroll() {
         final int scrollAmount = messagesTextView.getLayout().getLineTop(messagesTextView.getLineCount()) - messagesTextView.getHeight();
-        // if there is no need to scroll, scrollAmount will be <=0
         if (scrollAmount > 0)
             messagesTextView.scrollTo(0, scrollAmount);
         else
