@@ -1,7 +1,7 @@
 package com.bezirk.middleware.core.comms;
 
 import com.bezirk.middleware.core.comms.processor.CommsProcessor;
-import com.bezirk.middleware.core.componentManager.LifecycleManager;
+import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
 import com.bezirk.middleware.core.networking.NetworkManager;
 import com.bezirk.middleware.core.streaming.Streaming;
 
@@ -44,9 +44,9 @@ public class JmqCommsManager extends CommsProcessor implements OnMessageReceived
     //TODO: manage lifecycle of comms based on bezirk-lifecycle events appropriately
     @Override
     public void update(Observable observable, Object data) {
-        LifecycleManager lifecycleManager = (LifecycleManager) observable;
-        switch (lifecycleManager.getState()) {
-            case STARTED:
+        LifeCycleObservable lifeCycleObservable = (LifeCycleObservable) observable;
+        switch (lifeCycleObservable.getState()) {
+            case RUNNING:
                 if (comms != null) {
                     logger.debug("Starting comms");
                     comms.start();
@@ -60,13 +60,12 @@ public class JmqCommsManager extends CommsProcessor implements OnMessageReceived
                     super.stopComms();
                     comms = null;
                 }
-
         }
     }
 
     @Override
     public boolean processIncomingMessage(String nodeId, byte[] data) {
-        logger.debug("Msg from node " + nodeId + ", msg " + new String(data));
+        //logger.debug("Msg from node " + nodeId + ", msg " + new String(data));
         processWireMessage(nodeId, new String(data));
         return true;
     }

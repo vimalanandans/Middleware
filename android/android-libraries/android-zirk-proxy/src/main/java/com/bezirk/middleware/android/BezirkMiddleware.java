@@ -122,6 +122,9 @@ public abstract class BezirkMiddleware {
      * </p>
      */
     public static synchronized void stop() {
+        if (serviceManager == null) {
+            throw new IllegalStateException("Is Bezirk Middleware initialized? Initialize using BezirkMiddleware.initialize(Context) or BezirkMiddleware.initialize(Context, Config)");
+        }
         serviceManager.stop();
         context = null;
     }

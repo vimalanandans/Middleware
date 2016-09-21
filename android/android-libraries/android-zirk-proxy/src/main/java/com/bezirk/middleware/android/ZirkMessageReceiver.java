@@ -76,10 +76,10 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
                 ((IdentifiedEvent) event).setMiddlewareUser(incomingEvent.isMiddlewareUser());
             }
 
-            if (ProxyClient.eventListenerMap.containsKey(eventName)) {
-                final List<EventSet.EventReceiver> messageListeners = ProxyClient.eventListenerMap.get(eventName);
-                for (EventSet.EventReceiver listener : messageListeners) {
-                    listener.receiveEvent(event, endpoint);
+            if (ProxyClient.eventSetMap.containsKey(eventName)) {
+                final List<EventSet> eventSets = ProxyClient.eventSetMap.get(eventName);
+                for (EventSet eventSet : eventSets) {
+                    eventSet.getEventReceiver().receiveEvent(event, endpoint);
                 }
             }
         } else {

@@ -6,6 +6,7 @@ import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.android.testApp.R;
 import com.jaredrummler.android.device.DeviceName;
 
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -37,13 +39,19 @@ public class AdvancedTestActivity extends AppCompatActivity {
     private Button resetButton;
     private Button clearButton;
 
+    private Bezirk publisherBezirk;
+    private Bezirk subscriberBezirk;
+    private HouseInfoEventSet houseInfoEventSetForSubscriber;
+    private HouseInfoEventSet houseInfoEventSetForPublisher;
+
     private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_advanced_test);
+        //setContentView(R.layout.activity_advanced_test);
+        setContentView(R.layout.activity_advanced_test_table);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -81,13 +89,7 @@ public class AdvancedTestActivity extends AppCompatActivity {
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                messagesTextView.setText("");
-                buttonToggler(true);
-                if (timer != null) {
-                    timer.cancel();
-                }
-                BezirkMiddleware.stop();
-                setTitle(R.string.title_activity_advanced_test);
+                cleanUp();
             }
         });
 
@@ -107,37 +109,39 @@ public class AdvancedTestActivity extends AppCompatActivity {
     }
 
     private void subscriberZirk() {
-        BezirkMiddleware.initialize(this);
-        final Bezirk bezirk = BezirkMiddleware.registerZirk(SUBSCRIBER_ID);
-        HouseInfoEventSet houseEvents = new HouseInfoEventSet();
-        houseEvents.setEventReceiver(new EventSet.EventReceiver() {
+        //BezirkMiddleware.initialize(this);
+        subscriberBezirk = BezirkMiddleware.registerZirk(SUBSCRIBER_ID);
+        houseInfoEventSetForSubscriber = new HouseInfoEventSet();
+        houseInfoEventSetForSubscriber.setEventReceiver(new EventSet.EventReceiver() {
             @Override
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof AirQualityUpdateEvent) {
                     AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
                     messagesTextView.append(aqUpdate.toString() + "\n");
-                    bezirk.sendEvent(sender, new UpdateAcceptedEvent(SUBSCRIBER_ID, "pollen level:" + aqUpdate.pollenLevel));
+                    scroll();
+                    subscriberBezirk.sendEvent(sender, new UpdateAcceptedEvent(SUBSCRIBER_ID, "pollen level:" + aqUpdate.pollenLevel));
                 }
             }
         });
-        bezirk.subscribe(houseEvents);
+        subscriberBezirk.subscribe(houseInfoEventSetForSubscriber);
     }
 
     private void publisherZirk() {
-        BezirkMiddleware.initialize(this);
-        final Bezirk bezirk = BezirkMiddleware.registerZirk(PUBLISHER_ID);
-        HouseInfoEventSet houseEvents = new HouseInfoEventSet();
-        houseEvents.setEventReceiver(new EventSet.EventReceiver() {
+        //BezirkMiddleware.initialize(this);
+        publisherBezirk = BezirkMiddleware.registerZirk(PUBLISHER_ID);
+        houseInfoEventSetForPublisher = new HouseInfoEventSet();
+        houseInfoEventSetForPublisher.setEventReceiver(new EventSet.EventReceiver() {
             @Override
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
                     messagesTextView.append(acceptedEventUpdate.toString() + "\n");
+                    scroll();
                 }
             }
         });
 
-        bezirk.subscribe(houseEvents);
+        publisherBezirk.subscribe(houseInfoEventSetForPublisher);
 
         //publish messages periodically
         timer = new Timer();
@@ -150,9 +154,9 @@ public class AdvancedTestActivity extends AppCompatActivity {
                 airQualityUpdateEvent.sender = PUBLISHER_ID;
                 airQualityUpdateEvent.pollenLevel = pollenLevel++;
 
-                bezirk.sendEvent(airQualityUpdateEvent);
+                publisherBezirk.sendEvent(airQualityUpdateEvent);
             }
-        }, 0, 5000);
+        }, 0, 1500);
     }
 
     @Override
@@ -163,8 +167,29 @@ public class AdvancedTestActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BezirkMiddleware.stop();
+        cleanUp();
     }
 
+    private void cleanUp() {
+        messagesTextView.setText("");
+        buttonToggler(true);
+        if (timer != null) {
+            timer.cancel();
+        }
+        if (subscriberBezirk != null && houseInfoEventSetForSubscriber != null) {
+            subscriberBezirk.unsubscribe(houseInfoEventSetForSubscriber);
+        }
+        if (publisherBezirk != null && houseInfoEventSetForPublisher != null) {
+            publisherBezirk.unsubscribe(houseInfoEventSetForPublisher);
+        }
+        setTitle(R.string.title_activity_advanced_test);
+    }
 
+    private void scroll() {
+        final int scrollAmount = messagesTextView.getLayout().getLineTop(messagesTextView.getLineCount()) - messagesTextView.getHeight();
+        if (scrollAmount > 0)
+            messagesTextView.scrollTo(0, scrollAmount);
+        else
+            messagesTextView.scrollTo(0, 0);
+    }
 }

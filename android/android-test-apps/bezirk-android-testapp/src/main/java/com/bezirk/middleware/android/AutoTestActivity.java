@@ -35,6 +35,10 @@ public class AutoTestActivity extends AppCompatActivity {
     private final int noOfMessageRounds = 10; //Number of messages to be published [and get the response back for]
 
     private int noOfResponsesReceived; //number of unicast responses received by the publisher
+    private Bezirk publisherBezirk;
+    private Bezirk subscriberBezirk;
+    private HouseInfoEventSet houseInfoEventSetForSubscriber;
+    private HouseInfoEventSet houseInfoEventSetForPublisher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,31 +60,31 @@ public class AutoTestActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        BezirkMiddleware.initialize(this);
+        //BezirkMiddleware.initialize(this);
         subscriberZirk();
         publisherZirk();
     }
 
     private void subscriberZirk() {
-        final Bezirk bezirk = BezirkMiddleware.registerZirk(SUBSCRIBER_ID);
-        HouseInfoEventSet houseEvents = new HouseInfoEventSet();
-        houseEvents.setEventReceiver(new EventSet.EventReceiver() {
+        subscriberBezirk = BezirkMiddleware.registerZirk(SUBSCRIBER_ID);
+        houseInfoEventSetForSubscriber = new HouseInfoEventSet();
+        houseInfoEventSetForSubscriber.setEventReceiver(new EventSet.EventReceiver() {
             @Override
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof AirQualityUpdateEvent) {
                     AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
                     subscriberTextView.append(aqUpdate.toString() + "\n");
-                    bezirk.sendEvent(sender, new UpdateAcceptedEvent(SUBSCRIBER_ID, "pollen level:" + aqUpdate.pollenLevel));
+                    subscriberBezirk.sendEvent(sender, new UpdateAcceptedEvent(SUBSCRIBER_ID, "pollen level:" + aqUpdate.pollenLevel));
                 }
             }
         });
-        bezirk.subscribe(houseEvents);
+        subscriberBezirk.subscribe(houseInfoEventSetForSubscriber);
     }
 
     private void publisherZirk() {
-        final Bezirk bezirk = BezirkMiddleware.registerZirk(PUBLISHER_ID);
-        HouseInfoEventSet houseEvents = new HouseInfoEventSet();
-        houseEvents.setEventReceiver(new EventSet.EventReceiver() {
+        publisherBezirk = BezirkMiddleware.registerZirk(PUBLISHER_ID);
+        houseInfoEventSetForPublisher = new HouseInfoEventSet();
+        houseInfoEventSetForPublisher.setEventReceiver(new EventSet.EventReceiver() {
             @Override
             public void receiveEvent(Event event, ZirkEndPoint sender) {
                 if (event instanceof UpdateAcceptedEvent) {
@@ -95,7 +99,7 @@ public class AutoTestActivity extends AppCompatActivity {
             }
         });
 
-        bezirk.subscribe(houseEvents);
+        publisherBezirk.subscribe(houseInfoEventSetForPublisher);
 
         //publish messages periodically
         new Timer().scheduleAtFixedRate(new TimerTask() {
@@ -110,7 +114,7 @@ public class AutoTestActivity extends AppCompatActivity {
                 airQualityUpdateEvent.sender = PUBLISHER_ID;
                 airQualityUpdateEvent.pollenLevel = pollenLevel++;
 
-                bezirk.sendEvent(airQualityUpdateEvent);
+                publisherBezirk.sendEvent(airQualityUpdateEvent);
             }
         }, 0, 30);
     }
@@ -118,6 +122,10 @@ public class AutoTestActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BezirkMiddleware.stop();
+        subscriberBezirk.unsubscribe(houseInfoEventSetForSubscriber);
+        publisherBezirk.unsubscribe(houseInfoEventSetForPublisher);
+        //publisherBezirk.unregisterZirk();
+        //subscriberBezirk.unregisterZirk();
+        //BezirkMiddleware.stop();
     }
 }

@@ -7,9 +7,10 @@
     <string name="auto_test">Automated Bezirk Test</string>
     <string name="advanced_tests">Advanced Bezirk Test</string>
     <string name="stream_tests">Bezirk Streaming api Test</string>
-    <string name="button_publisher">Launch Publisher Zirk</string>
-    <string name="button_subscriber">Launch Subscriber Zirk</string>
-    <string name="button_reset">Destroy Zirk and Bezirk(if local)</string>
+    <string name="stop">Stop Bezirk Middleware</string>
+    <string name="button_publisher">Start&#10;Publisher</string>
+    <string name="button_subscriber">Start&#10;Subscriber</string>
+    <string name="button_reset">Stop</string>
     <string name="button_clear">Clear Screen</string>
     <string name="title_activity_auto_test">Automated Test</string>
     <string name="title_activity_advanced_test">Advanced Testing</string>

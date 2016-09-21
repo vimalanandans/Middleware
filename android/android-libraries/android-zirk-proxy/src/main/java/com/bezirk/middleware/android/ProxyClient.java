@@ -40,8 +40,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class ProxyClient implements Bezirk {
     private static final String TAG = ProxyClient.class.getName();
 
-    protected static final Map<String, List<EventSet.EventReceiver>> eventListenerMap = new ConcurrentHashMap<>();
     protected static final Map<String, List<StreamSet.StreamReceiver>> streamListenerMap = new ConcurrentHashMap<>();
+    protected static final Map<String, List<EventSet>> eventSetMap = new ConcurrentHashMap<>();
 
     protected static Context context;
     private final ZirkId zirkId;
@@ -74,14 +74,13 @@ public final class ProxyClient implements Bezirk {
         Log.d(TAG, "Registering Zirk is: " + zirkName);
 
         final SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(context);
-        if(null!=shrdPref){
-            Log.d(TAG,"shrdPref is not null");
-        }
-        else{
-            Log.d(TAG,"shredPref is null");
+        if (null != shrdPref) {
+            Log.d(TAG, "shrdPref is not null");
+        } else {
+            Log.d(TAG, "shredPref is null");
         }
         String zirkIdAsString = shrdPref.getString(zirkName, null);
-        Log.d(TAG,"zirkIdAsString is "+zirkIdAsString);
+        Log.d(TAG, "zirkIdAsString is " + zirkIdAsString);
         if (null == zirkIdAsString) {
             zirkIdAsString = UUID.randomUUID().toString();
             Log.d(TAG, "ZirkId-> " + zirkIdAsString);
@@ -113,7 +112,8 @@ public final class ProxyClient implements Bezirk {
                 SharedPreferences.Editor editor = shrdPref.edit();
                 editor.remove(entry.getKey());
                 editor.apply();
-                unsubscribe(null);
+                //TODO add unsubscription code for subsriptions of a zirk
+                //unsubscribe(null);
                 break;
             }
         }
@@ -121,17 +121,17 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void subscribe(final MessageSet messageSet) {
-        Log.d(TAG,"subscribe method of ProxyClient");
+        Log.d(TAG, "subscribe method of ProxyClient");
         if (messageSet instanceof EventSet) {
-            Log.d(TAG,"messageSet instanceof EventSet in ProxyClient");
-            EventSet.EventReceiver listener = ((EventSet) messageSet).getEventReceiver();
-            addMessagesToMap(messageSet, eventListenerMap, listener);
+            Log.d(TAG, "messageSet instanceof EventSet in ProxyClient");
+            //EventSet.EventReceiver listener = ((EventSet) messageSet).getEventReceiver();
+            addMessagesToMap((EventSet) messageSet, eventSetMap);
         } else if (messageSet instanceof StreamSet) {
-            Log.d(TAG,"messageSet instanceof StreamSet in ProxyClient");
+            Log.d(TAG, "messageSet instanceof StreamSet in ProxyClient");
             StreamSet.StreamReceiver listener = ((StreamSet) messageSet).getStreamReceiver();
             addMessagesToMap(messageSet, streamListenerMap, listener);
         } else {
-            Log.d(TAG,"messageSet is unKnown:  in ProxyClient");
+            Log.d(TAG, "messageSet is unKnown:  in ProxyClient");
             throw new AssertionError("Unknown MessageSet type: " +
                     messageSet.getClass().getSimpleName());
         }
@@ -139,20 +139,20 @@ public final class ProxyClient implements Bezirk {
         intentSender.sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE, zirkId, messageSet));
     }
 
-    private void addMessagesToMap(MessageSet messageSet, Map<String,
-            List<EventSet.EventReceiver>> listenerMap, EventSet.EventReceiver listener) {
-        for (String messageName : messageSet.getMessages()) {
+    private void addMessagesToMap(EventSet eventSet, Map<String,
+            List<EventSet>> listenerMap) {
+        for (String messageName : eventSet.getMessages()) {
             if (listenerMap.containsKey(messageName)) {
-                List<EventSet.EventReceiver> zirkList = listenerMap.get(messageName);
-                if (zirkList.contains(listener)) {
-                    throw new IllegalArgumentException("The assigned listener is already in use for " + messageName);
+                List<EventSet> eventSetList = listenerMap.get(messageName);
+                if (eventSetList.contains(eventSet)) {
+                    throw new IllegalArgumentException("The eventSet is already in use for " + messageName);
                 } else {
-                    zirkList.add(listener);
+                    eventSetList.add(eventSet);
                 }
             } else {
-                List<EventSet.EventReceiver> listenerList = new ArrayList<>();
-                listenerList.add(listener);
-                listenerMap.put(messageName, listenerList);
+                List<EventSet> eventSetList = new ArrayList<>();
+                eventSetList.add(eventSet);
+                listenerMap.put(messageName, eventSetList);
             }
         }
     }
@@ -177,13 +177,22 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public boolean unsubscribe(final MessageSet messageSet) {
+        if (messageSet == null) {
+            Log.w(TAG, "Unsubscribing from all MessageSet(s) using null is currently not implemented. To unsubscribe from all subscriptions, call this method by passing the reference to the each MessageSet");
+            return false;
+        }
+        for (List<EventSet> eventSets : eventSetMap.values()) {
+            if (eventSets.contains(messageSet)) {
+                eventSets.remove(messageSet);
+            }
+        }
         return intentSender.sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId,
                 messageSet));
     }
 
     @Override
     public void sendEvent(Event event) {
-        Log.d(TAG,"sendEvent One....");
+        Log.d(TAG, "sendEvent One....");
         sendEvent(new RecipientSelector(new Location("null/null/null")), event);
     }
 

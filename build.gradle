@@ -38,7 +38,8 @@
  * 3.0.0-alpha+019 cleaning lintOptions in android projects. Should fix InvalidPackage lint issue for zirk developers using android aar.
  * 3.0.0-alpha+020 jp2p usage of comms for android. Used for party.
  * 3.0.0-alpha+021 https://github.com/Bezirk-Bosch/Middleware/milestone/3
- * 3.0.0-alpha+021 https://github.com/Bezirk-Bosch/Middleware/milestone/5 (issues #110 #111)
+ * 3.0.0-alpha+022 https://github.com/Bezirk-Bosch/Middleware/milestone/5 (issues #110 #111)
+ * 3.0.0-alpha+023 https://github.com/Bezirk-Bosch/Middleware/milestone/4 (issues #106 #107)
  */
 buildscript {
     repositories {
@@ -68,7 +69,7 @@ allprojects {
     apply plugin: 'maven'
     apply plugin: 'distribution'
     group = 'com.bezirk'
-    version = "3.0.0-alpha+022"
+    version = "3.0.0-alpha+023"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
