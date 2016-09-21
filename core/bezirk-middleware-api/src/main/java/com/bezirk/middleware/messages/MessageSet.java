@@ -3,6 +3,7 @@ package com.bezirk.middleware.messages;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Base class for creating sets of messages that a Zirk wants to receive. Bezirk uses topic-based
@@ -70,12 +71,14 @@ import java.util.Set;
  */
 public abstract class MessageSet implements Serializable {
     private final Set<String> messageClassList = new HashSet<>();
+    private final String setId;
 
     @SafeVarargs
     public MessageSet(Class<? extends Message>... m) {
         for (Class<? extends Message> messageClass : m) {
             messageClassList.add(messageClass.getName());
         }
+        this.setId = UUID.randomUUID().toString();
     }
 
     /**
@@ -102,5 +105,25 @@ public abstract class MessageSet implements Serializable {
     } */
     public Set<String> getMessages() {
         return messageClassList;
+    }
+
+    public String getSetId() {
+        return setId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MessageSet that = (MessageSet) o;
+
+        return setId.equals(that.setId);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return setId.hashCode();
     }
 }
