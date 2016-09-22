@@ -11,16 +11,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
 /**
  * Created by Vimal on 11/12/2015.
  * New wire message will contain the control / even ledger message to send and receive
- * FIXME: Move this to Java Common
  */
 public class WireMessage implements Serializable {
     public static final Logger logger = LoggerFactory.getLogger(WireMessage.class);
@@ -188,20 +185,6 @@ public class WireMessage implements Serializable {
 
     public void setWireMsgStatus(WireMsgStatus wireMsgStatus) {
         this.wireMsgStatus = wireMsgStatus;
-    }
-
-
-    //refer : http://stackoverflow.com/questions/10572398/how-can-i-easily-compress-and-decompress-strings-to-from-byte-arrays
-    public byte[] compress(byte[] input) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            OutputStream out = new DeflaterOutputStream(baos);
-            out.write(input);
-            out.close();
-        } catch (IOException e) {
-            throw new AssertionError(e);
-        }
-        return baos.toByteArray();
     }
 
     // wire format is serialized
