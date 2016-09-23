@@ -72,7 +72,7 @@ public abstract class BezirkMiddleware {
      */
     public static synchronized Bezirk registerZirk(@NotNull final String zirkName) {
         if (serviceManager == null || !serviceManager.isStarted()) {
-            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk service using BezirkMiddleware.start(Context)");
+            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk service using BezirkMiddleware.initialize(Context) or BezirkMiddleware.initialize(Context, Config)");
         }
         ZirkId zirkId = ProxyClient.registerZirk(context, zirkName, intentSender);
         return zirkId == null ? null : new ProxyClient(zirkId);
