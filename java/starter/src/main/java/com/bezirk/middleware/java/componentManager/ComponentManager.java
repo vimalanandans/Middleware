@@ -140,8 +140,8 @@ public class ComponentManager {
             if (logger.isDebugEnabled()) logger.debug("Reusing identity {}", aliasString);
             identityManager.createAndSetIdentity(aliasString);
         }
-        Application.launch(QRCodeGenerator.class, new Gson().toJson(identityManager.getAlias()));
-
+        //generate QR code containing the identity
+        //Application.launch(QRCodeGenerator.class, new Gson().toJson(identityManager.getAlias()));
     }
 
     public void start() {

@@ -7,6 +7,11 @@ import org.junit.Test;
 import javafx.application.Application;
 
 public class QRCodeGeneratorTest {
+
+    /**
+     * Tests are commented as they break on jenkins
+     */
+
     //@Test
     public void test() {
         Application.launch(QRCodeGenerator.class, "Data to be displayed in QRCode");
