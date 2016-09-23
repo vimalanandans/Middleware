@@ -26,15 +26,15 @@ public class Main {
     private static void startAppication(int option) {
         switch (option) {
             case 1:
-                BezirkMiddleware.initialize();
+                init();
                 new Publisher();
                 break;
             case 2:
-                BezirkMiddleware.initialize();
+                init();
                 new Subscriber();
                 break;
             case 3:
-                BezirkMiddleware.initialize();
+                init();
                 new Publisher();
                 new Subscriber();
                 break;
@@ -43,8 +43,12 @@ public class Main {
                 return;
             default:
                 System.out.println("Invalid option selected, Exiting");
-
         }
+    }
+
+    private static void init() {
+        Config config = new Config.ConfigBuilder().setLogLevel(Config.Level.DEBUG).setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.INFO).create();
+        BezirkMiddleware.initialize(config);
     }
 
     public static String getHostName() {

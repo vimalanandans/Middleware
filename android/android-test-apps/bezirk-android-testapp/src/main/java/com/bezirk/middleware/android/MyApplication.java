@@ -10,9 +10,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Config config = new Config.ConfigBuilder().setLogLevel(Config.Level.DEBUG).setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.ERROR).create();
+        Config config = new Config.ConfigBuilder().setLogLevel(Config.Level.DEBUG).setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.INFO).create();
         BezirkMiddleware.initialize(this, config);
-  //      BezirkMiddleware.initialize(this);
+        //BezirkMiddleware.initialize(this);
         Log.d("MyApplication", "Application is starting");
     }
 }
