@@ -1,5 +1,6 @@
 package com.bezirk.middleware.java;
 
+import com.bezirk.middleware.core.proxy.Config;
 import com.bezirk.middleware.java.proxy.BezirkMiddleware;
 
 import java.net.InetAddress;

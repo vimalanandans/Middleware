@@ -17,6 +17,7 @@ import com.bezirk.middleware.core.streaming.StreamManager;
 import com.bezirk.middleware.core.streaming.Streaming;
 import com.bezirk.middleware.identity.Alias;
 import com.bezirk.middleware.java.device.JavaDevice;
+import com.bezirk.middleware.java.logging.LoggingManager;
 import com.bezirk.middleware.java.networking.JavaNetworkManager;
 import com.bezirk.middleware.java.persistence.DatabaseConnectionForJava;
 import com.bezirk.middleware.java.ui.QRCodeGenerator;
@@ -26,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
 import java.util.prefs.Preferences;
 
 import ch.qos.logback.classic.Level;
@@ -70,10 +72,8 @@ public class ComponentManager {
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         lifecyleObservable = new LifeCycleObservable();
 
-        if (Configuration.isLoggingEnabled()) {
-            ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
-            root.setLevel(Level.DEBUG);
-        }
+        LoggingManager loggingManager = new LoggingManager(config);
+        loggingManager.configure();
 
         //initialize network manager for handling network management and getting network addressing information
         networkManager = new JavaNetworkManager();
