@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 public abstract class BezirkMiddleware {
     private static final Logger logger = LoggerFactory.getLogger(BezirkMiddleware.class);
     private static Context context;
-    private static boolean localBezirkService;
+    private static boolean localBezirkService = true;
     private static IntentSender intentSender;
     private static ServiceManager serviceManager;
 

@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
 import com.bezirk.middleware.android.device.AndroidDevice;
+import com.bezirk.middleware.android.logging.LoggingManager;
 import com.bezirk.middleware.android.networking.AndroidNetworkManager;
 import com.bezirk.middleware.android.persistence.DatabaseConnectionForAndroid;
 import com.bezirk.middleware.android.proxy.android.AndroidProxyServer;
@@ -55,7 +56,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private RegistryStorage registryStorage;
     private MessageHandler messageHandler;
     private LifeCycleObservable lifecyleObservable;
-
+    private Config config;
+    private LoggingManager loggingManager;
     private Device device;
     private PubSubBroker pubSubBroker;
     private RemoteLog remoteLog = null;
@@ -117,17 +119,13 @@ public final class ComponentManager extends Service implements LifeCycleCallback
                 this.identityString = startServiceAction.getIdentity();
                 logger.debug("Received identityString in component manager: " + identityString);
             }
+            config = startServiceAction.getConfig();
             create();
-
         }
 
-        Config config = startServiceAction.getConfig();
         startForeground(FOREGROUND_ID, buildForegroundNotification(config.getAppName(), config.getAppName() + " ON", R.drawable.bezirk_notification_icon));
 
         logger.debug("LifeCycleCallbacks:start");
-        //TODO add start implementations for modules
-        //currentState = LifecycleManager.LifecycleState.CREATED;
-        //lifecyleObservable.setState(LifecycleManager.LifecycleState.STARTED);
         lifecyleObservable.transition(LifeCycleObservable.Transition.START);
         currentState = lifecyleObservable.getState();
     }
@@ -135,21 +133,10 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     @Override
     public void stop(StopServiceAction stopServiceAction) {
         logger.debug("LifeCycleCallbacks:stop");
-        //TODO add stop implementations for modules
-        //currentState = LifecycleManager.LifecycleState.STOPPED;
-        //lifecyleObservable.setState(LifecycleManager.LifecycleState.STOPPED);
         lifecyleObservable.transition(LifeCycleObservable.Transition.STOP);
         currentState = lifecyleObservable.getState();
         stopSelf();
     }
-
-//    @Override
-//    public void destroy() {
-//        logger.debug("LifeCycleCallbacks:destroy");
-//        //TODO add destroy implementations for modules
-//        currentState = LifecycleManager.LifecycleState.DESTROYED;
-//        lifecyleObservable.setState(LifecycleManager.LifecycleState.DESTROYED);
-//    }
 
     public final Notification buildForegroundNotification(String appName, String status, int icon) {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this);
@@ -191,6 +178,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private final void create() {
         logger.debug("Creating Bezirk Service");
 
+        loggingManager = new LoggingManager(config);
+        loggingManager.configure();
 
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         //lifecyleObservable = new LifecycleManager();

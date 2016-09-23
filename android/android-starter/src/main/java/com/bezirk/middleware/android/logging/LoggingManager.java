@@ -1,7 +1,6 @@
-package com.bezirk.middleware.java.logging;
+package com.bezirk.middleware.android.logging;
 
 import com.bezirk.middleware.core.proxy.Config;
-import com.bezirk.middleware.java.componentManager.Configuration;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,6 @@ import ch.qos.logback.classic.Level;
 public class LoggingManager {
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LoggingManager.class);
-    private final static String LOG_LEVEL_ENV_VARIABLE = "loglevel";
     private final Config config;
 
     public LoggingManager(@NotNull final Config config) {
@@ -27,16 +25,10 @@ public class LoggingManager {
 
     private void configureBezirkRootLogging() {
         ch.qos.logback.classic.Logger rootLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
-        Config.Level level = getLevel(Configuration.getPropertyValue(LOG_LEVEL_ENV_VARIABLE));
-        Level logBackLevel;
-        if (level != null) {
-            logBackLevel = getLogbackLevel(level);
-        } else {
-            logBackLevel = getLogbackLevel(config.getLogLevel());
-        }
+        Level logBackLevel = getLogbackLevel(config.getLogLevel());
+
         rootLogger.setLevel(logBackLevel);
         logger.debug("BezirkRootLogging level set to '" + logBackLevel + "'");
-        //logger.info("BezirkRootLogging level set to '" + logBackLevel + "'"); //kept to test functionality, LoggingManagerTest
     }
 
     private void configurePackageLevelLogging() {
@@ -66,15 +58,4 @@ public class LoggingManager {
         return null;
     }
 
-    private static Config.Level getLevel(String s) {
-        if (s == null) {
-            return null;
-        }
-        for (Config.Level level : Config.Level.values()) {
-            if (level.name().equalsIgnoreCase(s)) {
-                return level;
-            }
-        }
-        return null;
-    }
 }
