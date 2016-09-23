@@ -26,15 +26,6 @@ public final class ServiceManager {
         }
     }
 
-    void start(@NotNull final Config config, @NotNull final String identity) {
-        if (intentSender.sendBezirkIntent(new StartServiceAction(config, identity))) {
-            logger.info("Bezirk is starting");
-            started = true;
-        } else {
-            logger.error("Unable to start Bezirk Service");
-        }
-    }
-
     void stop() {
         if (BezirkMiddleware.isLocalBezirkService()) {
             if (started) {

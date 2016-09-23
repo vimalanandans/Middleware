@@ -13,27 +13,9 @@ import org.slf4j.LoggerFactory;
 public abstract class BezirkMiddleware {
     private static final Logger logger = LoggerFactory.getLogger(BezirkMiddleware.class);
     private static Context context;
-    private static boolean localBezirkService;
+    private static boolean localBezirkService = true;
     private static IntentSender intentSender;
     private static ServiceManager serviceManager;
-
-    public static synchronized void initializeWithIdentity(@NotNull final Context context, final Config config, final String identity) {
-        BezirkMiddleware.context = context;
-
-        if (identity == null || identity.isEmpty()) {
-            throw new IllegalArgumentException("identity cannot be null or empty");
-        }
-
-        if (config == null) {
-            localBezirkService = (IntentSender.isBezirkAvailableOnDevice(context)) ? false : true;
-        } else {
-            logger.debug("Custom configuration passed when initializing bezirk, creating custom bezirk service. Is bezirk service local: " + localBezirkService);
-        }
-
-        intentSender = new IntentSender(context);
-        serviceManager = new ServiceManager(intentSender);
-        serviceManager.start((config == null) ? new Config() : config, identity);
-    }
 
     /**
      * Initializes and starts the bezirk {@link android.app.Service}.
@@ -90,7 +72,7 @@ public abstract class BezirkMiddleware {
      */
     public static synchronized Bezirk registerZirk(@NotNull final String zirkName) {
         if (serviceManager == null || !serviceManager.isStarted()) {
-            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk service using BezirkMiddleware.start(Context)");
+            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk service using BezirkMiddleware.initialize(Context) or BezirkMiddleware.initialize(Context, Config)");
         }
         ZirkId zirkId = ProxyClient.registerZirk(context, zirkName, intentSender);
         return zirkId == null ? null : new ProxyClient(zirkId);

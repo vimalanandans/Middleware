@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
 import com.bezirk.middleware.android.device.AndroidDevice;
+import com.bezirk.middleware.android.logging.LoggingManager;
 import com.bezirk.middleware.android.networking.AndroidNetworkManager;
 import com.bezirk.middleware.android.persistence.DatabaseConnectionForAndroid;
 import com.bezirk.middleware.android.proxy.android.AndroidProxyServer;
@@ -31,8 +32,6 @@ import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
 import com.bezirk.middleware.core.streaming.StreamManager;
 import com.bezirk.middleware.core.streaming.Streaming;
-import com.bezirk.middleware.identity.Alias;
-import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +54,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private RegistryStorage registryStorage;
     private MessageHandler messageHandler;
     private LifeCycleObservable lifecyleObservable;
-
+    private Config config;
+    private LoggingManager loggingManager;
     private Device device;
     private PubSubBroker pubSubBroker;
     private RemoteLog remoteLog = null;
@@ -112,22 +112,13 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     public void start(StartServiceAction startServiceAction) {
         //start bezirk is called for the first time
         if (currentState == null) {
-            //create bezirk
-            if (startServiceAction.getIdentity() != null) {
-                this.identityString = startServiceAction.getIdentity();
-                logger.debug("Received identityString in component manager: " + identityString);
-            }
+            config = startServiceAction.getConfig();
             create();
-
         }
 
-        Config config = startServiceAction.getConfig();
         startForeground(FOREGROUND_ID, buildForegroundNotification(config.getAppName(), config.getAppName() + " ON", R.drawable.bezirk_notification_icon));
 
         logger.debug("LifeCycleCallbacks:start");
-        //TODO add start implementations for modules
-        //currentState = LifecycleManager.LifecycleState.CREATED;
-        //lifecyleObservable.setState(LifecycleManager.LifecycleState.STARTED);
         lifecyleObservable.transition(LifeCycleObservable.Transition.START);
         currentState = lifecyleObservable.getState();
     }
@@ -135,21 +126,10 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     @Override
     public void stop(StopServiceAction stopServiceAction) {
         logger.debug("LifeCycleCallbacks:stop");
-        //TODO add stop implementations for modules
-        //currentState = LifecycleManager.LifecycleState.STOPPED;
-        //lifecyleObservable.setState(LifecycleManager.LifecycleState.STOPPED);
         lifecyleObservable.transition(LifeCycleObservable.Transition.STOP);
         currentState = lifecyleObservable.getState();
         stopSelf();
     }
-
-//    @Override
-//    public void destroy() {
-//        logger.debug("LifeCycleCallbacks:destroy");
-//        //TODO add destroy implementations for modules
-//        currentState = LifecycleManager.LifecycleState.DESTROYED;
-//        lifecyleObservable.setState(LifecycleManager.LifecycleState.DESTROYED);
-//    }
 
     public final Notification buildForegroundNotification(String appName, String status, int icon) {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this);
@@ -191,6 +171,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private final void create() {
         logger.debug("Creating Bezirk Service");
 
+        loggingManager = new LoggingManager(config);
+        loggingManager.configure();
 
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         //lifecyleObservable = new LifecycleManager();
@@ -233,45 +215,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
         pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, identityManager, null, null, streaming, remoteLog);
 
-
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
         //pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null, streaming);
-
-
-        //TODO cleanup identity manager initialization
-        //initialize the identity manager
-        identityManager = new BezirkIdentityManager();
-        final String aliasString = preferences.getString(ALIAS_KEY, null);
-        logger.debug("aliasString is " + aliasString);
-        logger.debug("identityString received is " + identityString);
-        final Gson gson = new Gson();
-        final Alias identity;
-
-        if (identityString != null) {
-            logger.debug("Using received identity" + identityString);
-            identity = gson.fromJson(aliasString, Alias.class);
-            logger.trace("Setting Bezirk identity in preferences");
-
-            SharedPreferences.Editor preferencesEditor = preferences.edit();
-            preferencesEditor.putString(ALIAS_KEY, gson.toJson(identity));
-            preferencesEditor.commit();
-        } else {
-            if (aliasString == null) {
-                identity = identityManager.createIdentity("BezirkUser");
-                identityManager.setIdentity(identity);
-
-                logger.trace("Created new Bezirk identity");
-
-                SharedPreferences.Editor preferencesEditor = preferences.edit();
-                preferencesEditor.putString(ALIAS_KEY, gson.toJson(identity));
-                preferencesEditor.commit();
-            } else {
-                logger.debug("Reusing identity" + aliasString);
-                identity = gson.fromJson(aliasString, Alias.class);
-            }
-        }
-
-        identityManager.setIdentity(identity);
 
         //initialize proxyServer responsible for managing incoming events from zirks
         proxyServer = new AndroidProxyServer(identityManager);
@@ -289,27 +234,22 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         //currentState = LifecycleManager.LifecycleState.CREATED;
     }
 
+    //initialize the identity manager
     void initializeIdentityManager() {
-        //initialize the identity manager
         identityManager = new BezirkIdentityManager();
         final String aliasString = preferences.getString(ALIAS_KEY, null);
         logger.debug("aliasString is " + aliasString);
 
-
         if (aliasString == null) {
             identityManager.createAndSetIdentity(aliasString);
-
             logger.trace("Created new Bezirk identity");
-
             SharedPreferences.Editor preferencesEditor = preferences.edit();
             preferencesEditor.putString(ALIAS_KEY, identityManager.getAliasString());
             preferencesEditor.commit();
         } else {
             logger.debug("Reusing identity" + aliasString);
-
             identityManager.createAndSetIdentity(aliasString);
         }
-
     }
 
 }

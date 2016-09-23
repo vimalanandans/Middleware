@@ -23,6 +23,40 @@ public class Configuration {
     }
 
     /**
+     * Returns value of the propKey if set as a System Environment variable or passed as an JVM argument. If {@code propKey} is set as a JVM argument the method returns the value else it checks for the {@code propKey} in system variables.
+     *
+     * @param propKey
+     * @return {@code String} value of the {@code propKey} passed if set in the JVM or System variable with key as {@code propKey}
+     */
+    public static String getPropertyValue(String propKey) {
+        String propValue = getPropertyValueSetInJVM(propKey);
+        if (propValue == null) {
+            propValue = getPropertyValueSetInSystem(propKey);
+        }
+        return propValue;
+    }
+
+    private static String getPropertyValueSetInSystem(String propKey) {
+        String propValue = null;
+        try {
+            propValue = System.getenv(propKey);
+        } catch (SecurityException e) {
+            logger.warn("Unable to access system variable " + propKey + " " + e.getMessage());
+        }
+        return propValue;
+    }
+
+    private static String getPropertyValueSetInJVM(String propKey) {
+        String propValue = null;
+        try {
+            propValue = System.getProperty(propKey);
+        } catch (SecurityException e) {
+            logger.warn("Unable to access jvm variable " + propKey + " " + e.getMessage());
+        }
+        return propValue;
+    }
+
+    /**
      * Check if a property is enabled to true in JVM.
      *
      * @param propKey property set in the JVM
