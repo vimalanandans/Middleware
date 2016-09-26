@@ -133,26 +133,4 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
             }
         }
     }
-
-    private boolean checkDuplicateStream(final String sid, final int streamId) {
-        final String key = sid + ":" + streamId;
-        final Long currentTime = new Date().getTime();
-        if (duplicateStreamMap.containsKey(key)) {
-            if (currentTime - duplicateStreamMap.get(key) > TIME_DURATION) {
-                duplicateStreamMap.remove(key);
-                duplicateStreamMap.put(key, currentTime);
-                return true;
-            } else
-                return false;
-        } else {
-            duplicateStreamMap.put(key, currentTime);
-
-            if (duplicateStreamMap.size() < MAX_MAP_SIZE) {
-                return true;
-            } else {
-                duplicateStreamMap.remove(duplicateStreamMap.keySet().iterator().next());
-                return true;
-            }
-        }
-    }
 }
