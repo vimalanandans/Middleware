@@ -3,6 +3,8 @@ package com.bezirk.middleware.core.actions;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 public class RegisterZirkAction extends ZirkAction {
+
+    private static final long serialVersionUID = 3741338959971855300L;
     private final String zirkName;
 
     public RegisterZirkAction(ZirkId zirkId, String zirkName) {

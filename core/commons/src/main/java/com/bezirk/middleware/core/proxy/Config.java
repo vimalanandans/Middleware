@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Config implements Serializable {
+    private static final long serialVersionUID = 2330364021536661076L;
     private static final String DEFAULT_GROUP_NAME = "BEZIRK_GROUP";
     private static final String DEFAULT_APP_NAME = "Bezirk";
     private static final Level DEFAULT_LOG_LEVEL = Level.ERROR;

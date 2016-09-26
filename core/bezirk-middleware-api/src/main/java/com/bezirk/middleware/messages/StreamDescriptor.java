@@ -15,6 +15,8 @@ import java.io.File;
  * @see Event
  */
 public class StreamDescriptor extends Message {
+
+    private static final long serialVersionUID = -9093454918659207882L;
     /**
      * Subclass sets to <code>true</code> if the payload can be processed incrementally (e.g. a
      * music stream) or <code>false</code> if all data elements must be received before processing

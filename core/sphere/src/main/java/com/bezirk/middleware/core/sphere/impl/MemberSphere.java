@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * @author Rishabh Gulati
  */
-public final class MemberSphere extends com.bezirk.middleware.core.sphere.impl.Sphere implements Serializable {
+public final class MemberSphere extends Sphere implements Serializable {
     private static final long serialVersionUID = 4338578155881822594L;
     /**
      * Used to identify if the sphere was a sharable sphere of another device

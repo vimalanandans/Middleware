@@ -10,7 +10,7 @@ import java.util.LinkedHashMap;
 /**
  * @author Rishabh Gulati
  */
-public final class OwnerSphere extends com.bezirk.middleware.core.sphere.impl.Sphere implements Serializable {
+public final class OwnerSphere extends Sphere implements Serializable {
     private static final long serialVersionUID = 8307802592890417699L;
 
     public OwnerSphere() {

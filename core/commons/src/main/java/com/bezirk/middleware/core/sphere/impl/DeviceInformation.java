@@ -10,9 +10,6 @@ import java.io.Serializable;
  */
 public class DeviceInformation implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -7659289630471500105L;
 
     private String deviceName;

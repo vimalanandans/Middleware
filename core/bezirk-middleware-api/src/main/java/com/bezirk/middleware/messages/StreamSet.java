@@ -11,6 +11,8 @@ import java.io.PipedOutputStream;
  * to a small set of ad hoc streams. See {@link MessageSet} for examples.
  */
 public class StreamSet extends MessageSet {
+
+    private static final long serialVersionUID = 3461827337792455818L;
     private transient StreamReceiver receiver;
 
     @SafeVarargs

@@ -28,7 +28,9 @@ import java.io.Serializable;
  * @see Location
  */
 public class RecipientSelector implements Serializable {
+
     private static final Gson gson;
+    private static final long serialVersionUID = -6831867323290640758L;
 
     static {
         final GsonBuilder builder = new GsonBuilder();

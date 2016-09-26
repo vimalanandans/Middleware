@@ -18,7 +18,9 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 
 public class SubscriptionAction extends ZirkAction {
+
     private static final Gson gson;
+    private static final long serialVersionUID = -5818106760459744698L;
 
     static {
         final GsonBuilder gsonBuilder = new GsonBuilder();

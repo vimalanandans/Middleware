@@ -24,7 +24,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * Registry Class that deals with all the maps
  */
 public class PubSubBrokerRegistry implements Serializable {
+    private static final long serialVersionUID = -2245727406798376754L;
+
     private static final Logger logger = LoggerFactory.getLogger(PubSubBrokerRegistry.class);
+
     /**
      * Stores the list of Registered ZirkId's of the Zirks.
      */

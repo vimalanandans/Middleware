@@ -4,6 +4,8 @@ import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 public abstract class EventAction extends ZirkAction {
+
+    private static final long serialVersionUID = 7767357774933115392L;
     private final String serializedEvent;
     private final String messageId;
     private final String eventName;

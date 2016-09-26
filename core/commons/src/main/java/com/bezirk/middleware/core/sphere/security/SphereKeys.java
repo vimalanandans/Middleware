@@ -6,6 +6,8 @@ import java.util.Arrays;
 
 public final class SphereKeys implements Serializable {
 
+
+    private static final long serialVersionUID = 6032713440561575641L;
     /**
      * The key used for encrypting all the sphere information
      */

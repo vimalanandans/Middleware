@@ -21,11 +21,12 @@ import java.io.Serializable;
  * transfer/reception.
  */
 public abstract class Message implements Serializable {
+    private static final long serialVersionUID = 448363597771246254L;
     private static Gson gson;
     private String msgId;
 
-    //defualt value
-    private static final long serialVersionUID = 1L;
+
+    //private static final long serialVersionUID = 1L;
 
     static {
         final GsonBuilder gsonBuilder = new GsonBuilder();
@@ -44,7 +45,7 @@ public abstract class Message implements Serializable {
      *     //create gson builder
      *     GsonBuilder builder = new GsonBuilder();
      *     RuntimeTypeAdapterFactory &lt;Interface&gt; interfaceAdapter = RuntimeTypeAdapterFactory.of(Interface.class);
-     *     qualityAdapter.registerSubtype(Implementation1.class).registerSubtype(Implementation2.class);
+     *     interfaceAdapter.registerSubtype(Implementation1.class).registerSubtype(Implementation2.class);
      *     builder.registerTypeAdapterFactory(interfaceAdapter);
      *
      *     //set builder

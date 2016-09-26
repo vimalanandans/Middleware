@@ -6,6 +6,8 @@ import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 public class UnicastEventAction extends EventAction {
+
+    private static final long serialVersionUID = -8287413093514019296L;
     private final BezirkAction action;
     private final ZirkEndPoint endpoint;
     private boolean isIdentified = false;

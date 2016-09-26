@@ -14,4 +14,6 @@ package com.bezirk.middleware.messages;
  * @see StreamDescriptor
  */
 public class Event extends Message {
+
+    private static final long serialVersionUID = 2069566077448432587L;
 }

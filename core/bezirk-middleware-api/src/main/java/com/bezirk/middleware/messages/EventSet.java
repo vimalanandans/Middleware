@@ -12,6 +12,8 @@ import java.util.logging.Logger;
  * to a small set of ad hoc events. See {@link MessageSet} for examples.
  */
 public class EventSet extends MessageSet {
+
+    private static final long serialVersionUID = 3824727820246453131L;
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(EventSet.class);
     private transient EventReceiver receiver;
 

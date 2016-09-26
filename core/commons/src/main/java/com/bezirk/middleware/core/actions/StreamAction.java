@@ -7,6 +7,8 @@ import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import java.io.File;
 
 public abstract class StreamAction extends ZirkAction {
+
+    private static final long serialVersionUID = 2456894243312933233L;
     private final ZirkEndPoint recipient;
     private StreamDescriptor descriptor;
     private final short streamId;

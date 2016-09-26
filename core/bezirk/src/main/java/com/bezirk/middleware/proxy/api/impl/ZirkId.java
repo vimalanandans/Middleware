@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 
 public final class ZirkId implements Serializable {
+
+    private static final long serialVersionUID = -6695395311323807495L;
     private final String zirkId;
     private String bezirkEventId;
 

@@ -36,6 +36,8 @@ import com.bezirk.middleware.identity.Alias;
  * </pre>
  */
 public class IdentifiedEvent extends Event {
+
+    private static final long serialVersionUID = 1259872377550330321L;
     private Alias alias;
 
     private boolean isMiddlewareUser;

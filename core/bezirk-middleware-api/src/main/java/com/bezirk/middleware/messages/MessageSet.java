@@ -70,6 +70,8 @@ import java.util.UUID;
  * @see StreamDescriptor
  */
 public abstract class MessageSet implements Serializable {
+
+    private static final long serialVersionUID = -6232492956322531924L;
     private final Set<String> messageClassList = new HashSet<>();
     private final String setId;
 

@@ -4,6 +4,7 @@ import com.bezirk.middleware.core.proxy.Config;
 
 public class StartServiceAction extends ServiceAction {
 
+    private static final long serialVersionUID = -729245176942825895L;
     private final Config config;
 
     public StartServiceAction(final Config config) {

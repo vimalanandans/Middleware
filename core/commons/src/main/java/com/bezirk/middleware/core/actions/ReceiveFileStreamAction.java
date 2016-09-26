@@ -6,6 +6,8 @@ import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import java.io.File;
 
 public final class ReceiveFileStreamAction extends ZirkAction {
+
+    private static final long serialVersionUID = 5232331060924538823L;
     private final String serializedStream;
     /**
      * Path to downloaded file.

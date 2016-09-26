@@ -4,6 +4,8 @@ import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 public class SetLocationAction extends ZirkAction {
+
+    private static final long serialVersionUID = -3253426082978826042L;
     private final Location location;
 
     public SetLocationAction(ZirkId zirkId, Location location) {
@@ -21,7 +23,7 @@ public class SetLocationAction extends ZirkAction {
     }
 
     @Override
-    public com.bezirk.middleware.core.actions.BezirkAction getAction() {
-        return com.bezirk.middleware.core.actions.BezirkAction.ACTION_BEZIRK_SET_LOCATION;
+    public BezirkAction getAction() {
+        return BezirkAction.ACTION_BEZIRK_SET_LOCATION;
     }
 }

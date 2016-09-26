@@ -19,6 +19,7 @@ import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
+import java.io.InvalidClassException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,13 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        ZirkAction message = (ZirkAction) intent.getSerializableExtra("message");
+        ZirkAction message;
+        try {
+            message = (ZirkAction) intent.getSerializableExtra("message");
+        } catch (Exception e) { //to prevent app crash due to  java.io.InvalidClassException
+            Log.w(TAG, e.getMessage());
+            return;
+        }
 
         if (isValidRequest(message.getZirkId())) {
             switch (message.getAction()) {

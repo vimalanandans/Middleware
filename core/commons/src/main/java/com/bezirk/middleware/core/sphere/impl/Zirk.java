@@ -4,14 +4,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * @author Rishabh Gulati
- */
 public abstract class Zirk implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -2130386016234942372L;
     // set of sphereID's the zirk is a part of
     private HashSet<String> sphereSet;

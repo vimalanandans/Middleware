@@ -12,6 +12,8 @@ import java.util.Arrays;
  * are created and managed by the middleware.
  */
 public class Alias implements Serializable {
+
+    private static final long serialVersionUID = -7970996737976317494L;
     private final String name;
     private final byte[] hash;
 
