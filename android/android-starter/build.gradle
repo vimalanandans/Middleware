@@ -40,7 +40,6 @@ dependencies {
     compile project(':core:control-messages')
     compile project(':core:commons')
     compile project(':core:identity-management')
-    compile project(':core:sphere')
     compile project(':core:data-storage')
     compile project(':core:streaming')
     compile project(':core:remote-logging')

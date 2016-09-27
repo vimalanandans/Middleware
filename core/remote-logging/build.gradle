@@ -11,5 +11,5 @@ dependencies {
     compile project(':core:commons')
     compile project(':core:control-messages')
     testCompile 'junit:junit:4.12'
-    compile project(path: ':core:sphere')
+    //compile project(path: ':core:sphere')
 }

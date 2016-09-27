@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.bezirk.middleware.android.ui.R;
 import com.bezirk.middleware.core.actions.BezirkAction;
-import com.bezirk.middleware.core.sphere.api.DevMode;
 import com.bezirk.middleware.core.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -276,23 +275,23 @@ class DeviceControlActivityHelper {
     /**
      * Update/add the development mode information to the list
      */
-    void updateList(DevMode.Mode mode, List<DataModel> listData) {
-        if(mode == null)
-            return;
-
-        logger.debug("mode received: " + mode);
-
-
-        boolean switchState = false;
-        switch (mode) {
-            case ON:
-                switchState = true;
-                break;
-            default:
-        }
-        listData.add(new DataModel(R.drawable.ic_action_dev_mode, "Developer Mode",
-                "Common sphere across devices", true, switchState, false));
-
-    }
+//    void updateList(DevMode.Mode mode, List<DataModel> listData) {
+//        if(mode == null)
+//            return;
+//
+//        logger.debug("mode received: " + mode);
+//
+//
+//        boolean switchState = false;
+//        switch (mode) {
+//            case ON:
+//                switchState = true;
+//                break;
+//            default:
+//        }
+//        listData.add(new DataModel(R.drawable.ic_action_dev_mode, "Developer Mode",
+//                "Common sphere across devices", true, switchState, false));
+//
+//    }
 
 }
