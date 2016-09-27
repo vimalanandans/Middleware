@@ -116,7 +116,7 @@ class ControlActivityHelper {
         }
     }
 
-    private void showAlertDialogToShowSystemStatus() {
+    protected void showAlertDialogToShowSystemStatus() {
         AlertDialog.Builder builder = new AlertDialog.Builder(controlActivity);
         builder.setTitle("STACK STATUS");
         View alertView = LayoutInflater.from(controlActivity).inflate(R.layout.layout_alert_dialog_system_status, null);
