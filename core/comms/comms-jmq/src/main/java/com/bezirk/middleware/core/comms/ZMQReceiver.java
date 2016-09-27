@@ -7,14 +7,11 @@ import org.zeromq.ZFrame;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMsg;
 
-import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -39,8 +36,8 @@ public class ZMQReceiver implements Runnable {
         this.backend = ctx.createSocket(ZMQ.DEALER);
 
         //initialize port in a separate thread to prevent NetworkOnMainThread issue on android
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<Integer> future = executor.submit(new Callable<Integer>() {
+        final ExecutorService executor = Executors.newSingleThreadExecutor();
+        final Future<Integer> future = executor.submit(new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
                 return frontend.bindToRandomPort("tcp://*", 0xc000, 0xffff);
@@ -49,19 +46,14 @@ public class ZMQReceiver implements Runnable {
         try {
             port = future.get(50, TimeUnit.MILLISECONDS);
             executor.shutdownNow();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            logger.error("Failed to shutdown ZMQReceiver port initialization executor", e);
         }
 
-        logger.debug("tcp port: " + port);
+        logger.debug("tcp port: {}", port);
         if (port == 0) {
             logger.debug("Incoming port is null, unable to start receiver");
             ctx.destroy();
-            return;
         }
     }
 

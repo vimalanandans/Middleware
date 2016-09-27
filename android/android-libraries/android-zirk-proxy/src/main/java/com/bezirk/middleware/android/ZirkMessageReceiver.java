@@ -19,11 +19,8 @@ import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
-import java.io.InvalidClassException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ZirkMessageReceiver extends BroadcastReceiver {
     private final String TAG = ZirkMessageReceiver.class.getName();
@@ -34,7 +31,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         try {
             message = (ZirkAction) intent.getSerializableExtra("message");
         } catch (Exception e) { //to prevent app crash due to  java.io.InvalidClassException
-            Log.w(TAG, e.getMessage());
+            Log.w(TAG, "Failed to read serialized message from intent", e);
             return;
         }
 

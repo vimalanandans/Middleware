@@ -23,7 +23,8 @@ public class IntentSender {
 
     public IntentSender(@NotNull final Context context) {
         this.context = context;
-        this.componentName = new ComponentName((BezirkMiddleware.isLocalBezirkService()) ? context.getPackageName() : COMPONENT_NAME, SERVICE_PKG_NAME);
+        this.componentName = new ComponentName(BezirkMiddleware.isLocalBezirkService() ?
+                context.getPackageName() : COMPONENT_NAME, SERVICE_PKG_NAME);
     }
 
     public boolean sendBezirkIntent(@NotNull Action action) {
@@ -38,7 +39,8 @@ public class IntentSender {
         intent.putExtra(actionName, action);
 
         if (context.startService(intent) == null) {
-            logger.error("Failed to send intent for action: " + actionName + ". Intents can be send only if bezirk service is started");
+            logger.error("Failed to send intent for action: {}. Intents can be send only if bezirk " +
+                    "service is started", actionName);
             return false;
         }
         return true;
@@ -83,7 +85,7 @@ public class IntentSender {
             logger.debug("Bezirk App available on the device, reusing existing bezirk service.");
         } catch (PackageManager.NameNotFoundException e) {
             installed = false;
-            logger.debug("Bezirk App not installed on the device.");
+            logger.debug("Bezirk App not installed on the device.", e);
         }
         return installed;
     }

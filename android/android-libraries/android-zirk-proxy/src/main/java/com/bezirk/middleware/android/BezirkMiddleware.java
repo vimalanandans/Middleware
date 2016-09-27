@@ -48,9 +48,10 @@ public abstract class BezirkMiddleware {
         BezirkMiddleware.context = context;
 
         if (config == null) {
-            localBezirkService = (IntentSender.isBezirkAvailableOnDevice(context)) ? false : true;
+            localBezirkService = !IntentSender.isBezirkAvailableOnDevice(context);
         } else {
-            logger.debug("Custom configuration passed when initializing bezirk, creating custom bezirk service. Is bezirk service local: " + localBezirkService);
+            logger.debug("Custom configuration passed when initializing bezirk, creating custom " +
+                    "bezirk service. Is bezirk service local: {}", localBezirkService);
         }
 
         intentSender = new IntentSender(context);
@@ -72,7 +73,9 @@ public abstract class BezirkMiddleware {
      */
     public static synchronized Bezirk registerZirk(@NotNull final String zirkName) {
         if (serviceManager == null || !serviceManager.isStarted()) {
-            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk service using BezirkMiddleware.initialize(Context) or BezirkMiddleware.initialize(Context, Config)");
+            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk " +
+                    "service using BezirkMiddleware.initialize(Context) or " +
+                    "BezirkMiddleware.initialize(Context, Config)");
         }
         ZirkId zirkId = ProxyClient.registerZirk(context, zirkName, intentSender);
         return zirkId == null ? null : new ProxyClient(zirkId);
