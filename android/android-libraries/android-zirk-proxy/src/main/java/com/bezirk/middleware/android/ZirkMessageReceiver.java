@@ -26,10 +26,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ZirkMessageReceiver extends BroadcastReceiver {
-    private static final int TIME_DURATION = 15000;
-    private static final int MAX_MAP_SIZE = 50;
-    private static final Map<String, Long> duplicateMsgMap = new ConcurrentHashMap<>();
-    private static final Map<String, Long> duplicateStreamMap = new ConcurrentHashMap<>();
     private final String TAG = ZirkMessageReceiver.class.getName();
 
     @Override
@@ -72,26 +68,22 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
 
     private void processEvent(UnicastEventAction incomingEvent) {
         final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
-        final String messageId = incomingEvent.getMessageId();
 
-        if (checkDuplicateMsg(endpoint.zirkId.getZirkId(), messageId)) {
-            final Event event = (Event) Message.fromJson(incomingEvent.getSerializedEvent());
-            final String eventName = event.getClass().getName();
+        final Event event = (Event) Message.fromJson(incomingEvent.getSerializedEvent());
+        final String eventName = event.getClass().getName();
 
-            if (incomingEvent.isIdentified()) {
-                ((IdentifiedEvent) event).setAlias(incomingEvent.getAlias());
-                ((IdentifiedEvent) event).setMiddlewareUser(incomingEvent.isMiddlewareUser());
-            }
-
-            if (ProxyClient.eventSetMap.containsKey(eventName)) {
-                final List<EventSet> eventSets = ProxyClient.eventSetMap.get(eventName);
-                for (EventSet eventSet : eventSets) {
-                    eventSet.getEventReceiver().receiveEvent(event, endpoint);
-                }
-            }
-        } else {
-            Log.e(TAG, "Duplicate Message, Dropping message");
+        if (incomingEvent.isIdentified()) {
+            ((IdentifiedEvent) event).setAlias(incomingEvent.getAlias());
+            ((IdentifiedEvent) event).setMiddlewareUser(incomingEvent.isMiddlewareUser());
         }
+
+        if (ProxyClient.eventSetMap.containsKey(eventName)) {
+            final List<EventSet> eventSets = ProxyClient.eventSetMap.get(eventName);
+            for (EventSet eventSet : eventSets) {
+                eventSet.getEventReceiver().receiveEvent(event, endpoint);
+            }
+        }
+
     }
 
     private void processStream(ReceiveFileStreamAction streamMessage) {
@@ -109,28 +101,6 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         }
     }
 
-    private boolean checkDuplicateMsg(final String sid, final String messageId) {
-        final String key = sid + ":" + messageId;
-        final Long currentTime = new Date().getTime();
-        if (duplicateMsgMap.containsKey(key)) {
-            if (currentTime - duplicateMsgMap.get(key) > TIME_DURATION) {
-                duplicateMsgMap.remove(key);
-                duplicateMsgMap.put(key, currentTime);
-                return true;
-            } else
-                return false;
-        } else {
-            duplicateMsgMap.put(key, currentTime);
-
-            if (duplicateMsgMap.size() < MAX_MAP_SIZE) {
-                return true;
-            } else {
-                duplicateMsgMap.remove(duplicateMsgMap.keySet().iterator().next());
-                return true;
-            }
-        }
-    }
-    
     private boolean isRequestForCurrentApp(final String zirkId) {
         SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(ProxyClient.context);
         Map<String, ?> keys = shrdPref.getAll();

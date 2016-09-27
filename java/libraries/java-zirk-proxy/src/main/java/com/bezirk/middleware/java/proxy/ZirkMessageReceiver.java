@@ -23,11 +23,6 @@ import java.util.Set;
 public class ZirkMessageReceiver implements BroadcastReceiver {
     private static final Logger logger = LoggerFactory.getLogger(ZirkMessageReceiver.class);
 
-    private static final int TIME_DURATION = 15000;
-    private static final int MAX_MAP_SIZE = 50;
-    private static final Map<String, Long> duplicateMsgMap = new LinkedHashMap<>();
-    private static final Map<String, Long> duplicateStreamMap = new LinkedHashMap<>();
-
     private final Map<ZirkId, Set<EventSet.EventReceiver>> eventMap;
     private final Map<String, Set<EventSet.EventReceiver>> eventListenerMap;
     private final Map<ZirkId, Set<StreamSet.StreamReceiver>> streamMap;
@@ -78,22 +73,17 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
 
         final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
 
-        //Make a combined zid for sender and recipient
-        final String combinedSid = endpoint.zirkId.getZirkId() + ":" + incomingEvent.getZirkId().getZirkId();
-        if (checkDuplicateMsg(combinedSid, incomingEvent.getMessageId())) {
-            final Set<EventSet.EventReceiver> tempEventSet = eventMap.get(incomingEvent.getZirkId());
-            final Set<EventSet.EventReceiver> tempMessageSet = eventListenerMap.get(eventName);
+        final Set<EventSet.EventReceiver> tempEventSet = eventMap.get(incomingEvent.getZirkId());
+        final Set<EventSet.EventReceiver> tempMessageSet = eventListenerMap.get(eventName);
 
-            if (tempEventSet != null && tempMessageSet != null) {
-                for (EventSet.EventReceiver invokingListener : tempEventSet) {
-                    if (tempMessageSet.contains(invokingListener)) {
-                        invokingListener.receiveEvent(event, endpoint);
-                    }
+        if (tempEventSet != null && tempMessageSet != null) {
+            for (EventSet.EventReceiver invokingListener : tempEventSet) {
+                if (tempMessageSet.contains(invokingListener)) {
+                    invokingListener.receiveEvent(event, endpoint);
                 }
             }
-        } else {
-            logger.info("Duplicate Event Received");
         }
+
     }
 
     /**
@@ -108,28 +98,6 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
         if (streamListenerMap.containsKey(streamName)) {
             for (StreamSet.StreamReceiver listener : streamListenerMap.get(streamName)) {
                 listener.receiveStream(streamDescriptor, incomingStream.getFile(), incomingStream.getSender());
-            }
-        }
-    }
-
-    private boolean checkDuplicateMsg(final String sid, final String messageId) {
-        final String key = sid + ":" + messageId;
-        final Long currentTime = new Date().getTime();
-        if (duplicateMsgMap.containsKey(key)) {
-            if (currentTime - duplicateMsgMap.get(key) > TIME_DURATION) {
-                duplicateMsgMap.remove(key);
-                duplicateMsgMap.put(key, currentTime);
-                return true;
-            } else
-                return false;
-        } else {
-            duplicateMsgMap.put(key, currentTime);
-
-            if (duplicateMsgMap.size() < MAX_MAP_SIZE) {
-                return true;
-            } else {
-                duplicateMsgMap.remove(duplicateMsgMap.keySet().iterator().next());
-                return true;
             }
         }
     }
