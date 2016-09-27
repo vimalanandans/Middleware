@@ -26,11 +26,10 @@ import java.util.List;
 
 public class DeviceControlActivity extends AppCompatActivity
         implements GenericListItemView.ItemToggleListener {
-    final Context context = this;
+    private final Context context = this;
     private static final Logger logger = LoggerFactory.getLogger(DeviceControlActivity.class);
     // UI Create
-    final List<DataModel> listData = new ArrayList<>();
-    private GenericListItemView adapter;
+    private final List<DataModel> listData = new ArrayList<>();
     private DeviceControlActivityHelper deviceControlActivityHelper;
     private DeviceIntentReceiver deviceIntentReceiver;
 

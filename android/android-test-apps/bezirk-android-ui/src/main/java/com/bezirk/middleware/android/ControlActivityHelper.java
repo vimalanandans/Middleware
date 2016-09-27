@@ -33,7 +33,7 @@ class ControlActivityHelper {
     private final List<DataModel> listData = new ArrayList<>();
     private final String BR_SYSTEM_STATUS_ACTION = "com.bezirk.systemstatus";
     private final ControlActivity controlActivity;
-    boolean stackVersionMismatch;
+    protected boolean stackVersionMismatch;
     private String receivedBezirkVersion = BezirkVersion.BEZIRK_VERSION;
     /**
      * Broadcast receiver to receive the status from the stack if there is  a version mismatch
@@ -116,7 +116,7 @@ class ControlActivityHelper {
         }
     }
 
-    void showAlertDialogToShowSystemStatus() {
+    private void showAlertDialogToShowSystemStatus() {
         AlertDialog.Builder builder = new AlertDialog.Builder(controlActivity);
         builder.setTitle("STACK STATUS");
         View alertView = LayoutInflater.from(controlActivity).inflate(R.layout.layout_alert_dialog_system_status, null);

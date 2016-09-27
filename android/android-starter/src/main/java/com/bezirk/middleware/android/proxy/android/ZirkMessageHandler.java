@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 public class ZirkMessageHandler implements MessageHandler {
     private static final Logger logger = LoggerFactory.getLogger(ZirkMessageHandler.class);
 
-    final String FIRE_INTENT_ACTION = "com.bezirk.middleware.broadcast";
+    private static final String FIRE_INTENT_ACTION = "com.bezirk.middleware.broadcast";
     private final Context applicationContext;
 
     public ZirkMessageHandler(Context context) {

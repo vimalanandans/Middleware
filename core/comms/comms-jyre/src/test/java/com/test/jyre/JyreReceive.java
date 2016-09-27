@@ -10,7 +10,7 @@ import org.zyre.ZreMsg;
 public class JyreReceive {
 
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         ZreInterface inf = new ZreInterface();
         inf.join("Test");
         long start = System.currentTimeMillis();
