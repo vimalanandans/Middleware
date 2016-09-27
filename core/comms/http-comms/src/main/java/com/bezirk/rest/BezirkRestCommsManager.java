@@ -129,6 +129,8 @@ public class BezirkRestCommsManager {
         @Override
         public void run() {
             while (true) {
+                if (Thread.interrupted()) return;
+
                 if (requestQueue.peek() != null) {
                     bezirkComms.sendMessage(requestQueue.poll());
                 }

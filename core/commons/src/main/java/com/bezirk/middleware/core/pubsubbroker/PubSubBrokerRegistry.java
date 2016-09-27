@@ -31,27 +31,27 @@ public class PubSubBrokerRegistry implements Serializable {
     /**
      * Stores the list of Registered ZirkId's of the Zirks.
      */
-    protected final Set<ZirkId> zid = new HashSet<>();
+    private final Set<ZirkId> zid = new HashSet<>();
     /**
      * Stores the list of Zirks associated with MessageSets. Typically used in Discovery.
      * [Key -&gt; Value] = [MessageSet -&gt; [Set of ZirkIds]]
      */
-    protected final Map<MessageSet, Set<ZirkId>> subscriptionMap = new ConcurrentHashMap<>();
+    private final Map<MessageSet, Set<ZirkId>> subscriptionMap = new ConcurrentHashMap<>();
     /**
      * Stores the zirkIds mapped to the event topics. Typically used in Sending/ Receiving Event.
      * [Key -&gt; Value] = [eventTopic -&gt; [Set of ZirkIds]]
      */
-    protected final Map<String, Set<ZirkId>> eventMap = new ConcurrentHashMap<>();
+    private final Map<String, Set<ZirkId>> eventMap = new ConcurrentHashMap<>();
     /**
      * Stores the ZirkIds mapped to the stream topics. Typically used in Streaming.
      * [Key -&gt; Value] = [streamTopic -&gt; [Set of ZirkIds]]
      */
-    protected final Map<String, Set<ZirkId>> streamMap = new ConcurrentHashMap<>();
+    private final Map<String, Set<ZirkId>> streamMap = new ConcurrentHashMap<>();
     /**
      * Stores the location of the Zirkss.
      * [Key -&gt; Value] = [ZirkId -&gt; Location]
      */
-    protected final Map<ZirkId, Location> locationMap = new ConcurrentHashMap<>();
+    private final Map<ZirkId, Location> locationMap = new ConcurrentHashMap<>();
     /**
      * Default location used when a new zirk registers. Also used to check during location matching
      */

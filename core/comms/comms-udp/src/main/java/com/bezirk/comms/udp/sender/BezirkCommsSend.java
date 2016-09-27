@@ -166,8 +166,9 @@ public class BezirkCommsSend {
     private static boolean sendMulticast(byte[] sendData, boolean isEvent) {
         InetAddress ipAddress;
         DatagramPacket sendPacket;
+        DatagramSocket clientSocket = null;
         try {
-            DatagramSocket clientSocket = new DatagramSocket();
+            clientSocket = new DatagramSocket();
             if (isEvent) {
                 ipAddress = InetAddress.getByName(BezirkCommunications.getMULTICAST_ADDRESS());
                 sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, BezirkCommunications.getMULTICAST_PORT());
@@ -180,14 +181,10 @@ public class BezirkCommsSend {
             logger.debug("multicast Sent");
             return true;
 
-        } catch (UnknownHostException e) {
-            logger.error(" Problem sending Muliticasts", e);
-            return false;
-        } catch (SocketException e) {
-            logger.error(" Problem sending Muliticasts", e);
-            return false;
-        } catch (IOException e) {
-            logger.error(" Problem sending Muliticasts", e);
+        } catch (UnknownHostException | SocketException | IOException e) {
+            if (clientSocket != null) clientSocket.close();
+
+            logger.error(" Problem sending Unicast", e);
             return false;
         }
 
@@ -195,8 +192,9 @@ public class BezirkCommsSend {
 
     private static boolean sendUnicast(byte[] sendData, String address, boolean isEvent) {
         InetAddress ipAddress;
+        DatagramSocket clientSocket = null;
         try {
-            DatagramSocket clientSocket = new DatagramSocket();
+            clientSocket = new DatagramSocket();
             ipAddress = InetAddress.getByName(address);
             DatagramPacket sendPacket;
             if (isEvent)
@@ -207,13 +205,9 @@ public class BezirkCommsSend {
             clientSocket.close();
             return true;
 
-        } catch (UnknownHostException e) {
-            logger.error(" Problem sending Unicast", e);
-            return false;
-        } catch (SocketException e) {
-            logger.error(" Problem sending Unicast", e);
-            return false;
-        } catch (IOException e) {
+        } catch (UnknownHostException | SocketException | IOException e) {
+            if (clientSocket != null) clientSocket.close();
+
             logger.error(" Problem sending Unicast", e);
             return false;
         }

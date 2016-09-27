@@ -30,8 +30,9 @@ public class FileLogger {
     }
 
     public void handleLogMessage(RemoteLoggingMessage remoteLogMessage) {
+        FileWriter fileOut = null;
         try {
-            final FileWriter fileOut = new FileWriter(file);
+            fileOut = new FileWriter(file);
             final BufferedWriter out = new BufferedWriter(fileOut);
 
             out.write(getSphereNameFromSphereId(remoteLogMessage.sphereName) + " " +
@@ -42,6 +43,12 @@ public class FileLogger {
             out.close();
             fileOut.close();
         } catch (IOException e) {
+            try {
+                if (fileOut != null) fileOut.close();
+            } catch (IOException ex) {
+                logger.error("Failed to close remote logger FileOut after IOException", ex);
+            }
+
             if (logger.isErrorEnabled()) logger.error("Failed to write remote logger message to " +
                     "file " + file.getAbsolutePath(), e);
         }
