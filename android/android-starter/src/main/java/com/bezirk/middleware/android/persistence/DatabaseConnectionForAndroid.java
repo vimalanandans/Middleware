@@ -47,10 +47,13 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         dbConnectionSource = connectionSource;
         String internalMemoryPath = mContext.getFilesDir().getPath() + File.separator + PersistenceConstants.DB_FILE_NAME;
-        File tempDbFile = new File(internalMemoryPath);
+        final File tempDbFile = new File(internalMemoryPath);
         if (!tempDbFile.exists()) {
             try {
-                tempDbFile.createNewFile();
+                if (!tempDbFile.createNewFile()) {
+                    logger.error("Failed to create new temporary database file {}",
+                            tempDbFile.getAbsolutePath());
+                }
             } catch (IOException e) {
                 logger.error(e.getMessage(), e);
             }

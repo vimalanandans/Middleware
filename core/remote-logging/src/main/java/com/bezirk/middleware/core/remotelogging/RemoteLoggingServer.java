@@ -4,12 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
 
 /**
  * This is an Bezirk logging Zirk. All Platforms have to use this zirk to enable
@@ -19,11 +17,6 @@ import java.util.Date;
  * loads the serialized message into ReceiverQueue.
  */
 public class RemoteLoggingServer extends Thread {
-
-
-    /**
-     * private logger for the class
-     */
     private static final Logger logger = LoggerFactory.getLogger(RemoteLoggingServer.class);
     /**
      * TCP listening Port for the zirk. allocated automatically
@@ -37,22 +30,17 @@ public class RemoteLoggingServer extends Thread {
      * Socket at which the Zirk is listening
      */
     private ServerSocket serverSocket = null;
-
     private ReceiverQueueProcessor receiverQueueProcessor;
-
     private RemoteLoggingMessageNotification remoteLoggingMessageNotification = null;
-
     private boolean enableFileLogging;
 
-    private final Date currentDate = new Date();
     /**
      * setup the port.
-     *
      */
     public RemoteLoggingServer(RemoteLoggingMessageNotification remoteLoggingMessageNotification, boolean enableFileLogging) {
         this.remoteLoggingMessageNotification = remoteLoggingMessageNotification;
 
-      this.enableFileLogging = enableFileLogging;
+        this.enableFileLogging = enableFileLogging;
     }
 
     @Override
@@ -80,33 +68,26 @@ public class RemoteLoggingServer extends Thread {
     }
 
 
-
-    public int getPort()
-    {
+    public int getPort() {
         return listeningPort;
     }
 
     /**
      * Starts the Logging Zirk
-     *
-     * @throws IOException if socket is unavailable.
      */
     public boolean startRemoteLoggingService() {
 
         // find a free port first
-        listeningPort  = startServer(listeningPort);
-        if(listeningPort == 0)
-        {
+        listeningPort = startServer(listeningPort);
+        if (listeningPort == 0) {
             logger.error("unable to allocate the free port for remote logging server");
             return false;
         }
 
-
-
         receiverQueueProcessor = new ReceiverQueueProcessor(remoteLoggingMessageNotification, enableFileLogging);
-        isRunning = receiverQueueProcessor.startProcessing();
+        receiverQueueProcessor.startProcessing();
 
-        logger.info("remote logging server started on "+ listeningPort);
+        logger.info("remote logging server started on " + listeningPort);
         isRunning = true;
         this.start();
         return true;
@@ -114,22 +95,21 @@ public class RemoteLoggingServer extends Thread {
 
     /***
      * Start the server and return the port
-     * @param portNumber
-     * @return
      */
-    int startServer(int portNumber)
-    {
-
+    private int startServer(int portNumber) {
         try {
             serverSocket = new ServerSocket(portNumber);
             serverSocket.setReuseAddress(true);
             portNumber = serverSocket.getLocalPort();
         } catch (IOException e) {
+            logger.error("Failed to start remote logging server", e);
         } finally {
             if (serverSocket != null) {
                 try {
                     serverSocket.close();
                 } catch (IOException e) {
+                    logger.error("Failed to close remote logging server socket after starting " +
+                            "server failed", e);
                 }
             }
         }
@@ -147,5 +127,4 @@ public class RemoteLoggingServer extends Thread {
         isRunning = false;
         serverSocket.close();
     }
-
 }

@@ -61,7 +61,7 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
             logger.debug("preferences is not null in Android network manager");
             return preferences.getString(NETWORK_INTERFACE_NAME_KEY, DEFAULT_ANDROID_INTERFACE);
         } else {
-            logger.debug("preferrences is null");
+            logger.debug("preferences is null");
             return null;
         }
 
@@ -78,13 +78,15 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
     public InetAddress getInetAddress() {
         logger.debug("getInetAddress of AndroidNetworkManager");
         try {
-            NetworkInterface networkInterface = NetworkInterface.getByName(getStoredInterfaceName());
+            final NetworkInterface networkInterface =
+                    NetworkInterface.getByName(getStoredInterfaceName());
             if (null != networkInterface) {
-                logger.debug("Network interface found for " + getStoredInterfaceName());
+                if (logger.isDebugEnabled())
+                    logger.debug("Network interface found for {}", getStoredInterfaceName());
                 return getIpForInterface(networkInterface);
             }
         } catch (SocketException e) {
-            e.printStackTrace();
+            logger.error("Failed to get the IP address of the AndroidNetworkManager", e);
         }
         return null;
     }

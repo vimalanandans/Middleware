@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 public class CommsFactory {
     private static final Logger logger = LoggerFactory.getLogger(CommsFactory.class);
 
-    com.bezirk.middleware.core.comms.CommsFeature activeComms = com.bezirk.middleware.core.comms.CommsFeature.COMMS_BEZIRK;
+    private CommsFeature activeComms = CommsFeature.COMMS_BEZIRK;
 
     public com.bezirk.middleware.core.comms.Comms getComms() {
 

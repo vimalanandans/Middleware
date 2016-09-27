@@ -15,39 +15,36 @@ import java.util.Date;
 import java.util.Locale;
 
 public class FileLogger {
-
     private static final Logger logger = LoggerFactory.getLogger(ReceiverQueueProcessor.class);
-    private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS", Locale.GERMANY);
     private static final String RECIPIENT_MULTICAST_VALUE = "MULTI-CAST";
-
+    private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS", Locale.GERMANY);
     private File file = null;
 
     public FileLogger() {
-        Date date = new Date();
-        String filePath;
+        final String filePath = DataPathConfig.getDataPath() + File.separator + "log" + File.separator;
 
-        filePath = DataPathConfig.getDataPath() + File.separator + "log" + File.separator;
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss",
+                Locale.getDefault());
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-
-        file = new File(filePath + dateFormat.format(date) + ".txt");
-
+        file = new File(filePath + dateFormat.format(new Date()) + ".txt");
     }
 
     public void handleLogMessage(RemoteLoggingMessage remoteLogMessage) {
-
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter(file));
+            final FileWriter fileOut = new FileWriter(file);
+            final BufferedWriter out = new BufferedWriter(fileOut);
 
-            out.write(getSphereNameFromSphereId(remoteLogMessage.sphereName) + " " + sdf.format(Long.valueOf(remoteLogMessage.timeStamp)) +
-                    " " + remoteLogMessage.sender + " " + getDeviceNameFromDeviceId(remoteLogMessage.recipient));
+            out.write(getSphereNameFromSphereId(remoteLogMessage.sphereName) + " " +
+                    sdf.format(Long.valueOf(remoteLogMessage.timeStamp)) + " " +
+                    remoteLogMessage.sender + " " +
+                    getDeviceNameFromDeviceId(remoteLogMessage.recipient));
+
             out.close();
-
+            fileOut.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            if (logger.isErrorEnabled()) logger.error("Failed to write remote logger message to " +
+                    "file " + file.getAbsolutePath(), e);
         }
-
-
     }
 
     private String getSphereNameFromSphereId(final String sphereId) {

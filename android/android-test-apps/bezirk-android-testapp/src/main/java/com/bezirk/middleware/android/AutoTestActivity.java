@@ -22,7 +22,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class AutoTestActivity extends AppCompatActivity {
-
     private TextView publisherTextView;
     private TextView subscriberTextView;
     private TextView resultTextView;
@@ -44,7 +43,7 @@ public class AutoTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auto_test);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -103,7 +102,7 @@ public class AutoTestActivity extends AppCompatActivity {
 
         //publish messages periodically
         new Timer().scheduleAtFixedRate(new TimerTask() {
-            int pollenLevel = 1;
+            private int pollenLevel = 1;
 
             @Override
             public void run() {

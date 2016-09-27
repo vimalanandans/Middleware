@@ -42,7 +42,6 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
     private static final String ALIAS_KEY = "aliasName";
 
-
     private SharedPreferences preferences;
     //private final Context context;
     private ActionProcessor actionProcessor;
@@ -63,7 +62,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private LifeCycleObservable.State currentState;
     private String identityString;
 
-    int FOREGROUND_ID = 1336;
+    private static final int FOREGROUND_ID = 1336;
 //                    service.startForeground(FOREGROUND_ID,
 //                            service.buildForegroundNotification("Bezirk ON"));
 
@@ -211,7 +210,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         initializeIdentityManager();
 
         //streaming manager
-        Streaming streaming = new StreamManager(comms, networkManager);
+        final Streaming streaming = new StreamManager(comms, networkManager);
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
         pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, identityManager, null, null, streaming, remoteLog);
 

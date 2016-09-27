@@ -1,12 +1,9 @@
 package com.bezirk.middleware.android;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,18 +18,15 @@ import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.android.testApp.R;
 import com.jaredrummler.android.device.DeviceName;
 
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class AdvancedTestActivity extends AppCompatActivity {
-
     private static final String LAUNCH_MESSAGE = "For Testing inter-app communication/inter-platform communication.\nLaunch Publisher/Subscriber Zirk.\nIf bezirk is installed in the device, the instance is reused.\nElse, local bezirk service is created.";
     private static final String deviceName = DeviceName.getDeviceName();
     private static final String PUBLISHER_ID = deviceName + ":AdvTest:Publisher";
     private static final String SUBSCRIBER_ID = deviceName + ":AdvTest:Subscriber";
     //private final int noOfMessageRounds = 1000; //Number of messages to be published [and get the response back for]
-    private TextView zirkLauncherTextView;
     private TextView messagesTextView;
     private Button publisherButton;
     private Button subscriberButton;
@@ -57,7 +51,7 @@ public class AdvancedTestActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        zirkLauncherTextView = (TextView) findViewById(R.id.zirk_launcher_tv);
+        final TextView zirkLauncherTextView = (TextView) findViewById(R.id.zirk_launcher_tv);
         zirkLauncherTextView.setText(LAUNCH_MESSAGE);
 
         messagesTextView = (TextView) findViewById(R.id.messages_tv);
@@ -146,7 +140,7 @@ public class AdvancedTestActivity extends AppCompatActivity {
         //publish messages periodically
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
-            int pollenLevel = 1;
+            private int pollenLevel = 1;
 
             @Override
             public void run() {

@@ -31,13 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StreamingActivity extends AppCompatActivity {
-
     private TextView mTextViewFilePath;
     public static final int RESULT_LOAD_VIDEO = 222;
     private String filePath;
     private Button send, discover;
     private ListView listView;
-    final List<StreamDataModel> list = new ArrayList();
+    private final List<StreamDataModel> list = new ArrayList();
     private StreamAdapter arrayAdapter;
     private static ZirkEndPoint recipientEndpoint;
     //checkBox to see if the Encryption is enabled!!!

@@ -17,10 +17,8 @@ import java.util.Date;
  * is received from the Logging Zirk.
  */
 public class RemoteLoggingClient {
-    /**
-     * private logger for the class
-     */
     private static final Logger logger = LoggerFactory.getLogger(RemoteLoggingClient.class);
+    private final Date currentDate = new Date();
     /**
      * Remote Logging Zirk IP
      */
@@ -29,35 +27,30 @@ public class RemoteLoggingClient {
      * Remote Logging Zirk Port
      */
     private int servicePort = -1;
-
-    /**/
-    NetworkManager networkManager;
+    private NetworkManager networkManager;
     /**
      * Processor for LogSenderQueue
      */
     private SenderQueueProcessor senderQueueProcessor = null;
 
-    private final Date currentDate = new Date();
-
-    RemoteLoggingClient(NetworkManager networkManager)
-    {
+    RemoteLoggingClient(NetworkManager networkManager) {
         this.networkManager = networkManager;
     }
 
-    /** cehck the client is already running */
-    public boolean isRunning()
-    {
-        if(senderQueueProcessor != null)
-            return true;
-        return false;
+    /**
+     * cehck the client is already running
+     */
+    public boolean isRunning() {
+        return senderQueueProcessor != null;
     }
+
     /**
      * Starts the client and the logger sender Processor.
      *
      * @param remoteIP - IP of the logging Zirk
      * @param port     - Port at which the logging Zirk is listening
      */
-    public boolean  startClient(String remoteIP, int port) throws Exception {
+    public boolean startClient(String remoteIP, int port) throws Exception {
         this.serviceIP = remoteIP;
         this.servicePort = port;
         senderQueueProcessor = new SenderQueueProcessor(this.serviceIP, this.servicePort);
@@ -94,7 +87,6 @@ public class RemoteLoggingClient {
     public boolean updateClient(String newIP, int port) throws Exception {
 
         if (!this.serviceIP.equals(newIP) || this.servicePort != port) {
-
             stopClient(this.serviceIP, this.servicePort);
             return startClient(newIP, port);
         }
@@ -102,14 +94,14 @@ public class RemoteLoggingClient {
         return true;
     }
 
-    /** to send the incoming control message for logging */
+    /**
+     * to send the incoming control message for logging
+     */
     public boolean processLogInMessage(ControlMessage message) {
-
         boolean returnValue = false;
 
-        if (Util.checkSphere(message.getSphereId()) ) {
-
-            RemoteLoggingMessage remoteLoggingMessage = new RemoteLoggingMessage(
+        if (Util.checkSphere(message.getSphereId())) {
+            final RemoteLoggingMessage remoteLoggingMessage = new RemoteLoggingMessage(
                     message.getSphereId(),
                     String.valueOf(currentDate.getTime()),
                     networkManager.getDeviceIp(),
@@ -122,7 +114,7 @@ public class RemoteLoggingClient {
 
                 returnValue = true;
             } catch (InterruptedException e) {
-                logger.error(e.getMessage());
+                logger.error(e.getMessage(), e);
             }
         }
 
@@ -130,41 +122,28 @@ public class RemoteLoggingClient {
     }
 
 
-    /** to send the incoming event message for logging */
+    /**
+     * to send the incoming event message for logging
+     */
     public boolean processLogInMessage(Ledger ledger) {
+        if (!isRunning()) return false;
 
-        boolean returnValue = false;
+        final RemoteLoggingMessage remoteLoggingMessage;
 
-        if(isRunning() == false)
-            return returnValue;
-
-        RemoteLoggingMessage remoteLoggingMessage = null;
-
-        if(ledger instanceof EventLedger){
-            if((null!=((EventLedger) ledger).getHeader())){
-                logger.debug("Header is set "+((EventLedger) ledger).getHeader().toString());
-                if(null!=((EventLedger) ledger).getHeader().getSphereId()){
-                    logger.debug("sphere id is "+((EventLedger) ledger).getHeader().getSphereId());
+        if (ledger instanceof EventLedger) {
+            if ((null != ((EventLedger) ledger).getHeader())) {
+                logger.debug("Header is set " + ((EventLedger) ledger).getHeader().toString());
+                if (null != ((EventLedger) ledger).getHeader().getSphereId()) {
+                    logger.debug("sphere id is " + ((EventLedger) ledger).getHeader().getSphereId());
                 }
             }
 
             remoteLoggingMessage = new RemoteLoggingMessage(((EventLedger) ledger).getHeader().getSphereId(),
-                    String.valueOf(currentDate.getTime()),networkManager.getDeviceIp(),
+                    String.valueOf(currentDate.getTime()), networkManager.getDeviceIp(),
                     Util.CONTROL_RECEIVER_VALUE, ((EventLedger) ledger).getHeader().getUniqueMsgId(),
                     Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION);
-
-            try {
-
-                senderQueueProcessor.processLogOutMessage(remoteLoggingMessage.serialize());
-
-                returnValue = true;
-
-            } catch (InterruptedException e) {
-                logger.error(e.getMessage());
-            }
-        }else if(ledger instanceof ControlLedger){
-            if(Util.checkSphere(((ControlLedger) ledger).getSphereId()))
-            {
+        } else if (ledger instanceof ControlLedger) {
+            if (Util.checkSphere(((ControlLedger) ledger).getSphereId())) {
                 remoteLoggingMessage = new RemoteLoggingMessage(
                         ((ControlLedger) ledger).getSphereId(),
                         String.valueOf(currentDate.getTime()),
@@ -173,15 +152,23 @@ public class RemoteLoggingClient {
                         ((ControlLedger) ledger).getMessage().getUniqueKey(),
                         Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
                         Util.LOGGING_VERSION);
-                try {
-                    senderQueueProcessor.processLogOutMessage(remoteLoggingMessage.serialize());
-                    returnValue = true;
-                } catch (InterruptedException e) {
-                    logger.error(e.getMessage());
-                }
+            } else {
+                remoteLoggingMessage = null;
+            }
+        } else {
+            remoteLoggingMessage = null;
+        }
+
+        if (remoteLoggingMessage != null) {
+            try {
+                senderQueueProcessor.processLogOutMessage(remoteLoggingMessage.serialize());
+                return true;
+            } catch (InterruptedException e) {
+                logger.error(e.getMessage(), e);
             }
         }
-        return returnValue;
+
+        return false;
     }
 
 }

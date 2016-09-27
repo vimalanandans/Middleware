@@ -20,18 +20,12 @@ public class ReceiverQueueProcessor implements Runnable {
      * Platform specific logger
      */
     private final RemoteLoggingMessageNotification platformSpecificLogger;
+    FileLogger fileLogger = null;
     /**
      * Flag used for starting/ Stopping Threads!
      */
     private boolean isRunning = false;
-    /**
-     * Gson to fromJson into RemoteLogMessage
-     */
     private Gson gson = null;
-
-    FileLogger fileLogger = null;
-
-
     /**
      * Blocking Queue that is used to queue logger messages at the Logging Zirk.
      *
@@ -48,10 +42,10 @@ public class ReceiverQueueProcessor implements Runnable {
     public ReceiverQueueProcessor(RemoteLoggingMessageNotification logger, boolean enableFileLogging) {
         this.platformSpecificLogger = logger;
 
-        if(enableFileLogging == true)
-        {
+        if (enableFileLogging) {
             fileLogger = new FileLogger();
         }
+
         gson = new Gson();
     }
 
@@ -68,7 +62,7 @@ public class ReceiverQueueProcessor implements Runnable {
                         platformSpecificLogger.handleLogMessage(logMsg);
 
                         // log into file
-                        if(fileLogger != null)
+                        if (fileLogger != null)
                             fileLogger.handleLogMessage(logMsg);
 
                     } else {
@@ -86,17 +80,15 @@ public class ReceiverQueueProcessor implements Runnable {
 
     /**
      * Starts Processing the LogReceiverQueue
-     *
      */
-    public boolean startProcessing() {
+    public void startProcessing() {
         logger.debug("startProcessing of Receiverqueueprocessor");
 
-        if(isRunning == false) {
-            Thread t = new Thread(this);
+        if (!isRunning) {
+            final Thread t = new Thread(this);
             t.start();
+            isRunning = true;
         }
-        isRunning = true;
-        return isRunning;
     }
 
     /**
@@ -109,8 +101,6 @@ public class ReceiverQueueProcessor implements Runnable {
     }
 
 
-
-
     /**
      * loads the serialized RemoteLogMessage into LogReceiverQueue
      *
@@ -119,7 +109,7 @@ public class ReceiverQueueProcessor implements Runnable {
      */
     void processLogInMessage(String serializedLogMsg) throws InterruptedException {
         if (logReceiverQueue == null) {
-            logReceiverQueue = new SynchronousQueue<String>();
+            logReceiverQueue = new SynchronousQueue<>();
         }
         logReceiverQueue.put(serializedLogMsg);
     }
@@ -132,7 +122,7 @@ public class ReceiverQueueProcessor implements Runnable {
      */
     StringBuilder getLogIncomingMessage() throws InterruptedException {
         if (logReceiverQueue == null) {
-            logReceiverQueue = new SynchronousQueue<String>();
+            logReceiverQueue = new SynchronousQueue<>();
         }
         return new StringBuilder(logReceiverQueue.take());
     }
