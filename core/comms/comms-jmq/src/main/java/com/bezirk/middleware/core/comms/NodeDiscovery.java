@@ -10,10 +10,10 @@ import java.util.UUID;
 
 public class NodeDiscovery {
     private static final Logger logger = LoggerFactory.getLogger(NodeDiscovery.class);
-    private static final String prefix = "bezirk";
-    private static final String SEPERATOR = "::";
-    private static final String beaconHost = "255.255.255.255";
-    private static final int beaconPort = 5670; // this is zyre port
+    private static final String PREFIX = "bezirk";
+    private static final String SEPARATOR = "::";
+    private static final String BEACON_HOST = "255.255.255.255";
+    private static final int BEACON_PORT = 5670; // this is zyre port
     private final Node node;
     private final Peers peers;
     private String beaconData;
@@ -27,7 +27,7 @@ public class NodeDiscovery {
 
     private void processBeacon(final InetAddress sender, final byte[] beacon) {
         String beaconString = new String(beacon);
-        String[] data = beaconString.split(SEPERATOR);
+        String[] data = beaconString.split(SEPARATOR);
 
         if (data.length == 4) // right format
         {
@@ -41,11 +41,11 @@ public class NodeDiscovery {
     }
 
     public void start() {
-        beaconData = prefix + SEPERATOR + node.getUuid().getLeastSignificantBits() +
-                SEPERATOR + node.getUuid().getMostSignificantBits() +
-                SEPERATOR + String.valueOf(node.getPort());
-        zbeacon = new ZBeacon(beaconHost, beaconPort, beaconData.getBytes(), false);
-        zbeacon.setPrefix(prefix.getBytes());
+        beaconData = PREFIX + SEPARATOR + node.getUuid().getLeastSignificantBits() +
+                SEPARATOR + node.getUuid().getMostSignificantBits() +
+                SEPARATOR + String.valueOf(node.getPort());
+        zbeacon = new ZBeacon(BEACON_HOST, BEACON_PORT, beaconData.getBytes(), false);
+        zbeacon.setPrefix(PREFIX.getBytes());
         zbeacon.setListener(new ZBeacon.Listener() {
             @Override
             public void onBeacon(InetAddress sender, byte[] beacon) {

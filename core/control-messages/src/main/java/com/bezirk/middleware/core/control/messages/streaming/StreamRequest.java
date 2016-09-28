@@ -15,7 +15,7 @@ public class StreamRequest extends UnicastControlMessage {
     /**
      * Discriminator that uniquely defines the Control message!
      */
-    private final static Discriminator discriminator = ControlMessage.Discriminator.StreamRequest;
+    private final static Discriminator discriminator = ControlMessage.Discriminator.STREAM_REQUEST;
     /**
      * Location that is used for MulticastStreamDescriptor
      */

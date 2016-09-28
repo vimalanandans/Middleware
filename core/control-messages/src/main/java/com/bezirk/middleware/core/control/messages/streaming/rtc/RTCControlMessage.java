@@ -12,7 +12,7 @@ public class RTCControlMessage extends UnicastControlMessage {
     /**
      * Discriminator that uniquely defines the Control message!
      */
-    private final static Discriminator discriminator = ControlMessage.Discriminator.RTCControlMessage;
+    private final static Discriminator discriminator = ControlMessage.Discriminator.RTC_CONTROL_MESSAGE;
     /**
      * Actual handshake message
      */
@@ -32,7 +32,9 @@ public class RTCControlMessage extends UnicastControlMessage {
      * @param msgType   Type of the RTC handshake message
      * @param rtcMsg    Actual message content
      */
-    public RTCControlMessage(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereId, String uniqueKey, RTCControlMessageType msgType, String rtcMsg) {
+    public RTCControlMessage(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient,
+                             String sphereId, String uniqueKey, RTCControlMessageType msgType,
+                             String rtcMsg) {
         super(sender, recipient, sphereId, discriminator, false, uniqueKey);
         this.setRtcMsg(rtcMsg);
         this.setMsgType(msgType);
@@ -78,6 +80,6 @@ public class RTCControlMessage extends UnicastControlMessage {
      * Different types of RTC handshake messages
      */
     public enum RTCControlMessageType {
-        RTCOffer, RTCAnswer, RTCCandidate, RTCSessionId
+        RTC_OFFER, RTC_ANSWER, RTC_CANDIDATE, RTC_SESSION_ID
     }
 }

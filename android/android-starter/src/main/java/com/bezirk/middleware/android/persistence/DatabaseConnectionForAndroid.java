@@ -21,19 +21,23 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
     private Dao<PersistenceRegistry, Integer> bezirkPersistenceDao;
 
     public DatabaseConnectionForAndroid(Context context) {
-        super(context, context.getFilesDir().getPath() + File.separator + PersistenceConstants.DB_FILE_NAME, null, DATABASE_VERSION);
+        super(context,
+                context.getFilesDir().getPath() + File.separator + PersistenceConstants.DB_FILE_NAME,
+                null, DATABASE_VERSION);
         mContext = context;
     }
 
     @Override
-    public ConnectionSource getDatabaseConnection() throws NullPointerException, SQLException, IOException {
+    public ConnectionSource getDatabaseConnection()
+            throws NullPointerException, SQLException, IOException {
         if (null == dbConnectionSource)
             dbConnectionSource = getPersistenceDAO().getConnectionSource();
         return dbConnectionSource;
     }
 
     @Override
-    public Dao<PersistenceRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException {
+    public Dao<PersistenceRegistry, Integer> getPersistenceDAO()
+            throws NullPointerException, SQLException, IOException {
         if (null == bezirkPersistenceDao) {
             bezirkPersistenceDao = getDao(PersistenceRegistry.class);
             bezirkPersistenceDao.setAutoCommit(true);
@@ -46,7 +50,8 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         dbConnectionSource = connectionSource;
-        String internalMemoryPath = mContext.getFilesDir().getPath() + File.separator + PersistenceConstants.DB_FILE_NAME;
+        final String internalMemoryPath = mContext.getFilesDir().getPath() + File.separator +
+                PersistenceConstants.DB_FILE_NAME;
         final File tempDbFile = new File(internalMemoryPath);
         if (!tempDbFile.exists()) {
             try {
@@ -61,7 +66,8 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource,
+                          int oldVersion, int newVersion) {
         //To be implemented
     }
 

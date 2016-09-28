@@ -28,7 +28,7 @@ public class ControlLedgerTest {
     private static final long lastSent = 10;
     private static final Integer numOfSends = 1;
     private static final Boolean retransmit = true;
-    private static final Discriminator discriminator = Discriminator.DiscoveryRequest;
+    private static final Discriminator discriminator = Discriminator.DISCOVERY_REQUEST;
     private static final String sphereId = "TestSphere";
     private static final ZirkId serviceId = new ZirkId("ServiceA");
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceId);

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import static org.junit.Assert.assertEquals;
 
 /**
- * This testCase verifies the MemberLeaveRequest by retrieving the field values after deserialization.
+ * This testCase verifies the MEMBER_LEAVE_REQUEST by retrieving the field values after deserialization.
  *
  * @author AJC6KOR
  */

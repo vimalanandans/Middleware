@@ -15,7 +15,7 @@ public class StreamResponse extends UnicastControlMessage {
     /**
      * Discriminator that uniquely defines the Control message!
      */
-    private final static Discriminator discriminator = ControlMessage.Discriminator.StreamResponse;
+    private final static Discriminator discriminator = ControlMessage.Discriminator.STREAM_RESPONSE;
 
     /**
      * Status of the Recipient. PENDING or READY or ADDRESSED or BUSY
@@ -33,7 +33,7 @@ public class StreamResponse extends UnicastControlMessage {
     public int streamPort = -1;
 
     /**
-     * This is StreamRequestKey that has to be set by taking the key from StreamRequest
+     * This is StreamRequestKey that has to be set by taking the key from STREAM_REQUEST
      */
     public String sReqKey;
 

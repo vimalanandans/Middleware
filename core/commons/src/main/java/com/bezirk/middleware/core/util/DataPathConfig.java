@@ -14,12 +14,16 @@ public class DataPathConfig {
     private static final Logger logger = LoggerFactory.getLogger(DataPathConfig.class);
     private static final String DATA = "data"; // name of data folder
     private static final String BEZIRK = "bezirk"; // name of folder for holding bezirk related data/database(s)
-    private static final String DATA_PATH_REL = DATA + File.separator + BEZIRK +  File.separator; // relative data path for bezirk folder
+    // relative data path for bezirk folder
+    private static final String DATA_PATH_REL = DATA + File.separator + BEZIRK +  File.separator;
 
-    private final static String DISPLAY_ENV_VARIABLE = "displayEnabled"; // variable set in gradle/environment to enable/disable sphere-mgmt display
-    private final static boolean DISPLAY_DEFAULT_VALUE = false; // default value of bezirk sphere-mgmt display
+    // variable set in gradle/environment to enable/disable sphere-mgmt display
+    private final static String DISPLAY_ENV_VARIABLE = "displayEnabled";
+    // default value of bezirk sphere-mgmt display
+    private final static boolean DISPLAY_DEFAULT_VALUE = false;
 
-    private final static String LOGGING_ENV_VARIABLE = "loggingEnabled"; // variable set in gradle/environment to enable/disable bezirk logs
+    // variable set in gradle/environment to enable/disable bezirk logs
+    private final static String LOGGING_ENV_VARIABLE = "loggingEnabled";
     private final static boolean LOGGING_DEFAULT_VALUE = false; // default value of bezirk logging
 
     private String dataPath; // holds the absolute path of the bezirk folder

@@ -28,7 +28,7 @@ public class MulticastControlMessageTest {
     private static final ZirkId serviceId = new ZirkId("ServiceA");
     private static final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(serviceId);
     private static final String key = "TESTKEY";
-    private static final Discriminator discriminator = Discriminator.DiscoveryRequest;
+    private static final Discriminator discriminator = Discriminator.DISCOVERY_REQUEST;
 
     /**
      * @throws java.lang.Exception

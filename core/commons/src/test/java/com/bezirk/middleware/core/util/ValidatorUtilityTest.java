@@ -86,30 +86,30 @@ public class ValidatorUtilityTest {
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
 
-        // FIXME: 8/1/2016  Punith: UnComment and fix the test case for changes to StreamRequest constructor.
-        /*StreamRequest request = new StreamRequest(sender, recipient, sphereId,
+        // FIXME: 8/1/2016  Punith: UnComment and fix the test case for changes to STREAM_REQUEST constructor.
+        /*STREAM_REQUEST request = new STREAM_REQUEST(sender, recipient, sphereId,
                 null, null, null, "testFile", true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
-        request = new StreamRequest(sender, recipient, sphereId,
+        request = new STREAM_REQUEST(sender, recipient, sphereId,
                 null, null, "testString", null, true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
-        request = new StreamRequest(sender, recipient, null,
+        request = new STREAM_REQUEST(sender, recipient, null,
                 null, null, "testString", "testFile", true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
-        request = new StreamRequest(null, recipient, sphereId,
+        request = new STREAM_REQUEST(null, recipient, sphereId,
                 null, null, "testString", "testFile", true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);
 
         BezirkZirkEndPoint recepient = new BezirkZirkEndPoint(new ZirkId("test"));
         recepient.device = "";
-        request = new StreamRequest(sender, recepient, sphereId,
+        request = new STREAM_REQUEST(sender, recepient, sphereId,
                 null, null, "testString", "testFile", true);
         isValid = ValidatorUtility.checkStreamRequest(request);
         assertFalse("Invalid streamRequest is considered valid by validator.", isValid);*/

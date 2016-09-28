@@ -22,7 +22,8 @@ public class AndroidProxyServer extends ProxyServer {
     public AndroidProxyServer(IdentityManager identityManager) { super(identityManager); }
 
     public void registerZirk(Intent intent) {
-        final RegisterZirkAction registrationAction = (RegisterZirkAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_REGISTER.getName());
+        final RegisterZirkAction registrationAction =
+                (RegisterZirkAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_REGISTER.getName());
 
         Log.v(TAG, "Zirk registration received by Bezirk. Name: " + registrationAction.getZirkName()
                 + ", ID: {}" + registrationAction.getZirkId());
@@ -33,7 +34,8 @@ public class AndroidProxyServer extends ProxyServer {
     public void subscribeService(Intent intent) {
         Log.v(TAG, "Received subscription from zirk");
 
-        final SubscriptionAction subscriptionAction = (SubscriptionAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_SUBSCRIBE.getName());
+        final SubscriptionAction subscriptionAction =
+                (SubscriptionAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_SUBSCRIBE.getName());
 
         super.subscribe(subscriptionAction);
     }
@@ -41,7 +43,8 @@ public class AndroidProxyServer extends ProxyServer {
     public void unsubscribeService(Intent intent) {
         Log.v(TAG, "Received unsubscribe from zirk");
 
-        final SubscriptionAction subscriptionAction = (SubscriptionAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE.getName());
+        final SubscriptionAction subscriptionAction =
+                (SubscriptionAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE.getName());
 
         if (subscriptionAction.getMessageSet() != null) {
             super.unsubscribe(subscriptionAction);
@@ -53,7 +56,8 @@ public class AndroidProxyServer extends ProxyServer {
     public void sendMulticastEvent(Intent intent) {
         Log.v(TAG, "Received multicast message from zirk");
 
-        SendMulticastEventAction eventAction = (SendMulticastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_MULTICAST_EVENT.getName());
+        final SendMulticastEventAction eventAction =
+                (SendMulticastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_MULTICAST_EVENT.getName());
 
         super.sendEvent(eventAction);
     }
@@ -61,7 +65,8 @@ public class AndroidProxyServer extends ProxyServer {
     public void sendUnicastEvent(Intent intent) {
         Log.v(TAG, "Received unicast message from zirk");
 
-        UnicastEventAction eventAction = (UnicastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName());
+        final UnicastEventAction eventAction =
+                (UnicastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName());
 
         super.sendEvent(eventAction);
     }
@@ -69,11 +74,12 @@ public class AndroidProxyServer extends ProxyServer {
     public void sendUnicastStream(Intent intent) {
         Log.v(TAG, "Stream to unicast from Zirk");
 
-        SendFileStreamAction streamAction = (SendFileStreamAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM.getName());
+        final SendFileStreamAction streamAction =
+                (SendFileStreamAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM.getName());
 
-        Boolean isEncrypt = (Boolean)intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_ENCRYPT.getName());
-        Boolean isincremental= (Boolean)intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_INCREMENTAL.getName());
-        File file = (File)intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_FILE.getName());
+        final Boolean isEncrypt = (Boolean) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_ENCRYPT.getName());
+        final Boolean isincremental= (Boolean) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_INCREMENTAL.getName());
+        final File file = (File) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_FILE.getName());
 
         StreamDescriptor streamDescriptor  = new StreamDescriptor(isincremental, isEncrypt, file, streamAction.getStreamActionName());
         streamAction.setDescriptor(streamDescriptor);

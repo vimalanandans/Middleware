@@ -13,7 +13,7 @@ import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
  */
 public class ShareRequest extends MulticastControlMessage {
 
-    private final static Discriminator discriminator = ControlMessage.Discriminator.ShareRequest;
+    private final static Discriminator discriminator = ControlMessage.Discriminator.SHARE_REQUEST;
     /**
      * Important note and open point : If we have a owner sphere S [owned by the
      * current device] with local services S1 and S2 and external services S3
@@ -33,7 +33,7 @@ public class ShareRequest extends MulticastControlMessage {
      * @param bezirkDeviceInfo   - Has to be non-null.
      * @param sender          - Has to be non-null.
      * @param sharerSphereId: sphereId of the sphere which is sharing its services, required
-     *                        in order to complete the process when the ShareResponse is
+     *                        in order to complete the process when the SHARE_RESPONSE is
      *                        received. Would not be needed if all the devices with their
      *                        services are sent back to the device requesting to the share
      *                        the services. In order to add the services from the sphereId

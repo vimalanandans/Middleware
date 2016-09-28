@@ -19,14 +19,11 @@ import org.slf4j.LoggerFactory;
 public final class ActionProcessor {
     private static final Logger logger = LoggerFactory.getLogger(ActionProcessor.class);
 
-    private static final String CONTROL_UI_NOTIFICATION_ACTION = "com.bezirk.controlui.DeviceControlActivity";
-    private static final int START_CODE = 100;
-    private static final int STOP_CODE = 101;
-
     /**
      * Process BezirkAction based on action type.
      */
-    public void processBezirkAction(Intent intent, AndroidProxyServer ProxyService, LifeCycleCallbacks lifeCycleCallbacks) {
+    public void processBezirkAction(Intent intent, AndroidProxyServer ProxyService,
+                                    LifeCycleCallbacks lifeCycleCallbacks) {
 
 
         BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
@@ -64,14 +61,17 @@ public final class ActionProcessor {
 
     }
 
-    private void processBezirkStackAction(Intent intent, BezirkAction intentAction, LifeCycleCallbacks lifeCycleCallbacks) {
+    private void processBezirkStackAction(Intent intent, BezirkAction intentAction,
+                                          LifeCycleCallbacks lifeCycleCallbacks) {
         switch (intentAction) {
             case ACTION_START_BEZIRK:
-                StartServiceAction startServiceAction = (StartServiceAction) intent.getSerializableExtra(BezirkAction.ACTION_START_BEZIRK.getName());
+                StartServiceAction startServiceAction =
+                        (StartServiceAction) intent.getSerializableExtra(BezirkAction.ACTION_START_BEZIRK.getName());
                 lifeCycleCallbacks.start(startServiceAction);
                 break;
             case ACTION_STOP_BEZIRK:
-                StopServiceAction stopServiceAction = (StopServiceAction) intent.getSerializableExtra(BezirkAction.ACTION_START_BEZIRK.getName());
+                StopServiceAction stopServiceAction =
+                        (StopServiceAction) intent.getSerializableExtra(BezirkAction.ACTION_START_BEZIRK.getName());
                 lifeCycleCallbacks.stop(stopServiceAction);
                 break;
             case ACTION_REBOOT:
@@ -87,40 +87,8 @@ public final class ActionProcessor {
         }
     }
 
-//    private void processDeviceActions(BezirkAction intentAction, MainService service) {
-//
-//        switch (intentAction) {
-//
-//            case ACTION_CHANGE_DEVICE_NAME:
-//                sendIntent(ActionCommands.CMD_CHANGE_DEVICE_NAME_STATUS, true, service);
-//                break;
-//            case ACTION_CHANGE_DEVICE_TYPE:
-//                sendIntent(ActionCommands.CMD_CHANGE_DEVICE_TYPE_STATUS, true, service);
-//                break;
-//            case ACTION_DEV_MODE_ON:
-//                sendIntent(ActionCommands.CMD_DEV_MODE_ON_STATUS, MainStackHandler.getDevMode().switchMode(DevMode.Mode.ON), service);
-//                break;
-//            case ACTION_DEV_MODE_OFF:
-//                sendIntent(ActionCommands.CMD_DEV_MODE_OFF_STATUS, MainStackHandler.getDevMode().switchMode(DevMode.Mode.OFF), service);
-//                break;
-//            case ACTION_DEV_MODE_STATUS:
-//                DevMode.Mode mode = getDevMode();
-//                sendIntent(ActionCommands.CMD_DEV_MODE_STATUS, mode, service);
-//                break;
-//            default:
-//                if (logger.isWarnEnabled())
-//                    logger.warn("Received unknown intent action: {}", intentAction.getName());
-//                break;
-//        }
-//
-//    }
-
-//    private DevMode.Mode getDevMode() {
-//        return MainStackHandler.getDevMode() == null ? DevMode.Mode.OFF :
-//                MainStackHandler.getDevMode().getStatus();
-//    }
-
-    private void processZirkActions(BezirkAction intentAction, Intent intent, AndroidProxyServer ProxyService) {
+    private void processZirkActions(BezirkAction intentAction, Intent intent,
+                                    AndroidProxyServer ProxyService) {
         switch (intentAction) {
             case ACTION_BEZIRK_REGISTER:
                 ProxyService.registerZirk(intent);
@@ -141,7 +109,8 @@ public final class ActionProcessor {
         }
     }
 
-    private void processSendActions(BezirkAction intentAction, Intent intent, AndroidProxyServer ProxyService) {
+    private void processSendActions(BezirkAction intentAction, Intent intent,
+                                    AndroidProxyServer ProxyService) {
         logger.debug("intentAction in ActionProcessor is "+intentAction);
         switch (intentAction) {
             case ACTION_ZIRK_SEND_MULTICAST_EVENT:
@@ -160,21 +129,4 @@ public final class ActionProcessor {
                 break;
         }
     }
-
-//    private void sendIntent(String command, boolean status, MainService service) {
-//        Intent intent = new Intent();
-//        intent.setAction(CONTROL_UI_NOTIFICATION_ACTION);
-//        intent.putExtra("Command", command);
-//        intent.putExtra("Status", status);
-//
-//        service.getApplicationContext().sendBroadcast(intent);
-//    }
-//
-//    private void sendIntent(String command, DevMode.Mode mode, MainService service) {
-//        Intent intent = new Intent();
-//        intent.setAction(CONTROL_UI_NOTIFICATION_ACTION);
-//        intent.putExtra("Command", command);
-//        intent.putExtra("Mode", mode);
-//        service.getApplicationContext().sendBroadcast(intent);
-//    }
 }

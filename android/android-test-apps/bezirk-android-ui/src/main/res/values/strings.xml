@@ -6,7 +6,7 @@
     <string name="strItemTitle">Item Title</string>
     <string name="strItemHint">hint text</string>
     <string name="title_activity_device_control">DeviceControl</string>
-    <string name="about_version_text">Bezirk v2.1, January 2016, © Bosch</string>
+    <string name="about_version_text">Bezirk v2.1, January 2016, © Bezirk</string>
     <string name="about_copyright_text"> © Bosch</string>
     <string name="about_text">Bezirk is an experimental set of products for personalization and assistance in the Internet of Things.  This is a limited release intended for academic and research purposes. If you’d like to know more, contact joaop.sousa@us.bosch.com. </string>
     <!-- Logging Related -->

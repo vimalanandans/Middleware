@@ -13,7 +13,7 @@ public class CatchRequest extends MulticastControlMessage {
     // private sphere sphereInformation;
 
 
-    private final static ControlMessage.Discriminator discriminator = ControlMessage.Discriminator.CatchRequest;
+    private final static ControlMessage.Discriminator discriminator = ControlMessage.Discriminator.CATCH_REQUEST;
 
     private final BezirkDeviceInfo bezirkDeviceInfo;
     private final String sphereExchangeData; // generate 'catch' sphere qr code

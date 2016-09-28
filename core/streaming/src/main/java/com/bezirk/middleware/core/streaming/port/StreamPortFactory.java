@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * Port Factory is a Custom Factory class that is instantiated ( singleton ) when the Proxy is instantiated. It reads the values from the
  * properties file and instantiates the starting port and ending port. A call to the StreamPortFactory is made by the ControlReceiverThread when
- * it receives the ControlMessage as StreamRequest. The port Factory checks if it has any ports free between the Range and gives the Port. It
+ * it receives the ControlMessage as STREAM_REQUEST. The port Factory checks if it has any ports free between the Range and gives the Port. It
  * keeps a record in the portsMap in StreamUtilities to avoid reassigning of ports when it receives the same request. StreamPortFactory is also responsible
  * for releasing the ports once the streaming is completed.
  *
@@ -49,7 +49,7 @@ public class StreamPortFactory implements PortFactory {
     }
 
     /**
-     * This method is called by ControlReceiverThread when it receives a {@link ControlMessage} with Discriminator set to "StreamRequest". This method receives the
+     * This method is called by ControlReceiverThread when it receives a {@link ControlMessage} with Discriminator set to "STREAM_REQUEST". This method receives the
      * Key as [ MsgId:ServiceName:DeviceId ] from the {@link StreamRequest} and checks if any ports are available and return the int as positive value if available or -1 if not.
      * If Bezirk has already opened the maximum supported string then it returns -1. If the port is available and the key is not duplicate( i,e the Request has
      * arrived for the first time ) then it updates the activePorts Map with the port and portsMap in StreamStore with portMapKey and port.

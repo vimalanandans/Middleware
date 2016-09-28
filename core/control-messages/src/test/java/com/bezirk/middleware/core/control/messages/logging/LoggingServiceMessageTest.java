@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * This testCase verifies the LoggingServiceMessage by retrieving the field values after deserialization.
+ * This testCase verifies the LOGGING_SERVICE_MESSAGE by retrieving the field values after deserialization.
  *
  * @author AJC6KOR
  */

@@ -17,8 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Logging Manager class that starts/stops LoggingServices and RemoteLoggingClient.
@@ -41,14 +39,16 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     private LogCtrlMessageReceiver ctrlReceiver ;
 
-    public RemoteLoggingManager(Comms comms, NetworkManager networkManager, RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
+    public RemoteLoggingManager(Comms comms, NetworkManager networkManager,
+                                RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
         this.networkManager = networkManager;
         this.remoteLoggingMessageNotification = remoteLoggingMessageNotification;
         this.comms = comms;
         ctrlReceiver = new LogCtrlMessageReceiver(this);
         remoteLoggingClient = new RemoteLoggingClient(networkManager);
 
-        comms.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage,ctrlReceiver);
+        comms.registerControlMessageReceiver(ControlMessage.Discriminator.LOGGING_SERVICE_MESSAGE,
+                ctrlReceiver);
     }
 
     /**
@@ -60,7 +60,8 @@ public  class RemoteLoggingManager implements RemoteLog {
      * @return
      */
     @Override
-    public boolean enableLogging(boolean enable, boolean enableControl, boolean enableFileLogging, String[] sphereNameList) {
+    public boolean enableLogging(boolean enable, boolean enableControl, boolean enableFileLogging,
+                                 String[] sphereNameList) {
 
         boolean bReturn ;
 
@@ -113,8 +114,9 @@ public  class RemoteLoggingManager implements RemoteLog {
         boolean sendStatus = false;
 
         for (String sphereId : sphereList) {
-            final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep,
-                    sphereId, networkManager.getDeviceIp(), remoteLoggingServer.getPort(), selectedLogSpheres, isActivate);
+            final LoggingServiceMessage loggingServiceActivateRequest =
+                    new LoggingServiceMessage(sep, sphereId, networkManager.getDeviceIp(),
+                            remoteLoggingServer.getPort(), selectedLogSpheres, isActivate);
 
             if(null != sphereId &&
                     null != loggingServiceActivateRequest &&
@@ -159,11 +161,12 @@ public  class RemoteLoggingManager implements RemoteLog {
         @Override
         public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
             switch (id) {
-            case LoggingServiceMessage:
+            case LOGGING_SERVICE_MESSAGE:
 
                 logger.debug("ReceivedLogMessage-> " + serializedMsg);
 
-                final LoggingServiceMessage loggingServiceMsg = ControlMessage.deserialize(serializedMsg, LoggingServiceMessage.class);
+                final LoggingServiceMessage loggingServiceMsg =
+                        ControlMessage.deserialize(serializedMsg, LoggingServiceMessage.class);
 
                 handleLogRequest(loggingServiceMsg);
 
@@ -181,7 +184,8 @@ public  class RemoteLoggingManager implements RemoteLog {
      */
     private boolean startRemoteLoggingService() {
         if (remoteLoggingServer == null ) {
-            remoteLoggingServer = new RemoteLoggingServer(remoteLoggingMessageNotification, enableFileLogging);
+            remoteLoggingServer = new RemoteLoggingServer(remoteLoggingMessageNotification,
+                    enableFileLogging);
         }
         return  remoteLoggingServer.startRemoteLoggingService();
     }
@@ -209,7 +213,7 @@ public  class RemoteLoggingManager implements RemoteLog {
     /**
      * Handles the LogServiceMessage.
      * It will start/ stop the logging client accordingly based on the status received on the
-     * LoggingServiceMessage
+     * LOGGING_SERVICE_MESSAGE
      */
     public void handleLogRequest(final LoggingServiceMessage loggingServiceMsg) {
 

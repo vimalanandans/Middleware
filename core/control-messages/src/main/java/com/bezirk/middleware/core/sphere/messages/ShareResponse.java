@@ -13,7 +13,7 @@ import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
  */
 public class ShareResponse extends UnicastControlMessage {
 
-    private final static Discriminator discriminator = ControlMessage.Discriminator.ShareResponse;
+    private final static Discriminator discriminator = ControlMessage.Discriminator.SHARE_RESPONSE;
     private final BezirkDeviceInfo bezirkDeviceInfo;
     private final String sphereExchangeDataString;
     private final String sharerSphereId;

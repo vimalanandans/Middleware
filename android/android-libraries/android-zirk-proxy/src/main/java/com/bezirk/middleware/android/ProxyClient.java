@@ -35,7 +35,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class ProxyClient implements Bezirk {
-    protected static final Map<String, List<StreamSet.StreamReceiver>> streamListenerMap = new ConcurrentHashMap<>();
+    protected static final Map<String, List<StreamSet.StreamReceiver>> streamListenerMap =
+            new ConcurrentHashMap<>();
     protected static final Map<String, List<EventSet>> eventSetMap = new ConcurrentHashMap<>();
     private static final String TAG = ProxyClient.class.getName();
     protected static Context context;
@@ -58,7 +59,8 @@ public final class ProxyClient implements Bezirk {
     }
 
 
-    public static ZirkId registerZirk(@NotNull final Context context, final String zirkName, final IntentSender intentSender) {
+    public static ZirkId registerZirk(@NotNull final Context context, final String zirkName,
+                                      final IntentSender intentSender) {
         ProxyClient.context = context;
         ProxyClient.intentSender = intentSender;
 
@@ -131,7 +133,8 @@ public final class ProxyClient implements Bezirk {
                     messageSet.getClass().getSimpleName());
         }
 
-        intentSender.sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE, zirkId, messageSet));
+        intentSender.sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE,
+                zirkId, messageSet));
     }
 
     private void addMessagesToMap(EventSet eventSet, Map<String,
@@ -140,7 +143,8 @@ public final class ProxyClient implements Bezirk {
             if (listenerMap.containsKey(messageName)) {
                 List<EventSet> eventSetList = listenerMap.get(messageName);
                 if (eventSetList.contains(eventSet)) {
-                    throw new IllegalArgumentException("The eventSet is already in use for " + messageName);
+                    throw new IllegalArgumentException("The eventSet is already in use for " +
+                            messageName);
                 } else {
                     eventSetList.add(eventSet);
                 }
@@ -160,7 +164,8 @@ public final class ProxyClient implements Bezirk {
                 if (!zirkList.contains(listener)) {
                     zirkList.add(listener);
                 } else {
-                    throw new IllegalArgumentException("The assigned listener is already in use for " + messageName);
+                    throw new IllegalArgumentException("The assigned listener is already in use " +
+                            "for " + messageName);
                 }
             } else {
                 List<StreamSet.StreamReceiver> listenerList = new ArrayList<>();
@@ -214,18 +219,16 @@ public final class ProxyClient implements Bezirk {
         throw new UnsupportedOperationException("Calling sendStream with a PipedOutputStream is current unimplemented.");
     }
 
-
     @Override
     public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor) {
         short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
 
-        intentSender.sendBezirkStreamIntent(context, new SendFileStreamAction(zirkId, recipient, /*streamDescriptor,*/ streamId, streamDescriptor.getClass().getName()), streamDescriptor);
-
+        intentSender.sendBezirkStreamIntent(context, new SendFileStreamAction(zirkId, recipient,
+                /*streamDescriptor,*/ streamId, streamDescriptor.getClass().getName()), streamDescriptor);
     }
 
     @Override
     public void setLocation(Location location) {
         intentSender.sendBezirkIntent(new SetLocationAction(zirkId, location));
     }
-
 }

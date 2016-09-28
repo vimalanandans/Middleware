@@ -13,7 +13,7 @@ import com.bezirk.middleware.proxy.api.impl.ZirkId;
  */
 public class MemberLeaveRequest extends MulticastControlMessage {
     //private final String sphere_Name;
-    private final static Discriminator discriminator = ControlMessage.Discriminator.MemberLeaveRequest;
+    private final static Discriminator discriminator = ControlMessage.Discriminator.MEMBER_LEAVE_REQUEST;
     private final ZirkId serviceId;
 
     /**

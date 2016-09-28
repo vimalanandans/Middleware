@@ -48,13 +48,13 @@ public class StreamCtrlReceiver implements CtrlMsgReceiver {
                                          String serializedMsg) {
 
         switch (id) {
-            case StreamRequest:
+            case STREAM_REQUEST:
                 processStreamRequest(serializedMsg);
                 break;
-            case StreamResponse:
+            case STREAM_RESPONSE:
                 processStreamResponse(serializedMsg);
                 break;
-            case RTCControlMessage:
+            case RTC_CONTROL_MESSAGE:
                 logger.debug("Real Time StreamDescriptor Message Received");
                 processRTCMessage(serializedMsg);
                 break;

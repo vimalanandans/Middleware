@@ -75,21 +75,21 @@ public class BezirkMessageDispatcherTest {
         com.bezirk.middleware.core.comms.CommsMessageDispatcher commsMessageDispatcher = new com.bezirk.middleware.core.comms.CommsMessageDispatcher();
 
         com.bezirk.middleware.core.comms.CtrlMsgReceiver receiver = new MockReceiver();
-        commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, receiver);
+        commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DISCOVERY_REQUEST, receiver);
 
         ControlLedger tcMessage = new ControlLedger();
         StreamRecord record  = new StreamRecord();
 
         //// FIXME: 8/1/2016 set the proper record here, uncomment below lines
-        /*ControlMessage streamRequest = new StreamRequest(null, record, null);
+        /*ControlMessage streamRequest = new STREAM_REQUEST(null, record, null);
         tcMessage.setMessage(streamRequest);
         commsMessageDispatcher.dispatchControlMessages(tcMessage);*/
 
-        // FIXME: 8/1/2016 Punith. Fix the test case for the changes to StreamRequest constructor.
+        // FIXME: 8/1/2016 Punith. Fix the test case for the changes to STREAM_REQUEST constructor.
         //assertFalse("Unknown Message type is recieved by mock receiver.", unKnownMessageReceived);
 
         com.bezirk.middleware.core.comms.CtrlMsgReceiver duplicateReceiver = new MockReceiver();
-        //assertFalse("Duplicte receiver is allowed to register for the same message type.", commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DiscoveryRequest, duplicateReceiver));
+        //assertFalse("Duplicte receiver is allowed to register for the same message type.", commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DISCOVERY_REQUEST, duplicateReceiver));
 
 
     }
@@ -99,11 +99,11 @@ public class BezirkMessageDispatcherTest {
         @Override
         public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
             switch (id) {
-                case DiscoveryRequest:
+                case DISCOVERY_REQUEST:
                     logger.info("Received discovery request.");
                     requestReceived = true;
                     break;
-                case DiscoveryResponse:
+                case DISCOVERY_RESPONSE:
                     logger.info("Received discovery response.");
                     responseReceived = true;
                     break;

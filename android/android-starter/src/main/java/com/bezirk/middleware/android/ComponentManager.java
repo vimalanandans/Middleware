@@ -36,18 +36,15 @@ import com.bezirk.middleware.core.streaming.Streaming;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//import com.bezirk.middleware.android.comms.ZyreCommsManager;
-
 public final class ComponentManager extends Service implements LifeCycleCallbacks {
     private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
     private static final String ALIAS_KEY = "aliasName";
-
+    private static final String DB_VERSION = "0.0.4";
+    private static final int FOREGROUND_ID = 1336;
     private SharedPreferences preferences;
-    //private final Context context;
     private ActionProcessor actionProcessor;
     private BezirkIdentityManager identityManager;
     private AndroidProxyServer proxyServer;
-    //private ZyreCommsManager comms;
     private JmqCommsManager comms;
     private AndroidNetworkManager networkManager;
     private RegistryStorage registryStorage;
@@ -58,13 +55,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private Device device;
     private PubSubBroker pubSubBroker;
     private RemoteLog remoteLog = null;
-    private static final String DB_VERSION = "0.0.4";
     private LifeCycleObservable.State currentState;
     private String identityString;
-
-    private static final int FOREGROUND_ID = 1336;
-//                    service.startForeground(FOREGROUND_ID,
-//                            service.buildForegroundNotification("Bezirk ON"));
 
     @Override
     public void onCreate() {
@@ -154,12 +146,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         notification.setOngoing(true);
 
         notification.setContentIntent(pendingIntent);
-        //BitmapFactory.decodeResource(getResources(), R.drawable.upa_notification_s);
         notification.setContentTitle(appName)
                 .setContentText(status)
-                /** Changed notification icon to white color. */
-
-                //.setLargeIcon(bm)
                 .setSmallIcon(icon)
                 .setTicker(appName
                 );
@@ -173,20 +161,21 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         loggingManager = new LoggingManager(config);
         loggingManager.configure();
 
-        //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
-        //lifecyleObservable = new LifecycleManager();
+        // initialize lifecycle manager(Observable) for components(observers) to observe bezirk
+        // lifecycle events
         lifecyleObservable = new LifeCycleObservable();
 
-        //initialize android shared preferences for storing user preferences
+        // initialize android shared preferences for storing user preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        //initialize action processor to manage intents fired to Bezirk
+        // initialize action processor to manage intents fired to Bezirk
         actionProcessor = new ActionProcessor();
 
-        //initialize network manager for handling wifi-management and getting network addressing information
+        // initialize network manager for handling wifi-management and getting network addressing
+        // information
         networkManager = new AndroidNetworkManager(preferences, this);
 
-        //initialize message handler for sending events back to zirks
+        // initialize message handler for sending events back to zirks
         messageHandler = new ZirkMessageHandler(this);
 
         //initialize data-storage for storing detailed component information like maps, objects
@@ -199,9 +188,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         //android device for getting information like deviceId, deviceName, etc
         device = new AndroidDevice();
 
-        //initialize comms for communicating between devices over the wifi-network using zyre.
-        //comms = new ZyreCommsManager(networkManager, null, null, null);
-        // testing the comms comms-jmq
+        // initialize comms for communicating between devices over the wifi-network using jmq
         comms = new JmqCommsManager(networkManager, null, null, null);
 
         //initialize remoteLogging for logging the messages
@@ -209,13 +196,13 @@ public final class ComponentManager extends Service implements LifeCycleCallback
 
         initializeIdentityManager();
 
-        //streaming manager
+        // streaming manager
         final Streaming streaming = new StreamManager(comms, networkManager);
-        //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, identityManager, null, null, streaming, remoteLog);
-
-        //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        //pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, null, null, streaming);
+        // initialize pub-sub Broker for filtering of events based on subscriptions and spheres
+        // (if present) & dispatching messages to other zirks within the same device or another
+        // device
+        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms,
+                messageHandler, identityManager, null, null, streaming, remoteLog);
 
         //initialize proxyServer responsible for managing incoming events from zirks
         proxyServer = new AndroidProxyServer(identityManager);
@@ -237,7 +224,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     void initializeIdentityManager() {
         identityManager = new BezirkIdentityManager();
         final String aliasString = preferences.getString(ALIAS_KEY, null);
-        logger.debug("aliasString is " + aliasString);
+        if (logger.isDebugEnabled()) logger.debug("aliasString is {}", aliasString);
 
         if (aliasString == null) {
             identityManager.createAndSetIdentity(aliasString);
@@ -250,5 +237,4 @@ public final class ComponentManager extends Service implements LifeCycleCallback
             identityManager.createAndSetIdentity(aliasString);
         }
     }
-
 }

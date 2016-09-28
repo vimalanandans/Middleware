@@ -148,7 +148,7 @@ public class StreamManager implements com.bezirk.middleware.core.streaming.Strea
         final BezirkZirkEndPoint receiver = (BezirkZirkEndPoint) streamAction.getRecipient();
         //// FIXME: 8/4/2016 Punith.. device and ZirkID. is it required ??
         final String streamRequestKey = senderSEP.device + ":" + senderSEP.getBezirkZirkId().getZirkId() + ":"+ streamAction.getStreamId();
-        final StreamRecord streamRecord = new StreamRecord(senderSEP, receiver, null, ControlMessage.Discriminator.StreamRequest, false ,streamRequestKey);
+        final StreamRecord streamRecord = new StreamRecord(senderSEP, receiver, null, ControlMessage.Discriminator.STREAM_REQUEST, false ,streamRequestKey);
 
         streamRecord.setEncryptedStream(streamAction.isEncrypted());
         streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.PENDING);
@@ -224,15 +224,15 @@ public class StreamManager implements com.bezirk.middleware.core.streaming.Strea
                         streamStore, pubSubEventReceiver, /*sphereSecurity,*/ streamingMessageQueue);
 
                 comms.registerControlMessageReceiver(
-                        ControlMessage.Discriminator.StreamRequest,
+                        ControlMessage.Discriminator.STREAM_REQUEST,
                         ctrlReceiver);
 
                 comms.registerControlMessageReceiver(
-                        ControlMessage.Discriminator.StreamResponse,
+                        ControlMessage.Discriminator.STREAM_RESPONSE,
                         ctrlReceiver);
 
                 comms.registerControlMessageReceiver(
-                        ControlMessage.Discriminator.RTCControlMessage,
+                        ControlMessage.Discriminator.RTC_CONTROL_MESSAGE,
                         ctrlReceiver);
             }
 

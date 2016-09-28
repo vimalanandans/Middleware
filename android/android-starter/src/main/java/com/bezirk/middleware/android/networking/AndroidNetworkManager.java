@@ -41,7 +41,6 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
     private void init() {
         if (wifiManager.isWifiEnabled()) {
             logger.trace("Wifi is enabled");
-            ConnectivityManager connectivityManager = (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             if (null == wifiInfo) {
                 logger.warn("Not connected to a wifi network");

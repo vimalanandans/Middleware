@@ -37,7 +37,7 @@ final class BezirkStreamHandler {
 
     /**
      * The assumption is that the ControlReceiverThread has already checked for
-     * validity of StreamRequest.
+     * validity of STREAM_REQUEST.
      */
     boolean handleStreamRequest(final StreamRequest streamRequest, final Comms comms,
                                 final PortFactory portFactory, final com.bezirk.middleware.core.streaming.store.StreamStore streamStore,

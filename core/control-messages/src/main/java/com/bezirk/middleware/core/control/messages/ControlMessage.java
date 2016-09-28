@@ -23,7 +23,7 @@ public class ControlMessage {
      *
      * @param sender        the sender-end-point
      * @param sphereId    the sphere-id
-     * @param discriminator the message discriminator Eg: DiscoveryRequest, StreamResponse
+     * @param discriminator the message discriminator Eg: DISCOVERY_REQUEST, STREAM_RESPONSE
      * @param retransmit    <code>true</code> if the message is to be re-transmitted
      * @param key           UniqueKey that is used to match responses to corresponding requests
      */
@@ -42,7 +42,7 @@ public class ControlMessage {
      *
      * @param sender        the sender-end-point
      * @param sphereId    the sphere-id
-     * @param discriminator the message discriminator Eg: DiscoveryRequest, StreamResponse
+     * @param discriminator the message discriminator Eg: DISCOVERY_REQUEST, STREAM_RESPONSE
      * @param retransmit    <code>true</code> if the message is to be re-transmitted
      */
     protected ControlMessage(BezirkZirkEndPoint sender, String sphereId,
@@ -103,7 +103,8 @@ public class ControlMessage {
 
 
     /**
-     * The discriminator is of type String and is used to distinguish between control Messages such as Discovery, sphere , Streaming etc.
+     * The discriminator is of type String and is used to distinguish between control Messages
+     * such as Discovery, sphere , Streaming etc.
      *
      * @return the control Message discriminator
      */
@@ -134,11 +135,11 @@ public class ControlMessage {
     }
 
     public enum Discriminator {
-        DiscoveryRequest, DiscoveryResponse, MemberLeaveRequest, MemberLeaveResponse,
-        OwnerLeaveResponse, BezirkSphereLeave, ShareResponse, CatchRequest,
-        CatchResponse, ShareRequest,
-        StreamRequest, StreamResponse, SphereDiscoveryRequest, SphereDiscoveryResponse,
-        LoggingServiceMessage, RTCControlMessage,
-        MaxCtrlMsgId // add the new command before MaxCtrlMsgId
+        DISCOVERY_REQUEST, DISCOVERY_RESPONSE, MEMBER_LEAVE_REQUEST, MEMBER_LEAVE_RESPONSE,
+        OWNER_LEAVE_RESPONSE, BEZIRK_SPHERE_LEAVE, SHARE_RESPONSE, CATCH_REQUEST,
+        CATCH_RESPONSE, SHARE_REQUEST,
+        STREAM_REQUEST, STREAM_RESPONSE, SPHERE_DISCOVERY_REQUEST, SPHERE_DISCOVERY_RESPONSE,
+        LOGGING_SERVICE_MESSAGE, RTC_CONTROL_MESSAGE,
+        MAX_CTRL_MSG_ID // add the new command before MAX_CTRL_MSG_ID
     }
 }

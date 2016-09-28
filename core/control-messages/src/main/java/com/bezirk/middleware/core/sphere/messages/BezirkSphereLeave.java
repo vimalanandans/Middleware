@@ -12,7 +12,7 @@ import com.google.gson.Gson;
  * @author Rishabh Gulati
  */
 public class BezirkSphereLeave extends UnicastControlMessage {
-    private final static Discriminator discriminator = ControlMessage.Discriminator.BezirkSphereLeave;
+    private final static Discriminator discriminator = ControlMessage.Discriminator.BEZIRK_SPHERE_LEAVE;
     private final ZirkId serviceId;
     private final long time;
 

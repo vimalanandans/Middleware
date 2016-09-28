@@ -58,12 +58,6 @@ class ControlActivityHelper {
     void initUI() {
         listData.add(new DataModel(R.drawable.ic_action_sphere_control, "Device Control", "Total Device Control", false, false, false));
 
-        //listData.add(new DataModel(R.drawable.ic_sphere, "sphere Management", "Control Spheres and Services", false, false, false));
-
-        //listData.add(new DataModel(R.drawable.ic_action_pipes, "Pipe Management", "Control and configure Pipes", false, false, false));
-
-        //listData.add(new DataModel(R.drawable.ic_cloud, "Rest Pipe", "Control and configure Rest Server", false, false, false));
-
         String appName = controlActivity.getString(R.string.app_name);
 
         listData.add(new DataModel(R.drawable.upa_about, "About " + appName, "Details about " + appName, false, false, false));
@@ -142,7 +136,8 @@ class ControlActivityHelper {
         }
 
         if (stackVersionMismatch) {
-            bezirkStatus.setText("Different versions of Bezirk exist in the network, there might be failure in the communication");
+            bezirkStatus.setText("Different versions of Bezirk exist in the network, there might " +
+                    "be failure in the communication");
         }
 
         builder.setView(alertView);

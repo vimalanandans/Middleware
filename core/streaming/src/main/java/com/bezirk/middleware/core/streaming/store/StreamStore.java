@@ -23,7 +23,7 @@ public class StreamStore {
 
     // Maps stream_id:StreamRecord
     // Updated during sending control message
-    // Read after receiving a StreamResponse message
+    // Read after receiving a STREAM_RESPONSE message
     private final Map<String, StreamRecord> streamBook = new HashMap<String, StreamRecord>();
 
     // Maps key:[msgId:ZirkEndPoint] --- value: [Integer]
@@ -34,11 +34,11 @@ public class StreamStore {
 
     /*
      * This method used by the {@link StreamPortFactory} to update the {@link
-     * this#portsMap} when a {@link StreamRequest} is received and the ports are
+     * this#portsMap} when a {@link STREAM_REQUEST} is received and the ports are
      * available.
      * 
      * @param portMapKey - [ MsgId:ZirkEndPoint:DeviceID ] that uniquely
-     * identifies the port that is mapped to the StreamRequest. It is used to
+     * identifies the port that is mapped to the STREAM_REQUEST. It is used to
      * avoid duplication of the requests.
      * 
      * @param value - Port value
@@ -123,7 +123,7 @@ public class StreamStore {
      * This method registers the {@link StreamRecord} into {@link
      * com.bosch.upa.uhu.comms.udp.streaming.StreamStore}. It will be called by
      * the {@link com.bosch.upa.uhu.Proxy.android.BezirkProxyForServiceAPI} before
-     * it creates the StreamRequest
+     * it creates the STREAM_REQUEST
      * 
      * @param key
      * 
@@ -145,12 +145,12 @@ public class StreamStore {
     }
 
     /*
-     * This method checks the {@link StreamRequest} for Duplication. This method
+     * This method checks the {@link STREAM_REQUEST} for Duplication. This method
      * is called by the ControlReceivingThread} after receiving the {@link
-     * StreamRequest}. This method is used to check if the {@link
-     * StreamRequest}. If it is a new one , then it spawns a thread and
-     * construct the {@link StreamResponse} and send the response. If the {@link
-     * StreamRequest} is duplicate then construct the {@link StreamResponse} and
+     * STREAM_REQUEST}. This method is used to check if the {@link
+     * STREAM_REQUEST}. If it is a new one , then it spawns a thread and
+     * construct the {@link STREAM_RESPONSE} and send the response. If the {@link
+     * STREAM_REQUEST} is duplicate then construct the {@link STREAM_RESPONSE} and
      * send, without starting the thread
      * 
      * @param isDuplicateStreamRequestKey key [ msgId:ServiceName ] to check for
