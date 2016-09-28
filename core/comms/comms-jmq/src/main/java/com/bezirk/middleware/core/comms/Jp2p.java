@@ -25,7 +25,7 @@ public class Jp2p {
         try {
             Thread.sleep(10);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error("Port initialization wait was interrupted", e);
         }
         selfNode = new Node(zmqReceiver.getPort());
         peers = new Peers(selfNode);

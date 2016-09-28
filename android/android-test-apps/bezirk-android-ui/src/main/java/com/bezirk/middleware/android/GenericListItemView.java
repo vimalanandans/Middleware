@@ -18,9 +18,9 @@ import java.util.List;
 public class GenericListItemView extends ArrayAdapter<DataModel> {
     private final Activity context;
 
-    final List<DataModel> data;
+    private final List<DataModel> data;
 
-    final ItemToggleListener itemToggleListener;
+    private final ItemToggleListener itemToggleListener;
 
     public GenericListItemView(Activity parentContext, List<DataModel> listModel, ItemToggleListener toggleListener) {
 
