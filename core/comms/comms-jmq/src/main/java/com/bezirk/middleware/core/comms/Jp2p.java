@@ -14,12 +14,12 @@ public class Jp2p {
     private final Node selfNode;
     private final Peers peers;
     private final NodeDiscovery nodeDiscovery;
-    private final ZMQReceiver zmqReceiver;
+    private final ZMQReceiver2 zmqReceiver;
     private final OnMessageReceivedListener onMessageReceivedListener;
 
     public Jp2p(@NotNull final OnMessageReceivedListener onMessageReceivedListener) {
         this.onMessageReceivedListener = onMessageReceivedListener;
-        this.zmqReceiver = new ZMQReceiver(this);
+        this.zmqReceiver = new ZMQReceiver2(this);
 
         // to make sure the port is ready and bind by that that time
         try {
@@ -39,7 +39,8 @@ public class Jp2p {
 
     public boolean start() {
         peers.start();
-        new Thread(zmqReceiver).start();
+        //new Thread(zmqReceiver).start();
+        zmqReceiver.start();
         nodeDiscovery.start();
         return true;
     }

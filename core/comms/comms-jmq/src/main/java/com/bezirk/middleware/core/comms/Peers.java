@@ -102,9 +102,11 @@ public class Peers {
 
     void shutdownAndAwaitTermination(ExecutorService pool) {
         pool.shutdown(); // Disable new tasks from being submitted
+        logger.info("Peers shutdown");
         try {
             // Wait a while for existing tasks to terminate
             if (!pool.awaitTermination(500, TimeUnit.MILLISECONDS)) {
+                logger.info("Peers shutdownNow");
                 pool.shutdownNow(); // Cancel currently executing tasks
                 // Wait a while for tasks to respond to being cancelled
                 if (!pool.awaitTermination(500, TimeUnit.MILLISECONDS))
