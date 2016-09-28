@@ -43,14 +43,14 @@ public class FileLogger {
             out.close();
             fileOut.close();
         } catch (IOException e) {
+            if (logger.isErrorEnabled()) logger.error("Failed to write remote logger message to " +
+                    "file " + file.getAbsolutePath(), e);
+        } finally {
             try {
                 if (fileOut != null) fileOut.close();
             } catch (IOException ex) {
                 logger.error("Failed to close remote logger FileOut after IOException", ex);
             }
-
-            if (logger.isErrorEnabled()) logger.error("Failed to write remote logger message to " +
-                    "file " + file.getAbsolutePath(), e);
         }
     }
 

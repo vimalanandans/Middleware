@@ -25,7 +25,7 @@ public class Sphere implements Serializable {
     /**
      * List of deviceId's who own the sphere
      */
-    protected Set<String> ownerDevices;
+    private Set<String> ownerDevices;
     protected String sphereType;
     /**
      * Map maintains the services which belong to a particular device [device id

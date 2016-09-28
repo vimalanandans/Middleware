@@ -21,7 +21,10 @@ public abstract class BezirkMiddleware {
      * Initializes and starts the bezirk {@link android.app.Service}.
      * <p>
      * Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}.
-     * {@link BezirkMiddleware} is started using default configurations {@link Config} unless configurations are supplied explicitly using {@link #initialize(Context, Config)}. Bezirk service runs as a background Android service unless explicitly stopped by the application using {@link #stop()} or by Android OS.
+     * {@link BezirkMiddleware} is started using default configurations {@link Config} unless
+     * configurations are supplied explicitly using {@link #initialize(Context, Config)}. Bezirk
+     * service runs as a background Android service unless explicitly stopped by the application
+     * using {@link #stop()} or by Android OS.
      * </p>
      *
      * @see #initialize(Context, Config)
@@ -34,13 +37,18 @@ public abstract class BezirkMiddleware {
     /**
      * Initializes and starts the bezirk {@link android.app.Service}.
      * <p>
-     * Service is started using the supplied <code>config</code>. Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}. Bezirk service runs as a background Android service unless explicitly stopped by the application using {@link #stop()} or by Android OS.
+     * Service is started using the supplied <code>config</code>. Once started, Zirk(s) can be
+     * registered using {@link BezirkMiddleware#registerZirk(String)}. Bezirk service runs as a
+     * background Android service unless explicitly stopped by the application using {@link #stop()}
+     * or by Android OS.
      * </p>
      *
      * @param config custom configurations to be used by bezirk service
      *               <ul>
      *               <li>If <code>null</code>, a default configuration is used</li>
-     *               <li>If not <code>null</code>, Bezirk service is created for the current application, even if an existing bezirk service(inside the Bezirk Application) is running in the device.</li>
+     *               <li>If not <code>null</code>, Bezirk service is created for the current
+     *               application, even if an existing bezirk service(inside the Bezirk Application)
+     *               is running in the device.</li>
      *               </ul>
      * @see #stop()
      */
@@ -92,7 +100,9 @@ public abstract class BezirkMiddleware {
      * @return an instance of the Bezirk API for the newly registered Zirk, or <code>null</code> if
      * a Zirk with the name <code>zirkName</code> is already registered.
      * @see #initialize(Context)
-     * @deprecated registration of Zirk(s) now requires {@link BezirkMiddleware} to be initialized using {@link BezirkMiddleware#initialize(Context)}. Once initialized use {@link #registerZirk(String)} to register a Zirk with the middleware.
+     * @deprecated registration of Zirk(s) now requires {@link BezirkMiddleware} to be initialized
+     * using {@link BezirkMiddleware#initialize(Context)}. Once initialized use
+     * {@link #registerZirk(String)} to register a Zirk with the middleware.
      */
     @Deprecated
     public static synchronized Bezirk registerZirk(final Context context, final String zirkName) {
@@ -103,12 +113,15 @@ public abstract class BezirkMiddleware {
     /**
      * Stops the bezirk {@link android.app.Service}.
      * <p>
-     * Once bezirk is stopped, Zirk(s) cannot register with the bezirk service and all communications between registered Zirks would stop.
+     * Once bezirk is stopped, Zirk(s) cannot register with the bezirk service and all
+     * communications between registered Zirks would stop.
      * </p>
      */
     public static synchronized void stop() {
         if (serviceManager == null) {
-            throw new IllegalStateException("Is Bezirk Middleware initialized? Initialize using BezirkMiddleware.initialize(Context) or BezirkMiddleware.initialize(Context, Config)");
+            throw new IllegalStateException("Is Bezirk Middleware initialized? Initialize using " +
+                    "BezirkMiddleware.initialize(Context) or " +
+                    "BezirkMiddleware.initialize(Context, Config)");
         }
         serviceManager.stop();
         context = null;

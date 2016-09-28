@@ -139,10 +139,11 @@ public class BezirkRestRequestHandler extends DefaultHandler {
     private String retrieveHttpBody(NanoHTTPD.IHTTPSession session) {
         //Test
         String inputStreamString = null;
+        Scanner inputScanner = null
         try {
 
 			/*logger.debug("Retriving http body :"+System.currentTimeMillis());
-			isr = new InputStreamReader(session.getInputStream(),"utf-8");
+            isr = new InputStreamReader(session.getInputStream(),"utf-8");
 			
 			logger.debug("Converted InputStream :"+System.currentTimeMillis());
 			BufferedReader br = new BufferedReader(isr);
@@ -158,15 +159,18 @@ public class BezirkRestRequestHandler extends DefaultHandler {
 			br.close();
 			isr.close();*/
 
-            logger.debug("Retriving http body :" + System.currentTimeMillis());
-            inputStreamString = new Scanner(session.getInputStream(), "UTF-8").next();
+            logger.debug("Retrieving http body: {}", System.currentTimeMillis());
+            inputScanner = new Scanner(session.getInputStream(), "UTF-8");
+            inputStreamString = inputScanner.next();
 
             logger.debug("Body Read complete :" + System.currentTimeMillis());
             logger.debug("HTTP rest request body is :" + inputStreamString);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error("Failed to retrieve http body", e);
+        } finally {
+            if (inputScanner != null) inputScanner.close();
         }
+
         return inputStreamString;
     }
 

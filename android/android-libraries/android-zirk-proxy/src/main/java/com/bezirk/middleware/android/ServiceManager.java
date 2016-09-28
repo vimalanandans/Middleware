@@ -29,7 +29,8 @@ public final class ServiceManager {
     void stop() {
         if (BezirkMiddleware.isLocalBezirkService()) {
             if (started) {
-                started = !intentSender.sendBezirkIntent(new StopServiceAction()); //if stop action was successfully sent, started is set to false.
+                // If stop action was successfully sent, started is set to false.
+                started = !intentSender.sendBezirkIntent(new StopServiceAction());
             } else {
                 logger.warn("Bezirk Service is not running.");
             }

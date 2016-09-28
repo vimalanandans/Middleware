@@ -177,17 +177,15 @@ public class BezirkCommsSend {
                 sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, BezirkCommunications.getCTRL_MULTICAST_PORT());
             }
             clientSocket.send(sendPacket);
-            clientSocket.close();
             logger.debug("multicast Sent");
             return true;
 
         } catch (UnknownHostException | SocketException | IOException e) {
-            if (clientSocket != null) clientSocket.close();
-
             logger.error(" Problem sending Unicast", e);
             return false;
+        } finally {
+            if (clientSocket != null) clientSocket.close();
         }
-
     }
 
     private static boolean sendUnicast(byte[] sendData, String address, boolean isEvent) {
@@ -202,14 +200,13 @@ public class BezirkCommsSend {
             else
                 sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, BezirkCommunications.getCTRL_UNICAST_PORT());
             clientSocket.send(sendPacket);
-            clientSocket.close();
             return true;
 
         } catch (UnknownHostException | SocketException | IOException e) {
-            if (clientSocket != null) clientSocket.close();
-
             logger.error(" Problem sending Unicast", e);
             return false;
+        } finally {
+            if (clientSocket != null) clientSocket.close();
         }
     }
 

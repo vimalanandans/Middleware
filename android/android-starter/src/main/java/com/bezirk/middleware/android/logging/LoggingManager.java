@@ -24,17 +24,21 @@ public class LoggingManager {
     }
 
     private void configureBezirkRootLogging() {
-        ch.qos.logback.classic.Logger rootLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+        ch.qos.logback.classic.Logger rootLogger =
+                (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(
+                        ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
         Level logBackLevel = getLogbackLevel(config.getLogLevel());
 
         rootLogger.setLevel(logBackLevel);
-        logger.debug("BezirkRootLogging level set to '" + logBackLevel + "'");
+        if (logger.isDebugEnabled())
+            logger.debug("BezirkRootLogging level set to '{}'", logBackLevel);
     }
 
     private void configurePackageLevelLogging() {
         if (config.getPackageLogLevelMap() != null) {
             for (Map.Entry<String, Config.Level> entry : config.getPackageLogLevelMap().entrySet()) {
-                ch.qos.logback.classic.Logger currentPackageLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(entry.getKey());
+                ch.qos.logback.classic.Logger currentPackageLogger =
+                        (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(entry.getKey());
                 currentPackageLogger.setLevel(getLogbackLevel(entry.getValue()));
             }
         }
@@ -54,8 +58,8 @@ public class LoggingManager {
                 return Level.ERROR;
             case OFF:
                 return Level.OFF;
+            default:
+                return null;
         }
-        return null;
     }
-
 }

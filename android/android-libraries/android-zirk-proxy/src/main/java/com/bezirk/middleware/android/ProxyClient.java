@@ -1,12 +1,14 @@
 package com.bezirk.middleware.android;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.bezirk.middleware.Bezirk;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.addressing.RecipientSelector;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.RegisterZirkAction;
 import com.bezirk.middleware.core.actions.SendFileStreamAction;
@@ -14,11 +16,6 @@ import com.bezirk.middleware.core.actions.SendMulticastEventAction;
 import com.bezirk.middleware.core.actions.SetLocationAction;
 import com.bezirk.middleware.core.actions.SubscriptionAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
-import com.bezirk.middleware.core.actions.ZirkAction;
-import com.bezirk.middleware.Bezirk;
-import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.RecipientSelector;
-import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
@@ -38,16 +35,14 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class ProxyClient implements Bezirk {
-    private static final String TAG = ProxyClient.class.getName();
-
     protected static final Map<String, List<StreamSet.StreamReceiver>> streamListenerMap = new ConcurrentHashMap<>();
     protected static final Map<String, List<EventSet>> eventSetMap = new ConcurrentHashMap<>();
-
+    private static final String TAG = ProxyClient.class.getName();
     protected static Context context;
+    private static IntentSender intentSender;
     private final ZirkId zirkId;
     private final IdentityManager identityManager;
     private short streamFactory;
-    private static IntentSender intentSender;
 
     public ProxyClient(ZirkId zirkId) {
 
@@ -178,16 +173,22 @@ public final class ProxyClient implements Bezirk {
     @Override
     public boolean unsubscribe(final MessageSet messageSet) {
         if (messageSet == null) {
-            Log.w(TAG, "Unsubscribing from all MessageSet(s) using null is currently not implemented. To unsubscribe from all subscriptions, call this method by passing the reference to the each MessageSet");
+            Log.w(TAG, "Unsubscribing from all MessageSet(s) using null is currently not " +
+                    "implemented. To unsubscribe from all subscriptions, call this method by " +
+                    "passing the reference to the each MessageSet");
             return false;
         }
-        for (List<EventSet> eventSets : eventSetMap.values()) {
-            if (eventSets.contains(messageSet)) {
-                eventSets.remove(messageSet);
+
+        if (messageSet instanceof EventSet) {
+            for (List<EventSet> eventSets : eventSetMap.values()) {
+                if (eventSets.contains(messageSet)) {
+                    eventSets.remove(messageSet);
+                }
             }
         }
-        return intentSender.sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId,
-                messageSet));
+
+        return intentSender.sendBezirkIntent(
+                new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId, messageSet));
     }
 
     @Override

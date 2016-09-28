@@ -117,14 +117,8 @@ public  class RemoteLoggingManager implements RemoteLog {
             loggingSpheres = sphereNameList;
         }
 
-        if(bReturn) {
-            // Send the logging enable/disable to all the other nodes
-            bReturn = bReturn & sendLoggingServiceMsgToClients(comms,
-                    sphereNameList, loggingSpheres, enable);
-        }
-
-
-        return bReturn;
+        return bReturn &&
+                sendLoggingServiceMsgToClients(comms, sphereNameList, loggingSpheres, enable);
     }
 
 

@@ -3,24 +3,29 @@ package com.bezirk.middleware.java;
 import com.bezirk.middleware.core.proxy.Config;
 import com.bezirk.middleware.java.proxy.BezirkMiddleware;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private final static String DEFAULT_HOSTNAME = "UNKNOWN-PC";
     private static String hostname = DEFAULT_HOSTNAME;
 
     public static void main(String[] args) {
-        Scanner reader = new Scanner(System.in);
+        Scanner reader = new Scanner(System.in, "UTF-8");
         System.out.println("Select\n1. Publisher Zirk\n2. Subscriber Zirk\n3. Publisher and Subscriber together\n4. Exit");
         try {
             int n = reader.nextInt();
             startAppication(n);
         } catch (InputMismatchException e) {
-            System.out.println("Invalid input entered");
+            logger.error("Invalid input entered", e);
         }
+        reader.close();
     }
 
     private static void startAppication(int option) {
@@ -56,8 +61,8 @@ public class Main {
             InetAddress addr;
             addr = InetAddress.getLocalHost();
             hostname = addr.getHostName();
-        } catch (UnknownHostException ex) {
-            System.out.println("Hostname can not be resolved");
+        } catch (UnknownHostException e) {
+            logger.error("Hostname can not be resolved", e);
         }
         return hostname;
     }

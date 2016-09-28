@@ -14,7 +14,6 @@ import com.bezirk.middleware.core.control.messages.UnicastHeader;
 import com.bezirk.middleware.core.datastorage.PubSubBrokerStorage;
 import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.core.identity.IdentityProvisioner;
 import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.core.networking.NetworkManager;
@@ -334,8 +333,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
     /**
      * sends the stream request to comms module and then to streaming module.
-     * @param streamAction
-     * @return
      */
     public short sendStream(SendFileStreamAction streamAction) {
         final Iterable<String> listOfSphere;
