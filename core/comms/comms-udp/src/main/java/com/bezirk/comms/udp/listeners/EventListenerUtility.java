@@ -19,7 +19,7 @@ import java.util.Arrays;
 public final class EventListenerUtility {
     private static final Logger logger = LoggerFactory.getLogger(EventListenerUtility.class);
 
-    private final static byte SEPERATOR = (byte)',';
+    private static final byte SEPERATOR = (byte)',';
 
     private EventListenerUtility() {
         //This is a utility class

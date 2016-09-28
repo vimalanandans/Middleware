@@ -13,7 +13,7 @@ import java.util.List;
  * FixMe: remove the multicast. create unicast message since we know the device detail
  */
 public class SphereDiscoveryResponse extends MulticastControlMessage {
-    private final static Discriminator discriminator = ControlMessage.Discriminator.SPHERE_DISCOVERY_RESPONSE;
+    private static final Discriminator discriminator = ControlMessage.Discriminator.SPHERE_DISCOVERY_RESPONSE;
     private List<ZirkId> services;
 
     /**

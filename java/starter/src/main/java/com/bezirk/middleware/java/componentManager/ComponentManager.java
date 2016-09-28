@@ -60,7 +60,7 @@ public class ComponentManager {
     private static final String DB_VERSION = "0.0.4";
     private static final String DB_FILE_LOCATION = ".";
     //download path
-    private final static String downloadPath = "";
+    private static final String downloadPath = "";
 
     public ComponentManager(@NotNull final MessageHandler messageHandler, @NotNull final Config config) {
         this.messageHandler = messageHandler;

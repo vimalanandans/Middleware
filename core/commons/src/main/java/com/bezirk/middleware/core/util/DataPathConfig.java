@@ -18,13 +18,13 @@ public class DataPathConfig {
     private static final String DATA_PATH_REL = DATA + File.separator + BEZIRK +  File.separator;
 
     // variable set in gradle/environment to enable/disable sphere-mgmt display
-    private final static String DISPLAY_ENV_VARIABLE = "displayEnabled";
+    private static final String DISPLAY_ENV_VARIABLE = "displayEnabled";
     // default value of bezirk sphere-mgmt display
-    private final static boolean DISPLAY_DEFAULT_VALUE = false;
+    private static final boolean DISPLAY_DEFAULT_VALUE = false;
 
     // variable set in gradle/environment to enable/disable bezirk logs
-    private final static String LOGGING_ENV_VARIABLE = "loggingEnabled";
-    private final static boolean LOGGING_DEFAULT_VALUE = false; // default value of bezirk logging
+    private static final String LOGGING_ENV_VARIABLE = "loggingEnabled";
+    private static final boolean LOGGING_DEFAULT_VALUE = false; // default value of bezirk logging
 
     private String dataPath; // holds the absolute path of the bezirk folder
 
@@ -70,7 +70,7 @@ public class DataPathConfig {
      *
      * @return absolute path of the bezirk folder
      */
-    static public String getDataPath() {
+    public static String getDataPath() {
         return dataPathConfig.dataPath;
     }
 

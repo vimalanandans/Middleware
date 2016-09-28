@@ -22,8 +22,8 @@ import java.util.LinkedHashMap;
  * - Vimal
  * */
 public class MessageBookKeeper {
-    private final static long FRESHNESS_VAL = 10000;
-    private final static int MAX_SIZE = 50;
+    private static final long FRESHNESS_VAL = 10000;
+    private static final int MAX_SIZE = 50;
     //private static final Logger logger = LoggerFactory.getLogger(MessageBookKeeper.class);
     //uniqueKey:ControlRecord
     private LinkedHashMap<String, ControlRecord> controlMap = new LinkedHashMap<String, ControlRecord>();

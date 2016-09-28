@@ -12,7 +12,7 @@ import com.bezirk.middleware.proxy.api.impl.ZirkId;
  */
 public class MemberLeaveResponse extends UnicastControlMessage {
     //private final int requestId;
-    private final static Discriminator discriminator = ControlMessage.Discriminator.MEMBER_LEAVE_RESPONSE;
+    private static final Discriminator discriminator = ControlMessage.Discriminator.MEMBER_LEAVE_RESPONSE;
     //private final BezirkZirkEndPoint recipient; //initiator (owner of the sphere)
     private final boolean signatureVerified;
     private final boolean removedSuccessfully;

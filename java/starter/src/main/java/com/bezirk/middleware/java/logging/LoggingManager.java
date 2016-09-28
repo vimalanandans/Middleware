@@ -13,7 +13,7 @@ import ch.qos.logback.classic.Level;
 public class LoggingManager {
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LoggingManager.class);
-    private final static String LOG_LEVEL_ENV_VARIABLE = "loglevel";
+    private static final String LOG_LEVEL_ENV_VARIABLE = "loglevel";
     private final Config config;
 
     public LoggingManager(@NotNull final Config config) {

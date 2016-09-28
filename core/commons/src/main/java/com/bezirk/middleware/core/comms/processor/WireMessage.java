@@ -41,7 +41,7 @@ public class WireMessage implements Serializable {
 
     private byte[] headerMsg = null; // message header for event. FIXME : generalize this
 
-    static public boolean checkVersion(String msg) {
+    public static boolean checkVersion(String msg) {
         // for json format
         return msg.contains(MSG_VER);
     }
@@ -49,7 +49,7 @@ public class WireMessage implements Serializable {
     /**
      * call this when the message format is not able to fetch the data
      */
-    static public String getVersion(String msg) {
+    public static String getVersion(String msg) {
         String version = "";
 
         // for json format.

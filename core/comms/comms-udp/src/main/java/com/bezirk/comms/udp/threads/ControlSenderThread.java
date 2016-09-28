@@ -20,9 +20,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ControlSenderThread implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(ControlSenderThread.class);
 
-    private final static int timeBetweenRetransmits = 500; // time in milliseconds
-    private final static int MIN_NO_OF_RECEIVERS = 5;
-    private final static int SLEEP_TIME = 50; // time in milliseconds
+    private static final int timeBetweenRetransmits = 500; // time in milliseconds
+    private static final int MIN_NO_OF_RECEIVERS = 5;
+    private static final int SLEEP_TIME = 50; // time in milliseconds
 
     private MessageQueue msgQueue = null;
     private int numOfRetries = 5;

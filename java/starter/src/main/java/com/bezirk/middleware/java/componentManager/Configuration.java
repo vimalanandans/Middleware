@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 
 public class Configuration {
     private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
-    private final static String LOGGING_ENV_VARIABLE = "loggingEnabled"; // variable set in gradle/environment to enable/disable bezirk logs
-    private final static String REMOTE_LOGGING_ENV_VARIABLE = "remoteLogging"; // variable set in gradle/environment to enable/disable bezirk logs
-    private final static boolean REMOTE_LOGGING_ENV_VALUE = false; // variable set in gradle/environment to enable/disable bezirk logs
-    private final static boolean LOGGING_DEFAULT_VALUE = false; // default value of bezirk logging
+    private static final String LOGGING_ENV_VARIABLE = "loggingEnabled"; // variable set in gradle/environment to enable/disable bezirk logs
+    private static final String REMOTE_LOGGING_ENV_VARIABLE = "remoteLogging"; // variable set in gradle/environment to enable/disable bezirk logs
+    private static final boolean REMOTE_LOGGING_ENV_VALUE = false; // variable set in gradle/environment to enable/disable bezirk logs
+    private static final boolean LOGGING_DEFAULT_VALUE = false; // default value of bezirk logging
 
     public static boolean isLoggingEnabled() {
         boolean isLoggingEnabled = isEnabledInJVM(LOGGING_ENV_VARIABLE) || isEnabledInSystem(LOGGING_ENV_VARIABLE) || LOGGING_DEFAULT_VALUE;

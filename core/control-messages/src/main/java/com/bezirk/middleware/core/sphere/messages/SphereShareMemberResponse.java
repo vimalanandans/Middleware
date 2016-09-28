@@ -20,7 +20,7 @@
 //	 * Due to this currently only one BezirkDeviceInfo is required. If we need to extend the concept, we could move towards a List of BezirkDeviceInfo's
 //	 */
 //	private final BezirkDeviceInfo uhuDeviceInfo;
-//	private final static Discriminator discriminator = ControlMessage.Discriminator.SphereShareMemberResponse;
+//	private static final Discriminator discriminator = ControlMessage.Discriminator.SphereShareMemberResponse;
 //
 //    public SphereShareMemberResponse(String sphereID, BezirkDeviceInfo uhuDeviceInfo, BezirkZirkEndPoint sender) {
 //        super(sender, sphereID, discriminator);        

@@ -12,7 +12,7 @@ public class RTCControlMessage extends UnicastControlMessage {
     /**
      * Discriminator that uniquely defines the Control message!
      */
-    private final static Discriminator discriminator = ControlMessage.Discriminator.RTC_CONTROL_MESSAGE;
+    private static final Discriminator discriminator = ControlMessage.Discriminator.RTC_CONTROL_MESSAGE;
     /**
      * Actual handshake message
      */

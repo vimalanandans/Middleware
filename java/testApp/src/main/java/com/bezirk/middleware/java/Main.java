@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    private final static String DEFAULT_HOSTNAME = "UNKNOWN-PC";
+    private static final String DEFAULT_HOSTNAME = "UNKNOWN-PC";
     private static String hostname = DEFAULT_HOSTNAME;
 
     public static void main(String[] args) {

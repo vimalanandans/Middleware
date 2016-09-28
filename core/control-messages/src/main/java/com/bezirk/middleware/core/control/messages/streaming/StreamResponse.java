@@ -15,7 +15,7 @@ public class StreamResponse extends UnicastControlMessage {
     /**
      * Discriminator that uniquely defines the Control message!
      */
-    private final static Discriminator discriminator = ControlMessage.Discriminator.STREAM_RESPONSE;
+    private static final Discriminator discriminator = ControlMessage.Discriminator.STREAM_RESPONSE;
 
     /**
      * Status of the Recipient. PENDING or READY or ADDRESSED or BUSY

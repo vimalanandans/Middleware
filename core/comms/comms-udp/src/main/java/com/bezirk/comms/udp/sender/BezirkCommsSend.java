@@ -36,8 +36,8 @@ import java.util.Date;
 
 public class BezirkCommsSend {
     private static final Logger logger = LoggerFactory.getLogger(BezirkCommsSend.class);
-    private final static Date currentDate = new Date();
-    private final static String SEPERATOR = ",";
+    private static final Date currentDate = new Date();
+    private static final String SEPERATOR = ",";
 
     /**
      * The SenderThread invokes this method after the sphere Layer returns true.

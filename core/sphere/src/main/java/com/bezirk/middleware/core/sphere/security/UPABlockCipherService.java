@@ -17,7 +17,7 @@ public class UPABlockCipherService extends DefaultBlockCipherService {
     private static final String ENCRYPTION_ALGORITHM = "AES";
     private static final OperationMode operationMode = OperationMode.GCM;
     private static final PaddingScheme paddingScheme = PaddingScheme.NONE;
-    public final static String BEZIRK__RUNTIME_ENV__JAVA = "Java Platform API Specification";
+    public static final String BEZIRK__RUNTIME_ENV__JAVA = "Java Platform API Specification";
     // Bouncy Castle Provider registered?
     private static boolean bouncyRegistered = false;
 

@@ -58,21 +58,21 @@ public class BezirkVersion {
     /**
      * @return the wire message version
      */
-    static public String getWireVersion() {
+    public static String getWireVersion() {
         return WIRE_MESSAGE_VERSION;
     }
 
     /**
      * @return if the version is same
      */
-    static public boolean isSameWireMessageVersion(String version) {
+    public static boolean isSameWireMessageVersion(String version) {
         return WIRE_MESSAGE_VERSION.equals(version);
     }
 
     /**
      * this method returns list of versions. Useful to display to user
      */
-    static public Map<String, String> getAllVersion() {
+    public static Map<String, String> getAllVersion() {
         Map<String, String> versions = new HashMap<>();
 
         versions.put("BEZIRK_VERSION", BEZIRK_VERSION);

@@ -20,7 +20,7 @@ import java.util.Arrays;
 public final class ControlListenerUtility {
     private static final Logger logger = LoggerFactory.getLogger(ControlListenerUtility.class);
 
-    private final static byte SEPERATOR = (byte)',';
+    private static final byte SEPERATOR = (byte)',';
 
     private ControlListenerUtility() {
         // This a utility class

@@ -13,7 +13,7 @@ import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
  */
 public class ShareRequest extends MulticastControlMessage {
 
-    private final static Discriminator discriminator = ControlMessage.Discriminator.SHARE_REQUEST;
+    private static final Discriminator discriminator = ControlMessage.Discriminator.SHARE_REQUEST;
     /**
      * Important note and open point : If we have a owner sphere S [owned by the
      * current device] with local services S1 and S2 and external services S3

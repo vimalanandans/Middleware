@@ -10,7 +10,7 @@ import com.bezirk.comms.BezirkCommsManager;
  */
 public class CommsBuilder {
 
-    static public BezirkComms createComms() {
+    public static BezirkComms createComms() {
         BezirkComms comms;
 
         // for Bezirk (as of now)

@@ -23,8 +23,8 @@ import java.util.ArrayList;
  */
 public class MessageQueue {
     private static final Logger logger = LoggerFactory.getLogger(MessageQueue.class);
-    private final static int MaxSize = 1000;
-    private final ArrayList<ControlMessage> queue = new ArrayList<ControlMessage>();
+    private static final int MAX_SIZE = 1000;
+    private final ArrayList<ControlMessage> queue = new ArrayList<>();
 
     /**
      * @param message to be added to the queue
@@ -33,7 +33,7 @@ public class MessageQueue {
     public void addToQueue(ControlMessage message) {
         synchronized (this) {
             // wait if the queue is full
-            while (queue.size() == MaxSize) {
+            while (queue.size() == MAX_SIZE) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
@@ -92,9 +92,4 @@ public class MessageQueue {
             return queue;
         }
     }
-
-    public int getMaxsize() {
-        return MaxSize;
-    }
-
 }

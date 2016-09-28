@@ -10,7 +10,7 @@ import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
  * Control message for SphereCatchDiscoveryResponse to send the list of services to be catched
  */
 public class CatchResponse extends MulticastControlMessage {
-    private final static ControlMessage.Discriminator discriminator = ControlMessage.Discriminator.CATCH_RESPONSE;
+    private static final ControlMessage.Discriminator discriminator = ControlMessage.Discriminator.CATCH_RESPONSE;
     private BezirkDeviceInfo inviterSphereDeviceInfo;
     private String catcherSphereId;
     private String catcherDeviceId;

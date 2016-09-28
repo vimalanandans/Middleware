@@ -27,8 +27,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class EventSenderThread implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(EventSenderThread.class);
-    private final static int timeBetweenRetransmits = 100; // time in milliseconds
-    private final static int numOfRetries = 10;
+    private static final int timeBetweenRetransmits = 100; // time in milliseconds
+    private static final int numOfRetries = 10;
     private final PipeManager pipeManager;
     private final BezirkCommsLegacy bezirkComms;
     MessageQueue msgQueue = null;
