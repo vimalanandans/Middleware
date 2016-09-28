@@ -247,9 +247,8 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             eventLedger.setIsMulticast(true);
             eventLedger.setSerializedHeader(mHeader.serialize());
 
-            if (ValidatorUtility.isObjectNotNull(comms)) {
+            if (comms != null) {
                 comms.sendEventLedger(eventLedger);
-
             } else {
                 return false;
             }
@@ -311,7 +310,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             eventLedger.setIsMulticast(false);
             eventLedger.setSerializedHeader(uHeader.serialize());
 
-            if (ValidatorUtility.isObjectNotNull(comms)) {
+            if (comms != null) {
                 comms.sendEventLedger(eventLedger);
             } else {
                 logger.error("Comms manager not initialized");

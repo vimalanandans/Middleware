@@ -5,5 +5,5 @@ package com.bezirk.middleware;
  * a main class.
  */
 public class DownloadDependencies {
-    public static void main(String[] args) { System.out.println("Do nothing."); }
+    public static void main(String[] args) { }
 }

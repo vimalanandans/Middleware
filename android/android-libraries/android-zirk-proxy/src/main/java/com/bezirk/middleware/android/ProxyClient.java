@@ -68,21 +68,21 @@ public final class ProxyClient implements Bezirk {
             throw new IllegalArgumentException("Cannot register a Zirk with a null name");
         }
 
-        Log.d(TAG, "Registering Zirk is: " + zirkName);
+        Log.d(TAG, "Attempting to register Zirk: " + zirkName);
 
-        final SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(context);
-        if (null != shrdPref) {
-            Log.d(TAG, "shrdPref is not null");
-        } else {
-            Log.d(TAG, "shredPref is null");
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (sharedPreferences == null) {
+            throw new IllegalStateException("Cannot register new Zirk because shared preferences " +
+                    "could not be retrieved");
         }
-        String zirkIdAsString = shrdPref.getString(zirkName, null);
-        Log.d(TAG, "zirkIdAsString is " + zirkIdAsString);
-        if (null == zirkIdAsString) {
-            zirkIdAsString = UUID.randomUUID().toString();
-            Log.d(TAG, "ZirkId-> " + zirkIdAsString);
 
-            SharedPreferences.Editor editor = shrdPref.edit();
+        String zirkIdAsString = sharedPreferences.getString(zirkName, null);
+        Log.d(TAG, "zirkIdAsString from sharedPreferences: " + zirkIdAsString);
+        if (zirkIdAsString == null) {
+            zirkIdAsString = UUID.randomUUID().toString();
+            Log.d(TAG, "Generated zirkId: " + zirkIdAsString);
+
+            final SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(zirkName, zirkIdAsString);
             editor.commit();
         }

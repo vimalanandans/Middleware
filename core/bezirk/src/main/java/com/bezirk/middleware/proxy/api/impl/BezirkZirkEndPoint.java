@@ -18,28 +18,27 @@ public class BezirkZirkEndPoint implements ZirkEndPoint, Serializable {
         this.zirkId = zirkId;
     }
 
-    @Override
-    public int hashCode() {
-        String s = this.device + ":" + this.zirkId.toString();
-        return s.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj instanceof BezirkZirkEndPoint) {
-            BezirkZirkEndPoint curEp = (BezirkZirkEndPoint) obj;
-            return this.device.equals(curEp.device) && this.zirkId.equals(curEp.zirkId);
-        }
-        return false;
-    }
-
     public ZirkId getBezirkZirkId() {
         return zirkId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BezirkZirkEndPoint that = (BezirkZirkEndPoint) o;
+
+        if (!device.equals(that.device)) return false;
+        if (!zirkId.equals(that.zirkId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = device.hashCode();
+        result = 31 * result + zirkId.hashCode();
+        return result;
     }
 }

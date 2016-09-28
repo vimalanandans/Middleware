@@ -372,7 +372,7 @@ public class Hashids {
 
         for (int i = 0; i < input.length(); i++) {
             pos = alphabet.indexOf(input_arr[i]);
-            number += pos * Math.pow(alphabet.length(), input.length() - i - 1);
+            number += pos * (long) Math.pow(alphabet.length(), input.length() - i - 1);
         }
 
         return number;
