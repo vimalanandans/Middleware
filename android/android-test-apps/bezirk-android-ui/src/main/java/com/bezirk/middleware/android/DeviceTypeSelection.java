@@ -22,7 +22,7 @@ public class DeviceTypeSelection extends AppCompatActivity {
     public static final int RESULT_DEVICE_ITEM_SELECT = 0x100;
     public static final String DEVICE_ITEM_SELECTED_TEXT = "DEVICE_ITEM_SELECTED_TEXT";
     // UI Create
-    final List<DataModel> listData = new ArrayList<>();
+    private final List<DataModel> listData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

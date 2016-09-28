@@ -18,6 +18,9 @@ public class Publisher {
 
     public Publisher() {
         final Bezirk bezirk = BezirkMiddleware.registerZirk(PUBLISHER_ID);
+
+        if (bezirk == null) throw new AssertionError("BezirkMiddleware.registerZirk returned null");
+
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
         houseEvents.setEventReceiver(new EventSet.EventReceiver() {
             @Override
@@ -33,7 +36,7 @@ public class Publisher {
 
         //publish messages periodically
         new Timer().scheduleAtFixedRate(new TimerTask() {
-            int pollenLevel = 1;
+            private int pollenLevel = 1;
 
             @Override
             public void run() {

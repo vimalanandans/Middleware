@@ -25,48 +25,31 @@ import java.util.Set;
  * The platforms need to instantiate this manager and can start stop the zirk.
  */
 public  class RemoteLoggingManager implements RemoteLog {
-    /**
-     * RemoteLoggingServer
-     */
-    private RemoteLoggingServer remoteLoggingServer = null;
-    /**
-     * Logging Client
-     */
-    private RemoteLoggingClient remoteLoggingClient = null;
-
     private static final Logger logger = LoggerFactory.getLogger(RemoteLoggingManager.class);
 
+    private RemoteLoggingServer remoteLoggingServer = null;
+    private RemoteLoggingClient remoteLoggingClient = null;
     private RemoteLoggingMessageNotification remoteLoggingMessageNotification = null;
 
     private NetworkManager networkManager = null;
 
     private boolean enableLogging = false;
-
     private boolean enableControl = false;
-
     private boolean enableFileLogging = false;
 
+    private Comms comms;
 
-    Comms comms;
-
-    LogCtrlMessageReceiver ctrlReceiver ;
-
+    private LogCtrlMessageReceiver ctrlReceiver ;
 
     public RemoteLoggingManager(Comms comms, NetworkManager networkManager, RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
-
         this.networkManager = networkManager;
-
         this.remoteLoggingMessageNotification = remoteLoggingMessageNotification;
-
         this.comms = comms;
-
         ctrlReceiver = new LogCtrlMessageReceiver(this);
-
         remoteLoggingClient = new RemoteLoggingClient(networkManager);
 
         comms.registerControlMessageReceiver(ControlMessage.Discriminator.LoggingServiceMessage,ctrlReceiver);
     }
-
 
     /**
      *
@@ -82,37 +65,31 @@ public  class RemoteLoggingManager implements RemoteLog {
         boolean bReturn ;
 
         this.enableLogging = enable;
-
         this.enableControl = enableControl;
-
         this.enableFileLogging = enableFileLogging;
 
-        String[] loggingSpheres;
+        final String[] loggingSpheres;
 
-        if(enable)
-        {
+        if(enable) {
             bReturn = startRemoteLoggingService();
-        }else
-        {
+        } else {
             bReturn = stopRemoteLoggingService();
         }
 
-        if(sphereNameList == null)
-        {
+        if(sphereNameList == null) {
             loggingSpheres = new String[1];
             loggingSpheres[0] = RemoteLog.ALL_SPHERES;
             // this sphere list goes to comms. Rather than access the global
             String [] spheres = new String[1];
             spheres[0] = PubSubBroker.SPHERE_NULL_NAME;
             sphereNameList = spheres;
-        }else if (RemoteLog.ALL_SPHERES.equals(sphereNameList)) {
+        } else if (RemoteLog.ALL_SPHERES.equals(sphereNameList)) {
             loggingSpheres = new String[1];
             loggingSpheres[0] = RemoteLog.ALL_SPHERES;
             // this sphere list goes to comms. Rather than access the global
             String [] spheres = new String[1];
             spheres[0] = PubSubBroker.SPHERE_NULL_NAME;
             sphereNameList = spheres;
-
         } else {
             loggingSpheres = sphereNameList;
         }
@@ -131,14 +108,11 @@ public  class RemoteLoggingManager implements RemoteLog {
                     final String[] selectedLogSpheres, final boolean isActivate) {
 
         final ZirkId myId = new ZirkId("BEZIRK-REMOTE-LOGGING-SERVICE");
-
         final BezirkZirkEndPoint sep = new BezirkZirkEndPoint(comms.getNodeId(),myId);
 
         boolean sendStatus = false;
 
-
         for (String sphereId : sphereList) {
-
             final LoggingServiceMessage loggingServiceActivateRequest = new LoggingServiceMessage(sep,
                     sphereId, networkManager.getDeviceIp(), remoteLoggingServer.getPort(), selectedLogSpheres, isActivate);
 
@@ -221,7 +195,7 @@ public  class RemoteLoggingManager implements RemoteLog {
             try {
                 remoteLoggingServer.stopRemoteLoggingService();
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Failed to stop remote logging server", e);
                 return false;
             }
             remoteLoggingServer = null;
@@ -234,9 +208,8 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     /**
      * Handles the LogServiceMessage.
-     * It will start/ stop the logging client accordingly based on the status received on the LoggingServiceMessage
-     *
-     * @param loggingServiceMsg
+     * It will start/ stop the logging client accordingly based on the status received on the
+     * LoggingServiceMessage
      */
     public void handleLogRequest(final LoggingServiceMessage loggingServiceMsg) {
 
@@ -271,15 +244,14 @@ public  class RemoteLoggingManager implements RemoteLog {
     public boolean startLoggingClient(String remoteIP, int remotePort) throws Exception {
 
         if(ValidatorUtility.checkForString(remoteIP) || remotePort == 0 ){
-            logger.debug("invalid remote ip :" + remoteIP + " or remoteport " + remotePort);
+            logger.debug("invalid remote ip {} or remoteport {}", remoteIP, remotePort);
             return false;
         }
-
-
 
         if(!remoteLoggingClient.isRunning()){
             return remoteLoggingClient.startClient(remoteIP, remotePort);
         } // incase if already running
+
         return remoteLoggingClient.updateClient(remoteIP, remotePort);
     }
 
@@ -292,13 +264,11 @@ public  class RemoteLoggingManager implements RemoteLog {
      */
     public boolean  stopLoggingClient(String remoteIP, int remotePort) throws Exception {
         if(ValidatorUtility.checkForString(remoteIP) || remotePort == 0 ){
-            logger.debug("invalid remote ip :" + remoteIP + " or remoteport " + remotePort);
+            logger.debug("invalid remote ip {} or remoteport {}", remoteIP, remotePort);
             return false;
         }
 
         remoteLoggingClient.stopClient(remoteIP, remotePort);
-
-
         return true;
     }
 }

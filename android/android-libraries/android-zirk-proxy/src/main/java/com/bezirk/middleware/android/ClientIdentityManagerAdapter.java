@@ -12,7 +12,7 @@ import com.bezirk.middleware.identity.IdentityManager;
 import com.google.gson.Gson;
 
 public class ClientIdentityManagerAdapter implements IdentityManager {
-    private final String TAG = ClientIdentityManagerAdapter.class.getName();
+    private static final String TAG = ClientIdentityManagerAdapter.class.getName();
     private static final Gson gson = new Gson();
 
     private static RemoteIdentityManager remoteIdentityManager;

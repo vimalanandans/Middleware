@@ -14,6 +14,9 @@ public class Subscriber {
 
     public Subscriber() {
         final Bezirk bezirk = BezirkMiddleware.registerZirk(SUBSCRIBER_ID);
+
+        if (bezirk == null) throw new AssertionError("BezirkMiddleware.registerZirk returned null");
+
         HouseInfoEventSet houseEvents = new HouseInfoEventSet();
         houseEvents.setEventReceiver(new EventSet.EventReceiver() {
             @Override

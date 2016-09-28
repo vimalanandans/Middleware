@@ -38,7 +38,7 @@ class ControlActivityHelper {
     /**
      * Broadcast receiver to receive the status from the stack if there is  a version mismatch
      */
-    final BroadcastReceiver systemStatusBroadcastReceiver = new BroadcastReceiver() {
+    protected final BroadcastReceiver systemStatusBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             stackVersionMismatch = true;
@@ -47,7 +47,6 @@ class ControlActivityHelper {
         }
     };
     private AlertDialog mAlertDialog;
-    private GenericListItemView adapter;
 
     public ControlActivityHelper(ControlActivity controlActivity) {
         this.controlActivity = controlActivity;
@@ -74,7 +73,7 @@ class ControlActivityHelper {
 
         list = (AbsListView) controlActivity.findViewById(R.id.list);
 
-        adapter = new GenericListItemView(controlActivity, listData, null);
+        GenericListItemView adapter = new GenericListItemView(controlActivity, listData, null);
 
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
