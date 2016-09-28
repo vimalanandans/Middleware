@@ -70,7 +70,7 @@ allprojects {
     apply plugin: 'maven'
     apply plugin: 'distribution'
     group = 'com.bezirk'
-    version = "3.0.0-alpha+024"
+    version = "3.0.0-alpha+024-snapshot"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
