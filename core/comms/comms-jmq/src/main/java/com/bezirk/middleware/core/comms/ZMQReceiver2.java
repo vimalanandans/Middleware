@@ -166,11 +166,11 @@ public class ZMQReceiver2 {
         logger.info("shutdown");
         try {
             // Wait a while for existing tasks to terminate
-            if (!pool.awaitTermination(4000, TimeUnit.MILLISECONDS)) {
+            if (!pool.awaitTermination(500, TimeUnit.MILLISECONDS)) {
                 logger.info("shutdownNow");
                 pool.shutdownNow(); // Cancel currently executing tasks
                 // Wait a while for tasks to respond to being cancelled
-                if (!pool.awaitTermination(4000, TimeUnit.MILLISECONDS))
+                if (!pool.awaitTermination(500, TimeUnit.MILLISECONDS))
                     System.err.println("Pool did not terminate");
             }
         } catch (InterruptedException ie) {
@@ -192,7 +192,8 @@ public class ZMQReceiver2 {
                         return;
                     }
                     backend.bind("inproc://backend");
-                    service.submit(new ReceiverWorker(ctx));
+                    ZContext shadowCtx = ZContext.shadow(ctx);
+                    service.submit(new ReceiverWorker(shadowCtx));
 
                     logger.info("starting to block");
                     // Connect backend to frontend via a proxy, will return only if the context is closed
