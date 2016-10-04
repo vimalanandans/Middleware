@@ -1,4 +1,4 @@
-package com.bezirk.middleware.java.ui.statckstatus;
+package com.bezirk.middleware.java.ui.stackstatus;
 
 import com.bezirk.middleware.core.util.BezirkVersion;
 
