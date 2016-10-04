@@ -31,7 +31,7 @@ public class TestUIMouseListener implements MouseListener {
 
         if ("sphereUI".equalsIgnoreCase(uiType)) {
 
-            com.bezirk.middleware.java.ui.statckstatus.StackStatusUI.showStackStatusUI(false, misMatchVersion);
+            com.bezirk.middleware.java.ui.stackstatus.StackStatusUI.showStackStatusUI(false, misMatchVersion);
         }
 
 
