@@ -33,36 +33,35 @@ With the middleware, events, and adapter Zirks, very little code is required to
 write a Zirk that detects and actuates all Lightify lights on a network:
 
 ```java
-        final Bezirk bezirk = BezirkMiddleware.registerZirk("Lightify Zirk");
+    final Bezirk bezirk = BezirkMiddleware.registerZirk("Lightify Zirk");
 
-        final EventSet lightEvents = new EventSet(LightsDetectedEvent.class);
+    final EventSet lightEvents = new EventSet(LightsDetectedEvent.class);
 
-        lightEvents.setEventReceiver(new EventSet.EventReceiver() {
-            @Override
-            public void receiveEvent(Event event, ZirkEndPoint sender) {
-                if (event instanceof LightsDetectedEvent) {
-                    for (final Light light : ((LightsDetectedEvent) event).getLights()) {
-                        bezirk.sendEvent(new TurnLightOnEvent(light));
+    lightEvents.setEventReceiver(new EventSet.EventReceiver() {
+        @Override
+        public void receiveEvent(Event event, ZirkEndPoint sender) {
+            if (event instanceof LightsDetectedEvent) {
+                for (final Light light : ((LightsDetectedEvent) event).getLights()) {
+                    bezirk.sendEvent(new TurnLightOnEvent(light));
 
-                        new Timer().schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                bezirk.sendEvent(new TurnLightOffEvent(light));
-                            }
-                        }, 2000);
-                    }
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            bezirk.sendEvent(new TurnLightOffEvent(light));
+                        }
+                    }, 2000);
                 }
             }
-        });
-
-        bezirk.subscribe(lightEvents);
-
-        Set<String> gateways = LightifyAdapter.discoverGateways();
-        try {
-            new LightifyAdapter(bezirk, gateways.toArray(new String[gateways.size()])[0]);
-        } catch (IOException e) {
-            logger.error("Failed to connect to lightify gateway", e);
         }
+    });
+
+    bezirk.subscribe(lightEvents);
+
+    Set<String> gateways = LightifyAdapter.discoverGateways();
+    try {
+        new LightifyAdapter(bezirk, gateways.toArray(new String[gateways.size()])[0]);
+    } catch (IOException e) {
+        logger.error("Failed to connect to lightify gateway", e);
     }
 ```
 
