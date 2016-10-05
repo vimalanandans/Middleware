@@ -14,6 +14,7 @@ public class ConfigTest {
     private static final String PACKAGE_NAME_2 = "com.bezirk.test2";
     private static final Config.Level PACKAGE_LOG_LEVEL_2 = Config.Level.ERROR;
     private static final Config.Level level = Config.Level.DEBUG;
+    private static final boolean commsEnabled = false;
 
     /**
      * Config creation using {@link Config.ConfigBuilder}
@@ -25,6 +26,7 @@ public class ConfigTest {
                 .setLogLevel(level)
                 .setPackageLogLevel(PACKAGE_NAME_1, PACKAGE_LOG_LEVEL_1)
                 .setPackageLogLevel(PACKAGE_NAME_2, PACKAGE_LOG_LEVEL_2)
+                .setComms(commsEnabled)
                 .create();
         Gson gson = new Gson();
         String configJSON = gson.toJson(config);
@@ -43,6 +45,7 @@ public class ConfigTest {
         assertTrue(config.getPackageLogLevelMap().size() == 2);
         assertTrue(config.getPackageLogLevelMap().get(PACKAGE_NAME_1).equals(PACKAGE_LOG_LEVEL_1));
         assertTrue(config.getPackageLogLevelMap().get(PACKAGE_NAME_2).equals(PACKAGE_LOG_LEVEL_2));
+        assertTrue(config.isCommsEnabled() == commsEnabled);
     }
 
     /**

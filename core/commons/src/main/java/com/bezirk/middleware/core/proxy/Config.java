@@ -11,6 +11,7 @@ public class Config implements Serializable {
     private static final String DEFAULT_GROUP_NAME = "BEZIRK_GROUP";
     private static final String DEFAULT_APP_NAME = "Bezirk";
     private static final Level DEFAULT_LOG_LEVEL = Level.ERROR;
+    private static final boolean COMMS_ENABLED = true;
 
     public enum Level {TRACE, DEBUG, INFO, WARN, ERROR, OFF}
 
@@ -18,16 +19,18 @@ public class Config implements Serializable {
     private final String appName;
     private final Level logLevel;
     private final Map<String, Level> packageLogLevelMap;
+    private final boolean commsEnabled;
 
     public Config() {
-        this(DEFAULT_GROUP_NAME, DEFAULT_APP_NAME, DEFAULT_LOG_LEVEL, null);
+        this(DEFAULT_GROUP_NAME, DEFAULT_APP_NAME, DEFAULT_LOG_LEVEL, null, COMMS_ENABLED);
     }
 
-    public Config(@NotNull String groupName, @NotNull String appName, @NotNull Level logLevel, Map<String, Level> packageLogLevelMap) {
+    public Config(@NotNull final String groupName, @NotNull final String appName, @NotNull final Level logLevel, final Map<String, Level> packageLogLevelMap, @NotNull final boolean commsEnabled) {
         this.groupName = groupName;
         this.appName = appName;
         this.logLevel = logLevel;
         this.packageLogLevelMap = packageLogLevelMap;
+        this.commsEnabled = commsEnabled;
     }
 
     public static class ConfigBuilder {
@@ -35,12 +38,13 @@ public class Config implements Serializable {
         private String appName = DEFAULT_APP_NAME;
         private Level logLevel = DEFAULT_LOG_LEVEL;
         private Map<String, Level> packageLogLevelMap;
+        private boolean commsEnabled = COMMS_ENABLED;
 
         public ConfigBuilder() {
         }
 
         public Config create() {
-            return new Config(groupName, appName, logLevel, packageLogLevelMap);
+            return new Config(groupName, appName, logLevel, packageLogLevelMap, commsEnabled);
         }
 
         public ConfigBuilder setAppName(@NotNull String appName) {
@@ -71,6 +75,16 @@ public class Config implements Serializable {
             return this;
         }
 
+        /**
+         * Enable/Disable communications and networking capabilities of Bezirk.
+         *
+         * @param state if <code>false</code>, disables communications and networking capabilities of bezirk<br>
+         */
+        public ConfigBuilder setComms(@NotNull boolean state) {
+            commsEnabled = state;
+            return this;
+        }
+
     }
 
     public String getGroupName() {
@@ -87,5 +101,9 @@ public class Config implements Serializable {
 
     public Map<String, Level> getPackageLogLevelMap() {
         return packageLogLevelMap;
+    }
+
+    public boolean isCommsEnabled() {
+        return commsEnabled;
     }
 }

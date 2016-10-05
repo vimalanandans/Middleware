@@ -115,7 +115,7 @@ public class AutoTestActivity extends AppCompatActivity {
 
                 publisherBezirk.sendEvent(airQualityUpdateEvent);
             }
-        }, 0, 30);
+        }, 0, 50);
     }
 
     @Override

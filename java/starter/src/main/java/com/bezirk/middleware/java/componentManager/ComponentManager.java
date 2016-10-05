@@ -56,6 +56,7 @@ public class ComponentManager {
     private RemoteLog remoteLog;
     private BezirkIdentityManager identityManager;
     private LifeCycleObservable lifecyleObservable;
+    private Streaming streaming;
 
     private static final String DB_VERSION = "0.0.4";
     private static final String DB_FILE_LOCATION = ".";
@@ -75,9 +76,6 @@ public class ComponentManager {
         LoggingManager loggingManager = new LoggingManager(config);
         loggingManager.configure();
 
-        //initialize network manager for handling network management and getting network addressing information
-        networkManager = new JavaNetworkManager();
-
         //initialize data-storage for storing detailed component information like maps, objects
         try {
             this.registryStorage = new RegistryStorage(new DatabaseConnectionForJava(DB_FILE_LOCATION), DB_VERSION);
@@ -88,22 +86,32 @@ public class ComponentManager {
         //java device for getting information like deviceId, deviceName, etc
         device = new JavaDevice();
 
-        //initialize comms for communicating between devices over the wifi-network using zyre.
-        //comms = new ZyreCommsManager(networkManager, config.getGroupName(), null, null);
+        if(config.isCommsEnabled()) {
+            logger.debug("Comms is enabled");
+            //initialize network manager for handling network management and getting network addressing information
+            networkManager = new JavaNetworkManager();
 
-        // the Jmq comms
-        comms = new JmqCommsManager(networkManager, config.getGroupName(), null, null);
+            //initialize comms for communicating between devices over the wifi-network using zyre.
+            //comms = new ZyreCommsManager(networkManager, config.getGroupName(), null, null);
 
-        //streaming manager
-        Streaming streaming = new StreamManager(comms, /*downloadPath,*/ networkManager);
+            // the Jmq comms
+            comms = new JmqCommsManager(networkManager, config.getGroupName(), null, null);
 
-        //initialize remoteLogging for logging the messages
-        remoteLog = new RemoteLoggingManager(comms, networkManager, null);
+            //streaming manager
+            streaming = new StreamManager(comms, /*downloadPath,*/ networkManager);
 
-        if (Configuration.isRemoteLoggingEnabled()) {
-            remoteLog.enableLogging(true, false, true, null);
+            //initialize remoteLogging for logging the messages
+            remoteLog = new RemoteLoggingManager(comms, networkManager, null);
+
+            // add components as observers of bezirk lifecycle events.
+            lifecyleObservable.addObserver(comms);
+
+            if (Configuration.isRemoteLoggingEnabled()) {
+                remoteLog.enableLogging(true, false, true, null);
+            }
+        }else{
+            logger.debug("Comms is disabled");
         }
-
         //initialize the identity manager
         initializeIdentityManager();
 
@@ -116,11 +124,6 @@ public class ComponentManager {
         // TODO initialize in constructor instead.
         proxyServer.setPubSubBrokerService(pubSubBroker);
 
-        // add components as observers of bezirk lifecycle events.
-        lifecyleObservable.addObserver(comms);
-
-        // this state is set only when the bezirk service is created the first time
-        //lifecyleObservable.setState(com.bezirk.middleware.core.componentManager.LifecycleManager.LifecycleState.CREATED);
     }
 
     void initializeIdentityManager() {

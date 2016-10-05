@@ -57,6 +57,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private RemoteLog remoteLog = null;
     private LifeCycleObservable.State currentState;
     private String identityString;
+    private Streaming streaming;
 
     @Override
     public void onCreate() {
@@ -158,25 +159,11 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private final void create() {
         logger.debug("Creating Bezirk Service");
 
-        loggingManager = new LoggingManager(config);
-        loggingManager.configure();
-
-        // initialize lifecycle manager(Observable) for components(observers) to observe bezirk
-        // lifecycle events
+        // initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         lifecyleObservable = new LifeCycleObservable();
 
-        // initialize android shared preferences for storing user preferences
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // initialize action processor to manage intents fired to Bezirk
-        actionProcessor = new ActionProcessor();
-
-        // initialize network manager for handling wifi-management and getting network addressing
-        // information
-        networkManager = new AndroidNetworkManager(preferences, this);
-
-        // initialize message handler for sending events back to zirks
-        messageHandler = new ZirkMessageHandler(this);
+        loggingManager = new LoggingManager(config);
+        loggingManager.configure();
 
         //initialize data-storage for storing detailed component information like maps, objects
         try {
@@ -188,16 +175,35 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         //android device for getting information like deviceId, deviceName, etc
         device = new AndroidDevice();
 
-        // initialize comms for communicating between devices over the wifi-network using jmq
-        comms = new JmqCommsManager(networkManager, null, null, null);
+        // initialize android shared preferences for storing user preferences
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // initialize action processor to manage intents fired to Bezirk
+        actionProcessor = new ActionProcessor();
+
+        if (config.isCommsEnabled()) {
+            // initialize network manager for handling wifi-management and getting network addressing
+            // information
+            networkManager = new AndroidNetworkManager(preferences, this);
+
+            // initialize comms for communicating between devices over the wifi-network using jmq
+            comms = new JmqCommsManager(networkManager, null, null, null);
+
+            // streaming manager
+            streaming = new StreamManager(comms, networkManager);
+
+            // add components as observers of bezirk lifecycle events.
+            lifecyleObservable.addObserver(comms);
+            lifecyleObservable.addObserver(networkManager);
+        }
+        // initialize message handler for sending events back to zirks
+        messageHandler = new ZirkMessageHandler(this);
 
         //initialize remoteLogging for logging the messages
         // remoteLog = new RemoteLoggingManager(comms, networkManager, null);
 
         initializeIdentityManager();
 
-        // streaming manager
-        final Streaming streaming = new StreamManager(comms, networkManager);
         // initialize pub-sub Broker for filtering of events based on subscriptions and spheres
         // (if present) & dispatching messages to other zirks within the same device or another
         // device
@@ -209,10 +215,6 @@ public final class ComponentManager extends Service implements LifeCycleCallback
 
         // TODO initialize in constructor instead.
         proxyServer.setPubSubBrokerService(pubSubBroker);
-
-        // add components as observers of bezirk lifecycle events.
-        lifecyleObservable.addObserver(comms);
-        lifecyleObservable.addObserver(networkManager);
 
         // this state is set only when the bezirk service is created the first time
         //TODO add create implementations for modules
