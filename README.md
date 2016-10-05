@@ -3,6 +3,17 @@
 The Bezirk middleware is developer-friendly, user-centric, and privacy-respecting glue for the
 Internet of Things.
 
+## Build Dependencies
+
+- Latest version of the JDK
+- (Optional) Latest version of Android Studio
+
+To build and test the middleware run: `./gradlew check`
+
+To build the Bezirk API JavaDocs: `./gradlew :core:bezirk-middleware-api:javadoc`
+
+To build and run the Java SE test app (convenient for quick sanity checks): `./gradlew :java:testApp:run`
+
 ## Vision
 
 The more compelling subsets of the Internet of Things dream involve cooperation across devices diverse
@@ -83,7 +94,7 @@ based on the user's profile. Breaking out of the smart home entirely, what if yo
 temperature the car should be and what to set the radio to as it pulls up to pick you up? What if
 the shipping processes for your medicine or groceries were smart enough to ensure unbroken
 [cold chains](https://en.wikipedia.org/wiki/Cold_chain)? What if your city could dynamically adjust
-stop light timings based on current traffic? What if your doctor could tell what was going on every
+stop light timings based on current traffic? What if your doctor could tell what is going on every
 time your blood pressure is too high?
 
 Some of this might sound kind of creepy. Have every action you take observed to build profiles?
@@ -98,14 +109,3 @@ security awareness to use the IoT safely, securely, and privately.
 Please peruse the [wiki](https://github.com/Bezirk-Bosch/Middleware/wiki) to learn more about
 what we are working on, review design details for implemented and prospective features, and, most
 importantly, learn how you can contribute to the effort.
-
-## Build Dependencies
-
-- Latest version of the JDK
-- (Optional) Latest version of Android Studio
-
-To build and test the middleware run: `./gradlew check`
-
-To build the Bezirk API JavaDocs: `./gradlew :core:bezirk-middleware-api:javadoc`
-
-To build and run the Java SE test app (convenient for quick sanity checks): `./gradlew :java:testApp:run`
