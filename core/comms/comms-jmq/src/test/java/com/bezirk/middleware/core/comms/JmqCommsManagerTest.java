@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
-public class CommsManagerTest {
+public class JmqCommsManagerTest {
 
     /**
      * Start stop JmqCommsManager 2 times and shout out
@@ -24,7 +24,7 @@ public class CommsManagerTest {
             lifeCycleObservable.transition(LifeCycleObservable.Transition.START);
             //wait for comms to finish start before sending message
             try {
-                Thread.sleep(10);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

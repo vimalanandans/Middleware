@@ -10,12 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Observable;
 
-/**
- * Bezirk Communication manager for android zyre - jni
- */
-public class JmqCommsManager extends CommsProcessor implements OnMessageReceivedListener {
+public class JmqCommsManager extends CommsProcessor implements ZMQReceiver.OnMessageReceivedListener {
     private static final Logger logger = LoggerFactory.getLogger(JmqCommsManager.class);
-    private Jp2p comms;
+    private JmqComms comms;
 
     /**
      * @param networkManager - Network manager to get TCP/IP related device configurations
@@ -24,7 +21,7 @@ public class JmqCommsManager extends CommsProcessor implements OnMessageReceived
     public JmqCommsManager(NetworkManager networkManager, String groupName, CommsNotification commsNotification, Streaming streaming) {
         super(networkManager, commsNotification, streaming);
         if (comms == null) {
-            comms = new Jp2p(this);
+            comms = new JmqComms(this);
         }
     }
 
@@ -33,9 +30,6 @@ public class JmqCommsManager extends CommsProcessor implements OnMessageReceived
         return comms != null && comms.shout(msg);
     }
 
-    /**
-     * nodeId = device id
-     */
     @Override
     public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent) {
         return comms != null && comms.whisper(nodeId, msg);
@@ -65,14 +59,13 @@ public class JmqCommsManager extends CommsProcessor implements OnMessageReceived
 
     @Override
     public boolean processIncomingMessage(String nodeId, byte[] data) {
-        //logger.debug("Msg from node " + nodeId + ", msg " + new String(data));
         processWireMessage(nodeId, new String(data));
         return true;
     }
 
     @Override
     public String getNodeId() {
-        return (comms != null) ? comms.getNodeId().toString() : null;
+        return (comms != null) ? (comms.getNodeId() != null) ? comms.getNodeId().toString() : null : null;
     }
 }
 

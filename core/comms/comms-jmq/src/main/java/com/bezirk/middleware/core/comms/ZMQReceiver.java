@@ -1,93 +1,92 @@
 package com.bezirk.middleware.core.comms;
 
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zeromq.ZContext;
 import org.zeromq.ZFrame;
 import org.zeromq.ZMQ;
+import org.zeromq.ZMQException;
 import org.zeromq.ZMsg;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
-/**
- * Receiver to get all incoming data
- */
 public class ZMQReceiver implements Runnable {
+
+    public interface ReceiverPortInitializedCallback {
+        void onSuccess(int port);
+
+        void onFailure(String errorMessage);
+    }
+
+    public interface OnMessageReceivedListener {
+        boolean processIncomingMessage(String nodeId, byte[] data);
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(ZMQReceiver.class);
-    private final Jp2p jp2p;
-    private final ZContext ctx;
+
+    private ZContext ctx;
     //  Frontend socket talks to clients over TCP
-    private final ZMQ.Socket frontend;
+    private ZMQ.Socket frontend;
     //  Backend socket talks to workers over inproc
-    private final ZMQ.Socket backend;
+    private ZMQ.Socket backend;
     private int port;
-    private boolean stopped = false;
+    private final ReceiverPortInitializedCallback callback;
+    private final OnMessageReceivedListener onMessageReceivedListener;
 
-    public ZMQReceiver(Jp2p jp2p) {
-        this.jp2p = jp2p;
-        this.ctx = new ZContext();
-        this.frontend = ctx.createSocket(ZMQ.ROUTER);
-        this.backend = ctx.createSocket(ZMQ.DEALER);
-
-        //initialize port in a separate thread to prevent NetworkOnMainThread issue on android
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
-        final Future<Integer> future = executor.submit(new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                return frontend.bindToRandomPort("tcp://*", 0xc000, 0xffff);
-            }
-        });
-        try {
-            port = future.get(50, TimeUnit.MILLISECONDS);
-            executor.shutdownNow();
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            logger.error("Failed to shutdown ZMQReceiver port initialization executor", e);
-        }
-
-        logger.debug("tcp port: {}", port);
-        if (port == 0) {
-            logger.debug("Incoming port is null, unable to start receiver");
-            ctx.destroy();
-        }
-    }
-
-    public void stop() {
-        stopped = true;
-    }
-
-    public int getPort() {
-        return port;
+    public ZMQReceiver(@Nullable final ReceiverPortInitializedCallback callback, @Nullable final OnMessageReceivedListener onMessageReceivedListener) {
+        this.callback = callback;
+        this.onMessageReceivedListener = onMessageReceivedListener;
     }
 
     @Override
     public void run() {
-        while (!stopped) {
+
+        try {
+            this.ctx = new ZContext();
+            this.frontend = ctx.createSocket(ZMQ.ROUTER);
+            this.backend = ctx.createSocket(ZMQ.DEALER);
+            port = frontend.bindToRandomPort("tcp://*", 0xc000, 0xffff);
+            logger.trace("tcp port: " + port);
+
             if (port == 0) {
-                logger.error("Not starting worker threads for " + ZMQReceiver.class.getSimpleName());
+                logger.debug("Incoming port is null, unable to start receiver");
+                ctx.close();
+                if (callback != null) {
+                    callback.onFailure("Unable to initialize Receiver port");
+                }
                 return;
+            } else {
+                if (callback != null) {
+                    callback.onSuccess(port);
+                }
             }
+
             backend.bind("inproc://backend");
 
-            //  Launch pool of worker threads, precise number is not critical
-            for (int threadNbr = 0; threadNbr < 5; threadNbr++) {
-                new Thread(new ReceiverWorker(ctx)).start();
+            for (int i = 0; i < 5; i++) {
+                new Thread(new ReceiverWorker(ctx), "ZMQThread" + i).start();
             }
 
-            // Connect backend to frontend via a proxy, will return only if the context is closed
-            ZMQ.proxy(frontend, backend, null);
+            // Connect backend to frontend via a proxy, will return only when the context is closed
+            boolean b = ZMQ.proxy(frontend, backend, null);
+            logger.debug("ZMQ.proxy returned with value " + b);
+        } catch (ZMQException e) {
+            logger.debug("ZMQException in ZMQReceiver" + e);
+        } catch (Exception e) {
+            logger.debug("Exception in ZMQReceiver" + e);
+        } finally {
+            frontend.close();
+            backend.close();
+            return;
         }
-        Thread.currentThread().interrupt();
-        //ctx.destroy();
+
     }
 
-    /*Each worker task works on one request at a time and sends a random number
-    of replies back, with random delays between replies*/
+    public void stop() {
+        if (ctx != null) {
+            ctx.close();
+        }
+    }
 
     private class ReceiverWorker implements Runnable {
         private final ZContext ctx;
@@ -100,16 +99,29 @@ public class ZMQReceiver implements Runnable {
             ZMQ.Socket worker = ctx.createSocket(ZMQ.DEALER);
             worker.connect("inproc://backend");
 
-            while (!Thread.currentThread().isInterrupted()) {
-                //The DEALER socket gives us the address envelope and message
-                ZMsg msg = ZMsg.recvMsg(worker);
+            while (true) {
+                try {
+                    //The DEALER socket gives us the address envelope and message
+                    ZMsg msg = ZMsg.recvMsg(worker);
 
-                ZFrame address = msg.pop();
-                ZFrame content = msg.pop();
-                jp2p.processIncomingMessage(new String(address.getData()), content.getData());
+                    ZFrame address = msg.pop();
+                    ZFrame content = msg.pop();
+                    logger.trace(Thread.currentThread().getName() + " address: " + address + " content: " + content);
+
+                    if (onMessageReceivedListener != null) {
+                        onMessageReceivedListener.processIncomingMessage(new String(address.getData()), content.getData());
+                    }
+                    //jp2p.processIncomingMessage(new String(address.getData()), content.getData());
+                } catch (ZMQException e) {
+                    logger.debug("ZMQException in ReceiverWorker" + e);
+                    worker.close();
+                    break;
+                } catch (Exception e) {
+                    logger.debug("Exception in ReceiverWorker" + e);
+                    worker.close();
+                    break;
+                }
             }
-            ctx.destroy();
         }
     }
-
 }
