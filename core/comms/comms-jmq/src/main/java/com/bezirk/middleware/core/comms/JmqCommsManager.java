@@ -65,7 +65,7 @@ public class JmqCommsManager extends CommsProcessor implements ZMQReceiver.OnMes
 
     @Override
     public String getNodeId() {
-        return (comms != null) ? comms.getNodeId().toString() : null;
+        return (comms != null) ? (comms.getNodeId() != null) ? comms.getNodeId().toString() : null : null;
     }
 }
 

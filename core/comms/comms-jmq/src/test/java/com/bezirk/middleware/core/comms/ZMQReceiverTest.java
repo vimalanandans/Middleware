@@ -28,7 +28,7 @@ public class ZMQReceiverTest {
         Thread.sleep(1000);
         context.close();
         zmqReceiver.stop();
-
+        Thread.sleep(1000);
         int finalThreads = getNumberOfThreadsInSystem();
         assertEquals(startThreads, finalThreads);
     }

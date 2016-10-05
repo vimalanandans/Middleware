@@ -55,16 +55,22 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
     }
 
     public void stop() {
-        zmqReceiver.stop();
-        nodeDiscovery.stop();
-        for (Node node : nodeMap.values()) {
-            node.close();
-        }
-        selfNode.close();
-        if (context != null) {
-            context.close();
-        }
-        shutdownAndAwaitTermination(sendMessageService);
+        //closing is done in a thread so that android does not complain about NetworkOnMainThreadException
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                zmqReceiver.stop();
+                nodeDiscovery.stop();
+                for (Node node : nodeMap.values()) {
+                    node.close();
+                }
+                selfNode.close();
+                if (context != null) {
+                    context.close();
+                }
+                shutdownAndAwaitTermination(sendMessageService);
+            }
+        }).start();
     }
 
     public synchronized void addNode(UUID uuid, InetAddress sender, int port) {
@@ -75,7 +81,7 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
         } else {
             ZMQ.Socket socket = context.createSocket(ZMQ.DEALER);
             // Client identifies as same name as this node id, so that receiver identifies it
-            socket.setIdentity(uuid.toString().getBytes());
+            socket.setIdentity(selfNode.getUuid().toString().getBytes());
             //FIXME: get actual endpoint
             socket.connect("tcp:/" + sender + ":" + port);
             nodeMap.put(uuid, new Node(uuid, sender, port, socket));
@@ -98,7 +104,6 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
         if (nodeMap.containsKey(uuid)) {
             return whisper(nodeMap.get(uuid), data);
         } else {
-            logger.trace("Recipient " + recipient + " not found");
             return false;
         }
     }
@@ -176,6 +181,17 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
                     SEPERATOR + String.valueOf(selfNode.getPort());
             zbeacon = new ZBeacon(beaconHost, beaconPort, beaconData.getBytes(), false);
             zbeacon.setPrefix(prefix.getBytes());
+            zbeacon.setUncaughtExceptionHandlers(new Thread.UncaughtExceptionHandler() {
+                @Override
+                public void uncaughtException(Thread t, Throwable e) {
+                    logger.warn("Unable to beacon. This generally happens due to loss of network connectivity. When network connectivity is resumed, existing nodes will still be able to communicate. Communication between existing & new nodes would require Bezirk to be restarted.");
+                }
+            }, new Thread.UncaughtExceptionHandler() {
+                @Override
+                public void uncaughtException(Thread t, Throwable e) {
+                    logger.warn("Unable to beacon. This generally happens due to loss of network connectivity. When network connectivity is resumed, existing nodes will still be able to communicate. Communication between existing & new nodes would require Bezirk to be restarted.");
+                }
+            });
             zbeacon.setListener(new ZBeacon.Listener() {
                 @Override
                 public void onBeacon(InetAddress sender, byte[] beacon) {
@@ -192,7 +208,9 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
 
         public void stop() {
             try {
-                zbeacon.stop();
+                if (zbeacon != null) {
+                    zbeacon.stop();
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

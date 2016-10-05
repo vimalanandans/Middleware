@@ -13,7 +13,7 @@ import ch.qos.logback.classic.Level;
 
 public class JmqStressTest {
     private static final Logger logger = LoggerFactory.getLogger(JmqStressTest.class);
-    private static final int TEST_RUNTIME = 5000;
+    private static final int TEST_RUNTIME = 2000;
     private long testStartTime;
     private long testStopTime;
     private static int numberOfNodes;
@@ -23,7 +23,7 @@ public class JmqStressTest {
     static class TestJp2p implements Runnable {
         private static final Logger logger = LoggerFactory.getLogger(TestJp2p.class);
         private static final int MAX_MESSAGES_TO_SHOUT = 20000000; //max messages that can be shouted from a node
-        private static final int SLEEP_BETWEEN_EACH_MESSAGE = 5; //in milliseconds
+        private static final int SLEEP_BETWEEN_EACH_MESSAGE = 20; //in milliseconds
         private static final String AT_NODE_TEXT = "At Node : ";
         private static final String FROM_NODE_TEXT = " From Node : ";
         private static final String DATA_RECEIVED_TEXT = " Data Received : ";
@@ -143,7 +143,7 @@ public class JmqStressTest {
         t4.interrupt();
 
         logger.info("shutting down threads ... ");
-        Thread.sleep(5000); //wait for shutdown to complete
+        Thread.sleep(2000); //wait for shutdown to complete
 
         printResults();
 
