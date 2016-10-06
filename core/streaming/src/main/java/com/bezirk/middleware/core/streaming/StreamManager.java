@@ -6,6 +6,8 @@ import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.streaming.StreamRequest;
 import com.bezirk.middleware.core.networking.NetworkManager;
+import com.bezirk.middleware.core.streaming.store.StreamStore;
+import com.bezirk.middleware.core.streaming.threads.StreamQueueProcessor;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.core.pubsubbroker.PubSubEventReceiver;
 import com.bezirk.middleware.core.sphere.api.SphereSecurity;
@@ -32,22 +34,20 @@ public class StreamManager implements com.bezirk.middleware.core.streaming.Strea
 
     /** Streaming specific constants*/
 
-    static int STREAM_START_PORT = 6321;
-    static int STREAM_END_PORT = 6330;
-    static int STREAM_PARALLEL_MAX = 5;
-    static int STREAM_RETRY_COUNT = 5;
-    static final int THREAD_SIZE = 10;
+    private static int STREAM_START_PORT = 6321;
+    private static int STREAM_END_PORT = 6330;
+    private static int STREAM_PARALLEL_MAX = 5;
+    private static int STREAM_RETRY_COUNT = 5;
+    private static final int THREAD_SIZE = 10;
 
     private final StreamCtrlReceiver ctrlReceiver = new StreamCtrlReceiver();
     private MessageQueue streamingMessageQueue = null;
-    private com.bezirk.middleware.core.streaming.threads.StreamQueueProcessor sendStreamQueueProcessor = null;
-    private com.bezirk.middleware.core.streaming.BezirkStreamHandler bezirkStreamHandler = null;
+    private StreamQueueProcessor sendStreamQueueProcessor = null;
+    private BezirkStreamHandler bezirkStreamHandler = null;
     private PortFactory portFactory;
-    private com.bezirk.middleware.core.streaming.store.StreamStore streamStore = null;
-
+    private StreamStore streamStore = null;
 
     private PubSubEventReceiver pubSubEventReceiver;
-
 
     /***This has to be dependency injected.**/
     private Comms comms = null;
@@ -62,7 +62,7 @@ public class StreamManager implements com.bezirk.middleware.core.streaming.Strea
     private ExecutorService streamProcessExecutor = null;
 
     //running stream map is used to end the future task when cient wants to intrupt them.
-    private Map<String, Future> activeStreamMap = new HashMap<String, Future>();
+    private final Map<String, Future> activeStreamMap = new HashMap<>();
 
     private NetworkManager networkManager = null;
 
@@ -247,8 +247,7 @@ public class StreamManager implements com.bezirk.middleware.core.streaming.Strea
 
     @Override
     public boolean endStreams() {
-
-        boolean endStatus = false;
+        final boolean endStatus;
         if (streamQueueExecutor == null) {
             endStatus  =  false;
         } else {
