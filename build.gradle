@@ -41,7 +41,6 @@
  * 3.0.0-alpha+022 https://github.com/Bezirk-Bosch/Middleware/milestone/5
  * 3.0.0-alpha+023 https://github.com/Bezirk-Bosch/Middleware/milestone/4
  * 3.0.0-alpha+024 https://github.com/Bezirk-Bosch/Middleware/milestone/6
- * 3.0.0-alpha+025-snapshot fixes https://github.com/Bezirk-Bosch/Middleware/issues/134
  */
 buildscript {
     repositories {
@@ -63,15 +62,18 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:${project.androidGradleToolsVersion}"
         classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '4.1.0')
+//        Gradle 1.x/2.0, gradle-license-plugin 0.10.0 (and earlier)
+        classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.10.0'
     }
 }
-
 allprojects {
     apply plugin: 'idea'
     apply plugin: 'maven'
     apply plugin: 'distribution'
+//    This plugin will scan and adapt your source files to include a provided header, e.g. a LICENSE file
+    apply plugin: 'license'
     group = 'com.bezirk'
-    version = "3.0.0-alpha+025-snapshot"
+    version = "3.0.0-alpha+024"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
@@ -88,6 +90,13 @@ allprojects {
     tasks.withType(JavaCompile) {
         sourceCompatibility = "1.7"
         targetCompatibility = "1.7"
+    }
+//    A license extension is added to the project, which can be used to configure all license tasks
+    license {
+        header rootProject.file('LICENSE')
+        includes(["**/*.java", "**/*Test.java"])
+        exclude "**/*.properties"
+        strictCheck true
     }
 }
 

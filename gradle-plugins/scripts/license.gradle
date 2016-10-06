@@ -1,0 +1,107 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.10.0'
+    }
+}
+
+apply plugin: 'license'
+
+downloadLicenses {
+    // Add license info for jars that are missing it
+    licenses = [
+            (group('org.springframework'))        : license('Apache License, Version 2.0', 'http://www.apache.org/licenses/LICENSE-2.0'),
+            (group('com.bosch.upa.iassist'))      : license('Bosch internal (UPA iAssist), TBD'),
+            (group('com.bosch.upa.uhu'))          : license('Bosch internal (UPA Platform), TBD'),
+            // relaxng datatype interface (relaxngDatatype-20020414.jar) uses BSD license per: http://relaxng.org/
+            ('com.github.relaxng:relaxngDatatype'): license('BSD License', 'http://www.opensource.org/licenses/bsd-license.php')
+    ]
+
+    // include transient dependencies
+    includeProjectDependencies true
+
+    // Define license names for the purpose of this report
+    ext.apacheTwo = license('Apache License, Version 2.0', 'http://www.apache.org/licenses/LICENSE-2.0')
+    ext.bsd = license('BSD License', 'http://www.opensource.org/licenses/bsd-license.php')
+    ext.cddlgpl10 = license('CDDL 1.0 + GPLv2 with CE', 'https://glassfish.java.net/public/CDDL+GPL.html')
+    ext.cddlgpl11 = license('CDDL 1.1 + GPLv2 with CE', 'https://glassfish.java.net/public/CDDL+GPL_1_1.html')
+    ext.lgpl = license('GNU Lesser General Public License (LGPL)', 'http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html')
+    ext.epl = license('Eclipse Public License - Version 1.0', 'http://www.eclipse.org/org/documents/epl-v10.php')
+
+    // Disambiguation of license names
+    aliases = [
+            (apacheTwo): [
+                    'The Apache Software License, Version 2.0',
+                    'The Apache License, Version 2.0',
+                    'Apache Software License - Version 2.0',
+                    'Apache Software Licenses',
+                    'Apache License Version 2.0',
+                    'Apache License, Version 2.0',
+                    'Apache License 2.0',
+                    'Apache License v2',
+                    'Apache License',
+                    'Apache 2',
+                    'ASF 2.0',
+                    license('Apache License, Version 2.0', 'http://www.apache.org/licenses/LICENSE-2.0')
+            ],
+            (bsd)      : [
+                    'BSD',
+                    'BSD License',
+                    'The BSD License',
+                    license('BSD License', 'http://www.opensource.org/licenses/bsd-license.php')
+            ],
+            (cddlgpl10): [
+                    'CDDL 1.0 + GPLv2 with CE',
+                    'CDDL 1.0',
+                    license('CDDL 1.0 + GPLv2 with CE', 'https://glassfish.java.net/public/CDDL+GPL.html')
+            ],
+            (cddlgpl11): [
+                    'CDDL 1.1 + GPLv2 with CE',
+                    'CDDL 1.1',
+                    'CDDL',
+                    'GPLv2+CE',
+                    'GPL2 w/ CPE',
+                    license('CDDL 1.1 + GPLv2 with CE', 'https://glassfish.java.net/public/CDDL+GPL_1_1.html')
+            ],
+            (lgpl)     : [
+                    'GNU Lesser General Public License',
+                    'GNU Lesser General Public License (LGPL), Version 2.1',
+                    license('GNU Lesser General Public License (LGPL)', 'http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html')
+            ],
+            (epl)      : [
+                    'Eclipse Public License - Version 1.0',
+                    'Eclipse Public License - v 1.0',
+                    license('Eclipse Public License - Version 1.0', 'http://www.eclipse.org/org/documents/epl-v10.php')
+            ],
+    ]
+
+}
+
+/* NOTE, this is how you can exclude license* tasks, e.g. licenseFormat,
+   which adds license text to source files.  Uncomment this if you only
+   want to run the downloadLicenses task */
+//gradle.startParameter.excludedTaskNames += "license"
+//println("nbvj vkcn jn vkm vkn vk'")
+task collectLicenses(type: Copy) {
+    from("${buildDir}/reports/license") {
+        include "LICENSE"
+    }
+    into "${buildDir}/reports/license"
+}
+
+task cleanLicenses() {
+    force = true
+    doFirst {
+        ant.delete() {
+            fileset(dir: "${buildDir}/reports/license", includes: "*html")
+        }
+    }
+}
+
+task licenseFormat() << {
+    header rootDir.absoluteFile('${rootDir}/LICENSE')
+    strictCheck true
+}
