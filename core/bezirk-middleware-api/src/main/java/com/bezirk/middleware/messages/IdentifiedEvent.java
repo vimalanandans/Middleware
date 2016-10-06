@@ -19,9 +19,7 @@ import com.bezirk.middleware.identity.Alias;
  *         if (event instanceof HvacObservation) {
  *             // HvacObservation is an IdentifiedEvent
  *             HvacObservation o = (HvacObservation) event;
- *             Alias a = o.getAlias();
- *
- *             if (bezirk.getIdentityManager().isMiddlewareUser(a)) {
+ *             if (o.isMiddlewareUser()) {
  *                 // Do something with the observation knowing it is
  *                 // about the user of this Zirk
  *             } else {
@@ -43,20 +41,25 @@ public class IdentifiedEvent extends Event {
     private boolean isMiddlewareUser;
 
     /**
-     * check is this identified message belon to this middleware
-     * */
+     * Check is this identified message is for the user of the middleware receiving the message.
+     *
+     * @return <code>true</code>  if the <code>alias</code> in this message belongs to the
+     * receiving middleware's user
+     */
     public boolean isMiddlewareUser() {
         return isMiddlewareUser;
     }
 
     /**
-     * set by the middleware to inform zirk is this identified incoming message belong to this middleware
+     * Set by the middleware to inform zirk is this identified incoming message belong to this middleware
      * Zirk setting
-     * */
+     *
+     * @param middlewareUser middleware sets to <code>true</code> if the <code>alias</code> in
+     *                       this message belongs to the receiving middleware's user
+     */
     public void setMiddlewareUser(boolean middlewareUser) {
         isMiddlewareUser = middlewareUser;
     }
-
 
 
     /**

@@ -61,7 +61,6 @@ public class StreamDescriptor extends Message {
     }
 
 
-
     /**
      * Returns <code>true</code> if the payload can be processed as data elements arrive.
      *
