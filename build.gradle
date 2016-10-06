@@ -72,7 +72,7 @@ allprojects {
     apply plugin: 'maven'
     apply plugin: 'distribution'
 //    This plugin will scan and adapt your source files to include a provided header, e.g. a LICENSE file
-    apply plugin: 'license'
+    //apply plugin: 'license'
     group = 'com.bezirk'
     version = "3.0.0-alpha+025-snapshot"
 
@@ -93,12 +93,12 @@ allprojects {
         targetCompatibility = "1.7"
     }
 //    A license extension is added to the project, which can be used to configure all license tasks
-    license {
-        header rootProject.file('LICENSE')
-        includes(["**/*.java", "**/*Test.java"])
-        exclude "**/*.properties"
-        strictCheck true
-    }
+//    license {
+//        header rootProject.file('LICENSE')
+//        includes(["**/*.java", "**/*Test.java"])
+//        exclude "**/*.properties"
+//        strictCheck true
+//    }
 }
 
 /*
