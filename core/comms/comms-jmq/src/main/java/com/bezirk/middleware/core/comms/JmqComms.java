@@ -16,18 +16,20 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.PatternSyntaxException;
 
 public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
     private static final Logger logger = LoggerFactory.getLogger(JmqComms.class);
     private Node selfNode;
     private final Map<UUID, Node> nodeMap;
     private final ZMQReceiver zmqReceiver;
-    private int port;
     private NodeDiscovery nodeDiscovery;
     private ZContext context; //context used for sending data to other nodes
     private ExecutorService sendMessageService;
+    private final String groupName;
 
-    public JmqComms(@Nullable final ZMQReceiver.OnMessageReceivedListener onMessageReceivedListener) {
+    public JmqComms(@Nullable final ZMQReceiver.OnMessageReceivedListener onMessageReceivedListener, @Nullable final String groupName) {
+        this.groupName = groupName;
         nodeMap = new ConcurrentHashMap<>();
         // create the ZMQReceiver
         zmqReceiver = new ZMQReceiver(this, onMessageReceivedListener);
@@ -42,16 +44,15 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
     @Override
     public void onSuccess(final int port) {
         logger.trace("Port initialized successfully, initializing JmqComms");
-        this.port = port;
         selfNode = new Node(port);
-        nodeDiscovery = new NodeDiscovery();
+        nodeDiscovery = new NodeDiscovery(groupName);
         nodeDiscovery.start();
         sendMessageService = Executors.newFixedThreadPool(5);
     }
 
     @Override
     public void onFailure(String errorMessage) {
-        logger.debug("Not starting ");
+        logger.debug("Unable to start jeromq comms layer");
     }
 
     public void stop() {
@@ -153,34 +154,49 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
     }
 
     private class NodeDiscovery {
-        private static final String prefix = "bezirk";
+        private static final String DEFAULT_GROUP_NAME = "bezirk";
         private static final String SEPERATOR = "::";
         private static final String beaconHost = "255.255.255.255";
         private static final int beaconPort = 5670; // this is zyre port
         private String beaconData;
         private ZBeacon zbeacon;
+        private String groupName;
+
+        NodeDiscovery(@Nullable final String groupName) {
+            this.groupName = (groupName != null) ? groupName : DEFAULT_GROUP_NAME;
+            logger.info("GroupName for current bezirk instance " + groupName);
+        }
 
         private void processBeacon(final InetAddress sender, final byte[] beacon) {
             String beaconString = new String(beacon);
-            String[] data = beaconString.split(SEPERATOR);
+            String[] data;
+            try {
+                data = beaconString.split(SEPERATOR);
+            } catch (PatternSyntaxException e) {
+                logger.error("PatternSyntaxException " + e);
+                return;
+            }
 
             if (data.length == 4) // right format
             {
-                long lsb = Long.parseLong(data[1]);
-                long msb = Long.parseLong(data[2]);
-                UUID uuid = new UUID(msb, lsb);
-                int port = Integer.parseInt(data[3]);
-                //peers.validatePeer(uuid, sender, port);
-                addNode(uuid, sender, port);
+                try {
+                    long lsb = Long.parseLong(data[1]);
+                    long msb = Long.parseLong(data[2]);
+                    UUID uuid = new UUID(msb, lsb);
+                    int port = Integer.parseInt(data[3]);
+                    addNode(uuid, sender, port);
+                } catch (NumberFormatException n) {
+                    logger.error("NumberFormatException while processing beacon " + n);
+                }
             }
         }
 
         public void start() {
-            beaconData = prefix + SEPERATOR + selfNode.getUuid().getLeastSignificantBits() +
+            beaconData = groupName + SEPERATOR + selfNode.getUuid().getLeastSignificantBits() +
                     SEPERATOR + selfNode.getUuid().getMostSignificantBits() +
-                    SEPERATOR + String.valueOf(selfNode.getPort());
+                    SEPERATOR + String.valueOf(selfNode.getPort()); //this ensures only beacon with this prefix is processed
             zbeacon = new ZBeacon(beaconHost, beaconPort, beaconData.getBytes(), false);
-            zbeacon.setPrefix(prefix.getBytes());
+            zbeacon.setPrefix(groupName.getBytes());
             zbeacon.setUncaughtExceptionHandlers(new Thread.UncaughtExceptionHandler() {
                 @Override
                 public void uncaughtException(Thread t, Throwable e) {

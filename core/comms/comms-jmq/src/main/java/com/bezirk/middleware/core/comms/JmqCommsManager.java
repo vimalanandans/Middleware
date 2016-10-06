@@ -21,7 +21,7 @@ public class JmqCommsManager extends CommsProcessor implements ZMQReceiver.OnMes
     public JmqCommsManager(NetworkManager networkManager, String groupName, CommsNotification commsNotification, Streaming streaming) {
         super(networkManager, commsNotification, streaming);
         if (comms == null) {
-            comms = new JmqComms(this);
+            comms = new JmqComms(this, groupName);
         }
     }
 

@@ -187,7 +187,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
             networkManager = new AndroidNetworkManager(preferences, this);
 
             // initialize comms for communicating between devices over the wifi-network using jmq
-            comms = new JmqCommsManager(networkManager, null, null, null);
+            comms = new JmqCommsManager(networkManager, config.getGroupName(), null, null);
 
             // streaming manager
             streaming = new StreamManager(comms, networkManager);

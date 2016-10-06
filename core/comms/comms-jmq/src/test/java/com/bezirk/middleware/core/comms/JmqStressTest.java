@@ -39,7 +39,7 @@ public class JmqStressTest {
         public TestJp2p() {
             this.peerInfoMap = new ConcurrentHashMap<>();
             this.onMessageReceivedListener = new Listener();
-            jmqComms = new JmqComms(onMessageReceivedListener);
+            jmqComms = new JmqComms(onMessageReceivedListener, null);
             jmqComms.start();
 
             //sleep till nodeId is generated

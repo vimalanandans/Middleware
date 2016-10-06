@@ -18,7 +18,7 @@ public class JmqCommsTest {
     public void test() throws InterruptedException {
         Utils.setLogLevel(Level.ERROR);
         int startThreads = Utils.getNumberOfThreadsInSystem(true);
-        JmqComms jmqComms = new JmqComms(null);
+        JmqComms jmqComms = new JmqComms(null, null);
         jmqComms.start();
         Thread.sleep(1000);
         for (int i = 0; i < 10; i++) {
@@ -100,7 +100,7 @@ public class JmqCommsTest {
 
         @Override
         public void run() {
-            jmqComms = new JmqComms(onMessageReceivedListener);
+            jmqComms = new JmqComms(onMessageReceivedListener, null);
             try {
                 int i = 0;
                 jmqComms.start();
