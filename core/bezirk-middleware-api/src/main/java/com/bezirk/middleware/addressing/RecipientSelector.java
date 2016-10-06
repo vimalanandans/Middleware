@@ -15,7 +15,7 @@ import java.io.Serializable;
  * by a {@link Location}.
  * <p>
  * This class is used when sending messages with
- * {@link com.bezirk.middleware.Bezirk#sendEvent(RecipientSelector, Event) events}.
+ * {@link com.bezirk.middleware.Bezirk#sendEvent(RecipientSelector, Event)}.
  * </p>
  *
  * @see Event
