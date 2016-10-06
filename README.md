@@ -16,27 +16,30 @@ To build and run the Java SE test app (convenient for quick sanity checks): `./g
 
 ## Vision
 
-The more compelling subsets of the Internet of Things dream involve cooperation across devices diverse
-in their manufacturers, forms, functions, and use cases. This cooperation can enable a world where
-mundane tasks are fully automated and personalized per person, processes are optimized using accurate
-and timely data presenting a full view of each process, and much more. To achieve this dream we
-need an ecosystem where devices seamlessly interoperate and are easy for the right (and only the
-right) entities to access. However, in the current world the Internet of Things is full of buggy,
-poorly documented APIs that live in their own silos. How do we fulfill the IoT dream if the basic
-building blocks are clumsy and difficult to work with?
+The more compelling subsets of the Internet of Things dream involve cooperation across devices. With
+cooperation between devices, we can achieve dreams more complex than are currently possible.
+Cooperation can enable a world where we offload our mundane tasks to our Things, with outcomes
+customized to our needs and desires. Cooperation can also optimize business and industrial processes
+using accurate and timely data. These dreams need an ecosystem where devices seamlessly interoperate
+and are easy for the right (and only the right) entities to access.
 
-The Bezirk ecosystem aims to solve these problems and the middleware in this repository forms its
-heart. The Bezirk middleware implements cloudless and brokerless publish and subscribe in Java along
-with basic security and identity management building blocks. Together, these components enable secure,
-seamless interoperability as implemented by other components in the Bezirk ecosystem:
+In practice, devices are diverse in their manufacturers, forms, functions, and use cases. Yet, the
+Internet of Things is full of buggy, poorly documented APIs that do not work together. How do we
+fulfill the IoT dream if the basic building blocks are clumsy and difficult to work with?
 
-- Zirks plug into the middleware to control hardware and/or provide a service to the rest of the
-Bezirk ecosystem
+The Bezirk ecosystem aims to solve these problems. The middleware in this repository forms its heart.
+The Bezirk middleware implements cloudless and brokerless publish and subscribe in Java. It also
+includes basic security and identity management building blocks. Together, these components enable
+secure, seamless interoperability. The ecosystem includes components that use the described features
+to bootstrap interopability:
+
+- _Zirks_ plug into the middleware to control hardware and/or provide services within the Bezirk
+ecosystem
  - [Adapter Zirks](https://github.com/Bezirk-Bosch/AdapterZirks) implement support for specific
  hardware (e.g. Hue lights)
-- Events provide the basic building blocks used to communicate between Zirks
- - [Hardware events](https://github.com/Bezirk-Bosch/HardwareEvents) provide a uniform interface
- for beacons, environmental sensors, lights, and other hardware types
+- _Events_ are the unit of communication between Zirks
+ - [Hardware events](https://github.com/Bezirk-Bosch/HardwareEvents) provide a uniform interface for
+ beacons, environmental sensors, lights, and other hardware types
 
 ## Example
 
