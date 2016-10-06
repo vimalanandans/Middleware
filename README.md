@@ -90,7 +90,7 @@ lights.
 Many of the examples above have been smart home oriented. We are thinking bigger. What if the Zirks
 you use sent observations about how you use them to a personalization Zirk you own? This
 personalization Zirk could then build profiles based on how you interact with your world. What if instead
-of waiting to order at a coffee shop, the store could ask your personalization Zirk what your favorite
+of waiting to order at a coffee shop, the store could ask your personalization Zirk about your favorite
 drink as you walk in? What if your taxi knew what temperature the car should be and what to set the
 radio to as it pulls up to pick you up?  What if the shipping processes for your medicine or
 groceries were smart enough to ensure unbroken
