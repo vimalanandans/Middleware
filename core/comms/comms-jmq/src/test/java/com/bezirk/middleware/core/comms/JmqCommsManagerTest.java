@@ -13,7 +13,7 @@ public class JmqCommsManagerTest {
     /**
      * Start stop JmqCommsManager 2 times and shout out
      */
-    //@org.junit.Test
+    @org.junit.Test
     public void test() {
         NetworkManager networkManager = Mockito.mock(NetworkManager.class);
 

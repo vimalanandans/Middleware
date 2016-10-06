@@ -14,7 +14,7 @@ public class JmqCommsTest {
     private static final String THREAD_NAME_1 = "T1";
     private static final String THREAD_NAME_2 = "T2";
 
-    //@Test
+    @Test
     public void test() throws InterruptedException {
         Utils.setLogLevel(Level.ERROR);
         int startThreads = Utils.getNumberOfThreadsInSystem(true);
@@ -32,7 +32,7 @@ public class JmqCommsTest {
         //assertEquals(startThreads, finalThreads);
     }
 
-    //@Test
+    @Test
     public void test1() throws InterruptedException {
         Utils.setLogLevel(Level.ERROR);
         int startThreads = Utils.getNumberOfThreadsInSystem(false);

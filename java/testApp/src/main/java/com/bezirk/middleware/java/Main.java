@@ -53,7 +53,7 @@ public class Main {
 
     private static void init() {
         //with comms enabled
-        Config config = new Config.ConfigBuilder().setLogLevel(Config.Level.DEBUG).setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.INFO).create();
+        Config config = new Config.ConfigBuilder().setLogLevel(Config.Level.ERROR).setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.WARN).create();
 
         //with comms disabled
         //Config config = new Config.ConfigBuilder().setLogLevel(Config.Level.DEBUG).setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.INFO).setComms(false).create();

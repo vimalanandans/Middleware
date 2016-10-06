@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Set;
 
 public class ZMQReceiverTest {
-    //@Test
+    @Test
     public void test() throws InterruptedException {
         int startThreads = getNumberOfThreadsInSystem();
         ZMQReceiver zmqReceiver = new ZMQReceiver(null, null);

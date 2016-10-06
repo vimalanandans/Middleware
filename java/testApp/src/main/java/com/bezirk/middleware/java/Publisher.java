@@ -47,6 +47,6 @@ public class Publisher {
 
                 bezirk.sendEvent(airQualityUpdateEvent);
             }
-        }, 500, 5000);
+        }, 1000, 500);
     }
 }

@@ -104,7 +104,7 @@ public class JmqStressTest {
     }
 
 
-    //@org.junit.Test
+    @org.junit.Test
     public void test() throws InterruptedException {
         Utils.setLogLevel(Level.DEBUG);
         int startThreads = Utils.getNumberOfThreadsInSystem(false);
