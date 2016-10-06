@@ -42,6 +42,7 @@
  * 3.0.0-alpha+023 https://github.com/Bezirk-Bosch/Middleware/milestone/4
  * 3.0.0-alpha+024 https://github.com/Bezirk-Bosch/Middleware/milestone/6
  * 3.0.0-alpha+025-snapshot fixes multiple issues in milestone1
+ * 3.0.0-alpha+025-snapshot-1 fixes multiple issues in milestone1, testing alpha+025 release.
  */
 buildscript {
     repositories {
@@ -74,7 +75,7 @@ allprojects {
 //    This plugin will scan and adapt your source files to include a provided header, e.g. a LICENSE file
     //apply plugin: 'license'
     group = 'com.bezirk'
-    version = "3.0.0-alpha+025-snapshot"
+    version = "3.0.0-alpha+025-snapshot-1"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
