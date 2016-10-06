@@ -96,7 +96,7 @@ import java.io.Serializable;
  *
  *         // Send an event to all Things at the semantic address subscribed to the
  *         // light protocol telling the Things to turn on
- *         bezirk.sendEvent(new RecipientSelector(lightLocation), new TurnLightOnEvent();
+ *         bezirk.sendEvent(new RecipientSelector(lightLocation), new TurnLightOnEvent());
  *     });
  *
  *     // ...
