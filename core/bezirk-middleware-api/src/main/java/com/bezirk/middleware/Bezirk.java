@@ -15,10 +15,11 @@ import java.io.PipedOutputStream;
  * <br>
  * <pre>
  * import com.bezirk.middleware.Bezirk;
- * import com.bezirk.middleware.proxy.BezirkMiddleware;
+ * import com.bezirk.middleware.java.proxy.BezirkMiddleware;
  *
  * // ...
  *
+ *          BezirkMiddleware.initialize();
  *          Bezirk bezirk = BezirkMiddleware.registerZirk("Zirk Name Here");
  *
  * // ...
@@ -27,7 +28,8 @@ import java.io.PipedOutputStream;
  */
 public interface Bezirk {
     /**
-     * Undo the effects of registering the Zirk using a <code>Factory</code> and remove all
+     * Undo the effects of registering the Zirk using a
+     * <code>BezirkMiddleware.registerZirk(String)</code> and remove all
      * subscriptions as if {@link #unsubscribe(MessageSet)} were called with <code>null</code> as
      * the <code>MessageSet</code>.
      */
@@ -66,7 +68,7 @@ public interface Bezirk {
      * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event that also
      * meet the requirements set by a {@link com.bezirk.middleware.addressing.RecipientSelector}.
      * The set of recipients can be narrowed using <code>recipient</code> if a semantic address is
-     * specified, or broadened if a pipe is specified.
+     * specified.
      *
      * @param recipient the {@link RecipientSelector} specifying the sent event's recipients within
      *                  a sphere

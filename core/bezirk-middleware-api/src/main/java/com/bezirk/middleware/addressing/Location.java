@@ -43,7 +43,7 @@ import java.io.Serializable;
  * separated by a forward slash: <code>"wide scope/intermediate scope/narrow scope"</code>.
  * For example, using the scopes in the examples from the previous section, the semantic
  * addresses are represented by the following strings:
- * <code>"floor 1/kitchen/cake prep"</code> and <code>"floor 1/kitchen/window"</code>.
+ * <code>"floor 1/kitchen/window"</code> and <code>"floor 1/kitchen/cake prep"</code>.
  * <h1>Specifying Scopes</h1>
  * The relative size of each scope is dependent on the specific spatial context surrounding the
  * semantic address. The previous examples were within the context of Things in a building; however
@@ -85,19 +85,18 @@ import java.io.Serializable;
  *     EventSet e = new EventSet(UserLocationEvent.class);
  *
  *     e.setEventReceiver((event, sender) -&gt; {
- *         UserLocationEvent locationEvent =(UserLocationEvent) event;
- *         Location userLocation = locationEvent.getLocation();
+ *         final UserLocationEvent locationEvent = (UserLocationEvent) event;
+ *         final Location userLocation = locationEvent.getLocation();
  *
  *         // Create a semantic address referring to all Things in the user's current
  *         // room
- *         Location lightLocation = new Location(userLocation.getWideScope(),
+ *         final Location lightLocation = new Location(userLocation.getWideScope(),
  *                                               userLocation.getIntermediateScope(),
  *                                               null);
  *
  *         // Send an event to all Things at the semantic address subscribed to the
  *         // light protocol telling the Things to turn on
- *         bezirk.sendEvent(lightId, new RecipientSelector(lightLocation),
- *                          new ActuateLightEvent(LightOperations.ON);
+ *         bezirk.sendEvent(new RecipientSelector(lightLocation), new TurnLightOnEvent();
  *     });
  *
  *     // ...

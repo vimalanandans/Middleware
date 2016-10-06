@@ -8,7 +8,7 @@ import java.util.UUID;
 /**
  * Base class for creating sets of messages that a Zirk wants to receive. Bezirk uses topic-based
  * publish and subscribe to enable Zirks to scalably communicate with loose coupling. In Bezirk, a
- * message's topic is its type (e.g. <code>com.example.messages.measurement.HeatBeatMeasurement</code>).
+ * message's topic is its type (e.g. <code>com.example.messages.measurement.HeartBeatMeasurement</code>).
  * A Zirk creates a message set or re-uses an existing one. A Zirk begins receiving messages after
  * passing a set to {@link com.bezirk.middleware.Bezirk#subscribe(MessageSet)}.
  * <p>
