@@ -87,25 +87,25 @@ lights.
 
 ## The Bigger Picture
 
-However, we think bigger than simply the hardware you find in a typical smart home set-up. What if
-each Zirk actuating hardware were to send events observing a user's interactions with hardware
-to a personalization Zirk? This personalization Zirk could then build up a profile of how this user
-interacts with the world around them to begin to automate it. Instead of simply waiting for a command
-to turn on a light, a Zirk could ask the personalization Zirk whether the light should turn on or not
-and even what settings (color, temperature, etc.) the light should have and receive an answer back
-based on the user's profile. Breaking out of the smart home entirely, what if your taxi knew what
-temperature the car should be and what to set the radio to as it pulls up to pick you up? What if
-the shipping processes for your medicine or groceries were smart enough to ensure unbroken
+Many of the examples above have been smart home oriented. We are thinking bigger. What if the Zirks
+you use sent observations about how you use them to a personalization Zirk you own? This
+personalization Zirk could then build a profile of how you interact with your world. What if instead
+of waiting to order at a coffee shop, the store could ask your personalization Zirk what your favorite
+drink as you walk in? What if your taxi knew what temperature the car should be and what to set the
+radio to as it pulls up to pick you up?  What if the shipping processes for your medicine or
+groceries were smart enough to ensure unbroken
 [cold chains](https://en.wikipedia.org/wiki/Cold_chain)? What if your city could dynamically adjust
 stop light timings based on current traffic? What if your doctor could tell what is going on every
-time your blood pressure is too high?
+time your blood pressure is too high? All of this can be built on top of the Bezirk middleware.
 
-Some of this might sound kind of creepy. Have every action you take observed to build profiles?
-The Bezirk middleware is privacy-respecting in the sense that it puts the user in control of their own
-data. There is no requirement to use the cloud and the user can decide the scope within which their
-Zirks can communicate. While parts of this vision are not implemented yet, we aim to make it as
-easy on the user as possible. We firmly believe that people should not have to possess expert-level
-security awareness to use the IoT safely, securely, and privately.
+Some of this might sound kind of creepy. Are you comfortable having every action you take observed
+to build profiles? This is yet another problem we have to solve to realize compelling IoT dreams. The
+Bezirk middleware aims to be privacy-respecting in the sense that it puts the user in
+control of their own data, while taking care of the nitty-gritty security details automatically.
+There is no requirement to use the cloud and the user can decide the scope within which their Zirks
+can communicate. While parts of this vision are not implemented yet, we aim
+to make it as easy on the user as possible. We firmly believe that people should not have to possess
+expert-level security awareness to use the IoT safely, securely, and privately.
 
 ## Helping Out
 
