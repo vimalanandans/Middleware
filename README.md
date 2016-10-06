@@ -31,7 +31,7 @@ The Bezirk ecosystem aims to solve these problems. The middleware in this reposi
 The Bezirk middleware implements cloudless and brokerless publish and subscribe in Java. It also
 includes basic security and identity management building blocks. Together, these components enable
 secure, seamless interoperability. The ecosystem includes components that use the described features
-to bootstrap interopability:
+to bootstrap interoperability:
 
 - _Zirks_ plug into the middleware to control hardware and/or provide services within the Bezirk
 ecosystem
