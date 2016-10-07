@@ -60,12 +60,6 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private Streaming streaming;
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-
-    }
-
-    @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         if (intent != null) {
@@ -87,17 +81,10 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         return START_STICKY;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
     @NonNull
     @Override
     public IBinder onBind(Intent intent) {
-
         throw new UnsupportedOperationException("ibinder is not supperted");
-        //return null;
     }
 
     @Override
@@ -121,6 +108,14 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         lifecyleObservable.transition(LifeCycleObservable.Transition.STOP);
         currentState = lifecyleObservable.getState();
         stopSelf();
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        if (config != null && !config.keepServiceAlive()) {
+            stop(null);
+        }
     }
 
     public final Notification buildForegroundNotification(String appName, String status, int icon) {

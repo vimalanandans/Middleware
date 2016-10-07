@@ -12,6 +12,7 @@ public class Config implements Serializable {
     private static final String DEFAULT_APP_NAME = "Bezirk";
     private static final Level DEFAULT_LOG_LEVEL = Level.ERROR;
     private static final boolean COMMS_ENABLED = true;
+    private static final boolean BEZIRK_SERVICE_ALIVE_ON_APPLICATION_SHUTDOWN = false;
 
     public enum Level {TRACE, DEBUG, INFO, WARN, ERROR, OFF}
 
@@ -20,17 +21,19 @@ public class Config implements Serializable {
     private final Level logLevel;
     private final Map<String, Level> packageLogLevelMap;
     private final boolean commsEnabled;
+    private final boolean serviceAlive;
 
     public Config() {
-        this(DEFAULT_GROUP_NAME, DEFAULT_APP_NAME, DEFAULT_LOG_LEVEL, null, COMMS_ENABLED);
+        this(DEFAULT_GROUP_NAME, DEFAULT_APP_NAME, DEFAULT_LOG_LEVEL, null, COMMS_ENABLED, BEZIRK_SERVICE_ALIVE_ON_APPLICATION_SHUTDOWN);
     }
 
-    public Config(@NotNull final String groupName, @NotNull final String appName, @NotNull final Level logLevel, final Map<String, Level> packageLogLevelMap, @NotNull final boolean commsEnabled) {
+    public Config(@NotNull final String groupName, @NotNull final String appName, @NotNull final Level logLevel, final Map<String, Level> packageLogLevelMap, @NotNull final boolean commsEnabled, @NotNull final boolean serviceAlive) {
         this.groupName = groupName;
         this.appName = appName;
         this.logLevel = logLevel;
         this.packageLogLevelMap = packageLogLevelMap;
         this.commsEnabled = commsEnabled;
+        this.serviceAlive = serviceAlive;
     }
 
     public static class ConfigBuilder {
@@ -39,30 +42,31 @@ public class Config implements Serializable {
         private Level logLevel = DEFAULT_LOG_LEVEL;
         private Map<String, Level> packageLogLevelMap;
         private boolean commsEnabled = COMMS_ENABLED;
+        private boolean keepServiceAlive = BEZIRK_SERVICE_ALIVE_ON_APPLICATION_SHUTDOWN;
 
         public ConfigBuilder() {
         }
 
         public Config create() {
-            return new Config(groupName, appName, logLevel, packageLogLevelMap, commsEnabled);
+            return new Config(groupName, appName, logLevel, packageLogLevelMap, commsEnabled, keepServiceAlive);
         }
 
-        public ConfigBuilder setAppName(@NotNull String appName) {
+        public ConfigBuilder setAppName(@NotNull final String appName) {
             this.appName = appName;
             return this;
         }
 
-        public ConfigBuilder setGroupName(@NotNull String groupName) {
+        public ConfigBuilder setGroupName(@NotNull final String groupName) {
             this.groupName = groupName;
             return this;
         }
 
-        public ConfigBuilder setLogLevel(@NotNull Level logLevel) {
+        public ConfigBuilder setLogLevel(@NotNull final Level logLevel) {
             this.logLevel = logLevel;
             return this;
         }
 
-        public ConfigBuilder setPackageLogLevel(@NotNull String packageName, @NotNull Level logLevel) {
+        public ConfigBuilder setPackageLogLevel(@NotNull final String packageName, @NotNull final Level logLevel) {
             if (packageLogLevelMap == null) {
                 packageLogLevelMap = new HashMap<>();
             }
@@ -76,12 +80,22 @@ public class Config implements Serializable {
         }
 
         /**
-         * Enable/Disable communications and networking capabilities of Bezirk.
+         * Enable/Disable communications and networking capabilities of Bezirk. True by default.
          *
          * @param state if <code>false</code>, disables communications and networking capabilities of bezirk<br>
          */
-        public ConfigBuilder setComms(@NotNull boolean state) {
+        public ConfigBuilder setComms(@NotNull final boolean state) {
             commsEnabled = state;
+            return this;
+        }
+
+        /**
+         * This configuration works only in android, has no affect in java version of the middleware. False by default.
+         *
+         * @param alive if <code>true</code>, keeps the android service running even when the application is shutdown. In such cases, shutdown is handled explicitly by the application using <code>BezirkMiddleware.stop()</code>
+         */
+        public ConfigBuilder setServiceAlive(@NotNull final boolean alive) {
+            keepServiceAlive = alive;
             return this;
         }
 
@@ -105,5 +119,9 @@ public class Config implements Serializable {
 
     public boolean isCommsEnabled() {
         return commsEnabled;
+    }
+
+    public boolean keepServiceAlive() {
+        return serviceAlive;
     }
 }
