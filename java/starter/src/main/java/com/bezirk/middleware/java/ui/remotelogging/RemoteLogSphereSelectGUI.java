@@ -1,13 +1,11 @@
 package com.bezirk.middleware.java.ui.remotelogging;
 
 import com.bezirk.middleware.core.comms.Comms;
-import com.bezirk.middleware.objects.BezirkSphereInfo;
 import com.bezirk.middleware.core.networking.NetworkManager;
+import com.bezirk.middleware.core.remotelogging.RemoteLog;
 import com.bezirk.middleware.core.remotelogging.RemoteLoggingMessage;
 import com.bezirk.middleware.core.remotelogging.RemoteLoggingMessageNotification;
-
-import com.bezirk.middleware.core.remotelogging.RemoteLog;
-
+import com.bezirk.middleware.objects.BezirkSphereInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -49,9 +48,7 @@ import javax.swing.event.ListSelectionListener;
  */
 public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLoggingMessageNotification {
     private static final long serialVersionUID = 1L;
-
     private static final Logger logger = LoggerFactory.getLogger(RemoteLogSphereSelectGUI.class);
-
     /**
      * GUI components
      */
@@ -248,10 +245,10 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
         this.setJMenuBar(menuBar);
         this.getContentPane().setLayout(frameLayout);
         this.setSize(new Dimension(628, 551));
-        this.setTitle(com.bezirk.middleware.java.ui.remotelogging.LoggingGUILabels.LABEL_FRAME_HEADER);
+        this.setTitle("Bezirk-Logging");
         this.setResizable(false);
         this.setVisible(true);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.addWindowListener(closeButtonListener);
 
         final Dimension screenSize = Toolkit.getDefaultToolkit()
@@ -265,25 +262,25 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
         }
         this.setLocation((screenSize.width - frameSize.width) / 2,
                 (screenSize.height - frameSize.height) / 2);
-        menuSettings.setText(com.bezirk.middleware.java.ui.remotelogging.LoggingGUILabels.LABEL_SETTINGS);
-        menuAboutUs.setText(com.bezirk.middleware.java.ui.remotelogging.LoggingGUILabels.LABEL_ABOUT_US);
+        menuSettings.setText("Settings");
+        menuAboutUs.setText("About Us");
         framePanel.setLayout(null);
         sphereListLeftScroll.setBounds(new Rectangle(25, 110, 215, 285));
 
-        selectSphereLbl.setText(com.bezirk.middleware.java.ui.remotelogging.LoggingGUILabels.LABEL_SELECT_SPHERE);
+        selectSphereLbl.setText("Select sphere");
         selectSphereLbl.setBounds(new Rectangle(25, 85, 235, 20));
 
-        listSphereBtn.setText(com.bezirk.middleware.java.ui.remotelogging.LoggingGUILabels.LABEL_GET_SPHERE_LIST);
+        listSphereBtn.setText("Get sphere List");
         listSphereBtn.setBounds(new Rectangle(25, 30, 135, 25));
         listSphereBtn.addActionListener(listSphereBtnListener);
 
-        startLoggingBtn.setText(com.bezirk.middleware.java.ui.remotelogging.LoggingGUILabels.LABEL_START_LOGGING);
+        startLoggingBtn.setText("Start Logging");
         startLoggingBtn.setBounds(new Rectangle(180, 30, 135, 25));
 
-        selectedSphereLbl.setText(com.bezirk.middleware.java.ui.remotelogging.LoggingGUILabels.LABEL_SELECTED_SPHERE);
+        selectedSphereLbl.setText("Selected Spheres");
         selectedSphereLbl.setBounds(new Rectangle(360, 85, 235, 20));
 
-        bezirkDeveloperChck.setText(com.bezirk.middleware.java.ui.remotelogging.LoggingGUILabels.LABEL_ENABLE_DEVELOPER_MODE);
+        bezirkDeveloperChck.setText("Enable Bezirk Developer Option");
         bezirkDeveloperChck.setBounds(new Rectangle(25, 60, 325, 25));
         bezirkDeveloperChck.addItemListener(developerModeListener);
 
@@ -291,12 +288,12 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
         menuBar.add(menuAboutUs);
         menuBar.setEnabled(false);
 
-        settingsPanel.add(new JLabel(com.bezirk.middleware.java.ui.remotelogging.LoggingGUILabels.LABEL_IP_ADDRESS));
+        settingsPanel.add(new JLabel("IP Address:"));
         settingsPanel.add(ipAddressTxt);
         settingsPanel.add(Box.createHorizontalStrut(15)); // spacer between
         // textbox
         settingsPanel
-                .add(new JLabel(com.bezirk.middleware.java.ui.remotelogging.LoggingGUILabels.LABEL_REMOTE_LOGGING_PORT));
+                .add(new JLabel("Port"));
         settingsPanel.add(portTxt);
 
         sphereListRightScroll.getViewport().add(rightSphereList, null);
@@ -346,14 +343,11 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
      * Stops the GUI. Called when the zirk is shut down.
      */
     public void shutGUI() {
-        if (this != null) {
-            try {
-                remoteLog.enableLogging(false,false,false, null);
-            } catch (Exception e) {
-                logger.error("Error in stopping logging zirk. ", e);
-            }
+        try {
+            remoteLog.enableLogging(false, false, false, null);
+        } catch (Exception e) {
+            logger.error("Error in stopping logging zirk. ", e);
         }
-
     }
 
     @Override
@@ -361,9 +355,9 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
         logger.debug("inside handleLog message of RemoteLogSphereSelectGUI ");
         if (null != remoteLogDetails && msgLog != null) {
             logger.debug("remoteLogDetails and msgLog are not null");
-           // if (msgLog.isRemoteMessageValid(logMessage)) {
-                remoteLogDetails.updateTable(logMessage);
-           // }
+            // if (msgLog.isRemoteMessageValid(logMessage)) {
+            remoteLogDetails.updateTable(logMessage);
+            // }
         }
     }
 

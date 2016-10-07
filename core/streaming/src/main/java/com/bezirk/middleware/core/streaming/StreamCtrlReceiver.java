@@ -12,10 +12,6 @@ import com.bezirk.middleware.core.streaming.rtc.Signaling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by PIK6KOR on 7/26/2016.
- */
-
 public class StreamCtrlReceiver implements CtrlMsgReceiver {
 
     private static final Logger logger = LoggerFactory.getLogger(StreamCtrlReceiver.class);

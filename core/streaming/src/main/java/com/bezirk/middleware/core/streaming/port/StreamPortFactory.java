@@ -42,7 +42,7 @@ public class StreamPortFactory implements PortFactory {
     public StreamPortFactory(int startPort, com.bezirk.middleware.core.streaming.store.StreamStore streamStore, int streamMax) {
 
         startingPort = startPort;
-        activePorts = new HashSet<Integer>();
+        activePorts = new HashSet<>();
         lastAssignedPort = startPort;
         this.streamStore = streamStore;
         this.streamMax = streamMax;

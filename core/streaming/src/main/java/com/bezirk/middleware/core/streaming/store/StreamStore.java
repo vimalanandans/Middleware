@@ -24,13 +24,13 @@ public class StreamStore {
     // Maps stream_id:StreamRecord
     // Updated during sending control message
     // Read after receiving a STREAM_RESPONSE message
-    private final Map<String, StreamRecord> streamBook = new HashMap<String, StreamRecord>();
+    private final Map<String, StreamRecord> streamBook = new HashMap<>();
 
     // Maps key:[msgId:ZirkEndPoint] --- value: [Integer]
     // Updated by the StreamPortFactory during assigning a new Port
     // Read during each ControlMessage received to check if the request is
     // always processed!
-    private final Map<String, Integer> portsMap = new HashMap<String, Integer>();
+    private final Map<String, Integer> portsMap = new HashMap<>();
 
     /*
      * This method used by the {@link StreamPortFactory} to update the {@link

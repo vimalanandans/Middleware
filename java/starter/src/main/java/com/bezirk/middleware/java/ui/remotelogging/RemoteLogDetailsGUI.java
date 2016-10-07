@@ -114,23 +114,18 @@ public class RemoteLogDetailsGUI extends JFrame {
         this.comms = comms;
     }
 
-    /**
-     * init the GUI
-     *
-     * @throws Exception
-     */
     private void jbInit() {
 
         this.setVisible(true);
         this.getContentPane().setLayout(gridBagDialogLayout);
         this.setSize(new Dimension(1266, 842));
-        this.setTitle(LoggingGUILabels.LABEL_FRAME_HEADER);
+        this.setTitle("Bezirk-Logging");
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         headerPanel.setLayout(null);
         tableHolderPanel.setLayout(null);
         selectedSphereLbl.setBounds(new Rectangle(15, 15, 745, 25));
-        clearLogBtn.setText(LoggingGUILabels.LABEL_BUTTON_CLEAR_LOG);
+        clearLogBtn.setText("Clear Log");
         clearLogBtn.setBounds(new Rectangle(1050, 10, 100, 25));
 
         selectedSphereLbl.setText("Selected Spheres: "
@@ -147,12 +142,12 @@ public class RemoteLogDetailsGUI extends JFrame {
         selectedSphereLbl.setVisible(true);
         logTbl.setPreferredScrollableViewportSize(logTbl.getPreferredSize());
         logTbl.setBounds(new Rectangle(0, 0, 685, 680));
-        model.addColumn(LoggingGUILabels.LABEL_SPHERE);
-        model.addColumn(LoggingGUILabels.LABEL_UNIQUE_ID);
-        model.addColumn(LoggingGUILabels.LABEL_SENDER);
-        model.addColumn(LoggingGUILabels.LABEL_RECIPIENT);
-        model.addColumn(LoggingGUILabels.LABEL_TOPIC);
-        model.addColumn(LoggingGUILabels.LABEL_NO_OF_RECEIVERS);
+        model.addColumn("Sphere");
+        model.addColumn("Timestamp");
+        model.addColumn("Sender");
+        model.addColumn("Recipient");
+        model.addColumn("Topic");
+        model.addColumn("# - Receivers");
 
         this.getContentPane().add(
                 headerPanel,
@@ -174,8 +169,8 @@ public class RemoteLogDetailsGUI extends JFrame {
 
     private void showCancelDialog() {
         final int returnValue = JOptionPane.showConfirmDialog(null,
-                LoggingGUILabels.LABEL_CONFIRM_DIALOG,
-                LoggingGUILabels.LABEL_CONFIRM_DIALOG_TITLE,
+                "Are you sure you want to exit Logging?\n All the logged data will be lost!",
+                "Confirm Exit",
                 JOptionPane.OK_OPTION);
         if (returnValue == JOptionPane.OK_OPTION) {
             sphereSelectFrame.setVisible(true);
