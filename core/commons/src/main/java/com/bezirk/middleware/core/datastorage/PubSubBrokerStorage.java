@@ -1,10 +1,6 @@
-/**
- * @author Vijet Badigannavar(bvijet@in.bosch.com)
- */
 package com.bezirk.middleware.core.datastorage;
 
 import com.bezirk.middleware.core.pubsubbroker.PubSubBrokerRegistry;
-
 
 /**
  * Interface for the PubSubBroker to load and persist the registry

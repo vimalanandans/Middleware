@@ -15,9 +15,14 @@ import java.sql.SQLException;
  */
 public class RegistryStorage extends DatabaseHelper implements PubSubBrokerStorage, SpherePersistence, ProxyPersistence {
 
-    public RegistryStorage(DatabaseConnection dbConnection, String DBVersion) throws Exception {
+    public RegistryStorage(DatabaseConnection dbConnection, String DBVersion) throws DataStorageException {
         super(dbConnection);
-        checkDatabase(DBVersion);
+        try {
+            checkDatabase(DBVersion);
+        } catch (SQLException | IOException e) {
+            throw new DataStorageException("Database version checked failed when constructing " +
+                    "registry storage", e);
+        }
     }
 
     @Override
