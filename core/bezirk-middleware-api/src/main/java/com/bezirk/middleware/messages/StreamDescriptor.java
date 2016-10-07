@@ -3,6 +3,8 @@ package com.bezirk.middleware.messages;
 import java.io.File;
 
 /**
+ * <h1 style="color: red">Experimental</h1>
+ *
  * Base class for non-trivial Bezirk messages and data transfers. A stream represents a set of data
  * elements such as multiple messages or picture and music data. This class is extended by protocol
  * implementors to define concrete streams and their custom attributes and payloads. To implement

@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 /**
+ * <h1 style="color: red">Experimental</h1>
+ *
  * An alias is an identity assigned to a running instance of the middleware. This identity is used
  * to make authorization decisions for the user of a middleware instance, to segment preferences
  * for shared middleware instances, and to uniquely identify a middleware user that a message is

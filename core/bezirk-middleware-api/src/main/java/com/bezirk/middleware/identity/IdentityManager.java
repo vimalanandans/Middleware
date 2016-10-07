@@ -1,6 +1,8 @@
 package com.bezirk.middleware.identity;
 
 /**
+ * <h1 style="color: red">Experimental</h1>
+ *
  * The identity manager for Bezirk-specific identities. This interface exposes methods useful to
  * Zirks that are making use of {@link com.bezirk.middleware.messages.IdentifiedEvent identified messages}.
  */

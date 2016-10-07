@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.PipedOutputStream;
 
 /**
+ * <h1 style="color: red">Experimental</h1>
+ *
  * Class used to create a set of {@link StreamDescriptor streams} to subscribe to. Extend this set to design an
  * interface declaring the streams to subscribe to, otherwise directly instantiate it to subscribe
  * to a small set of ad hoc streams. See {@link MessageSet} for examples.
@@ -67,7 +69,7 @@ public class StreamSet extends MessageSet {
      *     // Sender
      *     ZirkEndPoint z = ...;
      *     StreamDescriptor s = new PictureStream(...);
-     *     bezirk.sendStream(z, s, new File("/home/user/pictures/Puppy.png");
+     *     bezirk.sendStream(z, s, new File("/home/user/pictures/Puppy.png"));
      * </pre>
      * <p>
      * Snippet from a Zirk that receives the sent file:
