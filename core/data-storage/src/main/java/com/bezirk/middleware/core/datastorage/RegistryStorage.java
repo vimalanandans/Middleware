@@ -10,7 +10,7 @@ import com.bezirk.middleware.core.pubsubbroker.PubSubBrokerRegistry;
  * of the Bezirk that needs to be persisted. The different layers will get the corresponding interfaces through
  * which they can load/ save the data to the persistence
  */
-public class RegistryStorage extends DatabaseHelper implements com.bezirk.middleware.core.datastorage.PubSubBrokerStorage, SpherePersistence, com.bezirk.middleware.core.datastorage.ProxyPersistence {
+public class RegistryStorage extends DatabaseHelper implements PubSubBrokerStorage, SpherePersistence, ProxyPersistence {
 
     public RegistryStorage(DatabaseConnection dbConnection, String DBVersion) throws Exception {
         super(dbConnection);
