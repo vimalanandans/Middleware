@@ -37,18 +37,15 @@ public  class RemoteLoggingManager implements RemoteLog {
 
     private Comms comms;
 
-    private LogCtrlMessageReceiver ctrlReceiver ;
-
     public RemoteLoggingManager(Comms comms, NetworkManager networkManager,
                                 RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
         this.networkManager = networkManager;
         this.remoteLoggingMessageNotification = remoteLoggingMessageNotification;
         this.comms = comms;
-        ctrlReceiver = new LogCtrlMessageReceiver(this);
         remoteLoggingClient = new RemoteLoggingClient(networkManager);
 
         comms.registerControlMessageReceiver(ControlMessage.Discriminator.LOGGING_SERVICE_MESSAGE,
-                ctrlReceiver);
+                new LogCtrlMessageReceiver(this));
     }
 
     /**
@@ -149,15 +146,13 @@ public  class RemoteLoggingManager implements RemoteLog {
     }
 
     /** to recieve the logging request*/
-    class LogCtrlMessageReceiver implements CtrlMsgReceiver {
+    private class LogCtrlMessageReceiver implements CtrlMsgReceiver {
+        private final RemoteLoggingManager loggingManager;
 
-        RemoteLoggingManager loggingManager = null;
-
-
-        public LogCtrlMessageReceiver(RemoteLoggingManager loggingManager)
-        {
+        public LogCtrlMessageReceiver(RemoteLoggingManager loggingManager) {
             this.loggingManager = loggingManager;
         }
+
         @Override
         public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
             switch (id) {

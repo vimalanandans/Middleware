@@ -20,7 +20,7 @@ public class ReceiverQueueProcessor implements Runnable {
      * Platform specific logger
      */
     private final RemoteLoggingMessageNotification platformSpecificLogger;
-    FileLogger fileLogger = null;
+    private FileLogger fileLogger;
     /**
      * Flag used for starting/ Stopping Threads!
      */
@@ -44,6 +44,8 @@ public class ReceiverQueueProcessor implements Runnable {
 
         if (enableFileLogging) {
             fileLogger = new FileLogger();
+        } else {
+            fileLogger = null;
         }
 
         gson = new Gson();
@@ -93,14 +95,10 @@ public class ReceiverQueueProcessor implements Runnable {
 
     /**
      * Stop processing the LogReceiverQueue.
-     *
-     * @throws Exception interrupted Exception if something goes down while stopping the thread.
      */
-    public void stopProcessing() throws Exception {
+    public void stopProcessing() {
         isRunning = false;
     }
-
-
     /**
      * loads the serialized RemoteLogMessage into LogReceiverQueue
      *

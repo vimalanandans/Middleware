@@ -9,6 +9,7 @@ import com.bezirk.middleware.core.networking.NetworkManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -50,7 +51,7 @@ public class RemoteLoggingClient {
      * @param remoteIP - IP of the logging Zirk
      * @param port     - Port at which the logging Zirk is listening
      */
-    public boolean startClient(String remoteIP, int port) throws Exception {
+    public boolean startClient(String remoteIP, int port) {
         this.serviceIP = remoteIP;
         this.servicePort = port;
         senderQueueProcessor = new SenderQueueProcessor(this.serviceIP, this.servicePort);
@@ -63,7 +64,7 @@ public class RemoteLoggingClient {
      * @param remoteIP Ip of the logging zirk that is shutting
      * @param port     port at which the logging zirk was listening for the clients
      */
-    public void stopClient(String remoteIP, int port) throws Exception {
+    public void stopClient(String remoteIP, int port) throws IOException {
         if (null != senderQueueProcessor &&
                 remoteIP.equals(this.serviceIP) &&
                 port == this.servicePort) {

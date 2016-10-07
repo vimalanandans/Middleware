@@ -119,9 +119,9 @@ public class RemoteLoggingServer extends Thread {
     /**
      * Stops the Logging Zirk
      *
-     * @throws Exception if there is an error while closing the server socket
+     * @throws IOException if there is an error while closing the server socket
      */
-    public void stopRemoteLoggingService() throws Exception {
+    public void stopRemoteLoggingService() throws IOException {
         receiverQueueProcessor.stopProcessing();
         receiverQueueProcessor = null;
         isRunning = false;
