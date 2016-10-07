@@ -26,7 +26,7 @@ import com.bezirk.middleware.identity.Alias;
  *                 // about the user of this Zirk
  *             } else {
  *                 // Do something with the observation knowing it is
- *                 // about someone in the same sphere as this Zirk's
+ *                 // about someone in the same subnet as this Zirk's
  *                 // user, but it is not about this Zirk's user.
  *             }
  *             // ...

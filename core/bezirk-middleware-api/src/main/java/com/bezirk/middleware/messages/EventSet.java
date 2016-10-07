@@ -4,8 +4,6 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 
 import org.slf4j.LoggerFactory;
 
-import java.util.logging.Logger;
-
 /**
  * Class used to create a set of {@link Event events} to subscribe to. Extend this set to design an
  * interface declaring the events to subscribe to, otherwise directly instantiate it to subscribe

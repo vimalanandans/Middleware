@@ -165,9 +165,7 @@ public class StreamManager implements com.bezirk.middleware.core.streaming.Strea
      * @param streamRecord
      */
     void sendStreamMessageToReceivers(Iterable<String> listOfSphere, StreamRecord streamRecord) {
-        final Iterator<String> sphereIterator = listOfSphere.iterator();
-        while (sphereIterator.hasNext()) {
-            final String sphereId = sphereIterator.next();
+        for (String sphereId : listOfSphere) {
             final ControlLedger tcMessage = prepareMessage(sphereId, streamRecord);
             if (ValidatorUtility.isObjectNotNull(comms)) {
                 comms.sendMessage(tcMessage);

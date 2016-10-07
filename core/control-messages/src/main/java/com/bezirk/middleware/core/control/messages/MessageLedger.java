@@ -7,40 +7,16 @@ import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
  * this is meant for comms layer diagnostic tests / performance tests etc.
  */
 public class MessageLedger implements Ledger /*implements Serializable*/ {
-
-    String MsgType; // Generic Message type
-    BezirkZirkEndPoint sender;
-    BezirkZirkEndPoint recipient;
-    String Msg; // serialized message
+    private String MsgType; // Generic Message type
+    private BezirkZirkEndPoint sender;
+    private BezirkZirkEndPoint recipient;
+    private String Msg; // serialized message
 
     public boolean isMulticast() {
         return recipient != null &&
                 recipient.device != null &&
                 recipient.device.length() != 0;
     }
-/*
-    // wire format is serialized
-    public byte[] toJson()  throws IOException {
-        Gson gson = new Gson();
-        return gson.toJson(this).getBytes();
-        // send the compressed string
-        //return compress (gson.toJson(this));
-    }
-    //fromJson data
-    public static MessageLedger fromJson(byte[] data) {
-
-        MessageLedger wireMessage = null;
-        String json = new String(data);
-        //String json = new String(decompress(data));
-        Gson gson = new Gson();
-        try{
-            wireMessage = gson.fromJson(json,MessageLedger.class);
-        } catch (JsonParseException e){
-            return null;
-        }
-        return wireMessage;
-    }
-*/
 
     public BezirkZirkEndPoint getSender() {
         return sender;

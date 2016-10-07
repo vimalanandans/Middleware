@@ -36,9 +36,9 @@ import java.util.concurrent.TimeUnit;
  * new comms implementations shall use this as base class
  */
 public abstract class CommsProcessor implements Comms, Observer {
-
     private static final Logger logger = LoggerFactory.getLogger(CommsProcessor.class);
     private static final int THREAD_POOL_SIZE = 4;
+
     private final CommsMessageDispatcher msgDispatcher;
     private final SphereSecurity sphereSecurity = null; //currently not initialized
     /**
@@ -522,9 +522,9 @@ public abstract class CommsProcessor implements Comms, Observer {
     }
 
     private class ProcessIncomingMessage implements Runnable {
-        String deviceId;
-        String msg = null;
-        Ledger ledger = null;
+        private String deviceId;
+        private String msg = null;
+        private Ledger ledger = null;
 
         public ProcessIncomingMessage(String deviceId, String msg) {
             this.deviceId = deviceId;

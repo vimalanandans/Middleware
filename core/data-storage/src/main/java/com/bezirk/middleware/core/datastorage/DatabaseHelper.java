@@ -48,9 +48,8 @@ public class DatabaseHelper {
      * @throws NullPointerException if pubSubBrokerRegistry or sphereRegistry is null
      * @throws SQLException         something goes wrong while storing
      * @throws IOException          if connection to the database is not successful.
-     * @throws Exception
      */
-    protected void updateRegistry(String columnName) throws Exception {
+    protected void updateRegistry(String columnName) throws SQLException, IOException {
         UpdateBuilder<PersistenceRegistry, Integer> updateDb = dbConnection.getPersistenceDAO().updateBuilder();
         switch (columnName) {
             case PersistenceConstants.COLUMN_1:
@@ -84,7 +83,7 @@ public class DatabaseHelper {
      * @throws SQLException         something goes wrong while storing
      * @throws IOException          if connection to the database is not successful.
      */
-    protected void loadRegistry() throws Exception {
+    protected void loadRegistry() throws SQLException, IOException {
         QueryBuilder<PersistenceRegistry, Integer> queryBuilder = dbConnection.getPersistenceDAO().queryBuilder();
         PersistenceRegistry tempRegistry = queryBuilder.queryForFirst();
         pubSubBrokerRegistry = tempRegistry.getPubSubBrokerRegistry();
@@ -101,9 +100,8 @@ public class DatabaseHelper {
      * @throws NullPointerException if the connection to the database is null
      * @throws SQLException         something goes wrong while creating the table
      * @throws IOException          if connection to the database is not successful.
-     * @throws Exception
      */
-    protected boolean checkDatabase(final String DB_VERSION) throws Exception {
+    protected boolean checkDatabase(final String DB_VERSION) throws SQLException, IOException {
         if (!PersistenceConstants.DB_VERSION.equals(DB_VERSION)) {
             dropTable();
         }
@@ -120,9 +118,8 @@ public class DatabaseHelper {
      * @throws NullPointerException if the connection to the database is null
      * @throws SQLException         something goes wrong while creating the table
      * @throws IOException          if connection to the database is not successful.
-     * @throws Exception
      */
-    private void dropTable() throws Exception {
+    private void dropTable() throws SQLException, IOException {
         if (dbConnection != null) {
             TableUtils.dropTable(dbConnection.getDatabaseConnection(), PersistenceRegistry.class, true);
         }
@@ -131,8 +128,9 @@ public class DatabaseHelper {
     /**
      * Insert the only row into the database
      */
-    private void insertInitialRow() throws Exception {
-        dbConnection.getPersistenceDAO().createOrUpdate(new PersistenceRegistry(1, new PubSubBrokerRegistry(), new SphereRegistry(), new ProxyRegistry()));
+    private void insertInitialRow() throws SQLException, IOException {
+        dbConnection.getPersistenceDAO().createOrUpdate(
+                new PersistenceRegistry(1, new PubSubBrokerRegistry(), new SphereRegistry(), new ProxyRegistry()));
     }
 
     /**
@@ -165,7 +163,7 @@ public class DatabaseHelper {
     /**
      * Clear the maps of the all the registry
      */
-    protected void clearPersistence() throws Exception {
+    protected void clearPersistence() {
         pubSubBrokerRegistry.clearRegistry();
         sphereRegistry.clearRegistry();
         proxyRegistry.clearRegistry();

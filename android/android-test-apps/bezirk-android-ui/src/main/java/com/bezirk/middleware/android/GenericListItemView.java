@@ -13,6 +13,7 @@ import android.widget.ToggleButton;
 import com.bezirk.middleware.android.ui.R;
 import com.bezirk.middleware.core.util.ValidatorUtility;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GenericListItemView extends ArrayAdapter<DataModel> {
@@ -28,7 +29,7 @@ public class GenericListItemView extends ArrayAdapter<DataModel> {
 
         context = parentContext;
 
-        data = listModel;
+        data = new ArrayList(listModel);
 
         itemToggleListener = toggleListener;
     }

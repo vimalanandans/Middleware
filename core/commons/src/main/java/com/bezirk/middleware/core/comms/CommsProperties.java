@@ -13,7 +13,7 @@ public class CommsProperties {
     private static final Logger logger = LoggerFactory.getLogger(CommsProperties.class);
     private static final int retransmitTime = 10000;
     private static final int mapSize = 10;
-    private static LinkedHashMap<String, Long> duplicateMap = new LinkedHashMap<String, Long>();
+    private static LinkedHashMap<String, Long> duplicateMap = new LinkedHashMap<>();
     //Interface
     private static String INTERFACE_NAME;
 

@@ -20,11 +20,12 @@ import java.util.regex.PatternSyntaxException;
 
 public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
     private static final Logger logger = LoggerFactory.getLogger(JmqComms.class);
+
     private Node selfNode;
     private final Map<UUID, Node> nodeMap;
     private final ZMQReceiver zmqReceiver;
     private NodeDiscovery nodeDiscovery;
-    private ZContext context; //context used for sending data to other nodes
+    private final ZContext context; //context used for sending data to other nodes
     private ExecutorService sendMessageService;
     private final String groupName;
 
@@ -102,11 +103,7 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
 
     public boolean whisper(final String recipient, final byte[] data) {
         UUID uuid = UUID.fromString(recipient);
-        if (nodeMap.containsKey(uuid)) {
-            return whisper(nodeMap.get(uuid), data);
-        } else {
-            return false;
-        }
+        return nodeMap.containsKey(uuid) && whisper(nodeMap.get(uuid), data);
     }
 
     private boolean whisper(@NotNull final Node node, @NotNull final byte[] data) {
@@ -155,7 +152,7 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
 
     private class NodeDiscovery {
         private static final String DEFAULT_GROUP_NAME = "bezirk";
-        private static final String SEPERATOR = "::";
+        private static final String SEPARATOR = "::";
         private static final String beaconHost = "255.255.255.255";
         private static final int beaconPort = 5670; // this is zyre port
         private String beaconData;
@@ -164,37 +161,36 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
 
         NodeDiscovery(@Nullable final String groupName) {
             this.groupName = (groupName != null) ? groupName : DEFAULT_GROUP_NAME;
-            logger.info("GroupName for current bezirk instance " + groupName);
+            logger.info("GroupName for current bezirk instance {}", groupName);
         }
 
         private void processBeacon(final InetAddress sender, final byte[] beacon) {
             String beaconString = new String(beacon);
             String[] data;
             try {
-                data = beaconString.split(SEPERATOR);
+                data = beaconString.split(SEPARATOR);
             } catch (PatternSyntaxException e) {
-                logger.error("PatternSyntaxException " + e);
+                logger.error("Failed to split beacon string", e);
                 return;
             }
 
-            if (data.length == 4) // right format
-            {
+            if (data.length == 4) { // right format
                 try {
                     long lsb = Long.parseLong(data[1]);
                     long msb = Long.parseLong(data[2]);
                     UUID uuid = new UUID(msb, lsb);
                     int port = Integer.parseInt(data[3]);
                     addNode(uuid, sender, port);
-                } catch (NumberFormatException n) {
-                    logger.error("NumberFormatException while processing beacon " + n);
+                } catch (NumberFormatException e) {
+                    logger.error("NumberFormatException while processing beacon", e);
                 }
             }
         }
 
         public void start() {
-            beaconData = groupName + SEPERATOR + selfNode.getUuid().getLeastSignificantBits() +
-                    SEPERATOR + selfNode.getUuid().getMostSignificantBits() +
-                    SEPERATOR + String.valueOf(selfNode.getPort()); //this ensures only beacon with this prefix is processed
+            beaconData = groupName + SEPARATOR + selfNode.getUuid().getLeastSignificantBits() +
+                    SEPARATOR + selfNode.getUuid().getMostSignificantBits() +
+                    SEPARATOR + String.valueOf(selfNode.getPort()); //this ensures only beacon with this prefix is processed
             zbeacon = new ZBeacon(beaconHost, beaconPort, beaconData.getBytes(), false);
             zbeacon.setPrefix(groupName.getBytes());
             zbeacon.setUncaughtExceptionHandlers(new Thread.UncaughtExceptionHandler() {
@@ -215,7 +211,8 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
                     if (!Arrays.equals(beacon, beaconData.getBytes())) {
                         processBeacon(sender, beacon);
                     } else {
-                        logger.trace("self node, sender " + sender + " data " + Arrays.toString(beacon));
+                        if (logger.isTraceEnabled())
+                            logger.trace("self node, sender {} data {}", sender, Arrays.toString(beacon));
                     }
                 }
             });
@@ -228,7 +225,7 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
                     zbeacon.stop();
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.error("Failed to close JMQ comms instance", e);
             }
         }
     }

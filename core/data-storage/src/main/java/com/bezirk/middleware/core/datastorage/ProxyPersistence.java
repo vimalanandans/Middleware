@@ -7,7 +7,7 @@ public interface ProxyPersistence {
      *
      * @throws Exception if persisting is not possible
      */
-    void persistBezirkProxyRegistry() throws Exception;
+    void persistBezirkProxyRegistry() throws DataStorageException;
 
     /**
      * Loads the ProxyRegistry
@@ -15,5 +15,5 @@ public interface ProxyPersistence {
      * @return ProxyRegistry
      * @throws Exception if loading is not possible
      */
-    ProxyRegistry loadBezirkProxyRegistry() throws Exception;
+    ProxyRegistry loadBezirkProxyRegistry() throws DataStorageException;
 }

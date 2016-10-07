@@ -5,27 +5,43 @@ package com.bezirk.middleware.core.datastorage;
 
 import com.bezirk.middleware.core.pubsubbroker.PubSubBrokerRegistry;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 /**
  * This common Registry class for the Bezirk platform. It implements all the interfaces for different modules
  * of the Bezirk that needs to be persisted. The different layers will get the corresponding interfaces through
  * which they can load/ save the data to the persistence
  */
-public class RegistryStorage extends DatabaseHelper implements com.bezirk.middleware.core.datastorage.PubSubBrokerStorage, SpherePersistence, com.bezirk.middleware.core.datastorage.ProxyPersistence {
+public class RegistryStorage extends DatabaseHelper implements PubSubBrokerStorage, SpherePersistence, ProxyPersistence {
 
-    public RegistryStorage(DatabaseConnection dbConnection, String DBVersion) throws Exception {
+    public RegistryStorage(DatabaseConnection dbConnection, String DBVersion) throws DataStorageException {
         super(dbConnection);
-        checkDatabase(DBVersion);
+        try {
+            checkDatabase(DBVersion);
+        } catch (SQLException | IOException e) {
+            throw new DataStorageException("Database version checked failed when constructing " +
+                    "registry storage", e);
+        }
     }
 
     @Override
-    public void persistSphereRegistry() throws Exception {
-        updateRegistry(PersistenceConstants.COLUMN_2);
+    public void persistSphereRegistry() throws DataStorageException {
+        try {
+            updateRegistry(PersistenceConstants.COLUMN_2);
+        } catch (SQLException | IOException e) {
+            throw new DataStorageException("Failed to persist sphere registry", e);
+        }
     }
 
     @Override
-    public com.bezirk.middleware.core.datastorage.SphereRegistry loadSphereRegistry() throws Exception {
+    public SphereRegistry loadSphereRegistry() throws DataStorageException {
         if (null == getSphereRegistry()) {
-            loadRegistry();
+            try {
+                loadRegistry();
+            } catch (SQLException | IOException e) {
+                throw new DataStorageException("Failed to load sphere registry", e);
+            }
         }
         return getSphereRegistry();
     }
@@ -44,23 +60,32 @@ public class RegistryStorage extends DatabaseHelper implements com.bezirk.middle
     }
 
     @Override
-    public ProxyRegistry loadBezirkProxyRegistry() throws Exception {
+    public ProxyRegistry loadBezirkProxyRegistry() throws DataStorageException {
         if (null == getProxyRegistry()) {
-            loadRegistry();
+            try {
+                loadRegistry();
+            } catch (SQLException | IOException e) {
+                throw new DataStorageException("Failed to load Bezirk proxy registry", e);
+            }
         }
+
         return getProxyRegistry();
     }
 
 
     @Override
-    public void persistBezirkProxyRegistry() throws Exception {
-        updateRegistry(PersistenceConstants.COLUMN_3);
+    public void persistBezirkProxyRegistry() throws DataStorageException {
+        try {
+            updateRegistry(PersistenceConstants.COLUMN_3);
+        } catch (SQLException | IOException e) {
+            throw new DataStorageException("Failed to persist Bezirk proxy registry", e);
+        }
     }
 
     /* (non-Javadoc)
      * @see DatabaseHelper#clearPersistence()
      */
-    public void clearPersistence() throws Exception {
+    public void clearPersistence() {
         super.clearPersistence();
     }
 }

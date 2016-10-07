@@ -4,10 +4,6 @@ import com.bezirk.middleware.messages.StreamDescriptor;
 
 import java.io.File;
 
-/**
- * Created by pik6kor on 8/9/2016.
- */
-
 public class StreamSend extends StreamDescriptor {
     /*//File which has to be streamed!!
     private File file;*/

@@ -5,8 +5,6 @@ import com.bezirk.middleware.identity.Alias;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
-import java.io.Serializable;
-
 public class SendMulticastEventAction extends EventAction {
 
     private static final long serialVersionUID = 5208841186626658098L;

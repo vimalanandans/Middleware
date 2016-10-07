@@ -1,6 +1,5 @@
 package com.bezirk.middleware.core.comms;
 
-import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.EventLedger;
 

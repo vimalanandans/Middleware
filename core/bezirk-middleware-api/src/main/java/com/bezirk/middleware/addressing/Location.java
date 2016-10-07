@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * A <code>Location</code> represents a <em>semantic address</em> that specifies the
  * physical location of a Thing or a set of Things. Typically, messages are broadcast
- * within a sphere and filtered per-Zirk based on the messages in the various
+ * within a subnet and filtered per-Zirk based on the messages in the various
  * {@link MessageSet MessageSets} each Zirk is subscribed to, which may be too coarse-grained
  * for some cases. A semantic address is used to more precisely scope message recipients
  * after message-based filtering occurs.
@@ -25,7 +25,7 @@ import java.io.Serializable;
  * scope. There are usually fewer things in an intermediate scope than in a wide scope. However,
  * you can specify an intermediate scope without a wide scope; for example, specifying
  * &quot;kitchen&quot; without &quot;floor 1&quot; would select all the kitchens in a Zirk's
- * sphere(s), which may include several floors. In this case, you could potentially be selecting
+ * subnet, which may include several floors. In this case, you could potentially be selecting
  * more things.</li>
  * <li>A <em>narrow scope</em> denotes the smallest spatial area. Again building on the previous
  * example, specifying a specific part of the kitchen (e.g. &quot;window&quot; or
@@ -52,10 +52,10 @@ import java.io.Serializable;
  * intersection.
  * <p>
  * Each scope is optional. If you do not specify any scope you are referring to all Things in
- * a sphere subscribed to the message's topic. This is equivalent to not using a semantic
+ * a subnet subscribed to the message's topic. This is equivalent to not using a semantic
  * address. However, any of the scopes may be skipped if necessary to define the desired set
  * of Things. Once again using the building example, the following addresses refer to different
- * sets of Things whose Zirks are within a sphere subscribed to the targeted topic:
+ * sets of Things whose Zirks are within a subnet subscribed to the targeted topic:
  * </p>
  * <ul>
  * <li><code>"floor1//"</code> refers to all Things on floor 1.</li>
@@ -65,9 +65,9 @@ import java.io.Serializable;
  * <li><code>"floor 1//cake prep"</code> refers to all Things in an any area called &quot;cake prep&quot;
  * on floor 1.</li>
  * <li><code>"/kitchen/cake prep"</code> refers to all Things in an area called &quot;cake prep&quot;
- * in rooms named &quot;kitchen&quot; anywhere in the building in the sending Zirk's sphere(s)</li>
+ * in rooms named &quot;kitchen&quot; anywhere in the building in the sending Zirk's subnet</li>
  * <li><code>"//cake prep"</code> refers to all things in any area named &quot;cake prep&quot; in the
- * sending Zirk's sphere(s).</li>
+ * sending Zirk's subnet.</li>
  * </ul>
  * <h1>Practical Example</h1>
  * Setting a Thing's physical location during initial configuration is a typical reason to use

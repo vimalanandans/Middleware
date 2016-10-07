@@ -58,20 +58,20 @@ public interface Bezirk {
     boolean unsubscribe(MessageSet messageSet);
 
     /**
-     * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event.
+     * Publish an event to all Zirks in the sender's subnet subscribed to the event.
      *
      * @param event the <code>Event</code> being sent
      */
     void sendEvent(Event event);
 
     /**
-     * Publish an event to all Zirks in the sender's sphere(s) subscribed to the event that also
+     * Publish an event to all Zirks in the sender's subnet subscribed to the event that also
      * meet the requirements set by a {@link com.bezirk.middleware.addressing.RecipientSelector}.
      * The set of recipients can be narrowed using <code>recipient</code> if a semantic address is
      * specified.
      *
      * @param recipient the {@link RecipientSelector} specifying the sent event's recipients within
-     *                  a sphere
+     *                  a subnet
      * @param event     the <code>Event</code> being sent
      */
     void sendEvent(RecipientSelector recipient, Event event);

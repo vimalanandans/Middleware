@@ -85,12 +85,12 @@ public class RemoteLoggingClient {
      * @param newIP IP address of the new Logging Zirk
      * @param port  Port at which the Logging Zirk is listening
      */
-    public boolean updateClient(String newIP, int port) throws Exception {
-
+    public boolean updateClient(String newIP, int port) throws IOException {
         if (!this.serviceIP.equals(newIP) || this.servicePort != port) {
             stopClient(this.serviceIP, this.servicePort);
             return startClient(newIP, port);
         }
+
         logger.debug("Received same LoggingService request to update the client");
         return true;
     }
