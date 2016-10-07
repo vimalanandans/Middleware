@@ -20,18 +20,12 @@ import com.bezirk.middleware.java.device.JavaDevice;
 import com.bezirk.middleware.java.logging.LoggingManager;
 import com.bezirk.middleware.java.networking.JavaNetworkManager;
 import com.bezirk.middleware.java.persistence.DatabaseConnectionForJava;
-import com.bezirk.middleware.java.ui.QRCodeGenerator;
-import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import java.util.prefs.Preferences;
-
-import ch.qos.logback.classic.Level;
-import javafx.application.Application;
 
 /**
  * This class manages Bezirk middleware component injection & lifecycle.
@@ -46,12 +40,10 @@ public class ComponentManager {
 
     //private ZyreCommsManager comms;
     private JmqCommsManager comms;
-    private PubSubBroker pubSubBroker;
     private RegistryStorage registryStorage;
     private ProxyServer proxyServer;
     private final MessageHandler messageHandler;
     private final Config config;
-    private Device device;
     private NetworkManager networkManager;
     private RemoteLog remoteLog;
     private BezirkIdentityManager identityManager;
@@ -60,8 +52,6 @@ public class ComponentManager {
 
     private static final String DB_VERSION = "0.0.4";
     private static final String DB_FILE_LOCATION = ".";
-    //download path
-    private static final String downloadPath = "";
 
     public ComponentManager(@NotNull final MessageHandler messageHandler, @NotNull final Config config) {
         this.messageHandler = messageHandler;
@@ -80,11 +70,11 @@ public class ComponentManager {
         try {
             this.registryStorage = new RegistryStorage(new DatabaseConnectionForJava(DB_FILE_LOCATION), DB_VERSION);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Failed to initialize registry storage", e);
         }
 
         //java device for getting information like deviceId, deviceName, etc
-        device = new JavaDevice();
+        final Device device = new JavaDevice();
 
         if(config.isCommsEnabled()) {
             logger.debug("Comms is enabled");
@@ -116,7 +106,7 @@ public class ComponentManager {
         initializeIdentityManager();
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, identityManager, null, null, streaming, remoteLog);
+        final PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, identityManager, null, null, streaming, remoteLog);
 
         //initialize proxyServer responsible for managing incoming events from zirks
         proxyServer = new ProxyServer(identityManager);

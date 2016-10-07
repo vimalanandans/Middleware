@@ -8,11 +8,15 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
 public final class DatabaseConnectionForJava implements DatabaseConnection {
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseConnectionForJava.class);
 
     private final String dbFilePath;
     private Dao<PersistenceRegistry, Integer> bezirkPersistenceDao;
@@ -44,7 +48,9 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
         final File tempDBFile = new File(dbFilePath + File.separator
                 + PersistenceConstants.DB_FILE_NAME);
         if (!tempDBFile.exists()) {
-            tempDBFile.createNewFile();
+            if (!tempDBFile.createNewFile()) {
+                logger.error("Failed to create database file{}", tempDBFile.getAbsolutePath());
+            }
         }
     }
 

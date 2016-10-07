@@ -4,10 +4,6 @@ import com.bezirk.middleware.messages.Event;
 
 import java.util.Random;
 
-/**
- * Created by pik6kor on 8/8/2016.
- */
-
 public class StreamPublishEvent extends Event{
 
     //set the subscriberID

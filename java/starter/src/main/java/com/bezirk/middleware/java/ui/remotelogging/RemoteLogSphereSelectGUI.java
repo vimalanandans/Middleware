@@ -106,8 +106,8 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
             }
         }
     };
-    transient Comms comms;
-    RemoteLog msgLog = null;
+    private transient Comms comms;
+    private RemoteLog msgLog = null;
     private String[] tempArray;
     private int size;
     /**

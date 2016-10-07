@@ -46,7 +46,7 @@ public class RemoteLogDetailsGUI extends JFrame {
     private static final String RECIPIENT_MULTICAST_VALUE = "MULTI-CAST";
     private static final int SIZE_OF_LOG_MSG_MAP = 128;
 
-    RemoteLog msgLog = null;
+    private RemoteLog msgLog = null;
     /*
      * GUI Components
      */
@@ -67,7 +67,7 @@ public class RemoteLogDetailsGUI extends JFrame {
      * To print the timestamp of the received msg
      */
     private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS", Locale.GERMANY);
-    transient Comms comms;
+    private transient Comms comms;
     private final transient WindowAdapter closeButtonListener = new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent arg0) {

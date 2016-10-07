@@ -30,7 +30,7 @@ public class SenderQueueProcessor implements Runnable {
      */
     private boolean isRunning = false;
 
-    Socket logClientSocket = null;
+    private Socket logClientSocket = null;
 
     /**
      * Blocking Queue that is used to queue logger messages at the logging client.
@@ -79,10 +79,8 @@ public class SenderQueueProcessor implements Runnable {
 
     /**
      * Starts Processing the Log Sender Queue
-     *
-     * @throws Exception if Logging Zirk is down and unable to connect
      */
-    public boolean startProcessing() throws Exception {
+    public boolean startProcessing() {
         isRunning = true;
         try {
             logClientSocket = new Socket(remoteServiceIP, remoteServicePort);
@@ -99,9 +97,9 @@ public class SenderQueueProcessor implements Runnable {
     /**
      * Stops processing the Log Sender Queue
      *
-     * @throws Exception interrupted Exception if something goes down while stopping the thread.
+     * @throws IOException IOException if something goes down while stopping the thread.
      */
-    public boolean stopProcessing() throws Exception {
+    public boolean stopProcessing() throws IOException {
         clearQueue();
         if (logClientSocket != null) {
             logClientSocket.close();
