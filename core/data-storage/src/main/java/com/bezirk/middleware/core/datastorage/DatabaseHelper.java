@@ -163,7 +163,7 @@ public class DatabaseHelper {
     /**
      * Clear the maps of the all the registry
      */
-    protected void clearPersistence() throws Exception {
+    protected void clearPersistence() {
         pubSubBrokerRegistry.clearRegistry();
         sphereRegistry.clearRegistry();
         proxyRegistry.clearRegistry();
