@@ -77,9 +77,7 @@ public class ZMQReceiver implements Runnable {
         } finally {
             frontend.close();
             backend.close();
-            return;
         }
-
     }
 
     public void stop() {

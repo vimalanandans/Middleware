@@ -2,7 +2,6 @@ package com.bezirk.middleware.messages;
 
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 
-import java.io.File;
 import java.io.PipedOutputStream;
 
 /**

@@ -115,7 +115,7 @@ public class SenderQueueProcessor implements Runnable {
      */
     public void processLogOutMessage(String serializedLogMsg) throws InterruptedException {
         if (logSenderQueue == null) {
-            logSenderQueue = new SynchronousQueue<String>();
+            logSenderQueue = new SynchronousQueue<>();
         }
         logSenderQueue.put(serializedLogMsg);
     }
@@ -128,7 +128,7 @@ public class SenderQueueProcessor implements Runnable {
      */
     private  StringBuilder getLogOutgoingMessage() throws InterruptedException {
         if (logSenderQueue == null) {
-            logSenderQueue = new SynchronousQueue<String>();
+            logSenderQueue = new SynchronousQueue<>();
         }
         return new StringBuilder(logSenderQueue.take());
     }
@@ -139,7 +139,7 @@ public class SenderQueueProcessor implements Runnable {
     void clearQueue()
     {
         if (logSenderQueue == null) {
-            logSenderQueue = new SynchronousQueue<String>();
+            logSenderQueue = new SynchronousQueue<>();
         }
         logSenderQueue.clear();
     }

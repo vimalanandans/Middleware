@@ -25,11 +25,11 @@ public class SphereRegistry implements Serializable {
 
     public SphereRegistry() {
         super();
-        this.spheres = new LinkedHashMap<String, Sphere>();
-        this.sphereMembership = new LinkedHashMap<String, Zirk>();
-        this.devices = new LinkedHashMap<String, DeviceInformation>();
-        this.sphereKeyMap = new HashMap<String, SphereKeys>();
-        this.sphereHashKeyMap = new HashMap<String, HashKey>();
+        this.spheres = new LinkedHashMap<>();
+        this.sphereMembership = new LinkedHashMap<>();
+        this.devices = new LinkedHashMap<>();
+        this.sphereKeyMap = new HashMap<>();
+        this.sphereHashKeyMap = new HashMap<>();
     }
 
     /**
