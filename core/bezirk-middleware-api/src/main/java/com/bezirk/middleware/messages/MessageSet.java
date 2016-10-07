@@ -86,7 +86,7 @@ public abstract class MessageSet implements Serializable {
     /**
      * The specific pub-sub topics any Zirk subscribed to this role will subscribe to. In
      * particular, a Zirk will receive any <code>Event</code> or <code>StreamDescriptor</code> sent in its
-     * sphere(s) whose topic is listed in the <code>Set</code> returned by this method.
+     * subnet whose topic is listed in the <code>Set</code> returned by this method.
      *
      * @return the set of topics this role subscribes to
      */

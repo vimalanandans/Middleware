@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * Aggregates addressing information for publishing {@link Event events} using the Bezirk middleware.
  * Typically you should think about your Zirk broadcasting messages to other Zirks within your Zirk's
- * sphere(s) where the message will be filtered based on topic. This class allows you to filter
+ * subnet where the message will be filtered based on topic. This class allows you to filter
  * by more than simply topic by narrowing the scope further using a semantic address specified
  * by a {@link Location}.
  * <p>
@@ -35,7 +35,7 @@ public class RecipientSelector implements Serializable {
     private final Location location;
 
     /**
-     * RecipientSelector for specifying a message's recipient set within a Zirk's sphere(s).
+     * RecipientSelector for specifying a message's recipient set within a Zirk's subnet.
      *
      * @param location the semantic address used to narrow a message's set of recipients farther
      *                 than a topic does
