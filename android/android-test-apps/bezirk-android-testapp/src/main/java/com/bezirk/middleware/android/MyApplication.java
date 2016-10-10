@@ -12,8 +12,10 @@ public class MyApplication extends Application {
         super.onCreate();
 
         Config.ConfigBuilder configBuilder = new Config.ConfigBuilder();
-        configBuilder.setLogLevel(Config.Level.DEBUG); //root log level
-        //configBuilder.setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.INFO); //package level logging
+        // Root log level
+        configBuilder.setLogLevel(Config.Level.DEBUG);
+        // Package log level
+        //configBuilder.setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.INFO);
         configBuilder.setAppName("bezirk-android-testapp");
         //configBuilder.setComms(false); //disabling comms
         //configBuilder.setGroupName("Test Group"); //custom group

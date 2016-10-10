@@ -12,10 +12,13 @@ import com.bezirk.middleware.android.testApp.R;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private static final String AUTO_TESTING_MESSAGE = "Test BezirkMiddleware & Bezirk API's for mvp using a single bezirk service instance for this current test application along with a publisher and subscriber zirk";
-    private static final String ADVANCED_TESTING_MESSAGE = "Test various combinations of using bezirk as a standalone application or as an integration application with zirks";
+    private static final String AUTO_TESTING_MESSAGE = "Test BezirkMiddleware & Bezirk API's for mvp using a single " +
+            "bezirk service instance for this current test application along with a publisher and subscriber zirk";
+    private static final String ADVANCED_TESTING_MESSAGE = "Test various combinations of using bezirk as a standalone " +
+            "application or as an integration application with zirks";
     private static final String STREAM_TESTING_MESSAGE = "Test Bezirk Streaming api";
-    private static final String STOP_MIDDLEWARE_MESSAGE = "Stops the middleware instance. Once stopped, middleware can start only by closing and opening the app again.";
+    private static final String STOP_MIDDLEWARE_MESSAGE = "Stops the middleware instance. Once stopped, middleware can " +
+            "start only by closing and opening the app again.";
 
     private TextView autoTextView;
     private TextView advancedTextView;

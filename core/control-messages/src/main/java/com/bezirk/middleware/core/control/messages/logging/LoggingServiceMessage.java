@@ -1,9 +1,10 @@
 package com.bezirk.middleware.core.control.messages.logging;
 
+import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 
 public class LoggingServiceMessage extends com.bezirk.middleware.core.control.messages.MulticastControlMessage {
-    private static final com.bezirk.middleware.core.control.messages.ControlMessage.Discriminator discriminator = com.bezirk.middleware.core.control.messages.ControlMessage.Discriminator.LOGGING_SERVICE_MESSAGE;
+    private static final ControlMessage.Discriminator discriminator = ControlMessage.Discriminator.LOGGING_SERVICE_MESSAGE;
 
     protected String remoteLoggingServiceIP;
     protected int remoteLoggingServicePort;

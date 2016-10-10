@@ -22,7 +22,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class AdvancedTestActivity extends AppCompatActivity {
-    private static final String LAUNCH_MESSAGE = "For Testing inter-app communication/inter-platform communication.\nLaunch Publisher/Subscriber Zirk.\nIf bezirk is installed in the device, the instance is reused.\nElse, local bezirk service is created.";
+    private static final String LAUNCH_MESSAGE = "For Testing inter-app/inter-platform communication.\n" +
+            "Launch Publisher/Subscriber Zirk.\nIf bezirk is installed in the device, the instance is reused.\n" +
+            "Else, local bezirk service is created.";
     private static final String deviceName = DeviceName.getDeviceName();
     private static final String PUBLISHER_ID = deviceName + ":AdvTest:Publisher";
     private static final String SUBSCRIBER_ID = deviceName + ":AdvTest:Subscriber";
@@ -44,7 +46,6 @@ public class AdvancedTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_advanced_test);
         setContentView(R.layout.activity_advanced_test_table);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -113,7 +114,8 @@ public class AdvancedTestActivity extends AppCompatActivity {
                     AirQualityUpdateEvent aqUpdate = (AirQualityUpdateEvent) event;
                     messagesTextView.append(aqUpdate.toString() + "\n");
                     scroll();
-                    subscriberBezirk.sendEvent(sender, new UpdateAcceptedEvent(SUBSCRIBER_ID, "pollen level:" + aqUpdate.pollenLevel));
+                    subscriberBezirk.sendEvent(sender, new UpdateAcceptedEvent(SUBSCRIBER_ID,
+                            "pollen level:" + aqUpdate.pollenLevel));
                 }
             }
         });
@@ -180,7 +182,9 @@ public class AdvancedTestActivity extends AppCompatActivity {
     }
 
     private void scroll() {
-        final int scrollAmount = messagesTextView.getLayout().getLineTop(messagesTextView.getLineCount()) - messagesTextView.getHeight();
+        final int scrollAmount =
+                messagesTextView.getLayout().getLineTop(messagesTextView.getLineCount()) -
+                        messagesTextView.getHeight();
         if (scrollAmount > 0)
             messagesTextView.scrollTo(0, scrollAmount);
         else

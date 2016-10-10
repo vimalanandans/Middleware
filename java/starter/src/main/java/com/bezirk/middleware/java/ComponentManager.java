@@ -31,7 +31,8 @@ import java.util.prefs.Preferences;
 /**
  * This class manages Bezirk middleware component injection & lifecycle.
  * All top level components like PubSubBroker, Comms, ProxyServer, Data-storage, etc are injected with their dependencies.
- * Circular dependency needs to be at its minimum to prevent injection problems. Going forward dependency injection using a DI framework like guice or dagger can be introduced.
+ * Circular dependency needs to be at its minimum to prevent injection problems. Going forward dependency
+ * injection using a DI framework like guice or dagger can be introduced.
  * To manage circular dependencies in the current code structure, init/setters might be needed.
  */
 public class ComponentManager {
@@ -104,7 +105,8 @@ public class ComponentManager {
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present)
         //Dispatching messages to other zirks within the same device or another device
-        final PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, identityManager, null, null, streaming, remoteLog);
+        final PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, networkManager,
+                comms, messageHandler, identityManager, null, null, streaming, remoteLog);
 
         //initialize proxyServer responsible for managing incoming events from zirks
         proxyServer = new ProxyServer(identityManager);

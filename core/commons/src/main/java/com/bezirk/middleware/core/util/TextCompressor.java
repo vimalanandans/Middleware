@@ -16,7 +16,8 @@ public class TextCompressor {
     private static final Logger logger = LoggerFactory.getLogger(TextCompressor.class);
 
     /**
-     * Uses a gzip compression to compress the String, a better option for a lengthier string. But the smaller string will have a space overhead. and returns a compressed byte[]
+     * Uses a gzip compression to compress the String, a better option for a lengthier string. But the
+     * smaller string will have a space overhead. and returns a compressed byte[]
      */
     public static byte[] compress(byte[] str) {
         ByteArrayOutputStream obj = new ByteArrayOutputStream();

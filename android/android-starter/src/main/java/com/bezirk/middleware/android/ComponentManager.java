@@ -48,12 +48,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private JmqCommsManager comms;
     private AndroidNetworkManager networkManager;
     private RegistryStorage registryStorage;
-    private MessageHandler messageHandler;
-    private LifeCycleObservable lifecyleObservable;
+    private LifeCycleObservable lifecycleObservable;
     private Config config;
-    private LoggingManager loggingManager;
-    private Device device;
-    private PubSubBroker pubSubBroker;
     private final RemoteLog remoteLog = null;
     private LifeCycleObservable.State currentState;
     private String identityString;
@@ -70,7 +66,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
                     StartServiceAction startServiceAction = (StartServiceAction) intent.getSerializableExtra(BezirkAction.ACTION_START_BEZIRK.getName());
                     start(startServiceAction);
                 } else {
-                    logger.debug("Bezirk Action received " + intentAction + ". Bezirk is not running. " + BezirkAction.ACTION_START_BEZIRK + " required to start bezirk.");
+                    logger.debug("Bezirk Action received {}. Bezirk is not running. {} required to start bezirk.",
+                            intentAction, BezirkAction.ACTION_START_BEZIRK);
                 }
             } else {
                 actionProcessor.processBezirkAction(intent, proxyServer, this);
@@ -84,7 +81,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     @NonNull
     @Override
     public IBinder onBind(Intent intent) {
-        throw new UnsupportedOperationException("ibinder is not supperted");
+        throw new UnsupportedOperationException("IBinder is not supported");
     }
 
     @Override
@@ -95,18 +92,19 @@ public final class ComponentManager extends Service implements LifeCycleCallback
             create();
         }
 
-        startForeground(FOREGROUND_ID, buildForegroundNotification(config.getAppName(), config.getAppName() + " ON", R.drawable.bezirk_notification_icon));
+        startForeground(FOREGROUND_ID, buildForegroundNotification(config.getAppName(),
+                config.getAppName() + " ON", R.drawable.bezirk_notification_icon));
 
         logger.debug("LifeCycleCallbacks:start");
-        lifecyleObservable.transition(LifeCycleObservable.Transition.START);
-        currentState = lifecyleObservable.getState();
+        lifecycleObservable.transition(LifeCycleObservable.Transition.START);
+        currentState = lifecycleObservable.getState();
     }
 
     @Override
     public void stop(StopServiceAction stopServiceAction) {
         logger.debug("LifeCycleCallbacks:stop");
-        lifecyleObservable.transition(LifeCycleObservable.Transition.STOP);
-        currentState = lifecyleObservable.getState();
+        lifecycleObservable.transition(LifeCycleObservable.Transition.STOP);
+        currentState = lifecycleObservable.getState();
         stopSelf();
     }
 
@@ -155,9 +153,9 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         logger.debug("Creating Bezirk Service");
 
         // initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
-        lifecyleObservable = new LifeCycleObservable();
+        lifecycleObservable = new LifeCycleObservable();
 
-        loggingManager = new LoggingManager(config);
+        final LoggingManager loggingManager = new LoggingManager(config);
         loggingManager.configure();
 
         //initialize data-storage for storing detailed component information like maps, objects
@@ -168,7 +166,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         }
 
         //android device for getting information like deviceId, deviceName, etc
-        device = new AndroidDevice();
+        final Device device = new AndroidDevice();
 
         // initialize android shared preferences for storing user preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -188,11 +186,11 @@ public final class ComponentManager extends Service implements LifeCycleCallback
             streaming = new StreamManager(comms, networkManager);
 
             // add components as observers of bezirk lifecycle events.
-            lifecyleObservable.addObserver(comms);
-            lifecyleObservable.addObserver(networkManager);
+            lifecycleObservable.addObserver(comms);
+            lifecycleObservable.addObserver(networkManager);
         }
         // initialize message handler for sending events back to zirks
-        messageHandler = new ZirkMessageHandler(this);
+        final MessageHandler messageHandler = new ZirkMessageHandler(this);
 
         //initialize remoteLogging for logging the messages
         // remoteLog = new RemoteLoggingManager(comms, networkManager, null);
@@ -202,7 +200,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         // initialize pub-sub Broker for filtering of events based on subscriptions and spheres
         // (if present) & dispatching messages to other zirks within the same device or another
         // device
-        pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms,
+        final PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms,
                 messageHandler, identityManager, null, null, streaming, remoteLog);
 
         //initialize proxyServer responsible for managing incoming events from zirks
@@ -213,7 +211,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
 
         // this state is set only when the bezirk service is created the first time
         //TODO add create implementations for modules
-        //lifecyleObservable.setState(LifecycleManager.LifecycleState.CREATED);
+        //lifecycleObservable.setState(LifecycleManager.LifecycleState.CREATED);
         //currentState = LifecycleManager.LifecycleState.CREATED;
     }
 

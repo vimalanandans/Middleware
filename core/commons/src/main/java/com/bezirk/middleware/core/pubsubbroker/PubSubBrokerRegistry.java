@@ -272,7 +272,8 @@ public class PubSubBrokerRegistry implements Serializable {
     public Location getLocationForZirk(ZirkId zirkId, Device device) {
         if (isZirkRegistered(zirkId)) {
             try {
-                return (defaultLocation.equals(locationMap.get(zirkId)) ? device.getDeviceLocation() : locationMap.get(zirkId));
+                return defaultLocation.equals(locationMap.get(zirkId)) ? device.getDeviceLocation() :
+                        locationMap.get(zirkId);
             } catch (Exception e) {
                 logger.error("Exception in fetching the device Location", e);
                 return null;
