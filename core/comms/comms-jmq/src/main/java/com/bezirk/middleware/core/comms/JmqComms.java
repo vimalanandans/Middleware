@@ -20,12 +20,16 @@ import java.util.regex.PatternSyntaxException;
 
 public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
     private static final Logger logger = LoggerFactory.getLogger(JmqComms.class);
-
+    private static final int THREAD_POOL_SIZE = 5;
+    private static final int POOL_TIMEOUT = 200;
+    private static final int MSG_FIELDS = 4;
     private Node selfNode;
     private final Map<UUID, Node> nodeMap;
     private final ZMQReceiver zmqReceiver;
     private NodeDiscovery nodeDiscovery;
-    private final ZContext context; //context used for sending data to other nodes
+
+    //context used for sending data to other nodes
+    private final ZContext context;
     private ExecutorService sendMessageService;
     private final String groupName;
 
@@ -48,7 +52,7 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
         selfNode = new Node(port);
         nodeDiscovery = new NodeDiscovery(groupName);
         nodeDiscovery.start();
-        sendMessageService = Executors.newFixedThreadPool(5);
+        sendMessageService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
     }
 
     @Override
@@ -79,12 +83,10 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
         logger.trace("Peer found " + uuid);
         if (nodeMap.containsKey(uuid)) {
             logger.trace("Peer exist in map " + uuid + " number of peers " + nodeMap.size());
-            // TODO add other validations and cleanup
         } else {
             ZMQ.Socket socket = context.createSocket(ZMQ.DEALER);
             // Client identifies as same name as this node id, so that receiver identifies it
             socket.setIdentity(selfNode.getUuid().toString().getBytes());
-            //FIXME: get actual endpoint
             socket.connect("tcp:/" + sender + ":" + port);
             nodeMap.put(uuid, new Node(uuid, sender, port, socket));
             logger.trace("Current Node id " + selfNode.getUuid().toString() + "::Peer with " + uuid + " added with port " + port);
@@ -130,17 +132,20 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
     }
 
 
-    private void shutdownAndAwaitTermination(ExecutorService pool) {
-        pool.shutdown(); // Disable new tasks from being submitted
+    private static void shutdownAndAwaitTermination(ExecutorService pool) {
+        // Disable new tasks from being submitted
+        pool.shutdown();
         logger.debug("sendMessageService shutdown");
         try {
             // Wait a while for existing tasks to terminate
-            if (!pool.awaitTermination(200, TimeUnit.MILLISECONDS)) {
+            if (!pool.awaitTermination(POOL_TIMEOUT, TimeUnit.MILLISECONDS)) {
                 logger.debug("sendMessageService shutdownNow");
-                pool.shutdownNow(); // Cancel currently executing tasks
+                // Cancel currently executing tasks
+                pool.shutdownNow();
                 // Wait a while for tasks to respond to being cancelled
-                if (!pool.awaitTermination(200, TimeUnit.MILLISECONDS))
+                if (!pool.awaitTermination(POOL_TIMEOUT, TimeUnit.MILLISECONDS)) {
                     logger.error("Pool did not terminate");
+                }
             }
         } catch (InterruptedException ie) {
             // (Re-)Cancel if current thread also interrupted
@@ -154,7 +159,7 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
         private static final String DEFAULT_GROUP_NAME = "bezirk";
         private static final String SEPARATOR = "::";
         private static final String beaconHost = "255.255.255.255";
-        private static final int beaconPort = 5670; // this is zyre port
+        private static final int beaconPort = 5670;
         private String beaconData;
         private ZBeacon zbeacon;
         private String groupName;
@@ -174,7 +179,7 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
                 return;
             }
 
-            if (data.length == 4) { // right format
+            if (data.length == MSG_FIELDS) {
                 try {
                     long lsb = Long.parseLong(data[1]);
                     long msb = Long.parseLong(data[2]);
@@ -190,7 +195,9 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
         public void start() {
             beaconData = groupName + SEPARATOR + selfNode.getUuid().getLeastSignificantBits() +
                     SEPARATOR + selfNode.getUuid().getMostSignificantBits() +
-                    SEPARATOR + String.valueOf(selfNode.getPort()); //this ensures only beacon with this prefix is processed
+                    SEPARATOR + String.valueOf(selfNode.getPort());
+
+            //this ensures only beacon with this prefix is processed
             zbeacon = new ZBeacon(beaconHost, beaconPort, beaconData.getBytes(), false);
             zbeacon.setPrefix(groupName.getBytes());
             zbeacon.setUncaughtExceptionHandlers(new Thread.UncaughtExceptionHandler() {
