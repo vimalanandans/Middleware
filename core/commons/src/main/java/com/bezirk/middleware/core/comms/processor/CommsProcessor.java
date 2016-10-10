@@ -187,7 +187,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         try {
             temp = data.getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
-            throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+            throw (AssertionError) new AssertionError("UTF-8 is not supported", e);
         }
         final long compStartTime = System.currentTimeMillis();
         final byte[] wireData = TextCompressor.compress(temp);
@@ -240,7 +240,7 @@ public abstract class CommsProcessor implements Comms, Observer {
                     logger.info("unable to decrypt msg for sphere id >> {}", sphereId);
                 }
             } catch (UnsupportedEncodingException e) {
-                throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+                throw (AssertionError) new AssertionError("UTF-8 is not supported", e);
             }
         } else {
             msg = msgData;
@@ -268,7 +268,7 @@ public abstract class CommsProcessor implements Comms, Observer {
             try {
                 header = ledger.getSerializedHeader().getBytes("UTF-8");
             } catch (UnsupportedEncodingException e) {
-                throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+                throw (AssertionError) new AssertionError("UTF-8 is not supported", e);
             }
 
             byte[] headerData = encryptMsg(wireMessage.getSphereId(), header);
@@ -316,7 +316,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         try {
             wireMessage.setMsg(message.getMsg().getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+            throw (AssertionError) new AssertionError("UTF-8 is not supported", e);
         }
 
         wireMessage.setSphereId("COMMS_DIAG");
@@ -365,7 +365,7 @@ public abstract class CommsProcessor implements Comms, Observer {
             try {
                 processedMsg = new String(msg, "UTF-8");
             } catch (UnsupportedEncodingException e) {
-                throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+                throw (AssertionError) new AssertionError("UTF-8 is not supported", e);
             }
             //logger.info("Ctrl Msg size "+data.length());
             ControlMessage ctrl = ControlMessage.deserialize(processedMsg, ControlMessage.class);
@@ -418,7 +418,7 @@ public abstract class CommsProcessor implements Comms, Observer {
                 try {
                     message = processedMsg.getBytes("UTF-8");
                 } catch (UnsupportedEncodingException e) {
-                    throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+                    throw (AssertionError) new AssertionError("UTF-8 is not supported", e);
                 }
         }
         return message;
@@ -441,7 +441,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         try {
             msgLedger.setMsg(new String(wireMessage.getMsg(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+            throw (AssertionError) new AssertionError("UTF-8 is not supported", e);
         }
 
         if (notification != null) {
@@ -475,7 +475,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         try {
             headerData = new String(data, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+            throw (AssertionError) new AssertionError("UTF-8 is not supported", e);
         }
 
         final Gson gson = new Gson();

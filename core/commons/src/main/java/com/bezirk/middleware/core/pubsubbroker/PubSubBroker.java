@@ -489,7 +489,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
                 try {
                     decryptedEventMsg = new String(eLedger.getEncryptedMessage(), "UTF-8");
                 } catch (UnsupportedEncodingException e) {
-                    throw (AssertionError) new AssertionError("UTF-8 is not supported").initCause(e);
+                    throw (AssertionError) new AssertionError("UTF-8 is not supported", e);
                 }
             }
         }

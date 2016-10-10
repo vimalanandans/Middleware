@@ -30,9 +30,8 @@ public class BezirkZirkEndPoint implements ZirkEndPoint, Serializable {
         BezirkZirkEndPoint that = (BezirkZirkEndPoint) o;
 
         if (!device.equals(that.device)) return false;
-        if (!zirkId.equals(that.zirkId)) return false;
+        return zirkId.equals(that.zirkId);
 
-        return true;
     }
 
     @Override
