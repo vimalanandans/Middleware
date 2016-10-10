@@ -24,7 +24,7 @@ final class BezirkStreamHandler {
             .getLogger(BezirkStreamHandler.class);
 
     /*private String downloadPath;*/
-    private ExecutorService receiveStreamExecutor;
+    private final ExecutorService receiveStreamExecutor;
     private StreamManager streamManager = null;
     private final NetworkManager networkManager;
 

@@ -1,6 +1,3 @@
-/**
- * @author: Vijet Badignannvar (bvijet@in.bosch.com)
- */
 package com.bezirk.middleware.core.control.messages.streaming;
 
 import com.bezirk.middleware.core.control.messages.ControlMessage;
@@ -20,10 +17,11 @@ public class StreamResponse extends UnicastControlMessage {
     /**
      * Status of the Recipient. PENDING or READY or ADDRESSED or BUSY
      */
-    public StreamRecord.StreamRecordStatus status;
+    public final StreamRecord.StreamRecordStatus status;
 
     /**
-     * The ip at which the recipient is listening. zirk end point is generic. may or maynot contain ip address
+     * The ip at which the recipient is listening. zirk end point is generic. may or may not
+     * contain ip address
      */
     public String streamIp = "";
 
@@ -37,9 +35,10 @@ public class StreamResponse extends UnicastControlMessage {
      */
     public String sReqKey;
 
-    public StreamResponse(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereName, String strmKey,
-                          StreamRecord.StreamRecordStatus status, String streamIp, int streamPort) {
-        super(sender, recipient, sphereName, discriminator, false, strmKey);
+    public StreamResponse(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereName,
+                          String streamKey, StreamRecord.StreamRecordStatus status, String streamIp,
+                          int streamPort) {
+        super(sender, recipient, sphereName, discriminator, false, streamKey);
         this.status = status;
         this.streamIp = streamIp;
         this.streamPort = streamPort;

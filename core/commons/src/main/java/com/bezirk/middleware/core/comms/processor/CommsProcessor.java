@@ -546,9 +546,9 @@ public abstract class CommsProcessor implements Comms, Observer {
     }
 
     private class ProcessIncomingMessage implements Runnable {
-        private String deviceId;
+        private final String deviceId;
         private String msg = null;
-        private Ledger ledger = null;
+        private final Ledger ledger = null;
 
         public ProcessIncomingMessage(String deviceId, String msg) {
             this.deviceId = deviceId;

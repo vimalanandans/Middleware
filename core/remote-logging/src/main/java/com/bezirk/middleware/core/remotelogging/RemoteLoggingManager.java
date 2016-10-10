@@ -35,7 +35,7 @@ public  class RemoteLoggingManager implements RemoteLog {
     private boolean enableControl = false;
     private boolean enableFileLogging = false;
 
-    private Comms comms;
+    private final Comms comms;
 
     public RemoteLoggingManager(Comms comms, NetworkManager networkManager,
                                 RemoteLoggingMessageNotification remoteLoggingMessageNotification) {

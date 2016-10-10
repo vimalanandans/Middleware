@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class SphereDiscoveryResponse extends MulticastControlMessage {
     private static final Discriminator discriminator = ControlMessage.Discriminator.SPHERE_DISCOVERY_RESPONSE;
-    private List<ZirkId> services;
+    private final List<ZirkId> services;
 
     /**
      * Constructor

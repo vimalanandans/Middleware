@@ -33,9 +33,9 @@ public class StreamManager implements com.bezirk.middleware.core.streaming.Strea
 
     /** Streaming specific constants*/
 
-    private static int STREAM_START_PORT = 6321;
+    private static final int STREAM_START_PORT = 6321;
     private static int STREAM_END_PORT = 6330;
-    private static int STREAM_PARALLEL_MAX = 5;
+    private static final int STREAM_PARALLEL_MAX = 5;
     private static int STREAM_RETRY_COUNT = 5;
     private static final int THREAD_SIZE = 10;
 
@@ -54,13 +54,13 @@ public class StreamManager implements com.bezirk.middleware.core.streaming.Strea
     /*private PubSubEventReceiver sadlReceiver = null;*/
     /***************/
 
-    // creates thread pool with one thead
+    // creates thread pool with one thread
     private ExecutorService streamQueueExecutor = null;
 
     // ExecutorService for sending stream
     private ExecutorService streamProcessExecutor = null;
 
-    //running stream map is used to end the future task when cient wants to intrupt them.
+    //running stream map is used to end the future task when client wants to interrupt them.
     private final Map<String, Future> activeStreamMap = new HashMap<>();
 
     private NetworkManager networkManager = null;
@@ -74,7 +74,7 @@ public class StreamManager implements com.bezirk.middleware.core.streaming.Strea
             /*this.sadlReceiver = sadlReceiver;*/
             this.networkManager = networkManager;
 
-            // ExecutorService for processing the straem massage queue.
+            // ExecutorService for processing the stream message queue.
             streamQueueExecutor = Executors.newSingleThreadExecutor();
 
             // ExecutorService for sending stream
@@ -298,7 +298,7 @@ public class StreamManager implements com.bezirk.middleware.core.streaming.Strea
 
 
     /**
-     * THis has to be removed.... Not good practice.. Added just for quick fix: Punith
+     * This has to be removed.... Not good practice.. Added just for quick fix: Punith
      * @param pubSubEventReceiver
      */
     @Override

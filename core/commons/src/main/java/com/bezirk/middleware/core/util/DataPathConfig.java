@@ -28,7 +28,7 @@ public class DataPathConfig {
 
     private String dataPath; // holds the absolute path of the bezirk folder
 
-    private  static DataPathConfig dataPathConfig = new DataPathConfig();
+    private  static final DataPathConfig dataPathConfig = new DataPathConfig();
 
     public DataPathConfig() {
         init();

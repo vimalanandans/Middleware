@@ -52,11 +52,11 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     protected SphereSecurity sphereSecurity = null; // Nullable object
     private NetworkManager networkManager = null;
     private Device device = null;
-    private RemoteLog remoteLog;
-    private Streaming streamManger;
-    private MessageHandler msgHandler;
-    private IdentityManager identityManager;
-    private static String id = UUID.randomUUID().toString();
+    private final RemoteLog remoteLog;
+    private final Streaming streamManger;
+    private final MessageHandler msgHandler;
+    private final IdentityManager identityManager;
+    private static final String id = UUID.randomUUID().toString();
 
     public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager, Comms comms, MessageHandler msgHandler, IdentityManager identityManager,
                         SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity, Streaming streamManger, RemoteLog remoteLogging) {

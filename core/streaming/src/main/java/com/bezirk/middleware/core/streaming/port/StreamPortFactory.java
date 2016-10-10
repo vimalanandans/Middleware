@@ -1,6 +1,3 @@
-/**
- * @author: Vijet Badigannavar ( bvijet@in.bosch.com )
- */
 package com.bezirk.middleware.core.streaming.port;
 
 import com.bezirk.middleware.core.control.messages.ControlMessage;
@@ -15,13 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Port Factory is a Custom Factory class that is instantiated ( singleton ) when the Proxy is instantiated. It reads the values from the
- * properties file and instantiates the starting port and ending port. A call to the StreamPortFactory is made by the ControlReceiverThread when
- * it receives the ControlMessage as STREAM_REQUEST. The port Factory checks if it has any ports free between the Range and gives the Port. It
- * keeps a record in the portsMap in StreamUtilities to avoid reassigning of ports when it receives the same request. StreamPortFactory is also responsible
+ * Port Factory is a Custom Factory class that is instantiated ( singleton ) when the Proxy is
+ * instantiated. It reads the values from the properties file and instantiates the starting port and
+ * ending port. A call to the StreamPortFactory is made by the ControlReceiverThread when it receives
+ * the ControlMessage as STREAM_REQUEST. The port Factory checks if it has any ports free between
+ * the Range and gives the Port. It keeps a record in the portsMap in StreamUtilities to avoid
+ * reassigning of ports when it receives the same request. StreamPortFactory is also responsible
  * for releasing the ports once the streaming is completed.
- *
- *
  */
 public class StreamPortFactory implements PortFactory {
     private static final Logger logger = LoggerFactory.getLogger(StreamPortFactory.class);
@@ -36,7 +33,8 @@ public class StreamPortFactory implements PortFactory {
      * It initializes the beginning and ending ports.
      * It initializes the StreamPortFactory.lastAssignedPort to the statingPort.
      *
-     * @param startPort : Beginning port that can be used for Streaming. RANGE (of ports that can be used for Streaming) =  {@link StreamPortFactory#startingPort - StreamPortFactory#endPort }
+     * @param startPort : Beginning port that can be used for Streaming. RANGE (of ports that can be
+     *                  used for Streaming) = {@link StreamPortFactory#startingPort - StreamPortFactory#endPort }
      *
      */
     public StreamPortFactory(int startPort, com.bezirk.middleware.core.streaming.store.StreamStore streamStore, int streamMax) {
@@ -70,7 +68,7 @@ public class StreamPortFactory implements PortFactory {
 
             do {
                 nextPort = startingPort + lastAssignedPort % startingPort;
-                logger.debug("nextport: " + nextPort);
+                logger.debug("nextPort: " + nextPort);
                 if (activePorts.contains(nextPort)) {
 
                     lastAssignedPort++;
@@ -99,7 +97,8 @@ public class StreamPortFactory implements PortFactory {
      * This method removes the record form the portsMap from {@link com.bezirk.middleware.core.streaming.store.StreamStore} and {@link StreamPortFactory#activePorts} from {@link StreamPortFactory}
      *
      * @param releasingPort : The Port that has to be released.
-     * @return : true - if the port is released successfully. false - if tried to free the port that doesn't exists. ( Port Malfunctioning )
+     * @return : <code>true</code> - if the port is released successfully. <code>false</code> - if
+     * tried to free the port that does not exist. ( Port Malfunctioning )
      * @see StreamResponse
      */
     @Override
@@ -128,7 +127,8 @@ public class StreamPortFactory implements PortFactory {
     /**
      * This method returns the ActivePortsMap that contains all the ports that are being used.
      *
-     * @return : size of the Set indicating Number of active ports that are getting streamed at this point of time.
+     * @return : size of the Set indicating Number of active ports that are getting streamed at this
+     * point of time.
      */
     @Override
     public int getNoOfActivePorts() {

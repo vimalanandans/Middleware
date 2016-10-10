@@ -54,7 +54,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private LoggingManager loggingManager;
     private Device device;
     private PubSubBroker pubSubBroker;
-    private RemoteLog remoteLog = null;
+    private final RemoteLog remoteLog = null;
     private LifeCycleObservable.State currentState;
     private String identityString;
     private Streaming streaming;

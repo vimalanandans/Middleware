@@ -6,16 +6,10 @@ import java.util.List;
  * Utility class for Logging Module defining all the constants.
  */
 public final class Util {
-    private  Util(){}
-
     /**
      * Version of the Logging Module.
      */
     public static final String LOGGING_VERSION = "0.0.1";
-    /**
-     * Constant label for ALL_SPHERES logging
-     */
-    //public static final String ALL_SPHERE = "ALL-SPHERES";
     /**
      * Value for the Control ReceiverField that is sent on the wire.
      */
@@ -47,11 +41,13 @@ public final class Util {
      * List storing the spheres in which Logging Zirk is Activated.
      * Ex. [Home, Garage]
      */
-    private static List<String> loggingSphereList = null;
+    private static List<String> loggingSphereList;
     /**
      * ALL_SPHERES flag
      */
     private static boolean anySphereEnabled = false;
+
+    private Util(){}
 
     /**
      * Updates the <code>loggingSphereList</code> with spheres selected by the logging Zirk.

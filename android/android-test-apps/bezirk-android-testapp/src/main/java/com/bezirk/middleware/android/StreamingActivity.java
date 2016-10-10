@@ -71,20 +71,12 @@ public class StreamingActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //create a bezirk Sream descriptor and send the file.
-
-                //pick this value from the checkbox
                 boolean isEncrypted = false;
 
-                //if file prepsent
                 if (filePath != null) {
-                    File file = new File(filePath);
-                    StreamSend streamSend = new StreamSend(false, isEncrypted, file);
+                    final File file = new File(filePath);
+                    final StreamSend streamSend = new StreamSend(false, isEncrypted, file);
                     bezirk.sendStream(recipientEndpoint, streamSend);
-
-                    //StreamDescriptor streamDescriptor = new StreamDescriptor(false, false, file);
-                    //bezirk.sendStream(recipientEndpoint, streamDescriptor);
-
                 } else {
                     Toast.makeText(getApplicationContext(), "file path is null.. Select the File and send", Toast.LENGTH_SHORT).show();
                 }
@@ -156,8 +148,8 @@ public class StreamingActivity extends AppCompatActivity {
     }
 
     class StreamDataModel {
-        private String subscriberId;
-        private ZirkEndPoint receiverEndpoint;
+        private final String subscriberId;
+        private final ZirkEndPoint receiverEndpoint;
 
         public StreamDataModel(String subscriberId, ZirkEndPoint receiverEndpoint) {
             this.subscriberId = subscriberId;

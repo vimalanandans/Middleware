@@ -20,10 +20,10 @@ public class CommsMessageDispatcher implements MessageDispatcher {
 
     private com.bezirk.middleware.core.comms.processor.EventMsgReceiver eventReceiver = null;
 
-    private RemoteLog msgLog = null;
+    private final RemoteLog msgLog = null;
 
     // Map of control receivers
-    private Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
+    private final Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
             new HashMap<>();
 
     public CommsMessageDispatcher() {

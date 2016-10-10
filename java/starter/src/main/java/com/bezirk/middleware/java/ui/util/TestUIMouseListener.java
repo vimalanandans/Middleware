@@ -14,7 +14,7 @@ public class TestUIMouseListener implements MouseListener {
 
     private final Integer pingCount;
     private final String misMatchVersion;
-    private Device device;
+    private final Device device;
 
     public TestUIMouseListener(String uiType, Integer pingCount,
                                String misMatchVersion, Device device) {

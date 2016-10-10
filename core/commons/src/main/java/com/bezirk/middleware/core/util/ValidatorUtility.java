@@ -71,7 +71,7 @@ public final class ValidatorUtility {
     }
 
     public static boolean checkStreamRequest(final StreamRequest request) {
-        return !(null == request || !checkForString(request.serialzedString, request.fileName, request.streamLabel, request.getSphereId()) || !checkEndPoints(request.getSender(), request.getRecipient()));
+        return !(null == request || !checkForString(request.serializedString, request.fileName, request.streamLabel, request.getSphereId()) || !checkEndPoints(request.getSender(), request.getRecipient()));
     }
 
     private static boolean checkEndPoints(BezirkZirkEndPoint... serviceEndPoints) {

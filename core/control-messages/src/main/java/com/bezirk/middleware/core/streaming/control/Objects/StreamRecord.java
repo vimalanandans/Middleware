@@ -31,7 +31,7 @@ public class StreamRecord extends UnicastControlMessage {
     //path to the file
     private File file;
 
-    //The receipient zirk end point
+    //The recipient zirk end point
     private BezirkZirkEndPoint recipientSEP;
 
     //This is the seal
@@ -40,7 +40,8 @@ public class StreamRecord extends UnicastControlMessage {
     /* Streaming Status indicates the status of the Streams.
      * PENDING -  indicates the waiting to know the response
      * READY   -  indicating the recipient has agreed to receive the stream
-     * BUSY    -  indicating the receipient is busy and the data cannot be streamed*/
+     * BUSY    -  indicating the recipient is busy and the data cannot be streamed
+     */
     public enum StreamRecordStatus {
         PENDING, READY, ADDRESSED, BUSY, LOCAL
     }

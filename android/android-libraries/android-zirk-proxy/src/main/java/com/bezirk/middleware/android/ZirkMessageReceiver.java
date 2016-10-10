@@ -98,8 +98,8 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
     }
 
     private boolean isRequestForCurrentApp(final String zirkId) {
-        SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(ProxyClient.context);
-        Map<String, ?> keys = shrdPref.getAll();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ProxyClient.context);
+        Map<String, ?> keys = sharedPreferences.getAll();
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
             if (entry.getValue().toString().equalsIgnoreCase(zirkId)) {
                 return true;

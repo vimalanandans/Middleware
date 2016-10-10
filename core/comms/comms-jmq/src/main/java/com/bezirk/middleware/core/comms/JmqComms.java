@@ -170,7 +170,7 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
         private static final int beaconPort = 5670;
         private byte[] beaconDataArr;
         private ZBeacon zbeacon;
-        private String groupName;
+        private final String groupName;
 
         NodeDiscovery(@Nullable final String groupName) {
             this.groupName = (groupName != null) ? groupName : DEFAULT_GROUP_NAME;
