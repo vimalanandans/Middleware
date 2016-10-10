@@ -106,5 +106,4 @@ public final class SphereKeys implements Serializable {
             return false;
         return Arrays.equals(ownerPublicKeyBytes, other.ownerPublicKeyBytes) && Arrays.equals(sphereKey, other.sphereKey);
     }
-
 }

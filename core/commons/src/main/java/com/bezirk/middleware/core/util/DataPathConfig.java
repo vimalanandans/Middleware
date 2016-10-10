@@ -35,11 +35,10 @@ public class DataPathConfig {
     }
 
     private void init() {
-
-        if(System.getProperty("java.vm.name").equalsIgnoreCase("Dalvik")) {
+        if(System.getProperty("java.vm.name") != null &&
+                System.getProperty("java.vm.name").equalsIgnoreCase("Dalvik")) {
             dataPath = File.separator+"storage/emulated/0/" + DATA_PATH_REL;
-        }
-        else {
+        } else {
             // gradle sets this when invoked
             String appHome = System.getenv().get("APP_HOME");
             if (appHome == null || appHome.isEmpty()) {
@@ -48,8 +47,6 @@ public class DataPathConfig {
             // set data path
             dataPath = appHome + File.separator + DATA_PATH_REL;
         }
-
-
 
         // create the data directory if it doesn't exist
         final File dataDir = new File(dataPath);
@@ -73,6 +70,5 @@ public class DataPathConfig {
     public static String getDataPath() {
         return dataPathConfig.dataPath;
     }
-
 
 }
