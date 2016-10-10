@@ -22,9 +22,8 @@ public final class ActionProcessor {
     /**
      * Process BezirkAction based on action type.
      */
-    public void processBezirkAction(Intent intent, AndroidProxyServer ProxyService,
+    public void processBezirkAction(Intent intent, AndroidProxyServer proxyService,
                                     LifeCycleCallbacks lifeCycleCallbacks) {
-
 
         BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
 
@@ -45,10 +44,10 @@ public final class ActionProcessor {
                     break;
                 case SEND_ACTION:
                     logger.debug("processBezirkAction method");
-                    processSendActions(intentAction, intent, ProxyService);
+                    processSendActions(intentAction, intent, proxyService);
                     break;
                 case ZIRK_ACTION:
-                    processZirkActions(intentAction, intent, ProxyService);
+                    processZirkActions(intentAction, intent, proxyService);
                     break;
                 default:
                     logger.warn("Received unknown intent action: " + intentAction.getName());
@@ -88,19 +87,19 @@ public final class ActionProcessor {
     }
 
     private void processZirkActions(BezirkAction intentAction, Intent intent,
-                                    AndroidProxyServer ProxyService) {
+                                    AndroidProxyServer proxyService) {
         switch (intentAction) {
             case ACTION_BEZIRK_REGISTER:
-                ProxyService.registerZirk(intent);
+                proxyService.registerZirk(intent);
                 break;
             case ACTION_BEZIRK_SUBSCRIBE:
-                ProxyService.subscribeService(intent);
+                proxyService.subscribeService(intent);
                 break;
             case ACTION_BEZIRK_SET_LOCATION:
-                ProxyService.setLocation(intent);
+                proxyService.setLocation(intent);
                 break;
             case ACTION_BEZIRK_UNSUBSCRIBE:
-                ProxyService.unsubscribeService(intent);
+                proxyService.unsubscribeService(intent);
                 break;
             default:
                 if (logger.isWarnEnabled())
@@ -110,18 +109,18 @@ public final class ActionProcessor {
     }
 
     private void processSendActions(BezirkAction intentAction, Intent intent,
-                                    AndroidProxyServer ProxyService) {
+                                    AndroidProxyServer proxyService) {
         logger.debug("intentAction in ActionProcessor is "+intentAction);
         switch (intentAction) {
             case ACTION_ZIRK_SEND_MULTICAST_EVENT:
                 logger.debug("In ACTION_ZIRK_SEND_MULTICAST_EVENT");
-                ProxyService.sendMulticastEvent(intent);
+                proxyService.sendMulticastEvent(intent);
                 break;
             case ACTION_ZIRK_SEND_UNICAST_EVENT:
-                ProxyService.sendUnicastEvent(intent);
+                proxyService.sendUnicastEvent(intent);
                 break;
             case ACTION_BEZIRK_PUSH_UNICAST_STREAM:
-                ProxyService.sendUnicastStream(intent);
+                proxyService.sendUnicastStream(intent);
                 break;
             default:
                 if (logger.isWarnEnabled())

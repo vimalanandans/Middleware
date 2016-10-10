@@ -78,10 +78,10 @@ public class AndroidProxyServer extends ProxyServer {
                 (SendFileStreamAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM.getName());
 
         final Boolean isEncrypt = (Boolean) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_ENCRYPT.getName());
-        final Boolean isincremental= (Boolean) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_INCREMENTAL.getName());
+        final Boolean isIncremental= (Boolean) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_INCREMENTAL.getName());
         final File file = (File) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_FILE.getName());
 
-        StreamDescriptor streamDescriptor  = new StreamDescriptor(isincremental, isEncrypt, file, streamAction.getStreamActionName());
+        StreamDescriptor streamDescriptor  = new StreamDescriptor(isIncremental, isEncrypt, file, streamAction.getStreamActionName());
         streamAction.setDescriptor(streamDescriptor);
 
         super.sendStream(streamAction);

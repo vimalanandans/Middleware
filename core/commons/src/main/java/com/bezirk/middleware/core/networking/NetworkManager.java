@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -32,8 +33,8 @@ public abstract class NetworkManager {
 
                 }
             }
-        } catch (Exception ex) {
-            logger.error("Error occurred while getting InterfaceInetPair \n", ex);
+        } catch (SocketException e) {
+            logger.error("Error occurred while getting InterfaceInetPair", e);
         }
         return list;
     }
@@ -57,8 +58,8 @@ public abstract class NetworkManager {
                     }
                 }
             }
-        } catch (Exception ex) {
-            logger.error("Error occurred while getting IpForInterface \n", ex);
+        } catch (SocketException e) {
+            logger.error("Error occurred while getting IpForInterface", e);
         }
         return null;
     }
@@ -97,8 +98,8 @@ public abstract class NetworkManager {
 
                 }
             }
-        } catch (Exception ex) {
-            logger.error("Error occurred while getting LocalMACAddress \n", ex);
+        } catch (SocketException e) {
+            logger.error("Error occurred while getting LocalMACAddress", e);
         }
         return null;
     }

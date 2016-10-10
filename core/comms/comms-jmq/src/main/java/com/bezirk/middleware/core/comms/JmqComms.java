@@ -140,7 +140,7 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
                 pool.shutdownNow(); // Cancel currently executing tasks
                 // Wait a while for tasks to respond to being cancelled
                 if (!pool.awaitTermination(200, TimeUnit.MILLISECONDS))
-                    System.err.println("Pool did not terminate");
+                    logger.error("Pool did not terminate");
             }
         } catch (InterruptedException ie) {
             // (Re-)Cancel if current thread also interrupted
@@ -226,6 +226,7 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
                 }
             } catch (InterruptedException e) {
                 logger.error("Failed to close JMQ comms instance", e);
+                Thread.currentThread().interrupt();
             }
         }
     }

@@ -205,18 +205,20 @@ public final class ProxyClient implements Bezirk {
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
         intentSender.sendBezirkIntent(new SendMulticastEventAction(zirkId, recipient, event,
-                (event instanceof IdentifiedEvent)));
+                event instanceof IdentifiedEvent));
     }
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
         intentSender.sendBezirkIntent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
-                zirkId, recipient, event, (event instanceof IdentifiedEvent)));
+                zirkId, recipient, event, event instanceof IdentifiedEvent));
     }
 
     @Override
-    public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor, PipedOutputStream dataStream) {
-        throw new UnsupportedOperationException("Calling sendStream with a PipedOutputStream is current unimplemented.");
+    public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor,
+                           PipedOutputStream dataStream) {
+        throw new UnsupportedOperationException("Calling sendStream with a PipedOutputStream is " +
+                "current unimplemented.");
     }
 
     @Override

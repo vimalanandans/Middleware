@@ -21,11 +21,12 @@ import android.view.SurfaceView;
 import java.io.IOException;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
+    private static final String TAG = CameraPreview.class.getName();
+
     private final SurfaceHolder surfaceHolder;
     private final Camera camera;
     private final PreviewCallback previewCallback;
     private final AutoFocusCallback autoFocusCallback;
-    private final String TAG = CameraPreview.class.getName();
 
     public CameraPreview(Context context, Camera camera,
                          PreviewCallback previewCb,

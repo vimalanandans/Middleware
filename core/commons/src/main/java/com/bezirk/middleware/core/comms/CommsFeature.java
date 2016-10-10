@@ -3,6 +3,7 @@ package com.bezirk.middleware.core.comms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Properties;
 
 public enum CommsFeature {
@@ -26,20 +27,18 @@ public enum CommsFeature {
     HTTP_BEZIRK_COMMS;
 
     private static final Logger logger = LoggerFactory.getLogger(CommsFeature.class);
-    private static Properties properties;
+    private static final Properties properties = new Properties();
     private String value;
 
     private void init() {
-        if (properties == null) {
-            properties = new Properties();
-            try {
-                //properties.load(Constants.class.getResourceAsStream(PATH));
-                ClassLoader loader = Thread.currentThread().getContextClassLoader();
-                properties.load(loader.getResourceAsStream("features.properties"));
-            } catch (Exception e) {
-                logger.error("Unable to load features.properties file from classpath.", e);
-            }
+        try {
+            //properties.load(Constants.class.getResourceAsStream(PATH));
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            properties.load(loader.getResourceAsStream("features.properties"));
+        } catch (IOException e) {
+            logger.error("Unable to load features.properties file from classpath.", e);
         }
+
         value = (String) properties.get(this.toString());
     }
 

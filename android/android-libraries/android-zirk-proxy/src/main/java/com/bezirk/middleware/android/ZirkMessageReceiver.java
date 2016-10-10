@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ZirkMessageReceiver extends BroadcastReceiver {
-    private final String TAG = ZirkMessageReceiver.class.getName();
+    private static final String TAG = ZirkMessageReceiver.class.getName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -86,7 +86,6 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
     private void processStream(ReceiveFileStreamAction streamMessage) {
         final StreamDescriptor streamDescriptor =
                 (StreamDescriptor) Message.fromJson(streamMessage.getSerializedStream());
-        //final String streamName = streamDescriptor.getClass().getName();
         final String streamName = streamDescriptor.getStreamActionName();
 
         if (ProxyClient.streamListenerMap.containsKey(streamName)) {
