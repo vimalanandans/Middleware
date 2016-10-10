@@ -10,30 +10,30 @@ import org.zeromq.ZMQException;
 import org.zeromq.ZMsg;
 
 
-public class ZMQReceiver implements Runnable {
-
-    public interface ReceiverPortInitializedCallback {
+class ZMQReceiver implements Runnable {
+    interface ReceiverPortInitializedCallback {
         void onSuccess(int port);
 
         void onFailure(String errorMessage);
     }
 
-    public interface OnMessageReceivedListener {
+    interface OnMessageReceivedListener {
         boolean processIncomingMessage(String nodeId, byte[] data);
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ZMQReceiver.class);
+    private static final int MAX_RECEIVER_THREADS = 5;
 
     private ZContext ctx;
     //  Frontend socket talks to clients over TCP
     private ZMQ.Socket frontend;
     //  Backend socket talks to workers over inproc
     private ZMQ.Socket backend;
-    private int port;
     private final ReceiverPortInitializedCallback callback;
     private final OnMessageReceivedListener onMessageReceivedListener;
 
-    public ZMQReceiver(@Nullable final ReceiverPortInitializedCallback callback, @Nullable final OnMessageReceivedListener onMessageReceivedListener) {
+    ZMQReceiver(@Nullable final ReceiverPortInitializedCallback callback,
+                @Nullable final OnMessageReceivedListener onMessageReceivedListener) {
         this.callback = callback;
         this.onMessageReceivedListener = onMessageReceivedListener;
     }
@@ -45,7 +45,7 @@ public class ZMQReceiver implements Runnable {
             this.ctx = new ZContext();
             this.frontend = ctx.createSocket(ZMQ.ROUTER);
             this.backend = ctx.createSocket(ZMQ.DEALER);
-            port = frontend.bindToRandomPort("tcp://*", 0xc000, 0xffff);
+            final int port = frontend.bindToRandomPort("tcp://*", 0xc000, 0xffff);
             logger.trace("tcp port: " + port);
 
             if (port == 0) {
@@ -63,7 +63,7 @@ public class ZMQReceiver implements Runnable {
 
             backend.bind("inproc://backend");
 
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < MAX_RECEIVER_THREADS; i++) {
                 new Thread(new ReceiverWorker(ctx), "ZMQThread" + i).start();
             }
 
@@ -89,7 +89,7 @@ public class ZMQReceiver implements Runnable {
     private class ReceiverWorker implements Runnable {
         private final ZContext ctx;
 
-        public ReceiverWorker(final ZContext ctx) {
+        ReceiverWorker(final ZContext ctx) {
             this.ctx = ctx;
         }
 
@@ -100,22 +100,25 @@ public class ZMQReceiver implements Runnable {
             while (true) {
                 try {
                     //The DEALER socket gives us the address envelope and message
-                    ZMsg msg = ZMsg.recvMsg(worker);
+                    final ZMsg msg = ZMsg.recvMsg(worker);
 
-                    ZFrame address = msg.pop();
-                    ZFrame content = msg.pop();
-                    logger.trace(Thread.currentThread().getName() + " address: " + address + " content: " + content);
+                    final ZFrame address = msg.pop();
+                    final ZFrame content = msg.pop();
+                    if (logger.isTraceEnabled()) {
+                        logger.trace("{} address: {} content: {}",
+                                Thread.currentThread().getName(), address, content);
+                    }
 
                     if (onMessageReceivedListener != null) {
-                        onMessageReceivedListener.processIncomingMessage(new String(address.getData()), content.getData());
+                        onMessageReceivedListener.processIncomingMessage(
+                                new String(address.getData()), content.getData());
                     }
-                    //jp2p.processIncomingMessage(new String(address.getData()), content.getData());
                 } catch (ZMQException e) {
-                    logger.debug("ZMQException in ReceiverWorker" + e);
+                    logger.debug("ZMQException in ReceiverWorker", e);
                     worker.close();
                     break;
                 } catch (Exception e) {
-                    logger.debug("Exception in ReceiverWorker" + e);
+                    logger.debug("Exception in ReceiverWorker", e);
                     worker.close();
                     break;
                 }

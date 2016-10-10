@@ -19,11 +19,11 @@ public class StreamRequest extends UnicastControlMessage {
     /**
      * Location that is used for MulticastStreamDescriptor
      */
-    public Location location = null;
+    public final Location location;
     /**
      * Contains the serialized String of the StreamDescriptor Descriptor pushed by the StreamDescriptor
      */
-    public String serializedString = null;
+    public final String serializedString;
     /**
      * StreamDescriptor Topic of the StreamDescriptor Descriptor
      */
@@ -31,20 +31,16 @@ public class StreamRequest extends UnicastControlMessage {
     /**
      * Name of the file that needs to be pushed on the recipient
      */
-    public String fileName = null;
+    public final String fileName;
     /**
      * Flag indicating secure communication. If true file transfer will be encrypted.
      */
-    public boolean isEncrypted = false;
+    public final boolean isEncrypted;
     /**
      * Flag indicating the communication is quantized. If <code>true</code> data  will be quantized
      * and sent
      */
     public boolean isIncremental = false;
-    /**
-     * Flag indicating isReliable transfer. If <code>false</code>, the communication is unreliable
-     */
-    public boolean reliable = true;
 
     public StreamRequest(String sphereId, StreamRecord streamRecord, Location location) {
         super(streamRecord.getSender(), streamRecord.getRecipient(), sphereId, discriminator, false, streamRecord.getUniqueKey());
