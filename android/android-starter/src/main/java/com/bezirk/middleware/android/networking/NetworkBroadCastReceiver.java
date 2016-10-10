@@ -28,8 +28,8 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         String action = intent.getAction();
         if (action.equals(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION)) {
-            SupplicantState supl_state = intent.getParcelableExtra(WifiManager.EXTRA_NEW_STATE);
-            switch (supl_state) {
+            SupplicantState supplicantState = intent.getParcelableExtra(WifiManager.EXTRA_NEW_STATE);
+            switch (supplicantState) {
                 case ASSOCIATING:
                     Log.i("SupplicantState", "Trying to Associate with a New Network..");
                     break;

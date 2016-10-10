@@ -161,7 +161,7 @@ class DeviceControlActivityHelper {
     }
 
     // prompt for text edit box
-    private void promptSettingTextChange(final String TitleText, final int resultId) {
+    private void promptSettingTextChange(final String titleText, final int resultId) {
 // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptsView = layoutInflater.inflate(R.layout.prompt_text, null);
@@ -176,7 +176,7 @@ class DeviceControlActivityHelper {
         final TextView userInputTitle = (TextView) promptsView
                 .findViewById(R.id.promptTextHeader);
 
-        userInputTitle.setText(TitleText);
+        userInputTitle.setText(titleText);
 
         final EditText userInput = (EditText) promptsView
                 .findViewById(R.id.promptEditTextDialog);
