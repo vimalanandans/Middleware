@@ -21,7 +21,6 @@ public final class SignalingFactory {
 
     /* Utility Class. All methods are static. Adding private constructor to suppress PMD warnings.*/
     private SignalingFactory() {
-
     }
 
     /**
@@ -41,12 +40,8 @@ public final class SignalingFactory {
      */
     public static void createSignalingInstance(final String className, final Comms comms) {
         synchronized (SignalingFactory.class) {
-            try {
-                if (signaling == null) {
-                    signaling = getNewInstance(className, comms);
-                }
-            } catch (Exception ex) {
-                logger.error("Signalling Instance creation failed:", ex);
+            if (signaling == null) {
+                signaling = getNewInstance(className, comms);
             }
         }
     }
@@ -99,7 +94,7 @@ public final class SignalingFactory {
         try {
             cTmp = Class.forName(className);
         } catch (ClassNotFoundException e) {
-            logger.error("Invalid class name \n", e);
+            logger.error("Invalid class name", e);
         }
         return cTmp;
     }
@@ -114,7 +109,7 @@ public final class SignalingFactory {
         try {
             newInstance = getClass(className).newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            logger.error("New Instance creation failed. \n", e);
+            logger.error("New Instance creation failed.", e);
         }
         return newInstance;
     }
@@ -132,7 +127,7 @@ public final class SignalingFactory {
             Constructor<?> ctor = getClass(className).getConstructor(Comms.class);
             newInstance = ctor.newInstance(comms);
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
-            logger.error("New Instance creation failed. \n", e);
+            logger.error("New Instance creation failed.", e);
         }
         return newInstance;
     }

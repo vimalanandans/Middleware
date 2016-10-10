@@ -51,7 +51,7 @@ public class TextCompressor {
             while ((line = bf.readLine()) != null) {
                 outStr.append(line);
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             logger.error("Exception while decompressing the bytes", e);
         }
 
@@ -74,17 +74,14 @@ public class TextCompressor {
                 int size = dfl.deflate(tmp);
                 baos.write(tmp, 0, size);
             }
-        } catch (Exception ex) {
-            logger.error("Exception while compress Byte ArrayUsingDeflater", ex);
         } finally {
             try {
                 baos.close();
-            } catch (Exception ex) {
-                logger.error("Exception while closing ByteArrayOutputStream", ex);
+            } catch (IOException e) {
+                logger.error("Exception while closing ByteArrayOutputStream", e);
             }
         }
 
         return baos.toByteArray();
     }
-
 }

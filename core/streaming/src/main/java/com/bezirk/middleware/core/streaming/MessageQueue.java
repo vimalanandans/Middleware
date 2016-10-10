@@ -37,17 +37,14 @@ public class MessageQueue {
                 try {
                     wait();
                 } catch (InterruptedException e) {
-                    logger.error(
-                            "Interrupted while waiting when the queue was full ",
-                            e);
+                    logger.error("Interrupted while waiting when the queue was full ", e);
+                    Thread.currentThread().interrupt();
                 }
             }
+
             if (queue.contains(message)) {
-
                 logger.warn("message w/ already present in sender queue");
-
             } else {
-
                 queue.add(message);
                 notifyAll();
             }
@@ -62,16 +59,12 @@ public class MessageQueue {
      */
     public void removeFromQueue(ControlMessage message) {
         synchronized (this) {
-            if (queue.isEmpty()) {
-                return;
-            }
-            if (queue.contains(message)) {
-                queue.remove(message);
+            if (queue.isEmpty()) return;
+
+            if (queue.remove(message)) {
                 notifyAll();
             } else {
-
                 logger.warn("message already removed from sender queue");
-
             }
         }
     }
@@ -87,6 +80,7 @@ public class MessageQueue {
                     wait();
                 } catch (InterruptedException e) {
                     logger.warn("Send/Receive Queue Interrupted");
+                    Thread.currentThread().interrupt();
                 }
             }
             return queue;
