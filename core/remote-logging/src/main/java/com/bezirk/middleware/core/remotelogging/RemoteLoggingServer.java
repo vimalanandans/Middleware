@@ -32,7 +32,7 @@ public class RemoteLoggingServer extends Thread {
     private ServerSocket serverSocket = null;
     private ReceiverQueueProcessor receiverQueueProcessor;
     private RemoteLoggingMessageNotification remoteLoggingMessageNotification = null;
-    private boolean enableFileLogging;
+    private final boolean enableFileLogging;
 
     /**
      * setup the port.

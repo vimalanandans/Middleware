@@ -17,11 +17,11 @@ import java.util.LinkedHashMap;
  */
 public class SphereRegistry implements Serializable {
     private static final long serialVersionUID = 682210165778262550L;
-    public LinkedHashMap<String, Sphere> spheres;
-    public LinkedHashMap<String, Zirk> sphereMembership;
-    public LinkedHashMap<String, DeviceInformation> devices;
-    public HashMap<String, SphereKeys> sphereKeyMap;
-    public HashMap<String, HashKey> sphereHashKeyMap;
+    public final LinkedHashMap<String, Sphere> spheres;
+    public final LinkedHashMap<String, Zirk> sphereMembership;
+    public final LinkedHashMap<String, DeviceInformation> devices;
+    public final HashMap<String, SphereKeys> sphereKeyMap;
+    public final HashMap<String, HashKey> sphereHashKeyMap;
 
     public SphereRegistry() {
         super();
@@ -140,8 +140,8 @@ public class SphereRegistry implements Serializable {
      */
     public class HashKey implements Serializable {
         private static final long serialVersionUID = -3621416938085121516L;
-        private byte[] hashKey;
-        private String sphereId;
+        private final byte[] hashKey;
+        private final String sphereId;
 
         public HashKey(byte[] sphereKey, String sphereId) {
             this.hashKey = sphereKey == null ? null : sphereKey.clone();

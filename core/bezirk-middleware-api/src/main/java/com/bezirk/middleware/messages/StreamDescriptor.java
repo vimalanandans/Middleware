@@ -36,7 +36,7 @@ public class StreamDescriptor extends Message {
     /*
      * The file whose contents will be sent using the <code>stream</code>
      */
-    private File file;
+    private final File file;
 
     private StateListener stateListener = null;
 

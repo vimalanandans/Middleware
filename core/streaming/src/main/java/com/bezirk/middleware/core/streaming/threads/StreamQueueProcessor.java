@@ -39,9 +39,9 @@ public class StreamQueueProcessor implements Runnable {
 
     //private SphereSecurity sphereSecurity;
 
-    private ExecutorService sendStreamExecutor;
+    private final ExecutorService sendStreamExecutor;
 
-    private StreamManager streamManager;
+    private final StreamManager streamManager;
 
     public StreamQueueProcessor(MessageQueue msgQueue, PubSubEventReceiver sadlReceiver, ExecutorService sendStreamExecutor, StreamManager streamManager) {
         this.sadlReceiver = sadlReceiver;

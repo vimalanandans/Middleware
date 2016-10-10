@@ -28,7 +28,7 @@ public class RemoteLoggingClient {
      * Remote Logging Zirk Port
      */
     private int servicePort = -1;
-    private NetworkManager networkManager;
+    private final NetworkManager networkManager;
     /**
      * Processor for LogSenderQueue
      */

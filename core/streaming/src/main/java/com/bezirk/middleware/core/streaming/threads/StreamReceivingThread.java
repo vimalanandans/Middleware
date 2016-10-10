@@ -4,13 +4,13 @@
 package com.bezirk.middleware.core.streaming.threads;
 
 import com.bezirk.middleware.core.actions.ReceiveFileStreamAction;
-import com.bezirk.middleware.core.streaming.PortFactory;
 import com.bezirk.middleware.core.control.messages.streaming.StreamRequest;
-import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.core.pubsubbroker.PubSubEventReceiver;
+import com.bezirk.middleware.core.streaming.PortFactory;
 import com.bezirk.middleware.core.streaming.StreamManager;
 import com.bezirk.middleware.core.streaming.port.StreamPortFactory;
 import com.bezirk.middleware.core.util.ValidatorUtility;
+import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +60,7 @@ public class StreamReceivingThread implements Runnable {
     /**
      * Constructor that is called during starting the thread
      *
-     * @param  port   - port that this thread is listening to receive the data. { This port is got from StreamPortFactory }
+     * @param port - port that this thread is listening to receive the data. { This port is got from StreamPortFactory }
      */
     public StreamReceivingThread(int port,/*String downloadPath,*/
                                  StreamRequest streamRequest, PortFactory portFactory,
@@ -74,7 +74,7 @@ public class StreamReceivingThread implements Runnable {
         this.isEncrypted = streamRequest.isEncrypted;
         this.recipient = streamRequest.getRecipient();
         this.sender = streamRequest.getSender();
-        this.serializedMsg = streamRequest.serialzedString;
+        this.serializedMsg = streamRequest.serializedString;
         this.portFactory = portFactory;
         this.pubSubReceiver = pubSubEventReceiver;
         /*this.sphereSecurity = sphereSecurity;*/
@@ -176,15 +176,13 @@ public class StreamReceivingThread implements Runnable {
 
     private void notifyStreamFile(File tempFile, boolean portReleased) {
         if (portReleased) {
-            ReceiveFileStreamAction uStreamCallbackMsg = new ReceiveFileStreamAction(
+            final ReceiveFileStreamAction uStreamCallbackMsg = new ReceiveFileStreamAction(
                     recipient.zirkId, serializedMsg,
                     tempFile, sender);
+
             if (ValidatorUtility.isObjectNotNull(pubSubReceiver)) {
-
                 pubSubReceiver.processNewStream(uStreamCallbackMsg);
-
             } else {
-
                 logger.error("BezirkCallback is not provided. Unable to send stream callback.");
             }
         } else {
@@ -192,18 +190,9 @@ public class StreamReceivingThread implements Runnable {
         }
     }
 
-
-    /**
-     * creates the folder if not existing and cretes the file
-     * @return
-     */
-    private String getStreamDownloadPath(){
-
-        String downloadPath;
-        ///storage/emulated/0/
-        downloadPath= File.separator+"storage/emulated/0/" + "downloads" + File.separator;
-        final File createDownloadFolder = new File(
-                downloadPath);
+    private String getStreamDownloadPath() {
+        final String downloadPath = File.separator + "storage/emulated/0/downloads" + File.separator;
+        final File createDownloadFolder = new File(downloadPath);
         if (!createDownloadFolder.exists()) {
             if (!createDownloadFolder.mkdir()) {
                 logger.error("Failed to create download direction: {}",

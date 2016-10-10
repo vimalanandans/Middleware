@@ -61,7 +61,7 @@ public class StreamStore {
                 return false;
             }
             getPortsMap().put(portMapKey, value);
-            logger.debug("portsmap updated with key : value:" + "key:" + portMapKey
+            logger.debug("portsMap updated with key : value:" + "key:" + portMapKey
                     + " value:" + value);
             return true;
 

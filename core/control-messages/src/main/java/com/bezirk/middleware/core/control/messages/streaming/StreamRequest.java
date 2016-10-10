@@ -23,11 +23,11 @@ public class StreamRequest extends UnicastControlMessage {
     /**
      * Contains the serialized String of the StreamDescriptor Descriptor pushed by the StreamDescriptor
      */
-    public String serialzedString = null;
+    public String serializedString = null;
     /**
      * StreamDescriptor Topic of the StreamDescriptor Descriptor
      */
-    public String streamLabel = null;
+    public final String streamLabel = null;
     /**
      * Name of the file that needs to be pushed on the recipient
      */
@@ -49,7 +49,7 @@ public class StreamRequest extends UnicastControlMessage {
     public StreamRequest(String sphereId, StreamRecord streamRecord, Location location) {
         super(streamRecord.getSender(), streamRecord.getRecipient(), sphereId, discriminator, false, streamRecord.getUniqueKey());
         this.location = location;
-        this.serialzedString = streamRecord.getSerializedStream();
+        this.serializedString = streamRecord.getSerializedStream();
         this.fileName = streamRecord.getFile().getName();
         this.isEncrypted = streamRecord.isEncryptedStream();
     }

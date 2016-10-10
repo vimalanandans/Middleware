@@ -60,7 +60,7 @@ public class StreamSendingThread implements Runnable {
             client = new Socket(recipientIP, port);                                       // open the socket
             dataOutputStream = new DataOutputStream(client.getOutputStream());
 
-            //If sphere security is enabled, the contents will be encrpted.
+            //If sphere security is enabled, the contents will be encrypted.
             if (isEncrypted /*&& sphereSecurity != null*/ ) // encrypted and valid sphere security object
             {
                 logger.debug("---------- Secure Data transfer requested! -------------");

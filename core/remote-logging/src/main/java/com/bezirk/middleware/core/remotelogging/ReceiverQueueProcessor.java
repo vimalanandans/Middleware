@@ -20,7 +20,7 @@ public class ReceiverQueueProcessor implements Runnable {
      * Platform specific logger
      */
     private final RemoteLoggingMessageNotification platformSpecificLogger;
-    private FileLogger fileLogger;
+    private final FileLogger fileLogger;
     /**
      * Flag used for starting/ Stopping Threads!
      */
