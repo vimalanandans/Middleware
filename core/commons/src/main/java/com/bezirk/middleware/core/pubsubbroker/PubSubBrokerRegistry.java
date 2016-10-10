@@ -102,8 +102,10 @@ public class PubSubBrokerRegistry implements Serializable {
 
                 Object currentValue = field.get(this);
                 Object otherValue = field.get(other);
-                if (currentValue == null && otherValue != null) {
-                    return false;
+                if (currentValue == null) {
+                    if (otherValue != null) {
+                        return false;
+                    }
                 } else if (!currentValue.equals(otherValue)) {
                     return false;
                 }
