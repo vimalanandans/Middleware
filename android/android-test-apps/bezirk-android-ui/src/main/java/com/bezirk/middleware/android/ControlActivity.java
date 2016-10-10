@@ -11,7 +11,6 @@ import android.view.MenuItem;
 
 import com.bezirk.middleware.android.ui.R;
 
-
 public class ControlActivity extends AppCompatActivity {
 
     private ControlActivityHelper controlActivityHelper;
@@ -69,5 +68,4 @@ public class ControlActivity extends AppCompatActivity {
         unregisterReceiver(controlActivityHelper.systemStatusBroadcastReceiver);
         BezirkMiddleware.stop();
     }
-
 }

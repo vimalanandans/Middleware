@@ -19,18 +19,18 @@ public class MemberLeaveRequest extends MulticastControlMessage {
     /**
      * Used with for multicasting the leave request by the member of a sphere
      */
-    public MemberLeaveRequest(String sphereID, ZirkId serviceId, String sphere_Name, BezirkZirkEndPoint sender) {
+    public MemberLeaveRequest(String sphereID, ZirkId serviceId, String sphereName, BezirkZirkEndPoint sender) {
         super(sender, sphereID, discriminator);
         this.serviceId = serviceId;
-        //this.sphere_Name = sphere_Name;        
+        //this.sphereName = sphereName;
     }
 
     public ZirkId getServiceId() {
         return serviceId;
     }
 
-//    public String getSphere_Name() {
-//        return sphere_Name;
+//    public String getSphereName() {
+//        return sphereName;
 //    }
 
 }

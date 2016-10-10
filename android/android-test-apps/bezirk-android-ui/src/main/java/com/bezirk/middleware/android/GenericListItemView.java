@@ -100,5 +100,4 @@ public class GenericListItemView extends ArrayAdapter<DataModel> {
     public interface ItemToggleListener {
         void onItemToggleListener(int position, boolean checkStatus);
     }
-
 }

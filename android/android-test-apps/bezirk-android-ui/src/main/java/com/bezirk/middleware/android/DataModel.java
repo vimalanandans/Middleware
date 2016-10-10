@@ -58,5 +58,4 @@ public class DataModel {
     public void setIcon(boolean icon) {
         this.icon = icon;
     }
-
 }
