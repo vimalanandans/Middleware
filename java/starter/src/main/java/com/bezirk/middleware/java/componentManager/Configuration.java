@@ -11,14 +11,14 @@ public class Configuration {
     private static final boolean LOGGING_DEFAULT_VALUE = false; // default value of bezirk logging
 
     public static boolean isLoggingEnabled() {
-        boolean isLoggingEnabled = isEnabledInJVM(LOGGING_ENV_VARIABLE) || isEnabledInSystem(LOGGING_ENV_VARIABLE) || LOGGING_DEFAULT_VALUE;
-        logger.debug("Logging enabled --> " + isLoggingEnabled);
+        final boolean isLoggingEnabled = isEnabledInJVM(LOGGING_ENV_VARIABLE) || isEnabledInSystem(LOGGING_ENV_VARIABLE) || LOGGING_DEFAULT_VALUE;
+        logger.debug("Logging enabled --> {}", isLoggingEnabled);
         return isLoggingEnabled;
     }
 
     public static boolean isRemoteLoggingEnabled() {
-        boolean isLoggingEnabled = isEnabledInJVM(REMOTE_LOGGING_ENV_VARIABLE) || isEnabledInSystem(REMOTE_LOGGING_ENV_VARIABLE) || REMOTE_LOGGING_ENV_VALUE;
-        logger.debug("Remote Logging status --> " + isLoggingEnabled);
+        final boolean isLoggingEnabled = isEnabledInJVM(REMOTE_LOGGING_ENV_VARIABLE) || isEnabledInSystem(REMOTE_LOGGING_ENV_VARIABLE) || REMOTE_LOGGING_ENV_VALUE;
+        logger.debug("Remote Logging status --> {}", isLoggingEnabled);
         return isLoggingEnabled;
     }
 
@@ -41,7 +41,7 @@ public class Configuration {
         try {
             propValue = System.getenv(propKey);
         } catch (SecurityException e) {
-            logger.warn("Unable to access system variable " + propKey + " " + e.getMessage());
+            logger.warn("Unable to access system variable " + propKey, e);
         }
         return propValue;
     }
@@ -51,7 +51,7 @@ public class Configuration {
         try {
             propValue = System.getProperty(propKey);
         } catch (SecurityException e) {
-            logger.warn("Unable to access jvm variable " + propKey + " " + e.getMessage());
+            logger.warn("Unable to access jvm variable " + propKey, e);
         }
         return propValue;
     }
@@ -68,11 +68,11 @@ public class Configuration {
         try {
             propValue = System.getProperty(propKey);
         } catch (SecurityException e) {
-            logger.warn("Unable to access jvm variable " + propKey + " " + e.getMessage());
+            logger.warn("Unable to access jvm variable " + propKey, e);
         }
         if (null != propValue) {
             boolPropValue = Boolean.parseBoolean(propValue);
-            logger.debug("JVM property " + propKey + " --> " + boolPropValue);
+            logger.debug("JVM property {} --> {}", propKey, boolPropValue);
         }
         return boolPropValue;
     }
@@ -89,11 +89,11 @@ public class Configuration {
         try {
             propValue = System.getenv(propKey);
         } catch (SecurityException e) {
-            logger.warn("Unable to access system variable " + propKey + " " + e.getMessage());
+            logger.warn("Unable to access system variable " + propKey, e);
         }
         if (null != propValue) {
             boolPropValue = Boolean.parseBoolean(propValue);
-            logger.debug("System property " + propKey + " --> " + boolPropValue);
+            logger.debug("System property {} --> {}", propKey, boolPropValue);
         }
         return boolPropValue;
     }

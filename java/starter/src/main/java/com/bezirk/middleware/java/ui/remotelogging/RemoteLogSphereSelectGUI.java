@@ -5,7 +5,6 @@ import com.bezirk.middleware.core.networking.NetworkManager;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
 import com.bezirk.middleware.core.remotelogging.RemoteLoggingMessage;
 import com.bezirk.middleware.core.remotelogging.RemoteLoggingMessageNotification;
-import com.bezirk.middleware.objects.BezirkSphereInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Iterator;
 
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
@@ -92,18 +90,6 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
             leftSphereListModel.removeAllElements();
             rightSphereListModel.removeAllElements();
             leftSphereListModel.addElement(RemoteLog.ALL_SPHERES);
-            try {
-                final Iterator<BezirkSphereInfo> sphereInfoIterator;
-                /*commented for the MVP refactoring. inject the sphere API to get access
-                final Iterator<BezirkSphereInfo> sphereInfoIterator = BezirkCompManager
-                        .getSphereUI().getSpheres().iterator();
-                while (sphereInfoIterator.hasNext()) {
-                    leftSphereListModel.addElement(sphereInfoIterator.next()
-                            .getSphereID());
-                }*/
-            } catch (Exception ex) {
-                logger.error("Error in sphere list model.", ex);
-            }
         }
     };
     private transient Comms comms;
@@ -224,18 +210,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
     public RemoteLogSphereSelectGUI(Comms comms, NetworkManager networkManager) {
         thisFrame = this;
         this.comms = comms;
-        try {
-            jbInit();
-        } catch (Exception e) {
-            logger.error("Error in sphere select GUI init. ", e);
-        }
-
-      /*  try {
-            remoteLog = new RemoteLoggingManager(networkManager);
-            remoteLog.startRemoteLoggingService(this);
-        } catch (Exception e) {
-            logger.error("Error in sphere Select GUI init.", e);
-        }*/
+        jbInit();
     }
 
     /**

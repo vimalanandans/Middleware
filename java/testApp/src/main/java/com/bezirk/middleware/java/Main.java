@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private static final String DEFAULT_HOSTNAME = "UNKNOWN-PC";
-    private static String hostname = DEFAULT_HOSTNAME;
+    private static volatile String hostname = DEFAULT_HOSTNAME;
 
     public static void main(String[] args) {
         Scanner reader = new Scanner(System.in, "UTF-8");

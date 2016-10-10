@@ -103,19 +103,13 @@ public class RemoteLogDetailsGUI extends JFrame {
         selectedSpheres = spheres.clone();
         this.isDeveloperModeEnabled = isDeveloperModeEnabled;
         currentFrame = this;
-        try {
-            jbInit();
-        } catch (Exception e1) {
-            logger.debug("Error in Log Details GUI.", e1);
-        }
-
+        jbInit();
         sendLoggingServiceMsg(true);
 
         this.comms = comms;
     }
 
     private void jbInit() {
-
         this.setVisible(true);
         this.getContentPane().setLayout(gridBagDialogLayout);
         this.setSize(new Dimension(1266, 842));

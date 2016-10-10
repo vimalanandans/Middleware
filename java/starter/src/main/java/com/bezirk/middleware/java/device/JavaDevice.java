@@ -21,31 +21,26 @@ public class JavaDevice extends Device {
         super(deviceId, deviceName, deviceType, deviceLocation);
     }
 
-    private static final String defaultDeviceId() {
-//        final byte[] macAddress = NetworkManager
-//                .getLocalMACAddress();
-//
-//        if (null != macAddress) {
-//            return Hex.encodeToString(macAddress);
-//        }
+    private static String defaultDeviceId() {
         return UUID.randomUUID().toString();
     }
 
-    private static final String defaultDeviceName() {
+    private static String defaultDeviceName() {
         String deviceName;
         try {
             deviceName = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
+            logger.error("Failed to get device host name, defaulting to JavaDevice class name", e);
             deviceName = JavaDevice.class.getSimpleName();
         }
         return deviceName;
     }
 
-    private static final DeviceType defaultDeviceType() {
+    private static DeviceType defaultDeviceType() {
         return DeviceType.DEFAULT;
     }
 
-    private static final Location defaultDeviceLocation() {
+    private static Location defaultDeviceLocation() {
         return new Location(null, null, null);
     }
 

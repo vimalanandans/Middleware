@@ -25,12 +25,8 @@ public class JavaNetworkManager extends NetworkManager {
     public JavaNetworkManager() {
         this.preferences = Preferences.userNodeForPackage(JavaNetworkManager.class);
 
-        try {
-            logger.debug("Network preferences initialized successfully");
-            logger.debug(NETWORK_INTERFACE_NAME_KEY + " --> " + getStoredInterfaceName());
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
+        logger.trace("Network preferences initialized successfully");
+        logger.trace(NETWORK_INTERFACE_NAME_KEY + " --> " + getStoredInterfaceName());
     }
 
     @Override
@@ -43,9 +39,9 @@ public class JavaNetworkManager extends NetworkManager {
         try {
             preferences.put(NETWORK_INTERFACE_NAME_KEY, interfaceName);
             preferences.sync();
-            logger.debug("Network preferences is stored");
+            logger.trace("Network preferences is stored");
         } catch (BackingStoreException e) {
-            logger.error(e.getMessage());
+            logger.error("Failed to store network preferences", e);
         }
     }
 
