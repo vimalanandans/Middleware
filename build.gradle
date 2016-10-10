@@ -63,7 +63,7 @@ buildscript {
         androidVersionName = "1.0"
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath "com.android.tools.build:gradle:${project.androidGradleToolsVersion}"
         classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '4.1.0')
 //        Gradle 1.x/2.0, gradle-license-plugin 0.10.0 (and earlier)
         classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.10.0'
