@@ -23,7 +23,7 @@ customized to our needs and desires. Cooperation can also optimize business and 
 using accurate and timely data. These dreams need an ecosystem where devices seamlessly interoperate
 and are easy for the right (and only the right) entities to access.
 
-In practice, devices are diverse in their manufacturers, forms, functions, and use cases, and they often have poorly documented APIs that do not work together. How do we fulfill the IoT dream if the basic building blocks are clumsy and difficult to work with?
+In practice, devices are diverse in their manufacturers, functions, and use cases, and they often have buggy, poorly documented APIs that do not work together. How do we fulfill the IoT dream if the basic building blocks are clumsy and difficult to work with?
 
 The Bezirk ecosystem aims to solve these problems. The middleware in this repository forms its heart.
 The Bezirk middleware implements cloudless and brokerless publish-and-subscribe in Java. It also
@@ -96,7 +96,7 @@ stop light timings based on current traffic? What if your doctor could tell what
 time your blood pressure is too high? All of this can be built on top of the Bezirk middleware.
 
 You might be thinking to yourself: "What about privacy concerns? I'm not sure I'm comfortable having every action I take observed
-to build profiles." This is yet another problem related to compelling IoT visions that we're trying to solve. The
+to build profiles." This is valid and another problem related to compelling IoT visions that we're trying to solve. The
 Bezirk middleware aims to be privacy-respecting in the sense that it puts the user in
 control of their own data, while taking care of the nitty-gritty security details automatically.
 We don't force users' data to go through the cloud, and users can decide the scope within which their Zirks
