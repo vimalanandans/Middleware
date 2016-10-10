@@ -36,7 +36,8 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
     private ExecutorService sendMessageService;
     private final String groupName;
 
-    public JmqComms(@Nullable final ZMQReceiver.OnMessageReceivedListener onMessageReceivedListener, @Nullable final String groupName) {
+    public JmqComms(@Nullable final ZMQReceiver.OnMessageReceivedListener onMessageReceivedListener,
+                    @Nullable final String groupName) {
         this.groupName = groupName;
         nodeMap = new ConcurrentHashMap<>();
         // create the ZMQReceiver
@@ -97,13 +98,20 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
             }
             socket.connect("tcp:/" + sender + ":" + port);
             nodeMap.put(uuid, new Node(uuid, sender, port, socket));
-            logger.trace("Current Node id " + selfNode.getUuid().toString() + "::Peer with " + uuid + " added with port " + port);
+            if (logger.isTraceEnabled()) {
+                logger.trace("Current Node id {}::Peer with {} added with port {}",
+                        selfNode.getUuid().toString(), uuid, port);
+            }
         }
     }
 
 
     public boolean shout(final byte[] data) {
-        logger.trace("at node " + selfNode.getUuid() + " no of nodes " + nodeMap.values().size() + " for data " + Arrays.toString(data));
+        if (logger.isTraceEnabled()) {
+            logger.trace("at node {} no of nodes {} for data {}",
+                    selfNode.getUuid(), nodeMap.values().size(), Arrays.toString(data));
+        }
+
         for (Node node : nodeMap.values()) {
             logger.trace("at node " + selfNode.getUuid() + " whispering to " + node.getUuid() + " data " + Arrays.toString(data));
             whisper(node, data);
@@ -223,12 +231,16 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
             zbeacon.setUncaughtExceptionHandlers(new Thread.UncaughtExceptionHandler() {
                 @Override
                 public void uncaughtException(Thread t, Throwable e) {
-                    logger.warn("Unable to beacon. This generally happens due to loss of network connectivity. When network connectivity is resumed, existing nodes will still be able to communicate. Communication between existing & new nodes would require Bezirk to be restarted.");
+                    logger.warn("Unable to beacon. This generally happens due to loss of network connectivity. " +
+                            "When network connectivity is resumed, existing nodes can communicate again. " +
+                            "Communication between existing & new nodes would require Bezirk to be restarted.");
                 }
             }, new Thread.UncaughtExceptionHandler() {
                 @Override
                 public void uncaughtException(Thread t, Throwable e) {
-                    logger.warn("Unable to beacon. This generally happens due to loss of network connectivity. When network connectivity is resumed, existing nodes will still be able to communicate. Communication between existing & new nodes would require Bezirk to be restarted.");
+                    logger.warn("Unable to beacon. This generally happens due to loss of network connectivity. " +
+                            "When network connectivity is resumed, existing nodes will still be able to communicate. " +
+                            "Communication between existing & new nodes would require Bezirk to be restarted.");
                 }
             });
             zbeacon.setListener(new ZBeacon.Listener() {

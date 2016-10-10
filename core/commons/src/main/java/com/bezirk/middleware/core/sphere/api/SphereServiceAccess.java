@@ -59,5 +59,4 @@ public interface SphereServiceAccess {
      * @return Device Name if exists, null otherwise
      */
     String getDeviceNameFromSphere(String deviceId);
-
 }

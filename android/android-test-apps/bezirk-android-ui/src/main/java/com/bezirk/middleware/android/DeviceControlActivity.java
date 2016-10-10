@@ -46,26 +46,17 @@ public class DeviceControlActivity extends AppCompatActivity
          * TODO: read it from xml file
          *  */
         String appName = getString(R.string.app_name);
-        listData.add(new DataModel(R.drawable.upa_control, appName + " On / OFF", "Turn " + appName + " On / Off", true, true, false));
+        listData.add(new DataModel(R.drawable.upa_control, appName + " On / OFF",
+                "Turn " + appName + " On / Off", true, true, false));
 
-//        listData.add(new DataModel(R.drawable.ic_device_name, "Set Device Name", "Change the Device Name from : "
-//                + preferences.getString(preferences.DEVICE_NAME_TAG_PREFERENCE, "")
-//                , false, false, false));
-//
-//        listData.add(new DataModel(R.drawable.ic_action_device_type, "Set Device Type", "Change the Device Type from : "
-//                + preferences.getString(preferences.DEVICE_TYPE_TAG_PREFERENCE, "")
-//                , false, false, false));
-//        listData.add(new DataModel(R.drawable.ic_action_sphere_name, "Set Default sphere Name",
-//                "Change the Default sphere Name from : "
-//                        + preferences.getString(preferences.DEFAULT_SPHERE_NAME_TAG_PREFERENCE, "")
-//                , false, false, false));
-
-        listData.add(new DataModel(R.drawable.ic_delete_database, "Clear the Data", "Clear the Spheres, Zirk and Pipes internal data ", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_delete_database, "Clear the Data",
+                "Clear the Spheres, Zirk and Pipes internal data ", false, false, false));
 
         listData.add(new DataModel(R.drawable.ic_action_diag, "Diagnosis",
                 "Diagnosis of Bezirk. Communication test and zirk logs", false, false, false));
 
-        //request current status of development mode, update the list based on the asynchronous response in Broadcast Receiver
+        //request current status of development mode, update the list based on the asynchronous
+        // response in Broadcast Receiver
         deviceControlActivityHelper.getStatus();
 
         // set the list
@@ -148,7 +139,8 @@ public class DeviceControlActivity extends AppCompatActivity
 
     @Override
     public void onItemToggleListener(int position, boolean checkStatus) {
-        logger.info("toggle button pressed at: " + String.valueOf(position), " state : " + String.valueOf(checkStatus));
+        logger.info("toggle button pressed at: {}, state: {}", String.valueOf(position),
+                String.valueOf(checkStatus));
         Intent intent;
         String action;
         // we selecting based on image id hence list must have image id and it has to be unique
@@ -158,12 +150,14 @@ public class DeviceControlActivity extends AppCompatActivity
                 intent = new Intent(context, ComponentManager.class);
                 switch (dataModel.getImageId()) {
                     case R.drawable.upa_control: // Bezirk On/OFF
-                        action = checkStatus ? BezirkAction.ACTION_START_BEZIRK.getName() : BezirkAction.ACTION_STOP_BEZIRK.getName();
+                        action = checkStatus ? BezirkAction.ACTION_START_BEZIRK.getName() :
+                                BezirkAction.ACTION_STOP_BEZIRK.getName();
                         intent.setAction(action);
                         startService(intent);
                         break;
                     case R.drawable.ic_action_dev_mode: //dev mode on/off
-                        action = checkStatus ? BezirkAction.ACTION_DEV_MODE_ON.getName() : BezirkAction.ACTION_DEV_MODE_OFF.getName();
+                        action = checkStatus ? BezirkAction.ACTION_DEV_MODE_ON.getName() :
+                                BezirkAction.ACTION_DEV_MODE_OFF.getName();
                         intent.setAction(action);
                         startService(intent);
                         break;
@@ -186,12 +180,6 @@ public class DeviceControlActivity extends AppCompatActivity
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "Received Intent for Device control >" + intent.getAction());
             Log.d(TAG, "Command >" + intent.getStringExtra("Command"));
-
-//            if (intent.getStringExtra("Command").equalsIgnoreCase(ActionCommands.CMD_DEV_MODE_STATUS)) {
-//                deviceControlActivityHelper.updateList((DevMode.Mode) intent.getSerializableExtra("Mode"), listData);
-//            }
         }
     }
-
-
 }

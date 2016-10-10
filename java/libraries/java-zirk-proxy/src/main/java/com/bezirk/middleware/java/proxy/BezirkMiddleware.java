@@ -11,7 +11,8 @@ public abstract class BezirkMiddleware {
      * Initializes and starts the bezirk service.
      * <p>
      * Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}.
-     * {@link BezirkMiddleware} is started using default configurations {@link Config} unless configurations are supplied explicitly using {@link #initialize(Config)}.
+     * {@link BezirkMiddleware} is started using default configurations {@link Config} unless
+     * configurations are supplied explicitly using {@link #initialize(Config)}.
      * </p>
      *
      * @see #initialize(Config)
@@ -24,13 +25,15 @@ public abstract class BezirkMiddleware {
     /**
      * Initializes and starts the bezirk service.
      * <p>
-     * Service is started using the supplied <code>config</code>. Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}.
+     * Service is started using the supplied <code>config</code>. Once started, Zirk(s) can be
+     * registered using {@link BezirkMiddleware#registerZirk(String)}.
      * </p>
      *
      * @param config custom configurations to be used by bezirk service
      *               <ul>
      *               <li>If <code>null</code>, a default configuration is used</li>
-     *               <li>If not <code>null</code>, Bezirk service is created for the current application, even if an existing bezirk service(inside the Bezirk Application) is running in the device.</li>
+     *               <li>If not <code>null</code>, Bezirk service is created for the current application,
+     *               even if an existing bezirk service(inside the Bezirk Application) is running in the device.</li>
      *               </ul>
      * @see #stop()
      */
@@ -53,7 +56,8 @@ public abstract class BezirkMiddleware {
      */
     public static Bezirk registerZirk(@NotNull String zirkName) {
         if (!ProxyClient.isStarted()) {
-            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk service using BezirkMiddleware.initialize() or BezirkMiddleware.initialize(Config)");
+            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk service " +
+                    "using BezirkMiddleware.initialize() or BezirkMiddleware.initialize(Config)");
         }
         synchronized (BezirkMiddleware.class) {
             ProxyClient proxyClient = new ProxyClient();
@@ -72,7 +76,9 @@ public abstract class BezirkMiddleware {
      * @param groupName group name to avoid message collision
      * @return an instance of the Bezirk API for the newly registered Zirk, or <code>null</code> if
      * a Zirk with the name <code>zirkName</code> is already registered.
-     * @deprecated groupName is passed using the configuration object, i.e. {@link Config}. Set the groupName using {@link com.bezirk.middleware.core.proxy.Config.ConfigBuilder#setGroupName(String)}. Then, initialize the <code>BezirkMiddleware</code> using {@link #initialize(Config)}.
+     * @deprecated groupName is passed using the configuration object, i.e. {@link Config}. Set the
+     * groupName using {@link com.bezirk.middleware.core.proxy.Config.ConfigBuilder#setGroupName(String)}.
+     * Then, initialize the <code>BezirkMiddleware</code> using {@link #initialize(Config)}.
      */
     @Deprecated
     public static Bezirk registerZirk(String zirkName, String groupName) {
@@ -82,7 +88,8 @@ public abstract class BezirkMiddleware {
     /**
      * Stop the bezirk service.
      * <p>
-     * Once bezirk is stopped, Zirk(s) cannot register with the bezirk service and all communications between registered Zirks would stop.
+     * Once bezirk is stopped, Zirk(s) cannot register with the bezirk service and all communications
+     * between registered Zirks would stop.
      * </p>
      */
     public static synchronized void stop() {

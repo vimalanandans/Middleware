@@ -75,7 +75,8 @@ public interface SphereSecurity {
      * @param sphereId sphereId of the sphere for which input stream needs to be
      *                 decrypted
      *                 <pre>
-     *                 NOTE: This method does NOT flush or close either stream prior to returning - the caller must do so when they are finished with the streams. For example:
+     *                 NOTE: This method does NOT flush or close either stream prior to returning -
+     *                 the caller must do so when they are finished with the streams. For example:
      *                 {@code try {
      *                       InputStream in = ...
      *                       OutputStream out = ...

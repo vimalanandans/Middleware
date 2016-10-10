@@ -37,10 +37,12 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * This class implements the PubSubBrokerZirkServicer, PubSubBrokerServiceInfo Interfaces. This class is used by ProxyForServices (by casting PubSubBrokerZirkServicer)
+ * This class implements the PubSubBrokerZirkServicer, PubSubBrokerServiceInfo Interfaces. This class is
+ * used by ProxyForServices (by casting PubSubBrokerZirkServicer)
  * EventSender/ EventReceiver/ ControlSender/ ControlReceiver by casting PubSubBrokerServiceInfo.
  */
-public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServiceInfo, PubSubBrokerControlReceiver, PubSubEventReceiver, EventMsgReceiver {
+public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServiceInfo,
+        PubSubBrokerControlReceiver, PubSubEventReceiver, EventMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(PubSubBroker.class);
 
     public static final String SPHERE_NULL_NAME = "SPHERE_NONE";
@@ -58,8 +60,10 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     private final IdentityManager identityManager;
     private static final String id = UUID.randomUUID().toString();
 
-    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager, Comms comms, MessageHandler msgHandler, IdentityManager identityManager,
-                        SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity, Streaming streamManger, RemoteLog remoteLogging) {
+    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager,
+                        Comms comms, MessageHandler msgHandler, IdentityManager identityManager,
+                        SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity,
+                        Streaming streamManger, RemoteLog remoteLogging) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
         this.device = device;
         this.networkManager = networkManager;
@@ -455,7 +459,8 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
         if (eLedger.getHeader() instanceof MulticastHeader) {
             MulticastHeader mHeader = (MulticastHeader) eLedger.getHeader();
-            Location targetLocation = mHeader.getRecipientSelector() == null ? null : mHeader.getRecipientSelector().getLocation();
+            Location targetLocation = mHeader.getRecipientSelector() == null ? null :
+                    mHeader.getRecipientSelector().getLocation();
             zirkList = this.checkMulticastEvent(mHeader.getEventName(), targetLocation);
         } else {
             UnicastHeader uHeader = (UnicastHeader) eLedger.getHeader();
@@ -479,7 +484,8 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
                     eLedger.getHeader().getSphereId(), eLedger.getEncryptedMessage());
 
             if (!ValidatorUtility.checkForString(decryptedEventMsg)) {
-                logger.debug("Decryption Failed: sphereId-" + eLedger.getHeader().getSphereId() + " may not exist");
+                logger.debug("Decryption Failed: sphereId-{} may not exist",
+                        eLedger.getHeader().getSphereId());
                 return false;
             }
 

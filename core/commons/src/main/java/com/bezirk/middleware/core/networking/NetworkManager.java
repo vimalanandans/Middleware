@@ -27,7 +27,7 @@ public abstract class NetworkManager {
                 NetworkInterface networkInterface = en.nextElement();
                 for (Enumeration<InetAddress> enumIpAddr = networkInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() /*&& inetAddress.isSiteLocalAddress()*/) {
+                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
                         list.add(new InterfaceInetPair(networkInterface, inetAddress));
                     }
 
@@ -50,7 +50,8 @@ public abstract class NetworkManager {
                 if (intf.getDisplayName().equals(curIntf.getDisplayName())) {
                     for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                         InetAddress inetAddress = enumIpAddr.nextElement();
-                        if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
+                        if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() &&
+                                inetAddress.isSiteLocalAddress()) {
                             logger.debug("IP address determined: " + inetAddress.getHostAddress());
                             curInterface = intf;
                             return inetAddress;
@@ -72,7 +73,6 @@ public abstract class NetworkManager {
         for (Enumeration<InetAddress> enumIpAddr = curInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
             InetAddress inetAddress = enumIpAddr.nextElement();
             if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-                //logger.info("IP address determined: " + inetAddress.getHostAddress());
                 return inetAddress;
             }
         }
@@ -92,7 +92,6 @@ public abstract class NetworkManager {
                 for (Enumeration<InetAddress> enumIpAddr = networkInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-                        //                        Log.i(TAG,"MAC address determined: " + Hex.encodeToString(intf.getHardwareAddress()));
                         return networkInterface.getHardwareAddress();
                     }
 
