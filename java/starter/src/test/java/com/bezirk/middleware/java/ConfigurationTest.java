@@ -1,8 +1,6 @@
 package com.bezirk.middleware.java;
 
 
-import com.bezirk.middleware.java.componentManager.Configuration;
-
 import org.junit.Test;
 
 public class ConfigurationTest {

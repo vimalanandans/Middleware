@@ -1,7 +1,8 @@
-package com.bezirk.middleware.java.componentManager;
+package com.bezirk.middleware.java;
 
 import com.bezirk.middleware.core.comms.JmqCommsManager;
 import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
+import com.bezirk.middleware.core.datastorage.DataStorageException;
 import com.bezirk.middleware.core.datastorage.ProxyPersistence;
 import com.bezirk.middleware.core.datastorage.RegistryStorage;
 import com.bezirk.middleware.core.device.Device;
@@ -29,7 +30,7 @@ import java.util.prefs.Preferences;
 
 /**
  * This class manages Bezirk middleware component injection & lifecycle.
- * All top level components like PubSubBroker, Comms, ProxyServer, Data-storage etc are injected with their dependencies.
+ * All top level components like PubSubBroker, Comms, ProxyServer, Data-storage, etc are injected with their dependencies.
  * Circular dependency needs to be at its minimum to prevent injection problems. Going forward dependency injection using a DI framework like guice or dagger can be introduced.
  * To manage circular dependencies in the current code structure, init/setters might be needed.
  */
@@ -38,7 +39,6 @@ public class ComponentManager {
 
     private static final String ALIAS_KEY = "aliasName";
 
-    //private ZyreCommsManager comms;
     private JmqCommsManager comms;
     private RegistryStorage registryStorage;
     private ProxyServer proxyServer;
@@ -59,7 +59,7 @@ public class ComponentManager {
         create();
     }
 
-    public void create() {
+    public final void create() {
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         lifecyleObservable = new LifeCycleObservable();
 
@@ -69,7 +69,7 @@ public class ComponentManager {
         //initialize data-storage for storing detailed component information like maps, objects
         try {
             this.registryStorage = new RegistryStorage(new DatabaseConnectionForJava(DB_FILE_LOCATION), DB_VERSION);
-        } catch (Exception e) {
+        } catch (DataStorageException e) {
             logger.error("Failed to initialize registry storage", e);
         }
 
@@ -80,9 +80,6 @@ public class ComponentManager {
             logger.debug("Comms is enabled");
             //initialize network manager for handling network management and getting network addressing information
             networkManager = new JavaNetworkManager();
-
-            //initialize comms for communicating between devices over the wifi-network using zyre.
-            //comms = new ZyreCommsManager(networkManager, config.getGroupName(), null, null);
 
             // the Jmq comms
             comms = new JmqCommsManager(networkManager, config.getGroupName(), null, null);
@@ -105,7 +102,8 @@ public class ComponentManager {
         //initialize the identity manager
         initializeIdentityManager();
 
-        //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present) & dispatching messages to other zirks within the same device or another device
+        //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present)
+        //Dispatching messages to other zirks within the same device or another device
         final PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms, messageHandler, identityManager, null, null, streaming, remoteLog);
 
         //initialize proxyServer responsible for managing incoming events from zirks
@@ -130,20 +128,16 @@ public class ComponentManager {
 
             preferences.put(ALIAS_KEY, identityManager.getAliasString());
         } else {
-            if (logger.isDebugEnabled()) logger.debug("Reusing identity {}", aliasString);
+            logger.debug("Reusing identity {}", aliasString);
             identityManager.createAndSetIdentity(aliasString);
         }
-        //generate QR code containing the identity
-        //Application.launch(QRCodeGenerator.class, new Gson().toJson(identityManager.getAlias()));
     }
 
     public void start() {
-        //this.lifecyleObservable.setState(com.bezirk.middleware.core.componentManager.LifecycleManager.LifecycleState.STARTED);
         lifecyleObservable.transition(LifeCycleObservable.Transition.START);
     }
 
     public void stop() {
-        //this.lifecyleObservable.setState(com.bezirk.middleware.core.componentManager.LifecycleManager.LifecycleState.DESTROYED);
         lifecyleObservable.transition(LifeCycleObservable.Transition.STOP);
     }
 

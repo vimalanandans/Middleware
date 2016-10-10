@@ -1,4 +1,4 @@
-package com.bezirk.middleware.java.componentManager;
+package com.bezirk.middleware.java;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

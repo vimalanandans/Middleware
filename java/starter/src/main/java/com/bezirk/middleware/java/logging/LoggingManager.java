@@ -1,7 +1,7 @@
 package com.bezirk.middleware.java.logging;
 
 import com.bezirk.middleware.core.proxy.Config;
-import com.bezirk.middleware.java.componentManager.Configuration;
+import com.bezirk.middleware.java.Configuration;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;

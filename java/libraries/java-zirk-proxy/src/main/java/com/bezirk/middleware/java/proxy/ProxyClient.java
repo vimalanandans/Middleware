@@ -7,7 +7,7 @@ import com.bezirk.middleware.core.actions.SetLocationAction;
 import com.bezirk.middleware.core.actions.SubscriptionAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.proxy.Config;
-import com.bezirk.middleware.java.componentManager.ComponentManager;
+import com.bezirk.middleware.java.ComponentManager;
 import com.bezirk.middleware.core.datastorage.ProxyPersistence;
 import com.bezirk.middleware.core.datastorage.ProxyRegistry;
 import com.bezirk.middleware.Bezirk;
