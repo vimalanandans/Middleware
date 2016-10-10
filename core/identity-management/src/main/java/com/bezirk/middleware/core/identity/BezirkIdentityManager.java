@@ -65,8 +65,8 @@ public class BezirkIdentityManager implements com.bezirk.middleware.core.identit
         try {
             MessageDigest md = MessageDigest.getInstance(IDENTITY_HASH_ALGORITHM);
             aliasHash = md.digest(aliasBuffer.array());
-        } catch (NoSuchAlgorithmException nsae) {
-            logger.error("Identity hash algorithm does not exist", nsae);
+        } catch (NoSuchAlgorithmException e) {
+            logger.error("Identity hash algorithm does not exist", e);
             return null;
         }
 

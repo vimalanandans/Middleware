@@ -27,27 +27,31 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         String action = intent.getAction();
-        if (action.equals(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION)) {
-            SupplicantState supplicantState = intent.getParcelableExtra(WifiManager.EXTRA_NEW_STATE);
-            switch (supplicantState) {
-                case ASSOCIATING:
-                    Log.i("SupplicantState", "Trying to Associate with a New Network..");
-                    break;
-                case COMPLETED:
-                    Log.i("SupplicantState", "Connected");
-                    handleConnectedState(context, wifiInfo);
-                    break;
-                case DISCONNECTED:
-                    logger.debug("Wifi is in DISCONNECTED state!!!");
-                    break;
-                default:
+        switch (action) {
+            case WifiManager.SUPPLICANT_STATE_CHANGED_ACTION:
+                SupplicantState supplicantState = intent.getParcelableExtra(WifiManager.EXTRA_NEW_STATE);
+                switch (supplicantState) {
+                    case ASSOCIATING:
+                        Log.i("SupplicantState", "Trying to Associate with a New Network..");
+                        break;
+                    case COMPLETED:
+                        Log.i("SupplicantState", "Connected");
+                        handleConnectedState(context, wifiInfo);
+                        break;
+                    case DISCONNECTED:
+                        logger.debug("Wifi is in DISCONNECTED state!!!");
+                        break;
+                    default:
 
-            }
-        } else if (action.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
-            processWifiStateChange(intent);
+                }
+                break;
+            case WifiManager.WIFI_STATE_CHANGED_ACTION:
+                processWifiStateChange(intent);
 
-        } else {
-            Log.i("SupplicantState", "Unknown event");
+                break;
+            default:
+                Log.i("SupplicantState", "Unknown event");
+                break;
         }
     }
 

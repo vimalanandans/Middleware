@@ -34,7 +34,7 @@ public class ShareResponse extends UnicastControlMessage {
         // super method has to be the first line in a constructor.
         if (bezirkDeviceInfo == null || sphereExchangeDataString == null || sharerSphereId == null
                 || sender == null || recipient == null || shareCode == null || uniqueKey == null) {
-            throw new IllegalArgumentException("Paramters of the constructor have to be non-null");
+            throw new IllegalArgumentException("Parameters of the constructor have to be non-null");
         }
         this.bezirkDeviceInfo = bezirkDeviceInfo;
         this.sphereExchangeDataString = sphereExchangeDataString;

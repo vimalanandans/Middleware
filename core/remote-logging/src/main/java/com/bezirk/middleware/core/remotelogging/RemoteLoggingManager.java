@@ -145,7 +145,7 @@ public  class RemoteLoggingManager implements RemoteLog {
         return remoteLoggingClient.processLogInMessage(message);
     }
 
-    /** to recieve the logging request*/
+    /** to receive the logging request*/
     private class LogCtrlMessageReceiver implements CtrlMsgReceiver {
         private final RemoteLoggingManager loggingManager;
 
@@ -175,7 +175,7 @@ public  class RemoteLoggingManager implements RemoteLog {
     }
 
     /**
-     * Starts the Logging service to cature the log messages
+     * Starts the Logging service to capture the log messages
      */
     private boolean startRemoteLoggingService() {
         if (remoteLoggingServer == null ) {

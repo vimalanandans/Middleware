@@ -16,14 +16,14 @@ public class Node {
     private final int port;
     private final ZMQ.Socket socket;
 
-    public Node(@NotNull final int port) {
+    public Node(final int port) {
         this.uuid = UUID.randomUUID();
         this.port = port;
         this.inetAddress = null;
         this.socket = null;
     }
 
-    public Node(@NotNull final UUID uuid, @NotNull final InetAddress inetAddress, @NotNull final int port, final ZMQ.Socket socket) {
+    public Node(@NotNull final UUID uuid, @NotNull final InetAddress inetAddress, final int port, final ZMQ.Socket socket) {
         this.uuid = uuid;
         this.port = port;
         this.inetAddress = inetAddress;

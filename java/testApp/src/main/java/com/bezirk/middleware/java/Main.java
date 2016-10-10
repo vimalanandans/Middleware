@@ -21,14 +21,14 @@ public class Main {
         System.out.println("Select\n1. Publisher Zirk\n2. Subscriber Zirk\n3. Publisher and Subscriber together\n4. Exit");
         try {
             int n = reader.nextInt();
-            startAppication(n);
+            startApplication(n);
         } catch (InputMismatchException e) {
             logger.error("Invalid input entered", e);
         }
         reader.close();
     }
 
-    private static void startAppication(int option) {
+    private static void startApplication(int option) {
         switch (option) {
             case 1:
                 init();

@@ -48,7 +48,7 @@ public class PubSubBrokerRegistry implements Serializable {
      */
     private final Map<String, Set<ZirkId>> streamMap = new ConcurrentHashMap<>();
     /**
-     * Stores the location of the Zirkss.
+     * Stores the location of the Zirks.
      * [Key -&gt; Value] = [ZirkId -&gt; Location]
      */
     private final Map<ZirkId, Location> locationMap = new ConcurrentHashMap<>();

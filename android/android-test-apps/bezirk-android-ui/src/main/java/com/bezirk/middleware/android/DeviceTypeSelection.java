@@ -28,10 +28,10 @@ public class DeviceTypeSelection extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // reusing the device control for displaying the devce type.
+        // reusing the device control for displaying the device type.
         // TODO change the activity_device_control layout into generic naming
         setContentView(R.layout.activity_device_control);
-        
+
         AbsListView list;
 
         list = (AbsListView) findViewById(R.id.list);

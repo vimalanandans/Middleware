@@ -5,7 +5,6 @@ import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.Ledger;
 
 /**
- * Created by Vimal on 7/11/2016.
  * Interface for the remote logging feature to the middleware
  */
 public interface RemoteLog {

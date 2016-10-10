@@ -1,6 +1,7 @@
 package com.bezirk.middleware.android;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +35,9 @@ public class GenericListItemView extends ArrayAdapter<DataModel> {
         itemToggleListener = toggleListener;
     }
 
+    @NonNull
     @Override
-    public View getView(final int position, View view, ViewGroup parent) {
+    public View getView(final int position, View view, @NonNull ViewGroup parent) {
 
 
         LayoutInflater inflater = context.getLayoutInflater();

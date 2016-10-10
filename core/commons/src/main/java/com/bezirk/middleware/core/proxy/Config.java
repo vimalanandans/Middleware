@@ -27,7 +27,7 @@ public class Config implements Serializable {
         this(DEFAULT_GROUP_NAME, DEFAULT_APP_NAME, DEFAULT_LOG_LEVEL, null, COMMS_ENABLED, BEZIRK_SERVICE_ALIVE_ON_APPLICATION_SHUTDOWN);
     }
 
-    public Config(@NotNull final String groupName, @NotNull final String appName, @NotNull final Level logLevel, final Map<String, Level> packageLogLevelMap, @NotNull final boolean commsEnabled, @NotNull final boolean serviceAlive) {
+    public Config(@NotNull final String groupName, @NotNull final String appName, @NotNull final Level logLevel, final Map<String, Level> packageLogLevelMap, final boolean commsEnabled, final boolean serviceAlive) {
         this.groupName = groupName;
         this.appName = appName;
         this.logLevel = logLevel;
@@ -84,7 +84,7 @@ public class Config implements Serializable {
          *
          * @param state if <code>false</code>, disables communications and networking capabilities of bezirk<br>
          */
-        public ConfigBuilder setComms(@NotNull final boolean state) {
+        public ConfigBuilder setComms(final boolean state) {
             commsEnabled = state;
             return this;
         }
@@ -94,7 +94,7 @@ public class Config implements Serializable {
          *
          * @param alive if <code>true</code>, keeps the android service running even when the application is shutdown. In such cases, shutdown is handled explicitly by the application using <code>BezirkMiddleware.stop()</code>
          */
-        public ConfigBuilder setServiceAlive(@NotNull final boolean alive) {
+        public ConfigBuilder setServiceAlive(final boolean alive) {
             keepServiceAlive = alive;
             return this;
         }

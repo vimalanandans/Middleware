@@ -41,7 +41,7 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
         if (null == bezirkPersistenceDao) {
             bezirkPersistenceDao = getDao(PersistenceRegistry.class);
             bezirkPersistenceDao.setAutoCommit(true);
-            // the above is depreicated, enable the below and test it
+            // the above is deprecated, enable the below and test it
            //  bezirkPersistenceDao.setAutoCommit(/*get connection source*/,true);
         }
         return bezirkPersistenceDao;
