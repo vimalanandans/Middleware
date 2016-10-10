@@ -1,5 +1,7 @@
 package com.bezirk.middleware.core.comms;
 
+import com.bezirk.middleware.core.comms.processor.WireMessage;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -8,6 +10,7 @@ import org.zeromq.ZBeacon;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
 
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.Map;
@@ -86,7 +89,12 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
         } else {
             ZMQ.Socket socket = context.createSocket(ZMQ.DEALER);
             // Client identifies as same name as this node id, so that receiver identifies it
-            socket.setIdentity(selfNode.getUuid().toString().getBytes());
+            try {
+                socket.setIdentity(selfNode.getUuid().toString().getBytes(WireMessage.ENCODING));
+            } catch (UnsupportedEncodingException e) {
+                logger.error(e.getLocalizedMessage());
+                throw new AssertionError(e);
+            }
             socket.connect("tcp:/" + sender + ":" + port);
             nodeMap.put(uuid, new Node(uuid, sender, port, socket));
             logger.trace("Current Node id " + selfNode.getUuid().toString() + "::Peer with " + uuid + " added with port " + port);
@@ -160,7 +168,7 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
         private static final String SEPARATOR = "::";
         private static final String beaconHost = "255.255.255.255";
         private static final int beaconPort = 5670;
-        private String beaconData;
+        private byte[] beaconDataArr;
         private ZBeacon zbeacon;
         private String groupName;
 
@@ -170,7 +178,13 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
         }
 
         private void processBeacon(final InetAddress sender, final byte[] beacon) {
-            String beaconString = new String(beacon);
+            String beaconString = null;
+            try {
+                beaconString = new String(beacon, WireMessage.ENCODING);
+            } catch (UnsupportedEncodingException e) {
+                logger.error(e.getLocalizedMessage());
+                throw new AssertionError(e);
+            }
             String[] data;
             try {
                 data = beaconString.split(SEPARATOR);
@@ -193,13 +207,19 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
         }
 
         public void start() {
-            beaconData = groupName + SEPARATOR + selfNode.getUuid().getLeastSignificantBits() +
+            final String beaconData = groupName + SEPARATOR + selfNode.getUuid().getLeastSignificantBits() +
                     SEPARATOR + selfNode.getUuid().getMostSignificantBits() +
                     SEPARATOR + String.valueOf(selfNode.getPort());
+            try {
+                beaconDataArr = beaconData.getBytes(WireMessage.ENCODING);
+                zbeacon = new ZBeacon(beaconHost, beaconPort, beaconDataArr, false);
+                zbeacon.setPrefix(groupName.getBytes(WireMessage.ENCODING));
+                //this ensures only beacon with this prefix is processed
+            } catch (UnsupportedEncodingException e) {
+                logger.error(e.getLocalizedMessage());
+                throw new AssertionError(e);
+            }
 
-            //this ensures only beacon with this prefix is processed
-            zbeacon = new ZBeacon(beaconHost, beaconPort, beaconData.getBytes(), false);
-            zbeacon.setPrefix(groupName.getBytes());
             zbeacon.setUncaughtExceptionHandlers(new Thread.UncaughtExceptionHandler() {
                 @Override
                 public void uncaughtException(Thread t, Throwable e) {
@@ -215,7 +235,8 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
                 @Override
                 public void onBeacon(InetAddress sender, byte[] beacon) {
                     // ignore self id
-                    if (!Arrays.equals(beacon, beaconData.getBytes())) {
+
+                    if (!Arrays.equals(beacon, beaconDataArr)) {
                         processBeacon(sender, beacon);
                     } else {
                         if (logger.isTraceEnabled())

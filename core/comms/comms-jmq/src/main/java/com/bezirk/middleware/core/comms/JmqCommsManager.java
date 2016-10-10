@@ -1,6 +1,7 @@
 package com.bezirk.middleware.core.comms;
 
 import com.bezirk.middleware.core.comms.processor.CommsProcessor;
+import com.bezirk.middleware.core.comms.processor.WireMessage;
 import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
 import com.bezirk.middleware.core.networking.NetworkManager;
 import com.bezirk.middleware.core.streaming.Streaming;
@@ -8,6 +9,7 @@ import com.bezirk.middleware.core.streaming.Streaming;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Observable;
 
 public class JmqCommsManager extends CommsProcessor implements ZMQReceiver.OnMessageReceivedListener {
@@ -59,7 +61,12 @@ public class JmqCommsManager extends CommsProcessor implements ZMQReceiver.OnMes
 
     @Override
     public boolean processIncomingMessage(String nodeId, byte[] data) {
-        processWireMessage(nodeId, new String(data));
+        try {
+            processWireMessage(nodeId, new String(data, WireMessage.ENCODING));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage());
+            throw new AssertionError(e);
+        }
         return true;
     }
 

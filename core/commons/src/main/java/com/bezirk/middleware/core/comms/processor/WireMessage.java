@@ -25,6 +25,7 @@ public class WireMessage implements Serializable {
     private static final String MSG_VER_STRING = "\"msgVer\":\"";
     /// if the parser type is json, to check the message version VERSION STRING
     private static final String MSG_VER = MSG_VER_STRING + BezirkVersion.getWireVersion() + "\"";
+    public static final String ENCODING = "UTF-8";
 
     //private String msgVer = BezirkVersion.BEZIRK_VERSION;
     // increment the wire message version in bezirk version. when there is a change in message format
@@ -56,16 +57,10 @@ public class WireMessage implements Serializable {
         int start = msg.indexOf(MSG_VER_STRING) + MSG_VER_STRING.length();
 
         if (start > MSG_VER_STRING.length()) {
-
             int end = msg.substring(start).indexOf("\"");
-
             if (start + end < msg.length())
-
-                // logger.info("start > " + start + " end > "+end);
                 version = msg.substring(start, start + end);
-            //logger.info("version > " + version);
         }
-
         return version;
     }
 
@@ -75,21 +70,29 @@ public class WireMessage implements Serializable {
         try {
             byte[] buffer = new byte[8192];
             int len;
-            while ((len = in.read(buffer)) > 0)
+            while ((len = in.read(buffer)) > 0) {
                 baos.write(buffer, 0, len);
-            return new String(baos.toByteArray(), "UTF-8");
+            }
+            return new String(baos.toByteArray(), ENCODING);
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage());
+            throw new AssertionError(e);
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage());
             throw new AssertionError(e);
         }
     }
 
-    //fromJson data
     public static WireMessage deserialize(byte[] data) {
 
         WireMessage wireMessage = null;
-        String json = new String(data);
-        //String json = new String(decompress(data));
+        String json = null;
+        try {
+            json = new String(data, ENCODING);
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage());
+            throw new AssertionError(e);
+        }
         Gson gson = new Gson();
         try {
             wireMessage = gson.fromJson(json, WireMessage.class);
@@ -101,7 +104,7 @@ public class WireMessage implements Serializable {
 
     public static WireMessage deserialize(String data) throws UnsupportedEncodingException {
         WireMessage wireMessage = null;
-        final String json = decompress(data.getBytes("UTF-8"));
+        final String json = decompress(data.getBytes(ENCODING));
         final Gson gson = new Gson();
 
         try {
@@ -192,7 +195,12 @@ public class WireMessage implements Serializable {
     // wire format is serialized
     public byte[] serialize() {
         Gson gson = new Gson();
-        return gson.toJson(this).getBytes();
+        try {
+            return gson.toJson(this).getBytes(ENCODING);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
         // send the compressed string
         //return compress (gson.toJson(this));
     }

@@ -7,6 +7,7 @@ import com.bezirk.middleware.core.actions.SendMulticastEventAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
+import com.bezirk.middleware.core.comms.processor.WireMessage;
 import com.bezirk.middleware.core.control.messages.EventLedger;
 import com.bezirk.middleware.core.control.messages.GenerateMsgId;
 import com.bezirk.middleware.core.control.messages.MulticastHeader;
@@ -487,9 +488,10 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
                 decryptedEventMsg = eLedger.getSerializedMessage();
             else {
                 try {
-                    decryptedEventMsg = new String(eLedger.getEncryptedMessage(), "UTF-8");
+                    decryptedEventMsg = new String(eLedger.getEncryptedMessage(), WireMessage.ENCODING);
                 } catch (UnsupportedEncodingException e) {
-                    throw (AssertionError) new AssertionError("UTF-8 is not supported", e);
+                    logger.error(e.getLocalizedMessage());
+                    throw new AssertionError(e);
                 }
             }
         }
