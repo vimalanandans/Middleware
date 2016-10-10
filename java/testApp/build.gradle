@@ -3,9 +3,6 @@ apply plugin: 'application'
 mainClassName = "com.bezirk.middleware.java.Main"
 
 dependencies {
-    compile project(':core:bezirk-middleware-api')
-    compile project(':core:bezirk')
-    //compile project(':core:commons')
     compile project(':java:libraries:java-zirk-proxy')
     compile project(':core:testapp-core')
 
