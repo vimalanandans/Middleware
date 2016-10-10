@@ -16,30 +16,27 @@ To build and run the Java SE test app (convenient for quick sanity checks): `./g
 
 ## Vision
 
-The more compelling subsets of the Internet of Things dream involve cooperation across devices. With
-cooperation between devices, we can achieve dreams more complex than are currently possible.
+The more compelling aspects of the Internet of Things dream involve cooperation between devices. With
+this cooperation, we can achieve dreams more complex than are currently possible.
 Cooperation can enable a world where we offload our mundane tasks to our Things, with outcomes
 customized to our needs and desires. Cooperation can also optimize business and industrial processes
 using accurate and timely data. These dreams need an ecosystem where devices seamlessly interoperate
 and are easy for the right (and only the right) entities to access.
 
-In practice, devices are diverse in their manufacturers, forms, functions, and use cases. Yet, the
-Internet of Things is full of buggy, poorly documented APIs that do not work together. How do we
-fulfill the IoT dream if the basic building blocks are clumsy and difficult to work with?
+In practice, devices are diverse in their manufacturers, forms, functions, and use cases, and they often have poorly documented APIs that do not work together. How do we fulfill the IoT dream if the basic building blocks are clumsy and difficult to work with?
 
 The Bezirk ecosystem aims to solve these problems. The middleware in this repository forms its heart.
-The Bezirk middleware implements cloudless and brokerless publish and subscribe in Java. It also
+The Bezirk middleware implements cloudless and brokerless publish-and-subscribe in Java. It also
 includes basic security and identity management building blocks. Together, these components enable
-secure, seamless interoperability. The ecosystem includes components that use the described features
-to bootstrap interoperability:
+secure, seamless interoperability. The ecosystem includes the following components to bootstrap interoperability:
 
-- _Zirks_ plug into the middleware to control hardware and/or provide services within the Bezirk
+- _Zirks_ use the middleware to communicate with hardware or other computing devices within the Bezirk
 ecosystem
- - [Adapter Zirks](https://github.com/Bezirk-Bosch/AdapterZirks) implement support for specific
- hardware (e.g. Hue lights)
 - _Events_ are the unit of communication between Zirks
- - [Hardware events](https://github.com/Bezirk-Bosch/HardwareEvents) provide a uniform interface for
- beacons, environmental sensors, lights, and other hardware types
+ - [Adapter Zirks](https://github.com/Bezirk-Bosch/AdapterZirks) are wrappers that enable existing
+ hardware (e.g., Philips Hue lights) to be controlled using Bezirk events.  
+ - [Hardware events](https://github.com/Bezirk-Bosch/HardwareEvents) provide a uniform interface for accessing IoT devices, including
+ beacons, environmental sensors, lights, and others.
 
 ## Example
 
@@ -98,12 +95,12 @@ groceries were smart enough to ensure unbroken
 stop light timings based on current traffic? What if your doctor could tell what is going on every
 time your blood pressure is too high? All of this can be built on top of the Bezirk middleware.
 
-Some of this might sound kind of creepy. Are you comfortable having every action you take observed
-to build profiles? This is yet another problem we have to solve to realize compelling IoT dreams. The
+You might be thinking to yourself: "What about privacy concerns? I'm not sure I'm comfortable having every action I take observed
+to build profiles." This is yet another problem related to compelling IoT visions that we're trying to solve. The
 Bezirk middleware aims to be privacy-respecting in the sense that it puts the user in
 control of their own data, while taking care of the nitty-gritty security details automatically.
-There is no requirement to use the cloud and the user can decide the scope within which their Zirks
-can communicate. While parts of this vision are not implemented yet, we aim
+We don't force users' data to go through the cloud, and users can decide the scope within which their Zirks
+can communicate. As a result, all of the users' information remains completely in their control. While parts of this vision are not implemented yet, we aim
 to make it as easy on the user as possible. We firmly believe that people should not have to possess
 expert-level security awareness to use the IoT safely, securely, and privately.
 
