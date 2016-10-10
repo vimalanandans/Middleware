@@ -55,7 +55,7 @@ public abstract class Message implements Serializable {
      *
      * @param gsonBuilder gson builder with registered adapter
      */
-    public static void setGsonBuilder(GsonBuilder gsonBuilder) {
+    public static synchronized void setGsonBuilder(GsonBuilder gsonBuilder) {
         gsonBuilder.registerTypeAdapter(Message.class,
                 new InterfaceAdapter<Message>());
         gson = gsonBuilder.create();
