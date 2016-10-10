@@ -23,6 +23,7 @@ import com.bezirk.middleware.core.actions.StopServiceAction;
 import com.bezirk.middleware.core.comms.JmqCommsManager;
 import com.bezirk.middleware.core.componentManager.LifeCycleCallbacks;
 import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
+import com.bezirk.middleware.core.datastorage.DataStorageException;
 import com.bezirk.middleware.core.datastorage.RegistryStorage;
 import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.core.identity.BezirkIdentityManager;
@@ -161,8 +162,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         //initialize data-storage for storing detailed component information like maps, objects
         try {
             registryStorage = new RegistryStorage(new DatabaseConnectionForAndroid(this), DB_VERSION);
-        } catch (Exception e1) {
-            logger.debug(e1.getMessage(), e1);
+        } catch (DataStorageException e) {
+            logger.error("Failed to initialize registry storage", e);
         }
 
         //android device for getting information like deviceId, deviceName, etc

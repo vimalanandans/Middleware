@@ -25,9 +25,6 @@ public abstract class Message implements Serializable {
     private static Gson gson;
     private String msgId;
 
-
-    //private static final long serialVersionUID = 1L;
-
     static {
         final GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Message.class,

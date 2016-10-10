@@ -71,7 +71,7 @@ public class PubSubBrokerRegistry implements Serializable {
         return result;
     }
 
-    private int checkNullAndComputeHashCode(final int prime, int result, Object object) {
+    private static int checkNullAndComputeHashCode(final int prime, int result, Object object) {
         return prime * result + ((object == null) ? 0 : object.hashCode());
     }
 
@@ -102,17 +102,16 @@ public class PubSubBrokerRegistry implements Serializable {
 
                 Object currentValue = field.get(this);
                 Object otherValue = field.get(other);
-                if (currentValue == null) {
-                    if (otherValue != null) {
-                        return false;
-                    }
+                if (currentValue == null && otherValue != null) {
+                    return false;
                 } else if (!currentValue.equals(otherValue)) {
                     return false;
                 }
-            } catch (Exception e) {
-
-                logger.error("Unable to retrieve maps from pubSubBrokerRegistry for checking.", e);
-
+            } catch (NoSuchFieldException ne) {
+                logger.error("NoSuchFieldException in PubSubBrokerRegistry", ne);
+                return false;
+            } catch (IllegalAccessException e) {
+                logger.error("IllegalAccessException in PubSubBrokerRegistry", e);
                 return false;
             }
         }
@@ -364,9 +363,6 @@ public class PubSubBrokerRegistry implements Serializable {
                 if (zirkLocation != null && location.subsumes(zirkLocation)) {
                     zirks.add(zirkId);
                 }
-            }
-            if (zirks.isEmpty()) {
-                return null;
             }
         }
         return zirks;
