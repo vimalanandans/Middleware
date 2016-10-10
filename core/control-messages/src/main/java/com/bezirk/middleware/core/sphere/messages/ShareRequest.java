@@ -45,7 +45,7 @@ public class ShareRequest extends MulticastControlMessage {
         // null checks for sender and shortCode added here because call to the
         // super method has to be the first line in a constructor.
         if (shortCode == null || bezirkDeviceInfo == null || sender == null || sharerSphereId == null) {
-            throw new IllegalArgumentException("Paramters of the constructor have to be non-null");
+            throw new IllegalArgumentException("Paramesters of the constructor have to be non-null");
         }
         this.bezirkDeviceInfo = bezirkDeviceInfo;
         this.sharerSphereId = sharerSphereId;

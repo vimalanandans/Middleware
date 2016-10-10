@@ -101,15 +101,15 @@ public final class ProxyClient implements Bezirk {
     public void unregisterZirk() {
         Log.d(TAG, "Unregister request for zirkID: " + zirkId.getZirkId());
 
-        SharedPreferences shrdPref = PreferenceManager.getDefaultSharedPreferences(context);
-        Map<String, ?> keys = shrdPref.getAll();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Map<String, ?> keys = sharedPreferences.getAll();
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
             if (entry.getValue().toString().equalsIgnoreCase(zirkId.getZirkId())) {
                 Log.d(TAG, "Unregistering zirk: " + entry.getKey());
-                SharedPreferences.Editor editor = shrdPref.edit();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.remove(entry.getKey());
                 editor.apply();
-                //TODO add unsubscription code for subsriptions of a zirk
+                //TODO add unsubscription code for subscriptions of a zirk
                 //unsubscribe(null);
                 break;
             }

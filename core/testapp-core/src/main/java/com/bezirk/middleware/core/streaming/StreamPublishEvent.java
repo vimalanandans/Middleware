@@ -2,7 +2,7 @@ package com.bezirk.middleware.core.streaming;
 
 import com.bezirk.middleware.messages.Event;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class StreamPublishEvent extends Event{
 
@@ -10,7 +10,7 @@ public class StreamPublishEvent extends Event{
     private String subscriberId;
 
     public StreamPublishEvent(String subscriberId){
-        Random rand = new Random();
+        SecureRandom rand = new SecureRandom();
         this.subscriberId = subscriberId + "-" + (rand.nextInt(50) + 1);
     }
 

@@ -165,8 +165,8 @@ public class RemoteLogDetailsGUI extends JFrame {
         final int returnValue = JOptionPane.showConfirmDialog(null,
                 "Are you sure you want to exit Logging?\n All the logged data will be lost!",
                 "Confirm Exit",
-                JOptionPane.OK_OPTION);
-        if (returnValue == JOptionPane.OK_OPTION) {
+                JOptionPane.YES_NO_OPTION);
+        if (returnValue == JOptionPane.YES_OPTION) {
             sphereSelectFrame.setVisible(true);
             currentFrame.dispose();
             shutLoggingGUI();

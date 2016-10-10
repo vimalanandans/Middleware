@@ -16,7 +16,7 @@ public class ClientIdentityManagerAdapter implements IdentityManager {
     private static final Gson gson = new Gson();
 
     private static RemoteIdentityManager remoteIdentityManager;
-    static ServiceConnection remoteConnection = new ServiceConnection() {
+    protected static ServiceConnection remoteConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             remoteIdentityManager = RemoteIdentityManager.Stub.asInterface(service);
         }

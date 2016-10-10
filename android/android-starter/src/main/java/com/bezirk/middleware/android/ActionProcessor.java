@@ -28,7 +28,7 @@ public final class ActionProcessor {
         BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
 
         if (ValidatorUtility.isObjectNotNull(intentAction)) {
-            logger.debug("intentAction is not null in Actionprocessor");
+            logger.debug("intentAction is not null in ActionProcessor");
             if (logger.isDebugEnabled())
                 logger.debug("Received intent, action: {}", intentAction.getName());
 
@@ -77,7 +77,7 @@ public final class ActionProcessor {
                 logger.debug("Not handling Reboot");
                 break;
             case ACTION_CLEAR_PERSISTENCE:
-                logger.debug("Not handling clear persistance");
+                logger.debug("Not handling clear persistence");
                 break;
             default:
                 if (logger.isWarnEnabled())

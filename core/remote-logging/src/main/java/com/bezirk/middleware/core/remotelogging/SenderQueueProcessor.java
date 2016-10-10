@@ -71,7 +71,7 @@ public class SenderQueueProcessor implements Runnable {
                     }
                 }
             } catch (InterruptedException e) {
-                logger.error("Remote logginer sender queue interrupted", e);
+                logger.error("Remote logger sender queue interrupted", e);
                 isRunning = false;
                 Thread.currentThread().interrupt();
             }

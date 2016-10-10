@@ -8,7 +8,7 @@ import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
  */
 public final class GenerateMsgId {
 
-    private static final String KEY_SEPERATOR = ":";
+    private static final String KEY_SEPARATOR = ":";
     private static int evtId = 0;
     private static int ctrlId = 0;
 
@@ -26,7 +26,7 @@ public final class GenerateMsgId {
         if (1024 == evtId) {
             evtId = 0;
         }
-        return (++evtId + KEY_SEPERATOR + sep.device + KEY_SEPERATOR + sep.zirkId.getZirkId());
+        return (++evtId + KEY_SEPARATOR + sep.device + KEY_SEPARATOR + sep.zirkId.getZirkId());
     }
 
     /**

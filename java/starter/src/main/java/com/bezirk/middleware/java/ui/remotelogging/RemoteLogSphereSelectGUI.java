@@ -69,7 +69,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
     private final JButton listSphereBtn = new JButton(),
             startLoggingBtn = new JButton(), moveRightBtn = new JButton(),
             moveLeftBtn = new JButton();
-    private final JCheckBox bezirkDeveloperChck = new JCheckBox();
+    private final JCheckBox bezirkDeveloperCheckBox = new JCheckBox();
     private final JFrame thisFrame;
     private final transient ListSelectionListener leftSphereSelectionListListener = new ListSelectionListener() {
         @Override
@@ -255,9 +255,9 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
         selectedSphereLbl.setText("Selected Spheres");
         selectedSphereLbl.setBounds(new Rectangle(360, 85, 235, 20));
 
-        bezirkDeveloperChck.setText("Enable Bezirk Developer Option");
-        bezirkDeveloperChck.setBounds(new Rectangle(25, 60, 325, 25));
-        bezirkDeveloperChck.addItemListener(developerModeListener);
+        bezirkDeveloperCheckBox.setText("Enable Bezirk Developer Option");
+        bezirkDeveloperCheckBox.setBounds(new Rectangle(25, 60, 325, 25));
+        bezirkDeveloperCheckBox.addItemListener(developerModeListener);
 
         menuBar.add(menuSettings);
         menuBar.add(menuAboutUs);
@@ -277,7 +277,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
         framePanel.add(moveRightBtn, null);
         framePanel.add(startLoggingBtn, null);
         framePanel.add(listSphereBtn, null);
-        framePanel.add(bezirkDeveloperChck, null);
+        framePanel.add(bezirkDeveloperCheckBox, null);
         framePanel.add(selectedSphereLbl, null);
 
         framePanel.add(selectSphereLbl, null);

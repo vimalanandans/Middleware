@@ -39,7 +39,7 @@ public class RemoteLoggingClient {
     }
 
     /**
-     * cehck the client is already running
+     * check the client is already running
      */
     public boolean isRunning() {
         return senderQueueProcessor != null;

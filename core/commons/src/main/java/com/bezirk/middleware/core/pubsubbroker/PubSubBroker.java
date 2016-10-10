@@ -124,7 +124,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
                 logger.info("Zirk Registration Complete for: {}, {}", zirkName, zirkId);
             } else {
                 // unregister the PubSubBroker due to failure in sphere
-                logger.error("sphere Registration Failed. unregistring PubSubBroker");
+                logger.error("sphere Registration Failed. unregistering PubSubBroker");
                 unregisterZirk(zirkId);
             }
         }
