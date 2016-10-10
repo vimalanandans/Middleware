@@ -1,5 +1,7 @@
 package com.bezirk.middleware.core.comms;
 
+import com.bezirk.middleware.core.comms.processor.WireMessage;
+
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +10,8 @@ import org.zeromq.ZFrame;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 import org.zeromq.ZMsg;
+
+import java.io.UnsupportedEncodingException;
 
 
 class ZMQReceiver implements Runnable {
@@ -109,9 +113,17 @@ class ZMQReceiver implements Runnable {
                                 Thread.currentThread().getName(), address, content);
                     }
 
+                    final String nodeId;
+                    try {
+                        nodeId = new String(address.getData(), WireMessage.ENCODING);
+                    } catch (UnsupportedEncodingException e) {
+                        logger.error(e.getLocalizedMessage());
+                        throw new AssertionError(e);
+                    }
+
                     if (onMessageReceivedListener != null) {
                         onMessageReceivedListener.processIncomingMessage(
-                                new String(address.getData()), content.getData());
+                                nodeId, content.getData());
                     }
                 } catch (ZMQException e) {
                     logger.debug("ZMQException in ReceiverWorker", e);

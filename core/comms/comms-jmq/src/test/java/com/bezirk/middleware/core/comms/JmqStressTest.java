@@ -1,8 +1,12 @@
 package com.bezirk.middleware.core.comms;
 
+import com.bezirk.middleware.core.comms.processor.WireMessage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -79,8 +83,12 @@ public class JmqStressTest {
             @Override
             public synchronized boolean processIncomingMessage(String nodeId, byte[] data) {
                 try {
-                    currentMsgData = Integer.parseInt(new String(data));
-                } catch (NumberFormatException e) {
+                    currentMsgData = Integer.parseInt(new String(data, WireMessage.ENCODING));
+                }catch (UnsupportedEncodingException uee){
+                    logger.error(uee.getLocalizedMessage());
+                    throw new AssertionError(uee);
+                }
+                catch (NumberFormatException e) {
                     logger.debug("Other messages being received");
                 }
                 logger.trace(atNodeText + FROM_NODE_TEXT + nodeId + DATA_RECEIVED_TEXT + currentMsgData);

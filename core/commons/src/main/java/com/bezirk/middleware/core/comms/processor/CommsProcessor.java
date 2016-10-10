@@ -575,7 +575,8 @@ public abstract class CommsProcessor implements Comms, Observer {
             try {
                 wireMessage = WireMessage.deserialize(msg.getBytes(WireMessage.ENCODING));
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                logger.error(e.getLocalizedMessage());
+                throw new AssertionError(e);
             }
             if (wireMessage == null) {
                 logger.error(" deserialization failed >> " + msg);

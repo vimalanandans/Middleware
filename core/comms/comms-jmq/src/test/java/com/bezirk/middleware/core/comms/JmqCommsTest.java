@@ -1,7 +1,10 @@
 package com.bezirk.middleware.core.comms;
 
+import com.bezirk.middleware.core.comms.processor.WireMessage;
+
 import org.junit.Test;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -71,7 +74,13 @@ public class JmqCommsTest {
         ZMQReceiver.OnMessageReceivedListener onMessageReceivedListener = new ZMQReceiver.OnMessageReceivedListener() {
             @Override
             public synchronized boolean processIncomingMessage(String nodeId, byte[] data) {
-                String dataString = new String(data);
+                String dataString = null;
+                try {
+                    dataString = new String(data, WireMessage.ENCODING);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
                 if (threadName.equalsIgnoreCase(THREAD_NAME_1)) {
                     if (dataString.contains(THREAD_NAME_2)) {
                         recvMulticastMessages++;

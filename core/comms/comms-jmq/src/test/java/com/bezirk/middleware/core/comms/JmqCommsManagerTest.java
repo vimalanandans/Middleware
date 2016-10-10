@@ -28,9 +28,10 @@ public class JmqCommsManagerTest {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            assertTrue(commsManager.sendToAll("a".getBytes(), true));
+            final byte[] bytes = {1};
+            assertTrue(commsManager.sendToAll(bytes, true));
             lifeCycleObservable.transition(LifeCycleObservable.Transition.STOP);
-            assertFalse(commsManager.sendToAll("a".getBytes(), true));
+            assertFalse(commsManager.sendToAll(bytes, true));
         }
     }
 }

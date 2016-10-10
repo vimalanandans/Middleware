@@ -1,11 +1,14 @@
 package com.bezirk.middleware.core.comms;
 
+import com.bezirk.middleware.core.comms.processor.WireMessage;
+
 import org.junit.Test;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
 public class ZMQReceiverTest {
@@ -20,8 +23,9 @@ public class ZMQReceiverTest {
 
         //receiver binds to random ports starting 49152. zeromq chooses the first available. This test assumes 49152 port is available
         socket.connect("tcp://*:49152");
+        final byte[] bytes = {1};
         for (int i = 0; i < 5000; i++) {
-            socket.send("test message".getBytes());
+            socket.send(bytes);
         }
 
         //wait for messages to be received
