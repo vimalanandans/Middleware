@@ -1,11 +1,7 @@
 apply plugin: 'java'
 dependencies {
-    compile project(':core:bezirk-middleware-api')
-    compile project(':core:bezirk')
-    compile project(':core:control-messages')
     compile project(':core:commons')
     compile project(':core:identity-management')
-    //compile project(':core:sphere')
     compile project(':core:data-storage')
     compile project(':core:streaming')
     compile project(':core:remote-logging')
