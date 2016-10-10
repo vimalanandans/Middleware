@@ -55,7 +55,7 @@ public class ProxyClient implements Bezirk {
 
     private ZirkId zirkId;
 
-    static void start(@NotNull final Config config) {
+    static synchronized void start(@NotNull final Config config) {
         if (componentManager == null) {
             componentManager = new ComponentManager(bezirkPcCallback, config);
             componentManager.start();
@@ -71,13 +71,13 @@ public class ProxyClient implements Bezirk {
         }
     }
 
-    static void stop() {
+    static synchronized void stop() {
         if (started) {
             componentManager.stop();
         }
     }
 
-    static boolean isStarted() {
+    static synchronized boolean isStarted() {
         return started;
     }
 
@@ -95,7 +95,7 @@ public class ProxyClient implements Bezirk {
             }
         }
 
-        if (logger.isTraceEnabled()) logger.trace("Zirk-Id: {}", zirkIdAsString);
+        logger.trace("Zirk-Id: {}", zirkIdAsString);
 
         zirkId = new ZirkId(zirkIdAsString);
         proxy.registerZirk(new RegisterZirkAction(zirkId, zirkName));
@@ -201,25 +201,24 @@ public class ProxyClient implements Bezirk {
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
         proxy.sendEvent(new SendMulticastEventAction(zirkId, recipient, event,
-                (event instanceof IdentifiedEvent)));
+                event instanceof IdentifiedEvent));
     }
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
         proxy.sendEvent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
-                zirkId, recipient, event, (event instanceof IdentifiedEvent)));
+                zirkId, recipient, event, event instanceof IdentifiedEvent));
     }
 
     @Override
     public void sendStream(ZirkEndPoint recipient,
                            StreamDescriptor streamDescriptor, PipedOutputStream dataStream) {
-        throw new UnsupportedOperationException("Calling sendStream with a PipedOutputStream is current unimplemented.");
+        throw new UnsupportedOperationException("Currently unimplemented.");
     }
 
     @Override
     public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor) {
-        short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
-        //proxy.sendStream(new SendFileStreamAction(zirkId, recipient, streamDescriptor,streamId));
+        throw new UnsupportedOperationException("Currently unimplemented.");
     }
 
     @Override
