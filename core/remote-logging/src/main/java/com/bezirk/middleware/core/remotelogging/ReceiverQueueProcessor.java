@@ -56,27 +56,25 @@ public class ReceiverQueueProcessor implements Runnable {
         try {
             while (isRunning) {
                 // read the blocked queue to fetch the incoming message
-                StringBuilder logMsgString = getLogIncomingMessage();
+                final StringBuilder logMsgString = getLogIncomingMessage();
 
-                try {
-                    RemoteLoggingMessage logMsg = gson.fromJson(logMsgString.toString(), RemoteLoggingMessage.class);
-                    if (Util.LOGGING_VERSION.equals(logMsg.version)) {
-                        platformSpecificLogger.handleLogMessage(logMsg);
+                RemoteLoggingMessage logMsg = gson.fromJson(logMsgString.toString(), RemoteLoggingMessage.class);
+                if (Util.LOGGING_VERSION.equals(logMsg.version)) {
+                    platformSpecificLogger.handleLogMessage(logMsg);
 
-                        // log into file
-                        if (fileLogger != null)
-                            fileLogger.handleLogMessage(logMsg);
+                    // log into file
+                    if (fileLogger != null)
+                        fileLogger.handleLogMessage(logMsg);
 
-                    } else {
-                        logger.error("LOGGING VERSION MISMATCH!!" + "Received LOG MSG VERSION = " + logMsg.version +
-                                " CURRENT LOGGING VERSION: " + Util.LOGGING_VERSION);
-                    }
-                } catch (Exception e) {
-                    logger.error("Some error occurred in ReceiverQueueProcessor \n", e);
+                } else {
+                    logger.error("LOGGING VERSION MISMATCH!!" + "Received LOG MSG VERSION = " + logMsg.version +
+                            " CURRENT LOGGING VERSION: " + Util.LOGGING_VERSION);
                 }
             }
         } catch (InterruptedException e) {
-            logger.error(e.getMessage());
+            logger.error("Log receiver interrupted", e);
+            isRunning = false;
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -84,7 +82,7 @@ public class ReceiverQueueProcessor implements Runnable {
      * Starts Processing the LogReceiverQueue
      */
     public void startProcessing() {
-        logger.debug("startProcessing of Receiverqueueprocessor");
+        logger.trace("startProcessing of ReceiverQueueProcessor");
 
         if (!isRunning) {
             final Thread t = new Thread(this);
@@ -99,6 +97,7 @@ public class ReceiverQueueProcessor implements Runnable {
     public void stopProcessing() {
         isRunning = false;
     }
+
     /**
      * loads the serialized RemoteLogMessage into LogReceiverQueue
      *

@@ -45,23 +45,25 @@ public class RemoteLoggingServer extends Thread {
 
     @Override
     public void run() {
-        logger.info("Logging Zirk is being Started in remote logging");
+        logger.trace("Logging Zirk is being Started in remote logging");
         try {
             while (isRunning) {
                 Socket clientSocket = serverSocket.accept();
-                String serializedLoggerMessage = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())).readLine();
+                String serializedLoggerMessage = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "UTF-8")).readLine();
                 receiverQueueProcessor.processLogInMessage(serializedLoggerMessage);
             }
         } catch (IOException e) {
-            logger.error("Some exception occurred", e);
+            logger.error("Exception reading socket in remote logging server", e);
         } catch (InterruptedException e) {
-            logger.error(e.getMessage());
+            logger.error("Remote logging server socket reader interrupted", e);
+            isRunning = false;
+            Thread.currentThread().interrupt();
         } finally {
             if (serverSocket != null) {
                 try {
                     serverSocket.close();
                 } catch (IOException e) {
-                    logger.error("Exception occurred while closing hte serverSocket", e);
+                    logger.error("Exception occurred while closing the serverSocket", e);
                 }
             }
         }

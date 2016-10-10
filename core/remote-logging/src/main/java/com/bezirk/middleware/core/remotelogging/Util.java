@@ -6,10 +6,8 @@ import java.util.List;
  * Utility class for Logging Module defining all the constants.
  */
 public final class Util {
+    private  Util(){}
 
-    private  Util(){
-
-    }
     /**
      * Version of the Logging Module.
      */

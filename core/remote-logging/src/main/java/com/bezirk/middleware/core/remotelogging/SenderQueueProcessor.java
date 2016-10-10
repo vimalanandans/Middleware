@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Locale;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
@@ -17,6 +18,10 @@ import java.util.concurrent.SynchronousQueue;
  */
 public class SenderQueueProcessor implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(SenderQueueProcessor.class);
+    /**
+     * Blocking Queue that is used to queue logger messages at the logging client.
+     */
+    private static final BlockingQueue<String> logSenderQueue = new SynchronousQueue<>();
     /**
      * Logging Zirk IP. This will set based on the LoggingMessage from the Logging zirk.
      */
@@ -29,13 +34,7 @@ public class SenderQueueProcessor implements Runnable {
      * Flag used for starting/ Stopping Threads!
      */
     private boolean isRunning = false;
-
     private Socket logClientSocket = null;
-
-    /**
-     * Blocking Queue that is used to queue logger messages at the logging client.
-     */
-    private static BlockingQueue<String> logSenderQueue = null;
 
     /**
      * Setup the Logging Zirk Parameters
@@ -72,7 +71,9 @@ public class SenderQueueProcessor implements Runnable {
                     }
                 }
             } catch (InterruptedException e) {
-                logger.error(e.getMessage());
+                logger.error("Remote logginer sender queue interrupted", e);
+                isRunning = false;
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -84,13 +85,14 @@ public class SenderQueueProcessor implements Runnable {
         isRunning = true;
         try {
             logClientSocket = new Socket(remoteServiceIP, remoteServicePort);
-        }catch  (IOException e){
-            logger.error("logging client create fail. ip : "+ remoteServiceIP + " port "
-                    + String.valueOf(remoteServicePort) + " " +e);
+        } catch (IOException e) {
+            final String logMessage = String.format(Locale.getDefault(),
+                    "Failed to create logging client: remoteServiceIP = %s, port %d",
+                    remoteServiceIP, remoteServicePort);
+            logger.error(logMessage, e);
             return false;
         }
-        Thread t = new Thread(this);
-        t.start();
+        new Thread(this).start();
         return true;
     }
 
@@ -100,13 +102,14 @@ public class SenderQueueProcessor implements Runnable {
      * @throws IOException IOException if something goes down while stopping the thread.
      */
     public boolean stopProcessing() throws IOException {
+        isRunning = false;
         clearQueue();
         if (logClientSocket != null) {
             logClientSocket.close();
         }
-        isRunning = false;
-        return isRunning;
+        return false;
     }
+
     /**
      * loads the serialized RemoteLogMessage into LogSenderQueue
      *
@@ -114,9 +117,6 @@ public class SenderQueueProcessor implements Runnable {
      * @throws InterruptedException if multiple threads try to access the queue.
      */
     public void processLogOutMessage(String serializedLogMsg) throws InterruptedException {
-        if (logSenderQueue == null) {
-            logSenderQueue = new SynchronousQueue<>();
-        }
         logSenderQueue.put(serializedLogMsg);
     }
 
@@ -126,21 +126,14 @@ public class SenderQueueProcessor implements Runnable {
      * @return String representation of the RemoteLogMessage
      * @throws InterruptedException if multiple threads try to access the queue.
      */
-    private  StringBuilder getLogOutgoingMessage() throws InterruptedException {
-        if (logSenderQueue == null) {
-            logSenderQueue = new SynchronousQueue<>();
-        }
+    private StringBuilder getLogOutgoingMessage() throws InterruptedException {
         return new StringBuilder(logSenderQueue.take());
     }
 
     /**
      * clears the logSenderQueue
      */
-    void clearQueue()
-    {
-        if (logSenderQueue == null) {
-            logSenderQueue = new SynchronousQueue<>();
-        }
+    void clearQueue() {
         logSenderQueue.clear();
     }
 }

@@ -110,12 +110,14 @@ public class RemoteLoggingClient {
                     message.getUniqueKey(),
                     Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
                     Util.LOGGING_VERSION);
+
             try {
                 senderQueueProcessor.processLogOutMessage(remoteLoggingMessage.serialize());
 
                 returnValue = true;
             } catch (InterruptedException e) {
-                logger.error(e.getMessage(), e);
+                logger.error("Processing of outgoing remote logging messages interrupted", e);
+                Thread.currentThread().interrupt();
             }
         }
 
@@ -165,7 +167,8 @@ public class RemoteLoggingClient {
                 senderQueueProcessor.processLogOutMessage(remoteLoggingMessage.serialize());
                 return true;
             } catch (InterruptedException e) {
-                logger.error(e.getMessage(), e);
+                logger.error("Processing of outgoing remote logging messages interrupted", e);
+                Thread.currentThread().interrupt();
             }
         }
 
