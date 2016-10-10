@@ -31,7 +31,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
 
     compile 'com.github.tony19:logback-android-classic:1.1.1-2'
-    compile 'org.slf4j:slf4j-api:1.7.6'
+    compile 'org.slf4j:slf4j-api:1.7.12'
     compile "com.j256.ormlite:ormlite-core:4.48"
     compile "com.j256.ormlite:ormlite-android:4.48"
     compile fileTree(dir: 'libs', include: ['*.jar'])

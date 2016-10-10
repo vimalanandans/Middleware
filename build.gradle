@@ -55,7 +55,7 @@ buildscript {
     ext {
         androidGradleToolsVersion = "2.1.0"
         androidBuildToolsVersion = "24.0.2"
-        androidSupportLibraryVersion = "24.1.0"
+        androidSupportLibraryVersion = "24.2.1"
         androidCompileSdkVersion = "24"
         androidMinSdkVersion = "16"
         androidTargetSdkVersion = "24"
