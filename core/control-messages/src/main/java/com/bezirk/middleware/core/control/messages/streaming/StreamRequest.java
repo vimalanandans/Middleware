@@ -43,7 +43,8 @@ public class StreamRequest extends UnicastControlMessage {
     public boolean isIncremental = false;
 
     public StreamRequest(String sphereId, StreamRecord streamRecord, Location location) {
-        super(streamRecord.getSender(), streamRecord.getRecipient(), sphereId, discriminator, false, streamRecord.getUniqueKey());
+        super(streamRecord.getSender(), streamRecord.getRecipient(), sphereId, discriminator, false,
+                streamRecord.getUniqueKey());
         this.location = location;
         this.serializedString = streamRecord.getSerializedStream();
         this.fileName = streamRecord.getFile().getName();

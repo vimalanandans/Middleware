@@ -54,7 +54,8 @@ public class StreamingActivity extends AppCompatActivity {
 
 
         listView = (ListView) findViewById(R.id.discoveredlist);
-        arrayAdapter = new StreamAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, list);
+        arrayAdapter = new StreamAdapter(getApplicationContext(), android.R.layout.simple_list_item_1,
+                android.R.id.text1, list);
         listView.setAdapter(arrayAdapter);
 
         //On item click
@@ -78,7 +79,8 @@ public class StreamingActivity extends AppCompatActivity {
                     final StreamSend streamSend = new StreamSend(false, isEncrypted, file);
                     bezirk.sendStream(recipientEndpoint, streamSend);
                 } else {
-                    Toast.makeText(getApplicationContext(), "file path is null.. Select the File and send", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "file path is null.. Select the File and send",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -107,7 +109,8 @@ public class StreamingActivity extends AppCompatActivity {
                             StreamPublishEvent streamPublishEvent = (StreamPublishEvent) event;
 
                             //show the receiverID to UI
-                            StreamDataModel streamDataModel = new StreamDataModel(streamPublishEvent.getSubscriberId(), sender);
+                            StreamDataModel streamDataModel =
+                                    new StreamDataModel(streamPublishEvent.getSubscriberId(), sender);
                             list.clear();
                             list.add(streamDataModel);
                             arrayAdapter.notifyDataSetChanged();

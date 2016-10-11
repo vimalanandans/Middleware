@@ -15,7 +15,8 @@ public class CatchResponse extends MulticastControlMessage {
     private String catcherSphereId;
     private String catcherDeviceId;
 
-    public CatchResponse(BezirkZirkEndPoint sender, String catcherSphereId, String catcherDeviceId, BezirkDeviceInfo inviterSphereDeviceInfo) {
+    public CatchResponse(BezirkZirkEndPoint sender, String catcherSphereId, String catcherDeviceId,
+                         BezirkDeviceInfo inviterSphereDeviceInfo) {
         super(sender, catcherSphereId, discriminator);
         // null checks for sender and catcherSphereId added here because call to the
         // super method has to be the first line in a constructor.

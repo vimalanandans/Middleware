@@ -181,7 +181,8 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
         }
     };
     /**
-     * Starts the logging Zirk by sending the {@link} on the wire to all the spheres and takes the action to the logging screen.
+     * Starts the logging Zirk by sending the {@link} on the wire to all the spheres and takes the
+     * action to the logging screen.
      */
     private final transient ActionListener startLoggingButtonListener = new ActionListener() {
 

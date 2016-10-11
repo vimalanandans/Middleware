@@ -17,7 +17,8 @@ public class BezirkSphereLeave extends UnicastControlMessage {
     /**
      * Used for sending leave request to a member
      */
-    public BezirkSphereLeave(String sphereID, ZirkId serviceId, BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient) {
+    public BezirkSphereLeave(String sphereID, ZirkId serviceId, BezirkZirkEndPoint sender,
+                             BezirkZirkEndPoint recipient) {
         super(sender, recipient, sphereID, discriminator, true);
         //public UnicastControlMessage(BezirkZirkEndPoint sender, BezirkZirkEndPoint recipient, String sphereName,
         //String discriminator, Boolean retransmit, String key){

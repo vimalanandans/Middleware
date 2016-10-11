@@ -20,17 +20,22 @@ import java.util.Observable;
  * import java.util.Observer;
  *
  * public class LifeCycleObserver implements Observer {
- *
  *      private LifeCycleObservable lifeCycleObservable;
+ *
  *      @Override
  *      public void update(Observable o, Object arg) {
  *          this.lifeCycleObservable = (LifeCycleObservable) o;
  *          switch (lifeCycleObservable.getState()) {
- *              case RUNNING: //do something when application is running, for instance, start the threads for sending/receiving data
- *              case STOPPED: //do something when application is started, for instance, save the state, stop running threads, gracefully shutdown the component
+ *              case RUNNING:
+ *                  // do something when application is running, for instance, start the threads for
+ *                  // sending/receiving data
+ *                  break;
+ *              case STOPPED:
+ *                  // do something when application is started, for instance, save the state,
+ *                  // stop running threads, gracefully shutdown the component
+ *                  break;
  *          }
  *      }
- *
  * }
  *
  * }

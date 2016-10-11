@@ -56,11 +56,13 @@ class ControlActivityHelper {
      * Initialize the UI
      */
     void initUI() {
-        listData.add(new DataModel(R.drawable.ic_action_sphere_control, "Device Control", "Total Device Control", false, false, false));
+        listData.add(new DataModel(R.drawable.ic_action_sphere_control, "Device Control",
+                "Total Device Control", false, false, false));
 
         String appName = controlActivity.getString(R.string.app_name);
 
-        listData.add(new DataModel(R.drawable.upa_about, "About " + appName, "Details about " + appName, false, false, false));
+        listData.add(new DataModel(R.drawable.upa_about, "About " + appName, "Details about " + appName,
+                false, false, false));
 
 
         AbsListView list;
@@ -159,7 +161,6 @@ class ControlActivityHelper {
         String appName = controlActivity.getString(R.string.app_name);
         String aboutText = appName + " v" + BezirkVersion.BEZIRK_VERSION + ", Aug 2016, " + controlActivity.getString(R.string.about_copyright_text);
         aboutVersionText.setText(aboutText);
-        //aboutVersionText.setText("UPA v"+ BezirkVersion.BEZIRK_VERSION + ", July 2015, � Bosch");
 
         // Set dialog title
         dialog.setTitle("About " + appName);
@@ -182,13 +183,6 @@ class ControlActivityHelper {
         //Intialize preferences
         PreferenceManager.setDefaultValues(activity, R.xml.preferences, false);
 
-     /*   //Start Bezirk
-        Intent serviceIntent = new Intent(activity.getApplicationContext(), ComponentManager.class);
-        serviceIntent.setAction("START_BEZIRK");
-        activity.startService(serviceIntent);
-     */
-        //AppManager bezirkApp = AppManager.getAppManager();
-        //bezirkApp.startBezirk(activity, true, "Bezirk",null);
         BezirkMiddleware.initialize(activity);
         // register a broadcast receiver
         controlActivity.registerReceiver(systemStatusBroadcastReceiver, new IntentFilter(BR_SYSTEM_STATUS_ACTION));

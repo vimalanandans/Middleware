@@ -181,9 +181,11 @@ public class RemoteLogDetailsGUI extends JFrame {
     }
 
     private void sendLoggingServiceMsg(boolean isActivateLogging) {
-
-        msgLog.enableLogging(isActivateLogging, false, true, selectedSpheres);
-
+        if (msgLog != null) {
+            msgLog.enableLogging(isActivateLogging, false, true, selectedSpheres);
+        } else {
+            logger.debug("Attempting to send logging service msg with null message log");
+        }
     }
 
     public void updateTable(RemoteLoggingMessage bezirkLogMessage) {

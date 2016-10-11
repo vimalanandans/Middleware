@@ -122,7 +122,8 @@ public class Location implements Serializable {
      */
     public Location(String wideScope, String intermediateScope, String narrowScope) {
         this.wideScope = (wideScope == null) ? null : wideScope.replace(",", "").replace("/", "");
-        this.intermediateScope = (intermediateScope == null) ? null : intermediateScope.replace(",", "").replace("/", "");
+        this.intermediateScope = (intermediateScope == null) ? null :
+                intermediateScope.replace(",", "").replace("/", "");
         this.narrowScope = (narrowScope == null) ? null : narrowScope.replace(",", "").replace("/", "");
     }
 

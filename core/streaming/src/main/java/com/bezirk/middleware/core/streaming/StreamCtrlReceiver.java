@@ -29,7 +29,9 @@ public class StreamCtrlReceiver implements CtrlMsgReceiver {
      * Initialize the stream ctrl receivers.
      */
     public void initStreamCtrlReceiver(BezirkStreamHandler bezirkStreamHandler, PortFactory portFactory, Comms comms,
-                                       com.bezirk.middleware.core.streaming.store.StreamStore streamStore, PubSubEventReceiver pubSubReceiver, /*SphereSecurity sphereSecurity,*/ MessageQueue streamingMessageQueue ){
+                                       com.bezirk.middleware.core.streaming.store.StreamStore streamStore,
+                                       PubSubEventReceiver pubSubReceiver, /*SphereSecurity sphereSecurity,*/
+                                       MessageQueue streamingMessageQueue ){
         this.bezirkStreamHandler = bezirkStreamHandler;
         this.portFactory = portFactory;
         this.comms = comms;

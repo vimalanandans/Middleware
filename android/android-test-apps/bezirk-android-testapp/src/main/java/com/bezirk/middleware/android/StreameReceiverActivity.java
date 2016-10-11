@@ -37,7 +37,8 @@ public class StreameReceiverActivity extends AppCompatActivity {
                 if (streamDescriptor.getStreamActionName().equals(StreamSend.class.getCanonicalName())) {
 
                     //reply to the sender StreamPublishEvent
-                    Toast.makeText(getApplicationContext(), "Received file with path " + streamDescriptor.getFile().getPath(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Received file with path " +
+                            streamDescriptor.getFile().getPath(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
