@@ -17,7 +17,8 @@ public abstract class StreamAction extends ZirkAction {
     private File file;
     private String streamActionName;
 
-    public StreamAction(ZirkId zirkId, ZirkEndPoint recipient, /*StreamDescriptor descriptor,*/ short streamId, String streamActionName) {
+    public StreamAction(ZirkId zirkId, ZirkEndPoint recipient, /*StreamDescriptor descriptor,*/
+                        short streamId, String streamActionName) {
         super(zirkId);
 
         if (recipient == null) {

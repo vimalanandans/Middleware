@@ -31,7 +31,8 @@ public class SubscriptionAction extends ZirkAction {
     private final com.bezirk.middleware.core.actions.BezirkAction action;
     private final String serializedMessageSet;
 
-    public SubscriptionAction(com.bezirk.middleware.core.actions.BezirkAction action, ZirkId zirkId, MessageSet messageSet) {
+    public SubscriptionAction(com.bezirk.middleware.core.actions.BezirkAction action, ZirkId zirkId,
+                              MessageSet messageSet) {
         super(zirkId);
 
         // MessageSet can be null for unsubscribing from all messages

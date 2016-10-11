@@ -24,10 +24,13 @@ public class Config implements Serializable {
     private final boolean serviceAlive;
 
     public Config() {
-        this(DEFAULT_GROUP_NAME, DEFAULT_APP_NAME, DEFAULT_LOG_LEVEL, null, COMMS_ENABLED, BEZIRK_SERVICE_ALIVE_ON_APPLICATION_SHUTDOWN);
+        this(DEFAULT_GROUP_NAME, DEFAULT_APP_NAME, DEFAULT_LOG_LEVEL, null, COMMS_ENABLED,
+                BEZIRK_SERVICE_ALIVE_ON_APPLICATION_SHUTDOWN);
     }
 
-    public Config(@NotNull final String groupName, @NotNull final String appName, @NotNull final Level logLevel, final Map<String, Level> packageLogLevelMap, final boolean commsEnabled, final boolean serviceAlive) {
+    public Config(@NotNull final String groupName, @NotNull final String appName,
+                  @NotNull final Level logLevel, final Map<String, Level> packageLogLevelMap,
+                  final boolean commsEnabled, final boolean serviceAlive) {
         this.groupName = groupName;
         this.appName = appName;
         this.logLevel = logLevel;
@@ -71,7 +74,8 @@ public class Config implements Serializable {
                 packageLogLevelMap = new HashMap<>();
             }
             if (packageLogLevelMap.containsKey(packageName)) {
-                throw new IllegalArgumentException("package name '" + packageName + "' already present with logLevel " + packageLogLevelMap.get(packageName));
+                throw new IllegalArgumentException("package name '" + packageName +
+                        "' already present with logLevel " + packageLogLevelMap.get(packageName));
             } else {
                 packageLogLevelMap.put(packageName, logLevel);
             }
@@ -92,7 +96,9 @@ public class Config implements Serializable {
         /**
          * This configuration works only in android, has no affect in java version of the middleware. False by default.
          *
-         * @param alive if <code>true</code>, keeps the android service running even when the application is shutdown. In such cases, shutdown is handled explicitly by the application using <code>BezirkMiddleware.stop()</code>
+         * @param alive if <code>true</code>, keeps the android service running even when the application
+         *              is shutdown. In such cases, shutdown is handled explicitly by the application
+         *              using <code>BezirkMiddleware.stop()</code>
          */
         public ConfigBuilder setServiceAlive(final boolean alive) {
             keepServiceAlive = alive;

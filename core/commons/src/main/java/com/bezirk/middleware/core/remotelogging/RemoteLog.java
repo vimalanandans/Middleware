@@ -20,7 +20,8 @@ public interface RemoteLog {
      * enable the control logging for middleware message analysing purpose.
      * enableRemoteLogging must be true
      * **/
-    boolean enableLogging(boolean enableRemoteLogging, boolean enableControl, boolean enableFileLogging, String[] sphereName);
+    boolean enableLogging(boolean enableRemoteLogging, boolean enableControl,
+                          boolean enableFileLogging, String[] sphereName);
 
     /** check whether the remoteLogging is enabled or not */
     boolean isRemoteLoggingEnabled();

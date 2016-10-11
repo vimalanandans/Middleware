@@ -21,7 +21,7 @@ import java.util.zip.InflaterInputStream;
  */
 public class WireMessage implements Serializable {
     private static final long serialVersionUID = 8351148484329885907L;
-    public static final Logger logger = LoggerFactory.getLogger(WireMessage.class);
+    private static final Logger logger = LoggerFactory.getLogger(WireMessage.class);
     private static final String MSG_VER_STRING = "\"msgVer\":\"";
     /// if the parser type is json, to check the message version VERSION STRING
     private static final String MSG_VER = MSG_VER_STRING + BezirkVersion.getWireVersion() + "\"";
@@ -198,7 +198,7 @@ public class WireMessage implements Serializable {
         try {
             return gson.toJson(this).getBytes(ENCODING);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.error("Unsupported encoding for wire message serializer", e);
         }
         return null;
         // send the compressed string

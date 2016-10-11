@@ -60,28 +60,32 @@ public class JavaNetworkManager extends NetworkManager {
      * <ul>
      * <li>If no interface is found, method returns null</li>
      * <li>If exactly one non-loopback interface is found, the method return that interface</li>
-     * <li>If more than one interfaces are found, user is prompted for selection. The selected interface is then returned</li>
+     * <li>If more than one interfaces are found, user is prompted for selection. The selected
+     * interface is then returned</li>
      * </ul>
      */
     private NetworkInterface resolveInterface(final String interfaceName) {
         NetworkInterface networkInterface = null;
         try {
             if (null != interfaceName) {
-                networkInterface = NetworkInterface.getByName(interfaceName); //resolve interface for supplied interfaceName
+                //resolve interface for supplied interfaceName
+                networkInterface = NetworkInterface.getByName(interfaceName);
             }
 
             if (null == networkInterface) {
-                logger.debug("Configured interface '" + interfaceName + "' could not be resolved. Detecting another interface ...");
+                logger.debug("Configured interface '{}' could not be resolved. Detecting another interface ...",
+                        interfaceName);
                 final List<InterfaceInetPair> interfaces = getInterfaceInetPair();
                 final int numInf = interfaces.size();
 
                 switch (numInf) {
                     case 0: //no interface found
-                        logger.error("Non-loopback interface not found, Bezirk will not be able to send messages to other devices.");
+                        logger.error("Non-loopback interface not found, Bezirk will not be able to " +
+                                "send messages to other devices.");
                         return null;
                     case 1: //only 1 interface found
                         networkInterface = interfaces.get(0).getNetworkInterface();
-                        logger.debug("Interface auto selected '" + networkInterface.getName() + "'");
+                        logger.debug("Interface auto selected '{}'", networkInterface.getName());
                         setStoredInterfaceName(networkInterface.getName());
                         break;
                     default:
@@ -89,10 +93,10 @@ public class JavaNetworkManager extends NetworkManager {
                         final String intfName = promptUserForInterface();
                         if (ValidatorUtility.checkForString(intfName)) {
                             networkInterface = NetworkInterface.getByName(intfName);
-                            logger.debug("Interface selected '" + intfName + "'");
+                            logger.debug("Interface selected '{}'", intfName);
                             setStoredInterfaceName(networkInterface.getName());
                         } else {
-                            logger.error("Interface not selected! Bezirk is shutting down. . .");
+                            logger.error("Interface not selected! Bezirk is shutting down...");
                             System.exit(0);
                         }
                         break;
@@ -100,10 +104,10 @@ public class JavaNetworkManager extends NetworkManager {
             } else {
                 logger.info("Using configured interface: " + networkInterface.getName());
             }
-        } catch (SocketException se) {
-            logger.debug("SocketException while resolving network interface" + se);
+        } catch (SocketException e) {
+            logger.debug("SocketException while resolving network interface", e);
         } catch (NullPointerException e) {
-            logger.debug("NullPointerException while resolving network interface" + e);
+            logger.debug("NullPointerException while resolving network interface", e);
         }
         return networkInterface;
     }
@@ -137,7 +141,8 @@ public class JavaNetworkManager extends NetworkManager {
             }
             final String[] interfaceNames = temp.toArray(new String[temp.size()]);
             return (String) JOptionPane.showInputDialog(null,
-                    "Please select your active network for Bezirk to send and receive messages", "Bezirk Network Selection",
+                    "Please select your active network for Bezirk to send and receive messages",
+                    "Bezirk Network Selection",
                     JOptionPane.QUESTION_MESSAGE, null, interfaceNames, null);
 
         }

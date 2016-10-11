@@ -305,7 +305,8 @@ public abstract class CommsProcessor implements Comms, Observer {
             // encrypt the header
             byte[] headerData;
             try {
-                headerData = encryptMsg(wireMessage.getSphereId(), ledger.getSerializedHeader().getBytes(WireMessage.ENCODING));
+                headerData = encryptMsg(wireMessage.getSphereId(),
+                        ledger.getSerializedHeader().getBytes(WireMessage.ENCODING));
             } catch (UnsupportedEncodingException e) {
                 logger.error(e.getLocalizedMessage());
                 throw new AssertionError(e);
@@ -489,7 +490,8 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     private boolean setEventHeader(EventLedger eLedger, WireMessage wireMessage) {
         // decrypt the header
-        final byte[] data = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getHeaderMsg());
+        final byte[] data = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(),
+                wireMessage.getHeaderMsg());
         if (data == null) {// header decrypt failed. unknown sphere id
             return false;
         }

@@ -6,15 +6,17 @@ import com.bezirk.middleware.proxy.api.impl.ZirkId;
 public class SendFileStreamAction extends StreamAction {
     /*private final File file;*/
 
-    public SendFileStreamAction(ZirkId zirkId, ZirkEndPoint recipient, /*StreamDescriptor descriptor,*/ short streamId, String streamActionName) {
+    public SendFileStreamAction(ZirkId zirkId, ZirkEndPoint recipient, /*StreamDescriptor descriptor,*/
+                                short streamId, String streamActionName) {
         super(zirkId, recipient/*, descriptor*/, streamId, streamActionName);
 
-        /*if (descriptor == null || descriptor.getFile() == null) {
+/*        if (descriptor == null || descriptor.getFile() == null) {
             throw new IllegalArgumentException("Cannot send a null file");
         }
 
         if (!descriptor.getFile().exists()) {
-            throw new IllegalArgumentException("Stream file not found", new FileNotFoundException(descriptor.getFile().getPath()));
+            throw new IllegalArgumentException("Stream file not found",
+                    new FileNotFoundException(descriptor.getFile().getPath()));
         }
 
         this.file = descriptor.getFile();*/

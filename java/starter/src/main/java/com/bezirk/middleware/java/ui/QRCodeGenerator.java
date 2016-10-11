@@ -26,7 +26,9 @@ public class QRCodeGenerator extends Application {
 
         Parameters parameters = getParameters();
         if (parameters == null || parameters.getRaw().size() == 0) {
-            throw new IllegalArgumentException("No parameters passed to QRCodeGenerator. Data to be embedded in the QRCodeGenerator needs to be passed. Usage\n Application.launch(QRCodeGenerator.class, \"Data to be displayed in QRCode\");");
+            throw new IllegalArgumentException("No parameters passed to QRCodeGenerator. Data to be " +
+                    "embedded in the QRCodeGenerator needs to be passed. Usage\n " +
+                    "Application.launch(QRCodeGenerator.class, \"Data to be displayed in QRCode\");");
         }
 
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
@@ -35,7 +37,8 @@ public class QRCodeGenerator extends Application {
 
         BufferedImage bufferedImage = null;
         try {
-            BitMatrix byteMatrix = qrCodeWriter.encode(getParameters().getRaw().get(0), BarcodeFormat.QR_CODE, width, height);
+            BitMatrix byteMatrix = qrCodeWriter.encode(getParameters().getRaw().get(0),
+                    BarcodeFormat.QR_CODE, width, height);
             bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             bufferedImage.createGraphics();
 
