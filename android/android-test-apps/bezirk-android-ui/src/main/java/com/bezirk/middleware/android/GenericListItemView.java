@@ -72,7 +72,8 @@ public class GenericListItemView extends ArrayAdapter<DataModel> {
                         data.get(position).setToggleButtonState(toggle.isChecked());
                         Log.i("GeneralListItemView", "Button pressed! > " + data.get(position).isToggleButtonState());
                         if (itemToggleListener == null) {
-                            Log.i("GeneralListItemView", "activity not registered with Toggle button listener " + data.get(position).isToggleButtonState());
+                            Log.i("GeneralListItemView", "activity not registered with Toggle button listener " +
+                                    data.get(position).isToggleButtonState());
                         } else {
                             itemToggleListener.onItemToggleListener(position, toggle.isChecked());
                         }

@@ -14,7 +14,8 @@ public class SphereInformation {
     /**
      * Used to identify if the sphere was a sharable sphere of another device
      * sphere used for exploring services in that device
-     * Can be used for future explorations or can also be used for deleting sphere information after the temporary transaction is complete
+     * Can be used for future explorations or can also be used for deleting sphere information after
+     * the temporary transaction is complete
      */
     private boolean temporarySphere;
 

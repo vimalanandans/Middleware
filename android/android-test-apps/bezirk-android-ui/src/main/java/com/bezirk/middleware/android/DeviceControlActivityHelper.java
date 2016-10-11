@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
 import com.bezirk.middleware.android.ui.R;
 import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.util.ValidatorUtility;
@@ -53,7 +52,9 @@ class DeviceControlActivityHelper {
             case R.drawable.ic_action_device_type:
                 // set device type
                 Intent activityIntent = new Intent(deviceControlActivity, DeviceTypeSelection.class);
-                deviceControlActivity.startActivityForResult(activityIntent, DeviceTypeSelection.RESULT_DEVICE_ITEM_SELECT);// Activity is started with requestCode 2
+                // Activity is started with requestCode 2
+                deviceControlActivity.startActivityForResult(activityIntent,
+                        DeviceTypeSelection.RESULT_DEVICE_ITEM_SELECT);
                 break;
             case R.drawable.ic_action_sphere_name: // set default sphere name
                 promptSettingTextChange(listData.get(position).getTitleText(), RESULT_SPHERE_NAME_CHANGE);
@@ -62,12 +63,10 @@ class DeviceControlActivityHelper {
                 actions = BezirkAction.ACTION_CHANGE_SPHERE_TYPE.getName();
                 break;
             case R.drawable.ic_delete_database:
-                promptClearConfirmation(listData.get(position).getTitleText(), "Do you want to Clear the sphere data ?",
-                        RESULT_DATABASE_CLEAR);
+                promptClearConfirmation(listData.get(position).getTitleText(),
+                        "Do you want to Clear the sphere data?", RESULT_DATABASE_CLEAR);
                 break;
             case R.drawable.ic_action_diag: // diag // to be implemented
-                //Intent diagonisisActivityIntent = new Intent(deviceControlActivity, DiagnosisActivity.class);
-                //deviceControlActivity.startActivity(diagonisisActivityIntent);
                 break;
             default:
                 logger.error("Unknown item pressed");
@@ -214,7 +213,8 @@ class DeviceControlActivityHelper {
 //        View promptsView = layoutInflater.inflate(R.layout.prompt_confirm, null);
 //        SphereAPI sphereAPI = ComponentManager.getSphereHandle();
 //        final List<BezirkZirkInfo> bezirkZirkInfos = sphereAPI.getServiceInfo();
-//        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(deviceControlActivity.getApplicationContext());
+//        final SharedPreferences sharedPrefs =
+//               PreferenceManager.getDefaultSharedPreferences(deviceControlActivity.getApplicationContext());
 //        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 //                context);
 //
@@ -240,7 +240,7 @@ class DeviceControlActivityHelper {
 //                                String data = confirmTextView.getText().toString();
 //                                logger.info("clear database confirmed " + data);
 //                                onPromptTextResult(resultId, data);
-//                                if (ValidatorUtility.isObjectNotNull(bezirkZirkInfos) && !bezirkZirkInfos.isEmpty()) {
+//                                if (bezirkZirkInfos != null && !bezirkZirkInfos.isEmpty()) {
 //                                    for (BezirkZirkInfo info : bezirkZirkInfos) {
 //                                        if (sharedPrefs.getAll().containsKey(info.getZirkId())) {
 //                                            sharedPrefs.edit().remove(info.getZirkId()).apply();

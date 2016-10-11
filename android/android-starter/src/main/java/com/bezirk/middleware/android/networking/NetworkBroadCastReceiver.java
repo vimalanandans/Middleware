@@ -78,7 +78,8 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
         logger.debug("Connected to wifi " + wifiInfo.getSSID());
         logger.warn("Comms start/restart currently not initiated based on wifi change");
 //        if (MainStackHandler.getBezirkComms() == null && mainService != null) {
-//                /*it is observed in few devices that, after receiving completed supplicant state the wifi manager will not retrieve the connection correctly.
+//                /*it is observed in few devices that, after receiving completed supplicant state
+//                the wifi manager will not retrieve the connection correctly.
 //                Hence making this separated thread sleep for 3 sec and then starting the stack.*/
 //            try {
 //                Thread.sleep(3000);
@@ -89,12 +90,12 @@ public class NetworkBroadCastReceiver extends BroadcastReceiver {
 //            }
 //
 //            return;
-//        } else if (bezirkWifiManager.getConnectedWifiSSID() == null || !bezirkWifiManager.getConnectedWifiSSID().equals(wifiInfo.getSSID())) {
+//        } else if (bezirkWifiManager.getConnectedWifiSSID() == null ||
+//                !bezirkWifiManager.getConnectedWifiSSID().equals(wifiInfo.getSSID())) {
 //            //restart comms
 //            String message = "Bezirk has been reconfigured to Wifi Access Point! " + wifiInfo.getSSID();
 //            new RestartCommsAsyncTask(context, message, stackHandler).execute();
 //        }
 //        bezirkWifiManager.setConnectedWifiSSID(wifiInfo.getSSID());
     }
-
 }
