@@ -1,5 +1,6 @@
 package com.bezirk.middleware.core.remotelogging;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,8 +59,8 @@ public final class Util {
      *
      * @param list list of spheres for which Logging Zirk is activated.
      */
-    public static void setLoggingSphereList(final List<String> list) {
-        loggingSphereList = list;
+    public synchronized static void setLoggingSphereList(final List<String> list) {
+        loggingSphereList = new ArrayList<>(list);
         if (list.size() == 1) {
             anySphereEnabled = list.get(0).equals(RemoteLog.ALL_SPHERES);
         }

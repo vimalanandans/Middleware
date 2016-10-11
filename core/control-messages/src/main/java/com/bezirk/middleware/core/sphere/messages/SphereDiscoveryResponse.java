@@ -5,6 +5,7 @@ import com.bezirk.middleware.core.control.messages.MulticastControlMessage;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,7 +27,7 @@ public class SphereDiscoveryResponse extends MulticastControlMessage {
     public SphereDiscoveryResponse(String scannedSphereId,
                                    List<ZirkId> services, BezirkZirkEndPoint sender) {
         super(sender, scannedSphereId, discriminator);
-        this.services = services;
+        this.services = new ArrayList<>(services);
 
     }
 
@@ -34,7 +35,7 @@ public class SphereDiscoveryResponse extends MulticastControlMessage {
      * @return the services
      */
     public final List<ZirkId> getServices() {
-        return services;
+        return new ArrayList<>(services);
     }
 
 

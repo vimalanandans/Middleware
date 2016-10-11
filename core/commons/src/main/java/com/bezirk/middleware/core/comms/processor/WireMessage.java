@@ -27,20 +27,24 @@ public class WireMessage implements Serializable {
     private static final String MSG_VER = MSG_VER_STRING + BezirkVersion.getWireVersion() + "\"";
     public static final String ENCODING = "UTF-8";
 
-    //private String msgVer = BezirkVersion.BEZIRK_VERSION;
     // increment the wire message version in bezirk version. when there is a change in message format
     private String msgVer = BezirkVersion.getWireVersion();
-    private String sphereId; // sphere id
-    private WireMsgType msgType; // control / event. do we need?
-    private MsgParserType parserType; // type of parser JSON / BSON for event/ctrl messages
-    private WireMsgStatus wireMsgStatus; // status of the msg, if its encrypted and compressed or Raw
+    private String sphereId;
+    // control / event. do we need?
+    private WireMsgType msgType;
+    // type of parser JSON / BSON for event/ctrl messages
+    private MsgParserType parserType;
+    // status of the msg, if its encrypted and compressed or Raw
+    private WireMsgStatus wireMsgStatus;
 
     // not don't sore the byte
     // stream in to wiremessage, while json serialization,
     // this would drastically increase the size of wire msg
-    private byte[] msg = null; // encrypted msg
+    // encrypted msg
+    private byte[] msg;
 
-    private byte[] headerMsg = null; // message header for event. FIXME : generalize this
+    // message header for event.
+    private byte[] headerMsg = null;
 
     public static boolean checkVersion(String msg) {
         // for json format
@@ -58,8 +62,9 @@ public class WireMessage implements Serializable {
 
         if (start > MSG_VER_STRING.length()) {
             int end = msg.substring(start).indexOf("\"");
-            if (start + end < msg.length())
+            if (start + end < msg.length()) {
                 version = msg.substring(start, start + end);
+            }
         }
         return version;
     }
@@ -74,9 +79,9 @@ public class WireMessage implements Serializable {
                 baos.write(buffer, 0, len);
             }
             return new String(baos.toByteArray(), ENCODING);
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage());
-            throw new AssertionError(e);
+        } catch (UnsupportedEncodingException uee) {
+            logger.error(uee.getLocalizedMessage());
+            throw new AssertionError(uee);
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage());
             throw new AssertionError(e);
@@ -86,7 +91,7 @@ public class WireMessage implements Serializable {
     public static WireMessage deserialize(byte[] data) {
 
         WireMessage wireMessage = null;
-        String json = null;
+        String json;
         try {
             json = new String(data, ENCODING);
         } catch (UnsupportedEncodingException e) {
@@ -192,7 +197,6 @@ public class WireMessage implements Serializable {
         this.wireMsgStatus = wireMsgStatus;
     }
 
-    // wire format is serialized
     public byte[] serialize() {
         Gson gson = new Gson();
         try {
@@ -201,8 +205,6 @@ public class WireMessage implements Serializable {
             logger.error("Unsupported encoding for wire message serializer", e);
         }
         return null;
-        // send the compressed string
-        //return compress (gson.toJson(this));
     }
 
     public enum WireMsgType {
@@ -210,7 +212,8 @@ public class WireMessage implements Serializable {
         MSG_UNICAST_CTRL,
         MSG_MULTICAST_EVENT,
         MSG_UNICAST_EVENT,
-        MSG_EVENT, // future use
+        // future use
+        MSG_EVENT,
     }
 
     public enum WireMsgStatus {
@@ -222,16 +225,7 @@ public class WireMessage implements Serializable {
     }
 
     public enum MsgParserType {
-        PARSER_JSON, // default / legacy
-        PARSER_BSON //
+        PARSER_JSON,
+        PARSER_BSON
     }
-
-    /**
-
-     public static <C> C fromJson(String json, Class<C> dC) {
-     Gson gson = new Gson();
-     return (C) gson.fromJson(json, dC);
-     }
-
-     * */
 }
