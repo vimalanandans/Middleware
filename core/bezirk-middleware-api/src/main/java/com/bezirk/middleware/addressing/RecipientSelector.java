@@ -8,11 +8,9 @@ import com.google.gson.GsonBuilder;
 import java.io.Serializable;
 
 /**
- * Aggregates addressing information for publishing {@link Event events} using the Bezirk middleware.
- * Typically you should think about your Zirk broadcasting messages to other Zirks within your Zirk's
- * subnet where the message will be filtered based on topic. This class allows you to filter
- * by more than simply topic by narrowing the scope further using a semantic address specified
- * by a {@link Location}.
+ * Aggregates addressing information that will be used for narrowing down recipients when publishing messages.
+ * Typically you should think about your Zirk broadcasting messages to other Zirks within your Zirk's subnet.
+ * This class allows you to filter further by using a semantic address specified by a {@link Location}.
  * <p>
  * This class is used when sending messages with
  * {@link com.bezirk.middleware.Bezirk#sendEvent(RecipientSelector, Event)}.

@@ -13,6 +13,15 @@ import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 
+/**
+ * This class implements an adapter for serializing and deserializing classes that will need to be
+ * deserialized to an abstract or interface type using GSON. For example, an
+ * {@link com.bezirk.middleware.messages.EventSet} may need to be deserialized as a
+ * {@link com.bezirk.middleware.messages.MessageSet}, in which case the instance of GSON being used
+ * must be initialized with an adapter instantiated for <code>EventSet</code>.
+ *
+ * @param <T> the type of the class being serialized or deserialized
+ */
 public class InterfaceAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
     private final Gson gson;
 

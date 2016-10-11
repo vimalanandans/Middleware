@@ -16,8 +16,8 @@ import java.util.UUID;
  * expects to receive or to create ad hoc sets of messages to receive. Creating an interface
  * communicates the design intent of the message set in a clear and re-usable way. For example,
  * a set of lighting related messages could be created to be re-used by any Zirk that wants to
- * work with lights. On the other hand, creating a re-usable interface requires design tasks that
- * are heavier than is desirable to subscribe to a small set of ad hoc messages.
+ * work with lights. On the other hand, when working with a small set of ad-hoc messages, designing
+ * a re-usable interface can be unnecessary and cumbersome.  You can choose whichever suits your needs.
  * </p><p>
  * To create an interface, Zirk creators should extend the message set class that matches the type
  * of message(s) they want to receive, either {@link EventSet} or {@link StreamSet}. For example:
@@ -70,7 +70,6 @@ import java.util.UUID;
  * @see StreamDescriptor
  */
 public abstract class MessageSet implements Serializable {
-
     private static final long serialVersionUID = -6232492956322531924L;
     private final Set<String> messageClassList = new HashSet<>();
     private final String setId;
