@@ -91,7 +91,8 @@ public class StreamingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //register the bezirk middleware
-                bezirk = BezirkMiddleware.registerZirk(getApplicationContext(), "Stream_Sending_Zirk");
+                BezirkMiddleware.initialize(getApplicationContext());
+                bezirk = BezirkMiddleware.registerZirk("Stream_Sending_Zirk");
 
                 //Multicast the StreamReceiveEvent
                 StreamReceiveEvent streamReceiveEvent = new StreamReceiveEvent();

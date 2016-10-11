@@ -26,7 +26,8 @@ public class StreameReceiverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_streame_receiver);
         //register the bezirk middleware
-        bezirk = BezirkMiddleware.registerZirk(getApplicationContext(), "Stream_Receive_Zirk");
+        BezirkMiddleware.initialize(getApplicationContext());
+        bezirk = BezirkMiddleware.registerZirk("Stream_Receive_Zirk");
 
         //#################### Stream Set Receiver#######################//
         ReceiverStreamSet receiverStreamSet = new ReceiverStreamSet();
