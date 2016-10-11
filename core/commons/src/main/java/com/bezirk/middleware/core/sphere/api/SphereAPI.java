@@ -8,13 +8,6 @@ import com.google.zxing.common.BitMatrix;
 
 import java.util.List;
 
-/**
- * SphereAPI - Platform-independent API offered by Bezirk to sphere management
- * application
- *
- * @author Rishabh Gulati, Vimal
- */
-
 public interface SphereAPI {
 
     /**

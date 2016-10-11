@@ -1,13 +1,8 @@
-/**
- *
- */
 package com.bezirk.middleware.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Rishabh Gulati
- */
 public class BezirkDeviceInfo {
     private final String deviceId;
     private final String deviceName;
@@ -25,7 +20,7 @@ public class BezirkDeviceInfo {
         this.deviceType = deviceType;
         this.deviceRole = deviceRole;
         this.deviceActive = deviceActive;
-        this.zirks = zirks;
+        this.zirks = new ArrayList<>(zirks);
     }
 
     /**
@@ -67,7 +62,7 @@ public class BezirkDeviceInfo {
      * @return the zirk info list
      */
     public final List<BezirkZirkInfo> getZirkList() {
-        return zirks;
+        return new ArrayList<>(zirks);
     }
 
     /* (non-Javadoc)
@@ -114,8 +109,8 @@ public class BezirkDeviceInfo {
     }
 
     public enum BezirkDeviceRole {
-        BEZIRK_MEMBER, // this device has control role for this sphere
-        BEZIRK_CONTROL // this device has member role for this sphere
+        BEZIRK_MEMBER,
+        BEZIRK_CONTROL
     }
 
 

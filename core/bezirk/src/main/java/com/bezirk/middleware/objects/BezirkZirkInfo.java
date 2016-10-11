@@ -1,13 +1,7 @@
-/**
- *
- */
 package com.bezirk.middleware.objects;
 
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
-/**
- * @author Rishabh Gulati
- */
 public class BezirkZirkInfo {
     private final String zirkId;
     private final String zirkName;

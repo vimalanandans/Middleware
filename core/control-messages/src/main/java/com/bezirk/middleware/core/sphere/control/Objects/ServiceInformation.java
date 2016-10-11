@@ -2,9 +2,6 @@ package com.bezirk.middleware.core.sphere.control.Objects;
 
 import java.util.HashSet;
 
-/**
- * @author Rishab Gulati
- */
 public class ServiceInformation {
 
     //set of sphereID's the zirk is a part of
@@ -12,11 +9,11 @@ public class ServiceInformation {
     private ServiceVitals serviceVitals;
 
     public HashSet<String> getSphereSet() {
-        return sphereSet;
+        return new HashSet<>(sphereSet);
     }
 
     public void setSphereSet(HashSet<String> sphereSet) {
-        this.sphereSet = sphereSet;
+        this.sphereSet = new HashSet<>(sphereSet);
     }
 
     public ServiceVitals getServiceVitals() {

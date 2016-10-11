@@ -2,9 +2,6 @@ package com.bezirk.middleware.core.sphere.impl;
 
 import java.io.Serializable;
 
-/**
- * @author Rishab Gulati
- */
 public class ServiceVitals implements Serializable {
     private static final long serialVersionUID = -1298410041179461450L;
     private final String serviceName;

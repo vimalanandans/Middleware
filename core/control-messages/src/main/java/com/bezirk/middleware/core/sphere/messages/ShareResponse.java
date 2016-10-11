@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.bezirk.middleware.core.sphere.messages;
 
 import com.bezirk.middleware.core.control.messages.ControlMessage;
@@ -8,9 +5,6 @@ import com.bezirk.middleware.core.control.messages.UnicastControlMessage;
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 
-/**
- * @author rishabh
- */
 public class ShareResponse extends UnicastControlMessage {
 
     private static final Discriminator discriminator = ControlMessage.Discriminator.SHARE_RESPONSE;

@@ -1,6 +1,3 @@
-/**
- * @author Vijet Badigannavar(bvijet@in.bosch.com) & Rishabh
- */
 package com.bezirk.middleware.core.datastorage;
 
 import com.bezirk.middleware.core.sphere.impl.DeviceInformation;

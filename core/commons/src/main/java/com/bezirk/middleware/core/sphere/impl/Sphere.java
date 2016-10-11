@@ -12,9 +12,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * @author Rishab Gulati
- */
 public class Sphere implements Serializable {
     private static final long serialVersionUID = -8206651024005270100L;
     private static final Logger logger = LoggerFactory.getLogger(Sphere.class);

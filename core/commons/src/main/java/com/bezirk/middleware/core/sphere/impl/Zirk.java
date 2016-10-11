@@ -15,21 +15,21 @@ public abstract class Zirk implements Serializable {
     public Zirk(String zirkName, String ownerDeviceId, HashSet<String> sphereSet) {
         this.zirkName = zirkName;
         this.ownerDeviceId = ownerDeviceId;
-        this.sphereSet = sphereSet;
+        this.sphereSet = new HashSet<>(sphereSet);
     }
 
     /**
      * @return the sphereSet
      */
     public Set<String> getSphereSet() {
-        return sphereSet;
+        return new HashSet<>(sphereSet);
     }
 
     /**
      * @param sphereSet the sphereSet to set
      */
     public void setSphereSet(HashSet<String> sphereSet) {
-        this.sphereSet = sphereSet;
+        this.sphereSet = new HashSet<>(sphereSet);
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class Zirk implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((ownerDeviceId == null) ? 0 : ownerDeviceId.hashCode());
-        result = prime * result + (( zirkName == null) ? 0 :  zirkName.hashCode());
+        result = prime * result + ((zirkName == null) ? 0 : zirkName.hashCode());
         result = prime * result + ((sphereSet == null) ? 0 : sphereSet.hashCode());
         return result;
     }
@@ -92,10 +92,10 @@ public abstract class Zirk implements Serializable {
                 return false;
         } else if (!ownerDeviceId.equals(other.ownerDeviceId))
             return false;
-        if ( zirkName == null) {
+        if (zirkName == null) {
             if (other.zirkName != null)
                 return false;
-        } else if (! zirkName.equals(other.zirkName))
+        } else if (!zirkName.equals(other.zirkName))
             return false;
         if (sphereSet == null) {
             if (other.sphereSet != null)

@@ -2,13 +2,9 @@ package com.bezirk.middleware.core.sphere.control.Objects;
 
 import java.util.Arrays;
 
-/**
- * @author Rishab Gulati
- */
 public class SphereInformation {
     private String sphereName;
     private byte[] sphereKey;
-    //private String creatorDeviceName;
     private String creatorDeviceId;
 
     /**
@@ -18,13 +14,6 @@ public class SphereInformation {
      */
     private boolean temporarySphere;
 
-    /*
-    * Currently only a single owner maintained
-    * Can be extended to a list of owners
-    * */
-    //private transient PrivateKey ownerPrivateKey;
-    //private transient PublicKey ownerPublicKey;
-
     private byte[] ownerPrivateKeyBytes;
     private byte[] ownerPublicKeyBytes;
 
@@ -33,14 +22,6 @@ public class SphereInformation {
     * false : member of the sphere
     * */
     private boolean owner;
-
-//    public String getCreatorDeviceName() {
-//        return creatorDeviceName;
-//    }
-//
-//    public void setCreatorDeviceName(String creatorDeviceName) {
-//        this.creatorDeviceName = creatorDeviceName;
-//    }
 
     public boolean isTemporarySphere() {
         return temporarySphere;

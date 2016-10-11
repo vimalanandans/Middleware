@@ -7,8 +7,6 @@ import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 /**
  * This message is used to respond to a SignedControlMessage(discriminator : BEZIRK_SPHERE_LEAVE)
- *
- * @author Rishab Gulati
  */
 public class MemberLeaveResponse extends UnicastControlMessage {
     //private final int requestId;

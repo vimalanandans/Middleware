@@ -7,10 +7,6 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-/**
- * @author Rishab Gulati
- */
 //TODO Move to new package, since this is an object used for encapsulating information to be sent as a signed messages. The control message which uses this object is SignedControlMessage.
 
 public class OwnerLeaveResponse {
@@ -49,10 +45,6 @@ public class OwnerLeaveResponse {
     public ZirkId getServiceId() {
         return serviceId;
     }
-
-//    public BezirkZirkEndPoint getRecipient() {
-//        return recipient;
-//    }
 
     public long getTime() {
         return time;

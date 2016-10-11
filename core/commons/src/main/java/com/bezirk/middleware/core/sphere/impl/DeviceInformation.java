@@ -1,13 +1,7 @@
-/**
- *
- */
 package com.bezirk.middleware.core.sphere.impl;
 
 import java.io.Serializable;
 
-/**
- * @author Rishabh Gulati
- */
 public class DeviceInformation implements Serializable {
 
     private static final long serialVersionUID = -7659289630471500105L;

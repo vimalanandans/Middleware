@@ -8,8 +8,6 @@ import com.google.gson.Gson;
 
 /**
  * This control message is issued by owners to ask other services (mainly members) to leave
- *
- * @author Rishabh Gulati
  */
 public class BezirkSphereLeave extends UnicastControlMessage {
     private static final Discriminator discriminator = ControlMessage.Discriminator.BEZIRK_SPHERE_LEAVE;

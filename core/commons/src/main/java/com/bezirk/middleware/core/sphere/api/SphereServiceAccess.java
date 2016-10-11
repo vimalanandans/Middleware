@@ -1,13 +1,7 @@
-/**
- *
- */
 package com.bezirk.middleware.core.sphere.api;
 
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
-/**
- * @author Rishabh Gulati
- */
 public interface SphereServiceAccess {
 
     /**
