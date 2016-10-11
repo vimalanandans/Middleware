@@ -35,7 +35,7 @@ public abstract class BezirkMiddleware {
     }
 
     /**
-     * Initializes and starts the bezirk {@link android.app.Service}.
+     * Initializes and starts the Bezirk {@link android.app.Service}.
      * <p>
      * Service is started using the supplied <code>config</code>. Once started, Zirk(s) can be
      * registered using {@link BezirkMiddleware#registerZirk(String)}. Bezirk service runs as a
@@ -43,12 +43,13 @@ public abstract class BezirkMiddleware {
      * or by Android OS.
      * </p>
      *
-     * @param config custom configurations to be used by bezirk service
+     * @param config custom configurations to be used by Bezirk service
      *               <ul>
      *               <li>If <code>null</code>, a default configuration is used</li>
-     *               <li>If not <code>null</code>, Bezirk service is created for the current
-     *               application, even if an existing bezirk service(inside the Bezirk Application)
-     *               is running in the device.</li>
+     *               <li>If not <code>null</code>, the Bezirk service is created for the current
+     *               application, even if an existing global instance of the Bezirk service is already
+     *               running on the device (e.g. because the middleware is installed as a standalone
+     *               app on the phone).</li>
      *               </ul>
      * @see #stop()
      */
@@ -58,8 +59,8 @@ public abstract class BezirkMiddleware {
         if (config == null) {
             localBezirkService = !IntentSender.isBezirkAvailableOnDevice(context);
         } else {
-            logger.debug("Custom configuration passed when initializing bezirk, creating custom " +
-                    "bezirk service. Is bezirk service local: {}", localBezirkService);
+            logger.debug("Custom configuration passed when initializing Bezirk, creating custom " +
+                    "Bezirk service. Is Bezirk service local: {}", localBezirkService);
         }
 
         intentSender = new IntentSender(context);
@@ -69,9 +70,8 @@ public abstract class BezirkMiddleware {
 
     /**
      * Register a Zirk with the Bezirk middleware. This makes the Zirk available to the user in
-     * Bezirk configuration interfaces, thus allowing her to place it in a sphere to interact with
-     * other Zirks. This method returns an instance of the Bezirk API for the newly registered
-     * Zirk.
+     * Bezirk configuration interfaces. This method returns an instance of the Bezirk API for the
+     * newly registered Zirk.
      *
      * @param zirkName the name of the Zirk being registered, as defined by the Zirk
      *                 developer/vendor
@@ -81,7 +81,7 @@ public abstract class BezirkMiddleware {
      */
     public static synchronized Bezirk registerZirk(@NotNull final String zirkName) {
         if (serviceManager == null || !serviceManager.isStarted()) {
-            throw new IllegalStateException("Bezirk Service is not running. Start the bezirk " +
+            throw new IllegalStateException("Bezirk Service is not running. Start the Bezirk " +
                     "service using BezirkMiddleware.initialize(Context) or " +
                     "BezirkMiddleware.initialize(Context, Config)");
         }
@@ -90,30 +90,9 @@ public abstract class BezirkMiddleware {
     }
 
     /**
-     * Register a Zirk with the Bezirk middleware. This makes the Zirk available to the user in
-     * Bezirk configuration interfaces, thus allowing her to place it in a sphere to interact with
-     * other Zirks. This method returns an instance of the Bezirk API for the newly registered
-     * Zirk.
-     *
-     * @param zirkName the name of the Zirk being registered, as defined by the Zirk
-     *                 developer/vendor
-     * @return an instance of the Bezirk API for the newly registered Zirk, or <code>null</code> if
-     * a Zirk with the name <code>zirkName</code> is already registered.
-     * @see #initialize(Context)
-     * @deprecated registration of Zirk(s) now requires {@link BezirkMiddleware} to be initialized
-     * using {@link BezirkMiddleware#initialize(Context)}. Once initialized use
-     * {@link #registerZirk(String)} to register a Zirk with the middleware.
-     */
-    @Deprecated
-    public static synchronized Bezirk registerZirk(final Context context, final String zirkName) {
-        initialize(context);
-        return registerZirk(zirkName);
-    }
-
-    /**
-     * Stops the bezirk {@link android.app.Service}.
+     * Stops the Bezirk {@link android.app.Service}.
      * <p>
-     * Once bezirk is stopped, Zirk(s) cannot register with the bezirk service and all
+     * Once Bezirk is stopped, Zirk(s) cannot register with the Bezirk service and all
      * communications between registered Zirks would stop.
      * </p>
      */
