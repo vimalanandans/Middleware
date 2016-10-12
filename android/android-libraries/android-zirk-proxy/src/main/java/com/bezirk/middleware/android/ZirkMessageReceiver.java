@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.actions.ZirkAction;
@@ -16,11 +15,14 @@ import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.Map;
 
 public class ZirkMessageReceiver extends BroadcastReceiver {
-    private static final String TAG = ZirkMessageReceiver.class.getName();
+    private static final Logger logger = LoggerFactory.getLogger(ZirkMessageReceiver.class);    
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -28,7 +30,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         try {
             message = (ZirkAction) intent.getSerializableExtra("message");
         } catch (Exception e) { //to prevent app crash due to  java.io.InvalidClassException
-            Log.w(TAG, "Failed to read serialized message from intent", e);
+            logger.warn("Failed to read serialized message from intent", e);
             return;
         }
 
@@ -38,19 +40,19 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
                     processEvent((UnicastEventAction) message);
                     break;
                 default:
-                    Log.e(TAG, "Unimplemented action: " + message.getAction());
+                    logger.error("Unimplemented action: " + message.getAction());
             }
         }
     }
 
     private boolean isValidRequest(ZirkId receivedZirkId) {
         if (ProxyClient.context == null) {
-            Log.e(TAG, "Application is not started");
+            logger.error("Application is not started");
             return false;
         }
 
         if (!isRequestForCurrentApp(receivedZirkId.getZirkId())) {
-            Log.e(TAG, "Intent is not for this Service");
+            logger.error("Intent is not for this Service");
             return false;
         }
 

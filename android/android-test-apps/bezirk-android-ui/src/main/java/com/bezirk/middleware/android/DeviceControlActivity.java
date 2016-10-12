@@ -6,13 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-
 
 import com.bezirk.middleware.android.ui.R;
 import com.bezirk.middleware.core.actions.BezirkAction;
@@ -178,8 +176,8 @@ public class DeviceControlActivity extends AppCompatActivity
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "Received Intent for Device control >" + intent.getAction());
-            Log.d(TAG, "Command >" + intent.getStringExtra("Command"));
+            logger.debug("Received Intent for Device control >" + intent.getAction());
+            logger.debug("Command >" + intent.getStringExtra("Command"));
         }
     }
 }

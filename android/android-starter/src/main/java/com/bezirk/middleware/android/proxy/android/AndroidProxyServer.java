@@ -12,23 +12,28 @@ import com.bezirk.middleware.core.actions.SubscriptionAction;
 import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.core.proxy.ProxyServer;
 
-public class AndroidProxyServer extends ProxyServer {
-    private static final String TAG = AndroidProxyServer.class.getName();
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    public AndroidProxyServer(IdentityManager identityManager) { super(identityManager); }
+public class AndroidProxyServer extends ProxyServer {
+    private static final Logger logger = LoggerFactory.getLogger(AndroidProxyServer.class);
+
+    public AndroidProxyServer(IdentityManager identityManager) {
+        super(identityManager);
+    }
 
     public void registerZirk(Intent intent) {
         final RegisterZirkAction registrationAction =
                 (RegisterZirkAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_REGISTER.getName());
 
-        Log.v(TAG, "Zirk registration received by Bezirk. Name: " + registrationAction.getZirkName()
+        logger.trace("Zirk registration received by Bezirk. Name: " + registrationAction.getZirkName()
                 + ", ID: {}" + registrationAction.getZirkId());
 
         super.registerZirk(registrationAction);
     }
 
     public void subscribeService(Intent intent) {
-        Log.v(TAG, "Received subscription from zirk");
+        logger.trace("Received subscription from zirk");
 
         final SubscriptionAction subscriptionAction =
                 (SubscriptionAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_SUBSCRIBE.getName());
@@ -37,7 +42,7 @@ public class AndroidProxyServer extends ProxyServer {
     }
 
     public void unsubscribeService(Intent intent) {
-        Log.v(TAG, "Received unsubscribe from zirk");
+        logger.trace("Received unsubscribe from zirk");
 
         final SubscriptionAction subscriptionAction =
                 (SubscriptionAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE.getName());
@@ -50,7 +55,7 @@ public class AndroidProxyServer extends ProxyServer {
     }
 
     public void sendMulticastEvent(Intent intent) {
-        Log.v(TAG, "Received multicast message from zirk");
+        logger.trace("Received multicast message from zirk");
 
         final SendMulticastEventAction eventAction =
                 (SendMulticastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_MULTICAST_EVENT.getName());
@@ -59,7 +64,7 @@ public class AndroidProxyServer extends ProxyServer {
     }
 
     public void sendUnicastEvent(Intent intent) {
-        Log.v(TAG, "Received unicast message from zirk");
+        logger.trace("Received unicast message from zirk");
 
         final UnicastEventAction eventAction =
                 (UnicastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName());
@@ -70,7 +75,7 @@ public class AndroidProxyServer extends ProxyServer {
     public void setLocation(Intent intent) {
         SetLocationAction locationAction = (SetLocationAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_SET_LOCATION.getName());
 
-        Log.v(TAG, "Received location " + locationAction.getLocation() + " from zirk");
+        logger.trace("Received location " + locationAction.getLocation() + " from zirk");
 
         super.setLocation(locationAction);
     }

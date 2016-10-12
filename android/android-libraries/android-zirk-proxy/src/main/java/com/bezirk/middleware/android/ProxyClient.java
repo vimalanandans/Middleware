@@ -23,6 +23,8 @@ import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +33,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class ProxyClient implements Bezirk {
+    private static final Logger logger = LoggerFactory.getLogger(ProxyClient.class);
     protected static final Map<String, List<EventSet>> eventSetMap = new ConcurrentHashMap<>();
-    private static final String TAG = ProxyClient.class.getName();
     protected static Context context;
     private static IntentSender intentSender;
     private final ZirkId zirkId;
@@ -46,7 +48,7 @@ public final class ProxyClient implements Bezirk {
 //        intent.setComponent(RECEIVING_COMPONENT);
 //        boolean boundService = context.bindService(intent,
 //                ClientIdentityManagerAdapter.remoteConnection, Context.BIND_AUTO_CREATE);
-//        Log.d(TAG, "Binding to identity management service status: "+ boundService);
+//        logger.debug("Binding to identity management service status: "+ boundService);
 
         this.zirkId = zirkId;
         this.identityManager = new ClientIdentityManagerAdapter();
@@ -62,7 +64,7 @@ public final class ProxyClient implements Bezirk {
             throw new IllegalArgumentException("Cannot register a Zirk with a null name");
         }
 
-        Log.d(TAG, "Attempting to register Zirk: " + zirkName);
+        logger.debug("Attempting to register Zirk: " + zirkName);
 
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (sharedPreferences == null) {
@@ -71,10 +73,10 @@ public final class ProxyClient implements Bezirk {
         }
 
         String zirkIdAsString = sharedPreferences.getString(zirkName, null);
-        Log.d(TAG, "zirkIdAsString from sharedPreferences: " + zirkIdAsString);
+        logger.debug("zirkIdAsString from sharedPreferences: " + zirkIdAsString);
         if (zirkIdAsString == null) {
             zirkIdAsString = UUID.randomUUID().toString();
-            Log.d(TAG, "Generated zirkId: " + zirkIdAsString);
+            logger.debug("Generated zirkId: " + zirkIdAsString);
 
             final SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(zirkName, zirkIdAsString);
@@ -84,7 +86,7 @@ public final class ProxyClient implements Bezirk {
         final ZirkId zirkId = new ZirkId(zirkIdAsString);
 
         if (intentSender.sendBezirkIntent(new RegisterZirkAction(zirkId, zirkName))) {
-            Log.d(TAG, "Registered Zirk: " + zirkName);
+            logger.debug("Registered Zirk: " + zirkName);
             return zirkId;
         }
 
@@ -93,13 +95,13 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void unregisterZirk() {
-        Log.d(TAG, "Unregister request for zirkID: " + zirkId.getZirkId());
+        logger.debug("Unregister request for zirkID: " + zirkId.getZirkId());
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         Map<String, ?> keys = sharedPreferences.getAll();
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
             if (entry.getValue().toString().equalsIgnoreCase(zirkId.getZirkId())) {
-                Log.d(TAG, "Unregistering zirk: " + entry.getKey());
+                logger.debug("Unregistering zirk: " + entry.getKey());
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.remove(entry.getKey());
                 editor.apply();
@@ -110,13 +112,13 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void subscribe(final MessageSet messageSet) {
-        Log.d(TAG, "subscribe method of ProxyClient");
+        logger.debug("subscribe method of ProxyClient");
         if (messageSet instanceof EventSet) {
-            Log.d(TAG, "messageSet instanceof EventSet in ProxyClient");
+            logger.debug("messageSet instanceof EventSet in ProxyClient");
             //EventSet.EventReceiver listener = ((EventSet) messageSet).getEventReceiver();
             addMessagesToMap((EventSet) messageSet, eventSetMap);
         } else {
-            Log.d(TAG, "messageSet is unKnown:  in ProxyClient");
+            logger.debug("messageSet is unKnown:  in ProxyClient");
             throw new AssertionError("Unknown MessageSet type: " +
                     messageSet.getClass().getSimpleName());
         }
@@ -163,7 +165,7 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(Event event) {
-        Log.d(TAG, "sendEvent One....");
+        logger.debug("sendEvent One....");
         sendEvent(new RecipientSelector(new Location("null/null/null")), event);
     }
 

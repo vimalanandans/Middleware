@@ -2,7 +2,6 @@ package com.bezirk.middleware.android;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,14 @@ import android.widget.ToggleButton;
 import com.bezirk.middleware.android.ui.R;
 import com.bezirk.middleware.core.util.ValidatorUtility;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GenericListItemView extends ArrayAdapter<DataModel> {
+    private static final Logger logger = LoggerFactory.getLogger(GenericListItemView.class);
     private final Activity context;
 
     private final List<DataModel> data;
@@ -63,16 +66,16 @@ public class GenericListItemView extends ArrayAdapter<DataModel> {
             final ToggleButton toggle = (ToggleButton) rowView.findViewById(R.id.listToggleButton);
             if (ValidatorUtility.isObjectNotNull(toggle)) {
                 toggle.setVisibility(View.VISIBLE);
-               // data.get(position).setToggleButtonState(BezirkRestCommsManager.getInstance().isStarted());
+                // data.get(position).setToggleButtonState(BezirkRestCommsManager.getInstance().isStarted());
                 data.get(position).setToggleButtonState(false);
                 toggle.setChecked(data.get(position).isToggleButtonState());
                 toggle.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View arg0) {
                         data.get(position).setToggleButtonState(toggle.isChecked());
-                        Log.i("GeneralListItemView", "Button pressed! > " + data.get(position).isToggleButtonState());
+                        logger.trace("Button pressed! > " + data.get(position).isToggleButtonState());
                         if (itemToggleListener == null) {
-                            Log.i("GeneralListItemView", "activity not registered with Toggle button listener " +
+                            logger.trace("activity not registered with Toggle button listener " +
                                     data.get(position).isToggleButtonState());
                         } else {
                             itemToggleListener.onItemToggleListener(position, toggle.isChecked());
@@ -84,7 +87,7 @@ public class GenericListItemView extends ArrayAdapter<DataModel> {
         }
 
         if (warningIcon == null) {
-            Log.d("TAG", "Warning icon is null");
+            logger.trace("Warning icon is null");
         } else {
             if (data.get(position).isIcon()) {
                 warningIcon.setVisibility(View.VISIBLE);
