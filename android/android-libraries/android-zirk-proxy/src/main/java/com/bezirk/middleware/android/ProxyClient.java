@@ -154,12 +154,11 @@ public final class ProxyClient implements Bezirk {
             for (List<EventSet> eventSets : eventSetMap.values()) {
                 if (eventSets.contains(messageSet)) {
                     eventSets.remove(messageSet);
-                    return intentSender.sendBezirkIntent(
-                            new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId, messageSet));
                 }
             }
         }
-        return false;
+        return intentSender.sendBezirkIntent(
+                new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId, messageSet));
     }
 
     @Override

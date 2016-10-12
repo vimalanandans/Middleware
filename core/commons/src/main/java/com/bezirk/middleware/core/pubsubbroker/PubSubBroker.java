@@ -89,7 +89,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         if (isPubSubPassed) {
             // Step 2: moved to outside since the sphere persistence is not ready
         } else {
-            logger.error("PubSubBroker Registration failed, Zirk ID is already registered");
+            logger.info("PubSubBroker: Zirk ID is already registered");
         }
 
         if (sphereServiceAccess != null) {

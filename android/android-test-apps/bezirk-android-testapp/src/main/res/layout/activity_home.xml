@@ -55,19 +55,6 @@
             android:text="@string/advanced_tests" />
 
         <TextView
-            android:id="@+id/stream_test_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="" />
-
-        <Button
-            android:id="@+id/stream_test_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:text="@string/stream_tests" />
-
-        <TextView
             android:id="@+id/stop_bezirk_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

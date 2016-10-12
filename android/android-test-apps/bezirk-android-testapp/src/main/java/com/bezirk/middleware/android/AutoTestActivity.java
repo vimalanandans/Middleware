@@ -30,7 +30,11 @@ public class AutoTestActivity extends AppCompatActivity {
     private static final String SUBSCRIBER_ID = deviceName + ":AutoTest:Subscriber";
     private static final String RESULT_MESSAGE = "Test finished successfully";
 
-    private final int noOfMessageRounds = 10; //Number of messages to be published [and get the response back for]
+    //Number of messages to be published [and get the response back for]
+    private static final int NO_OF_MESSAGE_ROUNDS = 10;
+
+    //Interval between each message being sent by the publisher
+    private static final int INTERVAL = 50;
 
     private int noOfResponsesReceived; //number of unicast responses received by the publisher
     private Bezirk publisherBezirk;
@@ -58,9 +62,16 @@ public class AutoTestActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //BezirkMiddleware.initialize(this);
         subscriberZirk();
         publisherZirk();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        subscriberBezirk.unsubscribe(houseInfoEventSetForSubscriber);
+        publisherBezirk.unsubscribe(houseInfoEventSetForPublisher);
+
     }
 
     private void subscriberZirk() {
@@ -89,7 +100,7 @@ public class AutoTestActivity extends AppCompatActivity {
                     UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
                     if (acceptedEventUpdate.getSender().equalsIgnoreCase(SUBSCRIBER_ID)) {
                         publisherTextView.append(acceptedEventUpdate.toString() + "\n");
-                        if (++noOfResponsesReceived == noOfMessageRounds) {
+                        if (++noOfResponsesReceived == NO_OF_MESSAGE_ROUNDS) {
                             resultTextView.append(RESULT_MESSAGE);
                         }
                     }
@@ -105,7 +116,7 @@ public class AutoTestActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                if (pollenLevel == noOfMessageRounds) {
+                if (pollenLevel == NO_OF_MESSAGE_ROUNDS) {
                     cancel();
                 }
                 AirQualityUpdateEvent airQualityUpdateEvent = new AirQualityUpdateEvent();
@@ -114,16 +125,6 @@ public class AutoTestActivity extends AppCompatActivity {
 
                 publisherBezirk.sendEvent(airQualityUpdateEvent);
             }
-        }, 0, 50);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        subscriberBezirk.unsubscribe(houseInfoEventSetForSubscriber);
-        publisherBezirk.unsubscribe(houseInfoEventSetForPublisher);
-        //publisherBezirk.unregisterZirk();
-        //subscriberBezirk.unregisterZirk();
-        //BezirkMiddleware.stop();
+        }, 0, INTERVAL);
     }
 }
