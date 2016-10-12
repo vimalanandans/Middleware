@@ -6,12 +6,10 @@ package com.bezirk.middleware.messages;
  * their custom attributes and simple, small payloads.
  * <p>
  * An <code>Event</code> is used to represent simple messages that communicate one request, reply, or
- * notification. To combine multiple messages into one send or to include non-trivial message
- * payloads, use the {@link StreamDescriptor} class.
+ * notification.
  * </p>
  *
  * @see Message
- * @see StreamDescriptor
  */
 public class Event extends Message {
     private static final long serialVersionUID = 2069566077448432587L;

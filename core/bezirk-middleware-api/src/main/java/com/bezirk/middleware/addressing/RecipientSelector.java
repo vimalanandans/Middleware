@@ -16,7 +16,6 @@ import java.io.Serializable;
  * </p>
  *
  * @see Event
- * @see StreamDescriptor
  * @see Location
  */
 public class RecipientSelector implements Serializable {

@@ -20,7 +20,7 @@ import java.util.UUID;
  * a re-usable interface can be unnecessary and cumbersome.  You can choose whichever suits your needs.
  * </p><p>
  * To create an interface, Zirk creators should extend the message set class that matches the type
- * of message(s) they want to receive, either {@link EventSet} or {@link StreamSet}. For example:
+ * of message(s) they want to receive, such as an {@link EventSet}. For example:
  * </p>
  * <pre>
  *     public class CarObservationEvents extends EventSet {
@@ -67,7 +67,6 @@ import java.util.UUID;
  * </pre>
  *
  * @see Event
- * @see StreamDescriptor
  */
 public abstract class MessageSet implements Serializable {
     private static final long serialVersionUID = -6232492956322531924L;
