@@ -10,6 +10,9 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * API to register Zirks, fetch the Bezirk API, and manage the lifecycle of the middleware on Android.
+ */
 public abstract class BezirkMiddleware {
     private static final Logger logger = LoggerFactory.getLogger(BezirkMiddleware.class);
     private static Context context;
@@ -18,7 +21,8 @@ public abstract class BezirkMiddleware {
     private static ServiceManager serviceManager;
 
     /**
-     * Initializes and starts the bezirk {@link android.app.Service}.
+     * Initializes and starts the bezirk
+     * <a target="_blank" href="https://developer.android.com/reference/android/app/Service.html">Service</a>.
      * <p>
      * Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}.
      * {@link BezirkMiddleware} is started using default configurations {@link Config} unless

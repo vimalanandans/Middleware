@@ -5,6 +5,9 @@ import com.bezirk.middleware.core.proxy.Config;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * API to register Zirks, fetch the Bezirk API, and manage the lifecycle of the middleware on Java SE.
+ */
 public abstract class BezirkMiddleware {
 
     /**
