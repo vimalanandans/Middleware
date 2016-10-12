@@ -1,2 +1,0 @@
-- Change adding devices in scanActivity
-- Cancel and Confirm Buttons (e.g. in selectServiceActivity) --> Data shouldn't be saved unless Confirm is clicked

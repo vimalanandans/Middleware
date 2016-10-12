@@ -1,0 +1,36 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion project.androidCompileSdkVersion.toInteger()
+    buildToolsVersion project.androidBuildToolsVersion
+
+    lintOptions {
+        abortOnError false
+    }
+    defaultConfig {
+        applicationId "com.bezirk.middleware.android.testApp"
+        minSdkVersion project.androidMinSdkVersion.toInteger()
+        targetSdkVersion project.androidTargetSdkVersion.toInteger()
+        versionCode project.androidVersionCode.toInteger()
+        versionName project.androidVersionName
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    compile "com.android.support:appcompat-v7:${project.androidSupportLibraryVersion}"
+    compile 'com.android.support:design:23.1.1'
+
+    //for getting android device names (https://github.com/jaredrummler/AndroidDeviceNames)
+    compile 'com.jaredrummler:android-device-names:1.1.0'
+
+    compile project(':android:android-libraries:android-zirk-proxy')
+    compile project(':core:testapp-core')
+    compile project(':core:remote-logging')
+}

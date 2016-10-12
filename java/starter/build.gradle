@@ -1,43 +1,29 @@
 apply plugin: 'java'
 dependencies {
-    compile project(':core:bezirk-middleware-api')
-    compile project(':core:bezirk')
-    compile project(':core:control-messages')
     compile project(':core:commons')
-    compile project(':core:comms:comms-udp')
-    //compile project(':core:comms:comms-jyre')
-    compile project(':core:comms:comms-factory')
-    compile project(':core:pipes')
-    compile project(':java:libraries:comms-zyre-jni')
+    compile project(':core:identity-management')
+    compile project(':core:data-storage')
+    compile project(':core:remote-logging')
 
-    // Enable this to include Bezirk-RTC
-    //	compile project(':bezirk-pc-rtc')
+    //pure java comms
+    compile project(':core:comms:comms-jmq')
+
+    //jni comms
+    //compile project(':java:libraries:comms-zyre-jni')
 
     compile 'org.apache.shiro:shiro-core:1.2.4'
     compile 'ch.qos.logback:logback-classic:1.1.3'
     compile 'ch.qos.logback:logback-core:1.1.3'
-    compile 'com.google.zxing:core:2.3.0'
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.google.zxing:core:3.2.1'
+    compile 'com.google.code.gson:gson:2.7'
     compile 'org.xerial:sqlite-jdbc:3.7.2'
-    compile 'org.springframework:spring-context:4.1.4.RELEASE'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:1.10.19'
 }
 
-test {
-    exclude 'com/bezirk/network/test/**'
-
-    // Automatically add the temporary directory where Bezirk dumps the ZeroMQ dependencies
-    // to java.library.path
-    def final String zeromqDir = System.getProperty("java.library.path") + File.pathSeparator +
-            System.getProperty("java.io.tmpdir") + "lib-zeromq-bin" + File.separator
-    systemProperty "java.library.path", zeromqDir
-}
-
 task deleteDb(type: Delete) {
-    //println 'Deleting db - uhu_spheres.sqlite'
-    delete 'uhu_spheres.sqlite'
+    delete 'mw_database.sqlite'
 }
 
 clean.dependsOn deleteDb

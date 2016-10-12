@@ -1,13 +1,12 @@
 description = "Bezirk-java: modules that run within a jvm and use Plain-Old-Java"
 
 subprojects {
-    apply plugin: 'java'
-    //apply from: "${rootDir}/gradle-plugins/script/java-support.gradle"
-    //apply from: "${rootDir}/gradle-plugins/script/maven-publishing-java.gradle"
-    //apply from: "${rootDir}/gradle-plugins/script/native.gradle"
-    apply from: "${rootDir}/gradle-plugins/script/artifactory-publishing-java.gradle"
 
+    apply plugin: 'java'
+    //apply from: "${rootDir}/gradle-plugins/artifactory-jar-publish.gradle"
+	
     sourceCompatibility = 1.7
+	apply from: "${rootDir}/gradle-plugins/scripts/build-dist.gradle"
 }
 
 buildscript {
@@ -15,6 +14,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+//        Gradle 1.x/2.0, gradle-license-plugin 0.10.0 (and earlier)
         classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.10.0'
         classpath 'org.ajoberstar:gradle-jacoco:0.1.0'
         classpath files("gradle-plugins/jar/release-plugin-0.2.jar")

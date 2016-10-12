@@ -1,0 +1,38 @@
+apply plugin: 'application'
+apply plugin: 'java'
+
+// The class to start from the starter scripts
+mainClassName = "com.bezirk.middleware.DownloadDependencies"
+
+/* Base dir for this project (used to reference root of unziped
+ * distribution) */
+def artifactBase ="${project.name}-${project.version}"
+
+// exclude the source jars from the distZip
+applicationDistribution.exclude('*-sources.jar')
+repositories {
+
+    mavenCentral()
+    // Add other repositories here
+}
+
+// Collect distribution files from each Middleware service and stage into Middleware/unpacked/dist-core
+task stageDistFiles(type: Copy) {
+	def artifactZipBase ="${project.name}/build/distributions/${artifactBase}.zip"
+    def zipFile = file("../${artifactZipBase}")
+    def outputDir = file("${rootDir}/build/distJars")
+    
+    from zipTree(zipFile)
+    into outputDir
+}
+
+// Collect all distribution files from each Middleware/java service and stage into Middleware/build/dist
+task stageDistFilesCopy(type: Copy)  {
+    dependsOn {[stageDistFiles]}
+    def outputDir = "${rootDir}/build/distJars"
+    def outputJarDir = file("${rootDir}/build/dist")
+
+    from "$outputDir/$artifactBase/lib"
+    include "*.jar"
+    into outputJarDir
+}

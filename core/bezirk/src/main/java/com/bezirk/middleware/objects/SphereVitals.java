@@ -1,11 +1,5 @@
-/**
- *
- */
 package com.bezirk.middleware.objects;
 
-/**
- * @author Rishabh Gulati
- */
 public final class SphereVitals {
     private final byte[] sphereKey;
     private final byte[] publicKey;

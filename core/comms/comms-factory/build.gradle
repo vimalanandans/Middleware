@@ -8,8 +8,6 @@ jar {
 dependencies {
     compile project(':core:control-messages')
     compile project(':core:commons')
-    compile project(':core:comms:comms-udp')
-    //compile project(':core:comms:comms-jyre')
     compile 'org.slf4j:slf4j-api:1.7.6'
 }
 

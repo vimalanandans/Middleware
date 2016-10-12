@@ -2,28 +2,22 @@ package com.bezirk.middleware.objects;
 
 import java.util.ArrayList;
 
-/**
- * @author Rishabh Gulati
- */
 public class BezirkSphereInfo {
     private final String sphereID;
     private final String sphereName;
     private final String sphereType;
     private final ArrayList<BezirkDeviceInfo> deviceList;
-    private final ArrayList<BezirkPipeInfo> pipeList;
-    // is this device is wons this sphere.
-    // This is used only in local device. hence tostring doesn't have
+
+    // current device owns this sphere.
     private boolean isThisDeviceOwnsSphere;
 
     public BezirkSphereInfo(final String sphereID, final String sphereName,
                             final String sphereType,
-                            final ArrayList<BezirkDeviceInfo> deviceList,
-                            final ArrayList<BezirkPipeInfo> pipeList) {
+                            final ArrayList<BezirkDeviceInfo> deviceList) {
         this.sphereID = sphereID;
         this.sphereType = sphereType;
         this.sphereName = sphereName;
-        this.deviceList = deviceList;
-        this.pipeList = pipeList;
+        this.deviceList = new ArrayList<>(deviceList);
     }
 
     /**
@@ -32,11 +26,7 @@ public class BezirkSphereInfo {
      */
 
     public BezirkSphereInfo(BezirkSphereInfo other) {
-        this.sphereID = other.sphereID;
-        this.sphereType = other.sphereType;
-        this.sphereName = other.sphereName;
-        this.deviceList = other.deviceList;
-        this.pipeList = other.pipeList;
+        this(other.sphereID, other.sphereName, other.sphereType, other.deviceList);
     }
 
 
@@ -76,14 +66,7 @@ public class BezirkSphereInfo {
      * @return the deviceList
      */
     public final ArrayList<BezirkDeviceInfo> getDeviceList() {
-        return deviceList;
-    }
-
-    /**
-     * @return the pipeList
-     */
-    public final ArrayList<BezirkPipeInfo> getPipeList() {
-        return pipeList;
+        return new ArrayList<>(deviceList);
     }
 
     /* (non-Javadoc)
@@ -92,8 +75,8 @@ public class BezirkSphereInfo {
     @Override
     public String toString() {
         return "BezirkSphereInfo [sphereID=" + sphereID + ",\nsphereName="
-                + sphereName + ",\nsphereType=" + sphereType + ",\ndeviceList=" + deviceList + ",\npipeList="
-                + pipeList + "]";
+                + sphereName + ",\nsphereType=" + sphereType + ",\ndeviceList=" + deviceList +
+                "]";
     }
 
 

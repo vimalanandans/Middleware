@@ -1,0 +1,19 @@
+package com.bezirk.middleware.core.datastorage;
+
+
+public interface ProxyPersistence {
+    /**
+     * Persists the ProxyRegistry
+     *
+     * @throws Exception if persisting is not possible
+     */
+    void persistBezirkProxyRegistry() throws DataStorageException;
+
+    /**
+     * Loads the ProxyRegistry
+     *
+     * @return ProxyRegistry
+     * @throws Exception if loading is not possible
+     */
+    ProxyRegistry loadBezirkProxyRegistry() throws DataStorageException;
+}

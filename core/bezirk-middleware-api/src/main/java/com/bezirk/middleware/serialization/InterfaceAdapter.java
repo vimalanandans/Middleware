@@ -1,65 +1,61 @@
-/**
- * This file is part of Bezirk-Middleware-API.
- * <p>
- * Bezirk-Middleware-API is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * </p>
- * <p>
- * Bezirk-Middleware-API is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * </p>
- * You should have received a copy of the GNU General Public License
- * along with Bezirk-Middleware-API.  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.bezirk.middleware.serialization;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 
+/**
+ * This class implements an adapter for serializing and deserializing classes that will need to be
+ * deserialized to an abstract or interface type using GSON. For example, an
+ * {@link com.bezirk.middleware.messages.EventSet} may need to be deserialized as a
+ * {@link com.bezirk.middleware.messages.MessageSet}, in which case the instance of GSON being used
+ * must be initialized with an adapter instantiated for <code>EventSet</code>.
+ *
+ * @param <T> the type of the class being serialized or deserialized
+ */
 public class InterfaceAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
-    @Override
-    public JsonElement serialize(T object, Type interfaceType, JsonSerializationContext context) {
-        final JsonObject wrapper = new JsonObject();
-        wrapper.addProperty("type", object.getClass().getName());
-        wrapper.add("data", new Gson().toJsonTree(object));
-        return wrapper;
+    private final Gson gson;
+
+    public InterfaceAdapter() {
+        gson = new Gson();
+    }
+
+    public InterfaceAdapter(Class type, Object chainedAdapter) {
+        final GsonBuilder gsonBuilder = new GsonBuilder();
+
+        gsonBuilder.registerTypeHierarchyAdapter(type, chainedAdapter);
+
+        gson = gsonBuilder.create();
     }
 
     @Override
-    public T deserialize(JsonElement elem, Type interfaceType, JsonDeserializationContext context) throws JsonParseException {
-        final JsonObject wrapper = (JsonObject) elem;
-        final JsonElement typeName = get(wrapper, "type");
-        final JsonElement data = get(wrapper, "data");
-        final Type actualType = typeForName(typeName);
-        return new Gson().fromJson(data, actualType);
+    public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {
+        JsonObject result = new JsonObject();
+        result.add("type", new JsonPrimitive(src.getClass().getName()));
+        result.add("properties", gson.toJsonTree(src, src.getClass()));
+        return result;
     }
 
-    private Type typeForName(final JsonElement typeElem) {
+    @Override
+    public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
+        JsonObject jsonObject = json.getAsJsonObject();
+        String type = jsonObject.get("type").getAsString();
+        JsonElement element = jsonObject.get("properties");
+
         try {
-            return Class.forName(typeElem.getAsString());
-        } catch (ClassNotFoundException e) {
-            throw new JsonParseException(e);
+            return (T) gson.fromJson(element, Class.forName(type));
+        } catch (ClassNotFoundException cnfe) {
+            throw new JsonParseException("Unknown element type: " + type, cnfe);
         }
     }
-
-    private JsonElement get(final JsonObject wrapper, String memberName) {
-        final JsonElement elem = wrapper.get(memberName);
-        if (elem == null)
-            throw new JsonParseException("no '" + memberName + "' member found in what was expected to be an interface wrapper");
-        return elem;
-    }
-
-
 }

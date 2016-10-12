@@ -1,0 +1,128 @@
+package com.bezirk.middleware.android;
+
+import android.content.Intent;
+
+import com.bezirk.middleware.core.actions.BezirkAction;
+import com.bezirk.middleware.core.actions.StartServiceAction;
+import com.bezirk.middleware.core.actions.StopServiceAction;
+import com.bezirk.middleware.core.componentManager.LifeCycleCallbacks;
+import com.bezirk.middleware.android.proxy.android.AndroidProxyServer;
+import com.bezirk.middleware.core.util.ValidatorUtility;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Takes care of processing intent action based on type.
+ * Handles zirk actions, send actions, stack actions and bezirk device actions.
+ */
+public final class ActionProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(ActionProcessor.class);
+
+    /**
+     * Process BezirkAction based on action type.
+     */
+    public void processBezirkAction(Intent intent, AndroidProxyServer proxyService,
+                                    LifeCycleCallbacks lifeCycleCallbacks) {
+
+        BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
+
+        if (ValidatorUtility.isObjectNotNull(intentAction)) {
+            logger.debug("intentAction is not null in ActionProcessor");
+            if (logger.isDebugEnabled())
+                logger.debug("Received intent, action: {}", intentAction.getName());
+
+            BezirkAction.ActionType actionType = intentAction.getType();
+            logger.debug("actionType is "+actionType);
+            switch (actionType) {
+                case BEZIRK_STACK_ACTION:
+                    processBezirkStackAction(intent, intentAction, lifeCycleCallbacks);
+                    break;
+                case DEVICE_ACTION:
+                    logger.warn("Not handling device actions in Bezirk currently.");
+                    //processDeviceActions(intentAction, service);
+                    break;
+                case SEND_ACTION:
+                    logger.debug("processBezirkAction method");
+                    processSendActions(intentAction, intent, proxyService);
+                    break;
+                case ZIRK_ACTION:
+                    processZirkActions(intentAction, intent, proxyService);
+                    break;
+                default:
+                    logger.warn("Received unknown intent action: " + intentAction.getName());
+                    break;
+            }
+        } else {
+            if (logger.isWarnEnabled())
+                logger.warn("Received unknown intent action: {}", intent.getAction());
+        }
+
+    }
+
+    private void processBezirkStackAction(Intent intent, BezirkAction intentAction,
+                                          LifeCycleCallbacks lifeCycleCallbacks) {
+        switch (intentAction) {
+            case ACTION_START_BEZIRK:
+                StartServiceAction startServiceAction =
+                        (StartServiceAction) intent.getSerializableExtra(BezirkAction.ACTION_START_BEZIRK.getName());
+                lifeCycleCallbacks.start(startServiceAction);
+                break;
+            case ACTION_STOP_BEZIRK:
+                StopServiceAction stopServiceAction =
+                        (StopServiceAction) intent.getSerializableExtra(BezirkAction.ACTION_START_BEZIRK.getName());
+                lifeCycleCallbacks.stop(stopServiceAction);
+                break;
+            case ACTION_REBOOT:
+                logger.debug("Not handling Reboot");
+                break;
+            case ACTION_CLEAR_PERSISTENCE:
+                logger.debug("Not handling clear persistence");
+                break;
+            default:
+                if (logger.isWarnEnabled())
+                    logger.warn("Received unknown intent action: {}", intent.getAction());
+                break;
+        }
+    }
+
+    private void processZirkActions(BezirkAction intentAction, Intent intent,
+                                    AndroidProxyServer proxyService) {
+        switch (intentAction) {
+            case ACTION_BEZIRK_REGISTER:
+                proxyService.registerZirk(intent);
+                break;
+            case ACTION_BEZIRK_SUBSCRIBE:
+                proxyService.subscribeService(intent);
+                break;
+            case ACTION_BEZIRK_SET_LOCATION:
+                proxyService.setLocation(intent);
+                break;
+            case ACTION_BEZIRK_UNSUBSCRIBE:
+                proxyService.unsubscribeService(intent);
+                break;
+            default:
+                if (logger.isWarnEnabled())
+                    logger.warn("Received unknown intent action: {}", intent.getAction());
+                break;
+        }
+    }
+
+    private void processSendActions(BezirkAction intentAction, Intent intent,
+                                    AndroidProxyServer proxyService) {
+        logger.debug("intentAction in ActionProcessor is "+intentAction);
+        switch (intentAction) {
+            case ACTION_ZIRK_SEND_MULTICAST_EVENT:
+                logger.debug("In ACTION_ZIRK_SEND_MULTICAST_EVENT");
+                proxyService.sendMulticastEvent(intent);
+                break;
+            case ACTION_ZIRK_SEND_UNICAST_EVENT:
+                proxyService.sendUnicastEvent(intent);
+                break;
+            default:
+                if (logger.isWarnEnabled())
+                    logger.warn("Received unknown intent action: {}", intent.getAction());
+                break;
+        }
+    }
+}

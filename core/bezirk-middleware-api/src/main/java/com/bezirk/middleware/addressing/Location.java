@@ -1,34 +1,16 @@
-/**
- * This file is part of Bezirk-Middleware-API.
- * <p>
- * Bezirk-Middleware-API is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * </p>
- * <p>
- * Bezirk-Middleware-API is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * </p>
- * You should have received a copy of the GNU General Public License
- * along with Bezirk-Middleware-API.  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.bezirk.middleware.addressing;
 
-import com.bezirk.middleware.BezirkListener;
-import com.bezirk.middleware.messages.ProtocolRole;
+import com.bezirk.middleware.messages.MessageSet;
 
 import java.io.Serializable;
 
 /**
  * A <code>Location</code> represents a <em>semantic address</em> that specifies the
  * physical location of a Thing or a set of Things. Typically, messages are broadcast
- * within a sphere and filtered based on the message's topic (topics are specified in
- * {@link com.bezirk.middleware.messages.ProtocolRole ProtocolRoles}), which may be too
- * coarse-grained for some cases. A semantic address is used to more precisely scope
- * message recipients after topic-based filtering occurs.
+ * within a subnet and filtered per-Zirk based on the messages in the various
+ * {@link MessageSet MessageSets} each Zirk is subscribed to, which may be too coarse-grained
+ * for some cases. A semantic address is used to more precisely scope message recipients
+ * after message-based filtering occurs.
  * <h1>Scopes</h1>
  * <p>
  * To spatially select a Thing or set of Things, a semantic address contains three levels of
@@ -37,17 +19,17 @@ import java.io.Serializable;
  * <ul>
  * <li>A <em>wide scope</em> denotes a large spatial area. For example,
  * the floor of a building (e.g. &quot;floor 1&quot;) represents a wide scope, which can
- * contain many things.</li>
+ * contain many Things.</li>
  * <li>An <em>intermediate scope</em> denotes a smaller spatial area. Building on the previous
  * example, specifying a room on floor 1 (e.g. &quot;kitchen&quot;) represents an intermediate
  * scope. There are usually fewer things in an intermediate scope than in a wide scope. However,
  * you can specify an intermediate scope without a wide scope; for example, specifying
  * &quot;kitchen&quot; without &quot;floor 1&quot; would select all the kitchens in a Zirk's
- * sphere(s), which may include several floors. In this case, you could potentially be selecting
+ * subnet, which may include several floors. In this case, you could potentially be selecting
  * more things.</li>
  * <li>A <em>narrow scope</em> denotes the smallest spatial area. Again building on the previous
- * example, specifying a specific part of the kitchen (e.g. &quot;window&quot; or &quot;light&quot;)
- * completes the semantic address.</li>
+ * example, specifying a specific part of the kitchen (e.g. &quot;window&quot; or
+ * &quot;cake prep&quot;) completes the semantic address.</li>
  * </ul>
  * <p>
  * The actual names of scopes can be specified manually by the user or automatically by a service.
@@ -61,80 +43,63 @@ import java.io.Serializable;
  * separated by a forward slash: <code>"wide scope/intermediate scope/narrow scope"</code>.
  * For example, using the scopes in the examples from the previous section, the semantic
  * addresses are represented by the following strings:
- * <code>"floor 1/kitchen/ceiling light"</code> and <code>"floor 1/kitchen/window"</code>.
+ * <code>"floor 1/kitchen/window"</code> and <code>"floor 1/kitchen/cake prep"</code>.
  * <h1>Specifying Scopes</h1>
  * The relative size of each scope is dependent on the specific spatial context surrounding the
  * semantic address. The previous examples were within the context of Things in a building; however
  * in a context where Things are traffic controls for municipalities, for example, the wide scope
- * may be a city, the intermediate scope a street, and the narrow scope a pedestrian walk sign or set
- * of traffic lights.
+ * may be a city, the intermediate scope a street, and the narrow scope a building number or
+ * intersection.
  * <p>
  * Each scope is optional. If you do not specify any scope you are referring to all Things in
- * a sphere subscribed to the message's topic. This is equivalent to not using a semantic
+ * a subnet subscribed to the message's topic. This is equivalent to not using a semantic
  * address. However, any of the scopes may be skipped if necessary to define the desired set
  * of Things. Once again using the building example, the following addresses refer to different
- * sets of Things whose Zirks are within a sphere subscribed to the targeted topic:
+ * sets of Things whose Zirks are within a subnet subscribed to the targeted topic:
  * </p>
  * <ul>
  * <li><code>"floor1//"</code> refers to all Things on floor 1.</li>
  * <li><code>"floor1/kitchen/"</code> refers to all Things in floor 1's kitchen.</li>
  * <li><code>"floor1/kitchen/window"</code> refers to all Things in floor 1's kitchen
- * window or the window itself.</li>
- * <li><code>"floor 1//light"</code> refers to all Things named &quot;light&quot; on
- * floor 1.</li>
- * <li><code>"/kitchen/light"</code> refers to all Things named &quot;light&quot; in
- * rooms named &quot;kitchen&quot; in the sending Zirk's sphere(s), which might include the
- * whole building</li>
- * <li><code>"//light"</code> refers to all things named &quot;light&quot; in the
- * sending Zirk's sphere(s).</li>
+ * window.</li>
+ * <li><code>"floor 1//cake prep"</code> refers to all Things in an any area called &quot;cake prep&quot;
+ * on floor 1.</li>
+ * <li><code>"/kitchen/cake prep"</code> refers to all Things in an area called &quot;cake prep&quot;
+ * in rooms named &quot;kitchen&quot; anywhere in the building in the sending Zirk's subnet</li>
+ * <li><code>"//cake prep"</code> refers to all things in any area named &quot;cake prep&quot; in the
+ * sending Zirk's subnet.</li>
  * </ul>
  * <h1>Practical Example</h1>
- * Setting a Things physical location during initial configuration is a typical reason to use
+ * Setting a Thing's physical location during initial configuration is a typical reason to use
  * a semantic address. The exact contents of this address can come from user-input during a Zirk's
  * initial connection to the Thing, or from a Zirk providing location awareness services. In
  * practice, such a location-awareness Zirk will typically be trained beforehand to know the names
  * of each scope in some location (e.g. the names of floors and rooms on those floors). These names
  * can later be used to provide parameters for a <code>Location</code>. In this scenario, a Zirk first
  * connecting to a Thing will query the location service Zirk asking for the current location
- * and will use the reply to set a starter wide scope and intermediate scope. The querying Zirk
- * will then assign the narrow scope a default name for the Thing. Finally, the user can choose to
- * override the initial values for any scope.
- * <p>
- * Assuming a Zirk already
- * {@link com.bezirk.middleware.Bezirk#discover(RecipientSelector, ProtocolRole, long, int, BezirkListener) discovered}
- * the location service and lights were already configured, the Zirk would turn on all lights in
- * the user's current location using code similar to the following:
- * </p>
+ * and will use the reply to set starter wide, intermediate, and narrow scopes. The user can then
+ * choose to override the initial values for any scope.
  * <pre>
- *     private class LightLocationListener implements BezirkListener {
- *         // Passed to ctor
- *         private final Bezirk bezirk;
- *         private final ZirkId lightId;
+ *     // ...
  *
- *         // ...
+ *     EventSet e = new EventSet(UserLocationEvent.class);
  *
- *         {@literal @}Override
- *         public void receiveEvent(String topic, String event, ZirkEndPoint sender) {
- *              // Receive an event containing the user's current location
- *              if (UserLocationEvent.topic.equals(topic)) {
- *                  UserLocationEvent locationEvent = Message.deserialize(event, UserLocationEvent.class);
- *                  Location userLocation = locationEvent.getLocation();
+ *     e.setEventReceiver((event, sender) -&gt; {
+ *         final UserLocationEvent locationEvent = (UserLocationEvent) event;
+ *         final Location userLocation = locationEvent.getLocation();
  *
- *                  // Create a semantic address referring to all Things in the user's current
- *                  // room
- *                  Location lightLocation = new Location(userLocation.getWideScope(),
- *                                                        userLocation.getIntermediateScope(),
- *                                                        null);
+ *         // Create a semantic address referring to all Things in the user's current
+ *         // room
+ *         final Location lightLocation = new Location(userLocation.getWideScope(),
+ *                                               userLocation.getIntermediateScope(),
+ *                                               null);
  *
- *                  // Send an event to all Things at the semantic address subscribed to the
- *                  // light protocol telling the Things to turn on
- *                  bezirk.sendEvent(lightId, new RecipientSelector(lightLocation),
- *                                   new ActuateLightEvent(LightOperations.ON);
- *              }
- *         }
+ *         // Send an event to all Things at the semantic address subscribed to the
+ *         // light protocol telling the Things to turn on
+ *         bezirk.sendEvent(new RecipientSelector(lightLocation), new TurnLightOnEvent());
+ *     });
  *
- *         // ...
- *     }
+ *     // ...
  * </pre>
  */
 public class Location implements Serializable {
@@ -152,12 +117,13 @@ public class Location implements Serializable {
      *                          cleared from the wideScope's name.
      * @param intermediateScope for example "bedroom" or "greater Pittsburgh". Commas and slashes
      *                          are cleared from the area's name.
-     * @param narrowScope       for example "bed" or "Frick park". Commas and slashes are cleared
+     * @param narrowScope       for example "closet" or "Frick park". Commas and slashes are cleared
      *                          from the landmark's name.
      */
     public Location(String wideScope, String intermediateScope, String narrowScope) {
         this.wideScope = (wideScope == null) ? null : wideScope.replace(",", "").replace("/", "");
-        this.intermediateScope = (intermediateScope == null) ? null : intermediateScope.replace(",", "").replace("/", "");
+        this.intermediateScope = (intermediateScope == null) ? null :
+                intermediateScope.replace(",", "").replace("/", "");
         this.narrowScope = (narrowScope == null) ? null : narrowScope.replace(",", "").replace("/", "");
     }
 
@@ -165,15 +131,15 @@ public class Location implements Serializable {
      * Construct a Location from its string representation. The string is in the format:
      * <code>"wide scope/intermediate scope/narrow scope"</code>.
      *
-     * @param location scopes separated by '/'. Passing null is equivalent to
-     *                 using <code>new Location(null, null, null);</code>
+     * @param location scopes separated by '/'. Throws an <code>IllegalArgumentException</code> if
+     *                 <code>location</code> is <code>null</code>.
      */
     public Location(String location) {
-        wideScope = null;
-        intermediateScope = null;
-        narrowScope = null;
-
-        if (location != null) {
+        if (location == null) {
+            throw new IllegalArgumentException("You must specify a string representing a semantic " +
+                    "address if you are going to use a Location. If you simply want to broadcast" +
+                    "an event, use Bezirk.sendEvent(Event e).");
+        } else {
             if (location.contains("/")) {
                 setLocationParams(location);
             } else {

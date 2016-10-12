@@ -1,19 +1,18 @@
 description "Bezirk-core: common-modules across platforms"
 subprojects {
     apply plugin: 'java'
-    apply from: "${rootDir}/gradle-plugins/script/artifactory-publishing-java.gradle"
-    sourceCompatibility = 1.7
+    //apply from: "${rootDir}/gradle-plugins/artifactory-jar-publish.gradle"
+	apply from: "${rootDir}/gradle-plugins/scripts/build-dist.gradle"
 }
-
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
+//        Gradle 1.x/2.0, gradle-license-plugin 0.10.0 (and earlier)
         classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.10.0'
         classpath 'org.ajoberstar:gradle-jacoco:0.1.0'
         classpath files("gradle-plugins/jar/release-plugin-0.2.jar")
         classpath files("gradle-plugins/jar/report-stats-plugin-0.2.jar")
     }
 }
-
