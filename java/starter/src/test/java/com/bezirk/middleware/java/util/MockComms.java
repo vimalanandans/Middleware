@@ -1,6 +1,5 @@
 package com.bezirk.middleware.java.util;
 
-import com.bezirk.middleware.core.actions.SendFileStreamAction;
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.comms.CommsNotification;
 import com.bezirk.middleware.core.comms.CtrlMsgReceiver;
@@ -89,18 +88,6 @@ public class MockComms implements Comms {
     @Override
     public boolean sendControlMessage(ControlMessage message) {
         return false;
-    }
-
-    /*@Override
-    public boolean sendStream(String uniqueKey) {
-        // TODO Auto-generated method stub
-        return true;
-    }*/
-
-    @Override
-    public boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList) {
-        // TODO Auto-generated method stub
-        return true;
     }
 
     @Override

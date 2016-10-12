@@ -1,6 +1,5 @@
 package com.bezirk.middleware.core.comms;
 
-import com.bezirk.middleware.core.actions.SendFileStreamAction;
 import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
@@ -64,19 +63,6 @@ public interface Comms {
      * Send event ledger
      * */
     boolean sendControlMessage(ControlMessage message);
-
-    /**
-     * send the stream message based on unique key
-     *//*
-    boolean sendStream(String uniqueKey);*/
-
-    /**
-     * fixme write this
-     * @param streamAction
-     * @param sphereList
-     * @return
-     */
-    boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList);
 
     /**
      *

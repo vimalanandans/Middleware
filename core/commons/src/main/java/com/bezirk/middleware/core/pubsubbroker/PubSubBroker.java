@@ -1,8 +1,6 @@
 package com.bezirk.middleware.core.pubsubbroker;
 
 import com.bezirk.middleware.core.actions.BezirkAction;
-import com.bezirk.middleware.core.actions.ReceiveFileStreamAction;
-import com.bezirk.middleware.core.actions.SendFileStreamAction;
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.comms.Comms;
@@ -24,7 +22,6 @@ import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
 import com.bezirk.middleware.core.sphere.api.SphereSecurity;
 import com.bezirk.middleware.core.sphere.api.SphereServiceAccess;
-import com.bezirk.middleware.core.streaming.Streaming;
 import com.bezirk.middleware.core.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -42,7 +39,7 @@ import java.util.UUID;
  * EventSender/ EventReceiver/ ControlSender/ ControlReceiver by casting PubSubBrokerServiceInfo.
  */
 public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServiceInfo,
-        PubSubBrokerControlReceiver, PubSubEventReceiver, EventMsgReceiver {
+        PubSubBrokerControlReceiver, EventMsgReceiver {
     private static final Logger logger = LoggerFactory.getLogger(PubSubBroker.class);
 
     public static final String SPHERE_NULL_NAME = "SPHERE_NONE";
@@ -55,7 +52,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     private NetworkManager networkManager = null;
     private Device device = null;
     private final RemoteLog remoteLog;
-    private final Streaming streamManger;
     private final MessageHandler msgHandler;
     private final IdentityManager identityManager;
     private static final String id = UUID.randomUUID().toString();
@@ -63,7 +59,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager,
                         Comms comms, MessageHandler msgHandler, IdentityManager identityManager,
                         SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity,
-                        Streaming streamManger, RemoteLog remoteLogging) {
+                        RemoteLog remoteLogging) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
         this.device = device;
         this.networkManager = networkManager;
@@ -79,32 +75,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         this.sphereSecurity = sphereSecurity;
         this.msgHandler = msgHandler;
         this.remoteLog = remoteLogging;
-
-        this.streamManger = streamManger;
-
-        if (streamManger != null) {
-            streamManger.setEventReceiver(this);
-
-            //Initialize the Streaming module
-            streamManger.startStreams();
-        }
-
     }
-
-
-    /**
-     * initialize the object references for future use
-     */
-//    public void initPubSubBroker(Comms comms, MessageHandler msgHandler,
-//                                 SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity) {
-//        this.comms = comms;
-//        // register event processor
-//        comms.registerEventMessageReceiver(this);
-//        this.sphereServiceAccess = sphereServiceAccess;
-//        this.sphereSecurity = sphereSecurity;
-//        this.msgHandler = msgHandler;
-//
-//    }
 
     /* (non-Javadoc)
      * @see com.bezirk.api.sadl.PubSubBrokerZirkServicer#registerZirk(com.bezirk.api.addressing.ZirkId)
@@ -336,45 +307,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         processEvent(eventLedger);
     }
 
-
-    /**
-     * sends the stream request to comms module and then to streaming module.
-     */
-    public short sendStream(SendFileStreamAction streamAction) {
-        final Iterable<String> listOfSphere;
-
-        if (streamManger != null) {
-            //know the spheres the zirk belongs to. We will send the stream control message to all registered spheres
-            if (sphereServiceAccess != null) {
-                listOfSphere = sphereServiceAccess.getSphereMembership(streamAction.getZirkId());
-            } else {
-                Set<String> spheres = new HashSet<>();
-                spheres.add(SPHERE_NULL_NAME);
-                listOfSphere = spheres;
-            }
-
-            if (null == listOfSphere) {
-                logger.error("Zirk Not Registered with any sphere: " + streamAction.getZirkId());
-                return (short) -1;
-            }
-
-            /*
-            * process the stream record which will
-            *store the streamrecord in the stream store and sends the stream message to receivers.*/
-
-            boolean status = streamManger.processStreamRecord(streamAction, listOfSphere);
-            if (!status) {
-                return (short) 1;
-            }
-        } else {
-            logger.error("Streaming manager is not initialized!!!");
-            return (short) -1;
-        }
-
-        return (short) 1;
-    }
-
-
     @Override
     public Boolean isZirkRegistered(ZirkId zirkId) {
         if (ValidatorUtility.checkBezirkZirkId(zirkId)) {
@@ -532,18 +464,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         } catch (Exception e) {
             logger.error("Error in loading registry from persistence \n", e);
         }
-    }
-
-   /* @Override
-    public boolean processStreamStatus(StreamStatusAction streamStatusNotification) {
-        msgHandler.onStreamStatus(streamStatusNotification);
-        return true;
-    }*/
-
-    @Override
-    public boolean processNewStream(ReceiveFileStreamAction streamData) {
-        msgHandler.onIncomingStream(streamData);
-        return true;
     }
 
     private void persistRegistry() {

@@ -22,13 +22,4 @@ public final class ZirkMessageHandler implements MessageHandler {
             logger.debug("Broadcast Receiver For Zirk is null, cannot give callback");
         }
     }
-
-    @Override
-    public void onIncomingStream(com.bezirk.middleware.core.actions.ReceiveFileStreamAction receiveFileStreamAction) {
-        if (zirkBroadcastReceiver != null) {
-            zirkBroadcastReceiver.onReceive(receiveFileStreamAction);
-        } else {
-            logger.debug("Broadcast Receiver For Zirk is null, cannot give callback");
-        }
-    }
 }

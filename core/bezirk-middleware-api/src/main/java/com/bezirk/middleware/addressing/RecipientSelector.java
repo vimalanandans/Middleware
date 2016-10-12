@@ -1,7 +1,6 @@
 package com.bezirk.middleware.addressing;
 
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.StreamDescriptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

@@ -14,8 +14,6 @@ import com.bezirk.middleware.core.proxy.ProxyServer;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
 import com.bezirk.middleware.core.remotelogging.RemoteLoggingManager;
-import com.bezirk.middleware.core.streaming.StreamManager;
-import com.bezirk.middleware.core.streaming.Streaming;
 import com.bezirk.middleware.identity.Alias;
 import com.bezirk.middleware.java.device.JavaDevice;
 import com.bezirk.middleware.java.logging.LoggingManager;
@@ -48,8 +46,7 @@ public class ComponentManager {
     private NetworkManager networkManager;
     private RemoteLog remoteLog;
     private BezirkIdentityManager identityManager;
-    private LifeCycleObservable lifecyleObservable;
-    private Streaming streaming;
+    private LifeCycleObservable lifecycleObservable;
 
     private static final String DB_VERSION = "0.0.4";
     private static final String DB_FILE_LOCATION = ".";
@@ -62,7 +59,7 @@ public class ComponentManager {
 
     public final void create() {
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
-        lifecyleObservable = new LifeCycleObservable();
+        lifecycleObservable = new LifeCycleObservable();
 
         LoggingManager loggingManager = new LoggingManager(config);
         loggingManager.configure();
@@ -83,16 +80,13 @@ public class ComponentManager {
             networkManager = new JavaNetworkManager();
 
             // the Jmq comms
-            comms = new JmqCommsManager(networkManager, config.getGroupName(), null, null);
-
-            //streaming manager
-            streaming = new StreamManager(comms, /*downloadPath,*/ networkManager);
+            comms = new JmqCommsManager(networkManager, config.getGroupName(), null);
 
             //initialize remoteLogging for logging the messages
             remoteLog = new RemoteLoggingManager(comms, networkManager, null);
 
             // add components as observers of bezirk lifecycle events.
-            lifecyleObservable.addObserver(comms);
+            lifecycleObservable.addObserver(comms);
 
             if (Configuration.isRemoteLoggingEnabled()) {
                 remoteLog.enableLogging(true, false, true, null);
@@ -106,7 +100,7 @@ public class ComponentManager {
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present)
         //Dispatching messages to other zirks within the same device or another device
         final PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, networkManager,
-                comms, messageHandler, identityManager, null, null, streaming, remoteLog);
+                comms, messageHandler, identityManager, null, null, remoteLog);
 
         //initialize proxyServer responsible for managing incoming events from zirks
         proxyServer = new ProxyServer(identityManager);
@@ -136,11 +130,11 @@ public class ComponentManager {
     }
 
     public void start() {
-        lifecyleObservable.transition(LifeCycleObservable.Transition.START);
+        lifecycleObservable.transition(LifeCycleObservable.Transition.START);
     }
 
     public void stop() {
-        lifecyleObservable.transition(LifeCycleObservable.Transition.STOP);
+        lifecycleObservable.transition(LifeCycleObservable.Transition.STOP);
     }
 
     public ProxyServer getProxyServer() {

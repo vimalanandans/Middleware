@@ -4,7 +4,6 @@ import com.bezirk.middleware.core.comms.processor.CommsProcessor;
 import com.bezirk.middleware.core.comms.processor.WireMessage;
 import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
 import com.bezirk.middleware.core.networking.NetworkManager;
-import com.bezirk.middleware.core.streaming.Streaming;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +19,8 @@ public class JmqCommsManager extends CommsProcessor implements ZMQReceiver.OnMes
      * @param networkManager - Network manager to get TCP/IP related device configurations
      * @param groupName      - Name to channel your application
      */
-    public JmqCommsManager(NetworkManager networkManager, String groupName, CommsNotification commsNotification, Streaming streaming) {
-        super(networkManager, commsNotification, streaming);
+    public JmqCommsManager(NetworkManager networkManager, String groupName, CommsNotification commsNotification) {
+        super(networkManager, commsNotification);
         if (comms == null) {
             comms = new JmqComms(this, groupName);
         }

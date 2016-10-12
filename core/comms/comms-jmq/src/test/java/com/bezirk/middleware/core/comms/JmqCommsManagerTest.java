@@ -19,7 +19,7 @@ public class JmqCommsManagerTest {
 
         for (int i = 0; i < 2; i++) {
             LifeCycleObservable lifeCycleObservable = new LifeCycleObservable();
-            JmqCommsManager commsManager = new JmqCommsManager(networkManager, null, null, null);
+            JmqCommsManager commsManager = new JmqCommsManager(networkManager, null, null);
             lifeCycleObservable.addObserver(commsManager);
             lifeCycleObservable.transition(LifeCycleObservable.Transition.START);
             //wait for comms to finish start before sending message

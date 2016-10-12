@@ -1,6 +1,5 @@
 package com.bezirk.middleware.core.pubsubbroker;
 
-import com.bezirk.middleware.core.actions.SendFileStreamAction;
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.addressing.Location;
@@ -25,6 +24,4 @@ public interface PubSubBrokerZirkServicer {
     boolean sendMulticastEvent(SendMulticastEventAction multicastEventAction);
 
     boolean sendUnicastEvent(UnicastEventAction unicastEventAction);
-
-    short sendStream(SendFileStreamAction streamAction);
 }

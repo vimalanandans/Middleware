@@ -5,16 +5,12 @@ import android.util.Log;
 
 import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.RegisterZirkAction;
-import com.bezirk.middleware.core.actions.SendFileStreamAction;
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.actions.SetLocationAction;
 import com.bezirk.middleware.core.actions.SubscriptionAction;
 import com.bezirk.middleware.identity.IdentityManager;
-import com.bezirk.middleware.messages.StreamDescriptor;
 import com.bezirk.middleware.core.proxy.ProxyServer;
-
-import java.io.File;
 
 public class AndroidProxyServer extends ProxyServer {
     private static final String TAG = AndroidProxyServer.class.getName();
@@ -69,22 +65,6 @@ public class AndroidProxyServer extends ProxyServer {
                 (UnicastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName());
 
         super.sendEvent(eventAction);
-    }
-
-    public void sendUnicastStream(Intent intent) {
-        Log.v(TAG, "Stream to unicast from Zirk");
-
-        final SendFileStreamAction streamAction =
-                (SendFileStreamAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM.getName());
-
-        final Boolean isEncrypt = (Boolean) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_ENCRYPT.getName());
-        final Boolean isIncremental= (Boolean) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_INCREMENTAL.getName());
-        final File file = (File) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_FILE.getName());
-
-        StreamDescriptor streamDescriptor  = new StreamDescriptor(isIncremental, isEncrypt, file, streamAction.getStreamActionName());
-        streamAction.setDescriptor(streamDescriptor);
-
-        super.sendStream(streamAction);
     }
 
     public void setLocation(Intent intent) {

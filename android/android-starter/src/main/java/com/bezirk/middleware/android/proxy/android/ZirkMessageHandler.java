@@ -3,7 +3,6 @@ package com.bezirk.middleware.android.proxy.android;
 import android.content.Context;
 import android.content.Intent;
 
-import com.bezirk.middleware.core.actions.ReceiveFileStreamAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.proxy.MessageHandler;
 
@@ -24,13 +23,6 @@ public class ZirkMessageHandler implements MessageHandler {
     public void onIncomingEvent(UnicastEventAction eventIncomingMessage) {
         final Intent intent = new Intent();
         intent.putExtra("message", eventIncomingMessage);
-        sendZirkIntent(intent);
-    }
-
-    @Override
-    public void onIncomingStream(ReceiveFileStreamAction receiveFileStreamAction) {
-        final Intent intent = new Intent();
-        intent.putExtra("message", receiveFileStreamAction);
         sendZirkIntent(intent);
     }
 

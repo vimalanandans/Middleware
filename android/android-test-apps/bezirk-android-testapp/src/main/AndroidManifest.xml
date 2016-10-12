@@ -50,29 +50,7 @@
                 android:value="com.bezirk.middleware.android.HomeActivity" />
         </activity>
 
-        <activity
-            android:name="com.bezirk.middleware.android.StreamingActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
 
-        <activity
-            android:name="com.bezirk.middleware.android.StreameReceiverActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-
-        <activity
-            android:name="com.bezirk.middleware.android.StreamingTestActivity"
-            android:label="@string/title_activity_streaming_test"
-            android:parentActivityName="com.bezirk.middleware.android.HomeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bezirk.middleware.android.HomeActivity" />
-        </activity>
     </application>
 
 </manifest>

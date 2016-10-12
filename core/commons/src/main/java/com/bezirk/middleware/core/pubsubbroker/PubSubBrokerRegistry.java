@@ -4,7 +4,6 @@ import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.MessageSet;
-import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 import org.slf4j.Logger;
@@ -140,8 +139,6 @@ public class PubSubBrokerRegistry implements Serializable {
 
         if (messageSet instanceof EventSet) {
             messageMap = eventMap;
-        } else if (messageSet instanceof StreamSet) {
-            messageMap = streamMap;
         } else {
             throw new AssertionError("Unknown MessageSet type: " +
                     messageSet.getClass().getSimpleName());

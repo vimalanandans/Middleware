@@ -5,9 +5,6 @@ import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.MessageSet;
-import com.bezirk.middleware.messages.StreamDescriptor;
-
-import java.io.PipedOutputStream;
 
 /**
  * The API for registering Zirks, sending messages, and subscribing to messages sent by other Zirks.
@@ -83,34 +80,6 @@ public interface Bezirk {
      * @param event     the <code>Event</code> being sent
      */
     void sendEvent(ZirkEndPoint recipient, Event event);
-
-    /**
-     * Publish a {@link StreamDescriptor} with one specific recipient. The
-     * channel's properties are described by <code>stream</code>. The transmitted data is supplied by
-     * writes to <code>dataStream</code>. To send a file use
-     * {@link #sendStream(ZirkEndPoint, StreamDescriptor)}. Streams sent using this
-     * method are assumed to be incremental (see {@link StreamDescriptor#isIncremental()}).
-     *
-     * @param recipient  intended recipient, as extracted from a received message
-     * @param streamDescriptor     communication channel's descriptor
-     * @param dataStream io stream where the outgoing data will be written into by this method's
-     *                   caller. Internally, the Bezirk middleware will read data from the
-     *                   <code>dataStream</code> in a thread-safe manner by creating a
-     *                   <code>PipedInputStream</code> linked to <code>dataStream</code>
-     */
-    void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor,
-                    PipedOutputStream dataStream);
-
-    /**
-     * Publish a file with one specific recipient. This method is identical to
-     * {@link Bezirk#sendStream(ZirkEndPoint, StreamDescriptor, PipedOutputStream)}, except this
-     * version is intended to send a specific file instead of general data. Streams sent using this
-     * method are assumed to be non-incremental (see {@link StreamDescriptor#isIncremental()}).
-     *
-     * @param recipient intended recipient, as extracted from a received message
-     * @param streamDescriptor    communication channel's descriptor
-     */
-    void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor);
 
     /**
      * Inform the Bezirk middleware of the Zirk's {@link com.bezirk.middleware.addressing.Location}.

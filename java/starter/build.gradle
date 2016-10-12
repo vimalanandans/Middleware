@@ -3,7 +3,6 @@ dependencies {
     compile project(':core:commons')
     compile project(':core:identity-management')
     compile project(':core:data-storage')
-    compile project(':core:streaming')
     compile project(':core:remote-logging')
 
     //pure java comms
