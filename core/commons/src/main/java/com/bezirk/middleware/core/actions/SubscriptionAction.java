@@ -2,7 +2,6 @@ package com.bezirk.middleware.core.actions;
 
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.MessageSet;
-import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -63,8 +62,6 @@ public class SubscriptionAction extends ZirkAction {
 
             if (src instanceof EventSet) {
                 result.add("type", new JsonPrimitive(EventSet.class.getName()));
-            } else if (src instanceof StreamSet) {
-                result.add("type", new JsonPrimitive(StreamSet.class.getName()));
             } else {
                 throw new AssertionError("Unknown MessageSet type: " +
                         src.getClass().getSimpleName());

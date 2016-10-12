@@ -1,13 +1,10 @@
 package com.bezirk.middleware.java.proxy;
 
-import com.bezirk.middleware.core.actions.ReceiveFileStreamAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.actions.ZirkAction;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.IdentifiedEvent;
-import com.bezirk.middleware.messages.StreamDescriptor;
-import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.bezirk.middleware.java.proxy.messagehandler.BroadcastReceiver;
@@ -23,31 +20,21 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
 
     private final Map<ZirkId, Set<EventSet.EventReceiver>> eventMap;
     private final Map<String, Set<EventSet.EventReceiver>> eventListenerMap;
-    private final Map<ZirkId, Set<StreamSet.StreamReceiver>> streamMap;
-    private final Map<String, Set<StreamSet.StreamReceiver>> streamListenerMap;
 
     public ZirkMessageReceiver(Map<ZirkId, Set<EventSet.EventReceiver>> eventMap,
-                               Map<String, Set<EventSet.EventReceiver>> eventListenerMap,
-                               Map<ZirkId, Set<StreamSet.StreamReceiver>> streamMap,
-                               Map<String, Set<StreamSet.StreamReceiver>> streamListenerMap) {
+                               Map<String, Set<EventSet.EventReceiver>> eventListenerMap) {
         super();
         this.eventMap = eventMap;
         this.eventListenerMap = eventListenerMap;
-        this.streamMap = streamMap;
-        this.streamListenerMap = streamListenerMap;
     }
 
     @Override
     public void onReceive(ZirkAction incomingMessage) {
-        if (!eventMap.containsKey(incomingMessage.getZirkId()) &&
-                !streamMap.containsKey(incomingMessage.getZirkId())) return;
+        if (!eventMap.containsKey(incomingMessage.getZirkId())) return;
 
         switch (incomingMessage.getAction()) {
             case ACTION_ZIRK_RECEIVE_EVENT:
                 processEvent((UnicastEventAction) incomingMessage);
-                break;
-            case ACTION_ZIRK_RECEIVE_STREAM:
-                processStream((ReceiveFileStreamAction) incomingMessage);
                 break;
             default:
                 logger.error("Unimplemented action: {}", incomingMessage.getAction());
@@ -79,23 +66,6 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
                 if (tempMessageSet.contains(invokingListener)) {
                     invokingListener.receiveEvent(event, endpoint);
                 }
-            }
-        }
-
-    }
-
-    /**
-     * Handle the stream Unicast callback.This is called from platform specific BezirkCallback Implementation.
-     *
-     * @param incomingStream streamMessage that will be given back to the services.
-     */
-    private void processStream(ReceiveFileStreamAction incomingStream) {
-        final StreamDescriptor streamDescriptor = (StreamDescriptor) StreamDescriptor.fromJson(incomingStream.getSerializedStream());
-        final String streamName = streamDescriptor.getClass().getName();
-
-        if (streamListenerMap.containsKey(streamName)) {
-            for (StreamSet.StreamReceiver listener : streamListenerMap.get(streamName)) {
-                listener.receiveStream(streamDescriptor, incomingStream.getFile(), incomingStream.getSender());
             }
         }
     }

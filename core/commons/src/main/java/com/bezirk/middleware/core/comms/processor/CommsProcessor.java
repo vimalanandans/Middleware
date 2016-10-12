@@ -1,6 +1,5 @@
 package com.bezirk.middleware.core.comms.processor;
 
-import com.bezirk.middleware.core.actions.SendFileStreamAction;
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.comms.CommsFeature;
 import com.bezirk.middleware.core.comms.CommsMessageDispatcher;
@@ -17,7 +16,6 @@ import com.bezirk.middleware.core.control.messages.UnicastControlMessage;
 import com.bezirk.middleware.core.control.messages.UnicastHeader;
 import com.bezirk.middleware.core.networking.NetworkManager;
 import com.bezirk.middleware.core.sphere.api.SphereSecurity;
-import com.bezirk.middleware.core.streaming.Streaming;
 import com.bezirk.middleware.core.util.TextCompressor;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.google.gson.Gson;
@@ -48,16 +46,12 @@ public abstract class CommsProcessor implements Comms, Observer {
      */
     private CommsNotification notification = null;
     private ExecutorService executor;
-    private Streaming bezirkStreamManager = null;
     private final NetworkManager networkManager;
 
-    public CommsProcessor(NetworkManager networkManager, CommsNotification commsNotification, Streaming streaming) {
+    public CommsProcessor(NetworkManager networkManager, CommsNotification commsNotification) {
         this.notification = commsNotification;
         this.networkManager = networkManager;
         this.msgDispatcher = new CommsMessageDispatcher();
-        if (streaming != null) {
-            bezirkStreamManager = streaming;
-        }
     }
 
     public void startComms() {
@@ -68,10 +62,6 @@ public abstract class CommsProcessor implements Comms, Observer {
         if (executor != null) {
             shutdownAndAwaitTermination(executor);
         }
-        if (bezirkStreamManager != null) {
-            bezirkStreamManager.endStreams();
-        }
-
     }
 
     private void shutdownAndAwaitTermination(ExecutorService pool) {
@@ -515,16 +505,6 @@ public abstract class CommsProcessor implements Comms, Observer {
             eLedger.setIsMulticast(false);
         }
         return true;
-    }
-
-    @Override
-    public boolean processStreamRecord(SendFileStreamAction streamAction, Iterable<String> sphereList) {
-        if (bezirkStreamManager != null) {
-            return bezirkStreamManager.processStreamRecord(streamAction, sphereList);
-        } else {
-            logger.error("BezirkStreamManager is not initialized.");
-            return false;
-        }
     }
 
     @Override

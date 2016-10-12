@@ -1,7 +1,6 @@
 package com.bezirk.middleware.core.proxy;
 
 import com.bezirk.middleware.core.actions.RegisterZirkAction;
-import com.bezirk.middleware.core.actions.SendFileStreamAction;
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.actions.SetLocationAction;
@@ -42,10 +41,6 @@ public class ProxyServer {
         }
 
         pubSubBrokerService.sendUnicastEvent(eventAction);
-    }
-
-    public short sendStream(@NotNull SendFileStreamAction streamAction) {
-        return pubSubBrokerService.sendStream(streamAction);
     }
 
     public void setLocation(@NotNull SetLocationAction locationAction) {

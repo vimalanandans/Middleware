@@ -54,7 +54,7 @@ buildscript {
         }//used for jfrog
     }
     ext {
-        androidGradleToolsVersion = "2.1.2"
+        androidGradleToolsVersion = "2.2.0"
         androidBuildToolsVersion = "24.0.2"
         androidSupportLibraryVersion = "24.2.1"
         androidCompileSdkVersion = "24"

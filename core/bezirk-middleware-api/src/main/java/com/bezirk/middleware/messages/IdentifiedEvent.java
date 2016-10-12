@@ -5,10 +5,10 @@ import com.bezirk.middleware.identity.Alias;
 /**
  *  <h1 style="color: red">Experimental</h1>
  *
- * Identified events have the alias assigned to the sending middleware attached as the message
- * is placed on the wire. This allows recipients to determine who the message is about. Zirks
- * do not need to do anything special to send an identified message. The middleware recognizes
- * outgoing identified messages and attaches the current user's alias.
+ * For identified events, the sending middleware attaches its alias to them before sending them on
+ * the wire. This allows recipients to determine who the message is about. Zirks do not need to do
+ * anything special to send an identified message. The middleware recognizes outgoing identified
+ * messages and attaches the current user's alias.
  *
  * Zirks determine who a message is about by calling {@link #getAlias()}, then using
  * {@link com.bezirk.middleware.identity.IdentityManager#isMiddlewareUser(Alias)} to determine

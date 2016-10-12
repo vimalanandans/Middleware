@@ -11,7 +11,6 @@ import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.RegisterZirkAction;
-import com.bezirk.middleware.core.actions.SendFileStreamAction;
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
 import com.bezirk.middleware.core.actions.SetLocationAction;
 import com.bezirk.middleware.core.actions.SubscriptionAction;
@@ -21,13 +20,10 @@ import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.messages.MessageSet;
-import com.bezirk.middleware.messages.StreamDescriptor;
-import com.bezirk.middleware.messages.StreamSet;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +31,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class ProxyClient implements Bezirk {
-    protected static final Map<String, List<StreamSet.StreamReceiver>> streamListenerMap =
-            new ConcurrentHashMap<>();
     protected static final Map<String, List<EventSet>> eventSetMap = new ConcurrentHashMap<>();
     private static final String TAG = ProxyClient.class.getName();
     protected static Context context;
@@ -121,10 +115,6 @@ public final class ProxyClient implements Bezirk {
             Log.d(TAG, "messageSet instanceof EventSet in ProxyClient");
             //EventSet.EventReceiver listener = ((EventSet) messageSet).getEventReceiver();
             addMessagesToMap((EventSet) messageSet, eventSetMap);
-        } else if (messageSet instanceof StreamSet) {
-            Log.d(TAG, "messageSet instanceof StreamSet in ProxyClient");
-            StreamSet.StreamReceiver listener = ((StreamSet) messageSet).getStreamReceiver();
-            addMessagesToMap(messageSet, streamListenerMap, listener);
         } else {
             Log.d(TAG, "messageSet is unKnown:  in ProxyClient");
             throw new AssertionError("Unknown MessageSet type: " +
@@ -150,25 +140,6 @@ public final class ProxyClient implements Bezirk {
                 List<EventSet> eventSetList = new ArrayList<>();
                 eventSetList.add(eventSet);
                 listenerMap.put(messageName, eventSetList);
-            }
-        }
-    }
-
-    private void addMessagesToMap(MessageSet messageSet, Map<String,
-            List<StreamSet.StreamReceiver>> listenerMap, StreamSet.StreamReceiver listener) {
-        for (String messageName : messageSet.getMessages()) {
-            if (listenerMap.containsKey(messageName)) {
-                List<StreamSet.StreamReceiver> zirkList = listenerMap.get(messageName);
-                if (!zirkList.contains(listener)) {
-                    zirkList.add(listener);
-                } else {
-                    throw new IllegalArgumentException("The assigned listener is already in use " +
-                            "for " + messageName);
-                }
-            } else {
-                List<StreamSet.StreamReceiver> listenerList = new ArrayList<>();
-                listenerList.add(listener);
-                listenerMap.put(messageName, listenerList);
             }
         }
     }
@@ -207,21 +178,6 @@ public final class ProxyClient implements Bezirk {
     public void sendEvent(ZirkEndPoint recipient, Event event) {
         intentSender.sendBezirkIntent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
                 zirkId, recipient, event, event instanceof IdentifiedEvent));
-    }
-
-    @Override
-    public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor,
-                           PipedOutputStream dataStream) {
-        throw new UnsupportedOperationException("Calling sendStream with a PipedOutputStream is " +
-                "current unimplemented.");
-    }
-
-    @Override
-    public void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor) {
-        short streamId = (short) ((streamFactory++) % Short.MAX_VALUE);
-
-        intentSender.sendBezirkStreamIntent(context, new SendFileStreamAction(zirkId, recipient,
-                /*streamDescriptor,*/ streamId, streamDescriptor.getClass().getName()), streamDescriptor);
     }
 
     @Override

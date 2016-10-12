@@ -71,7 +71,6 @@ public class BezirkMessageDispatcherTest {
     public void test() {
         Device device = Mockito.mock(Device.class);
         NetworkManager networkManager = Mockito.mock(NetworkManager.class);
-        //PubSubEventReceiver bezirkSadlManager = new PubSubBroker(null,device, networkManager);
         com.bezirk.middleware.core.comms.CommsMessageDispatcher commsMessageDispatcher = new com.bezirk.middleware.core.comms.CommsMessageDispatcher();
 
         com.bezirk.middleware.core.comms.CtrlMsgReceiver receiver = new MockReceiver();

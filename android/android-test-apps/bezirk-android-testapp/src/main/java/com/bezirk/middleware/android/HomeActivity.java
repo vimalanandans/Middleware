@@ -63,19 +63,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        //setup stream testing elements
-        streamTextView = (TextView) findViewById(R.id.stream_test_tv);
-        streamTestButton = (Button) findViewById(R.id.stream_test_button);
-
-        streamTextView.setText(STREAM_TESTING_MESSAGE);
-        streamTestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, StreamingTestActivity.class);
-                startActivity(intent);
-            }
-        });
-
         //setup stop bezirk middleware elements
         stopTextView = (TextView) findViewById(R.id.stop_bezirk_tv);
         stopTestButton = (Button) findViewById(R.id.stop_bezirk_button);

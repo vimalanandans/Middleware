@@ -6,9 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import com.bezirk.middleware.core.actions.Action;
-import com.bezirk.middleware.core.actions.BezirkAction;
-import com.bezirk.middleware.core.actions.ZirkAction;
-import com.bezirk.middleware.messages.StreamDescriptor;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -55,40 +52,6 @@ public class IntentSender {
         if (context.startService(intent) == null) {
             logger.error("Failed to send intent for action: {}. Intents can be send only if bezirk " +
                     "service is started", actionName);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * For Bezirk Stream Intent
-     */
-    public boolean sendBezirkStreamIntent(Context context, ZirkAction action,
-                                          StreamDescriptor streamDescriptor) {
-        if (streamDescriptor != null && action != null) {
-            final Intent intent = new Intent();
-
-            intent.setComponent(componentName);
-
-            final String actionName = action.getAction().getName();
-            intent.setAction(actionName);
-            intent.putExtra(actionName, action);
-
-            //pass the stream descriptor intent
-            intent.putExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_ENCRYPT.getName(),
-                    streamDescriptor.isEncrypted());
-            intent.putExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_INCREMENTAL.getName(),
-                    streamDescriptor.isIncremental());
-            intent.putExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM_FILE.getName(),
-                    streamDescriptor.getFile());
-
-            if (context.startService(intent) == null) {
-                logger.error("Failed to send intent for action: " + actionName +
-                        ". Is the middleware running?");
-                return false;
-            }
-        } else {
-            logger.error("Failed to get either StreamDescriptor and ZirkAction!!!");
             return false;
         }
         return true;

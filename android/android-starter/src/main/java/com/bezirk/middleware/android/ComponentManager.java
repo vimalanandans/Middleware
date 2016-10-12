@@ -31,8 +31,6 @@ import com.bezirk.middleware.core.proxy.Config;
 import com.bezirk.middleware.core.proxy.MessageHandler;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
-import com.bezirk.middleware.core.streaming.StreamManager;
-import com.bezirk.middleware.core.streaming.Streaming;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +52,6 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private final RemoteLog remoteLog = null;
     private LifeCycleObservable.State currentState;
     private String identityString;
-    private Streaming streaming;
 
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
@@ -181,10 +178,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
             networkManager = new AndroidNetworkManager(preferences, this);
 
             // initialize comms for communicating between devices over the wifi-network using jmq
-            comms = new JmqCommsManager(networkManager, config.getGroupName(), null, null);
-
-            // streaming manager
-            streaming = new StreamManager(comms, networkManager);
+            comms = new JmqCommsManager(networkManager, config.getGroupName(), null);
 
             // add components as observers of bezirk lifecycle events.
             lifecycleObservable.addObserver(comms);
@@ -202,7 +196,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         // (if present) & dispatching messages to other zirks within the same device or another
         // device
         final PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms,
-                messageHandler, identityManager, null, null, streaming, remoteLog);
+                messageHandler, identityManager, null, null, remoteLog);
 
         //initialize proxyServer responsible for managing incoming events from zirks
         proxyServer = new AndroidProxyServer(identityManager);
