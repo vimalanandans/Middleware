@@ -28,12 +28,11 @@ import java.net.SocketException;
  * This thread is used by the recipient that is interested in receiving the StreamDescriptor. This Thread opens socket at port ({@link StreamPortFactory#getPort(String)} and
  * waits for the sender to connect. Once the Sender gets connected, a file will be created at {} and will read
  * data at a time. After the data transfer it will release the port through
- * {@link StreamPortFactory#releasePort(int)}. From the {@link #streamLabel}, it will query the BezirkSadl
+ * {@link StreamPortFactory#releasePort(int)}.
  * to get all the Zirk Identities via
  * corresponding to the services.
  * If error occurs during the course, it releases the port and closes the socket and Streams
  *
- * @see com.bezirk.proxy
  * @see StreamPortFactory
  */
 public class StreamReceivingThread implements Runnable {
@@ -43,9 +42,7 @@ public class StreamReceivingThread implements Runnable {
      * the port is released*/
     private static final int CONNECTION_TIMEOUT_TIME = 45000;                                     // 45 sec
     private static final int BUFFER_SIZE = 1024;
-    private final String sphere;
     private final int port;                                                                      // port,received from Port Factory
-    private final String streamLabel;                                                                 // StreamLabel, that the zirk has subscribed
     private final String fileName;
     private final boolean isEncrypted;
     private final BezirkZirkEndPoint recipient;
@@ -66,10 +63,8 @@ public class StreamReceivingThread implements Runnable {
                                  StreamRequest streamRequest, PortFactory portFactory,
                                  PubSubEventReceiver pubSubEventReceiver, /*SphereSecurity sphereSecurity,*/ StreamManager streamManager) {
         super();
-        this.sphere = streamRequest.getSphereId();
         this.port = port;
         /*this.downloadPath = downloadPath;*/
-        this.streamLabel = streamRequest.streamLabel;
         this.fileName = streamRequest.fileName;
         this.isEncrypted = streamRequest.isEncrypted;
         this.recipient = streamRequest.getRecipient();
@@ -166,7 +161,7 @@ public class StreamReceivingThread implements Runnable {
                 socket.close();
             }
 
-            //Punith clean the active streamMap
+            //clean the active streamMap
             streamManager.removeRefFromActiveStream(streamRequestKey);
         } catch (IOException e) {
 
