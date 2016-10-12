@@ -22,11 +22,14 @@ import com.bezirk.middleware.messages.MessageSet;
  * // ...
  *
  * </pre>
+ *
+ * That sample uses the {@link com.bezirk.middleware.java.proxy.BezirkMiddleware Java SE} lifecycle
+ * API. There is also a version for {@link com.bezirk.middleware.android.BezirkMiddleware Android}.
  */
 public interface Bezirk {
     /**
-     * Undo the effects of registering the Zirk using a
-     * <code>BezirkMiddleware.registerZirk(String)</code>
+     * Undo the effects of registering the Zirk using
+     * <code>BezirkMiddleware.registerZirk(String)</code>.
      */
     void unregisterZirk();
 
