@@ -29,9 +29,7 @@ import java.io.PipedOutputStream;
 public interface Bezirk {
     /**
      * Undo the effects of registering the Zirk using a
-     * <code>BezirkMiddleware.registerZirk(String)</code> and remove all
-     * subscriptions as if {@link #unsubscribe(MessageSet)} were called with <code>null</code> as
-     * the <code>MessageSet</code>.
+     * <code>BezirkMiddleware.registerZirk(String)</code>
      */
     void unregisterZirk();
 
@@ -48,11 +46,10 @@ public interface Bezirk {
      * {@link #subscribe(MessageSet)}. After this method finishes, the
      * Zirk will no longer receive messages included in <code>messageSet</code> unless
      * the messages also appear in a different set the Zirk is subscribed to. This
-     * method does nothing if the Zirk was not subscribed to the set. Specifying <code>null</code>
-     * for the set unsubscribes the Zirk from all sets it is subscribed to.
+     * method does nothing if the Zirk was not subscribed to the set.
      *
-     * @param messageSet set to unsubscribe from, or <code>null</code> to remove all subscriptions
-     * @return <code>true</code> if <code>subscriber</code> was unsubscribed from at least one
+     * @param messageSet set to unsubscribe from
+     * @return <code>true</code> if <code>subscriber</code> was unsubscribed from the
      * set as a result of this method call
      */
     boolean unsubscribe(MessageSet messageSet);
@@ -91,12 +88,12 @@ public interface Bezirk {
      * {@link #sendStream(ZirkEndPoint, StreamDescriptor)}. Streams sent using this
      * method are assumed to be incremental (see {@link StreamDescriptor#isIncremental()}).
      *
-     * @param recipient  intended recipient, as extracted from a received message
-     * @param streamDescriptor     communication channel's descriptor
-     * @param dataStream io stream where the outgoing data will be written into by this method's
-     *                   caller. Internally, the Bezirk middleware will read data from the
-     *                   <code>dataStream</code> in a thread-safe manner by creating a
-     *                   <code>PipedInputStream</code> linked to <code>dataStream</code>
+     * @param recipient        intended recipient, as extracted from a received message
+     * @param streamDescriptor communication channel's descriptor
+     * @param dataStream       io stream where the outgoing data will be written into by this method's
+     *                         caller. Internally, the Bezirk middleware will read data from the
+     *                         <code>dataStream</code> in a thread-safe manner by creating a
+     *                         <code>PipedInputStream</code> linked to <code>dataStream</code>
      */
     void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor,
                     PipedOutputStream dataStream);
@@ -107,8 +104,8 @@ public interface Bezirk {
      * version is intended to send a specific file instead of general data. Streams sent using this
      * method are assumed to be non-incremental (see {@link StreamDescriptor#isIncremental()}).
      *
-     * @param recipient intended recipient, as extracted from a received message
-     * @param streamDescriptor    communication channel's descriptor
+     * @param recipient        intended recipient, as extracted from a received message
+     * @param streamDescriptor communication channel's descriptor
      */
     void sendStream(ZirkEndPoint recipient, StreamDescriptor streamDescriptor);
 

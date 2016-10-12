@@ -109,8 +109,6 @@ public final class ProxyClient implements Bezirk {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.remove(entry.getKey());
                 editor.apply();
-                //TODO add unsubscription code for subscriptions of a zirk
-                //unsubscribe(null);
                 break;
             }
         }
@@ -178,9 +176,6 @@ public final class ProxyClient implements Bezirk {
     @Override
     public boolean unsubscribe(final MessageSet messageSet) {
         if (messageSet == null) {
-            Log.w(TAG, "Unsubscribing from all MessageSet(s) using null is currently not " +
-                    "implemented. To unsubscribe from all subscriptions, call this method by " +
-                    "passing the reference to the each MessageSet");
             return false;
         }
 
@@ -188,12 +183,12 @@ public final class ProxyClient implements Bezirk {
             for (List<EventSet> eventSets : eventSetMap.values()) {
                 if (eventSets.contains(messageSet)) {
                     eventSets.remove(messageSet);
+                    return intentSender.sendBezirkIntent(
+                            new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId, messageSet));
                 }
             }
         }
-
-        return intentSender.sendBezirkIntent(
-                new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId, messageSet));
+        return false;
     }
 
     @Override
