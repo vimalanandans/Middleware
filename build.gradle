@@ -45,6 +45,7 @@
  * 3.0.0-alpha+025-snapshot-1 fixes multiple issues in milestone1, testing alpha+025 release.
  * 3.0.0-alpha+025-snapshot-2 fixes multiple issues in milestone1, testing alpha+025 release.
  * 3.0.0-alpha+025-snapshot-3 fixes multiple issues in milestone1, testing alpha+025 release.
+ * 3.0.0-alpha+025-snapshot-4 fixes multiple issues in milestone1, testing for open source release.
  */
 buildscript {
     repositories {
@@ -77,7 +78,7 @@ allprojects {
 //    This plugin will scan and adapt your source files to include a provided header, e.g. a LICENSE file
     //apply plugin: 'license'
     group = 'com.bezirk'
-    version = "3.0.0-alpha+025-snapshot-3"
+    version = "3.0.0-alpha+025-snapshot-4"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
