@@ -71,7 +71,6 @@ public class AutoTestActivity extends AppCompatActivity {
         super.onStop();
         subscriberBezirk.unsubscribe(houseInfoEventSetForSubscriber);
         publisherBezirk.unsubscribe(houseInfoEventSetForPublisher);
-
     }
 
     private void subscriberZirk() {
