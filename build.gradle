@@ -99,7 +99,7 @@ allprojects {
     license {
         header rootProject.file('LICENSE')
         include "**/*.java"
-        excludes(["**/*.properties", "**/*Test.java"])
+        excludes(["**/*.properties", "**/*Test.java", "**/package-info.java"])
         strictCheck true
         ignoreFailures false
     }
