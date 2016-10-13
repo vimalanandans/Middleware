@@ -61,7 +61,8 @@ public final class ComponentManager extends Service implements LifeCycleCallback
             if (currentState == null) {
                 BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
                 if (intentAction == BezirkAction.ACTION_START_BEZIRK) {
-                    StartServiceAction startServiceAction = (StartServiceAction) intent.getSerializableExtra(BezirkAction.ACTION_START_BEZIRK.getName());
+                    StartServiceAction startServiceAction =
+                            (StartServiceAction) intent.getSerializableExtra(BezirkAction.ACTION_START_BEZIRK.getName());
                     start(startServiceAction);
                 } else {
                     logger.debug("Bezirk Action received {}. Bezirk is not running. {} required to start bezirk.",

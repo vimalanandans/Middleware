@@ -159,7 +159,8 @@ class ControlActivityHelper {
         final TextView aboutVersionText = (TextView) dialog.findViewById(R.id.about_version_text);
 
         String appName = controlActivity.getString(R.string.app_name);
-        String aboutText = appName + " v" + BezirkVersion.BEZIRK_VERSION + ", Aug 2016, " + controlActivity.getString(R.string.about_copyright_text);
+        String aboutText = appName + " v" + BezirkVersion.BEZIRK_VERSION + ", Aug 2016, " +
+                controlActivity.getString(R.string.about_copyright_text);
         aboutVersionText.setText(aboutText);
 
         // Set dialog title

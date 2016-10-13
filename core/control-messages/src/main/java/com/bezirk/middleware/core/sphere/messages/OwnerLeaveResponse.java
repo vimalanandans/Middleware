@@ -7,18 +7,22 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//TODO Move to new package, since this is an object used for encapsulating information to be sent as a signed messages. The control message which uses this object is SignedControlMessage.
+// TODO Move to new package, since this is an object used for encapsulating information to be sent as a
+// signed messages. The control message which uses this object is SignedControlMessage.
 
 public class OwnerLeaveResponse {
     private static final Logger logger = LoggerFactory.getLogger(OwnerLeaveResponse.class);
 
-    //private final BezirkZirkEndPoint recipient; //TODO check if redundant field is actually needed for further verification of the signed message
+    //TODO check if redundant field is actually needed for further verification of the signed message
+    //private final BezirkZirkEndPoint recipient;
     private final boolean removedSuccessfully;
-    private final String sphereID; //TODO check if redundant field is actually needed for further verification of the signed message
+    //TODO check if redundant field is actually needed for further verification of the signed message
+    private final String sphereID;
     private final ZirkId serviceId;
     private final long time;
 
-    public OwnerLeaveResponse(String sphereID, ZirkId serviceId, BezirkZirkEndPoint recipient, boolean removedSuccessfully) {
+    public OwnerLeaveResponse(String sphereID, ZirkId serviceId, BezirkZirkEndPoint recipient,
+                              boolean removedSuccessfully) {
         this.sphereID = sphereID;
         this.serviceId = serviceId;
         //this.recipient = recipient;

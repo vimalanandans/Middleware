@@ -25,7 +25,8 @@ public abstract class NetworkManager {
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface networkInterface = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = networkInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                for (Enumeration<InetAddress> enumIpAddr = networkInterface.getInetAddresses();
+                     enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
                         list.add(new InterfaceInetPair(networkInterface, inetAddress));
@@ -72,7 +73,8 @@ public abstract class NetworkManager {
         }
         for (Enumeration<InetAddress> enumIpAddr = curInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
             InetAddress inetAddress = enumIpAddr.nextElement();
-            if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
+            if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() &&
+                    inetAddress.isSiteLocalAddress()) {
                 return inetAddress;
             }
         }
@@ -89,9 +91,11 @@ public abstract class NetworkManager {
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface networkInterface = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = networkInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                for (Enumeration<InetAddress> enumIpAddr = networkInterface.getInetAddresses();
+                     enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
+                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() &&
+                            inetAddress.isSiteLocalAddress()) {
                         return networkInterface.getHardwareAddress();
                     }
 
