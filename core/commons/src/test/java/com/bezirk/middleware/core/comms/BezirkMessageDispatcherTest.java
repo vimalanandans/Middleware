@@ -6,7 +6,6 @@ import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.core.networking.NetworkManager;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
-import com.bezirk.middleware.core.streaming.control.Objects.StreamRecord;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -77,7 +76,6 @@ public class BezirkMessageDispatcherTest {
         commsMessageDispatcher.registerControlMessageReceiver(ControlMessage.Discriminator.DISCOVERY_REQUEST, receiver);
 
         ControlLedger tcMessage = new ControlLedger();
-        StreamRecord record  = new StreamRecord();
 
         //// FIXME: 8/1/2016 set the proper record here, uncomment below lines
         /*ControlMessage streamRequest = new STREAM_REQUEST(null, record, null);
