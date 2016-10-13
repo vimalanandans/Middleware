@@ -9,8 +9,6 @@ import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.ControlMessage.Discriminator;
 import com.bezirk.middleware.core.control.messages.EventLedger;
 import com.bezirk.middleware.core.control.messages.Ledger;
-import com.bezirk.middleware.core.control.messages.streaming.StreamRequest;
-
 import java.util.ArrayList;
 
 public class MockComms implements Comms {
@@ -18,8 +16,6 @@ public class MockComms implements Comms {
     private ArrayList<ControlLedger> ctrlList;
 
     private ArrayList<EventLedger> eventList;
-
-    private ArrayList<StreamRequest> streamList;
 
     public ArrayList<ControlLedger> getCtrlList() {
         return ctrlList;
@@ -37,18 +33,9 @@ public class MockComms implements Comms {
         this.eventList = eventList;
     }
 
-    public ArrayList<StreamRequest> getStreamList() {
-        return streamList;
-    }
-
-    public void setStreamList(ArrayList<StreamRequest> streamList) {
-        this.streamList = streamList;
-    }
-
     public MockComms() {
         ctrlList = new ArrayList<>();
         eventList = new ArrayList<>();
-        streamList = new ArrayList<>();
     }
 
     @Override
@@ -59,15 +46,8 @@ public class MockComms implements Comms {
             ControlLedger ctrlLedger = (ControlLedger) message;
             ControlMessage ledgerMessage = ctrlLedger.getMessage();
 
-            if (ledgerMessage instanceof StreamRequest) {
-                StreamRequest streamMessage = (StreamRequest) ledgerMessage;
-                streamList.add(streamMessage);
-                return true;
-            } else {
-
-                ctrlList.add(ctrlLedger);
-                return true;
-            }
+            ctrlList.add(ctrlLedger);
+            return true;
         } else if (message instanceof EventLedger) {
             eventList.add((EventLedger) message);
             return true;
@@ -130,7 +110,6 @@ public class MockComms implements Comms {
 
         ctrlList.clear();
         eventList.clear();
-        streamList.clear();
 
     }
 

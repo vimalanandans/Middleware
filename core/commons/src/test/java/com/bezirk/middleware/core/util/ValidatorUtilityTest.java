@@ -76,7 +76,7 @@ public class ValidatorUtilityTest {
         isValid = com.bezirk.middleware.core.util.ValidatorUtility.checkBezirkZirkId(new ZirkId(null));
         assertFalse("Null serviceID is considered valid by validator", isValid);
     }
-    
+
     @Test
     public void testCheckRTCStreamRequest() {
 
