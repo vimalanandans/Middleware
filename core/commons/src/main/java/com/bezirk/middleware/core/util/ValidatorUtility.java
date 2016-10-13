@@ -1,7 +1,6 @@
 package com.bezirk.middleware.core.util;
 
 import com.bezirk.middleware.core.control.messages.Header;
-import com.bezirk.middleware.core.control.messages.streaming.StreamRequest;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
@@ -69,12 +68,6 @@ public final class ValidatorUtility {
         return !(!checkForString(mHeader.getSphereId()) ||
                 !checkBezirkZirkEndPoint(mHeader.getSender()));
 
-    }
-
-    public static boolean checkStreamRequest(final StreamRequest request) {
-        return !(null == request || !checkForString(request.serializedString, request.fileName,
-                request.streamLabel, request.getSphereId()) ||
-                !checkEndPoints(request.getSender(), request.getRecipient()));
     }
 
     private static boolean checkEndPoints(BezirkZirkEndPoint... serviceEndPoints) {
