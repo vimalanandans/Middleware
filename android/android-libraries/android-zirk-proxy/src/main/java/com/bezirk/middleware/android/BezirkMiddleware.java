@@ -41,6 +41,7 @@ public abstract class BezirkMiddleware {
     private static boolean localBezirkService = true;
     private static IntentSender intentSender;
     private static ServiceManager serviceManager;
+    private static long startTime;
 
     /**
      * Initializes and starts the bezirk
@@ -92,6 +93,7 @@ public abstract class BezirkMiddleware {
         intentSender = new IntentSender(context);
         serviceManager = new ServiceManager(intentSender);
         serviceManager.start((config == null) ? new Config() : config);
+        startTime = System.currentTimeMillis();
     }
 
     /**
@@ -134,6 +136,13 @@ public abstract class BezirkMiddleware {
 
     static boolean isLocalBezirkService() {
         return localBezirkService;
+    }
+
+    /**
+     * Time the BezirkMiddleware is initialized
+     */
+    static final long getStartTime() {
+        return startTime;
     }
 
 }

@@ -1,17 +1,17 @@
 /**
  * The MIT License (MIT)
  * Copyright (c) 2016 Bezirk http://bezirk.com
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,7 +25,6 @@ package com.bezirk.middleware.android;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.Location;
@@ -62,6 +61,10 @@ public final class ProxyClient implements Bezirk {
     private final ZirkId zirkId;
     private final IdentityManager identityManager;
     private short streamFactory;
+    //Bezirk is ready to send messages to another BezirkMiddleware stack
+    private boolean remoteSendReady = false;
+    //to ensure error log is just printed once
+    private boolean remoteSendReadyLogged = false;
 
     public ProxyClient(ZirkId zirkId) {
 
@@ -193,12 +196,18 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
+        if (!remoteSendReady) {
+            logRemoteSending();
+        }
         intentSender.sendBezirkIntent(new SendMulticastEventAction(zirkId, recipient, event,
                 event instanceof IdentifiedEvent));
     }
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
+        if (!remoteSendReady) {
+            logRemoteSending();
+        }
         intentSender.sendBezirkIntent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
                 zirkId, recipient, event, event instanceof IdentifiedEvent));
     }
@@ -207,4 +216,18 @@ public final class ProxyClient implements Bezirk {
     public void setLocation(Location location) {
         intentSender.sendBezirkIntent(new SetLocationAction(zirkId, location));
     }
+
+    private final void logRemoteSending() {
+        final long currentTime = System.currentTimeMillis();
+        if (currentTime - BezirkMiddleware.getStartTime() > 2000) {
+            remoteSendReady = true;
+        } else {
+            if (!remoteSendReadyLogged) {
+                logger.error("Bezirk.sendEvent() is being called less than 2 seconds after initialization of the middleware. This initialization requires up to 2 seconds to find peers. " +
+                        "\nIf you don't receive the Event(s), please ensure, via Thread.sleep() or other means, that there are at least 2 seconds between BezirkMiddleware.initialize() and Bezirk.sendEvent() calls. ");
+                remoteSendReadyLogged = true;
+            }
+        }
+    }
+
 }
