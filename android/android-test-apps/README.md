@@ -1,6 +1,6 @@
 # Android test applications
 
-### bezirk-android-ui application
+### bezirk-android application
 This android application is used to run standalone bezirk service.
 
 ### bezirk-android-testapp application
