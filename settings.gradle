@@ -18,7 +18,7 @@ include ':java:testApp'
 
 /*--------------------android--------------------*/
 include ':android:android-starter'
-include ':android:android-test-apps:bezirk-android-ui'
+include ':android:android-test-apps:bezirk-android'
 include ':android:android-test-apps:bezirk-android-testapp'
 include ':android:android-libraries:android-zirk-proxy'
 

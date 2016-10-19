@@ -226,11 +226,6 @@ public final class ComponentManager extends Service implements LifeCycleCallback
 
         // TODO initialize in constructor instead.
         proxyServer.setPubSubBrokerService(pubSubBroker);
-
-        // this state is set only when the bezirk service is created the first time
-        //TODO add create implementations for modules
-        //lifecycleObservable.setState(LifecycleManager.LifecycleState.CREATED);
-        //currentState = LifecycleManager.LifecycleState.CREATED;
     }
 
     //initialize the identity manager
