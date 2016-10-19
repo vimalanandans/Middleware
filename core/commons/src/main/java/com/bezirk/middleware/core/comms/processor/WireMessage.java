@@ -22,7 +22,6 @@
  */
 package com.bezirk.middleware.core.comms.processor;
 
-import com.bezirk.middleware.core.util.BezirkVersion;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
@@ -44,13 +43,14 @@ import java.util.zip.InflaterInputStream;
 public class WireMessage implements Serializable {
     private static final long serialVersionUID = 8351148484329885907L;
     private static final Logger logger = LoggerFactory.getLogger(WireMessage.class);
+    public static final String WIRE_MESSAGE_VERSION = "0.2";
     private static final String MSG_VER_STRING = "\"msgVer\":\"";
     /// if the parser type is json, to check the message version VERSION STRING
-    private static final String MSG_VER = MSG_VER_STRING + BezirkVersion.getWireVersion() + "\"";
+    private static final String MSG_VER = MSG_VER_STRING + WIRE_MESSAGE_VERSION + "\"";
     public static final String ENCODING = "UTF-8";
 
     // increment the wire message version in bezirk version. when there is a change in message format
-    private String msgVer = BezirkVersion.getWireVersion();
+    private String msgVer = WIRE_MESSAGE_VERSION;
     private String sphereId;
     // control / event. do we need?
     private WireMsgType msgType;

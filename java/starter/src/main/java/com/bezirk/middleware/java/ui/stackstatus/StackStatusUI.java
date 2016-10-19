@@ -22,7 +22,7 @@
  */
 package com.bezirk.middleware.java.ui.stackstatus;
 
-import com.bezirk.middleware.core.util.BezirkVersion;
+import com.bezirk.middleware.core.comms.processor.WireMessage;
 
 import javax.swing.JOptionPane;
 
@@ -43,7 +43,7 @@ public final class StackStatusUI {
                     .showMessageDialog(
                             null,
                             "Expected message version: "
-                                    + BezirkVersion.getWireVersion()
+                                    + WireMessage.WIRE_MESSAGE_VERSION
                                     + "\n\n"
                                     + "Received message version: "
                                     + receivedVersion

@@ -40,7 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bezirk.middleware.android.ui.R;
-import com.bezirk.middleware.core.util.BezirkVersion;
+import com.bezirk.middleware.core.util.VersionManager;
 import com.bezirk.middleware.core.util.ValidatorUtility;
 
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ class ControlActivityHelper {
     private final String BR_SYSTEM_STATUS_ACTION = "com.bezirk.systemstatus";
     private final ControlActivity controlActivity;
     protected boolean stackVersionMismatch;
-    private String receivedBezirkVersion = BezirkVersion.BEZIRK_VERSION;
+    private String receivedBezirkVersion = VersionManager.getBezirkVersion();
     /**
      * Broadcast receiver to receive the status from the stack if there is  a version mismatch
      */
@@ -152,11 +152,11 @@ class ControlActivityHelper {
             }
         });
 
-        bezirkVersion.setText("Expected Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
+        bezirkVersion.setText("Expected Bezirk-Version: " + VersionManager.getBezirkVersion());
         if (ValidatorUtility.isObjectNotNull(receivedBezirkVersion)) {
             bezirkExpectedVersionStatus.setText("Received Bezirk-Version: " + receivedBezirkVersion);
         } else {
-            bezirkExpectedVersionStatus.setText("Received Bezirk-Version: " + BezirkVersion.BEZIRK_VERSION);
+            bezirkExpectedVersionStatus.setText("Received Bezirk-Version: " + VersionManager.getBezirkVersion());
         }
 
         if (stackVersionMismatch) {
@@ -181,7 +181,7 @@ class ControlActivityHelper {
         final TextView aboutVersionText = (TextView) dialog.findViewById(R.id.about_version_text);
 
         String appName = controlActivity.getString(R.string.app_name);
-        String aboutText = appName + " v" + BezirkVersion.BEZIRK_VERSION + ", Aug 2016, " +
+        String aboutText = appName + " v" + VersionManager.getBezirkVersion() + ", Aug 2016, " +
                 controlActivity.getString(R.string.about_copyright_text);
         aboutVersionText.setText(aboutText);
 

@@ -23,7 +23,6 @@
 package com.bezirk.middleware.core.comms.processor;
 
 import com.bezirk.middleware.core.comms.Comms;
-import com.bezirk.middleware.core.comms.CommsFeature;
 import com.bezirk.middleware.core.comms.CommsMessageDispatcher;
 import com.bezirk.middleware.core.comms.CommsNotification;
 import com.bezirk.middleware.core.comms.CtrlMsgReceiver;
@@ -69,6 +68,8 @@ public abstract class CommsProcessor implements Comms, Observer {
     private CommsNotification notification = null;
     private ExecutorService executor;
     private final NetworkManager networkManager;
+    private static final boolean WIRE_MSG_COMPRESSION = false;
+    private static final boolean WIRE_MSG_ENCRYPTION = true;
 
     public CommsProcessor(NetworkManager networkManager, CommsNotification commsNotification) {
         this.notification = commsNotification;
@@ -162,13 +163,13 @@ public abstract class CommsProcessor implements Comms, Observer {
         byte[] wireData = null;
 
         /*Step 1 :Compression :  Do the compression if message compression is enabled*/
-        if (CommsFeature.WIRE_MSG_COMPRESSION.isActive()) {
+        if (WIRE_MSG_COMPRESSION) {
             wireData = compressMsg(data);
             wireMessage.setWireMsgStatus(WireMessage.WireMsgStatus.MSG_COMPRESSED);
         }
 
         /*Step 2 :Encryption :  perform encryption if it is enabled*/
-        if (CommsFeature.WIRE_MSG_ENCRYPTION.isActive()) {
+        if (WIRE_MSG_ENCRYPTION) {
             if (wireData != null) {
                 //means compression has happened, now encrypt the content
                 wireData = encryptMsg(wireMessage.getSphereId(), wireData);
