@@ -13,8 +13,8 @@ import ch.qos.logback.classic.Level;
 
 import static org.junit.Assert.assertTrue;
 
-public class JmqPerfomanceTest {
-    private static final Logger logger = LoggerFactory.getLogger(JmqPerfomanceTest.class);
+public class JmqPerformanceTest {
+    private static final Logger logger = LoggerFactory.getLogger(JmqPerformanceTest.class);
     private static final int NO_MSGS_TO_SEND_FROM_EACH_NODE = 10000;
     private static final int SLEEP_BETWEEN_EACH_MESSAGE = 5; //gap between each sent message in milliseconds
     private static final int NO_OF_NODES = 4; //no of nodes to be used for testing
@@ -135,11 +135,11 @@ public class JmqPerfomanceTest {
     }
 
     static synchronized void addResult(final int numberOfReceivedMessages) throws InterruptedException {
-        JmqPerfomanceTest.numberOfReceivedMessages += numberOfReceivedMessages;
+        JmqPerformanceTest.numberOfReceivedMessages += numberOfReceivedMessages;
         if (++totalResultsCollected == NO_OF_NODES) {
             testStopTime = System.currentTimeMillis();
 
-            final float reliability = (JmqPerfomanceTest.numberOfReceivedMessages / TOTAL_EXPECTED_MSGS);
+            final float reliability = (JmqPerformanceTest.numberOfReceivedMessages / TOTAL_EXPECTED_MSGS);
             //achieve atleast 95% reliability
             assertTrue(reliability > 0.95 && reliability <= 1);
 
@@ -147,7 +147,7 @@ public class JmqPerfomanceTest {
             logger.info("Total time taken for test ==> " + (testStopTime - testStartTime) + " ms");
             logger.info("Number of nodes: " + NO_OF_NODES);
             logger.info("Number of Expected messages: " + TOTAL_EXPECTED_MSGS);
-            logger.info("Number of Received messages: " + JmqPerfomanceTest.numberOfReceivedMessages);
+            logger.info("Number of Received messages: " + JmqPerformanceTest.numberOfReceivedMessages);
             logger.info("Message reliability: " + (reliability * 100) + "%");
         }
     }
