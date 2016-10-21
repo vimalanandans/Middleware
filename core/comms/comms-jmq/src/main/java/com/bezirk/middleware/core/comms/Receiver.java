@@ -1,5 +1,7 @@
 package com.bezirk.middleware.core.comms;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zeromq.ZFrame;
@@ -21,7 +23,7 @@ class Receiver extends Thread {
         boolean processIncomingMessage(String nodeId, byte[] data);
     }
 
-    Receiver(final OnMessageReceivedListener onMessageReceivedListener) {
+    Receiver(@Nullable final OnMessageReceivedListener onMessageReceivedListener) {
         this.onMessageReceivedListener = onMessageReceivedListener;
         this.context = ZMQ.context(1);
         frontend = context.socket(ZMQ.ROUTER);
@@ -70,8 +72,8 @@ class Receiver extends Thread {
         private final ZMQ.Socket socket;
         private final OnMessageReceivedListener onMessageReceivedListener;
 
-        public Dealer(final ZMQ.Context context, final String name,
-                      final OnMessageReceivedListener onMessageReceivedListener) {
+        public Dealer(@NotNull final ZMQ.Context context, @Nullable final String name,
+                      @Nullable final OnMessageReceivedListener onMessageReceivedListener) {
             this.context = context;
             this.onMessageReceivedListener = onMessageReceivedListener;
             setName(name);

@@ -1,5 +1,7 @@
 package com.bezirk.middleware.core.comms;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zeromq.ZBeacon;
@@ -28,8 +30,7 @@ class Beacon {
         void processPeer(UUID uuid, InetAddress senderInetAddress, int port);
     }
 
-    Beacon(final String groupName, final int port, final UUID myId, final BeaconCallback callback) {
-
+    Beacon(@Nullable final String groupName, @NotNull final int port, @NotNull final UUID myId, @NotNull final BeaconCallback callback) {
         this.groupName = (groupName != null) ? groupName : DEFAULT_GROUP_NAME;
         this.port = port;
         this.myId = myId;
@@ -38,8 +39,8 @@ class Beacon {
         logger.trace("Port being broadcasted in beacon " + port);
     }
 
-    private void processBeacon(final InetAddress sender, final byte[] beacon) {
-        String beaconString = null;
+    private void processBeacon(@NotNull final InetAddress sender, @NotNull final byte[] beacon) {
+        String beaconString;
         beaconString = new String(beacon, ZMQ.CHARSET);
         String[] data;
         try {

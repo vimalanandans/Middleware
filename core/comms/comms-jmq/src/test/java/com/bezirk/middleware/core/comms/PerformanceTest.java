@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 
 public class PerformanceTest {
     private static final Logger logger = LoggerFactory.getLogger(PerformanceTest.class);
-    private static final int NO_MSGS_TO_SEND_FROM_EACH_NODE = 100;
+    private static final int NO_MSGS_TO_SEND_FROM_EACH_NODE = 10000;
     private static final int SLEEP_BETWEEN_EACH_MESSAGE = 5; //gap between each sent message in milliseconds
     private static final int NO_OF_NODES = 4; //no of nodes to be used for testing
     private static long testStartTime;
@@ -53,7 +53,7 @@ public class PerformanceTest {
                     if (shoutCount <= NO_MSGS_TO_SEND_FROM_EACH_NODE) {
                         logger.trace("Shouting: " + shoutCount);
                         String data = String.valueOf(shoutCount++);
-                        peer.send(data);
+                        peer.send(data.getBytes());
 
                         if (shoutCount == NO_MSGS_TO_SEND_FROM_EACH_NODE + 1) {
                             //ensure last few messages are received before evaluating the count and closing comms

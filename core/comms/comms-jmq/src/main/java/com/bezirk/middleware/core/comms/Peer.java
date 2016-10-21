@@ -1,5 +1,7 @@
 package com.bezirk.middleware.core.comms;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +32,7 @@ public class Peer implements Beacon.BeaconCallback {
     private final Map<UUID, PeerMetaData> myPeers;
     private final Receiver.OnMessageReceivedListener onMessageReceivedListener;
 
-    public Peer(final String name, final Receiver.OnMessageReceivedListener onMessageReceivedListener) {
+    public Peer(@Nullable final String name, @Nullable final Receiver.OnMessageReceivedListener onMessageReceivedListener) {
         this.name = name;
         this.onMessageReceivedListener = onMessageReceivedListener;
         receiver = new Receiver(onMessageReceivedListener);
@@ -62,7 +64,7 @@ public class Peer implements Beacon.BeaconCallback {
         return name;
     }
 
-    public void processPeer(UUID uuid, InetAddress senderInetAddress, int port) {
+    public void processPeer(@NotNull final UUID uuid, @NotNull final InetAddress senderInetAddress, @NotNull final int port) {
         final PeerMetaData peerMetaData;
         synchronized (myPeers) {
             if (myPeers.containsKey(uuid)) {
@@ -76,11 +78,11 @@ public class Peer implements Beacon.BeaconCallback {
         sender.addConnection(uuid, peerMetaData);
     }
 
-    public void send(String data) {
+    public void send(byte[] data) {
         sender.send(data);
     }
 
-    public void send(UUID recipient, String data) {
+    public void send(UUID recipient, byte[] data) {
         sender.send(recipient, data);
     }
 

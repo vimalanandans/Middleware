@@ -1,5 +1,6 @@
 package com.bezirk.middleware.core.comms;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zeromq.ZMQ;
@@ -16,13 +17,13 @@ public class Sender {
     private final Map<UUID, ZMQ.Socket> connections;
     private final UUID myId;
 
-    public Sender(final UUID myId) {
+    public Sender(@NotNull final UUID myId) {
         context = ZMQ.context(1);
         connections = new HashMap<>();
         this.myId = myId;
     }
 
-    public void addConnection(final UUID uuid, final PeerMetaData peerMetaData) {
+    public void addConnection(@NotNull final UUID uuid, @NotNull final PeerMetaData peerMetaData) {
         logger.trace("adding connection");
         synchronized (connections) {
             if (connections.containsKey(uuid)) {
@@ -39,7 +40,7 @@ public class Sender {
         }
     }
 
-    public void send(String data) {
+    public void send(@NotNull final byte[] data) {
         final Set<ZMQ.Socket> recipients;
         synchronized (connections) {
             if (connections.size() > 0) {
@@ -53,7 +54,7 @@ public class Sender {
         }
     }
 
-    public void send(UUID recipient, String data) {
+    public void send(@NotNull final UUID recipient, @NotNull final byte[] data) {
         synchronized (connections) {
             if (connections.containsKey(recipient)) {
                 connections.get(recipient).send(data);

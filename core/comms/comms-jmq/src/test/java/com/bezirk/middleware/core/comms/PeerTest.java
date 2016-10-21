@@ -35,7 +35,7 @@ public class PeerTest {
             peer.start();
             int count = 0;
             while (count < 50) {
-                peer.send("Msg" + (count++));
+                peer.send(("Msg" + (count++)).getBytes());
                 Thread.sleep(5);
             }
             peer.stop();
@@ -69,8 +69,8 @@ public class PeerTest {
         Thread.sleep(500);
         int count = 0;
         while (count < TOTAL_MSGS_TO_SEND) {
-            p1.send(Peers.PEER_A.toString() + Integer.toString(count));
-            p2.send(Peers.PEER_B.toString() + Integer.toString(count));
+            p1.send((Peers.PEER_A.toString() + Integer.toString(count)).getBytes());
+            p2.send((Peers.PEER_B.toString() + Integer.toString(count)).getBytes());
             count++;
             //sleep between each message
             Thread.sleep(5);
@@ -79,7 +79,7 @@ public class PeerTest {
         p2.stop();
 
         //allow graceful shutdown of components
-        Thread.sleep(500);
+        Thread.sleep(1000);
 
         logger.error("responses received at {} {}, responses received at {} {}", Peers.PEER_A.toString(), p1Listener.getTotalResponsesReceived(), Peers.PEER_B.toString(), p2Listener.getTotalResponsesReceived());
 
@@ -92,10 +92,10 @@ public class PeerTest {
     private void send(final Peers fromPeer, final String data) {
         switch (fromPeer) {
             case PEER_A:
-                p1.send(p2.getId(), data);
+                p1.send(p2.getId(), data.getBytes());
                 break;
             case PEER_B:
-                p2.send(p1.getId(), data);
+                p2.send(p1.getId(), data.getBytes());
                 break;
         }
     }

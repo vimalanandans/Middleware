@@ -32,10 +32,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Observable;
+import java.util.UUID;
 
-public class JmqCommsManager extends CommsProcessor implements ZMQReceiver.OnMessageReceivedListener {
+public class JmqCommsManager extends CommsProcessor implements Receiver.OnMessageReceivedListener {
     private static final Logger logger = LoggerFactory.getLogger(JmqCommsManager.class);
-    private JmqComms comms;
+    private Peer comms;
 
     /**
      * @param networkManager - Network manager to get TCP/IP related device configurations
@@ -44,18 +45,26 @@ public class JmqCommsManager extends CommsProcessor implements ZMQReceiver.OnMes
     public JmqCommsManager(NetworkManager networkManager, String groupName, CommsNotification commsNotification) {
         super(networkManager, commsNotification);
         if (comms == null) {
-            comms = new JmqComms(this, groupName);
+            comms = new Peer(groupName, this);
         }
     }
 
     @Override
     public boolean sendToAll(byte[] msg, boolean isEvent) {
-        return comms != null && comms.shout(msg);
+        if(comms != null){
+            comms.send(msg);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent) {
-        return comms != null && comms.whisper(nodeId, msg);
+        if(comms != null){
+            comms.send(UUID.fromString(nodeId), msg);
+            return true;
+        }
+        return false;
     }
 
     //TODO: manage lifecycle of comms based on bezirk-lifecycle events appropriately
@@ -93,7 +102,7 @@ public class JmqCommsManager extends CommsProcessor implements ZMQReceiver.OnMes
 
     @Override
     public String getNodeId() {
-        return (comms != null) ? (comms.getNodeId() != null) ? comms.getNodeId().toString() : null : null;
+        return (comms != null) ? (comms.getId() != null) ? comms.getId().toString() : null : null;
     }
 }
 
