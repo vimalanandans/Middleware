@@ -1,17 +1,17 @@
 /**
  * The MIT License (MIT)
  * Copyright (c) 2016 Bezirk http://bezirk.com
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -74,7 +74,7 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
 
     @Override
     public void onSuccess(final int port) {
-        logger.trace("Port initialized successfully, initializing JmqComms");
+        logger.debug("Port initialized successfully, initializing JmqComms");
         selfNode = new Node(port);
         nodeDiscovery = new NodeDiscovery(groupName);
         nodeDiscovery.start();
@@ -120,22 +120,19 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
             }
             socket.connect("tcp:/" + sender + ":" + port);
             nodeMap.put(uuid, new Node(uuid, sender, port, socket));
-            if (logger.isTraceEnabled()) {
-                logger.trace("Current Node id {}::Peer with {} added with port {}",
-                        selfNode.getUuid().toString(), uuid, port);
-            }
+            logger.debug("Current Node id {}::Peer with id {} added with port {}",
+                    selfNode.getUuid().toString(), uuid, port);
+
         }
     }
 
 
     public boolean shout(final byte[] data) {
-        if (logger.isTraceEnabled()) {
-            logger.trace("at node {} no of nodes {} for data {}",
-                    selfNode.getUuid(), nodeMap.values().size(), Arrays.toString(data));
-        }
+        logger.debug("sending data from node {} to {} nodes",
+                selfNode.getUuid(), nodeMap.values().size());
 
         for (Node node : nodeMap.values()) {
-            logger.trace("at node " + selfNode.getUuid() + " whispering to " + node.getUuid() + " data " + Arrays.toString(data));
+            logger.trace("at node {} whispering to {}" + selfNode.getUuid(), node.getUuid());
             whisper(node, data);
         }
         return true;
@@ -204,11 +201,11 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
 
         NodeDiscovery(@Nullable final String groupName) {
             this.groupName = (groupName != null) ? groupName : DEFAULT_GROUP_NAME;
-            logger.info("GroupName for current bezirk instance {}", groupName);
+            logger.info("GroupName for current bezirk instance {}", this.groupName);
         }
 
         private void processBeacon(final InetAddress sender, final byte[] beacon) {
-            String beaconString = null;
+            String beaconString;
             try {
                 beaconString = new String(beacon, WireMessage.ENCODING);
             } catch (UnsupportedEncodingException e) {
@@ -219,7 +216,7 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
             try {
                 data = beaconString.split(SEPARATOR);
             } catch (PatternSyntaxException e) {
-                logger.error("Failed to split beacon string", e);
+                logger.error("Invalid beacon received, error splitting beacon string", e);
                 return;
             }
 
@@ -269,12 +266,10 @@ public class JmqComms implements ZMQReceiver.ReceiverPortInitializedCallback {
                 @Override
                 public void onBeacon(InetAddress sender, byte[] beacon) {
                     // ignore self id
-
                     if (!Arrays.equals(beacon, beaconDataArr)) {
                         processBeacon(sender, beacon);
                     } else {
-                        if (logger.isTraceEnabled())
-                            logger.trace("self node, sender {} data {}", sender, Arrays.toString(beacon));
+                        logger.trace("self node, sender {} data {}", sender, Arrays.toString(beacon));
                     }
                 }
             });
