@@ -27,10 +27,28 @@ class Receiver extends Thread {
         this.onMessageReceivedListener = onMessageReceivedListener;
         this.context = ZMQ.context(1);
         frontend = context.socket(ZMQ.ROUTER);
-        port = frontend.bindToRandomPort("tcp://*", 0xc000, 0xffff);
+
+        initializePort();
+
         logger.debug("frontend port " + port);
         backend = context.socket(ZMQ.DEALER);
         backend.bind("inproc://backend");
+    }
+
+
+    private void initializePort(){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                port = frontend.bindToRandomPort("tcp://*", 0xc000, 0xffff);
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

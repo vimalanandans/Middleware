@@ -1,17 +1,17 @@
 /**
  * The MIT License (MIT)
  * Copyright (c) 2016 Bezirk http://bezirk.com
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -50,12 +50,11 @@ public final class ActionProcessor {
         BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
 
         if (ValidatorUtility.isObjectNotNull(intentAction)) {
-            logger.debug("intentAction is not null in ActionProcessor");
-            if (logger.isDebugEnabled())
-                logger.debug("Received intent, action: {}", intentAction.getName());
+            logger.trace("intentAction is not null in ActionProcessor");
+            logger.debug("Received intent, action: {}", intentAction.getName());
 
             BezirkAction.ActionType actionType = intentAction.getType();
-            logger.debug("actionType is "+actionType);
+            logger.trace("actionType is " + actionType);
             switch (actionType) {
                 case BEZIRK_STACK_ACTION:
                     processBezirkStackAction(intent, intentAction, lifeCycleCallbacks);
@@ -65,7 +64,6 @@ public final class ActionProcessor {
                     //processDeviceActions(intentAction, service);
                     break;
                 case SEND_ACTION:
-                    logger.debug("processBezirkAction method");
                     processSendActions(intentAction, intent, proxyService);
                     break;
                 case ZIRK_ACTION:
@@ -76,8 +74,7 @@ public final class ActionProcessor {
                     break;
             }
         } else {
-            if (logger.isWarnEnabled())
-                logger.warn("Received unknown intent action: {}", intent.getAction());
+            logger.warn("Received unknown intent action: {}", intent.getAction());
         }
 
     }
@@ -96,14 +93,13 @@ public final class ActionProcessor {
                 lifeCycleCallbacks.stop(stopServiceAction);
                 break;
             case ACTION_REBOOT:
-                logger.debug("Not handling Reboot");
+                logger.trace("Not handling Reboot");
                 break;
             case ACTION_CLEAR_PERSISTENCE:
-                logger.debug("Not handling clear persistence");
+                logger.trace("Not handling clear persistence");
                 break;
             default:
-                if (logger.isWarnEnabled())
-                    logger.warn("Received unknown intent action: {}", intent.getAction());
+                logger.warn("Received unknown intent action: {}", intent.getAction());
                 break;
         }
     }
@@ -124,26 +120,25 @@ public final class ActionProcessor {
                 proxyService.unsubscribeService(intent);
                 break;
             default:
-                if (logger.isWarnEnabled())
-                    logger.warn("Received unknown intent action: {}", intent.getAction());
+                logger.warn("Received unknown intent action: {}", intent.getAction());
                 break;
         }
     }
 
     private void processSendActions(BezirkAction intentAction, Intent intent,
                                     AndroidProxyServer proxyService) {
-        logger.debug("intentAction in ActionProcessor is "+intentAction);
+        logger.trace("intentAction in ActionProcessor is " + intentAction);
         switch (intentAction) {
             case ACTION_ZIRK_SEND_MULTICAST_EVENT:
-                logger.debug("In ACTION_ZIRK_SEND_MULTICAST_EVENT");
+                logger.trace("In ACTION_ZIRK_SEND_MULTICAST_EVENT");
                 proxyService.sendMulticastEvent(intent);
                 break;
             case ACTION_ZIRK_SEND_UNICAST_EVENT:
+                logger.trace("In ACTION_ZIRK_SEND_UNICAST_EVENT");
                 proxyService.sendUnicastEvent(intent);
                 break;
             default:
-                if (logger.isWarnEnabled())
-                    logger.warn("Received unknown intent action: {}", intent.getAction());
+                logger.warn("Received unknown intent action: {}", intent.getAction());
                 break;
         }
     }
