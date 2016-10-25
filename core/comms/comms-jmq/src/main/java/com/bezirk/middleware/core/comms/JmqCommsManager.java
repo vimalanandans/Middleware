@@ -67,7 +67,6 @@ public class JmqCommsManager extends CommsProcessor implements Receiver.OnMessag
         return false;
     }
 
-    //TODO: manage lifecycle of comms based on bezirk-lifecycle events appropriately
     @Override
     public void update(Observable observable, Object data) {
         LifeCycleObservable lifeCycleObservable = (LifeCycleObservable) observable;

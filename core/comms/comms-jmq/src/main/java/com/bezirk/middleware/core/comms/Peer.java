@@ -1,17 +1,17 @@
 /**
  * The MIT License (MIT)
  * Copyright (c) 2016 Bezirk http://bezirk.com
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -45,12 +45,11 @@ import java.util.concurrent.TimeUnit;
  * <li>Receive messages from the discovered peers</li>
  * <li>Clean up resources like sockets, contexts, etc when stopped</li>
  * <li>TODO Manage network re-connections</li>
- * <li>TODO Remove peers from which a beacon is not received for a particular amount of time</li>
  * </ul>
  */
 public class Peer implements Beacon.BeaconCallback {
     private static final Logger logger = LoggerFactory.getLogger(Peer.class);
-    //maximum wait time within which if a udp-beacon from another peer is not received, the peer is removed.
+    //maximum wait time(in ms) within which if a udp-beacon from another peer is not received, the peer is removed.
     private static final int MAX_IDLE_TIME = 5000;
     private final String name;
     private final Receiver receiver;
@@ -120,6 +119,9 @@ public class Peer implements Beacon.BeaconCallback {
         sender.send(recipient, data);
     }
 
+    /**
+     * Responsible for checking {@link #myPeers} and removing those peers, from which a beacon has not been received for atleast {@link #MAX_IDLE_TIME} time
+     */
     private class CleanupRunnable implements Runnable {
         @Override
         public void run() {
