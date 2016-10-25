@@ -1,17 +1,17 @@
 /**
  * The MIT License (MIT)
  * Copyright (c) 2016 Bezirk http://bezirk.com
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -53,15 +53,15 @@ public class Main {
     private static void startApplication(int option) {
         switch (option) {
             case 1:
-                init();
+                initializeBezirk();
                 new Publisher();
                 break;
             case 2:
-                init();
+                initializeBezirk();
                 new Subscriber();
                 break;
             case 3:
-                init();
+                initializeBezirk();
                 new Publisher();
                 new Subscriber();
                 break;
@@ -73,14 +73,29 @@ public class Main {
         }
     }
 
-    private static void init() {
-        //with comms enabled
-        Config config = new Config.ConfigBuilder().setLogLevel(Config.Level.ERROR).setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.WARN).create();
+    private static void initializeBezirk() {
+        Config.ConfigBuilder configBuilder = new Config.ConfigBuilder();
 
-        //with comms disabled
-        //Config config = new Config.ConfigBuilder().setLogLevel(Config.Level.DEBUG).setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.INFO).setComms(false).create();
+        /*setting root log level*/
+        configBuilder.setLogLevel(Config.Level.ERROR);
 
-        BezirkMiddleware.initialize(config);
+        /*setting package log level*/
+        //configBuilder.setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.INFO);
+
+        /*disabling inter-device communication*/
+        //configBuilder.setComms(false);
+
+        /*using custom communication groups to prevent crosstalk*/
+        //configBuilder.setGroupName("Test Group");
+
+        /*keeping bezirk service alive even after the app is shutdown*/
+        //configBuilder.setServiceAlive(true);
+
+        /*initialize with default configurations*/
+        //BezirkMiddleware.initialize(this);
+
+        BezirkMiddleware.initialize(configBuilder.create());
+
     }
 
     public static String getHostName() {

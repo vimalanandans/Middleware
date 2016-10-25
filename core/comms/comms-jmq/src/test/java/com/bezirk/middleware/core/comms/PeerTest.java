@@ -66,7 +66,7 @@ public class PeerTest {
         p2.start();
 
         //allow peers to discover & connect
-        Thread.sleep(500);
+        Thread.sleep(1500);
         int count = 0;
         while (count < TOTAL_MSGS_TO_SEND) {
             p1.send((Peers.PEER_A.toString() + Integer.toString(count)).getBytes());

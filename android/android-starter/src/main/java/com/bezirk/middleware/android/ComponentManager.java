@@ -54,6 +54,7 @@ import com.bezirk.middleware.core.proxy.MessageHandler;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -117,29 +118,36 @@ public final class ComponentManager extends Service implements LifeCycleCallback
                 config.getAppName() + " ON", R.drawable.bezirk_notification_icon));
 
         logger.debug("LifeCycleCallbacks:start");
-        lifecycleObservable.transition(LifeCycleObservable.Transition.START);
+        //lifecycleObservable.transition(LifeCycleObservable.Transition.START);
+        executeTransitionInThread(LifeCycleObservable.Transition.START);
         currentState = lifecycleObservable.getState();
     }
 
     @Override
     public void stop(StopServiceAction stopServiceAction) {
         logger.debug("LifeCycleCallbacks:stop");
-        //As jmq-comms currently stops its components in the main thread, this causes NetworkOnMainThread Exception.
-        //As a work around, the transition is made in a new thread.
+        executeTransitionInThread(LifeCycleObservable.Transition.STOP);
+        currentState = lifecycleObservable.getState();
+        stopSelf();
+    }
+
+    /**
+     * As jmq-comms currently stops its components in the main thread, this causes NetworkOnMainThread Exception in Android.
+     * As a work around, the transition is made in a new thread.
+     */
+    private void executeTransitionInThread(@NotNull final LifeCycleObservable.Transition transition) {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                lifecycleObservable.transition(LifeCycleObservable.Transition.STOP);
+                lifecycleObservable.transition(transition);
             }
         });
         t.start();
         try {
             t.join();
         } catch (InterruptedException e) {
-            logger.error("Stop action interrupted", e);
+            logger.error("transition {} interrupted", transition, e);
         }
-        currentState = lifecycleObservable.getState();
-        stopSelf();
     }
 
     @Override

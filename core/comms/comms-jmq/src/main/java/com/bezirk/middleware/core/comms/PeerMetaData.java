@@ -22,15 +22,19 @@
  */
 package com.bezirk.middleware.core.comms;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.net.InetAddress;
 
 public class PeerMetaData {
     private final InetAddress inetAddress;
     private final int port;
+    private long lastSeen;
 
-    public PeerMetaData(final InetAddress inetAddress, final int port) {
+    public PeerMetaData(@NotNull final InetAddress inetAddress, final int port, final long lastSeen) {
         this.inetAddress = inetAddress;
         this.port = port;
+        this.lastSeen = lastSeen;
     }
 
     public InetAddress getInetAddress() {
@@ -39,5 +43,13 @@ public class PeerMetaData {
 
     public int getPort() {
         return port;
+    }
+
+    public long getLastSeen() {
+        return lastSeen;
+    }
+
+    public void setLastSeen(long lastSeen) {
+        this.lastSeen = lastSeen;
     }
 }
