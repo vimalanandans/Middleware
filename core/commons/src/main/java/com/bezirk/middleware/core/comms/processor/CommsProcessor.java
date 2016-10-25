@@ -214,18 +214,11 @@ public abstract class CommsProcessor implements Comms, Observer {
         final long compStartTime = System.currentTimeMillis();
         final byte[] wireData = TextCompressor.compress(temp);
         final long compEndTime = System.currentTimeMillis();
-        logger.info("Compression Took {} milliseconds", compEndTime - compStartTime);
+        logger.trace("Compression Took {} milliseconds", compEndTime - compStartTime);
         return wireData;
     }
 
     private byte[] encryptMsg(String sphereId, byte[] msgData) {
-        long startTime = 0;
-
-        if (logger.isTraceEnabled()) {
-            logger.trace("Before Encryption Msg byte length: {}", msgData.length);
-            startTime = System.nanoTime();
-        }
-
         final String msgDataString;
         try {
             msgDataString = new String(msgData, WireMessage.ENCODING);
@@ -239,10 +232,6 @@ public abstract class CommsProcessor implements Comms, Observer {
             msg = sphereSecurity.encryptSphereContent(sphereId, msgDataString);
         } else { // No encryption when there is no interface
             msg = msgData;
-        }
-        if (logger.isTraceEnabled()) {
-            logger.trace("Encryption took {} nano seconds", System.nanoTime() - startTime);
-            logger.trace("After Encryption Msg byte length: {}", msg.length);
         }
         return msg;
     }
