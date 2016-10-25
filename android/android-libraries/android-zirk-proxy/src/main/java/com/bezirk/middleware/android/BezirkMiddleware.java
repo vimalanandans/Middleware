@@ -1,17 +1,17 @@
 /**
  * The MIT License (MIT)
  * Copyright (c) 2016 Bezirk http://bezirk.com
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -58,7 +58,29 @@ public abstract class BezirkMiddleware {
      * @see #stop()
      */
     public static synchronized void initialize(@NotNull final Context context) {
-        initialize(context, null);
+        initialize(context, (Config) null);
+    }
+
+    /**
+     * Initializes and starts the bezirk
+     * <a target="_blank" href="https://developer.android.com/reference/android/app/Service.html">Service</a>.
+     * <p>
+     * Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}.
+     * {@link BezirkMiddleware} is started using default configurations {@link Config} with
+     * {@link Config#groupName} set to #channelId. Bezirk service runs
+     * as a background Android service unless explicitly stopped by the application
+     * using {@link #stop()} or by Android OS.
+     * </p>
+     *
+     * @param channelId
+     * @see #initialize(Context, Config)
+     * @see #stop()
+     */
+    public static synchronized void initialize(@NotNull final Context context, @NotNull final String channelId) {
+        if (channelId == null) {
+            throw new IllegalArgumentException("channelId cannot be null");
+        }
+        initialize(context, new Config.ConfigBuilder().setGroupName(channelId).create());
     }
 
     /**

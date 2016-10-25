@@ -94,7 +94,11 @@ public class Main {
         /*initialize with default configurations*/
         //BezirkMiddleware.initialize(this);
 
+        /*initialize with configurations*/
         BezirkMiddleware.initialize(configBuilder.create());
+
+        /*initialize with channelId/groupName*/
+        //BezirkMiddleware.initialize("MyChannel");
 
     }
 

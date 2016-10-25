@@ -31,7 +31,7 @@ public class PeerTest {
     public void test() throws InterruptedException {
         int startThreads = Utils.getNumberOfThreadsInSystem(false);
         for (int i = 0; i < 3; i++) {
-            Peer peer = new Peer("Peer" + i, null);
+            Peer peer = new Peer(null, null);
             peer.start();
             int count = 0;
             while (count < 50) {
@@ -59,8 +59,8 @@ public class PeerTest {
 
         Listener p1Listener = new Listener(Peers.PEER_A);
         Listener p2Listener = new Listener(Peers.PEER_B);
-        p1 = new Peer(Peers.PEER_A.toString(), p1Listener);
-        p2 = new Peer(Peers.PEER_B.toString(), p2Listener);
+        p1 = new Peer(null, p1Listener);
+        p2 = new Peer(null, p2Listener);
 
         p1.start();
         p2.start();
