@@ -57,7 +57,7 @@ class Beacon {
         this.port = port;
         this.myId = myId;
         this.beaconCallback = callback;
-        logger.error("GroupName for current bezirk instance " + this.groupName);
+        logger.info("GroupName for current bezirk instance " + this.groupName);
         logger.trace("Port being broadcasted in beacon " + port);
     }
 
