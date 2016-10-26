@@ -86,7 +86,7 @@ public class Main {
         //configBuilder.setComms(false);
 
         /*using custom communication groups to prevent crosstalk*/
-        //configBuilder.setGroupName("Test Group");
+        //configBuilder.setGroupName("TestGroup");
 
         /*keeping bezirk service alive even after the app is shutdown*/
         //configBuilder.setServiceAlive(true);

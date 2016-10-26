@@ -66,7 +66,7 @@ public class Peer implements Beacon.BeaconCallback {
         }
         beacon = new Beacon(groupName, receiver.getPort(), uuid, this);
         myPeers = new HashMap<>();
-        sender = new Sender(uuid);
+        sender = new Sender(uuid, groupName);
         service = Executors.newScheduledThreadPool(1);
     }
 
