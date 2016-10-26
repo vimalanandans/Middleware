@@ -92,7 +92,7 @@ public class Main {
         //configBuilder.setServiceAlive(true);
 
         /*initialize with default configurations*/
-        //BezirkMiddleware.initialize(this);
+        //BezirkMiddleware.initialize();
 
         /*initialize with configurations*/
         BezirkMiddleware.initialize(configBuilder.create());
