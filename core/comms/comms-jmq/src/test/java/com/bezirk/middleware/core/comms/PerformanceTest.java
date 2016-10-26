@@ -87,7 +87,7 @@ public class PerformanceTest {
                 } catch (NumberFormatException e) {
                     logger.debug("Receiving messages from other sources, ignoring");
                 }
-                logger.trace("Node {} received message {} from node {}", peer.getId(), currentMsgData, nodeId);
+                logger.trace("Peer {} received message {} from node {}", peer.getId(), currentMsgData, nodeId);
                 if (!peerInfoMap.containsKey(nodeId)) {
                     assert (currentMsgData == 1);
                     peerInfoMap.put(nodeId, currentMsgData);
@@ -110,7 +110,7 @@ public class PerformanceTest {
 
         //setup the nodes
         for (int i = 0; i < NO_OF_NODES; i++) {
-            nodes[i] = new Thread(new TestJp2p(), "Node" + i);
+            nodes[i] = new Thread(new TestJp2p(), "Peer" + i);
         }
 
         //allow all nodes to discover each other
