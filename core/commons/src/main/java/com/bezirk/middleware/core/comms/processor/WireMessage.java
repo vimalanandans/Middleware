@@ -112,7 +112,6 @@ public class WireMessage implements Serializable {
 
     public static WireMessage deserialize(byte[] data) {
 
-        WireMessage wireMessage = null;
         String json;
         try {
             json = new String(data, ENCODING);
@@ -120,11 +119,13 @@ public class WireMessage implements Serializable {
             logger.error(e.getLocalizedMessage());
             throw new AssertionError(e);
         }
-        Gson gson = new Gson();
+        final Gson gson = new Gson();
+        WireMessage wireMessage;
         try {
             wireMessage = gson.fromJson(json, WireMessage.class);
         } catch (JsonParseException e) {
             logger.error("Exception in parsing json message from wire message.", e);
+            wireMessage = null;
         }
         return wireMessage;
     }

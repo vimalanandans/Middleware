@@ -165,7 +165,7 @@ public class AndroidProxyServer extends ProxyServer implements Observer {
                     senderExecutorService.shutdownNow(); // Cancel currently executing tasks
                     // Wait a while for tasks to respond to being cancelled
                     if (!senderExecutorService.awaitTermination(100, TimeUnit.MILLISECONDS)) {
-                        System.err.println("Pool did not terminate");
+                        logger.error("Pool did not terminate");
                     }
                 }
             } catch (InterruptedException ie) {

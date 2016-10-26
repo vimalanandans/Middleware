@@ -147,6 +147,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
             t.join();
         } catch (InterruptedException e) {
             logger.error("transition {} interrupted", transition, e);
+            Thread.currentThread().interrupt();
         }
     }
 

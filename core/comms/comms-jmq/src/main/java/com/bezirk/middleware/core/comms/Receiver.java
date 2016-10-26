@@ -57,7 +57,6 @@ class Receiver extends Thread {
         backend.bind("inproc://backend");
     }
 
-
     private void initializePort() {
         Thread t = new Thread(new Runnable() {
             @Override
@@ -70,6 +69,7 @@ class Receiver extends Thread {
             t.join();
         } catch (InterruptedException e) {
             logger.error("Interrupted while fetching Receiver port", e);
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -100,6 +100,8 @@ class Receiver extends Thread {
                 logger.debug(dealer.getName() + " finished");
             }
         } catch (InterruptedException e) {
+            logger.error("JMQ Receiver interrupted during close");
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -140,6 +142,7 @@ class Receiver extends Thread {
 
                 } catch (ZMQException e) {
                     if (e.getErrorCode() == ZMQ.Error.ETERM.getCode()) {
+                        logger.error("Ending JMQ receier loop due to ETERM error code", e);
                         break;
                     }
                 }
