@@ -32,7 +32,11 @@ import org.zeromq.ZMQException;
 import org.zeromq.ZMsg;
 
 class Receiver extends Thread {
+    public static final int MINIMUM_PORT_NUMBER = 0xc000;
+    public static final int MAXIMUM_PORT_NUMBER = 0xffff;
+
     private static final Logger logger = LoggerFactory.getLogger(Receiver.class);
+
     private static final int NO_OF_DEALERS = 5;
     private final ZMQ.Context context;
     private volatile int port;
@@ -52,16 +56,19 @@ class Receiver extends Thread {
 
         initializePort();
 
-        logger.debug("frontend port " + port);
+        logger.debug("frontend port {}", port);
         backend = context.socket(ZMQ.DEALER);
         backend.bind("inproc://backend");
     }
 
     private void initializePort() {
+        // We bind to a random port on a separate thread because otherwise this code could
+        // run on an Android activity thread. Android does not allow network operations
+        // on such threads.
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                port = frontend.bindToRandomPort("tcp://*", 0xc000, 0xffff);
+                port = frontend.bindToRandomPort("tcp://*", MINIMUM_PORT_NUMBER, MAXIMUM_PORT_NUMBER);
             }
         });
         t.start();
@@ -124,7 +131,7 @@ class Receiver extends Thread {
 
         @Override
         public void run() {
-            logger.debug("Starting dealer " + getName());
+            logger.debug("Starting dealer {}", getName());
             socket.connect("inproc://backend");
             while (!Thread.currentThread().isInterrupted()) {
                 try {
