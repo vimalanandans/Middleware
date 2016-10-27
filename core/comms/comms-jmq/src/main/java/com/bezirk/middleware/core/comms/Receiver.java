@@ -142,7 +142,7 @@ class Receiver extends Thread {
 
                 } catch (ZMQException e) {
                     if (e.getErrorCode() == ZMQ.Error.ETERM.getCode()) {
-                        logger.error("Ending JMQ receier loop due to ETERM error code", e);
+                        logger.debug("Ending JMQ receiver loop due to ETERM error code");
                         break;
                     }
                 }
