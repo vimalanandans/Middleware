@@ -117,13 +117,11 @@ class Receiver extends Thread {
     }
 
     private static class Dealer extends Thread {
-        private final ZMQ.Context context;
         private final ZMQ.Socket socket;
         private final OnMessageReceivedListener onMessageReceivedListener;
 
         public Dealer(@NotNull final ZMQ.Context context, @Nullable final String name,
                       @Nullable final OnMessageReceivedListener onMessageReceivedListener) {
-            this.context = context;
             this.onMessageReceivedListener = onMessageReceivedListener;
             setName(name);
             socket = context.socket(ZMQ.DEALER);
@@ -149,6 +147,9 @@ class Receiver extends Thread {
 
                 } catch (ZMQException e) {
                     if (e.getErrorCode() == ZMQ.Error.ETERM.getCode()) {
+                        // We just log without throwing/logging the exception again as this is always
+                        // called when the ZMQ.Context is terminated. This is common practice in jeromq.
+                        // See this issue for details (https://github.com/zeromq/jeromq/issues/116)
                         logger.debug("Ending JMQ receiver loop due to ETERM error code");
                         break;
                     }

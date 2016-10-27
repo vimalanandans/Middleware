@@ -66,7 +66,7 @@ public class Peer implements Beacon.BeaconCallback {
                 receiver.getPort() > Receiver.MAXIMUM_PORT_NUMBER) {
             throw new AssertionError(String.format(Locale.getDefault(),
                     "Port not initialized to an expected value. Expected range = %d to %d, actual = %d",
-                            Receiver.MINIMUM_PORT_NUMBER, Receiver.MAXIMUM_PORT_NUMBER, receiver.getPort()));
+                    Receiver.MINIMUM_PORT_NUMBER, Receiver.MAXIMUM_PORT_NUMBER, receiver.getPort()));
         }
         beacon = new Beacon(groupName, receiver.getPort(), uuid, this);
         myPeers = new HashMap<>();
@@ -81,7 +81,7 @@ public class Peer implements Beacon.BeaconCallback {
     }
 
     public void stop() {
-        service.shutdownNow();
+        stopExecutor();
         receiver.close();
         beacon.stop();
         sender.close();
@@ -133,7 +133,7 @@ public class Peer implements Beacon.BeaconCallback {
         }
 
         if (!sender.send(recipient, data)) {
-            logger.trace("Failed to send data to recipient with id {]", recipient);
+            logger.trace("Failed to send data to recipient with id {}", recipient);
         }
     }
 
@@ -152,10 +152,31 @@ public class Peer implements Beacon.BeaconCallback {
                             logger.debug("Removing peer {}", entry.getKey());
                             sender.removeConnection(entry.getKey());
                             it.remove();
-
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private void stopExecutor() {
+        if (service != null) {
+            // Disable new tasks from being submitted
+            service.shutdown();
+            try {
+                // Wait a while for existing tasks to terminate
+                if (!service.awaitTermination(200, TimeUnit.MILLISECONDS)) {
+                    service.shutdownNow(); // Cancel currently executing tasks
+                    // Wait a while for tasks to respond to being cancelled
+                    if (!service.awaitTermination(200, TimeUnit.MILLISECONDS)) {
+                        logger.error("Pool did not terminate");
+                    }
+                }
+            } catch (InterruptedException ie) {
+                // (Re-)Cancel if current thread also interrupted
+                service.shutdownNow();
+                // Preserve interrupt status
+                Thread.currentThread().interrupt();
             }
         }
     }
