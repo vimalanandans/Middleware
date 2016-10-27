@@ -133,7 +133,7 @@ public class Peer implements Beacon.BeaconCallback {
         }
 
         if (!sender.send(recipient, data)) {
-            logger.trace("Failed to send data to recipient with id {]", recipient);
+            logger.trace("Failed to send data to recipient with id {}", recipient);
         }
     }
 
