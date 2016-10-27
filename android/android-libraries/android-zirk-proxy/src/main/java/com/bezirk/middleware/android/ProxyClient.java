@@ -204,9 +204,6 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
-        if (!remoteSendReady) {
-            logRemoteSending();
-        }
         intentSender.sendBezirkIntent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
                 zirkId, recipient, event, event instanceof IdentifiedEvent));
     }
