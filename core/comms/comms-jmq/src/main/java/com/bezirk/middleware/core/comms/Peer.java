@@ -1,17 +1,17 @@
 /**
  * The MIT License (MIT)
  * Copyright (c) 2016 Bezirk http://bezirk.com
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -66,7 +66,7 @@ public class Peer implements Beacon.BeaconCallback {
                 receiver.getPort() > Receiver.MAXIMUM_PORT_NUMBER) {
             throw new AssertionError(String.format(Locale.getDefault(),
                     "Port not initialized to an expected value. Expected range = %d to %d, actual = %d",
-                            Receiver.MINIMUM_PORT_NUMBER, Receiver.MAXIMUM_PORT_NUMBER, receiver.getPort()));
+                    Receiver.MINIMUM_PORT_NUMBER, Receiver.MAXIMUM_PORT_NUMBER, receiver.getPort()));
         }
         beacon = new Beacon(groupName, receiver.getPort(), uuid, this);
         myPeers = new HashMap<>();
@@ -81,7 +81,7 @@ public class Peer implements Beacon.BeaconCallback {
     }
 
     public void stop() {
-        service.shutdownNow();
+        stopExecutor();
         receiver.close();
         beacon.stop();
         sender.close();
@@ -152,10 +152,31 @@ public class Peer implements Beacon.BeaconCallback {
                             logger.debug("Removing peer {}", entry.getKey());
                             sender.removeConnection(entry.getKey());
                             it.remove();
-
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private void stopExecutor() {
+        if (service != null) {
+            // Disable new tasks from being submitted
+            service.shutdown();
+            try {
+                // Wait a while for existing tasks to terminate
+                if (!service.awaitTermination(200, TimeUnit.MILLISECONDS)) {
+                    service.shutdownNow(); // Cancel currently executing tasks
+                    // Wait a while for tasks to respond to being cancelled
+                    if (!service.awaitTermination(200, TimeUnit.MILLISECONDS)) {
+                        logger.error("Pool did not terminate");
+                    }
+                }
+            } catch (InterruptedException ie) {
+                // (Re-)Cancel if current thread also interrupted
+                service.shutdownNow();
+                // Preserve interrupt status
+                Thread.currentThread().interrupt();
             }
         }
     }
