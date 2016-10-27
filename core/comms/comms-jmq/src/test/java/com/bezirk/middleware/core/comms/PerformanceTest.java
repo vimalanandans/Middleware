@@ -105,7 +105,7 @@ public class PerformanceTest {
 
     @org.junit.Test
     public void test() throws InterruptedException {
-        Utils.setLogLevel(Level.INFO);
+        Utils.setLogLevel(Level.DEBUG);
         Thread[] nodes = new Thread[NO_OF_NODES];
 
         //setup the nodes

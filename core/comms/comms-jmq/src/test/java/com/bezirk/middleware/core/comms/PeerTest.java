@@ -41,7 +41,7 @@ public class PeerTest {
             peer.stop();
             Thread.sleep(500);
         }
-        int endThreads = Utils.getNumberOfThreadsInSystem(false);
+        int endThreads = Utils.getNumberOfThreadsInSystem(true);
         assertEquals(startThreads, endThreads);
     }
 
@@ -66,7 +66,7 @@ public class PeerTest {
         p2.start();
 
         //allow peers to discover & connect
-        Thread.sleep(1500);
+        Thread.sleep(2000);
         int count = 0;
         while (count < TOTAL_MSGS_TO_SEND) {
             p1.send((Peers.PEER_A.toString() + Integer.toString(count)).getBytes());
