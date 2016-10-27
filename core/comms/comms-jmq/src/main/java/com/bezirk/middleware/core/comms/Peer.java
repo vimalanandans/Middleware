@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -61,8 +62,11 @@ public class Peer implements Beacon.BeaconCallback {
     public Peer(@Nullable final String groupName, @Nullable final Receiver.OnMessageReceivedListener onMessageReceivedListener) {
         receiver = new Receiver(onMessageReceivedListener);
         uuid = UUID.randomUUID();
-        if (receiver.getPort() <= 0) {
-            throw new AssertionError("port not initialized, port is " + receiver.getPort());
+        if (receiver.getPort() < Receiver.MINIMUM_PORT_NUMBER ||
+                receiver.getPort() > Receiver.MAXIMUM_PORT_NUMBER) {
+            throw new AssertionError(String.format(Locale.getDefault(),
+                    "Port not initialized to an expected value. Expected range = %d to %d, actual = %d",
+                            Receiver.MINIMUM_PORT_NUMBER, Receiver.MAXIMUM_PORT_NUMBER, receiver.getPort()));
         }
         beacon = new Beacon(groupName, receiver.getPort(), uuid, this);
         myPeers = new HashMap<>();
