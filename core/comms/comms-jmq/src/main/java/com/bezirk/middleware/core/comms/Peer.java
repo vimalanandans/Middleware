@@ -108,11 +108,33 @@ public class Peer implements Beacon.BeaconCallback {
     }
 
     public void send(byte[] data) {
+        if (logger.isTraceEnabled()) {
+            for (UUID id : sender.getConnections().keySet()) {
+                if (myPeers.containsKey(id)) {
+                    final PeerMetaData peerMetaData = myPeers.get(id);
+                    logger.trace("Sending to {}:{} last seen {}", peerMetaData.getInetAddress(),
+                            peerMetaData.getPort(), peerMetaData.getLastSeen());
+                } else {
+                    logger.trace("Sender map contains a uuid that does not exist in the known peers map");
+                }
+            }
+        }
+
         sender.send(data);
     }
 
     public void send(UUID recipient, byte[] data) {
-        sender.send(recipient, data);
+        if (logger.isTraceEnabled()) {
+            if (sender.getConnections().containsKey(recipient)) {
+                final PeerMetaData peerMetaData = myPeers.get(recipient);
+                logger.trace("Unicasting to {}:{} last seen {} with id {}", peerMetaData.getInetAddress(),
+                        peerMetaData.getPort(), peerMetaData.getLastSeen(), recipient);
+            }
+        }
+
+        if (!sender.send(recipient, data)) {
+            logger.trace("Failed to send data to recipient with id {]", recipient);
+        }
     }
 
     /**

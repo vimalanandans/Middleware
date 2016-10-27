@@ -64,6 +64,10 @@ public class Sender {
         }
     }
 
+    protected Map<UUID, ZMQ.Socket> getConnections() {
+        return connections;
+    }
+
     public void removeConnection(@NotNull final UUID uuid) {
         synchronized (connections) {
             if (connections.containsKey(uuid)) {
@@ -90,13 +94,15 @@ public class Sender {
         }
     }
 
-    public void send(@NotNull final UUID recipient, @NotNull final byte[] data) {
+    public boolean send(@NotNull final UUID recipient, @NotNull final byte[] data) {
         synchronized (connections) {
             if (connections.containsKey(recipient)) {
-                connections.get(recipient).send(data);
                 logger.debug("sending to recipient {}", recipient);
+                return connections.get(recipient).send(data);
             }
         }
+
+        return false;
     }
 
     public void close() {
