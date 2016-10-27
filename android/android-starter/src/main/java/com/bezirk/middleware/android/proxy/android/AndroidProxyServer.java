@@ -91,9 +91,7 @@ public class AndroidProxyServer extends ProxyServer implements Observer {
         final SendMulticastEventAction eventAction =
                 (SendMulticastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_MULTICAST_EVENT.getName());
 
-        //sendEvent(eventAction);
         sendEventUsingExecutor(eventAction);
-
     }
 
     public void sendUnicastEvent(Intent intent) {
@@ -102,9 +100,7 @@ public class AndroidProxyServer extends ProxyServer implements Observer {
         final UnicastEventAction eventAction =
                 (UnicastEventAction) intent.getSerializableExtra(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT.getName());
 
-        //sendEvent(eventAction);
         sendEventUsingExecutor(eventAction);
-
     }
 
     public void setLocation(Intent intent) {
@@ -128,6 +124,13 @@ public class AndroidProxyServer extends ProxyServer implements Observer {
         }
     }
 
+    /**
+     * This method is used as Android does not allow network operation on the Main thread and throws an exception.
+     * Currently the underlying jeromq comms implementation is not sending messages in another separate thread.
+     * This provides a way to fix this problem. If the underlying implementation of
+     * {@link com.bezirk.middleware.core.comms.Sender} is changed to be in a separate thread,
+     * methods {@link #sendEvent(SendMulticastEventAction)} and {@link #sendEvent(UnicastEventAction)} can be used directly
+     */
     private void sendEventUsingExecutor(@NotNull final EventAction eventAction) {
         if (senderExecutorService == null) {
             throw new IllegalStateException("senderExecutorService is not created");
