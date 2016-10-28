@@ -91,7 +91,7 @@ public class Peer implements Beacon.BeaconCallback {
         return uuid;
     }
 
-    public void processPeer(@NotNull final UUID uuid, @NotNull final InetAddress senderInetAddress, @NotNull final int port) {
+    public void processPeer(@NotNull final UUID uuid, @NotNull final InetAddress senderInetAddress, final int port) {
         final PeerMetaData peerMetaData;
         synchronized (myPeers) {
             if (myPeers.containsKey(uuid)) {
