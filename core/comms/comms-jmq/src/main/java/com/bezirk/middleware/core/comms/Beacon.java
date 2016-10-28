@@ -41,7 +41,6 @@ class Beacon {
     private static final String SEPARATOR = "::";
     private static final String beaconHost = "255.255.255.255";
     private static final int beaconPort = 5670;
-    private byte[] beaconDataArr;
     private ZBeacon zbeacon;
     private final String groupName;
     private final int port;
@@ -52,36 +51,36 @@ class Beacon {
         void processPeer(UUID uuid, InetAddress senderInetAddress, int port);
     }
 
-    Beacon(@Nullable final String groupName, @NotNull final int port, @NotNull final UUID myId, @NotNull final BeaconCallback callback) {
+    Beacon(@Nullable final String groupName, final int port, @NotNull final UUID myId,
+           @NotNull final BeaconCallback callback) {
         this.groupName = (groupName != null) ? groupName : DEFAULT_GROUP_NAME;
         this.port = port;
         this.myId = myId;
         this.beaconCallback = callback;
-        logger.info("GroupName for current bezirk instance " + this.groupName);
-        logger.trace("Port being broadcasted in beacon " + port);
+        logger.info("GroupName for current bezirk instance {}", this.groupName);
+        logger.trace("Port being broadcast in beacon {}", port);
     }
 
     private void processBeacon(@NotNull final InetAddress sender, @NotNull final byte[] beacon) {
-        String beaconString;
-        beaconString = new String(beacon, ZMQ.CHARSET);
-        String[] data;
+        final String beaconString = new String(beacon, ZMQ.CHARSET);
+        final String[] data;
         try {
             data = beaconString.split(SEPARATOR);
         } catch (PatternSyntaxException e) {
-            logger.debug("Failed to split beacon string " + e);
+            logger.debug("Failed to split beacon string", e);
             return;
         }
 
         if (data.length == MSG_FIELDS) {
             try {
-                long lsb = Long.parseLong(data[1]);
-                long msb = Long.parseLong(data[2]);
-                UUID uuid = new UUID(msb, lsb);
-                int port = Integer.parseInt(data[3]);
-                logger.trace("uuid {}, port {}, sender {}", uuid, port, sender);
-                beaconCallback.processPeer(uuid, sender, port);
+                final long lsb = Long.parseLong(data[1]);
+                final long msb = Long.parseLong(data[2]);
+                final UUID uuid = new UUID(msb, lsb);
+                final int senderPort = Integer.parseInt(data[3]);
+                logger.trace("uuid {}, port {}, sender {}", uuid, senderPort, sender);
+                beaconCallback.processPeer(uuid, sender, senderPort);
             } catch (NumberFormatException e) {
-                logger.warn("NumberFormatException while processing beacon" + e);
+                logger.warn("NumberFormatException while processing beacon", e);
             }
         }
     }
@@ -89,34 +88,40 @@ class Beacon {
     public void start() {
         final String beaconData = groupName + SEPARATOR + myId.getLeastSignificantBits() + SEPARATOR
                 + myId.getMostSignificantBits() + SEPARATOR + String.valueOf(port);
-        beaconDataArr = beaconData.getBytes(ZMQ.CHARSET);
+        final byte[] beaconDataBytes = beaconData.getBytes(ZMQ.CHARSET);
 
-        zbeacon = new ZBeacon(beaconHost, beaconPort, beaconDataArr, false);
+        zbeacon = new ZBeacon(beaconHost, beaconPort, beaconDataBytes, false);
         // this ensures only beacon with this prefix is processed
         zbeacon.setPrefix(groupName.getBytes(ZMQ.CHARSET));
 
         zbeacon.setUncaughtExceptionHandlers(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
-                logger.warn("ex1");
+                logger.warn("ClientHandler: Unable to beacon. This generally happens due to loss of network connectivity. " +
+                        "When network connectivity is resumed, existing nodes can communicate again. " +
+                        "Communication between existing & new nodes would require Bezirk to be restarted.", e);
             }
         }, new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
-                logger.warn("ex2");
+                logger.warn("ServerHandler: Unable to beacon. This generally happens due to loss of network connectivity. " +
+                        "When network connectivity is resumed, existing nodes can communicate again. " +
+                        "Communication between existing & new nodes would require Bezirk to be restarted.", e);
             }
         });
+
         zbeacon.setListener(new ZBeacon.Listener() {
             @Override
             public void onBeacon(InetAddress sender, byte[] beacon) {
-                if (!Arrays.equals(beacon, beaconDataArr)) {
+                if (!Arrays.equals(beacon, beaconDataBytes)) {
                     processBeacon(sender, beacon);
                 } else {
                     // ignore beacon from the same node
-                    logger.trace("beacon from self node, sender {} data {}\n ", sender, Arrays.toString(beacon));
+                    logger.trace("beacon from self node, sender {} data {}", sender, Arrays.toString(beacon));
                 }
             }
         });
+
         zbeacon.start();
     }
 

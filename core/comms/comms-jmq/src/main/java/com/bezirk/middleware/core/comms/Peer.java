@@ -59,7 +59,8 @@ public class Peer implements Beacon.BeaconCallback {
     private final Map<UUID, PeerMetaData> myPeers;
     private final ScheduledExecutorService service;
 
-    public Peer(@Nullable final String groupName, @Nullable final Receiver.OnMessageReceivedListener onMessageReceivedListener) {
+    public Peer(@Nullable final String groupName,
+                @Nullable final Receiver.OnMessageReceivedListener onMessageReceivedListener) {
         receiver = new Receiver(onMessageReceivedListener);
         uuid = UUID.randomUUID();
         if (receiver.getPort() < Receiver.MINIMUM_PORT_NUMBER ||
@@ -91,7 +92,7 @@ public class Peer implements Beacon.BeaconCallback {
         return uuid;
     }
 
-    public void processPeer(@NotNull final UUID uuid, @NotNull final InetAddress senderInetAddress, @NotNull final int port) {
+    public void processPeer(@NotNull final UUID uuid, @NotNull final InetAddress senderInetAddress, final int port) {
         final PeerMetaData peerMetaData;
         synchronized (myPeers) {
             if (myPeers.containsKey(uuid)) {
@@ -137,36 +138,14 @@ public class Peer implements Beacon.BeaconCallback {
         }
     }
 
-    /**
-     * Responsible for checking {@link #myPeers} and removing those peers, from which a beacon has not been received for atleast {@link #MAX_IDLE_TIME} time
-     */
-    private class CleanupRunnable implements Runnable {
-        @Override
-        public void run() {
-            synchronized (myPeers) {
-                if (myPeers.size() > 0) {
-                    final long currentTime = System.currentTimeMillis();
-                    for (Iterator<Map.Entry<UUID, PeerMetaData>> it = myPeers.entrySet().iterator(); it.hasNext(); ) {
-                        Map.Entry<UUID, PeerMetaData> entry = it.next();
-                        if (currentTime - entry.getValue().getLastSeen() > MAX_IDLE_TIME) {
-                            logger.debug("Removing peer {}", entry.getKey());
-                            sender.removeConnection(entry.getKey());
-                            it.remove();
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     private void stopExecutor() {
         if (service != null) {
             // Disable new tasks from being submitted
             service.shutdown();
             try {
-                // Wait a while for existing tasks to terminate
                 if (!service.awaitTermination(200, TimeUnit.MILLISECONDS)) {
-                    service.shutdownNow(); // Cancel currently executing tasks
+                    // Cancel currently executing tasks if they have not terminated yet
+                    service.shutdownNow();
                     // Wait a while for tasks to respond to being cancelled
                     if (!service.awaitTermination(200, TimeUnit.MILLISECONDS)) {
                         logger.error("Pool did not terminate");
@@ -177,6 +156,31 @@ public class Peer implements Beacon.BeaconCallback {
                 service.shutdownNow();
                 // Preserve interrupt status
                 Thread.currentThread().interrupt();
+            }
+        } else {
+            logger.warn("Cannot stop null peer executor service");
+        }
+    }
+
+    /**
+     * Responsible for checking {@link #myPeers} and removing those peers, from which a beacon has
+     * not been received for at least {@link #MAX_IDLE_TIME} time
+     */
+    private class CleanupRunnable implements Runnable {
+        @Override
+        public void run() {
+            synchronized (myPeers) {
+                if (myPeers.size() <= 0) return;
+
+                final long currentTime = System.currentTimeMillis();
+                for (Iterator<Map.Entry<UUID, PeerMetaData>> it = myPeers.entrySet().iterator(); it.hasNext(); ) {
+                    final Map.Entry<UUID, PeerMetaData> entry = it.next();
+                    if (currentTime - entry.getValue().getLastSeen() > MAX_IDLE_TIME) {
+                        logger.debug("Removing peer {}, not seen in {}", entry.getKey(), MAX_IDLE_TIME);
+                        sender.removeConnection(entry.getKey());
+                        it.remove();
+                    }
+                }
             }
         }
     }

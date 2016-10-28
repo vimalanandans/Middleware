@@ -36,7 +36,7 @@ import java.util.UUID;
 
 public class JmqCommsManager extends CommsProcessor implements Receiver.OnMessageReceivedListener {
     private static final Logger logger = LoggerFactory.getLogger(JmqCommsManager.class);
-    private Peer comms;
+    private final Peer comms;
 
     /**
      * @param networkManager - Network manager to get TCP/IP related device configurations
@@ -44,9 +44,7 @@ public class JmqCommsManager extends CommsProcessor implements Receiver.OnMessag
      */
     public JmqCommsManager(NetworkManager networkManager, String groupName, CommsNotification commsNotification) {
         super(networkManager, commsNotification);
-        if (comms == null) {
-            comms = new Peer(groupName, this);
-        }
+        comms = new Peer(groupName, this);
     }
 
     @Override
@@ -83,7 +81,6 @@ public class JmqCommsManager extends CommsProcessor implements Receiver.OnMessag
                     logger.debug("Stopping comms");
                     comms.stop();
                     super.stopComms();
-                    comms = null;
                 }
         }
     }
