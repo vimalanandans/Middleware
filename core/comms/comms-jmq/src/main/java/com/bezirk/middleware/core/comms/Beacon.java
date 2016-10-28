@@ -76,9 +76,9 @@ class Beacon {
                 final long lsb = Long.parseLong(data[1]);
                 final long msb = Long.parseLong(data[2]);
                 final UUID uuid = new UUID(msb, lsb);
-                final int port = Integer.parseInt(data[3]);
-                logger.trace("uuid {}, port {}, sender {}", uuid, port, sender);
-                beaconCallback.processPeer(uuid, sender, port);
+                final int senderPort = Integer.parseInt(data[3]);
+                logger.trace("uuid {}, port {}, sender {}", uuid, senderPort, sender);
+                beaconCallback.processPeer(uuid, sender, senderPort);
             } catch (NumberFormatException e) {
                 logger.warn("NumberFormatException while processing beacon", e);
             }
@@ -99,14 +99,14 @@ class Beacon {
             public void uncaughtException(Thread t, Throwable e) {
                 logger.warn("ClientHandler: Unable to beacon. This generally happens due to loss of network connectivity. " +
                         "When network connectivity is resumed, existing nodes can communicate again. " +
-                        "Communication between existing & new nodes would require Bezirk to be restarted.");
+                        "Communication between existing & new nodes would require Bezirk to be restarted.", e);
             }
         }, new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
                 logger.warn("ServerHandler: Unable to beacon. This generally happens due to loss of network connectivity. " +
                         "When network connectivity is resumed, existing nodes can communicate again. " +
-                        "Communication between existing & new nodes would require Bezirk to be restarted.");
+                        "Communication between existing & new nodes would require Bezirk to be restarted.", e);
             }
         });
 
