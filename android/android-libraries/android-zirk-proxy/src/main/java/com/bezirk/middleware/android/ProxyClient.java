@@ -61,10 +61,6 @@ public final class ProxyClient implements Bezirk {
     private final ZirkId zirkId;
     private final IdentityManager identityManager;
     private short streamFactory;
-    //Bezirk is ready to send messages to another BezirkMiddleware stack
-    private boolean remoteSendReady = false;
-    //to ensure error log is just printed once
-    private boolean remoteSendReadyLogged = false;
 
     public ProxyClient(ZirkId zirkId) {
 
@@ -195,9 +191,6 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
-        if (!remoteSendReady) {
-            logRemoteSending();
-        }
         intentSender.sendBezirkIntent(new SendMulticastEventAction(zirkId, recipient, event,
                 event instanceof IdentifiedEvent));
     }
@@ -211,19 +204,6 @@ public final class ProxyClient implements Bezirk {
     @Override
     public void setLocation(Location location) {
         intentSender.sendBezirkIntent(new SetLocationAction(zirkId, location));
-    }
-
-    private final void logRemoteSending() {
-        final long currentTime = System.currentTimeMillis();
-        if (currentTime - BezirkMiddleware.getStartTime() > 2000) {
-            remoteSendReady = true;
-        } else {
-            if (!remoteSendReadyLogged) {
-                logger.error("Bezirk.sendEvent() is being called less than 2 seconds after initialization of the middleware. This initialization requires up to 2 seconds to find peers. " +
-                        "\nIf you don't receive the Event(s), please ensure, via Thread.sleep() or other means, that there are at least 2 seconds between BezirkMiddleware.initialize() and Bezirk.sendEvent() calls. ");
-                remoteSendReadyLogged = true;
-            }
-        }
     }
 
 }
