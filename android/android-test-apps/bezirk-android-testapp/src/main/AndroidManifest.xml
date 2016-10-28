@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.bezirk.middleware.android.testApp">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.bezirk.middleware.android.testApp">
 
     <application
         android:allowBackup="true"
@@ -12,44 +12,18 @@
         tools:replace="icon, label, theme">
         <receiver android:name="com.bezirk.middleware.android.ZirkMessageReceiver">
             <intent-filter>
-                <action android:name="com.bezirk.middleware.broadcast" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.bezirk.middleware.broadcast"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name="com.bezirk.middleware.android.HomeActivity"
-            android:label="@string/title_activity_home"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name="com.bezirk.middleware.android.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.bezirk.middleware.android.AutoTestActivity"
-            android:label="@string/title_activity_auto_test"
-            android:parentActivityName="com.bezirk.middleware.android.HomeActivity"
-
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bezirk.middleware.android.HomeActivity" />
-        </activity>
-        <activity
-            android:name="com.bezirk.middleware.android.AdvancedTestActivity"
-            android:label="@string/title_activity_advanced_test"
-            android:parentActivityName="com.bezirk.middleware.android.HomeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bezirk.middleware.android.HomeActivity" />
-        </activity>
-
-
     </application>
 
 </manifest>
