@@ -36,11 +36,22 @@ import java.util.Scanner;
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private static final String DEFAULT_HOSTNAME = "UNKNOWN-PC";
+    private static final String BOLD_ESCAPE_SEQUENCE = "\033[0;1m";
+    private static final String NORMAL_ESCAPE_SEQUENCE = "\033[0;8m";
     private static volatile String hostname = DEFAULT_HOSTNAME;
+    private static String channelId;
 
     public static void main(String[] args) {
+        if (args.length == 0 || args[0] == null) {
+            System.out.println(BOLD_ESCAPE_SEQUENCE + "\nChannel Id is mandatory.\n" + NORMAL_ESCAPE_SEQUENCE);
+            System.out.println("To run the test, run " + BOLD_ESCAPE_SEQUENCE + " java -jar test.jar <channelId>\n" + NORMAL_ESCAPE_SEQUENCE);
+            //System.out.println("To change the log level, run " + BOLD_ESCAPE_SEQUENCE + " java -Dloglevel=<loglevel> -jar path/to/test.jar <channelId>" + NORMAL_ESCAPE_SEQUENCE);
+            //System.out.println("Ex. To run with debug loglevel, run " + BOLD_ESCAPE_SEQUENCE + " java -Dloglevel=debug -jar path/to/test.jar <channelId>\n" + NORMAL_ESCAPE_SEQUENCE);
+            return;
+        }
+        channelId = args[0];
         Scanner reader = new Scanner(System.in, "UTF-8");
-        System.out.println("Select\n1. Publisher Zirk\n2. Subscriber Zirk\n3. Publisher and Subscriber together\n4. Exit");
+        System.out.println("Select\n1. Test Sending\n2. Test Receiving\n3. Exit");
         try {
             int n = reader.nextInt();
             startApplication(n);
@@ -50,7 +61,7 @@ public class Main {
         reader.close();
     }
 
-    private static void startApplication(int option) {
+    private static void startApplication(final int option) {
         switch (option) {
             case 1:
                 initializeBezirk();
@@ -61,11 +72,6 @@ public class Main {
                 new Subscriber();
                 break;
             case 3:
-                initializeBezirk();
-                new Publisher();
-                new Subscriber();
-                break;
-            case 4:
                 System.out.println("Exiting");
                 return;
             default:
@@ -74,32 +80,15 @@ public class Main {
     }
 
     private static void initializeBezirk() {
-        Config.ConfigBuilder configBuilder = new Config.ConfigBuilder();
+        if (channelId != null) {
+            System.out.println("Initializing Bezirk with channelId '" + channelId + "'\n");
+            Config config = new Config.ConfigBuilder().setPackageLogLevel("com.j256.ormlite", Config.Level.ERROR).setGroupName(channelId).create();
+            BezirkMiddleware.initialize(config);
 
-        /*setting root log level*/
-        configBuilder.setLogLevel(Config.Level.ERROR);
-
-        /*setting package log level*/
-        //configBuilder.setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.INFO);
-
-        /*disabling inter-device communication*/
-        //configBuilder.setComms(false);
-
-        /*using custom communication groups to prevent crosstalk*/
-        //configBuilder.setGroupName("TestGroup");
-
-        /*keeping bezirk service alive even after the app is shutdown*/
-        //configBuilder.setServiceAlive(true);
-
-        /*initialize with default configurations*/
-        //BezirkMiddleware.initialize();
-
-        /*initialize with configurations*/
-        BezirkMiddleware.initialize(configBuilder.create());
-
-        /*initialize with channelId/groupName*/
-        //BezirkMiddleware.initialize("MyChannel");
-
+        } else {
+            //for the hackathon this line would never reach as channelId is mandatory
+            BezirkMiddleware.initialize();
+        }
     }
 
     public static String getHostName() {

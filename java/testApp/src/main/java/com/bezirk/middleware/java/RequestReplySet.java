@@ -22,33 +22,10 @@
  */
 package com.bezirk.middleware.java;
 
-import com.bezirk.middleware.Bezirk;
-import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.java.proxy.BezirkMiddleware;
-import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 
-public class Subscriber {
-    private static final String SUBSCRIBER_ID = Main.getHostName() + ":Java:Receiver";
-
-    public Subscriber() {
-        final Bezirk bezirk = BezirkMiddleware.registerZirk(SUBSCRIBER_ID);
-
-        if (bezirk == null) throw new AssertionError("BezirkMiddleware.registerZirk returned null");
-
-        RequestReplySet requestReplySet = new RequestReplySet();
-
-
-        requestReplySet.setEventReceiver(new EventSet.EventReceiver() {
-            @Override
-            public void receiveEvent(Event event, ZirkEndPoint sender) {
-                if (event instanceof Request) {
-                    Request request = (Request) event;
-                    System.out.println(request.printMsgForReceiver());
-                    bezirk.sendEvent(sender, new Reply(SUBSCRIBER_ID, request.getMessageNumber()));
-                }
-            }
-        });
-        bezirk.subscribe(requestReplySet);
+public class RequestReplySet extends EventSet {
+    public RequestReplySet() {
+        super(Request.class, Reply.class);
     }
 }

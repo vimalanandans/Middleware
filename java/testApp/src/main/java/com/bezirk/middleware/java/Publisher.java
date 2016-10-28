@@ -24,51 +24,46 @@ package com.bezirk.middleware.java;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.java.proxy.BezirkMiddleware;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
-import com.bezirk.middleware.java.proxy.BezirkMiddleware;
-import com.bezirk.middleware.core.AirQualityUpdateEvent;
-import com.bezirk.middleware.core.HouseInfoEventSet;
-import com.bezirk.middleware.core.UpdateAcceptedEvent;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Publisher {
 
-    private static final String PUBLISHER_ID = Main.getHostName()+":Java:Publisher";
+    private static final String PUBLISHER_ID = Main.getHostName() + ":Java:Sender";
 
     public Publisher() {
         final Bezirk bezirk = BezirkMiddleware.registerZirk(PUBLISHER_ID);
 
         if (bezirk == null) throw new AssertionError("BezirkMiddleware.registerZirk returned null");
 
-        HouseInfoEventSet houseEvents = new HouseInfoEventSet();
-        houseEvents.setEventReceiver(new EventSet.EventReceiver() {
+        RequestReplySet requestReplySet = new RequestReplySet();
+        requestReplySet.setEventReceiver(new EventSet.EventReceiver() {
             @Override
             public void receiveEvent(Event event, ZirkEndPoint sender) {
-                if (event instanceof UpdateAcceptedEvent) {
-                    UpdateAcceptedEvent acceptedEventUpdate = (UpdateAcceptedEvent) event;
-                    System.out.println(acceptedEventUpdate.toString());
+                if (event instanceof Reply) {
+                    Reply reply = (Reply) event;
+                    System.out.println(reply.printMsgForReceiver());
                 }
             }
         });
 
-        bezirk.subscribe(houseEvents);
+        bezirk.subscribe(requestReplySet);
 
         //publish messages periodically
         new Timer().scheduleAtFixedRate(new TimerTask() {
-            private int pollenLevel = 1;
+            private int messageNumber = 1;
 
             @Override
             public void run() {
-
-                AirQualityUpdateEvent airQualityUpdateEvent = new AirQualityUpdateEvent();
-                airQualityUpdateEvent.sender = PUBLISHER_ID;
-                airQualityUpdateEvent.pollenLevel = pollenLevel++;
-
-                bezirk.sendEvent(airQualityUpdateEvent);
+                Request request = new Request(PUBLISHER_ID, messageNumber++);
+                bezirk.sendEvent(request);
+                System.out.println(request.printMsgForSender());
             }
-        }, 2000, 500);
+        }, 2000, 1000);
     }
+
 }

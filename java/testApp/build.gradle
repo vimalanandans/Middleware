@@ -4,7 +4,6 @@ mainClassName = "com.bezirk.middleware.java.Main"
 
 dependencies {
     compile project(':java:libraries:java-zirk-proxy')
-    compile project(':core:testapp-core')
 
     testCompile 'junit:junit:4.12'
 }
@@ -20,16 +19,17 @@ run {
      */
     systemProperties System.getProperties()
 }
-
+jar.baseName = 'test-sending-receiving'
+jar.version = ''
 //creates a executable jar
-//jar {
-//    from {
-//        (configurations.runtime).collect {
-//            it.isDirectory() ? it : zipTree(it)
-//        }
-//    }
-//    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
-//    manifest {
-//        attributes("Main-Class": "com.bezirk.middleware.java.Main")
-//    }
-//}
+jar {
+    from {
+        (configurations.runtime).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+    manifest {
+        attributes 'Main-Class': 'com.bezirk.middleware.java.Main'
+    }
+}
