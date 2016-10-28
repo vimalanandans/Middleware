@@ -27,7 +27,7 @@ allprojects {
     apply plugin: 'distribution'
     apply plugin: 'license'
     group = 'com.bezirk'
-    version = "3.0.2-2"
+    version = "3.0.2-3"
 
     ext {
         artifactRepoBase = "https://bezirk.artifactoryonline.com/bezirk"
