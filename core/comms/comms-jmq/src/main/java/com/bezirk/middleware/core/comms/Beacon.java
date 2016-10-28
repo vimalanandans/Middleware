@@ -97,12 +97,16 @@ class Beacon {
         zbeacon.setUncaughtExceptionHandlers(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
-                logger.warn("ex1");
+                logger.warn("ClientHandler: Unable to beacon. This generally happens due to loss of network connectivity. " +
+                        "When network connectivity is resumed, existing nodes can communicate again. " +
+                        "Communication between existing & new nodes would require Bezirk to be restarted.");
             }
         }, new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
-                logger.warn("ex2");
+                logger.warn("ServerHandler: Unable to beacon. This generally happens due to loss of network connectivity. " +
+                        "When network connectivity is resumed, existing nodes can communicate again. " +
+                        "Communication between existing & new nodes would require Bezirk to be restarted.");
             }
         });
 
@@ -117,7 +121,7 @@ class Beacon {
                 }
             }
         });
-        
+
         zbeacon.start();
     }
 
