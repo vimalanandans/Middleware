@@ -36,3 +36,4 @@ after_success:
 notifications:
   email:
     - Srinivasan.AnantharamaSetty@in.bosch.com
+    - Michael.Maass@us.bosch.com
