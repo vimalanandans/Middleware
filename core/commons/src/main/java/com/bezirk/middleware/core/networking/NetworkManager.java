@@ -22,9 +22,6 @@
  */
 package com.bezirk.middleware.core.networking;
 
-import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.middleware.proxy.api.impl.ZirkId;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,7 +85,6 @@ public abstract class NetworkManager {
         return null;
     }
 
-
     public InetAddress getLocalInet() {
         if (curInterface == null) {
             getInetAddress();
@@ -101,39 +97,6 @@ public abstract class NetworkManager {
             }
         }
         return null;
-    }
-
-
-    /**
-     * Gets a MAC address of a local network interface that is not a loopback interface
-     *
-     * @return Local MAC address
-     */
-    public byte[] getLocalMACAddress() {
-        try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
-                NetworkInterface networkInterface = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = networkInterface.getInetAddresses();
-                     enumIpAddr.hasMoreElements(); ) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() &&
-                            inetAddress.isSiteLocalAddress()) {
-                        return networkInterface.getHardwareAddress();
-                    }
-
-                }
-            }
-        } catch (SocketException e) {
-            logger.error("Error occurred while getting LocalMACAddress", e);
-        }
-        return null;
-    }
-
-    @Deprecated // create using new BezirkZirkEndPoint(comms.getNodeId(), zirkId)
-    public BezirkZirkEndPoint getServiceEndPoint(ZirkId zirkId) {
-        BezirkZirkEndPoint sep = new BezirkZirkEndPoint(zirkId);
-        sep.device = getLocalInet().getHostAddress();
-        return sep;
     }
 
     public String getDeviceIp() {
