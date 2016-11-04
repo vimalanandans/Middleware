@@ -5,6 +5,8 @@ env:
   global:
     - ANDROID_TARGET=android-24
     - ANDROID_ABI=armeabi-v7a
+	- artifactory_user=
+	- artifactory_password=
 #appcompat-v7
 android:
   components:
