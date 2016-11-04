@@ -36,6 +36,6 @@ after_success:
  notifications:
   email:
     recipients:
-  - Srinivasan.AnantharamaSetty@in.bosch.com
+      - Srinivasan.AnantharamaSetty@in.bosch.com
     on_success: change
     on_failure: always
