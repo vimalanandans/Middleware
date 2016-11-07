@@ -31,10 +31,12 @@ import java.util.Map;
 public class Config implements Serializable {
     private static final long serialVersionUID = 2330364021536661076L;
     private static final String DEFAULT_GROUP_NAME = "BEZIRK_GROUP";
-    private static final String DEFAULT_APP_NAME = "Bezirk";
     private static final Level DEFAULT_LOG_LEVEL = Level.ERROR;
     private static final boolean COMMS_ENABLED = true;
-    private static final boolean BEZIRK_SERVICE_ALIVE_ON_APPLICATION_SHUTDOWN = false;
+
+    //currently used only for android version of the middleware
+    private static final String DEFAULT_APP_NAME = "Bezirk";
+    private static final boolean SERVICE_ALIVE = false;
 
     public enum Level {TRACE, DEBUG, INFO, WARN, ERROR, OFF}
 
@@ -47,7 +49,7 @@ public class Config implements Serializable {
 
     public Config() {
         this(DEFAULT_GROUP_NAME, DEFAULT_APP_NAME, DEFAULT_LOG_LEVEL, null, COMMS_ENABLED,
-                BEZIRK_SERVICE_ALIVE_ON_APPLICATION_SHUTDOWN);
+                SERVICE_ALIVE);
     }
 
     public Config(@NotNull final String groupName, @NotNull final String appName,
@@ -67,7 +69,7 @@ public class Config implements Serializable {
         private Level logLevel = DEFAULT_LOG_LEVEL;
         private Map<String, Level> packageLogLevelMap;
         private boolean commsEnabled = COMMS_ENABLED;
-        private boolean keepServiceAlive = BEZIRK_SERVICE_ALIVE_ON_APPLICATION_SHUTDOWN;
+        private boolean keepServiceAlive = SERVICE_ALIVE;
 
         public ConfigBuilder() {
         }

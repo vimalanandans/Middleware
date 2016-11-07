@@ -61,7 +61,6 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
     private static final String ALIAS_KEY = "aliasName";
     private static final String DB_VERSION = "0.0.4";
-    private static final int FOREGROUND_ID = 1336;
     private SharedPreferences preferences;
     private ActionProcessor actionProcessor;
     private BezirkIdentityManager identityManager;
@@ -112,9 +111,6 @@ public final class ComponentManager extends Service implements LifeCycleCallback
             create();
         }
 
-        startForeground(FOREGROUND_ID, buildForegroundNotification(config.getAppName(),
-                config.getAppName() + " ON", R.drawable.bezirk_notification_icon));
-
         logger.debug("LifeCycleCallbacks:start");
         //lifecycleObservable.transition(LifeCycleObservable.Transition.START);
         executeTransitionInThread(LifeCycleObservable.Transition.START);
@@ -155,39 +151,6 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         if (config != null && !config.keepServiceAlive()) {
             stop(null);
         }
-    }
-
-    public final Notification buildForegroundNotification(String appName, String status, int icon) {
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(this);
-
-        Intent notificationIntent;
-        PackageManager manager = getPackageManager();
-
-        notificationIntent = manager.getLaunchIntentForPackage(getApplicationContext().getPackageName());
-
-        if (notificationIntent == null) {
-            notificationIntent = new Intent(Intent.ACTION_MAIN);
-        }
-
-        notificationIntent.setAction(Intent.ACTION_MAIN);
-
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                notificationIntent, 0);
-
-        notification.setOngoing(true);
-
-        notification.setContentIntent(pendingIntent);
-        notification.setContentTitle(appName)
-                .setContentText(status)
-                .setSmallIcon(icon)
-                .setTicker(appName
-                );
-
-        return notification.build();
     }
 
     private final void create() {
