@@ -59,7 +59,7 @@ public class Peer implements Beacon.BeaconCallback {
     private final Map<UUID, PeerMetaData> myPeers;
     private final ScheduledExecutorService service;
 
-    public Peer(@Nullable final String groupName,
+    public Peer(@NotNull final String groupName,
                 @Nullable final Receiver.OnMessageReceivedListener onMessageReceivedListener) {
         receiver = new Receiver(onMessageReceivedListener);
         uuid = UUID.randomUUID();

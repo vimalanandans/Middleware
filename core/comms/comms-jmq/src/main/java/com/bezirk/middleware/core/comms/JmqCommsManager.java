@@ -26,6 +26,7 @@ import com.bezirk.middleware.core.comms.processor.CommsProcessor;
 import com.bezirk.middleware.core.comms.processor.WireMessage;
 import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,16 +39,19 @@ public class JmqCommsManager extends CommsProcessor implements Receiver.OnMessag
     private final Peer comms;
 
     /**
-     * @param groupName      - Name to channel your application
+     * @param groupName - Name to channel your application
      */
-    public JmqCommsManager(String groupName, CommsNotification commsNotification) {
+    public JmqCommsManager(@NotNull final String groupName, final CommsNotification commsNotification) {
         super(commsNotification);
+        if (groupName == null) {
+            throw new IllegalArgumentException("Group name passed as null when initializing JmqCommsManager");
+        }
         comms = new Peer(groupName, this);
     }
 
     @Override
     public boolean sendToAll(byte[] msg, boolean isEvent) {
-        if(comms != null){
+        if (comms != null) {
             comms.send(msg);
             return true;
         }
@@ -56,7 +60,7 @@ public class JmqCommsManager extends CommsProcessor implements Receiver.OnMessag
 
     @Override
     public boolean sendToOne(byte[] msg, String nodeId, boolean isEvent) {
-        if(comms != null){
+        if (comms != null) {
             comms.send(UUID.fromString(nodeId), msg);
             return true;
         }
