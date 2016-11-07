@@ -23,8 +23,8 @@
 package com.bezirk.middleware.core.datastorage;
 
 import com.bezirk.middleware.core.sphere.impl.DeviceInformation;
-import com.bezirk.middleware.core.sphere.impl.Zirk;
 import com.bezirk.middleware.core.sphere.impl.Sphere;
+import com.bezirk.middleware.core.sphere.impl.Zirk;
 import com.bezirk.middleware.core.sphere.security.SphereKeys;
 
 import java.io.Serializable;

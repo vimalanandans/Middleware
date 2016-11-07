@@ -30,21 +30,15 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
 import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
-import com.bezirk.middleware.core.networking.NetworkManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.util.Observable;
 import java.util.Observer;
 
-public class AndroidNetworkManager extends NetworkManager implements Observer {
+public class AndroidNetworkManager implements Observer {
     private static final Logger logger = LoggerFactory.getLogger(AndroidNetworkManager.class);
-    private static final String DEFAULT_ANDROID_INTERFACE = "wlan0";
-    private final SharedPreferences preferences;
 
     private final Context context; //for registering the receiver
     private final NetworkBroadCastReceiver networkBroadCastReceiver;
@@ -52,8 +46,6 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
     private String connectedWifiSSID;
 
     public AndroidNetworkManager(SharedPreferences preferences, Context context) {
-
-        this.preferences = preferences;
         this.context = context;
         this.wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         networkBroadCastReceiver = new NetworkBroadCastReceiver(wifiManager);
@@ -74,42 +66,6 @@ public class AndroidNetworkManager extends NetworkManager implements Observer {
         } else {
             logger.warn("Wifi is not enabled");
         }
-    }
-
-    @Override
-    public String getStoredInterfaceName() {
-        if (null != preferences) {
-            logger.debug("preferences is not null in Android network manager");
-            return preferences.getString(NETWORK_INTERFACE_NAME_KEY, DEFAULT_ANDROID_INTERFACE);
-        } else {
-            logger.debug("preferences is null");
-            return null;
-        }
-
-    }
-
-    @Override
-    public void setStoredInterfaceName(String interfaceName) {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(NETWORK_INTERFACE_NAME_KEY, interfaceName);
-        editor.commit();
-    }
-
-    @Override
-    public InetAddress getInetAddress() {
-        logger.debug("getInetAddress of AndroidNetworkManager");
-        try {
-            final NetworkInterface networkInterface =
-                    NetworkInterface.getByName(getStoredInterfaceName());
-            if (null != networkInterface) {
-                if (logger.isDebugEnabled())
-                    logger.debug("Network interface found for {}", getStoredInterfaceName());
-                return getIpForInterface(networkInterface);
-            }
-        } catch (SocketException e) {
-            logger.error("Failed to get the IP address of the AndroidNetworkManager", e);
-        }
-        return null;
     }
 
     @Override

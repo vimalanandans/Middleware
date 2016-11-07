@@ -2,7 +2,7 @@ package com.bezirk.middleware.core.objects;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
 /**
  * This testcase verifies the SphereVitals by setting the properties and retrieving them.

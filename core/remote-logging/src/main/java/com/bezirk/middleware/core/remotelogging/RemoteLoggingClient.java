@@ -26,12 +26,12 @@ import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.EventLedger;
 import com.bezirk.middleware.core.control.messages.Ledger;
-import com.bezirk.middleware.core.networking.NetworkManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.Date;
 
 /**
@@ -50,14 +50,15 @@ public class RemoteLoggingClient {
      * Remote Logging Zirk Port
      */
     private int servicePort = -1;
-    private final NetworkManager networkManager;
+
+    private final InetAddress inetAddress;
     /**
      * Processor for LogSenderQueue
      */
     private SenderQueueProcessor senderQueueProcessor = null;
 
-    RemoteLoggingClient(NetworkManager networkManager) {
-        this.networkManager = networkManager;
+    RemoteLoggingClient(final InetAddress inetAddress) {
+        this.inetAddress = inetAddress;
     }
 
     /**
@@ -127,7 +128,7 @@ public class RemoteLoggingClient {
             final RemoteLoggingMessage remoteLoggingMessage = new RemoteLoggingMessage(
                     message.getSphereId(),
                     String.valueOf(currentDate.getTime()),
-                    networkManager.getDeviceIp(),
+                    inetAddress.getHostAddress(),
                     Util.CONTROL_RECEIVER_VALUE,
                     message.getUniqueKey(),
                     Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),
@@ -164,7 +165,7 @@ public class RemoteLoggingClient {
             }
 
             remoteLoggingMessage = new RemoteLoggingMessage(((EventLedger) ledger).getHeader().getSphereId(),
-                    String.valueOf(currentDate.getTime()), networkManager.getDeviceIp(),
+                    String.valueOf(currentDate.getTime()), inetAddress.getHostAddress(),
                     Util.CONTROL_RECEIVER_VALUE, ((EventLedger) ledger).getHeader().getUniqueMsgId(),
                     Util.LOGGING_MESSAGE_TYPE.EVENT_MESSAGE_RECEIVE.name(), Util.LOGGING_VERSION);
         } else if (ledger instanceof ControlLedger) {
@@ -172,7 +173,7 @@ public class RemoteLoggingClient {
                 remoteLoggingMessage = new RemoteLoggingMessage(
                         ((ControlLedger) ledger).getSphereId(),
                         String.valueOf(currentDate.getTime()),
-                        networkManager.getDeviceIp(),
+                        inetAddress.getHostAddress(),
                         Util.CONTROL_RECEIVER_VALUE,
                         ((ControlLedger) ledger).getMessage().getUniqueKey(),
                         Util.LOGGING_MESSAGE_TYPE.CONTROL_MESSAGE_RECEIVE.name(),

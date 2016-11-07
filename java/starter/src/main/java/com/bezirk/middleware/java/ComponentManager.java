@@ -29,17 +29,14 @@ import com.bezirk.middleware.core.datastorage.ProxyPersistence;
 import com.bezirk.middleware.core.datastorage.RegistryStorage;
 import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.core.identity.BezirkIdentityManager;
-import com.bezirk.middleware.core.networking.NetworkManager;
 import com.bezirk.middleware.core.proxy.Config;
 import com.bezirk.middleware.core.proxy.MessageHandler;
 import com.bezirk.middleware.core.proxy.ProxyServer;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
-import com.bezirk.middleware.core.remotelogging.RemoteLoggingManager;
 import com.bezirk.middleware.identity.Alias;
 import com.bezirk.middleware.java.device.JavaDevice;
 import com.bezirk.middleware.java.logging.LoggingManager;
-import com.bezirk.middleware.java.networking.JavaNetworkManager;
 import com.bezirk.middleware.java.persistence.DatabaseConnectionForJava;
 
 import org.jetbrains.annotations.NotNull;
@@ -65,7 +62,6 @@ public class ComponentManager {
     private ProxyServer proxyServer;
     private final MessageHandler messageHandler;
     private final Config config;
-    private NetworkManager networkManager;
     private RemoteLog remoteLog;
     private BezirkIdentityManager identityManager;
     private LifeCycleObservable lifecycleObservable;
@@ -98,14 +94,12 @@ public class ComponentManager {
 
         if(config.isCommsEnabled()) {
             logger.debug("Comms is enabled");
-            //initialize network manager for handling network management and getting network addressing information
-            networkManager = new JavaNetworkManager();
 
             // the Jmq comms
-            comms = new JmqCommsManager(networkManager, config.getGroupName(), null);
+            comms = new JmqCommsManager(config.getGroupName(), null);
 
             //initialize remoteLogging for logging the messages
-            remoteLog = new RemoteLoggingManager(comms, networkManager, null);
+            //remoteLog = new RemoteLoggingManager(comms, null);
 
             // add components as observers of bezirk lifecycle events.
             lifecycleObservable.addObserver(comms);
@@ -121,7 +115,7 @@ public class ComponentManager {
 
         //initialize pub-sub Broker for filtering of events based on subscriptions and spheres(if present)
         //Dispatching messages to other zirks within the same device or another device
-        final PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, networkManager,
+        final PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device,
                 comms, messageHandler, identityManager, null, null, remoteLog);
 
         //initialize proxyServer responsible for managing incoming events from zirks

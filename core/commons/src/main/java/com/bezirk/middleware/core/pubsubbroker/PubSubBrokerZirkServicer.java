@@ -22,9 +22,9 @@
  */
 package com.bezirk.middleware.core.pubsubbroker;
 
+import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
-import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 

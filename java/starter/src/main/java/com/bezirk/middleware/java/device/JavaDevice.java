@@ -22,8 +22,8 @@
  */
 package com.bezirk.middleware.java.device;
 
-import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.core.device.Device;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

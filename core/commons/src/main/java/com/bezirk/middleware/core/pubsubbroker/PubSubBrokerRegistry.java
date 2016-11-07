@@ -22,8 +22,8 @@
  */
 package com.bezirk.middleware.core.pubsubbroker;
 
-import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;

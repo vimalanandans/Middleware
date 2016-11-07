@@ -1,7 +1,7 @@
 package com.bezirk.middleware.core.sphere.messages;
 
-import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

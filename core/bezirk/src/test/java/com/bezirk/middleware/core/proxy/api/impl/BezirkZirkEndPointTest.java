@@ -5,7 +5,7 @@ import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * This testcase verifies the EchoRequest by setting the properties and retrieving them.
