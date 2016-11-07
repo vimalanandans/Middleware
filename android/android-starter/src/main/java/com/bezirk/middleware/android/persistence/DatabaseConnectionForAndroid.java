@@ -25,8 +25,8 @@ package com.bezirk.middleware.android.persistence;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.bezirk.middleware.core.datastorage.PersistenceConstants;
 import com.bezirk.middleware.core.datastorage.DatabaseConnection;
+import com.bezirk.middleware.core.datastorage.PersistenceConstants;
 import com.bezirk.middleware.core.datastorage.PersistenceRegistry;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;

@@ -35,7 +35,6 @@ import com.bezirk.middleware.core.control.messages.MulticastControlMessage;
 import com.bezirk.middleware.core.control.messages.MulticastHeader;
 import com.bezirk.middleware.core.control.messages.UnicastControlMessage;
 import com.bezirk.middleware.core.control.messages.UnicastHeader;
-import com.bezirk.middleware.core.networking.NetworkManager;
 import com.bezirk.middleware.core.sphere.api.SphereSecurity;
 import com.bezirk.middleware.core.util.TextCompressor;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
@@ -67,13 +66,11 @@ public abstract class CommsProcessor implements Comms, Observer {
      */
     private CommsNotification notification = null;
     private ExecutorService executor;
-    private final NetworkManager networkManager;
     private static final boolean WIRE_MSG_COMPRESSION = false;
     private static final boolean WIRE_MSG_ENCRYPTION = true;
 
-    public CommsProcessor(NetworkManager networkManager, CommsNotification commsNotification) {
+    public CommsProcessor(CommsNotification commsNotification) {
         this.notification = commsNotification;
-        this.networkManager = networkManager;
         this.msgDispatcher = new CommsMessageDispatcher();
     }
 

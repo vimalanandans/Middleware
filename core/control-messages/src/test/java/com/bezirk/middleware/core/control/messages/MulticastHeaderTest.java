@@ -3,8 +3,8 @@
  */
 package com.bezirk.middleware.core.control.messages;
 
-import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 

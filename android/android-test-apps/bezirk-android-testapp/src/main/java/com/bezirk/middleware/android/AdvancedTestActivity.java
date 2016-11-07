@@ -32,12 +32,12 @@ import android.widget.TextView;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.android.testApp.R;
 import com.bezirk.middleware.core.AirQualityUpdateEvent;
 import com.bezirk.middleware.core.HouseInfoEventSet;
 import com.bezirk.middleware.core.UpdateAcceptedEvent;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
-import com.bezirk.middleware.android.testApp.R;
 import com.jaredrummler.android.device.DeviceName;
 
 import java.util.Timer;

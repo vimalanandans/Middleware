@@ -22,6 +22,7 @@
  */
 package com.bezirk.middleware.core.pubsubbroker;
 
+import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
@@ -34,17 +35,15 @@ import com.bezirk.middleware.core.control.messages.MulticastHeader;
 import com.bezirk.middleware.core.control.messages.UnicastHeader;
 import com.bezirk.middleware.core.datastorage.PubSubBrokerStorage;
 import com.bezirk.middleware.core.device.Device;
-import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.identity.IdentityManager;
-import com.bezirk.middleware.messages.MessageSet;
-import com.bezirk.middleware.core.networking.NetworkManager;
 import com.bezirk.middleware.core.proxy.MessageHandler;
-import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
 import com.bezirk.middleware.core.sphere.api.SphereSecurity;
 import com.bezirk.middleware.core.sphere.api.SphereServiceAccess;
 import com.bezirk.middleware.core.util.ValidatorUtility;
+import com.bezirk.middleware.identity.IdentityManager;
+import com.bezirk.middleware.messages.MessageSet;
+import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,20 +70,19 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     protected Comms comms = null;
     protected SphereServiceAccess sphereServiceAccess = null; // Nullable object
     protected SphereSecurity sphereSecurity = null; // Nullable object
-    private NetworkManager networkManager = null;
+
     private Device device = null;
     private final RemoteLog remoteLog;
     private final MessageHandler msgHandler;
     private final IdentityManager identityManager;
     private static final String id = UUID.randomUUID().toString();
 
-    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device, NetworkManager networkManager,
+    public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device,
                         Comms comms, MessageHandler msgHandler, IdentityManager identityManager,
                         SphereServiceAccess sphereServiceAccess, SphereSecurity sphereSecurity,
                         RemoteLog remoteLogging) {
         this.pubSubBrokerStorage = pubSubBrokerStorage;
         this.device = device;
-        this.networkManager = networkManager;
         loadRegistry();
 
         this.comms = comms;

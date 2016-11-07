@@ -25,7 +25,6 @@ package com.bezirk.middleware.core.comms;
 import com.bezirk.middleware.core.comms.processor.CommsProcessor;
 import com.bezirk.middleware.core.comms.processor.WireMessage;
 import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
-import com.bezirk.middleware.core.networking.NetworkManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,11 +38,10 @@ public class JmqCommsManager extends CommsProcessor implements Receiver.OnMessag
     private final Peer comms;
 
     /**
-     * @param networkManager - Network manager to get TCP/IP related device configurations
      * @param groupName      - Name to channel your application
      */
-    public JmqCommsManager(NetworkManager networkManager, String groupName, CommsNotification commsNotification) {
-        super(networkManager, commsNotification);
+    public JmqCommsManager(String groupName, CommsNotification commsNotification) {
+        super(commsNotification);
         comms = new Peer(groupName, this);
     }
 

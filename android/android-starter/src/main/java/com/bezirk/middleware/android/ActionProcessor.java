@@ -24,11 +24,11 @@ package com.bezirk.middleware.android;
 
 import android.content.Intent;
 
+import com.bezirk.middleware.android.proxy.android.AndroidProxyServer;
 import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.StartServiceAction;
 import com.bezirk.middleware.core.actions.StopServiceAction;
 import com.bezirk.middleware.core.componentManager.LifeCycleCallbacks;
-import com.bezirk.middleware.android.proxy.android.AndroidProxyServer;
 import com.bezirk.middleware.core.util.ValidatorUtility;
 
 import org.slf4j.Logger;

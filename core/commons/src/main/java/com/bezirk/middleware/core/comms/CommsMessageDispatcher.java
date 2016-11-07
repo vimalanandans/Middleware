@@ -25,7 +25,6 @@ package com.bezirk.middleware.core.comms;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.EventLedger;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
-
 import com.bezirk.middleware.core.util.ValidatorUtility;
 
 import org.slf4j.Logger;

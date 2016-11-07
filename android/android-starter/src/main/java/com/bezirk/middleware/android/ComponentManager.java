@@ -35,7 +35,6 @@ import android.support.v4.app.NotificationCompat;
 
 import com.bezirk.middleware.android.device.AndroidDevice;
 import com.bezirk.middleware.android.logging.LoggingManager;
-import com.bezirk.middleware.android.networking.AndroidNetworkManager;
 import com.bezirk.middleware.android.persistence.DatabaseConnectionForAndroid;
 import com.bezirk.middleware.android.proxy.android.AndroidProxyServer;
 import com.bezirk.middleware.android.proxy.android.ZirkMessageHandler;
@@ -68,7 +67,6 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private BezirkIdentityManager identityManager;
     private AndroidProxyServer proxyServer;
     private JmqCommsManager comms;
-    private AndroidNetworkManager networkManager;
     private RegistryStorage registryStorage;
     private LifeCycleObservable lifecycleObservable;
     private Config config;
@@ -218,29 +216,24 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         actionProcessor = new ActionProcessor();
 
         if (config.isCommsEnabled()) {
-            // initialize network manager for handling wifi-management and getting network addressing
-            // information
-            networkManager = new AndroidNetworkManager(preferences, this);
-
             // initialize comms for communicating between devices over the wifi-network using jmq
-            comms = new JmqCommsManager(networkManager, config.getGroupName(), null);
+            comms = new JmqCommsManager(config.getGroupName(), null);
 
             // add components as observers of bezirk lifecycle events.
             lifecycleObservable.addObserver(comms);
-            lifecycleObservable.addObserver(networkManager);
         }
         // initialize message handler for sending events back to zirks
         final MessageHandler messageHandler = new ZirkMessageHandler(this);
 
         //initialize remoteLogging for logging the messages
-        // remoteLog = new RemoteLoggingManager(comms, networkManager, null);
+        // remoteLog = new RemoteLoggingManager(comms, null);
 
         initializeIdentityManager();
 
         // initialize pub-sub Broker for filtering of events based on subscriptions and spheres
         // (if present) & dispatching messages to other zirks within the same device or another
         // device
-        final PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms,
+        final PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, comms,
                 messageHandler, identityManager, null, null, remoteLog);
 
         //initialize proxyServer responsible for managing incoming events from zirks

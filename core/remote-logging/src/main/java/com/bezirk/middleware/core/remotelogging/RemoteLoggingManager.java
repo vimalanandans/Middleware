@@ -29,7 +29,6 @@ import com.bezirk.middleware.core.comms.CtrlMsgReceiver;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.Ledger;
 import com.bezirk.middleware.core.control.messages.logging.LoggingServiceMessage;
-import com.bezirk.middleware.core.networking.NetworkManager;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.middleware.core.util.ValidatorUtility;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
@@ -38,6 +37,8 @@ import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 
 /**
@@ -51,23 +52,36 @@ public  class RemoteLoggingManager implements RemoteLog {
     private RemoteLoggingClient remoteLoggingClient = null;
     private RemoteLoggingMessageNotification remoteLoggingMessageNotification = null;
 
-    private NetworkManager networkManager = null;
-
     private boolean enableLogging = false;
     private boolean enableControl = false;
     private boolean enableFileLogging = false;
+    private Comms comms;
+    private final InetAddress inetAddress;
 
-    private final Comms comms;
-
-    public RemoteLoggingManager(Comms comms, NetworkManager networkManager,
-                                RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
-        this.networkManager = networkManager;
+    public RemoteLoggingManager(final Comms comms,
+                                final RemoteLoggingMessageNotification remoteLoggingMessageNotification) {
+        this.inetAddress = getInetAddress();
+        if(inetAddress == null){
+            logger.warn("Exiting initialization for RemoteLoggingManager. InetAddress could not be initialized");
+            return;
+        }
         this.remoteLoggingMessageNotification = remoteLoggingMessageNotification;
         this.comms = comms;
-        remoteLoggingClient = new RemoteLoggingClient(networkManager);
+
+        remoteLoggingClient = new RemoteLoggingClient(inetAddress);
 
         comms.registerControlMessageReceiver(ControlMessage.Discriminator.LOGGING_SERVICE_MESSAGE,
                 new LogCtrlMessageReceiver(this));
+    }
+
+    private InetAddress getInetAddress(){
+        InetAddress inetAddress = null;
+        try {
+            inetAddress = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            logger.error("UnknownHostException while getting InetAddress.", e);
+        }
+        return inetAddress;
     }
 
     /**
@@ -134,7 +148,7 @@ public  class RemoteLoggingManager implements RemoteLog {
 
         for (String sphereId : sphereList) {
             final LoggingServiceMessage loggingServiceActivateRequest =
-                    new LoggingServiceMessage(sep, sphereId, networkManager.getDeviceIp(),
+                    new LoggingServiceMessage(sep, sphereId, inetAddress.getHostAddress(),
                             remoteLoggingServer.getPort(), selectedLogSpheres, isActivate);
 
             if(null != sphereId &&

@@ -24,12 +24,12 @@ package com.bezirk.middleware.core.proxy;
 
 import com.bezirk.middleware.core.actions.RegisterZirkAction;
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
-import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.actions.SetLocationAction;
 import com.bezirk.middleware.core.actions.SubscriptionAction;
+import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.identity.IdentityProvisioner;
-import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBrokerZirkServicer;
+import com.bezirk.middleware.identity.IdentityManager;
 
 import org.jetbrains.annotations.NotNull;
 

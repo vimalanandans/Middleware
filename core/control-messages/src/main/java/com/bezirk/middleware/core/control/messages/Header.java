@@ -23,8 +23,8 @@
 package com.bezirk.middleware.core.control.messages;
 
 import com.bezirk.middleware.identity.Alias;
-import com.bezirk.middleware.serialization.InterfaceAdapter;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.middleware.serialization.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
