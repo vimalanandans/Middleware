@@ -19,7 +19,7 @@ publishing {
 
                     //TODO automatically find android library projects and set their type attribute to aar
                     //android libraries added as aar dependencies for transitive resolution through pom.xml
-                    if(it.moduleName == "android-comms-zyre-jni" || it.moduleName == "zyre-jni" || it.moduleName == "android-starter"){
+                    if (it.moduleName == "android-comms-zyre-jni" || it.moduleName == "zyre-jni" || it.moduleName == "android-starter") {
                         dependency.appendNode('type', 'aar')
                     }
 
@@ -29,15 +29,13 @@ publishing {
     }
 }
 
-
-
 artifactory {
     contextUrl = 'https://bezirk.artifactoryonline.com/bezirk'
     publish {
         repository {
             repoKey = 'libs-release-local' // The Artifactory repository key to publish to
-            username=hasProperty('artifactory_user') ? artifactory_user : System.getenv('artifactory_user')
-            password=hasProperty('artifactory_password') ? artifactory_password : System.getenv('artifactory_password')
+            username=project.hasProperty('artifactory_user') ? "${artifactory_user}" : System.getenv('artifactory_user')
+            password=project.hasProperty('artifactory_password') ? "${artifactory_password}" : System.getenv('artifactory_password')
         }
         defaults {
             publications('bezirkPublication')
@@ -46,3 +44,4 @@ artifactory {
         }
     }
 }
+
