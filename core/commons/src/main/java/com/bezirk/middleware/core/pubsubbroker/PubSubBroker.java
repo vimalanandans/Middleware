@@ -24,6 +24,7 @@ package com.bezirk.middleware.core.pubsubbroker;
 
 import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
+import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
@@ -498,4 +499,8 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     }
 
 
+    @Override
+    public void sendStream(StreamAction streamAction) {
+
+    }
 }

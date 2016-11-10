@@ -28,6 +28,7 @@ import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.EventAction;
 import com.bezirk.middleware.core.actions.RegisterZirkAction;
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
+import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.actions.SetLocationAction;
 import com.bezirk.middleware.core.actions.SubscriptionAction;
@@ -179,4 +180,18 @@ public class AndroidProxyServer extends ProxyServer implements Observer {
             }
         }
     }
+
+    /**
+     * Takes the incoming intent and parses to an StreamAction.
+     * @param intent
+     */
+    public void sendStream(Intent intent) {
+
+        //parse the incoming intent to an Stream Action.
+        final StreamAction streamAction =
+                (StreamAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM.getName());
+
+        sendStream(streamAction);
+    }
+
 }

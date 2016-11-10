@@ -23,6 +23,7 @@
 package com.bezirk.middleware.core.pubsubbroker;
 
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
+import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.messages.MessageSet;
@@ -46,4 +47,6 @@ public interface PubSubBrokerZirkServicer {
     boolean sendMulticastEvent(SendMulticastEventAction multicastEventAction);
 
     boolean sendUnicastEvent(UnicastEventAction unicastEventAction);
+
+    void sendStream(StreamAction streamAction);
 }

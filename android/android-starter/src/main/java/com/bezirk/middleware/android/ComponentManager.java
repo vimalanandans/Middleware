@@ -53,6 +53,8 @@ import com.bezirk.middleware.core.proxy.Config;
 import com.bezirk.middleware.core.proxy.MessageHandler;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
+import com.bezirk.middleware.core.streaming.Streaming;
+import com.bezirk.streaming.FileStreaming;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

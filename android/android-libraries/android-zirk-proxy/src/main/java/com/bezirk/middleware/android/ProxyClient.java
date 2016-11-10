@@ -34,6 +34,7 @@ import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.RegisterZirkAction;
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
 import com.bezirk.middleware.core.actions.SetLocationAction;
+import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.actions.SubscriptionAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.identity.IdentityManager;
@@ -42,6 +43,7 @@ import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
+import com.bezirk.middleware.streaming.StreamRequest;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -211,6 +213,18 @@ public final class ProxyClient implements Bezirk {
     @Override
     public void setLocation(Location location) {
         intentSender.sendBezirkIntent(new SetLocationAction(zirkId, location));
+    }
+
+    @Override
+    public Short sendStream(StreamRequest streamRequest){
+        /*generate a unique streamID, this will be the primary key for stream access.
+          Use this streamID to interrupt the stream
+        */
+
+        Short streamID = -1;
+        BezirkAction bezirkAction  = BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM;
+        intentSender.sendBezirkIntent(new StreamAction(streamID,streamRequest, bezirkAction));
+        return streamID;
     }
 
     private final void logRemoteSending() {

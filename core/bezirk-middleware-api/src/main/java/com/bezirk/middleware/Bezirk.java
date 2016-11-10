@@ -27,6 +27,7 @@ import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.MessageSet;
+import com.bezirk.middleware.streaming.StreamRequest;
 
 /**
  * The API for registering Zirks, sending messages, and subscribing to messages sent by other Zirks.
@@ -114,4 +115,10 @@ public interface Bezirk {
      * @param location the physical location of the Thing <code>Zirk</code> controls
      */
     void setLocation(Location location);
+
+    /**
+     *
+     * @param streamRequest
+     */
+    Short sendStream(StreamRequest streamRequest);
 }

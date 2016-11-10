@@ -24,18 +24,26 @@ package com.bezirk.middleware.core.proxy;
 
 import com.bezirk.middleware.core.actions.RegisterZirkAction;
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
+import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.actions.SetLocationAction;
 import com.bezirk.middleware.core.actions.SubscriptionAction;
 import com.bezirk.middleware.core.identity.IdentityProvisioner;
+import com.bezirk.middleware.core.streaming.Streaming;
 import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBrokerZirkServicer;
+import com.bezirk.middleware.streaming.FileStreamRequest;
+import com.bezirk.streaming.FileStreaming;
+import com.bezirk.streaming.StreamRecord;
 
 import org.jetbrains.annotations.NotNull;
 
 public class ProxyServer {
     private PubSubBrokerZirkServicer pubSubBrokerService;
     private final IdentityManager identityManager;
+
+    //TODO Punith dependency injection of file streaming...
+    private Streaming streaming = new FileStreaming(null);
 
     public ProxyServer(IdentityManager identityManager) {
         this.identityManager = identityManager;
@@ -83,5 +91,10 @@ public class ProxyServer {
 
     public void setPubSubBrokerService(PubSubBrokerZirkServicer pubSubBrokerService) {
         this.pubSubBrokerService = pubSubBrokerService;
+    }
+
+    public void sendStream(@NotNull StreamAction streamAction){
+        StreamRecord streamRecord = null;
+        streaming.addStreamRecordToQueue(streamAction);
     }
 }

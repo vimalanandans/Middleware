@@ -44,6 +44,7 @@ import com.bezirk.middleware.core.proxy.ProxyServer;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.bezirk.middleware.java.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.middleware.java.proxy.messagehandler.ZirkMessageHandler;
+import com.bezirk.middleware.streaming.StreamRequest;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -208,6 +209,11 @@ public class ProxyClient implements Bezirk {
     @Override
     public void setLocation(Location location) {
         proxy.setLocation(new SetLocationAction(zirkId, location));
+    }
+
+    @Override
+    public Short sendStream(StreamRequest streamRequest) {
+        return null;
     }
 
     private final void logRemoteSending() {

@@ -137,6 +137,11 @@ public final class ActionProcessor {
                 logger.trace("In ACTION_ZIRK_SEND_UNICAST_EVENT");
                 proxyService.sendUnicastEvent(intent);
                 break;
+            case ACTION_BEZIRK_PUSH_UNICAST_STREAM:
+                logger.trace("In ACTION_BEZIRK_PUSH_UNICAST_STREAM");
+                proxyService.sendStream(intent);
+                break;
+
             default:
                 logger.warn("Received unknown intent action: {}", intent.getAction());
                 break;
