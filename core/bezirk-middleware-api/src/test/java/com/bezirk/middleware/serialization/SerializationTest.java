@@ -1,7 +1,7 @@
 package com.bezirk.middleware.serialization;
 
-import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.addressing.RecipientSelector;
 
 import org.junit.Test;
 

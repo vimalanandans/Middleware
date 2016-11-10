@@ -1,10 +1,10 @@
 package com.bezirk.middleware.core.sphere.messages;
 
 import com.bezirk.middleware.objects.BezirkDeviceInfo;
-import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.objects.BezirkDeviceInfo.BezirkDeviceRole;
-import com.bezirk.middleware.proxy.api.impl.ZirkId;
+import com.bezirk.middleware.objects.BezirkZirkInfo;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * This testCase verifies the SphereCatchRequestExt by retrieving the field values after deserialization.

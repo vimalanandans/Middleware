@@ -32,7 +32,6 @@ import com.bezirk.middleware.core.identity.IdentityProvisioner;
 import com.bezirk.middleware.core.streaming.Streaming;
 import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBrokerZirkServicer;
-import com.bezirk.middleware.streaming.FileStreamRequest;
 import com.bezirk.streaming.FileStreaming;
 import com.bezirk.streaming.StreamRecord;
 

@@ -22,10 +22,6 @@
  */
 package com.bezirk.middleware.core.datastorage;
 
-import org.junit.Test;
-
-import java.io.IOException;
-
 import static org.junit.Assert.assertNotNull;
 
 public class JavaPlatformPersistenceTestForConnection {

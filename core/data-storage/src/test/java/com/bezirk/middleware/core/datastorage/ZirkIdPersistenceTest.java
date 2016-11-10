@@ -7,7 +7,6 @@ import com.j256.ormlite.table.TableUtils;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.sql.SQLException;

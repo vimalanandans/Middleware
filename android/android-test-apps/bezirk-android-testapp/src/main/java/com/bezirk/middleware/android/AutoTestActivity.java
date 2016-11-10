@@ -28,10 +28,9 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
-import com.bezirk.middleware.android.testApp.R;
-
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.android.testApp.R;
 import com.bezirk.middleware.core.AirQualityUpdateEvent;
 import com.bezirk.middleware.core.HouseInfoEventSet;
 import com.bezirk.middleware.core.UpdateAcceptedEvent;

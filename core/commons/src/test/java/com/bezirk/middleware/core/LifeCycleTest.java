@@ -7,8 +7,8 @@ import org.junit.Test;
 import java.util.Observable;
 import java.util.Observer;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class LifeCycleTest implements Observer {
 

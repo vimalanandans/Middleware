@@ -23,7 +23,6 @@
 package com.bezirk.middleware.java.ui.remotelogging;
 
 import com.bezirk.middleware.core.comms.Comms;
-import com.bezirk.middleware.core.networking.NetworkManager;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
 import com.bezirk.middleware.core.remotelogging.RemoteLoggingMessage;
 import com.bezirk.middleware.core.remotelogging.RemoteLoggingMessageNotification;
@@ -230,7 +229,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
      *
      * @param comms
      */
-    public RemoteLogSphereSelectGUI(Comms comms, NetworkManager networkManager) {
+    public RemoteLogSphereSelectGUI(Comms comms) {
         thisFrame = this;
         this.comms = comms;
         jbInit();

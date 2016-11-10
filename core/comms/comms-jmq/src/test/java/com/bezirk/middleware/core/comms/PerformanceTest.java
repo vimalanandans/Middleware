@@ -36,7 +36,7 @@ public class PerformanceTest {
         public TestJp2p() throws InterruptedException {
             this.peerInfoMap = new ConcurrentHashMap<>();
             this.onMessageReceivedListener = new Listener();
-            peer = new Peer(null, onMessageReceivedListener);
+            peer = new Peer("test-group", onMessageReceivedListener);
             peer.start();
 
             //wait until nodeId is generated

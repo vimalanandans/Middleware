@@ -37,7 +37,6 @@ import java.util.regex.PatternSyntaxException;
 class Beacon {
     private static final Logger logger = LoggerFactory.getLogger(Beacon.class);
     private static final int MSG_FIELDS = 4;
-    private static final String DEFAULT_GROUP_NAME = "bezirk";
     private static final String SEPARATOR = "::";
     private static final String beaconHost = "255.255.255.255";
     private static final int beaconPort = 5670;
@@ -51,9 +50,9 @@ class Beacon {
         void processPeer(UUID uuid, InetAddress senderInetAddress, int port);
     }
 
-    Beacon(@Nullable final String groupName, final int port, @NotNull final UUID myId,
+    Beacon(@NotNull final String groupName, final int port, @NotNull final UUID myId,
            @NotNull final BeaconCallback callback) {
-        this.groupName = (groupName != null) ? groupName : DEFAULT_GROUP_NAME;
+        this.groupName = groupName;
         this.port = port;
         this.myId = myId;
         this.beaconCallback = callback;

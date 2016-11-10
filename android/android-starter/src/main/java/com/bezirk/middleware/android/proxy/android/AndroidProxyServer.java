@@ -33,8 +33,8 @@ import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.actions.SetLocationAction;
 import com.bezirk.middleware.core.actions.SubscriptionAction;
 import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
-import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.core.proxy.ProxyServer;
+import com.bezirk.middleware.identity.IdentityManager;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

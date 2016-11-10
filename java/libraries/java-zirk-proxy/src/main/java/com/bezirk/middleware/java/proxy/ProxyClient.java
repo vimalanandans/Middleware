@@ -22,28 +22,28 @@
  */
 package com.bezirk.middleware.java.proxy;
 
+import com.bezirk.middleware.Bezirk;
+import com.bezirk.middleware.addressing.Location;
+import com.bezirk.middleware.addressing.RecipientSelector;
+import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.RegisterZirkAction;
 import com.bezirk.middleware.core.actions.SendMulticastEventAction;
 import com.bezirk.middleware.core.actions.SetLocationAction;
 import com.bezirk.middleware.core.actions.SubscriptionAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
-import com.bezirk.middleware.core.proxy.Config;
-import com.bezirk.middleware.java.ComponentManager;
 import com.bezirk.middleware.core.datastorage.ProxyPersistence;
 import com.bezirk.middleware.core.datastorage.ProxyRegistry;
-import com.bezirk.middleware.Bezirk;
-import com.bezirk.middleware.addressing.Location;
-import com.bezirk.middleware.addressing.RecipientSelector;
-import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.core.proxy.Config;
+import com.bezirk.middleware.core.proxy.ProxyServer;
+import com.bezirk.middleware.java.ComponentManager;
+import com.bezirk.middleware.java.proxy.messagehandler.BroadcastReceiver;
+import com.bezirk.middleware.java.proxy.messagehandler.ZirkMessageHandler;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.messages.MessageSet;
-import com.bezirk.middleware.core.proxy.ProxyServer;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
-import com.bezirk.middleware.java.proxy.messagehandler.BroadcastReceiver;
-import com.bezirk.middleware.java.proxy.messagehandler.ZirkMessageHandler;
 import com.bezirk.middleware.streaming.StreamRequest;
 
 import org.jetbrains.annotations.NotNull;

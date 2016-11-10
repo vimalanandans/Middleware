@@ -2,8 +2,6 @@ package com.bezirk.middleware.java;
 
 import com.bezirk.middleware.java.ui.QRCodeGenerator;
 
-import org.junit.Test;
-
 import javafx.application.Application;
 
 public class QRCodeGeneratorTest {

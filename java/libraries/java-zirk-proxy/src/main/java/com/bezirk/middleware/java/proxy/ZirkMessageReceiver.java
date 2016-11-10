@@ -24,12 +24,12 @@ package com.bezirk.middleware.java.proxy;
 
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.actions.ZirkAction;
+import com.bezirk.middleware.java.proxy.messagehandler.BroadcastReceiver;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
-import com.bezirk.middleware.java.proxy.messagehandler.BroadcastReceiver;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

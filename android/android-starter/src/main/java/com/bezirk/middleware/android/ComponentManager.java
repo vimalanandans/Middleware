@@ -35,7 +35,6 @@ import android.support.v4.app.NotificationCompat;
 
 import com.bezirk.middleware.android.device.AndroidDevice;
 import com.bezirk.middleware.android.logging.LoggingManager;
-import com.bezirk.middleware.android.networking.AndroidNetworkManager;
 import com.bezirk.middleware.android.persistence.DatabaseConnectionForAndroid;
 import com.bezirk.middleware.android.proxy.android.AndroidProxyServer;
 import com.bezirk.middleware.android.proxy.android.ZirkMessageHandler;
@@ -64,13 +63,11 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
     private static final String ALIAS_KEY = "aliasName";
     private static final String DB_VERSION = "0.0.4";
-    private static final int FOREGROUND_ID = 1336;
     private SharedPreferences preferences;
     private ActionProcessor actionProcessor;
     private BezirkIdentityManager identityManager;
     private AndroidProxyServer proxyServer;
     private JmqCommsManager comms;
-    private AndroidNetworkManager networkManager;
     private RegistryStorage registryStorage;
     private LifeCycleObservable lifecycleObservable;
     private Config config;
@@ -116,9 +113,6 @@ public final class ComponentManager extends Service implements LifeCycleCallback
             create();
         }
 
-        startForeground(FOREGROUND_ID, buildForegroundNotification(config.getAppName(),
-                config.getAppName() + " ON", R.drawable.bezirk_notification_icon));
-
         logger.debug("LifeCycleCallbacks:start");
         //lifecycleObservable.transition(LifeCycleObservable.Transition.START);
         executeTransitionInThread(LifeCycleObservable.Transition.START);
@@ -161,39 +155,6 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         }
     }
 
-    public final Notification buildForegroundNotification(String appName, String status, int icon) {
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(this);
-
-        Intent notificationIntent;
-        PackageManager manager = getPackageManager();
-
-        notificationIntent = manager.getLaunchIntentForPackage(getApplicationContext().getPackageName());
-
-        if (notificationIntent == null) {
-            notificationIntent = new Intent(Intent.ACTION_MAIN);
-        }
-
-        notificationIntent.setAction(Intent.ACTION_MAIN);
-
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                notificationIntent, 0);
-
-        notification.setOngoing(true);
-
-        notification.setContentIntent(pendingIntent);
-        notification.setContentTitle(appName)
-                .setContentText(status)
-                .setSmallIcon(icon)
-                .setTicker(appName
-                );
-
-        return notification.build();
-    }
-
     private final void create() {
         logger.debug("Creating Bezirk Service");
 
@@ -220,29 +181,24 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         actionProcessor = new ActionProcessor();
 
         if (config.isCommsEnabled()) {
-            // initialize network manager for handling wifi-management and getting network addressing
-            // information
-            networkManager = new AndroidNetworkManager(preferences, this);
-
             // initialize comms for communicating between devices over the wifi-network using jmq
-            comms = new JmqCommsManager(networkManager, config.getGroupName(), null);
+            comms = new JmqCommsManager(config.getGroupName(), null);
 
             // add components as observers of bezirk lifecycle events.
             lifecycleObservable.addObserver(comms);
-            lifecycleObservable.addObserver(networkManager);
         }
         // initialize message handler for sending events back to zirks
         final MessageHandler messageHandler = new ZirkMessageHandler(this);
 
         //initialize remoteLogging for logging the messages
-        // remoteLog = new RemoteLoggingManager(comms, networkManager, null);
+        // remoteLog = new RemoteLoggingManager(comms, null);
 
         initializeIdentityManager();
 
         // initialize pub-sub Broker for filtering of events based on subscriptions and spheres
         // (if present) & dispatching messages to other zirks within the same device or another
         // device
-        final PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, networkManager, comms,
+        final PubSubBroker pubSubBroker = new PubSubBroker(registryStorage, device, comms,
                 messageHandler, identityManager, null, null, remoteLog);
 
         //initialize proxyServer responsible for managing incoming events from zirks
