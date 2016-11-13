@@ -186,6 +186,7 @@ public class Config implements Serializable {
          *              using <code>BezirkMiddleware.stop()</code>
          * @deprecated As of version 3.0.2, this method is no longer used.
          */
+        @Deprecated
         public ConfigBuilder setServiceAlive(final boolean alive) {
             keepServiceAlive = alive;
             return this;
