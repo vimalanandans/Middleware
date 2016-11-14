@@ -11,10 +11,10 @@ import java.io.File;
  * Created by PIK6KOR on 11/3/2016.
  */
 
-public class FileStreamRequest extends StreamRequest{
+public class FileStream extends Stream{
     private File file;
 
-    public FileStreamRequest(@NotNull ZirkId zirkId, @NotNull BezirkZirkEndPoint zirkEndPoint, @NotNull File file){
+    public FileStream(@NotNull ZirkId zirkId, @NotNull BezirkZirkEndPoint zirkEndPoint, @NotNull File file){
         super(zirkEndPoint, zirkId);
         this.file = file;
     }

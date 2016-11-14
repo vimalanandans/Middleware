@@ -14,8 +14,8 @@ public class StreamRecord {
     //stream primary ID
     private Short streamId;
 
-    // changed after receiving the Response, this will be in PENDING status in the stream store.
-    private StreamRecordStatus streamRecordStatus = StreamRecordStatus.PENDING;
+    // changed after receiving the Response, this will be in ALIVE status in the stream store.
+    private StreamRecordStatus streamRecordStatus = StreamRecordStatus.ALIVE;
 
     //The receipient zirk end point
     private BezirkZirkEndPoint recipientSEP;
@@ -69,7 +69,9 @@ public class StreamRecord {
              * READY   -  indicating the recipient has agreed to receive the stream
              * BUSY    -  indicating the receipient is busy and the data cannot be streamed*/
     public enum StreamRecordStatus {
-        PENDING, READY, BUSY, LOCAL
+        //PENDING, READY, BUSY, LOCAL
+        ALIVE, ADDRESSED, PROCESSING, BUSY, COMPLETED
+
     }
 
 

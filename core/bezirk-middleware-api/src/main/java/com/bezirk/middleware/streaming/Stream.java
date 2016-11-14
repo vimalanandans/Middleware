@@ -11,7 +11,7 @@ import java.io.File;
  * Created by PIK6KOR on 11/3/2016.
  */
 
-public abstract class StreamRequest {
+public abstract class Stream {
 
     private BezirkZirkEndPoint recipientEndPoint;
 
@@ -19,7 +19,7 @@ public abstract class StreamRequest {
     private ZirkId zirkId;
 
 
-    public StreamRequest(BezirkZirkEndPoint recipientEndPoint, ZirkId zirkID){
+    public Stream(BezirkZirkEndPoint recipientEndPoint, ZirkId zirkID){
         this.recipientEndPoint = recipientEndPoint;
         this.zirkId = zirkID;
     }

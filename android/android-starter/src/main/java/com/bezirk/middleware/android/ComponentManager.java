@@ -22,16 +22,12 @@
  */
 package com.bezirk.middleware.android;
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
 
 import com.bezirk.middleware.android.device.AndroidDevice;
 import com.bezirk.middleware.android.logging.LoggingManager;
@@ -52,8 +48,6 @@ import com.bezirk.middleware.core.proxy.Config;
 import com.bezirk.middleware.core.proxy.MessageHandler;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
-import com.bezirk.middleware.core.streaming.Streaming;
-import com.bezirk.streaming.FileStreaming;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

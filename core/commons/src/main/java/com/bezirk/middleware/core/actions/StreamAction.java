@@ -1,6 +1,6 @@
 package com.bezirk.middleware.core.actions;
 
-import com.bezirk.middleware.streaming.StreamRequest;
+import com.bezirk.middleware.streaming.Stream;
 
 /**
  * Created by PIK6KOR on 11/4/2016.
@@ -10,13 +10,13 @@ public class StreamAction extends ZirkAction {
 
     private Short streamId;
     private BezirkAction bezirkAction;
-    private StreamRequest streamRequest;
+    private Stream stream;
 
     //TODO : Punith does this require a default constructor??
 
-    public StreamAction(Short streamId, StreamRequest streamRequest, BezirkAction bezirkAction){
-        super(streamRequest.getZirkId());
-        this.streamRequest  = streamRequest;
+    public StreamAction(Short streamId, Stream stream, BezirkAction bezirkAction){
+        super(stream.getZirkId());
+        this.stream  = stream;
         this.streamId = streamId;
         this.bezirkAction = bezirkAction;
     }
@@ -26,8 +26,8 @@ public class StreamAction extends ZirkAction {
         return bezirkAction;
     }
 
-    public StreamRequest getStreamRequest() {
-        return streamRequest;
+    public Stream getStreamRequest() {
+        return stream;
     }
 
     public Short getStreamId() {

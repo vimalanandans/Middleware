@@ -20,17 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.bezirk.streaming;
+package com.bezirk.streaming.sender;
 
 import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.streaming.Streaming;
-import com.bezirk.middleware.streaming.FileStreamRequest;
+import com.bezirk.middleware.streaming.FileStream;
+import com.bezirk.streaming.FileStreamRequest;
+import com.bezirk.streaming.StreamBook;
+import com.bezirk.streaming.StreamRecord;
 import com.google.gson.Gson;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by PIK6KOR on 11/1/2016.
@@ -41,14 +41,25 @@ public final class FileStreaming implements Streaming {
     //inject the object of comms.
     private Comms comms;
 
-    //Streaming Request queue.
-    private final Map<Short, StreamRecord> streamingQueue = new HashMap<Short, StreamRecord>();
-
     //Gson
     private final Gson gson = new Gson();
 
+    //stream book
+    StreamBook streamBook = null;
+
+    //constructor
     public FileStreaming(Comms comms){
         this.comms = comms;
+        streamBook = new StreamBook();
+
+        //start the streaming module.
+        startStreamingModule();
+
+    }
+
+    private void startStreamingModule(){
+        //Start the stream book executors
+        streamBook.initStreamBook();
     }
 
     @Override
@@ -61,29 +72,27 @@ public final class FileStreaming implements Streaming {
         //prepare stream record from streamAction and save this in the map.
         StreamRecord streamRecord = null;
 
-        if(streamAction.getStreamRequest() instanceof FileStreamRequest){
-            FileStreamRequest fileStreamRequest = (FileStreamRequest) streamAction.getStreamRequest();
-            streamRecord = new StreamRecord(streamAction.getStreamId(), fileStreamRequest.getRecipientEndPoint(), fileStreamRequest.getFile());
-        }
+        FileStream fileStream = (FileStream) streamAction.getStreamRequest();
+        streamRecord = new StreamRecord(streamAction.getStreamId(), fileStream.getRecipientEndPoint(), fileStream.getFile());
 
         //add the record to streaming
-        boolean isAdded = addStreamRecordToMap(streamRecord);
+        boolean isAdded = addStreamRecordToBook(streamRecord);
 
-        //send a event to receiver when the sr=treamRecord is stored
+        //send a event to receiver when the streamRecord is stored
         if(isAdded){
             ControlLedger controlLedger = new ControlLedger();
 
-            //sphere will be dummy as of now
+            //sphere will be DEFAULT as of now
             controlLedger.setSphereId("DEFAULT");
 
-            StreamRequest streamRequest = new StreamRequest();
-
+            FileStreamRequest streamRequest = new FileStreamRequest(fileStream.getRecipientEndPoint(), "DEFAULT", streamRecord);
             controlLedger.setMessage(streamRequest);
             controlLedger.setSerializedMessage(gson.toJson(streamRequest));
 
             comms.sendControlLedger(controlLedger);
         }else{
-
+            //failure messgage
+            //update logger
         }
         return false;
     }
@@ -93,24 +102,15 @@ public final class FileStreaming implements Streaming {
      * @param sRecord
      * @return
      */
-    private final boolean addStreamRecordToMap(StreamRecord sRecord) {
+    private final boolean addStreamRecordToBook(StreamRecord sRecord) {
         synchronized (this) {
-            if (streamingQueue.containsKey(sRecord.getStreamId())) {
-                return false;
-            } else {
-                streamingQueue.put(sRecord.getStreamId(), sRecord);
+            if (streamBook.hasStreamRecord(sRecord.getStreamId())) {
+                streamBook.addStreamingRecordToBook(sRecord);
                 return true;
+            } else {
+                return false;
             }
         }
     }
 
-    /**
-     * check for duplicate
-     * @param streamKey
-     * @return
-     */
-    private final boolean checkStreamRequestForDuplicate(
-            String streamKey) {
-        return streamingQueue.containsKey(streamKey);
-    }
 }
