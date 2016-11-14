@@ -74,10 +74,14 @@ public class StreamBook {
 
 
     //update the streamBook
-    public void updateStreamRecordInBook(Short streamKey, StreamRecord.StreamRecordStatus updateStatus){
+    public void updateStreamRecordInBook(Short streamKey, StreamRecord.StreamRecordStatus updateStatus, Integer port){
         //get the stream based on the id and update the status
         StreamRecord streamRecord   = (StreamRecord) streamingQueue.get(streamKey);
         streamRecord.setStreamRecordStatus(updateStatus);
+
+        if(port != null){
+            streamRecord.setRecipientPort(port);
+        }
 
         streamingQueue.put(streamKey, streamRecord);
 

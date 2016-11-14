@@ -24,7 +24,7 @@ public class StreamRecord {
     private File file;
 
     // recipient Port,set after getting the Stream Response
-    private int recipientPort;
+    private Integer recipientPort;
 
     public StreamRecord(Short streamId, BezirkZirkEndPoint endPoint, File file){
         this.streamId = streamId;
@@ -56,7 +56,7 @@ public class StreamRecord {
         return streamRecordStatus;
     }
 
-    public void setRecipientPort(int recipientPort) {
+    public void setRecipientPort(Integer recipientPort) {
         this.recipientPort = recipientPort;
     }
 
@@ -65,12 +65,12 @@ public class StreamRecord {
     }
 
     /* Streaming Status indicates the status of the Streams.
-             * PENDING -  indicates the waiting to know the response
-             * READY   -  indicating the recipient has agreed to receive the stream
+             * ALIVE -  indicates the waiting to know the response
+             * ADDRESSED   -  indicating the recipient has agreed to receive the stream
              * BUSY    -  indicating the receipient is busy and the data cannot be streamed*/
     public enum StreamRecordStatus {
         //PENDING, READY, BUSY, LOCAL
-        ALIVE, ADDRESSED, PROCESSING, BUSY, COMPLETED
+        ALIVE, ADDRESSED, ASSIGNED , PROCESSING, BUSY, COMPLETED
 
     }
 

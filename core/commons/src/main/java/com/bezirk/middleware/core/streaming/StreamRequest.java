@@ -18,11 +18,11 @@ public abstract class StreamRequest extends UnicastControlMessage {
     private final static Discriminator discriminator = Discriminator.STREAM_REQUEST;
 
     /**
-     * Sphere to which we are sending this stream to.
+     * default constructor
+     * @param sender
+     * @param receiver
+     * @param sphereId
      */
-    private String sphereId = null;
-
-
     public StreamRequest(BezirkZirkEndPoint sender, BezirkZirkEndPoint receiver, String sphereId){
         super(sender, receiver, sphereId, discriminator, true );
     }

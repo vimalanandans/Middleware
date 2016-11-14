@@ -10,37 +10,41 @@ import java.util.Set;
  * Created by PIK6KOR on 11/14/2016.
  */
 
-public class FileStreamPortFactory implements PortFactory {
+public class FileStreamPortFactory{
 
-    private final int startingPort; // Beginning Port of the RANGE, read from properties file
-    private final Set<Integer> activePorts; // Set, that keeps the track of no_of_ports that are active and are been used
+    private final int startingPort;
+    private final Set<Integer> activePorts;
     private final int streamMax;
     private int lastAssignedPort; // used to assign the next port when the request comes!
 
     //holds the value for port number assigned for a stream id.
-    private final Map<String, Integer> portsMap = new HashMap<String, Integer>();
+    private final Map<Short, Integer> portsMap = new HashMap<Short, Integer>();
 
-    /**
-     *
-     * @param startPort
-     * @param streamMax
-     */
-    public FileStreamPortFactory(int startPort, int streamMax) {
 
-        startingPort = startPort;
+    //move this to the property file, this should be configurable.
+    static Short STREAM_START_PORT = 6321;
+    static Short STREAM_PARALLEL_MAX = 10;
+
+    //default constructor
+    public FileStreamPortFactory() {
+        startingPort = STREAM_START_PORT;
         activePorts = new HashSet<Integer>();
-        lastAssignedPort = startPort;
-        this.streamMax = streamMax;
+        lastAssignedPort = STREAM_START_PORT;
+        this.streamMax = STREAM_PARALLEL_MAX;
     }
 
 
-    @Override
-    public int getActivePort(String portMapKey) {
+    /**
+     *
+     * @param portMapKey
+     * @return
+     */
+    public Integer getActivePort(Short portMapKey) {
         synchronized (this) {
             int nextPort = -1;
 
             if (activePorts.size() == streamMax) {
-                return nextPort;
+                return -1;
             }
 
             do {
@@ -66,7 +70,7 @@ public class FileStreamPortFactory implements PortFactory {
         }
     }
 
-    private boolean updatePortsMap(String portMapKey, int value) {
+    private boolean updatePortsMap(Short portMapKey, int value) {
 
         synchronized (this) {
 
@@ -87,19 +91,16 @@ public class FileStreamPortFactory implements PortFactory {
         }
     }
 
-    /*
-     * This method returns the {@link this#portsMap}, that maps
-     * <[MsagId:ServiceName:DeviceId],Port>
+    /**
      *
-     * @return the PortsMap<Integer, StreamRecord>
+     * @return
      */
-    private Map<String, Integer> getPortsMap(){
+    private Map<Short, Integer> getPortsMap(){
         synchronized (this) {
             return portsMap;
         }
     }
 
-    @Override
     public boolean releasePort(int port) {
         synchronized (this) {
             boolean updatedPortMap = true;
@@ -110,10 +111,10 @@ public class FileStreamPortFactory implements PortFactory {
 
             if (getPortsMap().containsValue(port)) {
 
-                Iterator<Map.Entry<String, Integer>> portsMapIterator = getPortsMap()
+                Iterator<Map.Entry<Short, Integer>> portsMapIterator = getPortsMap()
                         .entrySet().iterator();
                 while (portsMapIterator.hasNext()) {
-                    Map.Entry<String, Integer> entry = portsMapIterator.next();
+                    Map.Entry<Short, Integer> entry = portsMapIterator.next();
                     if (entry.getValue() == port) {
                         portsMapIterator.remove();
                         break;
@@ -127,7 +128,6 @@ public class FileStreamPortFactory implements PortFactory {
 
     }
 
-    @Override
     public int getNoOfActivePorts() {
         synchronized (this) {
             return activePorts.size();
