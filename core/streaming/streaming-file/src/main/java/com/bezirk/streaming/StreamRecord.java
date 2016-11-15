@@ -65,12 +65,14 @@ public class StreamRecord {
     }
 
     /* Streaming Status indicates the status of the Streams.
-             * ALIVE -  indicates the waiting to know the response
-             * ADDRESSED   -  indicating the recipient has agreed to receive the stream
-             * BUSY    -  indicating the receipient is busy and the data cannot be streamed*/
+             * ALIVE -  Status for sender, when we has initiated a request.
+             * ADDRESSED   -  indicating the recipient has received the request.
+             * ASSIGNED - If the Port was free for recipient, and has agreed to receive the file.
+             * BUSY -  indicating the receipient is busy, All the active ports are consumed.
+             * COMPLETED -  Indicates that file transfer was complete.
+             * */
     public enum StreamRecordStatus {
-        //PENDING, READY, BUSY, LOCAL
-        ALIVE, ADDRESSED, ASSIGNED , PROCESSING, BUSY, COMPLETED
+        ALIVE, ADDRESSED, ASSIGNED , BUSY, COMPLETED
 
     }
 
