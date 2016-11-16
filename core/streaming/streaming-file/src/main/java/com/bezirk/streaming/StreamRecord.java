@@ -26,6 +26,9 @@ public class StreamRecord {
     // recipient Port,set after getting the Stream Response
     private Integer recipientPort;
 
+    // recipient Port,set after getting the Stream Response
+    private String recipientIp;
+
     public StreamRecord(Short streamId, BezirkZirkEndPoint endPoint, File file){
         this.streamId = streamId;
         this.recipientSEP = endPoint;
@@ -58,6 +61,15 @@ public class StreamRecord {
 
     public void setRecipientPort(Integer recipientPort) {
         this.recipientPort = recipientPort;
+    }
+
+    public String getRecipientIp() {
+        return recipientIp;
+    }
+
+
+    public void setRecipientIp(String recipientIp) {
+        this.recipientIp = recipientIp;
     }
 
     public int getRecipientPort() {
