@@ -1,5 +1,5 @@
 # Bezirk
-[![Build Status](https://travis-ci.org/Bezirk-Bosch/Middleware.png)](https://travis-ci.org/Bezirk-Bosch/Middleware)
+[![Build Status](https://travis-ci.org/Bezirk-Bosch/Middleware.svg?branch=master)](https://travis-ci.org/Bezirk-Bosch/Middleware)
 
 The Bezirk middleware is developer-friendly, user-centric, and privacy-respecting glue for the
 Internet of Things.
