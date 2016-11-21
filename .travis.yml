@@ -32,6 +32,7 @@ android:
     - '.+'
 script:
   - ./gradlew clean build -x lint
+# Analyse static-code for Travis
   - ./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN -Dsonar.projectVersion=$CURRENT_VERSION -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.sources="core,android,java" -Dsonar.profile=BezirkProfile -Dsonar.projectKey="Middleware_Integration" -Dsonar.projectName="Bezirk Middleware Integration Branch" -Dsonar.language=java -Dsonar.sourceEncoding=UTF-8
 #jacocoTestReport assembleAndroidTest build connectedCheck connectedAndroidTest
 before_script:
