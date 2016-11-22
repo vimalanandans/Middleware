@@ -20,24 +20,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.bezirk.middleware.streaming;
+package com.bezirk.streaming;
 
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.streaming.Stream;
+
+import java.io.File;
 
 /**
  * Created by PIK6KOR on 11/3/2016.
  */
 
-public abstract class Stream {
+public class FileStream extends Stream {
+    private File file;
 
-    private ZirkEndPoint recipientEndPoint;
-
-    public Stream(ZirkEndPoint recipientEndPoint){
-        this.recipientEndPoint = recipientEndPoint;
+    public FileStream(ZirkEndPoint zirkEndPoint, File file){
+        super(zirkEndPoint);
+        this.file = file;
     }
 
-    public ZirkEndPoint getRecipientEndPoint() {
-        return recipientEndPoint;
+    public File getFile() {
+        return file;
     }
-
 }

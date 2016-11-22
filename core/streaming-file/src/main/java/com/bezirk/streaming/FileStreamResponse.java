@@ -20,24 +20,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.bezirk.middleware.streaming;
+package com.bezirk.streaming;
 
-import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.core.streaming.StreamResponse;
+import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 
 /**
- * Created by PIK6KOR on 11/3/2016.
+ * Created by PIK6KOR on 11/14/2016.
  */
 
-public abstract class Stream {
+public class FileStreamResponse extends StreamResponse {
+    /**
+     * Name of the file that needs to be pushed on the recipient
+     */
+    private StreamRecord streamRecord = null;
 
-    private ZirkEndPoint recipientEndPoint;
-
-    public Stream(ZirkEndPoint recipientEndPoint){
-        this.recipientEndPoint = recipientEndPoint;
+    public FileStreamResponse(BezirkZirkEndPoint sender, String sphereId, StreamRecord streamRecord){
+        super(sender, streamRecord.getRecipientSEP(), sphereId);
+        this.streamRecord = streamRecord;
     }
 
-    public ZirkEndPoint getRecipientEndPoint() {
-        return recipientEndPoint;
+    public StreamRecord getStreamRecord() {
+        return streamRecord;
     }
 
 }

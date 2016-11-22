@@ -20,24 +20,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.bezirk.middleware.streaming;
+package com.bezirk.streaming.receiver;
 
-import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.core.streaming.StreamRequest;
+import com.bezirk.streaming.FileStreamRequest;
+import com.bezirk.streaming.StreamBook;
+import com.bezirk.streaming.StreamRecord;
+import com.bezirk.streaming.portfactory.FileStreamPortFactory;
 
 /**
- * Created by PIK6KOR on 11/3/2016.
+ * Created by PIK6KOR on 11/22/2016.
  */
 
-public abstract class Stream {
+public interface StreamEventObserver {
 
-    private ZirkEndPoint recipientEndPoint;
-
-    public Stream(ZirkEndPoint recipientEndPoint){
-        this.recipientEndPoint = recipientEndPoint;
-    }
-
-    public ZirkEndPoint getRecipientEndPoint() {
-        return recipientEndPoint;
-    }
-
+    public void update(StreamRequest streamRequest, StreamBook streamBook, FileStreamPortFactory portFactory);
 }

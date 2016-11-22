@@ -39,11 +39,11 @@ import com.bezirk.middleware.core.actions.SubscriptionAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.streaming.Stream;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
-import com.bezirk.middleware.streaming.StreamRequest;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -216,14 +216,14 @@ public final class ProxyClient implements Bezirk {
     }
 
     @Override
-    public Short sendStream(StreamRequest streamRequest){
+    public Short sendStream(Stream streamRequest){
         /*generate a unique streamID, this will be the primary key for stream access.
           Use this streamID to interrupt the stream
         */
 
         Short streamID = -1;
         BezirkAction bezirkAction  = BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM;
-        intentSender.sendBezirkIntent(new StreamAction(streamID,streamRequest, bezirkAction));
+        intentSender.sendBezirkIntent(new StreamAction(zirkId, streamID,streamRequest, bezirkAction));
         return streamID;
     }
 

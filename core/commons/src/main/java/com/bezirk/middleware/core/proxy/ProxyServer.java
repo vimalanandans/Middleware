@@ -32,17 +32,13 @@ import com.bezirk.middleware.core.identity.IdentityProvisioner;
 import com.bezirk.middleware.core.streaming.Streaming;
 import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBrokerZirkServicer;
-import com.bezirk.streaming.sender.FileStreaming;
-import com.bezirk.streaming.StreamRecord;
 
 import org.jetbrains.annotations.NotNull;
 
 public class ProxyServer {
     private PubSubBrokerZirkServicer pubSubBrokerService;
     private final IdentityManager identityManager;
-
-    //TODO Punith dependency injection of file streaming...
-    private Streaming streaming = new FileStreaming(null);
+    private Streaming streaming;
 
     public ProxyServer(IdentityManager identityManager) {
         this.identityManager = identityManager;
@@ -92,9 +88,11 @@ public class ProxyServer {
         this.pubSubBrokerService = pubSubBrokerService;
     }
 
-    public void sendStream(@NotNull StreamAction streamAction){
-        //StreamRecord streamRecord = null;
+    public void setStreaming(Streaming streaming) {
+        this.streaming = streaming;
+    }
 
+    public void sendStream(@NotNull StreamAction streamAction){
         streaming.addStreamRecordToQueue(streamAction);
     }
 }

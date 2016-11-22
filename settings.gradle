@@ -24,4 +24,4 @@ include ':android:android-libraries:android-zirk-proxy'
 
 
 /*--------------------streaming--------------------*/
-include ':core:streaming:streaming-file'
+include ':core:streaming-file'

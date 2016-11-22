@@ -26,6 +26,7 @@ import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.streaming.Streaming;
+import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.streaming.FileStream;
 import com.bezirk.streaming.FileStreamRequest;
 import com.bezirk.streaming.StreamBook;
@@ -52,14 +53,6 @@ public final class FileStreaming implements Streaming {
         this.comms = comms;
         streamBook = new StreamBook();
 
-        //start the streaming module.
-        startStreamingModule();
-
-    }
-
-    private void startStreamingModule(){
-        //Start the stream book executors
-        streamBook.initStreamBook();
     }
 
     @Override
@@ -70,7 +63,7 @@ public final class FileStreaming implements Streaming {
     @Override
     public boolean addStreamRecordToQueue(StreamAction streamAction) {
         //prepare stream record from streamAction and save this in the map.
-        StreamRecord streamRecord = null;
+        StreamRecord streamRecord;
 
         FileStream fileStream = (FileStream) streamAction.getStreamRequest();
         streamRecord = new StreamRecord(streamAction.getStreamId(), fileStream.getRecipientEndPoint(), fileStream.getFile());
@@ -85,12 +78,13 @@ public final class FileStreaming implements Streaming {
             //sphere will be DEFAULT as of now
             controlLedger.setSphereId("DEFAULT");
 
-            FileStreamRequest streamRequest = new FileStreamRequest(fileStream.getRecipientEndPoint(), "DEFAULT", streamRecord);
+            FileStreamRequest streamRequest = new FileStreamRequest((BezirkZirkEndPoint) fileStream.getRecipientEndPoint(), "DEFAULT", streamRecord);
             controlLedger.setMessage(streamRequest);
             controlLedger.setSerializedMessage(gson.toJson(streamRequest));
 
             comms.sendControlLedger(controlLedger);
         }else{
+
             //failure messgage
             //update logger
         }
