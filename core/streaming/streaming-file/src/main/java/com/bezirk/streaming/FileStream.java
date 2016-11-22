@@ -1,8 +1,9 @@
-package com.bezirk.middleware.streaming;
+package com.bezirk.streaming;
 
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
+import com.bezirk.middleware.streaming.Stream;
 import com.sun.istack.internal.NotNull;
 
 import java.io.File;
@@ -11,7 +12,7 @@ import java.io.File;
  * Created by PIK6KOR on 11/3/2016.
  */
 
-public class FileStream extends Stream{
+public class FileStream extends Stream {
     private File file;
 
     public FileStream(@NotNull ZirkId zirkId, @NotNull BezirkZirkEndPoint zirkEndPoint, @NotNull File file){
