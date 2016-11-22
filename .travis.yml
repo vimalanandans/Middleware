@@ -10,9 +10,6 @@ env:
     - SONAR_HOST_URL="http://54.186.23.122:9200/sonar/"
     - CURRENT_VERSION="3.0-Alpha"
     - SONAR_TOKEN="fa0f631c7cd9720fb17cbeaa99ef5899990aa413"
-script:
-  # other script steps might be done before running the actual SonarQube analysis
-  - sonar-scanner -Dsonar.login=$SONAR_TOKEN
 #appcompat-v7
 android:
   components:
@@ -31,9 +28,9 @@ android:
   licenses:
     - '.+'
 script:
-  - ./gradlew clean build -x lint
+  - ./gradlew clean build sonarqube -x lint
 # Analyse static-code for Travis
-  - ./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN -Dsonar.projectVersion=$CURRENT_VERSION -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.sources="core,android,java" -Dsonar.profile=BezirkProfile -Dsonar.projectKey="Middleware_Integration" -Dsonar.projectName="Bezirk Middleware Integration Branch" -Dsonar.language=java -Dsonar.sourceEncoding=UTF-8 -Dsonar.exclusions=**/package-info.java
+#  - ./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN -Dsonar.projectVersion=$CURRENT_VERSION -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.sources="core,android,java" -Dsonar.profile=BezirkProfile -Dsonar.projectKey="Middleware_Integration" -Dsonar.projectName="Bezirk Middleware Integration Branch" -Dsonar.language=java -Dsonar.sourceEncoding=UTF-8 -Dsonar.exclusions=**/package-info.java
 #jacocoTestReport assembleAndroidTest build connectedCheck connectedAndroidTest
 before_script:
   - chmod +x gradlew
