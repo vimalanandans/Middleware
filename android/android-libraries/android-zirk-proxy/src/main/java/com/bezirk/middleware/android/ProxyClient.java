@@ -36,7 +36,7 @@ import com.bezirk.middleware.core.actions.SendMulticastEventAction;
 import com.bezirk.middleware.core.actions.SetLocationAction;
 import com.bezirk.middleware.core.actions.SubscriptionAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
-import com.bezirk.middleware.identity.IdentityManager;
+import com.bezirk.middleware.core.proxy.ProxyServer;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.IdentifiedEvent;
@@ -57,33 +57,16 @@ public final class ProxyClient implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(ProxyClient.class);
     protected static final Map<String, List<EventSet>> eventSetMap = new ConcurrentHashMap<>();
     protected static Context context;
-    private static IntentSender intentSender;
+    private static ProxyServer proxyServer;
     private final ZirkId zirkId;
-    private final IdentityManager identityManager;
-    private short streamFactory;
-    //Bezirk is ready to send messages to another BezirkMiddleware stack
-    private boolean remoteSendReady = false;
-    //to ensure error log is just printed once
-    private boolean remoteSendReadyLogged = false;
 
     public ProxyClient(ZirkId zirkId) {
-
-        // Bind to remote identity management service
-//        Intent intent = new Intent();
-//        intent.setComponent(RECEIVING_COMPONENT);
-//        boolean boundService = context.bindService(intent,
-//                ClientIdentityManagerAdapter.remoteConnection, Context.BIND_AUTO_CREATE);
-//        logger.debug("Binding to identity management service status: "+ boundService);
-
         this.zirkId = zirkId;
-        this.identityManager = new ClientIdentityManagerAdapter();
     }
 
-
-    public static ZirkId registerZirk(@NotNull final Context context, final String zirkName,
-                                      final IntentSender intentSender) {
+    public static ZirkId registerZirk(@NotNull final Context context, final String zirkName, @NotNull final ProxyServer proxyServer) {
         ProxyClient.context = context;
-        ProxyClient.intentSender = intentSender;
+        ProxyClient.proxyServer = proxyServer;
 
         if (zirkName == null) {
             throw new IllegalArgumentException("Cannot register a Zirk with a null name");
@@ -109,12 +92,7 @@ public final class ProxyClient implements Bezirk {
         }
 
         final ZirkId zirkId = new ZirkId(zirkIdAsString);
-
-        if (intentSender.sendBezirkIntent(new RegisterZirkAction(zirkId, zirkName))) {
-            logger.debug("Registered Zirk: " + zirkName);
-            return zirkId;
-        }
-
+        proxyServer.registerZirk(new RegisterZirkAction(zirkId, zirkName));
         return zirkId;
     }
 
@@ -148,7 +126,7 @@ public final class ProxyClient implements Bezirk {
                     messageSet.getClass().getSimpleName());
         }
 
-        intentSender.sendBezirkIntent(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE,
+        proxyServer.subscribe(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE,
                 zirkId, messageSet));
     }
 
@@ -184,8 +162,8 @@ public final class ProxyClient implements Bezirk {
                 }
             }
         }
-        return intentSender.sendBezirkIntent(
-                new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId, messageSet));
+        proxyServer.unsubscribe(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId, messageSet));
+        return true;
     }
 
     @Override
@@ -195,35 +173,19 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
-        if (!remoteSendReady) {
-            logRemoteSending();
-        }
-        intentSender.sendBezirkIntent(new SendMulticastEventAction(zirkId, recipient, event,
+        proxyServer.sendEvent(new SendMulticastEventAction(zirkId, recipient, event,
                 event instanceof IdentifiedEvent));
     }
 
     @Override
     public void sendEvent(ZirkEndPoint recipient, Event event) {
-        intentSender.sendBezirkIntent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
+        proxyServer.sendEvent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
                 zirkId, recipient, event, event instanceof IdentifiedEvent));
     }
 
     @Override
     public void setLocation(Location location) {
-        intentSender.sendBezirkIntent(new SetLocationAction(zirkId, location));
-    }
-
-    private final void logRemoteSending() {
-        final long currentTime = System.currentTimeMillis();
-        if (currentTime - BezirkMiddleware.getStartTime() > 2000) {
-            remoteSendReady = true;
-        } else {
-            if (!remoteSendReadyLogged) {
-                logger.error("Bezirk.sendEvent() is being called less than 2 seconds after initialization of the middleware. This initialization requires up to 2 seconds to find peers. " +
-                        "\nIf you don't receive the Event(s), please ensure, via Thread.sleep() or other means, that there are at least 2 seconds between BezirkMiddleware.initialize() and Bezirk.sendEvent() calls. ");
-                remoteSendReadyLogged = true;
-            }
-        }
+        proxyServer.setLocation(new SetLocationAction(zirkId, location));
     }
 
 }

@@ -22,10 +22,15 @@
  */
 package com.bezirk.middleware.android;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.core.proxy.Config;
+import com.bezirk.middleware.core.proxy.ProxyServer;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 import org.jetbrains.annotations.NotNull;
@@ -38,10 +43,10 @@ import org.slf4j.LoggerFactory;
 public abstract class BezirkMiddleware {
     private static final Logger logger = LoggerFactory.getLogger(BezirkMiddleware.class);
     private static Context context;
-    private static boolean localBezirkService = true;
-    private static IntentSender intentSender;
-    private static ServiceManager serviceManager;
-    private static long startTime;
+    private static boolean mBound = false;
+    private static ComponentManager.ProxyBinder proxyBinder;
+    private static long bindingStartTime;
+    private static long bindingEndTime;
 
     /**
      * Initializes and starts the bezirk
@@ -103,19 +108,16 @@ public abstract class BezirkMiddleware {
      * @see #stop()
      */
     public static synchronized void initialize(@NotNull final Context context, final Config config) {
-        BezirkMiddleware.context = context;
-
-        if (config == null) {
-            localBezirkService = !IntentSender.isBezirkAvailableOnDevice(context);
-        } else {
-            logger.debug("Custom configuration passed when initializing Bezirk, creating custom " +
-                    "Bezirk service. Is Bezirk service local: {}", localBezirkService);
+        if (mBound) {
+            logger.debug("Bezirk service already initialized");
+            return;
         }
-
-        intentSender = new IntentSender(context);
-        serviceManager = new ServiceManager(intentSender);
-        serviceManager.start((config == null) ? new Config() : config);
-        startTime = System.currentTimeMillis();
+        BezirkMiddleware.context = context;
+        bindingStartTime = System.currentTimeMillis();
+        context.startService(new Intent(context, ComponentManager.class));
+        final Intent intent = new Intent(context, ComponentManager.class);
+        intent.putExtra(Config.class.getSimpleName(), (config == null) ? new Config() : config);
+        context.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
     /**
@@ -130,12 +132,12 @@ public abstract class BezirkMiddleware {
      * @see #initialize(Context)
      */
     public static synchronized Bezirk registerZirk(@NotNull final String zirkName) {
-        if (serviceManager == null || !serviceManager.isStarted()) {
+        if (!mBound || proxyBinder == null) {
             throw new IllegalStateException("Bezirk Service is not running. Start the Bezirk " +
                     "service using BezirkMiddleware.initialize(Context) or " +
                     "BezirkMiddleware.initialize(Context, Config)");
         }
-        ZirkId zirkId = ProxyClient.registerZirk(context, zirkName, intentSender);
+        final ZirkId zirkId = ProxyClient.registerZirk(context, zirkName, proxyBinder.getProxyServer());
         return zirkId == null ? null : new ProxyClient(zirkId);
     }
 
@@ -147,24 +149,37 @@ public abstract class BezirkMiddleware {
      * </p>
      */
     public static synchronized void stop() {
-        if (serviceManager == null) {
-            throw new IllegalStateException("Is Bezirk Middleware initialized? Initialize using " +
-                    "BezirkMiddleware.initialize(Context) or " +
-                    "BezirkMiddleware.initialize(Context, Config)");
+        if (mBound && context != null) {
+            logger.debug("unbinding and stopping Bezirk Service");
+            context.unbindService(mConnection);
+            context.stopService(new Intent(context, ComponentManager.class));
+            mBound = false;
         }
-        serviceManager.stop();
-        context = null;
-    }
-
-    static boolean isLocalBezirkService() {
-        return localBezirkService;
     }
 
     /**
-     * Time the BezirkMiddleware is initialized
+     * Defines callbacks for service binding, passed to bindService()
      */
-    static final long getStartTime() {
-        return startTime;
+    private static ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            bindingEndTime = System.currentTimeMillis();
+            logger.trace("onServiceConnected() time to bind the service " + (bindingEndTime - bindingStartTime) + " ms");
+            proxyBinder = (ComponentManager.ProxyBinder) service;
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+            logger.trace("onServiceDisconnected()");
+        }
+    };
+
+    public static synchronized boolean isInitialized() {
+        return mBound;
     }
 
 }

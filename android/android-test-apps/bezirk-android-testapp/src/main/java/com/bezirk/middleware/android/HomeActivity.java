@@ -58,8 +58,6 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        initializeBezirk();
-
         //setup auto testing elements
         autoTextView = (TextView) findViewById(R.id.auto_test_tv);
         autoTextView.setText(AUTO_TESTING_MESSAGE);
@@ -102,38 +100,6 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         });
-
-    }
-
-    private void initializeBezirk() {
-        Config.ConfigBuilder configBuilder = new Config.ConfigBuilder();
-
-        /*setting root log level*/
-        configBuilder.setLogLevel(Config.Level.ERROR);
-
-        /*setting package log level*/
-        //configBuilder.setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.INFO);
-
-        /*setting app name for notification*/
-        configBuilder.setAppName("bezirk-android-testapp");
-
-        /*disabling inter-device communication*/
-        //configBuilder.setComms(false);
-
-        /*using custom communication groups to prevent crosstalk*/
-        //configBuilder.setGroupName("Test Group");
-
-        /*keeping bezirk service alive even after the app is shutdown*/
-        //configBuilder.setServiceAlive(true);
-
-        /*initialize with default configurations*/
-        //BezirkMiddleware.initialize(this);
-
-        /*initialize with configurations*/
-        BezirkMiddleware.initialize(this, configBuilder.create());
-
-        /*initialize with channelId/groupName*/
-        //BezirkMiddleware.initialize(this, "MyChannel");
 
     }
 
