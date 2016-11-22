@@ -2,58 +2,51 @@ package com.bezirk.streaming.receiver;
 
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
-import com.bezirk.middleware.core.streaming.StreamReceiver;
 import com.bezirk.middleware.core.streaming.StreamRequest;
 import com.bezirk.streaming.FileStreamRequest;
 import com.bezirk.streaming.FileStreamResponse;
 import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.StreamRecord;
 import com.bezirk.streaming.portfactory.FileStreamPortFactory;
-import com.bezirk.streaming.sender.FileStreamSenderThread;
 import com.google.gson.Gson;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by PIK6KOR on 11/14/2016.
+ * StreamAliveObserver will be a EventObserver.. When the StreamStatus will be ALIVE this cde will handle the state.
  */
 
-public class FileStreamReceiver implements StreamReceiver{
-
-    private StreamBook streamBook  = null;
-    private FileStreamPortFactory portFactory = null;
-    //this has to be dependency injected.
-    private Comms comms = null;
-    Gson gson = new Gson();
-    static final int THREAD_SIZE = 10;
+class StreamAliveObserver implements StreamEventObserver {
 
     //executor which handles the file stream receiving thread.
     private ExecutorService fileStreamReceiverExecutor;
 
-    //executor which handles the file stream receiving thread.
-    private ExecutorService fileStreamSenderExecutor;
+    //size of thread size
+    private static final int THREAD_SIZE = 10;
 
-    public FileStreamReceiver(Comms comms){
-        streamBook = new StreamBook();
-        portFactory = new FileStreamPortFactory();
+    //comms injected.
+    private Comms comms = null;
+
+    //Gson dependency
+    private final Gson gson = new Gson();
+
+    //streamBook and Portfactory also needs to be dependency injected.
+
+    StreamAliveObserver(Comms comms){
         this.comms = comms;
-
         this.fileStreamReceiverExecutor = Executors.newFixedThreadPool(THREAD_SIZE);
-        this.fileStreamSenderExecutor = Executors.newFixedThreadPool(THREAD_SIZE);
-    }
-
-    private void initFileStreamReceiver(){
-        streamBook.initStreamBook();
     }
 
     @Override
-    public void incomingStreamRequest(StreamRequest streamRequest) {
+    public void update(StreamRequest streamRequest, StreamBook streamBook, FileStreamPortFactory portFactory) {
         FileStreamRequest fileStreamRequest = (FileStreamRequest) streamRequest;
 
         //update the status to addressed.
         StreamRecord streamRecord = fileStreamRequest.getStreamRecord();
+
         if(StreamRecord.StreamRecordStatus.ALIVE == streamRecord.getStreamRecordStatus()){
+            //when the status is alive
             streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.ADDRESSED);
 
             //add the stream record to stream book.
@@ -89,15 +82,7 @@ public class FileStreamReceiver implements StreamReceiver{
             }
 
 
-
-        }else if(StreamRecord.StreamRecordStatus.ASSIGNED == streamRecord.getStreamRecordStatus()){
-            // This will be reply to the sender, Start the sender thread and initiate file transmission.
-            FileStreamSenderThread fileStreamSenderThread = new FileStreamSenderThread(streamRecord);
-            fileStreamSenderExecutor.execute(fileStreamSenderThread);
-
         }
-
-
 
     }
 
