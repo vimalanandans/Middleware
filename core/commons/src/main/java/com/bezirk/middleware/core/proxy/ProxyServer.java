@@ -93,7 +93,8 @@ public class ProxyServer {
     }
 
     public void sendStream(@NotNull StreamAction streamAction){
-        StreamRecord streamRecord = null;
+        //StreamRecord streamRecord = null;
+
         streaming.addStreamRecordToQueue(streamAction);
     }
 }

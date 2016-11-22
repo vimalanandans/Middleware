@@ -26,7 +26,7 @@ import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.streaming.Streaming;
-import com.bezirk.middleware.streaming.FileStream;
+import com.bezirk.streaming.FileStream;
 import com.bezirk.streaming.FileStreamRequest;
 import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.StreamRecord;

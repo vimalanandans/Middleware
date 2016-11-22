@@ -15,58 +15,6 @@ public class StreamBook {
     //Streaming Request queue.
     private final Map<Short, StreamRecord> streamingQueue = new ConcurrentHashMap<Short, StreamRecord>();
 
-    // creates thread pool with one thead
-    private ExecutorService streamingQueueExecutor = null;
-
-    public StreamBook(){
-        //start  the executor which will loop through the stream book.
-        streamingQueueExecutor  = Executors.newSingleThreadExecutor();
-    }
-
-    public void initStreamBook(){
-        streamingQueueExecutor.execute(new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-
-                        //loop through the streaming queue until streaming is running
-                        while (true) {
-
-                            Iterator<Map.Entry<Short, StreamRecord>> it = streamingQueue.entrySet().iterator();
-
-                            while (it.hasNext()) {
-                                StreamRecord streamRecord = (StreamRecord) it.next();
-
-                                if (StreamRecord.StreamRecordStatus.ALIVE == streamRecord.getStreamRecordStatus()) {
-                                    processAliveRecords(streamRecord);
-
-                                } else if (StreamRecord.StreamRecordStatus.ADDRESSED == streamRecord.getStreamRecordStatus()) {
-                                    processAddressedRecords(streamRecord);
-                                } else {
-                                    //either dead(completed) or (//processing  || //
-                                }
-
-
-                            }
-
-                        }
-                    }
-                }
-        ));
-    }
-
-    private void processAliveRecords(StreamRecord streamRecord){
-
-    }
-
-    private void processAddressedRecords(StreamRecord streamRecord){
-
-    }
-
-    public ExecutorService getStreamingQueueExecutor() {
-        return streamingQueueExecutor;
-    }
-
     //add to streamBook
     public void addStreamingRecordToBook(StreamRecord streamRecord){
         streamingQueue.put(streamRecord.getStreamId(), streamRecord);
