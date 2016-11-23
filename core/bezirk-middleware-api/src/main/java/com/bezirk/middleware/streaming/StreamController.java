@@ -28,5 +28,5 @@ package com.bezirk.middleware.streaming;
 
 public abstract class StreamController {
 
-    public abstract void stopStreaming(Short streamId);
+    public abstract void stopStreaming();
 }

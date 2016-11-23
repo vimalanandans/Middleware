@@ -118,8 +118,11 @@ public interface Bezirk {
     void setLocation(Location location);
 
     /**
+     * This method is used for streaming between Zirk to Zirk. A Event callback will be received when there
+     * is a update to <code>StreamRecordStatus</code>. use <code>Stream.StreamEventReceiver</code> to set the
+     * receiver and recive the callbacks to handle appropriately.
      *
-     * @param streamRequest
+     * @param streamRequest field which will have information of streaming metadata.
      */
     StreamController sendStream(Stream streamRequest);
 }

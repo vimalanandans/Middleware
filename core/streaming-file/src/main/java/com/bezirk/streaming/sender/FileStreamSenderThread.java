@@ -37,6 +37,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
+ * This is FileStreamSenderThread, Which will be responsible for sending the chunks of bytes on the open Socket
+ *
  * Created by PIK6KOR on 11/15/2016.
  */
 
@@ -47,8 +49,8 @@ public class FileStreamSenderThread implements Runnable {
             .getLogger(FileStreamSenderThread.class);
     private static final int BUFFER_SIZE = 1024; // size of the buffer
     private final File file;
-    private final String recipientIP;                                 // recipient
-    private final int port;                                           // the port that the recipient is listening
+    private final String recipientIP; // recipient
+    private final int port; // the port that the recipient is listening
 
     public FileStreamSenderThread(StreamRecord streamRecord){
         this.file = streamRecord.getFile();

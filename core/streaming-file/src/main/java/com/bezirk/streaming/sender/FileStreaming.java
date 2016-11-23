@@ -27,13 +27,18 @@ import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.streaming.Streaming;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
-import com.bezirk.streaming.FileStream;
+import com.bezirk.middleware.streaming.FileStream;
 import com.bezirk.streaming.FileStreamRequest;
 import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.StreamRecord;
 import com.google.gson.Gson;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
+ * Implementation of <code>Streaming</code> interface. This is an implementation of File streaming concept.
+ *
  * Created by PIK6KOR on 11/1/2016.
  */
 
@@ -46,17 +51,22 @@ public final class FileStreaming implements Streaming {
     private final Gson gson = new Gson();
 
     //stream book
-    StreamBook streamBook = null;
+    private StreamBook streamBook = null;
+
+    //logger
+    private static final Logger logger = LoggerFactory.getLogger(FileStreaming.class);
 
     //constructor
     public FileStreaming(Comms comms){
         this.comms = comms;
         streamBook = new StreamBook();
+        logger.info("FileStreaming module was Initialized!!");
 
     }
 
     @Override
     public boolean interruptStream(String streamKey) {
+        logger.info("intrrupt streaming was called for key :"+streamKey);
         return false;
     }
 
@@ -66,6 +76,8 @@ public final class FileStreaming implements Streaming {
         StreamRecord streamRecord;
 
         FileStream fileStream = (FileStream) streamAction.getStreamRequest();
+        logger.info("Adding stream record to queue for "+fileStream.getFile());
+
         streamRecord = new StreamRecord(streamAction.getStreamId(), fileStream.getRecipientEndPoint(), fileStream.getFile());
 
         //add the record to streaming
@@ -73,6 +85,7 @@ public final class FileStreaming implements Streaming {
 
         //send a event to receiver when the streamRecord is stored
         if(isAdded){
+            logger.info("StreamRecord "+ streamAction.getStreamId() +" was added to the StreamBook, sending ControlMessage over comms to receiver");
             ControlLedger controlLedger = new ControlLedger();
 
             //sphere will be DEFAULT as of now
@@ -82,21 +95,20 @@ public final class FileStreaming implements Streaming {
             controlLedger.setMessage(streamRequest);
             controlLedger.setSerializedMessage(gson.toJson(streamRequest));
 
+            //send event
             comms.sendControlLedger(controlLedger);
         }else{
-
-            //failure messgage
-            //update logger
+            logger.error("Unable to add StreamRecord to stream queue");
         }
         return false;
     }
 
     /**
      * add Stream Record to Stream Sending queue.
-     * @param sRecord
-     * @return
+     * @param sRecord streamRecord to be added to the stream queue
+     * @return boolean
      */
-    private final boolean addStreamRecordToBook(StreamRecord sRecord) {
+    private boolean addStreamRecordToBook(StreamRecord sRecord) {
         synchronized (this) {
             if (streamBook.hasStreamRecord(sRecord.getStreamId())) {
                 streamBook.addStreamingRecordToBook(sRecord);

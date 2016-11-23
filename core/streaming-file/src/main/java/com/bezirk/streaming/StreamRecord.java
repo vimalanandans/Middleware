@@ -28,6 +28,9 @@ import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import java.io.File;
 
 /**
+ * StreamRecord, This will hold complete metadata of the streaming information.
+ * This will be kept in the StreamBook
+ *
  * Created by PIK6KOR on 11/10/2016.
  */
 
@@ -61,7 +64,7 @@ public class StreamRecord {
         return streamId;
     }
 
-    public BezirkZirkEndPoint getRecipientSEP() {
+    BezirkZirkEndPoint getRecipientSEP() {
         return recipientSEP;
     }
 
@@ -71,7 +74,7 @@ public class StreamRecord {
 
     /**
      * default will be PENDING, but can be updated based on the staus to
-     * @param streamRecordStatus
+     * @param streamRecordStatus status of StreamRecord
      */
     public void setStreamRecordStatus(StreamRecordStatus streamRecordStatus) {
         this.streamRecordStatus = streamRecordStatus;
@@ -88,7 +91,6 @@ public class StreamRecord {
     public String getRecipientIp() {
         return recipientIp;
     }
-
 
     public void setRecipientIp(String recipientIp) {
         this.recipientIp = recipientIp;

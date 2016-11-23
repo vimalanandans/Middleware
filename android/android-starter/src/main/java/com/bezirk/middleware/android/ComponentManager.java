@@ -48,6 +48,8 @@ import com.bezirk.middleware.core.proxy.Config;
 import com.bezirk.middleware.core.proxy.MessageHandler;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
+import com.bezirk.middleware.core.streaming.Streaming;
+import com.bezirk.streaming.sender.FileStreaming;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -68,6 +70,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private final RemoteLog remoteLog = null;
     private LifeCycleObservable.State currentState;
     private String identityString;
+    private Streaming streaming;
 
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
@@ -201,6 +204,10 @@ public final class ComponentManager extends Service implements LifeCycleCallback
 
         // TODO initialize in constructor instead.
         proxyServer.setPubSubBrokerService(pubSubBroker);
+
+        //initialize streaming, Remember DI should be way forward.
+        streaming = new FileStreaming(comms);
+        proxyServer.setStreaming(streaming);
     }
 
     //initialize the identity manager

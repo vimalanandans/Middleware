@@ -26,6 +26,9 @@ import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.bezirk.middleware.streaming.Stream;
 
 /**
+ * class <code>StreamAction</code> will have all the metadata information of streaming
+ * which will be passed as intent to the receiver.
+ *
  * Created by PIK6KOR on 11/4/2016.
  */
 

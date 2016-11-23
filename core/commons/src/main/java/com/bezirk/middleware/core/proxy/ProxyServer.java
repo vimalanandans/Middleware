@@ -34,11 +34,14 @@ import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBrokerZirkServicer;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProxyServer {
     private PubSubBrokerZirkServicer pubSubBrokerService;
     private final IdentityManager identityManager;
     private Streaming streaming;
+    private static final Logger logger = LoggerFactory.getLogger(ProxyServer.class);
 
     public ProxyServer(IdentityManager identityManager) {
         this.identityManager = identityManager;
@@ -88,11 +91,26 @@ public class ProxyServer {
         this.pubSubBrokerService = pubSubBrokerService;
     }
 
+    /**
+     * initialize the streaming module. Value is set in <code>ComponentManager</code>
+     *
+     * @param streaming Streaming module as configured in <code>ComponentManager<code/>
+     */
     public void setStreaming(Streaming streaming) {
         this.streaming = streaming;
     }
 
-    public void sendStream(@NotNull StreamAction streamAction){
-        streaming.addStreamRecordToQueue(streamAction);
+    /**
+     * Method used to send <code>StreamAction<code/> object to Streaming module.
+     * @param streamAction streamAction metadata of streaming information
+     */
+    protected void sendStream(@NotNull StreamAction streamAction){
+        //send StreamAction instance to streaming queue
+        if(streaming != null){
+            streaming.addStreamRecordToQueue(streamAction);
+        }else{
+            logger.error("Streaming module was not initialized!!!!. Ensure to initialize Streaming module in ComponentManager!!!");
+        }
+
     }
 }

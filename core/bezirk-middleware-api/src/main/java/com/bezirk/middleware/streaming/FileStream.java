@@ -20,10 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.bezirk.streaming;
+package com.bezirk.middleware.streaming;
 
 import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.streaming.Stream;
 
 import java.io.File;
 

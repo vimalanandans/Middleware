@@ -23,23 +23,16 @@
 package com.bezirk.streaming.receiver;
 
 import com.bezirk.middleware.core.comms.Comms;
-import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.streaming.StreamReceiver;
 import com.bezirk.middleware.core.streaming.StreamRequest;
-import com.bezirk.streaming.FileStreamRequest;
-import com.bezirk.streaming.FileStreamResponse;
 import com.bezirk.streaming.StreamBook;
-import com.bezirk.streaming.StreamRecord;
 import com.bezirk.streaming.portfactory.FileStreamPortFactory;
-import com.bezirk.streaming.sender.FileStreamSenderThread;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
+ * Implementaion of <code>StreamReceiver</code> all the receiving events will be received here and passed to observers
  * Created by PIK6KOR on 11/14/2016.
  */
 
@@ -47,7 +40,7 @@ public class FileStreamEventReceiver implements StreamReceiver{
 
     private StreamBook streamBook  = null;
     private FileStreamPortFactory portFactory = null;
-    List<StreamEventObserver> streamEventObservers = null;
+    private List<StreamEventObserver> streamEventObservers = null;
 
     public FileStreamEventReceiver(Comms comms){
         streamBook = new StreamBook();

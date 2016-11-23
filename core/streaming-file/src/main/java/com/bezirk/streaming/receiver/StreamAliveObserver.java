@@ -36,7 +36,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * StreamAliveObserver will be a EventObserver.. When the StreamStatus will be ALIVE this cde will handle the state.
+ * StreamAliveObserver is a implementation of <code>StreamEventObserver</code>.
+ * Update will be called when the subject StreamBook will be updated with a new entry.
  */
 
 class StreamAliveObserver implements StreamEventObserver {
@@ -110,8 +111,8 @@ class StreamAliveObserver implements StreamEventObserver {
 
     /**
      * reply to sender with the given stream staus.
-     * @param fileStreamRequest
-     * @param streamRecord
+     * @param fileStreamRequest fileStreamRequest a UnicastControlMessage
+     * @param streamRecord streamRecord.
      */
     private void replyToSender(FileStreamRequest fileStreamRequest, StreamRecord streamRecord) {
         //send a ControlMessage(StreamResponse) back to sender with updated information

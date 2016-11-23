@@ -183,7 +183,8 @@ public class AndroidProxyServer extends ProxyServer implements Observer {
 
     /**
      * Takes the incoming intent and parses to an StreamAction.
-     * @param intent
+     *
+     * @param intent incoming intent, this will have serialized StreamAction.
      */
     public void sendStream(Intent intent) {
 
@@ -191,6 +192,7 @@ public class AndroidProxyServer extends ProxyServer implements Observer {
         final StreamAction streamAction =
                 (StreamAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM.getName());
 
+        //call to send stream in <code>ProxyServer</code>
         sendStream(streamAction);
     }
 

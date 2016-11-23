@@ -21,7 +21,7 @@ class FileStreamController extends StreamController {
 
 
     @Override
-    public void stopStreaming(Short streamId) {
+    public void stopStreaming() {
         //implement stopping streaming here..
     }
 

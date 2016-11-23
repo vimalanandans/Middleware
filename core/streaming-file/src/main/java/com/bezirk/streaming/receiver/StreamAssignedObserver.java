@@ -33,10 +33,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
+ * StreamAssignedObserver is a implementation of <code>StreamEventObserver</code>.
+ * Update will be called when the subject StreamBook will be updated with a new entry.
+ *
  * Created by PIK6KOR on 11/22/2016.
  */
 
-public class StreamAssignedObserver implements StreamEventObserver {
+class StreamAssignedObserver implements StreamEventObserver {
 
     //executor which handles the file stream receiving thread.
     private ExecutorService fileStreamSenderExecutor;

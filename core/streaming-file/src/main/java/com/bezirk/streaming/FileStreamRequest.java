@@ -28,6 +28,8 @@ import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import java.io.File;
 
 /**
+ * This will be Streaming Request type sent by the Sender with <code>StreamRecord</code> metadata.
+ *
  * Created by PIK6KOR on 11/11/2016.
  */
 

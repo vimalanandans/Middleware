@@ -223,11 +223,11 @@ public final class ProxyClient implements Bezirk {
         /*generate a unique streamID, this will be the primary key for stream access.
           Use this streamID to interrupt the stream
         */
-        Short streamID = -1;
+        Short streamID;
         Integer intStreamID = ((streamIdCounter++) % Short.MAX_VALUE);
 
         streamID = intStreamID.shortValue();
-        FileStreamController fileStreamController = new FileStreamController(streamID);
+        StreamController fileStreamController = new FileStreamController(streamID);
 
         BezirkAction bezirkAction  = BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM;
         intentSender.sendBezirkIntent(new StreamAction(zirkId, streamID,streamRequest, bezirkAction));

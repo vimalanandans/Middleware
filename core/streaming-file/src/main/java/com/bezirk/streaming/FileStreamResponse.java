@@ -26,6 +26,8 @@ import com.bezirk.middleware.core.streaming.StreamResponse;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 
 /**
+ * This will be Response type sent by the Reciver with updated information of StreamRecord.
+ *
  * Created by PIK6KOR on 11/14/2016.
  */
 

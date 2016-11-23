@@ -38,10 +38,12 @@ import java.net.Socket;
 import java.net.SocketException;
 
 /**
+ * FileStreamReceivingThread, will be a running thread
+ *
  * Created by PIK6KOR on 11/15/2016.
  */
 
-public class FileStreamReceivingThread implements Runnable{
+class FileStreamReceivingThread implements Runnable{
 
     //assigned port for file streaming
     private Integer assignedPort = -1;
@@ -58,9 +60,9 @@ public class FileStreamReceivingThread implements Runnable{
     private static final int BUFFER_SIZE = 1024;
 
     // Note this has to be injected.
-    FileStreamPortFactory portFactory = null;
+    private FileStreamPortFactory portFactory = null;
 
-    public FileStreamReceivingThread(Integer port, File file, FileStreamPortFactory portFactory){
+    FileStreamReceivingThread(Integer port, File file, FileStreamPortFactory portFactory){
         this.assignedPort = port;
         this.filedownloadPath = ""; //assign it from the property file.
         this.file = file;
@@ -126,10 +128,10 @@ public class FileStreamReceivingThread implements Runnable{
 
     /**
      * close the streaming resources.
-     * @param socket
-     * @param receivingSocket
-     * @param fileOutputStream
-     * @param inputStream
+     * @param socket open socket
+     * @param receivingSocket receiving socket
+     * @param fileOutputStream open stream which is open
+     * @param inputStream input stream which was opened
      */
     private void closeResources(ServerSocket socket, Socket receivingSocket,
                                 FileOutputStream fileOutputStream, DataInputStream inputStream) {
@@ -142,10 +144,10 @@ public class FileStreamReceivingThread implements Runnable{
                 fileOutputStream.flush();
                 fileOutputStream.close();
             }
-            if (ValidatorUtility.isObjectNotNull(receivingSocket)) {                                     // If SocketTimeout Exception occurs, receivingSocket==null
+            if (ValidatorUtility.isObjectNotNull(receivingSocket)) { // If SocketTimeout Exception occurs, receivingSocket==null
                 receivingSocket.close();
             }
-            if (ValidatorUtility.isObjectNotNull(socket)) {                                              // If SocketTimeout Exception occurs, socket==null
+            if (ValidatorUtility.isObjectNotNull(socket)) { // If SocketTimeout Exception occurs, socket==null
                 socket.close();
             }
         } catch (IOException e) {
