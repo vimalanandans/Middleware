@@ -45,6 +45,7 @@ import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.bezirk.middleware.streaming.Stream;
+import com.bezirk.middleware.streaming.StreamController;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -212,7 +213,7 @@ public class ProxyClient implements Bezirk {
     }
 
     @Override
-    public Short sendStream(Stream streamRequest) {
+    public StreamController sendStream(Stream streamRequest) {
         return null;
     }
 

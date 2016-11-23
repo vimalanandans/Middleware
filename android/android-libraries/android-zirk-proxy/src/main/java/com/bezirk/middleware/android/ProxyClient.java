@@ -44,6 +44,7 @@ import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
+import com.bezirk.middleware.streaming.StreamController;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -62,11 +63,13 @@ public final class ProxyClient implements Bezirk {
     private static IntentSender intentSender;
     private final ZirkId zirkId;
     private final IdentityManager identityManager;
-    private short streamFactory;
     //Bezirk is ready to send messages to another BezirkMiddleware stack
     private boolean remoteSendReady = false;
     //to ensure error log is just printed once
     private boolean remoteSendReadyLogged = false;
+
+    //Stream Primary id
+    private short streamIdCounter;
 
     public ProxyClient(ZirkId zirkId) {
 
@@ -216,15 +219,19 @@ public final class ProxyClient implements Bezirk {
     }
 
     @Override
-    public Short sendStream(Stream streamRequest){
+    public StreamController sendStream(Stream streamRequest){
         /*generate a unique streamID, this will be the primary key for stream access.
           Use this streamID to interrupt the stream
         */
-
         Short streamID = -1;
+        Integer intStreamID = ((streamIdCounter++) % Short.MAX_VALUE);
+
+        streamID = intStreamID.shortValue();
+        FileStreamController fileStreamController = new FileStreamController(streamID);
+
         BezirkAction bezirkAction  = BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM;
         intentSender.sendBezirkIntent(new StreamAction(zirkId, streamID,streamRequest, bezirkAction));
-        return streamID;
+        return fileStreamController;
     }
 
     private final void logRemoteSending() {

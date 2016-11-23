@@ -28,6 +28,7 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.streaming.Stream;
+import com.bezirk.middleware.streaming.StreamController;
 
 /**
  * The API for registering Zirks, sending messages, and subscribing to messages sent by other Zirks.
@@ -120,5 +121,5 @@ public interface Bezirk {
      *
      * @param streamRequest
      */
-    Short sendStream(Stream streamRequest);
+    StreamController sendStream(Stream streamRequest);
 }
