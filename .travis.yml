@@ -25,6 +25,11 @@ android:
   licenses:
     - '.+'
 #jacocoTestReport assembleAndroidTest build connectedCheck connectedAndroidTest
+# safelist
+branches:
+  only:
+  - master
+  - integration
 before_script:
   - chmod +x gradlew
   - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
