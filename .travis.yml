@@ -36,7 +36,7 @@ before_script:
   - ./gradlew clean
 script:
 #  - ./gradlew build -x lint
-  - ./gradlew build sonarqube -Dsonar.host.url=$sonar_host -Dsonar.login=$sonar_login -Dsonar.password=$sonar_password -Dsonar.verbose=true
+#  - ./gradlew build sonarqube -Dsonar.host.url=$sonar_host -Dsonar.login=$sonar_login -Dsonar.password=$sonar_password -Dsonar.verbose=true
 #  -Dsonar.login=fa0f631c7cd9720fb17cbeaa99ef5899990aa413
 #  - emulator -avd test -no-skin -no-audio -no-window &
 #  - android-wait-for-emulator
