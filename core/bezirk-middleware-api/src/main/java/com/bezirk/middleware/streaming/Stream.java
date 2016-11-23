@@ -23,6 +23,9 @@
 package com.bezirk.middleware.streaming;
 
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.messages.Event;
+import com.bezirk.middleware.messages.EventSet;
+import com.bezirk.middleware.messages.StreamEvent;
 
 /**
  * Created by PIK6KOR on 11/3/2016.
@@ -30,14 +33,49 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 
 public abstract class Stream {
 
+    // recipientEndPoint, This will be the endPoint
     private ZirkEndPoint recipientEndPoint;
 
+    private StreamEventReceiver streamEventReceiver = null;
+
+    //constructor
     public Stream(ZirkEndPoint recipientEndPoint){
         this.recipientEndPoint = recipientEndPoint;
     }
 
     public ZirkEndPoint getRecipientEndPoint() {
         return recipientEndPoint;
+    }
+
+    /**
+     * set event receiver.
+     * @param receiver
+     */
+    public void setEventReceiver(StreamEventReceiver receiver) {
+        this.streamEventReceiver = receiver;
+    }
+
+    /**
+     * Used to stop the
+     */
+    public void stopStreaming(){
+
+    }
+
+
+    /**
+     * Interface implemented by observers of an <code>StreamSet</code> that want to be notified when
+     * an event in this set is received.
+     */
+    public interface StreamEventReceiver {
+        /**
+         * Called to notify the subscriber that a new event was received.
+         *
+         * @param event  the received event
+         * @param sender the sender of the event
+         */
+        void receiveStreamEvent(StreamEvent event, ZirkEndPoint sender);
+
     }
 
 }
