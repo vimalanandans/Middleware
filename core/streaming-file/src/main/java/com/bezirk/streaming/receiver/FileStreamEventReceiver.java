@@ -28,38 +28,32 @@ import com.bezirk.middleware.core.streaming.StreamRequest;
 import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.portfactory.FileStreamPortFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Observable;
 
 /**
  * Implementaion of <code>StreamReceiver</code> all the receiving events will be received here and passed to observers
  * Created by PIK6KOR on 11/14/2016.
  */
 
-public class FileStreamEventReceiver implements StreamReceiver{
-
-    private StreamBook streamBook  = null;
-    private FileStreamPortFactory portFactory = null;
-    private List<StreamEventObserver> streamEventObservers = null;
+public class FileStreamEventReceiver extends Observable implements StreamReceiver{
 
     public FileStreamEventReceiver(Comms comms){
-        streamBook = new StreamBook();
-        portFactory = new FileStreamPortFactory();
 
-        //initialize the observers.
-        streamEventObservers = new ArrayList<>();
-        streamEventObservers.add(new StreamAliveObserver(comms));
-        streamEventObservers.add(new StreamAssignedObserver());
+        StreamBook streamBook = new StreamBook();
+        FileStreamPortFactory portFactory = new FileStreamPortFactory();
+
+        //initialize the observers
+        addObserver(new StreamAliveObserver(comms, streamBook, portFactory));
+        addObserver(new StreamAssignedObserver(streamBook, portFactory));
     }
-
 
     @Override
     public void incomingStreamRequest(StreamRequest streamRequest) {
         //when we receive the event.. notify subjects observers.
-        for (StreamEventObserver streamObservers: streamEventObservers) {
-            streamObservers.update(streamRequest, streamBook, portFactory);
-        }
+        setChanged();
+        notifyObservers(streamRequest);
     }
+
 
 
 }

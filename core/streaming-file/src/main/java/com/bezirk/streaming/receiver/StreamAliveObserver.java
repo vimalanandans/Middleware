@@ -32,6 +32,8 @@ import com.bezirk.streaming.StreamRecord;
 import com.bezirk.streaming.portfactory.FileStreamPortFactory;
 import com.google.gson.Gson;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -40,7 +42,7 @@ import java.util.concurrent.Executors;
  * Update will be called when the subject StreamBook will be updated with a new entry.
  */
 
-class StreamAliveObserver implements StreamEventObserver {
+class StreamAliveObserver implements Observer {
 
     //executor which handles the file stream receiving thread.
     private ExecutorService fileStreamReceiverExecutor;
@@ -55,14 +57,19 @@ class StreamAliveObserver implements StreamEventObserver {
     private final Gson gson = new Gson();
 
     //streamBook and Portfactory also needs to be dependency injected.
+    private StreamBook streamBook;
+    private FileStreamPortFactory portFactory;
 
-    StreamAliveObserver(Comms comms){
+
+    StreamAliveObserver(Comms comms, StreamBook streamBook, FileStreamPortFactory portFactory){
         this.comms = comms;
         this.fileStreamReceiverExecutor = Executors.newFixedThreadPool(THREAD_SIZE);
+        this.streamBook = streamBook;
+        this.portFactory = portFactory;
     }
 
     @Override
-    public void update(StreamRequest streamRequest, StreamBook streamBook, FileStreamPortFactory portFactory) {
+    public void update(Observable observable, Object streamRequest) {
         FileStreamRequest fileStreamRequest = (FileStreamRequest) streamRequest;
 
         //update the status to addressed.

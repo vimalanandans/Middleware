@@ -29,6 +29,8 @@ import com.bezirk.streaming.StreamRecord;
 import com.bezirk.streaming.portfactory.FileStreamPortFactory;
 import com.bezirk.streaming.sender.FileStreamSenderThread;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -39,20 +41,28 @@ import java.util.concurrent.Executors;
  * Created by PIK6KOR on 11/22/2016.
  */
 
-class StreamAssignedObserver implements StreamEventObserver {
+class StreamAssignedObserver implements Observer {
 
     //executor which handles the file stream receiving thread.
     private ExecutorService fileStreamSenderExecutor;
 
+    //stream book
+    private StreamBook streamBook;
+
+    //port factory
+    private FileStreamPortFactory portFactory;
+
     //Thread size
     private static final int THREAD_SIZE = 10;
 
-    StreamAssignedObserver(){
+    StreamAssignedObserver(StreamBook streamBook, FileStreamPortFactory portFactory){
+        this.streamBook = streamBook;
+        this.portFactory = portFactory;
         this.fileStreamSenderExecutor = Executors.newFixedThreadPool(THREAD_SIZE);
     }
 
     @Override
-    public void update(StreamRequest streamRequest, StreamBook streamBook, FileStreamPortFactory portFactory) {
+    public void update(Observable observable, Object streamRequest) {
 
         FileStreamRequest fileStreamRequest = (FileStreamRequest) streamRequest;
 
