@@ -3,6 +3,10 @@ jdk: oraclejdk8
 sudo: required
 addons:
   sonarqube: true
+sonarqube:
+    branches :
+    - master
+    - integration
 env:
   global:
     - ANDROID_TARGET="android-24"
@@ -37,7 +41,6 @@ before_script:
 script:
   - ./gradlew build -Dorg.gradle.jvmargs=-Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError
   - ./gradlew sonarqube
-#  - ./gradlew build sonarqube -Dsonar.host.url=$sonar_host -Dsonar.login=$sonar_login -Dsonar.password=$sonar_password -Dsonar.verbose=true
 #  -Dsonar.login=fa0f631c7cd9720fb17cbeaa99ef5899990aa413
 #  - emulator -avd test -no-skin -no-audio -no-window &
 #  - android-wait-for-emulator
