@@ -70,9 +70,9 @@ distributions {
 
 sonarqube {
     properties {
-        SONAR_HOST='project.hasProperty('sonar_host') ? "${sonar_host}" : System.getenv('sonar_host')'
-        SONAR_USER=p'roject.hasProperty('sonar_login') ? "${sonar_login}" : System.getenv('sonar_login')'
-        SONAR_PASSWORD='project.hasProperty('sonar_password') ? "${sonar_password}" : System.getenv('sonar_password')'
+        def SONAR_HOST=project.hasProperty('sonar_host') ? "${sonar_host}" : System.getenv('sonar_host')
+        def SONAR_USER=project.hasProperty('sonar_login') ? "${sonar_login}" : System.getenv('sonar_login')
+        def SONAR_PASSWORD=project.hasProperty('sonar_password') ? "${sonar_password}" : System.getenv('sonar_password')
         property "sonar.host.url", "${SONAR_HOST}"
         property "sonar.projectKey", "Middleware_Integration"
         property "sonar.projectName", "Bezirk Middleware Integration Branch"
