@@ -70,7 +70,7 @@ distributions {
 
 sonarqube {
     properties {
-        property "sonar.host.url", "{sonar_host}"
+        property "sonar.host.url", "${sonar_host}"
         property "sonar.projectKey", "Middleware_Integration"
         property "sonar.projectName", "Bezirk Middleware Integration Branch"
         property "sonar.projectDescription", "Bezirk Middleware Integration Branch"
