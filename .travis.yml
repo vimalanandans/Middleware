@@ -5,7 +5,6 @@ addons:
   sonarqube: true
 sonarqube:
     branches :
-    - master
     - integration
 env:
   global:
@@ -39,7 +38,7 @@ before_script:
   - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
   - ./gradlew clean
 script:
-  - ./gradlew build -Dorg.gradle.jvmargs=-Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError
+  - ./gradlew --daemon build # -Dorg.gradle.jvmargs=-Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError
   - ./gradlew sonarqube
 #  -Dsonar.login=fa0f631c7cd9720fb17cbeaa99ef5899990aa413
 #  - emulator -avd test -no-skin -no-audio -no-window &
