@@ -35,7 +35,7 @@ before_script:
   - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
   - ./gradlew clean
 script:
-  - ./gradlew build -Dsonar.host.url=sonar_host -Dsonar.login=sonar_login -Dsonar.password=sonar_password -Dorg.gradle.jvmargs=-Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError
+  - ./gradlew build -Dorg.gradle.jvmargs=-Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError
   - ./gradlew sonarqube
 #  - ./gradlew build sonarqube -Dsonar.host.url=$sonar_host -Dsonar.login=$sonar_login -Dsonar.password=$sonar_password -Dsonar.verbose=true
 #  -Dsonar.login=fa0f631c7cd9720fb17cbeaa99ef5899990aa413
