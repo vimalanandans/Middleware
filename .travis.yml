@@ -4,7 +4,7 @@ sudo: required
 addons:
   sonarqube: true
 sonarqube:
-    branches :
+    branches:
     - integration
 env:
   global:
