@@ -6,7 +6,7 @@ addons:
 sonarqube:
     branches:
     - integration
-#    - master
+    - master
 env:
   global:
     - ANDROID_TARGET="android-24"
@@ -30,31 +30,19 @@ android:
   - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
   licenses:
     - '.+'
-#jacocoTestReport assembleAndroidTest build connectedCheck connectedAndroidTest
 # safelist
 branches:
   only:
   - master
   - integration
-before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-cache:
-  directories:
-    - '$HOME/.gradle/caches' # cache the gradle cache directory
-    - '$HOME/.gradle/wrapper' # cache the gradle wrapper directory  
 before_script:
   - chmod +x gradlew
   - chmod +x /home/travis/.sonarscanner/sonar-scanner-2.8/bin/sonar-scanner
   - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
-  - string getEnvHost = Environment.GetEnvironmentVariable("sonar_host");
-  - echo "Hello Gradle $getEnvHost is $SONAR_HOST is $sonar_host is ${SONAR_HOST} is ${sonar_host}"
   - ./gradlew clean
 script:
   - ./gradlew --daemon build check -x lint
-  - sonar-scanner -Dsonar.host.url=$sonar_host -Dsonar.login=$sonar_login -Dsonar.password=$sonar_password -Dsonar.projectKey="Middleware_Integration" -Dsonar.projectDescription="Bezirk Middleware Integration Branch" -Dsonar.projectName="Bezirk Middleware Integration Branch"
-#  - ./gradlew sonarqube 
-#  - /home/travis/.sonarscanner/sonar-scanner-2.8/bin/sonar-scanner -X -Dsonar.host.url=$sonar_host -Dsonar.sourceEncoding=UTF-8 -Dsonar.language=java -Dsonar.sources="core,android,java" -Dsonar.android.lint.report=./build/outputs/lint-results.xml -Dsonar.exclusions="**/build/**/*.class,**/build/**/*.java,**/src/**/package-info.java" -Dsonar.projectVersion=3.0-Alpha -Dsonar.projectBaseDir="." -Dsonar.projectKey=Middleware_Integration -Dsonar.projectDescription="Bezirk Middleware Integration Branch" -Dsonar.login=$sonar_login -Dsonar.password=$sonar_password -Dsonar.profile=BezirkProfile -Dsonar.projectName="Bezirk Middleware Integration Branch"
+  - ./gradlew sonarqube 
 #  -Dsonar.login=fa0f631c7cd9720fb17cbeaa99ef5899990aa413
 #  - emulator -avd test -no-skin -no-audio -no-window &
 #  - android-wait-for-emulator
