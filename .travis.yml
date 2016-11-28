@@ -36,12 +36,12 @@ branches:
   - integration
 before_script:
   - chmod +x gradlew
-  - chmod +x /home/travis/.sonarscanner/sonar-scanner-2.8/bin/sonar-scanner
+  - chmod +x /home/travis/.sonarscanner/sonar-scanner-2.8/bin/sonar-runner
   - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
   - ./gradlew clean
 script:
   - ./gradlew --daemon build -x lint
-  - /home/travis/.sonarscanner/sonar-scanner-2.8/bin/sonar-scanner -Dsonar.host.url=$sonar_host -Dsonar.sourceEncoding=UTF-8 -Dsonar.language=java -Dsonar.sources=core,android,java -Dsonar.android.lint.report=./build/outputs/lint-results.xml -Dsonar.exclusions=**/build/**/*.class,**/build/**/*.java,**/src/**/package-info.java -Dsonar.projectVersion=3.0-Alpha -Dsonar.projectKey=Middleware_Integration -Dsonar.projectBaseDir=. -Dsonar.projectDescription="Bezirk Middleware Integration Branch" -Dsonar.login=$sonar_login -Dsonar.password=$sonar_password -Dsonar.profile=BezirkProfile -Dsonar.projectName="Bezirk Middleware Integration Branch"
+  - /home/travis/.sonarscanner/sonar-scanner-2.8/bin/sonar-runner -Dsonar.host.url=$sonar_host -Dsonar.sourceEncoding=UTF-8 -Dsonar.language=java -Dsonar.sources=core,android,java -Dsonar.android.lint.report=./build/outputs/lint-results.xml -Dsonar.exclusions=**/build/**/*.class,**/build/**/*.java,**/src/**/package-info.java -Dsonar.projectVersion=3.0-Alpha -Dsonar.projectKey=Middleware_Integration -Dsonar.projectBaseDir=. -Dsonar.projectDescription="Bezirk Middleware Integration Branch" -Dsonar.login=$sonar_login -Dsonar.password=$sonar_password -Dsonar.profile=BezirkProfile -Dsonar.projectName=Bezirk Middleware Integration Branch
 #  - ./gradlew sonarqube
 #  -Dsonar.login=fa0f631c7cd9720fb17cbeaa99ef5899990aa413
 #  - emulator -avd test -no-skin -no-audio -no-window &
