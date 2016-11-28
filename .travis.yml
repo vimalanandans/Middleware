@@ -11,6 +11,8 @@ env:
   global:
     - ANDROID_TARGET="android-24"
     - ANDROID_ABI="armeabi-v7a"
+    - JAVA_OPTS='-Xmx3072m'
+    - SONAR_RUNNER_OPTS="-Xmx2048m -XX:MaxPermSize=1024m -XX:ReservedCodeCacheSize=512m"
 #appcompat-v7
 android:
   components:
@@ -40,9 +42,10 @@ before_script:
   - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
   - ./gradlew clean
 script:
-  - ./gradlew --daemon build -x lint
-  - ./gradlew sonarqube
-#  - /home/travis/.sonarscanner/sonar-scanner-2.8/bin/sonar-scanner -X -Dsonar.host.url=$sonar_host -Dsonar.sourceEncoding=UTF-8 -Dsonar.language=java -Dsonar.sources="core,android,java" -Dsonar.android.lint.report=./build/outputs/lint-results.xml -Dsonar.exclusions="**/build/**/*.class,**/build/**/*.java,**/src/**/package-info.java" -Dsonar.projectVersion=3.0-Alpha -Dsonar.projectKey=Middleware_Integration -Dsonar.projectBaseDir="." -Dsonar.projectDescription="Bezirk Middleware Integration Branch" -Dsonar.login=$sonar_login -Dsonar.password=$sonar_password -Dsonar.profile=BezirkProfile -Dsonar.projectName="Bezirk Middleware Integration Branch"
+  - ./gradlew --daemon build check -x lint
+  - sonar-scanner -Dsonar.host.url=$sonar_host -Dsonar.login=$sonar_login -Dsonar.password=$sonar_password -Dsonar.projectKey="Middleware_Integration" -Dsonar.projectDescription="Bezirk Middleware Integration Branch" -Dsonar.projectName="Bezirk Middleware Integration Branch"
+#  - ./gradlew sonarqube 
+#  - /home/travis/.sonarscanner/sonar-scanner-2.8/bin/sonar-scanner -X -Dsonar.host.url=$sonar_host -Dsonar.sourceEncoding=UTF-8 -Dsonar.language=java -Dsonar.sources="core,android,java" -Dsonar.android.lint.report=./build/outputs/lint-results.xml -Dsonar.exclusions="**/build/**/*.class,**/build/**/*.java,**/src/**/package-info.java" -Dsonar.projectVersion=3.0-Alpha -Dsonar.projectBaseDir="." -Dsonar.projectKey=Middleware_Integration -Dsonar.projectDescription="Bezirk Middleware Integration Branch" -Dsonar.login=$sonar_login -Dsonar.password=$sonar_password -Dsonar.profile=BezirkProfile -Dsonar.projectName="Bezirk Middleware Integration Branch"
 #  -Dsonar.login=fa0f631c7cd9720fb17cbeaa99ef5899990aa413
 #  - emulator -avd test -no-skin -no-audio -no-window &
 #  - android-wait-for-emulator
