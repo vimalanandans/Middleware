@@ -13,7 +13,6 @@ env:
     - ANDROID_ABI="armeabi-v7a"
     - JAVA_OPTS='-Xmx3072m'
     - SONAR_RUNNER_OPTS="-Xmx2048m -XX:MaxPermSize=1024m -XX:ReservedCodeCacheSize=512m"
-    - echo "Hello Gradle $SONAR_HOST is $sonar_host is ${SONAR_HOST}"
 #appcompat-v7
 android:
   components:
@@ -48,6 +47,7 @@ before_script:
   - chmod +x gradlew
   - chmod +x /home/travis/.sonarscanner/sonar-scanner-2.8/bin/sonar-scanner
   - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
+  - echo "Hello Gradle $SONAR_HOST is $sonar_host is ${SONAR_HOST} is ${sonar_host}"
   - ./gradlew clean
 script:
   - ./gradlew --daemon build check -x lint
