@@ -32,6 +32,9 @@ import com.bezirk.streaming.StreamRecord;
 import com.bezirk.streaming.portfactory.FileStreamPortFactory;
 import com.google.gson.Gson;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ExecutorService;
@@ -59,6 +62,10 @@ class StreamAliveObserver implements Observer {
     //streamBook and Portfactory also needs to be dependency injected.
     private StreamBook streamBook;
     private FileStreamPortFactory portFactory;
+
+    //logger instance
+    private static final Logger logger = LoggerFactory
+            .getLogger(FileStreamRequestObserver.class);
 
 
     StreamAliveObserver(Comms comms, StreamBook streamBook, FileStreamPortFactory portFactory){

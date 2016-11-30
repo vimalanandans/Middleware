@@ -23,58 +23,45 @@
 package com.bezirk.streaming.receiver;
 
 import com.bezirk.middleware.core.comms.Comms;
-import com.bezirk.middleware.core.comms.CtrlMsgReceiver;
-import com.bezirk.middleware.core.control.messages.ControlMessage;
-import com.bezirk.streaming.FileStreamRequest;
+import com.bezirk.middleware.core.streaming.StreamReceiver;
+import com.bezirk.middleware.core.streaming.StreamRequest;
+import com.bezirk.streaming.StreamBook;
+import com.bezirk.streaming.portfactory.FileStreamPortFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Observable;
+
 /**
- * FileStreamEventReceiver
- * Created by pik6kor on 11/28/2016.
+ * Implementaion of <code>StreamReceiver</code> all the receiving events will be received here and passed to observers
+ * Created by PIK6KOR on 11/14/2016.
  */
 
-public class FileStreamEventReceiver implements CtrlMsgReceiver {
-
-    private final FileStreamRequestObserver fileStreamRequestObserver;
-
-    //logger instance
+public class FileStreamRequestObserver extends Observable implements StreamReceiver{
     private static final Logger logger = LoggerFactory
             .getLogger(FileStreamRequestObserver.class);
 
-    public FileStreamEventReceiver() {
-        fileStreamRequestObserver = new FileStreamRequestObserver();
+    public void initStreamRequestObserver(Comms comms){
+        if(comms != null){
+            StreamBook streamBook = new StreamBook();
+            FileStreamPortFactory portFactory = new FileStreamPortFactory();
+
+            //initialize the observers
+            addObserver(new StreamAliveObserver(comms, streamBook, portFactory));
+            addObserver(new StreamAssignedObserver(streamBook, portFactory));
+        }else{
+            logger.error("Comms has to be initialized!!!");
+        }
     }
 
     @Override
-    public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
-        switch (id) {
-            case STREAM_REQUEST: {
-                FileStreamRequest fileStreamRequest = processMessage(serializedMsg);
-                fileStreamRequestObserver.incomingStreamRequest(fileStreamRequest);
-            }
-
-        }
-        return true;
+    public void incomingStreamRequest(StreamRequest streamRequest) {
+        //when we receive the event.. notify subjects observers.
+        setChanged();
+        notifyObservers(streamRequest);
     }
 
-    private FileStreamRequest processMessage(String serializedMsg){
-        FileStreamRequest fileStreamRequest = null;
 
-        if(serializedMsg != null){
-            fileStreamRequest =  ControlMessage.deserialize(serializedMsg, FileStreamRequest.class);
 
-        }
-
-        return fileStreamRequest;
-    }
-
-    /**
-     * pass the comms object to StreamAliveObserver as it is required to send reply
-     * @param comms
-     */
-    public void initFileStreamEventObserver(Comms comms){
-        fileStreamRequestObserver.initStreamRequestObserver(comms);
-    }
 }

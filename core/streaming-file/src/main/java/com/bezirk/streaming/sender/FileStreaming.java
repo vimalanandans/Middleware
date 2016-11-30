@@ -25,12 +25,14 @@ package com.bezirk.streaming.sender;
 import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
+import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.streaming.Streaming;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.streaming.FileStream;
 import com.bezirk.streaming.FileStreamRequest;
 import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.StreamRecord;
+import com.bezirk.streaming.receiver.FileStreamEventReceiver;
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
@@ -61,6 +63,14 @@ public final class FileStreaming implements Streaming {
         this.comms = comms;
         streamBook = new StreamBook();
         logger.info("FileStreaming module was Initialized!!");
+
+        //register the receiver module
+        FileStreamEventReceiver fileStreamEventReceiver = new FileStreamEventReceiver();
+        fileStreamEventReceiver.initFileStreamEventObserver(comms);
+
+        //register the control receiver
+        comms.registerControlMessageReceiver(ControlMessage.Discriminator.STREAM_REQUEST,
+                fileStreamEventReceiver);
 
     }
 
