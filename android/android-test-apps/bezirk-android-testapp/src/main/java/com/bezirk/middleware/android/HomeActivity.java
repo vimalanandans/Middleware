@@ -42,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
             "standalone application or as an integration application with zirks";
     private static final String STOP_MIDDLEWARE_MESSAGE = "Stops the middleware instance. Once stopped, " +
             "middleware can start only by closing and opening the app again.";
+    private static final String STREAM_TESTING_MESSAGE = "Test Bezirk Streaming API";
 
     private TextView autoTextView;
     private TextView advancedTextView;
@@ -100,6 +101,19 @@ public class HomeActivity extends AppCompatActivity {
                 stopTestButton.setEnabled(false);
                 Toast.makeText(HomeActivity.this, "Bezirk is turned off. Restart app to enable app functionality.",
                         Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //setup stream testing elements
+        TextView streamTextView = (TextView) findViewById(R.id.stream_test_tv);
+        Button streamTestButton = (Button) findViewById(R.id.stream_test_button);
+
+        streamTextView.setText(STREAM_TESTING_MESSAGE);
+        streamTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, StreamingTestActivity.class);
+                startActivity(intent);
             }
         });
 

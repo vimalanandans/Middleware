@@ -66,6 +66,18 @@
             android:layout_height="wrap_content"
             android:text="@string/stop" />
 
+        <TextView
+            android:id="@+id/stream_test_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+        <Button
+            android:id="@+id/stream_test_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stream_tests" />
+
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
