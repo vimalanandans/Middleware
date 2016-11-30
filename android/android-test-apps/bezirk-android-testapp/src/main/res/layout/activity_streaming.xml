@@ -35,7 +35,7 @@
             android:textSize="25dp"/>
 
         <TextView
-            android:id="@+id/choosenFile"
+            android:id="@+id/stream_receiver_activity"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="Choose a file"
@@ -50,7 +50,7 @@
             android:onClick="fileChooseButtonClick"
             android:text="Browse"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/choosenFile"/>
+            android:layout_below="@+id/stream_receiver_activity"/>
 
     </RelativeLayout>
 

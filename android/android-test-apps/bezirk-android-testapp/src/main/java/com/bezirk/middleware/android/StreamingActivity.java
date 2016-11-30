@@ -49,7 +49,7 @@ public class StreamingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_streaming);
-        mTextViewFilePath = (TextView) findViewById(R.id.choosenFile);
+        mTextViewFilePath = (TextView) findViewById(R.id.stream_receiver_activity);
         Button send = (Button) findViewById(R.id.sendButton);
         Button discover = (Button) findViewById(R.id.discoverRecipientButton);
 

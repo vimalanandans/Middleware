@@ -2,7 +2,6 @@ package com.bezirk.middleware.android;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
@@ -13,8 +12,6 @@ import com.bezirk.middleware.core.streaming.StreamReceiverEventSet;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 
-import java.util.Random;
-
 public class StreamReceiverActivity extends AppCompatActivity {
 
     private Bezirk bezirk;
@@ -22,9 +19,9 @@ public class StreamReceiverActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_streame_receiver);
+        setContentView(R.layout.activity_stream_receiver);
         //register the bezirk middleware
-        bezirk = BezirkMiddleware.registerZirk("Stream_Receive_Zirk");
+        bezirk = BezirkMiddleware.registerZirk("Stream_Receiver_Zirk");
 
         //################ Discover EVENT SET ###########################//
         //prep the StreamReceiverEventSet and multicast to identify the receivers.

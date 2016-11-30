@@ -49,6 +49,36 @@
                 android:value="com.bezirk.middleware.android.HomeActivity" />
         </activity>
 
+        <activity
+            android:name="com.bezirk.middleware.android.StreamingTestActivity"
+            android:label="@string/title_activity_streaming_test"
+            android:parentActivityName="com.bezirk.middleware.android.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bezirk.middleware.android.HomeActivity" />
+        </activity>
+
+        <activity
+            android:name="com.bezirk.middleware.android.StreamingActivity"
+            android:label="@string/title_activity_streaming_test"
+            android:parentActivityName="com.bezirk.middleware.android.StreamingTestActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bezirk.middleware.android.StreamingTestActivity" />
+        </activity>
+
+        <activity
+            android:name="com.bezirk.middleware.android.StreamReceiverActivity"
+            android:label="@string/title_activity_streaming_test"
+            android:parentActivityName="com.bezirk.middleware.android.StreamingTestActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bezirk.middleware.android.StreamingTestActivity" />
+        </activity>
+
 
     </application>
 
