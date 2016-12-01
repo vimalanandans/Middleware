@@ -30,7 +30,6 @@ import android.os.IBinder;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.core.proxy.Config;
-import com.bezirk.middleware.core.proxy.ProxyServer;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 import org.jetbrains.annotations.NotNull;
@@ -40,13 +39,34 @@ import org.slf4j.LoggerFactory;
 /**
  * API to register Zirks, fetch the Bezirk API, and manage the lifecycle of the middleware on Android.
  */
-public abstract class BezirkMiddleware {
+public final class BezirkMiddleware {
     private static final Logger logger = LoggerFactory.getLogger(BezirkMiddleware.class);
     private static Context context;
-    private static boolean mBound = false;
+    private static boolean serviceBound;
     private static ComponentManager.ProxyBinder proxyBinder;
-    private static long bindingStartTime;
-    private static long bindingEndTime;
+    private static ServiceConnection serviceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            synchronized (BezirkMiddleware.class) {
+                proxyBinder = (ComponentManager.ProxyBinder) service;
+                serviceBound = true;
+                logger.trace("Bezirk Service connected");
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            synchronized (BezirkMiddleware.class) {
+                serviceBound = false;
+                logger.trace("Bezirk Service disconnected");
+            }
+        }
+    };
+
+    private BezirkMiddleware() {
+    }
 
     /**
      * Initializes and starts the bezirk
@@ -56,7 +76,7 @@ public abstract class BezirkMiddleware {
      * {@link BezirkMiddleware} is started using default configurations {@link Config} unless
      * configurations are supplied explicitly using {@link #initialize(Context, Config)}. Bezirk
      * service runs as a background Android service unless explicitly stopped by the application
-     * using {@link #stop()} or by Android OS.
+     * using {@link #stop()} or when the application is closed by the user.
      * </p>
      *
      * @see #initialize(Context, Config)
@@ -74,7 +94,7 @@ public abstract class BezirkMiddleware {
      * {@link BezirkMiddleware} is started using default configurations {@link Config} with
      * {@link Config#groupName} set to #channelId. Bezirk service runs
      * as a background Android service unless explicitly stopped by the application
-     * using {@link #stop()} or by Android OS.
+     * using {@link #stop()} or when the application is closed by the user.
      * </p>
      *
      * @param channelId
@@ -94,30 +114,22 @@ public abstract class BezirkMiddleware {
      * Service is started using the supplied <code>config</code>. Once started, Zirk(s) can be
      * registered using {@link BezirkMiddleware#registerZirk(String)}. Bezirk service runs as a
      * background Android service unless explicitly stopped by the application using {@link #stop()}
-     * or by Android OS.
+     * or when the application is closed by the user.
      * </p>
      *
-     * @param config custom configurations to be used by Bezirk service
-     *               <ul>
-     *               <li>If <code>null</code>, a default configuration is used</li>
-     *               <li>If not <code>null</code>, the Bezirk service is created for the current
-     *               application, even if an existing global instance of the Bezirk service is already
-     *               running on the device (e.g. because the middleware is installed as a standalone
-     *               app on the phone).</li>
-     *               </ul>
+     * @param config custom configurations to be used when initializing the Bezirk service
      * @see #stop()
      */
     public static synchronized void initialize(@NotNull final Context context, final Config config) {
-        if (mBound) {
+        if (serviceBound) {
             logger.debug("Bezirk service already initialized");
             return;
         }
         BezirkMiddleware.context = context;
-        bindingStartTime = System.currentTimeMillis();
         context.startService(new Intent(context, ComponentManager.class));
         final Intent intent = new Intent(context, ComponentManager.class);
         intent.putExtra(Config.class.getSimpleName(), (config == null) ? new Config() : config);
-        context.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     /**
@@ -132,7 +144,7 @@ public abstract class BezirkMiddleware {
      * @see #initialize(Context)
      */
     public static synchronized Bezirk registerZirk(@NotNull final String zirkName) {
-        if (!mBound || proxyBinder == null) {
+        if (!serviceBound) {
             throw new IllegalStateException("Bezirk Service is not running. Start the Bezirk " +
                     "service using BezirkMiddleware.initialize(Context) or " +
                     "BezirkMiddleware.initialize(Context, Config)");
@@ -149,37 +161,21 @@ public abstract class BezirkMiddleware {
      * </p>
      */
     public static synchronized void stop() {
-        if (mBound && context != null) {
+        if (serviceBound) {
             logger.debug("unbinding and stopping Bezirk Service");
-            context.unbindService(mConnection);
+            context.unbindService(serviceConnection);
             context.stopService(new Intent(context, ComponentManager.class));
-            mBound = false;
+            serviceBound = false;
         }
     }
 
     /**
-     * Defines callbacks for service binding, passed to bindService()
+     * Returns true if the {@link BezirkMiddleware} is initialized.
+     *
+     * @return true if the {@link BezirkMiddleware} is initialized.
      */
-    private static ServiceConnection mConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-            bindingEndTime = System.currentTimeMillis();
-            logger.trace("onServiceConnected() time to bind the service " + (bindingEndTime - bindingStartTime) + " ms");
-            proxyBinder = (ComponentManager.ProxyBinder) service;
-            mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-            logger.trace("onServiceDisconnected()");
-        }
-    };
-
     public static synchronized boolean isInitialized() {
-        return mBound;
+        return serviceBound;
     }
 
 }

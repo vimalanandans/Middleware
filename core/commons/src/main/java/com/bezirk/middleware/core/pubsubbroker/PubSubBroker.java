@@ -65,17 +65,19 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
     public static final String SPHERE_NULL_NAME = "SPHERE_NONE";
 
-    protected PubSubBrokerStorage pubSubBrokerStorage = null;
-    protected PubSubBrokerRegistry pubSubBrokerRegistry = null;
-    protected Comms comms = null;
-    protected SphereServiceAccess sphereServiceAccess = null; // Nullable object
-    protected SphereSecurity sphereSecurity = null; // Nullable object
+    protected PubSubBrokerStorage pubSubBrokerStorage;
+    protected PubSubBrokerRegistry pubSubBrokerRegistry;
+    protected Comms comms;
+    // Nullable object
+    protected SphereServiceAccess sphereServiceAccess;
+    // Nullable object
+    protected SphereSecurity sphereSecurity;
 
-    private Device device = null;
+    private Device device;
     private final RemoteLog remoteLog;
     private final MessageHandler msgHandler;
     private final IdentityManager identityManager;
-    private static final String id = UUID.randomUUID().toString();
+    private static final String ID = UUID.randomUUID().toString();
 
     public PubSubBroker(PubSubBrokerStorage pubSubBrokerStorage, Device device,
                         Comms comms, MessageHandler msgHandler, IdentityManager identityManager,
@@ -218,10 +220,8 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         if (comms != null) {
             sender = new BezirkZirkEndPoint(comms.getNodeId(), zirkId);
         } else {
-            //sender = networkManager.getServiceEndPoint(zirkId);
-            sender = new BezirkZirkEndPoint(id, zirkId);
+            sender = new BezirkZirkEndPoint(ID, zirkId);
         }
-        // sender = new BezirkZirkEndPoint(zirkId);
 
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(sender));
 
@@ -283,13 +283,10 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         if (comms != null) {
             sender = new BezirkZirkEndPoint(comms.getNodeId(), zirkId);
         } else {
-            //sender = networkManager.getServiceEndPoint(zirkId);
-            sender = new BezirkZirkEndPoint(id, zirkId);
+            sender = new BezirkZirkEndPoint(ID, zirkId);
         }
-        // sender = new BezirkZirkEndPoint(zirkId);
 
         final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(sender));
-        //final StringBuilder eventTopic = new StringBuilder((Event.fromJson(serializedEventMsg, Event.class)).topic);
 
         while (sphereIterator.hasNext()) {
             final EventLedger eventLedger = new EventLedger();
@@ -356,8 +353,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         Set<ZirkId> zirkList = getAssociatedZirkList(eLedger);
 
         if (null == zirkList || zirkList.isEmpty()) {
-
-            //logger.debug("No services are present to respond to the request");
             return false;
         }
 
@@ -366,11 +361,10 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         }
 
         if (null != remoteLog) {
-
             remoteLog.sendRemoteLogToServer(eLedger);
         }
 
-        // give a callback to appropriate zirk..
+        // give callback to appropriate zirk
         triggerMessageHandler(eLedger, zirkList);
 
         return true;
@@ -390,8 +384,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
                 if (eLedger.getHeader().isIdentified()) {
                     eventMessage.setAlias(eLedger.getHeader().getAlias());
 
-                    if (identityManager.isMiddlewareUser(eLedger.getHeader().getAlias()))
+                    if (identityManager.isMiddlewareUser(eLedger.getHeader().getAlias())) {
                         eventMessage.setMiddlewareUser(true);
+                    }
                 }
 
                 msgHandler.onIncomingEvent(eventMessage);
@@ -442,10 +437,11 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
                 return false;
             }
 
-        } else { // no sphere object hence
-            if (eLedger.getEncryptedMessage() == null) //if it is local message
+        } else {
+            //if it is local message
+            if (eLedger.getEncryptedMessage() == null) {
                 decryptedEventMsg = eLedger.getSerializedMessage();
-            else {
+            } else {
                 try {
                     decryptedEventMsg = new String(eLedger.getEncryptedMessage(), WireMessage.ENCODING);
                 } catch (UnsupportedEncodingException e) {

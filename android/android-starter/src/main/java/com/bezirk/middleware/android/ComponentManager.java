@@ -33,7 +33,6 @@ import android.support.annotation.NonNull;
 import com.bezirk.middleware.android.device.AndroidDevice;
 import com.bezirk.middleware.android.logging.LoggingManager;
 import com.bezirk.middleware.android.persistence.DatabaseConnectionForAndroid;
-import com.bezirk.middleware.android.proxy.android.AndroidProxyServer;
 import com.bezirk.middleware.android.proxy.android.ZirkMessageHandler;
 import com.bezirk.middleware.core.comms.JmqCommsManager;
 import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
@@ -57,12 +56,15 @@ public final class ComponentManager extends Service {
     private static final String DB_VERSION = "0.0.4";
     private SharedPreferences preferences;
     private BezirkIdentityManager identityManager;
-    private AndroidProxyServer proxyServer;
+    private ProxyServer proxyServer;
     private JmqCommsManager comms;
     private RegistryStorage registryStorage;
     private LifeCycleObservable lifecycleObservable;
     private Config config;
-    private final RemoteLog remoteLog = null;
+    private RemoteLog remoteLog;
+
+    ComponentManager() {
+    }
 
     public class ProxyBinder extends Binder {
         ProxyServer getProxyServer() {
@@ -100,7 +102,7 @@ public final class ComponentManager extends Service {
         stopSelf();
     }
 
-    private final void create() {
+    private void create() {
         logger.trace("Creating Bezirk Service");
 
         // initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
@@ -144,8 +146,7 @@ public final class ComponentManager extends Service {
                 messageHandler, identityManager, null, null, remoteLog);
 
         //initialize proxyServer responsible for managing incoming events from zirks
-        proxyServer = new AndroidProxyServer(identityManager);
-        lifecycleObservable.addObserver(proxyServer);
+        proxyServer = new ProxyServer(identityManager);
 
         // TODO initialize in constructor instead.
         proxyServer.setPubSubBrokerService(pubSubBroker);
@@ -155,7 +156,9 @@ public final class ComponentManager extends Service {
     private void initializeIdentityManager() {
         identityManager = new BezirkIdentityManager();
         final String aliasString = preferences.getString(ALIAS_KEY, null);
-        if (logger.isDebugEnabled()) logger.debug("aliasString is {}", aliasString);
+        if (logger.isDebugEnabled()) {
+            logger.debug("aliasString is {}", aliasString);
+        }
 
         if (aliasString == null) {
             identityManager.createAndSetIdentity(aliasString);
@@ -170,7 +173,8 @@ public final class ComponentManager extends Service {
     }
 
     /**
-     * As jmq-comms currently stops its components in the main thread, this causes NetworkOnMainThread Exception in Android.
+     * As jmq-comms currently stops its components in the main thread,
+     * this causes NetworkOnMainThread Exception in Android.
      * As a work around, the transition is made in a new thread.
      */
     private void executeTransitionInThread(@NotNull final LifeCycleObservable.Transition transition) {

@@ -30,9 +30,10 @@ import org.jetbrains.annotations.NotNull;
 /**
  * API to register Zirks, fetch the Bezirk API, and manage the lifecycle of the middleware on Java SE.
  */
-public abstract class BezirkMiddleware {
+public final class BezirkMiddleware {
 
-    private static long startTime;
+    private BezirkMiddleware() {
+    }
 
     /**
      * Initializes and starts the bezirk service.
@@ -85,7 +86,6 @@ public abstract class BezirkMiddleware {
     public static void initialize(final Config config) {
         synchronized (BezirkMiddleware.class) {
             ProxyClient.start((config == null) ? new Config() : config);
-            startTime = System.currentTimeMillis();
         }
     }
 
@@ -119,13 +119,6 @@ public abstract class BezirkMiddleware {
      */
     public static synchronized void stop() {
         ProxyClient.stop();
-    }
-
-    /**
-     * Time the BezirkMiddleware is initialized
-     */
-    static final synchronized long getStartTime() {
-        return startTime;
     }
 
 }

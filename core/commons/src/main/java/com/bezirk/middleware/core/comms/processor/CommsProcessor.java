@@ -91,8 +91,9 @@ public abstract class CommsProcessor implements Comms, Observer {
             if (!pool.awaitTermination(500, TimeUnit.MILLISECONDS)) {
                 pool.shutdownNow(); // Cancel currently executing tasks
                 // Wait a while for tasks to respond to being cancelled
-                if (!pool.awaitTermination(500, TimeUnit.MILLISECONDS))
+                if (!pool.awaitTermination(500, TimeUnit.MILLISECONDS)) {
                     logger.error("Pool did not terminate");
+                }
             }
         } catch (InterruptedException ie) {
             // (Re-)Cancel if current thread also interrupted
@@ -104,18 +105,15 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     @Override
     public boolean sendMessage(Ledger message) {
-        // send as it is
-        if (message instanceof ControlLedger)
+        if (message instanceof ControlLedger) {
             return this.sendControlLedger((ControlLedger) message);
-        else if (message instanceof EventLedger)
+        } else if (message instanceof EventLedger) {
             return this.sendEventLedger((EventLedger) message);
-        else if (message instanceof MessageLedger)
+        } else if (message instanceof MessageLedger) {
             return this.sendMessageLedger((MessageLedger) message);
-        else { // stream ledger // hopefully there are no other types
-            //return this.sendStreamMessage(message);
+        } else {
             return false;
         }
-
     }
 
     @Override
@@ -435,13 +433,14 @@ public abstract class CommsProcessor implements Comms, Observer {
             byte[] temp = message;
             String processedMsg = TextCompressor.decompress(temp);
 
-            if ((processedMsg != null) && !processedMsg.isEmpty())
+            if ((processedMsg != null) && !processedMsg.isEmpty()) {
                 try {
                     message = processedMsg.getBytes(WireMessage.ENCODING);
                 } catch (UnsupportedEncodingException e) {
                     logger.error(e.getLocalizedMessage());
                     throw new AssertionError(e);
                 }
+            }
         }
         return message;
     }
