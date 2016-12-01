@@ -67,6 +67,9 @@ public class StreamingActivity extends AppCompatActivity {
             }
         });
 
+        //register the bezirk middleware
+        bezirk = BezirkMiddleware.registerZirk("Stream_Sending_Zirk");
+
 
         //on send click
         send.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +81,7 @@ public class StreamingActivity extends AppCompatActivity {
                     fileStream.setEventReceiver(new Stream.StreamEventReceiver() {
                         @Override
                         public void receiveStreamEvent(StreamEvent event, ZirkEndPoint sender) {
-
+                            //to be tested
                         }
                     });
                     //StreamController controller = bezirk.sendStream(fileStream);
@@ -99,9 +102,6 @@ public class StreamingActivity extends AppCompatActivity {
         discover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //register the bezirk middleware
-                bezirk = BezirkMiddleware.registerZirk("Stream_Sending_Zirk");
-
                 //Multicast the StreamReceiveEvent
                 StreamReceiveEvent streamReceiveEvent = new StreamReceiveEvent();
                 bezirk.sendEvent(streamReceiveEvent);
