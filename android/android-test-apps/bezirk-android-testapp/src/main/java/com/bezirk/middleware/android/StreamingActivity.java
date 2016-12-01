@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -49,13 +50,16 @@ public class StreamingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_streaming);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mTextViewFilePath = (TextView) findViewById(R.id.stream_receiver_activity);
         Button send = (Button) findViewById(R.id.sendButton);
         Button discover = (Button) findViewById(R.id.discoverRecipientButton);
 
 
-        ListView listView = (ListView) findViewById(R.id.discoveredlist);
-        arrayAdapter = new StreamAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, list);
+        final ListView listView = (ListView) findViewById(R.id.discoveredlist);
+        arrayAdapter = new StreamAdapter(getApplicationContext(), R.layout.simple_text_view, R.id.simple_textView, list);
         listView.setAdapter(arrayAdapter);
 
         //On item click

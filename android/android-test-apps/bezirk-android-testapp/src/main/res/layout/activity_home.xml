@@ -24,9 +24,9 @@
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:paddingTop="100dp"
         android:layout_gravity="top"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="100dp">
 
         <TextView
             android:id="@+id/auto_test_tv"
@@ -70,6 +70,7 @@
             android:id="@+id/stream_test_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:text="" />
 
         <Button
