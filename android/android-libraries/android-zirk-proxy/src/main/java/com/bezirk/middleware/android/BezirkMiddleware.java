@@ -44,26 +44,7 @@ public final class BezirkMiddleware {
     private static Context context;
     private static boolean serviceBound;
     private static ComponentManager.ProxyBinder proxyBinder;
-    private static ServiceConnection serviceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-            synchronized (BezirkMiddleware.class) {
-                proxyBinder = (ComponentManager.ProxyBinder) service;
-                serviceBound = true;
-                logger.trace("Bezirk Service connected");
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            synchronized (BezirkMiddleware.class) {
-                serviceBound = false;
-                logger.trace("Bezirk Service disconnected");
-            }
-        }
-    };
+    private static final ServiceConnection serviceConnection = new BezirkServiceConnection();
 
     private BezirkMiddleware() {
     }
@@ -80,6 +61,7 @@ public final class BezirkMiddleware {
      * </p>
      *
      * @see #initialize(Context, Config)
+     * @see #initialize(Context, String)
      * @see #stop()
      */
     public static synchronized void initialize(@NotNull final Context context) {
@@ -92,12 +74,15 @@ public final class BezirkMiddleware {
      * <p>
      * Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}.
      * {@link BezirkMiddleware} is started using default configurations {@link Config} with
-     * {@link Config#groupName} set to #channelId. Bezirk service runs
+     * {@link Config#groupName} set to the passed <code>channelId</code>. Bezirk service runs
      * as a background Android service unless explicitly stopped by the application
      * using {@link #stop()} or when the application is closed by the user.
      * </p>
      *
-     * @param channelId
+     * @param channelId channel identifier associated with this <code>BezirkMiddleware</code> instance.
+     *                  <code>BezirkMiddleware</code> instances on the same <code>channelId</code>
+     *                  can communicate with each other.
+     * @see #initialize(Context)
      * @see #initialize(Context, Config)
      * @see #stop()
      */
@@ -118,6 +103,8 @@ public final class BezirkMiddleware {
      * </p>
      *
      * @param config custom configurations to be used when initializing the Bezirk service
+     * @see #initialize(Context)
+     * @see #initialize(Context, String)
      * @see #stop()
      */
     public static synchronized void initialize(@NotNull final Context context, final Config config) {
@@ -141,7 +128,6 @@ public final class BezirkMiddleware {
      *                 developer/vendor
      * @return an instance of the Bezirk API for the newly registered Zirk, or <code>null</code> if
      * a Zirk with the name <code>zirkName</code> is already registered.
-     * @see #initialize(Context)
      */
     public static synchronized Bezirk registerZirk(@NotNull final String zirkName) {
         if (!serviceBound) {
@@ -171,11 +157,28 @@ public final class BezirkMiddleware {
 
     /**
      * Returns true if the {@link BezirkMiddleware} is initialized.
-     *
-     * @return true if the {@link BezirkMiddleware} is initialized.
      */
     public static synchronized boolean isInitialized() {
         return serviceBound;
     }
 
+    private static class BezirkServiceConnection implements ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            synchronized (BezirkMiddleware.class) {
+                proxyBinder = (ComponentManager.ProxyBinder) service;
+                serviceBound = true;
+                logger.trace("Bezirk Service connected");
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            synchronized (BezirkMiddleware.class) {
+                serviceBound = false;
+                logger.trace("Bezirk Service disconnected");
+            }
+        }
+    }
 }

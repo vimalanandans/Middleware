@@ -134,7 +134,7 @@ public class Config implements Serializable {
         }
 
         /**
-         * Set Group-name/channelId used for communication between a multiple instances of bezirk.
+         * Set Group-name/channelId used for communication between multiple instances of bezirk.
          */
         public ConfigBuilder setGroupName(@NotNull final String groupName) {
             this.groupName = groupName;
