@@ -51,7 +51,7 @@ public class CommsMessageDispatcher implements MessageDispatcher {
 
     }
 
-    public void registerEventMessageReceiver(com.bezirk.middleware.core.comms.processor.EventMsgReceiver eventReceiver){
+    public void registerEventMessageReceiver(com.bezirk.middleware.core.comms.processor.EventMsgReceiver eventReceiver) {
         this.eventReceiver = eventReceiver;
     }
 
@@ -91,10 +91,8 @@ public class CommsMessageDispatcher implements MessageDispatcher {
 
         logger.debug("Message decrypted with Discriminator : " + id);
 
-        if(msgLog != null)
-        {
-            if(msgLog.isRemoteLoggingEnabled())
-            {
+        if (msgLog != null) {
+            if (msgLog.isRemoteLoggingEnabled()) {
                 msgLog.sendRemoteLogToServer(ctrlMsg);
             }
         }
@@ -116,9 +114,6 @@ public class CommsMessageDispatcher implements MessageDispatcher {
 
         return true;
     }
-
-
-
 
 
 }

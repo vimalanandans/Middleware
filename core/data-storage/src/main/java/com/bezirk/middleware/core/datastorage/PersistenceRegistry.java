@@ -20,9 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-/**
- * @author Vijet Badigannavar(bvijet@in.bosch.com)
- */
+
 package com.bezirk.middleware.core.datastorage;
 
 import com.bezirk.middleware.core.pubsubbroker.PubSubBrokerRegistry;

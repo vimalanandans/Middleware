@@ -71,29 +71,31 @@ public interface Comms {
     /**
      * send the control or event message depends of ledger type
      */
-    @Deprecated // Use sendEventLedger, or sendControlLedger
+    @Deprecated
+    // Use sendEventLedger, or sendControlLedger
     boolean sendMessage(Ledger message);
 
     /**
      * Send event ledger
-     * */
+     */
     boolean sendEventLedger(EventLedger eventLedger);
 
     boolean sendControlLedger(ControlLedger controlLedger);
 
     /**
      * Send event ledger
-     * */
+     */
     boolean sendControlMessage(ControlMessage message);
 
     /**
-     *
      * @param notification
      * @return
      */
     boolean registerNotification(CommsNotification notification);
 
-    /** this is on each comms instance returns its own created id */
+    /**
+     * this is on each comms instance returns its own created id
+     */
     String getNodeId();
 
     /**
@@ -108,7 +110,6 @@ public interface Comms {
 
     /* register event message receiver */
     boolean registerEventMessageReceiver(EventMsgReceiver receiver);
-
 
 
 }

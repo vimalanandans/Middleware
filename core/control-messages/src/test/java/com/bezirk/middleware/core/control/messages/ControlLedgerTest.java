@@ -16,8 +16,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * This testCase verifies the ControlLedger POJO by retrieving the field values using getters.
- *
- * @author AJC6KOR
  */
 public class ControlLedgerTest {
     private static final Logger logger = LoggerFactory.getLogger(ControlLedgerTest.class);
@@ -75,7 +73,7 @@ public class ControlLedgerTest {
         //ctrlLedger.setLastSent(lastSent);
         //ctrlLedger.setNumOfSends(numOfSends);
         ctrlLedger.setMessage(message);
-       // ctrlLedger.setSendData(sendData);
+        // ctrlLedger.setSendData(sendData);
         ctrlLedger.setSerializedMessage(serializedMessage);
         ctrlLedger.setSphereId(sphereId);
         return ctrlLedger;

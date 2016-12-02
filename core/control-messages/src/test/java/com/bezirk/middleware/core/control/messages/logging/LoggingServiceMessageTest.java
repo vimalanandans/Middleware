@@ -16,8 +16,6 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * This testCase verifies the LOGGING_SERVICE_MESSAGE by retrieving the field values after deserialization.
- *
- * @author AJC6KOR
  */
 public class LoggingServiceMessageTest {
     private static final Logger logger = LoggerFactory.getLogger(LoggingServiceMessageTest.class);

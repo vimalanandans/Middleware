@@ -18,8 +18,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * This testCase verifies the MulticastHeader POJO by retrieving the field values.
- *
- * @author AJC6KOR
  */
 public class MulticastHeaderTest {
     private static final Logger logger = LoggerFactory.getLogger(MulticastControlMessageTest.class);
@@ -58,7 +56,7 @@ public class MulticastHeaderTest {
 
         assertEquals("RecipientSelector not equal to the set value.", RECIPIENT_SELECTOR, multicastHeader.getRecipientSelector());
         /*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
-		 * device null condition should be checked separately before device equals in BezirkServiceEndpoint equals api.
+         * device null condition should be checked separately before device equals in BezirkServiceEndpoint equals api.
 		 * 
 		assertEquals("DataOnWire not equal to the set value.",sender, multicastHeader.getSender());
 		*/

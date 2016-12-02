@@ -32,7 +32,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bezirk.middleware.android.testApp.R;
-import com.bezirk.middleware.core.proxy.Config;
 
 public class HomeActivity extends AppCompatActivity {
 

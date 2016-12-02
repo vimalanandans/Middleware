@@ -53,11 +53,11 @@ public class AndroidDevice extends Device {
         return AndroidDevice.class.getSimpleName() + UUID.randomUUID().toString().substring(0, 5);
     }
 
-    private static  DeviceType defaultDeviceType() {
+    private static DeviceType defaultDeviceType() {
         return DeviceType.SMARTPHONE;
     }
 
-    private static  Location defaultDeviceLocation() {
+    private static Location defaultDeviceLocation() {
         return new Location(null, null, null);
     }
 

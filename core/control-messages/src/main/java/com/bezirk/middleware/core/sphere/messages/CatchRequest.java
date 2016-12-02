@@ -47,7 +47,7 @@ public class CatchRequest extends MulticastControlMessage {
      * @param sender             - has to be non-null
      * @param inviterShortCode   short code of the inviting sphere. Has to be non-null.
      * @param catcherSphereId    sphereId catching the services from the inviting sphere. Has to be non-null.
-     * @param bezirkDeviceInfo      zirk and device information of the sphere catching the. Has to be non-null.
+     * @param bezirkDeviceInfo   zirk and device information of the sphere catching the. Has to be non-null.
      *                           services
      * @param sphereExchangeData sphere information of the sphere catching the services. Has to be non-null.
      */

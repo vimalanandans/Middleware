@@ -93,14 +93,18 @@ public class Header {
         return sender;
     }
 
-    public  String getEventName(){return eventName;}
+    public String getEventName() {
+        return eventName;
+    }
 
-    public  void setEventName(String eventName){this.eventName = eventName;}
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
 
 
     /**
      * @param sender the senderId of the message. Usually there is a function that retrieves
-     *                  the hostId and this is used to set the senderId
+     *               the hostId and this is used to set the senderId
      */
     public void setSender(BezirkZirkEndPoint sender) {
         this.sender = sender;
@@ -126,6 +130,7 @@ public class Header {
         Gson gson = new Gson();
         return gson.toJson(this);
     }
+
     public static <C> C fromJson(String json, Class<C> objectType) {
         return gson.fromJson(json, objectType);
     }

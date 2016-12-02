@@ -52,7 +52,7 @@ public class Alias implements Serializable {
 
         this.name = name;
         this.hash = new byte[hash.length];
-        System.arraycopy(hash, 0, this.hash, 0, hash.length );
+        System.arraycopy(hash, 0, this.hash, 0, hash.length);
     }
 
     /**
@@ -61,7 +61,9 @@ public class Alias implements Serializable {
      *
      * @return the human-readable identifier for this alias
      */
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     /**
      * Returns the identifier assigned this alias to ensure the alias is unique.

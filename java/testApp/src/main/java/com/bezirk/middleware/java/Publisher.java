@@ -36,7 +36,7 @@ import java.util.TimerTask;
 
 public class Publisher {
 
-    private static final String PUBLISHER_ID = Main.getHostName()+":Java:Publisher";
+    private static final String PUBLISHER_ID = Main.getHostName() + ":Java:Publisher";
 
     public Publisher() {
         final Bezirk bezirk = BezirkMiddleware.registerZirk(PUBLISHER_ID);

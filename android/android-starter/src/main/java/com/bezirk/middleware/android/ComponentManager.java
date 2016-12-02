@@ -63,7 +63,8 @@ public final class ComponentManager extends Service {
     private Config config;
     private RemoteLog remoteLog;
 
-    ComponentManager() {
+    public ComponentManager() {
+        super();
     }
 
     public class ProxyBinder extends Binder {

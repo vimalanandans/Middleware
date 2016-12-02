@@ -14,8 +14,6 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * This testCase verifies the OWNER_LEAVE_RESPONSE by retrieving the field values after deserialization.
- *
- * @author AJC6KOR
  */
 public class OwnerLeaveResponseTest {
     private static final Logger logger = LoggerFactory.getLogger(OwnerLeaveResponseTest.class);

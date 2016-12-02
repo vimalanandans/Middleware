@@ -25,7 +25,7 @@ package com.bezirk.middleware.messages;
 import com.bezirk.middleware.identity.Alias;
 
 /**
- *  <h1 style="color: red">Experimental</h1>
+ * <h1 style="color: red">Experimental</h1>
  *
  * For identified events, the sending middleware attaches its alias to them before sending them on
  * the wire. This allows recipients to determine who the message is about. Zirks do not need to do

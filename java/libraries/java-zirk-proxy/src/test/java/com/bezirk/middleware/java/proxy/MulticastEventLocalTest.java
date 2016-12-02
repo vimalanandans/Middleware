@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author vbd4kor
  * This class tests the local MulticastEvent communication. Three MockServices register and subscribe with common MessageRole.
  * Sub-test- 1 :MockServiceA sends the multicastEvent on the wire. MockServiceB and MockServiceC should receive the Events.
  * Sub-test- 2 : MockServiceC changes to New Location. MockServiceA pings a multicast event by setting the address to new location

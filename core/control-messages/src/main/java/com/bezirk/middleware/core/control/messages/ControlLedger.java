@@ -25,7 +25,6 @@ package com.bezirk.middleware.core.control.messages;
 
 /**
  * Control Ledger holds the control message related info for the internal data set
- *
  */
 public class ControlLedger implements Ledger {
     private ControlMessage message;

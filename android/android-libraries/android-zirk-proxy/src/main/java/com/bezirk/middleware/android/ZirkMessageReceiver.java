@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ZirkMessageReceiver extends BroadcastReceiver {
-    private static final Logger logger = LoggerFactory.getLogger(ZirkMessageReceiver.class);    
+    private static final Logger logger = LoggerFactory.getLogger(ZirkMessageReceiver.class);
 
     @Override
     public void onReceive(Context context, Intent intent) {

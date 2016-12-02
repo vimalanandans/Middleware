@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.bezirk.middleware.android.AdvancedTestActivity">
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:fitsSystemWindows="true"
+                                                 tools:context="com.bezirk.middleware.android.AdvancedTestActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -34,7 +34,7 @@
                 android:id="@+id/zirk_launcher_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:text=""/>
         </TableRow>
 
         <TableRow
@@ -47,14 +47,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/button_publisher" />
+                android:text="@string/button_publisher"/>
 
             <Button
                 android:id="@+id/subscriber_launcher_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/button_subscriber" />
+                android:text="@string/button_subscriber"/>
 
 
         </TableRow>
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:enabled="false"
-                android:text="@string/button_reset" />
+                android:text="@string/button_reset"/>
 
             <Button
                 android:id="@+id/clear_button"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:enabled="false"
-                android:text="@string/button_clear" />
+                android:text="@string/button_clear"/>
         </TableRow>
 
 
@@ -96,6 +96,6 @@
             android:fadeScrollbars="false"
             android:maxLines="20"
             android:scrollbars="vertical"
-            android:text="" />
+            android:text=""/>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

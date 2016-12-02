@@ -77,7 +77,7 @@ public class EventSet extends MessageSet {
      *                 <code>null</code> to remove an existing listener
      */
     public void setEventReceiver(EventReceiver receiver) {
-            logger.debug("Inside setEventReceiver method");
+        logger.debug("Inside setEventReceiver method");
         this.receiver = receiver;
     }
 

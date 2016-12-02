@@ -100,7 +100,8 @@ public interface SphereAPI {
      * Listener
      * @deprecated use {@link #addLocalServicesToSphere(String, Iterable)}
      */
-    @Deprecated // UI has BezirkZirkInfo not ZirkId
+    @Deprecated
+    // UI has BezirkZirkInfo not ZirkId
     boolean addLocalServicesToSphere(Iterable<ZirkId> serviceIds, String sphereId);
 
     /**
@@ -137,7 +138,8 @@ public interface SphereAPI {
      * Listener
      * @deprecated use {@link #expelDeviceFromSphere(String, String)}
      */
-    @Deprecated // concept is always expel the device from zirk
+    @Deprecated
+    // concept is always expel the device from zirk
     boolean expelServiceFromSphere(String zirkId, String sphereId);
 
     /**

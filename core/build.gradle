@@ -3,7 +3,7 @@ description "Bezirk-core: common-modules across platforms"
 subprojects {
     apply plugin: 'java'
     //apply from: "${rootDir}/gradle-plugins/artifactory-jar-publish.gradle"
-	apply from: "${rootDir}/gradle-plugins/scripts/build-dist.gradle"
+    apply from: "${rootDir}/gradle-plugins/scripts/build-dist.gradle"
 }
 buildscript {
     repositories {

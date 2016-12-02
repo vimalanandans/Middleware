@@ -11,7 +11,7 @@ public class NetworkInterfaceTest {
 
         SecurityManager mgr = System.getSecurityManager();
         /*
-		SecurityManager mgr = new SecurityManager();
+        SecurityManager mgr = new SecurityManager();
 		System.setSecurityManager(mgr);
 		*/
 

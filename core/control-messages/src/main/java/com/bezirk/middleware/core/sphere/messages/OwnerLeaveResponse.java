@@ -56,7 +56,7 @@ public class OwnerLeaveResponse {
 
     /**
      * @param json The Json String that is to be deserialized
-     * @param dC    class to fromJson into
+     * @param dC   class to fromJson into
      * @return object of class type C
      */
     public static <C> C deserialize(String json, Class<C> dC) {

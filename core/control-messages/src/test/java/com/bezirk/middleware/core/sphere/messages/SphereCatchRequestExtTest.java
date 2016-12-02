@@ -19,8 +19,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * This testCase verifies the SphereCatchRequestExt by retrieving the field values after deserialization.
- *
- * @author AJC6KOR
  */
 public class SphereCatchRequestExtTest {
     private static final Logger logger = LoggerFactory.getLogger(SphereCatchRequestExtTest.class);
@@ -49,7 +47,8 @@ public class SphereCatchRequestExtTest {
     /**
      * @throws java.lang.Exception
      */
-    @AfterClass public static void tearDownAfterClass() throws Exception {
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
         logger.info("***** Shutting down SphereCatchRequestExtTest TestCase *****");
     }
 

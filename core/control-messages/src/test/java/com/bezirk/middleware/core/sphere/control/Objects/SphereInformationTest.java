@@ -12,8 +12,6 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * This testCase verifies the SphereInformation POJO by retrieving the field values using getters.
- *
- * @author AJC6KOR
  */
 public class SphereInformationTest {
     private static final Logger logger = LoggerFactory.getLogger(SphereInformationTest.class);

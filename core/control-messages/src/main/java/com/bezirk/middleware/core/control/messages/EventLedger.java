@@ -24,7 +24,7 @@ package com.bezirk.middleware.core.control.messages;
 
 /**
  * Event Ledger to hold event message and header
- * */
+ */
 public class EventLedger implements Ledger {
     private String serializedMessage;
     private byte[] encryptedMessage;
@@ -35,7 +35,7 @@ public class EventLedger implements Ledger {
 
 
     public EventLedger() {
-      //  header = new Header();
+        //  header = new Header();
     }
 
     /**
