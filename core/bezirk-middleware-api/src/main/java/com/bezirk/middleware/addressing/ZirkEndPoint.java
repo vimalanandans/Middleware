@@ -22,6 +22,8 @@
  */
 package com.bezirk.middleware.addressing;
 
+import java.io.Serializable;
+
 /**
  * An end point represents a Zirk that another Zirk can directly send messages to (e.g. unicast).
  * There are a couple ways to get a Zirk's <code>ZirkEndPoint</code> to directly send it messages:
@@ -37,6 +39,6 @@ package com.bezirk.middleware.addressing;
  * The Bezirk middleware implements this interface.
  * </p>
  */
-public interface ZirkEndPoint {
+public interface ZirkEndPoint extends Serializable {
 // For now, this is a marker interface because there is nothing to offer to a Zirk API wise.
 }

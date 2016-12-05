@@ -24,7 +24,7 @@ public class StreamReceiverActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        
+
         //register the bezirk middleware
         bezirk = BezirkMiddleware.registerZirk("Stream_Receiver_Zirk");
 
@@ -45,6 +45,7 @@ public class StreamReceiverActivity extends AppCompatActivity {
             }
         });
 
+        //subscribe to the event set
         bezirk.subscribe(receiverEventSet);
 
     }

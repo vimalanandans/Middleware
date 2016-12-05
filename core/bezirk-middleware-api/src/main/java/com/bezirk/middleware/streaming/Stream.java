@@ -23,20 +23,27 @@
 package com.bezirk.middleware.streaming;
 
 import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.StreamEvent;
 
+import java.io.Serializable;
+
 /**
- * Created by PIK6KOR on 11/3/2016.
+ *
+ *
  */
 
-public abstract class Stream {
+public abstract class Stream{
 
     // recipientEndPoint, This will be the endPoint
     private ZirkEndPoint recipientEndPoint;
 
     private StreamEventReceiver streamEventReceiver = null;
+
+    //default constructor
+    public Stream(){
+        //providing default constructor for parcelable exception in android , do not use this.
+
+    }
 
     //constructor
     public Stream(ZirkEndPoint recipientEndPoint){
@@ -55,6 +62,10 @@ public abstract class Stream {
         this.streamEventReceiver = receiver;
     }
 
+    public StreamEventReceiver getStreamEventReceiver() {
+        return streamEventReceiver;
+    }
+
     /**
      * Used to stop the
      */
@@ -67,7 +78,7 @@ public abstract class Stream {
      * Interface implemented by observers of an <code>StreamSet</code> that want to be notified when
      * an event in this set is received.
      */
-    public interface StreamEventReceiver {
+    public interface StreamEventReceiver extends Serializable{
         /**
          * Called to notify the subscriber that a new event was received.
          *

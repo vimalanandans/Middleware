@@ -120,7 +120,7 @@ public final class FileStreaming implements Streaming {
      */
     private boolean addStreamRecordToBook(StreamRecord sRecord) {
         synchronized (this) {
-            if (streamBook.hasStreamRecord(sRecord.getStreamId())) {
+            if (!streamBook.hasStreamRecord(sRecord.getStreamId())) {
                 streamBook.addStreamingRecordToBook(sRecord);
                 return true;
             } else {

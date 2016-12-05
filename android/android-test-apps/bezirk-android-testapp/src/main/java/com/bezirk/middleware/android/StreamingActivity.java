@@ -38,7 +38,7 @@ public class StreamingActivity extends AppCompatActivity {
     private TextView mTextViewFilePath;
     private static final int RESULT_LOAD_VIDEO = 222;
     private String filePath;
-    private final List<StreamDataModel> list = new ArrayList();
+    private final List<StreamDataModel> list = new ArrayList<>();
     private StreamAdapter arrayAdapter;
     private static ZirkEndPoint recipientEndpoint;
     //checkBox to see if the Encryption is enabled!!!
@@ -53,6 +53,7 @@ public class StreamingActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mTextViewFilePath = (TextView) findViewById(R.id.stream_receiver_activity);
         Button send = (Button) findViewById(R.id.sendButton);
         Button discover = (Button) findViewById(R.id.discoverRecipientButton);
@@ -152,12 +153,15 @@ public class StreamingActivity extends AppCompatActivity {
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Video.Media.DATA};
             Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            this.filePath = cursor.getString(columnIndex);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                this.filePath = cursor.getString(columnIndex);
 
-            mTextViewFilePath.setText(cursor.getString(columnIndex));
-            cursor.close();
+                mTextViewFilePath.setText(cursor.getString(columnIndex));
+                cursor.close();
+            }
+
         }
 
     }

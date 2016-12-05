@@ -25,12 +25,14 @@ package com.bezirk.middleware.streaming;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
- * Created by PIK6KOR on 11/3/2016.
+ *
+ *
  */
 
-public class FileStream extends Stream {
+public class FileStream extends Stream implements Serializable {
     private File file;
 
     public FileStream(ZirkEndPoint zirkEndPoint, File file){
@@ -40,5 +42,15 @@ public class FileStream extends Stream {
 
     public File getFile() {
         return file;
+    }
+
+    @Override
+    public ZirkEndPoint getRecipientEndPoint() {
+        return super.getRecipientEndPoint();
+    }
+
+    @Override
+    public StreamEventReceiver getStreamEventReceiver() {
+        return super.getStreamEventReceiver();
     }
 }
