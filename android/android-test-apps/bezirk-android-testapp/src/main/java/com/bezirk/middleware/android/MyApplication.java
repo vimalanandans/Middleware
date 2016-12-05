@@ -1,3 +1,25 @@
+/**
+ * The MIT License (MIT)
+ * Copyright (c) 2016 Bezirk http://bezirk.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package com.bezirk.middleware.android;
 
 import android.app.Application;
@@ -9,42 +31,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        initializeBezirk();
-    }
 
-    private void initializeBezirk() {
         Config.ConfigBuilder configBuilder = new Config.ConfigBuilder();
-
-        /*setting root log level*/
         configBuilder.setLogLevel(Config.Level.TRACE);
-
-        /*setting package log level*/
-        //configBuilder.setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.INFO);
-
-        /*setting app name for notification*/
-        configBuilder.setAppName("bezirk-android-testapp");
-
-        /*disabling inter-device communication*/
-        //configBuilder.setComms(false);
-
-        /*using custom communication groups to prevent crosstalk*/
-        //configBuilder.setGroupName("Test Group");
-
-        /*keeping bezirk service alive even after the app is shutdown*/
-        //configBuilder.setServiceAlive(true);
-
-        /*initialize with default configurations*/
-        //BezirkMiddleware.initialize(this);
-
-        /*initialize with configurations*/
         BezirkMiddleware.initialize(this, configBuilder.create());
-
-        /*initialize with channelId/groupName*/
-        //BezirkMiddleware.initialize(this, "MyChannel");
-
-    }
-
-    public synchronized void stop() {
-        BezirkMiddleware.stop();
     }
 }
