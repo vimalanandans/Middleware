@@ -44,6 +44,7 @@ public final class BezirkMiddleware {
      * </p>
      *
      * @see #initialize(Config)
+     * @see #initialize(String)
      * @see #stop()
      */
     public static void initialize() {
@@ -55,9 +56,10 @@ public final class BezirkMiddleware {
      * <p>
      * Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}.
      * {@link BezirkMiddleware} is started using default configurations {@link Config} with
-     * {@link Config#groupName} set to #channelId.
+     * {@link Config#groupName} set to the passed <code>channelId</code>.
      * </p>
      *
+     * @see #initialize()
      * @see #initialize(Config)
      * @see #stop()
      */
@@ -81,6 +83,8 @@ public final class BezirkMiddleware {
      *               <li>If not <code>null</code>, Bezirk service is created for the current application,
      *               even if an existing Bezirk service(inside the Bezirk Application) is running in the device.</li>
      *               </ul>
+     * @see #initialize()
+     * @see #initialize(String)
      * @see #stop()
      */
     public static void initialize(final Config config) {
@@ -113,7 +117,7 @@ public final class BezirkMiddleware {
     /**
      * Stop the Bezirk service.
      * <p>
-     * Once Bezirk is stopped, Zirk(s) cannot register with the Bezirk service and all communications
+     * Once Bezirk is stopped, Zirk(s) cannot register with the Bezirk middleware and all communications
      * between registered Zirks would stop.
      * </p>
      */
