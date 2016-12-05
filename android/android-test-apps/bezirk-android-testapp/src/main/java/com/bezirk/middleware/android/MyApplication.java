@@ -45,8 +45,6 @@ public class MyApplication extends Application {
     }
 
     public synchronized void stop() {
-        if (BezirkMiddleware.isInitialized()) {
-            BezirkMiddleware.stop();
-        }
+        BezirkMiddleware.stop();
     }
 }

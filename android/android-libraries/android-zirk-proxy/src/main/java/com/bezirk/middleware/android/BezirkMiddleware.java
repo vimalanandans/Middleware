@@ -155,13 +155,6 @@ public final class BezirkMiddleware {
         }
     }
 
-    /**
-     * Returns true if the {@link BezirkMiddleware} is initialized.
-     */
-    public static synchronized boolean isInitialized() {
-        return serviceBound;
-    }
-
     private static class BezirkServiceConnection implements ServiceConnection {
         @Override
         public void onServiceConnected(ComponentName className,
