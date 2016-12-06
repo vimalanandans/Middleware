@@ -22,10 +22,15 @@
  */
 package com.bezirk.middleware.android;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -117,6 +122,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.System.canWrite(this)) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE}, 2909);
+            }
+        }
+
     }
 
     private void initializeBezirk() {
@@ -149,6 +161,20 @@ public class HomeActivity extends AppCompatActivity {
         /*initialize with channelId/groupName*/
         //BezirkMiddleware.initialize(this, "MyChannel");
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 2909: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.e("Permission", "Granted");
+                } else {
+                    Log.e("Permission", "Denied");
+                }
+                return;
+            }
+        }
     }
 
 }
