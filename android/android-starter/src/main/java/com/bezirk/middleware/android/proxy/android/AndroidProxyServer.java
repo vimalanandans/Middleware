@@ -24,6 +24,7 @@ package com.bezirk.middleware.android.proxy.android;
 
 import android.content.Intent;
 
+import com.bezirk.middleware.core.actions.Action;
 import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.EventAction;
 import com.bezirk.middleware.core.actions.RegisterZirkAction;
@@ -132,18 +133,22 @@ public class AndroidProxyServer extends ProxyServer implements Observer {
      * {@link com.bezirk.middleware.core.comms.Sender} is changed to be in a separate thread,
      * methods {@link #sendEvent(SendMulticastEventAction)} and {@link #sendEvent(UnicastEventAction)} can be used directly
      */
-    private void sendEventUsingExecutor(@NotNull final EventAction eventAction) {
+    private void sendEventUsingExecutor(@NotNull final Action action) {
         if (senderExecutorService == null) {
             throw new IllegalStateException("senderExecutorService is not created");
         }
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if (eventAction instanceof SendMulticastEventAction) {
-                    sendEvent((SendMulticastEventAction) eventAction);
-                } else if (eventAction instanceof UnicastEventAction) {
-                    sendEvent((UnicastEventAction) eventAction);
-                } else {
+                if (action instanceof SendMulticastEventAction) {
+                    sendEvent((SendMulticastEventAction) action);
+                } else if (action instanceof UnicastEventAction) {
+                    sendEvent((UnicastEventAction) action);
+                } else if(action instanceof StreamAction){
+                    sendStream((StreamAction) action);
+                }
+
+                else {
                     logger.error("Event action not support");
                     return;
                 }
@@ -193,7 +198,7 @@ public class AndroidProxyServer extends ProxyServer implements Observer {
                 (StreamAction) intent.getSerializableExtra(BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM.getName());
 
         //call to send stream in <code>ProxyServer</code>
-        sendStream(streamAction);
+        sendEventUsingExecutor(streamAction);
     }
 
 }

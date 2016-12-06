@@ -48,5 +48,5 @@ public interface PubSubBrokerZirkServicer {
 
     boolean sendUnicastEvent(UnicastEventAction unicastEventAction);
 
-    void sendStream(StreamAction streamAction);
+    boolean sendStream(StreamAction streamAction);
 }

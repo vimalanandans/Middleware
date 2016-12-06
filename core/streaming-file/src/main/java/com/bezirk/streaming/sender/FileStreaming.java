@@ -26,6 +26,8 @@ import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
+import com.bezirk.middleware.core.control.messages.GenerateMsgId;
+import com.bezirk.middleware.core.control.messages.UnicastHeader;
 import com.bezirk.middleware.core.streaming.Streaming;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.streaming.FileStream;
@@ -37,6 +39,10 @@ import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Implementation of <code>Streaming</code> interface. This is an implementation of File streaming concept.
@@ -57,6 +63,8 @@ public final class FileStreaming implements Streaming {
 
     //logger
     private static final Logger logger = LoggerFactory.getLogger(FileStreaming.class);
+
+    private static final String id = UUID.randomUUID().toString();
 
     //constructor
     public FileStreaming(Comms comms){
@@ -83,21 +91,32 @@ public final class FileStreaming implements Streaming {
     @Override
     public boolean addStreamRecordToQueue(StreamAction streamAction) {
         //prepare stream record from streamAction and save this in the map.
-        StreamRecord streamRecord;
 
         FileStream fileStream = (FileStream) streamAction.getStreamRequest();
         logger.info("Adding stream record to queue for "+fileStream.getFile());
 
-        streamRecord = new StreamRecord(streamAction.getStreamId(), fileStream.getRecipientEndPoint(), fileStream.getFile());
+        final BezirkZirkEndPoint sender;
+
+        if (comms != null) {
+            sender = new BezirkZirkEndPoint(comms.getNodeId(), streamAction.getZirkId());
+        } else {
+            //sender = networkManager.getServiceEndPoint(zirkId);
+            sender = new BezirkZirkEndPoint(id, streamAction.getZirkId());
+        }
+
+        StreamRecord streamRecord = new StreamRecord(streamAction.getStreamId(), (BezirkZirkEndPoint) fileStream.getRecipientEndPoint(), fileStream.getFile(), sender);
 
         //add the record to streaming
         boolean isAdded = addStreamRecordToBook(streamRecord);
 
         //send a event to receiver when the streamRecord is stored
         if(isAdded){
-            logger.info("StreamRecord "+ streamAction.getStreamId() +" was added to the StreamBook, sending ControlMessage over comms to receiver");
-            ControlLedger controlLedger = new ControlLedger();
 
+
+
+            logger.info("StreamRecord "+ streamAction.getStreamId() +" was added to the StreamBook, sending ControlMessage over comms to receiver");
+            final ControlLedger controlLedger = new ControlLedger();
+            final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(sender));
             //sphere will be DEFAULT as of now
             controlLedger.setSphereId("DEFAULT");
 
@@ -105,8 +124,14 @@ public final class FileStreaming implements Streaming {
             controlLedger.setMessage(streamRequest);
             controlLedger.setSerializedMessage(gson.toJson(streamRequest));
 
-            //send event
+            final UnicastHeader uHeader = new UnicastHeader();
+            uHeader.setRecipient((BezirkZirkEndPoint) fileStream.getRecipientEndPoint());
+            uHeader.setSender(sender);
+            uHeader.setUniqueMsgId(uniqueMsgId.toString());
+            controlLedger.setHeader(uHeader);
+
             comms.sendControlLedger(controlLedger);
+
         }else{
             logger.error("Unable to add StreamRecord to stream queue");
         }

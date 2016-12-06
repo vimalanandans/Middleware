@@ -23,6 +23,7 @@
 package com.bezirk.middleware.streaming;
 
 import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.StreamEvent;
 
 import java.io.Serializable;
@@ -32,12 +33,12 @@ import java.io.Serializable;
  *
  */
 
-public abstract class Stream{
+public class Stream extends Message implements Serializable{
 
     // recipientEndPoint, This will be the endPoint
     private ZirkEndPoint recipientEndPoint;
 
-    private StreamEventReceiver streamEventReceiver = null;
+    /*private StreamEventReceiver streamEventReceiver = null;*/
 
     //default constructor
     public Stream(){
@@ -46,7 +47,7 @@ public abstract class Stream{
     }
 
     //constructor
-    public Stream(ZirkEndPoint recipientEndPoint){
+    Stream(ZirkEndPoint recipientEndPoint){
         this.recipientEndPoint = recipientEndPoint;
     }
 
@@ -54,39 +55,35 @@ public abstract class Stream{
         return recipientEndPoint;
     }
 
+    public void setRecipientEndPoint(ZirkEndPoint recipientEndPoint) {
+        this.recipientEndPoint = recipientEndPoint;
+    }
+
     /**
      * set event receiver.
      * @param receiver
      */
-    public void setEventReceiver(StreamEventReceiver receiver) {
+    /*public void setEventReceiver(StreamEventReceiver receiver) {
         this.streamEventReceiver = receiver;
     }
 
     public StreamEventReceiver getStreamEventReceiver() {
         return streamEventReceiver;
-    }
-
-    /**
-     * Used to stop the
-     */
-    public void stopStreaming(){
-
-    }
-
+    }*/
 
     /**
      * Interface implemented by observers of an <code>StreamSet</code> that want to be notified when
      * an event in this set is received.
      */
-    public interface StreamEventReceiver extends Serializable{
-        /**
+    /*public interface StreamEventReceiver extends Serializable{
+        *//**
          * Called to notify the subscriber that a new event was received.
          *
          * @param event  the received event
          * @param sender the sender of the event
-         */
+         *//*
         void receiveStreamEvent(StreamEvent event, ZirkEndPoint sender);
 
-    }
+    }*/
 
 }

@@ -51,23 +51,18 @@ public class FileStreamEventReceiver implements CtrlMsgReceiver {
     public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
         switch (id) {
             case STREAM_REQUEST: {
-                FileStreamRequest fileStreamRequest = processMessage(serializedMsg);
-                fileStreamRequestObserver.incomingStreamRequest(fileStreamRequest);
+                if(serializedMsg != null){
+                    FileStreamRequest fileStreamRequest =  ControlMessage.deserialize(serializedMsg, FileStreamRequest.class);
+                    fileStreamRequestObserver.incomingStreamRequest(fileStreamRequest);
+                }else {
+                    // logger error
+                }
             }
-
+            default : {
+                //logger error
+            }
         }
         return true;
-    }
-
-    private FileStreamRequest processMessage(String serializedMsg){
-        FileStreamRequest fileStreamRequest = null;
-
-        if(serializedMsg != null){
-            fileStreamRequest =  ControlMessage.deserialize(serializedMsg, FileStreamRequest.class);
-
-        }
-
-        return fileStreamRequest;
     }
 
     /**

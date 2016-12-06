@@ -29,16 +29,16 @@ import com.bezirk.middleware.streaming.Stream;
  * class <code>StreamAction</code> will have all the metadata information of streaming
  * which will be passed as intent to the receiver.
  *
- * Created by PIK6KOR on 11/4/2016.
+ *
  */
 
 public class StreamAction extends ZirkAction {
 
-    private Short streamId;
+    private short streamId;
     private BezirkAction bezirkAction;
     private Stream stream;
 
-    public StreamAction(ZirkId zirkId, Short streamId, Stream stream, BezirkAction bezirkAction){
+    public StreamAction(ZirkId zirkId, short streamId, Stream stream, BezirkAction bezirkAction){
         super(zirkId);
         this.stream  = stream;
         this.streamId = streamId;
@@ -54,7 +54,7 @@ public class StreamAction extends ZirkAction {
         return stream;
     }
 
-    public Short getStreamId() {
+    public short getStreamId() {
         return streamId;
     }
 }

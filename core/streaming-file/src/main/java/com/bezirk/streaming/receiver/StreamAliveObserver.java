@@ -24,9 +24,7 @@ package com.bezirk.streaming.receiver;
 
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
-import com.bezirk.middleware.core.streaming.StreamRequest;
 import com.bezirk.streaming.FileStreamRequest;
-import com.bezirk.streaming.FileStreamResponse;
 import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.StreamRecord;
 import com.bezirk.streaming.portfactory.FileStreamPortFactory;
@@ -35,6 +33,10 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ExecutorService;
@@ -78,8 +80,6 @@ class StreamAliveObserver implements Observer {
     @Override
     public void update(Observable observable, Object streamRequest) {
         FileStreamRequest fileStreamRequest = (FileStreamRequest) streamRequest;
-
-        //update the status to addressed.
         StreamRecord streamRecord = fileStreamRequest.getStreamRecord();
 
         if(StreamRecord.StreamRecordStatus.ALIVE == streamRecord.getStreamRecordStatus()){
@@ -93,29 +93,33 @@ class StreamAliveObserver implements Observer {
             Integer assignedPort = portFactory.getActivePort(streamRecord.getStreamId());
 
             if(assignedPort != -1){
-                //update the status to assigned and assign the port to stream record.
                 streamRecord.setRecipientPort(assignedPort);
-                streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.ASSIGNED, assignedPort);
+                streamRecord.setRecipientIp(getIPAddress());
 
                 //start the receiver thread and send a reply to sender.
                 FileStreamReceivingThread streamReceivingThread =new FileStreamReceivingThread(assignedPort, streamRecord.getFile(), portFactory);
-                fileStreamReceiverExecutor.submit(new Thread(streamReceivingThread));
+                fileStreamReceiverExecutor.submit(streamReceivingThread);
 
-                if(/*featureCallbackReturnsTrue*/ true) {
+                /*if(*//*featureCallbackReturnsTrue*//* true) {
 
                     //update the status to compete and notify the sender that the file receive is complete.
-                    streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.COMPLETED, assignedPort);
+                    streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.COMPLETED, null, null);
 
-                    //reply to the sender with status
-                    replyToSender(fileStreamRequest, streamRecord);
-                }
+
+                }*/
+
+                //reply to the sender with status
+                replyToSender(streamRecord);
+
+                //update stream book.
+                streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.ASSIGNED, assignedPort, getIPAddress());
             }else{
                 //update the stream record to busy status and send it to .
                 streamRecord.setRecipientPort(assignedPort);
-                streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.BUSY, assignedPort);
+                streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.BUSY, null, null);
 
                 //reply to the sender with status
-                replyToSender(fileStreamRequest, streamRecord);
+                replyToSender(streamRecord);
             }
 
 
@@ -125,20 +129,44 @@ class StreamAliveObserver implements Observer {
 
     /**
      * reply to sender with the given stream staus.
-     * @param fileStreamRequest fileStreamRequest a UnicastControlMessage
      * @param streamRecord streamRecord.
      */
-    private void replyToSender(FileStreamRequest fileStreamRequest, StreamRecord streamRecord) {
+    private void replyToSender(StreamRecord streamRecord) {
         //send a ControlMessage(StreamResponse) back to sender with updated information
         ControlLedger controlLedger = new ControlLedger();
 
         //sphere will be DEFAULT as of now
         controlLedger.setSphereId("DEFAULT");
 
-        FileStreamResponse streamResonse = new FileStreamResponse(fileStreamRequest.getSender(), "DEFAULT", streamRecord);
-        controlLedger.setMessage(streamResonse);
-        controlLedger.setSerializedMessage(gson.toJson(streamResonse));
+        FileStreamRequest streamResponse = new FileStreamRequest(streamRecord.getSenderSEP(), "DEFAULT", streamRecord);
+        controlLedger.setMessage(streamResponse);
+        controlLedger.setSerializedMessage(gson.toJson(streamResponse));
 
         comms.sendControlLedger(controlLedger);
+    }
+
+
+    /**
+     * Get IP address from first non-localhost interface
+     * @return  address or empty string
+     */
+    private static String getIPAddress() {
+        try {
+            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface intf : interfaces) {
+                List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+                for (InetAddress addr : addrs) {
+                    if (!addr.isLoopbackAddress()) {
+                        String sAddr = addr.getHostAddress();
+                        boolean isIPv4 = sAddr.indexOf(':')<0;
+
+                        if (isIPv4){
+                            return sAddr;
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) { } // for now eat exceptions
+        return "";
     }
 }

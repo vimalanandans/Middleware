@@ -23,7 +23,8 @@
 package com.bezirk.middleware.streaming;
 
 /**
- * Created by PIK6KOR on 11/23/2016.
+ *
+ *
  */
 
 public abstract class StreamController {

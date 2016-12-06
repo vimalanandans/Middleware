@@ -69,7 +69,7 @@ class StreamAssignedObserver implements Observer {
         //update the status to addressed.
         StreamRecord streamRecord = fileStreamRequest.getStreamRecord();
 
-        if(StreamRecord.StreamRecordStatus.ASSIGNED == streamRecord.getStreamRecordStatus()){
+        if(StreamRecord.StreamRecordStatus.ADDRESSED == streamRecord.getStreamRecordStatus()){
             // This will be reply to the sender, Start the sender thread and initiate file transmission.
             FileStreamSenderThread fileStreamSenderThread = new FileStreamSenderThread(streamRecord);
             fileStreamSenderExecutor.execute(fileStreamSenderThread);

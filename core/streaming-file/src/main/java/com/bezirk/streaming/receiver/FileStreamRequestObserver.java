@@ -50,6 +50,7 @@ public class FileStreamRequestObserver extends Observable implements StreamRecei
             //initialize the observers
             addObserver(new StreamAliveObserver(comms, streamBook, portFactory));
             addObserver(new StreamAssignedObserver(streamBook, portFactory));
+            addObserver(new StreamBusyObserver());
         }else{
             logger.error("Comms has to be initialized!!!");
         }

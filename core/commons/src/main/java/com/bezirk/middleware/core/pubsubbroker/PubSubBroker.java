@@ -498,7 +498,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
 
     @Override
-    public void sendStream(StreamAction streamAction) {
-
+    public boolean sendStream(StreamAction streamAction) {
+        return false;
     }
 }

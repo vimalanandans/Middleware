@@ -29,6 +29,9 @@ import com.bezirk.middleware.messages.StreamEvent;
 import com.bezirk.middleware.streaming.FileStream;
 import com.bezirk.middleware.streaming.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,9 @@ public class StreamingActivity extends AppCompatActivity {
 
     //bezirk Instance
     private Bezirk bezirk;
+
+    //logger
+    private static final Logger logger = LoggerFactory.getLogger(StreamingActivity.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,12 +89,12 @@ public class StreamingActivity extends AppCompatActivity {
                 if (filePath != null) {
                     File file = new File(filePath);
                     Stream fileStream = new FileStream(recipientEndpoint, file);
-                    fileStream.setEventReceiver(new Stream.StreamEventReceiver() {
+                    /*fileStream.setEventReceiver(new Stream.StreamEventReceiver() {
                         @Override
                         public void receiveStreamEvent(StreamEvent event, ZirkEndPoint sender) {
                             //to be tested
                         }
-                    });
+                    });*/
                     //StreamController controller = bezirk.sendStream(fileStream);
                     //use this line to stop streaming
                     //controller.stopStreaming();
@@ -107,6 +113,9 @@ public class StreamingActivity extends AppCompatActivity {
         discover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //clear the zirkendpoint list view.
+                list.clear();
+
                 //Multicast the StreamReceiveEvent
                 StreamReceiveEvent streamReceiveEvent = new StreamReceiveEvent();
                 bezirk.sendEvent(streamReceiveEvent);
@@ -118,13 +127,14 @@ public class StreamingActivity extends AppCompatActivity {
                 streamPublisherEventSet.setEventReceiver(new EventSet.EventReceiver() {
                     @Override
                     public void receiveEvent(Event event, ZirkEndPoint sender) {
+                        logger.debug("received subscriber" +sender.toString());
+
                         //got a response from the receiver
                         if (event instanceof StreamPublishEvent) {
                             StreamPublishEvent streamPublishEvent = (StreamPublishEvent) event;
 
                             //show the receiverID to UI
                             StreamDataModel streamDataModel = new StreamDataModel(streamPublishEvent.getSubscriberId(), sender);
-                            list.clear();
                             list.add(streamDataModel);
                             arrayAdapter.notifyDataSetChanged();
                         }

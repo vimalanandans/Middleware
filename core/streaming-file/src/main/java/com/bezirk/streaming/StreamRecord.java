@@ -45,6 +45,9 @@ public class StreamRecord {
     //The receipient zirk end point
     private BezirkZirkEndPoint recipientSEP;
 
+    //The receipient zirk end point
+    private BezirkZirkEndPoint senderSEP;
+
     //File file information which will be sent
     private File file;
 
@@ -54,10 +57,11 @@ public class StreamRecord {
     // recipient Port,set after getting the Stream Response
     private String recipientIp;
 
-    public StreamRecord(Short streamId, ZirkEndPoint endPoint, File file){
+    public StreamRecord(Short streamId, BezirkZirkEndPoint recipientEndPoint, File file, BezirkZirkEndPoint senderEndPoint){
         this.streamId = streamId;
-        this.recipientSEP = (BezirkZirkEndPoint) endPoint;
+        this.recipientSEP = recipientEndPoint;
         this.file = file;
+        this.senderSEP = senderEndPoint;
     }
 
     public Short getStreamId() {
@@ -100,13 +104,17 @@ public class StreamRecord {
         return recipientPort;
     }
 
+    public BezirkZirkEndPoint getSenderSEP() {
+        return senderSEP;
+    }
+
     /* Streaming Status indicates the status of the Streams.
-             * ALIVE -  Status for sender, when we has initiated a request.
-             * ADDRESSED   -  indicating the recipient has received the request.
-             * ASSIGNED - If the Port was free for recipient, and has agreed to receive the file.
-             * BUSY -  indicating the receipient is busy, All the active ports are consumed.
-             * COMPLETED -  Indicates that file transfer was complete.
-             * */
+                 * ALIVE -  Status for sender, when we has initiated a request.
+                 * ADDRESSED   -  indicating the recipient has received the request.
+                 * ASSIGNED - If the Port was free for recipient, and has agreed to receive the file.
+                 * BUSY -  indicating the receipient is busy, All the active ports are consumed.
+                 * COMPLETED -  Indicates that file transfer was complete.
+                 * */
     public enum StreamRecordStatus {
         ALIVE, ADDRESSED, ASSIGNED , BUSY, COMPLETED
 

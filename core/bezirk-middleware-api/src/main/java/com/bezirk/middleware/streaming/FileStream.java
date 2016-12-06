@@ -35,22 +35,21 @@ import java.io.Serializable;
 public class FileStream extends Stream implements Serializable {
     private File file;
 
+    //default constructor
+    FileStream(){
+
+    }
+
     public FileStream(ZirkEndPoint zirkEndPoint, File file){
         super(zirkEndPoint);
         this.file = file;
     }
 
+    public void setFile(File file) {
+        this.file = file;
+    }
+
     public File getFile() {
         return file;
-    }
-
-    @Override
-    public ZirkEndPoint getRecipientEndPoint() {
-        return super.getRecipientEndPoint();
-    }
-
-    @Override
-    public StreamEventReceiver getStreamEventReceiver() {
-        return super.getStreamEventReceiver();
     }
 }

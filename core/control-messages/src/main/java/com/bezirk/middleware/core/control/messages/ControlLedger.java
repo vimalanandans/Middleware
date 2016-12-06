@@ -33,6 +33,7 @@ public class ControlLedger implements Ledger {
     private byte[] encryptedMessage;
     private Boolean isMessageFromHost = true; // usage not clear
     private String sphereId;    // Fixme Control Message is already having sphere id.
+    private Header header;
 
     public ControlMessage getMessage() {
         return message;
@@ -77,5 +78,11 @@ public class ControlLedger implements Ledger {
         this.isMessageFromHost = isMessageFromHost;
     }
 
+    public Header getHeader() {
+        return header;
+    }
 
+    public void setHeader(Header header) {
+        this.header = header;
+    }
 }

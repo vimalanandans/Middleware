@@ -43,13 +43,17 @@ public class StreamBook {
 
 
     //update the streamBook
-    public void updateStreamRecordInBook(Short streamKey, StreamRecord.StreamRecordStatus updateStatus, Integer port){
+    public void updateStreamRecordInBook(Short streamKey, StreamRecord.StreamRecordStatus updateStatus, Integer port, String deviceIp){
         //get the stream based on the id and update the status
         StreamRecord streamRecord = streamingQueue.get(streamKey);
         streamRecord.setStreamRecordStatus(updateStatus);
 
         if(port != null){
             streamRecord.setRecipientPort(port);
+        }
+
+        if(deviceIp != null){
+            streamRecord.setRecipientIp(deviceIp);
         }
 
         streamingQueue.put(streamKey, streamRecord);

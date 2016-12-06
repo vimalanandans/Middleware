@@ -29,7 +29,8 @@ import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import java.io.File;
 
 /**
- * Created by PIK6KOR on 11/10/2016.
+ *
+ *
  */
 
 public abstract class StreamRequest extends UnicastControlMessage {
