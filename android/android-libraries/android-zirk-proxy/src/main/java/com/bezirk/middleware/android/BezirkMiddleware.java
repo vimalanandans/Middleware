@@ -135,7 +135,7 @@ public final class BezirkMiddleware {
                     "service using BezirkMiddleware.initialize(Context) or " +
                     "BezirkMiddleware.initialize(Context, Config)");
         }
-        final ZirkId zirkId = ProxyClient.registerZirk(context, zirkName, proxyBinder.getProxyServer());
+        final ZirkId zirkId = ProxyClient.registerZirk(context, zirkName);
         return zirkId == null ? null : new ProxyClient(zirkId);
     }
 
@@ -161,6 +161,7 @@ public final class BezirkMiddleware {
                                        IBinder service) {
             synchronized (BezirkMiddleware.class) {
                 proxyBinder = (ComponentManager.ProxyBinder) service;
+                ProxyClient.registerProxyServer(proxyBinder.getProxyServer());
                 serviceBound = true;
                 logger.trace("Bezirk Service connected");
             }

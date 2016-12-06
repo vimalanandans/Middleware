@@ -33,7 +33,6 @@ import com.bezirk.middleware.core.actions.ZirkAction;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.IdentifiedEvent;
-import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
@@ -82,9 +81,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
     }
 
     private void processEvent(UnicastEventAction incomingEvent) {
-        final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
-
-        final Event event = (Event) Message.fromJson(incomingEvent.getSerializedEvent());
+        final Event event = (Event) Event.fromJson(incomingEvent.getSerializedEvent());
         final String eventName = event.getClass().getName();
 
         if (incomingEvent.isIdentified()) {
@@ -92,13 +89,18 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
             ((IdentifiedEvent) event).setMiddlewareUser(incomingEvent.isMiddlewareUser());
         }
 
-        if (ProxyClient.eventSetMap.containsKey(eventName)) {
-            final List<EventSet> eventSets = ProxyClient.eventSetMap.get(eventName);
-            for (EventSet eventSet : eventSets) {
-                eventSet.getEventReceiver().receiveEvent(event, endpoint);
+        final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
+
+        final List<EventSet> subscriptionsForZirk = ProxyClient.zirkEventSubsciptionsMap.get(incomingEvent.getZirkId());
+        final List<EventSet> subscriptionsForEvent = ProxyClient.eventSubscriptionsMap.get(eventName);
+
+        if (subscriptionsForZirk != null && subscriptionsForEvent != null) {
+            for (EventSet eventSet : subscriptionsForZirk) {
+                if (subscriptionsForEvent.contains(eventSet)) {
+                    eventSet.getEventReceiver().receiveEvent(event, endpoint);
+                }
             }
         }
-
     }
 
     private boolean isRequestForCurrentApp(final String zirkId) {

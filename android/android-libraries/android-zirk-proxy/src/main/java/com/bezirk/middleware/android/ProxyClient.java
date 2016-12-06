@@ -55,7 +55,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class ProxyClient implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(ProxyClient.class);
-    protected static final Map<String, List<EventSet>> eventSetMap = new ConcurrentHashMap<>();
+    /**
+     * Stores the list of <code>EventSet</code>(s) associated with each zirk.
+     * [Key -&gt; Value] = [ZirkId -&gt; [List of EventSets]]
+     */
+    protected static final Map<ZirkId, List<EventSet>> zirkEventSubsciptionsMap = new ConcurrentHashMap<>();
+    /**
+     * Stores the list of <code>EventSet</code>(s) associated with each eventTopic. Typically used for incoming events.
+     * [Key -&gt; Value] = [eventTopic -&gt; [List of EventSets]]
+     */
+    protected static final Map<String, List<EventSet>> eventSubscriptionsMap = new ConcurrentHashMap<>();
     protected static Context context;
     private static ProxyServer proxyServer;
     private final ZirkId zirkId;
@@ -64,9 +73,12 @@ public final class ProxyClient implements Bezirk {
         this.zirkId = zirkId;
     }
 
-    public static ZirkId registerZirk(@NotNull final Context context, final String zirkName, @NotNull final ProxyServer proxyServer) {
-        ProxyClient.context = context;
+    protected static void registerProxyServer(@NotNull final ProxyServer proxyServer){
         ProxyClient.proxyServer = proxyServer;
+    }
+
+    public static ZirkId registerZirk(@NotNull final Context context, final String zirkName) {
+        ProxyClient.context = context;
 
         if (zirkName == null) {
             throw new IllegalArgumentException("Cannot register a Zirk with a null name");
@@ -118,8 +130,7 @@ public final class ProxyClient implements Bezirk {
         logger.debug("subscribe method of ProxyClient");
         if (messageSet instanceof EventSet) {
             logger.debug("messageSet instanceof EventSet in ProxyClient");
-            //EventSet.EventReceiver listener = ((EventSet) messageSet).getEventReceiver();
-            addMessagesToMap((EventSet) messageSet, eventSetMap);
+            addEventSet((EventSet) messageSet);
         } else {
             logger.debug("messageSet is unKnown:  in ProxyClient");
             throw new AssertionError("Unknown MessageSet type: " +
@@ -130,11 +141,18 @@ public final class ProxyClient implements Bezirk {
                 zirkId, messageSet));
     }
 
-    private void addMessagesToMap(EventSet eventSet, Map<String,
-            List<EventSet>> listenerMap) {
+    private void addEventSet(final EventSet eventSet) {
+        if (zirkEventSubsciptionsMap.containsKey(zirkId)) {
+            zirkEventSubsciptionsMap.get(zirkId).add(eventSet);
+        } else {
+            List<EventSet> eventSets = new ArrayList<>();
+            eventSets.add(eventSet);
+            zirkEventSubsciptionsMap.put(zirkId, eventSets);
+        }
+
         for (String messageName : eventSet.getMessages()) {
-            if (listenerMap.containsKey(messageName)) {
-                List<EventSet> eventSetList = listenerMap.get(messageName);
+            if (eventSubscriptionsMap.containsKey(messageName)) {
+                List<EventSet> eventSetList = eventSubscriptionsMap.get(messageName);
                 if (eventSetList.contains(eventSet)) {
                     throw new IllegalArgumentException("The eventSet is already in use for " +
                             messageName);
@@ -144,7 +162,7 @@ public final class ProxyClient implements Bezirk {
             } else {
                 List<EventSet> eventSetList = new ArrayList<>();
                 eventSetList.add(eventSet);
-                listenerMap.put(messageName, eventSetList);
+                eventSubscriptionsMap.put(messageName, eventSetList);
             }
         }
     }
@@ -156,7 +174,12 @@ public final class ProxyClient implements Bezirk {
         }
 
         if (messageSet instanceof EventSet) {
-            for (List<EventSet> eventSets : eventSetMap.values()) {
+            for (List<EventSet> eventSets : eventSubscriptionsMap.values()) {
+                if (eventSets.contains(messageSet)) {
+                    eventSets.remove(messageSet);
+                }
+            }
+            for (List<EventSet> eventSets : zirkEventSubsciptionsMap.values()) {
                 if (eventSets.contains(messageSet)) {
                     eventSets.remove(messageSet);
                 }
