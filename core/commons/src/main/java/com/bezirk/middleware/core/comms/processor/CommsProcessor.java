@@ -40,6 +40,7 @@ import com.bezirk.middleware.core.util.TextCompressor;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.google.gson.Gson;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,7 +57,8 @@ import java.util.concurrent.TimeUnit;
 public abstract class CommsProcessor implements Comms, Observer {
     private static final Logger logger = LoggerFactory.getLogger(CommsProcessor.class);
     private static final int THREAD_POOL_SIZE = 4;
-
+    private static final boolean WIRE_MSG_COMPRESSION = false;
+    private static final boolean WIRE_MSG_ENCRYPTION = true;
     private final CommsMessageDispatcher msgDispatcher;
     private final SphereSecurity sphereSecurity = null; //currently not initialized
     /**
@@ -66,8 +68,6 @@ public abstract class CommsProcessor implements Comms, Observer {
      */
     private CommsNotification notification = null;
     private ExecutorService executor;
-    private static final boolean WIRE_MSG_COMPRESSION = false;
-    private static final boolean WIRE_MSG_ENCRYPTION = true;
 
     public CommsProcessor(CommsNotification commsNotification) {
         this.notification = commsNotification;
@@ -119,8 +119,8 @@ public abstract class CommsProcessor implements Comms, Observer {
     }
 
     @Override
-    public boolean sendControlMessage(ControlMessage message) {
-        ControlLedger ledger = new ControlLedger();
+    public boolean sendControlMessage(@NotNull ControlMessage message) {
+        final ControlLedger ledger = new ControlLedger();
         ledger.setMessage(message);
         ledger.setSphereId(message.getSphereId());
         ledger.setSerializedMessage(ledger.getMessage().serialize());
@@ -129,33 +129,35 @@ public abstract class CommsProcessor implements Comms, Observer {
     }
 
     @Override
-    public boolean sendControlLedger(ControlLedger ledger) {
-        boolean ret = false;
+    public boolean sendControlLedger(@NotNull ControlLedger ledger) {
+        final ControlMessage ledgerMessage = ledger.getMessage();
 
-        String data = ledger.getSerializedMessage();
-        if (data != null) {
-            if (ledger.getMessage() instanceof MulticastControlMessage) {
-                WireMessage wireMessage = prepareWireMessage(ledger.getMessage().getSphereId(), data);
-                wireMessage.setMsgType(WireMessage.WireMsgType.MSG_MULTICAST_CTRL);
-                byte[] wireByteMessage = wireMessage.serialize();
-                ret = sendToAll(wireByteMessage, false);
-            } else if (ledger.getMessage() instanceof UnicastControlMessage) {
-                WireMessage wireMessage = prepareWireMessage(ledger.getMessage().getSphereId(), data);
-                wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_CTRL);
-                byte[] wireByteMessage = wireMessage.serialize();
-                ret = sendToAll(wireByteMessage, false);
-            } else {
-                logger.debug("unknown control message");
-            }
+        if (!(ledgerMessage instanceof MulticastControlMessage) &&
+                !(ledgerMessage instanceof UnicastControlMessage)) {
+            logger.debug("unknown control message type {}", ledgerMessage.getClass().getName());
+            return false;
         }
-        return ret;
+
+        final String data = ledger.getSerializedMessage();
+        if (data == null) {
+            return false;
+        }
+
+        // At this point we know the message is a Multicast or Unicast control message
+        final WireMessage.WireMsgType messageType = ledgerMessage instanceof MulticastControlMessage ?
+                WireMessage.WireMsgType.MSG_MULTICAST_CTRL : WireMessage.WireMsgType.MSG_UNICAST_CTRL;
+
+        final WireMessage wireMessage = prepareWireMessage(ledgerMessage.getSphereId(), data);
+        wireMessage.setMsgType(messageType);
+        final byte[] wireByteMessage = wireMessage.serialize();
+        return sendToAll(wireByteMessage, false);
     }
 
     /**
      * prepares the WireMessage and returns it based on encryption and compression settings
      */
     private WireMessage prepareWireMessage(String sphereId, String data) {
-        WireMessage wireMessage = new WireMessage();
+        final WireMessage wireMessage = new WireMessage();
         wireMessage.setSphereId(sphereId);
         byte[] wireData = null;
 
@@ -200,12 +202,12 @@ public abstract class CommsProcessor implements Comms, Observer {
         return wireMessage;
     }
 
-    private byte[] compressMsg(final String data) {
+    private byte[] compressMsg(@NotNull final String data) {
         final byte[] temp;
         try {
             temp = data.getBytes(WireMessage.ENCODING);
         } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage());
+            logger.error("Failed to get wire message bytes to compress the message", e);
             throw new AssertionError(e);
         }
         final long compStartTime = System.currentTimeMillis();
@@ -220,7 +222,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         try {
             msgDataString = new String(msgData, WireMessage.ENCODING);
         } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage());
+            logger.error("Failed to get wire message bytes to encrypt the message", e);
             throw new AssertionError(e);
         }
         final byte[] msg;
@@ -236,8 +238,8 @@ public abstract class CommsProcessor implements Comms, Observer {
     private byte[] decryptMsg(String sphereId, WireMessage.WireMsgStatus msgStatus, byte[] msgData) {
         byte[] msg = null;
 
-        if ((msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED_COMPRESSED)
-                || (msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED)) {
+        if (msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED_COMPRESSED
+                || msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED) {
             String data;
             try {
                 if (sphereSecurity != null) {
@@ -538,8 +540,8 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     private class ProcessIncomingMessage implements Runnable {
         private final String deviceId;
-        private String msg = null;
         private final Ledger ledger = null;
+        private String msg = null;
 
         public ProcessIncomingMessage(String deviceId, String msg) {
             this.deviceId = deviceId;
