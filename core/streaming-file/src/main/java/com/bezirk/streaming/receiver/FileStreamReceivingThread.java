@@ -51,8 +51,8 @@ class FileStreamReceivingThread implements Runnable{
     //connection timeout
     private static final int CONNECTION_TIMEOUT_TIME = 45000;
 
-    //file download path, pull this from the property file.
-    private String filedownloadPath = null;
+    //TODO file download path, pull this from the property file.
+    private static final String fileDownloadFolder = "/storage/emulated/0/bezirk/downloads/";
 
     private File file = null;
 
@@ -64,7 +64,6 @@ class FileStreamReceivingThread implements Runnable{
 
     FileStreamReceivingThread(Integer port, File file, FileStreamPortFactory portFactory){
         this.assignedPort = port;
-        this.filedownloadPath = ""; //assign it from the property file.
         this.file = file;
         this.portFactory = portFactory;
     }
@@ -87,20 +86,26 @@ class FileStreamReceivingThread implements Runnable{
             socket.setSoTimeout(CONNECTION_TIMEOUT_TIME);
             receivingSocket = socket.accept();
 
-            tempFile = new File(filedownloadPath + file);
-            fileOutputStream = new FileOutputStream(tempFile);
-            inputStream = new DataInputStream(receivingSocket.getInputStream());
+            if(getDownloadPath(fileDownloadFolder) != null){
+                tempFile = new File(getDownloadPath(fileDownloadFolder) + file.getName());
+                fileOutputStream = new FileOutputStream(tempFile);
+                inputStream = new DataInputStream(receivingSocket.getInputStream());
 
-            int noOfBytesRead;
-            final byte[] buffer = new byte[BUFFER_SIZE];
-            while ((noOfBytesRead = inputStream.read(buffer)) != -1) {
-                fileOutputStream.write(buffer, 0, noOfBytesRead);
+                int noOfBytesRead;
+                final byte[] buffer = new byte[BUFFER_SIZE];
+                while ((noOfBytesRead = inputStream.read(buffer)) != -1) {
+                    fileOutputStream.write(buffer, 0, noOfBytesRead);
+                }
+
+                //release the port.
+                portFactory.releasePort(assignedPort);
+
+                streamErrored = false;
+            }else{
+                logger.error("Failed to create folder!!!");
             }
 
-            //release the port.
-            portFactory.releasePort(assignedPort);
 
-            streamErrored = false;
         } catch (SocketException e) {
             logger.error("Connection Timeout, the client didn't connect within specified timeout", e);
             if (tempFile != null && tempFile.exists() && !tempFile.delete()) {
@@ -154,6 +159,23 @@ class FileStreamReceivingThread implements Runnable{
 
             logger.error("Exception in closing resources.", e);
         }
+    }
+
+    /**
+     * creates the folder if not existing and returns the download path for the respective environment
+     * @return downloadFolder Path of the download folder.
+     */
+    private String getDownloadPath(String downloadFolder){
+        final File createDownloadFolder = new File(
+                downloadFolder);
+        if (!createDownloadFolder.exists()) {
+            if (!createDownloadFolder.mkdir()) {
+                logger.error("Failed to create download direction: "+
+                        createDownloadFolder.getAbsolutePath());
+                return null;
+            }
+        }
+        return downloadFolder;
     }
 
 
