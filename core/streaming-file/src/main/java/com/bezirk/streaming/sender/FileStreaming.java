@@ -24,6 +24,7 @@ package com.bezirk.streaming.sender;
 
 import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.comms.Comms;
+import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.GenerateMsgId;
@@ -67,14 +68,14 @@ public final class FileStreaming implements Streaming {
     private static final String id = UUID.randomUUID().toString();
 
     //constructor
-    public FileStreaming(Comms comms){
+    public FileStreaming(Comms comms, EventMsgReceiver msgReceiver){
         this.comms = comms;
         streamBook = new StreamBook();
         logger.info("FileStreaming module was Initialized!!");
 
         //register the receiver module
         FileStreamEventReceiver fileStreamEventReceiver = new FileStreamEventReceiver();
-        fileStreamEventReceiver.initFileStreamEventObserver(comms);
+        fileStreamEventReceiver.initFileStreamEventObserver(comms, msgReceiver);
 
         //register the control receiver
         comms.registerControlMessageReceiver(ControlMessage.Discriminator.STREAM_REQUEST,
@@ -105,15 +106,13 @@ public final class FileStreaming implements Streaming {
         }
 
         StreamRecord streamRecord = new StreamRecord(streamAction.getStreamId(), (BezirkZirkEndPoint) fileStream.getRecipientEndPoint(), fileStream.getFile(), sender);
+        streamRecord.setZirkId(streamAction.getZirkId());
 
         //add the record to streaming
         boolean isAdded = addStreamRecordToBook(streamRecord);
 
         //send a event to receiver when the streamRecord is stored
         if(isAdded){
-
-
-
             logger.info("StreamRecord "+ streamAction.getStreamId() +" was added to the StreamBook, sending ControlMessage over comms to receiver");
             final ControlLedger controlLedger = new ControlLedger();
             final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(sender));

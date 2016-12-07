@@ -33,12 +33,12 @@ import java.io.Serializable;
  *
  */
 
-public class Stream extends Message implements Serializable{
+public abstract class Stream extends Message implements Serializable{
 
     // recipientEndPoint, This will be the endPoint
     private ZirkEndPoint recipientEndPoint;
 
-    /*private StreamEventReceiver streamEventReceiver = null;*/
+    private transient StreamEventReceiver streamEventReceiver = null;
 
     //default constructor
     public Stream(){
@@ -63,27 +63,27 @@ public class Stream extends Message implements Serializable{
      * set event receiver.
      * @param receiver
      */
-    /*public void setEventReceiver(StreamEventReceiver receiver) {
+    public void setEventReceiver(StreamEventReceiver receiver) {
         this.streamEventReceiver = receiver;
     }
 
     public StreamEventReceiver getStreamEventReceiver() {
         return streamEventReceiver;
-    }*/
+    }
 
     /**
      * Interface implemented by observers of an <code>StreamSet</code> that want to be notified when
      * an event in this set is received.
      */
-    /*public interface StreamEventReceiver extends Serializable{
-        *//**
+    public interface StreamEventReceiver extends Serializable{
+        /**
          * Called to notify the subscriber that a new event was received.
          *
          * @param event  the received event
          * @param sender the sender of the event
-         *//*
+         */
         void receiveStreamEvent(StreamEvent event, ZirkEndPoint sender);
 
-    }*/
+    }
 
 }

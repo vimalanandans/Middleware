@@ -25,6 +25,7 @@
  */
 package com.bezirk.middleware.core.proxy;
 
+import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 
 /**
@@ -38,4 +39,6 @@ public interface MessageHandler {
      * @param eventIncomingMessage the callback message that will be fired.
      */
     void onIncomingEvent(UnicastEventAction eventIncomingMessage);
+
+    void onIncomingStreamEvent(StreamAction streamMessage);
 }

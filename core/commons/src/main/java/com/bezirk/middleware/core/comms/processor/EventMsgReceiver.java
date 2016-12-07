@@ -22,6 +22,8 @@
  */
 package com.bezirk.middleware.core.comms.processor;
 
+import com.bezirk.middleware.core.actions.StreamAction;
+import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.EventLedger;
 
 /**
@@ -37,4 +39,6 @@ public interface EventMsgReceiver {
      * @return true if the event is processed
      */
     boolean processEvent(final EventLedger eLedger);
+
+    boolean processStreamEvent(final StreamAction streamAction);
 }

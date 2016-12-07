@@ -24,6 +24,7 @@ package com.bezirk.streaming.receiver;
 
 import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.comms.CtrlMsgReceiver;
+import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.streaming.FileStreamRequest;
 
@@ -69,7 +70,7 @@ public class FileStreamEventReceiver implements CtrlMsgReceiver {
      * pass the comms object to StreamAliveObserver as it is required to send reply
      * @param comms
      */
-    public void initFileStreamEventObserver(Comms comms){
-        fileStreamRequestObserver.initStreamRequestObserver(comms);
+    public void initFileStreamEventObserver(Comms comms, EventMsgReceiver msgReceiver){
+        fileStreamRequestObserver.initStreamRequestObserver(comms, msgReceiver);
     }
 }

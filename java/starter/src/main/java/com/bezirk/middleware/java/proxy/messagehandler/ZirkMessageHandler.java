@@ -22,6 +22,7 @@
  */
 package com.bezirk.middleware.java.proxy.messagehandler;
 
+import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.proxy.MessageHandler;
 
 import org.slf4j.Logger;
@@ -40,6 +41,15 @@ public final class ZirkMessageHandler implements MessageHandler {
     public void onIncomingEvent(com.bezirk.middleware.core.actions.UnicastEventAction eventIncomingMessage) {
         if (zirkBroadcastReceiver != null) {
             zirkBroadcastReceiver.onReceive(eventIncomingMessage);
+        } else {
+            logger.debug("Broadcast Receiver For Zirk is null, cannot give callback");
+        }
+    }
+
+    @Override
+    public void onIncomingStreamEvent(StreamAction streamMessage) {
+        if (zirkBroadcastReceiver != null) {
+            zirkBroadcastReceiver.onReceive(streamMessage);
         } else {
             logger.debug("Broadcast Receiver For Zirk is null, cannot give callback");
         }

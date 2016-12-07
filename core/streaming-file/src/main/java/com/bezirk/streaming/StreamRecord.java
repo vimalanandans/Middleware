@@ -24,6 +24,7 @@ package com.bezirk.streaming;
 
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
+import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 import java.io.File;
 
@@ -56,6 +57,12 @@ public class StreamRecord {
 
     // recipient Port,set after getting the Stream Response
     private String recipientIp;
+
+    private ZirkId zirkId;
+
+    public StreamRecord(){
+        //default contsructor
+    }
 
     public StreamRecord(Short streamId, BezirkZirkEndPoint recipientEndPoint, File file, BezirkZirkEndPoint senderEndPoint){
         this.streamId = streamId;
@@ -102,6 +109,14 @@ public class StreamRecord {
 
     public int getRecipientPort() {
         return recipientPort;
+    }
+
+    public void setZirkId(ZirkId zirkId) {
+        this.zirkId = zirkId;
+    }
+
+    public ZirkId getZirkId() {
+        return zirkId;
     }
 
     public BezirkZirkEndPoint getSenderSEP() {

@@ -89,12 +89,12 @@ public class StreamingActivity extends AppCompatActivity {
                 if (filePath != null) {
                     File file = new File(filePath);
                     Stream fileStream = new FileStream(recipientEndpoint, file);
-                    /*fileStream.setEventReceiver(new Stream.StreamEventReceiver() {
+                    fileStream.setEventReceiver(new Stream.StreamEventReceiver() {
                         @Override
                         public void receiveStreamEvent(StreamEvent event, ZirkEndPoint sender) {
                             //to be tested
                         }
-                    });*/
+                    });
                     //StreamController controller = bezirk.sendStream(fileStream);
                     //use this line to stop streaming
                     //controller.stopStreaming();

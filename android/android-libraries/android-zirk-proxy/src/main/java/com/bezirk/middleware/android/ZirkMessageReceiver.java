@@ -28,14 +28,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.actions.ZirkAction;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.messages.Message;
+import com.bezirk.middleware.messages.StreamEvent;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
+import com.bezirk.middleware.streaming.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +64,9 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
                 case ACTION_ZIRK_RECEIVE_EVENT:
                     processEvent((UnicastEventAction) message);
                     break;
+                case ACTION_ZIRK_RECEIVE_STREAM:
+                    processStream((StreamAction) message);
+                    break;
                 default:
                     logger.error("Unimplemented action: " + message.getAction());
             }
@@ -81,6 +87,10 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         return true;
     }
 
+    /**
+     *
+     * @param incomingEvent
+     */
     private void processEvent(UnicastEventAction incomingEvent) {
         final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
 
@@ -96,6 +106,24 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
             final List<EventSet> eventSets = ProxyClient.eventSetMap.get(eventName);
             for (EventSet eventSet : eventSets) {
                 eventSet.getEventReceiver().receiveEvent(event, endpoint);
+            }
+        }
+
+    }
+
+    /**
+     *
+     * @param incomingStreamEvent
+     */
+    private void processStream(StreamAction incomingStreamEvent){
+        final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingStreamEvent.getStreamRequest().getRecipientEndPoint();
+        final Short streamID = incomingStreamEvent.getStreamId();
+
+        if (ProxyClient.streamSetMap.containsKey(streamID)) {
+            final Stream.StreamEventReceiver receiver = ProxyClient.streamSetMap.get(streamID);
+            if(receiver != null){
+                StreamEvent streamEvent = new StreamEvent(incomingStreamEvent.getStreamStatus(), incomingStreamEvent.getStreamId());
+                receiver.receiveStreamEvent(streamEvent, endpoint);
             }
         }
 

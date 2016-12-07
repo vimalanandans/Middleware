@@ -25,6 +25,7 @@ package com.bezirk.middleware.android.proxy.android;
 import android.content.Context;
 import android.content.Intent;
 
+import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.proxy.MessageHandler;
 
@@ -46,6 +47,11 @@ public class ZirkMessageHandler implements MessageHandler {
         final Intent intent = new Intent();
         intent.putExtra("message", eventIncomingMessage);
         sendZirkIntent(intent);
+    }
+
+    @Override
+    public void onIncomingStreamEvent(StreamAction streamMessage) {
+        //TODO has to be implemented
     }
 
     private void sendZirkIntent(Intent intent) {

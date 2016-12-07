@@ -38,6 +38,11 @@ public class StreamAction extends ZirkAction {
     private BezirkAction bezirkAction;
     private Stream stream;
 
+    private String streamStatus;
+
+    public StreamAction(ZirkId zirkId){
+        super(zirkId);
+    }
     public StreamAction(ZirkId zirkId, short streamId, Stream stream, BezirkAction bezirkAction){
         super(zirkId);
         this.stream  = stream;
@@ -50,11 +55,27 @@ public class StreamAction extends ZirkAction {
         return bezirkAction;
     }
 
+    public void setBezirkAction(BezirkAction bezirkAction) {
+        this.bezirkAction = bezirkAction;
+    }
+
     public Stream getStreamRequest() {
         return stream;
     }
 
     public short getStreamId() {
         return streamId;
+    }
+
+    public void setStreamId(short streamId) {
+        this.streamId = streamId;
+    }
+
+    public String getStreamStatus() {
+        return streamStatus;
+    }
+
+    public void setStreamStatus(String streamStatus) {
+        this.streamStatus = streamStatus;
     }
 }

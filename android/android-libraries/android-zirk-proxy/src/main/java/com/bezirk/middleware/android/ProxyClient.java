@@ -39,11 +39,11 @@ import com.bezirk.middleware.core.actions.SubscriptionAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.identity.IdentityManager;
 import com.bezirk.middleware.messages.Event;
-import com.bezirk.middleware.streaming.Stream;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
+import com.bezirk.middleware.streaming.Stream;
 import com.bezirk.middleware.streaming.StreamController;
 
 import org.jetbrains.annotations.NotNull;
@@ -59,6 +59,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class ProxyClient implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(ProxyClient.class);
     protected static final Map<String, List<EventSet>> eventSetMap = new ConcurrentHashMap<>();
+    protected static final Map<Short, Stream.StreamEventReceiver> streamSetMap = new ConcurrentHashMap<>();
     protected static Context context;
     private static IntentSender intentSender;
     private final ZirkId zirkId;
@@ -231,6 +232,9 @@ public final class ProxyClient implements Bezirk {
 
         BezirkAction bezirkAction  = BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM;
         intentSender.sendBezirkIntent(new StreamAction(zirkId, streamID,streamRequest, bezirkAction));
+
+        //add the streamReciver to streamSetMap
+        streamSetMap.put(streamID, streamRequest.getStreamEventReceiver());
         return fileStreamController;
     }
 

@@ -22,10 +22,14 @@
  */
 package com.bezirk.streaming.receiver;
 
+import com.bezirk.middleware.core.actions.BezirkAction;
+import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.comms.Comms;
+import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
 import com.bezirk.middleware.core.streaming.StreamReceiver;
 import com.bezirk.middleware.core.streaming.StreamRequest;
 import com.bezirk.streaming.StreamBook;
+import com.bezirk.streaming.StreamRecord;
 import com.bezirk.streaming.portfactory.FileStreamPortFactory;
 
 import org.slf4j.Logger;
@@ -38,22 +42,35 @@ import java.util.Observable;
  * Created by PIK6KOR on 11/14/2016.
  */
 
-public class FileStreamRequestObserver extends Observable implements StreamReceiver{
+public class FileStreamRequestObserver extends Observable implements StreamReceiver, ZirkMessageHandler{
     private static final Logger logger = LoggerFactory
             .getLogger(FileStreamRequestObserver.class);
 
-    public void initStreamRequestObserver(Comms comms){
-        if(comms != null){
+    private EventMsgReceiver eventMsgReceiver = null;
+
+    public void initStreamRequestObserver(Comms comms, EventMsgReceiver eventMsgReceiver){
+        if(comms != null || eventMsgReceiver != null){
+            this.eventMsgReceiver = eventMsgReceiver;
             StreamBook streamBook = new StreamBook();
             FileStreamPortFactory portFactory = new FileStreamPortFactory();
 
             //initialize the observers
-            addObserver(new StreamAliveObserver(comms, streamBook, portFactory));
+            addObserver(new StreamAliveObserver(comms, streamBook, portFactory, this));
             addObserver(new StreamAssignedObserver(streamBook, portFactory));
-            addObserver(new StreamBusyObserver());
         }else{
             logger.error("Comms has to be initialized!!!");
         }
+    }
+
+    @Override
+    public void callBackToZirk(StreamRecord streamRecord){
+        StreamAction streamAction  = new StreamAction(streamRecord.getZirkId());
+        streamAction.setStreamId(streamRecord.getStreamId());
+        streamAction.setStreamStatus(streamRecord.getStreamRecordStatus().toString());
+        streamAction.setBezirkAction(BezirkAction.ACTION_ZIRK_RECEIVE_STREAM);
+
+        eventMsgReceiver.processStreamEvent(streamAction);
+
     }
 
     @Override
@@ -63,6 +80,13 @@ public class FileStreamRequestObserver extends Observable implements StreamRecei
         notifyObservers(streamRequest);
     }
 
-
-
 }
+
+/**
+ *
+ */
+interface ZirkMessageHandler{
+    public void callBackToZirk(StreamRecord streamRecord);
+}
+
+

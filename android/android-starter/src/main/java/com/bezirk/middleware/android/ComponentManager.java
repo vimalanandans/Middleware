@@ -206,7 +206,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         proxyServer.setPubSubBrokerService(pubSubBroker);
 
         //initialize streaming, Remember DI should be way forward.
-        streaming = new FileStreaming(comms);
+        streaming = new FileStreaming(comms, pubSubBroker);
         proxyServer.setStreaming(streaming);
     }
 

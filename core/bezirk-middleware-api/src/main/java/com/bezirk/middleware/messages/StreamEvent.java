@@ -25,7 +25,8 @@ package com.bezirk.middleware.messages;
 import java.io.File;
 
 /**
- * Created by PIK6KOR on 11/22/2016.
+ *
+ *
  */
 
 public class StreamEvent {
@@ -34,19 +35,32 @@ public class StreamEvent {
     private StreamRecordStatus streamRecordStatus;
 
     //streamfile information
-    private File file;
+    /*private File file;*/
 
     //primary key of the stream information
     private Short streamId;
 
+    public StreamEvent(String streamRecordStatus, /*File file, */Short streamId){
+        this.streamRecordStatus = StreamRecordStatus.valueOf(streamRecordStatus);
+        /*this.file = file;*/
+        this.streamId = streamId;
+    }
+
+    public Short getStreamId() {
+        return streamId;
+    }
+
+    public StreamRecordStatus getStreamRecordStatus() {
+        return streamRecordStatus;
+    }
 
     /* Streaming Status indicates the status of the Streams.
-             * ALIVE -  Status for sender, when we has initiated a request.
-             * ADDRESSED   -  indicating the recipient has received the request.
-             * ASSIGNED - If the Port was free for recipient, and has agreed to receive the file.
-             * BUSY -  indicating the receipient is busy, All the active ports are consumed.
-             * COMPLETED -  Indicates that file transfer was complete.
-             * */
+                     * ALIVE -  Status for sender, when we has initiated a request.
+                     * ADDRESSED   -  indicating the recipient has received the request.
+                     * ASSIGNED - If the Port was free for recipient, and has agreed to receive the file.
+                     * BUSY -  indicating the receipient is busy, All the active ports are consumed.
+                     * COMPLETED -  Indicates that file transfer was complete.
+                     * */
     public enum StreamRecordStatus {
         ALIVE, ADDRESSED, ASSIGNED , BUSY, COMPLETED
 

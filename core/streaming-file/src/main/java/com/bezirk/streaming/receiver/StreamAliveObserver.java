@@ -22,8 +22,12 @@
  */
 package com.bezirk.streaming.receiver;
 
+import com.bezirk.middleware.core.actions.BezirkAction;
+import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.comms.Comms;
+import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
+import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.streaming.FileStreamRequest;
 import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.StreamRecord;
@@ -64,17 +68,19 @@ class StreamAliveObserver implements Observer {
     //streamBook and Portfactory also needs to be dependency injected.
     private StreamBook streamBook;
     private FileStreamPortFactory portFactory;
+    private ZirkMessageHandler zirkMessageHandler;
 
     //logger instance
     private static final Logger logger = LoggerFactory
             .getLogger(FileStreamRequestObserver.class);
 
 
-    StreamAliveObserver(Comms comms, StreamBook streamBook, FileStreamPortFactory portFactory){
+    StreamAliveObserver(Comms comms, StreamBook streamBook, FileStreamPortFactory portFactory, ZirkMessageHandler zirkMessageHandler){
         this.comms = comms;
         this.fileStreamReceiverExecutor = Executors.newFixedThreadPool(THREAD_SIZE);
         this.streamBook = streamBook;
         this.portFactory = portFactory;
+        this.zirkMessageHandler = zirkMessageHandler;
     }
 
     @Override
@@ -100,13 +106,6 @@ class StreamAliveObserver implements Observer {
                 FileStreamReceivingThread streamReceivingThread =new FileStreamReceivingThread(assignedPort, streamRecord.getFile(), portFactory);
                 fileStreamReceiverExecutor.submit(streamReceivingThread);
 
-                /*if(*//*featureCallbackReturnsTrue*//* true) {
-
-                    //update the status to compete and notify the sender that the file receive is complete.
-                    streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.COMPLETED, null, null);
-
-
-                }*/
 
                 //reply to the sender with status
                 replyToSender(streamRecord);
@@ -122,10 +121,13 @@ class StreamAliveObserver implements Observer {
                 replyToSender(streamRecord);
             }
 
-
+            //give a callback status to zirk of updated status.
+            zirkMessageHandler.callBackToZirk(streamRecord);
         }
 
     }
+
+
 
     /**
      * reply to sender with the given stream staus.
@@ -147,7 +149,8 @@ class StreamAliveObserver implements Observer {
 
 
     /**
-     * Get IP address from first non-localhost interface
+     * //TODO remove this, not good!! temp fix
+     * Get IP address from first non-localhost interface, This has to be removed!!!!!!!!!!!!!!
      * @return  address or empty string
      */
     private static String getIPAddress() {
