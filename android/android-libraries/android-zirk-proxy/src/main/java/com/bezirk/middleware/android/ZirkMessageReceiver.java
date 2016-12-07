@@ -52,12 +52,15 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         try {
             message = (ZirkAction) intent.getSerializableExtra("message");
         } catch (Exception e) {
-            //to prevent app crash due to  java.io.InvalidClassException
+            // java.io.InvalidClassException is thrown when there is a difference in the serialVersionUID,
+            // see http://docs.oracle.com/javase/7/docs/api/java/io/Serializable.html
+            // As the exception is not thrown by intent.getSerializableExtra(),
+            // it is caught using Exception
             logger.warn("Failed to read serialized message from intent", e);
             return;
         }
 
-        if (isValidRequest(message.getZirkId()) && message.getAction().equals(BezirkAction.ACTION_ZIRK_RECEIVE_EVENT)) {
+        if (isValidRequest(message.getZirkId()) && BezirkAction.ACTION_ZIRK_RECEIVE_EVENT.equals(message.getAction())) {
             processEvent((UnicastEventAction) message);
         }
 

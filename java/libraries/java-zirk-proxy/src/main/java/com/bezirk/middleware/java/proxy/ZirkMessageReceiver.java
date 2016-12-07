@@ -22,6 +22,7 @@
  */
 package com.bezirk.middleware.java.proxy;
 
+import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.actions.ZirkAction;
 import com.bezirk.middleware.java.proxy.messagehandler.BroadcastReceiver;
@@ -31,29 +32,29 @@ import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Map;
 import java.util.Set;
-
-import static com.bezirk.middleware.core.actions.BezirkAction.ACTION_ZIRK_RECEIVE_EVENT;
 
 public class ZirkMessageReceiver implements BroadcastReceiver {
     private final Map<ZirkId, Set<EventSet.EventReceiver>> eventMap;
     private final Map<String, Set<EventSet.EventReceiver>> eventListenerMap;
 
-    public ZirkMessageReceiver(Map<ZirkId, Set<EventSet.EventReceiver>> eventMap,
-                               Map<String, Set<EventSet.EventReceiver>> eventListenerMap) {
+    public ZirkMessageReceiver(@NotNull final Map<ZirkId, Set<EventSet.EventReceiver>> eventMap,
+                               @NotNull final Map<String, Set<EventSet.EventReceiver>> eventListenerMap) {
         super();
         this.eventMap = eventMap;
         this.eventListenerMap = eventListenerMap;
     }
 
     @Override
-    public void onReceive(ZirkAction incomingMessage) {
+    public void onReceive(@NotNull final ZirkAction incomingMessage) {
         if (!eventMap.containsKey(incomingMessage.getZirkId())) {
             return;
         }
 
-        if (incomingMessage.getAction().equals(ACTION_ZIRK_RECEIVE_EVENT)) {
+        if (BezirkAction.ACTION_ZIRK_RECEIVE_EVENT.equals(incomingMessage.getAction())) {
             processEvent((UnicastEventAction) incomingMessage);
         }
     }
@@ -64,7 +65,7 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
      *
      * @param incomingEvent new event to send up to Zirks registered to receive it
      */
-    private void processEvent(UnicastEventAction incomingEvent) {
+    private void processEvent(@NotNull final UnicastEventAction incomingEvent) {
         final Event event = (Event) Event.fromJson(incomingEvent.getSerializedEvent());
         final String eventName = event.getClass().getName();
 
