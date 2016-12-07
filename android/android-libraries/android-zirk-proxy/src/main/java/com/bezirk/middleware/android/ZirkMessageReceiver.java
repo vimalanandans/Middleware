@@ -116,14 +116,13 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
      * @param incomingStreamEvent
      */
     private void processStream(StreamAction incomingStreamEvent){
-        final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingStreamEvent.getStreamRequest().getRecipientEndPoint();
         final Short streamID = incomingStreamEvent.getStreamId();
 
         if (ProxyClient.streamSetMap.containsKey(streamID)) {
             final Stream.StreamEventReceiver receiver = ProxyClient.streamSetMap.get(streamID);
             if(receiver != null){
                 StreamEvent streamEvent = new StreamEvent(incomingStreamEvent.getStreamStatus(), incomingStreamEvent.getStreamId());
-                receiver.receiveStreamEvent(streamEvent, endpoint);
+                receiver.receiveStreamEvent(streamEvent);
             }
         }
 

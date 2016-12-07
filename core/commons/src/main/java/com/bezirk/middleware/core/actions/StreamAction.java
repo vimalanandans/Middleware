@@ -22,6 +22,8 @@
  */
 package com.bezirk.middleware.core.actions;
 
+import com.bezirk.middleware.addressing.ZirkEndPoint;
+import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.bezirk.middleware.streaming.Stream;
 
@@ -39,6 +41,7 @@ public class StreamAction extends ZirkAction {
     private Stream stream;
 
     private String streamStatus;
+    private ZirkEndPoint senderZirkEndPoint;
 
     public StreamAction(ZirkId zirkId){
         super(zirkId);
@@ -63,6 +66,10 @@ public class StreamAction extends ZirkAction {
         return stream;
     }
 
+    public void setStream(Stream stream) {
+        this.stream = stream;
+    }
+
     public short getStreamId() {
         return streamId;
     }
@@ -77,5 +84,13 @@ public class StreamAction extends ZirkAction {
 
     public void setStreamStatus(String streamStatus) {
         this.streamStatus = streamStatus;
+    }
+
+    public void setSenderZirkEndPoint(ZirkEndPoint senderZirkEndPoint) {
+        this.senderZirkEndPoint = senderZirkEndPoint;
+    }
+
+    public ZirkEndPoint getSenderZirkEndPoint() {
+        return senderZirkEndPoint;
     }
 }

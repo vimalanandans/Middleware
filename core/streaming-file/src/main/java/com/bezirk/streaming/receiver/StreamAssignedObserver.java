@@ -22,6 +22,7 @@
  */
 package com.bezirk.streaming.receiver;
 
+import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
 import com.bezirk.middleware.core.streaming.StreamRequest;
 import com.bezirk.streaming.FileStreamRequest;
 import com.bezirk.streaming.StreamBook;
@@ -46,19 +47,17 @@ class StreamAssignedObserver implements Observer {
     //executor which handles the file stream receiving thread.
     private ExecutorService fileStreamSenderExecutor;
 
-    //stream book
     private StreamBook streamBook;
-
-    //port factory
     private FileStreamPortFactory portFactory;
-
+    private ZirkMessageHandler zirkMessageHandler;
     //Thread size
     private static final int THREAD_SIZE = 10;
 
-    StreamAssignedObserver(StreamBook streamBook, FileStreamPortFactory portFactory){
+    StreamAssignedObserver(StreamBook streamBook, FileStreamPortFactory portFactory, ZirkMessageHandler zirkMessageHandler){
         this.streamBook = streamBook;
         this.portFactory = portFactory;
         this.fileStreamSenderExecutor = Executors.newFixedThreadPool(THREAD_SIZE);
+        this.zirkMessageHandler = zirkMessageHandler;
     }
 
     @Override
@@ -73,6 +72,11 @@ class StreamAssignedObserver implements Observer {
             // This will be reply to the sender, Start the sender thread and initiate file transmission.
             FileStreamSenderThread fileStreamSenderThread = new FileStreamSenderThread(streamRecord);
             fileStreamSenderExecutor.execute(fileStreamSenderThread);
+
+            //TODO Submit the fututre task and on complete callback zirk message
+
+            //give a callback status to zirk of updated status.
+            zirkMessageHandler.callBackToZirk(streamRecord);
 
         }
 

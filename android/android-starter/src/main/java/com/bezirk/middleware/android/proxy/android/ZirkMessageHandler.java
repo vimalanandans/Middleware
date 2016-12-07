@@ -51,7 +51,9 @@ public class ZirkMessageHandler implements MessageHandler {
 
     @Override
     public void onIncomingStreamEvent(StreamAction streamMessage) {
-        //TODO has to be implemented
+        final Intent intent = new Intent();
+        intent.putExtra("message", streamMessage);
+        sendZirkIntent(intent);
     }
 
     private void sendZirkIntent(Intent intent) {

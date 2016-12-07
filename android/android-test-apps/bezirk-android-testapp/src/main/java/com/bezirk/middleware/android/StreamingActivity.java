@@ -2,11 +2,13 @@
 package com.bezirk.middleware.android;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -91,8 +93,8 @@ public class StreamingActivity extends AppCompatActivity {
                     Stream fileStream = new FileStream(recipientEndpoint, file);
                     fileStream.setEventReceiver(new Stream.StreamEventReceiver() {
                         @Override
-                        public void receiveStreamEvent(StreamEvent event, ZirkEndPoint sender) {
-                            //to be tested
+                        public void receiveStreamEvent(StreamEvent event) {
+                            Toast.makeText(getApplicationContext(),"Status :: "+event.getStreamRecordStatus() ,Toast.LENGTH_SHORT).show();
                         }
                     });
                     //StreamController controller = bezirk.sendStream(fileStream);

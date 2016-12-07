@@ -80,9 +80,8 @@ public abstract class Stream extends Message implements Serializable{
          * Called to notify the subscriber that a new event was received.
          *
          * @param event  the received event
-         * @param sender the sender of the event
          */
-        void receiveStreamEvent(StreamEvent event, ZirkEndPoint sender);
+        void receiveStreamEvent(StreamEvent event);
 
     }
 
