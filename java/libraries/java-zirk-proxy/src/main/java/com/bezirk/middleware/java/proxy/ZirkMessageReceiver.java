@@ -31,15 +31,12 @@ import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Map;
 import java.util.Set;
 
-public class ZirkMessageReceiver implements BroadcastReceiver {
-    private static final Logger logger = LoggerFactory.getLogger(ZirkMessageReceiver.class);
+import static com.bezirk.middleware.core.actions.BezirkAction.ACTION_ZIRK_RECEIVE_EVENT;
 
+public class ZirkMessageReceiver implements BroadcastReceiver {
     private final Map<ZirkId, Set<EventSet.EventReceiver>> eventMap;
     private final Map<String, Set<EventSet.EventReceiver>> eventListenerMap;
 
@@ -52,14 +49,12 @@ public class ZirkMessageReceiver implements BroadcastReceiver {
 
     @Override
     public void onReceive(ZirkAction incomingMessage) {
-        if (!eventMap.containsKey(incomingMessage.getZirkId())) return;
+        if (!eventMap.containsKey(incomingMessage.getZirkId())) {
+            return;
+        }
 
-        switch (incomingMessage.getAction()) {
-            case ACTION_ZIRK_RECEIVE_EVENT:
-                processEvent((UnicastEventAction) incomingMessage);
-                break;
-            default:
-                logger.error("Unimplemented action: {}", incomingMessage.getAction());
+        if (incomingMessage.getAction().equals(ACTION_ZIRK_RECEIVE_EVENT)) {
+            processEvent((UnicastEventAction) incomingMessage);
         }
     }
 

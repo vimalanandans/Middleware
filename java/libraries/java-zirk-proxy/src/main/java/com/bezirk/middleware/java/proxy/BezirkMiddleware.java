@@ -58,7 +58,9 @@ public final class BezirkMiddleware {
      * {@link BezirkMiddleware} is started using default configurations {@link Config} with
      * {@link Config#groupName} set to the passed <code>channelId</code>.
      * </p>
-     *
+     * @param channelId channel identifier associated with this <code>BezirkMiddleware</code> instance.
+     *                  <code>BezirkMiddleware</code> instances on the same <code>channelId</code>
+     *                  can communicate with each other.
      * @see #initialize()
      * @see #initialize(Config)
      * @see #stop()
@@ -77,12 +79,8 @@ public final class BezirkMiddleware {
      * registered using {@link BezirkMiddleware#registerZirk(String)}.
      * </p>
      *
-     * @param config custom configurations to be used by Bezirk service
-     *               <ul>
-     *               <li>If <code>null</code>, a default configuration is used</li>
-     *               <li>If not <code>null</code>, Bezirk service is created for the current application,
-     *               even if an existing Bezirk service(inside the Bezirk Application) is running in the device.</li>
-     *               </ul>
+     * @param config custom configurations to be used by the Bezirk service.
+     *               If <code>null</code>, default configuration is used.
      * @see #initialize()
      * @see #initialize(String)
      * @see #stop()

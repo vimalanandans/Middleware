@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.actions.ZirkAction;
 import com.bezirk.middleware.messages.Event;
@@ -50,20 +51,16 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         ZirkAction message;
         try {
             message = (ZirkAction) intent.getSerializableExtra("message");
-        } catch (Exception e) { //to prevent app crash due to  java.io.InvalidClassException
+        } catch (Exception e) {
+            //to prevent app crash due to  java.io.InvalidClassException
             logger.warn("Failed to read serialized message from intent", e);
             return;
         }
 
-        if (isValidRequest(message.getZirkId())) {
-            switch (message.getAction()) {
-                case ACTION_ZIRK_RECEIVE_EVENT:
-                    processEvent((UnicastEventAction) message);
-                    break;
-                default:
-                    logger.error("Unimplemented action: " + message.getAction());
-            }
+        if (isValidRequest(message.getZirkId()) && message.getAction().equals(BezirkAction.ACTION_ZIRK_RECEIVE_EVENT)) {
+            processEvent((UnicastEventAction) message);
         }
+
     }
 
     private boolean isValidRequest(ZirkId receivedZirkId) {
@@ -111,7 +108,6 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
                 return true;
             }
         }
-
         return false;
     }
 }

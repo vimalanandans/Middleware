@@ -102,7 +102,8 @@ public final class BezirkMiddleware {
      * or when the application is closed by the user.
      * </p>
      *
-     * @param config custom configurations to be used when initializing the Bezirk service
+     * @param config custom configurations to be used by the Bezirk service.
+     *               If <code>null</code>, default configuration is used.
      * @see #initialize(Context)
      * @see #initialize(Context, String)
      * @see #stop()
@@ -113,7 +114,11 @@ public final class BezirkMiddleware {
             return;
         }
         BezirkMiddleware.context = context;
+
+        //start service to allow it to run in the background
         context.startService(new Intent(context, ComponentManager.class));
+
+        //bind to the service to get the IBinder interface for communication
         final Intent intent = new Intent(context, ComponentManager.class);
         intent.putExtra(Config.class.getSimpleName(), (config == null) ? new Config() : config);
         context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);

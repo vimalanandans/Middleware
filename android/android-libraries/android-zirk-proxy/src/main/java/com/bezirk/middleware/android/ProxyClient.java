@@ -53,7 +53,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public final class ProxyClient implements Bezirk {
+public class ProxyClient implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(ProxyClient.class);
     /**
      * Stores the list of <code>EventSet</code>(s) associated with each zirk.

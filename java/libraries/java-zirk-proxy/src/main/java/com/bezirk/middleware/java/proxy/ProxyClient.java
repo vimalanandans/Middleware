@@ -143,7 +143,7 @@ public class ProxyClient implements Bezirk {
                 messageSet));
     }
 
-    private void addTopicsToMaps(final ZirkId subscriber, final MessageSet messageSet,
+    private static void addTopicsToMaps(final ZirkId subscriber, final MessageSet messageSet,
                                  final EventSet.EventReceiver listener,
                                  Map<String, Set<EventSet.EventReceiver>> listenerMap) {
         for (String messageName : messageSet.getMessages()) {
