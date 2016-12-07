@@ -145,14 +145,14 @@ public class ProxyClient implements Bezirk {
         if (zirkEventSubsciptionsMap.containsKey(zirkId)) {
             zirkEventSubsciptionsMap.get(zirkId).add(eventSet);
         } else {
-            List<EventSet> eventSets = new ArrayList<>();
+            final List<EventSet> eventSets = new ArrayList<>();
             eventSets.add(eventSet);
             zirkEventSubsciptionsMap.put(zirkId, eventSets);
         }
 
         for (String messageName : eventSet.getMessages()) {
             if (eventSubscriptionsMap.containsKey(messageName)) {
-                List<EventSet> eventSetList = eventSubscriptionsMap.get(messageName);
+                final List<EventSet> eventSetList = eventSubscriptionsMap.get(messageName);
                 if (eventSetList.contains(eventSet)) {
                     throw new IllegalArgumentException("The eventSet is already in use for " +
                             messageName);
@@ -160,7 +160,7 @@ public class ProxyClient implements Bezirk {
                     eventSetList.add(eventSet);
                 }
             } else {
-                List<EventSet> eventSetList = new ArrayList<>();
+                final List<EventSet> eventSetList = new ArrayList<>();
                 eventSetList.add(eventSet);
                 eventSubscriptionsMap.put(messageName, eventSetList);
             }

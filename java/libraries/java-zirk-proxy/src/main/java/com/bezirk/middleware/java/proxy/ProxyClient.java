@@ -150,7 +150,7 @@ public class ProxyClient implements Bezirk {
             if (eventMap.containsKey(subscriber)) {
                 eventMap.get(subscriber).add(listener);
             } else {
-                Set<EventSet.EventReceiver> listeners = new HashSet<>();
+                final Set<EventSet.EventReceiver> listeners = new HashSet<>();
                 listeners.add(listener);
                 eventMap.put(subscriber, listeners);
             }
@@ -164,7 +164,7 @@ public class ProxyClient implements Bezirk {
                     zirkList.add(listener);
                 }
             } else {
-                Set<EventSet.EventReceiver> regServiceList = new HashSet<>();
+                final Set<EventSet.EventReceiver> regServiceList = new HashSet<>();
                 regServiceList.add(listener);
                 listenerMap.put(messageName, regServiceList);
             }
