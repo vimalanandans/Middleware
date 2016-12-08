@@ -371,8 +371,8 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     protected boolean processWireMessage(String deviceId, String msg) {
         if (executor != null && !executor.isShutdown()) {
-            final ProcessIncomingMessage inMsg = new ProcessIncomingMessage(deviceId, msg);
-            executor.execute(inMsg);
+            final IncomingMessageProcessor messageProcessor = new IncomingMessageProcessor(deviceId, msg);
+            executor.execute(messageProcessor);
         } else {
             logger.error("thread pool is not active.");
             return false;
@@ -391,7 +391,7 @@ public abstract class CommsProcessor implements Comms, Observer {
             try {
                 processedMsg = new String(msg, WireMessage.ENCODING);
             } catch (UnsupportedEncodingException e) {
-                logger.error(e.getLocalizedMessage());
+                logger.error("Failed to encode control message", e);
                 throw new AssertionError(e);
             }
 
@@ -406,9 +406,9 @@ public abstract class CommsProcessor implements Comms, Observer {
     }
 
     /**
-     * Process WireMessage which will decompress and decrypt based on the wire message.
+     * Returns decrypted and decompressed WireMessage.
      */
-    private byte[] parseCtrlMessage(WireMessage wireMessage) {
+    private byte[] parseCtrlMessage(@NotNull WireMessage wireMessage) {
         /*Step 1 : Decryption :  decrypt the message*/
         byte[] message = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getMsg());
         if (message == null) {
@@ -425,7 +425,7 @@ public abstract class CommsProcessor implements Comms, Observer {
                 try {
                     message = processedMsg.getBytes(WireMessage.ENCODING);
                 } catch (UnsupportedEncodingException e) {
-                    logger.error(e.getLocalizedMessage());
+                    logger.error("Missing encoding required to fetch control message bytes", e);
                     throw new AssertionError(e);
                 }
         }
@@ -433,7 +433,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         return message;
     }
 
-    private boolean processMessageEvent(String deviceId, @NotNull WireMessage wireMessage) {
+    private boolean processMessageEvent(final String deviceId, @NotNull WireMessage wireMessage) {
         final MessageLedger msgLedger = new MessageLedger();
         // fixme: check the version
 
@@ -454,7 +454,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         return true;
     }
 
-    private boolean processEvent(String deviceId, WireMessage wireMessage) {
+    private boolean processEvent(final String deviceId, @NotNull WireMessage wireMessage) {
         final EventLedger eventLedger = new EventLedger();
         // fixme: check the version
 
@@ -470,7 +470,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         return true;
     }
 
-    private boolean setEventHeader(EventLedger eLedger, WireMessage wireMessage) {
+    private boolean setEventHeader(@NotNull EventLedger eLedger, @NotNull WireMessage wireMessage) {
         // decrypt the header
         final byte[] data = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(),
                 wireMessage.getHeaderMsg());
@@ -522,11 +522,11 @@ public abstract class CommsProcessor implements Comms, Observer {
         return true;
     }
 
-    private class ProcessIncomingMessage implements Runnable {
+    private class IncomingMessageProcessor implements Runnable {
         private final String deviceId;
         private final String msg;
 
-        ProcessIncomingMessage(String deviceId, String msg) {
+        IncomingMessageProcessor(final String deviceId, @NotNull String msg) {
             this.deviceId = deviceId;
             this.msg = msg;
         }
@@ -567,11 +567,11 @@ public abstract class CommsProcessor implements Comms, Observer {
                 case MSG_UNICAST_EVENT:
                     processEvent(deviceId, wireMessage);
                     break;
-                case MSG_EVENT: //handling diag event
+                case MSG_EVENT:
                     processMessageEvent(deviceId, wireMessage);
                     break;
                 default:
-                    logger.error("Unknown event type {}", msg);
+                    logger.error("Unknown event type {}", wireMessage.getMsgType());
             }
         }
     }
