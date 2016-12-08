@@ -73,7 +73,7 @@ public class ProxyClient implements Bezirk {
         this.zirkId = zirkId;
     }
 
-    protected static void registerProxyServer(@NotNull final ProxyServer proxyServer){
+    protected static void registerProxyServer(@NotNull final ProxyServer proxyServer) {
         ProxyClient.proxyServer = proxyServer;
     }
 
@@ -132,8 +132,8 @@ public class ProxyClient implements Bezirk {
             logger.debug("messageSet instanceof EventSet in ProxyClient");
             addEventSet((EventSet) messageSet);
         } else {
-            logger.debug("messageSet is unKnown:  in ProxyClient");
-            throw new AssertionError("Unknown MessageSet type: " +
+            logger.debug("unknown messageSet in ProxyClient");
+            throw new AssertionError("unknown messageSet type: " +
                     messageSet.getClass().getSimpleName());
         }
 
@@ -175,14 +175,10 @@ public class ProxyClient implements Bezirk {
 
         if (messageSet instanceof EventSet) {
             for (List<EventSet> eventSets : eventSubscriptionsMap.values()) {
-                if (eventSets.contains(messageSet)) {
-                    eventSets.remove(messageSet);
-                }
+                eventSets.remove(messageSet);
             }
             for (List<EventSet> eventSets : zirkEventSubsciptionsMap.values()) {
-                if (eventSets.contains(messageSet)) {
-                    eventSets.remove(messageSet);
-                }
+                eventSets.remove(messageSet);
             }
         }
         proxyServer.unsubscribe(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_UNSUBSCRIBE, zirkId, messageSet));

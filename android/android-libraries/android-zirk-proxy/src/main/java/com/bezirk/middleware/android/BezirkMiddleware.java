@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 public final class BezirkMiddleware {
     private static final Logger logger = LoggerFactory.getLogger(BezirkMiddleware.class);
     private static Context context;
-    private static boolean serviceBound;
+    private static volatile boolean serviceBound;
     private static ComponentManager.ProxyBinder proxyBinder;
     private static final ServiceConnection serviceConnection = new BezirkServiceConnection();
 
@@ -173,7 +173,7 @@ public final class BezirkMiddleware {
         }
 
         @Override
-        public void onServiceDisconnected(ComponentName arg0) {
+        public void onServiceDisconnected(ComponentName componentName) {
             synchronized (BezirkMiddleware.class) {
                 serviceBound = false;
                 logger.trace("Bezirk Service disconnected");

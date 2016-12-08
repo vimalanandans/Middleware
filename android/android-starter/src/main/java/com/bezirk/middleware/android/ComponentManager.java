@@ -179,12 +179,13 @@ public final class ComponentManager extends Service {
      * As a work around, the transition is made in a new thread.
      */
     private void executeTransitionInThread(@NotNull final LifeCycleObservable.Transition transition) {
-        Thread t = new Thread(new Runnable() {
+        final Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 lifecycleObservable.transition(transition);
             }
         });
+        t.setName("lifecycle-transition");
         t.start();
         try {
             t.join();

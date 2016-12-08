@@ -35,7 +35,6 @@ public class EventLedger implements Ledger {
 
 
     public EventLedger() {
-        //  header = new Header();
     }
 
     /**

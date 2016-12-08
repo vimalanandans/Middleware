@@ -22,6 +22,7 @@
  */
 package com.bezirk.middleware.core.comms;
 
+import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.EventLedger;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
@@ -38,20 +39,17 @@ import java.util.Map;
  */
 public class CommsMessageDispatcher implements MessageDispatcher {
     private static final Logger logger = LoggerFactory.getLogger(CommsMessageDispatcher.class);
+    private EventMsgReceiver eventReceiver;
+    private RemoteLog msgLog;
 
-    private com.bezirk.middleware.core.comms.processor.EventMsgReceiver eventReceiver = null;
-
-    private final RemoteLog msgLog = null;
-
-    // Map of control receivers
     private final Map<ControlMessage.Discriminator, CtrlMsgReceiver> ctrlReceivers =
             new HashMap<>();
 
     public CommsMessageDispatcher() {
-
+        msgLog = null;
     }
 
-    public void registerEventMessageReceiver(com.bezirk.middleware.core.comms.processor.EventMsgReceiver eventReceiver) {
+    public void registerEventMessageReceiver(EventMsgReceiver eventReceiver) {
         this.eventReceiver = eventReceiver;
     }
 
@@ -61,8 +59,8 @@ public class CommsMessageDispatcher implements MessageDispatcher {
     @Override
     public boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver) {
         if (ctrlReceivers.containsKey(id)) {
-            logger.debug("Registration is rejected. id is already registered > " + id);
-            return false; // unregister first
+            logger.debug("Registration is rejected. Id {} already registered", id);
+            return false;
         }
         ctrlReceivers.put(id, receiver);
         return true;
@@ -86,17 +84,12 @@ public class CommsMessageDispatcher implements MessageDispatcher {
      */
     @Override
     public boolean dispatchControlMessages(ControlMessage ctrlMsg, String serializedMsg) {
+        final ControlMessage.Discriminator id = ctrlMsg.getDiscriminator();
+        logger.debug("Message decrypted with Discriminator {}", id);
 
-        ControlMessage.Discriminator id = ctrlMsg.getDiscriminator();
-
-        logger.debug("Message decrypted with Discriminator : " + id);
-
-        if (msgLog != null) {
-            if (msgLog.isRemoteLoggingEnabled()) {
-                msgLog.sendRemoteLogToServer(ctrlMsg);
-            }
+        if (msgLog != null && msgLog.isRemoteLoggingEnabled()) {
+            msgLog.sendRemoteLogToServer(ctrlMsg);
         }
-
 
         //get the registered receiver
         CtrlMsgReceiver ctrlReceiver = ctrlReceivers.get(id);
@@ -104,16 +97,12 @@ public class CommsMessageDispatcher implements MessageDispatcher {
         if (ValidatorUtility.isObjectNotNull(ctrlReceiver)) {
             // invoke the listener
             if (!ctrlReceiver.processControlMessage(id, serializedMsg)) {
-                logger.debug("Receiver not processing id > " + id);
+                logger.debug("Receiver not processing id {}" + id);
             }
-
         } else {
-
-            logger.error("New Message / not registered ? No receiver to process id > " + id);
+            logger.error("New Message/Not registered? No receiver to process id {}", id);
         }
-
         return true;
     }
-
 
 }

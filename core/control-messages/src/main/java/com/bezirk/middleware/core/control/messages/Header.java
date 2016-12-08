@@ -127,7 +127,7 @@ public class Header {
     }
 
     public String serialize() {
-        Gson gson = new Gson();
+        final Gson gson = new Gson();
         return gson.toJson(this);
     }
 

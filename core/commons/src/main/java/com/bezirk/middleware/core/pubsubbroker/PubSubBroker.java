@@ -350,7 +350,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     @Override
     public boolean processEvent(final EventLedger eLedger) {
 
-        Set<ZirkId> zirkList = getAssociatedZirkList(eLedger);
+        final Set<ZirkId> zirkList = getAssociatedZirkList(eLedger);
 
         if (null == zirkList || zirkList.isEmpty()) {
             return false;

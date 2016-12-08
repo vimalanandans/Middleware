@@ -30,10 +30,10 @@ import com.google.gson.Gson;
  */
 public class ControlMessage {
     private String sphereId = "";
-    private Integer messageId = -1; //message Id check if used
+    //message Id check if used
+    private Integer messageId = -1;
     private Discriminator discriminator;
     private String uniqueKey = "";
-    // private Boolean retransmit = true;
     private BezirkZirkEndPoint sender;
 
     public ControlMessage() {
@@ -56,7 +56,6 @@ public class ControlMessage {
         this.messageId = GenerateMsgId.generateCtrlId();
         this.discriminator = discriminator;
         this.uniqueKey = key;
-        //   this.retransmit = retransmit;
     }
 
     /**
@@ -73,7 +72,6 @@ public class ControlMessage {
         this.sphereId = sphereId;
         this.messageId = GenerateMsgId.generateCtrlId();
         this.discriminator = discriminator;
-        //    this.retransmit = retransmit;
         //Auto-Generate Unique Key
         this.uniqueKey = sender.device + ":" + sphereId + ":" + this.messageId;
     }

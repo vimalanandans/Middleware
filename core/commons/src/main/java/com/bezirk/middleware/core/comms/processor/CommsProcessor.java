@@ -112,6 +112,7 @@ public abstract class CommsProcessor implements Comms, Observer {
         } else if (message instanceof MessageLedger) {
             return this.sendMessageLedger((MessageLedger) message);
         } else {
+            logger.error("Not processing Ledger {}", message);
             return false;
         }
     }
@@ -435,7 +436,7 @@ public abstract class CommsProcessor implements Comms, Observer {
             byte[] temp = message;
             String processedMsg = TextCompressor.decompress(temp);
 
-            if ((processedMsg != null) && !processedMsg.isEmpty()) {
+            if (!processedMsg.isEmpty()) {
                 try {
                     message = processedMsg.getBytes(WireMessage.ENCODING);
                 } catch (UnsupportedEncodingException e) {

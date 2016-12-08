@@ -32,7 +32,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Config.ConfigBuilder configBuilder = new Config.ConfigBuilder();
+        final Config.ConfigBuilder configBuilder = new Config.ConfigBuilder();
         configBuilder.setLogLevel(Config.Level.TRACE);
         BezirkMiddleware.initialize(this, configBuilder.create());
     }
