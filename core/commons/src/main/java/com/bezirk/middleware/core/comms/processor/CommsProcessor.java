@@ -74,11 +74,11 @@ public abstract class CommsProcessor implements Comms, Observer {
         this.msgDispatcher = new CommsMessageDispatcher();
     }
 
-    public void startComms() {
+    protected void startComms() {
         executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
     }
 
-    public void stopComms() {
+    protected void stopComms() {
         if (executor != null) {
             shutdownAndAwaitTermination(executor);
         }
@@ -111,8 +111,8 @@ public abstract class CommsProcessor implements Comms, Observer {
             return this.sendEventLedger((EventLedger) message);
         else if (message instanceof MessageLedger)
             return this.sendMessageLedger((MessageLedger) message);
-        else { // stream ledger // hopefully there are no other types
-            //return this.sendStreamMessage(message);
+        else {
+            logger.error("Cannot send message of unknown type {}", message.getClass().getName());
             return false;
         }
 
@@ -272,12 +272,11 @@ public abstract class CommsProcessor implements Comms, Observer {
 
         if (ledger.getHeader() instanceof MulticastHeader) {
             //TODO: for event message decrypt the header here
-            // if the intended zirk is available in sadl message is decrypted
-            WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
+            // if the intended zirk is available in PubSubBroker message is decrypted
+            final WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
 
             // encrypt the header
-
-            byte[] header;
+            final byte[] header;
 
             try {
                 header = ledger.getSerializedHeader().getBytes(WireMessage.ENCODING);
@@ -286,25 +285,35 @@ public abstract class CommsProcessor implements Comms, Observer {
                 throw new AssertionError(e);
             }
 
-            byte[] headerData = encryptMsg(wireMessage.getSphereId(), header);
+            final byte[] headerData = encryptMsg(wireMessage.getSphereId(), header);
 
             wireMessage.setHeaderMsg(headerData);
 
             wireMessage.setMsgType(WireMessage.WireMsgType.MSG_MULTICAST_EVENT);
 
-
-            byte[] wireByteMessage = wireMessage.serialize();
+            final byte[] wireByteMessage = wireMessage.serialize();
             return sendToAll(wireByteMessage, false);
         } else {
-            UnicastHeader uHeader = (UnicastHeader) ledger.getHeader();
-            String recipient = uHeader.getRecipient().device;
+            final UnicastHeader unicastHeader = (UnicastHeader) ledger.getHeader();
+
+            if (unicastHeader.getRecipient() == null) {
+                logger.error("Unicast message does not have a recipient");
+                return false;
+            }
+
+            final String recipient = unicastHeader.getRecipient().device;
+
+            if (recipient == null || recipient.isEmpty()) {
+                logger.error("Unicast message does not have a recipient device");
+                return false;
+            }
 
             //TODO: for event message decrypt the header here
-            // if the intended zirk is available in sadl message is decrypted
-            WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
+            // if the intended zirk is available in PubSubBroker message is decrypted
+            final WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
 
             // encrypt the header
-            byte[] headerData;
+            final byte[] headerData;
             try {
                 headerData = encryptMsg(wireMessage.getSphereId(),
                         ledger.getSerializedHeader().getBytes(WireMessage.ENCODING));
@@ -317,20 +326,13 @@ public abstract class CommsProcessor implements Comms, Observer {
 
             wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_EVENT);
 
-
-            if (null == uHeader || uHeader.getRecipient() == null
-                    || uHeader.getRecipient().device == null || uHeader.getRecipient().device.length() == 0) {
-                logger.error("Message not of accepted type");
-                return false;
-            }
-
             byte[] wireByteMessage = wireMessage.serialize();
             return sendToOne(wireByteMessage, recipient, false);
         }
     }
 
-    public boolean sendMessageLedger(MessageLedger message) {
-        WireMessage wireMessage = new WireMessage();
+    private boolean sendMessageLedger(MessageLedger message) {
+        final WireMessage wireMessage = new WireMessage();
         // configure raw msg event
         wireMessage.setMsgType(WireMessage.WireMsgType.MSG_EVENT);
 
@@ -345,7 +347,7 @@ public abstract class CommsProcessor implements Comms, Observer {
 
         wireMessage.setWireMsgStatus(WireMessage.WireMsgStatus.MSG_RAW);
 
-        byte[] data = wireMessage.serialize();
+        final byte[] data = wireMessage.serialize();
 
         if (message.isMulticast()) {
             sendToAll(data, false);
@@ -367,22 +369,24 @@ public abstract class CommsProcessor implements Comms, Observer {
      */
     public abstract boolean sendToOne(byte[] msg, String nodeId, boolean isEvent);
 
-    public boolean processWireMessage(String deviceId, String msg) {
-        if ((executor != null) && !executor.isShutdown()) {
-            ProcessIncomingMessage inMsg = new ProcessIncomingMessage(deviceId, msg);
+    protected boolean processWireMessage(String deviceId, String msg) {
+        if (executor != null && !executor.isShutdown()) {
+            final ProcessIncomingMessage inMsg = new ProcessIncomingMessage(deviceId, msg);
             executor.execute(inMsg);
         } else {
             logger.error("thread pool is not active.");
+            return false;
         }
+
         return true;
     }
 
     private boolean processCtrl(String deviceId, WireMessage wireMessage) {
         // fixme: check the version
-        byte[] msg = parseCtrlMessage(wireMessage);
+        final byte[] msg = parseCtrlMessage(wireMessage);
 
         if (msg != null) {
-            String processedMsg;
+            final String processedMsg;
 
             try {
                 processedMsg = new String(msg, WireMessage.ENCODING);
@@ -390,54 +394,34 @@ public abstract class CommsProcessor implements Comms, Observer {
                 logger.error(e.getLocalizedMessage());
                 throw new AssertionError(e);
             }
-            //logger.info("Ctrl Msg size "+data.length());
-            ControlMessage ctrl = ControlMessage.deserialize(processedMsg, ControlMessage.class);
 
-            // Quickfix for zyre-jni: update the sender device id
+            final ControlMessage ctrl = ControlMessage.deserialize(processedMsg, ControlMessage.class);
+
             ctrl.getSender().device = deviceId;
-            //processedMsg = ctrl.toJson();
-            // instead of deserialization, you shall try to use
-            // pattern match to speed up the discriminator
-            //logger.info("ctrl msg >> " + ctrl.toString());
             msgDispatcher.dispatchControlMessages(ctrl, processedMsg);
             return true;
         }
-        return false;
-    }
 
-    //send the message to intended modules
-    boolean dispatchMessage(Ledger ledger) {
-        if (ledger instanceof ControlLedger) {
-            ControlLedger ctrlLedger = (ControlLedger) ledger;
-            msgDispatcher.dispatchControlMessages(ctrlLedger.getMessage(), ctrlLedger.getSerializedMessage());
-        } else if (ledger instanceof EventLedger) {
-            EventLedger eventLedger = (EventLedger) ledger;
-            msgDispatcher.dispatchServiceMessages(eventLedger);
-        } else {
-            logger.error("unknown msg to dispatch ");
-        }
         return false;
     }
 
     /**
-     * Process wiremessage which will decompress and decrypt based on the wire message.
+     * Process WireMessage which will decompress and decrypt based on the wire message.
      */
     private byte[] parseCtrlMessage(WireMessage wireMessage) {
         /*Step 1 : Decryption :  decrypt the message*/
         byte[] message = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getMsg());
         if (message == null) {
-            // encryption failed return null
-            return message;
+            // decryption failed
+            return null;
         }
 
         /*Step 2 : De-compress the message :  de-compress the message*/
-        if ((wireMessage.getWireMsgStatus() == WireMessage.WireMsgStatus.MSG_ENCRYPTED_COMPRESSED)
-                || (wireMessage.getWireMsgStatus() == WireMessage.WireMsgStatus.MSG_COMPRESSED)) {
-            //mean the data is decrypted and not to decompress
-            byte[] temp = message;
-            String processedMsg = TextCompressor.decompress(temp);
+        if (wireMessage.getWireMsgStatus() == WireMessage.WireMsgStatus.MSG_ENCRYPTED_COMPRESSED
+                || wireMessage.getWireMsgStatus() == WireMessage.WireMsgStatus.MSG_COMPRESSED) {
+            final String processedMsg = TextCompressor.decompress(message);
 
-            if ((processedMsg != null) && !processedMsg.isEmpty())
+            if (!processedMsg.isEmpty())
                 try {
                     message = processedMsg.getBytes(WireMessage.ENCODING);
                 } catch (UnsupportedEncodingException e) {
@@ -445,21 +429,15 @@ public abstract class CommsProcessor implements Comms, Observer {
                     throw new AssertionError(e);
                 }
         }
+
         return message;
     }
 
-    //enable the above code later. Quickfix network device id is taken as local ip as of now
-    // for zyre this needs to return from actual comms
-//    public String getNodeId() {
-//        return networkManager.getDeviceIp();
-//    }
-
-
-    private boolean processMessageEvent(String deviceId, WireMessage wireMessage) {
-        MessageLedger msgLedger = new MessageLedger();
+    private boolean processMessageEvent(String deviceId, @NotNull WireMessage wireMessage) {
+        final MessageLedger msgLedger = new MessageLedger();
         // fixme: check the version
 
-        BezirkZirkEndPoint endPoint = new BezirkZirkEndPoint(deviceId, null);
+        final BezirkZirkEndPoint endPoint = new BezirkZirkEndPoint(deviceId, null);
         msgLedger.setSender(endPoint);
 
         try {
@@ -472,28 +450,32 @@ public abstract class CommsProcessor implements Comms, Observer {
         if (notification != null) {
             notification.diagMsg(msgLedger);
         }
+
         return true;
     }
 
     private boolean processEvent(String deviceId, WireMessage wireMessage) {
-        EventLedger eventLedger = new EventLedger();
+        final EventLedger eventLedger = new EventLedger();
         // fixme: check the version
 
-        if (setEventHeader(eventLedger, wireMessage)) {
-            // override sender zirk end point device id with local id
-            eventLedger.getHeader().getSender().device = deviceId;
-            eventLedger.setEncryptedMessage(wireMessage.getMsg());
-            msgDispatcher.dispatchServiceMessages(eventLedger);
-            return true;
+        if (!setEventHeader(eventLedger, wireMessage)) {
+            return false;
         }
-        return false;
+
+        // override sender zirk end point device id with local id
+        eventLedger.getHeader().getSender().device = deviceId;
+        eventLedger.setEncryptedMessage(wireMessage.getMsg());
+        msgDispatcher.dispatchServiceMessages(eventLedger);
+
+        return true;
     }
 
     private boolean setEventHeader(EventLedger eLedger, WireMessage wireMessage) {
         // decrypt the header
         final byte[] data = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(),
                 wireMessage.getHeaderMsg());
-        if (data == null) {// header decrypt failed. unknown sphere id
+        if (data == null) {
+            // header decrypt failed. unknown sphere id
             return false;
         }
 
@@ -507,14 +489,15 @@ public abstract class CommsProcessor implements Comms, Observer {
 
         final Gson gson = new Gson();
         if (wireMessage.isMulticast()) {
-            MulticastHeader mHeader = gson.fromJson(headerData, MulticastHeader.class);
+            final MulticastHeader mHeader = gson.fromJson(headerData, MulticastHeader.class);
             eLedger.setHeader(mHeader);
             eLedger.setIsMulticast(true);
         } else {
-            UnicastHeader uHeader = gson.fromJson(headerData, UnicastHeader.class);
+            final UnicastHeader uHeader = gson.fromJson(headerData, UnicastHeader.class);
             eLedger.setHeader(uHeader);
             eLedger.setIsMulticast(false);
         }
+
         return true;
     }
 
@@ -524,6 +507,7 @@ public abstract class CommsProcessor implements Comms, Observer {
             this.notification = notification;
             return true;
         }
+
         return false;
     }
 
@@ -540,39 +524,33 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     private class ProcessIncomingMessage implements Runnable {
         private final String deviceId;
-        private final Ledger ledger = null;
-        private String msg = null;
+        private final String msg;
 
-        public ProcessIncomingMessage(String deviceId, String msg) {
+        ProcessIncomingMessage(String deviceId, String msg) {
             this.deviceId = deviceId;
             this.msg = msg;
         }
 
         @Override
         public void run() {
-            if (ledger != null) {
-                // not a loopback, dispatch it directly
-                dispatchMessage(ledger);
-                return;
-            }
-
             if (!WireMessage.checkVersion(msg)) {
-                String mismatchedVersion = WireMessage.getVersion(msg);
                 if (notification != null) {
-                    notification.versionMismatch(mismatchedVersion);
+                    notification.versionMismatch(WireMessage.getVersion(msg));
                 }
+
                 return;
             }
 
-            WireMessage wireMessage = null;
+            final WireMessage wireMessage;
             try {
                 wireMessage = WireMessage.deserialize(msg.getBytes(WireMessage.ENCODING));
             } catch (UnsupportedEncodingException e) {
                 logger.error(e.getLocalizedMessage());
                 throw new AssertionError(e);
             }
+
             if (wireMessage == null) {
-                logger.error(" deserialization failed >> " + msg);
+                logger.error("deserialization failed {}", msg);
                 return;
             }
 
@@ -593,9 +571,8 @@ public abstract class CommsProcessor implements Comms, Observer {
                     processMessageEvent(deviceId, wireMessage);
                     break;
                 default:
-                    logger.error(" Unknown event >> " + msg);
+                    logger.error("Unknown event type {}", msg);
             }
         }
     }
-
 }
