@@ -91,8 +91,9 @@ public abstract class CommsProcessor implements Comms, Observer {
             if (!pool.awaitTermination(500, TimeUnit.MILLISECONDS)) {
                 pool.shutdownNow(); // Cancel currently executing tasks
                 // Wait a while for tasks to respond to being cancelled
-                if (!pool.awaitTermination(500, TimeUnit.MILLISECONDS))
+                if (!pool.awaitTermination(500, TimeUnit.MILLISECONDS)) {
                     logger.error("Pool did not terminate");
+                }
             }
         } catch (InterruptedException ie) {
             // (Re-)Cancel if current thread also interrupted
@@ -104,18 +105,16 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     @Override
     public boolean sendMessage(Ledger message) {
-        // send as it is
-        if (message instanceof ControlLedger)
+        if (message instanceof ControlLedger) {
             return this.sendControlLedger((ControlLedger) message);
-        else if (message instanceof EventLedger)
+        } else if (message instanceof EventLedger) {
             return this.sendEventLedger((EventLedger) message);
-        else if (message instanceof MessageLedger)
+        } else if (message instanceof MessageLedger) {
             return this.sendMessageLedger((MessageLedger) message);
-        else {
+        } else {
             logger.error("Cannot send message of unknown type {}", message.getClass().getName());
             return false;
         }
-
     }
 
     @Override
@@ -421,13 +420,14 @@ public abstract class CommsProcessor implements Comms, Observer {
                 || wireMessage.getWireMsgStatus() == WireMessage.WireMsgStatus.MSG_COMPRESSED) {
             final String processedMsg = TextCompressor.decompress(message);
 
-            if (!processedMsg.isEmpty())
+            if (!processedMsg.isEmpty()) {
                 try {
                     message = processedMsg.getBytes(WireMessage.ENCODING);
                 } catch (UnsupportedEncodingException e) {
                     logger.error("Missing encoding required to fetch control message bytes", e);
                     throw new AssertionError(e);
                 }
+            }
         }
 
         return message;

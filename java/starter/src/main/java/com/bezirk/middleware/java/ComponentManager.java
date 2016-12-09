@@ -36,7 +36,6 @@ import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
 import com.bezirk.middleware.identity.Alias;
 import com.bezirk.middleware.java.device.JavaDevice;
-import com.bezirk.middleware.java.logging.LoggingManager;
 import com.bezirk.middleware.java.persistence.DatabaseConnectionForJava;
 
 import org.jetbrains.annotations.NotNull;
@@ -79,9 +78,6 @@ public class ComponentManager {
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         lifecycleObservable = new LifeCycleObservable();
 
-        LoggingManager loggingManager = new LoggingManager(config);
-        loggingManager.configure();
-
         //initialize data-storage for storing detailed component information like maps, objects
         try {
             this.registryStorage = new RegistryStorage(new DatabaseConnectionForJava(DB_FILE_LOCATION), DB_VERSION);
@@ -92,7 +88,7 @@ public class ComponentManager {
         //java device for getting information like deviceId, deviceName, etc
         final Device device = new JavaDevice();
 
-        if(config.isCommsEnabled()) {
+        if (config.isCommsEnabled()) {
             logger.debug("Comms is enabled");
 
             // the Jmq comms
@@ -107,7 +103,7 @@ public class ComponentManager {
             if (Configuration.isRemoteLoggingEnabled()) {
                 remoteLog.enableLogging(true, false, true, null);
             }
-        }else{
+        } else {
             logger.debug("Comms is disabled");
         }
         //initialize the identity manager

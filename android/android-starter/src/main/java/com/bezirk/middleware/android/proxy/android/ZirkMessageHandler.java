@@ -57,14 +57,4 @@ public class ZirkMessageHandler implements MessageHandler {
             logger.error("Cannot send Zirk intent because applicationContext is null");
         }
     }
-
-    private void sentZirkSphereIntent(Intent intent) {
-        intent.setAction("SphereScanReceiver");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (applicationContext != null) {
-            applicationContext.sendBroadcast(intent);
-        } else {
-            logger.error("Cannot send Zirk intent because applicationContext is null");
-        }
-    }
 }

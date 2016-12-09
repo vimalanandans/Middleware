@@ -36,9 +36,10 @@ public class VersionManager {
 
     /**
      * Returns current bezirk middleware version
+     *
      * @return
      */
-    public static final String getBezirkVersion(){
+    public static final String getBezirkVersion() {
         final Properties bezirkProperties = new Properties();
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
 

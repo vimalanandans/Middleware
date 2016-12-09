@@ -108,7 +108,6 @@ public final class ValidatorUtility {
     }
 
 
-
     public static boolean checkRTCStreamRequest(final ZirkId serviceId, final BezirkZirkEndPoint sep) {
         return checkBezirkZirkId(serviceId) && checkBezirkZirkEndPoint(sep);
     }

@@ -26,7 +26,6 @@ import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 
 public class UnicastControlMessage extends ControlMessage {
 
-   // private Boolean isLocal = false;
     private BezirkZirkEndPoint recipient;
 
     /**

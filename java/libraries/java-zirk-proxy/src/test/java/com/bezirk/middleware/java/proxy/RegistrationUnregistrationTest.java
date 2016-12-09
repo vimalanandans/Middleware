@@ -11,13 +11,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
- * @author vbd4kor
- *         This class tests the Bezirk for Registration and Unregistration Scenario.
- *         Steps: 1. registers the zirk with BezirkFactory
- *         2. Check the Sid Map if it contains the ZirkId
- *         3. register the same zirk Again and check if the same zirk is generated.
- *         4. unregister the zirk
- *         5. Register the zirk again and check for different ZirkId that indicates the validaity of the test case
+ * This class tests the Bezirk for Registration and Unregistration Scenario.
+ * Steps:
+ * 1. registers the zirk with BezirkFactory
+ * 2. Check the Sid Map if it contains the ZirkId
+ * 3. register the same zirk Again and check if the same zirk is generated.
+ * 4. unregister the zirk
+ * 5. Register the zirk again and check for different ZirkId that indicates the validaity of the test case
  */
 public class RegistrationUnregistrationTest {
     private static final Logger logger = LoggerFactory.getLogger(RegistrationUnregistrationTest.class);

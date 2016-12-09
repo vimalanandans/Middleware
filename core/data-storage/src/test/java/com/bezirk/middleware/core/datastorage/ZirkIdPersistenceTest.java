@@ -1,6 +1,3 @@
-/**
- * @author Vijet Badigannavar (bvijet@in.bosch.com)
- */
 package com.bezirk.middleware.core.datastorage;
 
 import com.j256.ormlite.table.TableUtils;

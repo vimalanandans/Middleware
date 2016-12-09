@@ -14,8 +14,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * This testCase verifies the ControlMessage POJO by retrieving the field values after deserialization.
- *
- * @author AJC6KOR
  */
 public class ControlMessageTest {
     private static final Logger logger = LoggerFactory.getLogger(ControlMessageTest.class);
@@ -48,10 +46,10 @@ public class ControlMessageTest {
         com.bezirk.middleware.core.control.messages.ControlMessage deserializedCtrlMessage = com.bezirk.middleware.core.control.messages.ControlMessage.deserialize(serializedMessage, com.bezirk.middleware.core.control.messages.ControlMessage.class);
 
         assertEquals("Discriminator not equal to the set value.", discriminator, deserializedCtrlMessage.getDiscriminator());
-     //   assertEquals("Retransmit not equal to the set value.", retransmit, deserializedCtrlMessage.getRetransmit());
+        //   assertEquals("Retransmit not equal to the set value.", retransmit, deserializedCtrlMessage.getRetransmit());
 
 	/*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
-	 * device null condition should be checked separately before device equals in BezirkServiceEndpoint equals api.
+     * device null condition should be checked separately before device equals in BezirkServiceEndpoint equals api.
 	 * 
 	 assertEquals("Sender not equal to the set value.",sender, deserializedCtrlMessage.getSender());
 	 

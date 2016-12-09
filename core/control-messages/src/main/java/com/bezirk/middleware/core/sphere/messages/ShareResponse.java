@@ -39,7 +39,7 @@ public class ShareResponse extends UnicastControlMessage {
      * @param recipient-                Has to be non-null.
      * @param uniqueKey-                Has to be non-null.
      * @param shareCode-                Has to be non-null.
-     * @param bezirkDeviceInfo-            Has to be non-null.
+     * @param bezirkDeviceInfo-         Has to be non-null.
      * @param sphereExchangeDataString- Has to be non-null.
      * @param sharerSphereId-           Has to be non-null.
      */

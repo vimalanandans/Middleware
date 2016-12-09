@@ -63,18 +63,11 @@ public class ProxyClient implements Bezirk {
     private static final BroadcastReceiver brForService = new ZirkMessageReceiver(
             eventMap, eventListenerMap);
     private static final ZirkMessageHandler bezirkPcCallback = new ZirkMessageHandler(brForService);
-    private static ComponentManager componentManager = null;
+    private static ComponentManager componentManager;
     private static ProxyServer proxy;
     private static ProxyPersistence proxyPersistence;
     private static ProxyRegistry proxyRegistry;
-    private short streamFactory;
-    private static boolean started = false;
-
-    //Bezirk is ready to send messages to another BezirkMiddleware stack
-    private boolean remoteSendReady = false;
-    //to ensure error log is just printed once
-    private boolean remoteSendReadyLogged = false;
-
+    private static boolean started;
     private ZirkId zirkId;
 
     static synchronized void start(@NotNull final Config config) {
@@ -150,14 +143,14 @@ public class ProxyClient implements Bezirk {
                 messageSet));
     }
 
-    private void addTopicsToMaps(final ZirkId subscriber, final MessageSet messageSet,
-                                 final EventSet.EventReceiver listener,
-                                 Map<String, Set<EventSet.EventReceiver>> listenerMap) {
+    private static void addTopicsToMaps(@NotNull final ZirkId subscriber, @NotNull final MessageSet messageSet,
+                                 @NotNull final EventSet.EventReceiver listener,
+                                 @NotNull final Map<String, Set<EventSet.EventReceiver>> listenerMap) {
         for (String messageName : messageSet.getMessages()) {
             if (eventMap.containsKey(subscriber)) {
                 eventMap.get(subscriber).add(listener);
             } else {
-                Set<EventSet.EventReceiver> listeners = new HashSet<>();
+                final Set<EventSet.EventReceiver> listeners = new HashSet<>();
                 listeners.add(listener);
                 eventMap.put(subscriber, listeners);
             }
@@ -171,7 +164,7 @@ public class ProxyClient implements Bezirk {
                     zirkList.add(listener);
                 }
             } else {
-                Set<EventSet.EventReceiver> regServiceList = new HashSet<>();
+                final Set<EventSet.EventReceiver> regServiceList = new HashSet<>();
                 regServiceList.add(listener);
                 listenerMap.put(messageName, regServiceList);
             }
@@ -191,9 +184,6 @@ public class ProxyClient implements Bezirk {
 
     @Override
     public void sendEvent(RecipientSelector recipient, Event event) {
-        if (!remoteSendReady) {
-            logRemoteSending();
-        }
         proxy.sendEvent(new SendMulticastEventAction(zirkId, recipient, event,
                 event instanceof IdentifiedEvent));
 
@@ -210,16 +200,4 @@ public class ProxyClient implements Bezirk {
         proxy.setLocation(new SetLocationAction(zirkId, location));
     }
 
-    private final void logRemoteSending() {
-        final long currentTime = System.currentTimeMillis();
-        if (currentTime - BezirkMiddleware.getStartTime() > 2000) {
-            remoteSendReady = true;
-        } else {
-            if (!remoteSendReadyLogged) {
-                logger.error("Bezirk.sendEvent() is being called less than 2 seconds after initialization of the middleware. This initialization requires up to 2 seconds to find peers. " +
-                        "\nIf you don't receive the Event(s), please ensure, via Thread.sleep() or other means, that there are at least 2 seconds between BezirkMiddleware.initialize() and Bezirk.sendEvent() calls. ");
-                remoteSendReadyLogged = true;
-            }
-        }
-    }
 }

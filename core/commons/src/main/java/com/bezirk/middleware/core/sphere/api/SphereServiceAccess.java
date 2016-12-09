@@ -37,7 +37,9 @@ public interface SphereServiceAccess {
      */
     boolean registerService(ZirkId zirkId, String zirkName);
 
-    /** unregister service*/
+    /**
+     * unregister service
+     */
     boolean unregisterService(ZirkId serviceId);
 
     /**

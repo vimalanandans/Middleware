@@ -10,8 +10,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * This testCase verifies the ServiceVitals POJO by retrieving the field values using getters.
- *
- * @author AJC6KOR
  */
 public class ServiceVitalsTest {
     private static final Logger logger = LoggerFactory.getLogger(ServiceVitalsTest.class);

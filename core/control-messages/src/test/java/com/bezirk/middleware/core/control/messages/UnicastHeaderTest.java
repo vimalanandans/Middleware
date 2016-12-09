@@ -13,8 +13,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * This testCase verifies the UnicastHeader POJO by retrieving the field values.
- *
- * @author AJC6KOR
  */
 public class UnicastHeaderTest {
     private static final Logger logger = LoggerFactory.getLogger(UnicastHeaderTest.class);

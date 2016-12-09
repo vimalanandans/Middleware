@@ -18,8 +18,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * This testCase verifies the SphereCatchResponse by retrieving the field values after deserialization.
- *
- * @author AJC6KOR
  */
 public class SphereCatchResponseTest {
     private static final Logger logger = LoggerFactory.getLogger(SphereCatchResponseTest.class);

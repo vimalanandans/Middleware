@@ -97,16 +97,16 @@ public class ValidatorUtilityTest {
     public void testCheckHeader() {
 
 		/*-------------- Positive cases --------------*/
-        Header mHeader = new Header(sphereId, sender, "12","TestEventName");
+        Header mHeader = new Header(sphereId, sender, "12", "TestEventName");
         isValid = com.bezirk.middleware.core.util.ValidatorUtility.checkHeader(mHeader);
         assertTrue("Valid header is considered invalid by validator.", isValid);
 
 		/*-------------- Negative cases --------------*/
-        mHeader = new Header(null, sender, "12","TestEventName");
+        mHeader = new Header(null, sender, "12", "TestEventName");
         isValid = com.bezirk.middleware.core.util.ValidatorUtility.checkHeader(mHeader);
         assertFalse("Invalid header is considered valid by validator.", isValid);
 
-        mHeader = new Header(sphereId, null, "12","TestEventName");
+        mHeader = new Header(sphereId, null, "12", "TestEventName");
         isValid = com.bezirk.middleware.core.util.ValidatorUtility.checkHeader(mHeader);
         assertFalse("Invalid header is considered valid by validator.", isValid);
 

@@ -26,7 +26,7 @@ import com.bezirk.middleware.core.control.messages.EventLedger;
 
 /**
  * event msg receiver to process the incoming event messages
- * */
+ */
 public interface EventMsgReceiver {
 
     /**

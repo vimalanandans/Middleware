@@ -70,7 +70,8 @@ public final class Util {
      */
     private static boolean anySphereEnabled = false;
 
-    private Util(){}
+    private Util() {
+    }
 
     /**
      * Updates the <code>loggingSphereList</code> with spheres selected by the logging Zirk.

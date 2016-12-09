@@ -53,15 +53,15 @@ public class Main {
     private static void startApplication(int option) {
         switch (option) {
             case 1:
-                initializeBezirk();
+                BezirkMiddleware.initialize();
                 new Publisher();
                 break;
             case 2:
-                initializeBezirk();
+                BezirkMiddleware.initialize();
                 new Subscriber();
                 break;
             case 3:
-                initializeBezirk();
+                BezirkMiddleware.initialize();
                 new Publisher();
                 new Subscriber();
                 break;
@@ -71,35 +71,6 @@ public class Main {
             default:
                 System.out.println("Invalid option selected, Exiting");
         }
-    }
-
-    private static void initializeBezirk() {
-        Config.ConfigBuilder configBuilder = new Config.ConfigBuilder();
-
-        /*setting root log level*/
-        configBuilder.setLogLevel(Config.Level.ERROR);
-
-        /*setting package log level*/
-        //configBuilder.setPackageLogLevel("com.bezirk.middleware.core.comms", Config.Level.INFO);
-
-        /*disabling inter-device communication*/
-        //configBuilder.setComms(false);
-
-        /*using custom communication groups to prevent crosstalk*/
-        //configBuilder.setGroupName("TestGroup");
-
-        /*keeping bezirk service alive even after the app is shutdown*/
-        //configBuilder.setServiceAlive(true);
-
-        /*initialize with default configurations*/
-        //BezirkMiddleware.initialize();
-
-        /*initialize with configurations*/
-        BezirkMiddleware.initialize(configBuilder.create());
-
-        /*initialize with channelId/groupName*/
-        //BezirkMiddleware.initialize("MyChannel");
-
     }
 
     public static String getHostName() {

@@ -25,8 +25,7 @@ package com.bezirk.middleware.core.control.messages;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 
 /**
- * @author Mansimar Aneja
- *         This class is used to generate messageIds for both Events and Control messages on behalf of the Bezirk Stack
+ * This class is used to generate messageIds for both Events and Control messages on behalf of the Bezirk Stack
  */
 public final class GenerateMsgId {
 

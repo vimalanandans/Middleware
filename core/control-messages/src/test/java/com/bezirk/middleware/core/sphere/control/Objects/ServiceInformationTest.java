@@ -12,8 +12,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * This testCase verifies the ServiceInformation POJO by retrieving the field values using getters.
- *
- * @author AJC6KOR
  */
 public class ServiceInformationTest {
     private static final Logger logger = LoggerFactory.getLogger(ServiceInformationTest.class);

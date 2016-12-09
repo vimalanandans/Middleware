@@ -45,15 +45,15 @@ public class ShareRequest extends MulticastControlMessage {
     private final String sharerSphereId;
 
     /**
-     * @param shortCode       short code of the device sharing its sphere - Has to be non-null.
-     * @param bezirkDeviceInfo   - Has to be non-null.
-     * @param sender          - Has to be non-null.
-     * @param sharerSphereId: sphereId of the sphere which is sharing its services, required
-     *                        in order to complete the process when the SHARE_RESPONSE is
-     *                        received. Would not be needed if all the devices with their
-     *                        services are sent back to the device requesting to the share
-     *                        the services. In order to add the services from the sphereId
-     *                        which is sharing the services into the new sphere. Has to be non-null.
+     * @param shortCode        short code of the device sharing its sphere - Has to be non-null.
+     * @param bezirkDeviceInfo - Has to be non-null.
+     * @param sender           - Has to be non-null.
+     * @param sharerSphereId:  sphereId of the sphere which is sharing its services, required
+     *                         in order to complete the process when the SHARE_RESPONSE is
+     *                         received. Would not be needed if all the devices with their
+     *                         services are sent back to the device requesting to the share
+     *                         the services. In order to add the services from the sphereId
+     *                         which is sharing the services into the new sphere. Has to be non-null.
      */
     public ShareRequest(String shortCode, BezirkDeviceInfo bezirkDeviceInfo, BezirkZirkEndPoint sender,
                         String sharerSphereId) {

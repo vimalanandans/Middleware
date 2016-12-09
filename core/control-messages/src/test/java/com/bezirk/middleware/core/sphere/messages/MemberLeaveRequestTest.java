@@ -13,8 +13,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * This testCase verifies the MEMBER_LEAVE_REQUEST by retrieving the field values after deserialization.
- *
- * @author AJC6KOR
  */
 public class MemberLeaveRequestTest {
     private static final Logger logger = LoggerFactory.getLogger(MemberLeaveRequestTest.class);

@@ -14,7 +14,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * @author vbd4kor
  * This test case is used to test the Unicast Event communication locally!
  * 2 Services - MockServiceA register for ProtocolB , MockServiceB register for ProtocolA.
  * MockService-A - discovers the zirk based on ProtocolB. MockServiceA sends the Unicast event to the discovered zirk.

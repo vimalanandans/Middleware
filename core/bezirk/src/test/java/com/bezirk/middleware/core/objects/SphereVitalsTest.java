@@ -6,8 +6,6 @@ import static org.junit.Assert.assertArrayEquals;
 
 /**
  * This testcase verifies the SphereVitals by setting the properties and retrieving them.
- *
- * @author AJC6KOR
  */
 public class SphereVitalsTest {
 
