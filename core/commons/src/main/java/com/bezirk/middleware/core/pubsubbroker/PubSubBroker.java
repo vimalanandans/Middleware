@@ -310,7 +310,6 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
 
             if (comms != null) {
                 comms.sendEventLedger(eventLedger);
-                logger.debug(eventLedger.toString());
             }
             sendMessageToLocal(eventLedger);
         }

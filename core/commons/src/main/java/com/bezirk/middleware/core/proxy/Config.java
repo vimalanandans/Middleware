@@ -38,8 +38,8 @@ import java.util.Map;
  * // ...
  *          Config.ConfigBuilder configBuilder = new Config.ConfigBuilder();
  *
- *          //set loglevel to debug for the bezirk middleware.
- *          configBuilder.setLogLevel(Config.Level.DEBUG);
+ *          //disable communication with external devices
+ *          configBuilder.setComms(false);
  *
  *          BezirkMiddleware.initialize(configBuilder.create());
  *
@@ -143,7 +143,10 @@ public class Config implements Serializable {
 
         /**
          * Set the overall log level for the bezirk
+         *
+         * @deprecated As of version 3.1.0, this method is no longer used.
          */
+        @Deprecated
         public ConfigBuilder setLogLevel(@NotNull final Level logLevel) {
             this.logLevel = logLevel;
             return this;
@@ -153,7 +156,10 @@ public class Config implements Serializable {
          * Set loglevel for a particular package in the bezirk middleware.
          *
          * @param packageName package name for setting the log level, ex. <code>com.bezirk.middleware.core.comms</code>
+         *
+         * @deprecated As of version 3.1.0, this method is no longer used.
          */
+        @Deprecated
         public ConfigBuilder setPackageLogLevel(@NotNull final String packageName, @NotNull final Level logLevel) {
             if (packageLogLevelMap == null) {
                 packageLogLevelMap = new HashMap<>();

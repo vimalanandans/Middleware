@@ -36,7 +36,6 @@ import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
 import com.bezirk.middleware.identity.Alias;
 import com.bezirk.middleware.java.device.JavaDevice;
-import com.bezirk.middleware.java.logging.LoggingManager;
 import com.bezirk.middleware.java.persistence.DatabaseConnectionForJava;
 
 import org.jetbrains.annotations.NotNull;
@@ -78,9 +77,6 @@ public class ComponentManager {
     public final void create() {
         //initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         lifecycleObservable = new LifeCycleObservable();
-
-        LoggingManager loggingManager = new LoggingManager(config);
-        loggingManager.configure();
 
         //initialize data-storage for storing detailed component information like maps, objects
         try {

@@ -31,7 +31,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import com.bezirk.middleware.android.device.AndroidDevice;
-import com.bezirk.middleware.android.logging.LoggingManager;
 import com.bezirk.middleware.android.persistence.DatabaseConnectionForAndroid;
 import com.bezirk.middleware.android.proxy.android.ZirkMessageHandler;
 import com.bezirk.middleware.core.comms.JmqCommsManager;
@@ -108,9 +107,6 @@ public final class ComponentManager extends Service {
 
         // initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         lifecycleObservable = new LifeCycleObservable();
-
-        final LoggingManager loggingManager = new LoggingManager(config);
-        loggingManager.configure();
 
         //initialize data-storage for storing detailed component information like maps, objects
         try {
