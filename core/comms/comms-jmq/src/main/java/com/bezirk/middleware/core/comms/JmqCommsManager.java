@@ -43,9 +43,6 @@ public class JmqCommsManager extends CommsProcessor implements Receiver.OnMessag
      */
     public JmqCommsManager(@NotNull final String groupName, final CommsNotification commsNotification) {
         super(commsNotification);
-        if (groupName == null) {
-            throw new IllegalArgumentException("Group name passed as null when initializing JmqCommsManager");
-        }
         comms = new Peer(groupName, this);
     }
 
