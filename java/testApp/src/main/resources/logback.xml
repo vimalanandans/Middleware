@@ -9,7 +9,11 @@
         </encoder>
     </appender>
 
+    <!-- Configure root logger-->
     <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
     </root>
+
+    <!-- Configure package level logging-->
+    <!--<logger name="package.to.configure" level="TRACE" />-->
 </configuration>

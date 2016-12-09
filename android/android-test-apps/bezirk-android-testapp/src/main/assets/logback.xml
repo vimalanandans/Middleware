@@ -1,10 +1,16 @@
 <configuration>
+    <!-- Write to logcat -->
     <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{0} - %msg%n</pattern>
         </encoder>
     </appender>
+
+    <!-- Configure root logger-->
     <root level="DEBUG">
         <appender-ref ref="logcat"/>
     </root>
+
+    <!-- Configure package level logging-->
+    <!--<logger name="package.to.configure" level="TRACE" />-->
 </configuration>
