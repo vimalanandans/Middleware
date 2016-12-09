@@ -15,8 +15,9 @@ public class ReceiverTest {
         ZContext context = new ZContext();
         ZMQ.Socket socket = context.createSocket(ZMQ.DEALER);
 
+        final int receiverPort = receiver.getPort();
         //receiver binds to random ports starting 49152. zeromq chooses the first available. This test assumes 49152 port is available
-        socket.connect("tcp://*:49152");
+        socket.connect("tcp://*:"+receiverPort);
         final byte[] bytes = {1};
         for (int i = 0; i < 5000; i++) {
             socket.send(bytes);
