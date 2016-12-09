@@ -145,6 +145,8 @@ public class Config implements Serializable {
          * Set the overall log level for the bezirk
          *
          * @deprecated As of version 3.1.0, this method is no longer used.
+         * Going forward Bezirk will use the {@link org.slf4j.Logger} interface with Logback as the default logging implementation.
+         * Applications can either use logback or switch it with another slf4j supported logging implementation.
          */
         @Deprecated
         public ConfigBuilder setLogLevel(@NotNull final Level logLevel) {
@@ -158,6 +160,9 @@ public class Config implements Serializable {
          * @param packageName package name for setting the log level, ex. <code>com.bezirk.middleware.core.comms</code>
          *
          * @deprecated As of version 3.1.0, this method is no longer used.
+         * Going forward Bezirk will use the {@link org.slf4j.Logger} interface with Logback as the default logging implementation.
+         * Applications can either use logback or switch it with another slf4j supported logging implementation.
+
          */
         @Deprecated
         public ConfigBuilder setPackageLogLevel(@NotNull final String packageName, @NotNull final Level logLevel) {
