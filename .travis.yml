@@ -42,10 +42,6 @@ before_script:
   - ./gradlew clean
 script:
   - ./gradlew --daemon build check -x lint
-  - ./gradlew sonarqube 
-#  -Dsonar.login=fa0f631c7cd9720fb17cbeaa99ef5899990aa413
-#  - emulator -avd test -no-skin -no-audio -no-window &
-#  - android-wait-for-emulator
-#  - adb shell input keyevent 82 &
+  - ./gradlew sonarqube
 after_success:
   - bash <(curl -s https://codecov.io/bash)

@@ -39,18 +39,15 @@ public final class StackStatusUI {
             JOptionPane.showMessageDialog(null, "Bezirk-is functioning normally",
                     "STACK-STATUS", JOptionPane.ERROR_MESSAGE);
         } else {
-            JOptionPane
-                    .showMessageDialog(
-                            null,
-                            "Expected message version: "
-                                    + WireMessage.WIRE_MESSAGE_VERSION
-                                    + "\n\n"
-                                    + "Received message version: "
-                                    + receivedVersion
-                                    + "\n\n\n"
-                                    + " Different Versions of Bezirk exist in the network, there might be failure in the communication",
-                            "STACK-STATUS", JOptionPane.ERROR_MESSAGE);
-
+            JOptionPane.showMessageDialog(null,
+                    "Expected message version: "
+                            + WireMessage.WIRE_MESSAGE_VERSION
+                            + "\n\nReceived message version: "
+                            + receivedVersion
+                            + "\n\n\n"
+                            + "Different Versions of Bezirk exist in the network, there might be "
+                            + "failure in the communication",
+                    "STACK-STATUS", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

@@ -36,11 +36,11 @@ import java.util.LinkedHashMap;
  */
 public class SphereRegistry implements Serializable {
     private static final long serialVersionUID = 682210165778262550L;
-    public final LinkedHashMap<String, Sphere> spheres;
-    public final LinkedHashMap<String, Zirk> sphereMembership;
-    public final LinkedHashMap<String, DeviceInformation> devices;
-    public final HashMap<String, SphereKeys> sphereKeyMap;
-    public final HashMap<String, HashKey> sphereHashKeyMap;
+    private final LinkedHashMap<String, Sphere> spheres;
+    private final LinkedHashMap<String, Zirk> sphereMembership;
+    private final LinkedHashMap<String, DeviceInformation> devices;
+    private final HashMap<String, SphereKeys> sphereKeyMap;
+    private final HashMap<String, HashKey> sphereHashKeyMap;
 
     public SphereRegistry() {
         super();

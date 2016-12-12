@@ -41,14 +41,13 @@ import java.util.zip.InflaterInputStream;
  * New wire message will contain the control / even ledger message to send and receive
  */
 public class WireMessage implements Serializable {
+    public static final String WIRE_MESSAGE_VERSION = "0.2";
+    public static final String ENCODING = "UTF-8";
     private static final long serialVersionUID = 8351148484329885907L;
     private static final Logger logger = LoggerFactory.getLogger(WireMessage.class);
-    public static final String WIRE_MESSAGE_VERSION = "0.2";
     private static final String MSG_VER_STRING = "\"msgVer\":\"";
     /// if the parser type is json, to check the message version VERSION STRING
     private static final String MSG_VER = MSG_VER_STRING + WIRE_MESSAGE_VERSION + "\"";
-    public static final String ENCODING = "UTF-8";
-
     // increment the wire message version in bezirk version. when there is a change in message format
     private String msgVer = WIRE_MESSAGE_VERSION;
     private String sphereId;
@@ -66,7 +65,7 @@ public class WireMessage implements Serializable {
     private byte[] msg;
 
     // message header for event.
-    private byte[] headerMsg = null;
+    private byte[] headerMsg;
 
     public static boolean checkVersion(String msg) {
         // for json format
@@ -83,7 +82,7 @@ public class WireMessage implements Serializable {
         int start = msg.indexOf(MSG_VER_STRING) + MSG_VER_STRING.length();
 
         if (start > MSG_VER_STRING.length()) {
-            int end = msg.substring(start).indexOf("\"");
+            int end = msg.substring(start).indexOf('\"');
             if (start + end < msg.length()) {
                 version = msg.substring(start, start + end);
             }
@@ -101,11 +100,8 @@ public class WireMessage implements Serializable {
                 baos.write(buffer, 0, len);
             }
             return new String(baos.toByteArray(), ENCODING);
-        } catch (UnsupportedEncodingException uee) {
-            logger.error(uee.getLocalizedMessage());
-            throw new AssertionError(uee);
         } catch (IOException e) {
-            logger.error(e.getLocalizedMessage());
+            logger.error("Failed to encode decompressed message", e);
             throw new AssertionError(e);
         }
     }
@@ -230,7 +226,7 @@ public class WireMessage implements Serializable {
         return null;
     }
 
-    public enum WireMsgType {
+    enum WireMsgType {
         MSG_MULTICAST_CTRL,
         MSG_UNICAST_CTRL,
         MSG_MULTICAST_EVENT,
@@ -239,7 +235,7 @@ public class WireMessage implements Serializable {
         MSG_EVENT,
     }
 
-    public enum WireMsgStatus {
+    enum WireMsgStatus {
         MSG_RAW,
         MSG_ENCRYPTED,
         MSG_COMPRESSED,
@@ -247,7 +243,7 @@ public class WireMessage implements Serializable {
         MSG_DECRYPTED
     }
 
-    public enum MsgParserType {
+    enum MsgParserType {
         PARSER_JSON,
         PARSER_BSON
     }

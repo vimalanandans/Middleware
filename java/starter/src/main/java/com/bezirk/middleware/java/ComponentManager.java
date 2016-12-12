@@ -46,9 +46,9 @@ import java.util.prefs.Preferences;
 
 /**
  * This class manages Bezirk middleware component injection & lifecycle.
- * All top level components like PubSubBroker, Comms, ProxyServer, Data-storage, etc are injected with their dependencies.
- * Circular dependency needs to be at its minimum to prevent injection problems. Going forward dependency
- * injection using a DI framework like guice or dagger can be introduced.
+ * All top level components like PubSubBroker, Comms, ProxyServer, Data-storage, etc are injected with
+ * their dependencies. Circular dependency needs to be at its minimum to prevent injection problems.
+ * Going forward dependency injection using a DI framework like guice or dagger can be introduced.
  * To manage circular dependencies in the current code structure, init/setters might be needed.
  */
 public class ComponentManager {
@@ -122,7 +122,7 @@ public class ComponentManager {
 
     }
 
-    void initializeIdentityManager() {
+    private void initializeIdentityManager() {
 
         final Preferences preferences = Preferences.userNodeForPackage(BezirkIdentityManager.class);
         identityManager = new BezirkIdentityManager();

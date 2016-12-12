@@ -85,14 +85,14 @@ public class LifeCycleObservable extends Observable {
                         changeAndNotify(State.RUNNING);
                         return true;
                     case STOP:
-                        logger.error("Requested invalid transition '" + transition + "' from '" + currentState + "'");
+                        logger.error("Requested invalid transition '{}' from '{}'", transition, currentState);
                         return false;
                 }
                 break;
             case RUNNING:
                 switch (transition) {
                     case START:
-                        logger.error("Requested invalid transition '" + transition + "' from '" + currentState + "'");
+                        logger.error("Requested invalid transition '{}' from '{}'", transition, currentState);
                         return false;
                     case STOP:
                         changeAndNotify(State.STOPPED);
@@ -108,7 +108,8 @@ public class LifeCycleObservable extends Observable {
     }
 
     private void changeAndNotify(State state) {
-        logger.debug("Current state being changed from '" + currentState + "' to '" + state + "'. Notifying observers");
+        logger.debug("Current state being changed from '{}' to '{}'. Notifying observers",
+                currentState, state);
         currentState = state;
         setChanged();
         notifyObservers();
