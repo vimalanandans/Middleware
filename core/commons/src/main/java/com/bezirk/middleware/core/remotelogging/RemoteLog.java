@@ -60,6 +60,4 @@ public interface RemoteLog {
      * to send the incoming control message for logging
      */
     boolean sendRemoteLogToServer(ControlMessage message);
-
-    //boolean isRemoteMessageValid(RemoteLoggingMessage logMessage);
 }
