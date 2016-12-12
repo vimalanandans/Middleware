@@ -73,11 +73,12 @@ public class RemoteLogDetailsGUI extends JFrame {
      * GUI Components
      */
     private final GridBagLayout gridBagDialogLayout = new GridBagLayout();
-    private final JPanel headerPanel = new JPanel(),
-            tableHolderPanel = new JPanel();
+    private final JPanel headerPanel = new JPanel();
+    private final JPanel tableHolderPanel = new JPanel();
     private final JLabel selectedSphereLbl = new JLabel();
     private final JButton clearLogBtn = new JButton();
-    private final JFrame sphereSelectFrame, currentFrame;
+    private final JFrame sphereSelectFrame;
+    private final JFrame currentFrame;
     private final String[] selectedSpheres;
     private final boolean isDeveloperModeEnabled;
     /**
@@ -92,9 +93,27 @@ public class RemoteLogDetailsGUI extends JFrame {
     private final transient Comms comms;
     private final transient WindowAdapter closeButtonListener = new WindowAdapter() {
         @Override
-        public void windowClosing(WindowEvent arg0) {
+        public void windowClosing(WindowEvent windowEvent) {
             showCancelDialog();
-            super.windowClosing(arg0);
+            super.windowClosing(windowEvent);
+        }
+
+        private void showCancelDialog() {
+            final int returnValue = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to exit Logging?\nAll the logged data will be lost!",
+                    "Confirm Exit", JOptionPane.YES_NO_OPTION);
+            if (returnValue == JOptionPane.YES_OPTION) {
+                sphereSelectFrame.setVisible(true);
+                currentFrame.dispose();
+                shutLoggingGUI();
+            }
+        }
+
+        /**
+         * Shut the logging Zirk
+         */
+        private void shutLoggingGUI() {
+            sendLoggingServiceMsg(false);
         }
     };
     private DefaultTableModel model = new DefaultTableModel(0, 0) {
@@ -131,6 +150,43 @@ public class RemoteLogDetailsGUI extends JFrame {
         this.comms = comms;
     }
 
+    /**
+     * Returns the DeviceName associated with the deviceId
+     *
+     * @param deviceId Device Id whose name is to be fetched
+     * @return DeviceName if exists, null otherwise
+     */
+    private static String getDeviceNameFromDeviceId(final String deviceId) {
+        if (deviceId == null) {
+            return RECIPIENT_MULTICAST_VALUE;
+        }
+
+        return deviceId;
+    }
+
+    /**
+     * Gets the sphere name from the Sphere UI if available, "Un-defined" if not available.
+     *
+     * @param sphereId SphereId of the sphere
+     * @return sphere Name associated with the sphere Id.
+     */
+    private static String getSphereNameFromSphereId(final String sphereId) {
+        final StringBuilder tempSphereName = new StringBuilder();
+
+        SphereAPI sphereAPI = null;
+        if (sphereAPI != null && sphereAPI.getSphere(sphereId) != null &&
+                sphereAPI.getSphere(sphereId).getSphereName() != null) {
+            logger.debug("sphereAPI is not null in RemoteLogDetailsGUI");
+            tempSphereName.append(sphereAPI.getSphere(sphereId).getSphereName());
+        } else {
+            logger.debug("sphereAPI is null in RemoteLogDetailsGUI");
+        }
+
+        return tempSphereName.toString();
+    }
+
+    // Ignore magic number warnings for GUI code
+    @SuppressWarnings("squid:S109")
     private void jbInit() {
         this.setVisible(true);
         this.getContentPane().setLayout(gridBagDialogLayout);
@@ -183,25 +239,6 @@ public class RemoteLogDetailsGUI extends JFrame {
 
     }
 
-    private void showCancelDialog() {
-        final int returnValue = JOptionPane.showConfirmDialog(null,
-                "Are you sure you want to exit Logging?\n All the logged data will be lost!",
-                "Confirm Exit",
-                JOptionPane.YES_NO_OPTION);
-        if (returnValue == JOptionPane.YES_OPTION) {
-            sphereSelectFrame.setVisible(true);
-            currentFrame.dispose();
-            shutLoggingGUI();
-        }
-    }
-
-    /**
-     * Shut the logging Zirk
-     */
-    public void shutLoggingGUI() {
-        sendLoggingServiceMsg(false);
-    }
-
     private void sendLoggingServiceMsg(boolean isActivateLogging) {
         if (msgLog != null) {
             msgLog.enableLogging(isActivateLogging, false, true, selectedSpheres);
@@ -211,15 +248,13 @@ public class RemoteLogDetailsGUI extends JFrame {
     }
 
     public void updateTable(RemoteLoggingMessage bezirkLogMessage) {
-
         if (!isDeveloperModeEnabled) {
-
             return;
         }
 
         final StringBuilder tempMapKey = new StringBuilder();
         tempMapKey.append(bezirkLogMessage.uniqueMsgId).append(':').append(bezirkLogMessage.sphereName);
-        logger.debug("tempMapKeyis " + tempMapKey);
+        logger.debug("tempMapKey is {}", tempMapKey);
         if (checkEntry(tempMapKey.toString())) {
             try {
                 model.addRow(new Object[]{
@@ -231,64 +266,17 @@ public class RemoteLogDetailsGUI extends JFrame {
                 logger.error("Error in updating the table", e);
             }
         } else {
-            int tempValue = (int) model.getValueAt(
-                    logMsgMap.get(tempMapKey.toString()), 5);
-            model.setValueAt(++tempValue, logMsgMap.get(tempMapKey.toString()),
-                    5);
+            int tempValue = (int) model.getValueAt(logMsgMap.get(tempMapKey.toString()), 5) + 1;
+            model.setValueAt(tempValue, logMsgMap.get(tempMapKey.toString()), 5);
         }
     }
 
     private boolean checkEntry(final String tempMapKey) {
-
         if (logMsgMap.containsKey(tempMapKey)) {
             return false;
         } else {
             logMsgMap.put(tempMapKey, logTbl.getRowCount());
             return true;
         }
-
-    }
-
-    /**
-     * Returns the DeviceName associated with the deviceId
-     *
-     * @param deviceId Device Id whose name is to be fetched
-     * @return DeviceName if exists, null otherwise
-     */
-    private String getDeviceNameFromDeviceId(final String deviceId) {
-        if (deviceId == null) {
-
-            return RECIPIENT_MULTICAST_VALUE;
-        }
-//        SphereServiceAccess sphereServiceAccess = new SphereServiceManager();
-//        final String tempDeviceName = sphereServiceAccess.getDeviceNameFromSphere(deviceId);
-//        return (null == tempDeviceName) ? deviceId : tempDeviceName;
-        return deviceId;
-    }
-
-    /**
-     * Gets the sphere name from the Sphere UI if available, "Un-defined" if not available.
-     *
-     * @param sphereId SphereId of the sphere
-     * @return sphere Name associated with the sphere Id.
-     */
-    private String getSphereNameFromSphereId(final String sphereId) {
-        final StringBuilder tempSphereName = new StringBuilder();
-
-        //SphereAPI sphereAPI=new SphereServiceManager();
-        SphereAPI sphereAPI = null;
-        try {
-            if (null != sphereAPI) {
-                logger.debug("sphereAPI is not null in RemoteLogDetailsGUI");
-                tempSphereName.append(sphereAPI.getSphere(sphereId).getSphereName());
-            } else {
-                logger.debug("sphereAPI is null in RemoteLogDetailsGUI");
-            }
-
-        } catch (NullPointerException ne) {
-            logger.error("Error in fetching sphereName from RemoteLogDetailsGUI", ne);
-            tempSphereName.append("Un-defined");
-        }
-        return tempSphereName.toString();
     }
 }

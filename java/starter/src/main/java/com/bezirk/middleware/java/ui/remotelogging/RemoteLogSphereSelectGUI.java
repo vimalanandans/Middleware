@@ -108,7 +108,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
     private final transient ActionListener listSphereBtnListener = new ActionListener() {
 
         @Override
-        public void actionPerformed(ActionEvent arg0) {
+        public void actionPerformed(ActionEvent actionEvent) {
             leftSphereListModel.removeAllElements();
             rightSphereListModel.removeAllElements();
             leftSphereListModel.addElement(RemoteLog.ALL_SPHERES);
@@ -254,6 +254,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
     /**
      * initialize the GUI with the components
      */
+    // Ignore magic number warnings for GUI code
     @SuppressWarnings("squid:S109")
     private void jbInit() {
         this.setJMenuBar(menuBar);
