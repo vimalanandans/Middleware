@@ -28,10 +28,11 @@ import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
  * This class is used to generate messageIds for both Events and Control messages on behalf of the Bezirk Stack
  */
 public final class GenerateMsgId {
-
     private static final String KEY_SEPARATOR = ":";
-    private static int evtId = 0;
-    private static int ctrlId = 0;
+    private static final int MAX_ID_COUNT = 1024;
+
+    private static int evtId;
+    private static int ctrlId;
 
     private GenerateMsgId() {
         //Utility class should have a private constructor
@@ -44,10 +45,13 @@ public final class GenerateMsgId {
      * Example - 2:192.168.1.124:abc123423
      */
     public static String generateEvtId(BezirkZirkEndPoint sep) {
-        if (1024 == evtId) {
+        if (evtId == MAX_ID_COUNT) {
             evtId = 0;
         }
-        return (++evtId + KEY_SEPARATOR + sep.device + KEY_SEPARATOR + sep.zirkId.getZirkId());
+
+        evtId++;
+
+        return evtId + KEY_SEPARATOR + sep.getDevice() + KEY_SEPARATOR + sep.getBezirkZirkId().getZirkId();
     }
 
     /**
@@ -56,9 +60,10 @@ public final class GenerateMsgId {
      * @return the ctrlId
      */
     public static int generateCtrlId() {
-        if (1024 == ctrlId) {
+        if (ctrlId == MAX_ID_COUNT) {
             ctrlId = 0;
         }
+
         return ++ctrlId;
     }
 }

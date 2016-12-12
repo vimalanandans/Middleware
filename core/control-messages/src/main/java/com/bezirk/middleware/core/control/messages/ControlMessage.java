@@ -50,7 +50,7 @@ public class ControlMessage {
      * @param key           UniqueKey that is used to match responses to corresponding requests
      */
     protected ControlMessage(BezirkZirkEndPoint sender, String sphereId,
-                             Discriminator discriminator, Boolean retransmit, String key) {
+                             Discriminator discriminator, boolean retransmit, String key) {
         this.sender = sender;
         this.sphereId = sphereId;
         this.messageId = GenerateMsgId.generateCtrlId();
@@ -67,13 +67,13 @@ public class ControlMessage {
      * @param retransmit    <code>true</code> if the message is to be re-transmitted
      */
     protected ControlMessage(BezirkZirkEndPoint sender, String sphereId,
-                             Discriminator discriminator, Boolean retransmit) {
+                             Discriminator discriminator, boolean retransmit) {
         this.sender = sender;
         this.sphereId = sphereId;
         this.messageId = GenerateMsgId.generateCtrlId();
         this.discriminator = discriminator;
         //Auto-Generate Unique Key
-        this.uniqueKey = sender.device + ":" + sphereId + ":" + this.messageId;
+        this.uniqueKey = sender.getDevice() + ":" + sphereId + ":" + this.messageId;
     }
 
     /**
@@ -85,17 +85,6 @@ public class ControlMessage {
         Gson gson = new Gson();
         return gson.fromJson(json, dC);
     }
-
-    /**
-     * General norm for this field is
-     * For requests: true
-     * For responses: false
-     *
-     * @return true if msg is to be retransmitted
-     */
-//    public Boolean getRetransmit() {
-//        return retransmit;
-//    }
 
     /**
      * For requests: this key must be used to Hash Requests that are pending and also to map duplicates
@@ -114,13 +103,16 @@ public class ControlMessage {
         return sphereId;
     }
 
+    public void setSphereId(String sphereId) {
+        this.sphereId = sphereId;
+    }
+
     /**
      * @return the message id
      */
     public Integer getMessageId() {
         return messageId;
     }
-
 
     /**
      * The discriminator is of type String and is used to distinguish between control Messages
@@ -132,7 +124,6 @@ public class ControlMessage {
         return discriminator;
     }
 
-
     /**
      * Returns the Sender of the Control Message
      *
@@ -140,10 +131,6 @@ public class ControlMessage {
      */
     public BezirkZirkEndPoint getSender() {
         return sender;
-    }
-
-    public void setSphereId(String sphereId) {
-        this.sphereId = sphereId;
     }
 
     /**

@@ -32,14 +32,6 @@ import com.google.gson.GsonBuilder;
  * Header contains information needed by comms to route messages
  */
 public class Header {
-    // Open Fields
-    private String sphereId = null; //Don't touch
-    private BezirkZirkEndPoint sender = null; // Change to ZirkEndPoint sender
-    private String uniqueMsgId = null;
-    private String eventName = null;
-    private boolean isIdentified = false;
-    private String serializedAlias;
-
     private static final Gson gson;
 
     static {
@@ -47,6 +39,14 @@ public class Header {
         gsonBuilder.registerTypeHierarchyAdapter(Header.class, new InterfaceAdapter<Header>());
         gson = gsonBuilder.create();
     }
+
+    // Open Fields
+    private String sphereId;
+    private BezirkZirkEndPoint sender = null; // Change to ZirkEndPoint sender
+    private String uniqueMsgId;
+    private String eventName;
+    private boolean isIdentified = false;
+    private String serializedAlias;
 
     public Header() {
     }
@@ -58,15 +58,21 @@ public class Header {
         this.eventName = eventName;
     }
 
+    public static <C> C fromJson(String json, Class<C> objectType) {
+        return gson.fromJson(json, objectType);
+    }
+
     /**
-     * @return the messageId which is generated per message sent. Every message is assigned with a unique identifier
+     * @return the messageId which is generated per message sent. Every message is assigned with a
+     * unique identifier
      */
     public String getUniqueMsgId() {
         return uniqueMsgId;
     }
 
     /**
-     * @param messageId the messageId which is generated per message sent. Every message is assigned with a unique identifier
+     * @param messageId the messageId which is generated per message sent. Every message is assigned
+     *                  with a unique identifier
      */
     public void setUniqueMsgId(String messageId) {
         this.uniqueMsgId = messageId;
@@ -93,21 +99,20 @@ public class Header {
         return sender;
     }
 
-    public String getEventName() {
-        return eventName;
-    }
-
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
-
-
     /**
      * @param sender the senderId of the message. Usually there is a function that retrieves
      *               the hostId and this is used to set the senderId
      */
     public void setSender(BezirkZirkEndPoint sender) {
         this.sender = sender;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 
     public void setIsIdentified(boolean isIdentified) {
@@ -118,21 +123,16 @@ public class Header {
         return isIdentified;
     }
 
-    public void setAlias(Alias alias) {
-        this.serializedAlias = gson.toJson(alias);
-    }
-
     public Alias getAlias() {
         return gson.fromJson(serializedAlias, Alias.class);
     }
 
-    public String serialize() {
-        final Gson gson = new Gson();
-        return gson.toJson(this);
+    public void setAlias(Alias alias) {
+        this.serializedAlias = gson.toJson(alias);
     }
 
-    public static <C> C fromJson(String json, Class<C> objectType) {
-        return gson.fromJson(json, objectType);
+    public String serialize() {
+        return new Gson().toJson(this);
     }
 
 }

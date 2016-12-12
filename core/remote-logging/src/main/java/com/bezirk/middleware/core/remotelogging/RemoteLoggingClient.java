@@ -27,6 +27,7 @@ import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.EventLedger;
 import com.bezirk.middleware.core.control.messages.Ledger;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,20 +43,19 @@ import java.util.Date;
 public class RemoteLoggingClient {
     private static final Logger logger = LoggerFactory.getLogger(RemoteLoggingClient.class);
     private final Date currentDate = new Date();
+    private final InetAddress inetAddress;
     /**
      * Remote Logging Zirk IP
      */
-    private String serviceIP = null;
+    private String serviceIP;
     /**
      * Remote Logging Zirk Port
      */
     private int servicePort = -1;
-
-    private final InetAddress inetAddress;
     /**
      * Processor for LogSenderQueue
      */
-    private SenderQueueProcessor senderQueueProcessor = null;
+    private SenderQueueProcessor senderQueueProcessor;
 
     RemoteLoggingClient(final InetAddress inetAddress) {
         this.inetAddress = inetAddress;
@@ -87,7 +87,7 @@ public class RemoteLoggingClient {
      * @param remoteIP Ip of the logging zirk that is shutting
      * @param port     port at which the logging zirk was listening for the clients
      */
-    public void stopClient(String remoteIP, int port) throws IOException {
+    public void stopClient(@NotNull String remoteIP, int port) throws IOException {
         if (null != senderQueueProcessor &&
                 remoteIP.equals(this.serviceIP) &&
                 port == this.servicePort) {
@@ -121,7 +121,7 @@ public class RemoteLoggingClient {
     /**
      * to send the incoming control message for logging
      */
-    public boolean processLogInMessage(ControlMessage message) {
+    public boolean processLogInMessage(@NotNull ControlMessage message) {
         boolean returnValue = false;
 
         if (Util.checkSphere(message.getSphereId())) {
@@ -152,15 +152,18 @@ public class RemoteLoggingClient {
      * to send the incoming event message for logging
      */
     public boolean processLogInMessage(Ledger ledger) {
-        if (!isRunning()) return false;
+        if (!isRunning()) {
+            return false;
+        }
 
         final RemoteLoggingMessage remoteLoggingMessage;
 
         if (ledger instanceof EventLedger) {
-            if ((null != ((EventLedger) ledger).getHeader())) {
-                logger.debug("Header is set " + ((EventLedger) ledger).getHeader().toString());
-                if (null != ((EventLedger) ledger).getHeader().getSphereId()) {
-                    logger.debug("sphere id is " + ((EventLedger) ledger).getHeader().getSphereId());
+            final EventLedger eventLedger = (EventLedger) ledger;
+            if (eventLedger.getHeader() != null) {
+                logger.debug("Header is set {}", eventLedger.getHeader().toString());
+                if (eventLedger.getHeader().getSphereId() != null) {
+                    logger.debug("sphere id is {}", eventLedger.getHeader().getSphereId());
                 }
             }
 

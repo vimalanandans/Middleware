@@ -34,8 +34,8 @@ public class ValidatorUtilityTest {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        recipient.device = inetAddr.getHostAddress();
-        sender.device = inetAddr.getHostAddress();
+        recipient.setDevice(inetAddr.getHostAddress());
+        sender.setDevice(inetAddr.getHostAddress());
     }
 
     @Test

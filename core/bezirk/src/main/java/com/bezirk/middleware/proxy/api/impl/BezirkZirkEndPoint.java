@@ -27,8 +27,8 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import java.io.Serializable;
 
 public class BezirkZirkEndPoint implements ZirkEndPoint, Serializable {
-    public String device;
-    public final ZirkId zirkId;
+    private String device;
+    private final ZirkId zirkId;
 
     public BezirkZirkEndPoint(String device, ZirkId zirkId) {
         this.device = device;
@@ -40,18 +40,30 @@ public class BezirkZirkEndPoint implements ZirkEndPoint, Serializable {
         this.zirkId = zirkId;
     }
 
+    public String getDevice() {
+        return device;
+    }
+
+    public void setDevice(String newDevice) {
+        device = newDevice;
+    }
+
     public ZirkId getBezirkZirkId() {
         return zirkId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         BezirkZirkEndPoint that = (BezirkZirkEndPoint) o;
 
-        if (!device.equals(that.device)) return false;
+        if (!device.equals(that.device))
+            return false;
         return zirkId.equals(that.zirkId);
 
     }

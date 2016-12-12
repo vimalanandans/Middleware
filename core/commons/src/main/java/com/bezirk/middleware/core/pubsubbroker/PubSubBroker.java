@@ -414,9 +414,9 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
             zirkList = this.checkMulticastEvent(mHeader.getEventName(), targetLocation);
         } else {
             UnicastHeader uHeader = (UnicastHeader) eLedger.getHeader();
-            if (this.checkUnicastEvent(uHeader.getEventName(), uHeader.getRecipient().zirkId)) {
+            if (this.checkUnicastEvent(uHeader.getEventName(), uHeader.getRecipient().getBezirkZirkId())) {
                 zirkList = new HashSet<>();
-                zirkList.add(uHeader.getRecipient().zirkId);
+                zirkList.add(uHeader.getRecipient().getBezirkZirkId());
             }
         }
         return zirkList;

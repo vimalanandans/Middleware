@@ -51,7 +51,6 @@ public final class ValidatorUtility {
      * @return true if object is not null
      */
     public static boolean isObjectNotNull(final Object object) {
-
         return object != null;
     }
 
@@ -62,8 +61,8 @@ public final class ValidatorUtility {
      * @return true if valid, false otherwise.
      */
     public static boolean checkBezirkZirkEndPoint(final BezirkZirkEndPoint bezirkServiceEndPoint) {
-        return !(bezirkServiceEndPoint == null || !checkBezirkZirkId(bezirkServiceEndPoint.zirkId) ||
-                !checkForString(bezirkServiceEndPoint.device));
+        return !(bezirkServiceEndPoint == null || !checkBezirkZirkId(bezirkServiceEndPoint.getBezirkZirkId()) ||
+                !checkForString(bezirkServiceEndPoint.getDevice()));
     }
 
     /**
@@ -91,22 +90,6 @@ public final class ValidatorUtility {
                 !checkBezirkZirkEndPoint(mHeader.getSender()));
 
     }
-
-    private static boolean checkEndPoints(BezirkZirkEndPoint... serviceEndPoints) {
-
-        for (BezirkZirkEndPoint serviceEndPoint : serviceEndPoints) {
-
-            if (!checkBezirkZirkEndPoint(serviceEndPoint)) {
-
-                return false;
-            }
-
-        }
-
-        return true;
-
-    }
-
 
     public static boolean checkRTCStreamRequest(final ZirkId serviceId, final BezirkZirkEndPoint sep) {
         return checkBezirkZirkId(serviceId) && checkBezirkZirkEndPoint(sep);

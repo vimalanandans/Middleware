@@ -258,7 +258,7 @@ public abstract class CommsProcessor implements Comms, Observer {
                 return false;
             }
 
-            final String recipient = unicastHeader.getRecipient().device;
+            final String recipient = unicastHeader.getRecipient().getDevice();
 
             if (recipient == null || recipient.isEmpty()) {
                 logger.error("Unicast message does not have a recipient device");

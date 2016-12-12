@@ -102,7 +102,7 @@ final class IncomingMessageProcessor implements Runnable {
         }
 
         // override sender zirk end point device id with local id
-        eventLedger.getHeader().getSender().device = deviceId;
+        eventLedger.getHeader().getSender().setDevice(deviceId);
         eventLedger.setEncryptedMessage(wireMessage.getMsg());
         msgDispatcher.dispatchServiceMessages(eventLedger);
 
@@ -158,7 +158,7 @@ final class IncomingMessageProcessor implements Runnable {
 
         final ControlMessage ctrl = ControlMessage.deserialize(processedMsg, ControlMessage.class);
 
-        ctrl.getSender().device = deviceId;
+        ctrl.getSender().setDevice(deviceId);
         msgDispatcher.dispatchControlMessages(ctrl, processedMsg);
         return true;
     }
@@ -201,7 +201,7 @@ final class IncomingMessageProcessor implements Runnable {
         msgLedger.setSender(endPoint);
 
         try {
-            msgLedger.setMsg(new String(wireMessage.getMsg(), WireMessage.ENCODING));
+            msgLedger.setMessage(new String(wireMessage.getMsg(), WireMessage.ENCODING));
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage());
             throw new AssertionError(e);
