@@ -50,7 +50,7 @@ public interface Comms {
     boolean sendControlMessage(ControlMessage message);
 
     /**
-     * returns the unique ID for the device abstracted by this comms interfaces
+     * returns the unique ID for the device abstracted by this comms interface
      */
     String getNodeId();
 
