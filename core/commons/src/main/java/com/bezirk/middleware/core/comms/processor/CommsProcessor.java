@@ -71,16 +71,6 @@ public abstract class CommsProcessor implements Comms, Observer {
         this.msgDispatcher = new CommsMessageDispatcher();
     }
 
-    protected void startComms() {
-        executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-    }
-
-    protected void stopComms() {
-        if (executor != null) {
-            shutdownAndAwaitTermination(executor);
-        }
-    }
-
     private static void shutdownAndAwaitTermination(ExecutorService pool) {
         // Disable new tasks from being submitted
         pool.shutdown();
@@ -99,6 +89,31 @@ public abstract class CommsProcessor implements Comms, Observer {
             pool.shutdownNow();
             // Preserve interrupt status
             Thread.currentThread().interrupt();
+        }
+    }
+
+    private static byte[] compressMsg(@NotNull final String data) {
+        final byte[] messageBytes;
+        try {
+            messageBytes = data.getBytes(WireMessage.ENCODING);
+        } catch (UnsupportedEncodingException e) {
+            logger.error("Failed to get wire message bytes to compress the message", e);
+            throw new AssertionError(e);
+        }
+        final long compStartTime = System.currentTimeMillis();
+        final byte[] wireData = TextCompressor.compress(messageBytes);
+        final long compEndTime = System.currentTimeMillis();
+        logger.trace("Compression Took {} milliseconds", compEndTime - compStartTime);
+        return wireData;
+    }
+
+    protected void startComms() {
+        executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+    }
+
+    protected void stopComms() {
+        if (executor != null) {
+            shutdownAndAwaitTermination(executor);
         }
     }
 
@@ -184,21 +199,6 @@ public abstract class CommsProcessor implements Comms, Observer {
 
         wireMessage.setMsg(wireData);
         return wireMessage;
-    }
-
-    private static byte[] compressMsg(@NotNull final String data) {
-        final byte[] temp;
-        try {
-            temp = data.getBytes(WireMessage.ENCODING);
-        } catch (UnsupportedEncodingException e) {
-            logger.error("Failed to get wire message bytes to compress the message", e);
-            throw new AssertionError(e);
-        }
-        final long compStartTime = System.currentTimeMillis();
-        final byte[] wireData = TextCompressor.compress(temp);
-        final long compEndTime = System.currentTimeMillis();
-        logger.trace("Compression Took {} milliseconds", compEndTime - compStartTime);
-        return wireData;
     }
 
     private byte[] encryptMsg(String sphereId, byte[] msgData) {

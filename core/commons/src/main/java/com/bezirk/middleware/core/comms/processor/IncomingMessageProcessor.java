@@ -1,3 +1,25 @@
+/**
+ * The MIT License (MIT)
+ * Copyright (c) 2016 Bezirk http://bezirk.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package com.bezirk.middleware.core.comms.processor;
 
 import com.bezirk.middleware.core.comms.CommsMessageDispatcher;
@@ -71,7 +93,7 @@ final class IncomingMessageProcessor implements Runnable {
         }
     }
 
-    private boolean processEvent(final String deviceId, @NotNull WireMessage wireMessage) {
+    private boolean processEvent(final String deviceId, @NotNull final WireMessage wireMessage) {
         final EventLedger eventLedger = new EventLedger();
         // fixme: check the version
 
@@ -87,7 +109,7 @@ final class IncomingMessageProcessor implements Runnable {
         return true;
     }
 
-    private boolean setEventHeader(@NotNull EventLedger eLedger, @NotNull WireMessage wireMessage) {
+    private boolean setEventHeader(@NotNull final EventLedger eLedger, @NotNull final WireMessage wireMessage) {
         // decrypt the header
         final byte[] data = decryptMsg(wireMessage.getWireMsgStatus(), wireMessage.getHeaderMsg());
         if (data == null) {
@@ -117,49 +139,50 @@ final class IncomingMessageProcessor implements Runnable {
         return true;
     }
 
-    private boolean processCtrl(String deviceId, WireMessage wireMessage) {
+    private boolean processCtrl(String deviceId, final WireMessage wireMessage) {
         // fixme: check the version
-        final byte[] msg = parseCtrlMessage(wireMessage);
+        final byte[] messageBytes = parseCtrlMessage(wireMessage);
 
-        if (msg != null) {
-            final String processedMsg;
-
-            try {
-                processedMsg = new String(msg, WireMessage.ENCODING);
-            } catch (UnsupportedEncodingException e) {
-                logger.error("Failed to encode control message", e);
-                throw new AssertionError(e);
-            }
-
-            final ControlMessage ctrl = ControlMessage.deserialize(processedMsg, ControlMessage.class);
-
-            ctrl.getSender().device = deviceId;
-            msgDispatcher.dispatchControlMessages(ctrl, processedMsg);
-            return true;
+        if (messageBytes.length <= 0) {
+            return false;
         }
 
-        return false;
+        final String processedMsg;
+
+        try {
+            processedMsg = new String(messageBytes, WireMessage.ENCODING);
+        } catch (UnsupportedEncodingException e) {
+            logger.error("Failed to encode control message", e);
+            throw new AssertionError(e);
+        }
+
+        final ControlMessage ctrl = ControlMessage.deserialize(processedMsg, ControlMessage.class);
+
+        ctrl.getSender().device = deviceId;
+        msgDispatcher.dispatchControlMessages(ctrl, processedMsg);
+        return true;
     }
 
     /**
      * Returns decrypted and decompressed WireMessage.
      */
-    private byte[] parseCtrlMessage(@NotNull WireMessage wireMessage) {
+    @NotNull
+    private byte[] parseCtrlMessage(@NotNull final WireMessage wireMessage) {
         /*Step 1 : Decryption :  decrypt the message*/
-        byte[] message = decryptMsg(wireMessage.getWireMsgStatus(), wireMessage.getMsg());
-        if (message == null) {
+        byte[] messageBytes = decryptMsg(wireMessage.getWireMsgStatus(), wireMessage.getMsg());
+        if (messageBytes == null) {
             // decryption failed
-            return null;
+            return new byte[0];
         }
 
         /*Step 2 : De-compress the message :  de-compress the message*/
         if (wireMessage.getWireMsgStatus() == WireMessage.WireMsgStatus.MSG_ENCRYPTED_COMPRESSED
                 || wireMessage.getWireMsgStatus() == WireMessage.WireMsgStatus.MSG_COMPRESSED) {
-            final String processedMsg = TextCompressor.decompress(message);
+            final String processedMsg = TextCompressor.decompress(messageBytes);
 
             if (!processedMsg.isEmpty()) {
                 try {
-                    message = processedMsg.getBytes(WireMessage.ENCODING);
+                    messageBytes = processedMsg.getBytes(WireMessage.ENCODING);
                 } catch (UnsupportedEncodingException e) {
                     logger.error("Missing encoding required to fetch control message bytes", e);
                     throw new AssertionError(e);
@@ -167,10 +190,10 @@ final class IncomingMessageProcessor implements Runnable {
             }
         }
 
-        return message;
+        return messageBytes;
     }
 
-    private boolean processMessageEvent(final String deviceId, @NotNull WireMessage wireMessage) {
+    private boolean processMessageEvent(final String deviceId, @NotNull final WireMessage wireMessage) {
         final MessageLedger msgLedger = new MessageLedger();
         // fixme: check the version
 
@@ -189,21 +212,22 @@ final class IncomingMessageProcessor implements Runnable {
         return true;
     }
 
-    private byte[] decryptMsg(WireMessage.WireMsgStatus msgStatus, byte[] msgData) {
-        byte[] msg;
+    private static byte[] decryptMsg(final WireMessage.WireMsgStatus msgStatus, @NotNull final byte[] msgData) {
+        byte[] messageBytes;
 
         if (msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED_COMPRESSED
                 || msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED) {
             try {
                 final String data = new String(msgData, WireMessage.ENCODING);
-                msg = data.getBytes(WireMessage.ENCODING);
+                messageBytes = data.getBytes(WireMessage.ENCODING);
             } catch (UnsupportedEncodingException e) {
                 logger.error(e.getLocalizedMessage());
                 throw new AssertionError(e);
             }
         } else {
-            msg = msgData;
+            messageBytes = msgData;
         }
-        return msg;
+
+        return messageBytes;
     }
 }

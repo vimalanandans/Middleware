@@ -25,6 +25,7 @@ package com.bezirk.middleware.core.comms;
 import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
+import com.bezirk.middleware.core.control.messages.ControlMessage.Discriminator;
 import com.bezirk.middleware.core.control.messages.EventLedger;
 
 /**
@@ -49,15 +50,13 @@ public interface Comms {
     boolean sendControlMessage(ControlMessage message);
 
     /**
-     * this is on each comms instance returns its own created id
+     * returns the unique ID for the device abstracted by this comms interfaces
      */
     String getNodeId();
 
-    boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
+    boolean registerControlMessageReceiver(Discriminator id, CtrlMsgReceiver receiver);
 
     /* register event message receiver */
     boolean registerEventMessageReceiver(EventMsgReceiver receiver);
-
-
 }
 
