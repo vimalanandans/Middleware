@@ -25,8 +25,8 @@ package com.bezirk.middleware.core.comms;
 import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
+import com.bezirk.middleware.core.control.messages.ControlMessage.Discriminator;
 import com.bezirk.middleware.core.control.messages.EventLedger;
-import com.bezirk.middleware.core.control.messages.Ledger;
 
 /**
  * This class is created to de-couple from the rest of bezirk (spheres / sadl / stream)
@@ -37,44 +37,6 @@ import com.bezirk.middleware.core.control.messages.Ledger;
  * </p>
  */
 public interface Comms {
-
-//    /**
-//     * start the communication
-//     */
-//    boolean startComms();
-//
-//    /**
-//     * stop the communication
-//     */
-//    boolean stopComms();
-//
-//    /**
-//     * close the communication
-//     */
-//    boolean closeComms();
-//
-//    /**
-//     * restart the underlying comms
-//     */
-//    boolean restartComms();
-
-    /**
-     * Set the sphere for sadl. for late initialization
-     *//*
-    void setSphereSecurity(final SphereSecurity sphereSecurity);*/
-
-    /**
-     * TODO: Split the interface for controlling comms component as CommsCtrl
-     * and below access related as Comms
-     * */
-
-    /**
-     * send the control or event message depends of ledger type
-     */
-    @Deprecated
-    // Use sendEventLedger, or sendControlLedger
-    boolean sendMessage(Ledger message);
-
     /**
      * Send event ledger
      */
@@ -88,29 +50,13 @@ public interface Comms {
     boolean sendControlMessage(ControlMessage message);
 
     /**
-     * @param notification
-     * @return
-     */
-    boolean registerNotification(CommsNotification notification);
-
-    /**
-     * this is on each comms instance returns its own created id
+     * returns the unique ID for the device abstracted by this comms interface
      */
     String getNodeId();
 
-    /**
-     * Initialize the communications
-     * creates queues, threads, sockets
-     **/
-//    boolean initComms(CommsProperties commsProperties, InetAddress addr,
-//                      SphereSecurity sphereSecurity,
-//                      Streaming streaming);
-
-    boolean registerControlMessageReceiver(ControlMessage.Discriminator id, CtrlMsgReceiver receiver);
+    boolean registerControlMessageReceiver(Discriminator id, CtrlMsgReceiver receiver);
 
     /* register event message receiver */
     boolean registerEventMessageReceiver(EventMsgReceiver receiver);
-
-
 }
 

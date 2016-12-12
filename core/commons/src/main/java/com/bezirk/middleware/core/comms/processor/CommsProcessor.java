@@ -29,16 +29,12 @@ import com.bezirk.middleware.core.comms.CtrlMsgReceiver;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.EventLedger;
-import com.bezirk.middleware.core.control.messages.Ledger;
-import com.bezirk.middleware.core.control.messages.MessageLedger;
 import com.bezirk.middleware.core.control.messages.MulticastControlMessage;
 import com.bezirk.middleware.core.control.messages.MulticastHeader;
 import com.bezirk.middleware.core.control.messages.UnicastControlMessage;
 import com.bezirk.middleware.core.control.messages.UnicastHeader;
 import com.bezirk.middleware.core.sphere.api.SphereSecurity;
 import com.bezirk.middleware.core.util.TextCompressor;
-import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
-import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -60,13 +56,14 @@ public abstract class CommsProcessor implements Comms, Observer {
     private static final boolean WIRE_MSG_COMPRESSION = false;
     private static final boolean WIRE_MSG_ENCRYPTION = true;
     private final CommsMessageDispatcher msgDispatcher;
-    private final SphereSecurity sphereSecurity = null; //currently not initialized
+    //currently not initialized
+    private final SphereSecurity sphereSecurity = null;
     /**
      * Version Callback that will be used to inform the platforms when there is mismatch in versions.
      * This parameter will be injected in all the components that will be checking for versions to
      * be compatible before they are processed.
      */
-    private CommsNotification notification = null;
+    private final CommsNotification notification;
     private ExecutorService executor;
 
     public CommsProcessor(CommsNotification commsNotification) {
@@ -74,22 +71,14 @@ public abstract class CommsProcessor implements Comms, Observer {
         this.msgDispatcher = new CommsMessageDispatcher();
     }
 
-    protected void startComms() {
-        executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-    }
-
-    protected void stopComms() {
-        if (executor != null) {
-            shutdownAndAwaitTermination(executor);
-        }
-    }
-
-    private void shutdownAndAwaitTermination(ExecutorService pool) {
-        pool.shutdown(); // Disable new tasks from being submitted
+    private static void shutdownAndAwaitTermination(ExecutorService pool) {
+        // Disable new tasks from being submitted
+        pool.shutdown();
         try {
             // Wait a while for existing tasks to terminate
             if (!pool.awaitTermination(500, TimeUnit.MILLISECONDS)) {
-                pool.shutdownNow(); // Cancel currently executing tasks
+                // Cancel currently executing tasks
+                pool.shutdownNow();
                 // Wait a while for tasks to respond to being cancelled
                 if (!pool.awaitTermination(500, TimeUnit.MILLISECONDS)) {
                     logger.error("Pool did not terminate");
@@ -103,17 +92,28 @@ public abstract class CommsProcessor implements Comms, Observer {
         }
     }
 
-    @Override
-    public boolean sendMessage(Ledger message) {
-        if (message instanceof ControlLedger) {
-            return this.sendControlLedger((ControlLedger) message);
-        } else if (message instanceof EventLedger) {
-            return this.sendEventLedger((EventLedger) message);
-        } else if (message instanceof MessageLedger) {
-            return this.sendMessageLedger((MessageLedger) message);
-        } else {
-            logger.error("Cannot send message of unknown type {}", message.getClass().getName());
-            return false;
+    private static byte[] compressMsg(@NotNull final String data) {
+        final byte[] messageBytes;
+        try {
+            messageBytes = data.getBytes(WireMessage.ENCODING);
+        } catch (UnsupportedEncodingException e) {
+            logger.error("Failed to get wire message bytes to compress the message", e);
+            throw new AssertionError(e);
+        }
+        final long compStartTime = System.currentTimeMillis();
+        final byte[] wireData = TextCompressor.compress(messageBytes);
+        final long compEndTime = System.currentTimeMillis();
+        logger.trace("Compression Took {} milliseconds", compEndTime - compStartTime);
+        return wireData;
+    }
+
+    protected void startComms() {
+        executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+    }
+
+    protected void stopComms() {
+        if (executor != null) {
+            shutdownAndAwaitTermination(executor);
         }
     }
 
@@ -201,21 +201,6 @@ public abstract class CommsProcessor implements Comms, Observer {
         return wireMessage;
     }
 
-    private byte[] compressMsg(@NotNull final String data) {
-        final byte[] temp;
-        try {
-            temp = data.getBytes(WireMessage.ENCODING);
-        } catch (UnsupportedEncodingException e) {
-            logger.error("Failed to get wire message bytes to compress the message", e);
-            throw new AssertionError(e);
-        }
-        final long compStartTime = System.currentTimeMillis();
-        final byte[] wireData = TextCompressor.compress(temp);
-        final long compEndTime = System.currentTimeMillis();
-        logger.trace("Compression Took {} milliseconds", compEndTime - compStartTime);
-        return wireData;
-    }
-
     private byte[] encryptMsg(String sphereId, byte[] msgData) {
         final String msgDataString;
         try {
@@ -228,33 +213,6 @@ public abstract class CommsProcessor implements Comms, Observer {
 
         if (sphereSecurity != null) {
             msg = sphereSecurity.encryptSphereContent(sphereId, msgDataString);
-        } else { // No encryption when there is no interface
-            msg = msgData;
-        }
-        return msg;
-    }
-
-    private byte[] decryptMsg(String sphereId, WireMessage.WireMsgStatus msgStatus, byte[] msgData) {
-        byte[] msg = null;
-
-        if (msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED_COMPRESSED
-                || msgStatus == WireMessage.WireMsgStatus.MSG_ENCRYPTED) {
-            String data;
-            try {
-                if (sphereSecurity != null) {
-                    data = sphereSecurity.decryptSphereContent(sphereId, msgData);
-                } else { // No decryption when there is no interface
-                    data = new String(msgData, WireMessage.ENCODING);
-                }
-                if (data != null) {
-                    msg = data.getBytes(WireMessage.ENCODING);
-                } else {
-                    logger.info("unable to decrypt msg for sphere id >> {}", sphereId);
-                }
-            } catch (UnsupportedEncodingException e) {
-                logger.error(e.getLocalizedMessage());
-                throw new AssertionError(e);
-            }
         } else {
             msg = msgData;
         }
@@ -270,9 +228,8 @@ public abstract class CommsProcessor implements Comms, Observer {
         }
 
         if (ledger.getHeader() instanceof MulticastHeader) {
-            //TODO: for event message decrypt the header here
-            // if the intended zirk is available in PubSubBroker message is decrypted
-            final WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
+            //TODO: for event message decrypt the header here if the intended zirk is available in
+            // PubSubBroker message is decrypted
 
             // encrypt the header
             final byte[] header;
@@ -284,6 +241,7 @@ public abstract class CommsProcessor implements Comms, Observer {
                 throw new AssertionError(e);
             }
 
+            final WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
             final byte[] headerData = encryptMsg(wireMessage.getSphereId(), header);
 
             wireMessage.setHeaderMsg(headerData);
@@ -307,8 +265,8 @@ public abstract class CommsProcessor implements Comms, Observer {
                 return false;
             }
 
-            //TODO: for event message decrypt the header here
-            // if the intended zirk is available in PubSubBroker message is decrypted
+            //TODO: for event message decrypt the header here if the intended zirk is available in
+            // PubSubBroker message is decrypted
             final WireMessage wireMessage = prepareWireMessage(ledger.getHeader().getSphereId(), data);
 
             // encrypt the header
@@ -325,36 +283,9 @@ public abstract class CommsProcessor implements Comms, Observer {
 
             wireMessage.setMsgType(WireMessage.WireMsgType.MSG_UNICAST_EVENT);
 
-            byte[] wireByteMessage = wireMessage.serialize();
+            final byte[] wireByteMessage = wireMessage.serialize();
             return sendToOne(wireByteMessage, recipient, false);
         }
-    }
-
-    private boolean sendMessageLedger(MessageLedger message) {
-        final WireMessage wireMessage = new WireMessage();
-        // configure raw msg event
-        wireMessage.setMsgType(WireMessage.WireMsgType.MSG_EVENT);
-
-        try {
-            wireMessage.setMsg(message.getMsg().getBytes(WireMessage.ENCODING));
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage());
-            throw new AssertionError(e);
-        }
-
-        wireMessage.setSphereId("COMMS_DIAG");
-
-        wireMessage.setWireMsgStatus(WireMessage.WireMsgStatus.MSG_RAW);
-
-        final byte[] data = wireMessage.serialize();
-
-        if (message.isMulticast()) {
-            sendToAll(data, false);
-        } else {
-            sendToOne(data, message.getRecipient().device, false);
-        }
-
-        return true;
     }
 
     /**
@@ -370,7 +301,8 @@ public abstract class CommsProcessor implements Comms, Observer {
 
     protected boolean processWireMessage(String deviceId, String msg) {
         if (executor != null && !executor.isShutdown()) {
-            final IncomingMessageProcessor messageProcessor = new IncomingMessageProcessor(deviceId, msg);
+            final IncomingMessageProcessor messageProcessor
+                    = new IncomingMessageProcessor(notification, msgDispatcher, deviceId, msg);
             executor.execute(messageProcessor);
         } else {
             logger.error("thread pool is not active.");
@@ -378,137 +310,6 @@ public abstract class CommsProcessor implements Comms, Observer {
         }
 
         return true;
-    }
-
-    private boolean processCtrl(String deviceId, WireMessage wireMessage) {
-        // fixme: check the version
-        final byte[] msg = parseCtrlMessage(wireMessage);
-
-        if (msg != null) {
-            final String processedMsg;
-
-            try {
-                processedMsg = new String(msg, WireMessage.ENCODING);
-            } catch (UnsupportedEncodingException e) {
-                logger.error("Failed to encode control message", e);
-                throw new AssertionError(e);
-            }
-
-            final ControlMessage ctrl = ControlMessage.deserialize(processedMsg, ControlMessage.class);
-
-            ctrl.getSender().device = deviceId;
-            msgDispatcher.dispatchControlMessages(ctrl, processedMsg);
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns decrypted and decompressed WireMessage.
-     */
-    private byte[] parseCtrlMessage(@NotNull WireMessage wireMessage) {
-        /*Step 1 : Decryption :  decrypt the message*/
-        byte[] message = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(), wireMessage.getMsg());
-        if (message == null) {
-            // decryption failed
-            return null;
-        }
-
-        /*Step 2 : De-compress the message :  de-compress the message*/
-        if (wireMessage.getWireMsgStatus() == WireMessage.WireMsgStatus.MSG_ENCRYPTED_COMPRESSED
-                || wireMessage.getWireMsgStatus() == WireMessage.WireMsgStatus.MSG_COMPRESSED) {
-            final String processedMsg = TextCompressor.decompress(message);
-
-            if (!processedMsg.isEmpty()) {
-                try {
-                    message = processedMsg.getBytes(WireMessage.ENCODING);
-                } catch (UnsupportedEncodingException e) {
-                    logger.error("Missing encoding required to fetch control message bytes", e);
-                    throw new AssertionError(e);
-                }
-            }
-        }
-
-        return message;
-    }
-
-    private boolean processMessageEvent(final String deviceId, @NotNull WireMessage wireMessage) {
-        final MessageLedger msgLedger = new MessageLedger();
-        // fixme: check the version
-
-        final BezirkZirkEndPoint endPoint = new BezirkZirkEndPoint(deviceId, null);
-        msgLedger.setSender(endPoint);
-
-        try {
-            msgLedger.setMsg(new String(wireMessage.getMsg(), WireMessage.ENCODING));
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage());
-            throw new AssertionError(e);
-        }
-
-        if (notification != null) {
-            notification.diagMsg(msgLedger);
-        }
-
-        return true;
-    }
-
-    private boolean processEvent(final String deviceId, @NotNull WireMessage wireMessage) {
-        final EventLedger eventLedger = new EventLedger();
-        // fixme: check the version
-
-        if (!setEventHeader(eventLedger, wireMessage)) {
-            return false;
-        }
-
-        // override sender zirk end point device id with local id
-        eventLedger.getHeader().getSender().device = deviceId;
-        eventLedger.setEncryptedMessage(wireMessage.getMsg());
-        msgDispatcher.dispatchServiceMessages(eventLedger);
-
-        return true;
-    }
-
-    private boolean setEventHeader(@NotNull EventLedger eLedger, @NotNull WireMessage wireMessage) {
-        // decrypt the header
-        final byte[] data = decryptMsg(wireMessage.getSphereId(), wireMessage.getWireMsgStatus(),
-                wireMessage.getHeaderMsg());
-        if (data == null) {
-            // header decrypt failed. unknown sphere id
-            return false;
-        }
-
-        final String headerData;
-        try {
-            headerData = new String(data, WireMessage.ENCODING);
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage());
-            throw new AssertionError(e);
-        }
-
-        final Gson gson = new Gson();
-        if (wireMessage.isMulticast()) {
-            final MulticastHeader mHeader = gson.fromJson(headerData, MulticastHeader.class);
-            eLedger.setHeader(mHeader);
-            eLedger.setIsMulticast(true);
-        } else {
-            final UnicastHeader uHeader = gson.fromJson(headerData, UnicastHeader.class);
-            eLedger.setHeader(uHeader);
-            eLedger.setIsMulticast(false);
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean registerNotification(CommsNotification notification) {
-        if (this.notification == null) {
-            this.notification = notification;
-            return true;
-        }
-
-        return false;
     }
 
     @Override
@@ -520,59 +321,5 @@ public abstract class CommsProcessor implements Comms, Observer {
     public boolean registerEventMessageReceiver(EventMsgReceiver receiver) {
         msgDispatcher.registerEventMessageReceiver(receiver);
         return true;
-    }
-
-    private class IncomingMessageProcessor implements Runnable {
-        private final String deviceId;
-        private final String msg;
-
-        IncomingMessageProcessor(final String deviceId, @NotNull String msg) {
-            this.deviceId = deviceId;
-            this.msg = msg;
-        }
-
-        @Override
-        public void run() {
-            if (!WireMessage.checkVersion(msg)) {
-                if (notification != null) {
-                    notification.versionMismatch(WireMessage.getVersion(msg));
-                }
-
-                return;
-            }
-
-            final WireMessage wireMessage;
-            try {
-                wireMessage = WireMessage.deserialize(msg.getBytes(WireMessage.ENCODING));
-            } catch (UnsupportedEncodingException e) {
-                logger.error(e.getLocalizedMessage());
-                throw new AssertionError(e);
-            }
-
-            if (wireMessage == null) {
-                logger.error("deserialization failed {}", msg);
-                return;
-            }
-
-            switch (wireMessage.getMsgType()) {
-                case MSG_MULTICAST_CTRL:
-                    processCtrl(deviceId, wireMessage);
-                    break;
-                case MSG_UNICAST_CTRL:
-                    processCtrl(deviceId, wireMessage);
-                    break;
-                case MSG_MULTICAST_EVENT:
-                    processEvent(deviceId, wireMessage);
-                    break;
-                case MSG_UNICAST_EVENT:
-                    processEvent(deviceId, wireMessage);
-                    break;
-                case MSG_EVENT:
-                    processMessageEvent(deviceId, wireMessage);
-                    break;
-                default:
-                    logger.error("Unknown event type {}", wireMessage.getMsgType());
-            }
-        }
     }
 }
