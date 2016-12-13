@@ -22,7 +22,6 @@
  */
 package com.bezirk.streaming;
 
-import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
@@ -30,34 +29,25 @@ import java.io.File;
 
 /**
  * StreamRecord, This will hold complete metadata of the streaming information.
- * This will be kept in the StreamBook
+ * {@link StreamBook will be the container of all the StreamRecord}
  *
- * Created by PIK6KOR on 11/10/2016.
  */
-
 public class StreamRecord {
 
     //stream primary ID
     private Short streamId;
-
     // changed after receiving the Response, this will be in ALIVE status in the stream store.
     private StreamRecordStatus streamRecordStatus = StreamRecordStatus.ALIVE;
-
     //The receipient zirk end point
     private BezirkZirkEndPoint recipientSEP;
-
     //The receipient zirk end point
     private BezirkZirkEndPoint senderSEP;
-
     //File file information which will be sent
     private File file;
-
     // recipient Port,set after getting the Stream Response
     private Integer recipientPort;
-
     // recipient Port,set after getting the Stream Response
     private String recipientIp;
-
     private ZirkId zirkId;
 
     public StreamRecord(){

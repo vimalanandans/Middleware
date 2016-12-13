@@ -38,8 +38,8 @@ import java.net.UnknownHostException;
 
 /**
  * This is FileStreamSenderThread, Which will be responsible for sending the chunks of bytes on the open Socket
+ * of {@link com.bezirk.streaming.receiver.FileStreamReceivingThread}
  *
- * Created by PIK6KOR on 11/15/2016.
  */
 
 public class FileStreamSenderThread implements Runnable {
@@ -51,6 +51,7 @@ public class FileStreamSenderThread implements Runnable {
     private final File file;
     private final String recipientIP; // recipient
     private final int port; // the port that the recipient is listening
+
 
     public FileStreamSenderThread(StreamRecord streamRecord){
         this.file = streamRecord.getFile();
@@ -64,7 +65,7 @@ public class FileStreamSenderThread implements Runnable {
         FileInputStream fileInputStream = null;
         DataOutputStream dataOutputStream = null;
         try {
-            logger.debug("Thread started to send the data");
+            logger.debug("Thread started to send the data for file {}", file.getName());
             fileInputStream = new FileInputStream(file);  // open the file
             client = new Socket(recipientIP, port);       // open the socket
             dataOutputStream = new DataOutputStream(client.getOutputStream());
@@ -76,9 +77,9 @@ public class FileStreamSenderThread implements Runnable {
             }
             logger.debug("---------- Data has been transferred successfully! -------------");
         } catch (FileNotFoundException e) {
-            logger.debug("Error in Sending stream : " + file.getPath(), e);
+            logger.debug("Error in Sending stream : {}",file.getPath(), e);
         } catch (UnknownHostException e) {
-            logger.debug("Error in Opening socket to host : " + recipientIP + " , port : " + port, e);
+            logger.debug("Error in Opening socket to host : {}, for port {}", recipientIP, port, e);
         } catch (IOException e) {
             logger.debug("Error in Sending Thread", e);
         } finally {
@@ -86,6 +87,11 @@ public class FileStreamSenderThread implements Runnable {
         }
     }
 
+    /**
+     * gracefully close all the open resources
+     * @param fileInputStream
+     * @param dataOutputStream
+     */
     private void closeResources(FileInputStream fileInputStream,
                                 DataOutputStream dataOutputStream) {
         try {

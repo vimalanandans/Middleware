@@ -22,27 +22,36 @@
  */
 package com.bezirk.streaming;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * StreamBook provides all the methods and properties required to add, update the StreamRecord in ConcurrentHashMap
- *
- * Created by PIK6KOR on 11/14/2016.
+ * StreamBook will be a ledger for all the incoming and outgoing stream request.
+ * It is managed by a {@link ConcurrentHashMap}. All the latest request with updated stream status
+ * will be available in this object.
  */
-
 public class StreamBook {
 
     //Streaming Request queue.
     private final Map<Short, StreamRecord> streamingQueue = new ConcurrentHashMap<>();
+    private static final Logger logger = LoggerFactory.getLogger(StreamBook.class);
 
-    //add to streamBook
+    /**
+     * add a streamRecord to streamBook
+     * @param streamRecord streamRecord with streaming metadata.
+     */
     public void addStreamingRecordToBook(StreamRecord streamRecord){
         streamingQueue.put(streamRecord.getStreamId(), streamRecord);
+        logger.debug("added a new stream record {} to stream book", streamRecord.getFile().getName());
     }
 
 
-    //update the streamBook
+    /**
+     * update a streamRecord the streamBook
+     */
     public void updateStreamRecordInBook(Short streamKey, StreamRecord.StreamRecordStatus updateStatus, Integer port, String deviceIp){
         //get the stream based on the id and update the status
         StreamRecord streamRecord = streamingQueue.get(streamKey);
@@ -50,12 +59,13 @@ public class StreamBook {
 
         if(port != null){
             streamRecord.setRecipientPort(port);
+            logger.debug("updated stream record with Port {} to stream book", port);
         }
 
         if(deviceIp != null){
             streamRecord.setRecipientIp(deviceIp);
+            logger.debug("updated stream record  with device IP {} to stream book", deviceIp);
         }
-
         streamingQueue.put(streamKey, streamRecord);
 
     }

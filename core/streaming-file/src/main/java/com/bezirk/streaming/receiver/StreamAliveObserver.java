@@ -22,12 +22,8 @@
  */
 package com.bezirk.streaming.receiver;
 
-import com.bezirk.middleware.core.actions.BezirkAction;
-import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.comms.Comms;
-import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
 import com.bezirk.middleware.core.control.messages.ControlLedger;
-import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.streaming.FileStreamRequest;
 import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.StreamRecord;
@@ -55,16 +51,11 @@ class StreamAliveObserver implements Observer {
 
     //executor which handles the file stream receiving thread.
     private ExecutorService fileStreamReceiverExecutor;
-
     //size of thread size
     private static final int THREAD_SIZE = 10;
-
     //comms injected.
     private Comms comms = null;
-
-    //Gson dependency
     private final Gson gson = new Gson();
-
     //streamBook and Portfactory also needs to be dependency injected.
     private StreamBook streamBook;
     private FileStreamPortFactory portFactory;
@@ -72,7 +63,7 @@ class StreamAliveObserver implements Observer {
 
     //logger instance
     private static final Logger logger = LoggerFactory
-            .getLogger(FileStreamRequestObserver.class);
+            .getLogger(StreamAliveObserver.class);
 
 
     StreamAliveObserver(Comms comms, StreamBook streamBook, FileStreamPortFactory portFactory, ZirkMessageHandler zirkMessageHandler){
@@ -85,7 +76,7 @@ class StreamAliveObserver implements Observer {
 
     @Override
     public void update(Observable observable, Object streamRequest) {
-        FileStreamRequest fileStreamRequest = (FileStreamRequest) streamRequest;
+        FileStreamRequest fileStreamRequest = (FileStreamRequest)streamRequest;
         StreamRecord streamRecord = fileStreamRequest.getStreamRecord();
 
         if(StreamRecord.StreamRecordStatus.ALIVE == streamRecord.getStreamRecordStatus()){
@@ -97,6 +88,7 @@ class StreamAliveObserver implements Observer {
 
             //assign a port to stream record from the port factory.
             Integer assignedPort = portFactory.getActivePort(streamRecord.getStreamId());
+            logger.debug("assigned port {} for stream request of file {}",assignedPort, streamRecord.getFile().getName());
 
             if(assignedPort != -1){
                 streamRecord.setRecipientPort(assignedPort);
@@ -105,7 +97,6 @@ class StreamAliveObserver implements Observer {
                 //start the receiver thread and send a reply to sender.
                 FileStreamReceivingThread streamReceivingThread =new FileStreamReceivingThread(assignedPort, streamRecord.getFile(), portFactory);
                 fileStreamReceiverExecutor.submit(streamReceivingThread);
-
 
                 //reply to the sender with status
                 replyToSender(streamRecord);
@@ -144,6 +135,7 @@ class StreamAliveObserver implements Observer {
         controlLedger.setMessage(streamResponse);
         controlLedger.setSerializedMessage(gson.toJson(streamResponse));
 
+        logger.debug("sending a reply to sender for stream request {}", streamRecord.getStreamId());
         comms.sendControlLedger(controlLedger);
     }
 

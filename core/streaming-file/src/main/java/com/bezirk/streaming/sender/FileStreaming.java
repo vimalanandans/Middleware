@@ -46,28 +46,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Implementation of <code>Streaming</code> interface. This is an implementation of File streaming concept.
+ * Implementation of {@link Streaming} interface. This is an implementation of File streaming concept.
+ * All the request to be streamed will be added to {@link StreamBook}. after adding to the {@link StreamBook#streamingQueue}
+ * the a {@link FileStreamRequest} will be sent to the receiver.
  *
- * Created by PIK6KOR on 11/1/2016.
  */
 
 public final class FileStreaming implements Streaming {
 
     //inject the object of comms.
     private Comms comms;
-
-    //Gson
     private final Gson gson = new Gson();
-
-    //stream book
     private StreamBook streamBook = null;
-
-    //logger
     private static final Logger logger = LoggerFactory.getLogger(FileStreaming.class);
-
     private static final String id = UUID.randomUUID().toString();
 
-    //constructor
     public FileStreaming(Comms comms, EventMsgReceiver msgReceiver){
         this.comms = comms;
         streamBook = new StreamBook();
@@ -94,14 +87,13 @@ public final class FileStreaming implements Streaming {
         //prepare stream record from streamAction and save this in the map.
 
         FileStream fileStream = (FileStream) streamAction.getStreamRequest();
-        logger.info("Adding stream record to queue for "+fileStream.getFile());
+        logger.info("Adding stream record to queue for {},",fileStream.getFile().getName());
 
         final BezirkZirkEndPoint sender;
 
         if (comms != null) {
             sender = new BezirkZirkEndPoint(comms.getNodeId(), streamAction.getZirkId());
         } else {
-            //sender = networkManager.getServiceEndPoint(zirkId);
             sender = new BezirkZirkEndPoint(id, streamAction.getZirkId());
         }
 
@@ -113,7 +105,7 @@ public final class FileStreaming implements Streaming {
 
         //send a event to receiver when the streamRecord is stored
         if(isAdded){
-            logger.info("StreamRecord "+ streamAction.getStreamId() +" was added to the StreamBook, sending ControlMessage over comms to receiver");
+            logger.info("StreamRecord with streamId {} was added to the StreamBook, sending ControlMessage over comms to receiver", streamAction.getStreamId());
             final ControlLedger controlLedger = new ControlLedger();
             final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(sender));
             //sphere will be DEFAULT as of now
@@ -129,10 +121,11 @@ public final class FileStreaming implements Streaming {
             uHeader.setUniqueMsgId(uniqueMsgId.toString());
             controlLedger.setHeader(uHeader);
 
+            logger.info("sending control ledger from Stream module for request {}", streamRequest.getUniqueKey());
             comms.sendControlLedger(controlLedger);
 
         }else{
-            logger.error("Unable to add StreamRecord to stream queue");
+            logger.error("Unable to add StreamRecord to stream queue !!!!!");
         }
         return false;
     }
@@ -146,11 +139,12 @@ public final class FileStreaming implements Streaming {
         synchronized (this) {
             if (!streamBook.hasStreamRecord(sRecord.getStreamId())) {
                 streamBook.addStreamingRecordToBook(sRecord);
+                logger.debug("addStreamRecordToBook was successful for  {},",sRecord.getFile().getName());
                 return true;
             } else {
+                logger.debug("addStreamRecordToBook has failed for  {},",sRecord.getFile().getName());
                 return false;
             }
         }
     }
-
 }

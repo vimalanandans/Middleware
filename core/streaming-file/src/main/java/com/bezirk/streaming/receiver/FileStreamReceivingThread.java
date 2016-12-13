@@ -47,20 +47,18 @@ class FileStreamReceivingThread implements Runnable{
 
     //assigned port for file streaming
     private Integer assignedPort = -1;
-
     //connection timeout
     private static final int CONNECTION_TIMEOUT_TIME = 45000;
 
     //TODO file download path, pull this from the property file.
     private static final String fileDownloadFolder = "/storage/emulated/0/bezirk/downloads/";
-
     private File file = null;
-
     //file stream buffer size.
     private static final int BUFFER_SIZE = 1024;
-
     // Note this has to be injected.
     private FileStreamPortFactory portFactory = null;
+    //logger instance
+    private static final Logger logger = LoggerFactory.getLogger(FileStreamReceivingThread.class);
 
     FileStreamReceivingThread(Integer port, File file, FileStreamPortFactory portFactory){
         this.assignedPort = port;
@@ -68,7 +66,6 @@ class FileStreamReceivingThread implements Runnable{
         this.portFactory = portFactory;
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(FileStreamReceivingThread.class);
 
     @Override
     public void run() {
@@ -93,6 +90,7 @@ class FileStreamReceivingThread implements Runnable{
 
                 int noOfBytesRead;
                 final byte[] buffer = new byte[BUFFER_SIZE];
+                logger.debug("Strted file receiving thread for file {}", file.getName());
                 while ((noOfBytesRead = inputStream.read(buffer)) != -1) {
                     fileOutputStream.write(buffer, 0, noOfBytesRead);
                 }
@@ -170,7 +168,7 @@ class FileStreamReceivingThread implements Runnable{
                 downloadFolder);
         if (!createDownloadFolder.exists()) {
             if (!createDownloadFolder.mkdir()) {
-                logger.error("Failed to create download direction: "+
+                logger.error("Failed to create download direction: {}",
                         createDownloadFolder.getAbsolutePath());
                 return null;
             }

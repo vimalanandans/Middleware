@@ -32,8 +32,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * FileStreamEventReceiver
- * Created by pik6kor on 11/28/2016.
+ * FileStreamEventReceiver is a implementation of {@link CtrlMsgReceiver}.
+ * This will receive all the control messages related to Streaming. This module will be initialized when
+ * Streaming module will be initialized at {@link com.bezirk.streaming.sender.FileStreaming}
  */
 
 public class FileStreamEventReceiver implements CtrlMsgReceiver {
@@ -48,6 +49,12 @@ public class FileStreamEventReceiver implements CtrlMsgReceiver {
         fileStreamRequestObserver = new FileStreamRequestObserver();
     }
 
+    /**
+     * All the received Stream_Request control messages will be passed to stream observer
+     * @param id
+     * @param serializedMsg
+     * @return
+     */
     @Override
     public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
         switch (id) {
@@ -55,12 +62,10 @@ public class FileStreamEventReceiver implements CtrlMsgReceiver {
                 if(serializedMsg != null){
                     FileStreamRequest fileStreamRequest =  ControlMessage.deserialize(serializedMsg, FileStreamRequest.class);
                     fileStreamRequestObserver.incomingStreamRequest(fileStreamRequest);
-                }else {
-                    // logger error
                 }
             }
             default : {
-                //logger error
+                logger.error("Unknown request type received at Process Control Message typr is {}", id);
             }
         }
         return true;

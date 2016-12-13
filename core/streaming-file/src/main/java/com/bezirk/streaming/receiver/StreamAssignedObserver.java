@@ -22,13 +22,14 @@
  */
 package com.bezirk.streaming.receiver;
 
-import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
-import com.bezirk.middleware.core.streaming.StreamRequest;
 import com.bezirk.streaming.FileStreamRequest;
 import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.StreamRecord;
 import com.bezirk.streaming.portfactory.FileStreamPortFactory;
 import com.bezirk.streaming.sender.FileStreamSenderThread;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -52,6 +53,9 @@ class StreamAssignedObserver implements Observer {
     private ZirkMessageHandler zirkMessageHandler;
     //Thread size
     private static final int THREAD_SIZE = 10;
+    //logger instance
+    private static final Logger logger = LoggerFactory
+            .getLogger(StreamAssignedObserver.class);
 
     StreamAssignedObserver(StreamBook streamBook, FileStreamPortFactory portFactory, ZirkMessageHandler zirkMessageHandler){
         this.streamBook = streamBook;
@@ -64,17 +68,15 @@ class StreamAssignedObserver implements Observer {
     public void update(Observable observable, Object streamRequest) {
 
         FileStreamRequest fileStreamRequest = (FileStreamRequest) streamRequest;
-
         //update the status to addressed.
         StreamRecord streamRecord = fileStreamRequest.getStreamRecord();
 
         if(StreamRecord.StreamRecordStatus.ADDRESSED == streamRecord.getStreamRecordStatus()){
-            // This will be reply to the sender, Start the sender thread and initiate file transmission.
+            //Start the sender thread and initiate file transmission.
             FileStreamSenderThread fileStreamSenderThread = new FileStreamSenderThread(streamRecord);
             fileStreamSenderExecutor.execute(fileStreamSenderThread);
 
             //TODO Submit the fututre task and on complete callback zirk message
-
             //give a callback status to zirk of updated status.
             zirkMessageHandler.callBackToZirk(streamRecord);
 

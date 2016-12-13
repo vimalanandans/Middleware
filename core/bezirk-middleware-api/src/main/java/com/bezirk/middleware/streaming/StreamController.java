@@ -23,8 +23,7 @@
 package com.bezirk.middleware.streaming;
 
 /**
- *
- *
+ *  abstract class StreamController, All the inheriting class has to implement stopStreaming logic.
  */
 
 public abstract class StreamController {

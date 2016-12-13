@@ -29,40 +29,28 @@ import com.bezirk.middleware.messages.StreamEvent;
 import java.io.Serializable;
 
 /**
- *
+ * abstract class Stream, will have the common properties for Streaming module.
  *
  */
 
 public abstract class Stream extends Message implements Serializable{
 
-    // recipientEndPoint, This will be the endPoint
     private ZirkEndPoint recipientEndPoint;
-
     private transient StreamEventReceiver streamEventReceiver = null;
 
     //default constructor
     public Stream(){
         //providing default constructor for parcelable exception in android , do not use this.
-
     }
-
-    //constructor
     Stream(ZirkEndPoint recipientEndPoint){
         this.recipientEndPoint = recipientEndPoint;
     }
+
 
     public ZirkEndPoint getRecipientEndPoint() {
         return recipientEndPoint;
     }
 
-    public void setRecipientEndPoint(ZirkEndPoint recipientEndPoint) {
-        this.recipientEndPoint = recipientEndPoint;
-    }
-
-    /**
-     * set event receiver.
-     * @param receiver
-     */
     public void setEventReceiver(StreamEventReceiver receiver) {
         this.streamEventReceiver = receiver;
     }
@@ -72,8 +60,8 @@ public abstract class Stream extends Message implements Serializable{
     }
 
     /**
-     * Interface implemented by observers of an <code>StreamSet</code> that want to be notified when
-     * an event in this set is received.
+     * Interface implemented by the Zirk developers, Use this {@code streamEventReceiver} object
+     * will be used to give a callback to  receiver.
      */
     public interface StreamEventReceiver extends Serializable{
         /**

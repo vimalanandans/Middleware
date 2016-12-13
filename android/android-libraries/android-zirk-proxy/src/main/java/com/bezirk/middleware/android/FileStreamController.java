@@ -3,10 +3,9 @@ package com.bezirk.middleware.android;
 import com.bezirk.middleware.streaming.StreamController;
 
 /**
- * Class <code>FileStreamController<code/> extends <code>StreamController</code>will be return type for the sendStream in middleware-api project.
+ * Class {@link FileStreamController} extends {@link StreamController} is class provides action to control File Streaming.
  * using this instance user can stop the streaming.
  *
- * Created by PIK6KOR on 11/23/2016.
  */
 
 class FileStreamController extends StreamController {

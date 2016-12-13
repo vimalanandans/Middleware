@@ -147,7 +147,6 @@ public class AndroidProxyServer extends ProxyServer implements Observer {
                 } else if(action instanceof StreamAction){
                     sendStream((StreamAction) action);
                 }
-
                 else {
                     logger.error("Event action not support");
                     return;

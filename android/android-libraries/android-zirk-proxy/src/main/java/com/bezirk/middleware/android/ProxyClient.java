@@ -59,7 +59,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class ProxyClient implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(ProxyClient.class);
     protected static final Map<String, List<EventSet>> eventSetMap = new ConcurrentHashMap<>();
-    protected static final Map<Short, Stream.StreamEventReceiver> streamSetMap = new ConcurrentHashMap<>();
+    static final Map<Short, Stream.StreamEventReceiver> streamSetMap = new ConcurrentHashMap<>();
     protected static Context context;
     private static IntentSender intentSender;
     private final ZirkId zirkId;
@@ -221,9 +221,7 @@ public final class ProxyClient implements Bezirk {
 
     @Override
     public StreamController sendStream(Stream streamRequest){
-        /*generate a unique streamID, this will be the primary key for stream access.
-          Use this streamID to interrupt the stream
-        */
+        //generate a unique streamID, this will be the primary key for stream access.
         Short streamID;
         Integer intStreamID = ((streamIdCounter++) % Short.MAX_VALUE);
 
@@ -233,7 +231,7 @@ public final class ProxyClient implements Bezirk {
         BezirkAction bezirkAction  = BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM;
         intentSender.sendBezirkIntent(new StreamAction(zirkId, streamID,streamRequest, bezirkAction));
 
-        //add the streamReciver to streamSetMap
+        //add the streamReciver to streamSetMap, used by the ZirkMessageReceiver to give callbacks.
         streamSetMap.put(streamID, streamRequest.getStreamEventReceiver());
         return fileStreamController;
     }

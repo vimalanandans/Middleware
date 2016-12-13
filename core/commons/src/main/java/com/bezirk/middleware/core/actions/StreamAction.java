@@ -22,16 +22,12 @@
  */
 package com.bezirk.middleware.core.actions;
 
-import com.bezirk.middleware.addressing.ZirkEndPoint;
-import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.bezirk.middleware.streaming.Stream;
 
 /**
- * class <code>StreamAction</code> will have all the metadata information of streaming
- * which will be passed as intent to the receiver.
- *
- *
+ * This class will have all the metadata information of streaming. which will be passed as intent
+ * to the android receiver .
  */
 
 public class StreamAction extends ZirkAction {
@@ -39,9 +35,7 @@ public class StreamAction extends ZirkAction {
     private short streamId;
     private BezirkAction bezirkAction;
     private Stream stream;
-
     private String streamStatus;
-    private ZirkEndPoint senderZirkEndPoint;
 
     public StreamAction(ZirkId zirkId){
         super(zirkId);
@@ -86,11 +80,4 @@ public class StreamAction extends ZirkAction {
         this.streamStatus = streamStatus;
     }
 
-    public void setSenderZirkEndPoint(ZirkEndPoint senderZirkEndPoint) {
-        this.senderZirkEndPoint = senderZirkEndPoint;
-    }
-
-    public ZirkEndPoint getSenderZirkEndPoint() {
-        return senderZirkEndPoint;
-    }
 }

@@ -22,6 +22,9 @@
  */
 package com.bezirk.streaming.portfactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,7 +32,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by PIK6KOR on 11/14/2016.
+ *
+ *
  */
 
 public class FileStreamPortFactory{
@@ -40,25 +44,22 @@ public class FileStreamPortFactory{
     private int lastAssignedPort; // used to assign the next port when the request comes!
 
     //holds the value for port number assigned for a stream id.
-    private final Map<Short, Integer> portsMap = new HashMap<Short, Integer>();
-
-
-    //move this to the property file, this should be configurable.
-    static Short STREAM_START_PORT = 6321;
-    static Short STREAM_PARALLEL_MAX = 10;
+    private final Map<Short, Integer> portsMap = new HashMap<>();
+    private static final Logger logger = LoggerFactory.getLogger(FileStreamPortFactory.class);
 
     //default constructor
     public FileStreamPortFactory() {
+        Short STREAM_START_PORT = 6321;
         startingPort = STREAM_START_PORT;
-        activePorts = new HashSet<Integer>();
+        activePorts = new HashSet<>();
         lastAssignedPort = STREAM_START_PORT;
-        this.streamMax = STREAM_PARALLEL_MAX;
+        this.streamMax = 10;
     }
 
 
     /**
-     *
-     * @param portMapKey
+     * retrieve a active port from the given port range
+     * @param portMapKey portmap key
      * @return
      */
     public Integer getActivePort(Short portMapKey) {
@@ -66,17 +67,15 @@ public class FileStreamPortFactory{
             int nextPort = -1;
 
             if (activePorts.size() == streamMax) {
+                logger.error("all ports are consumed for streaming");
                 return -1;
             }
 
             do {
                 nextPort = startingPort + lastAssignedPort % startingPort;
                 if (activePorts.contains(nextPort)) {
-
                     lastAssignedPort++;
-
                 } else {
-
                     activePorts.add(nextPort);
                     if (updatePortsMap(portMapKey, nextPort)) {
                         lastAssignedPort = nextPort;
@@ -87,35 +86,40 @@ public class FileStreamPortFactory{
 
                 }
             } while (true);
-
+            logger.info("assigned port for streaming {}", nextPort);
             return nextPort;
         }
     }
 
+    /**
+     * update the portMap when the port is released or when free.
+     * @param portMapKey portmap key is the port key
+     * @param value port calue
+     * @return boolean value based on the update feature
+     */
     private boolean updatePortsMap(Short portMapKey, int value) {
 
         synchronized (this) {
 
             if (value <= 0) {
-                //logger.error("empty values for either key or value");
+                logger.error("empty values for either key or value");
                 return false;
             }
 
             if (portsMap.containsKey(portMapKey)) {
-                //logger.error("port key already exists..");
+                logger.error("port key already exists..");
                 return false;
             }
             getPortsMap().put(portMapKey, value);
-            /*logger.debug("portsmap updated with key : value:" + "key:" + portMapKey
-                    + " value:" + value);*/
+            logger.debug("portsmap updated with key : value: key: {}  value: {}",portMapKey, value);
             return true;
 
         }
     }
 
     /**
-     *
-     * @return
+     * returns the complete port map
+     * @return complete port map
      */
     private Map<Short, Integer> getPortsMap(){
         synchronized (this) {
@@ -123,11 +127,17 @@ public class FileStreamPortFactory{
         }
     }
 
+    /**
+     * release a port which is free to be consumed
+     * @param port port to be released
+     * @return if the process was successful return true else false
+     */
     public boolean releasePort(int port) {
         synchronized (this) {
             boolean updatedPortMap = true;
 
             if (port <= 0) {
+                logger.debug("error in releasing port from portfactory {}", port);
                 return false;
             }
 
@@ -142,14 +152,21 @@ public class FileStreamPortFactory{
                         break;
                     }
                 }
+                logger.debug("releasing port from portfactory {}", port);
             } else {
                 updatedPortMap = false;
+                logger.debug("port map was not updated from portfactory {} for ", port);
             }
+
             return updatedPortMap;
         }
 
     }
 
+    /**
+     * return number of active port.
+     * @return number of active port
+     */
     public int getNoOfActivePorts() {
         synchronized (this) {
             return activePorts.size();

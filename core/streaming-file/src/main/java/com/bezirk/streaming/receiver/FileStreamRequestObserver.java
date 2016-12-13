@@ -28,6 +28,7 @@ import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
 import com.bezirk.middleware.core.streaming.StreamReceiver;
 import com.bezirk.middleware.core.streaming.StreamRequest;
+import com.bezirk.streaming.FileStreamRequest;
 import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.StreamRecord;
 import com.bezirk.streaming.portfactory.FileStreamPortFactory;
@@ -38,8 +39,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Observable;
 
 /**
- * Implementaion of <code>StreamReceiver</code> all the receiving events will be received here and passed to observers
- * Created by PIK6KOR on 11/14/2016.
+ * Implementaion of {@link StreamReceiver} and {@link ZirkMessageHandler}
+ * all the Stream receiving events will be received here and passed to observers, There are 2 observers as now,
+ * {@link StreamAliveObserver} and {@link StreamAssignedObserver}.
  */
 
 public class FileStreamRequestObserver extends Observable implements StreamReceiver, ZirkMessageHandler{
@@ -57,8 +59,10 @@ public class FileStreamRequestObserver extends Observable implements StreamRecei
             //initialize the observers
             addObserver(new StreamAliveObserver(comms, streamBook, portFactory, this));
             addObserver(new StreamAssignedObserver(streamBook, portFactory, this));
+
+            logger.info("Initialized the Streaming observers");
         }else{
-            logger.error("Comms has to be initialized!!!");
+            logger.error("Stream request observer initialization was unsuccessful");
         }
     }
 
@@ -76,8 +80,10 @@ public class FileStreamRequestObserver extends Observable implements StreamRecei
     @Override
     public void incomingStreamRequest(StreamRequest streamRequest) {
         //when we receive the event.. notify subjects observers.
+        FileStreamRequest fileStreamRequest = (FileStreamRequest) streamRequest;
+        logger.debug("received a new stream request for file {}", fileStreamRequest.getStreamRecord().getFile().getName());
         setChanged();
-        notifyObservers(streamRequest);
+        notifyObservers(fileStreamRequest);
     }
 
 }

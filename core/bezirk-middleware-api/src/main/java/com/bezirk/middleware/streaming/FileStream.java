@@ -28,17 +28,12 @@ import java.io.File;
 import java.io.Serializable;
 
 /**
- *
- *
+ * {@link FileStream} inherits {@link Stream}. Zirk developer will create a instance of FileStream
+ * and pass the complete metadata required for FileStreaming module.
  */
 
 public class FileStream extends Stream implements Serializable {
     private File file;
-
-    //default constructor
-    FileStream(){
-
-    }
 
     public FileStream(ZirkEndPoint zirkEndPoint, File file){
         super(zirkEndPoint);
