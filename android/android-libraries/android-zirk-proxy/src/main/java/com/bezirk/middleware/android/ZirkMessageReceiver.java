@@ -113,7 +113,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
 
     /**
      *  Gives a callback with updated stream status to the receiver.
-     * @param incomingStreamEvent
+     * @param incomingStreamEvent incoming stream event
      */
     private void processStream(StreamAction incomingStreamEvent){
         final Short streamID = incomingStreamEvent.getStreamId();

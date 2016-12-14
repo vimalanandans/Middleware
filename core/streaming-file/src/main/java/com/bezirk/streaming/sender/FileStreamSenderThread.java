@@ -35,6 +35,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.Callable;
 
 /**
  * This is FileStreamSenderThread, Which will be responsible for sending the chunks of bytes on the open Socket
@@ -42,7 +43,7 @@ import java.net.UnknownHostException;
  *
  */
 
-public class FileStreamSenderThread implements Runnable {
+public class FileStreamSenderThread implements Callable<Boolean> {
 
     private Socket client;
     private static final Logger logger = LoggerFactory
@@ -60,7 +61,9 @@ public class FileStreamSenderThread implements Runnable {
     }
 
     @Override
-    public void run() {
+    public Boolean call() {
+
+        Boolean streamStatus = false;
         client = null;
         FileInputStream fileInputStream = null;
         DataOutputStream dataOutputStream = null;
@@ -76,6 +79,7 @@ public class FileStreamSenderThread implements Runnable {
                 dataOutputStream.write(buffer, 0, noOfBytesReadFromTheFile);   // write into the buffer
             }
             logger.debug("---------- Data has been transferred successfully! -------------");
+            streamStatus = Boolean.TRUE;
         } catch (FileNotFoundException e) {
             logger.debug("Error in Sending stream : {}",file.getPath(), e);
         } catch (UnknownHostException e) {
@@ -85,6 +89,8 @@ public class FileStreamSenderThread implements Runnable {
         } finally {
             closeResources(fileInputStream, dataOutputStream);
         }
+
+        return streamStatus;
     }
 
     /**

@@ -58,7 +58,7 @@ public class FileStreamRequestObserver extends Observable implements StreamRecei
 
             //initialize the observers
             addObserver(new StreamAliveObserver(comms, streamBook, portFactory, this));
-            addObserver(new StreamAssignedObserver(streamBook, portFactory, this));
+            addObserver(new StreamAssignedObserver(comms, streamBook, portFactory, this));
 
             logger.info("Initialized the Streaming observers");
         }else{

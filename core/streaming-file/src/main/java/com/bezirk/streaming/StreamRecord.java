@@ -121,7 +121,7 @@ public class StreamRecord {
                  * COMPLETED -  Indicates that file transfer was complete.
                  * */
     public enum StreamRecordStatus {
-        ALIVE, ADDRESSED, ASSIGNED , BUSY, COMPLETED
+        ALIVE, ADDRESSED, ASSIGNED , BUSY, COMPLETED, ERROR
 
     }
 

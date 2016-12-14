@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.concurrent.Callable;
 
 /**
  * FileStreamReceivingThread, will be a running thread
@@ -69,7 +70,6 @@ class FileStreamReceivingThread implements Runnable{
 
     @Override
     public void run() {
-
         ServerSocket socket = null;
         Socket receivingSocket = null;
         File tempFile = null;

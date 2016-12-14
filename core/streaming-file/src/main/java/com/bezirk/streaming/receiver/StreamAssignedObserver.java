@@ -22,11 +22,14 @@
  */
 package com.bezirk.streaming.receiver;
 
+import com.bezirk.middleware.core.comms.Comms;
+import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.streaming.FileStreamRequest;
 import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.StreamRecord;
 import com.bezirk.streaming.portfactory.FileStreamPortFactory;
 import com.bezirk.streaming.sender.FileStreamSenderThread;
+import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,9 +38,10 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
- * StreamAssignedObserver is a implementation of <code>StreamEventObserver</code>.
+ * StreamAssignedObserver is an Observer waiting for Assigned status stream records from {@link FileStreamRequestObserver}.
  * Update will be called when the subject StreamBook will be updated with a new entry.
  *
  * Created by PIK6KOR on 11/22/2016.
@@ -56,8 +60,11 @@ class StreamAssignedObserver implements Observer {
     //logger instance
     private static final Logger logger = LoggerFactory
             .getLogger(StreamAssignedObserver.class);
+    private final Gson gson = new Gson();
+    private Comms comms = null;
 
-    StreamAssignedObserver(StreamBook streamBook, FileStreamPortFactory portFactory, ZirkMessageHandler zirkMessageHandler){
+    StreamAssignedObserver(Comms comms, StreamBook streamBook, FileStreamPortFactory portFactory, ZirkMessageHandler zirkMessageHandler){
+        this.comms = comms;
         this.streamBook = streamBook;
         this.portFactory = portFactory;
         this.fileStreamSenderExecutor = Executors.newFixedThreadPool(THREAD_SIZE);
@@ -71,17 +78,50 @@ class StreamAssignedObserver implements Observer {
         //update the status to addressed.
         StreamRecord streamRecord = fileStreamRequest.getStreamRecord();
 
-        if(StreamRecord.StreamRecordStatus.ADDRESSED == streamRecord.getStreamRecordStatus()){
+        if(StreamRecord.StreamRecordStatus.ASSIGNED == streamRecord.getStreamRecordStatus()){
             //Start the sender thread and initiate file transmission.
             FileStreamSenderThread fileStreamSenderThread = new FileStreamSenderThread(streamRecord);
-            fileStreamSenderExecutor.execute(fileStreamSenderThread);
+            Future<Boolean> future = fileStreamSenderExecutor.submit(fileStreamSenderThread);
+            try {
+                while (!future.isDone()) {
+                    Thread.sleep(100);
+                }
+                if(future.get()){
+                    streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.COMPLETED);
+                }else{
+                    streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.ERROR);
+                }
+            } catch (InterruptedException e) {
+                logger.error("InterruptedException has occurred during File stream SENDING!!!");
+            } catch (Exception e){
+                logger.error("Exception has occurred during File stream SENDING!!!!!!");
+            }
 
-            //TODO Submit the fututre task and on complete callback zirk message
-            //give a callback status to zirk of updated status.
+            logger.debug("stream sending was sucessfull for streamID {} giving a callback to zirk!", streamRecord.getStreamId());
+            //give a callback status to zirk of updated status and reply to sender with updated status.
+            replyToSender(streamRecord);
             zirkMessageHandler.callBackToZirk(streamRecord);
-
         }
 
 
+    }
+
+    /**
+     * reply to sender with the given stream staus.
+     * @param streamRecord streamRecord.
+     */
+    private void replyToSender(StreamRecord streamRecord) {
+        //send a ControlMessage(StreamResponse) back to sender with updated information
+        ControlLedger controlLedger = new ControlLedger();
+
+        //sphere will be DEFAULT as of now
+        controlLedger.setSphereId("DEFAULT");
+
+        FileStreamRequest streamResponse = new FileStreamRequest(streamRecord.getSenderSEP(), "DEFAULT", streamRecord);
+        controlLedger.setMessage(streamResponse);
+        controlLedger.setSerializedMessage(gson.toJson(streamResponse));
+
+        logger.debug("sending a reply to sender for stream request {}", streamRecord.getStreamId());
+        comms.sendControlLedger(controlLedger);
     }
 }

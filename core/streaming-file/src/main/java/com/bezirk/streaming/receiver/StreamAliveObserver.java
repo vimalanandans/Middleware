@@ -39,8 +39,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * StreamAliveObserver is a implementation of <code>StreamEventObserver</code>.
@@ -96,13 +98,15 @@ class StreamAliveObserver implements Observer {
 
                 //start the receiver thread and send a reply to sender.
                 FileStreamReceivingThread streamReceivingThread =new FileStreamReceivingThread(assignedPort, streamRecord.getFile(), portFactory);
-                fileStreamReceiverExecutor.submit(streamReceivingThread);
+                fileStreamReceiverExecutor.execute(streamReceivingThread);
 
-                //reply to the sender with status
-                replyToSender(streamRecord);
+                streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.ASSIGNED);
 
                 //update stream book.
                 streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.ASSIGNED, assignedPort, getIPAddress());
+                //reply to the sender with status
+                replyToSender(streamRecord);
+
             }else{
                 //update the stream record to busy status and send it to .
                 streamRecord.setRecipientPort(assignedPort);
