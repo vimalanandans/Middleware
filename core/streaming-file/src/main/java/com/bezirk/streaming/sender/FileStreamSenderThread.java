@@ -63,7 +63,7 @@ public class FileStreamSenderThread implements Callable<Boolean> {
     @Override
     public Boolean call() {
 
-        Boolean streamStatus = false;
+        Boolean streamStatus = Boolean.FALSE;
         client = null;
         FileInputStream fileInputStream = null;
         DataOutputStream dataOutputStream = null;

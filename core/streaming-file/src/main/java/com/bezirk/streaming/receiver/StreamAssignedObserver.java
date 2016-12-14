@@ -53,7 +53,6 @@ class StreamAssignedObserver implements Observer {
     private ExecutorService fileStreamSenderExecutor;
 
     private StreamBook streamBook;
-    private FileStreamPortFactory portFactory;
     private ZirkMessageHandler zirkMessageHandler;
     //Thread size
     private static final int THREAD_SIZE = 10;
@@ -63,10 +62,9 @@ class StreamAssignedObserver implements Observer {
     private final Gson gson = new Gson();
     private Comms comms = null;
 
-    StreamAssignedObserver(Comms comms, StreamBook streamBook, FileStreamPortFactory portFactory, ZirkMessageHandler zirkMessageHandler){
+    StreamAssignedObserver(Comms comms, StreamBook streamBook, ZirkMessageHandler zirkMessageHandler){
         this.comms = comms;
         this.streamBook = streamBook;
-        this.portFactory = portFactory;
         this.fileStreamSenderExecutor = Executors.newFixedThreadPool(THREAD_SIZE);
         this.zirkMessageHandler = zirkMessageHandler;
     }
@@ -88,8 +86,10 @@ class StreamAssignedObserver implements Observer {
                 }
                 if(future.get()){
                     streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.COMPLETED);
+                    streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.COMPLETED, null, null);
                 }else{
                     streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.ERROR);
+                    streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.BUSY, null, null);
                 }
             } catch (InterruptedException e) {
                 logger.error("InterruptedException has occurred during File stream SENDING!!!");
@@ -99,11 +99,9 @@ class StreamAssignedObserver implements Observer {
 
             logger.debug("stream sending was sucessfull for streamID {} giving a callback to zirk!", streamRecord.getStreamId());
             //give a callback status to zirk of updated status and reply to sender with updated status.
-            replyToSender(streamRecord);
             zirkMessageHandler.callBackToZirk(streamRecord);
+            replyToSender(streamRecord);
         }
-
-
     }
 
     /**

@@ -43,7 +43,7 @@ public class FileStreamEventReceiver implements CtrlMsgReceiver {
 
     //logger instance
     private static final Logger logger = LoggerFactory
-            .getLogger(FileStreamRequestObserver.class);
+            .getLogger(FileStreamEventReceiver.class);
 
     public FileStreamEventReceiver() {
         fileStreamRequestObserver = new FileStreamRequestObserver();
