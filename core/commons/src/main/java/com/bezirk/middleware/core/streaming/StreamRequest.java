@@ -22,11 +22,8 @@
  */
 package com.bezirk.middleware.core.streaming;
 
-import com.bezirk.middleware.core.control.messages.ControlMessage;
 import com.bezirk.middleware.core.control.messages.UnicastControlMessage;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
-
-import java.io.File;
 
 /**
  *
@@ -38,13 +35,13 @@ public abstract class StreamRequest extends UnicastControlMessage {
     /**
      * Discriminator that uniquely defines the Control message!
      */
-    private final static Discriminator discriminator = Discriminator.STREAM_REQUEST;
+    private static final Discriminator discriminator = Discriminator.STREAM_REQUEST;
 
     /**
      * default constructor
-     * @param sender
-     * @param receiver
-     * @param sphereId
+     * @param sender BezirkZirkEndPoint of sender
+     * @param receiver BezirkZirkEndPoint of receiver
+     * @param sphereId sphereID the request belong to.
      */
     public StreamRequest(BezirkZirkEndPoint sender, BezirkZirkEndPoint receiver, String sphereId){
         super(sender, receiver, sphereId, discriminator, true );

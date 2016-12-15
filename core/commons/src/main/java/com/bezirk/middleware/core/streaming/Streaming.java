@@ -27,7 +27,6 @@ import com.bezirk.middleware.core.actions.StreamAction;
 /**
  * Interface for Streaming module. All defining modules have to implement the below methods.
  *
- * Created by PIK6KOR on 11/3/2016.
  */
 
 public interface Streaming {

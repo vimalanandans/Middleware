@@ -27,7 +27,6 @@ import com.bezirk.middleware.core.control.messages.ControlLedger;
 import com.bezirk.streaming.FileStreamRequest;
 import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.StreamRecord;
-import com.bezirk.streaming.portfactory.FileStreamPortFactory;
 import com.bezirk.streaming.sender.FileStreamSenderThread;
 import com.google.gson.Gson;
 
@@ -92,9 +91,10 @@ class StreamAssignedObserver implements Observer {
                     streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.BUSY, null, null);
                 }
             } catch (InterruptedException e) {
-                logger.error("InterruptedException has occurred during File stream SENDING!!!");
+                logger.error("InterruptedException has occurred during File stream SENDING!!!", e);
+                Thread.currentThread().interrupt();
             } catch (Exception e){
-                logger.error("Exception has occurred during File stream SENDING!!!!!!");
+                logger.error("Exception has occurred during File stream SENDING!!!!!!", e);
             }
 
             logger.debug("stream sending was sucessfull for streamID {} giving a callback to zirk!", streamRecord.getStreamId());

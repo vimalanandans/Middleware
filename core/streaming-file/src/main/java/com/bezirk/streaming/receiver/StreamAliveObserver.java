@@ -39,10 +39,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * StreamAliveObserver is a implementation of <code>StreamEventObserver</code>.
@@ -145,7 +143,6 @@ class StreamAliveObserver implements Observer {
 
 
     /**
-     * //TODO remove this, not good!! temp fix
      * Get IP address from first non-localhost interface, This has to be removed!!!!!!!!!!!!!!
      * @return  address or empty string
      */
@@ -165,7 +162,9 @@ class StreamAliveObserver implements Observer {
                     }
                 }
             }
-        } catch (Exception ex) { } // for now eat exceptions
+        } catch (Exception ex) {
+            logger.error("Error while getting IP address of device", ex);
+        } // for now eat exceptions
         return "";
     }
 }

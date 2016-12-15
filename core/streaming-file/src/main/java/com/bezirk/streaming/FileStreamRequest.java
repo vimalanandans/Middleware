@@ -25,12 +25,9 @@ package com.bezirk.streaming;
 import com.bezirk.middleware.core.streaming.StreamRequest;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 
-import java.io.File;
-
 /**
  * This will be Streaming Request type sent by the Sender with {@link StreamRecord} metadata.
  *
- * Created by PIK6KOR on 11/11/2016.
  */
 
 public class FileStreamRequest extends StreamRequest {

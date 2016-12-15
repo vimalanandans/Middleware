@@ -49,10 +49,10 @@ public class FileStreamPortFactory{
 
     //default constructor
     public FileStreamPortFactory() {
-        Short STREAM_START_PORT = 6321;
-        startingPort = STREAM_START_PORT;
+        Short streamStartPort = 6321;
+        startingPort = streamStartPort;
         activePorts = new HashSet<>();
-        lastAssignedPort = STREAM_START_PORT;
+        lastAssignedPort = streamStartPort;
         this.streamMax = 10;
     }
 
@@ -60,11 +60,11 @@ public class FileStreamPortFactory{
     /**
      * retrieve a active port from the given port range
      * @param portMapKey portmap key
-     * @return
+     * @return a free active port, available for open connection.
      */
     public Integer getActivePort(Short portMapKey) {
         synchronized (this) {
-            int nextPort = -1;
+            int nextPort;
 
             if (activePorts.size() == streamMax) {
                 logger.error("all ports are consumed for streaming");
@@ -152,10 +152,10 @@ public class FileStreamPortFactory{
                         break;
                     }
                 }
-                logger.debug("releasing port from portfactory {}", port);
+                logger.debug("releasing port from port factory {}", port);
             } else {
                 updatedPortMap = false;
-                logger.debug("port map was not updated from portfactory {} for ", port);
+                logger.debug("port map was not updated from port factory {} for ", port);
             }
 
             return updatedPortMap;

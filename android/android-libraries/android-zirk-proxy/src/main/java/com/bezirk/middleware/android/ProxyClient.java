@@ -223,7 +223,7 @@ public final class ProxyClient implements Bezirk {
     public StreamController sendStream(Stream streamRequest){
         //generate a unique streamID, this will be the primary key for stream access.
         Short streamID;
-        Integer intStreamID = ((streamIdCounter++) % Short.MAX_VALUE);
+        Integer intStreamID = (streamIdCounter++) % Short.MAX_VALUE;
 
         streamID = intStreamID.shortValue();
         StreamController fileStreamController = new FileStreamController(streamID);

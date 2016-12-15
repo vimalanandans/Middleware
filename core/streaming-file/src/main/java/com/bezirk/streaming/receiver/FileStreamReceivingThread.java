@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.concurrent.Callable;
 
 /**
  * FileStreamReceivingThread, will be a running thread
@@ -50,9 +49,7 @@ class FileStreamReceivingThread implements Runnable{
     private Integer assignedPort = -1;
     //connection timeout
     private static final int CONNECTION_TIMEOUT_TIME = 45000;
-
-    //TODO file download path, pull this from the property file.
-    private static final String fileDownloadFolder = "/storage/emulated/0/bezirk/downloads/";
+    private static final String FILE_DOWNLOAD_FOLDER = "/storage/emulated/0/bezirk/downloads/";
     private File file = null;
     //file stream buffer size.
     private static final int BUFFER_SIZE = 1024;
@@ -83,8 +80,8 @@ class FileStreamReceivingThread implements Runnable{
             socket.setSoTimeout(CONNECTION_TIMEOUT_TIME);
             receivingSocket = socket.accept();
 
-            if(getDownloadPath(fileDownloadFolder) != null){
-                tempFile = new File(getDownloadPath(fileDownloadFolder) + file.getName());
+            if(getDownloadPath(FILE_DOWNLOAD_FOLDER) != null){
+                tempFile = new File(getDownloadPath(FILE_DOWNLOAD_FOLDER) + file.getName());
                 fileOutputStream = new FileOutputStream(tempFile);
                 inputStream = new DataInputStream(receivingSocket.getInputStream());
 
@@ -106,25 +103,19 @@ class FileStreamReceivingThread implements Runnable{
 
         } catch (SocketException e) {
             logger.error("Connection Timeout, the client didn't connect within specified timeout", e);
-            if (tempFile != null && tempFile.exists() && !tempFile.delete()) {
-                logger.error("Failed to delete temporary stream file: {}", tempFile);
-            }
         } catch (FileNotFoundException e) {
             logger.error("Unable to receiving stream file in downloads.", e);
-            if (tempFile != null && tempFile.exists() && !tempFile.delete()) {
-                logger.error("Failed to delete temporary stream file: {}", tempFile);
-            }
         } catch (IOException e) {
             logger.error("Exception occurred while receiving stream.", e);
-            if (tempFile != null && tempFile.exists() && !tempFile.delete()) {
-                logger.error("Failed to delete temporary stream file: {}", tempFile);
-            }
         } finally {
             if (streamErrored) {
                 //releasing the port from active and making it available.
                 portFactory.releasePort(assignedPort);
+            }else{
+                if (tempFile.exists() && !tempFile.delete()) {
+                    logger.error("Failed to delete temporary stream file: {}", tempFile);
+                }
             }
-
             closeResources(socket, receivingSocket, fileOutputStream, inputStream);
         }
     }
@@ -167,10 +158,16 @@ class FileStreamReceivingThread implements Runnable{
         final File createDownloadFolder = new File(
                 downloadFolder);
         if (!createDownloadFolder.exists()) {
+            logger.error("Download folder does not exist {}",
+                    createDownloadFolder.getAbsolutePath());
+        }else{
             if (!createDownloadFolder.mkdir()) {
                 logger.error("Failed to create download direction: {}",
                         createDownloadFolder.getAbsolutePath());
                 return null;
+            }else{
+                logger.debug("create download folder: {}",
+                        createDownloadFolder.getAbsolutePath());
             }
         }
         return downloadFolder;

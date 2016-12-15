@@ -42,8 +42,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Implementation of {@link Streaming} interface. This is an implementation of File streaming concept.
@@ -59,7 +57,7 @@ public final class FileStreaming implements Streaming {
     private final Gson gson = new Gson();
     private StreamBook streamBook = null;
     private static final Logger logger = LoggerFactory.getLogger(FileStreaming.class);
-    private static final String id = UUID.randomUUID().toString();
+    private static final String ID = UUID.randomUUID().toString();
 
     public FileStreaming(Comms comms, EventMsgReceiver msgReceiver){
         this.comms = comms;
@@ -94,7 +92,7 @@ public final class FileStreaming implements Streaming {
         if (comms != null) {
             sender = new BezirkZirkEndPoint(comms.getNodeId(), streamAction.getZirkId());
         } else {
-            sender = new BezirkZirkEndPoint(id, streamAction.getZirkId());
+            sender = new BezirkZirkEndPoint(ID, streamAction.getZirkId());
         }
 
         StreamRecord streamRecord = new StreamRecord(streamAction.getStreamId(), (BezirkZirkEndPoint) fileStream.getRecipientEndPoint(), fileStream.getFile(), sender);
@@ -107,7 +105,6 @@ public final class FileStreaming implements Streaming {
         if(isAdded){
             logger.info("StreamRecord with streamId {} was added to the StreamBook, sending ControlMessage over comms to receiver", streamAction.getStreamId());
             final ControlLedger controlLedger = new ControlLedger();
-            final StringBuilder uniqueMsgId = new StringBuilder(GenerateMsgId.generateEvtId(sender));
             //sphere will be DEFAULT as of now
             controlLedger.setSphereId("DEFAULT");
 
@@ -118,7 +115,7 @@ public final class FileStreaming implements Streaming {
             final UnicastHeader uHeader = new UnicastHeader();
             uHeader.setRecipient((BezirkZirkEndPoint) fileStream.getRecipientEndPoint());
             uHeader.setSender(sender);
-            uHeader.setUniqueMsgId(uniqueMsgId.toString());
+            uHeader.setUniqueMsgId(GenerateMsgId.generateEvtId(sender));
             controlLedger.setHeader(uHeader);
 
             logger.info("sending control ledger from Stream module for request {}", streamRequest.getUniqueKey());

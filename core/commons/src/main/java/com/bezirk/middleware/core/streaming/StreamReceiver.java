@@ -23,10 +23,11 @@
 package com.bezirk.middleware.core.streaming;
 
 /**
- * Created by PIK6KOR on 11/11/2016.
+ * Interface for incoming Stream request events, incoming Stream Request will be be
+ * given to observer <code>FileStreamRequestObserver</code>
  */
 
 public interface StreamReceiver {
 
-    public void incomingStreamRequest(StreamRequest streamRequest);
+    void incomingStreamRequest(StreamRequest streamRequest);
 }

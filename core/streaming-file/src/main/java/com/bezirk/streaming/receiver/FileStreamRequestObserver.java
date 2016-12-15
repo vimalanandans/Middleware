@@ -44,13 +44,13 @@ import java.util.Observable;
  * {@link StreamAliveObserver} and {@link StreamAssignedObserver}.
  */
 
-public class FileStreamRequestObserver extends Observable implements StreamReceiver, ZirkMessageHandler{
+class FileStreamRequestObserver extends Observable implements StreamReceiver, ZirkMessageHandler{
     private static final Logger logger = LoggerFactory
             .getLogger(FileStreamRequestObserver.class);
 
     private EventMsgReceiver eventMsgReceiver = null;
 
-    public void initStreamRequestObserver(Comms comms, EventMsgReceiver eventMsgReceiver){
+    void initStreamRequestObserver(Comms comms, EventMsgReceiver eventMsgReceiver){
         if(comms != null || eventMsgReceiver != null){
             this.eventMsgReceiver = eventMsgReceiver;
             StreamBook streamBook = new StreamBook();

@@ -68,7 +68,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
                     processStream((StreamAction) message);
                     break;
                 default:
-                    logger.error("Unimplemented action: " + message.getAction());
+                    logger.error("Unimplemented action: {}", message.getAction());
             }
         }
     }

@@ -31,6 +31,8 @@ import com.bezirk.streaming.FileStreamRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.bezirk.middleware.core.control.messages.ControlMessage.Discriminator.STREAM_REQUEST;
+
 /**
  * FileStreamEventReceiver is a implementation of {@link CtrlMsgReceiver}.
  * This will receive all the control messages related to Streaming. This module will be initialized when
@@ -51,29 +53,27 @@ public class FileStreamEventReceiver implements CtrlMsgReceiver {
 
     /**
      * All the received Stream_Request control messages will be passed to stream observer
-     * @param id
-     * @param serializedMsg
-     * @return
+     * @param id control message ID.
+     * @param serializedMsg incoming serialized event message.
+     * @return return boolean, if the processing of message was successful or failure.
      */
     @Override
     public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
-        switch (id) {
-            case STREAM_REQUEST: {
-                if(serializedMsg != null){
-                    FileStreamRequest fileStreamRequest =  ControlMessage.deserialize(serializedMsg, FileStreamRequest.class);
-                    fileStreamRequestObserver.incomingStreamRequest(fileStreamRequest);
-                }
+        if(id.equals(STREAM_REQUEST)){
+            if(serializedMsg != null){
+                FileStreamRequest fileStreamRequest =  ControlMessage.deserialize(serializedMsg, FileStreamRequest.class);
+                fileStreamRequestObserver.incomingStreamRequest(fileStreamRequest);
             }
-            default : {
-                logger.error("Unknown request type received at Process Control Message typr is {}", id);
-            }
+        }else{
+            logger.error("Unknown request type received at Process Control Message typr is {}", id);
         }
+
         return true;
     }
 
     /**
      * pass the comms object to StreamAliveObserver as it is required to send reply
-     * @param comms
+     * @param comms instance of COMMS
      */
     public void initFileStreamEventObserver(Comms comms, EventMsgReceiver msgReceiver){
         fileStreamRequestObserver.initStreamRequestObserver(comms, msgReceiver);

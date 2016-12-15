@@ -95,8 +95,8 @@ public class FileStreamSenderThread implements Callable<Boolean> {
 
     /**
      * gracefully close all the open resources
-     * @param fileInputStream
-     * @param dataOutputStream
+     * @param fileInputStream input stream resource instance.
+     * @param dataOutputStream Output stream resource instance.
      */
     private void closeResources(FileInputStream fileInputStream,
                                 DataOutputStream dataOutputStream) {

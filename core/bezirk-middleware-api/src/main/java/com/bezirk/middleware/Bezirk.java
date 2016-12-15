@@ -123,7 +123,7 @@ public interface Bezirk {
      * Use {@link Stream.StreamEventReceiver} to set the receiver and receive the callbacks with {@link com.bezirk.middleware.messages.StreamEvent#streamRecordStatus}
      * to handle callbacks.
      *
-     * @param streamRequest object which will have information of streaming metadata.
+     * @param streamRequest object which will have stream request metadata.
      */
     StreamController sendStream(Stream streamRequest);
 }

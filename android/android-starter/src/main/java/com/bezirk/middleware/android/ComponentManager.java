@@ -70,7 +70,6 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     private final RemoteLog remoteLog = null;
     private LifeCycleObservable.State currentState;
     private String identityString;
-    private Streaming streaming;
 
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
@@ -206,7 +205,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         proxyServer.setPubSubBrokerService(pubSubBroker);
 
         //initialize streaming, Remember DI should be way forward.
-        streaming = new FileStreaming(comms, pubSubBroker);
+        Streaming streaming = new FileStreaming(comms, pubSubBroker);
         proxyServer.setStreaming(streaming);
     }
 
