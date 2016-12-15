@@ -150,21 +150,33 @@ class StreamAliveObserver implements Observer {
         try {
             List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface intf : interfaces) {
-                List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
-                for (InetAddress addr : addrs) {
-                    if (!addr.isLoopbackAddress()) {
-                        String sAddr = addr.getHostAddress();
-                        boolean isIPv4 = sAddr.indexOf(':')<0;
-
-                        if (isIPv4){
-                            return sAddr;
-                        }
-                    }
+                String sAddr = getNetworkAddress(intf);
+                if (sAddr != null){
+                    return sAddr;
                 }
             }
         } catch (Exception ex) {
             logger.error("Error while getting IP address of device", ex);
         } // for now eat exceptions
         return "";
+    }
+
+    /**
+     * returns a network address from NetworkInterface
+     * @param intf NetworkInterface
+     * @return IP address of the device.
+     */
+    private static String getNetworkAddress(NetworkInterface intf) {
+        List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+        for (InetAddress addr : addrs) {
+            if (!addr.isLoopbackAddress()) {
+                String sAddr = addr.getHostAddress();
+                boolean isIPv4 = sAddr.indexOf(':')<0;
+                if (isIPv4){
+                    return sAddr;
+                }
+            }
+        }
+        return null;
     }
 }

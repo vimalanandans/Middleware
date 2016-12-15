@@ -43,7 +43,6 @@ import java.util.concurrent.Future;
  * StreamAssignedObserver is an Observer waiting for Assigned status stream records from {@link FileStreamRequestObserver}.
  * Update will be called when the subject StreamBook will be updated with a new entry.
  *
- * Created by PIK6KOR on 11/22/2016.
  */
 
 class StreamAssignedObserver implements Observer {
